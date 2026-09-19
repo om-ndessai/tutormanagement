@@ -1,0 +1,33 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "tmi-portal",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-09-19",
+	// The Worker both serves the API and hosts the built React SPA, so the whole
+	// portal is a single `wrangler deploy` on the Workers free plan.
+	"assets": {
+		"directory": "../web/dist",
+		"binding": "ASSETS",
+		"not_found_handling": "single-page-application",
+		// Without this, a request to /api/users would be answered by the SPA
+		// fallback instead of reaching the Worker.
+		"run_worker_first": [
+			"/api/*"
+		]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "tmi-portal-db",
+			// Run `npm run db:create` and paste the printed id here.
+			"database_id": "587b5622-15bf-4fbb-9a3f-873bee7a67c5",
+			"migrations_dir": "migrations"
+		}
+	],
+	"vars": {
+		"ENVIRONMENT": "development"
+	},
+	"observability": {
+		"enabled": true
+	}
+}

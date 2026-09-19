@@ -1,0 +1,33 @@
+{
+  "name": "tmi-portal",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Tutor management portal for the Mathematics Institute of the Triangle",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev --workspace @tmi/api",
+    "dev:web": "npm run dev --workspace @tmi/web",
+    "build": "npm run build --workspace @tmi/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:create": "npm run db:create --workspace @tmi/api",
+    "db:migrate": "npm run db:migrate --workspace @tmi/api",
+    "db:migrate:remote": "npm run db:migrate:remote --workspace @tmi/api",
+    "db:seed": "npm run db:seed --workspace @tmi/api",
+    "db:reset": "npm run db:reset --workspace @tmi/api",
+    "db:studio": "npm run db:studio --workspace @tmi/api",
+    "deploy": "npm run build && npm run deploy --workspace @tmi/api"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "concurrently": "^10.0.5",
+    "typescript": "^7.0.2"
+  }
+}

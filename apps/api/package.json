@@ -1,0 +1,30 @@
+{
+  "name": "@tmi/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker API + static host for the TMI tutor management portal",
+  "scripts": {
+    "predev": "node -e \"require('node:fs').mkdirSync('../web/dist',{recursive:true})\"",
+    "dev": "wrangler dev --port 8787",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types",
+    "db:create": "wrangler d1 create tmi-portal-db",
+    "db:migrate": "wrangler d1 migrations apply tmi-portal-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply tmi-portal-db --remote",
+    "db:seed": "wrangler d1 execute tmi-portal-db --local --file=./seed/dev-seed.sql",
+    "db:reset": "npm run db:migrate && npm run db:seed",
+    "db:studio": "wrangler d1 execute tmi-portal-db --local --command=\"SELECT id, email, full_name, role, status, deleted_at FROM users ORDER BY full_name\""
+  },
+  "dependencies": {
+    "@tmi/shared": "*",
+    "hono": "^4.13.8",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260919.1",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.135.0"
+  }
+}
