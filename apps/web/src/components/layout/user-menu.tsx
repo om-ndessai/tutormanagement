@@ -50,7 +50,9 @@ export function UserMenu() {
         <DropdownMenuLabel className="font-normal">
           <p className="truncate text-sm font-medium">{user.full_name}</p>
           <p className="text-muted-foreground truncate text-xs">{user.email}</p>
-          <p className="text-muted-foreground mt-1 text-xs">{USER_ROLE_LABELS[user.role]}</p>
+            <p className="text-muted-foreground mt-1 text-xs">
+            {user.roles.map((role) => USER_ROLE_LABELS[role]).join(" \u00b7 ")}
+          </p>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />

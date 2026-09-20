@@ -12,7 +12,7 @@ import { useAuth } from '@/providers/auth-provider';
  * unauthenticated API calls regardless of what the SPA renders.
  */
 export function RequireAuth() {
-  const { status } = useAuth();
+  const { status, statusMessage } = useAuth();
   const location = useLocation();
 
   if (status === 'loading') {
@@ -31,9 +31,9 @@ export function RequireAuth() {
     return (
       <div className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-4 px-4 text-center">
         <LogoMark className="size-12 opacity-60" />
-        <h1 className="text-xl font-semibold">Can’t reach the portal</h1>
+        <h1 className="text-xl font-semibold">The portal can’t start</h1>
         <p className="text-muted-foreground text-sm">
-          The server did not respond. Check your connection and try again.
+          {statusMessage ?? 'The server did not respond. Check your connection and try again.'}
         </p>
         <Button onClick={() => window.location.reload()}>Retry</Button>
       </div>

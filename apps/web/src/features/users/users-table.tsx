@@ -2,6 +2,7 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   MoreHorizontalIcon,
+  EyeIcon,
   PencilIcon,
   RotateCcwIcon,
   Trash2Icon,
@@ -31,7 +32,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { DeletedBadge, RoleBadge, StatusBadge } from './user-badges';
+import { DeletedBadge, RoleBadges, StatusBadge } from './user-badges';
 
 interface SortState {
   sort: UserSortField;
@@ -42,7 +43,7 @@ const COLUMNS: { key: UserSortField | null; label: string; className?: string }[
   { key: 'full_name', label: 'Name' },
   { key: 'email', label: 'Email', className: 'hidden md:table-cell' },
   { key: null, label: 'Phone', className: 'hidden lg:table-cell' },
-  { key: 'role', label: 'Role' },
+  { key: null, label: 'Roles' },
   { key: 'status', label: 'Status' },
 ];
 
@@ -60,6 +61,7 @@ export function UsersTable({
   isLoading,
   sortState,
   onSortChange,
+  onView,
   onEdit,
   onDeactivate,
   onRestore,
@@ -69,6 +71,7 @@ export function UsersTable({
   isLoading: boolean;
   sortState: SortState;
   onSortChange: (next: SortState) => void;
+  onView: (user: User) => void;
   onEdit: (user: User) => void;
   onDeactivate: (user: User) => void;
   onRestore: (user: User) => void;
@@ -156,7 +159,13 @@ export function UsersTable({
                       </span>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="truncate font-medium">{user.full_name}</span>
+                          <button
+                            type="button"
+                            onClick={() => onView(user)}
+                            className="hover:text-primary truncate text-left font-medium transition-colors"
+                          >
+                            {user.full_name}
+                          </button>
                           {isDeleted && <DeletedBadge />}
                         </div>
                         <span className="text-muted-foreground truncate text-xs md:hidden">
@@ -180,7 +189,7 @@ export function UsersTable({
                   </TableCell>
 
                   <TableCell>
-                    <RoleBadge role={user.role} />
+                    <RoleBadges roles={user.roles} />
                   </TableCell>
 
                   <TableCell>
@@ -199,6 +208,10 @@ export function UsersTable({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem onSelect={() => onView(user)}>
+                          <EyeIcon className="size-4" />
+                          View details
+                        </DropdownMenuItem>
                         {!isDeleted && (
                           <>
                             <DropdownMenuItem onSelect={() => onEdit(user)}>

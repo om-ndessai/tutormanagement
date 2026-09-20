@@ -23,6 +23,12 @@ interface AuthContextValue {
   impersonated: boolean;
   /** Why the last sign-in attempt failed, if it did. */
   error: ApiRequestError | null;
+  /**
+   * Why `status` is 'error'. Surfaced verbatim, because the reason is usually a
+   * configuration problem the operator can act on -- a generic "can't reach the
+   * portal" screen once hid an empty user table for an entire debugging round.
+   */
+  statusMessage: string | null;
   signInWithGoogle: (credential: string) => Promise<void>;
   signOut: () => Promise<void>;
   clearError: () => void;
@@ -45,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<AuthConfig | null>(null);
   const [impersonated, setImpersonated] = useState(false);
   const [error, setError] = useState<ApiRequestError | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   // Boot: config and session in parallel. A 401 on session is the normal
   // "signed out" case, not an error.
@@ -62,6 +69,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (configResult.status === 'fulfilled') {
         setConfig(configResult.value.data);
       } else {
+        const reason = configResult.reason;
+        setStatusMessage(
+          reason instanceof ApiRequestError ? reason.message : 'The server did not respond.',
+        );
         setStatus('error');
         return;
       }
@@ -73,8 +84,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
+      // A 401 is the normal signed-out case. Anything else is a real fault,
+      // and its message is the only clue the operator gets.
       const reason = sessionResult.reason;
-      setStatus(reason instanceof ApiRequestError && reason.status >= 500 ? 'error' : 'unauthenticated');
+      const isFault = reason instanceof ApiRequestError && reason.status !== 401;
+
+      if (isFault) {
+        setStatusMessage(reason.message);
+        setStatus('error');
+        return;
+      }
+
+      setStatus('unauthenticated');
     }
 
     void boot();
@@ -135,8 +156,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const clearError = useCallback(() => setError(null), []);
 
   const value = useMemo(
-    () => ({ status, user, config, impersonated, error, signInWithGoogle, signOut, clearError }),
-    [status, user, config, impersonated, error, signInWithGoogle, signOut, clearError],
+    () => ({
+      status,
+      user,
+      config,
+      impersonated,
+      error,
+      statusMessage,
+      signInWithGoogle,
+      signOut,
+      clearError,
+    }),
+    [status, user, config, impersonated, error, statusMessage, signInWithGoogle, signOut, clearError],
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;

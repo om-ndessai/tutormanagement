@@ -36,6 +36,7 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { ApiRequestError } from '@/lib/api-client';
 import { useDeleteUser, useRestoreUser, useUsers } from './api';
+import { UserDetailDialog } from './user-detail-dialog';
 import { UserFormDialog } from './user-form-dialog';
 import { UsersTable } from './users-table';
 
@@ -60,7 +61,8 @@ export function UsersPage() {
   const [page, setPage] = useState(0);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState<User | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewingId, setViewingId] = useState<string | null>(null);
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
 
   const debouncedSearch = useDebouncedValue(search);
@@ -96,12 +98,12 @@ export function UsersPage() {
   }
 
   function openCreate() {
-    setEditing(null);
+    setEditingId(null);
     setFormOpen(true);
   }
 
   function openEdit(user: User) {
-    setEditing(user);
+    setEditingId(user.id);
     setFormOpen(true);
   }
 
@@ -138,7 +140,7 @@ export function UsersPage() {
     <div className="mx-auto max-w-6xl">
       <PageHeader
         title="Users"
-        description="Admins and tutors at the Mathematics Institute of the Triangle."
+        description="Everyone at the Mathematics Institute of the Triangle. A person can hold more than one role."
         actions={
           <Button onClick={openCreate}>
             <PlusIcon />
@@ -209,6 +211,7 @@ export function UsersPage() {
             isLoading={isPending}
             sortState={sortState}
             onSortChange={resetPage(setSortState)}
+            onView={(user) => setViewingId(user.id)}
             onEdit={openEdit}
             onDeactivate={(user) => setPendingAction({ kind: 'deactivate', user })}
             onRestore={handleRestore}
@@ -245,7 +248,9 @@ export function UsersPage() {
         </>
       )}
 
-      <UserFormDialog open={formOpen} onOpenChange={setFormOpen} user={editing} />
+      <UserFormDialog open={formOpen} onOpenChange={setFormOpen} userId={editingId} />
+
+      <UserDetailDialog userId={viewingId} onOpenChange={(open) => !open && setViewingId(null)} />
 
       <AlertDialog
         open={pendingAction !== null}

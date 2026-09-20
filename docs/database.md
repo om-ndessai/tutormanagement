@@ -5,56 +5,45 @@ Cloudflare D1 — SQLite at the edge. One database, `tmi-portal-db`, bound to th
 
 ## Schema
 
-### `users`
+Seven tables, all hanging off `users`. **[data-model.md](data-model.md) is the reference** --
+it explains why each attribute sits where it does and which rules the database cannot enforce.
+This file covers the operational side.
 
-Phase 1 covers **staff only**: admins and tutors. Students, parents and guardians will get
-their own tables alongside classes and scheduling.
-
-| Column | Type | Notes |
+| Table | Rows per user | Holds |
 | --- | --- | --- |
-| `id` | TEXT PK | UUID v4 from `crypto.randomUUID()` |
-| `email` | TEXT NOT NULL | Stored lowercased and trimmed by the Zod schema |
-| `full_name` | TEXT NOT NULL | Single field — names do not split reliably |
-| `phone` | TEXT NULL | Free-form; only ever displayed back |
-| `role` | TEXT NOT NULL | `admin` \| `tutor` (CHECK constraint) |
-| `status` | TEXT NOT NULL | `active` \| `invited` \| `suspended`, default `active` |
-| `google_sub` | TEXT NULL | Google's permanent id for the account, pinned on first sign-in. Matching is on **email** (admins create rows before anyone signs in), but `sub` survives a Google account changing address |
-| `created_at` | TEXT NOT NULL | ISO-8601 UTC, ms precision |
-| `updated_at` | TEXT NOT NULL | Same format; see the trigger below |
-| `last_login_at` | TEXT NULL | Set on every successful Google sign-in |
-| `deleted_at` | TEXT NULL | Soft delete marker; `NULL` means live |
+| `users` | 1 | The person: name, email, phone, status, sign-in state |
+| `user_roles` | 1..4 | Which of admin / tutor / student / parent they hold |
+| `tutor_profiles` | 0..1 | Education, school, area, availability notes, virtual flag |
+| `student_profiles` | 0..1 | School, current course, year goal, virtual flag |
+| `payment_handles` | 0..2 | One Zelle and/or one Venmo id |
+| `availability_slots` | 0..n | One row per free hour block, `(day_of_week, hour)` |
+| `guardianships` | 0..n | Which adult is responsible for which young person |
 
-Indexes:
+Every child table is `ON DELETE CASCADE`, so removing a person removes everything about them.
+D1 enforces foreign keys, so this works without any pragma.
 
-| Index | Purpose |
-| --- | --- |
-| `users_email_unique` on `lower(email)` **where `deleted_at IS NULL`** | One live user per address, case-insensitively. Partial, so a deactivated person's address can be reused |
-| `users_google_sub_unique` on `google_sub` where not null **and not deleted** | One live user per Google account. Scoped to live rows so deleting and re-adding the same person does not collide with their own retired row |
-| `users_role_idx`, `users_status_idx`, `users_full_name_idx` | Partial indexes over live rows, matching how the list endpoint filters and sorts |
-
-### Conventions and why
+### Conventions
 
 **Text timestamps.** SQLite has no date type. `strftime('%Y-%m-%dT%H:%M:%fZ', 'now')` gives
 ISO-8601 UTC with milliseconds, which sorts lexicographically in the same order it sorts
 chronologically, and which `new Date(...)` parses unchanged in the browser.
 
-**Soft delete.** Staff records will be referenced by schedules, classes and attendance history.
-Deleting one outright would orphan that history, so `DELETE /api/users/:id` sets `deleted_at`
-and the record stays. List queries add `WHERE deleted_at IS NULL` unless asked for
-`include_deleted=true`. Hard delete exists behind `?hard=true` for genuine mistakes.
+**Integer booleans.** SQLite has no boolean either, so `0`/`1` with a CHECK constraint.
 
-One consequence to keep in mind: because the unique email index only covers live rows, a
-soft-deleted user's email can be taken by someone new — and then **restoring fails with a 409**.
-`POST /api/users/:id/restore` already handles and reports that.
+**`day_of_week` is 0=Sunday..6=Saturday**, matching JavaScript's `Date#getDay()` so nothing has
+to convert.
 
-**Case-insensitive email.** SQLite's default collation is case-sensitive, so the unique index
-is on `lower(email)` and the Zod schema lowercases on the way in. Both are needed: the schema
-normalizes what the app writes, the index protects against anything else.
+**Soft delete.** People are referenced by history, so `DELETE /api/users/:id` sets `deleted_at`
+and the record stays. List queries add `WHERE deleted_at IS NULL` unless asked otherwise. This
+is distinct from `status = 'suspended'`, which means "still ours, no access".
 
-**`updated_at` trigger.** `users_set_updated_at` fires only `WHEN NEW.updated_at = OLD.updated_at`
-— that is, only when a writer did not set it. The API sets it explicitly in the same `UPDATE`
-(saving a second write), so the trigger is really a safety net for manual
-`wrangler d1 execute` edits and future services.
+One consequence: because the unique email index only covers live rows, a soft-deleted person's
+email can be taken by someone new — and then **restoring fails with a 409**. The restore route
+handles and reports that.
+
+**`updated_at` triggers** fire only `WHEN NEW.updated_at = OLD.updated_at`, so the API can set
+the column inline (saving a second write) while manual `wrangler d1 execute` edits still get it
+maintained.
 
 ## No migrations — one rebuildable schema
 
@@ -79,9 +68,9 @@ simply recreated.
 
 **`npm run db:rebuild:remote` destroys all production data.**
 
-That moment has already arrived: the deployed database holds real user records. So the
-drop-and-recreate workflow now applies to **local only**, and a schema change has to be
-carried to production by hand:
+While the institute has no records worth keeping, that is the intended way to apply a model
+change to production — it is what the plan asks for. Once real records exist, it stops being
+an option and a schema change has to be carried over by hand instead:
 
 ```bash
 # after editing db/schema.sql and running db:reset locally
@@ -116,8 +105,11 @@ disposable:
 npm run db:reset    # migrate, then load apps/api/seed/dev-seed.sql
 ```
 
-The seed inserts six staff members covering every role and status, including one suspended
-tutor, with fixed UUIDs so they are stable across resets. It begins with `DELETE FROM users`,
+The seed inserts eleven people chosen to exercise every requirement in the plan rather than to
+look like a plausible institute: an admin who tutors, a parent who tutors, a tutor who is also
+a student and has a parent of his own, a student with two parents (one primary), a parent with
+no children, plus one suspended and one never-signed-in account. Fixed UUIDs, so they are
+stable across resets. It begins with `DELETE FROM users`,
 so it is safe to re-run — and must never be pointed at production.
 
 Note the seeded addresses are `@trianglemathinstitute.com`. Unless those are real Google

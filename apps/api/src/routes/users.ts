@@ -1,24 +1,34 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import {
-  createUserSchema,
+  createUserRequestSchema,
   listUsersQuerySchema,
-  updateUserSchema,
+  splitUserRequest,
+  updateUserRequestSchema,
   type ApiList,
   type ApiOk,
+  type GuardianshipInput,
   type User,
+  type UserDetail,
+  type UserRole,
 } from '@tmi/shared';
+
 import type { AppEnv } from '../types.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
+import { requireAdmin } from '../middleware/require-admin.js';
 import {
+  countGuardians,
   createUser,
   deactivateUser,
+  findMissingUserIds,
   getUserById,
+  getUserDetail,
   listUsers,
   purgeUser,
   restoreUser,
   updateUser,
+  updateUserSections,
 } from '../repositories/users.js';
 
 const idParamSchema = z.object({
@@ -35,6 +45,46 @@ const deleteQuerySchema = z.object({
 
 const EMAIL_TAKEN = 'Another user already has that email address.';
 
+/**
+ * "A student must have atleast one parent relationship." -- docs/plan.md.
+ *
+ * This cannot be a database constraint: the student row must exist before any
+ * guardianship can point at it, so no CHECK or foreign key can express it. It
+ * lives here instead, and is checked on every write that could break it.
+ */
+function assertStudentHasGuardian(roles: UserRole[], guardianCount: number) {
+  if (roles.includes('student') && guardianCount === 0) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      guardians: ['A student must have at least one parent or guardian.'],
+    });
+  }
+}
+
+/** Guardian ids come from the client, so they are checked before they hit a FK. */
+async function assertGuardiansExist(
+  db: D1Database,
+  dependentId: string | null,
+  guardians: GuardianshipInput[] | undefined,
+) {
+  if (!guardians || guardians.length === 0) return;
+
+  const ids = guardians.map((link) => link.guardian_user_id);
+
+  if (dependentId && ids.includes(dependentId)) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      guardians: ['Someone cannot be their own parent or guardian.'],
+    });
+  }
+
+  const missing = await findMissingUserIds(db, ids);
+
+  if (missing.length > 0) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      guardians: [`${missing.length} selected guardian(s) no longer exist.`],
+    });
+  }
+}
+
 export const usersRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listUsersQuerySchema), async (c) => {
@@ -48,83 +98,110 @@ export const usersRoutes = new Hono<AppEnv>()
     return c.json(body);
   })
 
-  .post('/', zValidator('json', createUserSchema), async (c) => {
-    const input = c.req.valid('json');
+  /**
+   * Creating the user and its sections is one call so that a student is never
+   * briefly parentless -- see assertStudentHasGuardian.
+   */
+  .post('/', requireAdmin, zValidator('json', createUserRequestSchema), async (c) => {
+    const { user: fields, sections } = splitUserRequest(c.req.valid('json'));
+
+    assertStudentHasGuardian(fields.roles, sections.guardians?.length ?? 0);
+    await assertGuardiansExist(c.env.DB, null, sections.guardians);
+
+    let created: User;
 
     try {
-      const user = await createUser(c.env.DB, input);
-      const body: ApiOk<User> = { data: user };
-      return c.json(body, 201);
+      created = await createUser(c.env.DB, fields);
     } catch (error) {
-      if (isUniqueConstraintError(error)) {
-        throw ApiError.conflict(EMAIL_TAKEN);
-      }
+      if (isUniqueConstraintError(error)) throw ApiError.conflict(EMAIL_TAKEN);
       throw error;
     }
+
+    await updateUserSections(c.env.DB, created.id, sections);
+
+    const detail = await getUserDetail(c.env.DB, created.id);
+    const body: ApiOk<UserDetail> = { data: detail! };
+    return c.json(body, 201);
   })
 
+  /** Returns the whole graph: roles, role profiles, availability, money, family. */
   .get('/:id', zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
-    const user = await getUserById(c.env.DB, id);
+    const detail = await getUserDetail(c.env.DB, id);
 
-    if (!user) {
-      throw ApiError.notFound('That user does not exist.');
-    }
+    if (!detail) throw ApiError.notFound('That user does not exist.');
 
-    const body: ApiOk<User> = { data: user };
+    const body: ApiOk<UserDetail> = { data: detail };
     return c.json(body);
   })
 
   .patch(
     '/:id',
+    requireAdmin,
     zValidator('param', idParamSchema),
-    zValidator('json', updateUserSchema),
+    zValidator('json', updateUserRequestSchema),
     async (c) => {
       const { id } = c.req.valid('param');
-      const input = c.req.valid('json');
+      const { user: fields, sections } = splitUserRequest(c.req.valid('json'));
+
+      const existing = await getUserById(c.env.DB, id);
+      if (!existing || existing.deleted_at) {
+        throw ApiError.notFound('That user does not exist, or has been deactivated.');
+      }
+
+      // Either side of this can change in one request, so both are resolved to
+      // their post-update values before the invariant is checked.
+      const finalRoles = fields.roles ?? existing.roles;
+      const guardianCount = sections.guardians
+        ? sections.guardians.length
+        : await countGuardians(c.env.DB, id);
+
+      assertStudentHasGuardian(finalRoles, guardianCount);
+      await assertGuardiansExist(c.env.DB, id, sections.guardians);
 
       try {
-        const user = await updateUser(c.env.DB, id, input);
-
-        if (!user) {
-          throw ApiError.notFound('That user does not exist, or has been deactivated.');
+        if (Object.keys(fields).length > 0) {
+          const updated = await updateUser(c.env.DB, id, fields);
+          if (!updated) throw ApiError.notFound('That user does not exist.');
         }
-
-        const body: ApiOk<User> = { data: user };
-        return c.json(body);
       } catch (error) {
-        if (isUniqueConstraintError(error)) {
-          throw ApiError.conflict(EMAIL_TAKEN);
-        }
+        if (isUniqueConstraintError(error)) throw ApiError.conflict(EMAIL_TAKEN);
         throw error;
       }
+
+      await updateUserSections(c.env.DB, id, sections);
+
+      const detail = await getUserDetail(c.env.DB, id);
+      const body: ApiOk<UserDetail> = { data: detail! };
+      return c.json(body);
     },
   )
 
   /**
    * Soft-deletes by default so schedules and history keep resolving. Pass
-   * `?hard=true` to remove the row permanently.
+   * `?hard=true` to remove the row and everything that cascades from it.
    */
   .delete(
     '/:id',
+    requireAdmin,
     zValidator('param', idParamSchema),
     zValidator('query', deleteQuerySchema),
     async (c) => {
       const { id } = c.req.valid('param');
       const { hard } = c.req.valid('query');
 
-      if (hard) {
-        const removed = await purgeUser(c.env.DB, id);
+      if (c.get('user').id === id) {
+        throw new ApiError(409, 'conflict', 'You cannot remove your own account.');
+      }
 
-        if (!removed) {
+      if (hard) {
+        if (!(await purgeUser(c.env.DB, id))) {
           throw ApiError.notFound('That user does not exist.');
         }
-
         return c.body(null, 204);
       }
 
       const user = await deactivateUser(c.env.DB, id);
-
       if (!user) {
         throw ApiError.notFound('That user does not exist, or was already deactivated.');
       }
@@ -134,12 +211,11 @@ export const usersRoutes = new Hono<AppEnv>()
     },
   )
 
-  .post('/:id/restore', zValidator('param', idParamSchema), async (c) => {
+  .post('/:id/restore', requireAdmin, zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
 
     try {
       const user = await restoreUser(c.env.DB, id);
-
       if (!user) {
         throw ApiError.notFound('That user does not exist, or is already active.');
       }

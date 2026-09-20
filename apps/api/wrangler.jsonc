@@ -34,14 +34,22 @@
 		// See docs/google-oauth-setup.md for how to create one.
 		"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
 
-		// Master switch for authentication. "false" makes every API route run as
-		// DEV_USER_EMAIL and lets the SPA skip the login screen -- intended for
-		// building later phases without signing in each time. Must be "true" in
-		// production.
-		"AUTH_ENABLED": "true",
+		// Master switch for authentication.
+		//
+		// Currently "false" BY CHOICE: Google sign-in works (Phase 1) but is
+		// switched off so later phases can be built without signing in each
+		// time. While it is false, every API route runs as DEV_USER_EMAIL --
+		// or, failing that, the first admin -- and the SPA skips the login
+		// screen. The portal is effectively PUBLIC to anyone with the URL.
+		//
+		// Set to "true" to turn sign-in back on. Nothing else needs to change;
+		// GOOGLE_CLIENT_ID and SESSION_SECRET are already configured.
+		"AUTH_ENABLED": "false",
 
-		// Who the API runs as while AUTH_ENABLED is "false". Falls back to the
-		// first admin in the table when empty.
+		// Who the API runs as while AUTH_ENABLED is "false". When empty, falls
+		// back to the first admin, then to any user, and finally creates a
+		// placeholder admin -- so an empty directory can never take the portal
+		// down. Note that a non-admin here means writes return 403.
 		"DEV_USER_EMAIL": "",
 
 		// Chicken-and-egg escape hatch: while the users table contains no admin,

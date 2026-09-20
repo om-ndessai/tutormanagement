@@ -7,11 +7,17 @@ React SPA, backed by one D1 (SQLite) database.
 
 Roadmap lives in [docs/plan.md](docs/plan.md).
 
-- **Phase 1 (done):** Google sign-in. It is the only way in, and every API route that serves
-  portal data requires a verified Google identity. Plus the staff directory — create, edit,
-  deactivate and restore admins and tutors.
-- **Phase 2 (next):** the real data model — admins, tutors, students and parents, with a user
-  able to hold several roles at once.
+- **Phase 1 (done):** Google sign-in. The only way in, and every API route that serves portal
+  data requires a verified Google identity.
+> **Authentication is currently switched OFF.** Google sign-in works and is fully built, but
+> `AUTH_ENABLED` is `"false"` so later phases can be built without signing in each time. The
+> deployed portal is reachable by anyone with the URL. Set `AUTH_ENABLED` to `"true"` in
+> `apps/api/wrangler.jsonc` to turn it back on — nothing else needs to change.
+
+- **Phase 2 (done):** the data model — admins, tutors, students and parents, where one person
+  can hold several roles at once, with role profiles, availability, payment handles and
+  parent/guardian relationships. See [docs/data-model.md](docs/data-model.md).
+- **Next:** classes, schedules and homework.
 
 ## Stack
 
@@ -42,8 +48,9 @@ relative URLs it will use in production.
 [docs/google-oauth-setup.md](docs/google-oauth-setup.md) — it covers the Google Cloud side, the
 two config values, and bootstrapping the first admin.
 
-To work on the app without signing in, set `"AUTH_ENABLED": "false"` in
-`apps/api/wrangler.jsonc`. Never deploy with that set.
+Sign-in is currently disabled (`AUTH_ENABLED: "false"`), so the app runs without it. While it
+is off, every request runs as `DEV_USER_EMAIL`, or the first admin if that is empty. Set it to
+a non-admin to exercise the authorization paths.
 
 ## Layout
 
@@ -88,6 +95,7 @@ share one origin and one domain.
 ## Documentation
 
 - [docs/plan.md](docs/plan.md) — the phased roadmap
+- [docs/data-model.md](docs/data-model.md) — the Phase 2 model: why each table exists, and which rules the database cannot enforce
 - [docs/architecture.md](docs/architecture.md) — how the pieces fit, request flow, conventions
 - [docs/google-oauth-setup.md](docs/google-oauth-setup.md) — creating the Google client ID, secrets, first admin
 - [docs/database.md](docs/database.md) — schema, migration workflow, D1 notes
@@ -109,9 +117,9 @@ cookie and returns `401 unauthenticated` without one.
 | `POST` | `/api/auth/google` | public | Exchanges a Google ID token for a session cookie |
 | `GET` | `/api/auth/session` | required | The signed-in user |
 | `POST` | `/api/auth/logout` | public | Clears the cookie |
-| `GET` | `/api/users` | required | `search`, `role`, `status`, `include_deleted`, `sort`, `order`, `limit`, `offset` |
-| `POST` | `/api/users` | required | 409 on duplicate email, 422 on validation failure |
-| `GET` | `/api/users/:id` | required | |
-| `PATCH` | `/api/users/:id` | required | Partial; omitted fields are left alone, `phone: null` clears |
-| `DELETE` | `/api/users/:id` | required | Soft delete; `?hard=true` removes the row |
-| `POST` | `/api/users/:id/restore` | required | Undo a soft delete |
+| `GET` | `/api/users` | required | `search`, `role` (holds it), `status`, `include_deleted`, `sort`, `order`, `limit`, `offset` |
+| `POST` | `/api/users` | **admin** | User + roles + profiles + availability + guardians in one call |
+| `GET` | `/api/users/:id` | required | The full graph: roles, role profiles, availability, payment, family |
+| `PATCH` | `/api/users/:id` | **admin** | Partial; supplying a section replaces it wholesale |
+| `DELETE` | `/api/users/:id` | **admin** | Soft delete; `?hard=true` removes the row and cascades |
+| `POST` | `/api/users/:id/restore` | **admin** | Undo a soft delete |

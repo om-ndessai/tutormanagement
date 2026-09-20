@@ -7,10 +7,11 @@ import {
 import type {
   ApiList,
   ApiOk,
-  CreateUserPayload,
+  CreateUserRequestPayload,
   ListUsersParams,
-  UpdateUserPayload,
+  UpdateUserRequestPayload,
   User,
+  UserDetail,
 } from '@tmi/shared';
 
 import { apiClient, toQueryString } from '@/lib/api-client';
@@ -46,12 +47,21 @@ export function useUsers(params: UsersListParams) {
   });
 }
 
+/** The full graph for one person: roles, role profiles, availability, family. */
+export function useUserDetail(id: string | null) {
+  return useQuery({
+    queryKey: userKeys.detail(id ?? ''),
+    queryFn: () => apiClient.get<ApiOk<UserDetail>>(`/users/${id}`),
+    enabled: id !== null,
+  });
+}
+
 export function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: CreateUserPayload) =>
-      apiClient.post<ApiOk<User>>('/users', input),
+    mutationFn: (input: CreateUserRequestPayload) =>
+      apiClient.post<ApiOk<UserDetail>>('/users', input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: userKeys.all }),
   });
 }
@@ -60,13 +70,13 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: UpdateUserPayload }) =>
-      apiClient.patch<ApiOk<User>>(`/users/${id}`, input),
+    mutationFn: ({ id, input }: { id: string; input: UpdateUserRequestPayload }) =>
+      apiClient.patch<ApiOk<UserDetail>>(`/users/${id}`, input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: userKeys.all }),
   });
 }
 
-/** Soft delete by default; `hard` removes the row for good. */
+/** Soft delete by default; `hard` removes the row and everything cascading from it. */
 export function useDeleteUser() {
   const queryClient = useQueryClient();
 

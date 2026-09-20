@@ -2,7 +2,13 @@ import { getCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
 import { ApiError } from '../lib/errors.js';
 import { SESSION_COOKIE, readSessionToken } from '../lib/session.js';
-import { getFirstAdmin, getLiveUserByEmail, getLiveUserById } from '../repositories/users.js';
+import {
+  createBootstrapAdmin,
+  getFirstAdmin,
+  getFirstLiveUser,
+  getLiveUserByEmail,
+  getLiveUserById,
+} from '../repositories/users.js';
 import { isAuthEnabled, type AppEnv } from '../types.js';
 
 /**
@@ -43,26 +49,45 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
   return next();
 });
 
+/** Placeholder identity created when the directory is empty. */
+const FALLBACK_DEV_EMAIL = 'portal-admin@trianglemathinstitute.com';
+
 /**
  * Identity used while AUTH_ENABLED is "false", so later phases can be built and
- * tested without signing in. DEV_USER_EMAIL wins; otherwise the first admin.
+ * tested without signing in.
+ *
+ * Resolution order: DEV_USER_EMAIL, then the first admin, then anyone at all,
+ * and finally a placeholder admin created on the spot.
+ *
+ * That last step matters because this project rebuilds its database from
+ * scratch by design (see docs/plan.md). Without it, every `db:rebuild` leaves
+ * the portal with nobody to run as and the whole app dead on a 503 — which is
+ * exactly what happened. Switching auth off must never be able to take the
+ * portal down.
+ *
+ * Only reachable while AUTH_ENABLED is "false", so it cannot create an admin on
+ * a secured deployment.
  */
 async function resolveBypassUser(env: AppEnv['Bindings']) {
   const configured = env.DEV_USER_EMAIL?.trim();
 
-  const user = configured
-    ? await getLiveUserByEmail(env.DB, configured)
-    : await getFirstAdmin(env.DB);
-
-  if (!user) {
-    throw new ApiError(
-      503,
-      'internal_error',
-      configured
-        ? `AUTH_ENABLED is false but no live user matches DEV_USER_EMAIL (${configured}).`
-        : 'AUTH_ENABLED is false but the users table has no admin to run as. Run `npm run db:seed`.',
-    );
+  if (configured) {
+    const named = await getLiveUserByEmail(env.DB, configured);
+    if (named) return named;
   }
 
-  return user;
+  const admin = await getFirstAdmin(env.DB);
+  if (admin) return admin;
+
+  // An existing non-admin is still better than inventing someone.
+  const anyone = await getFirstLiveUser(env.DB);
+  if (anyone) return anyone;
+
+  console.warn('AUTH_ENABLED=false and the users table is empty; creating a placeholder admin.');
+
+  return createBootstrapAdmin(env.DB, {
+    email: configured || FALLBACK_DEV_EMAIL,
+    full_name: 'Portal Admin (auth disabled)',
+    google_sub: null,
+  });
 }

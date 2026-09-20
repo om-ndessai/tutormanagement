@@ -8,12 +8,19 @@ The staff/tutor management portal for the **Mathematics Institute of the Triangl
 (trianglemathinstitute.com). It runs entirely on Cloudflare's free tier: one Worker serves
 both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
-`docs/plan.md` is the authoritative roadmap. **Phase 1 (done): Google sign-in.** It is the
-only way in — every `/api` route except `/api/health` and `/api/auth/*` requires a verified
-Google identity. The portal still manages staff (admins and tutors) only.
+`docs/plan.md` is the authoritative roadmap.
 
-**Phase 2 (next): the real data model** — multi-role users covering admins, tutors, students
-and parents. Do not build students, parents, classes or scheduling until then.
+**Phase 1 (done): Google sign-in.** Every `/api` route except `/api/health` and `/api/auth/*`
+requires a verified Google identity — *when it is switched on*. It currently is **not**:
+`AUTH_ENABLED` is `"false"` by choice, so the deployed portal is open to anyone with the URL.
+Do not "fix" that without being asked; do not add features that assume a real signed-in user.
+
+**Phase 2 (done): the data model.** Admins, tutors, students and parents, where one person can
+hold several roles at once. Read `docs/data-model.md` before touching the schema — it explains
+why each table is where it is, and which rules the database cannot enforce.
+
+**Next: classes and scheduling.** Do not build `classes`, `enrollments`, `sessions` or
+tutor-to-student assignment until asked.
 
 ## Layout
 
@@ -52,6 +59,34 @@ single source of truth, and `npm run db:rebuild` drops and recreates everything 
 change the data model, edit that file and re-run `npm run db:reset`. Do not add a migrations
 folder or numbered migration files.
 
+**A person is one `users` row; what they do is `user_roles`.** Never add a `role` column, and
+never add `is_tutor`-style booleans. Before putting an attribute on `tutor_profiles` or
+`student_profiles`, ask whether two people holding different roles could sensibly disagree about
+it — if not, it belongs to the person (like `payment_handles` and `availability_slots`, which
+are keyed on `user_id` for exactly this reason).
+
+**A profile row exists only while its role is held.** Dropping a role deletes its profile, in
+the same batch as the role change (`profileCleanupStatements` in the users repository).
+
+**Three rules live in the API because SQL cannot express them**, and they are easy to break by
+accident: a student must have at least one guardian (which is why creating a student and naming
+their parent is ONE request), only admins may mutate users (`requireAdmin`), and the profile
+rule above. See `docs/data-model.md`.
+
+**A person is one `users` row; what they do is `user_roles`.** Never add a `role` column, and
+never add `is_tutor`-style booleans. Before putting an attribute on `tutor_profiles` or
+`student_profiles`, ask whether two people holding different roles could sensibly disagree about
+it — if not, it belongs to the person (like `payment_handles` and `availability_slots`, which
+are keyed on `user_id` for exactly this reason).
+
+**A profile row exists only while its role is held.** Dropping a role deletes its profile, in
+the same batch as the role change. `profileCleanupStatements` in the users repository does this.
+
+**Three rules live in the API because SQL cannot express them**, and they are easy to break by
+accident: a student must have at least one guardian (which is why creating a student and naming
+their parent is ONE request), only admins may mutate users (`requireAdmin`), and the profile
+rule above. See `docs/data-model.md`.
+
 **Validation lives in `packages/shared`.** Do not write ad-hoc validation in a route handler
 or a form. Add or change the Zod schema, then use it on both sides. Note the split between
 `userFieldsSchema` (no defaults, the basis for PATCH) and `createUserSchema` (adds defaults) —
@@ -86,7 +121,7 @@ them (`bg-primary`, `text-muted-foreground`, `bg-brand-100`). Never hardcode a h
 palette utility like `bg-purple-700` in a component — it will not follow dark mode.
 
 **`apps/web/src/components/ui/` is vendored shadcn/ui.** Add components with
-`npm run ui:add --workspace @tmi/web -- <name>`, not by hand. The CLI writes
+`npm run ui:add --workspace @tmi/web — <name>`, not by hand. The CLI writes
 `import { cn } from "cn"` — correct it to `@/lib/utils`. Avoid editing these files otherwise;
 app-specific components belong in `components/` or `features/`.
 
@@ -103,7 +138,10 @@ There is no test suite yet, so verify by running things:
    (validation, duplicate email, missing id). A new data route must return 401 without a
    session cookie — check that explicitly.
 3. For UI work: `npm run dev` and load http://localhost:5173. To skip signing in, set
-   `AUTH_ENABLED: "false"` in `apps/api/wrangler.jsonc`.
+   `AUTH_ENABLED` is already `"false"`; set `DEV_USER_EMAIL` to a non-admin from the seed to
+   check authorization paths, and flip `AUTH_ENABLED` to `"true"` to test sign-in.
+4. After a schema change, run the audit query in `docs/data-model.md` ("students missing a
+   parent") — it catches invariant breaks the database cannot.
 
 ## Gotchas
 
@@ -113,6 +151,10 @@ There is no test suite yet, so verify by running things:
 - Sessions are stateless (signed cookie, no sessions table) but the user row is re-read from
   D1 on every request, so suspending someone takes effect immediately. Do not "optimise" that
   lookup away.
+- With `AUTH_ENABLED=false` the API still needs somebody to run as. It falls back through
+  DEV_USER_EMAIL -> first admin -> any user -> a placeholder admin it creates. That last step
+  exists because rebuilding the database empties it, and an empty directory used to take the
+  whole portal down with a 503.
 - `SESSION_SECRET` comes from `apps/api/.dev.vars` locally (gitignored; copy
   `.dev.vars.example`) and `wrangler secret put SESSION_SECRET` in production. Without it,
   every authenticated request returns 503 `not_configured`.

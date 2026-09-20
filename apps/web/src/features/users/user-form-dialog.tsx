@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
-  USER_ROLES,
-  USER_ROLE_LABELS,
   USER_STATUSES,
   USER_STATUS_LABELS,
-  createUserSchema,
-  type User,
+  createUserRequestSchema,
+  updateUserRequestSchema,
+  type AvailabilitySlot,
+  type PaymentHandle,
+  type UserDetail,
   type UserRole,
   type UserStatus,
 } from '@tmi/shared';
@@ -30,69 +31,158 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
-import { useCreateUser, useUpdateUser } from './api';
+import { useCreateUser, useUpdateUser, useUserDetail } from './api';
+import { AvailabilityPicker } from './availability-picker';
+import { GuardianPicker } from './guardian-picker';
+import { PaymentHandlesField } from './payment-handles-field';
+import { RoleSelector } from './role-selector';
+
+interface GuardianValue {
+  guardian_user_id: string;
+  relationship: 'mother' | 'father' | 'guardian' | 'other';
+  is_primary: boolean;
+}
 
 interface FormState {
   email: string;
   full_name: string;
   phone: string;
-  role: UserRole;
   status: UserStatus;
+  roles: UserRole[];
+  tutor: {
+    highest_education: string;
+    school: string;
+    area: string;
+    availability_notes: string;
+    virtual_available: boolean;
+  };
+  student: {
+    school: string;
+    current_math_course: string;
+    academic_year_goal: string;
+    virtual_available: boolean;
+  };
+  payment_handles: PaymentHandle[];
+  availability: AvailabilitySlot[];
+  guardians: GuardianValue[];
 }
 
-const EMPTY_FORM: FormState = {
+const EMPTY: FormState = {
   email: '',
   full_name: '',
   phone: '',
-  role: 'tutor',
   status: 'active',
+  roles: [],
+  tutor: {
+    highest_education: '',
+    school: '',
+    area: '',
+    availability_notes: '',
+    virtual_available: false,
+  },
+  student: {
+    school: '',
+    current_math_course: '',
+    academic_year_goal: '',
+    virtual_available: false,
+  },
+  payment_handles: [],
+  availability: [],
+  guardians: [],
 };
 
-function toFormState(user: User | null): FormState {
-  if (!user) return EMPTY_FORM;
-
+function fromDetail(detail: UserDetail): FormState {
   return {
-    email: user.email,
-    full_name: user.full_name,
-    phone: user.phone ?? '',
-    role: user.role,
-    status: user.status,
+    email: detail.email,
+    full_name: detail.full_name,
+    phone: detail.phone ?? '',
+    status: detail.status,
+    roles: detail.roles,
+    tutor: {
+      highest_education: detail.tutor_profile?.highest_education ?? '',
+      school: detail.tutor_profile?.school ?? '',
+      area: detail.tutor_profile?.area ?? '',
+      availability_notes: detail.tutor_profile?.availability_notes ?? '',
+      virtual_available: detail.tutor_profile?.virtual_available ?? false,
+    },
+    student: {
+      school: detail.student_profile?.school ?? '',
+      current_math_course: detail.student_profile?.current_math_course ?? '',
+      academic_year_goal: detail.student_profile?.academic_year_goal ?? '',
+      virtual_available: detail.student_profile?.virtual_available ?? false,
+    },
+    payment_handles: detail.payment_handles,
+    availability: detail.availability,
+    guardians: detail.guardians.map((link) => ({
+      guardian_user_id: link.user_id,
+      relationship: link.relationship,
+      is_primary: link.is_primary,
+    })),
   };
 }
 
 /**
- * One dialog for both create and edit: passing a `user` switches it to edit
- * mode. Validation runs against the same Zod schema the Worker uses, so the
- * two can never drift.
+ * Builds the request body. Role-specific sections are sent as null when the
+ * role is not held, which is what tells the API to drop that profile row --
+ * the schema's rule is that a profile exists only while its role does.
+ */
+function toRequest(form: FormState) {
+  const isTutor = form.roles.includes('tutor');
+  const isStudent = form.roles.includes('student');
+
+  return {
+    email: form.email,
+    full_name: form.full_name,
+    phone: form.phone,
+    status: form.status,
+    roles: form.roles,
+    tutor_profile: isTutor ? form.tutor : null,
+    student_profile: isStudent ? form.student : null,
+    payment_handles: form.payment_handles,
+    // Availability only means something for someone who teaches or learns.
+    availability: isTutor || isStudent ? form.availability : [],
+    guardians: form.guardians,
+  };
+}
+
+/**
+ * One dialog for both create and edit. Passing a `userId` switches it to edit
+ * mode, where the full record is loaded before the form is populated.
  */
 export function UserFormDialog({
   open,
   onOpenChange,
-  user,
+  userId,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  user: User | null;
+  userId: string | null;
 }) {
-  const isEdit = user !== null;
-  const [form, setForm] = useState<FormState>(() => toFormState(user));
+  const isEdit = userId !== null;
+  const { data: detail, isPending: loadingDetail } = useUserDetail(open && isEdit ? userId : null);
+
+  const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
-  const isPending = createUser.isPending || updateUser.isPending;
+  const saving = createUser.isPending || updateUser.isPending;
 
-  // Reset whenever the dialog is opened for a different record.
+  // Repopulate whenever the dialog opens, or the loaded record arrives.
   useEffect(() => {
-    if (open) {
-      setForm(toFormState(user));
-      setErrors({});
-    }
-  }, [open, user]);
+    if (!open) return;
+    setErrors({});
+    setForm(isEdit ? (detail ? fromDetail(detail.data) : EMPTY) : EMPTY);
+  }, [open, isEdit, detail]);
 
-  const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+  const isTutor = form.roles.includes('tutor');
+  const isStudent = form.roles.includes('student');
+  const isParent = form.roles.includes('parent');
+
+  const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((previous) => ({ ...previous, [key]: value }));
     setErrors((previous) => {
       if (!(key in previous)) return previous;
@@ -104,13 +194,14 @@ export function UserFormDialog({
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const parsed = createUserSchema.safeParse(form);
+    const request = toRequest(form);
+    const schema = isEdit ? updateUserRequestSchema : createUserRequestSchema;
+    const parsed = schema.safeParse(request);
 
     if (!parsed.success) {
       const fieldErrors: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
-        const key = issue.path.join('.');
-        fieldErrors[key] ??= issue.message;
+        fieldErrors[issue.path.join('.') || '_'] ??= issue.message;
       }
       setErrors(fieldErrors);
       return;
@@ -118,11 +209,11 @@ export function UserFormDialog({
 
     try {
       if (isEdit) {
-        await updateUser.mutateAsync({ id: user.id, input: parsed.data });
-        toast.success(`${parsed.data.full_name} updated.`);
+        await updateUser.mutateAsync({ id: userId, input: parsed.data as never });
+        toast.success(`${form.full_name} updated.`);
       } else {
-        await createUser.mutateAsync(parsed.data);
-        toast.success(`${parsed.data.full_name} added.`);
+        await createUser.mutateAsync(parsed.data as never);
+        toast.success(`${form.full_name} added.`);
       }
       onOpenChange(false);
     } catch (error) {
@@ -137,78 +228,62 @@ export function UserFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-h-[92dvh] gap-0 overflow-y-auto sm:max-w-2xl">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
             <DialogTitle>{isEdit ? 'Edit user' : 'Add user'}</DialogTitle>
             <DialogDescription>
-              {isEdit
-                ? 'Update this staff member’s details.'
-                : 'Add an admin or tutor to the institute directory.'}
+              One person, one record. Tick every role they hold — the rest of the form follows.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <Field id="full_name" label="Full name" error={errors.full_name}>
-              <Input
-                id="full_name"
-                value={form.full_name}
-                onChange={(event) => setField('full_name', event.target.value)}
-                aria-invalid={Boolean(errors.full_name)}
-                autoComplete="name"
-                placeholder="Alex Chen"
-              />
-            </Field>
-
-            <Field id="email" label="Email" error={errors.email}>
-              <Input
-                id="email"
-                type="email"
-                value={form.email}
-                onChange={(event) => setField('email', event.target.value)}
-                aria-invalid={Boolean(errors.email)}
-                autoComplete="email"
-                placeholder="alex@trianglemathinstitute.com"
-              />
-            </Field>
-
-            <Field id="phone" label="Phone" error={errors.phone} optional>
-              <Input
-                id="phone"
-                type="tel"
-                value={form.phone}
-                onChange={(event) => setField('phone', event.target.value)}
-                aria-invalid={Boolean(errors.phone)}
-                autoComplete="tel"
-                placeholder="(919) 555-0142"
-              />
-            </Field>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field id="role" label="Role" error={errors.role}>
-                <Select
-                  value={form.role}
-                  onValueChange={(value) => setField('role', value as UserRole)}
-                >
-                  <SelectTrigger id="role" className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {USER_ROLES.map((role) => (
-                      <SelectItem key={role} value={role}>
-                        {USER_ROLE_LABELS[role]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+          {isEdit && loadingDetail ? (
+            <p className="text-muted-foreground flex items-center gap-2 py-10 text-sm">
+              <Loader2Icon className="size-4 animate-spin" />
+              Loading record…
+            </p>
+          ) : (
+            <div className="grid gap-5 py-4">
+              <Field id="full_name" label="Full name" error={errors.full_name}>
+                <Input
+                  id="full_name"
+                  value={form.full_name}
+                  onChange={(e) => set('full_name', e.target.value)}
+                  aria-invalid={Boolean(errors.full_name)}
+                  placeholder="Alex Chen"
+                />
               </Field>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field id="email" label="Email" error={errors.email}>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => set('email', e.target.value)}
+                    aria-invalid={Boolean(errors.email)}
+                    placeholder="alex@gmail.com"
+                  />
+                </Field>
+
+                <Field id="phone" label="Phone" error={errors.phone} optional>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => set('phone', e.target.value)}
+                    aria-invalid={Boolean(errors.phone)}
+                    placeholder="(919) 555-0142"
+                  />
+                </Field>
+              </div>
 
               <Field id="status" label="Status" error={errors.status}>
                 <Select
                   value={form.status}
-                  onValueChange={(value) => setField('status', value as UserStatus)}
+                  onValueChange={(v) => set('status', v as UserStatus)}
                 >
-                  <SelectTrigger id="status" className="w-full">
+                  <SelectTrigger id="status" className="w-full sm:w-56">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -220,20 +295,178 @@ export function UserFormDialog({
                   </SelectContent>
                 </Select>
               </Field>
+
+              <Separator />
+
+              <RoleSelector
+                value={form.roles}
+                onChange={(roles) => set('roles', roles)}
+                error={errors.roles}
+              />
+
+              {isTutor && (
+                <>
+                  <Separator />
+                  <SectionHeading title="Tutor details" />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field
+                      id="t_edu"
+                      label="Highest education"
+                      hint="Or their current grade / math course."
+                    >
+                      <Input
+                        id="t_edu"
+                        value={form.tutor.highest_education}
+                        onChange={(e) =>
+                          set('tutor', { ...form.tutor, highest_education: e.target.value })
+                        }
+                        placeholder="MS, Applied Mathematics"
+                      />
+                    </Field>
+                    <Field id="t_school" label="School">
+                      <Input
+                        id="t_school"
+                        value={form.tutor.school}
+                        onChange={(e) => set('tutor', { ...form.tutor, school: e.target.value })}
+                        placeholder="NC State"
+                      />
+                    </Field>
+                    <Field id="t_area" label="Area" hint="No street address is recorded.">
+                      <Input
+                        id="t_area"
+                        value={form.tutor.area}
+                        onChange={(e) => set('tutor', { ...form.tutor, area: e.target.value })}
+                        placeholder="Chapel Hill"
+                      />
+                    </Field>
+                    <Field id="t_notes" label="Availability notes" optional>
+                      <Input
+                        id="t_notes"
+                        value={form.tutor.availability_notes}
+                        onChange={(e) =>
+                          set('tutor', { ...form.tutor, availability_notes: e.target.value })
+                        }
+                        placeholder="Term-time only"
+                      />
+                    </Field>
+                  </div>
+                  <Checkbox
+                    id="t_virtual"
+                    label="Available for virtual tutoring"
+                    checked={form.tutor.virtual_available}
+                    onChange={(checked) =>
+                      set('tutor', { ...form.tutor, virtual_available: checked })
+                    }
+                  />
+                </>
+              )}
+
+              {isStudent && (
+                <>
+                  <Separator />
+                  <SectionHeading title="Student details" />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field id="s_school" label="School">
+                      <Input
+                        id="s_school"
+                        value={form.student.school}
+                        onChange={(e) =>
+                          set('student', { ...form.student, school: e.target.value })
+                        }
+                        placeholder="Culbreth Middle"
+                      />
+                    </Field>
+                    <Field id="s_course" label="Current math course / grade">
+                      <Input
+                        id="s_course"
+                        value={form.student.current_math_course}
+                        onChange={(e) =>
+                          set('student', { ...form.student, current_math_course: e.target.value })
+                        }
+                        placeholder="Grade 7 Mathematics"
+                      />
+                    </Field>
+                  </div>
+                  <Field id="s_goal" label="Goal for this academic year">
+                    <Input
+                      id="s_goal"
+                      value={form.student.academic_year_goal}
+                      onChange={(e) =>
+                        set('student', { ...form.student, academic_year_goal: e.target.value })
+                      }
+                      placeholder="Move up to the accelerated track"
+                    />
+                  </Field>
+                  <Checkbox
+                    id="s_virtual"
+                    label="Available for virtual tutoring"
+                    checked={form.student.virtual_available}
+                    onChange={(checked) =>
+                      set('student', { ...form.student, virtual_available: checked })
+                    }
+                  />
+                </>
+              )}
+
+              {(isTutor || isStudent) && (
+                <>
+                  <Separator />
+                  <AvailabilityPicker
+                    value={form.availability}
+                    onChange={(slots) => set('availability', slots)}
+                  />
+                </>
+              )}
+
+              {(isTutor || isParent) && (
+                <>
+                  <Separator />
+                  <PaymentHandlesField
+                    value={form.payment_handles}
+                    onChange={(handles) => set('payment_handles', handles)}
+                    hint={
+                      isTutor && isParent
+                        ? 'Used both to pay them as a tutor and to bill them as a parent.'
+                        : isTutor
+                          ? 'How this tutor is paid.'
+                          : 'How this parent is billed.'
+                    }
+                  />
+                </>
+              )}
+
+              {(isStudent || isTutor) && (
+                <>
+                  <Separator />
+                  <GuardianPicker
+                    value={form.guardians}
+                    onChange={(links) => set('guardians', links)}
+                    excludeUserId={userId ?? undefined}
+                    error={errors.guardians}
+                    required={isStudent}
+                  />
+                </>
+              )}
+
+              {errors._ && (
+                <p role="alert" className="text-destructive text-xs">
+                  {errors._}
+                </p>
+              )}
             </div>
-          </div>
+          )}
 
           <DialogFooter>
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={isPending}
+              disabled={saving}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending && <Loader2Icon className="animate-spin" />}
+            <Button type="submit" disabled={saving || (isEdit && loadingDetail)}>
+              {saving && <Loader2Icon className="animate-spin" />}
               {isEdit ? 'Save changes' : 'Add user'}
             </Button>
           </DialogFooter>
@@ -243,17 +476,48 @@ export function UserFormDialog({
   );
 }
 
+function SectionHeading({ title }: { title: string }) {
+  return <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{title}</h3>;
+}
+
+function Checkbox({
+  id,
+  label,
+  checked,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <label htmlFor={id} className="flex cursor-pointer items-center gap-2 text-sm">
+      <input
+        id={id}
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="accent-primary size-4"
+      />
+      {label}
+    </label>
+  );
+}
+
 function Field({
   id,
   label,
   error,
   optional,
+  hint,
   children,
 }: {
   id: string;
   label: string;
   error?: string;
   optional?: boolean;
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -263,6 +527,7 @@ function Field({
         {optional && <span className="text-muted-foreground font-normal">(optional)</span>}
       </Label>
       {children}
+      {hint && !error && <p className="text-muted-foreground text-xs">{hint}</p>}
       {error && (
         <p role="alert" className="text-destructive text-xs">
           {error}

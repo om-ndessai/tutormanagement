@@ -1,22 +1,30 @@
 import { z } from 'zod';
 
 /**
- * Phase 1 covers staff only. Student / parent records get their own phase once
- * classes and scheduling exist.
+ * The four kinds of person the portal serves. A user holds one OR MORE of
+ * these at once -- a parent who tutors, an admin who teaches, a senior student
+ * who tutors younger children. That is why roles are a set, not a field.
  */
-export const USER_ROLES = ['admin', 'tutor'] as const;
+export const USER_ROLES = ['admin', 'tutor', 'student', 'parent'] as const;
 export type UserRole = (typeof USER_ROLES)[number];
 
 /**
- * `invited` means the record exists but the person has not signed in yet. It is
- * already meaningful without auth: it marks staff who are being onboarded.
+ * `invited` means the record exists but the person has never signed in.
+ * `suspended` means access is revoked while the record is kept. Retiring
+ * someone entirely is a soft delete, which is separate.
  */
 export const USER_STATUSES = ['active', 'invited', 'suspended'] as const;
 export type UserStatus = (typeof USER_STATUSES)[number];
 
-export const USER_SORT_FIELDS = ['full_name', 'email', 'role', 'status', 'created_at'] as const;
+/** Roles are multi-valued, so they are not a sort key. */
+export const USER_SORT_FIELDS = ['full_name', 'email', 'status', 'created_at'] as const;
 export type UserSortField = (typeof USER_SORT_FIELDS)[number];
 
+/**
+ * Any Google-backed address is accepted. Google sign-in is what proves the
+ * account is real, so no domain is hard-coded here -- that would shut out the
+ * institute's own Workspace addresses later.
+ */
 const email = z
   .email({ message: 'Enter a valid email address.' })
   .trim()
@@ -29,10 +37,7 @@ const fullName = z
   .min(1, 'Name is required.')
   .max(120, 'Name must be 120 characters or fewer.');
 
-/**
- * Deliberately permissive: staff phone numbers get typed in every format under
- * the sun, and we only ever display them back.
- */
+/** Permissive: phone numbers get typed in every format, and we only display them. */
 const phone = z
   .string()
   .trim()
@@ -40,39 +45,44 @@ const phone = z
   .regex(/^[0-9+().\-\s]*$/, 'Phone may only contain digits and + ( ) - . characters.');
 
 /** An optional free-text field that treats "" from a form as "not set". */
-const optionalText = <T extends z.ZodType<string>>(schema: T) =>
+export const optionalText = <T extends z.ZodType<string>>(schema: T) =>
   z
     .union([schema, z.literal('')])
     .nullish()
     .transform((value) => (value === '' || value == null ? null : (value as string)));
 
-/** Shape returned by the API. Mirrors the `users` table minus internal columns. */
 export const userSchema = z.object({
   id: z.uuid(),
   email: z.string(),
   full_name: z.string(),
   phone: z.string().nullable(),
-  role: z.enum(USER_ROLES),
   status: z.enum(USER_STATUSES),
+  /** Every role this person holds. Always at least one. */
+  roles: z.array(z.enum(USER_ROLES)),
   created_at: z.string(),
   updated_at: z.string(),
-  /** Set on every successful Google sign-in; null until they first sign in. */
   last_login_at: z.string().nullable(),
   deleted_at: z.string().nullable(),
 });
 
 export type User = z.infer<typeof userSchema>;
 
+/** At least one role: a user with no role has no reason to exist. */
+const roles = z
+  .array(z.enum(USER_ROLES))
+  .min(1, 'Choose at least one role.')
+  .transform((value) => [...new Set(value)]);
+
 /**
- * The writable fields, with no defaults applied. Kept separate because
- * `.partial()` does not remove a `.default()`: a PATCH body of `{}` would
- * otherwise parse to `{ status: 'active' }` and silently reactivate someone.
+ * Writable fields with no defaults applied. Kept separate because `.partial()`
+ * does not remove a `.default()`: a PATCH body of `{}` would otherwise parse to
+ * `{ status: 'active' }` and silently reactivate someone.
  */
-const userFieldsSchema = z.object({
+export const userFieldsSchema = z.object({
   email,
   full_name: fullName,
   phone: optionalText(phone),
-  role: z.enum(USER_ROLES),
+  roles,
   status: z.enum(USER_STATUSES),
 });
 
@@ -84,8 +94,8 @@ export type CreateUserInput = z.input<typeof createUserSchema>;
 export type CreateUserPayload = z.output<typeof createUserSchema>;
 
 /**
- * PATCH semantics: an omitted key is left alone, so at least one key is
- * required. `phone: null` clears the value.
+ * PATCH semantics: an omitted key is left alone. Supplying `roles` REPLACES the
+ * whole set rather than adding to it.
  */
 export const updateUserSchema = userFieldsSchema
   .partial()
@@ -99,9 +109,9 @@ export type UpdateUserPayload = z.output<typeof updateUserSchema>;
 export const listUsersQuerySchema = z.object({
   /** Case-insensitive substring match against name and email. */
   search: z.string().trim().max(120).optional(),
+  /** Matches users who hold this role, among others. */
   role: z.enum(USER_ROLES).optional(),
   status: z.enum(USER_STATUSES).optional(),
-  /** Include soft-deleted records in the result set. */
   include_deleted: z
     .enum(['true', 'false'])
     .default('false')
@@ -118,6 +128,16 @@ export type ListUsersParams = z.output<typeof listUsersQuerySchema>;
 export const USER_ROLE_LABELS: Record<UserRole, string> = {
   admin: 'Admin',
   tutor: 'Tutor',
+  student: 'Student',
+  parent: 'Parent',
+};
+
+/** One-line explanation of each role, for form hints. */
+export const USER_ROLE_DESCRIPTIONS: Record<UserRole, string> = {
+  admin: 'Owns the institute or has admin access. Only admins can add users.',
+  tutor: 'Offers tutoring services.',
+  student: 'Enrolled for tutoring. Must have at least one parent.',
+  parent: 'Responsible for costs, communication and monitoring.',
 };
 
 export const USER_STATUS_LABELS: Record<UserStatus, string> = {
@@ -125,3 +145,7 @@ export const USER_STATUS_LABELS: Record<UserStatus, string> = {
   invited: 'Invited',
   suspended: 'Suspended',
 };
+
+export function hasRole(user: Pick<User, 'roles'>, role: UserRole): boolean {
+  return user.roles.includes(role);
+}

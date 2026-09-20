@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
-import { ArrowRightIcon, ShieldCheckIcon, UserPlusIcon, UsersIcon } from 'lucide-react';
-import { USER_STATUS_LABELS } from '@tmi/shared';
+import {
+  ArrowRightIcon,
+  GraduationCapIcon,
+  HeartHandshakeIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+} from 'lucide-react';
+import { USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
 
 import { LogoMark } from '@/components/brand/logo';
 import { PageHeader } from '@/components/layout/page-header';
@@ -9,22 +15,31 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useUsers } from '@/features/users/api';
 
-/**
- * Phase 1 dashboard: a welcome panel plus headline counts pulled from the
- * users endpoint. Classes, scheduling and homework land here in later phases.
- */
-export function DashboardPage() {
-  const all = useUsers({ limit: 1 });
-  const admins = useUsers({ role: 'admin', limit: 1 });
-  const tutors = useUsers({ role: 'tutor', limit: 1 });
-  const invited = useUsers({ status: 'invited', limit: 1 });
+const ROLE_ICONS: Record<UserRole, typeof UsersIcon> = {
+  admin: ShieldCheckIcon,
+  tutor: GraduationCapIcon,
+  student: UsersIcon,
+  parent: HeartHandshakeIcon,
+};
 
-  const stats = [
-    { label: 'Staff', value: all.data?.meta.total, icon: UsersIcon },
-    { label: 'Admins', value: admins.data?.meta.total, icon: ShieldCheckIcon },
-    { label: 'Tutors', value: tutors.data?.meta.total, icon: UsersIcon },
-    { label: USER_STATUS_LABELS.invited, value: invited.data?.meta.total, icon: UserPlusIcon },
-  ];
+/**
+ * Counts come from the list endpoint's `meta.total` with `limit: 1`, so each
+ * card costs a COUNT rather than fetching rows. Because a person can hold
+ * several roles, these deliberately overlap and do not sum to the total.
+ */
+function useRoleCount(role: UserRole) {
+  return useUsers({ role, limit: 1 }).data?.meta.total;
+}
+
+export function DashboardPage() {
+  const total = useUsers({ limit: 1 }).data?.meta.total;
+
+  const counts: Record<UserRole, number | undefined> = {
+    admin: useRoleCount('admin'),
+    tutor: useRoleCount('tutor'),
+    student: useRoleCount('student'),
+    parent: useRoleCount('parent'),
+  };
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -38,8 +53,8 @@ export function DashboardPage() {
               Exploring the fun of Math
             </h2>
             <p className="mt-1 max-w-prose text-sm text-white/85">
-              Manage the people behind the classroom. Start with the staff directory — classes,
-              schedules and student records come in the next phase.
+              {total === undefined ? 'Loading the directory…' : `${total} people on file.`} Classes
+              and scheduling come in a later phase.
             </p>
           </div>
           <Button asChild variant="secondary">
@@ -52,24 +67,33 @@ export function DashboardPage() {
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map(({ label, value, icon: Icon }) => (
-          <Card key={label}>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
-                <Icon className="size-4" />
-                {label}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {value === undefined ? (
-                <Skeleton className="h-9 w-12" />
-              ) : (
-                <p className="font-display text-3xl font-semibold tabular-nums">{value}</p>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+        {(Object.keys(counts) as UserRole[]).map((role) => {
+          const Icon = ROLE_ICONS[role];
+          const value = counts[role];
+
+          return (
+            <Card key={role}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
+                  <Icon className="size-4" />
+                  {USER_ROLE_LABELS[role]}s
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {value === undefined ? (
+                  <Skeleton className="h-9 w-12" />
+                ) : (
+                  <p className="font-display text-3xl font-semibold tabular-nums">{value}</p>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
+
+      <p className="text-muted-foreground mt-4 text-xs">
+        A person can hold more than one role, so these counts overlap.
+      </p>
     </div>
   );
 }

@@ -181,6 +181,12 @@ address through the Users screen once you are in.
 
 ## Turning authentication off
 
+**This is the current state of the project.** `AUTH_ENABLED` is `"false"` in
+`apps/api/wrangler.jsonc`, deliberately, so later phases can be built without signing in. The
+deployed portal is reachable by anyone with the URL. Everything below describes how that works
+and how to reverse it.
+
+
 For building later phases without signing in every time, set in
 `apps/api/wrangler.jsonc`:
 
@@ -193,8 +199,12 @@ Every API request then runs as that user and the SPA skips the login screen. A
 banner on the profile page makes the state obvious so it cannot ship unnoticed.
 Leave `DEV_USER_EMAIL` empty to run as the first admin in the table.
 
-Only an explicit `"false"` disables auth — any other value leaves it on, so a
-typo cannot quietly open up the API. **Never deploy with this set to `false`.**
+Only an explicit `"false"` disables auth — any other value leaves it on, so a typo cannot
+quietly open up the API.
+
+**Before the portal holds anything real, set this back to `"true"`.** Google sign-in,
+`GOOGLE_CLIENT_ID` and `SESSION_SECRET` are all already configured, so re-enabling is a
+one-line change and a deploy.
 
 ---
 
