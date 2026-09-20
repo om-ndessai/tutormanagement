@@ -66,3 +66,8 @@ Ability to download a calendar file for scheduled tutoring sessions. A tutor sho
 
 Phase 10: 
 Ability to download csv for payments and tutoring session log. Allow applicable users to see a grid of session and/or payments and download that in csv format to open in excel sheet.
+
+Phase 11:
+This phase is about bringing up test environment. Create new database test instance, worker test instance and test portal. 
+Playwright will no longer use the production instance and the test database will be seeded with a couple of admin accounts, 10 tutors, 30 parents and 50 students.
+Run all playwright tests on this instance and verify. Disable authentication on the test portal
