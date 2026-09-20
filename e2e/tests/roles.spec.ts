@@ -61,6 +61,14 @@ test.describe('each kind of user sees their own portal', () => {
     // Another family's children are not hers to see.
     await expect(page.getByText('Ben Whitfield')).toHaveCount(0);
     await expect(page.getByText('Sofia Okafor')).toHaveCount(0);
+
+    // Assignments are the same list for everyone, scoped differently: Anita
+    // gets the tutors teaching Sanjay, so the page must not tell her these
+    // are students she teaches.
+    await page.goto('/assignments');
+    await expect(visible(page, 'Who teaches your children.').first()).toBeVisible();
+    await expect(page.getByText('The students you teach.')).toHaveCount(0);
+    await expect(visible(page, 'Priya Raghavan').first()).toBeVisible();
   });
 
   test('a student sees their own record', async ({ as }) => {
@@ -93,7 +101,7 @@ test.describe('each kind of user sees their own portal', () => {
     await tutorPage.goto('/assignments');
 
     // A tutor can see their pairings but cannot create one.
-    await expect(visible(tutorPage, 'The students you are assigned to teach.').first()).toBeVisible();
+    await expect(visible(tutorPage, 'The students you teach.').first()).toBeVisible();
     await expect(tutorPage.getByRole('button', { name: 'Assign a student' })).toHaveCount(0);
 
     // And the API refuses even if the button is bypassed.

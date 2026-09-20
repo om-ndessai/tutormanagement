@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
-import { formatCents, type Assignment } from '@tmi/shared';
+import { formatCents, type Assignment, type UserRole } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
 import {
@@ -33,6 +33,7 @@ import { useAssignments, useDeleteAssignment } from './api';
 export function AssignmentsPage() {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
+  const { description, empty } = copyFor(user?.roles ?? []);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Assignment | null>(null);
@@ -62,11 +63,7 @@ export function AssignmentsPage() {
     <div className="mx-auto max-w-5xl">
       <PageHeader
         title="Assignments"
-        description={
-          isAdmin
-            ? 'Which tutor teaches which student, and at what rate.'
-            : 'The students you are assigned to teach.'
-        }
+        description={description}
         actions={
           isAdmin ? (
             <Button
@@ -138,9 +135,7 @@ export function AssignmentsPage() {
         ))}
         {!isPending && assignments.length === 0 && (
           <li className="border-border bg-card text-muted-foreground rounded-lg border p-8 text-center text-sm">
-            {isAdmin
-              ? 'No students are assigned yet.'
-              : 'You have no students assigned.'}
+            {empty}
           </li>
         )}
       </ul>
@@ -176,9 +171,8 @@ export function AssignmentsPage() {
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={isAdmin ? 5 : 4} className="h-28 text-center">
                   <p className="text-muted-foreground text-sm">
-                    {isAdmin
-                      ? 'No students are assigned yet. Assign one to let their tutor record sessions.'
-                      : 'You have no students assigned.'}
+                    {empty}
+                    {isAdmin && ' Assign one to let their tutor record sessions.'}
                   </p>
                 </TableCell>
               </TableRow>
@@ -254,6 +248,61 @@ export function AssignmentsPage() {
       </AlertDialog>
     </div>
   );
+}
+
+/**
+ * What this page is, in the viewer's own terms.
+ *
+ * The list is scoped to whoever is reading it: a tutor gets their assigned
+ * students, a parent gets the tutors teaching their children, and someone who
+ * is taught gets their own tutors. One line for every non-admin used to tell
+ * a parent these were "the students you are assigned to teach".
+ *
+ * Built by clause rather than by case because the roles combine -- a tutor who
+ * is also a parent sees both kinds of row in the one list.
+ */
+function copyFor(roles: UserRole[]): { description: string; empty: string } {
+  if (roles.includes('admin')) {
+    return {
+      description: 'Which tutor teaches which student, and at what rate.',
+      empty: 'No students are assigned yet.',
+    };
+  }
+
+  const descriptions: string[] = [];
+  const empties: string[] = [];
+
+  if (roles.includes('tutor')) {
+    descriptions.push('the students you teach');
+    empties.push('you have no students assigned');
+  }
+
+  if (roles.includes('student')) {
+    descriptions.push('your own tutors');
+    empties.push('no tutor teaches you');
+  }
+
+  if (roles.includes('parent')) {
+    descriptions.push('who teaches your children');
+    empties.push('no tutor teaches your children');
+  }
+
+  if (descriptions.length === 0) {
+    return {
+      description: 'Tutor and student pairings that involve you.',
+      empty: 'Nothing is assigned to you yet.',
+    };
+  }
+
+  return { description: sentence(descriptions), empty: sentence(empties) };
+}
+
+/** Joins clauses into one capitalised sentence: "a, b, and c." */
+function sentence(parts: string[]): string {
+  const joined =
+    parts.length > 1 ? `${parts.slice(0, -1).join(', ')}, and ${parts.at(-1)}` : parts[0]!;
+
+  return `${joined[0]!.toUpperCase()}${joined.slice(1)}.`;
 }
 
 /** Shows the rate in force, and whether it overrides the tutor's default. */
