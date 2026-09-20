@@ -252,7 +252,7 @@ export function UserFormDialog({
           <DialogHeader>
             <DialogTitle>{isEdit ? 'Edit user' : 'Add user'}</DialogTitle>
             <DialogDescription>
-              One person, one record. Tick every role they hold — the rest of the form follows.
+              One person, one record. Check every role they hold — the rest of the form follows.
             </DialogDescription>
           </DialogHeader>
 
