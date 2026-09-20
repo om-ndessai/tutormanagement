@@ -85,9 +85,23 @@ export interface ListUsersResult {
   total: number;
 }
 
-export async function listUsers(db: D1Database, params: ListUsersParams): Promise<ListUsersResult> {
+export async function listUsers(
+  db: D1Database,
+  params: ListUsersParams,
+  /**
+   * Ids this viewer may see, or null for an admin. Applied here rather than in
+   * the route so that no caller can forget it.
+   */
+  visibleIds?: Set<string> | null,
+): Promise<ListUsersResult> {
   const where: string[] = [];
   const values: unknown[] = [];
+
+  if (visibleIds) {
+    if (visibleIds.size === 0) return { users: [], total: 0 };
+    where.push(`u.id IN (${[...visibleIds].map(() => '?').join(', ')})`);
+    values.push(...visibleIds);
+  }
 
   if (!params.include_deleted) where.push('u.deleted_at IS NULL');
 
@@ -163,7 +177,8 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
       db.prepare(`${SELECT_USER} WHERE u.id = ?`).bind(id),
       db
         .prepare(
-          `SELECT highest_education, school, area, availability_notes, virtual_available
+          `SELECT highest_education, school, area, availability_notes, virtual_available,
+                  default_rate_in_person_cents, default_rate_virtual_cents
            FROM tutor_profiles WHERE user_id = ?`,
         )
         .bind(id),
@@ -226,6 +241,10 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
           area: (rawTutor.area as string | null) ?? null,
           availability_notes: (rawTutor.availability_notes as string | null) ?? null,
           virtual_available: rawTutor.virtual_available === 1,
+          default_rate_in_person_cents:
+            (rawTutor.default_rate_in_person_cents as number | null) ?? null,
+          default_rate_virtual_cents:
+            (rawTutor.default_rate_virtual_cents as number | null) ?? null,
         } satisfies TutorProfile)
       : null,
     student_profile: rawStudent
@@ -373,8 +392,9 @@ export async function updateUserSections(
         db
           .prepare(
             `INSERT INTO tutor_profiles
-               (user_id, highest_education, school, area, availability_notes, virtual_available)
-             VALUES (?, ?, ?, ?, ?, ?)`,
+               (user_id, highest_education, school, area, availability_notes, virtual_available,
+                default_rate_in_person_cents, default_rate_virtual_cents)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
@@ -383,6 +403,8 @@ export async function updateUserSections(
             p.area,
             p.availability_notes,
             p.virtual_available ? 1 : 0,
+            p.default_rate_in_person_cents,
+            p.default_rate_virtual_cents,
           ),
       );
     }

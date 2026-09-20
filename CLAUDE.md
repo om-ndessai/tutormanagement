@@ -110,6 +110,10 @@ always the live, re-checked user.
 an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
 identity, and it is the whole security boundary of sign-in.
 
+**Money is integer cents, never floats.** `formatCents` / `parseCentsInput` in
+`packages/shared/src/teaching.ts` are the only conversions. Amounts and durations are always
+derived on the server: a client may send times, never a price.
+
 **Every action a user takes gets an audit event.** Adding a route that changes data means
 adding a `recordAudit` call and an entry in `AUDIT_ACTIONS` in `packages/shared/src/audit.ts`.
 The action name is `<entity>.<verb>`; the description is a finished sentence naming the person,

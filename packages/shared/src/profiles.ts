@@ -8,6 +8,12 @@ import { optionalText, userSchema, type UserRole } from './users.js';
 const shortText = (max: number, label: string) =>
   z.string().trim().max(max, `${label} must be ${max} characters or fewer.`);
 
+/** A money field that treats "" from a form as "not set". */
+const optionalCentsField = z
+  .union([z.number().int().min(0).max(100_000_00), z.literal('')])
+  .nullish()
+  .transform((value) => (value === '' || value == null ? null : (value as number)));
+
 /**
  * Data that only means anything for a tutor. Exists only while the person
  * holds the tutor role.
@@ -26,6 +32,12 @@ export const tutorProfileSchema = z.object({
   availability_notes: optionalText(shortText(1000, 'Notes')),
   /** Whether this tutor will teach online as well as in person. */
   virtual_available: z.boolean().default(false),
+  /**
+   * Default hourly rates in whole cents. A per-student override on the
+   * assignment beats these; see resolveRateCents in teaching.ts.
+   */
+  default_rate_in_person_cents: optionalCentsField,
+  default_rate_virtual_cents: optionalCentsField,
 });
 
 export type TutorProfileInput = z.input<typeof tutorProfileSchema>;

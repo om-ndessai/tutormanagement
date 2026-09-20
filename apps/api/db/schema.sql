@@ -24,12 +24,16 @@
 -- ===========================================================================
 
 -- Dropped children-first so foreign keys never block the rebuild.
+DROP TRIGGER IF EXISTS sessions_set_updated_at;
+DROP TRIGGER IF EXISTS assignments_set_updated_at;
 DROP TRIGGER IF EXISTS payment_handles_set_updated_at;
 DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
 
 DROP TABLE IF EXISTS audit_events;
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS assignments;
 DROP TABLE IF EXISTS guardianships;
 DROP TABLE IF EXISTS availability_slots;
 DROP TABLE IF EXISTS payment_handles;
@@ -132,6 +136,14 @@ CREATE TABLE tutor_profiles (
 
   -- Whether this tutor will teach online as well as in person.
   virtual_available INTEGER NOT NULL DEFAULT 0 CHECK (virtual_available IN (0, 1)),
+
+  -- Default hourly rates, in whole cents. Integers rather than REAL because
+  -- money in floating point accumulates rounding error, and these feed billing.
+  -- The two can differ: virtual sessions are often priced lower.
+  -- A per-student override on `assignments` beats these; see rate resolution
+  -- in docs/data-model.md.
+  default_rate_in_person_cents INTEGER CHECK (default_rate_in_person_cents >= 0),
+  default_rate_virtual_cents   INTEGER CHECK (default_rate_virtual_cents >= 0),
 
   created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
@@ -251,6 +263,94 @@ CREATE UNIQUE INDEX guardianships_one_primary_idx
 
 
 -- ---------------------------------------------------------------------------
+-- assignments - which tutor teaches which student, and at what rate
+-- ---------------------------------------------------------------------------
+-- Created by an admin. A session can only be recorded for a pair that has an
+-- active assignment, which is what stops a tutor billing for a student who was
+-- never given to them.
+--
+-- The two rate columns are OPTIONAL overrides. NULL means "use the tutor's
+-- default for that mode", so the common case needs no per-pair setup and the
+-- exception is one field.
+CREATE TABLE assignments (
+  id                   TEXT PRIMARY KEY,
+
+  tutor_user_id        TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  student_user_id      TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  rate_in_person_cents INTEGER CHECK (rate_in_person_cents >= 0),
+  rate_virtual_cents   INTEGER CHECK (rate_virtual_cents >= 0),
+
+  -- Ending an assignment keeps its history; it just stops new sessions.
+  is_active            INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+  notes                TEXT,
+
+  created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  -- One pairing per tutor/student. Re-assigning reactivates the same row.
+  UNIQUE (tutor_user_id, student_user_id),
+
+  -- A user can be both a tutor and a student here, but not their own tutor.
+  CHECK (tutor_user_id <> student_user_id)
+);
+
+CREATE INDEX assignments_tutor_idx   ON assignments (tutor_user_id)   WHERE is_active = 1;
+CREATE INDEX assignments_student_idx ON assignments (student_user_id) WHERE is_active = 1;
+
+
+-- ---------------------------------------------------------------------------
+-- sessions - a lesson that actually happened, and what it costs
+-- ---------------------------------------------------------------------------
+-- Recorded by the tutor afterwards. This is the billing record: everything the
+-- amount depends on is frozen here at the moment it is saved.
+--
+-- Deliberately NOT a foreign key to `assignments`. The assignment authorises
+-- and prices a session, but the session records what happened. Unassigning a
+-- student later must not delete the history of lessons already taught.
+CREATE TABLE sessions (
+  id                 TEXT PRIMARY KEY,
+
+  tutor_user_id      TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  student_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  -- Local calendar date of the lesson, YYYY-MM-DD.
+  occurred_on        TEXT NOT NULL,
+  -- Local wall-clock times, HH:MM. Stored as entered rather than as an instant:
+  -- a lesson is "Tuesday 4pm" to everyone involved, and no timezone conversion
+  -- should ever move it.
+  started_at         TEXT NOT NULL,
+  ended_at           TEXT NOT NULL,
+
+  -- Elapsed time rounded to the nearest quarter hour, which is the unit the
+  -- institute bills in. Stored rather than recomputed so a later change to the
+  -- rounding rule cannot silently restate old invoices.
+  duration_minutes   INTEGER NOT NULL
+                     CHECK (duration_minutes > 0 AND duration_minutes % 15 = 0),
+
+  mode               TEXT NOT NULL CHECK (mode IN ('in_person', 'virtual')),
+
+  -- Snapshot of the hourly rate that applied when this was saved, and the
+  -- resulting charge. Frozen so that changing a tutor's rate tomorrow does not
+  -- restate every session they have already taught.
+  rate_cents         INTEGER NOT NULL CHECK (rate_cents >= 0),
+  amount_cents       INTEGER NOT NULL CHECK (amount_cents >= 0),
+
+  -- Feedback, progress towards the student's goal, assessment, homework set.
+  notes              TEXT,
+
+  recorded_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+
+  created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK (ended_at > started_at)
+);
+
+CREATE INDEX sessions_tutor_idx   ON sessions (tutor_user_id, occurred_on);
+CREATE INDEX sessions_student_idx ON sessions (student_user_id, occurred_on);
+CREATE INDEX sessions_date_idx    ON sessions (occurred_on);
+
 -- audit_events - who did what, and when
 -- ---------------------------------------------------------------------------
 -- An append-only activity log. Rows are never updated and never deleted by the
@@ -329,4 +429,16 @@ AFTER UPDATE ON payment_handles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_a
 BEGIN
   UPDATE payment_handles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
   WHERE user_id = NEW.user_id AND method = NEW.method;
+END;
+
+CREATE TRIGGER assignments_set_updated_at
+AFTER UPDATE ON assignments FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE assignments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER sessions_set_updated_at
+AFTER UPDATE ON sessions FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE sessions SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
 END;

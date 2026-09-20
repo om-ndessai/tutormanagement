@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import {
   USER_STATUSES,
   USER_STATUS_LABELS,
+  centsToInput,
+  parseCentsInput,
   createUserRequestSchema,
   updateUserRequestSchema,
   type AvailabilitySlot,
@@ -58,6 +60,9 @@ interface FormState {
     area: string;
     availability_notes: string;
     virtual_available: boolean;
+    /** Dollars as typed; converted to cents on submit. */
+    rate_in_person: string;
+    rate_virtual: string;
   };
   student: {
     school: string;
@@ -82,6 +87,8 @@ const EMPTY: FormState = {
     area: '',
     availability_notes: '',
     virtual_available: false,
+    rate_in_person: '',
+    rate_virtual: '',
   },
   student: {
     school: '',
@@ -107,6 +114,8 @@ function fromDetail(detail: UserDetail): FormState {
       area: detail.tutor_profile?.area ?? '',
       availability_notes: detail.tutor_profile?.availability_notes ?? '',
       virtual_available: detail.tutor_profile?.virtual_available ?? false,
+      rate_in_person: centsToInput(detail.tutor_profile?.default_rate_in_person_cents),
+      rate_virtual: centsToInput(detail.tutor_profile?.default_rate_virtual_cents),
     },
     student: {
       school: detail.student_profile?.school ?? '',
@@ -139,7 +148,17 @@ function toRequest(form: FormState) {
     phone: form.phone,
     status: form.status,
     roles: form.roles,
-    tutor_profile: isTutor ? form.tutor : null,
+    tutor_profile: isTutor
+      ? {
+          highest_education: form.tutor.highest_education,
+          school: form.tutor.school,
+          area: form.tutor.area,
+          availability_notes: form.tutor.availability_notes,
+          virtual_available: form.tutor.virtual_available,
+          default_rate_in_person_cents: parseCentsInput(form.tutor.rate_in_person),
+          default_rate_virtual_cents: parseCentsInput(form.tutor.rate_virtual),
+        }
+      : null,
     student_profile: isStudent ? form.student : null,
     payment_handles: form.payment_handles,
     // Availability only means something for someone who teaches or learns.
@@ -358,6 +377,37 @@ export function UserFormDialog({
                       set('tutor', { ...form.tutor, virtual_available: checked })
                     }
                   />
+
+                  {/* Default hourly rates. A per-student override on the
+                      assignment beats these. */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field
+                      id="t_rate_ip"
+                      label="In-person rate / hr"
+                      hint="Used unless an assignment overrides it."
+                    >
+                      <Input
+                        id="t_rate_ip"
+                        inputMode="decimal"
+                        value={form.tutor.rate_in_person}
+                        onChange={(e) =>
+                          set('tutor', { ...form.tutor, rate_in_person: e.target.value })
+                        }
+                        placeholder="75.00"
+                      />
+                    </Field>
+                    <Field id="t_rate_v" label="Virtual rate / hr" optional>
+                      <Input
+                        id="t_rate_v"
+                        inputMode="decimal"
+                        value={form.tutor.rate_virtual}
+                        onChange={(e) =>
+                          set('tutor', { ...form.tutor, rate_virtual: e.target.value })
+                        }
+                        placeholder="65.00"
+                      />
+                    </Field>
+                  </div>
                 </>
               )}
 

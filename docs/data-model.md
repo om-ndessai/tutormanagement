@@ -150,6 +150,30 @@ a CHECK stops anyone being their own guardian.
 
 ---
 
+### `assignments` and `sessions`
+
+Phase 4. An assignment pairs a tutor with a student and prices that pairing; a session is a
+lesson that actually happened.
+
+**Rate resolution** is one rule, written once in `resolveRateCents` so the API and the UI
+preview cannot disagree: a per-pair override on the assignment wins, otherwise the tutor's
+default for that mode. Both rate columns are nullable on both tables, so the common case needs
+no per-student setup.
+
+**`sessions` deliberately has no foreign key to `assignments`.** The assignment authorises and
+prices a session, but the session records what happened. Unassigning a student later must not
+delete the lessons already taught.
+
+**`rate_cents` and `amount_cents` are frozen snapshots.** Changing a tutor's rate tomorrow must
+not restate every session they have already taught, so the rate that applied is copied onto the
+session at the moment it is saved. `duration_minutes` is stored for the same reason: a later
+change to the rounding rule cannot silently re-bill history.
+
+**Durations round to the nearest quarter hour, with a floor of 15 minutes.** Nearest rather
+than up or down, because rounding up systematically overcharges families and rounding down
+systematically underpays tutors. The client never sends a duration or an amount — both are
+derived server-side from the times and the assignment.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application

@@ -18,6 +18,14 @@ export const AUDIT_ACTIONS = [
   'user.deactivated',
   'user.restored',
   'user.deleted',
+
+  'assignment.created',
+  'assignment.updated',
+  'assignment.removed',
+
+  'session.recorded',
+  'session.updated',
+  'session.deleted',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -38,6 +46,14 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'user.deactivated': 'User deactivated',
   'user.restored': 'User restored',
   'user.deleted': 'User deleted',
+
+  'assignment.created': 'Student assigned',
+  'assignment.updated': 'Assignment updated',
+  'assignment.removed': 'Assignment removed',
+
+  'session.recorded': 'Session recorded',
+  'session.updated': 'Session updated',
+  'session.deleted': 'Session deleted',
 };
 
 export interface AuditEvent {

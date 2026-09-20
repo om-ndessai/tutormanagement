@@ -21,6 +21,8 @@
 --    Grace   parent             "parent may or may not have a student assigned"
 -- ===========================================================================
 
+DELETE FROM sessions;
+DELETE FROM assignments;
 DELETE FROM guardianships;
 DELETE FROM availability_slots;
 DELETE FROM payment_handles;
@@ -63,13 +65,15 @@ INSERT INTO user_roles (user_id, role) VALUES
 
 -- --- tutor-only data -------------------------------------------------------
 INSERT INTO tutor_profiles
-  (user_id, highest_education, school, area, availability_notes, virtual_available) VALUES
-  ('00000000-0000-4000-8000-000000000001', 'PhD, Mathematics',       'UNC Chapel Hill',      'Chapel Hill',  'Limited hours during term planning weeks.', 1),
-  ('00000000-0000-4000-8000-000000000003', 'MS, Applied Mathematics','NC State',             'Cary',         'Prefers back-to-back sessions.',            1),
-  ('00000000-0000-4000-8000-000000000004', 'BS, Statistics',         'Duke',                 'Durham',       'In person only during school holidays.',    0),
-  ('00000000-0000-4000-8000-000000000005', 'MSc, Mathematics',       'Lund University',      'Chapel Hill',  NULL,                                        1),
-  -- A tutor still at school: "highest education" carries his current course.
-  ('00000000-0000-4000-8000-000000000006', 'Grade 12 - AP Calculus BC','East Chapel Hill High','Chapel Hill','Only after 5pm on weekdays.',               1);
+  (user_id, highest_education, school, area, availability_notes, virtual_available,
+   default_rate_in_person_cents, default_rate_virtual_cents) VALUES
+  ('00000000-0000-4000-8000-000000000001', 'PhD, Mathematics',       'UNC Chapel Hill',      'Chapel Hill',  'Limited hours during term planning weeks.', 1, 9000, 8000),
+  ('00000000-0000-4000-8000-000000000003', 'MS, Applied Mathematics','NC State',             'Cary',         'Prefers back-to-back sessions.',            1, 7500, 6500),
+  ('00000000-0000-4000-8000-000000000004', 'BS, Statistics',         'Duke',                 'Durham',       'In person only during school holidays.',    0, 6000, NULL),
+  ('00000000-0000-4000-8000-000000000005', 'MSc, Mathematics',       'Lund University',      'Chapel Hill',  NULL,                                        1, 7000, 6000),
+  -- A tutor still at school: "highest education" carries his current course,
+  -- and his rate is lower than the advanced-degree tutors'.
+  ('00000000-0000-4000-8000-000000000006', 'Grade 12 - AP Calculus BC','East Chapel Hill High','Chapel Hill','Only after 5pm on weekdays.',               1, 3500, 3000);
 
 -- --- student-only data -----------------------------------------------------
 INSERT INTO student_profiles
@@ -124,3 +128,25 @@ INSERT INTO guardianships (guardian_user_id, dependent_user_id, relationship, is
   -- table carries his parent link.
   ('00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', 'mother', 1);
 -- Grace Lee deliberately has no dependents: a parent need not have a student.
+
+-- --- who teaches whom, and at what price ------------------------------------
+-- Rates are only set here when they differ from the tutor's default, so the
+-- NULLs are the normal case rather than missing data.
+INSERT INTO assignments (id, tutor_user_id, student_user_id, rate_in_person_cents, rate_virtual_cents, notes) VALUES
+  ('a0000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000008', NULL, NULL, 'Weekly, building towards the accelerated track.'),
+  -- A negotiated rate for this family, below Alex's usual in-person price.
+  ('a0000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000009', 7000, NULL, 'Sibling-style discount agreed with the Whitfields.'),
+  -- The senior student tutoring a younger one.
+  ('a0000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000009', NULL, NULL, NULL),
+  -- ...and being tutored himself, by the institute's owner.
+  ('a0000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', NULL, NULL, 'AP Calculus BC exam prep.');
+
+-- --- lessons that happened --------------------------------------------------
+-- rate_cents and amount_cents are frozen snapshots: amount = rate x minutes/60.
+INSERT INTO sessions
+  (id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at, duration_minutes, mode, rate_cents, amount_cents, notes, recorded_by_user_id) VALUES
+  ('50000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000008', '2026-09-08', '16:00', '17:00', 60,  'in_person', 7500, 7500,  'Reviewed equivalent fractions. Confident on halves and quarters, shaky on thirds. Homework: worksheet 3a.', '00000000-0000-4000-8000-000000000003'),
+  ('50000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000008', '2026-09-15', '16:00', '17:30', 90,  'virtual',   6500, 9750,  'Word problems. Much better at extracting the operation from the sentence. Goal check: on track for accelerated track.', '00000000-0000-4000-8000-000000000003'),
+  ('50000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000009', '2026-09-12', '10:00', '11:00', 60,  'in_person', 7000, 7000,  'Long division. Needed scaffolding but got there. Set 10 practice problems.', '00000000-0000-4000-8000-000000000003'),
+  ('50000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000009', '2026-09-13', '17:00', '18:00', 60,  'virtual',   3000, 3000,  'Times tables drill, 6s through 9s. Fast recall improving.', '00000000-0000-4000-8000-000000000006'),
+  ('50000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', '2026-09-10', '14:00', '15:30', 90,  'in_person', 9000, 13500, 'Related rates. Worked three past-paper questions. Assessment: exam-ready on this topic.', '00000000-0000-4000-8000-000000000001');

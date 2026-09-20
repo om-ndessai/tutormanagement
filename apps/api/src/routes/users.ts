@@ -17,6 +17,7 @@ import type { AppEnv } from '../types.js';
 import { describeChangedFields, recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
+import { isAdmin, visibleUserIds } from '../lib/scope.js';
 import { requireAdmin } from '../middleware/require-admin.js';
 import {
   countGuardians,
@@ -90,7 +91,9 @@ export const usersRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listUsersQuerySchema), async (c) => {
     const params = c.req.valid('query');
-    const { users, total } = await listUsers(c.env.DB, params);
+    // Non-admins see only the people they work with; see lib/scope.ts.
+    const visible = await visibleUserIds(c.env.DB, c.get('user'));
+    const { users, total } = await listUsers(c.env.DB, params, visible);
 
     const body: ApiList<User> = {
       data: users,
@@ -136,6 +139,15 @@ export const usersRoutes = new Hono<AppEnv>()
   /** Returns the whole graph: roles, role profiles, availability, money, family. */
   .get('/:id', zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
+    const viewer = c.get('user');
+
+    // Checked before the read so an out-of-scope id is indistinguishable from
+    // one that does not exist.
+    if (!isAdmin(viewer)) {
+      const visible = await visibleUserIds(c.env.DB, viewer);
+      if (visible && !visible.has(id)) throw ApiError.notFound('That user does not exist.');
+    }
+
     const detail = await getUserDetail(c.env.DB, id);
 
     if (!detail) throw ApiError.notFound('That user does not exist.');

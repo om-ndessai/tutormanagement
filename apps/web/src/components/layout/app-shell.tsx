@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   ActivityIcon,
+  BookOpenIcon,
   LayoutDashboardIcon,
+  LinkIcon,
   MenuIcon,
   UserIcon,
   UsersIcon,
@@ -19,6 +21,8 @@ import { cn } from '@/lib/utils';
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false },
+  { to: '/assignments', label: 'Assignments', icon: LinkIcon, end: false },
+  { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false },
 ];

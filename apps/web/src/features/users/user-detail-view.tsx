@@ -17,6 +17,7 @@ import {
   DAYS_OF_WEEK,
   PAYMENT_METHOD_LABELS,
   RELATIONSHIP_LABELS,
+  formatCents,
   groupSlotsByDay,
   type UserDetail,
 } from '@tmi/shared';
@@ -104,6 +105,20 @@ export function UserDetailView({ user }: { user: UserDetail }) {
             </Detail>
             <Detail icon={<VideoIcon className="size-4" />} label="Virtual tutoring">
               {tutor.virtual_available ? 'Available' : 'In person only'}
+            </Detail>
+            <Detail icon={<WalletIcon className="size-4" />} label="In-person rate">
+              {tutor.default_rate_in_person_cents != null ? (
+                `${formatCents(tutor.default_rate_in_person_cents)} / hr`
+              ) : (
+                <Muted>Not set</Muted>
+              )}
+            </Detail>
+            <Detail icon={<WalletIcon className="size-4" />} label="Virtual rate">
+              {tutor.default_rate_virtual_cents != null ? (
+                `${formatCents(tutor.default_rate_virtual_cents)} / hr`
+              ) : (
+                <Muted>Not set</Muted>
+              )}
             </Detail>
           </dl>
           {tutor.availability_notes && (
