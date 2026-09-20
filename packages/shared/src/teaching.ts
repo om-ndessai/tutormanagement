@@ -80,6 +80,59 @@ export function minutesToClock(minutes: number): string {
 }
 
 /**
+ * Times are STORED as 24-hour "HH:MM" because that sorts correctly as text and
+ * is unambiguous, and DISPLAYED as 12-hour with AM/PM because that is how the
+ * institute talks about lessons. Everything below is the display half; nothing
+ * here should ever be written back to the database.
+ */
+function periodOf(minutes: number): 'AM' | 'PM' {
+  return Math.floor(minutes / 60) % 24 < 12 ? 'AM' : 'PM';
+}
+
+/** 960 -> "4:00 PM". Midnight and noon come out as 12, not 0. */
+export function formatMinutesOfDay(minutes: number, omitPeriod = false): string {
+  const total = ((Math.round(minutes) % 1440) + 1440) % 1440;
+  const hours24 = Math.floor(total / 60);
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+  const clock = `${hours12}:${String(total % 60).padStart(2, '0')}`;
+
+  return omitPeriod ? clock : `${clock} ${periodOf(total)}`;
+}
+
+/** "16:00" -> "4:00 PM". Returns the input unchanged if it is not a time. */
+export function formatClockTime(value: string): string {
+  const minutes = parseClockTime(value);
+  return minutes === null ? value : formatMinutesOfDay(minutes);
+}
+
+/**
+ * "4:00-5:30 PM", or "11:00 AM - 1:00 PM" when the range crosses midday.
+ *
+ * The period is printed once when both ends share it, which is the common case
+ * for a lesson and reads far better in a list of them.
+ */
+export function formatTimeRange(startMinutes: number, endMinutes: number): string {
+  const sharesPeriod = periodOf(startMinutes) === periodOf(endMinutes);
+  // "4:00-5:00 PM" stays tight; "11:00 AM - 1:00 PM" needs room to breathe.
+  const dash = sharesPeriod ? '–' : ' – ';
+
+  return `${formatMinutesOfDay(startMinutes, sharesPeriod)}${dash}${formatMinutesOfDay(endMinutes)}`;
+}
+
+/**
+ * A compact hour label for a dense grid: "7a", "12p", "9p".
+ *
+ * The availability picker shows fifteen columns across; "7:00 AM" in each
+ * would not fit, and a bare "7" cannot tell morning from evening.
+ */
+export function formatHourShort(hour: number): string {
+  const hours24 = ((hour % 24) + 24) % 24;
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+
+  return `${hours12}${hours24 < 12 ? 'a' : 'p'}`;
+}
+
+/**
  * Snaps a wall-clock time to the nearest quarter hour.
  *
  * Distinct from roundToQuarterHour, which rounds a DURATION. A live session

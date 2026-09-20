@@ -1,4 +1,9 @@
-import { DAYS_OF_WEEK, type AvailabilitySlot } from '@tmi/shared';
+import {
+  DAYS_OF_WEEK,
+  formatHourShort,
+  formatTimeRange,
+  type AvailabilitySlot,
+} from '@tmi/shared';
 
 import { cn } from '@/lib/utils';
 
@@ -50,7 +55,7 @@ export function AvailabilityPicker({
               <th className="w-10" />
               {HOURS.map((hour) => (
                 <th key={hour} className="text-muted-foreground w-7 pb-1 font-normal">
-                  {hour}
+                  {formatHourShort(hour)}
                 </th>
               ))}
             </tr>
@@ -68,7 +73,7 @@ export function AvailabilityPicker({
                         type="button"
                         onClick={() => toggle(day.value, hour)}
                         aria-pressed={on}
-                        aria-label={`${day.label} ${hour}:00 to ${hour + 1}:00`}
+                        aria-label={`${day.label} ${formatTimeRange(hour * 60, (hour + 1) * 60)}`}
                         className={cn(
                           'size-6 rounded-[3px] border transition-colors',
                           on
@@ -86,7 +91,7 @@ export function AvailabilityPicker({
       </div>
 
       <p className="text-muted-foreground text-xs">
-        Each square is one hour, starting at the time shown.
+        Each square is one hour, starting at the time shown (a = morning, p = afternoon).
       </p>
     </div>
   );

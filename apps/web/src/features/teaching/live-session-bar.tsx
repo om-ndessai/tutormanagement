@@ -5,6 +5,7 @@ import {
   SESSION_MODE_LABELS,
   elapsedSince,
   formatCents,
+  formatClockTime,
   formatStopwatch,
   type ActiveSession,
 } from '@tmi/shared';
@@ -86,7 +87,7 @@ export function LiveSessionBar() {
           </span>
 
           <Badge variant="secondary" className="hidden text-xs sm:inline-flex">
-            from {active.rounded_start}
+            from {formatClockTime(active.rounded_start)}
           </Badge>
 
           <div className="ml-auto flex items-center gap-2">
@@ -148,7 +149,8 @@ function StopDialog({
       const session = result.data;
 
       toast.success(
-        `Session recorded: ${session.started_at}–${session.ended_at}, ${formatCents(session.amount_cents)}.`,
+        `Session recorded: ${formatClockTime(session.started_at)}–` +
+          `${formatClockTime(session.ended_at)}, ${formatCents(session.amount_cents)}.`,
       );
       onOpenChange(false);
     } catch (error) {
@@ -165,7 +167,7 @@ function StopDialog({
           <DialogTitle>End the session with {active.student_name}?</DialogTitle>
           <DialogDescription>
             Start and end are each recorded to the nearest quarter hour, so this will be logged
-            from {active.rounded_start}. You can edit the details afterwards.
+            from {formatClockTime(active.rounded_start)}. You can edit the details afterwards.
           </DialogDescription>
         </DialogHeader>
 

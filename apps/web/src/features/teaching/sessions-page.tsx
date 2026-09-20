@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import {
   SESSION_MODE_LABELS,
   formatCents,
+  formatClockTime,
   formatDuration,
   type TutoringSession,
 } from '@tmi/shared';
@@ -231,7 +232,8 @@ export function SessionsPage() {
                         <span>{session.occurred_on}</span>
                         <span>·</span>
                         <span>
-                          {session.started_at}–{session.ended_at}
+                          {formatClockTime(session.started_at)}–
+                          {formatClockTime(session.ended_at)}
                         </span>
                         <span>·</span>
                         <span>{formatDuration(session.duration_minutes)}</span>

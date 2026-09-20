@@ -18,6 +18,7 @@ import {
   PAYMENT_METHOD_LABELS,
   RELATIONSHIP_LABELS,
   formatCents,
+  formatTimeRange,
   groupSlotsByDay,
   type UserDetail,
 } from '@tmi/shared';
@@ -42,8 +43,6 @@ function formatTimestamp(value: string | null, fallback: string) {
   if (!value) return fallback;
   return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 }
-
-const pad = (n: number) => String(n).padStart(2, '0');
 
 /**
  * The whole record for one person, assembled from every table that hangs off
@@ -156,8 +155,8 @@ export function UserDetailView({ user }: { user: UserDetail }) {
                 </span>
                 {/* Consecutive hours are collapsed, so 16,17,18 reads as one block. */}
                 {ranges.map((range) => (
-                  <Badge key={range.start} variant="secondary" className="font-mono text-xs">
-                    {pad(range.start)}:00–{pad(range.end)}:00
+                  <Badge key={range.start} variant="secondary" className="text-xs">
+                    {formatTimeRange(range.start * 60, range.end * 60)}
                   </Badge>
                 ))}
               </li>

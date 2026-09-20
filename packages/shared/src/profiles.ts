@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { formatTimeRange } from './teaching.js';
 import { optionalText, userSchema, type UserRole } from './users.js';
 
 // ---------------------------------------------------------------------------
@@ -125,14 +126,13 @@ export const availabilitySchema = z
     { message: 'The same hour was selected twice.' },
   );
 
-/** "Tue 16:00–17:00" */
+/** "Tue 4:00–5:00 PM" */
 export function formatSlot(slot: AvailabilitySlot): string {
   const day = DAYS_OF_WEEK[slot.day_of_week]?.short ?? '?';
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${day} ${pad(slot.hour)}:00–${pad(slot.hour + 1)}:00`;
+  return `${day} ${formatTimeRange(slot.hour * 60, (slot.hour + 1) * 60)}`;
 }
 
-/** Collapses consecutive hours on the same day into "Tue 16:00–18:00". */
+/** Collapses consecutive hours on the same day into "Tue 4:00–6:00 PM". */
 export function groupSlotsByDay(
   slots: AvailabilitySlot[],
 ): { day_of_week: number; ranges: { start: number; end: number }[] }[] {

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
   computeAmountCents,
   elapsedMinutes,
+  formatClockTime,
   formatDuration,
   resolveRateCents as resolveRate,
   startSessionSchema,
@@ -208,8 +209,8 @@ export const sessionsRoutes = new Hono<AppEnv>()
         session.occurred_on,
         session.student_name,
         session.tutor_name,
-        session.started_at,
-        session.ended_at,
+        formatClockTime(session.started_at),
+        formatClockTime(session.ended_at),
         session.duration_minutes,
         SESSION_MODE_LABELS[session.mode],
         csvMoney(session.rate_cents),

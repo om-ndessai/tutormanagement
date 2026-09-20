@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import { DAYS_OF_WEEK } from './profiles.js';
-import { SESSION_MODES, formatDuration, parseClockTime, type SessionMode } from './teaching.js';
+import {
+  SESSION_MODES,
+  formatDuration,
+  formatTimeRange,
+  parseClockTime,
+  type SessionMode,
+} from './teaching.js';
 import { optionalText } from './users.js';
 
 /**
@@ -90,15 +96,13 @@ export const listSchedulesQuerySchema = z.object({
 
 export type ListSchedulesParams = z.output<typeof listSchedulesQuerySchema>;
 
-/** "Tuesdays 16:00–17:00 · 1 hr" */
+/** "Tuesdays 4:00–5:00 PM · 1 hr" */
 export function describeSchedule(schedule: ScheduledSession): string {
   const day = DAYS_OF_WEEK[schedule.day_of_week]?.label ?? '?';
   const start = parseClockTime(schedule.start_time) ?? 0;
-  const end = start + schedule.duration_minutes;
-  const pad = (n: number) => String(n).padStart(2, '0');
 
   return (
-    `${day}s ${schedule.start_time}–${pad(Math.floor(end / 60))}:${pad(end % 60)}` +
+    `${day}s ${formatTimeRange(start, start + schedule.duration_minutes)}` +
     ` · ${formatDuration(schedule.duration_minutes)}`
   );
 }
