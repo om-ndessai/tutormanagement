@@ -2,12 +2,8 @@ import { Link } from 'react-router-dom';
 import {
   ActivityIcon,
   BookOpenIcon,
-  GraduationCapIcon,
-  HeartHandshakeIcon,
   RadioIcon,
-  ShieldCheckIcon,
   TargetIcon,
-  UsersIcon,
   WalletIcon,
 } from 'lucide-react';
 import {
@@ -24,6 +20,7 @@ import {
 } from '@tmi/shared';
 
 import { ActivityFeed } from '@/features/audit/activity-feed';
+import { ROLE_ICONS } from '@/features/users/role-icon';
 import { Badge } from '@/components/ui/badge';
 import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
 import { cn } from '@/lib/utils';
@@ -135,10 +132,10 @@ export function AdminView({ data }: { data: AdminDashboard }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard index={0} label="Students" value={data.counts.students} icon={UsersIcon} to="/users?role=student" />
-        <StatCard index={1} label="Tutors" value={data.counts.tutors} icon={GraduationCapIcon} to="/users?role=tutor" />
-        <StatCard index={2} label="Parents" value={data.counts.parents} icon={HeartHandshakeIcon} to="/users?role=parent" />
-        <StatCard index={3} label="Admins" value={data.counts.admins} icon={ShieldCheckIcon} to="/users?role=admin" />
+        <StatCard index={0} label="Students" value={data.counts.students} icon={ROLE_ICONS.student} to="/users?role=student" />
+        <StatCard index={1} label="Tutors" value={data.counts.tutors} icon={ROLE_ICONS.tutor} to="/users?role=tutor" />
+        <StatCard index={2} label="Parents" value={data.counts.parents} icon={ROLE_ICONS.parent} to="/users?role=parent" />
+        <StatCard index={3} label="Admins" value={data.counts.admins} icon={ROLE_ICONS.admin} to="/users?role=admin" />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -238,7 +235,7 @@ export function TutorView({ data }: { data: TutorDashboard }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard index={0} label="Students" value={data.students.length} icon={UsersIcon} to="/assignments" />
+        <StatCard index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
         <StatCard index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
         <StatCard index={2} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
         <StatCard
@@ -309,7 +306,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard index={0} label="Children" value={data.children.length} icon={UsersIcon} />
+        <StatCard index={0} label="Children" value={data.children.length} icon={ROLE_ICONS.student} />
         <StatCard index={1} label="Charged" value={data.totals.charged_cents} money icon={BookOpenIcon} to="/sessions" />
         <StatCard
           index={2}
@@ -382,7 +379,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
           formatValue={formatDuration}
           icon={ActivityIcon}
         />
-        <StatCard index={3} label="Tutors" value={data.tutors.length} icon={GraduationCapIcon} />
+        <StatCard index={3} label="Tutors" value={data.tutors.length} icon={ROLE_ICONS.tutor} />
       </div>
 
       <Panel index={4} title="Your tutors">

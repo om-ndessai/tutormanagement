@@ -1,9 +1,9 @@
 import {
-  GraduationCapIcon,
-  HeartHandshakeIcon,
-  ShieldCheckIcon,
+  BackpackIcon,
+  PresentationIcon,
+  ShieldIcon,
   UserIcon,
-  UsersIcon,
+  UsersRoundIcon,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { USER_ROLES, USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
@@ -11,14 +11,26 @@ import { USER_ROLES, USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
 import { cn } from '@/lib/utils';
 
 /**
- * One glyph per role, defined once so the dashboard, the user picker and
+ * One glyph per role, defined once so the dashboard cards, the user picker and
  * anywhere else that shows a role all say the same thing.
+ *
+ * Chosen for distinct silhouettes at 14px and for meaning what they show:
+ *
+ *   admin    a shield -- authority over the system. Plain rather than
+ *            shield-with-tick, which turns to mush at this size.
+ *   tutor    a board on a stand -- someone teaching. A graduation cap says
+ *            "graduate", which is the student, not the person paid to teach.
+ *   student  a backpack -- one learner's own object. The previous group-of-
+ *            people glyph said the opposite of "a single student".
+ *   parent   two figures -- a parent is defined by a relationship to a child,
+ *            so a pair is the honest shape. A heart-and-handshake read as a
+ *            business deal.
  */
 export const ROLE_ICONS: Record<UserRole, ComponentType<{ className?: string }>> = {
-  admin: ShieldCheckIcon,
-  tutor: GraduationCapIcon,
-  student: UsersIcon,
-  parent: HeartHandshakeIcon,
+  admin: ShieldIcon,
+  tutor: PresentationIcon,
+  student: BackpackIcon,
+  parent: UsersRoundIcon,
 };
 
 /** Matches the badge colours, so a role reads the same whichever form it takes. */
