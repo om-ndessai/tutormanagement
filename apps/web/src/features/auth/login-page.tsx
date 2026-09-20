@@ -128,9 +128,9 @@ export function LoginPage() {
             )}
 
             <p className="text-muted-foreground mt-10 border-t pt-6 text-center text-xs leading-relaxed">
-              Accounts are created by an administrator.
+              Access is granted by an administrator.
               <br />
-              No portal account yet? Ask them to add your Google address.
+              Can&apos;t sign in? Ask them to add your Google address.
             </p>
           </div>
         </div>
@@ -146,9 +146,8 @@ export function LoginPage() {
  */
 function SignInError({ code, message }: { code: string; message: string }) {
   const guidance =
-    code === AUTH_ERROR_CODES.NO_ACCOUNT
-      ? 'Accounts are created by an administrator. Ask them to add your Google address to the portal.'
-      : code === AUTH_ERROR_CODES.ACCOUNT_SUSPENDED
+    // no_account already says what to do, so it gets no second line.
+    code === AUTH_ERROR_CODES.ACCOUNT_SUSPENDED
         ? 'Contact an administrator to have your access restored.'
         : code === AUTH_ERROR_CODES.EMAIL_UNVERIFIED
           ? 'Verify your email address with Google, then try again.'

@@ -174,6 +174,6 @@ async function bootstrapOrReject(env: Env, identity: GoogleIdentity) {
   throw new ApiError(
     403,
     'no_account',
-    'No portal account matches that Google address. Ask an administrator to add you.',
+    'You are not authorized to access this portal. Please reach out to the administrator.',
   );
 }

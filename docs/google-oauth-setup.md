@@ -214,10 +214,11 @@ Either the client ID is still the placeholder — the login page says so
 explicitly — or the GIS script was blocked. Check the browser console and any
 tracking blockers.
 
-**"No portal account matches that Google address"**
-Sign-in worked; there is simply no live `users` row with that email. Add the
-person through the Users screen, or use the bootstrap list above. Remember the
-match is on **email**, so it must be the same address as the Google account.
+**"You are not authorized to access this portal"**
+Sign-in with Google worked; there is simply no live `users` row with that
+email. Add the person through the Users screen, or use the bootstrap list
+above. Remember the match is on **email**, so it must be the same address as
+the Google account they signed in with.
 
 **"Your account has been suspended"**
 The matching user row has `status = 'suspended'`, or was deactivated. Restore
