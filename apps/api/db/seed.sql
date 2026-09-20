@@ -21,6 +21,7 @@
 --    Grace   parent             "parent may or may not have a student assigned"
 -- ===========================================================================
 
+DELETE FROM payments;
 DELETE FROM sessions;
 DELETE FROM assignments;
 DELETE FROM guardianships;
@@ -150,3 +151,13 @@ INSERT INTO sessions
   ('50000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000009', '2026-09-12', '10:00', '11:00', 60,  'in_person', 7000, 7000,  'Long division. Needed scaffolding but got there. Set 10 practice problems.', '00000000-0000-4000-8000-000000000003'),
   ('50000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000009', '2026-09-13', '17:00', '18:00', 60,  'virtual',   3000, 3000,  'Times tables drill, 6s through 9s. Fast recall improving.', '00000000-0000-4000-8000-000000000006'),
   ('50000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', '2026-09-10', '14:00', '15:30', 90,  'in_person', 9000, 13500, 'Related rates. Worked three past-paper questions. Assessment: exam-ready on this topic.', '00000000-0000-4000-8000-000000000001');
+
+-- --- money that has changed hands -------------------------------------------
+-- Sofia's mother has paid part of what is owed; Ben's family has paid in full
+-- for Alex's lesson. Alex has been paid once. The rest is outstanding, which
+-- is what the balances screen is for.
+INSERT INTO payments (id, direction, party_user_id, student_user_id, amount_cents, method, paid_at, reference, notes, recorded_by_user_id) VALUES
+  ('60000000-0000-4000-8000-000000000001', 'from_parent', '00000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000008', 7500,  'zelle', '2026-09-09T18:30:00.000Z', NULL,   'For the 8 Sept lesson.', '00000000-0000-4000-8000-000000000001'),
+  ('60000000-0000-4000-8000-000000000002', 'from_parent', '00000000-0000-4000-8000-00000000000a', '00000000-0000-4000-8000-000000000009', 7000,  'venmo', '2026-09-13T09:05:00.000Z', NULL,   NULL,                     '00000000-0000-4000-8000-000000000001'),
+  ('60000000-0000-4000-8000-000000000003', 'from_parent', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', 10000, 'check', '2026-09-11T12:00:00.000Z', '1042', 'Part payment.',          '00000000-0000-4000-8000-000000000001'),
+  ('60000000-0000-4000-8000-000000000004', 'to_tutor',    '00000000-0000-4000-8000-000000000003', NULL,                                   15000, 'zelle', '2026-09-16T10:00:00.000Z', NULL,   'September, first half.', '00000000-0000-4000-8000-000000000001');

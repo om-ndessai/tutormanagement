@@ -24,6 +24,7 @@
 -- ===========================================================================
 
 -- Dropped children-first so foreign keys never block the rebuild.
+DROP TRIGGER IF EXISTS payments_set_updated_at;
 DROP TRIGGER IF EXISTS sessions_set_updated_at;
 DROP TRIGGER IF EXISTS assignments_set_updated_at;
 DROP TRIGGER IF EXISTS payment_handles_set_updated_at;
@@ -31,6 +32,7 @@ DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
 
+DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS audit_events;
 DROP TABLE IF EXISTS sessions;
 DROP TABLE IF EXISTS assignments;
@@ -351,6 +353,57 @@ CREATE INDEX sessions_tutor_idx   ON sessions (tutor_user_id, occurred_on);
 CREATE INDEX sessions_student_idx ON sessions (student_user_id, occurred_on);
 CREATE INDEX sessions_date_idx    ON sessions (occurred_on);
 
+-- ---------------------------------------------------------------------------
+-- payments - money that changed hands, recorded after the fact
+-- ---------------------------------------------------------------------------
+-- No money moves through the portal. This is a ledger of payments made
+-- elsewhere, so the institute can answer two questions: what does a family
+-- still owe, and what is a tutor still owed.
+--
+-- Those two questions are opposite directions of the same table, which is why
+-- `direction` exists rather than two near-identical tables.
+CREATE TABLE payments (
+  id                  TEXT PRIMARY KEY,
+
+  --   from_parent - a family paying the institute
+  --   to_tutor    - the institute paying a tutor
+  direction           TEXT NOT NULL CHECK (direction IN ('from_parent', 'to_tutor')),
+
+  -- The parent who paid, or the tutor who was paid.
+  party_user_id       TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  -- Which student the money is for. Charges attach to a student, not to a
+  -- parent, because a student may have two guardians and either may pay.
+  -- Required for from_parent (see the CHECK below) so every family payment
+  -- lands against exactly one balance; meaningless for to_tutor.
+  student_user_id     TEXT REFERENCES users (id) ON DELETE SET NULL,
+
+  amount_cents        INTEGER NOT NULL CHECK (amount_cents > 0),
+
+  -- "The payment form need to be supported are venmo, zelle, cash, check."
+  method              TEXT NOT NULL CHECK (method IN ('zelle', 'venmo', 'cash', 'check')),
+
+  -- When the money actually moved, which is not when it was typed in.
+  paid_at             TEXT NOT NULL,
+
+  -- Cheque number, transfer confirmation, whatever makes it findable later.
+  reference           TEXT,
+  notes               TEXT,
+
+  recorded_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+
+  created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  -- A family payment with no student would belong to no balance at all.
+  CHECK (direction <> 'from_parent' OR student_user_id IS NOT NULL)
+);
+
+CREATE INDEX payments_party_idx   ON payments (party_user_id, paid_at DESC);
+CREATE INDEX payments_student_idx ON payments (student_user_id, paid_at DESC);
+CREATE INDEX payments_recent_idx  ON payments (paid_at DESC);
+
+
 -- audit_events - who did what, and when
 -- ---------------------------------------------------------------------------
 -- An append-only activity log. Rows are never updated and never deleted by the
@@ -441,4 +494,10 @@ CREATE TRIGGER sessions_set_updated_at
 AFTER UPDATE ON sessions FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE sessions SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER payments_set_updated_at
+AFTER UPDATE ON payments FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE payments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
 END;

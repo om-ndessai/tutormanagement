@@ -6,6 +6,7 @@ import { RequireAuth } from '@/features/auth/require-auth';
 import { ActivityPage } from '@/features/audit/activity-page';
 import { AssignmentsPage } from '@/features/teaching/assignments-page';
 import { SessionsPage } from '@/features/teaching/sessions-page';
+import { BillingPage } from '@/features/payments/billing-page';
 import { UsersPage } from '@/features/users/users-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { NotFoundPage } from '@/pages/not-found-page';
@@ -25,6 +26,7 @@ export function App() {
           <Route path="users" element={<UsersPage />} />
           <Route path="assignments" element={<AssignmentsPage />} />
           <Route path="sessions" element={<SessionsPage />} />
+          <Route path="billing" element={<BillingPage />} />
           <Route path="activity" element={<ActivityPage />} />
           <Route path="dashboard" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFoundPage />} />

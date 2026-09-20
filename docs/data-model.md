@@ -174,6 +174,29 @@ than up or down, because rounding up systematically overcharges families and rou
 systematically underpays tutors. The client never sends a duration or an amount — both are
 derived server-side from the times and the assignment.
 
+### `payments`
+
+Phase 5. A ledger of money that moved **outside** the portal, so the institute can answer two
+questions: what a family still owes, and what a tutor is still owed. Those are opposite
+directions of the same table, which is why `direction` exists rather than two near-identical
+tables.
+
+**A family payment must name a student**, enforced by a CHECK. Charges arise from a student's
+lessons and a student may have two guardians who both pay, so a payment with no student would
+belong to no balance at all. Payments to a tutor carry no student, because they settle the
+tutor's whole ledger rather than one child's.
+
+Balances are derived, never stored:
+
+```
+tutor   balance = sum(sessions they taught)        - sum(payments to_tutor)
+student balance = sum(sessions for that student)   - sum(payments from_parent for them)
+```
+
+Storing them would mean two sources of truth that drift the first time a session is corrected.
+The headline totals sum only *positive* balances, so one overpaid tutor cannot mask another's
+unpaid one.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application
