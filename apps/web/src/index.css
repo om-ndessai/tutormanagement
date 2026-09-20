@@ -215,6 +215,14 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      /*
+       * The delay matters as much as the duration. Staggered entrances pair a
+       * delay with `fill-mode: backwards`, which holds the element at its
+       * starting opacity of zero until the delay elapses -- so leaving the
+       * delay in place would keep content invisible for exactly the people who
+       * asked for less motion.
+       */
+      animation-delay: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;

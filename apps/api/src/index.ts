@@ -8,6 +8,7 @@ import { requireAuth } from './middleware/auth.js';
 import { authRoutes } from './routes/auth.js';
 import { assignmentsRoutes } from './routes/assignments.js';
 import { auditRoutes } from './routes/audit.js';
+import { dashboardRoutes } from './routes/dashboard.js';
 import { paymentsRoutes } from './routes/payments.js';
 import { sessionsRoutes } from './routes/sessions.js';
 import { usersRoutes } from './routes/users.js';
@@ -75,6 +76,7 @@ const guardedRoutes = new Hono<AppEnv>()
   .use('*', requireAuth)
   .route('/users', usersRoutes)
   .route('/audit', auditRoutes)
+  .route('/dashboard', dashboardRoutes)
   .route('/assignments', assignmentsRoutes)
   .route('/sessions', sessionsRoutes)
   .route('/payments', paymentsRoutes);
