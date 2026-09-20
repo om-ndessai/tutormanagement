@@ -1,18 +1,28 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { AppShell } from '@/components/layout/app-shell';
+import { LoginPage } from '@/features/auth/login-page';
+import { RequireAuth } from '@/features/auth/require-auth';
 import { UsersPage } from '@/features/users/users-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { NotFoundPage } from '@/pages/not-found-page';
+import { ProfilePage } from '@/pages/profile-page';
 
 export function App() {
   return (
     <Routes>
-      <Route element={<AppShell />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="users" element={<UsersPage />} />
-        <Route path="dashboard" element={<Navigate to="/" replace />} />
-        <Route path="*" element={<NotFoundPage />} />
+      <Route path="/login" element={<LoginPage />} />
+
+      {/* Everything below requires a session. The Worker enforces the same
+          rule on the API, so this guard is about UX, not security. */}
+      <Route element={<RequireAuth />}>
+        <Route element={<AppShell />}>
+          <Route index element={<DashboardPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="dashboard" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
       </Route>
     </Routes>
   );

@@ -35,6 +35,14 @@ export const ERROR_CODES = [
   'not_found',
   'conflict',
   'internal_error',
+
+  // Authentication and authorization. The UI renders several of these
+  // differently, so they are distinct codes rather than one 'unauthorized'.
+  'unauthenticated',
+  'forbidden',
+  'no_account',
+  'account_suspended',
+  'email_unverified',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

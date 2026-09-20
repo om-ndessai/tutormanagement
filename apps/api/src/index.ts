@@ -4,6 +4,8 @@ import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
 import type { AppEnv } from './types.js';
 import { onError, onNotFound } from './middleware/error.js';
+import { requireAuth } from './middleware/auth.js';
+import { authRoutes } from './routes/auth.js';
 import { usersRoutes } from './routes/users.js';
 
 const app = new Hono<AppEnv>();
@@ -28,7 +30,11 @@ app.use(
   }),
 );
 
-const api = new Hono<AppEnv>()
+/**
+ * Health is the only unauthenticated data route: it reports liveness, not
+ * portal data. Everything else goes through `requireAuth`.
+ */
+const publicRoutes = new Hono<AppEnv>()
   .get('/health', async (c) => {
     // Touching D1 makes this a real readiness check, not just "the Worker boots".
     const probe = await c.env.DB.prepare('SELECT 1 AS ok').first<{ ok: number }>();
@@ -39,7 +45,20 @@ const api = new Hono<AppEnv>()
       time: new Date().toISOString(),
     });
   })
+  // /auth guards itself: /config and /google must be reachable while signed
+  // out, /session applies requireAuth on its own.
+  .route('/auth', authRoutes);
+
+/**
+ * Everything below this line requires a verified Google identity. The guard is
+ * mounted on the router rather than on individual handlers, so a new route is
+ * protected by default -- forgetting to add it cannot leak data.
+ */
+const guardedRoutes = new Hono<AppEnv>()
+  .use('*', requireAuth)
   .route('/users', usersRoutes);
+
+const api = new Hono<AppEnv>().route('/', publicRoutes).route('/', guardedRoutes);
 
 app.route('/api', api);
 

@@ -56,6 +56,8 @@ export const userSchema = z.object({
   status: z.enum(USER_STATUSES),
   created_at: z.string(),
   updated_at: z.string(),
+  /** Set on every successful Google sign-in; null until they first sign in. */
+  last_login_at: z.string().nullable(),
   deleted_at: z.string().nullable(),
 });
 

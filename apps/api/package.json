@@ -11,15 +11,16 @@
     "typecheck": "tsc --noEmit",
     "cf-typegen": "wrangler types",
     "db:create": "wrangler d1 create tmi-portal-db",
-    "db:migrate": "wrangler d1 migrations apply tmi-portal-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply tmi-portal-db --remote",
-    "db:seed": "wrangler d1 execute tmi-portal-db --local --file=./seed/dev-seed.sql",
-    "db:reset": "npm run db:migrate && npm run db:seed",
-    "db:studio": "wrangler d1 execute tmi-portal-db --local --command=\"SELECT id, email, full_name, role, status, deleted_at FROM users ORDER BY full_name\""
+    "db:rebuild": "wrangler d1 execute tmi-portal-db --local --file=./db/schema.sql",
+    "db:rebuild:remote": "wrangler d1 execute tmi-portal-db --remote --file=./db/schema.sql",
+    "db:seed": "wrangler d1 execute tmi-portal-db --local --file=./db/seed.sql",
+    "db:reset": "npm run db:rebuild && npm run db:seed",
+    "db:studio": "wrangler d1 execute tmi-portal-db --local --command=\"SELECT id, email, full_name, role, status, last_login_at, deleted_at FROM users ORDER BY full_name\""
   },
   "dependencies": {
     "@tmi/shared": "*",
     "hono": "^4.13.8",
+    "jose": "^6.2.12",
     "zod": "^4.6.5"
   },
   "devDependencies": {

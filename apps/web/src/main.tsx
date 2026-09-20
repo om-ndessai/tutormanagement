@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from '@/App';
 import { Toaster } from '@/components/ui/sonner';
 import { ApiRequestError } from '@/lib/api-client';
+import { AuthProvider } from '@/providers/auth-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 import './index.css';
@@ -37,9 +38,11 @@ createRoot(container).render(
   <StrictMode>
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </AuthProvider>
         <Toaster position="bottom-right" richColors closeButton />
       </QueryClientProvider>
     </ThemeProvider>

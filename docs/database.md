@@ -18,9 +18,10 @@ their own tables alongside classes and scheduling.
 | `phone` | TEXT NULL | Free-form; only ever displayed back |
 | `role` | TEXT NOT NULL | `admin` \| `tutor` (CHECK constraint) |
 | `status` | TEXT NOT NULL | `active` \| `invited` \| `suspended`, default `active` |
-| `google_sub` | TEXT NULL | **Reserved.** The `sub` claim from a Google ID token, for the planned social login. Nothing reads or writes it yet |
+| `google_sub` | TEXT NULL | Google's permanent id for the account, pinned on first sign-in. Matching is on **email** (admins create rows before anyone signs in), but `sub` survives a Google account changing address |
 | `created_at` | TEXT NOT NULL | ISO-8601 UTC, ms precision |
 | `updated_at` | TEXT NOT NULL | Same format; see the trigger below |
+| `last_login_at` | TEXT NULL | Set on every successful Google sign-in |
 | `deleted_at` | TEXT NULL | Soft delete marker; `NULL` means live |
 
 Indexes:
@@ -28,7 +29,7 @@ Indexes:
 | Index | Purpose |
 | --- | --- |
 | `users_email_unique` on `lower(email)` **where `deleted_at IS NULL`** | One live user per address, case-insensitively. Partial, so a deactivated person's address can be reused |
-| `users_google_sub_unique` on `google_sub` where not null | Ready for the login phase |
+| `users_google_sub_unique` on `google_sub` where not null **and not deleted** | One live user per Google account. Scoped to live rows so deleting and re-adding the same person does not collide with their own retired row |
 | `users_role_idx`, `users_status_idx`, `users_full_name_idx` | Partial indexes over live rows, matching how the list endpoint filters and sorts |
 
 ### Conventions and why
@@ -55,28 +56,28 @@ normalizes what the app writes, the index protects against anything else.
 (saving a second write), so the trigger is really a safety net for manual
 `wrangler d1 execute` edits and future services.
 
-## Migrations
+## No migrations — one rebuildable schema
 
-Files live in `apps/api/migrations/`, named `NNNN_description.sql` and applied in order.
-Wrangler tracks which have run in a `d1_migrations` table inside the database.
-
-**Never edit a migration that has been applied.** Add a new one.
+This project is greenfield, so per `docs/plan.md` there are no migrations. **`apps/api/db/schema.sql`
+is the single source of truth**, and it begins by dropping everything it is about to create.
 
 ```bash
-# 1. create the file
-#    apps/api/migrations/0002_add_classes.sql
+# change the model
+$EDITOR apps/api/db/schema.sql
 
-# 2. apply locally and check it
-npm run db:migrate
+# rebuild locally and reload sample data
+npm run db:reset
 npm run db:studio
-
-# 3. later, against production
-npm run db:migrate:remote
 ```
 
-D1 applies each file as one statement batch. Because SQLite cannot drop or retype a column in
-place, a change to an existing column is the usual create-new-table / copy / drop / rename
-dance — write it out explicitly in the migration.
+This trades the ability to preserve data for the ability to change the model freely — which is
+the right trade while there is no data worth preserving. It also sidesteps SQLite's inability
+to drop or retype a column in place: there is no ALTER path to write, because the table is
+simply recreated.
+
+**`npm run db:rebuild:remote` destroys all production data.** It exists for the first deploy.
+Once the institute is entering real records, this approach needs to be replaced with proper
+migrations — that is a deliberate decision to make at the time, not something to drift into.
 
 ## Local development
 
@@ -91,6 +92,10 @@ The seed inserts six staff members covering every role and status, including one
 tutor, with fixed UUIDs so they are stable across resets. It begins with `DELETE FROM users`,
 so it is safe to re-run — and must never be pointed at production.
 
+Note the seeded addresses are `@trianglemathinstitute.com`. Unless those are real Google
+accounts you control, you cannot sign in as them — use `BOOTSTRAP_ADMIN_EMAILS`, or set
+`AUTH_ENABLED: "false"`. See [google-oauth-setup.md](google-oauth-setup.md).
+
 Ad-hoc queries:
 
 ```bash
@@ -98,14 +103,14 @@ npx wrangler d1 execute tmi-portal-db --local --command="SELECT role, count(*) F
 ```
 
 Add `--remote` to hit production. Nothing else in this repo does that except
-`npm run db:migrate:remote`.
+`npm run db:rebuild:remote`.
 
 ## Production setup
 
 ```bash
 npm run db:create              # prints the database_id
 # paste it into apps/api/wrangler.jsonc
-npm run db:migrate:remote
+npm run db:rebuild:remote      # drops and creates the schema
 ```
 
 Free-tier D1 limits at time of writing: 5 GB total storage, 5 million rows read and 100,000
@@ -117,5 +122,5 @@ Sketched here so migrations land in a consistent shape, not yet implemented:
 
 - `students`, `guardians`, `student_guardians` — families, in the phase after login
 - `classes`, `enrollments`, `sessions`, `attendance` — the scheduling phase
-- `sessions` (auth) or a Google-token verification path — the login phase; `users.google_sub`
-  is already in place for it
+Phase 1 added no tables: sessions are stateless signed cookies, so there is no session table
+to plan for.

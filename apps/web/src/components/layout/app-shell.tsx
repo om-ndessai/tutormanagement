@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboardIcon, MenuIcon, UsersIcon, XIcon } from 'lucide-react';
+import { LayoutDashboardIcon, MenuIcon, UserIcon, UsersIcon, XIcon } from 'lucide-react';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
+import { UserMenu } from '@/components/layout/user-menu';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -11,6 +12,7 @@ import { cn } from '@/lib/utils';
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false },
+  { to: '/profile', label: 'My profile', icon: UserIcon, end: false },
 ];
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
@@ -99,6 +101,7 @@ export function AppShell() {
 
           <div className="ml-auto flex items-center gap-1">
             <ThemeToggle />
+            <UserMenu />
           </div>
         </header>
 

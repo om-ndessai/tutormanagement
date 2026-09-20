@@ -19,13 +19,30 @@
 		{
 			"binding": "DB",
 			"database_name": "tmi-portal-db",
-			// Run `npm run db:create` and paste the printed id here.
-			"database_id": "587b5622-15bf-4fbb-9a3f-873bee7a67c5",
-			"migrations_dir": "migrations"
+			"database_id": "587b5622-15bf-4fbb-9a3f-873bee7a67c5"
 		}
 	],
 	"vars": {
-		"ENVIRONMENT": "development"
+		"ENVIRONMENT": "development",
+
+		// Google OAuth web client id. Not a secret -- it is sent to the browser.
+		// See docs/google-oauth-setup.md for how to create one.
+		"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
+
+		// Master switch for authentication. "false" makes every API route run as
+		// DEV_USER_EMAIL and lets the SPA skip the login screen -- intended for
+		// building later phases without signing in each time. Must be "true" in
+		// production.
+		"AUTH_ENABLED": "true",
+
+		// Who the API runs as while AUTH_ENABLED is "false". Falls back to the
+		// first admin in the table when empty.
+		"DEV_USER_EMAIL": "",
+
+		// Chicken-and-egg escape hatch: while the users table contains no admin,
+		// these comma-separated Google accounts may sign in and are created as
+		// admins. Ignored the moment one admin exists.
+		"BOOTSTRAP_ADMIN_EMAILS": "om.ndessai@gmail.com"
 	},
 	"observability": {
 		"enabled": true

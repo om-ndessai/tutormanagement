@@ -6,6 +6,13 @@ import type { ApiErrorBody, ApiErrorCode } from '@tmi/shared';
  */
 const API_BASE = '/api';
 
+/**
+ * Broadcast when the API rejects a request for lack of a valid session, so the
+ * auth provider can drop to the login screen from anywhere -- including inside
+ * a TanStack Query retry, which has no access to React context.
+ */
+export const UNAUTHENTICATED_EVENT = 'tmi:unauthenticated';
+
 export class ApiRequestError extends Error {
   readonly status: number;
   readonly code: ApiErrorCode;
@@ -49,6 +56,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     response = await fetch(`${API_BASE}${path}`, {
       ...init,
+      // The session lives in an HttpOnly cookie. Same-origin in production and
+      // behind the Vite proxy in development, but stated explicitly so a future
+      // cross-origin setup does not silently drop it.
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
@@ -66,6 +77,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const payload: unknown = await response.json().catch(() => null);
 
   if (!response.ok) {
+    if (response.status === 401) {
+      window.dispatchEvent(new CustomEvent(UNAUTHENTICATED_EVENT));
+    }
+
     if (isApiErrorBody(payload)) {
       throw new ApiRequestError(
         response.status,

@@ -48,6 +48,10 @@ because both sides fail to typecheck together.
 POST /api/users
   │
   ├─ hono/cors, logger, secureHeaders            apps/api/src/index.ts
+  ├─ requireAuth                                 apps/api/src/middleware/auth.ts
+  │     ├─ read signed session cookie -> user id
+  │     ├─ re-read the user row from D1 (live? suspended?)
+  │     └─ on failure: throw ApiError(401 | 403)
   ├─ zValidator('json', createUserSchema)        apps/api/src/lib/validate.ts
   │     └─ on failure: throw ApiError(422, 'validation_failed', …)
   ├─ route handler                               apps/api/src/routes/users.ts
@@ -61,7 +65,10 @@ Layers and their one job:
 
 | Layer | Responsibility |
 | --- | --- |
-| `src/index.ts` | Middleware, route mounting, health check |
+| `src/index.ts` | Middleware, route mounting, and the public/guarded split |
+| `src/middleware/auth.ts` | `requireAuth` — the gate on every data route |
+| `src/lib/google.ts` | Verifies Google ID tokens. The security boundary of sign-in |
+| `src/lib/session.ts` | Signs and reads the stateless session cookie |
 | `src/routes/` | HTTP shape: parse, call a repository, choose a status code |
 | `src/repositories/` | All SQL. The only place that knows about columns |
 | `src/lib/errors.ts` | `ApiError` — the one way to produce a client-visible failure |
@@ -69,6 +76,51 @@ Layers and their one job:
 
 Handlers never build SQL, and repositories never touch `Request`/`Response`. The only strings
 interpolated into SQL are sort column and direction, and both come from Zod enums.
+
+## Authentication
+
+Sign-in is client-side Google Identity Services with a server-side trust boundary:
+
+```
+browser                          Worker                        Google
+  │                                │                             │
+  │ GET /api/auth/config ─────────►│                             │
+  │◄──────── { google_client_id }  │                             │
+  │                                │                             │
+  │ renders Google's button, user clicks, Google returns an ID token
+  │                                │                             │
+  │ POST /api/auth/google ────────►│                             │
+  │    { credential }              │ fetch JWKS ────────────────►│
+  │                                │ verify sig / iss / aud / exp│
+  │                                │ match users.email           │
+  │◄─── Set-Cookie: tmi_session ───│                             │
+```
+
+Four things are worth knowing:
+
+**The client id is served, not bundled.** `GET /api/auth/config` hands it to the SPA at
+runtime, so it is configured once in `wrangler.jsonc` and changing it needs no frontend
+rebuild. It is public by design — it is sent to every browser.
+
+**The ID token is the only thing the browser supplies, and it is never trusted as-is.**
+`verifyGoogleIdToken` checks the signature against Google's published keys plus the issuer,
+the audience (binding the token to *this* app) and expiry. An email that did not come out of
+that function is not an identity.
+
+**Sessions are stateless, but revocation is not.** The cookie is an HMAC-signed token
+carrying only a user id — there is no sessions table. Role and status are deliberately left
+out and the user row is re-read on every request, so suspending or deactivating someone takes
+effect on their next request rather than whenever their cookie happens to expire. That is one
+indexed primary-key read per request, and it is the reason the stateless design is safe here.
+
+**The guard is mounted on the router, not on handlers.** In `src/index.ts` the API splits into
+`publicRoutes` (health, auth) and `guardedRoutes` (everything else, behind `requireAuth`). A
+new route added under the guarded router is protected without anyone remembering to protect
+it; exposing one publicly takes a deliberate move.
+
+`AUTH_ENABLED: "false"` swaps the whole thing for a fixed identity (`DEV_USER_EMAIL`, or the
+first admin) so later phases can be built without signing in. Only the exact string `"false"`
+disables it, and the profile page shows a banner whenever it is off.
 
 ## Frontend structure
 
@@ -80,8 +132,10 @@ src/
   components/ui/            Vendored shadcn/ui — add via CLI, avoid hand-editing
   components/layout/        App shell, header, theme toggle, page header
   components/brand/         Logo lockups
+  features/auth/            login page, Google button, RequireAuth route guard
   features/users/           api.ts (query hooks), users-page, users-table, form, badges
-  lib/api-client.ts         fetch wrapper → ApiRequestError
+  lib/api-client.ts         fetch wrapper → ApiRequestError; broadcasts 401s
+  providers/auth-provider   Session lifecycle: config, sign-in, sign-out
   providers/theme-provider  Owns the single `dark` class on <html>
   hooks/                    Small reusable hooks
 ```
@@ -95,7 +149,13 @@ so the table, the filters and the dashboard counters all refresh from one source
 server-derived is mirrored into `useState`.
 
 `ApiRequestError` carries the API's `code` and `details`, which is what lets the form map a
-422 back onto individual fields and what lets the query client skip retries on 4xx.
+422 back onto individual fields, the login page give each sign-in failure its own next step,
+and the query client skip retries on 4xx.
+
+A 401 from *any* request — including one buried in a background refetch — dispatches a
+`tmi:unauthenticated` window event that `AuthProvider` listens for. That is how an expired
+session drops the whole app back to the login screen without every call site handling it.
+`RequireAuth` is a UX convenience only; the Worker is what actually enforces access.
 
 ## Why these choices
 
@@ -104,6 +164,9 @@ server-derived is mirrored into `useState`.
 - **D1** because it is the free-tier relational option and SQLite is a good fit for a roster of
   this size. Queries stay plain SQL — no ORM — because the schema is small and D1's batching
   and `RETURNING` support are easier to use directly.
+- **`jose`** for both Google token verification and session signing, rather than hand-rolling
+  JWT/JWKS on Web Crypto. Key rotation, algorithm confusion and claim validation are exactly
+  the places where hand-rolled crypto goes wrong.
 - **Tailwind v4 with CSS-first tokens** so theming is a stylesheet, not a JS config object, and
   so dark mode is a token swap rather than per-component variants.
 - **shadcn/ui** because the components are copied into the repo: they can be read and edited
@@ -111,5 +174,7 @@ server-derived is mirrored into `useState`.
 
 ## Deliberately absent
 
-No auth (phase 1 is intentionally public), no tests or CI yet, no ESLint/Prettier config, no
-rate limiting, no audit log. Add them when asked, not opportunistically.
+No authorization *within* the portal — any signed-in user can manage users; the plan puts
+role-based permissions with the Phase 2 data model. No tests or CI yet, no ESLint/Prettier
+config, no rate limiting on the sign-in route, no audit log. Add them when asked, not
+opportunistically.
