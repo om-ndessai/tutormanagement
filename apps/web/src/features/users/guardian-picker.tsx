@@ -159,7 +159,12 @@ export function GuardianPicker({
               Add a parent or guardian
             </span>
           </SelectTrigger>
-          <SelectContent>
+          {/*
+            Popper positioning, not the default item-aligned: this select has
+            no chosen value to align to, so item-aligned drops the list off the
+            bottom of the window and it cannot be clicked.
+          */}
+          <SelectContent position="popper" align="start">
             {candidates.map((candidate) => (
               <SelectItem key={candidate.id} value={candidate.id}>
                 {candidate.full_name}
