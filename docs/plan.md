@@ -28,6 +28,9 @@ Stuents must support following data: School. Currently enrolled math course/grad
 Parents: Support recording zelle or venmo id for requesting payment. A student must have atleast one parent relationship. Parent may or may not have a student assigned. 
 
 Phase 3:
+This phase is about building user audit. Each user activity needs to be recorded in a user audit system. This needs to have a timestamp, the userid and brief description of what action was performed. Within each profile, a run down of the activity should be visible. Admin should have ability to see the user activity within the entire system as well as for inidividual user.
+
+Phase 4:
 Portal enhancement for Tutors. This phase will make enhancements for tutors. Only admins can add another user. A parent must be created before a student can be created. And admin can assign student to tutors.
 
 A tutor will have a default hourly rate. The rate can be different for in person vs virtual. The system should also allow variable rate for each student/tutor relation. Admin, when assigning a student to the tutor can specify the hourly rate.
@@ -36,10 +39,10 @@ After each session, the tutor will record that session was held. Will specify th
 
 After the session details are saved, the amount for the session will be calculated and saved. This will drive the billables for the session and will help the admin to keep track of amount the tutor has earned.
 
-Phase 4: 
+Phase 5: 
 Payment enhancements. No actual payments will be made through the portal. Its only to keep track of what a tutor owns and let admin record when the payment was received from the parent and when the payment was made tot he tutor. The payments should allow recording date time, amount, for which student if the payment is coming from parent etc. Balances need to be supported for parents as well as tutors. The payment form need to be supported are venmo, zelle, cash, check. 
 
-Phase 5:
+Phase 6:
 This phase is about thourough end-to-end testing. For each testing session, wipe out the database and rebuild through automation testing. Iterate through to make changes to the data model, api, ui etc till the goals described in above phases are achieved.
 I want to use playwright for testing. Use the production site/url, DB for testing. Disable authentication during the testing. 
 The goal for this phase is to confirm end-to-end workflows for different types of users. Launch portal as a different type of user and validate. 
