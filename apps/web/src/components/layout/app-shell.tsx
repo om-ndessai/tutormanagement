@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboardIcon, MenuIcon, UserIcon, UsersIcon, XIcon } from 'lucide-react';
+import {
+  ActivityIcon,
+  LayoutDashboardIcon,
+  MenuIcon,
+  UserIcon,
+  UsersIcon,
+  XIcon,
+} from 'lucide-react';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
@@ -12,6 +19,7 @@ import { cn } from '@/lib/utils';
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false },
+  { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false },
 ];
 

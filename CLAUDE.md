@@ -110,6 +110,11 @@ always the live, re-checked user.
 an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
 identity, and it is the whole security boundary of sign-in.
 
+**Every action a user takes gets an audit event.** Adding a route that changes data means
+adding a `recordAudit` call and an entry in `AUDIT_ACTIONS` in `packages/shared/src/audit.ts`.
+The action name is `<entity>.<verb>`; the description is a finished sentence naming the person,
+because it is written once and never reconstructed. Never update or delete `audit_events` rows.
+
 **Every response uses the shared envelope**: `{ data }`, `{ data, meta }` for lists, or
 `{ error: { code, message, details? } }`. Throw `ApiError` from a handler rather than building
 an error response by hand.

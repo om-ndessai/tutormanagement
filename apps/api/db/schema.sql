@@ -29,6 +29,7 @@ DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
 
+DROP TABLE IF EXISTS audit_events;
 DROP TABLE IF EXISTS guardianships;
 DROP TABLE IF EXISTS availability_slots;
 DROP TABLE IF EXISTS payment_handles;
@@ -247,6 +248,53 @@ CREATE INDEX guardianships_dependent_idx ON guardianships (dependent_user_id);
 -- At most one primary guardian per dependent.
 CREATE UNIQUE INDEX guardianships_one_primary_idx
   ON guardianships (dependent_user_id) WHERE is_primary = 1;
+
+
+-- ---------------------------------------------------------------------------
+-- audit_events - who did what, and when
+-- ---------------------------------------------------------------------------
+-- An append-only activity log. Rows are never updated and never deleted by the
+-- application: an audit trail that can be edited is not an audit trail.
+--
+-- Note the two name columns. They are snapshots taken when the event is
+-- written, and they are the reason the foreign keys are ON DELETE SET NULL
+-- rather than CASCADE: purging a user must not erase the record of what they
+-- did, and the log still has to read sensibly afterwards.
+CREATE TABLE audit_events (
+  id              TEXT PRIMARY KEY,
+
+  -- Who performed the action. NULL once that user is purged.
+  actor_user_id   TEXT REFERENCES users (id) ON DELETE SET NULL,
+  actor_name      TEXT NOT NULL,
+
+  -- Who or what it was done to, when that differs from the actor. An admin
+  -- editing a tutor records the admin as actor and the tutor as subject, so
+  -- "activity for this user" can mean both what they did and what was done to
+  -- them.
+  subject_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+  subject_name    TEXT,
+
+  -- Machine-readable, always "<entity>.<verb>": user.created, auth.signed_in.
+  -- Grouped this way so the UI can filter by entity without a second column.
+  action          TEXT NOT NULL,
+
+  -- The brief, human-readable line the plan asks for. Written once, at the
+  -- moment of the action, because only the code performing it knows what it
+  -- meant -- reconstructing it later from ids would lose that.
+  description     TEXT NOT NULL,
+
+  -- The record acted upon, when it is not a user (an assignment, a session).
+  entity_type     TEXT,
+  entity_id       TEXT,
+
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- The three ways the log is read: newest-first overall, and newest-first for
+-- one person as either actor or subject.
+CREATE INDEX audit_events_recent_idx  ON audit_events (created_at DESC);
+CREATE INDEX audit_events_actor_idx   ON audit_events (actor_user_id, created_at DESC);
+CREATE INDEX audit_events_subject_idx ON audit_events (subject_user_id, created_at DESC);
 
 
 -- ---------------------------------------------------------------------------

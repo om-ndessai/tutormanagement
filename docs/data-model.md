@@ -150,6 +150,31 @@ a CHECK stops anyone being their own guardian.
 
 ---
 
+### `audit_events`
+
+Append-only activity log, added in Phase 3. Never updated, never deleted by the application
+— an audit trail that can be edited is not an audit trail.
+
+| Column | Notes |
+| --- | --- |
+| `actor_user_id` / `actor_name` | Who acted. The id goes NULL if they are purged; the **name is a snapshot** so the line still reads |
+| `subject_user_id` / `subject_name` | Who it was done to, when that differs from the actor |
+| `action` | Always `<entity>.<verb>`, e.g. `user.created`. Grouped so the UI can filter by entity without a second column |
+| `description` | The human-readable line, written at the moment of the action — only the code performing it knows what it meant |
+| `entity_type` / `entity_id` | The record acted upon when it is not a user |
+
+Two decisions worth keeping:
+
+**The foreign keys are `ON DELETE SET NULL`, not `CASCADE`.** Purging a user must not erase the
+record of what they did. That is the whole reason the name columns exist.
+
+**A person's feed matches them as actor *or* subject.** An admin editing your record is part of
+your activity, not just theirs, so `?user_id=` filters on both.
+
+Writes are best-effort: `recordAudit` swallows its own errors so a logging failure can never turn
+a successful action into a failed request. It is awaited rather than backgrounded, because both
+the UI and the Phase 6 tests read the log immediately after acting.
+
 ## What the database enforces, and what it cannot
 
 The schema carries every rule it is capable of carrying:

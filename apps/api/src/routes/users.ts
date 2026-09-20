@@ -14,6 +14,7 @@ import {
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
+import { describeChangedFields, recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
@@ -119,6 +120,14 @@ export const usersRoutes = new Hono<AppEnv>()
 
     await updateUserSections(c.env.DB, created.id, sections);
 
+    await recordAudit(c.env.DB, c.get('user'), {
+      action: 'user.created',
+      description: `Added ${created.full_name} as ${created.roles.join(' and ')}`,
+      subject: created,
+      entity_type: 'user',
+      entity_id: created.id,
+    });
+
     const detail = await getUserDetail(c.env.DB, created.id);
     const body: ApiOk<UserDetail> = { data: detail! };
     return c.json(body, 201);
@@ -171,6 +180,41 @@ export const usersRoutes = new Hono<AppEnv>()
 
       await updateUserSections(c.env.DB, id, sections);
 
+      const actor = c.get('user');
+
+      // Role changes get their own event: they change what somebody can do, so
+      // they should be findable without reading every "user.updated" line.
+      const rolesChanged =
+        fields.roles !== undefined &&
+        [...fields.roles].sort().join(',') !== [...existing.roles].sort().join(',');
+
+      if (rolesChanged) {
+        await recordAudit(c.env.DB, actor, {
+          action: 'user.roles_changed',
+          description: `Changed ${existing.full_name}'s roles to ${fields.roles!.join(' and ')}`,
+          subject: existing,
+          entity_type: 'user',
+          entity_id: id,
+        });
+      }
+
+      const touched = { ...fields, ...sections };
+      delete (touched as Record<string, unknown>).roles;
+
+      const changedKeys = Object.fromEntries(
+        Object.entries(touched).filter(([, value]) => value !== undefined),
+      );
+
+      if (Object.keys(changedKeys).length > 0) {
+        await recordAudit(c.env.DB, actor, {
+          action: 'user.updated',
+          description: `Updated ${existing.full_name}'s ${describeChangedFields(changedKeys)}`,
+          subject: existing,
+          entity_type: 'user',
+          entity_id: id,
+        });
+      }
+
       const detail = await getUserDetail(c.env.DB, id);
       const body: ApiOk<UserDetail> = { data: detail! };
       return c.json(body);
@@ -195,9 +239,21 @@ export const usersRoutes = new Hono<AppEnv>()
       }
 
       if (hard) {
+        // Read the name first: after the delete there is nothing left to name,
+        // and the log keeps a snapshot rather than a dangling id.
+        const doomed = await getUserById(c.env.DB, id);
+
         if (!(await purgeUser(c.env.DB, id))) {
           throw ApiError.notFound('That user does not exist.');
         }
+
+        await recordAudit(c.env.DB, c.get('user'), {
+          action: 'user.deleted',
+          description: `Permanently deleted ${doomed?.full_name ?? 'a user'}`,
+          entity_type: 'user',
+          entity_id: id,
+        });
+
         return c.body(null, 204);
       }
 
@@ -205,6 +261,14 @@ export const usersRoutes = new Hono<AppEnv>()
       if (!user) {
         throw ApiError.notFound('That user does not exist, or was already deactivated.');
       }
+
+      await recordAudit(c.env.DB, c.get('user'), {
+        action: 'user.deactivated',
+        description: `Deactivated ${user.full_name}`,
+        subject: user,
+        entity_type: 'user',
+        entity_id: id,
+      });
 
       const body: ApiOk<User> = { data: user };
       return c.json(body);
@@ -219,6 +283,14 @@ export const usersRoutes = new Hono<AppEnv>()
       if (!user) {
         throw ApiError.notFound('That user does not exist, or is already active.');
       }
+
+      await recordAudit(c.env.DB, c.get('user'), {
+        action: 'user.restored',
+        description: `Restored ${user.full_name}`,
+        subject: user,
+        entity_type: 'user',
+        entity_id: id,
+      });
 
       const body: ApiOk<User> = { data: user };
       return c.json(body);

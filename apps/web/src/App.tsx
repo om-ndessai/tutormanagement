@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppShell } from '@/components/layout/app-shell';
 import { LoginPage } from '@/features/auth/login-page';
 import { RequireAuth } from '@/features/auth/require-auth';
+import { ActivityPage } from '@/features/audit/activity-page';
 import { UsersPage } from '@/features/users/users-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { NotFoundPage } from '@/pages/not-found-page';
@@ -20,6 +21,7 @@ export function App() {
           <Route index element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="users" element={<UsersPage />} />
+          <Route path="activity" element={<ActivityPage />} />
           <Route path="dashboard" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -2,6 +2,7 @@ import {
   CalendarClockIcon,
   GraduationCapIcon,
   HeartHandshakeIcon,
+  HistoryIcon,
   MailIcon,
   MapPinIcon,
   PhoneIcon,
@@ -22,6 +23,8 @@ import {
 
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { useAuditEvents } from '@/features/audit/api';
+import { ActivityFeed } from '@/features/audit/activity-feed';
 import { DeletedBadge, RoleBadges, StatusBadge } from './user-badges';
 
 function initials(name: string) {
@@ -175,7 +178,35 @@ export function UserDetailView({ user }: { user: UserDetail }) {
           <PeopleList people={user.dependents} />
         </Section>
       )}
+
+      <RecentActivity userId={user.id} />
     </div>
+  );
+}
+
+/**
+ * The per-profile activity rundown. Shows what this person did AND what was
+ * done to them, which is why an admin editing your record appears in your
+ * feed.
+ *
+ * Renders nothing at all when there is no activity, so profiles created before
+ * auditing existed do not show an empty panel.
+ */
+function RecentActivity({ userId }: { userId: string }) {
+  const { data, isPending } = useAuditEvents({ user_id: userId, limit: 8 });
+
+  const events = data?.data ?? [];
+  if (!isPending && events.length === 0) return null;
+
+  return (
+    <Section title="Recent activity" icon={<HistoryIcon className="size-4" />}>
+      <ActivityFeed events={events} isLoading={isPending} />
+      {data && data.meta.total > events.length && (
+        <p className="text-muted-foreground mt-2 px-2 text-xs">
+          Showing the latest {events.length} of {data.meta.total} events.
+        </p>
+      )}
+    </Section>
   );
 }
 

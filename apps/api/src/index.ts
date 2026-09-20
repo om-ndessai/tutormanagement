@@ -6,6 +6,7 @@ import { isProduction, type AppEnv } from './types.js';
 import { onError, onNotFound } from './middleware/error.js';
 import { requireAuth } from './middleware/auth.js';
 import { authRoutes } from './routes/auth.js';
+import { auditRoutes } from './routes/audit.js';
 import { usersRoutes } from './routes/users.js';
 
 const app = new Hono<AppEnv>();
@@ -69,7 +70,8 @@ const publicRoutes = new Hono<AppEnv>()
  */
 const guardedRoutes = new Hono<AppEnv>()
   .use('*', requireAuth)
-  .route('/users', usersRoutes);
+  .route('/users', usersRoutes)
+  .route('/audit', auditRoutes);
 
 const api = new Hono<AppEnv>().route('/', publicRoutes).route('/', guardedRoutes);
 

@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { getCookie } from 'hono/cookie';
 import {
   googleSignInSchema,
   type ApiOk,
@@ -6,11 +7,14 @@ import {
   type SessionResponse,
 } from '@tmi/shared';
 
+import { recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { verifyGoogleIdToken, type GoogleIdentity } from '../lib/google.js';
 import {
+  SESSION_COOKIE,
   clearedSessionCookie,
   createSessionToken,
+  readSessionToken,
   sessionCookie,
 } from '../lib/session.js';
 import { zValidator } from '../lib/validate.js';
@@ -19,6 +23,7 @@ import {
   countAdmins,
   createBootstrapAdmin,
   getLiveUserByEmail,
+  getLiveUserById,
   recordSignIn,
 } from '../repositories/users.js';
 import { isAuthEnabled, isProduction, type AppEnv, type Env } from '../types.js';
@@ -93,6 +98,13 @@ export const authRoutes = new Hono<AppEnv>()
       }
     }
 
+    await recordAudit(c.env.DB, user, {
+      action: 'auth.signed_in',
+      description: `${user.full_name} signed in with Google`,
+      entity_type: 'user',
+      entity_id: user.id,
+    });
+
     const token = await createSessionToken(user.id, c.env.SESSION_SECRET);
     c.header('Set-Cookie', sessionCookie(token, isProduction(c.env)));
 
@@ -108,7 +120,28 @@ export const authRoutes = new Hono<AppEnv>()
     return c.json(body);
   })
 
-  .post('/logout', (c) => {
+  .post('/logout', async (c) => {
+    // The cookie is cleared regardless; the log entry is best-effort and only
+    // possible when we can still tell who was signed in.
+    const token = getCookie(c, SESSION_COOKIE);
+
+    if (token) {
+      try {
+        const { sub } = await readSessionToken(token, c.env.SESSION_SECRET);
+        const user = await getLiveUserById(c.env.DB, sub);
+        if (user) {
+          await recordAudit(c.env.DB, user, {
+            action: 'auth.signed_out',
+            description: `${user.full_name} signed out`,
+            entity_type: 'user',
+            entity_id: user.id,
+          });
+        }
+      } catch {
+        // An expired or forged cookie simply produces no log entry.
+      }
+    }
+
     c.header('Set-Cookie', clearedSessionCookie(isProduction(c.env)));
     return c.body(null, 204);
   });
@@ -132,6 +165,11 @@ async function bootstrapOrReject(env: Env, identity: GoogleIdentity) {
       google_sub: identity.sub,
     });
   }
+
+  await recordAudit(env.DB, null, {
+    action: 'auth.denied',
+    description: `Sign-in refused for ${identity.email}: no portal account`,
+  });
 
   throw new ApiError(
     403,
