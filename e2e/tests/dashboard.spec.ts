@@ -66,8 +66,12 @@ test.describe('dashboards', () => {
     await expect(admin.getByText('Your students')).toBeVisible();
 
     // A tutor asking for somebody else's dashboard is refused by the API.
+    //
+    // The id is looked up through the ADMIN's context on purpose: role scoping
+    // means a tutor cannot see an admin at all, so resolving it as the tutor
+    // would fail for the wrong reason and hide what this test is checking.
+    const adminId = await idOf(admin, PEOPLE.admin.email);
     const tutor = await as('tutor');
-    const adminId = await idOf(tutor, PEOPLE.admin.email);
     const refused = await tutor.request.get(`/api/dashboard?user_id=${adminId}`);
     expect(refused.status()).toBe(403);
   });

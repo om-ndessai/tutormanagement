@@ -138,6 +138,14 @@ app-specific components belong in `components/` or `features/`.
 query hooks, table, form and badges. Follow that shape for the next feature rather than
 splitting by file type.
 
+**Two rounding rules, deliberately different.** `roundToQuarterHour` rounds a DURATION, for a
+session typed in afterwards. `roundClockToQuarter` snaps a wall-clock ENDPOINT, for the live
+timer. Do not collapse them — the plan specifies each separately.
+
+**Exports and calendar files are plain links, not fetches.** The session cookie goes along and
+the browser names the file from `Content-Disposition`. `lib/csv.ts` neutralises formula-leading
+characters and writes a BOM; do not hand-roll a CSV writer next to it.
+
 ## End-to-end tests
 
 `npm run e2e` deploys and tests `tmi-portal-test`, a separate Worker with its own database

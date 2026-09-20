@@ -16,6 +16,10 @@ Roadmap lives in [docs/plan.md](docs/plan.md).
 - **Phase 4 (done):** tutor rates, student assignments, and session recording with billing.
 - **Phase 5 (done):** payment tracking and balances for tutors and families.
 - **Phase 6 (done):** Playwright end-to-end tests against a separate test deployment.
+- **Phase 7 (done):** a live session timer — start, teach, stop, priced automatically.
+- **Phase 8 (done):** role-shaped dashboards, with admin "view as another user".
+- **Phase 9 (done):** recurring weekly schedules, downloadable as calendar invites.
+- **Phase 10 (done):** CSV export of the session log and payment ledger.
 
 ## Stack
 
@@ -75,6 +79,7 @@ npm run db:studio      # dump the users table
 npm run deploy         # build the SPA, then wrangler deploy (production)
 npm run deploy:test    # deploy the test Worker (tmi-portal-test)
 npm run e2e            # deploy + rebuild the TEST database + run the suite
+npm run e2e:test       # run the suite only, against E2E_BASE_URL
 ```
 
 ## First deploy
