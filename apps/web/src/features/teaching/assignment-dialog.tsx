@@ -26,15 +26,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useUsers } from '@/features/users/api';
+import { useUserDetail, useUsers } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
 import { useCreateAssignment, useUpdateAssignment } from './api';
 
 /**
  * "Admin, when assigning a student to the tutor can specify the hourly rate."
  *
- * Both rate fields are optional. Left blank, the tutor's own default applies,
- * so the common case needs no thought and the exception is one number.
+ * Choosing a tutor fills both rate fields with that tutor's current defaults,
+ * so the admin can see what this pairing will cost without leaving the dialog,
+ * and adjust from a real number rather than from nothing.
+ *
+ * Note what this means: a filled field is an OVERRIDE stored on the assignment,
+ * so the rate is captured as of the moment the pairing was made and a later
+ * change to the tutor's default will not move it. Clearing a field restores the
+ * inherit-from-tutor behaviour.
  */
 export function AssignmentDialog({
   open,
@@ -54,6 +60,10 @@ export function AssignmentDialog({
   const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Which tutor's defaults have already been written into the fields. Guards
+  // the prefill so it happens once per choice and never overwrites typing.
+  const [prefilledFor, setPrefilledFor] = useState<string | null>(null);
+
   const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' });
   const students = useUsers({ role: 'student', limit: 100, sort: 'full_name' });
 
@@ -69,9 +79,41 @@ export function AssignmentDialog({
     setInPerson(centsToInput(existing?.rate_in_person_cents));
     setVirtual(centsToInput(existing?.rate_virtual_cents));
     setNotes(existing?.notes ?? '');
+    // An existing assignment already carries its own rates; only a new pairing
+    // takes them from the tutor.
+    setPrefilledFor(existing ? existing.tutor_user_id : null);
   }, [open, existing]);
 
   const selectedTutor = tutors.data?.data.find((candidate) => candidate.id === tutorId);
+
+  // The list rows carry no rates, so the chosen tutor's profile is fetched for
+  // them. Skipped while editing, where the assignment's own rates win.
+  const tutorDetail = useUserDetail(!isEdit && tutorId ? tutorId : null);
+  const tutorDefaults = tutorDetail.data?.data.tutor_profile ?? null;
+
+  useEffect(() => {
+    if (isEdit || !tutorId || !tutorDefaults || prefilledFor === tutorId) return;
+
+    setInPerson(centsToInput(tutorDefaults.default_rate_in_person_cents));
+    setVirtual(centsToInput(tutorDefaults.default_rate_virtual_cents));
+    setPrefilledFor(tutorId);
+  }, [isEdit, tutorId, tutorDefaults, prefilledFor]);
+
+  // Both fields say the same thing, so the wording stays short enough to read
+  // twice. Once a tutor is chosen the fields hold real numbers, and the useful
+  // fact becomes what clearing one does -- or, if the tutor has no rate at all,
+  // that this pairing cannot record a session until one is set somewhere.
+  const hasAnyDefault =
+    tutorDefaults != null &&
+    (tutorDefaults.default_rate_in_person_cents != null ||
+      tutorDefaults.default_rate_virtual_cents != null);
+
+  const rateHint =
+    isEdit || !selectedTutor
+      ? "Blank uses the tutor's default."
+      : hasAnyDefault
+        ? `From ${selectedTutor.full_name}'s profile. Clear to follow their default instead.`
+        : `${selectedTutor.full_name} has no default rate — set one here, or sessions cannot be priced.`;
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -170,20 +212,19 @@ export function AssignmentDialog({
                 id="rate_ip"
                 label="In-person rate"
                 error={errors.rate_in_person_cents}
-                hint="Blank uses the tutor's default."
+                hint={rateHint}
               >
                 <Input
                   id="rate_ip"
                   inputMode="decimal"
                   value={inPerson}
                   onChange={(event) => setInPerson(event.target.value)}
-                  placeholder={
+                  placeholder={fallbackHint(
                     existing
-                      ? formatCents(existing.effective_rate_in_person_cents)
-                      : selectedTutor
-                        ? 'default'
-                        : '75.00'
-                  }
+                      ? existing.effective_rate_in_person_cents
+                      : (tutorDefaults?.default_rate_in_person_cents ?? null),
+                    '75.00',
+                  )}
                 />
               </Field>
 
@@ -191,16 +232,19 @@ export function AssignmentDialog({
                 id="rate_v"
                 label="Virtual rate"
                 error={errors.rate_virtual_cents}
-                hint="Blank uses the tutor's default."
+                hint={rateHint}
               >
                 <Input
                   id="rate_v"
                   inputMode="decimal"
                   value={virtual}
                   onChange={(event) => setVirtual(event.target.value)}
-                  placeholder={
-                    existing ? formatCents(existing.effective_rate_virtual_cents) : '65.00'
-                  }
+                  placeholder={fallbackHint(
+                    existing
+                      ? existing.effective_rate_virtual_cents
+                      : (tutorDefaults?.default_rate_virtual_cents ?? null),
+                    '65.00',
+                  )}
                 />
               </Field>
             </div>
@@ -228,6 +272,12 @@ export function AssignmentDialog({
       </DialogContent>
     </Dialog>
   );
+}
+
+/** What a cleared field will fall back to, named rather than implied. */
+function fallbackHint(fallbackCents: number | null, example: string): string {
+  if (fallbackCents == null) return example;
+  return `${formatCents(fallbackCents)} (default)`;
 }
 
 function Field({
