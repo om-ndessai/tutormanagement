@@ -10,10 +10,10 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phase 1 (done): Google sign-in.** Every `/api` route except `/api/health` and `/api/auth/*`
-requires a verified Google identity — *when it is switched on*. It currently is **not**:
-`AUTH_ENABLED` is `"false"` by choice, so the deployed portal is open to anyone with the URL.
-Do not "fix" that without being asked; do not add features that assume a real signed-in user.
+**Phase 1 (done): Google sign-in.** It is the only way in — every `/api` route except
+`/api/health` and `/api/auth/*` requires a verified Google identity. `AUTH_ENABLED` is `"true"`
+in the committed config; flipping it to `"false"` is a local convenience, not something to
+deploy.
 
 **Phase 2 (done): the data model.** Admins, tutors, students and parents, where one person can
 hold several roles at once. Read `docs/data-model.md` before touching the schema — it explains

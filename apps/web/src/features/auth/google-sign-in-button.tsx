@@ -38,6 +38,26 @@ declare global {
   }
 }
 
+const BUTTON_WIDTH = 320;
+
+/**
+ * Google draws this button inside its own iframe, so it cannot be styled with
+ * our tokens -- only their documented options apply. `filled_blue` would fight
+ * the brand purple, so the button stays neutral and lets the page carry the
+ * colour: a black pill on light backgrounds, a white one on dark.
+ */
+function renderInto(container: HTMLElement, theme: 'light' | 'dark') {
+  window.google?.accounts.id.renderButton(container, {
+    type: 'standard',
+    theme: theme === 'dark' ? 'outline' : 'filled_black',
+    size: 'large',
+    text: 'continue_with',
+    shape: 'pill',
+    logo_alignment: 'left',
+    width: BUTTON_WIDTH,
+  });
+}
+
 /** Loads the GIS script once per page, even if several components ask for it. */
 let scriptPromise: Promise<void> | null = null;
 
@@ -85,6 +105,13 @@ export function GoogleSignInButton({
   const containerRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<'loading' | 'ready' | 'failed'>('loading');
 
+  // Google's button ignores the page theme, so it is redrawn whenever ours
+  // flips. The ref lets the very first draw use the current theme without
+  // making the loader re-run every time the theme changes.
+  const { resolvedTheme } = useTheme();
+  const themeRef = useRef(resolvedTheme);
+  themeRef.current = resolvedTheme;
+
   // Google invokes the callback it was given at initialize() time, so keep a
   // ref to the latest handler instead of re-initializing on every render.
   const handlerRef = useRef(onCredential);
@@ -106,16 +133,7 @@ export function GoogleSignInButton({
           cancel_on_tap_outside: true,
         });
 
-        window.google.accounts.id.renderButton(containerRef.current, {
-          type: 'standard',
-          theme: 'outline',
-          size: 'large',
-          text: 'continue_with',
-          shape: 'rectangular',
-          logo_alignment: 'center',
-          width: 320,
-        });
-
+        renderInto(containerRef.current, themeRef.current);
         setState('ready');
       })
       .catch(() => {
@@ -127,23 +145,11 @@ export function GoogleSignInButton({
     };
   }, [clientId]);
 
-  // Google's button ignores the page theme; re-render it when ours flips so the
-  // two do not clash.
-  const { resolvedTheme } = useTheme();
-
   useEffect(() => {
-    if (state !== 'ready' || !containerRef.current || !window.google) return;
+    if (state !== 'ready' || !containerRef.current) return;
 
     containerRef.current.replaceChildren();
-    window.google.accounts.id.renderButton(containerRef.current, {
-      type: 'standard',
-      theme: resolvedTheme === 'dark' ? 'filled_black' : 'outline',
-      size: 'large',
-      text: 'continue_with',
-      shape: 'rectangular',
-      logo_alignment: 'center',
-      width: 320,
-    });
+    renderInto(containerRef.current, resolvedTheme);
   }, [resolvedTheme, state]);
 
   if (state === 'failed') {
@@ -156,7 +162,7 @@ export function GoogleSignInButton({
 
   return (
     <div className="flex min-h-11 justify-center">
-      {state === 'loading' && <Skeleton className="h-11 w-[320px] rounded-md" />}
+      {state === 'loading' && <Skeleton className="h-11 w-[320px] rounded-full" />}
       <div
         ref={containerRef}
         // Google's iframe ignores pointer-events styling, so a pending sign-in

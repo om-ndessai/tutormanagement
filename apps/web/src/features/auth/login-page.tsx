@@ -3,9 +3,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { AlertTriangleIcon, Loader2Icon, SettingsIcon } from 'lucide-react';
 import { AUTH_ERROR_CODES } from '@tmi/shared';
 
-import { LogoFull } from '@/components/brand/logo';
+import { LogoFull, LogoMark } from '@/components/brand/logo';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
-import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/providers/auth-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
 
@@ -41,62 +40,101 @@ export function LoginPage() {
   const needsSetup = status !== 'loading' && isPlaceholderClientId(clientId);
 
   return (
-    <div className="bg-background flex min-h-dvh flex-col">
-      <div className="flex justify-end p-4">
-        <ThemeToggle />
-      </div>
+    <div className="bg-background min-h-dvh lg:grid lg:grid-cols-[1.05fr_1fr]">
+      {/*
+        The brand panel carries the purple so the sign-in side can stay calm.
+        Google renders its own button and will not take our colours, so putting
+        the brand next to it reads better than trying to fight it.
+      */}
+      <aside className="brand-gradient relative hidden overflow-hidden p-12 text-white lg:flex lg:flex-col lg:justify-between">
+        {/*
+          Watermark keeps the logo's own shading: knocking it out to white
+          flattens the Penrose illusion into a plain triangle.
+        */}
+        <LogoMark
+          className="pointer-events-none absolute -right-24 -bottom-28 size-[30rem] opacity-[0.14]"
+          aria-hidden
+        />
+        {/* Soft highlight so the flat gradient has some depth. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-32 -left-24 size-96 rounded-full bg-white/15 blur-3xl"
+        />
 
-      <div className="flex flex-1 items-start justify-center px-4 pb-24">
-        <div className="w-full max-w-md">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <LogoFull className="h-20 w-auto" />
-            <p className="text-muted-foreground font-display mt-4 text-sm">
-              Exploring the fun of Math
-            </p>
-          </div>
+        <LogoMark className="relative size-11 brightness-0 invert drop-shadow-sm" />
 
-          <Card>
-            <CardContent className="flex flex-col items-center gap-6 py-2">
-              <div className="text-center">
-                <h1 className="text-lg font-semibold">Staff portal</h1>
-                <p className="text-muted-foreground mt-1 text-sm">
-                  Sign in with the Google account your administrator added.
-                </p>
-              </div>
+        <div className="relative max-w-md">
+          <h1 className="font-display text-4xl leading-tight font-semibold text-white">
+            Exploring the fun of Math
+          </h1>
+          <p className="mt-4 text-sm leading-relaxed text-white/80">
+            Small classes, advanced-degree instructors, and a curriculum built around problem
+            solving — for grades 1 through 12, in person and online.
+          </p>
+        </div>
 
-              {error && <SignInError code={error.code} message={error.message} />}
+        <p className="relative text-xs text-white/70">
+          Mathematics Institute of the Triangle · Chapel Hill, North Carolina
+        </p>
+      </aside>
 
-              {status === 'loading' && (
-                <p className="text-muted-foreground flex items-center gap-2 py-3 text-sm">
-                  <Loader2Icon className="size-4 animate-spin" />
-                  Loading…
-                </p>
-              )}
+      <main className="flex min-h-dvh flex-col">
+        <div className="flex justify-end p-4">
+          <ThemeToggle />
+        </div>
 
-              {needsSetup && <SetupNotice />}
+        <div className="flex flex-1 items-center justify-center px-6 pb-20">
+          <div className="w-full max-w-sm">
+            {/* The wordmark stands in for the brand panel on narrow screens. */}
+            <div className="mb-10 flex justify-center lg:hidden">
+              <LogoFull className="h-16 w-auto" />
+            </div>
 
-              {status !== 'loading' && !needsSetup && clientId && (
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold tracking-tight">Staff portal</h2>
+              <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                Sign in with the Google account your administrator added.
+              </p>
+            </div>
+
+            {error && <SignInError code={error.code} message={error.message} />}
+
+            {status === 'loading' && (
+              <p className="text-muted-foreground flex items-center gap-2 py-3 text-sm">
+                <Loader2Icon className="size-4 animate-spin" />
+                Loading…
+              </p>
+            )}
+
+            {needsSetup && <SetupNotice />}
+
+            {status !== 'loading' && !needsSetup && clientId && (
+              <>
                 <GoogleSignInButton
                   clientId={clientId}
                   onCredential={handleCredential}
                   disabled={submitting}
                 />
-              )}
 
-              {submitting && (
-                <p className="text-muted-foreground flex items-center gap-2 text-sm">
-                  <Loader2Icon className="size-4 animate-spin" />
-                  Signing you in…
-                </p>
-              )}
-            </CardContent>
-          </Card>
+                <div className="mt-4 flex min-h-5 justify-center">
+                  {submitting && (
+                    <p className="text-muted-foreground flex items-center gap-2 text-sm">
+                      <Loader2Icon className="size-4 animate-spin" />
+                      Signing you in…
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
 
-          <p className="text-muted-foreground mt-6 text-center text-xs">
-            Mathematics Institute of the Triangle
-          </p>
+            <p className="text-muted-foreground mt-10 border-t pt-6 text-center text-xs leading-relaxed">
+              Accounts are created by an administrator.
+              <br />
+              No portal account yet? Ask them to add your Google address.
+            </p>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
@@ -119,7 +157,7 @@ function SignInError({ code, message }: { code: string; message: string }) {
   return (
     <div
       role="alert"
-      className="border-destructive/40 bg-destructive/5 w-full rounded-md border p-3"
+      className="border-destructive/40 bg-destructive/5 mb-6 rounded-lg border p-3.5"
     >
       <p className="text-destructive flex items-start gap-2 text-sm font-medium">
         <AlertTriangleIcon className="mt-0.5 size-4 shrink-0" />
@@ -132,12 +170,12 @@ function SignInError({ code, message }: { code: string; message: string }) {
 
 function SetupNotice() {
   return (
-    <div className="border-warning/40 bg-warning/10 w-full rounded-md border p-3">
+    <div className="border-warning/40 bg-warning/10 rounded-lg border p-3.5">
       <p className="flex items-start gap-2 text-sm font-medium">
         <SettingsIcon className="mt-0.5 size-4 shrink-0" />
         Google sign-in is not configured yet
       </p>
-      <p className="text-muted-foreground mt-2 pl-6 text-xs">
+      <p className="text-muted-foreground mt-2 pl-6 text-xs leading-relaxed">
         Set <code className="font-mono">GOOGLE_CLIENT_ID</code> in{' '}
         <code className="font-mono">apps/api/wrangler.jsonc</code>. See{' '}
         <code className="font-mono">docs/google-oauth-setup.md</code> for the steps.

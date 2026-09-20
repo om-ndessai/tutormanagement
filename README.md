@@ -9,11 +9,6 @@ Roadmap lives in [docs/plan.md](docs/plan.md).
 
 - **Phase 1 (done):** Google sign-in. The only way in, and every API route that serves portal
   data requires a verified Google identity.
-> **Authentication is currently switched OFF.** Google sign-in works and is fully built, but
-> `AUTH_ENABLED` is `"false"` so later phases can be built without signing in each time. The
-> deployed portal is reachable by anyone with the URL. Set `AUTH_ENABLED` to `"true"` in
-> `apps/api/wrangler.jsonc` to turn it back on — nothing else needs to change.
-
 - **Phase 2 (done):** the data model — admins, tutors, students and parents, where one person
   can hold several roles at once, with role profiles, availability, payment handles and
   parent/guardian relationships. See [docs/data-model.md](docs/data-model.md).
@@ -48,9 +43,10 @@ relative URLs it will use in production.
 [docs/google-oauth-setup.md](docs/google-oauth-setup.md) — it covers the Google Cloud side, the
 two config values, and bootstrapping the first admin.
 
-Sign-in is currently disabled (`AUTH_ENABLED: "false"`), so the app runs without it. While it
-is off, every request runs as `DEV_USER_EMAIL`, or the first admin if that is empty. Set it to
-a non-admin to exercise the authorization paths.
+To work on the app without signing in every time, set `"AUTH_ENABLED": "false"` in
+`apps/api/wrangler.jsonc`. Every request then runs as `DEV_USER_EMAIL`, or the first admin if
+that is empty — set it to a non-admin to exercise the authorization paths. That setting makes
+the portal public, so keep it out of deploys.
 
 ## Layout
 
