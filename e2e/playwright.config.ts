@@ -1,15 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Per docs/plan.md, the suite drives the DEPLOYED portal rather than a local
- * dev server: the bugs this project has actually hit -- a stale production
- * schema, dev-mode CORS shipped to production -- only exist once something is
- * deployed, and a local run would never see them.
+ * The suite drives a DEPLOYED portal rather than a local dev server: the bugs
+ * this project has actually hit -- a stale remote schema, dev-mode CORS
+ * shipped live, an unset secret -- only exist once something is deployed, and
+ * a local run would never see them.
  *
- * `npm run e2e` from the repo root wipes and rebuilds the remote database,
- * deploys with authentication off, runs this suite, then restores auth.
+ * The target is the dedicated test Worker, which has its own D1 database and
+ * runs with authentication permanently off. Production is never touched.
+ * `npm run e2e` deploys it, rebuilds its database and runs this suite.
  */
-const baseURL = process.env.E2E_BASE_URL ?? 'https://tmi-portal.om-ndessai.workers.dev';
+const baseURL = process.env.E2E_BASE_URL ?? 'https://tmi-portal-test.om-ndessai.workers.dev';
 
 export default defineConfig({
   testDir: './tests',

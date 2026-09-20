@@ -376,7 +376,12 @@ CREATE TABLE payments (
   -- parent, because a student may have two guardians and either may pay.
   -- Required for from_parent (see the CHECK below) so every family payment
   -- lands against exactly one balance; meaningless for to_tutor.
-  student_user_id     TEXT REFERENCES users (id) ON DELETE SET NULL,
+  --
+  -- CASCADE, not SET NULL: nulling this on a purge would leave a from_parent
+  -- row violating that CHECK, and the delete would fail outright. A payment
+  -- "for Sofia" also means nothing once Sofia is gone. Matches how
+  -- sessions.student_user_id behaves.
+  student_user_id     TEXT REFERENCES users (id) ON DELETE CASCADE,
 
   amount_cents        INTEGER NOT NULL CHECK (amount_cents > 0),
 

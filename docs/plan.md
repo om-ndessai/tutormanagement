@@ -44,6 +44,6 @@ Payment enhancements. No actual payments will be made through the portal. Its on
 
 Phase 6:
 This phase is about thourough end-to-end testing. For each testing session, wipe out the database and rebuild through automation testing. Iterate through to make changes to the data model, api, ui etc till the goals described in above phases are achieved.
-I want to use playwright for testing. Use the production site/url, DB for testing. Disable authentication during the testing. 
+I want to use playwright for testing. Use a dedicated test deployment with its own database - tmi-portal-test, backed by tmi-portal-test-db - and never production. Authentication is permanently disabled on that test deployment, which is what lets the suite launch the portal as each type of user. Production keeps its own database and stays authenticated. 
 The goal for this phase is to confirm end-to-end workflows for different types of users. Launch portal as a different type of user and validate. 
 

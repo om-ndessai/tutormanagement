@@ -140,9 +140,13 @@ splitting by file type.
 
 ## End-to-end tests
 
-`E2E_YES=1 npm run e2e` drives the DEPLOYED portal and **destroys the production database**.
-Read `docs/testing.md` before running it. `npm run e2e:test` runs the suite without deploying
-or wiping anything, against `E2E_BASE_URL`.
+`npm run e2e` deploys and tests `tmi-portal-test`, a separate Worker with its own database
+(`tmi-portal-test-db`) and authentication permanently off. It wipes that database every run.
+**It never touches production.** `npm run e2e:test` runs the suite without deploying or wiping.
+
+The test environment is a named `env` in `apps/api/wrangler.jsonc`. Named environments do not
+inherit `assets`, `d1_databases` or `vars`, so all of them are restated there — deliberately,
+so this environment cannot reach production's database. Do not "tidy" that duplication away.
 
 The suite acts as different people with an `X-Dev-User` header, honoured only while
 `AUTH_ENABLED` is `"false"`. Set it on the browser context, never per request — two values

@@ -27,7 +27,8 @@
     "deploy": "npm run build && npm run deploy --workspace @tmi/api",
     "e2e": "bash scripts/e2e.sh",
     "e2e:test": "npm run test --workspace @tmi/e2e",
-    "e2e:report": "npm run report --workspace @tmi/e2e"
+    "e2e:report": "npm run report --workspace @tmi/e2e",
+    "deploy:test": "npm run build && npm run deploy:test --workspace @tmi/api"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

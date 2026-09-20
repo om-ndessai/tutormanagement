@@ -15,7 +15,7 @@ Roadmap lives in [docs/plan.md](docs/plan.md).
 - **Phase 3 (done):** an append-only audit log of every action.
 - **Phase 4 (done):** tutor rates, student assignments, and session recording with billing.
 - **Phase 5 (done):** payment tracking and balances for tutors and families.
-- **Phase 6 (done):** Playwright end-to-end tests driving the deployed portal.
+- **Phase 6 (done):** Playwright end-to-end tests against a separate test deployment.
 
 ## Stack
 
@@ -72,7 +72,9 @@ npm run db:rebuild     # DROP and recreate local tables from apps/api/db/schema.
 npm run db:seed        # reload sample data into local D1
 npm run db:reset       # rebuild + seed
 npm run db:studio      # dump the users table
-npm run deploy         # build the SPA, then wrangler deploy
+npm run deploy         # build the SPA, then wrangler deploy (production)
+npm run deploy:test    # deploy the test Worker (tmi-portal-test)
+npm run e2e            # deploy + rebuild the TEST database + run the suite
 ```
 
 ## First deploy
@@ -94,7 +96,7 @@ share one origin and one domain.
 ## Documentation
 
 - [docs/plan.md](docs/plan.md) — the phased roadmap
-- [docs/testing.md](docs/testing.md) — the end-to-end suite, and what running it destroys
+- [docs/testing.md](docs/testing.md) — the end-to-end suite and the test deployment it drives
 - [docs/data-model.md](docs/data-model.md) — the Phase 2 model: why each table exists, and which rules the database cannot enforce
 - [docs/architecture.md](docs/architecture.md) — how the pieces fit, request flow, conventions
 - [docs/google-oauth-setup.md](docs/google-oauth-setup.md) — creating the Google client ID, secrets, first admin
