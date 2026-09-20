@@ -76,3 +76,44 @@ test.describe('dashboards', () => {
     expect(refused.status()).toBe(403);
   });
 });
+
+/**
+ * The "view as" control is a searchable combobox rather than a plain select:
+ * with a full roster a dropdown cannot be scrolled to the person you want.
+ */
+test.describe('viewing another dashboard', () => {
+  test('an admin can search for a user and open their dashboard', async ({ as }) => {
+    const page = await as('admin');
+    await page.goto('/');
+
+    await page.getByLabel('View dashboard as').click();
+    await page.getByPlaceholder('Search by name or email').fill('lindqvist');
+
+    // Searching hits the API, so the match need not be on the first page of
+    // the directory -- which is the whole point of replacing the select.
+    const match = page.locator('[cmdk-item]', { hasText: 'Johan Lindqvist' });
+    await expect(match).toBeVisible();
+
+    // Each row says what kind of user it is.
+    await expect(match).toContainText('Tutor');
+
+    await match.click();
+
+    await expect(page.getByText('Viewing as Johan Lindqvist')).toBeVisible();
+    expect(new URL(page.url()).searchParams.get('as')).toBeTruthy();
+  });
+
+  test('searching by email works too, and clears back to your own', async ({ as }) => {
+    const page = await as('admin');
+    await page.goto('/');
+
+    await page.getByLabel('View dashboard as').click();
+    await page.getByPlaceholder('Search by name or email').fill(PEOPLE.student.email);
+    await page.locator('[cmdk-item]', { hasText: PEOPLE.student.name }).click();
+
+    await expect(page.getByText(`Viewing as ${PEOPLE.student.name}`)).toBeVisible();
+
+    await page.getByRole('button', { name: 'Back to mine' }).click();
+    await expect(page.getByText('Viewing as')).toHaveCount(0);
+  });
+});

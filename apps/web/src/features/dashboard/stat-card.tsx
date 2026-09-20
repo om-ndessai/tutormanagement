@@ -23,6 +23,12 @@ export function StatCard({
   value,
   /** Renders `value` as money rather than a plain count. */
   money,
+  /**
+   * Formats the settled number instead of printing it plainly. For values that
+   * are not really counts -- minutes, say -- rounding to a whole unit states
+   * something untrue.
+   */
+  formatValue,
   icon: Icon,
   to,
   hint,
@@ -32,6 +38,7 @@ export function StatCard({
   label: string;
   value: number | undefined;
   money?: boolean;
+  formatValue?: (value: number) => string;
   icon: ComponentType<{ className?: string }>;
   /** Makes the whole card a link. "The cards should be clickable." */
   to?: string;
@@ -40,7 +47,12 @@ export function StatCard({
   index?: number;
 }) {
   const settled = useCountUp(value ?? 0);
-  const display = value === undefined ? '—' : money ? formatCents(settled) : String(settled);
+  const display =
+    value === undefined
+      ? '—'
+      : money
+        ? formatCents(settled)
+        : (formatValue?.(settled) ?? String(settled));
 
   const toneClass = {
     default: '',

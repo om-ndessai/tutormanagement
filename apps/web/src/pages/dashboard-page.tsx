@@ -12,9 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useUsers } from '@/features/users/api';
 import { useAuth } from '@/providers/auth-provider';
 import { useDashboard } from '@/features/dashboard/api';
+import { UserPicker } from '@/features/dashboard/user-picker';
+import { RoleIcons } from '@/features/users/role-icon';
 import {
   AdminView,
   ParentView,
@@ -41,9 +42,6 @@ export function DashboardPage() {
     ...(requestedRole ? { role: requestedRole } : {}),
     ...(viewingId ? { userId: viewingId } : {}),
   });
-
-  // Only loaded for admins, who are the only ones who may look at anyone else.
-  const { data: usersData } = useUsers(isAdmin ? { limit: 100, sort: 'full_name' } : { limit: 1 });
 
   const response = data?.data;
   const subject = response?.subject;
@@ -91,27 +89,16 @@ export function DashboardPage() {
             )}
 
             {isAdmin && (
-              <Select
-                value={viewingId ?? 'me'}
-                onValueChange={(value) => setParam('as', value === 'me' ? null : value)}
-              >
-                <SelectTrigger className="w-full sm:w-56" aria-label="View dashboard as">
-                  <span className="flex min-w-0 items-center gap-2">
-                    <EyeIcon className="size-4 shrink-0" />
-                    <SelectValue />
-                  </span>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="me">My own dashboard</SelectItem>
-                  {(usersData?.data ?? [])
-                    .filter((candidate) => candidate.id !== user?.id)
-                    .map((candidate) => (
-                      <SelectItem key={candidate.id} value={candidate.id}>
-                        {candidate.full_name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
+              <UserPicker
+                value={viewingId ?? null}
+                onChange={(next) => setParam('as', next)}
+                currentUserId={user?.id}
+                selected={
+                  subject?.viewing_as_other
+                    ? { full_name: subject.full_name, roles: subject.roles }
+                    : null
+                }
+              />
             )}
           </div>
         }
@@ -120,6 +107,7 @@ export function DashboardPage() {
       {subject?.viewing_as_other && (
         <div className="border-primary/30 bg-primary/10 mb-6 flex flex-wrap items-center gap-3 rounded-lg border px-4 py-2.5">
           <EyeIcon className="size-4 shrink-0" />
+          <RoleIcons roles={subject.roles} size="md" />
           <p className="min-w-0 flex-1 text-sm">
             Viewing as <span className="font-medium">{subject.full_name}</span>
             {response && (

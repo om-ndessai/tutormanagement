@@ -378,9 +378,9 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         <StatCard
           index={2}
           label="Time tutored"
-          value={Math.round(data.totals.total_minutes / 60)}
+          value={data.totals.total_minutes}
+          formatValue={formatDuration}
           icon={ActivityIcon}
-          hint={formatDuration(data.totals.total_minutes)}
         />
         <StatCard index={3} label="Tutors" value={data.tutors.length} icon={GraduationCapIcon} />
       </div>
