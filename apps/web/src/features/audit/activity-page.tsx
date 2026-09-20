@@ -79,12 +79,12 @@ export function ActivityPage() {
 
       <div className="mb-4 flex flex-wrap items-end gap-3">
         {isAdmin && (
-          <div className="grid gap-1.5">
+          <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
             <Label htmlFor="who" className="text-muted-foreground text-xs">
               Person
             </Label>
             <Select value={userId} onValueChange={reset(setUserId)}>
-              <SelectTrigger id="who" className="w-52">
+              <SelectTrigger id="who" className="w-full sm:w-52">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -99,12 +99,12 @@ export function ActivityPage() {
           </div>
         )}
 
-        <div className="grid gap-1.5">
+        <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
           <Label htmlFor="what" className="text-muted-foreground text-xs">
             Action
           </Label>
           <Select value={action} onValueChange={reset(setAction)}>
-            <SelectTrigger id="what" className="w-52">
+            <SelectTrigger id="what" className="w-full sm:w-52">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -121,7 +121,7 @@ export function ActivityPage() {
           </Select>
         </div>
 
-        <div className="grid gap-1.5">
+        <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
           <Label htmlFor="from" className="text-muted-foreground text-xs">
             From
           </Label>
@@ -130,11 +130,11 @@ export function ActivityPage() {
             type="date"
             value={from}
             onChange={(event) => reset(setFrom)(event.target.value)}
-            className="w-40"
+            className="w-full sm:w-40"
           />
         </div>
 
-        <div className="grid gap-1.5">
+        <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
           <Label htmlFor="to" className="text-muted-foreground text-xs">
             To
           </Label>
@@ -143,7 +143,7 @@ export function ActivityPage() {
             type="date"
             value={to}
             onChange={(event) => reset(setTo)(event.target.value)}
-            className="w-40"
+            className="w-full sm:w-40"
           />
         </div>
 

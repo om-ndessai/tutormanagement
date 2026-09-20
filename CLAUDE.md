@@ -146,6 +146,16 @@ timer. Do not collapse them — the plan specifies each separately.
 the browser names the file from `Content-Disposition`. `lib/csv.ts` neutralises formula-leading
 characters and writes a BOM; do not hand-roll a CSV writer next to it.
 
+**Several screens ship two layouts**: cards below `md`/`sm` and a table above, both in the DOM.
+A bare `getByText` in a test then matches twice and `.first()` can pick the hidden one — use
+the `visible()` helper in `e2e/support/ui.ts`. Presence assertions target the rendered layout;
+absence assertions stay on the full DOM, because a name must be in neither.
+
+**Headers and filter rows must stack on phones, not shrink.** Flexbox shrinks items before it
+wraps them, so a row of fixed-width controls pushes the document wider than the viewport and
+every card on the page runs off the edge. `responsive.spec.ts` asserts zero horizontal overflow
+on every page at 390px and 360px.
+
 ## End-to-end tests
 
 `npm run e2e` deploys and tests `tmi-portal-test`, a separate Worker with its own database

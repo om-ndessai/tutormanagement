@@ -77,7 +77,7 @@ export function DashboardPage() {
                 value={response?.role ?? ''}
                 onValueChange={(value) => setParam('role', value)}
               >
-                <SelectTrigger className="w-44" aria-label="Dashboard role">
+                <SelectTrigger className="w-full sm:w-44" aria-label="Dashboard role">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -95,7 +95,7 @@ export function DashboardPage() {
                 value={viewingId ?? 'me'}
                 onValueChange={(value) => setParam('as', value === 'me' ? null : value)}
               >
-                <SelectTrigger className="w-56" aria-label="View dashboard as">
+                <SelectTrigger className="w-full sm:w-56" aria-label="View dashboard as">
                   <span className="flex min-w-0 items-center gap-2">
                     <EyeIcon className="size-4 shrink-0" />
                     <SelectValue />

@@ -149,8 +149,14 @@ export function UsersPage() {
         }
       />
 
-      <div className="mb-4 flex flex-wrap items-end gap-3">
-        <div className="min-w-56 flex-1">
+      {/*
+        Explicit layout rather than flex-wrap: the controls have minimum widths
+        of their own, so left to shrink they overflowed the viewport instead of
+        wrapping. Search takes a row, the two filters share one, the toggle
+        sits below -- and it all collapses to a single row from `sm` up.
+      */}
+      <div className="mb-4 grid gap-3 sm:flex sm:flex-wrap sm:items-end">
+        <div className="sm:min-w-56 sm:flex-1">
           <Label htmlFor="user-search" className="sr-only">
             Search users
           </Label>
@@ -167,27 +173,29 @@ export function UsersPage() {
           </div>
         </div>
 
-        <FilterSelect
-          id="role-filter"
-          label="Role"
-          value={role}
-          onValueChange={resetPage((value: string) => setRole(value as UserRole | typeof ANY))}
-          anyLabel="All roles"
-          options={USER_ROLES.map((value) => ({ value, label: USER_ROLE_LABELS[value] }))}
-        />
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:items-end">
+          <FilterSelect
+            id="role-filter"
+            label="Role"
+            value={role}
+            onValueChange={resetPage((value: string) => setRole(value as UserRole | typeof ANY))}
+            anyLabel="All roles"
+            options={USER_ROLES.map((value) => ({ value, label: USER_ROLE_LABELS[value] }))}
+          />
 
-        <FilterSelect
-          id="status-filter"
-          label="Status"
-          value={status}
-          onValueChange={resetPage((value: string) =>
-            setStatus(value as UserStatus | typeof ANY),
-          )}
-          anyLabel="All statuses"
-          options={USER_STATUSES.map((value) => ({ value, label: USER_STATUS_LABELS[value] }))}
-        />
+          <FilterSelect
+            id="status-filter"
+            label="Status"
+            value={status}
+            onValueChange={resetPage((value: string) =>
+              setStatus(value as UserStatus | typeof ANY),
+            )}
+            anyLabel="All statuses"
+            options={USER_STATUSES.map((value) => ({ value, label: USER_STATUS_LABELS[value] }))}
+          />
+        </div>
 
-        <label className="text-muted-foreground flex h-9 cursor-pointer items-center gap-2 text-sm">
+        <label className="text-muted-foreground flex cursor-pointer items-center gap-2 text-sm sm:h-9">
           <input
             type="checkbox"
             checked={includeDeleted}
@@ -305,12 +313,12 @@ function FilterSelect({
   options: { value: string; label: string }[];
 }) {
   return (
-    <div className="grid gap-1.5">
+    <div className="grid min-w-0 gap-1.5">
       <Label htmlFor={id} className="sr-only">
         {label}
       </Label>
       <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger id={id} className="w-40">
+        <SelectTrigger id={id} className="w-full sm:w-40">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

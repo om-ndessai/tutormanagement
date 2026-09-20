@@ -1,4 +1,5 @@
 import { PEOPLE, expect, test } from '../support/fixtures.js';
+import { visible } from '../support/ui.js';
 
 /**
  * "Launch portal as a different type of user and validate." -- docs/plan.md.
@@ -18,10 +19,10 @@ test.describe('each kind of user sees their own portal', () => {
     //
     // Asserted by name rather than by a row count, because other specs in this
     // suite add users to the same database and a count would be brittle.
-    await expect(page.getByText('Johan Lindqvist')).toBeVisible();
-    await expect(page.getByText('Grace Lee')).toBeVisible();
-    await expect(page.getByText('Ben Whitfield')).toBeVisible();
-    await expect(page.getByText('Sofia Okafor')).toBeVisible();
+    await expect(visible(page, 'Johan Lindqvist').first()).toBeVisible();
+    await expect(visible(page, 'Grace Lee').first()).toBeVisible();
+    await expect(visible(page, 'Ben Whitfield').first()).toBeVisible();
+    await expect(visible(page, 'Sofia Okafor').first()).toBeVisible();
 
     // Admin-only navigation and actions are present.
     await expect(page.getByRole('link', { name: 'Billing' })).toBeVisible();
@@ -33,11 +34,11 @@ test.describe('each kind of user sees their own portal', () => {
     await page.goto('/sessions');
 
     await expect(page.getByRole('heading', { name: 'Sessions' })).toBeVisible();
-    await expect(page.getByText('Lessons you have taught, and what you have earned.')).toBeVisible();
+    await expect(visible(page, 'Lessons you have taught, and what you have earned.').first()).toBeVisible();
 
     // Alex teaches Sofia and Ben, and nobody else.
-    await expect(page.getByText('Sofia Okafor').first()).toBeVisible();
-    await expect(page.getByText('Ben Whitfield').first()).toBeVisible();
+    await expect(visible(page, 'Sofia Okafor').first()).toBeVisible();
+    await expect(visible(page, 'Ben Whitfield').first()).toBeVisible();
 
     // Sanjay is taught by Priya, not by Alex: that session must not appear.
     await expect(page.getByText('Priya Raghavan')).toHaveCount(0);
@@ -48,8 +49,8 @@ test.describe('each kind of user sees their own portal', () => {
     await page.goto('/users');
 
     // Anita sees herself, her son Sanjay, and Sanjay's tutor Priya.
-    await expect(page.getByText('Anita Patel').first()).toBeVisible();
-    await expect(page.getByText('Sanjay Patel').first()).toBeVisible();
+    await expect(visible(page, 'Anita Patel').first()).toBeVisible();
+    await expect(visible(page, 'Sanjay Patel').first()).toBeVisible();
 
     // Another family's children are not hers to see.
     await expect(page.getByText('Ben Whitfield')).toHaveCount(0);
@@ -61,11 +62,11 @@ test.describe('each kind of user sees their own portal', () => {
     await page.goto('/profile');
 
     await expect(page.getByRole('heading', { name: 'Sofia Okafor' })).toBeVisible();
-    await expect(page.getByText('Culbreth Middle')).toBeVisible();
+    await expect(visible(page, 'Culbreth Middle').first()).toBeVisible();
 
     // Her tutor is visible; unrelated tutors are not.
     await page.goto('/users');
-    await expect(page.getByText('Alex Chen').first()).toBeVisible();
+    await expect(visible(page, 'Alex Chen').first()).toBeVisible();
     await expect(page.getByText('Johan Lindqvist')).toHaveCount(0);
   });
 
@@ -78,7 +79,7 @@ test.describe('each kind of user sees their own portal', () => {
     await expect(page.getByRole('heading', { name: 'Sanjay Patel' })).toBeVisible();
     await expect(page.getByText('Tutor', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('Student', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText('AP Calculus BC').first()).toBeVisible();
+    await expect(visible(page, 'AP Calculus BC').first()).toBeVisible();
   });
 
   test('only admins can reach the write actions', async ({ as }) => {
@@ -86,7 +87,7 @@ test.describe('each kind of user sees their own portal', () => {
     await tutorPage.goto('/assignments');
 
     // A tutor can see their pairings but cannot create one.
-    await expect(tutorPage.getByText('The students you are assigned to teach.')).toBeVisible();
+    await expect(visible(tutorPage, 'The students you are assigned to teach.').first()).toBeVisible();
     await expect(tutorPage.getByRole('button', { name: 'Assign a student' })).toHaveCount(0);
 
     // And the API refuses even if the button is bypassed.

@@ -120,6 +120,7 @@ export function BillingPage() {
               formatCents(tutor.earned_cents),
               formatCents(tutor.paid_cents),
             ],
+            summary: `${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned · ${formatCents(tutor.paid_cents)} paid`,
             balance: tutor.balance_cents,
           }))}
           isLoading={balances.isPending}
@@ -139,6 +140,7 @@ export function BillingPage() {
               formatCents(student.charged_cents),
               formatCents(student.paid_cents),
             ],
+            summary: `${student.guardians.map((g) => g.full_name).join(', ') || 'No guardian'} · ${formatCents(student.charged_cents)} charged · ${formatCents(student.paid_cents)} paid`,
             balance: student.balance_cents,
           }))}
           isLoading={balances.isPending}
@@ -146,7 +148,45 @@ export function BillingPage() {
       )}
 
       <h2 className="mt-8 mb-3 text-sm font-semibold">Payments</h2>
-      <div className="border-border bg-card overflow-hidden rounded-lg border">
+
+      {/* Phone: stacked payment cards. */}
+      <ul className="border-border bg-card divide-border divide-y rounded-lg border sm:hidden">
+        {(payments.data?.data ?? []).map((payment) => (
+          <li key={payment.id} className="flex items-start gap-3 p-3">
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-medium">{payment.party_name}</span>
+              <span className="text-muted-foreground block truncate text-xs">
+                {payment.direction === 'from_parent' ? 'Received' : 'Paid out'}
+                {payment.student_name ? ` · for ${payment.student_name}` : ''}
+              </span>
+              <span className="text-muted-foreground block text-xs">
+                {new Date(payment.paid_at).toLocaleDateString(undefined, { dateStyle: 'medium' })} ·{' '}
+                {PAYMENT_FORM_LABELS[payment.method]}
+              </span>
+            </span>
+            <span className="shrink-0 text-sm font-semibold tabular-nums">
+              {formatCents(payment.amount_cents)}
+            </span>
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Delete ${PAYMENT_DIRECTION_LABELS[payment.direction]}`}
+                onClick={() => setRemoving(payment)}
+              >
+                <Trash2Icon />
+              </Button>
+            )}
+          </li>
+        ))}
+        {!payments.isPending && (payments.data?.data.length ?? 0) === 0 && (
+          <li className="text-muted-foreground p-6 text-center text-sm">
+            No payments recorded yet.
+          </li>
+        )}
+      </ul>
+
+      <div className="border-border bg-card hidden overflow-x-auto rounded-lg border sm:block">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -295,7 +335,8 @@ function LedgerTable({
   title: string;
   caption: string;
   columns: string[];
-  rows: { key: string; cells: string[]; balance: number }[];
+  /** `summary` is the single line the phone layout shows under the name. */
+  rows: { key: string; cells: string[]; summary: string; balance: number }[];
   isLoading: boolean;
 }) {
   return (
@@ -303,7 +344,34 @@ function LedgerTable({
       <h2 className="mb-1 text-sm font-semibold">{title}</h2>
       <p className="text-muted-foreground mb-3 text-xs">{caption}</p>
 
-      <div className="border-border bg-card overflow-hidden rounded-lg border">
+      {/* Phone: each row stacked, so no column is pushed off-screen. */}
+      <ul className="border-border bg-card divide-border divide-y rounded-lg border sm:hidden">
+        {rows.map((row) => (
+          <li key={row.key} className="flex items-center gap-3 p-3">
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-medium">{row.cells[0]}</span>
+              <span className="text-muted-foreground block text-xs text-pretty">
+                {row.summary}
+              </span>
+            </span>
+            <span
+              className={cn(
+                'shrink-0 text-sm font-semibold tabular-nums',
+                row.balance > 0 ? '' : 'text-muted-foreground',
+              )}
+            >
+              {formatCents(row.balance)}
+            </span>
+          </li>
+        ))}
+        {isLoading && (
+          <li className="p-3">
+            <Skeleton className="h-10 w-full" />
+          </li>
+        )}
+      </ul>
+
+      <div className="border-border bg-card hidden overflow-x-auto rounded-lg border sm:block">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">

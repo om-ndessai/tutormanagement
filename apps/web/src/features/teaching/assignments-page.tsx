@@ -82,7 +82,70 @@ export function AssignmentsPage() {
         }
       />
 
-      <div className="border-border bg-card overflow-hidden rounded-lg border">
+      {/* Phone: one card per pairing, with both rates visible. */}
+      <ul className="space-y-3 sm:hidden">
+        {assignments.map((assignment) => (
+          <li key={assignment.id} className="border-border bg-card rounded-lg border p-3">
+            <div className="flex items-start gap-2">
+              <span className="min-w-0 flex-1">
+                <span className="block truncate font-medium">{assignment.student_name}</span>
+                <span className="text-muted-foreground block truncate text-xs">
+                  with {assignment.tutor_name}
+                </span>
+              </span>
+              {isAdmin && (
+                <span className="flex shrink-0 items-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Edit ${assignment.student_name}'s assignment`}
+                    onClick={() => {
+                      setEditing(assignment);
+                      setDialogOpen(true);
+                    }}
+                  >
+                    <PencilIcon />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Remove ${assignment.student_name} from ${assignment.tutor_name}`}
+                    onClick={() => setRemoving(assignment)}
+                  >
+                    <Trash2Icon />
+                  </Button>
+                </span>
+              )}
+            </div>
+
+            <div className="text-muted-foreground mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              <span className="flex items-center gap-1.5">
+                In person:
+                <RateCell
+                  effective={assignment.effective_rate_in_person_cents}
+                  override={assignment.rate_in_person_cents}
+                />
+              </span>
+              <span className="flex items-center gap-1.5">
+                Virtual:
+                <RateCell
+                  effective={assignment.effective_rate_virtual_cents}
+                  override={assignment.rate_virtual_cents}
+                />
+              </span>
+            </div>
+          </li>
+        ))}
+        {!isPending && assignments.length === 0 && (
+          <li className="border-border bg-card text-muted-foreground rounded-lg border p-8 text-center text-sm">
+            {isAdmin
+              ? 'No students are assigned yet.'
+              : 'You have no students assigned.'}
+          </li>
+        )}
+      </ul>
+
+      <div className="border-border bg-card hidden overflow-x-auto rounded-lg border sm:block">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">

@@ -159,7 +159,7 @@ export function SessionsPage() {
               setFrom(event.target.value);
               setPage(0);
             }}
-            className="w-40"
+            className="w-full sm:w-40"
           />
         </div>
         <div className="grid gap-1.5">
@@ -174,7 +174,7 @@ export function SessionsPage() {
               setTo(event.target.value);
               setPage(0);
             }}
-            className="w-40"
+            className="w-full sm:w-40"
           />
         </div>
         {(from || to) && (
