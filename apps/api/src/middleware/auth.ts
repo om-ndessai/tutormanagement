@@ -20,7 +20,12 @@ import { isAuthEnabled, type AppEnv } from '../types.js';
  */
 export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
   if (!isAuthEnabled(c.env)) {
-    const user = await resolveBypassUser(c.env);
+    // Lets the end-to-end suite act as each kind of user without redeploying
+    // between roles. Only read while auth is off -- a deployment in that state
+    // is already fully open, so this grants nothing that was not already
+    // available.
+    const requested = c.req.header(DEV_USER_HEADER)?.trim();
+    const user = await resolveBypassUser(c.env, requested);
     c.set('user', user);
     c.set('impersonated', true);
     return next();
@@ -53,6 +58,12 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
 const FALLBACK_DEV_EMAIL = 'portal-admin@trianglemathinstitute.com';
 
 /**
+ * Names the user to act as while AUTH_ENABLED is "false". Honoured only in
+ * that state; ignored entirely on a deployment with sign-in switched on.
+ */
+export const DEV_USER_HEADER = 'X-Dev-User';
+
+/**
  * Identity used while AUTH_ENABLED is "false", so later phases can be built and
  * tested without signing in.
  *
@@ -68,7 +79,22 @@ const FALLBACK_DEV_EMAIL = 'portal-admin@trianglemathinstitute.com';
  * Only reachable while AUTH_ENABLED is "false", so it cannot create an admin on
  * a secured deployment.
  */
-async function resolveBypassUser(env: AppEnv['Bindings']) {
+async function resolveBypassUser(env: AppEnv['Bindings'], requestedEmail?: string) {
+  // A per-request override beats the deployment-wide setting.
+  if (requestedEmail) {
+    const requested = await getLiveUserByEmail(env.DB, requestedEmail);
+
+    if (!requested) {
+      throw new ApiError(
+        404,
+        'not_found',
+        `No live user matches the requested ${DEV_USER_HEADER} address (${requestedEmail}).`,
+      );
+    }
+
+    return requested;
+  }
+
   const configured = env.DEV_USER_EMAIL?.trim();
 
   if (configured) {

@@ -138,6 +138,16 @@ app-specific components belong in `components/` or `features/`.
 query hooks, table, form and badges. Follow that shape for the next feature rather than
 splitting by file type.
 
+## End-to-end tests
+
+`E2E_YES=1 npm run e2e` drives the DEPLOYED portal and **destroys the production database**.
+Read `docs/testing.md` before running it. `npm run e2e:test` runs the suite without deploying
+or wiping anything, against `E2E_BASE_URL`.
+
+The suite acts as different people with an `X-Dev-User` header, honoured only while
+`AUTH_ENABLED` is `"false"`. Set it on the browser context, never per request — two values
+make the header ambiguous.
+
 ## Verifying a change
 
 There is no test suite yet, so verify by running things:

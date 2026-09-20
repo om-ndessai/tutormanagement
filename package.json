@@ -9,7 +9,8 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "e2e"
   ],
   "scripts": {
     "dev": "concurrently -n api,web -c magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
@@ -23,7 +24,10 @@
     "db:seed": "npm run db:seed --workspace @tmi/api",
     "db:reset": "npm run db:reset --workspace @tmi/api",
     "db:studio": "npm run db:studio --workspace @tmi/api",
-    "deploy": "npm run build && npm run deploy --workspace @tmi/api"
+    "deploy": "npm run build && npm run deploy --workspace @tmi/api",
+    "e2e": "bash scripts/e2e.sh",
+    "e2e:test": "npm run test --workspace @tmi/e2e",
+    "e2e:report": "npm run report --workspace @tmi/e2e"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

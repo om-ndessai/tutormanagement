@@ -12,7 +12,10 @@ Roadmap lives in [docs/plan.md](docs/plan.md).
 - **Phase 2 (done):** the data model — admins, tutors, students and parents, where one person
   can hold several roles at once, with role profiles, availability, payment handles and
   parent/guardian relationships. See [docs/data-model.md](docs/data-model.md).
-- **Next:** classes, schedules and homework.
+- **Phase 3 (done):** an append-only audit log of every action.
+- **Phase 4 (done):** tutor rates, student assignments, and session recording with billing.
+- **Phase 5 (done):** payment tracking and balances for tutors and families.
+- **Phase 6 (done):** Playwright end-to-end tests driving the deployed portal.
 
 ## Stack
 
@@ -91,6 +94,7 @@ share one origin and one domain.
 ## Documentation
 
 - [docs/plan.md](docs/plan.md) — the phased roadmap
+- [docs/testing.md](docs/testing.md) — the end-to-end suite, and what running it destroys
 - [docs/data-model.md](docs/data-model.md) — the Phase 2 model: why each table exists, and which rules the database cannot enforce
 - [docs/architecture.md](docs/architecture.md) — how the pieces fit, request flow, conventions
 - [docs/google-oauth-setup.md](docs/google-oauth-setup.md) — creating the Google client ID, secrets, first admin

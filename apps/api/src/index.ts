@@ -41,7 +41,7 @@ app.use(
       return DEV_ALLOWED_ORIGINS.includes(origin) ? origin : '';
     },
     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type'],
+    allowHeaders: ['Content-Type', 'X-Dev-User'],
     credentials: true,
     maxAge: 600,
   }),
