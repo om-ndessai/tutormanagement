@@ -174,6 +174,21 @@ than up or down, because rounding up systematically overcharges families and rou
 systematically underpays tutors. The client never sends a duration or an amount — both are
 derived server-side from the times and the assignment.
 
+### `scheduled_sessions`
+
+Phase 9. A standing weekly lesson, and what the calendar invite is generated from. Distinct
+from `sessions`, which records lessons that actually happened: a schedule says "every Tuesday
+at four", and whether any particular Tuesday went ahead is a separate fact.
+
+Weekly on one weekday is the only recurrence offered. It is what tutoring actually looks like,
+and it maps onto a single `RRULE` without needing a recurrence engine.
+
+**The generated .ics uses floating local times** — no trailing `Z`, no `TZID`. A lesson is
+"Tuesday at four" wherever the reader is, which is why the portal stores wall-clock times in
+the first place. Attaching a timezone would mean shipping a `VTIMEZONE` block and getting DST
+transitions right, to express something the institute does not actually mean. The `UID` is
+derived from the schedule id, so re-downloading updates the event rather than duplicating it.
+
 ### `active_sessions`
 
 Phase 7. A lesson being taught right now: the tutor presses start, teaches, presses stop, and a

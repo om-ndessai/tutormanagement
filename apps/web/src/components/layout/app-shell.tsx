@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import {
   ActivityIcon,
   BookOpenIcon,
+  CalendarDaysIcon,
   LayoutDashboardIcon,
   LinkIcon,
   WalletIcon,
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { to: '/users', label: 'Users', icon: UsersIcon, end: false },
   { to: '/assignments', label: 'Assignments', icon: LinkIcon, end: false },
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false },
+  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false },
   { to: '/billing', label: 'Billing', icon: WalletIcon, end: false },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false },

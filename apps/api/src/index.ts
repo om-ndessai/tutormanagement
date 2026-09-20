@@ -10,6 +10,7 @@ import { assignmentsRoutes } from './routes/assignments.js';
 import { auditRoutes } from './routes/audit.js';
 import { dashboardRoutes } from './routes/dashboard.js';
 import { paymentsRoutes } from './routes/payments.js';
+import { schedulesRoutes } from './routes/schedules.js';
 import { sessionsRoutes } from './routes/sessions.js';
 import { usersRoutes } from './routes/users.js';
 
@@ -79,6 +80,7 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/dashboard', dashboardRoutes)
   .route('/assignments', assignmentsRoutes)
   .route('/sessions', sessionsRoutes)
+  .route('/schedules', schedulesRoutes)
   .route('/payments', paymentsRoutes);
 
 const api = new Hono<AppEnv>().route('/', publicRoutes).route('/', guardedRoutes);

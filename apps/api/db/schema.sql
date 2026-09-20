@@ -25,6 +25,7 @@
 
 -- Dropped children-first so foreign keys never block the rebuild.
 DROP TRIGGER IF EXISTS payments_set_updated_at;
+DROP TRIGGER IF EXISTS scheduled_sessions_set_updated_at;
 DROP TRIGGER IF EXISTS sessions_set_updated_at;
 DROP TRIGGER IF EXISTS assignments_set_updated_at;
 DROP TRIGGER IF EXISTS payment_handles_set_updated_at;
@@ -32,6 +33,7 @@ DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
 
+DROP TABLE IF EXISTS scheduled_sessions;
 DROP TABLE IF EXISTS active_sessions;
 DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS audit_events;
@@ -355,6 +357,53 @@ CREATE INDEX sessions_student_idx ON sessions (student_user_id, occurred_on);
 CREATE INDEX sessions_date_idx    ON sessions (occurred_on);
 
 -- ---------------------------------------------------------------------------
+-- scheduled_sessions - a standing weekly lesson
+-- ---------------------------------------------------------------------------
+-- What the calendar invite is generated from. Distinct from `sessions`, which
+-- records lessons that actually happened: a schedule says "every Tuesday at
+-- four", and whether any particular Tuesday went ahead is a separate fact.
+--
+-- Weekly on one weekday is the only recurrence offered. It is what tutoring
+-- actually looks like, and it maps onto a single RRULE without needing a
+-- recurrence engine.
+CREATE TABLE scheduled_sessions (
+  id               TEXT PRIMARY KEY,
+
+  tutor_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  student_user_id  TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  -- 0 = Sunday .. 6 = Saturday, matching availability_slots and JS getDay().
+  day_of_week      INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
+  -- Local wall-clock start, HH:MM. Stored as entered: a lesson is "Tuesday at
+  -- four" to everyone involved, and no timezone conversion should move it.
+  start_time       TEXT NOT NULL,
+  duration_minutes INTEGER NOT NULL
+                   CHECK (duration_minutes > 0 AND duration_minutes % 15 = 0),
+
+  mode             TEXT NOT NULL CHECK (mode IN ('in_person', 'virtual')),
+
+  -- The recurrence window. `ends_on` NULL means open-ended, which becomes an
+  -- RRULE with no UNTIL.
+  starts_on        TEXT NOT NULL,
+  ends_on          TEXT,
+
+  -- Free text: a room, or a meeting link for virtual lessons.
+  location         TEXT,
+  notes            TEXT,
+
+  is_active        INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK (ends_on IS NULL OR ends_on >= starts_on)
+);
+
+CREATE INDEX scheduled_sessions_tutor_idx   ON scheduled_sessions (tutor_user_id)   WHERE is_active = 1;
+CREATE INDEX scheduled_sessions_student_idx ON scheduled_sessions (student_user_id) WHERE is_active = 1;
+
+
+-- ---------------------------------------------------------------------------
 -- active_sessions - a lesson being taught right now
 -- ---------------------------------------------------------------------------
 -- The tutor presses start, teaches, then presses stop, at which point a row in
@@ -541,4 +590,11 @@ CREATE TRIGGER payments_set_updated_at
 AFTER UPDATE ON payments FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE payments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER scheduled_sessions_set_updated_at
+AFTER UPDATE ON scheduled_sessions FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE scheduled_sessions SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE id = NEW.id;
 END;

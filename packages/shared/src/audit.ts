@@ -30,6 +30,10 @@ export const AUDIT_ACTIONS = [
   'payment.recorded',
   'payment.updated',
   'payment.deleted',
+
+  'schedule.created',
+  'schedule.updated',
+  'schedule.removed',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -62,6 +66,10 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'payment.recorded': 'Payment recorded',
   'payment.updated': 'Payment updated',
   'payment.deleted': 'Payment deleted',
+
+  'schedule.created': 'Session scheduled',
+  'schedule.updated': 'Schedule updated',
+  'schedule.removed': 'Schedule removed',
 };
 
 export interface AuditEvent {

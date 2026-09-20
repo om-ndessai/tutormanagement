@@ -21,6 +21,7 @@
 --    Grace   parent             "parent may or may not have a student assigned"
 -- ===========================================================================
 
+DELETE FROM scheduled_sessions;
 DELETE FROM payments;
 DELETE FROM sessions;
 DELETE FROM assignments;
@@ -161,3 +162,11 @@ INSERT INTO payments (id, direction, party_user_id, student_user_id, amount_cent
   ('60000000-0000-4000-8000-000000000002', 'from_parent', '00000000-0000-4000-8000-00000000000a', '00000000-0000-4000-8000-000000000009', 7000,  'venmo', '2026-09-13T09:05:00.000Z', NULL,   NULL,                     '00000000-0000-4000-8000-000000000001'),
   ('60000000-0000-4000-8000-000000000003', 'from_parent', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', 10000, 'check', '2026-09-11T12:00:00.000Z', '1042', 'Part payment.',          '00000000-0000-4000-8000-000000000001'),
   ('60000000-0000-4000-8000-000000000004', 'to_tutor',    '00000000-0000-4000-8000-000000000003', NULL,                                   15000, 'zelle', '2026-09-16T10:00:00.000Z', NULL,   'September, first half.', '00000000-0000-4000-8000-000000000001');
+
+-- --- standing weekly lessons ------------------------------------------------
+INSERT INTO scheduled_sessions
+  (id, tutor_user_id, student_user_id, day_of_week, start_time, duration_minutes, mode, starts_on, ends_on, location, notes) VALUES
+  ('70000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000008', 2, '16:00', 60, 'in_person', '2026-09-01', '2026-12-18', 'Institute, room 2', 'Weekly slot for Sofia.'),
+  ('70000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000009', 6, '10:00', 60, 'in_person', '2026-09-05', NULL,         'Institute, room 1', NULL),
+  -- Open-ended, virtual, with a meeting link in place of a room.
+  ('70000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 4, '17:00', 90, 'virtual',   '2026-09-03', NULL,         'https://meet.example.com/ap-calc', 'AP Calculus BC exam prep.');
