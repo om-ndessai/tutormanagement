@@ -56,7 +56,10 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
          (SELECT COUNT(*) FROM active_sessions) AS live_sessions`,
     ),
     db.prepare(
-      `SELECT COALESCE(SUM(amount_cents), 0) AS billed, COUNT(*) AS sessions FROM sessions`,
+      `SELECT COALESCE(SUM(charge_amount_cents), 0) AS billed,
+              COALESCE(SUM(tutor_amount_cents), 0)  AS tutor_cost,
+              COUNT(*) AS sessions
+       FROM sessions`,
     ),
   ]);
 
@@ -80,6 +83,8 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
       owed_to_tutors_cents: balances.totals.owed_to_tutors_cents,
       owed_by_families_cents: balances.totals.owed_by_families_cents,
       billed_all_time_cents: Number(totals.billed ?? 0),
+      tutor_cost_all_time_cents: Number(totals.tutor_cost ?? 0),
+      margin_all_time_cents: Number(totals.billed ?? 0) - Number(totals.tutor_cost ?? 0),
       session_count: Number(totals.sessions ?? 0),
     },
     // Worth chasing first.
@@ -97,7 +102,7 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
               sp.school, sp.current_math_course,
               a.rate_in_person_cents, a.rate_virtual_cents,
               COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id), 0) AS session_count,
-              COALESCE((SELECT SUM(s.amount_cents) FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id), 0) AS earned_cents,
+              COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id), 0) AS earned_cents,
               (SELECT MAX(s.occurred_on) FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id) AS last_session_on
        FROM assignments a
        JOIN users u ON u.id = a.student_user_id

@@ -243,6 +243,23 @@ export function resolveRateCents(
   return override[pick] ?? tutorDefault[pick];
 }
 
+/**
+ * What the family is charged per hour. Unlike the tutor's rate there is no
+ * per-pairing override: the price belongs to the student, so it does not
+ * change according to who happens to teach them.
+ */
+export function resolveChargeRateCents(
+  mode: SessionMode,
+  student: {
+    charge_rate_in_person_cents: number | null;
+    charge_rate_virtual_cents: number | null;
+  },
+): number | null {
+  return mode === 'virtual'
+    ? student.charge_rate_virtual_cents
+    : student.charge_rate_in_person_cents;
+}
+
 export const listAssignmentsQuerySchema = z.object({
   tutor_user_id: z.uuid().optional(),
   student_user_id: z.uuid().optional(),
@@ -315,11 +332,54 @@ export interface TutoringSession {
   ended_at: string;
   duration_minutes: number;
   mode: SessionMode;
-  rate_cents: number;
-  amount_cents: number;
+  /**
+   * The two sides of the money, each null when the viewer is not entitled to
+   * it: a tutor is not shown what the family pays, and a family is not shown
+   * what the tutor is paid. Only an admin sees both, and so only an admin can
+   * see the margin. See scopeSessionMoney in the API.
+   */
+  tutor_rate_cents: number | null;
+  tutor_amount_cents: number | null;
+  charge_rate_cents: number | null;
+  charge_amount_cents: number | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
+}
+
+/**
+ * The headline money for a session, from the viewer's point of view.
+ *
+ * Scoping leaves a non-admin with exactly one side populated, so the fallback
+ * picks whichever that is: a tutor sees their pay, a family sees the price.
+ * An admin has both, and is shown the charge -- the institute's revenue --
+ * with the margin alongside it.
+ */
+export function shownAmountCents(session: {
+  tutor_amount_cents: number | null;
+  charge_amount_cents: number | null;
+}): number | null {
+  return session.charge_amount_cents ?? session.tutor_amount_cents;
+}
+
+export function shownRateCents(session: {
+  tutor_rate_cents: number | null;
+  charge_rate_cents: number | null;
+}): number | null {
+  return session.charge_rate_cents ?? session.tutor_rate_cents;
+}
+
+/**
+ * What the institute keeps on a session, or null when the viewer cannot see
+ * both sides. Always derived, never stored, so it cannot drift from the two
+ * numbers it comes from.
+ */
+export function marginCents(session: {
+  tutor_amount_cents: number | null;
+  charge_amount_cents: number | null;
+}): number | null {
+  const { tutor_amount_cents: paid, charge_amount_cents: charged } = session;
+  return paid == null || charged == null ? null : charged - paid;
 }
 
 export const listSessionsQuerySchema = z.object({
@@ -338,7 +398,9 @@ export type ListSessionsParams = z.output<typeof listSessionsQuerySchema>;
 export interface SessionTotals {
   session_count: number;
   total_minutes: number;
-  total_amount_cents: number;
+  /** Null for viewers not entitled to that side; see TutoringSession. */
+  total_tutor_amount_cents: number | null;
+  total_charge_amount_cents: number | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -365,8 +427,12 @@ export interface ActiveSession {
   rounded_start: string;
   occurred_on: string;
   notes: string | null;
-  /** The rate that will apply, resolved from the assignment at start time. */
-  rate_cents: number | null;
+  /**
+   * The rates that will apply, resolved when the lesson started. Scoped the
+   * same way as a finished session's.
+   */
+  tutor_rate_cents: number | null;
+  charge_rate_cents: number | null;
 }
 
 export const startSessionSchema = z.object({

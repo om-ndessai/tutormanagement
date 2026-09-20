@@ -1,5 +1,7 @@
-import type { ActiveSession, SessionMode } from '@tmi/shared';
+import type { ActiveSession, SessionMode, User } from '@tmi/shared';
 import { minutesToClock, roundClockToQuarter } from '@tmi/shared';
+
+import { isAdmin } from '../lib/scope.js';
 
 const SELECT_ACTIVE = `
   SELECT a.tutor_user_id, t.full_name AS tutor_name,
@@ -37,14 +39,26 @@ function clockParts(iso: string) {
   };
 }
 
-export function toActiveSession(row: ActiveRow, rateCents: number | null): ActiveSession {
+/**
+ * A live lesson as the viewer may see it. The two rates are scoped the same
+ * way a finished session's are: the tutor teaching it sees what they earn,
+ * an admin sees both, and nobody else sees either.
+ */
+export function toActiveSession(
+  row: ActiveRow,
+  tutorRateCents: number | null,
+  chargeRateCents: number | null,
+  viewer: User,
+): ActiveSession {
   const { day, minutesOfDay } = clockParts(row.started_at);
+  const admin = isAdmin(viewer);
 
   return {
     ...row,
     occurred_on: day,
     rounded_start: minutesToClock(roundClockToQuarter(minutesOfDay)),
-    rate_cents: rateCents,
+    tutor_rate_cents: admin || row.tutor_user_id === viewer.id ? tutorRateCents : null,
+    charge_rate_cents: admin ? chargeRateCents : null,
   };
 }
 

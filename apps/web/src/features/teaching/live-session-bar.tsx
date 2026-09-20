@@ -5,6 +5,7 @@ import {
   SESSION_MODE_LABELS,
   elapsedSince,
   formatCents,
+  shownAmountCents,
   formatClockTime,
   formatStopwatch,
   type ActiveSession,
@@ -150,7 +151,8 @@ function StopDialog({
 
       toast.success(
         `Session recorded: ${formatClockTime(session.started_at)}–` +
-          `${formatClockTime(session.ended_at)}, ${formatCents(session.amount_cents)}.`,
+          `${formatClockTime(session.ended_at)}, ` +
+          `${formatCents(shownAmountCents(session) ?? 0)}.`,
       );
       onOpenChange(false);
     } catch (error) {

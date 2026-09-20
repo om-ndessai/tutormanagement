@@ -114,6 +114,14 @@ identity, and it is the whole security boundary of sign-in.
 `packages/shared/src/teaching.ts` are the only conversions. Amounts and durations are always
 derived on the server: a client may send times, never a price.
 
+**A lesson has two rates, and conflating them erases the institute's margin.** The tutor is
+paid `tutor_rate_cents` (from `tutor_profiles`, overridable per pairing on `assignments`); the
+family is charged `charge_rate_cents` (from `student_profiles`, no override). Both are frozen
+onto the session. The margin is always derived, never stored. Never make one column serve both
+sides -- that is the bug these columns were split to fix. Each party sees only their own side:
+`scopeSessionMoney` and `scopeStudentCharges` enforce that in the API, so do not return a
+session or a student profile from a new route without them.
+
 **Every action a user takes gets an audit event.** Adding a route that changes data means
 adding a `recordAudit` call and an entry in `AUDIT_ACTIONS` in `packages/shared/src/audit.ts`.
 The action name is `<entity>.<verb>`; the description is a finished sentence naming the person,

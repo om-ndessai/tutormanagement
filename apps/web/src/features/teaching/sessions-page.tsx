@@ -6,6 +6,9 @@ import {
   formatCents,
   formatClockTime,
   formatDuration,
+  marginCents,
+  shownAmountCents,
+  shownRateCents,
   type TutoringSession,
 } from '@tmi/shared';
 
@@ -142,7 +145,11 @@ export function SessionsPage() {
         />
         <SummaryTile
           label={isAdmin ? 'Billed' : isTutor ? 'Earned' : 'Charged'}
-          value={totals ? formatCents(totals.total_amount_cents) : undefined}
+          value={
+            totals
+              ? formatCents(totals.total_charge_amount_cents ?? totals.total_tutor_amount_cents ?? 0)
+              : undefined
+          }
           emphasis
         />
       </div>
@@ -246,11 +253,17 @@ export function SessionsPage() {
                     <div className="flex items-center gap-2">
                       <div className="text-right">
                         <p className="font-display font-semibold tabular-nums">
-                          {formatCents(session.amount_cents)}
+                          {formatCents(shownAmountCents(session) ?? 0)}
                         </p>
                         <p className="text-muted-foreground text-[11px]">
-                          {formatCents(session.rate_cents)}/hr
+                          {formatCents(shownRateCents(session) ?? 0)}/hr
                         </p>
+                        {/* Only an admin sees both sides, so only they see this. */}
+                        {marginCents(session) !== null && (
+                          <p className="text-muted-foreground text-[11px]">
+                            {formatCents(marginCents(session)!)} kept
+                          </p>
+                        )}
                       </div>
 
                       {canEdit && (
@@ -338,7 +351,8 @@ export function SessionsPage() {
             <AlertDialogTitle>Delete this session?</AlertDialogTitle>
             <AlertDialogDescription>
               The {removing?.occurred_on} session with {removing?.student_name} and its{' '}
-              {formatCents(removing?.amount_cents ?? 0)} charge will be removed. This cannot be
+              {formatCents(shownAmountCents(removing ?? { tutor_amount_cents: null, charge_amount_cents: null }) ?? 0)}{' '}
+              charge will be removed. This cannot be
               undone.
             </AlertDialogDescription>
           </AlertDialogHeader>

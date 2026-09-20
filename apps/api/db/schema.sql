@@ -170,6 +170,18 @@ CREATE TABLE student_profiles (
   -- Whether this student will take online sessions.
   virtual_available   INTEGER NOT NULL DEFAULT 0 CHECK (virtual_available IN (0, 1)),
 
+  -- What the institute CHARGES this student's family per hour, in whole cents.
+  -- Deliberately separate from what the tutor is PAID (tutor_profiles and
+  -- assignments): the institute keeps the difference, so the two sides must be
+  -- able to move independently. Storing only one rate made the margin
+  -- structurally zero.
+  --
+  -- Nullable so a student can exist before pricing is agreed, but a session
+  -- cannot be recorded until the mode being taught has a rate -- see
+  -- priceSession in routes/sessions.ts.
+  charge_rate_in_person_cents INTEGER CHECK (charge_rate_in_person_cents >= 0),
+  charge_rate_virtual_cents   INTEGER CHECK (charge_rate_virtual_cents >= 0),
+
   created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
@@ -335,11 +347,20 @@ CREATE TABLE sessions (
 
   mode               TEXT NOT NULL CHECK (mode IN ('in_person', 'virtual')),
 
-  -- Snapshot of the hourly rate that applied when this was saved, and the
-  -- resulting charge. Frozen so that changing a tutor's rate tomorrow does not
-  -- restate every session they have already taught.
-  rate_cents         INTEGER NOT NULL CHECK (rate_cents >= 0),
-  amount_cents       INTEGER NOT NULL CHECK (amount_cents >= 0),
+  -- Snapshots of BOTH hourly rates that applied when this was saved, and the
+  -- money each one produced. Frozen so that changing a rate tomorrow does not
+  -- restate every session already taught.
+  --
+  -- tutor_*  is what the institute owes the tutor for this lesson.
+  -- charge_* is what the institute bills the student's family for it.
+  --
+  -- The institute's margin is the difference, and is never stored: it is
+  -- derived wherever it is shown, so it cannot drift out of step with the two
+  -- numbers it comes from.
+  tutor_rate_cents    INTEGER NOT NULL CHECK (tutor_rate_cents >= 0),
+  tutor_amount_cents  INTEGER NOT NULL CHECK (tutor_amount_cents >= 0),
+  charge_rate_cents   INTEGER NOT NULL CHECK (charge_rate_cents >= 0),
+  charge_amount_cents INTEGER NOT NULL CHECK (charge_amount_cents >= 0),
 
   -- Feedback, progress towards the student's goal, assessment, homework set.
   notes              TEXT,

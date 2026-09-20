@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import {
   ActivityIcon,
   BookOpenIcon,
+  PiggyBankIcon,
   RadioIcon,
   TargetIcon,
   WalletIcon,
@@ -10,6 +11,7 @@ import {
   PAYMENT_FORM_LABELS,
   SESSION_MODE_LABELS,
   formatCents,
+  shownAmountCents,
   formatDuration,
   type AdminDashboard,
   type ParentDashboard,
@@ -51,7 +53,7 @@ function SessionList({ sessions, showTutor }: { sessions: TutoringSession[]; sho
             {SESSION_MODE_LABELS[session.mode]}
           </Badge>
           <span className="w-16 text-right text-sm font-medium tabular-nums">
-            {formatCents(session.amount_cents)}
+            {formatCents(shownAmountCents(session) ?? 0)}
           </span>
         </li>
       ))}
@@ -139,7 +141,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
         <StatCard index={3} label="Admins" value={data.counts.admins} icon={ROLE_ICONS.admin} to="/users?role=admin" />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard
           index={4}
           label="Owed to tutors"
@@ -169,6 +171,16 @@ export function AdminView({ data }: { data: AdminDashboard }) {
         />
         <StatCard
           index={7}
+          label="Kept by the institute"
+          value={data.totals.margin_all_time_cents}
+          money
+          icon={PiggyBankIcon}
+          tone="success"
+          hint={`Paid out ${formatCents(data.totals.tutor_cost_all_time_cents)}`}
+          to="/sessions"
+        />
+        <StatCard
+          index={8}
           label="Sessions running"
           value={data.counts.live_sessions}
           icon={RadioIcon}

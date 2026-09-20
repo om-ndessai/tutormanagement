@@ -52,6 +52,13 @@ export const studentProfileSchema = z.object({
   /** What they are working towards this academic year. */
   academic_year_goal: optionalText(shortText(1000, 'Goal')),
   virtual_available: z.boolean().default(false),
+  /**
+   * Hourly rates the institute CHARGES this student's family, in whole cents.
+   * Separate from what the tutor is paid; the institute keeps the difference.
+   * Only an admin may set these -- see the users route.
+   */
+  charge_rate_in_person_cents: optionalCentsField,
+  charge_rate_virtual_cents: optionalCentsField,
 });
 
 export type StudentProfileInput = z.input<typeof studentProfileSchema>;

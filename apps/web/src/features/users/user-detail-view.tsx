@@ -141,6 +141,18 @@ export function UserDetailView({ user }: { user: UserDetail }) {
             <Detail icon={<VideoIcon className="size-4" />} label="Virtual sessions">
               {student.virtual_available ? 'Available' : 'In person only'}
             </Detail>
+            {/* The API blanks these for anyone but an admin: a tutor who knows
+                their own rate would otherwise learn the institute's margin. */}
+            {student.charge_rate_in_person_cents != null && (
+              <Detail icon={<WalletIcon className="size-4" />} label="In-person price">
+                {`${formatCents(student.charge_rate_in_person_cents)} / hr`}
+              </Detail>
+            )}
+            {student.charge_rate_virtual_cents != null && (
+              <Detail icon={<WalletIcon className="size-4" />} label="Virtual price">
+                {`${formatCents(student.charge_rate_virtual_cents)} / hr`}
+              </Detail>
+            )}
           </dl>
         </Section>
       )}

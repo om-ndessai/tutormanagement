@@ -5,7 +5,7 @@ import type {
   User,
 } from '@tmi/shared';
 
-import { teachingScopeSql } from '../lib/scope.js';
+import { scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -20,8 +20,10 @@ const SELECT_SESSION = `
          s.ended_at,
          s.duration_minutes,
          s.mode,
-         s.rate_cents,
-         s.amount_cents,
+         s.tutor_rate_cents,
+         s.tutor_amount_cents,
+         s.charge_rate_cents,
+         s.charge_amount_cents,
          s.notes,
          s.created_at,
          s.updated_at
@@ -30,7 +32,24 @@ const SELECT_SESSION = `
   JOIN users st ON st.id = s.student_user_id
 `;
 
-type SessionRow = TutoringSession;
+/**
+ * A session exactly as the table holds it: both sides of the money are always
+ * present. `TutoringSession` widens them to nullable because a viewer may only
+ * be shown one side, so keeping the stored shape separate means the compiler
+ * catches any path that returns a row before scopeSessionMoney has run.
+ */
+export interface StoredSession
+  extends Omit<
+    TutoringSession,
+    'tutor_rate_cents' | 'tutor_amount_cents' | 'charge_rate_cents' | 'charge_amount_cents'
+  > {
+  tutor_rate_cents: number;
+  tutor_amount_cents: number;
+  charge_rate_cents: number;
+  charge_amount_cents: number;
+}
+
+type SessionRow = StoredSession;
 
 /** Builds the shared WHERE for list and totals, so the two cannot disagree. */
 function buildFilter(viewer: User, params: ListSessionsParams) {
@@ -86,7 +105,8 @@ export async function listSessions(
       .prepare(
         `SELECT COUNT(*) AS session_count,
                 COALESCE(SUM(s.duration_minutes), 0) AS total_minutes,
-                COALESCE(SUM(s.amount_cents), 0) AS total_amount_cents
+                COALESCE(SUM(s.tutor_amount_cents), 0) AS total_tutor_amount_cents,
+                COALESCE(SUM(s.charge_amount_cents), 0) AS total_charge_amount_cents
          FROM sessions s ${filter.sql}`,
       )
       .bind(...filter.values),
@@ -101,17 +121,32 @@ export async function listSessions(
 
   const totalsRow = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
 
+  const sessions = ((pageResult?.results ?? []) as unknown as TutoringSession[]).map((row) =>
+    scopeSessionMoney(row, viewer),
+  );
+
+  // A list can mix lessons the viewer taught with lessons their child took, so
+  // the totals follow the rows: a side is shown only if it survived scoping on
+  // every row, otherwise the figure would silently be a partial sum.
+  const showsTutorSide = sessions.every((row) => row.tutor_amount_cents !== null);
+  const showsChargeSide = sessions.every((row) => row.charge_amount_cents !== null);
+
   return {
-    sessions: (pageResult?.results ?? []) as unknown as TutoringSession[],
+    sessions,
     totals: {
       session_count: Number(totalsRow.session_count ?? 0),
       total_minutes: Number(totalsRow.total_minutes ?? 0),
-      total_amount_cents: Number(totalsRow.total_amount_cents ?? 0),
+      total_tutor_amount_cents: showsTutorSide
+        ? Number(totalsRow.total_tutor_amount_cents ?? 0)
+        : null,
+      total_charge_amount_cents: showsChargeSide
+        ? Number(totalsRow.total_charge_amount_cents ?? 0)
+        : null,
     },
   };
 }
 
-export async function getSession(db: D1Database, id: string): Promise<TutoringSession | null> {
+export async function getSession(db: D1Database, id: string): Promise<StoredSession | null> {
   const row = await db.prepare(`${SELECT_SESSION} WHERE s.id = ?`).bind(id).first<SessionRow>();
   return row ?? null;
 }
@@ -124,8 +159,10 @@ export interface CreateSessionRow {
   ended_at: string;
   duration_minutes: number;
   mode: string;
-  rate_cents: number;
-  amount_cents: number;
+  tutor_rate_cents: number;
+  tutor_amount_cents: number;
+  charge_rate_cents: number;
+  charge_amount_cents: number;
   notes: string | null;
   recorded_by_user_id: string;
 }
@@ -133,15 +170,16 @@ export interface CreateSessionRow {
 export async function createSession(
   db: D1Database,
   row: CreateSessionRow,
-): Promise<TutoringSession> {
+): Promise<StoredSession> {
   const id = crypto.randomUUID();
 
   await db
     .prepare(
       `INSERT INTO sessions
          (id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at,
-          duration_minutes, mode, rate_cents, amount_cents, notes, recorded_by_user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          duration_minutes, mode, tutor_rate_cents, tutor_amount_cents,
+          charge_rate_cents, charge_amount_cents, notes, recorded_by_user_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -152,8 +190,10 @@ export async function createSession(
       row.ended_at,
       row.duration_minutes,
       row.mode,
-      row.rate_cents,
-      row.amount_cents,
+      row.tutor_rate_cents,
+      row.tutor_amount_cents,
+      row.charge_rate_cents,
+      row.charge_amount_cents,
       row.notes,
       row.recorded_by_user_id,
     )
@@ -166,9 +206,9 @@ export async function createSession(
 }
 
 /**
- * Editing a session re-derives duration and amount from the new times, so a
- * correction cannot leave the billed figure out of step with the hours. The
- * rate itself stays frozen at whatever applied when the session was recorded.
+ * Editing a session re-derives duration and BOTH amounts from the new times,
+ * so a correction cannot leave either figure out of step with the hours. The
+ * rates stay frozen at whatever applied when the session was recorded.
  */
 export async function updateSessionRow(
   db: D1Database,
@@ -180,10 +220,12 @@ export async function updateSessionRow(
     mode: string;
     notes: string | null;
     duration_minutes: number;
-    amount_cents: number;
-    rate_cents: number;
+    tutor_amount_cents: number;
+    tutor_rate_cents: number;
+    charge_amount_cents: number;
+    charge_rate_cents: number;
   }>,
-): Promise<TutoringSession | null> {
+): Promise<StoredSession | null> {
   const assignments: string[] = [];
   const values: unknown[] = [];
 

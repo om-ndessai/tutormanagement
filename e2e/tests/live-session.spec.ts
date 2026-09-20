@@ -41,7 +41,9 @@ test.describe('a tutor can run a live session', () => {
     // and a lesson too short to register is floored rather than lost.
     expect(session.duration_minutes % 15).toBe(0);
     expect(session.duration_minutes).toBeGreaterThanOrEqual(15);
-    expect(session.amount_cents).toBeGreaterThan(0);
+    // A tutor stopping their own lesson sees their pay, never the family's price.
+    expect(session.tutor_amount_cents).toBeGreaterThan(0);
+    expect(session.charge_amount_cents).toBeNull();
     // Notes written during the lesson survive the stop.
     expect(session.notes).toBe('Ratios, with a worked example.');
 

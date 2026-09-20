@@ -10,6 +10,10 @@ import { isAdmin } from '../lib/scope.js';
  *   tutor   balance = what they earned teaching  - what we have paid them
  *   student balance = what their lessons cost    - what their family has paid
  *
+ * The two sums come from DIFFERENT columns on the same session: the tutor is
+ * paid `tutor_amount_cents` and the family is billed `charge_amount_cents`.
+ * Reading one column for both made the institute's margin structurally zero.
+ *
  * Families are keyed on the STUDENT, not the parent, because charges arise
  * from a student's lessons and a student may have two guardians who both pay.
  * The guardians are listed alongside so the screen can still answer "who do we
@@ -34,7 +38,7 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
     db
       .prepare(
         `SELECT u.id AS user_id, u.full_name,
-                COALESCE((SELECT SUM(s.amount_cents) FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS earned_cents,
+                COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS earned_cents,
                 COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS session_count,
                 COALESCE((SELECT SUM(p.amount_cents) FROM payments p WHERE p.party_user_id = u.id AND p.direction = 'to_tutor'), 0) AS paid_cents
          FROM users u
@@ -46,7 +50,7 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
     db
       .prepare(
         `SELECT u.id AS student_user_id, u.full_name AS student_name,
-                COALESCE((SELECT SUM(s.amount_cents) FROM sessions s WHERE s.student_user_id = u.id), 0) AS charged_cents,
+                COALESCE((SELECT SUM(s.charge_amount_cents) FROM sessions s WHERE s.student_user_id = u.id), 0) AS charged_cents,
                 COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.student_user_id = u.id), 0) AS session_count,
                 COALESCE((SELECT SUM(p.amount_cents) FROM payments p WHERE p.student_user_id = u.id AND p.direction = 'from_parent'), 0) AS paid_cents
          FROM users u

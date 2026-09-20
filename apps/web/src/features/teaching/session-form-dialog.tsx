@@ -147,6 +147,8 @@ export function SessionFormDialog({
         )
       : null;
 
+    // The tutor's side only. The charge is priced on the student and is not
+    // fetched here, so this preview deliberately does not claim to show it.
     return {
       elapsed,
       billed,
@@ -416,7 +418,8 @@ function SessionPreview({
 
       {preview.rate != null && (
         <p className="text-muted-foreground mt-1 text-xs">
-          Billed in quarter hours at {formatCents(preview.rate)}/hr.
+          Tutor is paid in quarter hours at {formatCents(preview.rate)}/hr. What the family
+          is charged is priced separately, on the student.
         </p>
       )}
     </div>

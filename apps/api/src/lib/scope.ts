@@ -84,3 +84,62 @@ export function teachingScopeSql(
     values: [viewer.id, viewer.id, viewer.id],
   };
 }
+
+/**
+ * Hides the half of a session's money the viewer has no business seeing.
+ *
+ * The institute buys tutoring at one rate and sells it at another, and keeps
+ * the difference. Showing a tutor what the family pays, or a family what the
+ * tutor is paid, would expose that margin to both sides of the deal, so each
+ * party sees only their own side. An admin sees both, which is what makes the
+ * margin visible to them alone.
+ *
+ * Applied on the way out, after the query: the columns are always read, so the
+ * totals an admin sees and the ones a tutor sees come from the same rows.
+ */
+export function scopeSessionMoney<
+  T extends {
+    tutor_user_id: string;
+    tutor_rate_cents: number | null;
+    tutor_amount_cents: number | null;
+    charge_rate_cents: number | null;
+    charge_amount_cents: number | null;
+  },
+>(row: T, viewer: User): T {
+  if (isAdmin(viewer)) return row;
+
+  // A tutor looking at a lesson they taught sees their pay, not the price.
+  // Everybody else here is the student or their guardian, so they see the
+  // price and not the tutor's pay.
+  return row.tutor_user_id === viewer.id
+    ? { ...row, charge_rate_cents: null, charge_amount_cents: null }
+    : { ...row, tutor_rate_cents: null, tutor_amount_cents: null };
+}
+
+/**
+ * Hides what a student's family is charged from anyone but an admin.
+ *
+ * A tutor can read the record of a student they teach, and already knows their
+ * own rate; showing them the price alongside it would hand them the
+ * institute's margin. The same reasoning as scopeSessionMoney, applied to the
+ * profile the price is set on.
+ */
+export function scopeStudentCharges<
+  T extends {
+    student_profile: {
+      charge_rate_in_person_cents: number | null;
+      charge_rate_virtual_cents: number | null;
+    } | null;
+  },
+>(detail: T, viewer: User): T {
+  if (isAdmin(viewer) || !detail.student_profile) return detail;
+
+  return {
+    ...detail,
+    student_profile: {
+      ...detail.student_profile,
+      charge_rate_in_person_cents: null,
+      charge_rate_virtual_cents: null,
+    },
+  };
+}

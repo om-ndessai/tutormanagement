@@ -180,6 +180,15 @@ for (const t of genTutors) {
   ]);
 }
 
+// What the institute CHARGES each family, per hour. Always above what the
+// tutor is paid for the same lesson -- the difference is the margin, and the
+// whole reason these are separate from the tutor's rates.
+const studentCharge = {
+  [CAST.sanjay]: { in: 12000, virt: 10500 }, // Priya is paid 9000 / 8000.
+  [CAST.sofia]: { in: 10000, virt: 8500 }, //  Alex is paid 7500 / 6500.
+  [CAST.ben]: { in: 9500, virt: 8000 }, //    Alex 7000, Sanjay 3500 / 3000.
+};
+
 const studentProfiles = [
   [q(CAST.sanjay), q('East Chapel Hill High'), q('AP Calculus BC'), q('Score 5 on the AP exam.'), 1],
   [q(CAST.sofia), q('Culbreth Middle'), q('Grade 7 Mathematics'), q('Move up to the accelerated track next year.'), 1],
@@ -284,18 +293,43 @@ genStudents.forEach((student, index) => {
   });
 });
 
+// Generated students are priced off the rate their tutor is paid, marked up
+// 20-40% and rounded to the nearest $5. Derived from the tutor's BASE rate, so
+// a per-pairing discount reduces the cost and widens the margin rather than
+// pushing the price below it.
+const round5 = (cents) => Math.round(cents / 500) * 500;
+
+for (const a of assignments.slice(4)) {
+  const markup = 1.2 + rnd() * 0.2;
+  const base = tutorRates.get(q(a.tutor));
+
+  studentCharge[a.student] = {
+    in: round5((base.in ?? 7000) * markup),
+    virt: base.virt === null ? null : round5(base.virt * markup),
+  };
+}
+
+// Now that every student has a price, append it to their profile row.
+for (const row of studentProfiles) {
+  const price = studentCharge[row[0].slice(1, -1)];
+  row.push(price?.in ?? 'NULL', price?.virt ?? 'NULL');
+}
+
 // --- sessions ---------------------------------------------------------------
 const DAY_MS = 86400000;
 const TODAY = Date.parse('2026-09-20T00:00:00Z');
 const isoDay = (offsetDays) => new Date(TODAY - offsetDays * DAY_MS).toISOString().slice(0, 10);
 const clock = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 
+// Columns: ... mode, tutor_rate, tutor_amount, charge_rate, charge_amount.
+// Each amount is its rate x minutes / 60, and the charge always exceeds the
+// pay -- the same invariants the API enforces.
 const sessions = [
-  [q(id('50000000', 1)), q(CAST.alex), q(CAST.sofia), q('2026-09-08'), q('16:00'), q('17:00'), 60, q('in_person'), 7500, 7500, q('Reviewed equivalent fractions. Confident on halves and quarters, shaky on thirds. Homework: worksheet 3a.'), q(CAST.alex)],
-  [q(id('50000000', 2)), q(CAST.alex), q(CAST.sofia), q('2026-09-15'), q('16:00'), q('17:30'), 90, q('virtual'), 6500, 9750, q('Word problems. Much better at extracting the operation from the sentence. Goal check: on track for accelerated track.'), q(CAST.alex)],
-  [q(id('50000000', 3)), q(CAST.alex), q(CAST.ben), q('2026-09-12'), q('10:00'), q('11:00'), 60, q('in_person'), 7000, 7000, q('Long division. Needed scaffolding but got there. Set 10 practice problems.'), q(CAST.alex)],
-  [q(id('50000000', 4)), q(CAST.sanjay), q(CAST.ben), q('2026-09-13'), q('17:00'), q('18:00'), 60, q('virtual'), 3000, 3000, q('Times tables drill, 6s through 9s. Fast recall improving.'), q(CAST.sanjay)],
-  [q(id('50000000', 5)), q(CAST.priya), q(CAST.sanjay), q('2026-09-10'), q('14:00'), q('15:30'), 90, q('in_person'), 9000, 13500, q('Related rates. Worked three past-paper questions. Assessment: exam-ready on this topic.'), q(CAST.priya)],
+  [q(id('50000000', 1)), q(CAST.alex), q(CAST.sofia), q('2026-09-08'), q('16:00'), q('17:00'), 60, q('in_person'), 7500, 7500, 10000, 10000, q('Reviewed equivalent fractions. Confident on halves and quarters, shaky on thirds. Homework: worksheet 3a.'), q(CAST.alex)],
+  [q(id('50000000', 2)), q(CAST.alex), q(CAST.sofia), q('2026-09-15'), q('16:00'), q('17:30'), 90, q('virtual'), 6500, 9750, 8500, 12750, q('Word problems. Much better at extracting the operation from the sentence. Goal check: on track for accelerated track.'), q(CAST.alex)],
+  [q(id('50000000', 3)), q(CAST.alex), q(CAST.ben), q('2026-09-12'), q('10:00'), q('11:00'), 60, q('in_person'), 7000, 7000, 9500, 9500, q('Long division. Needed scaffolding but got there. Set 10 practice problems.'), q(CAST.alex)],
+  [q(id('50000000', 4)), q(CAST.sanjay), q(CAST.ben), q('2026-09-13'), q('17:00'), q('18:00'), 60, q('virtual'), 3000, 3000, 8000, 8000, q('Times tables drill, 6s through 9s. Fast recall improving.'), q(CAST.sanjay)],
+  [q(id('50000000', 5)), q(CAST.priya), q(CAST.sanjay), q('2026-09-10'), q('14:00'), q('15:30'), 90, q('in_person'), 9000, 13500, 12000, 18000, q('Related rates. Worked three past-paper questions. Assessment: exam-ready on this topic.'), q(CAST.priya)],
 ];
 
 let sessionSeq = 0;
@@ -307,25 +341,30 @@ for (const a of assignments.slice(4)) {
   for (let week = 0; week < 6; week += 1) {
     if (rnd() < 0.25) continue;
 
-    const virtual = a.rate.virt !== null && rnd() < 0.35;
+    const price = studentCharge[a.student];
+    const virtual = a.rate.virt !== null && price?.virt != null && rnd() < 0.35;
+
     const rate = virtual ? a.rate.virt : a.rate.in;
-    if (!rate) continue;
+    const chargeRate = virtual ? price?.virt : price?.in;
+    if (!rate || !chargeRate) continue;
 
     const minutes = pick([45, 60, 60, 60, 75, 90]);
     const startMin = pick([15, 16, 17, 18, 10]) * 60;
     const amount = Math.round((rate * minutes) / 60);
+    const chargeAmount = Math.round((chargeRate * minutes) / 60);
 
     sessionSeq += 1;
     sessions.push([
       q(id('51111111', sessionSeq)), q(a.tutor), q(a.student),
       q(isoDay(week * 7 + between(0, 3))),
       q(clock(startMin)), q(clock(startMin + minutes)), minutes,
-      q(virtual ? 'virtual' : 'in_person'), rate, amount,
+      q(virtual ? 'virtual' : 'in_person'), rate, amount, chargeRate, chargeAmount,
       q(pick(NOTES)), q(a.tutor),
     ]);
 
+    // The tutor is owed what they earned; the family owes what it was charged.
     earned.set(a.tutor, (earned.get(a.tutor) ?? 0) + amount);
-    charged.set(a.student, (charged.get(a.student) ?? 0) + amount);
+    charged.set(a.student, (charged.get(a.student) ?? 0) + chargeAmount);
   }
 }
 
@@ -451,7 +490,7 @@ ${insert('user_roles', ['user_id', 'role'], roles)}
 ${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents'], tutorProfiles)}
 
 -- --- student-only data -----------------------------------------------------
-${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available'], studentProfiles)}
+${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents'], studentProfiles)}
 
 -- --- who is responsible for whom -------------------------------------------
 ${insert('guardianships', ['guardian_user_id', 'dependent_user_id', 'relationship', 'is_primary'], guardianships)}
@@ -467,9 +506,9 @@ ${insert('assignments', ['id', 'tutor_user_id', 'student_user_id', 'rate_in_pers
   assignments.map((a) => [q(a.id), q(a.tutor), q(a.student), n(a.inPerson), n(a.virtual), a.notes ? q(a.notes) : 'NULL']))}
 
 -- --- lessons that happened -------------------------------------------------
--- amount_cents = rate_cents x duration_minutes / 60, rounded, exactly as the
+-- each amount = its rate x duration_minutes / 60, rounded, exactly as the
 -- API computes it.
-${insert('sessions', ['id', 'tutor_user_id', 'student_user_id', 'occurred_on', 'started_at', 'ended_at', 'duration_minutes', 'mode', 'rate_cents', 'amount_cents', 'notes', 'recorded_by_user_id'], sessions, 30)}
+${insert('sessions', ['id', 'tutor_user_id', 'student_user_id', 'occurred_on', 'started_at', 'ended_at', 'duration_minutes', 'mode', 'tutor_rate_cents', 'tutor_amount_cents', 'charge_rate_cents', 'charge_amount_cents', 'notes', 'recorded_by_user_id'], sessions, 30)}
 
 -- --- money that changed hands ----------------------------------------------
 ${insert('payments', ['id', 'direction', 'party_user_id', 'student_user_id', 'amount_cents', 'method', 'paid_at', 'reference', 'notes', 'recorded_by_user_id'], payments, 30)}

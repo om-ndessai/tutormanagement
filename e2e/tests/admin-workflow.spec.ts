@@ -53,6 +53,10 @@ test('a family can be onboarded, taught, billed and settled', async ({ as }) => 
           current_math_course: 'Grade 6',
           academic_year_goal: 'Pass the end-of-year test',
           virtual_available: true,
+          // What the family is charged, as distinct from what the tutor is
+          // paid on the assignment below. The institute keeps the difference.
+          charge_rate_in_person_cents: 11000,
+          charge_rate_virtual_cents: 9500,
         },
         guardians: [{ guardian_user_id: parentId, relationship: 'mother', is_primary: true }],
       },
@@ -94,16 +98,33 @@ test('a family can be onboarded, taught, billed and settled', async ({ as }) => 
     const body = await unwrap<any>(session, 'recording the session');
 
     expect(body.duration_minutes).toBe(105);
-    expect(body.rate_cents).toBe(8000);
+
+    // The tutor recorded it, so they see their own side and not the family's.
+    expect(body.tutor_rate_cents).toBe(8000);
     // 105 minutes at $80/hr = $140.00
-    expect(body.amount_cents).toBe(14000);
+    expect(body.tutor_amount_cents).toBe(14000);
+    expect(body.charge_rate_cents).toBeNull();
+    expect(body.charge_amount_cents).toBeNull();
   });
 
-  await test.step('the family owes exactly that amount', async () => {
+  await test.step('the admin sees both sides, and the margin between them', async () => {
+    const seen = await admin.request.get('/api/sessions?student_user_id=' + studentId);
+    const list = await unwrap<any>(seen, 'reading the session as an admin');
+    const one = list[0];
+
+    expect(one.tutor_amount_cents).toBe(14000);
+    // 105 minutes at $110/hr = $192.50
+    expect(one.charge_rate_cents).toBe(11000);
+    expect(one.charge_amount_cents).toBe(19250);
+    // What the institute keeps on this lesson.
+    expect(one.charge_amount_cents - one.tutor_amount_cents).toBe(5250);
+  });
+
+  await test.step('the family owes the charged amount, not the tutor pay', async () => {
     const balance = await studentBalance(admin, studentId);
-    expect(balance.charged_cents).toBe(14000);
+    expect(balance.charged_cents).toBe(19250);
     expect(balance.paid_cents).toBe(0);
-    expect(balance.balance_cents).toBe(14000);
+    expect(balance.balance_cents).toBe(19250);
   });
 
   await test.step('the admin records the payment and the balance clears', async () => {
@@ -112,7 +133,7 @@ test('a family can be onboarded, taught, billed and settled', async ({ as }) => 
         direction: 'from_parent',
         party_user_id: parentId,
         student_user_id: studentId,
-        amount_cents: 14000,
+        amount_cents: 19250,
         method: 'zelle',
         paid_at: new Date().toISOString(),
       },
@@ -120,7 +141,7 @@ test('a family can be onboarded, taught, billed and settled', async ({ as }) => 
     expect(payment.status()).toBe(201);
 
     const balance = await studentBalance(admin, studentId);
-    expect(balance.paid_cents).toBe(14000);
+    expect(balance.paid_cents).toBe(19250);
     expect(balance.balance_cents).toBe(0);
   });
 

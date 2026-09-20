@@ -69,6 +69,9 @@ interface FormState {
     current_math_course: string;
     academic_year_goal: string;
     virtual_available: boolean;
+    /** Dollars as typed; converted to cents on submit. */
+    charge_in_person: string;
+    charge_virtual: string;
   };
   payment_handles: PaymentHandle[];
   availability: AvailabilitySlot[];
@@ -95,6 +98,8 @@ const EMPTY: FormState = {
     current_math_course: '',
     academic_year_goal: '',
     virtual_available: false,
+    charge_in_person: '',
+    charge_virtual: '',
   },
   payment_handles: [],
   availability: [],
@@ -122,6 +127,8 @@ function fromDetail(detail: UserDetail): FormState {
       current_math_course: detail.student_profile?.current_math_course ?? '',
       academic_year_goal: detail.student_profile?.academic_year_goal ?? '',
       virtual_available: detail.student_profile?.virtual_available ?? false,
+      charge_in_person: centsToInput(detail.student_profile?.charge_rate_in_person_cents),
+      charge_virtual: centsToInput(detail.student_profile?.charge_rate_virtual_cents),
     },
     payment_handles: detail.payment_handles,
     availability: detail.availability,
@@ -159,7 +166,16 @@ function toRequest(form: FormState) {
           default_rate_virtual_cents: parseCentsInput(form.tutor.rate_virtual),
         }
       : null,
-    student_profile: isStudent ? form.student : null,
+    student_profile: isStudent
+      ? {
+          school: form.student.school,
+          current_math_course: form.student.current_math_course,
+          academic_year_goal: form.student.academic_year_goal,
+          virtual_available: form.student.virtual_available,
+          charge_rate_in_person_cents: parseCentsInput(form.student.charge_in_person),
+          charge_rate_virtual_cents: parseCentsInput(form.student.charge_virtual),
+        }
+      : null,
     payment_handles: form.payment_handles,
     // Availability only means something for someone who teaches or learns.
     availability: isTutor || isStudent ? form.availability : [],
@@ -378,8 +394,9 @@ export function UserFormDialog({
                     }
                   />
 
-                  {/* Default hourly rates. A per-student override on the
-                      assignment beats these. */}
+                  {/* What the tutor is PAID. A per-student override on the
+                      assignment beats these. Not what the family is charged --
+                      that is priced on the student, below. */}
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Field
                       id="t_rate_ip"
@@ -455,6 +472,38 @@ export function UserFormDialog({
                       set('student', { ...form.student, virtual_available: checked })
                     }
                   />
+
+                  {/* What the FAMILY is charged. Priced on the student, so it
+                      does not change with whoever happens to teach them; the
+                      institute keeps the difference from the tutor's rate. */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field
+                      id="s_charge_ip"
+                      label="In-person price / hr"
+                      hint="Charged to the family. A session cannot be recorded without it."
+                    >
+                      <Input
+                        id="s_charge_ip"
+                        inputMode="decimal"
+                        value={form.student.charge_in_person}
+                        onChange={(e) =>
+                          set('student', { ...form.student, charge_in_person: e.target.value })
+                        }
+                        placeholder="95.00"
+                      />
+                    </Field>
+                    <Field id="s_charge_v" label="Virtual price / hr" optional>
+                      <Input
+                        id="s_charge_v"
+                        inputMode="decimal"
+                        value={form.student.charge_virtual}
+                        onChange={(e) =>
+                          set('student', { ...form.student, charge_virtual: e.target.value })
+                        }
+                        placeholder="85.00"
+                      />
+                    </Field>
+                  </div>
                 </>
               )}
 

@@ -155,19 +155,40 @@ a CHECK stops anyone being their own guardian.
 Phase 4. An assignment pairs a tutor with a student and prices that pairing; a session is a
 lesson that actually happened.
 
-**Rate resolution** is one rule, written once in `resolveRateCents` so the API and the UI
-preview cannot disagree: a per-pair override on the assignment wins, otherwise the tutor's
-default for that mode. Both rate columns are nullable on both tables, so the common case needs
-no per-student setup.
+**There are two rates on every lesson, and they are not the same number.** The institute buys
+tutoring at one price and sells it at another, and keeps the difference:
+
+| | Set on | Resolved by | Frozen onto the session as |
+| --- | --- | --- | --- |
+| What the **tutor is paid** | `tutor_profiles` default, overridden per pairing on `assignments` | `resolveRateCents` | `tutor_rate_cents`, `tutor_amount_cents` |
+| What the **family is charged** | `student_profiles` | `resolveChargeRateCents` | `charge_rate_cents`, `charge_amount_cents` |
+
+The charge is priced on the STUDENT, with no per-pairing override: a family's price should not
+change according to which tutor happens to be free that week. The pay keeps its override,
+because what a tutor is worth for a particular student genuinely does vary.
+
+**The margin is never stored.** It is `charge_amount_cents - tutor_amount_cents`, derived
+wherever it is shown (`marginCents`), so it cannot drift out of step with the two numbers it
+comes from. Storing one amount for both sides is what made the margin structurally zero before
+these columns were split.
+
+**Each party sees only their own side.** `scopeSessionMoney` blanks the charge for a tutor and
+the pay for a family, and `scopeStudentCharges` hides a student's price from anyone but an
+admin. Both run in the API, not the UI: a tutor who knows their own rate would otherwise be one
+API call away from the institute's markup. Only an admin sees both, which is what makes the
+margin visible to them alone -- and why the money fields on `TutoringSession` are nullable.
+
+**A session cannot be recorded until both rates exist.** A missing tutor rate and a missing
+student price each fail validation on the way in, rather than billing zero quietly.
 
 **`sessions` deliberately has no foreign key to `assignments`.** The assignment authorises and
 prices a session, but the session records what happened. Unassigning a student later must not
 delete the lessons already taught.
 
-**`rate_cents` and `amount_cents` are frozen snapshots.** Changing a tutor's rate tomorrow must
-not restate every session they have already taught, so the rate that applied is copied onto the
-session at the moment it is saved. `duration_minutes` is stored for the same reason: a later
-change to the rounding rule cannot silently re-bill history.
+**All four money columns are frozen snapshots.** Changing a rate tomorrow must not restate
+lessons already taught, so whatever applied is copied onto the session at the moment it is
+saved. `duration_minutes` is stored for the same reason: a later change to the rounding rule
+cannot silently re-bill history.
 
 **Durations round to the nearest quarter hour, with a floor of 15 minutes.** Nearest rather
 than up or down, because rounding up systematically overcharges families and rounding down

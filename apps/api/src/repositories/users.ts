@@ -184,7 +184,8 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
         .bind(id),
       db
         .prepare(
-          `SELECT school, current_math_course, academic_year_goal, virtual_available
+          `SELECT school, current_math_course, academic_year_goal, virtual_available,
+                  charge_rate_in_person_cents, charge_rate_virtual_cents
            FROM student_profiles WHERE user_id = ?`,
         )
         .bind(id),
@@ -253,6 +254,10 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
           current_math_course: (rawStudent.current_math_course as string | null) ?? null,
           academic_year_goal: (rawStudent.academic_year_goal as string | null) ?? null,
           virtual_available: rawStudent.virtual_available === 1,
+          charge_rate_in_person_cents:
+            (rawStudent.charge_rate_in_person_cents as number | null) ?? null,
+          charge_rate_virtual_cents:
+            (rawStudent.charge_rate_virtual_cents as number | null) ?? null,
         } satisfies StudentProfile)
       : null,
     payment_handles: (payRes?.results ?? []) as unknown as PaymentHandle[],
@@ -419,8 +424,9 @@ export async function updateUserSections(
         db
           .prepare(
             `INSERT INTO student_profiles
-               (user_id, school, current_math_course, academic_year_goal, virtual_available)
-             VALUES (?, ?, ?, ?, ?)`,
+               (user_id, school, current_math_course, academic_year_goal, virtual_available,
+                charge_rate_in_person_cents, charge_rate_virtual_cents)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
@@ -428,6 +434,8 @@ export async function updateUserSections(
             p.current_math_course,
             p.academic_year_goal,
             p.virtual_available ? 1 : 0,
+            p.charge_rate_in_person_cents,
+            p.charge_rate_virtual_cents,
           ),
       );
     }
@@ -600,4 +608,30 @@ export async function createBootstrapAdmin(
   if (!user) throw new Error('Bootstrap admin insert returned no row.');
 
   return user;
+}
+
+/**
+ * The hourly prices charged for one student, or null if they have no student
+ * profile. Its own query because pricing a session needs nothing else from the
+ * profile, and runs on every session write.
+ */
+export async function getStudentChargeRates(
+  db: D1Database,
+  studentUserId: string,
+): Promise<{
+  charge_rate_in_person_cents: number | null;
+  charge_rate_virtual_cents: number | null;
+} | null> {
+  const row = await db
+    .prepare(
+      `SELECT charge_rate_in_person_cents, charge_rate_virtual_cents
+       FROM student_profiles WHERE user_id = ?`,
+    )
+    .bind(studentUserId)
+    .first<{
+      charge_rate_in_person_cents: number | null;
+      charge_rate_virtual_cents: number | null;
+    }>();
+
+  return row ?? null;
 }

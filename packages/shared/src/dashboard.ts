@@ -45,7 +45,12 @@ export interface AdminDashboard {
   totals: {
     owed_to_tutors_cents: number;
     owed_by_families_cents: number;
+    /** All-time revenue: what families have been charged for lessons. */
     billed_all_time_cents: number;
+    /** All-time cost: what tutors have earned for those same lessons. */
+    tutor_cost_all_time_cents: number;
+    /** What the institute kept. Derived from the two figures above. */
+    margin_all_time_cents: number;
     session_count: number;
   };
   tutor_balances: TutorBalance[];

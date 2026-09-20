@@ -11,7 +11,9 @@ import {
   updateActiveSessionSchema,
   type ActiveSession,
   listSessionsQuerySchema,
+  marginCents,
   SESSION_MODE_LABELS,
+  resolveChargeRateCents,
   resolveRateCents,
   roundToQuarterHour,
   sessionInputSchema,
@@ -27,9 +29,10 @@ import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
-import { isAdmin, teachingScopeSql } from '../lib/scope.js';
+import { isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
+import { getStudentChargeRates } from '../repositories/users.js';
 import {
   clearActive,
   getActiveRow,
@@ -77,7 +80,10 @@ async function priceSession(
     });
   }
 
-  const rateCents = resolveRateCents(
+  const label = mode === 'virtual' ? 'virtual' : 'in-person';
+
+  // What the tutor is paid: the pairing's override, else the tutor's default.
+  const tutorRateCents = resolveRateCents(
     mode,
     { in_person: assignment.rate_in_person_cents, virtual: assignment.rate_virtual_cents },
     {
@@ -86,11 +92,25 @@ async function priceSession(
     },
   );
 
-  if (rateCents == null) {
+  if (tutorRateCents == null) {
     throw ApiError.validation('Please correct the highlighted fields.', {
       mode: [
-        `No ${mode === 'virtual' ? 'virtual' : 'in-person'} rate is set for this tutor. ` +
+        `No ${label} rate is set for this tutor. ` +
           'Set a default rate on their profile, or a rate on the assignment.',
+      ],
+    });
+  }
+
+  // What the family is charged. Priced on the student, so it does not depend
+  // on who teaches them.
+  const studentRates = await getStudentChargeRates(db, studentUserId);
+  const chargeRateCents = studentRates && resolveChargeRateCents(mode, studentRates);
+
+  if (chargeRateCents == null) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      mode: [
+        `No ${label} price is set for this student. ` +
+          "Set it on the student's profile before recording the session.",
       ],
     });
   }
@@ -106,8 +126,10 @@ async function priceSession(
 
   return {
     durationMinutes,
-    rateCents,
-    amountCents: computeAmountCents(durationMinutes, rateCents),
+    tutorRateCents,
+    chargeRateCents,
+    tutorAmountCents: computeAmountCents(durationMinutes, tutorRateCents),
+    chargeAmountCents: computeAmountCents(durationMinutes, chargeRateCents),
   };
 }
 
@@ -156,8 +178,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
       ended_at: input.ended_at,
       duration_minutes: priced.durationMinutes,
       mode: input.mode,
-      rate_cents: priced.rateCents,
-      amount_cents: priced.amountCents,
+      tutor_rate_cents: priced.tutorRateCents,
+      tutor_amount_cents: priced.tutorAmountCents,
+      charge_rate_cents: priced.chargeRateCents,
+      charge_amount_cents: priced.chargeAmountCents,
       notes: input.notes,
       recorded_by_user_id: viewer.id,
     });
@@ -168,13 +192,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
         `Recorded a ${formatDuration(session.duration_minutes)} ` +
         `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
         `${session.student_name} on ${session.occurred_on} ` +
-        `(${(session.amount_cents / 100).toFixed(2)} USD)`,
+        `(${((session.charge_amount_cents ?? 0) / 100).toFixed(2)} USD)`,
       subject: { id: session.student_user_id, full_name: session.student_name },
       entity_type: 'session',
       entity_id: session.id,
     });
 
-    const body: ApiOk<TutoringSession> = { data: session };
+    const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
     return c.json(body, 201);
   })
 
@@ -201,8 +225,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
         'End',
         'Minutes',
         'Mode',
-        'Rate (USD/hr)',
-        'Amount (USD)',
+        'Charge rate (USD/hr)',
+        'Charged (USD)',
+        'Tutor rate (USD/hr)',
+        'Tutor pay (USD)',
+        'Margin (USD)',
         'Notes',
       ],
       sessions.map((session) => [
@@ -213,8 +240,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
         formatClockTime(session.ended_at),
         session.duration_minutes,
         SESSION_MODE_LABELS[session.mode],
-        csvMoney(session.rate_cents),
-        csvMoney(session.amount_cents),
+        csvMoney(session.charge_rate_cents),
+        csvMoney(session.charge_amount_cents),
+        csvMoney(session.tutor_rate_cents),
+        csvMoney(session.tutor_amount_cents),
+        csvMoney(marginCents(session)),
         session.notes ?? '',
       ]),
     );
@@ -242,7 +272,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
         row.student_user_id,
       );
 
-      const rate = assignment
+      const tutorRate = assignment
         ? resolveRate(
             row.mode,
             {
@@ -256,7 +286,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
           )
         : null;
 
-      return toActiveSession(row, rate);
+      const studentRates = await getStudentChargeRates(c.env.DB, row.student_user_id);
+      const chargeRate = studentRates ? resolveChargeRateCents(row.mode, studentRates) : null;
+
+      return toActiveSession(row, tutorRate, chargeRate, viewer);
     };
 
     const body: ApiOk<{ mine: ActiveSession | null; all: ActiveSession[] }> = {
@@ -294,7 +327,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     await startActive(c.env.DB, viewer.id, student_user_id, mode);
 
     const row = await getActiveRow(c.env.DB, viewer.id);
-    const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null) };
+    const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null, null, viewer) };
     return c.json(body, 201);
   })
 
@@ -309,7 +342,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     await updateActive(c.env.DB, viewer.id, c.req.valid('json'));
 
     const row = await getActiveRow(c.env.DB, viewer.id);
-    const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null) };
+    const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null, null, viewer) };
     return c.json(body);
   })
 
@@ -347,8 +380,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
       // agree except at the boundaries, and the plan specifies the endpoints.
       duration_minutes: times.duration_minutes,
       mode: row.mode,
-      rate_cents: priced.rateCents,
-      amount_cents: computeAmountCents(times.duration_minutes, priced.rateCents),
+      tutor_rate_cents: priced.tutorRateCents,
+      tutor_amount_cents: computeAmountCents(times.duration_minutes, priced.tutorRateCents),
+      charge_rate_cents: priced.chargeRateCents,
+      charge_amount_cents: computeAmountCents(times.duration_minutes, priced.chargeRateCents),
       notes,
       recorded_by_user_id: viewer.id,
     });
@@ -361,13 +396,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
         `Recorded a ${formatDuration(session.duration_minutes)} ` +
         `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
         `${session.student_name} on ${session.occurred_on} ` +
-        `(${(session.amount_cents / 100).toFixed(2)} USD)`,
+        `(${((session.charge_amount_cents ?? 0) / 100).toFixed(2)} USD)`,
       subject: { id: session.student_user_id, full_name: session.student_name },
       entity_type: 'session',
       entity_id: session.id,
     });
 
-    const body: ApiOk<TutoringSession> = { data: session };
+    const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
     return c.json(body, 201);
   })
 
@@ -400,7 +435,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       if (!allowed) throw ApiError.notFound('That session does not exist.');
     }
 
-    const body: ApiOk<TutoringSession> = { data: session };
+    const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
     return c.json(body);
   })
 
@@ -428,8 +463,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
       const timesChanged =
         startedAt !== existing.started_at || endedAt !== existing.ended_at || mode !== existing.mode;
 
-      let derived: Partial<{ duration_minutes: number; amount_cents: number; rate_cents: number }> =
-        {};
+      let derived: Partial<{
+        duration_minutes: number;
+        tutor_rate_cents: number;
+        tutor_amount_cents: number;
+        charge_rate_cents: number;
+        charge_amount_cents: number;
+      }> = {};
 
       if (timesChanged) {
         const priced = await priceSession(
@@ -440,16 +480,21 @@ export const sessionsRoutes = new Hono<AppEnv>()
           startedAt,
           endedAt,
         );
+
+        // Correcting the times re-derives both amounts, but the rates stay
+        // frozen at what applied when the lesson was recorded -- unless the
+        // mode changed, which is what decides WHICH rate applies.
+        const tutorRate = mode === existing.mode ? existing.tutor_rate_cents : priced.tutorRateCents;
+        const chargeRate =
+          mode === existing.mode ? existing.charge_rate_cents : priced.chargeRateCents;
+
         derived = {
           duration_minutes: priced.durationMinutes,
-          amount_cents: priced.amountCents,
-          // Changing between in-person and virtual changes which rate applies.
-          rate_cents: mode === existing.mode ? existing.rate_cents : priced.rateCents,
+          tutor_rate_cents: tutorRate,
+          charge_rate_cents: chargeRate,
+          tutor_amount_cents: computeAmountCents(priced.durationMinutes, tutorRate),
+          charge_amount_cents: computeAmountCents(priced.durationMinutes, chargeRate),
         };
-
-        if (mode === existing.mode) {
-          derived.amount_cents = computeAmountCents(priced.durationMinutes, existing.rate_cents);
-        }
       }
 
       const updated = await updateSessionRow(c.env.DB, id, {
@@ -471,7 +516,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
         entity_id: updated.id,
       });
 
-      const body: ApiOk<TutoringSession> = { data: updated };
+      const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(updated, viewer) };
       return c.json(body);
     },
   )
