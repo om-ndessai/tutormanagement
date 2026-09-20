@@ -72,6 +72,29 @@ export function roundToQuarterHour(minutes: number): number {
   return Math.max(QUARTER_HOUR, Math.round(minutes / QUARTER_HOUR) * QUARTER_HOUR);
 }
 
+/** Minutes past midnight back to "HH:MM". */
+export function minutesToClock(minutes: number): string {
+  const clamped = Math.max(0, Math.min(23 * 60 + 59, Math.round(minutes)));
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${pad(Math.floor(clamped / 60))}:${pad(clamped % 60)}`;
+}
+
+/**
+ * Snaps a wall-clock time to the nearest quarter hour.
+ *
+ * Distinct from roundToQuarterHour, which rounds a DURATION. A live session
+ * rounds each endpoint as it is pressed -- "the start time will be nearest
+ * 15 min ... it will again record session end to nearest 15 min" -- so the
+ * duration falls out as a multiple of 15 rather than being rounded itself.
+ *
+ * Clamped to 23:45 so a late-evening start cannot roll past midnight and make
+ * the session appear to end before it began.
+ */
+export function roundClockToQuarter(minutesOfDay: number): number {
+  const rounded = Math.round(minutesOfDay / QUARTER_HOUR) * QUARTER_HOUR;
+  return Math.max(0, Math.min(23 * 60 + 45, rounded));
+}
+
 /** Elapsed minutes between two HH:MM times, or null if either is unreadable. */
 export function elapsedMinutes(startedAt: string, endedAt: string): number | null {
   const start = parseClockTime(startedAt);
@@ -263,4 +286,74 @@ export interface SessionTotals {
   session_count: number;
   total_minutes: number;
   total_amount_cents: number;
+}
+
+// ---------------------------------------------------------------------------
+// Live sessions (Phase 7)
+// ---------------------------------------------------------------------------
+
+/**
+ * A lesson currently being taught.
+ *
+ * Kept in its own table rather than as a half-filled `sessions` row: a session
+ * is the billing record, and every column it has must be true of it. An
+ * in-progress lesson has no end, no duration and no amount, so it is a
+ * different thing until it finishes.
+ */
+export interface ActiveSession {
+  tutor_user_id: string;
+  tutor_name: string;
+  student_user_id: string;
+  student_name: string;
+  mode: SessionMode;
+  /** The real instant the tutor pressed start, not the rounded value. */
+  started_at: string;
+  /** What the start time will be recorded as, already snapped to a quarter. */
+  rounded_start: string;
+  occurred_on: string;
+  notes: string | null;
+  /** The rate that will apply, resolved from the assignment at start time. */
+  rate_cents: number | null;
+}
+
+export const startSessionSchema = z.object({
+  student_user_id: z.uuid(),
+  mode: z.enum(SESSION_MODES).default('in_person'),
+});
+
+export type StartSessionPayload = z.output<typeof startSessionSchema>;
+
+/** Notes may be written during the lesson or left until after it. */
+export const updateActiveSessionSchema = z
+  .object({
+    mode: z.enum(SESSION_MODES).optional(),
+    notes: optionalText(z.string().trim().max(4000)),
+  })
+  .refine((value) => Object.keys(value).length > 0, {
+    message: 'Provide at least one field to update.',
+  });
+
+export type UpdateActiveSessionPayload = z.output<typeof updateActiveSessionSchema>;
+
+export const stopSessionSchema = z.object({
+  notes: optionalText(z.string().trim().max(4000)),
+});
+
+export type StopSessionPayload = z.output<typeof stopSessionSchema>;
+
+/** Elapsed wall-clock time so far, for the ticking display. */
+export function elapsedSince(startedAtIso: string, now: Date = new Date()): number {
+  const started = new Date(startedAtIso).getTime();
+  if (Number.isNaN(started)) return 0;
+  return Math.max(0, Math.floor((now.getTime() - started) / 1000));
+}
+
+/** "1:04:37" */
+export function formatStopwatch(totalSeconds: number): string {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  return `${hours}:${pad(minutes)}:${pad(seconds)}`;
 }

@@ -15,6 +15,7 @@ import {
 import { LogoLockup } from '@/components/brand/logo';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { UserMenu } from '@/components/layout/user-menu';
+import { LiveSessionBar } from '@/features/teaching/live-session-bar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -118,6 +119,10 @@ export function AppShell() {
             <UserMenu />
           </div>
         </header>
+
+        {/* A running lesson follows the tutor wherever they navigate, so it
+            cannot be left ticking on a screen they have moved away from. */}
+        <LiveSessionBar />
 
         <main className="flex-1 px-4 py-6 lg:px-8 lg:py-8">
           <Outlet />

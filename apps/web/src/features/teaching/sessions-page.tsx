@@ -28,6 +28,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { SessionFormDialog } from './session-form-dialog';
+import { StartSessionButton } from './start-session-button';
 import { useDeleteSession, useSessions } from './api';
 
 const PAGE_SIZE = 25;
@@ -95,15 +96,18 @@ export function SessionsPage() {
         }
         actions={
           isTutor || isAdmin ? (
-            <Button
-              onClick={() => {
-                setEditing(null);
-                setFormOpen(true);
-              }}
-            >
-              <PlusIcon />
-              Record a session
-            </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <StartSessionButton />
+              <Button
+                onClick={() => {
+                  setEditing(null);
+                  setFormOpen(true);
+                }}
+              >
+                <PlusIcon />
+                Record a session
+              </Button>
+            </div>
           ) : undefined
         }
       />

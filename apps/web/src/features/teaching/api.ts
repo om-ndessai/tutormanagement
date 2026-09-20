@@ -1,5 +1,6 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
+  ActiveSession,
   ApiList,
   ApiOk,
   Assignment,
@@ -9,6 +10,9 @@ import type {
   ListSessionsParams,
   SessionPayload,
   SessionTotals,
+  StartSessionPayload,
+  StopSessionPayload,
+  UpdateActiveSessionPayload,
   SessionUpdatePayload,
   TutoringSession,
 } from '@tmi/shared';
@@ -28,8 +32,70 @@ function useTeachingInvalidation() {
   return () => {
     void queryClient.invalidateQueries({ queryKey: ['assignments'] });
     void queryClient.invalidateQueries({ queryKey: ['sessions'] });
+    void queryClient.invalidateQueries({ queryKey: ['active-session'] });
+    void queryClient.invalidateQueries({ queryKey: ['balances'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
+}
+
+interface ActiveSessionResponse {
+  mine: ActiveSession | null;
+  all: ActiveSession[];
+}
+
+/**
+ * The lesson currently running, if any.
+ *
+ * Polled rather than held in component state: the timer lives in the database
+ * so it survives a refresh, and a tutor may start on a phone and stop on a
+ * laptop. Polling keeps those views honest with each other.
+ */
+export function useActiveSession() {
+  return useQuery({
+    queryKey: ['active-session'],
+    queryFn: () => apiClient.get<ApiOk<ActiveSessionResponse>>('/sessions/active'),
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: true,
+  });
+}
+
+export function useStartSession() {
+  const invalidate = useTeachingInvalidation();
+
+  return useMutation({
+    mutationFn: (input: StartSessionPayload) =>
+      apiClient.post<ApiOk<ActiveSession>>('/sessions/active', input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useUpdateActiveSession() {
+  const invalidate = useTeachingInvalidation();
+
+  return useMutation({
+    mutationFn: (input: UpdateActiveSessionPayload) =>
+      apiClient.patch<ApiOk<ActiveSession>>('/sessions/active', input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useStopSession() {
+  const invalidate = useTeachingInvalidation();
+
+  return useMutation({
+    mutationFn: (input: StopSessionPayload) =>
+      apiClient.post<ApiOk<TutoringSession>>('/sessions/active/stop', input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useCancelActiveSession() {
+  const invalidate = useTeachingInvalidation();
+
+  return useMutation({
+    mutationFn: () => apiClient.delete<undefined>('/sessions/active'),
+    onSuccess: invalidate,
+  });
 }
 
 export function useAssignments(params: Partial<ListAssignmentsParams> = {}) {

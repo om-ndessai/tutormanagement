@@ -32,6 +32,7 @@ DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
 
+DROP TABLE IF EXISTS active_sessions;
 DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS audit_events;
 DROP TABLE IF EXISTS sessions;
@@ -352,6 +353,41 @@ CREATE TABLE sessions (
 CREATE INDEX sessions_tutor_idx   ON sessions (tutor_user_id, occurred_on);
 CREATE INDEX sessions_student_idx ON sessions (student_user_id, occurred_on);
 CREATE INDEX sessions_date_idx    ON sessions (occurred_on);
+
+-- ---------------------------------------------------------------------------
+-- active_sessions - a lesson being taught right now
+-- ---------------------------------------------------------------------------
+-- The tutor presses start, teaches, then presses stop, at which point a row in
+-- `sessions` is written and this one is removed.
+--
+-- Deliberately NOT a half-filled `sessions` row. A session is the billing
+-- record and every column it carries must be true of it; a lesson in progress
+-- has no end, no duration and no amount. Making those nullable would weaken
+-- the constraints that protect every completed session.
+--
+-- Living in the database rather than the browser means a tutor can start on
+-- their phone and stop on a laptop, and a refresh does not lose the lesson.
+CREATE TABLE active_sessions (
+  -- One live session per tutor: you cannot teach two lessons at once, and the
+  -- primary key is what enforces it.
+  tutor_user_id   TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  student_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  mode            TEXT NOT NULL CHECK (mode IN ('in_person', 'virtual')),
+
+  -- The real instant start was pressed. Rounding happens when the session is
+  -- written, so the raw value stays available for the ticking display and for
+  -- working out what happened if something goes wrong.
+  started_at      TEXT NOT NULL,
+
+  -- Notes may be typed during the lesson or left until afterwards.
+  notes           TEXT,
+
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX active_sessions_student_idx ON active_sessions (student_user_id);
+
 
 -- ---------------------------------------------------------------------------
 -- payments - money that changed hands, recorded after the fact

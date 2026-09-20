@@ -4,6 +4,11 @@ import {
   computeAmountCents,
   elapsedMinutes,
   formatDuration,
+  resolveRateCents as resolveRate,
+  startSessionSchema,
+  stopSessionSchema,
+  updateActiveSessionSchema,
+  type ActiveSession,
   listSessionsQuerySchema,
   resolveRateCents,
   roundToQuarterHour,
@@ -22,6 +27,15 @@ import { ApiError } from '../lib/errors.js';
 import { isAdmin, teachingScopeSql } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
+import {
+  clearActive,
+  getActiveRow,
+  listActiveRows,
+  resolveTimes,
+  startActive,
+  toActiveSession,
+  updateActive,
+} from '../repositories/active-sessions.js';
 import {
   createSession,
   deleteSession,
@@ -159,6 +173,163 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     const body: ApiOk<TutoringSession> = { data: session };
     return c.json(body, 201);
+  })
+
+  // ---------------------------------------------------------------------
+  // Live sessions (Phase 7)
+  // ---------------------------------------------------------------------
+  // Declared before '/:id' so that "active" is matched as a literal segment
+  // rather than parsed as a session id.
+
+  /** The viewer's running lesson, plus every one of them for an admin. */
+  .get('/active', async (c) => {
+    const viewer = c.get('user');
+
+    const mine = await getActiveRow(c.env.DB, viewer.id);
+    const others = isAdmin(viewer) ? await listActiveRows(c.env.DB) : [];
+
+    const withRate = async (row: NonNullable<typeof mine>) => {
+      const assignment = await getActiveAssignmentFor(
+        c.env.DB,
+        row.tutor_user_id,
+        row.student_user_id,
+      );
+
+      const rate = assignment
+        ? resolveRate(
+            row.mode,
+            {
+              in_person: assignment.rate_in_person_cents,
+              virtual: assignment.rate_virtual_cents,
+            },
+            {
+              in_person: assignment.effective_rate_in_person_cents,
+              virtual: assignment.effective_rate_virtual_cents,
+            },
+          )
+        : null;
+
+      return toActiveSession(row, rate);
+    };
+
+    const body: ApiOk<{ mine: ActiveSession | null; all: ActiveSession[] }> = {
+      data: {
+        mine: mine ? await withRate(mine) : null,
+        all: await Promise.all(others.map(withRate)),
+      },
+    };
+    return c.json(body);
+  })
+
+  /** "When the session is to start, the tutor could click the start session
+   *  button and select student." */
+  .post('/active', zValidator('json', startSessionSchema), async (c) => {
+    const viewer = c.get('user');
+    const { student_user_id, mode } = c.req.valid('json');
+
+    // The primary key would reject this anyway; catching it here says why.
+    if (await getActiveRow(c.env.DB, viewer.id)) {
+      throw new ApiError(
+        409,
+        'conflict',
+        'You already have a session running. Stop it before starting another.',
+      );
+    }
+
+    const assignment = await getActiveAssignmentFor(c.env.DB, viewer.id, student_user_id);
+
+    if (!assignment) {
+      throw ApiError.validation('Please correct the highlighted fields.', {
+        student_user_id: ['That student is not currently assigned to you.'],
+      });
+    }
+
+    await startActive(c.env.DB, viewer.id, student_user_id, mode);
+
+    const row = await getActiveRow(c.env.DB, viewer.id);
+    const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null) };
+    return c.json(body, 201);
+  })
+
+  /** Notes and mode can be adjusted while the lesson is still running. */
+  .patch('/active', zValidator('json', updateActiveSessionSchema), async (c) => {
+    const viewer = c.get('user');
+
+    if (!(await getActiveRow(c.env.DB, viewer.id))) {
+      throw ApiError.notFound('You have no session running.');
+    }
+
+    await updateActive(c.env.DB, viewer.id, c.req.valid('json'));
+
+    const row = await getActiveRow(c.env.DB, viewer.id);
+    const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null) };
+    return c.json(body);
+  })
+
+  /**
+   * Ends the lesson and writes the billing record.
+   *
+   * Both endpoints are snapped to the nearest quarter hour as they were
+   * pressed, so the duration is a multiple of 15 without rounding it again.
+   */
+  .post('/active/stop', zValidator('json', stopSessionSchema), async (c) => {
+    const viewer = c.get('user');
+    const row = await getActiveRow(c.env.DB, viewer.id);
+
+    if (!row) throw ApiError.notFound('You have no session running.');
+
+    const times = resolveTimes(row.started_at);
+    const notes = c.req.valid('json').notes ?? row.notes;
+
+    const priced = await priceSession(
+      c.env.DB,
+      row.tutor_user_id,
+      row.student_user_id,
+      row.mode,
+      times.started_at,
+      times.ended_at,
+    );
+
+    const session = await createSession(c.env.DB, {
+      tutor_user_id: row.tutor_user_id,
+      student_user_id: row.student_user_id,
+      occurred_on: times.occurred_on,
+      started_at: times.started_at,
+      ended_at: times.ended_at,
+      // Trust the endpoint rounding over re-rounding the elapsed time: the two
+      // agree except at the boundaries, and the plan specifies the endpoints.
+      duration_minutes: times.duration_minutes,
+      mode: row.mode,
+      rate_cents: priced.rateCents,
+      amount_cents: computeAmountCents(times.duration_minutes, priced.rateCents),
+      notes,
+      recorded_by_user_id: viewer.id,
+    });
+
+    await clearActive(c.env.DB, viewer.id);
+
+    await recordAudit(c.env.DB, viewer, {
+      action: 'session.recorded',
+      description:
+        `Recorded a ${formatDuration(session.duration_minutes)} ` +
+        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
+        `${session.student_name} on ${session.occurred_on} ` +
+        `(${(session.amount_cents / 100).toFixed(2)} USD)`,
+      subject: { id: session.student_user_id, full_name: session.student_name },
+      entity_type: 'session',
+      entity_id: session.id,
+    });
+
+    const body: ApiOk<TutoringSession> = { data: session };
+    return c.json(body, 201);
+  })
+
+  /** Abandons a running lesson without recording anything. */
+  .delete('/active', async (c) => {
+    if (!(await clearActive(c.env.DB, c.get('user').id))) {
+      throw ApiError.notFound('You have no session running.');
+    }
+    return c.body(null, 204);
   })
 
   .get('/:id', zValidator('param', idParamSchema), async (c) => {

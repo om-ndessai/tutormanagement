@@ -174,6 +174,25 @@ than up or down, because rounding up systematically overcharges families and rou
 systematically underpays tutors. The client never sends a duration or an amount — both are
 derived server-side from the times and the assignment.
 
+### `active_sessions`
+
+Phase 7. A lesson being taught right now: the tutor presses start, teaches, presses stop, and a
+`sessions` row is written while this one is removed.
+
+Deliberately **not** a half-filled `sessions` row. A session is the billing record and every
+column it carries must be true of it; a lesson in progress has no end, no duration and no
+amount. Making those nullable would weaken the constraints protecting every completed session.
+
+The primary key is `tutor_user_id`, which is what enforces one live lesson per tutor. Keeping
+it in the database rather than the browser means a tutor can start on a phone and stop on a
+laptop, and a refresh loses nothing.
+
+**Rounding differs from Phase 4 on purpose.** A typed-in session rounds its *elapsed time* to
+the nearest quarter. A live session snaps *each endpoint* as it is pressed — "the start time
+will be nearest 15 min ... it will again record session end to nearest 15 min" — so the
+duration falls out as a multiple of 15 rather than being rounded itself. `roundClockToQuarter`
+and `roundToQuarterHour` are separate functions for that reason.
+
 ### `payments`
 
 Phase 5. A ledger of money that moved **outside** the portal, so the institute can answer two
