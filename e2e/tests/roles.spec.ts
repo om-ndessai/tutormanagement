@@ -14,15 +14,21 @@ test.describe('each kind of user sees their own portal', () => {
 
     await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible();
 
-    // People from unrelated families and an unassigned tutor: an admin sees
-    // everyone, including those no scoped role would be shown.
+    // People from unrelated families and an unassigned tutor: an admin can
+    // reach everyone, including those no scoped role would ever be shown.
     //
-    // Asserted by name rather than by a row count, because other specs in this
-    // suite add users to the same database and a count would be brittle.
-    await expect(visible(page, 'Johan Lindqvist').first()).toBeVisible();
-    await expect(visible(page, 'Grace Lee').first()).toBeVisible();
-    await expect(visible(page, 'Ben Whitfield').first()).toBeVisible();
-    await expect(visible(page, 'Sofia Okafor').first()).toBeVisible();
+    // Reached by search rather than by reading the first page: the roster is
+    // large enough to paginate, so "is this name on screen" would depend on
+    // alphabetical luck. Searching is also how an admin actually finds
+    // somebody.
+    const search = page.getByLabel('Search users');
+
+    for (const name of ['Johan Lindqvist', 'Grace Lee', 'Ben Whitfield', 'Sofia Okafor']) {
+      await search.fill(name);
+      await expect(visible(page, name).first()).toBeVisible();
+    }
+
+    await search.fill('');
 
     // Admin-only navigation and actions are present.
     await expect(page.getByRole('link', { name: 'Billing' })).toBeVisible();

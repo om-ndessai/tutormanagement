@@ -156,6 +156,12 @@ wraps them, so a row of fixed-width controls pushes the document wider than the 
 every card on the page runs off the edge. `responsive.spec.ts` asserts zero horizontal overflow
 on every page at 390px and 360px.
 
+**`apps/api/db/seed.sql` is generated, not hand-edited.** Change `db/generate-seed.mjs` and run
+`npm run db:seed:generate --workspace @tmi/api`. The generator owns the invariants the API
+enforces (every student has a guardian, every session has an assignment, amount = rate x
+minutes / 60), and pairs generated people only with each other so bulk data cannot change who
+can see whom.
+
 ## End-to-end tests
 
 `npm run e2e` deploys and tests `tmi-portal-test`, a separate Worker with its own database

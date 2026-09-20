@@ -14,6 +14,36 @@ That command:
 3. rebuilds that database from `apps/api/db/schema.sql` and `db/seed.sql`
 4. runs the suite against `https://tmi-portal-test.om-ndessai.workers.dev`
 
+## The seeded roster
+
+The test database is rebuilt from `apps/api/db/seed.sql` on every run, at the scale
+`docs/plan.md` asks for: **2 admins, 10 tutors, 30 parents, 50 students** {D} 88 people. The
+totals overlap because a person may hold several roles, which is the point of the model.
+
+That file is **generated**, not hand-written:
+
+```bash
+npm run db:seed:generate --workspace @tmi/api   # rewrites db/seed.sql
+```
+
+A thousand rows of SQL cannot be kept internally consistent by hand. Every student needs a
+guardian, every session needs an assignment that authorises it, and every amount must equal
+rate x minutes / 60. Those invariants live in `db/generate-seed.mjs` as code, so the seed
+cannot drift into a state the API would have rejected. The generator is deterministic {D} fixed
+PRNG seed, derived ids {D} so the file only changes when the script does, and a diff is
+reviewable.
+
+**The named cast at the top is fixed**, including every relationship between its members. The
+suite asserts on them by name, and they cover the combinations the plan calls out: an admin who
+tutors, a parent who tutors, a senior student who tutors younger children while being taught
+himself. Generated people are only ever paired with **each other**, so adding bulk cannot
+quietly change who can see whom {D} which is exactly what the scoping tests are checking.
+
+One consequence of the scale: the directory now paginates, so a test cannot assume a name is on
+the first page. Assertions search for people instead, which is also how an admin actually finds
+somebody. Counts drift upward across runs too, because the specs create users of their own {D}
+never assert an exact row count.
+
 ## The two deployments
 
 | | Production | Test |
@@ -21,7 +51,7 @@ That command:
 | Worker | `tmi-portal` | `tmi-portal-test` |
 | Database | `tmi-portal-db` | `tmi-portal-test-db` |
 | Authentication | **on** — Google sign-in required | **off**, permanently |
-| Data | real staff and families | seeded fiction, wiped every run |
+| Data | real staff and families | 88 seeded people, wiped every run |
 | Deployed by | `npm run deploy` | `npm run e2e`, or `npm run deploy:test` |
 
 They are separate Workers with separate databases. The test environment is a named `env` in
