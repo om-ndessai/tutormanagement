@@ -10,6 +10,7 @@ import {
   updateActiveSessionSchema,
   type ActiveSession,
   listSessionsQuerySchema,
+  SESSION_MODE_LABELS,
   resolveRateCents,
   roundToQuarterHour,
   sessionInputSchema,
@@ -23,6 +24,7 @@ import {
 
 import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
+import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { isAdmin, teachingScopeSql } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
@@ -173,6 +175,50 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     const body: ApiOk<TutoringSession> = { data: session };
     return c.json(body, 201);
+  })
+
+  /**
+   * The session log as a spreadsheet. Same filters and same scoping as the
+   * list, so a tutor exports their own lessons and an admin exports all of
+   * them -- the export can never widen what somebody may see.
+   */
+  .get('/export.csv', zValidator('query', listSessionsQuerySchema), async (c) => {
+    const params = c.req.valid('query');
+    // Export the whole filtered set, not just the page the UI happens to show.
+    const { sessions } = await listSessions(c.env.DB, c.get('user'), {
+      ...params,
+      limit: 5000,
+      offset: 0,
+    });
+
+    const body = buildCsv(
+      [
+        'Date',
+        'Student',
+        'Tutor',
+        'Start',
+        'End',
+        'Minutes',
+        'Mode',
+        'Rate (USD/hr)',
+        'Amount (USD)',
+        'Notes',
+      ],
+      sessions.map((session) => [
+        session.occurred_on,
+        session.student_name,
+        session.tutor_name,
+        session.started_at,
+        session.ended_at,
+        session.duration_minutes,
+        SESSION_MODE_LABELS[session.mode],
+        csvMoney(session.rate_cents),
+        csvMoney(session.amount_cents),
+        session.notes ?? '',
+      ]),
+    );
+
+    return csvResponse(datedFilename('tmi-sessions'), body);
   })
 
   // ---------------------------------------------------------------------

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronDownIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
+import { ChevronDownIcon, DownloadIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   SESSION_MODE_LABELS,
@@ -60,6 +60,15 @@ export function SessionsPage() {
     [from, to, page],
   );
 
+  // Mirrors the on-screen filter so the export matches the view.
+  const exportQuery = useMemo(() => {
+    const search = new URLSearchParams();
+    if (from) search.set('from', from);
+    if (to) search.set('to', to);
+    const query = search.toString();
+    return query ? `?${query}` : '';
+  }, [from, to]);
+
   const { data, isPending } = useSessions(params);
   const remove = useDeleteSession();
 
@@ -95,20 +104,31 @@ export function SessionsPage() {
               : 'Lessons taught, and what they cost.'
         }
         actions={
-          isTutor || isAdmin ? (
-            <div className="flex flex-wrap items-center gap-2">
-              <StartSessionButton />
-              <Button
-                onClick={() => {
-                  setEditing(null);
-                  setFormOpen(true);
-                }}
-              >
-                <PlusIcon />
-                Record a session
-              </Button>
-            </div>
-          ) : undefined
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Carries the current date filter, so what you download is what
+                you are looking at. A plain link: the cookie goes along and the
+                browser names the file from Content-Disposition. */}
+            <Button variant="outline" asChild>
+              <a href={`/api/sessions/export.csv${exportQuery}`} download>
+                <DownloadIcon />
+                CSV
+              </a>
+            </Button>
+            {(isTutor || isAdmin) && (
+              <>
+                <StartSessionButton />
+                <Button
+                  onClick={() => {
+                    setEditing(null);
+                    setFormOpen(true);
+                  }}
+                >
+                  <PlusIcon />
+                  Record a session
+                </Button>
+              </>
+            )}
+          </div>
         }
       />
 

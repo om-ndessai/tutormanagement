@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlusIcon, Trash2Icon } from 'lucide-react';
+import { DownloadIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   PAYMENT_DIRECTION_LABELS,
@@ -75,12 +75,20 @@ export function BillingPage() {
         title="Billing"
         description="No money moves through the portal. This tracks what is owed and what has been paid."
         actions={
-          isAdmin ? (
-            <Button onClick={() => setDialogOpen(true)}>
-              <PlusIcon />
-              Record a payment
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="outline" asChild>
+              <a href="/api/payments/export.csv" download>
+                <DownloadIcon />
+                CSV
+              </a>
             </Button>
-          ) : undefined
+            {isAdmin && (
+              <Button onClick={() => setDialogOpen(true)}>
+                <PlusIcon />
+                Record a payment
+              </Button>
+            )}
+          </div>
         }
       />
 

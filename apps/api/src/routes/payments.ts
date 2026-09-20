@@ -5,6 +5,7 @@ import {
   listPaymentsQuerySchema,
   paymentInputSchema,
   paymentUpdateSchema,
+  PAYMENT_DIRECTION_LABELS,
   PAYMENT_FORM_LABELS,
   type ApiList,
   type ApiOk,
@@ -14,6 +15,7 @@ import {
 
 import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
+import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
@@ -86,6 +88,32 @@ export const paymentsRoutes = new Hono<AppEnv>()
       total_amount_cents,
     };
     return c.json(body);
+  })
+
+  /** The payment ledger as a spreadsheet, scoped exactly like the list. */
+  .get('/export.csv', zValidator('query', listPaymentsQuerySchema), async (c) => {
+    const params = c.req.valid('query');
+    const { payments } = await listPayments(c.env.DB, c.get('user'), {
+      ...params,
+      limit: 5000,
+      offset: 0,
+    });
+
+    const body = buildCsv(
+      ['Date', 'Direction', 'Person', 'For student', 'Form', 'Amount (USD)', 'Reference', 'Notes'],
+      payments.map((payment) => [
+        payment.paid_at.slice(0, 10),
+        PAYMENT_DIRECTION_LABELS[payment.direction],
+        payment.party_name,
+        payment.student_name ?? '',
+        PAYMENT_FORM_LABELS[payment.method],
+        csvMoney(payment.amount_cents),
+        payment.reference ?? '',
+        payment.notes ?? '',
+      ]),
+    );
+
+    return csvResponse(datedFilename('tmi-payments'), body);
   })
 
   /**
