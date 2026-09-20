@@ -44,6 +44,25 @@ Payment enhancements. No actual payments will be made through the portal. Its on
 
 Phase 6:
 This phase is about thourough end-to-end testing. For each testing session, wipe out the database and rebuild through automation testing. Iterate through to make changes to the data model, api, ui etc till the goals described in above phases are achieved.
-I want to use playwright for testing. Use a dedicated test deployment with its own database - tmi-portal-test, backed by tmi-portal-test-db - and never production. Authentication is permanently disabled on that test deployment, which is what lets the suite launch the portal as each type of user. Production keeps its own database and stays authenticated. 
+I want to use playwright for testing. Use the production site/url, DB for testing. Disable authentication during the testing. 
 The goal for this phase is to confirm end-to-end workflows for different types of users. Launch portal as a different type of user and validate. 
 
+Phase 7:
+This phase allows the tutor to record session start and end real time. When the session is to start, the tutor could click the start session button and select student. The start time will be nearest 15 min, when the session ends, it will again record session end to nearest 15 min. The tutor can record session details at that time or can edit those later.
+
+Phase 8:
+This is dashboard phase. The goal of this phase is to provide a dashboard for individual user types. 
+Admin will see cards for how many students are actively enrolled, how many parents, how many tutors etc. The admin should also see balances on each tutor, parent etc. The cards should be clickable to get more details. The admin should also see audit of last few entries throughout the system. 
+A tutors dashboard will have student cards, applicable payment cards etc. A log of activity in reverse chronological order. Conducted sessions log in reverse chronological order etc.
+Parent dashboard will have payment card, session log in reverse chonological order. 
+Handle cases where a single user could have multiple roles and so dashboard should have ability to select the role for that user.
+
+Admin will have ability see the dashboard as seen by inidvidual user. On the main dashboard, the admin should be able to see all users and can then select a user to see the dashboard as shown to that user.
+
+This is the place for you to build industry standard intuitive and exciting dashboard with animation etc.
+
+Phase 9: 
+Ability to download a calendar file for scheduled tutoring sessions. A tutor should be able to schedule a recurring tutoring session for his/her students. And all applicable users (parents, tutors, admins, students) should be able to download the calendar invite for those session.
+
+Phase 10: 
+Ability to download csv for payments and tutoring session log. Allow applicable users to see a grid of session and/or payments and download that in csv format to open in excel sheet.
