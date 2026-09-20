@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
-import type { AppEnv } from './types.js';
+import { isProduction, type AppEnv } from './types.js';
 import { onError, onNotFound } from './middleware/error.js';
 import { requireAuth } from './middleware/auth.js';
 import { authRoutes } from './routes/auth.js';
@@ -14,15 +14,28 @@ app.use('*', logger());
 app.use('*', secureHeaders());
 
 /**
- * In production the SPA is served by this same Worker, so requests are
- * same-origin and CORS never applies. It exists for `vite dev` on :5173 talking
- * to `wrangler dev` on :8787.
+ * The only origins allowed to make credentialed cross-origin calls, and only
+ * outside production. In production the SPA is served by this same Worker, so
+ * every request is same-origin and no origin is permitted.
+ *
+ * This is an allowlist rather than an echo of whatever `Origin` arrived:
+ * reflecting an arbitrary origin alongside `credentials: true` lets any site
+ * read the API as the signed-in user.
  */
+const DEV_ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:8787',
+  'http://127.0.0.1:8787',
+];
+
 app.use(
   '/api/*',
   cors({
-    origin: (origin, c) =>
-      c.env.ENVIRONMENT === 'production' ? '' : (origin ?? ''),
+    origin: (origin, c) => {
+      if (isProduction(c.env)) return '';
+      return DEV_ALLOWED_ORIGINS.includes(origin) ? origin : '';
+    },
     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type'],
     credentials: true,

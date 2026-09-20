@@ -75,9 +75,37 @@ the right trade while there is no data worth preserving. It also sidesteps SQLit
 to drop or retype a column in place: there is no ALTER path to write, because the table is
 simply recreated.
 
-**`npm run db:rebuild:remote` destroys all production data.** It exists for the first deploy.
-Once the institute is entering real records, this approach needs to be replaced with proper
-migrations — that is a deliberate decision to make at the time, not something to drift into.
+### Keeping production in step
+
+**`npm run db:rebuild:remote` destroys all production data.**
+
+That moment has already arrived: the deployed database holds real user records. So the
+drop-and-recreate workflow now applies to **local only**, and a schema change has to be
+carried to production by hand:
+
+```bash
+# after editing db/schema.sql and running db:reset locally
+cd apps/api
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE users ADD COLUMN new_column TEXT"
+```
+
+SQLite can add a column and can add or drop an index, but it cannot drop or retype a column
+in place. Anything beyond an additive change needs the create-new-table / copy / drop / rename
+dance, written out explicitly.
+
+To see what has drifted:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="SELECT sql FROM sqlite_master WHERE tbl_name='users'"
+```
+
+> This is the cost of skipping migrations, and it is now being paid manually. If the divergence
+> keeps biting, the alternative is to re-adopt numbered migrations — a decision worth making
+> deliberately rather than drifting into. Production has already gone out of step once: the
+> Worker was deployed expecting `last_login_at` while the database predated it, and every
+> sign-in failed with a 500.
 
 ## Local development
 

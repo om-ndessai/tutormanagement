@@ -22,10 +22,17 @@ interface SessionClaims {
 
 function keyFrom(secret: string): Uint8Array {
   if (!secret || secret.length < 32) {
-    // A weak or missing secret means anyone can mint a session cookie, so this
-    // is a hard failure rather than a warning.
-    throw new Error(
-      'SESSION_SECRET is missing or shorter than 32 characters. See docs/google-oauth-setup.md.',
+    // A weak or missing secret means anyone could mint a session cookie, so
+    // this is a hard failure rather than a warning. It is an ApiError, not a
+    // bare Error, so it reaches the operator as an actionable message instead
+    // of a generic 500 -- this exact misconfiguration is easy to ship and
+    // otherwise gives no clue what is wrong.
+    throw new ApiError(
+      503,
+      'not_configured',
+      'Sign-in is unavailable: this deployment has no valid SESSION_SECRET. ' +
+        'Set one with `wrangler secret put SESSION_SECRET` (32+ characters). ' +
+        'See docs/google-oauth-setup.md.',
     );
   }
   return new TextEncoder().encode(secret);
@@ -42,8 +49,12 @@ export async function createSessionToken(userId: string, secret: string): Promis
 }
 
 export async function readSessionToken(token: string, secret: string): Promise<SessionClaims> {
+  // Resolved before the try, so a missing secret surfaces as the configuration
+  // error it is rather than being reported as an expired session.
+  const key = keyFrom(secret);
+
   try {
-    const { payload } = await jwtVerify(token, keyFrom(secret), { issuer: ISSUER });
+    const { payload } = await jwtVerify(token, key, { issuer: ISSUER });
 
     if (typeof payload.sub !== 'string' || !payload.sub) {
       throw new Error('Session token has no subject.');

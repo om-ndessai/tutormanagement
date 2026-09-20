@@ -114,7 +114,14 @@ There is no test suite yet, so verify by running things:
   D1 on every request, so suspending someone takes effect immediately. Do not "optimise" that
   lookup away.
 - `SESSION_SECRET` comes from `apps/api/.dev.vars` locally (gitignored; copy
-  `.dev.vars.example`) and `wrangler secret` in production. Without it, sign-in fails hard.
+  `.dev.vars.example`) and `wrangler secret put SESSION_SECRET` in production. Without it,
+  every authenticated request returns 503 `not_configured`.
+- **`vars` in `wrangler.jsonc` are what a DEPLOY ships with**, so they hold the *production*
+  values (`ENVIRONMENT: "production"`). `.dev.vars` overrides them during `wrangler dev`.
+  Do not "fix" `ENVIRONMENT` back to `development` in `wrangler.jsonc` — that shipped
+  dev-mode CORS to production once already.
+- Production's database is **not** rebuilt from `db/schema.sql`; it holds real data. Carry
+  schema changes there by hand — see `docs/database.md`.
 - `GOOGLE_CLIENT_ID` is public and lives in `wrangler.jsonc`. The SPA reads it from
   `/api/auth/config` at runtime, so changing it needs no frontend rebuild.
 - See `docs/google-oauth-setup.md` for the Google Cloud side.

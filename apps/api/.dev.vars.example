@@ -3,6 +3,11 @@
 # In production these are set with:
 #   npx wrangler secret put SESSION_SECRET
 
+# Overrides "ENVIRONMENT" from wrangler.jsonc, which ships as "production" so
+# that deploys are secure by default. Keep this here: it relaxes the cookie
+# Secure flag and the CORS rules for http://localhost.
+ENVIRONMENT=development
+
 # HMAC key used to sign session cookies. Must be at least 32 characters.
 # Generate one with:  openssl rand -base64 48
 SESSION_SECRET=replace-with-at-least-32-random-characters-please

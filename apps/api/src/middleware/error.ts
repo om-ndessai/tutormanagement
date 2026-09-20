@@ -1,7 +1,7 @@
 import { HTTPException } from 'hono/http-exception';
 import type { ErrorHandler, NotFoundHandler } from 'hono';
 import type { ApiErrorBody } from '@tmi/shared';
-import type { AppEnv } from '../types.js';
+import { isProduction, type AppEnv } from '../types.js';
 import { ApiError } from '../lib/errors.js';
 
 export const onError: ErrorHandler<AppEnv> = (error, c) => {
@@ -22,10 +22,16 @@ export const onError: ErrorHandler<AppEnv> = (error, c) => {
 
   console.error('Unhandled API error', error);
 
+  // Outside production, hand back the real message. A generic string here cost
+  // a debugging session once already; there is no user to protect on a dev box.
+  const detail = error instanceof Error ? error.message : String(error);
+
   const body: ApiErrorBody = {
     error: {
       code: 'internal_error',
-      message: 'Something went wrong. Please try again.',
+      message: isProduction(c.env)
+        ? 'Something went wrong. Please try again.'
+        : `Something went wrong: ${detail}`,
     },
   };
   return c.json(body, 500);

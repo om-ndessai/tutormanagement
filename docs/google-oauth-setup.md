@@ -115,8 +115,21 @@ openssl rand -base64 48
 ```bash
 cd apps/api
 npx wrangler secret put SESSION_SECRET
-# paste the output of `openssl rand -base64 48`
+# it then PROMPTS for the value -- paste the output of `openssl rand -base64 48`
 ```
+
+> **The name is an argument; the value is a prompt.** `wrangler secret put` takes
+> the secret's *name* on the command line and asks for the *value* afterwards.
+> Passing the value as the argument creates a secret **named** after your
+> credential — which leaves `SESSION_SECRET` unset and prints the credential in
+> `wrangler secret list`. Check with:
+>
+> ```bash
+> npx wrangler secret list   # must contain a secret named SESSION_SECRET
+> ```
+
+You can ignore the Google **client secret** entirely. This app uses the GIS
+ID-token flow, which has no client secret, so there is nothing to store.
 
 Use a *different* value in production than locally. Rotating it signs everyone
 out, which is the intended way to force that.
@@ -210,6 +223,16 @@ them from the Users screen.
 The Worker rejected the ID token. Almost always a mismatch between the client ID
 Google issued the token for and `GOOGLE_CLIENT_ID` in `wrangler.jsonc`. Restart
 `wrangler dev` after changing it.
+
+**500, or "Sign-in is unavailable: this deployment has no valid SESSION_SECRET"**
+`SESSION_SECRET` is not set for that environment. Run `npx wrangler secret list`
+and confirm a secret named exactly `SESSION_SECRET` exists. See the warning in
+step 5.
+
+**500 with "no such column" in the Worker logs**
+The deployed database is older than `apps/api/db/schema.sql`. See
+[database.md](database.md#keeping-production-in-step) — production has real data
+now, so this needs a hand-written `ALTER TABLE`, not a rebuild.
 
 **Signed in, then immediately signed out again**
 `SESSION_SECRET` is missing, shorter than 32 characters, or changed between

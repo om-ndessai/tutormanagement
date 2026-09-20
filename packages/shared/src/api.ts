@@ -43,6 +43,10 @@ export const ERROR_CODES = [
   'no_account',
   'account_suspended',
   'email_unverified',
+
+  // The deployment is missing required configuration. Distinct from
+  // internal_error because the fix is a config change, not a code change.
+  'not_configured',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

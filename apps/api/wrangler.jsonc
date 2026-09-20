@@ -23,7 +23,12 @@
 		}
 	],
 	"vars": {
-		"ENVIRONMENT": "development",
+		// These are the values a DEPLOY ships with, so the safe setting wins here
+		// and local development opts out. `.dev.vars` overrides anything in this
+		// block during `wrangler dev`, which is where ENVIRONMENT=development is
+		// set. Getting this backwards silently shipped dev-mode CORS to
+		// production once already.
+		"ENVIRONMENT": "production",
 
 		// Google OAuth web client id. Not a secret -- it is sent to the browser.
 		// See docs/google-oauth-setup.md for how to create one.
