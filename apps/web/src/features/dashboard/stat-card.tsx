@@ -63,11 +63,20 @@ export function StatCard({
 
   const body = (
     <CardContent className="py-5">
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex items-start justify-between gap-3">
         <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
           {label}
         </p>
-        <Icon className="text-muted-foreground size-4 shrink-0" />
+        {/* Sits in a tinted chip so the glyph reads as part of the card rather
+            than a stray mark in the corner. */}
+        <span
+          className={cn(
+            'bg-muted/70 flex size-10 shrink-0 items-center justify-center rounded-lg',
+            toneClass || 'text-muted-foreground',
+          )}
+        >
+          <Icon className="size-5" />
+        </span>
       </div>
 
       <p className={cn('font-display mt-2 text-3xl font-semibold tabular-nums', toneClass)}>

@@ -21,6 +21,7 @@ import {
 
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { ROLE_ICONS } from '@/features/users/role-icon';
+import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
 import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
 import { cn } from '@/lib/utils';
@@ -144,7 +145,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
           label="Owed to tutors"
           value={data.totals.owed_to_tutors_cents}
           money
-          icon={WalletIcon}
+          icon={WalletMinusIcon}
           tone="warning"
           to="/billing"
         />
@@ -153,7 +154,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
           label="Owed by families"
           value={data.totals.owed_by_families_cents}
           money
-          icon={WalletIcon}
+          icon={WalletPlusIcon}
           tone="brand"
           to="/billing"
         />
@@ -243,7 +244,7 @@ export function TutorView({ data }: { data: TutorDashboard }) {
           label="Owed to you"
           value={data.earnings.balance_cents}
           money
-          icon={WalletIcon}
+          icon={WalletPlusIcon}
           tone={data.earnings.balance_cents > 0 ? 'warning' : 'default'}
           hint={`${formatCents(data.earnings.paid_cents)} paid so far`}
           to="/billing"
@@ -313,7 +314,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
           label="Outstanding"
           value={data.totals.balance_cents}
           money
-          icon={WalletIcon}
+          icon={WalletMinusIcon}
           tone={data.totals.balance_cents > 0 ? 'brand' : 'success'}
           hint={`${formatCents(data.totals.paid_cents)} paid`}
           to="/billing"
