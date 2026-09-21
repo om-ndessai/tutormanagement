@@ -98,6 +98,20 @@ export function useCancelActiveSession() {
   });
 }
 
+/**
+ * One session by id, for a link that points straight at it.
+ *
+ * The list is paged server-side, so a session somebody links to may not be on
+ * the page the filters would show -- it has to be fetched on its own.
+ */
+export function useSession(id: string | null) {
+  return useQuery({
+    queryKey: ['sessions', 'one', id],
+    queryFn: () => apiClient.get<ApiOk<TutoringSession>>(`/sessions/${id}`),
+    enabled: Boolean(id),
+  });
+}
+
 export function useAssignments(params: Partial<ListAssignmentsParams> = {}) {
   return useQuery({
     queryKey: teachingKeys.assignments(params),

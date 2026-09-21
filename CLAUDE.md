@@ -10,17 +10,20 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phase 1 (done): Google sign-in.** It is the only way in — every `/api` route except
-`/api/health` and `/api/auth/*` requires a verified Google identity. `AUTH_ENABLED` is `"true"`
-in the committed config; flipping it to `"false"` is a local convenience, not something to
-deploy.
+**Phases 1 to 12 are built.** In short: Google sign-in (1), the people model (2), the audit
+log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
+dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
+exports (10), the deployed test environment (11), and comments (12).
 
-**Phase 2 (done): the data model.** Admins, tutors, students and parents, where one person can
-hold several roles at once. Read `docs/data-model.md` before touching the schema — it explains
-why each table is where it is, and which rules the database cannot enforce.
+Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
+`/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
+`"true"` in the committed config; flipping it to `"false"` is a local convenience, not
+something to deploy. **The people model** is admins, tutors, students and parents, where one
+person may hold several roles at once: read `docs/data-model.md` before touching the schema, as
+it explains why each table is where it is and which rules the database cannot enforce.
 
-**Next: classes and scheduling.** Do not build `classes`, `enrollments`, `sessions` or
-tutor-to-student assignment until asked.
+**Ask before starting the next phase.** `docs/plan.md` is the roadmap, but it is a plan, not a
+licence — do not build ahead of what has been asked for.
 
 ## Layout
 
@@ -152,6 +155,18 @@ a wall-clock ENDPOINT, which the live timer does to the start. Do not collapse t
 lesson's length comes from the two instants and its end is derived from the start plus that
 length: subtracting two separately snapped endpoints drifts a full quarter whenever they round
 opposite ways, and that was a real billing bug.
+
+**A comment is readable by fewer people than the thing it hangs off, never more.** On a
+session, assignment or scheduled session the audience is that row's tutor, student, the
+student's guardians and admins (`teachingScopeSql`). On a PERSON it is narrower — admins, the
+author, that person and their guardians — which is what keeps one tutor's remark about a family
+off another tutor's screen. Every route in `routes/comments.ts` resolves the TARGET and checks
+it before touching a comment, and reports a target the viewer may not see as missing rather
+than forbidden. The thread, the count badges and the global feed at `/comments` all build
+their WHERE from the same two fragments (`personScopeSql`, `teachingScopeSql`) — never write a
+fourth copy of the rule. Comments are never editable (no `updated_at`, no PATCH route) and only their
+author may delete them — not admins. Never put comment text in an audit description: the log is
+read by admins, and a comment is not theirs by default.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

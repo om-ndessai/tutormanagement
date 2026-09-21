@@ -33,6 +33,9 @@ DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
 
+-- Comments first: they reference four of the tables below, and SQLite will
+-- not drop a table something still points at.
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS scheduled_sessions;
 DROP TABLE IF EXISTS active_sessions;
 DROP TABLE IF EXISTS payments;
@@ -587,6 +590,70 @@ CREATE INDEX audit_events_recent_idx  ON audit_events (created_at DESC);
 CREATE INDEX audit_events_actor_idx   ON audit_events (actor_user_id, created_at DESC);
 CREATE INDEX audit_events_subject_idx ON audit_events (subject_user_id, created_at DESC);
 
+
+-- ---------------------------------------------------------------------------
+-- comments
+-- ---------------------------------------------------------------------------
+-- Phase 12. A remark somebody wants on the record against a person, a lesson,
+-- a pairing or a recurring slot: "parent asked to move Thursdays", "finished
+-- the fractions unit".
+--
+-- Distinct from `audit_events`, which record what the SYSTEM did and are never
+-- written by hand, and from the `notes` column on a session, which is the
+-- tutor's account of that lesson. A comment is one person addressing the
+-- people who share the thing it is attached to.
+
+CREATE TABLE comments (
+  id                TEXT PRIMARY KEY,
+
+  -- Who wrote it. Their name is read through this rather than snapshotted:
+  -- unlike an audit line, a comment is part of a live conversation, so it
+  -- should follow a rename.
+  author_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  -- What it is about. Exactly ONE of these is set.
+  --
+  -- Four nullable foreign keys rather than a (target_type, target_id) pair,
+  -- because the pair cannot be a foreign key: the database would no longer
+  -- know the target exists, and a deleted lesson would leave its comments
+  -- behind. The CHECK below is what makes the four behave as one field.
+  target_user_id              TEXT REFERENCES users (id) ON DELETE CASCADE,
+  target_session_id           TEXT REFERENCES sessions (id) ON DELETE CASCADE,
+  target_assignment_id        TEXT REFERENCES assignments (id) ON DELETE CASCADE,
+  target_scheduled_session_id TEXT REFERENCES scheduled_sessions (id) ON DELETE CASCADE,
+
+  body              TEXT NOT NULL,
+
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  -- Comments are never edited -- there is no updated_at and no trigger,
+  -- deliberately, because a remark somebody replied to must not change under
+  -- them. The author, and only the author, may withdraw one: that sets this
+  -- and every reader stops seeing it.
+  deleted_at        TEXT,
+
+  CHECK (length(trim(body)) > 0),
+  CHECK (
+    (target_user_id IS NOT NULL) +
+    (target_session_id IS NOT NULL) +
+    (target_assignment_id IS NOT NULL) +
+    (target_scheduled_session_id IS NOT NULL) = 1
+  )
+);
+
+-- One index per target, because a thread is always read for a single entity,
+-- newest first. Partial so each index holds only the comments of its own kind.
+CREATE INDEX comments_user_idx ON comments (target_user_id, created_at DESC)
+  WHERE target_user_id IS NOT NULL;
+CREATE INDEX comments_session_idx ON comments (target_session_id, created_at DESC)
+  WHERE target_session_id IS NOT NULL;
+CREATE INDEX comments_assignment_idx ON comments (target_assignment_id, created_at DESC)
+  WHERE target_assignment_id IS NOT NULL;
+CREATE INDEX comments_scheduled_idx ON comments (target_scheduled_session_id, created_at DESC)
+  WHERE target_scheduled_session_id IS NOT NULL;
+
+-- "Comments I wrote" -- the only thing the author alone may act on.
+CREATE INDEX comments_author_idx ON comments (author_user_id, created_at DESC);
 
 -- ---------------------------------------------------------------------------
 -- updated_at triggers

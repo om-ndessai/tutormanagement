@@ -100,6 +100,17 @@ production accepts values the API and the Zod schema would reject. That is toler
 because every write goes through the API, but it is the reason the rebuilt schema is the
 source of truth and not the live database.
 
+Phase 12 adds a whole table rather than a column, so production takes the `CREATE TABLE
+comments` block and its five indexes from `schema.sql` verbatim:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="$(sed -n '/^CREATE TABLE comments/,/^CREATE INDEX comments_author_idx/p' apps/api/db/schema.sql)"
+```
+
+A new table with its constraints intact is the one migration SQLite does properly — unlike the
+added columns above, this one keeps every CHECK and foreign key.
+
 To see what has drifted:
 
 ```bash

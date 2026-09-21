@@ -4,6 +4,7 @@ import { AppShell } from '@/components/layout/app-shell';
 import { LoginPage } from '@/features/auth/login-page';
 import { RequireAuth } from '@/features/auth/require-auth';
 import { ActivityPage } from '@/features/audit/activity-page';
+import { CommentsPage } from '@/features/comments/comments-page';
 import { AssignmentsPage } from '@/features/teaching/assignments-page';
 import { SessionsPage } from '@/features/teaching/sessions-page';
 import { SchedulesPage } from '@/features/schedules/schedules-page';
@@ -30,6 +31,7 @@ export function App() {
           <Route path="sessions" element={<SessionsPage />} />
           <Route path="schedule" element={<SchedulesPage />} />
           <Route path="billing" element={<BillingPage />} />
+          <Route path="comments" element={<CommentsPage />} />
           <Route path="activity" element={<ActivityPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

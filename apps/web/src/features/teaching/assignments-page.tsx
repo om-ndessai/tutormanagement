@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatCents, type Assignment, type UserRole } from '@tmi/shared';
 
+import { FocusNotice } from '@/components/layout/focus-notice';
 import { PageHeader } from '@/components/layout/page-header';
 import {
   AlertDialog,
@@ -25,9 +27,24 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { AssignmentDialog } from './assignment-dialog';
+
+/**
+ * A pairing's thread. Named once so the phone cards and the table above them
+ * cannot drift apart in how they describe it.
+ */
+function AssignmentComments({ assignment }: { assignment: Assignment }) {
+  return (
+    <CommentsButton
+      target={{ target_type: 'assignment', target_id: assignment.id }}
+      title={`${assignment.student_name}’s assignment`}
+      description={`${assignment.student_name} is taught by ${assignment.tutor_name}.`}
+    />
+  );
+}
 import { useAssignments, useDeleteAssignment } from './api';
 
 export function AssignmentsPage() {
@@ -38,11 +55,27 @@ export function AssignmentsPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Assignment | null>(null);
   const [removing, setRemoving] = useState<Assignment | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { data, isPending } = useAssignments();
   const remove = useDeleteAssignment();
 
-  const assignments = data?.data ?? [];
+  /**
+   * A link from the comments feed names one pairing. The whole list is already
+   * loaded here, so singling it out is a filter rather than another request.
+   */
+  const focusId = searchParams.get('focus');
+  const all = data?.data ?? [];
+  const assignments = focusId ? all.filter((row) => row.id === focusId) : all;
+  const clearFocus = () =>
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        next.delete('focus');
+        return next;
+      },
+      { replace: true },
+    );
 
   async function confirmRemove() {
     if (!removing) return;
@@ -79,6 +112,13 @@ export function AssignmentsPage() {
         }
       />
 
+      <FocusNotice
+        active={Boolean(focusId)}
+        found={assignments.length > 0}
+        what="assignment"
+        onClear={clearFocus}
+      />
+
       {/* Phone: one card per pairing, with both rates visible. */}
       <ul className="space-y-3 sm:hidden">
         {assignments.map((assignment) => (
@@ -90,29 +130,32 @@ export function AssignmentsPage() {
                   with {assignment.tutor_name}
                 </span>
               </span>
-              {isAdmin && (
-                <span className="flex shrink-0 items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Edit ${assignment.student_name}'s assignment`}
-                    onClick={() => {
-                      setEditing(assignment);
-                      setDialogOpen(true);
-                    }}
-                  >
-                    <PencilIcon />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Remove ${assignment.student_name} from ${assignment.tutor_name}`}
-                    onClick={() => setRemoving(assignment)}
-                  >
-                    <Trash2Icon />
-                  </Button>
-                </span>
-              )}
+              <span className="flex shrink-0 items-center gap-1">
+                <AssignmentComments assignment={assignment} />
+                {isAdmin && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Edit ${assignment.student_name}'s assignment`}
+                      onClick={() => {
+                        setEditing(assignment);
+                        setDialogOpen(true);
+                      }}
+                    >
+                      <PencilIcon />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Remove ${assignment.student_name} from ${assignment.tutor_name}`}
+                      onClick={() => setRemoving(assignment)}
+                    >
+                      <Trash2Icon />
+                    </Button>
+                  </>
+                )}
+              </span>
             </div>
 
             <div className="text-muted-foreground mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
@@ -148,18 +191,16 @@ export function AssignmentsPage() {
               <TableHead>Student</TableHead>
               <TableHead>In person</TableHead>
               <TableHead>Virtual</TableHead>
-              {isAdmin && (
-                <TableHead className="w-24">
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              )}
+              <TableHead className="w-28">
+                <span className="sr-only">Actions</span>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isPending &&
               Array.from({ length: 3 }).map((_, index) => (
                 <TableRow key={index}>
-                  {Array.from({ length: isAdmin ? 5 : 4 }).map((__, cell) => (
+                  {Array.from({ length: 5 }).map((__, cell) => (
                     <TableCell key={cell}>
                       <Skeleton className="h-5 w-24" />
                     </TableCell>
@@ -169,7 +210,7 @@ export function AssignmentsPage() {
 
             {!isPending && assignments.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={isAdmin ? 5 : 4} className="h-28 text-center">
+                <TableCell colSpan={5} className="h-28 text-center">
                   <p className="text-muted-foreground text-sm">
                     {empty}
                     {isAdmin && ' Assign one to let their tutor record sessions.'}
@@ -194,9 +235,11 @@ export function AssignmentsPage() {
                     override={assignment.rate_virtual_cents}
                   />
                 </TableCell>
-                {isAdmin && (
-                  <TableCell>
-                    <div className="flex items-center gap-1">
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    <AssignmentComments assignment={assignment} />
+                    {isAdmin && (
+                      <>
                       <Button
                         variant="ghost"
                         size="icon"
@@ -216,9 +259,10 @@ export function AssignmentsPage() {
                       >
                         <Trash2Icon />
                       </Button>
-                    </div>
-                  </TableCell>
-                )}
+                      </>
+                    )}
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

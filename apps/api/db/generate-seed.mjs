@@ -463,6 +463,37 @@ const counts = {
   students: roles.filter((r) => r[1] === q('student')).length,
 };
 
+// --- comments ---------------------------------------------------------------
+// Phase 12. Written only by people who can actually see the thing commented
+// on, so the seed cannot demonstrate a visibility the API would refuse:
+//   - a comment on a PERSON reaches admins, its author, that person and their
+//     parents;
+//   - a comment on a lesson, pairing or slot reaches everyone it concerns.
+// Timestamps are explicit so the newest-first view has something to order.
+const comments = [
+  // On people.
+  [q(id('c0000000', 1)), q(CAST.alex), q(CAST.ben), 'NULL', 'NULL', 'NULL',
+   q('Ben asked to switch to Saturday mornings from November. Flagging so the office can check the room.'), q('2026-09-14T15:04:00.000Z')],
+  [q(id('c0000000', 2)), q(CAST.priya), q(CAST.sanjay), 'NULL', 'NULL', 'NULL',
+   q('Sanjay is taking on younger students this term as well as studying. Keep an eye on his total hours.'), q('2026-09-16T12:20:00.000Z')],
+  [q(id('c0000000', 3)), q(CAST.anita), q(CAST.sanjay), 'NULL', 'NULL', 'NULL',
+   q('He is away the last week of October — family trip.'), q('2026-09-17T09:12:00.000Z')],
+
+  // On a lesson.
+  [q(id('c0000000', 4)), q(CAST.maria), 'NULL', q(id('50000000', 2)), 'NULL', 'NULL',
+   q('Sofia came out of this one delighted with herself. Thank you.'), q('2026-09-15T19:30:00.000Z')],
+  [q(id('c0000000', 5)), q(CAST.alex), 'NULL', q(id('50000000', 2)), 'NULL', 'NULL',
+   q('Worth repeating the sentence-to-operation drill next week while it is fresh.'), q('2026-09-16T08:02:00.000Z')],
+
+  // On a pairing.
+  [q(id('c0000000', 6)), q(CAST.priya), 'NULL', 'NULL', q(id('a0000000', 3)), 'NULL',
+   q('Agreed with both families that Sanjay teaches Ben at the junior rate while he is still at school.'), q('2026-09-11T10:45:00.000Z')],
+
+  // On a standing slot.
+  [q(id('c0000000', 7)), q(CAST.alex), 'NULL', 'NULL', 'NULL', q(id('70000000', 1)),
+   q('Room 2 is double-booked on the 24th; we will use room 1 that week only.'), q('2026-09-18T14:00:00.000Z')],
+];
+
 const sql = `-- ===========================================================================
 --  Test and development seed  --  GENERATED FILE, DO NOT EDIT BY HAND
 -- ===========================================================================
@@ -483,6 +514,7 @@ const sql = `-- ================================================================
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM comments;
 DELETE FROM scheduled_sessions;
 DELETE FROM active_sessions;
 DELETE FROM payments;
@@ -532,6 +564,9 @@ ${insert('payments', ['id', 'direction', 'party_user_id', 'student_user_id', 'am
 
 -- --- standing weekly lessons -----------------------------------------------
 ${insert('scheduled_sessions', ['id', 'tutor_user_id', 'student_user_id', 'day_of_week', 'start_time', 'duration_minutes', 'mode', 'starts_on', 'ends_on', 'location', 'notes'], schedules)}
+
+-- --- what people have said about all of it ---------------------------------
+${insert('comments', ['id', 'author_user_id', 'target_user_id', 'target_session_id', 'target_assignment_id', 'target_scheduled_session_id', 'body', 'created_at'], comments)}
 `;
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -540,5 +575,6 @@ writeFileSync(join(here, 'seed.sql'), sql);
 console.log(
   `seed.sql: ${users.length} users (${counts.admins} admin, ${counts.tutors} tutor, ` +
     `${counts.parents} parent, ${counts.students} student), ${assignments.length} assignments, ` +
-    `${sessions.length} sessions, ${payments.length} payments, ${schedules.length} schedules`,
+    `${sessions.length} sessions, ${payments.length} payments, ${schedules.length} schedules, ` +
+    `${comments.length} comments`,
 );

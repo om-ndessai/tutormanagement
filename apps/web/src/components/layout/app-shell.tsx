@@ -8,6 +8,7 @@ import {
   LinkIcon,
   WalletIcon,
   MenuIcon,
+  MessageSquareIcon,
   UserIcon,
   UsersIcon,
   XIcon,
@@ -28,6 +29,7 @@ const NAV_ITEMS = [
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false },
   { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false },
   { to: '/billing', label: 'Billing', icon: WalletIcon, end: false },
+  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false },
 ];

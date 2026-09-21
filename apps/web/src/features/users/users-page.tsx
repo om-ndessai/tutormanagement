@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -62,7 +63,26 @@ export function UsersPage() {
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [viewingId, setViewingId] = useState<string | null>(null);
+  /**
+   * Which record is open lives in the URL, so a comment in the feed -- or a
+   * link somebody pastes to a colleague -- can open a person directly, and
+   * the back button closes it again.
+   */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const viewingId = searchParams.get('view');
+
+  const setViewingId = (id: string | null) => {
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        if (id) next.set('view', id);
+        else next.delete('view');
+        return next;
+      },
+      { replace: true },
+    );
+  };
+
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
 
   const debouncedSearch = useDebouncedValue(search);

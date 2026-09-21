@@ -18,6 +18,7 @@
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM comments;
 DELETE FROM scheduled_sessions;
 DELETE FROM active_sessions;
 DELETE FROM payments;
@@ -972,3 +973,13 @@ INSERT INTO scheduled_sessions (id, tutor_user_id, student_user_id, day_of_week,
   ('71111111-0000-4000-8000-000000000023', '11111111-0000-4000-8000-000000000003', '33333333-0000-4000-8000-000000000073', 1, '17:00', 45, 'virtual', '2026-09-01', NULL, 'https://meet.example.com/tmi', NULL),
   ('71111111-0000-4000-8000-000000000024', '11111111-0000-4000-8000-000000000001', '33333333-0000-4000-8000-000000000076', 5, '16:00', 45, 'virtual', '2026-09-01', NULL, 'https://meet.example.com/tmi', NULL),
   ('71111111-0000-4000-8000-000000000025', '11111111-0000-4000-8000-000000000002', '33333333-0000-4000-8000-000000000077', 4, '16:00', 60, 'in_person', '2026-09-01', '2026-12-18', 'Institute, room 4', NULL);
+
+-- --- what people have said about all of it ---------------------------------
+INSERT INTO comments (id, author_user_id, target_user_id, target_session_id, target_assignment_id, target_scheduled_session_id, body, created_at) VALUES
+  ('c0000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000009', NULL, NULL, NULL, 'Ben asked to switch to Saturday mornings from November. Flagging so the office can check the room.', '2026-09-14T15:04:00.000Z'),
+  ('c0000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', NULL, NULL, NULL, 'Sanjay is taking on younger students this term as well as studying. Keep an eye on his total hours.', '2026-09-16T12:20:00.000Z'),
+  ('c0000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', NULL, NULL, NULL, 'He is away the last week of October — family trip.', '2026-09-17T09:12:00.000Z'),
+  ('c0000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000004', NULL, '50000000-0000-4000-8000-000000000002', NULL, NULL, 'Sofia came out of this one delighted with herself. Thank you.', '2026-09-15T19:30:00.000Z'),
+  ('c0000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000003', NULL, '50000000-0000-4000-8000-000000000002', NULL, NULL, 'Worth repeating the sentence-to-operation drill next week while it is fresh.', '2026-09-16T08:02:00.000Z'),
+  ('c0000000-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000001', NULL, NULL, 'a0000000-0000-4000-8000-000000000003', NULL, 'Agreed with both families that Sanjay teaches Ben at the junior rate while he is still at school.', '2026-09-11T10:45:00.000Z'),
+  ('c0000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000003', NULL, NULL, NULL, '70000000-0000-4000-8000-000000000001', 'Room 2 is double-booked on the 24th; we will use room 1 that week only.', '2026-09-18T14:00:00.000Z');

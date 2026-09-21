@@ -5,6 +5,7 @@ import {
   HistoryIcon,
   MailIcon,
   MapPinIcon,
+  MessageSquareIcon,
   PhoneIcon,
   SchoolIcon,
   TargetIcon,
@@ -30,6 +31,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useAuditEvents } from '@/features/audit/api';
 import { ActivityFeed } from '@/features/audit/activity-feed';
+import { CommentThread } from '@/features/comments/comment-thread';
 import { DeletedBadge, RoleBadges, StatusBadge } from './user-badges';
 
 function initials(name: string) {
@@ -221,6 +223,12 @@ export function UserDetailView({ user }: { user: UserDetail }) {
           <PeopleList people={user.dependents} />
         </Section>
       )}
+
+      {/* Above the activity feed on purpose: what people have SAID about
+          someone matters more on their record than what the system logged. */}
+      <Section title="Comments" icon={<MessageSquareIcon className="size-4" />}>
+        <CommentThread target={{ target_type: 'user', target_id: user.id }} />
+      </Section>
 
       <RecentActivity userId={user.id} />
     </div>

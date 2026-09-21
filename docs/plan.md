@@ -71,3 +71,11 @@ Phase 11:
 This phase is about bringing up test environment. Create new database test instance, worker test instance and test portal. 
 Playwright will no longer use the production instance and the test database will be seeded with a couple of admin accounts, 10 tutors, 30 parents and 50 students.
 Run all playwright tests on this instance and verify. Disable authentication on the test portal
+
+Phase 12: 
+Allow ability to record a comment. The comment will include the timestamp, the user and target. The target could be a user, a scheduled session, an assignment of the tutor/student relationship or a session itself.
+Comments are only shown to the related parties. Comments are not editable. They can only be deleted by the user who entered it.
+
+Build a reverse chronological view which depicts applicable comments for any entity. 
+
+Do a detailed industry standard best practice for this ask and come up with a plan to implement and execute.

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { ChevronDownIcon, DownloadIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -12,6 +13,7 @@ import {
   type TutoringSession,
 } from '@tmi/shared';
 
+import { FocusNotice } from '@/components/layout/focus-notice';
 import { PageHeader } from '@/components/layout/page-header';
 import {
   AlertDialog,
@@ -29,11 +31,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
+import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { SessionFormDialog } from './session-form-dialog';
 import { StartSessionButton } from './start-session-button';
-import { useDeleteSession, useSessions } from './api';
+import { useDeleteSession, useSession, useSessions } from './api';
 
 const PAGE_SIZE = 25;
 
@@ -49,6 +52,7 @@ export function SessionsPage() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [page, setPage] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<TutoringSession | null>(null);
   const [removing, setRemoving] = useState<TutoringSession | null>(null);
@@ -73,10 +77,29 @@ export function SessionsPage() {
     return query ? `?${query}` : '';
   }, [from, to]);
 
-  const { data, isPending } = useSessions(params);
+  const { data, isPending: listPending } = useSessions(params);
   const remove = useDeleteSession();
 
-  const sessions = data?.data ?? [];
+  /**
+   * A link from the comments feed names one session. It may sit on any page of
+   * any filter, so it is fetched on its own and shown alone until the reader
+   * asks for the rest.
+   */
+  const focusId = searchParams.get('focus');
+  const focused = useSession(focusId);
+  const clearFocus = () =>
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        next.delete('focus');
+        return next;
+      },
+      { replace: true },
+    );
+
+  const listSessions = data?.data ?? [];
+  const sessions = focusId ? (focused.data ? [focused.data.data] : []) : listSessions;
+  const isPending = focusId ? focused.isPending : listPending;
   const totals = data?.totals;
   const total = totals?.session_count ?? 0;
   const lastPage = Math.max(0, Math.ceil(total / PAGE_SIZE) - 1);
@@ -154,6 +177,14 @@ export function SessionsPage() {
         />
       </div>
 
+      <FocusNotice
+        active={Boolean(focusId)}
+        found={sessions.length > 0}
+        what="session"
+        onClear={clearFocus}
+      />
+
+      {!focusId && (
       <div className="mb-4 flex flex-wrap items-end gap-3">
         <div className="grid gap-1.5">
           <Label htmlFor="from" className="text-muted-foreground text-xs">
@@ -198,6 +229,7 @@ export function SessionsPage() {
           </Button>
         )}
       </div>
+      )}
 
       {isPending && (
         <div className="space-y-3">
@@ -282,6 +314,12 @@ export function SessionsPage() {
                         )}
                       </div>
 
+                      <CommentsButton
+                        target={{ target_type: 'session', target_id: session.id }}
+                        title={`the ${session.occurred_on} session with ${session.student_name}`}
+                        description={`${session.student_name} with ${session.tutor_name}, ${formatClockTime(session.started_at)}–${formatClockTime(session.ended_at)}.`}
+                      />
+
                       {canEdit && (
                         <>
                           <Button
@@ -333,7 +371,7 @@ export function SessionsPage() {
         })}
       </ul>
 
-      {total > PAGE_SIZE && (
+      {!focusId && total > PAGE_SIZE && (
         <div className="mt-4 flex items-center justify-between gap-3">
           <p className="text-muted-foreground text-sm">
             Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total}

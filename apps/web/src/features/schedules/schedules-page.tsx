@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { CalendarPlusIcon, DownloadIcon, PencilIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -8,6 +9,7 @@ import {
   type ScheduledSession,
 } from '@tmi/shared';
 
+import { FocusNotice } from '@/components/layout/focus-notice';
 import { PageHeader } from '@/components/layout/page-header';
 import {
   AlertDialog,
@@ -23,6 +25,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { ScheduleDialog } from './schedule-dialog';
@@ -41,11 +44,25 @@ export function SchedulesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<ScheduledSession | null>(null);
   const [removing, setRemoving] = useState<ScheduledSession | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { data, isPending } = useSchedules();
   const remove = useDeleteSchedule();
 
-  const schedules = data?.data ?? [];
+  /** One slot, when a comment in the feed links straight to it. */
+  const focusId = searchParams.get('focus');
+  const all = data?.data ?? [];
+  const schedules = focusId ? all.filter((row) => row.id === focusId) : all;
+  const clearFocus = () =>
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        next.delete('focus');
+        return next;
+      },
+      { replace: true },
+    );
+
   const byDay = DAYS_OF_WEEK.map((day) => ({
     day,
     items: schedules.filter((schedule) => schedule.day_of_week === day.value),
@@ -96,6 +113,13 @@ export function SchedulesPage() {
             )}
           </div>
         }
+      />
+
+      <FocusNotice
+        active={Boolean(focusId)}
+        found={schedules.length > 0}
+        what="scheduled session"
+        onClear={clearFocus}
       />
 
       {isPending && (
@@ -159,6 +183,12 @@ export function SchedulesPage() {
                         </div>
 
                         <div className="flex items-center gap-1">
+                          <CommentsButton
+                            target={{ target_type: 'scheduled_session', target_id: schedule.id }}
+                            title={`${schedule.student_name}’s recurring session`}
+                            description={`${describeSchedule(schedule)}, with ${schedule.tutor_name}.`}
+                          />
+
                           <Button variant="ghost" size="icon" aria-label="Download calendar invite" asChild>
                             <a href={calendarHref.one(schedule.id)} download>
                               <DownloadIcon />

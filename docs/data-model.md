@@ -272,6 +272,42 @@ Storing them would mean two sources of truth that drift the first time a session
 The headline totals sum only *positive* balances, so one overpaid tutor cannot mask another's
 unpaid one.
 
+### `comments`
+
+Phase 12. A remark somebody wants on the record, against a person, a lesson, a pairing or a
+recurring slot: "parent asked to move Thursdays", "finished the fractions unit".
+
+Three tables now hold prose, and they are not interchangeable. `audit_events` is what the
+**system** did, written by code and never by hand. `sessions.notes` is the **tutor's account of
+one lesson**, part of the billing record. A comment is **one person addressing the people who
+share the thing it hangs off** — and it is the only one of the three anybody can delete.
+
+**The target is four nullable foreign keys, not a `(target_type, target_id)` pair.** The pair is
+the usual shape and it is the wrong one here: it cannot be a foreign key, so the database would
+no longer know the target exists, and deleting a lesson would leave its comments behind pointing
+at nothing. A `CHECK` that exactly one of the four is set makes them behave as one field, and
+the API still speaks `target_type` / `target_id` at its edge.
+
+**Who may read one is the whole feature, and it differs by target.** A comment on a lesson, a
+pairing or a slot goes to everyone that row concerns — its tutor, its student, that student's
+guardians, and admins — the same rule as `teachingScopeSql`, because a comment should not be
+readable by fewer or more people than the thing it is about. A comment on a **person** is
+narrower: admins, its author, that person, and that person's guardians. That is what keeps one
+tutor's remark about a family off another tutor's screen, while making sure nothing is written
+about somebody behind their back.
+
+**One set of visibility fragments, three readers.** The thread, the per-row count badges and
+the global feed at `/comments` all build their WHERE from `personScopeSql` and
+`teachingScopeSql` in the comments repository. That matters because they are easy to drift
+apart, and a drift shows somebody a comment they cannot open, or hides one they are entitled
+to. The feed is a different view of the same comments, never a wider one — a parent's feed is
+their own family's, an admin's is the institute's.
+
+**Never edited, and deleted only by whoever wrote it** — not by an admin, which is unusual in
+this codebase and is what the plan asks for. There is no `updated_at` and no trigger, so the
+schema itself says a comment cannot change: a remark somebody has already read must not be
+rewritten under them. Deleting is soft, and hides it from everyone including its author.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application
@@ -313,6 +349,9 @@ The schema carries every rule it is capable of carrying:
 | One live user per email address | partial `UNIQUE INDEX` on `lower(email)` |
 | Deleting a person removes everything hanging off them | `ON DELETE CASCADE` |
 | A session limit is a positive multiple of 15 minutes | `CHECK` on `max_session_minutes` |
+| A comment is about exactly one thing | `CHECK` over the four target columns |
+| A comment cannot be empty | `CHECK (length(trim(body)) > 0)` |
+| Deleting a lesson removes its comments | `ON DELETE CASCADE` on each target |
 
 Three rules **cannot** be constraints, and live in the API instead. They are called out here
 because "the database guarantees it" would be wrong:
@@ -329,6 +368,12 @@ because "the database guarantees it" would be wrong:
 
 3. **A profile row exists only while its role is held.** Dropping the tutor role deletes the
    tutor profile, in the same batch as the role change.
+
+4. **Who may read a comment.** The rule depends on the kind of target and, for a person, on
+   guardianship — a join the row itself cannot express. It lives in
+   `apps/api/src/repositories/comments.ts`, and every route there resolves the TARGET before it
+   touches a comment, so a thread can never be reached through an id the viewer would not have
+   been allowed to see in the first place.
 
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
 a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's

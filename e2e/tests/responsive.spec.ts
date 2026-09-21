@@ -8,7 +8,7 @@ import { expect, test } from '../support/fixtures.js';
  * cannot wrap pushes the whole document wider, and every card on the page then
  * runs off the right edge.
  */
-const PAGES = ['/', '/users', '/assignments', '/sessions', '/schedule', '/billing', '/activity', '/profile'];
+const PAGES = ['/', '/users', '/assignments', '/sessions', '/schedule', '/billing', '/comments', '/activity', '/profile'];
 
 // iPhone-class width, and a narrow Android for good measure.
 const WIDTHS = [390, 360];
