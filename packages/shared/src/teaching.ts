@@ -80,6 +80,57 @@ export function minutesToClock(minutes: number): string {
 }
 
 /**
+ * The institute's timezone.
+ *
+ * A lesson is "Tuesday 4pm" to everyone involved, so the wall-clock times a
+ * session is stored with are the ones the tutor and family saw. The Worker
+ * that records them runs in UTC, and a browser runs wherever its owner is, so
+ * an instant becomes a clock time ONLY through this: reading UTC parts off a
+ * live session's start silently shifted every lesson by the offset, and after
+ * early evening moved it to the next day as well.
+ */
+export const INSTITUTE_TIME_ZONE = 'America/New_York';
+
+const zonedFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function zonedFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = zonedFormatters.get(timeZone);
+
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    zonedFormatters.set(timeZone, formatter);
+  }
+
+  return formatter;
+}
+
+/**
+ * The calendar day and minutes past midnight an instant showed on the clock in
+ * a given timezone -- the pair a session is recorded against.
+ */
+export function zonedClockParts(
+  iso: string,
+  timeZone: string = INSTITUTE_TIME_ZONE,
+): { day: string; minutesOfDay: number } {
+  const parts = zonedFormatter(timeZone).formatToParts(new Date(iso));
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((candidate) => candidate.type === type)?.value ?? '00';
+
+  return {
+    day: `${part('year')}-${part('month')}-${part('day')}`,
+    minutesOfDay: Number(part('hour')) * 60 + Number(part('minute')),
+  };
+}
+
+/**
  * Times are STORED as 24-hour "HH:MM" because that sorts correctly as text and
  * is unambiguous, and DISPLAYED as 12-hour with AM/PM because that is how the
  * institute talks about lessons. Everything below is the display half; nothing

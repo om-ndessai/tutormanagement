@@ -1,5 +1,5 @@
 import type { ActiveSession, SessionMode, User } from '@tmi/shared';
-import { minutesToClock, roundClockToQuarter } from '@tmi/shared';
+import { minutesToClock, roundClockToQuarter, zonedClockParts } from '@tmi/shared';
 
 import { isAdmin } from '../lib/scope.js';
 
@@ -23,23 +23,6 @@ interface ActiveRow {
 }
 
 /**
- * Local wall-clock parts of an instant.
- *
- * The Worker runs in UTC, so "today" and "16:07" are derived from the stored
- * instant in UTC too. A lesson is recorded against the clock the tutor saw;
- * for an institute in one timezone this is the pragmatic choice, and the raw
- * instant is kept so it can be reinterpreted later if that stops being true.
- */
-function clockParts(iso: string) {
-  const date = new Date(iso);
-
-  return {
-    day: iso.slice(0, 10),
-    minutesOfDay: date.getUTCHours() * 60 + date.getUTCMinutes(),
-  };
-}
-
-/**
  * A live lesson as the viewer may see it. The two rates are scoped the same
  * way a finished session's are: the tutor teaching it sees what they earn,
  * an admin sees both, and nobody else sees either.
@@ -50,7 +33,7 @@ export function toActiveSession(
   chargeRateCents: number | null,
   viewer: User,
 ): ActiveSession {
-  const { day, minutesOfDay } = clockParts(row.started_at);
+  const { day, minutesOfDay } = zonedClockParts(row.started_at);
   const admin = isAdmin(viewer);
 
   return {
@@ -128,10 +111,13 @@ export async function clearActive(db: D1Database, tutorUserId: string): Promise<
  * duration is inherently a multiple of 15. A lesson shorter than half a
  * quarter would otherwise round to nothing, so it is floored at 15 minutes:
  * anything that happened is worth recording.
+ *
+ * The raw instants are read on the institute's clock, not the Worker's UTC
+ * one, so a lesson is recorded at the time the tutor watched it happen.
  */
 export function resolveTimes(startedAtIso: string, endedAt: Date = new Date()) {
-  const start = clockParts(startedAtIso);
-  const end = clockParts(endedAt.toISOString());
+  const start = zonedClockParts(startedAtIso);
+  const end = zonedClockParts(endedAt.toISOString());
 
   const roundedStart = roundClockToQuarter(start.minutesOfDay);
   let roundedEnd = roundClockToQuarter(end.minutesOfDay);

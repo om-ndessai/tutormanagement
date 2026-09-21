@@ -1,3 +1,5 @@
+import { zonedClockParts } from '@tmi/shared';
+
 /**
  * Characters that make a spreadsheet treat a cell as a formula. A field
  * beginning with one of these is prefixed with an apostrophe, which Excel and
@@ -55,7 +57,7 @@ export function csvResponse(filename: string, body: string): Response {
   });
 }
 
-/** "tmi-sessions-2026-09-20.csv" */
+/** "tmi-sessions-2026-09-20.csv", dated on the institute's clock rather than the Worker's. */
 export function datedFilename(prefix: string): string {
-  return `${prefix}-${new Date().toISOString().slice(0, 10)}.csv`;
+  return `${prefix}-${zonedClockParts(new Date().toISOString()).day}.csv`;
 }
