@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { formatTimeRange } from './teaching.js';
+import {
+  MAX_SESSION_MINUTES_LIMIT,
+  QUARTER_HOUR,
+  formatTimeRange,
+} from './teaching.js';
 import { optionalText, userSchema, type UserRole } from './users.js';
 
 // ---------------------------------------------------------------------------
@@ -12,6 +16,23 @@ const shortText = (max: number, label: string) =>
 /** A money field that treats "" from a form as "not set". */
 const optionalCentsField = z
   .union([z.number().int().min(0).max(100_000_00), z.literal('')])
+  .nullish()
+  .transform((value) => (value === '' || value == null ? null : (value as number)));
+
+/**
+ * The longest a single lesson may run, in minutes. "" from a form means "no
+ * limit of their own", which defers to the other party's.
+ */
+const optionalMaxSessionMinutesField = z
+  .union([
+    z
+      .number()
+      .int('Use a whole number of minutes.')
+      .min(QUARTER_HOUR, 'The shortest session the institute records is 15 minutes.')
+      .max(MAX_SESSION_MINUTES_LIMIT, 'A single session cannot run longer than eight hours.')
+      .refine((value) => value % QUARTER_HOUR === 0, 'Use a multiple of 15 minutes.'),
+    z.literal(''),
+  ])
   .nullish()
   .transform((value) => (value === '' || value == null ? null : (value as number)));
 
@@ -39,6 +60,12 @@ export const tutorProfileSchema = z.object({
    */
   default_rate_in_person_cents: optionalCentsField,
   default_rate_virtual_cents: optionalCentsField,
+  /**
+   * The longest lesson this tutor teaches. The SHORTER of this and the
+   * student's limit ends a live session that reaches it; see
+   * effectiveMaxSessionMinutes.
+   */
+  max_session_minutes: optionalMaxSessionMinutesField,
 });
 
 export type TutorProfileInput = z.input<typeof tutorProfileSchema>;
@@ -59,6 +86,8 @@ export const studentProfileSchema = z.object({
    */
   charge_rate_in_person_cents: optionalCentsField,
   charge_rate_virtual_cents: optionalCentsField,
+  /** The longest lesson this student sits. See the tutor's field. */
+  max_session_minutes: optionalMaxSessionMinutesField,
 });
 
 export type StudentProfileInput = z.input<typeof studentProfileSchema>;

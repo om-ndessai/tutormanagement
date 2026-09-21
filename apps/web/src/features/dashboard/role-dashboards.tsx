@@ -52,6 +52,14 @@ function SessionList({ sessions, showTutor }: { sessions: TutoringSession[]; sho
           <Badge variant="secondary" className="text-[10px]">
             {SESSION_MODE_LABELS[session.mode]}
           </Badge>
+          {session.auto_stopped && (
+            <Badge
+              variant="outline"
+              className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
+            >
+              Auto-stopped
+            </Badge>
+          )}
           <span className="w-16 text-right text-sm font-medium tabular-nums">
             {formatCents(shownAmountCents(session) ?? 0)}
           </span>

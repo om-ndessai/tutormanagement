@@ -180,6 +180,14 @@ for (const t of genTutors) {
   ]);
 }
 
+// The longest lesson each tutor will teach. Appended last so the rate columns
+// the assignment step reads by index keep their positions.
+const TUTOR_MAX = { [CAST.priya]: 180, [CAST.alex]: 180, [CAST.maria]: 120, [CAST.johan]: 180, [CAST.sanjay]: 120 };
+for (const row of tutorProfiles) {
+  const id = row[0].slice(1, -1);
+  row.push(TUTOR_MAX[id] ?? pick([120, 180, 240, 'NULL']));
+}
+
 // What the institute CHARGES each family, per hour. Always above what the
 // tutor is paid for the same lesson -- the difference is the margin, and the
 // whole reason these are separate from the tutor's rates.
@@ -313,6 +321,15 @@ for (const a of assignments.slice(4)) {
 for (const row of studentProfiles) {
   const price = studentCharge[row[0].slice(1, -1)];
   row.push(price?.in ?? 'NULL', price?.virt ?? 'NULL');
+}
+
+// The longest a student sits, appended after their prices for the same reason.
+// A nine-year-old's hour and a senior's two hours are both real: the SHORTER of
+// this and the tutor's limit is what ends a running lesson.
+const STUDENT_MAX = { [CAST.sanjay]: 120, [CAST.sofia]: 90, [CAST.ben]: 60 };
+for (const row of studentProfiles) {
+  const id = row[0].slice(1, -1);
+  row.push(STUDENT_MAX[id] ?? pick([60, 90, 120, 'NULL']));
 }
 
 // --- sessions ---------------------------------------------------------------
@@ -487,10 +504,10 @@ ${insert('users', ['id', 'email', 'full_name', 'phone', 'status'], users)}
 ${insert('user_roles', ['user_id', 'role'], roles)}
 
 -- --- tutor-only data -------------------------------------------------------
-${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents'], tutorProfiles)}
+${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes'], tutorProfiles)}
 
 -- --- student-only data -----------------------------------------------------
-${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents'], studentProfiles)}
+${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], studentProfiles)}
 
 -- --- who is responsible for whom -------------------------------------------
 ${insert('guardianships', ['guardian_user_id', 'dependent_user_id', 'relationship', 'is_primary'], guardianships)}

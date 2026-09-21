@@ -223,11 +223,31 @@ The primary key is `tutor_user_id`, which is what enforces one live lesson per t
 it in the database rather than the browser means a tutor can start on a phone and stop on a
 laptop, and a refresh loses nothing.
 
-**Rounding differs from Phase 4 on purpose.** A typed-in session rounds its *elapsed time* to
-the nearest quarter. A live session snaps *each endpoint* as it is pressed — "the start time
-will be nearest 15 min ... it will again record session end to nearest 15 min" — so the
-duration falls out as a multiple of 15 rather than being rounded itself. `roundClockToQuarter`
-and `roundToQuarterHour` are separate functions for that reason.
+**Rounding.** A live session snaps its *start* to the nearest quarter as it is pressed
+(`roundClockToQuarter`), and is then billed for the time that actually elapsed between the
+start and stop instants, rounded to a quarter (`roundToQuarterHour`); the end is the start plus
+that length. The two functions stay separate because they round different things — an endpoint
+and a duration — but the length always comes from the instants. Subtracting two separately
+snapped endpoints, which is what the code did first, is wrong by a full quarter whenever the
+two round opposite ways: 4:53 to 5:52 is 59 minutes, and 5:00 to 5:45 is 45.
+
+**A lesson has a maximum length, and it enforces itself.** `tutor_profiles.max_session_minutes`
+and `student_profiles.max_session_minutes` each hold the longest single lesson that person
+does; the **shorter** of the two applies, and `DEFAULT_MAX_SESSION_MINUTES` (4 hr) covers a
+pairing where neither is set. Both are on profiles rather than on the person because they are
+genuinely different facts: a tutor who will teach for three hours and a nine-year-old who
+cannot sit for more than one are both telling the truth.
+
+A running lesson that reaches its limit is recorded at the limit and flagged `auto_stopped`,
+because the alternative — a timer left on overnight — bills a family for a lesson nobody
+taught. The sweep that does this (`autoStopExpired`) runs from a cron trigger every fifteen
+minutes and again whenever anybody reads the live sessions, so a portal nobody has open still
+settles up. The same cap applies when a tutor presses stop hours late, so the limit cannot be
+sidestepped by leaving the timer running and stopping it by hand.
+
+The limit deliberately does **not** apply to a session typed in afterwards, or to an edit. A
+person asserting what happened is better evidence than a cap, and a lesson that really did run
+five hours has to be correctable after the sweep cut it to four.
 
 ### `payments`
 
@@ -292,6 +312,7 @@ The schema carries every rule it is capable of carrying:
 | At most one primary guardian per dependent | partial `UNIQUE INDEX` |
 | One live user per email address | partial `UNIQUE INDEX` on `lower(email)` |
 | Deleting a person removes everything hanging off them | `ON DELETE CASCADE` |
+| A session limit is a positive multiple of 15 minutes | `CHECK` on `max_session_minutes` |
 
 Three rules **cannot** be constraints, and live in the API instead. They are called out here
 because "the database guarantees it" would be wrong:

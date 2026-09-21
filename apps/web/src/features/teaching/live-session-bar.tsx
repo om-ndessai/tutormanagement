@@ -5,6 +5,7 @@ import {
   SESSION_MODE_LABELS,
   elapsedSince,
   formatCents,
+  formatDuration,
   shownAmountCents,
   formatClockTime,
   formatStopwatch,
@@ -38,6 +39,11 @@ import {
   useCancelActiveSession,
   useStopSession,
 } from './api';
+
+/** An instant as the clock time the reader is looking at. */
+function formatInstantTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+}
 
 /** Ticks once a second, driven off the server's start instant rather than a local one. */
 function useStopwatch(startedAt: string | undefined) {
@@ -89,6 +95,12 @@ export function LiveSessionBar() {
 
           <Badge variant="secondary" className="hidden text-xs sm:inline-flex">
             from {formatClockTime(active.rounded_start)}
+          </Badge>
+
+          {/* The limit is the tutor's safety net, so it should not be a
+              surprise when it fires. */}
+          <Badge variant="outline" className="hidden text-xs md:inline-flex">
+            ends by {formatInstantTime(active.auto_stop_at)}
           </Badge>
 
           <div className="ml-auto flex items-center gap-2">
@@ -168,8 +180,10 @@ function StopDialog({
         <DialogHeader>
           <DialogTitle>End the session with {active.student_name}?</DialogTitle>
           <DialogDescription>
-            Start and end are each recorded to the nearest quarter hour, so this will be logged
-            from {formatClockTime(active.rounded_start)}. You can edit the details afterwards.
+            The start is recorded to the nearest quarter hour, so this will be logged from{' '}
+            {formatClockTime(active.rounded_start)}, and billed for however long it ran, rounded
+            the same way — up to the {formatDuration(active.max_minutes)} limit for this pairing.
+            You can edit the details afterwards.
           </DialogDescription>
         </DialogHeader>
 

@@ -4,7 +4,9 @@ import { PEOPLE } from '../support/people.js';
 
 /**
  * Phase 7: the tutor starts a timer rather than typing times in afterwards.
- * Both endpoints snap to the nearest quarter hour as they are pressed.
+ * The start snaps to the nearest quarter hour, and the lesson is billed for
+ * the time that elapsed between the two instants, rounded the same way and
+ * capped at the pairing's session limit.
  */
 test.describe('a tutor can run a live session', () => {
   test.afterEach(async ({ as }) => {
@@ -37,8 +39,8 @@ test.describe('a tutor can run a live session', () => {
     const stopped = await tutor.request.post('/api/sessions/active/stop', { data: {} });
     const session = await unwrap<any>(stopped, 'stopping the session');
 
-    // Endpoint rounding makes the duration a multiple of 15 by construction,
-    // and a lesson too short to register is floored rather than lost.
+    // The billed length is always a whole number of quarters, and a lesson
+    // too short to register is floored rather than lost.
     expect(session.duration_minutes % 15).toBe(0);
     expect(session.duration_minutes).toBeGreaterThanOrEqual(15);
     // A tutor stopping their own lesson sees their pay, never the family's price.

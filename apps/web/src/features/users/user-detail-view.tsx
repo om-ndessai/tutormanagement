@@ -8,6 +8,7 @@ import {
   PhoneIcon,
   SchoolIcon,
   TargetIcon,
+  TimerIcon,
   UsersIcon,
   VideoIcon,
   WalletIcon,
@@ -15,9 +16,11 @@ import {
 import type { ReactNode } from 'react';
 import {
   DAYS_OF_WEEK,
+  DEFAULT_MAX_SESSION_MINUTES,
   PAYMENT_METHOD_LABELS,
   RELATIONSHIP_LABELS,
   formatCents,
+  formatDuration,
   formatTimeRange,
   groupSlotsByDay,
   type UserDetail,
@@ -119,6 +122,13 @@ export function UserDetailView({ user }: { user: UserDetail }) {
                 <Muted>Not set</Muted>
               )}
             </Detail>
+            <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
+              {tutor.max_session_minutes != null ? (
+                formatDuration(tutor.max_session_minutes)
+              ) : (
+                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)</Muted>
+              )}
+            </Detail>
           </dl>
           {tutor.availability_notes && (
             <p className="text-muted-foreground mt-4 text-sm">{tutor.availability_notes}</p>
@@ -153,6 +163,13 @@ export function UserDetailView({ user }: { user: UserDetail }) {
                 {`${formatCents(student.charge_rate_virtual_cents)} / hr`}
               </Detail>
             )}
+            <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
+              {student.max_session_minutes != null ? (
+                formatDuration(student.max_session_minutes)
+              ) : (
+                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)</Muted>
+              )}
+            </Detail>
           </dl>
         </Section>
       )}

@@ -24,6 +24,7 @@ export const AUDIT_ACTIONS = [
   'assignment.removed',
 
   'session.recorded',
+  'session.auto_stopped',
   'session.updated',
   'session.deleted',
 
@@ -60,6 +61,7 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'assignment.removed': 'Assignment removed',
 
   'session.recorded': 'Session recorded',
+  'session.auto_stopped': 'Session auto-stopped',
   'session.updated': 'Session updated',
   'session.deleted': 'Session deleted',
 

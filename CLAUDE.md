@@ -146,9 +146,27 @@ app-specific components belong in `components/` or `features/`.
 query hooks, table, form and badges. Follow that shape for the next feature rather than
 splitting by file type.
 
-**Two rounding rules, deliberately different.** `roundToQuarterHour` rounds a DURATION, for a
-session typed in afterwards. `roundClockToQuarter` snaps a wall-clock ENDPOINT, for the live
-timer. Do not collapse them — the plan specifies each separately.
+**Two rounding rules, deliberately different.** `roundToQuarterHour` rounds a DURATION — a
+session typed in afterwards, and the measured length of a live one. `roundClockToQuarter` snaps
+a wall-clock ENDPOINT, which the live timer does to the start. Do not collapse them. A live
+lesson's length comes from the two instants and its end is derived from the start plus that
+length: subtracting two separately snapped endpoints drifts a full quarter whenever they round
+opposite ways, and that was a real billing bug.
+
+**A live lesson has a maximum length, and the API enforces it.**
+`tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the
+longest lesson that person does; the SHORTER of the two applies, and `DEFAULT_MAX_SESSION_MINUTES`
+covers a pairing where neither is set (`effectiveMaxSessionMinutes`). A running lesson that
+reaches its limit is recorded at it and flagged `auto_stopped`, by `autoStopExpired` — from the
+cron trigger in `wrangler.jsonc` and from every read of the live sessions. The cap applies to a
+late manual stop too, so it cannot be sidestepped. It deliberately does NOT apply to a session
+typed in afterwards or to an edit: a person vouching for what happened outranks the cap, and
+correcting the times is how a wrongly cut session gets fixed (which clears the flag).
+
+**An instant becomes a clock time only through `zonedClockParts`.** The Worker runs in UTC and a
+browser runs wherever its owner is, so reading UTC parts off a live session shifted every lesson
+by the institute's offset. `INSTITUTE_TIME_ZONE` in `packages/shared/src/teaching.ts` is the one
+clock a lesson is recorded against.
 
 **Exports and calendar files are plain links, not fetches.** The session cookie goes along and
 the browser names the file from `Content-Disposition`. `lib/csv.ts` neutralises formula-leading

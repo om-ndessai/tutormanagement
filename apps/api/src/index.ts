@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
-import { isProduction, type AppEnv } from './types.js';
+import { isProduction, type AppEnv, type Env } from './types.js';
+import { autoStopExpired } from './lib/live-sessions.js';
 import { onError, onNotFound } from './middleware/error.js';
 import { requireAuth } from './middleware/auth.js';
 import { authRoutes } from './routes/auth.js';
@@ -95,4 +96,22 @@ app.onError(onError);
  */
 export type AppType = typeof api;
 
-export default app;
+/**
+ * The Worker itself: the portal, plus the sweep that ends lessons nobody
+ * stopped.
+ *
+ * The sweep also runs whenever somebody reads the live sessions, so this
+ * matters most when nobody is looking -- a timer started on Friday evening is
+ * settled up that night rather than on Monday morning. Cron schedule in
+ * wrangler.jsonc.
+ */
+export default {
+  fetch: app.fetch,
+
+  // Awaited rather than handed to waitUntil: closing these lessons IS the
+  // job, so the invocation should not be able to finish before it is done.
+  async scheduled(_event: ScheduledController, env: Env): Promise<void> {
+    const closed = await autoStopExpired(env.DB);
+    if (closed > 0) console.log(`Auto-stopped ${closed} session(s) past their limit.`);
+  },
+} satisfies ExportedHandler<Env>;

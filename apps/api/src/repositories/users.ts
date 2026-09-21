@@ -178,14 +178,16 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
       db
         .prepare(
           `SELECT highest_education, school, area, availability_notes, virtual_available,
-                  default_rate_in_person_cents, default_rate_virtual_cents
+                  default_rate_in_person_cents, default_rate_virtual_cents,
+                  max_session_minutes
            FROM tutor_profiles WHERE user_id = ?`,
         )
         .bind(id),
       db
         .prepare(
           `SELECT school, current_math_course, academic_year_goal, virtual_available,
-                  charge_rate_in_person_cents, charge_rate_virtual_cents
+                  charge_rate_in_person_cents, charge_rate_virtual_cents,
+                  max_session_minutes
            FROM student_profiles WHERE user_id = ?`,
         )
         .bind(id),
@@ -246,6 +248,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
             (rawTutor.default_rate_in_person_cents as number | null) ?? null,
           default_rate_virtual_cents:
             (rawTutor.default_rate_virtual_cents as number | null) ?? null,
+          max_session_minutes: (rawTutor.max_session_minutes as number | null) ?? null,
         } satisfies TutorProfile)
       : null,
     student_profile: rawStudent
@@ -258,6 +261,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
             (rawStudent.charge_rate_in_person_cents as number | null) ?? null,
           charge_rate_virtual_cents:
             (rawStudent.charge_rate_virtual_cents as number | null) ?? null,
+          max_session_minutes: (rawStudent.max_session_minutes as number | null) ?? null,
         } satisfies StudentProfile)
       : null,
     payment_handles: (payRes?.results ?? []) as unknown as PaymentHandle[],
@@ -398,8 +402,8 @@ export async function updateUserSections(
           .prepare(
             `INSERT INTO tutor_profiles
                (user_id, highest_education, school, area, availability_notes, virtual_available,
-                default_rate_in_person_cents, default_rate_virtual_cents)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
@@ -410,6 +414,7 @@ export async function updateUserSections(
             p.virtual_available ? 1 : 0,
             p.default_rate_in_person_cents,
             p.default_rate_virtual_cents,
+            p.max_session_minutes,
           ),
       );
     }
@@ -425,8 +430,8 @@ export async function updateUserSections(
           .prepare(
             `INSERT INTO student_profiles
                (user_id, school, current_math_course, academic_year_goal, virtual_available,
-                charge_rate_in_person_cents, charge_rate_virtual_cents)
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                charge_rate_in_person_cents, charge_rate_virtual_cents, max_session_minutes)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
@@ -436,6 +441,7 @@ export async function updateUserSections(
             p.virtual_available ? 1 : 0,
             p.charge_rate_in_person_cents,
             p.charge_rate_virtual_cents,
+            p.max_session_minutes,
           ),
       );
     }

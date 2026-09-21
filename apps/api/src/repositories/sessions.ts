@@ -25,6 +25,7 @@ const SELECT_SESSION = `
          s.charge_rate_cents,
          s.charge_amount_cents,
          s.notes,
+         s.auto_stopped,
          s.created_at,
          s.updated_at
   FROM sessions s
@@ -49,7 +50,12 @@ export interface StoredSession
   charge_amount_cents: number;
 }
 
-type SessionRow = StoredSession;
+type SessionRow = Omit<StoredSession, 'auto_stopped'> & { auto_stopped: number };
+
+/** D1 stores the flag as 0/1; everything above this layer speaks booleans. */
+function toSession(row: SessionRow): StoredSession {
+  return { ...row, auto_stopped: Number(row.auto_stopped) === 1 };
+}
 
 /** Builds the shared WHERE for list and totals, so the two cannot disagree. */
 function buildFilter(viewer: User, params: ListSessionsParams) {
@@ -121,8 +127,8 @@ export async function listSessions(
 
   const totalsRow = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
 
-  const sessions = ((pageResult?.results ?? []) as unknown as TutoringSession[]).map((row) =>
-    scopeSessionMoney(row, viewer),
+  const sessions = ((pageResult?.results ?? []) as unknown as SessionRow[]).map((row) =>
+    scopeSessionMoney(toSession(row), viewer),
   );
 
   // A list can mix lessons the viewer taught with lessons their child took, so
@@ -148,7 +154,7 @@ export async function listSessions(
 
 export async function getSession(db: D1Database, id: string): Promise<StoredSession | null> {
   const row = await db.prepare(`${SELECT_SESSION} WHERE s.id = ?`).bind(id).first<SessionRow>();
-  return row ?? null;
+  return row ? toSession(row) : null;
 }
 
 export interface CreateSessionRow {
@@ -164,7 +170,10 @@ export interface CreateSessionRow {
   charge_rate_cents: number;
   charge_amount_cents: number;
   notes: string | null;
-  recorded_by_user_id: string;
+  /** True when the limit ended the lesson rather than a person. */
+  auto_stopped: boolean;
+  /** NULL when the sweep recorded it: nobody pressed stop. */
+  recorded_by_user_id: string | null;
 }
 
 export async function createSession(
@@ -178,8 +187,9 @@ export async function createSession(
       `INSERT INTO sessions
          (id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at,
           duration_minutes, mode, tutor_rate_cents, tutor_amount_cents,
-          charge_rate_cents, charge_amount_cents, notes, recorded_by_user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          charge_rate_cents, charge_amount_cents, notes, auto_stopped,
+          recorded_by_user_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -195,6 +205,7 @@ export async function createSession(
       row.charge_rate_cents,
       row.charge_amount_cents,
       row.notes,
+      row.auto_stopped ? 1 : 0,
       row.recorded_by_user_id,
     )
     .run();
@@ -224,6 +235,7 @@ export async function updateSessionRow(
     tutor_rate_cents: number;
     charge_amount_cents: number;
     charge_rate_cents: number;
+    auto_stopped: boolean;
   }>,
 ): Promise<StoredSession | null> {
   const assignments: string[] = [];
@@ -232,7 +244,8 @@ export async function updateSessionRow(
   for (const [key, value] of Object.entries(fields)) {
     if (value === undefined) continue;
     assignments.push(`${key} = ?`);
-    values.push(value);
+    // The one boolean among them; D1 stores it as 0/1 like the schema says.
+    values.push(typeof value === 'boolean' ? (value ? 1 : 0) : value);
   }
 
   if (assignments.length === 0) return getSession(db, id);

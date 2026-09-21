@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  DEFAULT_MAX_SESSION_MINUTES,
+  SESSION_LIMIT_CHOICES,
   USER_STATUSES,
   USER_STATUS_LABELS,
   centsToInput,
+  formatDuration,
   parseCentsInput,
   createUserRequestSchema,
   updateUserRequestSchema,
@@ -63,6 +66,8 @@ interface FormState {
     /** Dollars as typed; converted to cents on submit. */
     rate_in_person: string;
     rate_virtual: string;
+    /** Minutes, or "" for "no limit of their own". */
+    max_minutes: string;
   };
   student: {
     school: string;
@@ -72,6 +77,8 @@ interface FormState {
     /** Dollars as typed; converted to cents on submit. */
     charge_in_person: string;
     charge_virtual: string;
+    /** Minutes, or "" for "no limit of their own". */
+    max_minutes: string;
   };
   payment_handles: PaymentHandle[];
   availability: AvailabilitySlot[];
@@ -92,6 +99,7 @@ const EMPTY: FormState = {
     virtual_available: false,
     rate_in_person: '',
     rate_virtual: '',
+    max_minutes: '',
   },
   student: {
     school: '',
@@ -100,6 +108,7 @@ const EMPTY: FormState = {
     virtual_available: false,
     charge_in_person: '',
     charge_virtual: '',
+    max_minutes: '',
   },
   payment_handles: [],
   availability: [],
@@ -121,6 +130,7 @@ function fromDetail(detail: UserDetail): FormState {
       virtual_available: detail.tutor_profile?.virtual_available ?? false,
       rate_in_person: centsToInput(detail.tutor_profile?.default_rate_in_person_cents),
       rate_virtual: centsToInput(detail.tutor_profile?.default_rate_virtual_cents),
+      max_minutes: detail.tutor_profile?.max_session_minutes?.toString() ?? '',
     },
     student: {
       school: detail.student_profile?.school ?? '',
@@ -129,6 +139,7 @@ function fromDetail(detail: UserDetail): FormState {
       virtual_available: detail.student_profile?.virtual_available ?? false,
       charge_in_person: centsToInput(detail.student_profile?.charge_rate_in_person_cents),
       charge_virtual: centsToInput(detail.student_profile?.charge_rate_virtual_cents),
+      max_minutes: detail.student_profile?.max_session_minutes?.toString() ?? '',
     },
     payment_handles: detail.payment_handles,
     availability: detail.availability,
@@ -164,6 +175,7 @@ function toRequest(form: FormState) {
           virtual_available: form.tutor.virtual_available,
           default_rate_in_person_cents: parseCentsInput(form.tutor.rate_in_person),
           default_rate_virtual_cents: parseCentsInput(form.tutor.rate_virtual),
+          max_session_minutes: form.tutor.max_minutes ? Number(form.tutor.max_minutes) : null,
         }
       : null,
     student_profile: isStudent
@@ -174,6 +186,7 @@ function toRequest(form: FormState) {
           virtual_available: form.student.virtual_available,
           charge_rate_in_person_cents: parseCentsInput(form.student.charge_in_person),
           charge_rate_virtual_cents: parseCentsInput(form.student.charge_virtual),
+          max_session_minutes: form.student.max_minutes ? Number(form.student.max_minutes) : null,
         }
       : null,
     payment_handles: form.payment_handles,
@@ -425,6 +438,13 @@ export function UserFormDialog({
                       />
                     </Field>
                   </div>
+
+                  <SessionLimitField
+                    id="t_max_session"
+                    value={form.tutor.max_minutes}
+                    onChange={(value) => set('tutor', { ...form.tutor, max_minutes: value })}
+                    hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
+                  />
                 </>
               )}
 
@@ -504,6 +524,13 @@ export function UserFormDialog({
                       />
                     </Field>
                   </div>
+
+                  <SessionLimitField
+                    id="s_max_session"
+                    value={form.student.max_minutes}
+                    onChange={(value) => set('student', { ...form.student, max_minutes: value })}
+                    hint="The shorter of this and the tutor's limit is the one that applies."
+                  />
                 </>
               )}
 
@@ -603,6 +630,46 @@ function Checkbox({
     </label>
   );
 }
+
+/**
+ * The longest a single lesson may run. Offered as a choice rather than a typed
+ * number because the value has to be a multiple of a quarter hour, which is
+ * the unit sessions are recorded in.
+ */
+function SessionLimitField({
+  id,
+  value,
+  onChange,
+  hint,
+}: {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  hint: string;
+}) {
+  return (
+    <Field id={id} label="Longest session" hint={hint} optional>
+      <Select value={value || NO_LIMIT} onValueChange={(v) => onChange(v === NO_LIMIT ? '' : v)}>
+        <SelectTrigger id={id} className="w-full sm:w-56">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={NO_LIMIT}>
+            No limit of their own ({formatDuration(DEFAULT_MAX_SESSION_MINUTES)})
+          </SelectItem>
+          {SESSION_LIMIT_CHOICES.map((minutes) => (
+            <SelectItem key={minutes} value={String(minutes)}>
+              {formatDuration(minutes)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </Field>
+  );
+}
+
+/** Radix cannot hold an empty option value, so absence needs a name. */
+const NO_LIMIT = 'none';
 
 function Field({
   id,

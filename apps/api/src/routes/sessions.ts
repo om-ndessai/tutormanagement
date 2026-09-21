@@ -29,6 +29,8 @@ import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
+import { autoStopExpired, recordRunningSession } from '../lib/live-sessions.js';
+import { priceSession } from '../lib/pricing.js';
 import { isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
@@ -37,7 +39,6 @@ import {
   clearActive,
   getActiveRow,
   listActiveRows,
-  resolveTimes,
   startActive,
   toActiveSession,
   updateActive,
@@ -57,81 +58,6 @@ interface SessionListBody extends ApiList<TutoringSession> {
   totals: SessionTotals;
 }
 
-/**
- * Prices a session from the pairing that authorises it.
- *
- * Both halves matter: a tutor can only bill for a student who was actually
- * assigned to them, and the rate comes from the assignment (or the tutor's
- * default) rather than from anything the client sent.
- */
-async function priceSession(
-  db: D1Database,
-  tutorUserId: string,
-  studentUserId: string,
-  mode: SessionMode,
-  startedAt: string,
-  endedAt: string,
-) {
-  const assignment = await getActiveAssignmentFor(db, tutorUserId, studentUserId);
-
-  if (!assignment) {
-    throw ApiError.validation('Please correct the highlighted fields.', {
-      student_user_id: ['That student is not currently assigned to this tutor.'],
-    });
-  }
-
-  const label = mode === 'virtual' ? 'virtual' : 'in-person';
-
-  // What the tutor is paid: the pairing's override, else the tutor's default.
-  const tutorRateCents = resolveRateCents(
-    mode,
-    { in_person: assignment.rate_in_person_cents, virtual: assignment.rate_virtual_cents },
-    {
-      in_person: assignment.effective_rate_in_person_cents,
-      virtual: assignment.effective_rate_virtual_cents,
-    },
-  );
-
-  if (tutorRateCents == null) {
-    throw ApiError.validation('Please correct the highlighted fields.', {
-      mode: [
-        `No ${label} rate is set for this tutor. ` +
-          'Set a default rate on their profile, or a rate on the assignment.',
-      ],
-    });
-  }
-
-  // What the family is charged. Priced on the student, so it does not depend
-  // on who teaches them.
-  const studentRates = await getStudentChargeRates(db, studentUserId);
-  const chargeRateCents = studentRates && resolveChargeRateCents(mode, studentRates);
-
-  if (chargeRateCents == null) {
-    throw ApiError.validation('Please correct the highlighted fields.', {
-      mode: [
-        `No ${label} price is set for this student. ` +
-          "Set it on the student's profile before recording the session.",
-      ],
-    });
-  }
-
-  const elapsed = elapsedMinutes(startedAt, endedAt);
-  if (elapsed === null) {
-    throw ApiError.validation('Please correct the highlighted fields.', {
-      ended_at: ['The end time must be after the start time.'],
-    });
-  }
-
-  const durationMinutes = roundToQuarterHour(elapsed);
-
-  return {
-    durationMinutes,
-    tutorRateCents,
-    chargeRateCents,
-    tutorAmountCents: computeAmountCents(durationMinutes, tutorRateCents),
-    chargeAmountCents: computeAmountCents(durationMinutes, chargeRateCents),
-  };
-}
 
 export const sessionsRoutes = new Hono<AppEnv>()
 
@@ -183,6 +109,8 @@ export const sessionsRoutes = new Hono<AppEnv>()
       charge_rate_cents: priced.chargeRateCents,
       charge_amount_cents: priced.chargeAmountCents,
       notes: input.notes,
+      // A person is asserting what happened, so the end is observed, not imposed.
+      auto_stopped: false,
       recorded_by_user_id: viewer.id,
     });
 
@@ -262,6 +190,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
   .get('/active', async (c) => {
     const viewer = c.get('user');
 
+    // Anyone looking at the live sessions also settles up the ones that have
+    // outlived their limit, so a forgotten timer does not have to wait for the
+    // next scheduled sweep while somebody has the portal open.
+    await autoStopExpired(c.env.DB);
+
     const mine = await getActiveRow(c.env.DB, viewer.id);
     const others = isAdmin(viewer) ? await listActiveRows(c.env.DB) : [];
 
@@ -307,6 +240,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
     const { student_user_id, mode } = c.req.valid('json');
 
+    // Yesterday's forgotten lesson must not block today's: close anything past
+    // its limit before deciding whether this tutor is already teaching.
+    await autoStopExpired(c.env.DB);
+
     // The primary key would reject this anyway; catching it here says why.
     if (await getActiveRow(c.env.DB, viewer.id)) {
       throw new ApiError(
@@ -349,8 +286,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
   /**
    * Ends the lesson and writes the billing record.
    *
-   * Both endpoints are snapped to the nearest quarter hour as they were
-   * pressed, so the duration is a multiple of 15 without rounding it again.
+   * Deliberately does NOT sweep first: if this tutor's lesson has outrun its
+   * limit, recording it here keeps the notes they just typed, where the sweep
+   * would have closed it underneath them.
    */
   .post('/active/stop', zValidator('json', stopSessionSchema), async (c) => {
     const viewer = c.get('user');
@@ -358,48 +296,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     if (!row) throw ApiError.notFound('You have no session running.');
 
-    const times = resolveTimes(row.started_at);
-    const notes = c.req.valid('json').notes ?? row.notes;
-
-    const priced = await priceSession(
-      c.env.DB,
-      row.tutor_user_id,
-      row.student_user_id,
-      row.mode,
-      times.started_at,
-      times.ended_at,
-    );
-
-    const session = await createSession(c.env.DB, {
-      tutor_user_id: row.tutor_user_id,
-      student_user_id: row.student_user_id,
-      occurred_on: times.occurred_on,
-      started_at: times.started_at,
-      ended_at: times.ended_at,
-      // Trust the endpoint rounding over re-rounding the elapsed time: the two
-      // agree except at the boundaries, and the plan specifies the endpoints.
-      duration_minutes: times.duration_minutes,
-      mode: row.mode,
-      tutor_rate_cents: priced.tutorRateCents,
-      tutor_amount_cents: computeAmountCents(times.duration_minutes, priced.tutorRateCents),
-      charge_rate_cents: priced.chargeRateCents,
-      charge_amount_cents: computeAmountCents(times.duration_minutes, priced.chargeRateCents),
-      notes,
-      recorded_by_user_id: viewer.id,
-    });
-
-    await clearActive(c.env.DB, viewer.id);
-
-    await recordAudit(c.env.DB, viewer, {
-      action: 'session.recorded',
-      description:
-        `Recorded a ${formatDuration(session.duration_minutes)} ` +
-        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
-        `${session.student_name} on ${session.occurred_on} ` +
-        `(${((session.charge_amount_cents ?? 0) / 100).toFixed(2)} USD)`,
-      subject: { id: session.student_user_id, full_name: session.student_name },
-      entity_type: 'session',
-      entity_id: session.id,
+    const session = await recordRunningSession(c.env.DB, row, {
+      actor: viewer,
+      notes: c.req.valid('json').notes ?? row.notes,
     });
 
     const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
@@ -460,6 +359,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
       const endedAt = input.ended_at ?? existing.ended_at;
       const mode = input.mode ?? existing.mode;
 
+      // Correcting the clock times is a person vouching for them, which is
+      // exactly what the auto_stopped flag was asking for, so it clears.
+      // Editing only the notes leaves it standing.
+      const endConfirmed = startedAt !== existing.started_at || endedAt !== existing.ended_at;
+
       const timesChanged =
         startedAt !== existing.started_at || endedAt !== existing.ended_at || mode !== existing.mode;
 
@@ -469,6 +373,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
         tutor_amount_cents: number;
         charge_rate_cents: number;
         charge_amount_cents: number;
+        auto_stopped: boolean;
       }> = {};
 
       if (timesChanged) {
@@ -490,6 +395,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
         derived = {
           duration_minutes: priced.durationMinutes,
+          ...(endConfirmed && existing.auto_stopped ? { auto_stopped: false } : {}),
           tutor_rate_cents: tutorRate,
           charge_rate_cents: chargeRate,
           tutor_amount_cents: computeAmountCents(priced.durationMinutes, tutorRate),

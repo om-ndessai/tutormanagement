@@ -15,6 +15,15 @@
 			"/api/*"
 		]
 	},
+	// Ends lessons whose timer was left running past the limit on the tutor's and
+	// the student's profiles. Reading the live sessions in the portal does the
+	// same sweep, so this is the path that matters when nobody is looking --
+	// overnight, and at weekends.
+	"triggers": {
+		"crons": [
+			"*/15 * * * *"
+		]
+	},
 	"d1_databases": [
 		{
 			"binding": "DB",

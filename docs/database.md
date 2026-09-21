@@ -83,6 +83,23 @@ SQLite can add a column and can add or drop an index, but it cannot drop or rety
 in place. Anything beyond an additive change needs the create-new-table / copy / drop / rename
 dance, written out explicitly.
 
+The session-limit columns added with the auto-stop work are exactly this kind of additive
+change:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE tutor_profiles ADD COLUMN max_session_minutes INTEGER"
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE student_profiles ADD COLUMN max_session_minutes INTEGER"
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE sessions ADD COLUMN auto_stopped INTEGER NOT NULL DEFAULT 0"
+```
+
+SQLite will not attach the `CHECK` constraints in `schema.sql` to a column added this way, so
+production accepts values the API and the Zod schema would reject. That is tolerable here
+because every write goes through the API, but it is the reason the rebuilt schema is the
+source of truth and not the live database.
+
 To see what has drifted:
 
 ```bash

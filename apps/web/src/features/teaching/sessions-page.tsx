@@ -247,7 +247,23 @@ export function SessionsPage() {
                         <Badge variant="secondary" className="text-[10px]">
                           {SESSION_MODE_LABELS[session.mode]}
                         </Badge>
+                        {session.auto_stopped && (
+                          <Badge
+                            variant="outline"
+                            className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
+                          >
+                            Auto-stopped
+                          </Badge>
+                        )}
                       </p>
+                      {/* The end of this one was imposed by the limit, not
+                          watched, so it is the figure most worth checking. */}
+                      {session.auto_stopped && (
+                        <p className="text-muted-foreground mt-1 text-xs">
+                          The timer ran past the session limit, so this was recorded at it. Edit
+                          it if the lesson was a different length.
+                        </p>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2">

@@ -183,6 +183,44 @@ export function formatHourShort(hour: number): string {
   return `${hours12}${hours24 < 12 ? 'a' : 'p'}`;
 }
 
+// ---------------------------------------------------------------------------
+// How long a lesson may run
+// ---------------------------------------------------------------------------
+
+/**
+ * The institute's backstop: the longest a live session runs when neither the
+ * tutor nor the student sets a limit of their own.
+ *
+ * It exists because the common failure is a tutor forgetting to press stop,
+ * and an unconfigured pair is exactly the pair nobody has thought about yet.
+ */
+export const DEFAULT_MAX_SESSION_MINUTES = 240;
+
+/** Nobody's limit may exceed this, whatever they type. */
+export const MAX_SESSION_MINUTES_LIMIT = 480;
+
+/** The limits the profile forms offer, in minutes. */
+export const SESSION_LIMIT_CHOICES = [45, 60, 90, 120, 150, 180, 240, 300, 360, 480] as const;
+
+/**
+ * How long THIS lesson may run: the shorter of the two limits.
+ *
+ * A tutor happy to teach for three hours and a student who cannot sit for
+ * more than one are both telling the truth, and the lesson is over when the
+ * first of them is reached. Either side may leave it unset, in which case the
+ * other side decides; when neither does, the institute's default applies.
+ */
+export function effectiveMaxSessionMinutes(
+  tutorMaxMinutes: number | null | undefined,
+  studentMaxMinutes: number | null | undefined,
+): number {
+  const limits = [tutorMaxMinutes, studentMaxMinutes].filter(
+    (value): value is number => typeof value === 'number' && value > 0,
+  );
+
+  return limits.length === 0 ? DEFAULT_MAX_SESSION_MINUTES : Math.min(...limits);
+}
+
 /**
  * Snaps a wall-clock time to the nearest quarter hour.
  *
@@ -394,6 +432,12 @@ export interface TutoringSession {
   charge_rate_cents: number | null;
   charge_amount_cents: number | null;
   notes: string | null;
+  /**
+   * True when the end was imposed by the session limit rather than observed --
+   * the timer ran past it and the lesson was cut to it. The figure is a guess
+   * until somebody confirms it, so every screen that shows a session says so.
+   */
+  auto_stopped: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -484,6 +528,10 @@ export interface ActiveSession {
    */
   tutor_rate_cents: number | null;
   charge_rate_cents: number | null;
+  /** The shorter of the tutor's and the student's limits, in minutes. */
+  max_minutes: number;
+  /** The instant this lesson closes itself if nobody presses stop. */
+  auto_stop_at: string;
 }
 
 export const startSessionSchema = z.object({

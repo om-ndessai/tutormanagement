@@ -150,6 +150,18 @@ CREATE TABLE tutor_profiles (
   default_rate_in_person_cents INTEGER CHECK (default_rate_in_person_cents >= 0),
   default_rate_virtual_cents   INTEGER CHECK (default_rate_virtual_cents >= 0),
 
+  -- The longest single lesson this tutor teaches. A live session that passes
+  -- it is closed at it and marked auto_stopped, so a timer left running does
+  -- not bill a family for the rest of the night.
+  --
+  -- NULL means "no limit of their own": the student's limit applies, and if
+  -- neither sets one, DEFAULT_MAX_SESSION_MINUTES in packages/shared does.
+  -- A multiple of 15 because that is the unit sessions are recorded in.
+  max_session_minutes INTEGER
+                      CHECK (max_session_minutes IS NULL
+                             OR (max_session_minutes > 0
+                                 AND max_session_minutes % 15 = 0)),
+
   created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
@@ -181,6 +193,15 @@ CREATE TABLE student_profiles (
   -- priceSession in routes/sessions.ts.
   charge_rate_in_person_cents INTEGER CHECK (charge_rate_in_person_cents >= 0),
   charge_rate_virtual_cents   INTEGER CHECK (charge_rate_virtual_cents >= 0),
+
+  -- The longest single lesson this student sits. Held here as well as on the
+  -- tutor because the two are different facts -- a tutor who will teach three
+  -- hours straight and a nine-year-old who cannot sit for more than one both
+  -- get to be true -- and the SHORTER of the two is what applies.
+  max_session_minutes INTEGER
+                      CHECK (max_session_minutes IS NULL
+                             OR (max_session_minutes > 0
+                                 AND max_session_minutes % 15 = 0)),
 
   created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
@@ -364,6 +385,12 @@ CREATE TABLE sessions (
 
   -- Feedback, progress towards the student's goal, assessment, homework set.
   notes              TEXT,
+
+  -- 1 when the end was imposed by the session limit rather than observed:
+  -- the timer ran past the shorter of the tutor's and the student's maximum,
+  -- so the lesson was cut to it. Surfaced in the UI because the figure needs
+  -- a human to confirm or correct it.
+  auto_stopped       INTEGER NOT NULL DEFAULT 0 CHECK (auto_stopped IN (0, 1)),
 
   recorded_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
 
