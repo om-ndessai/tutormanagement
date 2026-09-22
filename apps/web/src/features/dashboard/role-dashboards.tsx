@@ -354,7 +354,7 @@ export function TutorView({ data }: { data: TutorDashboard }) {
         )}
       </div>
 
-      <Panel index={4} title="Your students" action={{ label: 'Assignments', to: '/assignments' }}>
+      <Panel index={4} title="Your students" action={{ label: 'Tutor pairings', to: '/assignments' }}>
         {data.students.length === 0 ? (
           <EmptyNote>No students assigned to you yet.</EmptyNote>
         ) : (
