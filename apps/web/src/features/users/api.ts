@@ -95,6 +95,10 @@ export function useSsnReceipt() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['users'] });
       void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      // The year-end panel reads ['finance', ...] and is the whole reason
+      // anybody presses this: without it the 1099 stays blocked on screen
+      // after the fact that blocked it has changed.
+      void queryClient.invalidateQueries({ queryKey: ['finance'] });
       void queryClient.invalidateQueries({ queryKey: ['audit'] });
     },
   });

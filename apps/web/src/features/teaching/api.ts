@@ -34,6 +34,8 @@ function useTeachingInvalidation() {
     void queryClient.invalidateQueries({ queryKey: ['sessions'] });
     void queryClient.invalidateQueries({ queryKey: ['active-session'] });
     void queryClient.invalidateQueries({ queryKey: ['balances'] });
+    // A lesson changes its month's sessions, hours, billed and earned.
+    void queryClient.invalidateQueries({ queryKey: ['finance'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }

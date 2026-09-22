@@ -23,6 +23,8 @@ function usePaymentInvalidation() {
   return () => {
     void queryClient.invalidateQueries({ queryKey: ['payments'] });
     void queryClient.invalidateQueries({ queryKey: ['balances'] });
+    // A payment moves a month's "received" and a tutor's year-end total.
+    void queryClient.invalidateQueries({ queryKey: ['finance'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }

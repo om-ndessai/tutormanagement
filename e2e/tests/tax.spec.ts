@@ -103,13 +103,28 @@ test.describe('tax documents', () => {
     await admin.goto('/?tab=finance');
     await expect(admin.getByText(/SSN not on file/)).toBeVisible();
 
-    const confirm = admin.getByRole('button', { name: /Mark SSN received/i }).first();
-    await expect(confirm).toBeVisible();
-    await confirm.click();
+    // Scoped to THIS tutor's row in the year-end list. Asserting that "a"
+    // 1099 button exists somewhere passes before the click as well, since
+    // every other tutor already has one -- which is exactly how a stale card
+    // went unnoticed once already.
+    // Anchored on text that does not change -- filtering the row BY the button
+    // would stop matching the moment the button correctly disappears.
+    const row = admin
+      .locator('li')
+      .filter({ hasText: PEOPLE.tutor.name })
+      .filter({ hasText: /paid in \d{4}/ })
+      .first();
 
-    // Acting on it clears the chase list and unblocks the 1099.
+    await expect(row.getByRole('button', { name: '1099-NEC' })).toHaveCount(0);
+    await row.getByRole('button', { name: /Mark SSN received/i }).click();
+
+    // The row itself has to change, without a reload: the button that was
+    // blocking the 1099 is gone and the 1099 is offered in its place.
+    await expect(row.getByRole('button', { name: '1099-NEC' })).toBeVisible();
+    await expect(row.getByRole('button', { name: /Mark SSN received/i })).toHaveCount(0);
+
+    // And the chase panel, which reads from a different query, agrees.
     await expect(admin.getByText(/SSN not on file/)).toHaveCount(0);
-    await expect(admin.getByRole('button', { name: '1099-NEC' }).first()).toBeVisible();
   });
 
   test('the year-end summary carries money and readiness, never a number', async ({ as }) => {
