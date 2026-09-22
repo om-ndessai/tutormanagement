@@ -75,7 +75,9 @@ const castUsers = [
   [q(CAST.sanjay), q('sanjay.patel.nc@gmail.com'), q('Sanjay Patel'), q('(919) 555-0198'), q('active')],
   [q(CAST.anita), q('anita.patel.nc@gmail.com'), q('Anita Patel'), q('(919) 555-0199'), q('active')],
   [q(CAST.sofia), q('sofia.okafor@gmail.com'), q('Sofia Okafor'), 'NULL', q('active')],
-  [q(CAST.ben), q('ben.whitfield09@gmail.com'), q('Ben Whitfield'), 'NULL', q('active')],
+  // No address: a ten-year-old who never signs in. His parents read his
+  // dashboard from their own logins.
+  [q(CAST.ben), 'NULL', q('Ben Whitfield'), 'NULL', q('active')],
   [q(CAST.tom), q('tom.whitfield@gmail.com'), q('Tom Whitfield'), q('(919) 555-0121'), q('active')],
   [q(CAST.grace), q('grace.lee.nc@gmail.com'), q('Grace Lee'), q('(984) 555-0166'), q('active')],
 ];
@@ -153,8 +155,16 @@ const genParents = Array.from({ length: 25 }, () => makePerson('22222222'));
 // 47 more students -> 50.
 const genStudents = Array.from({ length: 47 }, () => makePerson('33333333'));
 
-for (const person of [...genTutors, ...genParents, ...genStudents]) {
+for (const person of [...genTutors, ...genParents]) {
   users.push([q(person.id), q(person.email), q(person.name), q(person.phone), q('active')]);
+}
+
+// Most students are children with no address of their own: they never sign in,
+// and their parents read their dashboard from their own login. A few older ones
+// have one, so both paths are covered by the fixtures.
+for (const person of genStudents) {
+  const email = rnd() < 0.25 ? q(person.email) : 'NULL';
+  users.push([q(person.id), email, q(person.name), q(person.phone), q('active')]);
 }
 for (const t of genTutors) roles.push([q(t.id), q('tutor')]);
 for (const p of genParents) roles.push([q(p.id), q('parent')]);

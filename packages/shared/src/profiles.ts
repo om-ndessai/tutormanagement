@@ -245,7 +245,8 @@ export const guardianshipsSchema = z
 export interface GuardianLink {
   user_id: string;
   full_name: string;
-  email: string;
+  /** NULL for a child with no address of their own. */
+  email: string | null;
   relationship: Relationship;
   is_primary: boolean;
 }
@@ -300,13 +301,16 @@ export const ROLE_PROFILE_TABLE: Partial<Record<UserRole, 'tutor_profile' | 'stu
 // "a student must have at least one parent" is unenforceable if the two are
 // separate requests, because the student would exist parentless in between.
 
-import { USER_STATUSES, userFieldsSchema } from './users.js';
+import { USER_STATUSES, refineEmailForRoles, userFieldsSchema } from './users.js';
 
 const sectionShape = updateUserSectionsSchema.shape;
 
 export const createUserRequestSchema = userFieldsSchema
   .extend({ status: z.enum(USER_STATUSES).default('active') })
-  .extend(sectionShape);
+  .extend(sectionShape)
+  // The same rule the standalone createUserSchema carries: this is the shape
+  // the route actually validates, and the form checks before submitting.
+  .superRefine(refineEmailForRoles);
 
 export type CreateUserRequestInput = z.input<typeof createUserRequestSchema>;
 export type CreateUserRequestPayload = z.output<typeof createUserRequestSchema>;

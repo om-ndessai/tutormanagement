@@ -118,6 +118,26 @@ npx wrangler d1 execute tmi-portal-db --remote \
 A new table with its constraints intact is the one migration SQLite does properly — unlike the
 added columns above, this one keeps every CHECK and foreign key.
 
+### Rebuilding a table is not safe on D1
+
+Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own
+answer is to rebuild the table. **On D1 that destroys the child rows**, and it was proved
+twice against the test database:
+
+1. `DROP TABLE users` performs an implicit delete, and every child table references `users`
+   with `ON DELETE CASCADE`. All 207 sessions, 92 roles, 68 guardianships, 60 payments and
+   the rest went with it. `PRAGMA defer_foreign_keys = true` does **not** prevent this — it
+   defers the violation check, not the cascade action.
+2. Renaming the table out of the way first, under `PRAGMA legacy_alter_table = ON` so the
+   children keep pointing at the name `users`, survives the rename — and still loses every
+   child row on `DROP TABLE users_old`, although nothing names that table.
+
+So: **never drop or rebuild a table that other tables reference.** The migration that made
+`users.email` nullable was therefore NOT applied this way; see the note in `docs/data-model.md`
+about how production came to hold that change. If a rebuild is ever unavoidable, take
+`wrangler d1 export` first, note a Time Travel bookmark, and restore the whole database from
+the dump rather than dropping one table inside a live schema.
+
 To see what has drifted:
 
 ```bash

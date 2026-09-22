@@ -67,3 +67,32 @@ export function DeletedBadge() {
     </Badge>
   );
 }
+
+/**
+ * Somebody's email, or a plain statement that they have none.
+ *
+ * Most students are children who never sign in, so an absent address is
+ * ordinary rather than missing data -- it should not read as a gap, and it
+ * must never become a mailto: pointing at the word "null".
+ */
+export function EmailOrNone({
+  email,
+  className,
+  link = true,
+}: {
+  email: string | null;
+  className?: string;
+  link?: boolean;
+}) {
+  if (!email) {
+    return <span className={cn('text-muted-foreground', className)}>No email</span>;
+  }
+
+  if (!link) return <span className={className}>{email}</span>;
+
+  return (
+    <a href={`mailto:${email}`} className={className}>
+      {email}
+    </a>
+  );
+}

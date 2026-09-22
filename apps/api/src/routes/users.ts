@@ -1,8 +1,10 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import {
+  EMAIL_REQUIRED_MESSAGE,
   createUserRequestSchema,
   listUsersQuerySchema,
+  requiresEmail,
   splitUserRequest,
   updateUserRequestSchema,
   type ApiList,
@@ -63,6 +65,26 @@ function assertStudentHasGuardian(roles: UserRole[], guardianCount: number) {
   if (roles.includes('student') && guardianCount === 0) {
     throw ApiError.validation('Please correct the highlighted fields.', {
       guardians: ['A student must have at least one parent or guardian.'],
+    });
+  }
+}
+
+/**
+ * "Only a student who holds no other role may be left without an email."
+ *
+ * The database cannot see this one either: the address is on `users` and the
+ * roles are rows in `user_roles`, and a PATCH may move either side. Both are
+ * resolved to their post-update values before it is checked -- taking the
+ * address off somebody and making them a tutor in one request has to fail as
+ * surely as doing it in two.
+ *
+ * Sign-in matches on email, so the rule is really "nobody who signs in may be
+ * without a way to sign in".
+ */
+function assertEmailPresentIfNeeded(roles: UserRole[], email: string | null) {
+  if (email === null && requiresEmail(roles)) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      email: [EMAIL_REQUIRED_MESSAGE],
     });
   }
 }
@@ -180,11 +202,13 @@ export const usersRoutes = new Hono<AppEnv>()
       // Either side of this can change in one request, so both are resolved to
       // their post-update values before the invariant is checked.
       const finalRoles = fields.roles ?? existing.roles;
+      const finalEmail = fields.email !== undefined ? fields.email : existing.email;
       const guardianCount = sections.guardians
         ? sections.guardians.length
         : await countGuardians(c.env.DB, id);
 
       assertStudentHasGuardian(finalRoles, guardianCount);
+      assertEmailPresentIfNeeded(finalRoles, finalEmail);
       await assertGuardiansExist(c.env.DB, id, sections.guardians);
 
       try {

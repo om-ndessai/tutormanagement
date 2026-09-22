@@ -371,7 +371,7 @@ The schema carries every rule it is capable of carrying:
 | `day_of_week` 0–6, `hour` 0–23 | `CHECK` constraints |
 | Nobody is their own guardian | `CHECK (guardian_user_id <> dependent_user_id)` |
 | At most one primary guardian per dependent | partial `UNIQUE INDEX` |
-| One live user per email address | partial `UNIQUE INDEX` on `lower(email)` |
+| One live user per email address | partial `UNIQUE INDEX` on `lower(email)`, over rows that have one |
 | Deleting a person removes everything hanging off them | `ON DELETE CASCADE` |
 | A session limit is a positive multiple of 15 minutes | `CHECK` on `max_session_minutes` |
 | A top-up level cannot be negative | `CHECK (topup_amount_cents >= 0)` |
@@ -395,7 +395,18 @@ because "the database guarantees it" would be wrong:
 3. **A profile row exists only while its role is held.** Dropping the tutor role deletes the
    tutor profile, in the same batch as the role change.
 
-4. **Who may read a comment.** The rule depends on the kind of target and, for a person, on
+4. **"Only a student who holds no other role may be without an email."** The address is on
+   `users` and the roles are rows in `user_roles`, so no CHECK can see both. `users.email` is
+   nullable because most students are children who have no address and never sign in — their
+   parents read their dashboard from their own login — and requiring one forced invented
+   addresses like `child-no-email@noemail.com` into the directory, which look like contact
+   details and are not. Everyone else signs in, and sign-in matches on email, so an admin,
+   tutor or parent without one could never get in. Enforced by `refineEmailForRoles` on the
+   create schemas and `assertEmailPresentIfNeeded` on update, which resolves both sides to
+   their post-update values: taking somebody's address away *and* making them a tutor in one
+   request fails as surely as doing it in two.
+
+5. **Who may read a comment.** The rule depends on the kind of target and, for a person, on
    guardianship — a join the row itself cannot express. It lives in
    `apps/api/src/repositories/comments.ts`, and every route there resolves the TARGET before it
    touches a comment, so a thread can never be reached through an id the viewer would not have

@@ -28,7 +28,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { DeletedBadge, RoleBadges, StatusBadge } from './user-badges';
+import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 
 interface SortState {
   sort: UserSortField;
@@ -206,12 +206,10 @@ export function UsersTable({
                   >
                     {user.full_name}
                   </button>
-                  <a
-                    href={`mailto:${user.email}`}
+                  <EmailOrNone
+                    email={user.email}
                     className="text-muted-foreground hover:text-primary block truncate text-xs"
-                  >
-                    {user.email}
-                  </a>
+                  />
                   {user.phone && (
                     <span className="text-muted-foreground block text-xs">{user.phone}</span>
                   )}
@@ -283,20 +281,20 @@ export function UsersTable({
                           </button>
                           {isDeleted && <DeletedBadge />}
                         </div>
-                        <span className="text-muted-foreground truncate text-xs lg:hidden">
-                          {user.email}
-                        </span>
+                        <EmailOrNone
+                          email={user.email}
+                          link={false}
+                          className="text-muted-foreground truncate text-xs lg:hidden"
+                        />
                       </div>
                     </div>
                   </TableCell>
 
                   <TableCell className="hidden lg:table-cell">
-                    <a
-                      href={`mailto:${user.email}`}
+                    <EmailOrNone
+                      email={user.email}
                       className="hover:text-primary text-muted-foreground truncate transition-colors"
-                    >
-                      {user.email}
-                    </a>
+                    />
                   </TableCell>
 
                   <TableCell className="text-muted-foreground hidden xl:table-cell">

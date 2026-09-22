@@ -33,7 +33,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAuditEvents } from '@/features/audit/api';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { CommentThread } from '@/features/comments/comment-thread';
-import { DeletedBadge, RoleBadges, StatusBadge } from './user-badges';
+import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 
 function initials(name: string) {
   return name
@@ -81,9 +81,7 @@ export function UserDetailView({ user }: { user: UserDetail }) {
 
       <dl className="grid gap-x-8 gap-y-4 border-t pt-5 sm:grid-cols-2">
         <Detail icon={<MailIcon className="size-4" />} label="Email">
-          <a href={`mailto:${user.email}`} className="hover:text-primary break-all">
-            {user.email}
-          </a>
+          <EmailOrNone email={user.email} className="hover:text-primary break-all" />
         </Detail>
         <Detail icon={<PhoneIcon className="size-4" />} label="Phone">
           {user.phone ?? <Muted>Not recorded</Muted>}
@@ -273,7 +271,13 @@ function RecentActivity({ userId }: { userId: string }) {
 function PeopleList({
   people,
 }: {
-  people: { user_id: string; full_name: string; email: string; relationship: string; is_primary: boolean }[];
+  people: {
+    user_id: string;
+    full_name: string;
+    email: string | null;
+    relationship: string;
+    is_primary: boolean;
+  }[];
 }) {
   return (
     <ul className="grid gap-2">
@@ -289,10 +293,10 @@ function PeopleList({
             </Badge>
           )}
           <a
-            href={`mailto:${person.email}`}
+            href={person.email ? `mailto:${person.email}` : undefined}
             className="text-muted-foreground hover:text-primary text-xs"
           >
-            {person.email}
+            {person.email ?? 'No email'}
           </a>
         </li>
       ))}

@@ -3,6 +3,7 @@ import { Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DEFAULT_MAX_SESSION_MINUTES,
+  requiresEmail,
   SESSION_LIMIT_CHOICES,
   USER_STATUSES,
   USER_STATUS_LABELS,
@@ -120,7 +121,7 @@ const EMPTY: FormState = {
 
 function fromDetail(detail: UserDetail): FormState {
   return {
-    email: detail.email,
+    email: detail.email ?? '',
     full_name: detail.full_name,
     phone: detail.phone ?? '',
     status: detail.status,
@@ -233,6 +234,8 @@ export function UserFormDialog({
 
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
+  // Everyone but a student-only person signs in, and sign-in needs an address.
+  const emailRequired = requiresEmail(form.roles);
   const isParent = form.roles.includes('parent');
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
@@ -308,14 +311,27 @@ export function UserFormDialog({
               </Field>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field id="email" label="Email" error={errors.email}>
+                {/* Optional only for a student who holds no other role: they
+                    never sign in, and their parents read their dashboard from
+                    their own login. The API enforces the same rule. */}
+                <Field
+                  id="email"
+                  label="Email"
+                  error={errors.email}
+                  optional={!emailRequired}
+                  hint={
+                    emailRequired
+                      ? 'They sign in with this Google address.'
+                      : 'Leave blank if this child has no address of their own.'
+                  }
+                >
                   <Input
                     id="email"
                     type="email"
                     value={form.email}
                     onChange={(e) => set('email', e.target.value)}
                     aria-invalid={Boolean(errors.email)}
-                    placeholder="alex@gmail.com"
+                    placeholder={emailRequired ? 'alex@gmail.com' : 'No email'}
                   />
                 </Field>
 

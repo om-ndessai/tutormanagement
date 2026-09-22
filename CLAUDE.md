@@ -92,6 +92,13 @@ accident: a student must have at least one guardian (which is why creating a stu
 their parent is ONE request), only admins may mutate users (`requireAdmin`), and the profile
 rule above. See `docs/data-model.md`.
 
+**A student may have no email; everybody else must.** `users.email` is nullable because most
+students are children who never sign in. Sign-in matches on email, so anyone holding a role
+other than `student` needs one — `requiresEmail` in `packages/shared/src/users.ts` is the rule,
+applied by `refineEmailForRoles` on the create schemas and `assertEmailPresentIfNeeded` on
+update. Never invent a placeholder address to satisfy a form, and never render an absent one as
+a `mailto:` — use `EmailOrNone`.
+
 **Validation lives in `packages/shared`.** Do not write ad-hoc validation in a route handler
 or a form. Add or change the Zod schema, then use it on both sides. Note the split between
 `userFieldsSchema` (no defaults, the basis for PATCH) and `createUserSchema` (adds defaults) —

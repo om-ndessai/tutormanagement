@@ -62,7 +62,16 @@ CREATE TABLE users (
 
   -- Sign-in matches on this. Any Google-backed address is accepted; Google
   -- sign-in is what proves the account is real, so no domain is hard-coded.
-  email         TEXT NOT NULL,
+  --
+  -- NULL is allowed, and means exactly what it says: this person has no email
+  -- address. Most students are children who do not have one and never sign in
+  -- -- their parents read their dashboard from their own login. Requiring an
+  -- address here forced made-up ones like `child-no-email@noemail.com` into
+  -- the directory, which look like contact details and are not.
+  --
+  -- Nobody can sign in without one, so the API requires an address from anyone
+  -- who holds a role other than `student`; see docs/data-model.md.
+  email         TEXT,
   full_name     TEXT NOT NULL,
   phone         TEXT,
 
@@ -87,10 +96,11 @@ CREATE TABLE users (
   deleted_at    TEXT
 );
 
--- Unique among LIVE rows only, so a retired person's address can be reused.
--- Lowercased because SQLite's default collation is case-sensitive.
+-- Unique among LIVE rows that HAVE an address, so a retired person's address
+-- can be reused and any number of children can have none at all. Lowercased
+-- because SQLite's default collation is case-sensitive.
 CREATE UNIQUE INDEX users_email_unique
-  ON users (lower(email)) WHERE deleted_at IS NULL;
+  ON users (lower(email)) WHERE deleted_at IS NULL AND email IS NOT NULL;
 
 CREATE UNIQUE INDEX users_google_sub_unique
   ON users (google_sub) WHERE google_sub IS NOT NULL AND deleted_at IS NULL;

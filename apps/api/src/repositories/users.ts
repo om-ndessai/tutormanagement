@@ -52,7 +52,7 @@ const SORT_SQL: Record<UserSortField, string> = {
 
 interface UserRow {
   id: string;
-  email: string;
+  email: string | null;
   full_name: string;
   phone: string | null;
   status: string;
@@ -158,6 +158,11 @@ export async function getLiveUserById(db: D1Database, id: string): Promise<User 
  * person has ever presented a Google token.
  */
 export async function getLiveUserByEmail(db: D1Database, email: string): Promise<User | null> {
+  // A blank address must never match. SQL equality against NULL is already
+  // never true, so a child's row is unreachable this way; this guards the
+  // other direction, where a caller passes "" and matches a row storing "".
+  if (!email.trim()) return null;
+
   const row = await db
     .prepare(`${SELECT_USER} WHERE lower(u.email) = ? AND u.deleted_at IS NULL`)
     .bind(email.trim().toLowerCase())
@@ -230,7 +235,8 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
     (rows as Record<string, unknown>[]).map((row) => ({
       user_id: String(row.user_id),
       full_name: String(row.full_name),
-      email: String(row.email),
+      // Not String(): a child with no address would become the text "null".
+      email: (row.email as string | null) ?? null,
       relationship: row.relationship as GuardianLink['relationship'],
       is_primary: row.is_primary === 1,
     }));

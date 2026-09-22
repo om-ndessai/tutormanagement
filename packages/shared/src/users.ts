@@ -31,6 +31,31 @@ const email = z
   .toLowerCase()
   .max(254);
 
+/**
+ * The same address, optional. "" from a form means "no address at all", which
+ * is the ordinary case for a child.
+ */
+const optionalEmail = z
+  .union([email, z.literal('')])
+  .nullish()
+  .transform((value) => (value === '' || value == null ? null : (value as string)));
+
+/**
+ * Whether this set of roles obliges someone to have an email address.
+ *
+ * Everything except being a student involves signing in, and sign-in matches
+ * on email -- so an admin, tutor or parent without one could never get in. A
+ * student who only learns here never signs in: their parents read their
+ * dashboard from their own login.
+ */
+export function requiresEmail(roles: readonly UserRole[]): boolean {
+  return roles.some((role) => role !== 'student');
+}
+
+/** The message shown when somebody who must have an address has none. */
+export const EMAIL_REQUIRED_MESSAGE =
+  'An email address is required for anyone who signs in. Only a student who holds no other role may be left without one.';
+
 const fullName = z
   .string()
   .trim()
@@ -53,7 +78,8 @@ export const optionalText = <T extends z.ZodType<string>>(schema: T) =>
 
 export const userSchema = z.object({
   id: z.uuid(),
-  email: z.string(),
+  /** NULL for somebody with no address -- a child who never signs in. */
+  email: z.string().nullable(),
   full_name: z.string(),
   phone: z.string().nullable(),
   status: z.enum(USER_STATUSES),
@@ -79,16 +105,36 @@ const roles = z
  * `{ status: 'active' }` and silently reactivate someone.
  */
 export const userFieldsSchema = z.object({
-  email,
+  email: optionalEmail,
   full_name: fullName,
   phone: optionalText(phone),
   roles,
   status: z.enum(USER_STATUSES),
 });
 
-export const createUserSchema = userFieldsSchema.extend({
-  status: z.enum(USER_STATUSES).default('active'),
-});
+/**
+ * The "who may have no address" rule, as a refinement.
+ *
+ * Applied to every schema that carries an email and a whole role set, so the
+ * form and the route reject the same thing and the browser can say so inline.
+ * A PATCH carries neither reliably -- it may move the roles without the email
+ * or the other way about -- so the route re-checks the combination against
+ * what is already stored; see assertEmailPresentIfNeeded there.
+ */
+export function refineEmailForRoles(
+  value: { email: string | null; roles: readonly UserRole[] },
+  ctx: z.RefinementCtx,
+) {
+  if (value.email === null && requiresEmail(value.roles)) {
+    ctx.addIssue({ code: 'custom', path: ['email'], message: EMAIL_REQUIRED_MESSAGE });
+  }
+}
+
+export const createUserSchema = userFieldsSchema
+  .extend({
+    status: z.enum(USER_STATUSES).default('active'),
+  })
+  .superRefine(refineEmailForRoles);
 
 export type CreateUserInput = z.input<typeof createUserSchema>;
 export type CreateUserPayload = z.output<typeof createUserSchema>;
