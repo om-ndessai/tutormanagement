@@ -3,6 +3,7 @@ import {
   type AvailabilitySlot,
   type CreateUserPayload,
   type GuardianLink,
+  type TutorTaxStatus,
   type ListUsersParams,
   type PaymentHandle,
   type StudentProfile,
@@ -184,7 +185,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
         .prepare(
           `SELECT highest_education, school, area, availability_notes, virtual_available,
                   default_rate_in_person_cents, default_rate_virtual_cents,
-                  max_session_minutes, topup_amount_cents
+                  max_session_minutes, topup_amount_cents, ssn_received_on
            FROM tutor_profiles WHERE user_id = ?`,
         )
         .bind(id),
@@ -256,6 +257,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
             (rawTutor.default_rate_virtual_cents as number | null) ?? null,
           max_session_minutes: (rawTutor.max_session_minutes as number | null) ?? null,
           topup_amount_cents: (rawTutor.topup_amount_cents as number | null) ?? null,
+          ssn_received_on: (rawTutor.ssn_received_on as string | null) ?? null,
         } satisfies TutorProfile)
       : null,
     student_profile: rawStudent
@@ -410,8 +412,8 @@ export async function updateUserSections(
             `INSERT INTO tutor_profiles
                (user_id, highest_education, school, area, availability_notes, virtual_available,
                 default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes,
-                topup_amount_cents)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                topup_amount_cents, ssn_received_on)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
@@ -424,6 +426,7 @@ export async function updateUserSections(
             p.default_rate_virtual_cents,
             p.max_session_minutes,
             p.topup_amount_cents,
+            p.ssn_received_on,
           ),
       );
     }
@@ -649,4 +652,96 @@ export async function getStudentChargeRates(
     }>();
 
   return row ?? null;
+}
+
+/**
+ * Records, or withdraws, the office's confirmation that it holds a tutor's
+ * SSN. The number is not a parameter here and has nowhere to go if it were.
+ */
+export async function setSsnReceived(
+  db: D1Database,
+  userId: string,
+  received: boolean,
+): Promise<string | null> {
+  await db
+    .prepare(
+      `UPDATE tutor_profiles
+       SET ssn_received_on = ${received ? "date('now')" : 'NULL'},
+           updated_at = ${NOW}
+       WHERE user_id = ?`,
+    )
+    .bind(userId)
+    .run();
+
+  const row = await db
+    .prepare('SELECT ssn_received_on FROM tutor_profiles WHERE user_id = ?')
+    .bind(userId)
+    .first<{ ssn_received_on: string | null }>();
+
+  return row?.ssn_received_on ?? null;
+}
+
+/**
+ * Every tutor's tax-document readiness, with what they have been paid in the
+ * given calendar year.
+ *
+ * One query rather than a balance recomputation: a year-end document covers
+ * money that MOVED in that year, which is the payments table, not the
+ * sessions that earned it.
+ */
+export async function listTutorTaxStatus(
+  db: D1Database,
+  year: number,
+): Promise<TutorTaxStatus[]> {
+  const result = await db
+    .prepare(
+      `SELECT u.id AS user_id, u.full_name, tp.ssn_received_on,
+              COALESCE((SELECT SUM(p.amount_cents) FROM payments p
+                        WHERE p.party_user_id = u.id
+                          AND p.direction = 'to_tutor'
+                          AND p.paid_at >= ? AND p.paid_at < ?), 0) AS paid_this_year_cents
+       FROM users u
+       JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'
+       LEFT JOIN tutor_profiles tp ON tp.user_id = u.id
+       WHERE u.deleted_at IS NULL
+       ORDER BY u.full_name`,
+    )
+    .bind(`${year}-01-01`, `${year + 1}-01-01`)
+    .all<Record<string, unknown>>();
+
+  return (result.results ?? []).map((row) => ({
+    user_id: String(row.user_id),
+    full_name: String(row.full_name),
+    ssn_received_on: (row.ssn_received_on as string | null) ?? null,
+    paid_this_year_cents: Number(row.paid_this_year_cents ?? 0),
+  }));
+}
+
+/** Tutors the office cannot file a tax document for yet. */
+export async function listTutorsMissingSsn(
+  db: D1Database,
+): Promise<{ user_id: string; full_name: string }[]> {
+  const result = await db
+    .prepare(
+      `SELECT u.id AS user_id, u.full_name
+       FROM users u
+       JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'
+       LEFT JOIN tutor_profiles tp ON tp.user_id = u.id
+       WHERE u.deleted_at IS NULL AND u.status <> 'suspended'
+         AND tp.ssn_received_on IS NULL
+       ORDER BY u.full_name`,
+    )
+    .all<{ user_id: string; full_name: string }>();
+
+  return result.results ?? [];
+}
+
+/** One tutor's own tax-document readiness, for their dashboard. */
+export async function getSsnReceivedOn(db: D1Database, userId: string): Promise<string | null> {
+  const row = await db
+    .prepare('SELECT ssn_received_on FROM tutor_profiles WHERE user_id = ?')
+    .bind(userId)
+    .first<{ ssn_received_on: string | null }>();
+
+  return row?.ssn_received_on ?? null;
 }

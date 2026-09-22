@@ -72,6 +72,15 @@ export const tutorProfileSchema = z.object({
    * users route -- and only an admin or the tutor themselves may read it.
    */
   topup_amount_cents: optionalCentsField,
+  /**
+   * The date the office confirmed it holds this tutor's SSN, or null when it
+   * does not and no tax document can be issued. The number itself is never
+   * stored, sent or asked for by this portal.
+   */
+  ssn_received_on: z
+    .union([z.iso.date({ message: 'Use a date like 2026-01-31.' }), z.literal('')])
+    .nullish()
+    .transform((value) => (value === '' || value == null ? null : (value as string))),
 });
 
 export type TutorProfileInput = z.input<typeof tutorProfileSchema>;

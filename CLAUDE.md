@@ -122,6 +122,13 @@ always the live, re-checked user.
 an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
 identity, and it is the whole security boundary of sign-in.
 
+**No Social Security number is ever stored, anywhere.** `tutor_profiles.ssn_received_on` is a
+DATE recording that the office holds one — never the number. `containsSsn` in
+`packages/shared/src/tax.ts` rejects SSN-shaped text from every free-text field, which is why
+the guard sits inside `optionalText` rather than on individual fields: a new note or comment
+field inherits it. Never add a column, form field or API parameter that could carry the number,
+and never widen the pattern so far that phone numbers and reference codes trip it.
+
 **Tutors are paid in advance, and only the threshold is stored.**
 `tutor_profiles.topup_amount_cents` is the level a tutor's advance is kept above; what they
 actually hold is `paid - earned` and the shortfall is `topup - held`, both derived by

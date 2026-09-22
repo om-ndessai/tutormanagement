@@ -12,6 +12,7 @@ import type {
 } from '@tmi/shared';
 
 import { computeBalances } from './balances.js';
+import { getSsnReceivedOn, listTutorsMissingSsn } from './users.js';
 import { listAuditEvents } from './audit.js';
 import { listPayments } from './payments.js';
 import { listSessions } from './sessions.js';
@@ -67,6 +68,7 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
   const totals = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
 
   const balances = await computeBalances(db, subject);
+  const missingSsn = await listTutorsMissingSsn(db);
   const activity = await listAuditEvents(db, { limit: 8, offset: 0, include_deleted: false } as never);
   const sessions = await listSessions(db, subject, { limit: 6, offset: 0 } as never);
 
@@ -89,6 +91,7 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
     },
     // Worth chasing first.
     tutor_balances: [...balances.tutors].sort((a, b) => b.balance_cents - a.balance_cents),
+    tutors_missing_ssn: missingSsn,
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
     recent_activity: activity.events as AuditEvent[],
     recent_sessions: sessions.sessions,
@@ -135,6 +138,7 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
       rate_in_person_cents: (row.rate_in_person_cents as number | null) ?? null,
       rate_virtual_cents: (row.rate_virtual_cents as number | null) ?? null,
     })),
+    ssn_received_on: await getSsnReceivedOn(db, subject.id),
     earnings: balances.tutors.find((t) => t.user_id === subject.id) ?? {
       user_id: subject.id,
       full_name: subject.full_name,

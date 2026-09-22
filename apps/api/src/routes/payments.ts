@@ -11,6 +11,7 @@ import {
   type ApiOk,
   type BalancesResponse,
   type Payment,
+  taxSummaryQuerySchema,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -21,6 +22,7 @@ import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
 import { computeBalances } from '../repositories/balances.js';
+import { listTutorTaxStatus } from '../repositories/users.js';
 import {
   createPayment,
   deletePayment,
@@ -122,6 +124,32 @@ export const paymentsRoutes = new Hono<AppEnv>()
    * Placed under /payments because it is the same ledger read the other way,
    * and scoped so a tutor sees only their own figure.
    */
+  /**
+   * The year-end tutor summary the tax documents are prepared from: what each
+   * tutor was PAID in a calendar year, and whether the office has their SSN.
+   *
+   * Payments rather than earnings, because a tax document reports money that
+   * moved in the year. The SSN column is a yes/no with the date it was
+   * confirmed -- the number is not in this file, this database or this
+   * portal.
+   */
+  .get('/tax-summary.csv', requireAdmin, zValidator('query', taxSummaryQuerySchema), async (c) => {
+    const { year } = c.req.valid('query');
+    const tutors = await listTutorTaxStatus(c.env.DB, year);
+
+    const body = buildCsv(
+      ['Tutor', 'Paid in ' + year, 'SSN on file', 'Confirmed on'],
+      tutors.map((tutor) => [
+        tutor.full_name,
+        csvMoney(tutor.paid_this_year_cents),
+        tutor.ssn_received_on ? 'Yes' : 'NOT RECEIVED',
+        tutor.ssn_received_on ?? '',
+      ]),
+    );
+
+    return csvResponse(`tmi-tax-summary-${year}.csv`, body);
+  })
+
   .get('/balances', async (c) => {
     const body: ApiOk<BalancesResponse> = {
       data: await computeBalances(c.env.DB, c.get('user')),

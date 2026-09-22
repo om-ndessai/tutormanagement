@@ -163,6 +163,18 @@ CREATE TABLE tutor_profiles (
   default_rate_in_person_cents INTEGER CHECK (default_rate_in_person_cents >= 0),
   default_rate_virtual_cents   INTEGER CHECK (default_rate_virtual_cents >= 0),
 
+  -- WHEN the office confirmed it had the tutor's SSN, as YYYY-MM-DD. NULL
+  -- means it has not been received and a tax document cannot be issued.
+  --
+  -- The number itself is NEVER stored -- not here, not anywhere in this
+  -- database, and not in the portal. This column is a receipt, not a record:
+  -- it answers "may we file for this tutor yet", which is the only question
+  -- the institute needs answered all year. The SSN lives wherever the office
+  -- keeps its paper, and `containsSsn` in packages/shared rejects anything
+  -- that looks like one from every free-text field, so it cannot arrive here
+  -- by the back door either.
+  ssn_received_on   TEXT,
+
   -- The floor the institute keeps this tutor's advance above, in whole cents.
   --
   -- Tutors here are paid BEFORE they teach: the office hands over, say, $100,

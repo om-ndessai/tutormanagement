@@ -85,6 +85,22 @@ export function BillingPage() {
                 CSV
               </a>
             </Button>
+
+            {/* What each tutor was PAID in the year, and whether the office
+                holds their SSN -- the two things a year-end tax document
+                needs. The number itself is in neither this file nor the
+                database it comes from. */}
+            {isAdmin && (
+              <Button variant="outline" asChild>
+                <a
+                  href={`/api/payments/tax-summary.csv?year=${new Date().getFullYear()}`}
+                  download
+                >
+                  <DownloadIcon />
+                  Tax summary
+                </a>
+              </Button>
+            )}
             {isAdmin && (
               <Button onClick={() => setDialogOpen(true)}>
                 <PlusIcon />

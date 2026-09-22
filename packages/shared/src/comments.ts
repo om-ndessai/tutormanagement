@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { refuseSsn } from './tax.js';
 
 // ---------------------------------------------------------------------------
 // Comments
@@ -28,11 +29,15 @@ export const commentTargetSchema = z.object({
 export type CommentTarget = z.output<typeof commentTargetSchema>;
 
 export const commentInputSchema = commentTargetSchema.extend({
-  body: z
-    .string()
-    .trim()
-    .min(1, 'Write something before posting.')
-    .max(MAX_COMMENT_LENGTH, `Keep a comment to ${MAX_COMMENT_LENGTH} characters or fewer.`),
+  // refuseSsn for the same reason the profile fields have it: a comment is the
+  // easiest place in the portal to paste something that should never be here.
+  body: refuseSsn(
+    z
+      .string()
+      .trim()
+      .min(1, 'Write something before posting.')
+      .max(MAX_COMMENT_LENGTH, `Keep a comment to ${MAX_COMMENT_LENGTH} characters or fewer.`),
+  ),
 });
 
 export type CommentInput = z.input<typeof commentInputSchema>;

@@ -201,6 +201,8 @@ export function AdminView({ data }: { data: AdminDashboard }) {
         />
       </div>
 
+      <SsnPanel tutors={data.tutors_missing_ssn} />
+
       <TopupPanel tutors={data.tutor_balances} />
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -251,6 +253,49 @@ export function AdminView({ data }: { data: AdminDashboard }) {
         </Panel>
       </div>
     </div>
+  );
+}
+
+/**
+ * Tutors the institute cannot issue a tax document for, because it does not
+ * have their SSN.
+ *
+ * Shown as work to chase rather than a statistic, and never anywhere to enter
+ * a number: the office collects it outside the portal and records only that
+ * it arrived.
+ */
+function SsnPanel({ tutors }: { tutors: { user_id: string; full_name: string }[] }) {
+  if (tutors.length === 0) return null;
+
+  return (
+    <Panel
+      index={6}
+      title={`SSN not on file · ${tutors.length}`}
+      action={{ label: 'Users', to: '/users' }}
+    >
+      <p className="text-muted-foreground mb-3 text-sm">
+        A tax document cannot be issued without it. Collect it from each tutor directly — never
+        through the portal — then confirm it on their record.
+      </p>
+      <ul className="divide-border divide-y">
+        {tutors.map((tutor) => (
+          <li key={tutor.user_id} className="flex items-center justify-between gap-3 py-2.5">
+            <Link
+              to={`/users?view=${tutor.user_id}`}
+              className="hover:text-primary text-sm font-medium transition-colors"
+            >
+              {tutor.full_name}
+            </Link>
+            <Badge
+              variant="outline"
+              className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
+            >
+              Not received
+            </Badge>
+          </li>
+        ))}
+      </ul>
+    </Panel>
   );
 }
 
@@ -353,6 +398,20 @@ export function TutorView({ data }: { data: TutorDashboard }) {
           />
         )}
       </div>
+
+      {!data.ssn_received_on && (
+        <Panel index={3} title="Action needed: your SSN">
+          <p className="text-sm">
+            The institute does not have your Social Security number, and needs it to issue your
+            tax document at the end of the year.
+          </p>
+          <p className="text-muted-foreground mt-2 text-sm">
+            Give it to the office directly — in person, or however you normally reach them.{' '}
+            <span className="font-medium">Never send it through this portal</span>, which does
+            not store it and has nowhere to put it. They will mark it received once they have it.
+          </p>
+        </Panel>
+      )}
 
       <Panel index={4} title="Your students" action={{ label: 'Pairings', to: '/assignments' }}>
         {data.students.length === 0 ? (

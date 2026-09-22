@@ -5,6 +5,7 @@ import {
   createUserRequestSchema,
   listUsersQuerySchema,
   requiresEmail,
+  ssnReceiptSchema,
   splitUserRequest,
   updateUserRequestSchema,
   type ApiList,
@@ -33,6 +34,7 @@ import {
   findMissingUserIds,
   getUserById,
   getUserDetail,
+  setSsnReceived,
   listUsers,
   purgeUser,
   restoreUser,
@@ -184,6 +186,55 @@ export const usersRoutes = new Hono<AppEnv>()
     };
     return c.json(body);
   })
+
+  /**
+   * Records that the office has the tutor's SSN, or withdraws that.
+   *
+   * A deliberate one-field endpoint rather than part of the profile PATCH: it
+   * is an action somebody takes on a particular day, it earns its own audit
+   * line, and it cannot be reached with a body that carries a number -- the
+   * schema has one boolean in it.
+   */
+  .post(
+    '/:id/ssn-receipt',
+    requireAdmin,
+    zValidator('param', idParamSchema),
+    zValidator('json', ssnReceiptSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const { received } = c.req.valid('json');
+      const viewer = c.get('user');
+
+      const existing = await getUserById(c.env.DB, id);
+      if (!existing || existing.deleted_at) {
+        throw ApiError.notFound('That user does not exist, or has been deactivated.');
+      }
+
+      if (!existing.roles.includes('tutor')) {
+        throw ApiError.validation('Please correct the highlighted fields.', {
+          roles: ['Only a tutor needs a tax document, so only a tutor can have this recorded.'],
+        });
+      }
+
+      const receivedOn = await setSsnReceived(c.env.DB, id, received);
+
+      await recordAudit(c.env.DB, viewer, {
+        action: received ? 'tutor.ssn_confirmed' : 'tutor.ssn_cleared',
+        // Says that the office HAS it, never what it is.
+        description: received
+          ? `Confirmed the institute has ${existing.full_name}'s SSN on file`
+          : `Withdrew the confirmation that ${existing.full_name}'s SSN is on file`,
+        subject: { id: existing.id, full_name: existing.full_name },
+        entity_type: 'user',
+        entity_id: existing.id,
+      });
+
+      const body: ApiOk<{ ssn_received_on: string | null }> = {
+        data: { ssn_received_on: receivedOn },
+      };
+      return c.json(body);
+    },
+  )
 
   .patch(
     '/:id',

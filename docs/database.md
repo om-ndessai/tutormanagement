@@ -95,6 +95,13 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE sessions ADD COLUMN auto_stopped INTEGER NOT NULL DEFAULT 0"
 ```
 
+Phase 14's is one statement:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE tutor_profiles ADD COLUMN ssn_received_on TEXT"
+```
+
 Phase 13's is one statement:
 
 ```bash

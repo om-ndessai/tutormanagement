@@ -54,6 +54,12 @@ export interface AdminDashboard {
     session_count: number;
   };
   tutor_balances: TutorBalance[];
+  /**
+   * Tutors whose SSN the office does not have. Empty is the resting state and
+   * the panel says so; anything in it is work the admin has to chase before
+   * year end.
+   */
+  tutors_missing_ssn: { user_id: string; full_name: string }[];
   student_balances: StudentBalance[];
   recent_activity: AuditEvent[];
   recent_sessions: TutoringSession[];
@@ -73,6 +79,12 @@ export interface TutorDashboard {
     rate_virtual_cents: number | null;
   }[];
   earnings: TutorBalance;
+  /**
+   * The date the office confirmed it holds this tutor's SSN, or null when it
+   * does not -- in which case their dashboard asks them to send it. The
+   * portal never offers anywhere to type it.
+   */
+  ssn_received_on: string | null;
   recent_sessions: TutoringSession[];
   recent_payments: Payment[];
   recent_activity: AuditEvent[];

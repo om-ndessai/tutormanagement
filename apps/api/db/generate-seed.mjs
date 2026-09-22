@@ -215,6 +215,18 @@ for (const row of tutorProfiles) {
   topupByTutor.set(id, topup === 'NULL' ? null : topup);
 }
 
+// Whether the office has each tutor's SSN -- the fact only, never the number.
+// Alex and Johan have not handed theirs over, so both dashboards have the
+// "action needed" case to show.
+const SSN_ON_FILE = {
+  [CAST.priya]: q('2026-01-12'), [CAST.dana]: q('2026-01-19'), [CAST.alex]: 'NULL',
+  [CAST.maria]: q('2026-02-02'), [CAST.johan]: 'NULL', [CAST.sanjay]: q('2026-01-30'),
+};
+for (const row of tutorProfiles) {
+  const id = row[0].slice(1, -1);
+  row.push(SSN_ON_FILE[id] ?? (rnd() < 0.8 ? q('2026-01-15') : 'NULL'));
+}
+
 // What the institute CHARGES each family, per hour. Always above what the
 // tutor is paid for the same lesson -- the difference is the margin, and the
 // whole reason these are separate from the tutor's rates.
@@ -587,7 +599,7 @@ ${insert('users', ['id', 'email', 'full_name', 'phone', 'status'], users)}
 ${insert('user_roles', ['user_id', 'role'], roles)}
 
 -- --- tutor-only data -------------------------------------------------------
-${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents'], tutorProfiles)}
+${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on'], tutorProfiles)}
 
 -- --- student-only data -----------------------------------------------------
 ${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], studentProfiles)}

@@ -77,6 +77,29 @@ export function useUpdateUser() {
 }
 
 /** Soft delete by default; `hard` removes the row and everything cascading from it. */
+/**
+ * Records that the office has this tutor's SSN, or withdraws that.
+ *
+ * Takes a boolean and nothing else: there is no field anywhere in this portal
+ * that accepts the number itself.
+ */
+export function useSsnReceipt() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, received }: { userId: string; received: boolean }) =>
+      apiClient.post<ApiOk<{ ssn_received_on: string | null }>>(
+        `/users/${userId}/ssn-receipt`,
+        { received },
+      ),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['users'] });
+      void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      void queryClient.invalidateQueries({ queryKey: ['audit'] });
+    },
+  });
+}
+
 export function useDeleteUser() {
   const queryClient = useQueryClient();
 

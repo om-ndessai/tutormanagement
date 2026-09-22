@@ -84,3 +84,6 @@ Phase 13:
 This phase is to build a feature which allows admin to record a topup amount per tutor. This is amount say 100$, that admin will set per tutor. The admin mostly pays the tutors in advance. If the total amount with the tutor (total paid - earned or owed amount) is less than the topup amount, then the admin will make another payment to the tutor to keep the balance above the topup amount. 
 
 Build the data model to support it and also show this on the dashboards accordingly.
+
+Phase 14:
+This phase is about financial management. At the end of the year, the admin would have to generate tax documents for the tutor. We do not intend to record the SSN in this database. But I would like the database to be extended to confirm that admin has received the SSN from tutor. The field on tutors should indicate that. Other wise it should show up dashboard both for tutor and admin that tutor's SSN has not been shared and an action is needed. Ensure, no SSN is ever persisted in this database or portal.

@@ -274,6 +274,32 @@ of the tutor teaching them, and what the office advances that tutor is no busine
 `scopeTutorTopup` blanks it, the same way `scopeStudentCharges` blanks a family's price. The
 institute-wide "top-ups due" total is admin-only for the same reason.
 
+### Tax documents, and the SSN that is not here
+
+Phase 14. The institute files a tax document for each tutor at year end, which needs their
+Social Security number. **The number is never stored in this database, never sent through this
+portal, and never asked for by any screen in it.** `tutor_profiles.ssn_received_on` is a
+receipt, not a record: a date saying the office confirmed it holds what it needs, or NULL
+saying it does not. That is the only question the portal has to answer all year — "may we file
+for this tutor yet" — and a date answers it without the institute becoming a place where
+identity numbers are kept.
+
+"We do not store SSNs" is enforced, not merely intended. `containsSsn` in
+`packages/shared/src/tax.ts` rejects SSN-shaped text from **every free-text field** — every one
+is built from `optionalText`, which is where the guard lives, plus the comment body, which is
+required and so has it applied directly. The pattern is deliberately narrow: `123-45-6789` and
+`123 45 6789` are unmistakable, and nine bare digits are only refused when nearby words say
+"SSN" or "social security", so a phone number, invoice reference or student id still goes
+through. A validator that cries wolf gets worked around.
+
+Both sides are told when it is missing: the tutor's own dashboard asks them to hand it to the
+office **and says not to send it through the portal**, and the admin's lists who is outstanding.
+Recording receipt is a one-field admin endpoint (`POST /api/users/:id/ssn-receipt`) whose body
+is a single boolean — there is no shape of request that could carry a number. The year-end
+summary (`GET /api/payments/tax-summary.csv?year=`) pairs what each tutor was PAID in the
+calendar year with whether the office can file for them; payments rather than earnings, because
+a tax document reports money that moved.
+
 ### `payments`
 
 Phase 5. A ledger of money that moved **outside** the portal, so the institute can answer two

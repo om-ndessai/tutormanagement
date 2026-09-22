@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { refuseSsn } from './tax.js';
 
 /**
  * The four kinds of person the portal serves. A user holds one OR MORE of
@@ -69,10 +70,17 @@ const phone = z
   .max(32, 'Phone must be 32 characters or fewer.')
   .regex(/^[0-9+().\-\s]*$/, 'Phone may only contain digits and + ( ) - . characters.');
 
-/** An optional free-text field that treats "" from a form as "not set". */
+/**
+ * An optional free-text field that treats "" from a form as "not set".
+ *
+ * Every free-text field in the portal is built from this, which is why the
+ * SSN guard lives here: "we never store a Social Security number" has to mean
+ * one cannot be typed into a note or a comment either, not merely that no
+ * column is named after it.
+ */
 export const optionalText = <T extends z.ZodType<string>>(schema: T) =>
   z
-    .union([schema, z.literal('')])
+    .union([refuseSsn(schema), z.literal('')])
     .nullish()
     .transform((value) => (value === '' || value == null ? null : (value as string)));
 
