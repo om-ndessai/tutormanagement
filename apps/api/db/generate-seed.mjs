@@ -587,6 +587,7 @@ DELETE FROM audit_events;
 DELETE FROM guardianships;
 DELETE FROM availability_slots;
 DELETE FROM payment_handles;
+DELETE FROM admin_profiles;
 DELETE FROM student_profiles;
 DELETE FROM tutor_profiles;
 DELETE FROM user_roles;
@@ -597,6 +598,14 @@ ${insert('users', ['id', 'email', 'full_name', 'phone', 'status'], users)}
 
 -- --- what each of them does ------------------------------------------------
 ${insert('user_roles', ['user_id', 'role'], roles)}
+
+-- --- admin-only data --------------------------------------------------------
+-- The number the institute files its 1099s under. Not a person's, and not an
+-- SSN: the API refuses one here as firmly as anywhere else.
+${insert('admin_profiles', ['user_id', 'tin'], [
+  [q(CAST.priya), q('47-2019388')],
+  [q(CAST.dana), 'NULL'],
+])}
 
 -- --- tutor-only data -------------------------------------------------------
 ${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on'], tutorProfiles)}

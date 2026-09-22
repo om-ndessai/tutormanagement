@@ -133,6 +133,11 @@ renders first.
 silently grows by 48px. Stat grids use `items-start`: a grid row sizes every card to the
 tallest, so one card with a hint line lifts empty space into all the others.
 
+**The institute's TIN lives on `admin_profiles`, and is not an SSN.** One field, one row per
+admin, removed with the role like every other profile. It prefills the payer box on a 1099. It
+runs through `optionalText`, so the SSN guard applies — a sole proprietor filing under their own
+number is exactly the case that must still be refused.
+
 **No Social Security number is ever stored, anywhere.** `tutor_profiles.ssn_received_on` is a
 DATE recording that the office holds one — never the number. The one place a number is typed is the 1099 dialog, and it is
 written into a printable window in the BROWSER — never sent to the server, so there is no

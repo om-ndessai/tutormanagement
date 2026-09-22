@@ -22,6 +22,7 @@ import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
 import {
   isAdmin,
+  scopeAdminTin,
   scopeStudentCharges,
   scopeTutorTopup,
   visibleUserIds,
@@ -182,7 +183,7 @@ export const usersRoutes = new Hono<AppEnv>()
     if (!detail) throw ApiError.notFound('That user does not exist.');
 
     const body: ApiOk<UserDetail> = {
-      data: scopeTutorTopup(scopeStudentCharges(detail, viewer), viewer),
+      data: scopeAdminTin(scopeTutorTopup(scopeStudentCharges(detail, viewer), viewer), viewer),
     };
     return c.json(body);
   })

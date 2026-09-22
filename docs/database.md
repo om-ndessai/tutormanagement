@@ -95,6 +95,15 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE sessions ADD COLUMN auto_stopped INTEGER NOT NULL DEFAULT 0"
 ```
 
+The admin TIN is a new table, taken from `schema.sql` verbatim:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="$(sed -n '/^CREATE TABLE admin_profiles/,/^);/p' apps/api/db/schema.sql)"
+```
+
+Its `updated_at` trigger is a second statement, copied the same way.
+
 Phase 14's is one statement:
 
 ```bash

@@ -2,6 +2,7 @@ import {
   USER_ROLES,
   type AvailabilitySlot,
   type CreateUserPayload,
+  type AdminProfile,
   type GuardianLink,
   type TutorTaxStatus,
   type ListUsersParams,
@@ -178,9 +179,19 @@ export async function getLiveUserByEmail(db: D1Database, email: string): Promise
  * round trip to D1.
  */
 export async function getUserDetail(db: D1Database, id: string): Promise<UserDetail | null> {
-  const [userRes, tutorRes, studentRes, payRes, availRes, guardiansRes, dependentsRes] =
+  const [
+    userRes,
+    adminRes,
+    tutorRes,
+    studentRes,
+    payRes,
+    availRes,
+    guardiansRes,
+    dependentsRes,
+  ] =
     await db.batch<Record<string, unknown>>([
       db.prepare(`${SELECT_USER} WHERE u.id = ?`).bind(id),
+      db.prepare('SELECT tin FROM admin_profiles WHERE user_id = ?').bind(id),
       db
         .prepare(
           `SELECT highest_education, school, area, availability_notes, virtual_available,
@@ -229,6 +240,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
   const userRow = userRes?.results?.[0] as UserRow | undefined;
   if (!userRow) return null;
 
+  const rawAdmin = adminRes?.results?.[0] as Record<string, unknown> | undefined;
   const rawTutor = tutorRes?.results?.[0] as Record<string, unknown> | undefined;
   const rawStudent = studentRes?.results?.[0] as Record<string, unknown> | undefined;
 
@@ -244,6 +256,9 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
 
   return {
     ...toUser(userRow),
+    admin_profile: rawAdmin
+      ? ({ tin: (rawAdmin.tin as string | null) ?? null } satisfies AdminProfile)
+      : null,
     tutor_profile: rawTutor
       ? ({
           highest_education: (rawTutor.highest_education as string | null) ?? null,
@@ -321,6 +336,9 @@ function roleStatements(db: D1Database, userId: string, roles: UserRole[]) {
 function profileCleanupStatements(db: D1Database, userId: string, roles: UserRole[]) {
   const statements = [];
 
+  if (!roles.includes('admin')) {
+    statements.push(db.prepare('DELETE FROM admin_profiles WHERE user_id = ?').bind(userId));
+  }
   if (!roles.includes('tutor')) {
     statements.push(db.prepare('DELETE FROM tutor_profiles WHERE user_id = ?').bind(userId));
   }
@@ -400,6 +418,18 @@ export async function updateUserSections(
   sections: UpdateUserSectionsPayload,
 ): Promise<void> {
   const statements = [];
+
+  if (sections.admin_profile !== undefined) {
+    statements.push(db.prepare('DELETE FROM admin_profiles WHERE user_id = ?').bind(id));
+
+    if (sections.admin_profile !== null) {
+      statements.push(
+        db
+          .prepare('INSERT INTO admin_profiles (user_id, tin) VALUES (?, ?)')
+          .bind(id, sections.admin_profile.tin),
+      );
+    }
+  }
 
   if (sections.tutor_profile !== undefined) {
     statements.push(db.prepare('DELETE FROM tutor_profiles WHERE user_id = ?').bind(id));

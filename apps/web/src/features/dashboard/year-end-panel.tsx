@@ -4,6 +4,8 @@ import { formatCents, type TutorTaxStatus } from '@tmi/shared';
 import { Button } from '@/components/ui/button';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/providers/auth-provider';
+import { useUserDetail } from '@/features/users/api';
 import { Form1099Dialog } from './form-1099-dialog';
 import { EmptyNote, Panel } from './stat-card';
 
@@ -25,6 +27,10 @@ export function YearEndPanel({
   isLoading: boolean;
   index?: number;
 }) {
+  // The institute's TIN, as recorded by whoever is signed in.
+  const { user } = useAuth();
+  const me = useUserDetail(user?.id ?? null);
+  const instituteTin = me.data?.data.admin_profile?.tin ?? null;
   const [printing, setPrinting] = useState<TutorTaxStatus | null>(null);
 
   // Somebody paid nothing all year needs no document.
@@ -81,6 +87,7 @@ export function YearEndPanel({
           tutorName={printing.full_name}
           year={year}
           amountCents={printing.paid_this_year_cents}
+          instituteTin={instituteTin}
         />
       )}
     </Panel>

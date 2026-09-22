@@ -171,3 +171,21 @@ export function scopeTutorTopup<
     tutor_profile: { ...detail.tutor_profile, topup_amount_cents: null },
   };
 }
+
+/**
+ * Hides the institute's TIN from anyone who is not an admin.
+ *
+ * A tutor or a parent can open an admin's record -- they are people in the
+ * same directory -- and the number the institute files its taxes under is not
+ * theirs to read. Unlike the tutor's advance, there is no "unless it is your
+ * own" clause worth making: an admin's own record is already covered by being
+ * an admin.
+ */
+export function scopeAdminTin<T extends { admin_profile: { tin: string | null } | null }>(
+  detail: T,
+  viewer: User,
+): T {
+  if (isAdmin(viewer) || !detail.admin_profile) return detail;
+
+  return { ...detail, admin_profile: { ...detail.admin_profile, tin: null } };
+}

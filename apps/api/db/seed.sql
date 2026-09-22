@@ -28,6 +28,7 @@ DELETE FROM audit_events;
 DELETE FROM guardianships;
 DELETE FROM availability_slots;
 DELETE FROM payment_handles;
+DELETE FROM admin_profiles;
 DELETE FROM student_profiles;
 DELETE FROM tutor_profiles;
 DELETE FROM user_roles;
@@ -226,6 +227,13 @@ INSERT INTO user_roles (user_id, role) VALUES
   ('33333333-0000-4000-8000-000000000075', 'student'),
   ('33333333-0000-4000-8000-000000000076', 'student'),
   ('33333333-0000-4000-8000-000000000077', 'student');
+
+-- --- admin-only data --------------------------------------------------------
+-- The number the institute files its 1099s under. Not a person's, and not an
+-- SSN: the API refuses one here as firmly as anywhere else.
+INSERT INTO admin_profiles (user_id, tin) VALUES
+  ('00000000-0000-4000-8000-000000000001', '47-2019388'),
+  ('00000000-0000-4000-8000-000000000002', NULL);
 
 -- --- tutor-only data -------------------------------------------------------
 INSERT INTO tutor_profiles (user_id, highest_education, school, area, availability_notes, virtual_available, default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes, topup_amount_cents, ssn_received_on) VALUES

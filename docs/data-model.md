@@ -274,6 +274,21 @@ of the tutor teaching them, and what the office advances that tutor is no busine
 `scopeTutorTopup` blanks it, the same way `scopeStudentCharges` blanks a family's price. The
 institute-wide "top-ups due" total is admin-only for the same reason.
 
+### `admin_profiles`
+
+Role data for an admin, which today is one field: `tin`, the taxpayer identification number the
+institute files its 1099s under. It sits beside `tutor_profiles` and `student_profiles` rather
+than in a settings table because it obeys the same rule they do — the row exists while the role
+does, and `profileCleanupStatements` removes it when the role is dropped. An institute with two
+admins records it twice; that is the price of the model being one rule rather than two, and the
+1099 prefills from whichever admin is signed in.
+
+**It is not a Social Security number.** A sole proprietor may well file under theirs, and the
+API refuses that here as firmly as anywhere else: the field runs through `optionalText`, so
+`containsSsn` guards it. The promise that the portal never stores an SSN cannot have an
+exception for the field named after tax. Only an admin may read it (`scopeAdminTin`) — a family
+can open an admin's record, and the institute's tax identity is not part of what they may see.
+
 ### Tax documents, and the SSN that is not here
 
 Phase 14. The institute files a tax document for each tutor at year end, which needs their

@@ -58,6 +58,10 @@ interface FormState {
   phone: string;
   status: UserStatus;
   roles: UserRole[];
+  admin: {
+    /** The institute's TIN, as it should read on a 1099. */
+    tin: string;
+  };
   tutor: {
     highest_education: string;
     school: string;
@@ -71,6 +75,13 @@ interface FormState {
     max_minutes: string;
     /** Dollars as typed; "" means this tutor is not paid in advance. */
     topup: string;
+    /**
+     * Whether the office holds this tutor's SSN. A tick, never the number --
+     * there is no field for that anywhere in this portal.
+     */
+    ssn_received: boolean;
+    /** The date already recorded, kept so a tick does not re-date it. */
+    ssn_received_on: string | null;
   };
   student: {
     school: string;
@@ -94,6 +105,7 @@ const EMPTY: FormState = {
   phone: '',
   status: 'active',
   roles: [],
+  admin: { tin: '' },
   tutor: {
     highest_education: '',
     school: '',
@@ -104,6 +116,8 @@ const EMPTY: FormState = {
     rate_virtual: '',
     max_minutes: '',
     topup: '',
+    ssn_received: false,
+    ssn_received_on: null,
   },
   student: {
     school: '',
@@ -119,6 +133,13 @@ const EMPTY: FormState = {
   guardians: [],
 };
 
+/** Today on the reader's own calendar, for the date a confirmation is recorded. */
+function todayIso(): string {
+  const now = new Date();
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
 function fromDetail(detail: UserDetail): FormState {
   return {
     email: detail.email ?? '',
@@ -126,6 +147,7 @@ function fromDetail(detail: UserDetail): FormState {
     phone: detail.phone ?? '',
     status: detail.status,
     roles: detail.roles,
+    admin: { tin: detail.admin_profile?.tin ?? '' },
     tutor: {
       highest_education: detail.tutor_profile?.highest_education ?? '',
       school: detail.tutor_profile?.school ?? '',
@@ -136,6 +158,8 @@ function fromDetail(detail: UserDetail): FormState {
       rate_virtual: centsToInput(detail.tutor_profile?.default_rate_virtual_cents),
       max_minutes: detail.tutor_profile?.max_session_minutes?.toString() ?? '',
       topup: centsToInput(detail.tutor_profile?.topup_amount_cents),
+      ssn_received: Boolean(detail.tutor_profile?.ssn_received_on),
+      ssn_received_on: detail.tutor_profile?.ssn_received_on ?? null,
     },
     student: {
       school: detail.student_profile?.school ?? '',
@@ -165,12 +189,15 @@ function toRequest(form: FormState) {
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
 
+  const isAdminRole = form.roles.includes('admin');
+
   return {
     email: form.email,
     full_name: form.full_name,
     phone: form.phone,
     status: form.status,
     roles: form.roles,
+    admin_profile: isAdminRole ? { tin: form.admin.tin } : null,
     tutor_profile: isTutor
       ? {
           highest_education: form.tutor.highest_education,
@@ -182,6 +209,11 @@ function toRequest(form: FormState) {
           default_rate_virtual_cents: parseCentsInput(form.tutor.rate_virtual),
           max_session_minutes: form.tutor.max_minutes ? Number(form.tutor.max_minutes) : null,
           topup_amount_cents: parseCentsInput(form.tutor.topup),
+          // A tick sets today and keeps whatever date was already recorded,
+          // so editing an unrelated field never silently re-dates it.
+          ssn_received_on: form.tutor.ssn_received
+            ? (form.tutor.ssn_received_on ?? todayIso())
+            : null,
         }
       : null,
     student_profile: isStudent
@@ -373,6 +405,31 @@ export function UserFormDialog({
                 error={errors.roles}
               />
 
+              {form.roles.includes('admin') && (
+                <>
+                  <Separator />
+                  <SectionHeading title="Admin details" />
+
+                  {/* The institute's own tax identity, not a person's. It
+                      prefills the payer box when a 1099 is printed. */}
+                  <Field
+                    id="a_tin"
+                    label="Institute TIN"
+                    optional
+                    error={errors['admin_profile.tin']}
+                    hint="The EIN the institute files under. Used to prefill the 1099 — never a Social Security number, which the portal refuses to store."
+                  >
+                    <Input
+                      id="a_tin"
+                      value={form.admin.tin}
+                      onChange={(e) => set('admin', { ...form.admin, tin: e.target.value })}
+                      aria-invalid={Boolean(errors['admin_profile.tin'])}
+                      placeholder="12-3456789"
+                    />
+                  </Field>
+                </>
+              )}
+
               {isTutor && (
                 <>
                   <Separator />
@@ -459,6 +516,23 @@ export function UserFormDialog({
                       />
                     </Field>
                   </div>
+
+                  {/* The fact, never the number. Ticking this records
+                      today; the number itself is collected outside the portal
+                      and has nowhere to go in it. */}
+                  <Checkbox
+                    id="t_ssn"
+                    label="We have this tutor’s SSN on file"
+                    checked={form.tutor.ssn_received}
+                    onChange={(checked) =>
+                      set('tutor', { ...form.tutor, ssn_received: checked })
+                    }
+                  />
+                  {form.tutor.ssn_received && form.tutor.ssn_received_on && (
+                    <p className="text-muted-foreground -mt-2 text-xs">
+                      Confirmed on {form.tutor.ssn_received_on}.
+                    </p>
+                  )}
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <SessionLimitField

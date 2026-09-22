@@ -145,3 +145,58 @@ test.describe('tax documents', () => {
     expect((await tutor.request.get('/api/payments/tax-summary.csv?year=2026')).status()).toBe(403);
   });
 });
+
+/**
+ * The institute's own tax identity, recorded once on an admin's record and
+ * reused on every 1099 it prints.
+ */
+test.describe('the institute TIN', () => {
+  test('is admin-only, editable from the user dialog, and never an SSN', async ({ as }) => {
+    const admin = await as('admin');
+    const adminId = await idOf(admin, PEOPLE.admin.email);
+
+    // Editable through the ordinary user PATCH, like any other profile section.
+    await unwrap(
+      await admin.request.patch(`/api/users/${adminId}`, {
+        data: { admin_profile: { tin: '47-2019388' } },
+      }),
+      'setting the TIN',
+    );
+
+    const detail = await unwrap<any>(
+      await admin.request.get(`/api/users/${adminId}`),
+      'reading it back',
+    );
+    expect(detail.admin_profile.tin).toBe('47-2019388');
+
+    // A family can open an admin's record; the institute's tax identity is
+    // not part of what they may read.
+    const parent = await as('parent');
+    const asParent = await unwrap<any>(
+      await parent.request.get(`/api/users/${adminId}`),
+      'reading as a parent',
+    );
+    expect(asParent.admin_profile?.tin ?? null).toBeNull();
+
+    // A sole proprietor may file under their SSN; this portal still will not
+    // hold one, whatever the field is called.
+    const refused = await admin.request.patch(`/api/users/${adminId}`, {
+      data: { admin_profile: { tin: '123-45-6789' } },
+    });
+    expect(refused.status()).toBe(422);
+  });
+
+  test('prefills the 1099, and the profile goes when the role does', async ({ as }) => {
+    const admin = await as('admin');
+    const adminId = await idOf(admin, PEOPLE.admin.email);
+
+    await admin.request.patch(`/api/users/${adminId}`, {
+      data: { admin_profile: { tin: '47-2019388' } },
+    });
+
+    await admin.goto('/?tab=finance');
+    await admin.getByRole('button', { name: '1099-NEC' }).first().click();
+    const dialog = admin.getByRole('dialog');
+    await expect(dialog.getByLabel(/Payer.s TIN/)).toHaveValue('47-2019388');
+  });
+});

@@ -42,16 +42,21 @@ export function Form1099Dialog({
   tutorName,
   year,
   amountCents,
+  instituteTin,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   tutorName: string;
   year: number;
   amountCents: number;
+  /** From the signed-in admin's record, so it is typed once and not per form. */
+  instituteTin?: string | null;
 }) {
   const [ssn, setSsn] = useState('');
   const [address, setAddress] = useState('');
-  const [payerTin, setPayerTin] = useState('');
+  // Prefilled from the admin's own record: the institute files under one
+  // number all year, and retyping it on every form is how a digit goes wrong.
+  const [payerTin, setPayerTin] = useState(instituteTin ?? '');
 
   const formatted = normaliseSsn(ssn);
 
@@ -59,9 +64,11 @@ export function Form1099Dialog({
     // Cleared on the way out, so a reopened dialog never shows the last
     // tutor's number.
     if (!next) {
+      // The SSN is cleared; the institute's own number is not a secret from
+      // the person who recorded it, and clearing it would just be retyping.
       setSsn('');
       setAddress('');
-      setPayerTin('');
+      setPayerTin(instituteTin ?? '');
     }
     onOpenChange(next);
   }
@@ -141,7 +148,12 @@ export function Form1099Dialog({
 
           <div className="grid gap-2">
             <Label htmlFor="ein">
-              Payer’s TIN <span className="text-muted-foreground">(optional)</span>
+              Payer’s TIN{' '}
+              {instituteTin ? (
+                <span className="text-muted-foreground">(from your record)</span>
+              ) : (
+                <span className="text-muted-foreground">(optional)</span>
+              )}
             </Label>
             <Input
               id="ein"
@@ -149,6 +161,12 @@ export function Form1099Dialog({
               onChange={(event) => setPayerTin(event.target.value)}
               placeholder="The institute’s EIN"
             />
+            {!instituteTin && (
+              <p className="text-muted-foreground text-xs">
+                Save it on your own record under Admin details and it will fill itself in
+                next time.
+              </p>
+            )}
           </div>
         </div>
 

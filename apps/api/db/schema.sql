@@ -45,6 +45,7 @@ DROP TABLE IF EXISTS assignments;
 DROP TABLE IF EXISTS guardianships;
 DROP TABLE IF EXISTS availability_slots;
 DROP TABLE IF EXISTS payment_handles;
+DROP TABLE IF EXISTS admin_profiles;
 DROP TABLE IF EXISTS student_profiles;
 DROP TABLE IF EXISTS tutor_profiles;
 DROP TABLE IF EXISTS user_roles;
@@ -210,6 +211,30 @@ CREATE TABLE tutor_profiles (
 -- ---------------------------------------------------------------------------
 -- student_profiles - data that only means anything for a student
 -- ---------------------------------------------------------------------------
+-- Role data for an admin. Today that is one field: the taxpayer identification
+-- number the institute files under, which every 1099 it issues has to carry.
+--
+-- Kept per admin, beside the tutor's and the student's profile rather than in
+-- a settings table, because it follows the same rule as they do -- it exists
+-- while the role does, and goes when the role goes. An institute with two
+-- admins records it twice, which is the price of the model being one rule
+-- rather than two.
+--
+-- It is NOT a Social Security number. A sole proprietor may file under theirs,
+-- and the API refuses that: `containsSsn` rejects SSN-shaped text everywhere,
+-- this field included, because the promise that the portal never stores one
+-- cannot have an exception for the field named after tax.
+CREATE TABLE admin_profiles (
+  user_id     TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+
+  -- The institute's EIN, as it should read on a 1099. Free text: it is printed
+  -- rather than computed with, and the formats vary.
+  tin         TEXT,
+
+  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
 CREATE TABLE student_profiles (
   user_id             TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
 
@@ -709,6 +734,13 @@ CREATE TRIGGER tutor_profiles_set_updated_at
 AFTER UPDATE ON tutor_profiles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE tutor_profiles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE user_id = NEW.user_id;
+END;
+
+CREATE TRIGGER admin_profiles_set_updated_at
+AFTER UPDATE ON admin_profiles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE admin_profiles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
   WHERE user_id = NEW.user_id;
 END;
 
