@@ -42,5 +42,33 @@ echo "==> Rebuilding $TEST_DB (destructive, test data only)"
   && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/schema.sql >/dev/null \
   && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/seed.sql >/dev/null )
 
+# A deploy and a remote D1 rebuild are both eventually consistent, and the
+# suite starts the instant they return. Twice now the first run after a deploy
+# has failed and an immediate re-run has passed, which is what that looks like.
+# The cause was never caught in the act, so this is a guard rather than a
+# diagnosis: wait until the new Worker is answering AND the seeded roster is
+# actually readable before asserting anything about either.
+echo "==> Waiting for $TEST_URL to be ready"
+for attempt in $(seq 1 30); do
+  health=$(curl -s --max-time 10 "$TEST_URL/api/health" || true)
+  people=$(curl -s --max-time 10 -H 'X-Dev-User: priya.raghavan@gmail.com' \
+    "$TEST_URL/api/users?limit=1" || true)
+
+  case "$health$people" in
+    *'"status":"ok"'*'"meta"'*)
+      echo "    ready after ${attempt}s"
+      break
+      ;;
+  esac
+
+  if [ "$attempt" -eq 30 ]; then
+    echo "Refusing to run: $TEST_URL did not become ready." >&2
+    echo "  health:  ${health:0:120}" >&2
+    echo "  roster:  ${people:0:120}" >&2
+    exit 1
+  fi
+  sleep 1
+done
+
 echo "==> Running the end-to-end suite against $TEST_URL"
 E2E_BASE_URL="$TEST_URL" npm run test --workspace @tmi/e2e
