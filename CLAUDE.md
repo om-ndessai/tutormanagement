@@ -52,8 +52,10 @@ Run from the repo root.
 | `npm run build` | Build the SPA into `apps/web/dist` |
 | `npm run deploy` | Build the SPA, then `wrangler deploy` |
 
-`npm run db:rebuild:remote` **destroys all production data**. Never run it, or any `--remote`
-wrangler command, without being asked.
+`npm run db:rebuild:remote` **destroys all production data**, which since 2026-09-21 means real
+institute records. **Never run it.** Carry schema changes to production by hand and additively
+(`ALTER TABLE ... ADD COLUMN`, `CREATE TABLE`), writing the statements into `docs/database.md`
+as part of the change — and never run any `--remote` wrangler command without being asked.
 
 ## Rules
 
@@ -112,6 +114,14 @@ always the live, re-checked user.
 **Never trust an email that did not come out of `verifyGoogleIdToken`.** The browser supplies
 an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
 identity, and it is the whole security boundary of sign-in.
+
+**Tutors are paid in advance, and only the threshold is stored.**
+`tutor_profiles.topup_amount_cents` is the level a tutor's advance is kept above; what they
+actually hold is `paid - earned` and the shortfall is `topup - held`, both derived by
+`tutorAdvanceCents` / `topupDueCents` in `packages/shared/src/payments.ts`. NULL means the
+tutor is paid for work already done and no top-up is ever due. Only an admin and the tutor
+themselves may see the arrangement — `scopeTutorTopup` blanks it for everyone else, and the
+institute-wide total is admin-only.
 
 **Money is integer cents, never floats.** `formatCents` / `parseCentsInput` in
 `packages/shared/src/teaching.ts` are the only conversions. Amounts and durations are always

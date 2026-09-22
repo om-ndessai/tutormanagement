@@ -17,7 +17,12 @@ import type { AppEnv } from '../types.js';
 import { describeChangedFields, recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
-import { isAdmin, scopeStudentCharges, visibleUserIds } from '../lib/scope.js';
+import {
+  isAdmin,
+  scopeStudentCharges,
+  scopeTutorTopup,
+  visibleUserIds,
+} from '../lib/scope.js';
 import { requireAdmin } from '../middleware/require-admin.js';
 import {
   countGuardians,
@@ -152,7 +157,9 @@ export const usersRoutes = new Hono<AppEnv>()
 
     if (!detail) throw ApiError.notFound('That user does not exist.');
 
-    const body: ApiOk<UserDetail> = { data: scopeStudentCharges(detail, viewer) };
+    const body: ApiOk<UserDetail> = {
+      data: scopeTutorTopup(scopeStudentCharges(detail, viewer), viewer),
+    };
     return c.json(body);
   })
 

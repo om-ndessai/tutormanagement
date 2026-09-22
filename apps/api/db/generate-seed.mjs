@@ -188,6 +188,23 @@ for (const row of tutorProfiles) {
   row.push(TUTOR_MAX[id] ?? pick([120, 180, 240, 'NULL']));
 }
 
+// The level each tutor's advance is kept above. Most of the cast is on one, so
+// the dashboards have something to show; Johan is not, which is the case where
+// no top-up is ever due.
+const TUTOR_TOPUP = {
+  [CAST.priya]: 30000, [CAST.dana]: 'NULL', [CAST.alex]: 20000,
+  [CAST.maria]: 15000, [CAST.johan]: 'NULL', [CAST.sanjay]: 5000,
+};
+// Keyed for the payment step below, which has to pay an advance tutor AHEAD of
+// what they have earned rather than behind it.
+const topupByTutor = new Map();
+for (const row of tutorProfiles) {
+  const id = row[0].slice(1, -1);
+  const topup = TUTOR_TOPUP[id] ?? pick([10000, 15000, 20000, 'NULL']);
+  row.push(topup);
+  topupByTutor.set(id, topup === 'NULL' ? null : topup);
+}
+
 // What the institute CHARGES each family, per hour. Always above what the
 // tutor is paid for the same lesson -- the difference is the margin, and the
 // whole reason these are separate from the tutor's rates.
@@ -417,17 +434,41 @@ for (const [studentId, total] of charged) {
   ]);
 }
 
-// Tutors have been paid roughly two thirds of what they have earned.
-for (const [tutorId, total] of earned) {
-  if (total === 0) continue;
-  const paid = Math.round(total * pick([0.5, 0.7, 0.9]));
+// How each tutor has been paid, which depends on the arrangement they are on.
+//
+// A tutor with a top-up level is paid BEFORE they teach, so their payments add
+// up to more than they have earned and the difference is the advance they are
+// holding. Most are left comfortably above their level and a few below it, so
+// the admin dashboard has both states to show. A tutor without a level is paid
+// for work already done, which leaves them owed money instead.
+//
+// Tutors on an advance who have not taught yet still appear here: being paid
+// up front is the whole point, so their advance is the money they hold.
+const paidTutors = new Set([...earned.keys(), ...[...topupByTutor.entries()]
+  .filter(([, topup]) => topup !== null)
+  .map(([tutorId]) => tutorId)]);
+
+for (const tutorId of paidTutors) {
+  const total = earned.get(tutorId) ?? 0;
+  const topup = topupByTutor.get(tutorId) ?? null;
+
+  // 1.3 and 1.05 leave them above their level; 0.4 leaves them below it, and
+  // that tutor is the one the office needs to act on.
+  const paid =
+    topup === null
+      ? Math.round(total * pick([0.5, 0.7, 0.9]))
+      : total + Math.round(topup * pick([1.3, 1.05, 1.3, 0.4]));
+
+  if (paid <= 0) continue;
 
   paySeq += 1;
   payments.push([
     q(id('61111111', paySeq + 500)), q('to_tutor'), q(tutorId), 'NULL', paid,
     q(pick(['zelle', 'venmo'])),
     q(new Date(TODAY - between(1, 14) * DAY_MS).toISOString()),
-    'NULL', q('Part payment for the term so far.'), q(CAST.priya),
+    'NULL',
+    q(topup === null ? 'Part payment for the term so far.' : 'Advance for the term.'),
+    q(CAST.priya),
   ]);
 }
 
@@ -536,7 +577,7 @@ ${insert('users', ['id', 'email', 'full_name', 'phone', 'status'], users)}
 ${insert('user_roles', ['user_id', 'role'], roles)}
 
 -- --- tutor-only data -------------------------------------------------------
-${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes'], tutorProfiles)}
+${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents'], tutorProfiles)}
 
 -- --- student-only data -----------------------------------------------------
 ${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], studentProfiles)}

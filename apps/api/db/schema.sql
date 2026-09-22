@@ -153,6 +153,21 @@ CREATE TABLE tutor_profiles (
   default_rate_in_person_cents INTEGER CHECK (default_rate_in_person_cents >= 0),
   default_rate_virtual_cents   INTEGER CHECK (default_rate_virtual_cents >= 0),
 
+  -- The floor the institute keeps this tutor's advance above, in whole cents.
+  --
+  -- Tutors here are paid BEFORE they teach: the office hands over, say, $100,
+  -- and the tutor works it off. `topup_amount_cents` is the level at which
+  -- another payment is due -- when what the tutor still holds falls below it,
+  -- the office tops them back up.
+  --
+  -- Only the threshold is stored. What the tutor currently holds is
+  -- paid - earned, derived wherever it is shown like every other balance, so
+  -- it cannot drift out of step with the payments and sessions it comes from.
+  --
+  -- NULL means this tutor is not on an advance: they are paid for work already
+  -- done, and no top-up is ever due.
+  topup_amount_cents INTEGER CHECK (topup_amount_cents >= 0),
+
   -- The longest single lesson this tutor teaches. A live session that passes
   -- it is closed at it and marked auto_stopped, so a timer left running does
   -- not bill a family for the rest of the night.

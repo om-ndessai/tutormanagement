@@ -68,6 +68,8 @@ interface FormState {
     rate_virtual: string;
     /** Minutes, or "" for "no limit of their own". */
     max_minutes: string;
+    /** Dollars as typed; "" means this tutor is not paid in advance. */
+    topup: string;
   };
   student: {
     school: string;
@@ -100,6 +102,7 @@ const EMPTY: FormState = {
     rate_in_person: '',
     rate_virtual: '',
     max_minutes: '',
+    topup: '',
   },
   student: {
     school: '',
@@ -131,6 +134,7 @@ function fromDetail(detail: UserDetail): FormState {
       rate_in_person: centsToInput(detail.tutor_profile?.default_rate_in_person_cents),
       rate_virtual: centsToInput(detail.tutor_profile?.default_rate_virtual_cents),
       max_minutes: detail.tutor_profile?.max_session_minutes?.toString() ?? '',
+      topup: centsToInput(detail.tutor_profile?.topup_amount_cents),
     },
     student: {
       school: detail.student_profile?.school ?? '',
@@ -176,6 +180,7 @@ function toRequest(form: FormState) {
           default_rate_in_person_cents: parseCentsInput(form.tutor.rate_in_person),
           default_rate_virtual_cents: parseCentsInput(form.tutor.rate_virtual),
           max_session_minutes: form.tutor.max_minutes ? Number(form.tutor.max_minutes) : null,
+          topup_amount_cents: parseCentsInput(form.tutor.topup),
         }
       : null,
     student_profile: isStudent
@@ -439,12 +444,33 @@ export function UserFormDialog({
                     </Field>
                   </div>
 
-                  <SessionLimitField
-                    id="t_max_session"
-                    value={form.tutor.max_minutes}
-                    onChange={(value) => set('tutor', { ...form.tutor, max_minutes: value })}
-                    hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
-                  />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <SessionLimitField
+                      id="t_max_session"
+                      value={form.tutor.max_minutes}
+                      onChange={(value) => set('tutor', { ...form.tutor, max_minutes: value })}
+                      hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
+                    />
+
+                    {/* The institute pays most tutors up front. This is the
+                        level their unworked balance is kept above, not a
+                        payment: recording the payment itself is a separate
+                        act, on the billing page. */}
+                    <Field
+                      id="t_topup"
+                      label="Top up below"
+                      optional
+                      hint="Blank means this tutor is paid for work already done, never in advance."
+                    >
+                      <Input
+                        id="t_topup"
+                        inputMode="decimal"
+                        value={form.tutor.topup}
+                        onChange={(e) => set('tutor', { ...form.tutor, topup: e.target.value })}
+                        placeholder="100.00"
+                      />
+                    </Field>
+                  </div>
                 </>
               )}
 

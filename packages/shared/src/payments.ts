@@ -110,6 +110,48 @@ export interface TutorBalance {
   paid_cents: number;
   balance_cents: number;
   session_count: number;
+  /**
+   * The level the institute keeps this tutor's advance above, or null when
+   * they are not on an advance. Null also for a viewer not entitled to see it:
+   * a tutor's arrangement is theirs and the admin's, nobody else's.
+   */
+  topup_amount_cents: number | null;
+}
+
+/**
+ * What the tutor is holding right now: money paid to them that they have not
+ * yet worked off.
+ *
+ * The mirror image of `balance_cents`, and the figure the top-up arrangement
+ * is about. Positive means they hold the institute's money; negative means
+ * they have taught more than they have been paid for, so the institute owes
+ * them and no top-up would fix that -- a payment is simply due.
+ */
+export function tutorAdvanceCents(balance: Pick<TutorBalance, 'earned_cents' | 'paid_cents'>) {
+  return balance.paid_cents - balance.earned_cents;
+}
+
+/**
+ * What to pay now to restore the floor, or null when the tutor is not on an
+ * advance.
+ *
+ * Zero when the advance is still above the threshold -- the office does
+ * nothing -- and otherwise exactly the shortfall, so paying it puts the tutor
+ * back AT the agreed level rather than at a round number somebody guessed.
+ */
+export function topupDueCents(
+  balance: Pick<TutorBalance, 'earned_cents' | 'paid_cents' | 'topup_amount_cents'>,
+): number | null {
+  if (balance.topup_amount_cents == null) return null;
+  return Math.max(0, balance.topup_amount_cents - tutorAdvanceCents(balance));
+}
+
+/** Whether this tutor is due a top-up at all. */
+export function needsTopup(
+  balance: Pick<TutorBalance, 'earned_cents' | 'paid_cents' | 'topup_amount_cents'>,
+): boolean {
+  const due = topupDueCents(balance);
+  return due !== null && due > 0;
 }
 
 /**
@@ -135,5 +177,11 @@ export interface BalancesResponse {
   totals: {
     owed_to_tutors_cents: number;
     owed_by_families_cents: number;
+    /**
+     * What it would cost to bring every tutor on an advance back up to their
+     * agreed level. Null for a viewer who is not an admin: it is a figure
+     * about the institute, not about them.
+     */
+    topups_due_cents: number | null;
   };
 }

@@ -249,6 +249,31 @@ The limit deliberately does **not** apply to a session typed in afterwards, or t
 person asserting what happened is better evidence than a cap, and a lesson that really did run
 five hours has to be correctable after the sweep cut it to four.
 
+### Tutor advances
+
+Phase 13. The institute pays most tutors **before** they teach: the office hands over, say,
+$100 and the tutor works it off. `tutor_profiles.topup_amount_cents` is the level that advance
+is kept above — when what the tutor still holds falls below it, another payment is due.
+
+**Only the threshold is stored.** What the tutor holds is `paid - earned`, the mirror of the
+`balance_cents` the ledger already derives, and the shortfall is `topup - held`. Both are
+computed wherever they are shown (`tutorAdvanceCents`, `topupDueCents`, `needsTopup` in
+`packages/shared/src/payments.ts`), for the same reason balances are: storing them would mean
+two sources of truth that drift the first time a session is corrected.
+
+**NULL means the tutor is not on an advance** and no top-up is ever due — they are paid for
+work already done, and their row shows the ordinary owed figure instead. The two arrangements
+coexist in one ledger.
+
+A tutor in arrears has a *negative* advance, and the shortfall formula still holds: paying it
+settles what they are owed and restores the float in one payment, which is what "keep the
+balance above the top-up amount" means.
+
+**Who may see it**: admins, and the tutor themselves. A parent or student can open the record
+of the tutor teaching them, and what the office advances that tutor is no business of theirs —
+`scopeTutorTopup` blanks it, the same way `scopeStudentCharges` blanks a family's price. The
+institute-wide "top-ups due" total is admin-only for the same reason.
+
 ### `payments`
 
 Phase 5. A ledger of money that moved **outside** the portal, so the institute can answer two
@@ -349,6 +374,7 @@ The schema carries every rule it is capable of carrying:
 | One live user per email address | partial `UNIQUE INDEX` on `lower(email)` |
 | Deleting a person removes everything hanging off them | `ON DELETE CASCADE` |
 | A session limit is a positive multiple of 15 minutes | `CHECK` on `max_session_minutes` |
+| A top-up level cannot be negative | `CHECK (topup_amount_cents >= 0)` |
 | A comment is about exactly one thing | `CHECK` over the four target columns |
 | A comment cannot be empty | `CHECK (length(trim(body)) > 0)` |
 | Deleting a lesson removes its comments | `ON DELETE CASCADE` on each target |

@@ -66,6 +66,12 @@ export const tutorProfileSchema = z.object({
    * effectiveMaxSessionMinutes.
    */
   max_session_minutes: optionalMaxSessionMinutesField,
+  /**
+   * The level the institute keeps this tutor's advance above. Blank means the
+   * tutor is not on an advance at all. Only an admin may set it -- see the
+   * users route -- and only an admin or the tutor themselves may read it.
+   */
+  topup_amount_cents: optionalCentsField,
 });
 
 export type TutorProfileInput = z.input<typeof tutorProfileSchema>;

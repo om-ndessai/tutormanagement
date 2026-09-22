@@ -179,7 +179,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
         .prepare(
           `SELECT highest_education, school, area, availability_notes, virtual_available,
                   default_rate_in_person_cents, default_rate_virtual_cents,
-                  max_session_minutes
+                  max_session_minutes, topup_amount_cents
            FROM tutor_profiles WHERE user_id = ?`,
         )
         .bind(id),
@@ -249,6 +249,7 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
           default_rate_virtual_cents:
             (rawTutor.default_rate_virtual_cents as number | null) ?? null,
           max_session_minutes: (rawTutor.max_session_minutes as number | null) ?? null,
+          topup_amount_cents: (rawTutor.topup_amount_cents as number | null) ?? null,
         } satisfies TutorProfile)
       : null,
     student_profile: rawStudent
@@ -402,8 +403,9 @@ export async function updateUserSections(
           .prepare(
             `INSERT INTO tutor_profiles
                (user_id, highest_education, school, area, availability_notes, virtual_available,
-                default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes,
+                topup_amount_cents)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
@@ -415,6 +417,7 @@ export async function updateUserSections(
             p.default_rate_in_person_cents,
             p.default_rate_virtual_cents,
             p.max_session_minutes,
+            p.topup_amount_cents,
           ),
       );
     }

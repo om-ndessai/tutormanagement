@@ -1,3 +1,4 @@
+import { topupDueCents } from '@tmi/shared';
 import type { BalancesResponse, StudentBalance, TutorBalance, User } from '@tmi/shared';
 
 import { isAdmin } from '../lib/scope.js';
@@ -38,11 +39,15 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
     db
       .prepare(
         `SELECT u.id AS user_id, u.full_name,
+                tp.topup_amount_cents,
                 COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS earned_cents,
                 COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS session_count,
                 COALESCE((SELECT SUM(p.amount_cents) FROM payments p WHERE p.party_user_id = u.id AND p.direction = 'to_tutor'), 0) AS paid_cents
          FROM users u
          JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'
+         -- Left join: a tutor may hold the role with no profile row yet, and
+         -- must still appear in the ledger.
+         LEFT JOIN tutor_profiles tp ON tp.user_id = u.id
          ${tutorFilter}
          ORDER BY u.full_name`,
       )
@@ -79,6 +84,8 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
         paid_cents: paid,
         balance_cents: earned - paid,
         session_count: Number(row.session_count ?? 0),
+        // Scoped by the query itself: a non-admin only ever gets their own row.
+        topup_amount_cents: (row.topup_amount_cents as number | null) ?? null,
       };
     },
   );
@@ -122,6 +129,11 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
       // else's unpaid balance in the headline figure.
       owed_to_tutors_cents: tutors.reduce((sum, t) => sum + Math.max(0, t.balance_cents), 0),
       owed_by_families_cents: students.reduce((sum, s) => sum + Math.max(0, s.balance_cents), 0),
+      // Advances are the office's own cash-flow question, so only an admin is
+      // given the total; a tutor sees their own shortfall and nobody else's.
+      topups_due_cents: admin
+        ? tutors.reduce((sum, t) => sum + (topupDueCents(t) ?? 0), 0)
+        : null,
     },
   };
 }

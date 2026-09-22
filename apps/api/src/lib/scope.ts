@@ -143,3 +143,31 @@ export function scopeStudentCharges<
     },
   };
 }
+
+/**
+ * Hides a tutor's advance arrangement from everyone but that tutor and an
+ * admin.
+ *
+ * A parent can open the record of the tutor teaching their child, and a
+ * student the record of their own tutor -- neither has any business knowing
+ * what the office pays that tutor up front. The tutor themselves does: it is
+ * their money, and the threshold is what tells them when the next payment is
+ * coming.
+ *
+ * Same shape as scopeStudentCharges, and for the same reason: applied on the
+ * way out, after the query, so one code path reads the column and one decides
+ * who may see it.
+ */
+export function scopeTutorTopup<
+  T extends {
+    id: string;
+    tutor_profile: { topup_amount_cents: number | null } | null;
+  },
+>(detail: T, viewer: User): T {
+  if (isAdmin(viewer) || detail.id === viewer.id || !detail.tutor_profile) return detail;
+
+  return {
+    ...detail,
+    tutor_profile: { ...detail.tutor_profile, topup_amount_cents: null },
+  };
+}

@@ -7,6 +7,7 @@ import {
   MapPinIcon,
   MessageSquareIcon,
   PhoneIcon,
+  PiggyBankIcon,
   SchoolIcon,
   TargetIcon,
   TimerIcon,
@@ -131,6 +132,14 @@ export function UserDetailView({ user }: { user: UserDetail }) {
                 <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)</Muted>
               )}
             </Detail>
+            {/* The API blanks this for anyone but an admin and the tutor
+                themselves: what the office advances a tutor is not the
+                business of the families they teach. */}
+            {tutor.topup_amount_cents != null && (
+              <Detail icon={<PiggyBankIcon className="size-4" />} label="Top up below">
+                {`${formatCents(tutor.topup_amount_cents)} advance`}
+              </Detail>
+            )}
           </dl>
           {tutor.availability_notes && (
             <p className="text-muted-foreground mt-4 text-sm">{tutor.availability_notes}</p>

@@ -66,11 +66,11 @@ simply recreated.
 
 ### Keeping production in step
 
-**`npm run db:rebuild:remote` destroys all production data.**
+**`npm run db:rebuild:remote` destroys all production data. Do not run it.**
 
-While the institute has no records worth keeping, that is the intended way to apply a model
-change to production — it is what the plan asks for. Once real records exist, it stops being
-an option and a schema change has to be carried over by hand instead:
+It was the intended way to apply a model change while the database held nothing worth keeping.
+**That stopped being true on 2026-09-21**, when the institute began recording real families,
+lessons and payments. Every schema change now goes over by hand, additively:
 
 ```bash
 # after editing db/schema.sql and running db:reset locally
@@ -93,6 +93,13 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE student_profiles ADD COLUMN max_session_minutes INTEGER"
 npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE sessions ADD COLUMN auto_stopped INTEGER NOT NULL DEFAULT 0"
+```
+
+Phase 13's is one statement:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE tutor_profiles ADD COLUMN topup_amount_cents INTEGER"
 ```
 
 SQLite will not attach the `CHECK` constraints in `schema.sql` to a column added this way, so

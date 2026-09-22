@@ -11,13 +11,17 @@ import {
   PAYMENT_FORM_LABELS,
   SESSION_MODE_LABELS,
   formatCents,
+  needsTopup,
   shownAmountCents,
   formatDuration,
+  topupDueCents,
+  tutorAdvanceCents,
   type AdminDashboard,
   type ParentDashboard,
   type Payment,
   type StudentDashboard,
   type TutoringSession,
+  type TutorBalance,
   type TutorDashboard,
 } from '@tmi/shared';
 
@@ -197,6 +201,8 @@ export function AdminView({ data }: { data: AdminDashboard }) {
         />
       </div>
 
+      <TopupPanel tutors={data.tutor_balances} />
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel index={8} title="Tutors awaiting payment" action={{ label: 'Billing', to: '/billing' }}>
           {data.tutor_balances.length === 0 ? (
@@ -248,27 +254,104 @@ export function AdminView({ data }: { data: AdminDashboard }) {
   );
 }
 
+/**
+ * Which tutors on an advance have worked it down past their agreed level, and
+ * what it would take to restore each one.
+ *
+ * The one piece of this feature that is a to-do list rather than a figure, so
+ * it leads the panels. It says nothing at all when no tutor is on an advance
+ * -- an institute that does not pay up front should not be told about a
+ * mechanism it does not use -- but it does speak up when everyone is topped
+ * up, because "nothing to do" is the answer the office is looking for.
+ */
+function TopupPanel({ tutors }: { tutors: TutorBalance[] }) {
+  const onAdvance = tutors.filter((tutor) => tutor.topup_amount_cents != null);
+  if (onAdvance.length === 0) return null;
+
+  const due = onAdvance.filter((tutor) => needsTopup(tutor));
+  const total = due.reduce((sum, tutor) => sum + (topupDueCents(tutor) ?? 0), 0);
+
+  return (
+    <Panel
+      index={7}
+      title={due.length === 0 ? 'Advances' : `Top-ups due · ${formatCents(total)}`}
+      action={{ label: 'Billing', to: '/billing' }}
+    >
+      {due.length === 0 ? (
+        <EmptyNote>
+          All {onAdvance.length} {onAdvance.length === 1 ? 'tutor' : 'tutors'} on an advance are
+          above their top-up level.
+        </EmptyNote>
+      ) : (
+        <ul className="divide-border divide-y">
+          {due.map((tutor) => (
+            <BalanceRow
+              key={tutor.user_id}
+              name={tutor.full_name}
+              detail={
+                `holds ${formatCents(tutorAdvanceCents(tutor))} of ` +
+                `${formatCents(tutor.topup_amount_cents ?? 0)}`
+              }
+              balance={topupDueCents(tutor) ?? 0}
+              to={`/dashboard?as=${tutor.user_id}&role=tutor`}
+            />
+          ))}
+        </ul>
+      )}
+    </Panel>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Tutor
 // ---------------------------------------------------------------------------
 
 export function TutorView({ data }: { data: TutorDashboard }) {
+  // Only shown to a tutor the institute actually pays in advance.
+  const advance = data.earnings.topup_amount_cents == null ? null : data.earnings;
+
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div
+        className={cn('grid gap-4 sm:grid-cols-2', advance ? 'lg:grid-cols-5' : 'lg:grid-cols-4')}
+      >
         <StatCard index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
         <StatCard index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
         <StatCard index={2} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
         <StatCard
           index={3}
           label="Owed to you"
-          value={data.earnings.balance_cents}
+          // A tutor on an advance is usually in credit, and "owed to you
+          // -$167.50" is not a thing anybody is owed: what it means is that
+          // they hold money they have not worked off, which the next card
+          // says properly. Nothing is outstanding, so the figure is zero.
+          value={advance ? Math.max(0, data.earnings.balance_cents) : data.earnings.balance_cents}
           money
           icon={WalletPlusIcon}
           tone={data.earnings.balance_cents > 0 ? 'warning' : 'default'}
-          hint={`${formatCents(data.earnings.paid_cents)} paid so far`}
+          hint={
+            advance && data.earnings.balance_cents <= 0
+              ? `Paid up front — ${formatCents(data.earnings.paid_cents)} so far`
+              : `${formatCents(data.earnings.paid_cents)} paid so far`
+          }
           to="/billing"
         />
+        {advance && (
+          <StatCard
+            index={4}
+            label="Advance held"
+            value={tutorAdvanceCents(advance)}
+            money
+            icon={PiggyBankIcon}
+            tone={needsTopup(advance) ? 'warning' : 'success'}
+            hint={
+              needsTopup(advance)
+                ? `Below your ${formatCents(advance.topup_amount_cents ?? 0)} level — a top-up is due`
+                : `Topped up when it falls below ${formatCents(advance.topup_amount_cents ?? 0)}`
+            }
+            to="/billing"
+          />
+        )}
       </div>
 
       <Panel index={4} title="Your students" action={{ label: 'Assignments', to: '/assignments' }}>

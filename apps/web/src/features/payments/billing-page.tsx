@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { DownloadIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   PAYMENT_DIRECTION_LABELS,
   PAYMENT_FORM_LABELS,
   formatCents,
+  topupDueCents,
+  tutorAdvanceCents,
   type Payment,
+  type TutorBalance,
 } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
@@ -93,7 +96,7 @@ export function BillingPage() {
       />
 
       {isAdmin && (
-        <div className="mb-6 grid gap-4 sm:grid-cols-2">
+        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <HeadlineTile
             label="Owed to tutors"
             cents={data?.totals.owed_to_tutors_cents}
@@ -104,6 +107,14 @@ export function BillingPage() {
             cents={data?.totals.owed_by_families_cents}
             tone="brand"
           />
+          {/* What it would take to put every tutor on an advance back at their
+              agreed level. Zero is the resting state, and worth showing: it
+              says the advances have been kept up, not that nobody is on one. */}
+          <HeadlineTile
+            label="Top-ups due"
+            cents={data?.totals.topups_due_cents ?? 0}
+            tone="warning"
+          />
         </div>
       )}
 
@@ -111,18 +122,30 @@ export function BillingPage() {
         <LedgerTable
           title="Tutors"
           caption="What each tutor has earned, and what they have been paid."
-          columns={['Tutor', 'Sessions', 'Earned', 'Paid', 'Owed']}
-          rows={(data?.tutors ?? []).map((tutor) => ({
-            key: tutor.user_id,
-            cells: [
-              tutor.full_name,
-              String(tutor.session_count),
-              formatCents(tutor.earned_cents),
-              formatCents(tutor.paid_cents),
-            ],
-            summary: `${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned · ${formatCents(tutor.paid_cents)} paid`,
-            balance: tutor.balance_cents,
-          }))}
+          columns={['Tutor', 'Sessions', 'Earned', 'Paid', 'Advance held', 'Owed']}
+          rows={(data?.tutors ?? []).map((tutor) => {
+            const due = topupDueCents(tutor);
+
+            return {
+              key: tutor.user_id,
+              cells: [
+                tutor.full_name,
+                String(tutor.session_count),
+                formatCents(tutor.earned_cents),
+                formatCents(tutor.paid_cents),
+                <AdvanceCell key="advance" tutor={tutor} />,
+              ],
+              summary:
+                `${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned · ` +
+                `${formatCents(tutor.paid_cents)} paid` +
+                (tutor.topup_amount_cents == null
+                  ? ''
+                  : ` · holds ${formatCents(tutorAdvanceCents(tutor))} of ` +
+                    `${formatCents(tutor.topup_amount_cents)}`) +
+                (due && due > 0 ? ` · top up ${formatCents(due)}` : ''),
+              balance: tutor.balance_cents,
+            };
+          })}
           isLoading={balances.isPending}
         />
       )}
@@ -325,6 +348,35 @@ function HeadlineTile({
   );
 }
 
+/**
+ * What a tutor is holding, and what it would take to restore their floor.
+ *
+ * A dash rather than a zero when the tutor is not on an advance: they are paid
+ * for work already done, so there is no level to be below.
+ */
+function AdvanceCell({ tutor }: { tutor: TutorBalance }) {
+  if (tutor.topup_amount_cents == null) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+
+  const due = topupDueCents(tutor) ?? 0;
+
+  return (
+    <span className="inline-flex items-center justify-end gap-2">
+      <span>{formatCents(tutorAdvanceCents(tutor))}</span>
+      {due > 0 ? (
+        <Badge variant="outline" className="border-amber-500/50 text-amber-700 dark:text-amber-400">
+          Top up {formatCents(due)}
+        </Badge>
+      ) : (
+        <span className="text-muted-foreground text-xs">
+          of {formatCents(tutor.topup_amount_cents)}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function LedgerTable({
   title,
   caption,
@@ -336,7 +388,7 @@ function LedgerTable({
   caption: string;
   columns: string[];
   /** `summary` is the single line the phone layout shows under the name. */
-  rows: { key: string; cells: string[]; summary: string; balance: number }[];
+  rows: { key: string; cells: ReactNode[]; summary: string; balance: number }[];
   isLoading: boolean;
 }) {
   return (

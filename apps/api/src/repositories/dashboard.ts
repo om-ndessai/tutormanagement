@@ -142,6 +142,7 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
       paid_cents: 0,
       balance_cents: 0,
       session_count: 0,
+      topup_amount_cents: null,
     },
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
