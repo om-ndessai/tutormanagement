@@ -37,7 +37,7 @@ import { Button } from '@/components/ui/button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { useAuditEvents } from '@/features/audit/api';
-import { useSsnReceipt } from './api';
+import { SsnReceiptButton } from './ssn-receipt-button';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { CommentThread } from '@/features/comments/comment-thread';
 import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
@@ -138,7 +138,11 @@ export function UserDetailView({ user }: { user: UserDetail }) {
               )}
             </Detail>
             <Detail icon={<ShieldCheckIcon className="size-4" />} label="SSN on file">
-              <SsnStatus userId={user.id} receivedOn={tutor.ssn_received_on} />
+              <SsnStatus
+                userId={user.id}
+                fullName={user.full_name}
+                receivedOn={tutor.ssn_received_on}
+              />
             </Detail>
             {/* The API blanks this for anyone but an admin and the tutor
                 themselves: what the office advances a tutor is not the
@@ -321,58 +325,29 @@ function PeopleList({
  * the number, because the portal has nowhere to keep one -- an admin collects
  * it outside and ticks this afterwards.
  */
-function SsnStatus({ userId, receivedOn }: { userId: string; receivedOn: string | null }) {
+function SsnStatus({
+  userId,
+  fullName,
+  receivedOn,
+}: {
+  userId: string;
+  fullName: string;
+  receivedOn: string | null;
+}) {
   const { user: viewer } = useAuth();
   const isAdmin = viewer?.roles.includes('admin') ?? false;
-  const receipt = useSsnReceipt();
-
-  async function set(received: boolean) {
-    try {
-      await receipt.mutateAsync({ userId, received });
-      toast.success(received ? 'Recorded as received.' : 'Confirmation withdrawn.');
-    } catch (error) {
-      toast.error(
-        error instanceof ApiRequestError ? error.message : 'Could not record that.',
-      );
-    }
-  }
 
   return (
     <span className="flex flex-wrap items-center gap-2">
       {receivedOn ? (
-        <>
-          <span>Received {receivedOn}</span>
-          {isAdmin && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs"
-              disabled={receipt.isPending}
-              onClick={() => set(false)}
-            >
-              Withdraw
-            </Button>
-          )}
-        </>
+        <span>Received {receivedOn}</span>
       ) : (
-        <>
-          <Badge
-            variant="outline"
-            className="border-amber-500/50 text-amber-700 dark:text-amber-400"
-          >
-            Not received
-          </Badge>
-          {isAdmin && (
-            <Button
-              size="sm"
-              className="h-7 px-2 text-xs"
-              disabled={receipt.isPending}
-              onClick={() => set(true)}
-            >
-              Mark received
-            </Button>
-          )}
-        </>
+        <Badge variant="outline" className="border-amber-500/50 text-amber-700 dark:text-amber-400">
+          Not received
+        </Badge>
+      )}
+      {isAdmin && (
+        <SsnReceiptButton userId={userId} fullName={fullName} received={Boolean(receivedOn)} />
       )}
     </span>
   );

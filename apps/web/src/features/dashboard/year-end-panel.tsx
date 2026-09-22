@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { formatCents, type TutorTaxStatus } from '@tmi/shared';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Form1099Dialog } from './form-1099-dialog';
 import { EmptyNote, Panel } from './stat-card';
@@ -58,12 +58,12 @@ export function YearEndPanel({
                   1099-NEC
                 </Button>
               ) : (
-                <Badge
-                  variant="outline"
-                  className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
-                >
-                  SSN needed
-                </Badge>
+                // Same question, same button: no 1099 until the office has it.
+                <SsnReceiptButton
+                  userId={tutor.user_id}
+                  fullName={tutor.full_name}
+                  received={false}
+                />
               )}
             </li>
           ))}

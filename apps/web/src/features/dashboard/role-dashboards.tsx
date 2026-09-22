@@ -33,6 +33,7 @@ import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
+import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { MonthlyFinance } from './monthly-finance';
 import { YearEndPanel } from './year-end-panel';
 import { useMonthlyFinance, useTaxStatus } from './api';
@@ -360,19 +361,24 @@ function SsnPanel({ tutors }: { tutors: { user_id: string; full_name: string }[]
       </p>
       <ul className="divide-border divide-y">
         {tutors.map((tutor) => (
-          <li key={tutor.user_id} className="flex items-center justify-between gap-3 py-2.5">
+          <li
+            key={tutor.user_id}
+            className="flex flex-wrap items-center justify-between gap-2 py-2.5"
+          >
             <Link
               to={`/users?view=${tutor.user_id}`}
               className="hover:text-primary text-sm font-medium transition-colors"
             >
               {tutor.full_name}
             </Link>
-            <Badge
-              variant="outline"
-              className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
-            >
-              Not received
-            </Badge>
+            {/* The action sits where the admin notices the problem. Having to
+                go and find the tutor's record to tick it off is what made this
+                impossible to use. */}
+            <SsnReceiptButton
+              userId={tutor.user_id}
+              fullName={tutor.full_name}
+              received={false}
+            />
           </li>
         ))}
       </ul>

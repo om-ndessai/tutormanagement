@@ -97,9 +97,19 @@ test.describe('tax documents', () => {
     await expect(tutor.getByText('Action needed: your SSN')).toBeVisible();
     await expect(tutor.getByText(/Never send it through this portal/)).toBeVisible();
 
-    // The admin's lists them as work to chase, beside the year-end documents.
+    // The admin's lists them as work to chase, beside the year-end documents --
+    // with the action right there, because having to go and find the tutor's
+    // record to tick it off is what made this impossible to use.
     await admin.goto('/?tab=finance');
     await expect(admin.getByText(/SSN not on file/)).toBeVisible();
+
+    const confirm = admin.getByRole('button', { name: /Mark SSN received/i }).first();
+    await expect(confirm).toBeVisible();
+    await confirm.click();
+
+    // Acting on it clears the chase list and unblocks the 1099.
+    await expect(admin.getByText(/SSN not on file/)).toHaveCount(0);
+    await expect(admin.getByRole('button', { name: '1099-NEC' }).first()).toBeVisible();
   });
 
   test('the year-end summary carries money and readiness, never a number', async ({ as }) => {
