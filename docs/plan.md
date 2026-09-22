@@ -79,3 +79,8 @@ Comments are only shown to the related parties. Comments are not editable. They 
 Build a reverse chronological view which depicts applicable comments for any entity. 
 
 Do a detailed industry standard best practice for this ask and come up with a plan to implement and execute.
+
+Phase 13:
+This phase is to build a feature which allows admin to record a topup amount per tutor. This is amount say 100$, that admin will set per tutor. The admin mostly pays the tutors in advance. If the total amount with the tutor (total paid - earned or owed amount) is less than the topup amount, then the admin will make another payment to the tutor to keep the balance above the topup amount. 
+
+Build the data model to support it and also show this on the dashboards accordingly.

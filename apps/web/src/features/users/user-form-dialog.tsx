@@ -687,7 +687,10 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-2">
+    // content-start, not the default stretch: a grid row sizes every field in
+    // it to the tallest, and a field carrying a hint or an error is taller. Let
+    // the rows stretch and the inputs beside it drift down out of line with it.
+    <div className="grid content-start gap-2">
       <Label htmlFor={id} className={cn(error && 'text-destructive')}>
         {label}
         {optional && <span className="text-muted-foreground font-normal">(optional)</span>}
