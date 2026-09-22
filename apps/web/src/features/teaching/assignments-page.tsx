@@ -95,7 +95,7 @@ export function AssignmentsPage() {
   return (
     <div className="mx-auto max-w-5xl">
       <PageHeader
-        title="Tutor pairings"
+        title="Pairings"
         description={description}
         actions={
           isAdmin ? (

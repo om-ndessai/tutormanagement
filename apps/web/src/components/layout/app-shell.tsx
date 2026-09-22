@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false },
-  { to: '/assignments', label: 'Tutor pairings', icon: LinkIcon, end: false },
+  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false },
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false },
   { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false },
   { to: '/billing', label: 'Billing', icon: WalletIcon, end: false },
