@@ -292,6 +292,14 @@ required and so has it applied directly. The pattern is deliberately narrow: `12
 "SSN" or "social security", so a phone number, invoice reference or student id still goes
 through. A validator that cries wolf gets worked around.
 
+The year-end 1099 is prepared in the browser. The admin types the number into a dialog, which
+writes a printable sheet into a new window and hands it to the print dialog; **nothing is sent
+to the server**, so the number never reaches a request body, a log line or a row. What prints
+is the recipient's copy and the payer's record — Copy A, the red scannable sheet, is filed
+electronically or on official stock and cannot come off any printer. Box 1 is the total PAID in
+the calendar year, which is why the figures come from `payments` rather than from what the
+lessons earned.
+
 Both sides are told when it is missing: the tutor's own dashboard asks them to hand it to the
 office **and says not to send it through the portal**, and the admin's lists who is outstanding.
 Recording receipt is a one-field admin endpoint (`POST /api/users/:id/ssn-receipt`) whose body

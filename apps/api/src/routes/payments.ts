@@ -12,6 +12,9 @@ import {
   type BalancesResponse,
   type Payment,
   taxSummaryQuerySchema,
+  monthlyFinanceQuerySchema,
+  type MonthlyFinanceResponse,
+  type TutorTaxStatus,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -21,7 +24,7 @@ import { ApiError } from '../lib/errors.js';
 import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
-import { computeBalances } from '../repositories/balances.js';
+import { computeBalances, computeMonthlyFinance } from '../repositories/balances.js';
 import { listTutorTaxStatus } from '../repositories/users.js';
 import {
   createPayment,
@@ -125,6 +128,20 @@ export const paymentsRoutes = new Hono<AppEnv>()
    * and scoped so a tutor sees only their own figure.
    */
   /**
+   * The same year-end figures as the CSV, for the screen that offers to print
+   * a 1099. Admin only, and it carries no SSN -- only whether the office has
+   * one, which is all the portal ever knows.
+   */
+  .get('/tax-status', requireAdmin, zValidator('query', taxSummaryQuerySchema), async (c) => {
+    const { year } = c.req.valid('query');
+
+    const body: ApiOk<TutorTaxStatus[]> = {
+      data: await listTutorTaxStatus(c.env.DB, year),
+    };
+    return c.json(body);
+  })
+
+  /**
    * The year-end tutor summary the tax documents are prepared from: what each
    * tutor was PAID in a calendar year, and whether the office has their SSN.
    *
@@ -148,6 +165,21 @@ export const paymentsRoutes = new Hono<AppEnv>()
     );
 
     return csvResponse(`tmi-tax-summary-${year}.csv`, body);
+  })
+
+  /**
+   * The month-by-month rundown of a financial year.
+   *
+   * Scoped by who is asking, in the repository rather than here: an admin gets
+   * the institute, a tutor gets their own teaching and their own pay.
+   */
+  .get('/monthly', zValidator('query', monthlyFinanceQuerySchema), async (c) => {
+    const { year } = c.req.valid('query');
+
+    const body: ApiOk<MonthlyFinanceResponse> = {
+      data: await computeMonthlyFinance(c.env.DB, c.get('user'), year),
+    };
+    return c.json(body);
   })
 
   .get('/balances', async (c) => {

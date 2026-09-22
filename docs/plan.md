@@ -87,3 +87,8 @@ Build the data model to support it and also show this on the dashboards accordin
 
 Phase 14:
 This phase is about financial management. At the end of the year, the admin would have to generate tax documents for the tutor. We do not intend to record the SSN in this database. But I would like the database to be extended to confirm that admin has received the SSN from tutor. The field on tutors should indicate that. Other wise it should show up dashboard both for tutor and admin that tutor's SSN has not been shared and an action is needed. Ensure, no SSN is ever persisted in this database or portal.
+
+Phase 15:
+This phase is about cleaning the dashboard for admins and tutors. There are two major parts of this application. Finance and Tracking tutoring progress. I would like to evaluate creating these two tabs and see how we can made dashboard little more crisp and effective. Currently the cards are too big and waste a lot of white space.
+In finance tab - I want a monthly run down of the current financial year, which will show how many sessions, how many hours, billed for that month, received in that month, Net in that month etc. I want to also have ability for admin to create 1099 year end for the tutor. This will open up a dialog to accept SSN on the UI. The SSN as agreed will not be persisted anywhere and 1099 will be created for that tutor. 
+Other metrics will move into Tutoring progress tab and we will work on that in the next phase.

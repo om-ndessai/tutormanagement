@@ -61,42 +61,36 @@ export function StatCard({
     success: 'text-success',
   }[tone];
 
+  // Deliberately tight. These cards are read at a glance and a dozen of them
+  // share a screen, so every line that is not a number or a word about the
+  // number is pushing the next card off the fold: the icon shrank, the "View"
+  // row went (the whole card is the link, and the arrow says so on hover), and
+  // the figure sits straight under its label.
   const body = (
-    <CardContent className="py-5">
-      <div className="flex items-start justify-between gap-3">
-        <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+    <CardContent className="px-4 py-3.5">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-muted-foreground truncate text-[11px] font-medium tracking-wide uppercase">
           {label}
         </p>
-        {/* Sits in a tinted chip so the glyph reads as part of the card rather
-            than a stray mark in the corner. */}
-        <span
-          className={cn(
-            'bg-muted/70 flex size-10 shrink-0 items-center justify-center rounded-lg',
-            toneClass || 'text-muted-foreground',
-          )}
-        >
-          <Icon className="size-5" />
+        <span className={cn('shrink-0', toneClass || 'text-muted-foreground/70')}>
+          <Icon className="size-4" />
         </span>
       </div>
 
-      <p className={cn('font-display mt-2 text-3xl font-semibold tabular-nums', toneClass)}>
+      <p className={cn('font-display mt-1 text-2xl font-semibold tabular-nums', toneClass)}>
         {display}
+        {to && (
+          <ArrowUpRightIcon className="text-muted-foreground/0 group-hover:text-primary ml-1 inline size-3.5 align-super transition-colors" />
+        )}
       </p>
 
-      {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
-
-      {to && (
-        <span className="text-muted-foreground group-hover:text-primary mt-2 flex items-center gap-1 text-xs transition-colors">
-          View
-          <ArrowUpRightIcon className="size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </span>
-      )}
+      {hint && <p className="text-muted-foreground mt-0.5 text-xs leading-snug">{hint}</p>}
     </CardContent>
   );
 
   if (!to) {
     return (
-      <Card className={ENTER} style={stagger(index)}>
+      <Card className={cn('py-0', ENTER)} style={stagger(index)}>
         {body}
       </Card>
     );
@@ -104,7 +98,7 @@ export function StatCard({
 
   return (
     <Link to={to} className={cn('group block', ENTER)} style={stagger(index)}>
-      <Card className="hover:border-primary/40 h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
+      <Card className="hover:border-primary/40 h-full py-0 transition-all hover:-translate-y-0.5 hover:shadow-md">
         {body}
       </Card>
     </Link>
@@ -126,9 +120,9 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <Card className={cn(ENTER, className)} style={stagger(index)}>
-      <CardContent className="py-5">
-        <div className="mb-4 flex items-baseline justify-between gap-2">
+    <Card className={cn('py-0', ENTER, className)} style={stagger(index)}>
+      <CardContent className="px-4 py-4">
+        <div className="mb-3 flex items-baseline justify-between gap-2">
           <h2 className="text-sm font-semibold">{title}</h2>
           {action && (
             <Link

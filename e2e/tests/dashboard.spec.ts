@@ -4,15 +4,19 @@ import { PEOPLE } from '../support/people.js';
 
 /** Phase 8: one route, a different dashboard per role. */
 test.describe('dashboards', () => {
+  // Since phase 15 the dashboard is two tabs: the teaching on one, the money
+  // on the other. Each half is asserted where it now lives.
   test('an admin sees institute-wide counts and balances', async ({ as }) => {
     const admin = await as('admin');
     await admin.goto('/');
 
     await expect(admin.getByText('Students', { exact: true })).toBeVisible();
+    await expect(admin.getByText('Recent activity')).toBeVisible();
+
+    await admin.getByRole('tab', { name: /Finance/ }).click();
     await expect(admin.getByText('Owed to tutors')).toBeVisible();
     await expect(admin.getByText('Owed by families')).toBeVisible();
     await expect(admin.getByText('Tutors awaiting payment')).toBeVisible();
-    await expect(admin.getByText('Recent activity')).toBeVisible();
   });
 
   test('a tutor sees their own students and earnings, not the institute', async ({ as }) => {
@@ -20,8 +24,10 @@ test.describe('dashboards', () => {
     await tutor.goto('/');
 
     await expect(tutor.getByText('Your students')).toBeVisible();
+
+    await tutor.goto('/?tab=finance');
     await expect(tutor.getByText('Owed to you')).toBeVisible();
-    // Institute-wide figures belong to the admin dashboard only.
+    // Institute-wide figures belong to the admin dashboard only, on either tab.
     await expect(tutor.getByText('Owed by families')).toHaveCount(0);
   });
 

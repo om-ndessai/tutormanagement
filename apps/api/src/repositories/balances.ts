@@ -1,5 +1,12 @@
 import { topupDueCents } from '@tmi/shared';
-import type { BalancesResponse, StudentBalance, TutorBalance, User } from '@tmi/shared';
+import type {
+  BalancesResponse,
+  MonthlyFinanceResponse,
+  MonthlyFinanceRow,
+  StudentBalance,
+  TutorBalance,
+  User,
+} from '@tmi/shared';
 
 import { isAdmin } from '../lib/scope.js';
 
@@ -136,4 +143,86 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
         : null,
     },
   };
+}
+
+/**
+ * A month-by-month rundown of a financial year.
+ *
+ * Lessons are grouped by the date they were TAUGHT and payments by the date
+ * they MOVED, because those answer different questions -- what the month
+ * earned, and what the month's cash did. Keeping them in one row is the point:
+ * the gap between the two columns is the institute's collection problem, and
+ * it is invisible in either figure alone.
+ *
+ * A tutor gets their own teaching and their own pay; the family side is
+ * withheld from them exactly as it is on a single session.
+ */
+export async function computeMonthlyFinance(
+  db: D1Database,
+  viewer: User,
+  year: number,
+): Promise<MonthlyFinanceResponse> {
+  const admin = isAdmin(viewer);
+  const from = `${year}-01-01`;
+  const to = `${year + 1}-01-01`;
+
+  // A tutor's rundown covers the lessons they taught and the money they were
+  // paid; an admin's covers the institute.
+  const sessionScope = admin ? '' : 'AND s.tutor_user_id = ?';
+  const sessionValues = admin ? [] : [viewer.id];
+
+  const [sessionResult, paymentResult] = await db.batch<Record<string, unknown>>([
+    db
+      .prepare(
+        `SELECT substr(s.occurred_on, 1, 7) AS month,
+                COUNT(*) AS session_count,
+                COALESCE(SUM(s.duration_minutes), 0) AS minutes,
+                COALESCE(SUM(s.charge_amount_cents), 0) AS billed_cents,
+                COALESCE(SUM(s.tutor_amount_cents), 0) AS earned_cents
+         FROM sessions s
+         WHERE s.occurred_on >= ? AND s.occurred_on < ? ${sessionScope}
+         GROUP BY month`,
+      )
+      .bind(from, to, ...sessionValues),
+    db
+      .prepare(
+        `SELECT substr(p.paid_at, 1, 7) AS month,
+                COALESCE(SUM(CASE WHEN p.direction = 'from_parent' THEN p.amount_cents END), 0)
+                  AS received_from_families_cents,
+                COALESCE(SUM(CASE WHEN p.direction = 'to_tutor' ${admin ? '' : 'AND p.party_user_id = ?'}
+                             THEN p.amount_cents END), 0) AS paid_to_tutors_cents
+         FROM payments p
+         WHERE p.paid_at >= ? AND p.paid_at < ?
+         GROUP BY month`,
+      )
+      .bind(...(admin ? [] : [viewer.id]), from, to),
+  ]);
+
+  const sessions = new Map<string, Record<string, unknown>>();
+  for (const row of sessionResult?.results ?? []) sessions.set(String(row.month), row);
+
+  const payments = new Map<string, Record<string, unknown>>();
+  for (const row of paymentResult?.results ?? []) payments.set(String(row.month), row);
+
+  // Every month of the year, not just the ones with activity: a gap in the
+  // table is itself the answer to "what happened in August".
+  const months: MonthlyFinanceRow[] = Array.from({ length: 12 }, (_, index) => {
+    const month = `${year}-${String(index + 1).padStart(2, '0')}`;
+    const taught = sessions.get(month);
+    const moved = payments.get(month);
+
+    return {
+      month,
+      session_count: Number(taught?.session_count ?? 0),
+      minutes: Number(taught?.minutes ?? 0),
+      billed_cents: admin ? Number(taught?.billed_cents ?? 0) : null,
+      received_from_families_cents: admin
+        ? Number(moved?.received_from_families_cents ?? 0)
+        : null,
+      earned_cents: Number(taught?.earned_cents ?? 0),
+      paid_to_tutors_cents: Number(moved?.paid_to_tutors_cents ?? 0),
+    };
+  });
+
+  return { year, scope: admin ? 'institute' : 'tutor', months };
 }

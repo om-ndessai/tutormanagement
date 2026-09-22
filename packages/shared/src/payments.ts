@@ -81,6 +81,10 @@ export const paymentUpdateSchema = z
 
 export type PaymentUpdatePayload = z.output<typeof paymentUpdateSchema>;
 
+export const monthlyFinanceQuerySchema = z.object({
+  year: z.coerce.number().int().min(2000).max(2100),
+});
+
 export const listPaymentsQuerySchema = z.object({
   direction: z.enum(PAYMENT_DIRECTIONS).optional(),
   party_user_id: z.uuid().optional(),
@@ -184,4 +188,61 @@ export interface BalancesResponse {
      */
     topups_due_cents: number | null;
   };
+}
+
+// ---------------------------------------------------------------------------
+// The monthly rundown
+// ---------------------------------------------------------------------------
+
+/**
+ * One month of the financial year.
+ *
+ * The family side is present only for an admin: a tutor may never see what a
+ * family was billed, which is the same rule scopeSessionMoney applies row by
+ * row. Their own figures are always here, so a tutor's rundown is their
+ * teaching and their pay and nothing about anybody's margin.
+ */
+export interface MonthlyFinanceRow {
+  /** YYYY-MM. */
+  month: string;
+  session_count: number;
+  /** Time taught, in minutes, so the UI can round as it likes. */
+  minutes: number;
+  /** What families were billed for lessons taught that month. Admin only. */
+  billed_cents: number | null;
+  /** Money that came IN from families that month. Admin only. */
+  received_from_families_cents: number | null;
+  /** What tutors earned teaching that month -- for a tutor, their own. */
+  earned_cents: number;
+  /** Money that went OUT to tutors that month -- for a tutor, their own. */
+  paid_to_tutors_cents: number;
+}
+
+export interface MonthlyFinanceResponse {
+  year: number;
+  /** 'institute' for an admin, 'tutor' for their own figures. */
+  scope: 'institute' | 'tutor';
+  months: MonthlyFinanceRow[];
+}
+
+/**
+ * What the institute kept on the lessons taught that month: billed minus what
+ * the tutors earned for them.
+ *
+ * Both figures are about the same lessons, so this is the margin earned in the
+ * month rather than the cash that moved -- the two differ whenever a family
+ * pays late, which is most of the time. Null for anyone not entitled to the
+ * billed side.
+ */
+export function monthlyNetCents(row: MonthlyFinanceRow): number | null {
+  return row.billed_cents === null ? null : row.billed_cents - row.earned_cents;
+}
+
+/** "Mar" for 2026-03, on the reader's own clock-free calendar. */
+export function formatMonthShort(month: string): string {
+  const index = Number(month.slice(5, 7)) - 1;
+  return [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ][index] ?? month;
 }

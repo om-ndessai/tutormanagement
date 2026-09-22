@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   ActivityIcon,
   BookOpenIcon,
+  GraduationCapIcon,
   PiggyBankIcon,
   RadioIcon,
   TargetIcon,
@@ -29,7 +31,11 @@ import { ActivityFeed } from '@/features/audit/activity-feed';
 import { ROLE_ICONS } from '@/features/users/role-icon';
 import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
+import { MonthlyFinance } from './monthly-finance';
+import { YearEndPanel } from './year-end-panel';
+import { useMonthlyFinance, useTaxStatus } from './api';
 import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
@@ -143,116 +149,191 @@ function BalanceRow({
 // Admin
 // ---------------------------------------------------------------------------
 
-export function AdminView({ data }: { data: AdminDashboard }) {
+/**
+ * The dashboard's two halves.
+ *
+ * The application really is two things -- money, and how the teaching is
+ * going -- and one scrolling column of cards made the reader find that out
+ * for themselves. Splitting them lets each half be dense without either
+ * crowding the other, and the tab lives in the URL so a link to the finance
+ * view stays the finance view.
+ */
+function DashboardTabs({
+  finance,
+  tutoring,
+}: {
+  finance: ReactNode;
+  tutoring: ReactNode;
+}) {
+  const [params, setParams] = useSearchParams();
+  const tab = params.get('tab') === 'finance' ? 'finance' : 'tutoring';
+
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard index={0} label="Students" value={data.counts.students} icon={ROLE_ICONS.student} to="/users?role=student" />
-        <StatCard index={1} label="Tutors" value={data.counts.tutors} icon={ROLE_ICONS.tutor} to="/users?role=tutor" />
-        <StatCard index={2} label="Parents" value={data.counts.parents} icon={ROLE_ICONS.parent} to="/users?role=parent" />
-        <StatCard index={3} label="Admins" value={data.counts.admins} icon={ROLE_ICONS.admin} to="/users?role=admin" />
-      </div>
+    <Tabs
+      value={tab}
+      onValueChange={(value) =>
+        setParams(
+          (current) => {
+            const next = new URLSearchParams(current);
+            next.set('tab', value);
+            return next;
+          },
+          { replace: true },
+        )
+      }
+    >
+      <TabsList className="mb-4">
+        <TabsTrigger value="tutoring">
+          <GraduationCapIcon className="size-4" />
+          Tutoring
+        </TabsTrigger>
+        <TabsTrigger value="finance">
+          <WalletIcon className="size-4" />
+          Finance
+        </TabsTrigger>
+      </TabsList>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <StatCard
-          index={4}
-          label="Owed to tutors"
-          value={data.totals.owed_to_tutors_cents}
-          money
-          icon={WalletMinusIcon}
-          tone="warning"
-          to="/billing"
-        />
-        <StatCard
-          index={5}
-          label="Owed by families"
-          value={data.totals.owed_by_families_cents}
-          money
-          icon={WalletPlusIcon}
-          tone="brand"
-          to="/billing"
-        />
-        <StatCard
-          index={6}
-          label="Billed all time"
-          value={data.totals.billed_all_time_cents}
-          money
-          icon={BookOpenIcon}
-          hint={`${data.totals.session_count} sessions`}
-          to="/sessions"
-        />
-        <StatCard
-          index={7}
-          label="Kept by the institute"
-          value={data.totals.margin_all_time_cents}
-          money
-          icon={PiggyBankIcon}
-          tone="success"
-          hint={`Paid out ${formatCents(data.totals.tutor_cost_all_time_cents)}`}
-          to="/sessions"
-        />
-        <StatCard
-          index={8}
-          label="Sessions running"
-          value={data.counts.live_sessions}
-          icon={RadioIcon}
-          tone={data.counts.live_sessions > 0 ? 'success' : 'default'}
-          hint={data.counts.live_sessions > 0 ? 'Being taught right now' : 'None in progress'}
-        />
-      </div>
+      <TabsContent value="tutoring" className="space-y-4">
+        {tutoring}
+      </TabsContent>
+      <TabsContent value="finance" className="space-y-4">
+        {finance}
+      </TabsContent>
+    </Tabs>
+  );
+}
 
-      <SsnPanel tutors={data.tutors_missing_ssn} />
+export function AdminView({ data }: { data: AdminDashboard }) {
+  const year = new Date().getFullYear();
+  const monthly = useMonthlyFinance(year);
+  const taxStatus = useTaxStatus(year);
 
-      <TopupPanel tutors={data.tutor_balances} />
+  return (
+    <DashboardTabs
+      tutoring={
+        <>
+          <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <StatCard index={0} label="Students" value={data.counts.students} icon={ROLE_ICONS.student} to="/users?role=student" />
+            <StatCard index={1} label="Tutors" value={data.counts.tutors} icon={ROLE_ICONS.tutor} to="/users?role=tutor" />
+            <StatCard index={2} label="Parents" value={data.counts.parents} icon={ROLE_ICONS.parent} to="/users?role=parent" />
+            <StatCard index={3} label="Admins" value={data.counts.admins} icon={ROLE_ICONS.admin} to="/users?role=admin" />
+            <StatCard
+              index={4}
+              label="Sessions running"
+              value={data.counts.live_sessions}
+              icon={RadioIcon}
+              tone={data.counts.live_sessions > 0 ? 'success' : 'default'}
+              hint={data.counts.live_sessions > 0 ? 'Being taught right now' : 'None in progress'}
+            />
+          </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Panel index={8} title="Tutors awaiting payment" action={{ label: 'Billing', to: '/billing' }}>
-          {data.tutor_balances.length === 0 ? (
-            <EmptyNote>No tutors yet.</EmptyNote>
-          ) : (
-            <ul className="divide-border divide-y">
-              {data.tutor_balances.slice(0, 5).map((tutor) => (
-                <BalanceRow
-                  key={tutor.user_id}
-                  name={tutor.full_name}
-                  detail={`${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned`}
-                  balance={tutor.balance_cents}
-                  to={`/dashboard?as=${tutor.user_id}&role=tutor`}
-                />
-              ))}
-            </ul>
-          )}
-        </Panel>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Panel index={5} title="Latest sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+              <SessionList sessions={data.recent_sessions} showTutor />
+            </Panel>
 
-        <Panel index={9} title="Families with a balance" action={{ label: 'Billing', to: '/billing' }}>
-          {data.student_balances.length === 0 ? (
-            <EmptyNote>No students yet.</EmptyNote>
-          ) : (
-            <ul className="divide-border divide-y">
-              {data.student_balances.slice(0, 5).map((student) => (
-                <BalanceRow
-                  key={student.student_user_id}
-                  name={student.student_name}
-                  detail={student.guardians.map((g) => g.full_name).join(', ') || 'No guardian'}
-                  balance={student.balance_cents}
-                  to={`/dashboard?as=${student.student_user_id}&role=student`}
-                />
-              ))}
-            </ul>
-          )}
-        </Panel>
-      </div>
+            <Panel index={6} title="Recent activity" action={{ label: 'Full log', to: '/activity' }}>
+              <ActivityFeed events={data.recent_activity} />
+            </Panel>
+          </div>
+        </>
+      }
+      finance={
+        <>
+          <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              index={0}
+              label="Owed to tutors"
+              value={data.totals.owed_to_tutors_cents}
+              money
+              icon={WalletMinusIcon}
+              tone="warning"
+              to="/billing"
+            />
+            <StatCard
+              index={1}
+              label="Owed by families"
+              value={data.totals.owed_by_families_cents}
+              money
+              icon={WalletPlusIcon}
+              tone="brand"
+              to="/billing"
+            />
+            <StatCard
+              index={2}
+              label="Billed all time"
+              value={data.totals.billed_all_time_cents}
+              money
+              icon={BookOpenIcon}
+              hint={`${data.totals.session_count} sessions`}
+              to="/sessions"
+            />
+            <StatCard
+              index={3}
+              label="Kept by the institute"
+              value={data.totals.margin_all_time_cents}
+              money
+              icon={PiggyBankIcon}
+              tone="success"
+              hint={`Paid out ${formatCents(data.totals.tutor_cost_all_time_cents)}`}
+              to="/sessions"
+            />
+          </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Panel index={10} title="Latest sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-          <SessionList sessions={data.recent_sessions} showTutor />
-        </Panel>
+          <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={4} />
 
-        <Panel index={11} title="Recent activity" action={{ label: 'Full log', to: '/activity' }}>
-          <ActivityFeed events={data.recent_activity} />
-        </Panel>
-      </div>
-    </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <YearEndPanel
+              tutors={taxStatus.data?.data ?? []}
+              year={year}
+              isLoading={taxStatus.isPending}
+              index={5}
+            />
+            <SsnPanel tutors={data.tutors_missing_ssn} />
+          </div>
+
+          <TopupPanel tutors={data.tutor_balances} />
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Panel index={8} title="Tutors awaiting payment" action={{ label: 'Billing', to: '/billing' }}>
+              {data.tutor_balances.length === 0 ? (
+                <EmptyNote>No tutors yet.</EmptyNote>
+              ) : (
+                <ul className="divide-border divide-y">
+                  {data.tutor_balances.slice(0, 5).map((tutor) => (
+                    <BalanceRow
+                      key={tutor.user_id}
+                      name={tutor.full_name}
+                      detail={`${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned`}
+                      balance={tutor.balance_cents}
+                      to={`/dashboard?as=${tutor.user_id}&role=tutor`}
+                    />
+                  ))}
+                </ul>
+              )}
+            </Panel>
+
+            <Panel index={9} title="Families with a balance" action={{ label: 'Billing', to: '/billing' }}>
+              {data.student_balances.length === 0 ? (
+                <EmptyNote>No students yet.</EmptyNote>
+              ) : (
+                <ul className="divide-border divide-y">
+                  {data.student_balances.slice(0, 5).map((student) => (
+                    <BalanceRow
+                      key={student.student_user_id}
+                      name={student.student_name}
+                      detail={student.guardians.map((g) => g.full_name).join(', ') || 'No guardian'}
+                      balance={student.balance_cents}
+                      to={`/dashboard?as=${student.student_user_id}&role=student`}
+                    />
+                  ))}
+                </ul>
+              )}
+            </Panel>
+          </div>
+        </>
+      }
+    />
   );
 }
 
@@ -354,110 +435,143 @@ function TopupPanel({ tutors }: { tutors: TutorBalance[] }) {
 export function TutorView({ data }: { data: TutorDashboard }) {
   // Only shown to a tutor the institute actually pays in advance.
   const advance = data.earnings.topup_amount_cents == null ? null : data.earnings;
+  const year = new Date().getFullYear();
+  const monthly = useMonthlyFinance(year);
 
   return (
-    <div className="space-y-6">
-      <div
-        className={cn('grid gap-4 sm:grid-cols-2', advance ? 'lg:grid-cols-5' : 'lg:grid-cols-4')}
-      >
-        <StatCard index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
-        <StatCard index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
-        <StatCard index={2} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
-        <StatCard
-          index={3}
-          label="Owed to you"
-          // A tutor on an advance is usually in credit, and "owed to you
-          // -$167.50" is not a thing anybody is owed: what it means is that
-          // they hold money they have not worked off, which the next card
-          // says properly. Nothing is outstanding, so the figure is zero.
-          value={advance ? Math.max(0, data.earnings.balance_cents) : data.earnings.balance_cents}
-          money
-          icon={WalletPlusIcon}
-          tone={data.earnings.balance_cents > 0 ? 'warning' : 'default'}
-          hint={
-            advance && data.earnings.balance_cents <= 0
-              ? `Paid up front — ${formatCents(data.earnings.paid_cents)} so far`
-              : `${formatCents(data.earnings.paid_cents)} paid so far`
-          }
-          to="/billing"
-        />
-        {advance && (
-          <StatCard
-            index={4}
-            label="Advance held"
-            value={tutorAdvanceCents(advance)}
-            money
-            icon={PiggyBankIcon}
-            tone={needsTopup(advance) ? 'warning' : 'success'}
-            hint={
-              needsTopup(advance)
-                ? `Below your ${formatCents(advance.topup_amount_cents ?? 0)} level — a top-up is due`
-                : `Topped up when it falls below ${formatCents(advance.topup_amount_cents ?? 0)}`
-            }
-            to="/billing"
-          />
-        )}
-      </div>
-
-      {!data.ssn_received_on && (
-        <Panel index={3} title="Action needed: your SSN">
-          <p className="text-sm">
-            The institute does not have your Social Security number, and needs it to issue your
-            tax document at the end of the year.
-          </p>
-          <p className="text-muted-foreground mt-2 text-sm">
-            Give it to the office directly — in person, or however you normally reach them.{' '}
-            <span className="font-medium">Never send it through this portal</span>, which does
-            not store it and has nowhere to put it. They will mark it received once they have it.
-          </p>
-        </Panel>
-      )}
-
-      <Panel index={4} title="Your students" action={{ label: 'Pairings', to: '/assignments' }}>
-        {data.students.length === 0 ? (
-          <EmptyNote>No students assigned to you yet.</EmptyNote>
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {data.students.map((student, position) => (
-              <div
-                key={student.user_id}
-                className={cn('rounded-lg border p-3 transition-colors hover:border-primary/40', ENTER)}
-                style={stagger(position + 5)}
-              >
-                <p className="font-medium">{student.full_name}</p>
-                <p className="text-muted-foreground mt-0.5 text-xs">
-                  {student.current_math_course ?? 'No course recorded'}
-                  {student.school ? ` · ${student.school}` : ''}
-                </p>
-                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                  <Badge variant="secondary">{student.session_count} sessions</Badge>
-                  <span className="text-muted-foreground">
-                    {formatCents(student.earned_cents)} earned
-                  </span>
-                  {student.last_session_on && (
-                    <span className="text-muted-foreground">last {student.last_session_on}</span>
-                  )}
-                </div>
-              </div>
-            ))}
+    <DashboardTabs
+      tutoring={
+        <>
+          <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
+            <StatCard index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
+            <StatCard index={2} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
+            <StatCard
+              index={3}
+              label="Students taught this month"
+              value={new Set(data.recent_sessions.map((session) => session.student_user_id)).size}
+              icon={ROLE_ICONS.tutor}
+              hint="From your latest sessions"
+              to="/sessions"
+            />
           </div>
-        )}
-      </Panel>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Panel index={12} title="Your recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-          <SessionList sessions={data.recent_sessions} />
-        </Panel>
+          <Panel index={4} title="Your students" action={{ label: 'Pairings', to: '/assignments' }}>
+            {data.students.length === 0 ? (
+              <EmptyNote>No students assigned to you yet.</EmptyNote>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {data.students.map((student, position) => (
+                  <div
+                    key={student.user_id}
+                    className={cn('rounded-lg border p-3 transition-colors hover:border-primary/40', ENTER)}
+                    style={stagger(position + 5)}
+                  >
+                    <p className="font-medium">{student.full_name}</p>
+                    <p className="text-muted-foreground mt-0.5 text-xs">
+                      {student.current_math_course ?? 'No course recorded'}
+                      {student.school ? ` · ${student.school}` : ''}
+                    </p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                      <Badge variant="secondary">{student.session_count} sessions</Badge>
+                      <span className="text-muted-foreground">
+                        {formatCents(student.earned_cents)} earned
+                      </span>
+                      {student.last_session_on && (
+                        <span className="text-muted-foreground">last {student.last_session_on}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Panel>
 
-        <Panel index={13} title="Payments to you" action={{ label: 'Billing', to: '/billing' }}>
-          <PaymentList payments={data.recent_payments} />
-        </Panel>
-      </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Panel index={12} title="Your recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+              <SessionList sessions={data.recent_sessions} />
+            </Panel>
 
-      <Panel index={14} title="Your activity" action={{ label: 'Full log', to: '/activity' }}>
-        <ActivityFeed events={data.recent_activity} showActor={false} />
-      </Panel>
-    </div>
+            <Panel index={13} title="Your activity" action={{ label: 'Full log', to: '/activity' }}>
+              <ActivityFeed events={data.recent_activity} showActor={false} />
+            </Panel>
+          </div>
+        </>
+      }
+      finance={
+        <>
+          {/* The tax notice leads the finance tab, because it is the one thing
+              here the tutor has to act on rather than read. */}
+          {!data.ssn_received_on && (
+            <Panel index={0} title="Action needed: your SSN">
+              <p className="text-sm">
+                The institute does not have your Social Security number, and needs it to issue
+                your tax document at the end of the year.
+              </p>
+              <p className="text-muted-foreground mt-2 text-sm">
+                Give it to the office directly — in person, or however you normally reach them.{' '}
+                <span className="font-medium">Never send it through this portal</span>, which
+                does not store it and has nowhere to put it. They will mark it received once
+                they have it.
+              </p>
+            </Panel>
+          )}
+
+          <div
+            className={cn(
+              'grid items-start gap-3 sm:grid-cols-2',
+              advance ? 'lg:grid-cols-4' : 'lg:grid-cols-3',
+            )}
+          >
+            <StatCard index={1} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
+            <StatCard
+              index={2}
+              label="Paid to you"
+              value={data.earnings.paid_cents}
+              money
+              icon={WalletMinusIcon}
+              to="/billing"
+            />
+            <StatCard
+              index={3}
+              label="Owed to you"
+              // A tutor on an advance is usually in credit, and "owed to you
+              // -$167.50" is not a thing anybody is owed: what it means is
+              // that they hold money they have not worked off, which the next
+              // card says properly.
+              value={advance ? Math.max(0, data.earnings.balance_cents) : data.earnings.balance_cents}
+              money
+              icon={WalletPlusIcon}
+              tone={data.earnings.balance_cents > 0 ? 'warning' : 'default'}
+              hint={advance && data.earnings.balance_cents <= 0 ? 'Paid up front' : undefined}
+              to="/billing"
+            />
+            {advance && (
+              <StatCard
+                index={4}
+                label="Advance held"
+                value={tutorAdvanceCents(advance)}
+                money
+                icon={PiggyBankIcon}
+                tone={needsTopup(advance) ? 'warning' : 'success'}
+                hint={
+                  needsTopup(advance)
+                    ? `Below your ${formatCents(advance.topup_amount_cents ?? 0)} level — a top-up is due`
+                    : `Topped up below ${formatCents(advance.topup_amount_cents ?? 0)}`
+                }
+                to="/billing"
+              />
+            )}
+          </div>
+
+          <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={5} />
+
+          <Panel index={6} title="Payments to you" action={{ label: 'Billing', to: '/billing' }}>
+            <PaymentList payments={data.recent_payments} />
+          </Panel>
+        </>
+      }
+    />
   );
 }
 

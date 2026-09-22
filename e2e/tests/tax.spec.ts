@@ -92,12 +92,13 @@ test.describe('tax documents', () => {
     await admin.request.post(`/api/users/${tutorId}/ssn-receipt`, { data: { received: false } });
 
     // The tutor's own dashboard asks them to hand it over, and says how not to.
-    await tutor.goto('/');
+    // It leads the finance tab, which is where their tax affairs live.
+    await tutor.goto('/?tab=finance');
     await expect(tutor.getByText('Action needed: your SSN')).toBeVisible();
     await expect(tutor.getByText(/Never send it through this portal/)).toBeVisible();
 
-    // The admin's lists them as work to chase.
-    await admin.goto('/');
+    // The admin's lists them as work to chase, beside the year-end documents.
+    await admin.goto('/?tab=finance');
     await expect(admin.getByText(/SSN not on file/)).toBeVisible();
   });
 

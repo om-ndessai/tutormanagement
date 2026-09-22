@@ -122,8 +122,22 @@ always the live, re-checked user.
 an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
 identity, and it is the whole security boundary of sign-in.
 
+**The dashboard is two tabs: Tutoring and Finance.** `DashboardTabs` in
+`features/dashboard/role-dashboards.tsx` holds both halves and keeps the choice in `?tab=`, so a
+link to the finance view opens the finance view. Money belongs on Finance, teaching on
+Tutoring — put a new panel where its subject lives rather than at the bottom of whichever
+renders first.
+
+**Dashboard cards are deliberately tight.** The vendored `Card` carries `py-6` of its own, so
+`StatCard` and `Panel` pass `py-0` and supply their own padding — dropping that is how a card
+silently grows by 48px. Stat grids use `items-start`: a grid row sizes every card to the
+tallest, so one card with a hint line lifts empty space into all the others.
+
 **No Social Security number is ever stored, anywhere.** `tutor_profiles.ssn_received_on` is a
-DATE recording that the office holds one — never the number. `containsSsn` in
+DATE recording that the office holds one — never the number. The one place a number is typed is the 1099 dialog, and it is
+written into a printable window in the BROWSER — never sent to the server, so there is no
+request body, no log line and no row that could carry it. Keep it that way: the moment the
+document is generated server-side, the number is in a Worker log. `containsSsn` in
 `packages/shared/src/tax.ts` rejects SSN-shaped text from every free-text field, which is why
 the guard sits inside `optionalText` rather than on individual fields: a new note or comment
 field inherits it. Never add a column, form field or API parameter that could carry the number,
