@@ -42,7 +42,7 @@ const TARGET_ICONS: Record<CommentTargetType, typeof UserIcon> = {
 const FILTER_LABELS: Record<CommentTargetType, string> = {
   user: 'People',
   session: 'Sessions',
-  assignment: 'Assignments',
+  assignment: 'Tutor pairings',
   scheduled_session: 'Schedule',
 };
 

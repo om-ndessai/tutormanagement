@@ -64,7 +64,7 @@
 		// Chicken-and-egg escape hatch: while the users table contains no admin,
 		// these comma-separated Google accounts may sign in and are created as
 		// admins. Ignored the moment one admin exists.
-		"BOOTSTRAP_ADMIN_EMAILS": "ved.ndessai@gmail.com"
+		"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com"
 	},
 	"observability": {
 		"enabled": true

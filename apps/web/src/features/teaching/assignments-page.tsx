@@ -40,7 +40,7 @@ function AssignmentComments({ assignment }: { assignment: Assignment }) {
   return (
     <CommentsButton
       target={{ target_type: 'assignment', target_id: assignment.id }}
-      title={`${assignment.student_name}’s assignment`}
+      title={`${assignment.student_name}’s pairing`}
       description={`${assignment.student_name} is taught by ${assignment.tutor_name}.`}
     />
   );
@@ -85,7 +85,7 @@ export function AssignmentsPage() {
       toast.success(`${removing.student_name} removed from ${removing.tutor_name}.`);
     } catch (error) {
       toast.error(
-        error instanceof ApiRequestError ? error.message : 'Could not remove the assignment.',
+        error instanceof ApiRequestError ? error.message : 'Could not remove the pairing.',
       );
     } finally {
       setRemoving(null);
@@ -95,7 +95,7 @@ export function AssignmentsPage() {
   return (
     <div className="mx-auto max-w-5xl">
       <PageHeader
-        title="Assignments"
+        title="Tutor pairings"
         description={description}
         actions={
           isAdmin ? (

@@ -136,7 +136,7 @@ export function AssignmentDialog({
     try {
       if (isEdit) {
         await update.mutateAsync({ id: existing.id, input: rates as never });
-        toast.success('Assignment updated.');
+        toast.success('Pairing updated.');
       } else {
         await create.mutateAsync({
           tutor_user_id: tutorId,
@@ -153,7 +153,7 @@ export function AssignmentDialog({
         toast.error(error.message);
         return;
       }
-      toast.error('Could not save the assignment.');
+      toast.error('Could not save the pairing.');
     }
   }
 
@@ -162,7 +162,7 @@ export function AssignmentDialog({
       <DialogContent className="sm:max-w-lg">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
-            <DialogTitle>{isEdit ? 'Edit assignment' : 'Assign a student'}</DialogTitle>
+            <DialogTitle>{isEdit ? 'Edit pairing' : 'Pair a tutor with a student'}</DialogTitle>
             <DialogDescription>
               {isEdit
                 ? `${existing.tutor_name} teaches ${existing.student_name}.`
