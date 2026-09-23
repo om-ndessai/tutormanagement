@@ -81,6 +81,25 @@
   --sidebar-accent-foreground: var(--brand-800);
   --sidebar-border: oklch(0.9 0.016 324);
   --sidebar-ring: var(--brand-600);
+
+  /*
+   * The 1-5 progress scale (Phase 16). Ordinal, so one hue stepping light to
+   * dark: a 1 is faint, a 5 is the full brand colour. Dark mode flips the
+   * anchor so a 5 is still the most prominent step on a dark surface.
+   * --rating-*-ink is the text colour that clears contrast on each step.
+   */
+  --rating-1: var(--brand-100);
+  --rating-2: var(--brand-200);
+  --rating-3: var(--brand-400);
+  --rating-4: var(--brand-600);
+  --rating-5: var(--brand-800);
+  --rating-light-ink: var(--brand-950);
+  --rating-dark-ink: oklch(0.985 0.004 324);
+  --rating-1-ink: var(--rating-light-ink);
+  --rating-2-ink: var(--rating-light-ink);
+  --rating-3-ink: var(--rating-light-ink);
+  --rating-4-ink: var(--rating-dark-ink);
+  --rating-5-ink: var(--rating-dark-ink);
 }
 
 .dark {
@@ -127,6 +146,17 @@
   --sidebar-accent-foreground: oklch(0.96 0.01 324);
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: oklch(0.62 0.1 324);
+
+  --rating-1: var(--brand-950);
+  --rating-2: var(--brand-800);
+  --rating-3: var(--brand-600);
+  --rating-4: var(--brand-400);
+  --rating-5: var(--brand-200);
+  --rating-1-ink: var(--rating-dark-ink);
+  --rating-2-ink: var(--rating-dark-ink);
+  --rating-3-ink: var(--rating-dark-ink);
+  --rating-4-ink: var(--rating-light-ink);
+  --rating-5-ink: var(--rating-light-ink);
 }
 
 /*

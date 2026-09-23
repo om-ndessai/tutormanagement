@@ -36,6 +36,9 @@ function useTeachingInvalidation() {
     void queryClient.invalidateQueries({ queryKey: ['balances'] });
     // A lesson changes its month's sessions, hours, billed and earned.
     void queryClient.invalidateQueries({ queryKey: ['finance'] });
+    // A scored lesson moves the student's progress and every chart of it.
+    void queryClient.invalidateQueries({ queryKey: ['progress'] });
+    void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }

@@ -274,6 +274,67 @@ of the tutor teaching them, and what the office advances that tutor is no busine
 `scopeTutorTopup` blanks it, the same way `scopeStudentCharges` blanks a family's price. The
 institute-wide "top-ups due" total is admin-only for the same reason.
 
+### Progress tracking: curriculum, assessments, plans
+
+Phase 16. The institute teaches from one ladder -- Beast Academy levels 1-5, then the Art of
+Problem Solving books -- and every student is measured against it three times over: where they
+started (an **assessment**), where they are going (a **learning plan**), and how each lesson
+moved them (**session progress**).
+
+```
+curriculum_levels ─┬─ curriculum_topics ──┬── assessment_topic_ratings ── assessments ───┐
+                   │                      ├── learning_plan_topics ────── learning_plans ─┤── users (student)
+                   │                      └── session_topic_ratings ───── sessions ───────┘
+                   └── recommended / target level     session_progress (1:1 with sessions)
+```
+
+**Naming convention.** Level and topic ids are the codes the office speaks in, not UUIDs:
+
+| Code | Level | Topics |
+| --- | --- | --- |
+| `BA1` … `BA5` | Beast Academy Level 1 … 5 | 12 each: guide books A-D × 3 chapters, numbered straight through (`BA3.01`-`03` are 3A, `BA3.10`-`12` are 3D) |
+| `PRE` | AoPS Prealgebra | 15, one per chapter |
+| `ALG` | AoPS Introduction to Algebra | 22, one per chapter |
+| `GEO` | AoPS Introduction to Geometry | 19, one per chapter |
+
+A topic is `<level>.<nn>`, so "topic 10 from level 3" is `BA3.10` and nothing else. The chapter
+lists were taken from beastacademy.com and the AoPS tables of contents (current editions). The
+catalog is reference data, inserted by an idempotent upsert block at the end of `schema.sql`;
+topics are never deleted, because every rating references one without a cascade.
+
+**One rating scale, 1-5, everywhere.** 1 means the student performs poorly or needs help, 5 that
+they have it cold (`TOPIC_RATING_LABELS`). The assessment, each lesson's topic scores and the
+lesson's step towards the goal (`GOAL_RATING_LABELS`, 1 = no progress … 5 = a big step) all use
+it, which is what lets a lesson's 4 be read against the assessment's 1 on the same topic. An
+unrated topic has no row: silence is not a 1.
+
+**Assessments** keep the long-form write-up, what the student was enrolled in at the time, the
+recommended level, and any topic scores. A reassessment is a new row, so the starting point is
+never overwritten.
+
+**Learning plans** hold the goal, the goal timeline (`starts_on` → `target_on`), the recommended
+cadence (`sessions_per_week` × `session_minutes`), the prose recommendation, and the topics to
+cover in teaching order -- which may reach into a lower level. A partial unique index allows
+**one active plan per student**, so "the plan" a lesson is scored against is never ambiguous;
+finished plans stay as `achieved` or `closed` history. Distinct from
+`student_profiles.academic_year_goal`, the family's one-line ambition.
+
+**Session progress** sits beside `sessions` rather than in it: the session is the billing
+record, and how a lesson moved the goal is an optional teaching judgement. `session_progress`
+freezes the plan that was active when the lesson was first scored, so a later plan never
+re-files old lessons.
+
+**Progress is derived, never stored** (`computeProgress` in `packages/shared/src/progress.ts`,
+used by both the API and the dashboards). A plan topic counts as mastered when its *latest*
+score reaches 4; the share mastered is compared with a straight pace line from 0% at the start
+to 100% at the goal date, and a student within ten points of it is on track.
+
+**Who may see it.** Admins; the student; their guardians; and every tutor *currently* assigned
+to them (`studentScopeSql`) -- wider than a lesson's own audience, because a plan is shared work
+and a tutor taking over needs to know where the last one left off. Only admins write
+assessments and plans ("the owner assesses the student"); tutors score progress through the
+lessons they record. None of it carries money.
+
 ### `admin_profiles`
 
 Role data for an admin, which today is one field: `tin`, the taxpayer identification number the

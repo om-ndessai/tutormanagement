@@ -11,7 +11,9 @@ import {
   parseClockTime,
   resolveRateCents,
   roundToQuarterHour,
+  GOAL_RATING_LABELS,
   type Assignment,
+  type Rating,
   type SessionMode,
   type TutoringSession,
 } from '@tmi/shared';
@@ -37,6 +39,8 @@ import {
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
+import { useStudentProgress, useTopicIndex } from '@/features/progress/api';
+import { RatingPicker, TopicName } from '@/features/progress/rating';
 import { useAssignments, useRecordSession, useUpdateSession } from './api';
 
 /** Common lesson lengths, offered as one tap rather than clock arithmetic. */
@@ -83,6 +87,8 @@ export function SessionFormDialog({
   const [endedAt, setEndedAt] = useState('17:00');
   const [mode, setMode] = useState<SessionMode>('in_person');
   const [notes, setNotes] = useState('');
+  const [goalRating, setGoalRating] = useState<Rating | null>(null);
+  const [topicRatings, setTopicRatings] = useState(new Map<string, Rating>());
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // A tutor only ever sees their own pairings; an admin sees all of them.
@@ -111,6 +117,10 @@ export function SessionFormDialog({
       setEndedAt(existing.ended_at);
       setMode(existing.mode);
       setNotes(existing.notes ?? '');
+      setGoalRating(existing.progress?.goal_rating ?? null);
+      setTopicRatings(
+        new Map((existing.progress?.topic_ratings ?? []).map((row) => [row.topic_id, row.rating])),
+      );
     } else {
       setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
       setOccurredOn(todayIso());
@@ -118,6 +128,8 @@ export function SessionFormDialog({
       setEndedAt('17:00');
       setMode('in_person');
       setNotes('');
+      setGoalRating(null);
+      setTopicRatings(new Map());
     }
     // `assignments` is intentionally excluded: repopulating mid-edit would
     // stomp on what the user has typed when the query refetches.
@@ -125,6 +137,20 @@ export function SessionFormDialog({
   }, [open, existing]);
 
   const assignment: Assignment | undefined = assignments.find((a) => a.id === assignmentId);
+  const studentId = existing?.student_user_id ?? assignment?.student_user_id;
+
+  /**
+   * Only sent when there is something to say: a lesson scored for the first
+   * time, or an existing score being changed or cleared. Otherwise the
+   * lesson is recorded with no progress row at all.
+   */
+  const progressBody =
+    goalRating !== null || topicRatings.size > 0 || existing?.progress
+      ? {
+          goal_rating: goalRating,
+          topic_ratings: [...topicRatings].map(([topic_id, rating]) => ({ topic_id, rating })),
+        }
+      : undefined;
 
   /** The live preview: elapsed -> billed quarter hours -> money. */
   const preview = useMemo(() => {
@@ -176,6 +202,7 @@ export function SessionFormDialog({
             ended_at: endedAt,
             mode,
             notes: notes.trim() || null,
+            ...(progressBody ? { progress: progressBody } : {}),
           } as never,
         });
         toast.success('Session updated.');
@@ -188,6 +215,7 @@ export function SessionFormDialog({
           ended_at: endedAt,
           mode,
           notes: notes.trim() || null,
+          ...(progressBody ? { progress: progressBody } : {}),
         } as never);
         toast.success('Session recorded.');
       }
@@ -357,6 +385,17 @@ export function SessionFormDialog({
                 {errors.mode}
               </p>
             )}
+
+            {studentId && (
+              <ProgressSection
+                studentId={studentId}
+                goalRating={goalRating}
+                onGoalRating={setGoalRating}
+                topicRatings={topicRatings}
+                onTopicRatings={setTopicRatings}
+                error={errors['progress.topic_ratings']}
+              />
+            )}
           </div>
 
           <DialogFooter>
@@ -423,5 +462,108 @@ function SessionPreview({
         </p>
       )}
     </div>
+  );
+}
+
+/**
+ * How the lesson went against the student's learning plan: one score for the
+ * step it took towards the goal, and one per plan topic worked on. Every
+ * score is optional -- rate what was covered and leave the rest.
+ */
+function ProgressSection({
+  studentId,
+  goalRating,
+  onGoalRating,
+  topicRatings,
+  onTopicRatings,
+  error,
+}: {
+  studentId: string;
+  goalRating: Rating | null;
+  onGoalRating: (value: Rating | null) => void;
+  topicRatings: Map<string, Rating>;
+  onTopicRatings: (value: Map<string, Rating>) => void;
+  error?: string;
+}) {
+  const { data, isPending } = useStudentProgress(studentId);
+  const { topics } = useTopicIndex();
+  const progress = data?.data;
+  const plan = progress?.plan;
+
+  if (isPending) return null;
+
+  if (!plan) {
+    return (
+      <p className="bg-muted/50 text-muted-foreground rounded-md px-3 py-2.5 text-xs">
+        No learning plan yet, so there is nothing to score this lesson against.
+      </p>
+    );
+  }
+
+  // Plan topics first, in teaching order; then anything scored before that
+  // has since left the plan, so an edit never silently drops a score.
+  const current = new Map((progress.topics ?? []).map((row) => [row.topic_id, row.current]));
+  const ids = [...plan.topic_ids, ...[...topicRatings.keys()].filter((id) => !plan.topic_ids.includes(id))];
+
+  function set(topicId: string, value: Rating | null) {
+    const next = new Map(topicRatings);
+    if (value === null) next.delete(topicId);
+    else next.set(topicId, value);
+    onTopicRatings(next);
+  }
+
+  return (
+    <fieldset className="grid gap-3 rounded-md border p-3">
+      <legend className="px-1 text-sm font-medium">Progress towards the goal</legend>
+      <p className="text-muted-foreground -mt-1 text-xs">{plan.goal}</p>
+
+      <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+        <span className="text-sm">How far did this lesson move them?</span>
+        <RatingPicker
+          name="Progress towards the goal"
+          value={goalRating}
+          onChange={onGoalRating}
+          labels={GOAL_RATING_LABELS}
+        />
+      </div>
+      {goalRating && (
+        <p className="text-muted-foreground -mt-2 text-right text-xs">{GOAL_RATING_LABELS[goalRating]}</p>
+      )}
+
+      {ids.length > 0 && (
+        <div className="grid gap-1">
+          <p className="text-muted-foreground text-xs">
+            Where they stand on each topic you covered, 1 (needs help) to 5 (mastered):
+          </p>
+          <ul className="divide-y">
+            {ids.map((id) => {
+              const topic = topics.get(id);
+              const before = current.get(id);
+              return (
+                <li key={id} className="flex flex-col gap-1 py-1.5 sm:flex-row sm:items-center sm:justify-between">
+                  <span className="text-sm">
+                    <TopicName id={id} name={topic?.name} />
+                    {before != null && (
+                      <span className="text-muted-foreground ml-1.5 text-xs">latest {before}</span>
+                    )}
+                  </span>
+                  <RatingPicker
+                    name={`${id} ${topic?.name ?? ''}`}
+                    value={topicRatings.get(id) ?? null}
+                    onChange={(value) => set(id, value)}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      {error && (
+        <p role="alert" className="text-destructive text-xs">
+          {error}
+        </p>
+      )}
+    </fieldset>
   );
 }

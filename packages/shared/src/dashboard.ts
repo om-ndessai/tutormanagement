@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { AuditEvent } from './audit.js';
 import type { Payment, StudentBalance, TutorBalance } from './payments.js';
+import type { ProgressOverview, StudentProgress } from './progress.js';
 import type { TutoringSession } from './teaching.js';
 import { USER_ROLES, type UserRole } from './users.js';
 
@@ -63,6 +64,8 @@ export interface AdminDashboard {
   student_balances: StudentBalance[];
   recent_activity: AuditEvent[];
   recent_sessions: TutoringSession[];
+  /** Every student against their plan, for the Tutoring tab (Phase 16). */
+  progress: ProgressOverview[];
 }
 
 export interface TutorDashboard {
@@ -88,6 +91,8 @@ export interface TutorDashboard {
   recent_sessions: TutoringSession[];
   recent_payments: Payment[];
   recent_activity: AuditEvent[];
+  /** The students this tutor teaches, against their plans. */
+  progress: ProgressOverview[];
 }
 
 export interface ParentDashboard {
@@ -96,6 +101,8 @@ export interface ParentDashboard {
   totals: { charged_cents: number; paid_cents: number; balance_cents: number };
   recent_sessions: TutoringSession[];
   recent_payments: Payment[];
+  /** Each child's plan and progress in full, so the dashboard can chart it. */
+  progress: StudentProgress[];
 }
 
 export interface StudentDashboard {
@@ -105,6 +112,8 @@ export interface StudentDashboard {
   tutors: { user_id: string; full_name: string; session_count: number }[];
   totals: { session_count: number; total_minutes: number };
   recent_sessions: TutoringSession[];
+  /** Their own plan and progress. */
+  progress: StudentProgress | null;
 }
 
 export type DashboardData =

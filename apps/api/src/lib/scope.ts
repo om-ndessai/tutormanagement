@@ -86,6 +86,35 @@ export function teachingScopeSql(
 }
 
 /**
+ * A WHERE fragment restricting rows that belong to ONE student -- their
+ * assessment, their learning plan, the progress of their lessons.
+ *
+ * Wider than teachingScopeSql in one direction only: every tutor currently
+ * assigned to the student sees the whole of it, not just the lessons they
+ * taught themselves, because a plan is shared work and a tutor picking up a
+ * student needs to know where the last one left off. A tutor whose pairing has
+ * ended loses sight of it, as they lose sight of the student.
+ *
+ * `column` is the SQL expression naming the student, e.g. "p.student_user_id".
+ * Returns null for an admin.
+ */
+export function studentScopeSql(
+  viewer: User,
+  column: string,
+): { sql: string; values: unknown[] } | null {
+  if (isAdmin(viewer)) return null;
+
+  return {
+    sql:
+      `(${column} = ?` +
+      ` OR ${column} IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?)` +
+      ` OR ${column} IN (SELECT a.student_user_id FROM assignments a` +
+      ` WHERE a.tutor_user_id = ? AND a.is_active = 1))`,
+    values: [viewer.id, viewer.id, viewer.id],
+  };
+}
+
+/**
  * Hides the half of a session's money the viewer has no business seeing.
  *
  * The institute buys tutoring at one rate and sells it at another, and keeps

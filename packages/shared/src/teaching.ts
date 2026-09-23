@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { sessionProgressInputSchema, type SessionProgress } from './progress.js';
 import { optionalText } from './users.js';
 
 // ---------------------------------------------------------------------------
@@ -387,6 +388,11 @@ export const sessionInputSchema = z
     ended_at: clockTime,
     mode: z.enum(SESSION_MODES),
     notes: optionalText(z.string().trim().max(4000)),
+    /**
+     * How the lesson went against the student's plan (Phase 16). Optional:
+     * leaving it out records the lesson and scores nothing.
+     */
+    progress: sessionProgressInputSchema.optional(),
   })
   .refine((value) => elapsedMinutes(value.started_at, value.ended_at) !== null, {
     message: 'The end time must be after the start time.',
@@ -403,6 +409,8 @@ export const sessionUpdateSchema = z
     ended_at: clockTime.optional(),
     mode: z.enum(SESSION_MODES).optional(),
     notes: optionalText(z.string().trim().max(4000)),
+    /** When sent, replaces the lesson's whole progress record. */
+    progress: sessionProgressInputSchema.optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
     message: 'Provide at least one field to update.',
@@ -438,6 +446,11 @@ export interface TutoringSession {
    * until somebody confirms it, so every screen that shows a session says so.
    */
   auto_stopped: boolean;
+  /**
+   * How the lesson was scored against the student's plan, or null when it was
+   * not. Carries no money, so it is shown to everyone who may see the lesson.
+   */
+  progress: SessionProgress | null;
   created_at: string;
   updated_at: string;
 }

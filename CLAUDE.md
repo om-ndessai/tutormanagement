@@ -10,10 +10,12 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 12 are built.** In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 16 are built.** In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
-exports (10), the deployed test environment (11), and comments (12).
+exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
+receipts (14), the Tutoring/Finance dashboard and 1099s (15), and progress tracking against a
+curriculum (16).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -210,6 +212,13 @@ their WHERE from the same two fragments (`personScopeSql`, `teachingScopeSql`) �
 fourth copy of the rule. Comments are never editable (no `updated_at`, no PATCH route) and only their
 author may delete them — not admins. Never put comment text in an audit description: the log is
 read by admins, and a comment is not theirs by default.
+
+**Progress is measured on one 1-5 scale against one curriculum ladder.** Levels are `BA1`-`BA5`,
+`PRE`, `ALG`, `GEO`; topics are `<level>.<nn>` (`BA3.10`). The catalog is reference data at the
+end of `schema.sql`, written as upserts -- never delete a topic, ratings reference it. Progress
+figures are derived by `computeProgress` in `packages/shared/src/progress.ts`, never stored.
+Assessments and plans are admin-written; a tutor scores a lesson through the session's
+optional `progress` field, which lives in `session_progress`, not on the billing row.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

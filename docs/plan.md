@@ -92,3 +92,18 @@ Phase 15:
 This phase is about cleaning the dashboard for admins and tutors. There are two major parts of this application. Finance and Tracking tutoring progress. I would like to evaluate creating these two tabs and see how we can made dashboard little more crisp and effective. Currently the cards are too big and waste a lot of white space.
 In finance tab - I want a monthly run down of the current financial year, which will show how many sessions, how many hours, billed for that month, received in that month, Net in that month etc. I want to also have ability for admin to create 1099 year end for the tutor. This will open up a dialog to accept SSN on the UI. The SSN as agreed will not be persisted anywhere and 1099 will be created for that tutor. 
 Other metrics will move into Tutoring progress tab and we will work on that in the next phase.
+
+Phase 16: 
+This math tutoring coursework is based on beast academy, level 1-5 and AOPS beyond level 5 - prealgebra, algebra and geometry. At the beginning of enrollment, the owner assesses the student based on what they are currently enrolled in and then recommends the level. Sometimes he will even recommned adding some topics from other levels - likely a lower one.
+In this phase we will first start with addint the levels and topics from each level. Dig into Beast academy and AOPS and create a db model to store them and store them in the DB.
+Then extend the sttudent data model to record the initial assessment. The intial assessment would be a long prose but I also want a way of recording say 1-5 levels against topics at a level. The assessor could pick say topic 10 from level 3 and mark as 1. Marking 1 on a topic means the studnet perform poorly or needs help. Recommend a good naming convention for levels.
+Once the assessor records the assessment, then he will recommend the course of tutoring against the goal. For example - goal could be get ready for prealgebra by next academic year and then record what topics/levels need to be included, how often to schedule the sessions like twice a week 1 hour sessions. The data model clearly supports the goal. Now I want to extend the data model to retain the assessment, levels on each topic and tutoring session recommendation to achieve that goal.
+When the tutor records the session, the tutor will record the assessment of the tutoring session against the recommended goal and track the progress.
+The dashboard will include the timeline of the beginning of tutoring, the goal timeline and how each session is tracking towards the goal. Use some charting option to build a best and most intuitive UI.
+
+Phase 17.
+The amount recorded in the session should be curated based on the user. The parent/or student should see the amount they have to pay. The tutor should see the amount that is paid to the tutor. Admin should see the amount that parent/student is charged and also see the amount or cut for the institution.
+Ensure the data model changes, if any are needed for this. Make the data/api/UI changes as needed and deploy them
+
+Phase 18.
+Do a detailed analysis of UI/api code and ensure the data that is shown to the logged in user (other than admin) is relevant and as expected so the issues like in Phase 17 do not slip through.

@@ -28,6 +28,7 @@ import {
 } from '@tmi/shared';
 
 import { ActivityFeed } from '@/features/audit/activity-feed';
+import { ProgressOverviewPanel, StudentProgressCard } from '@/features/progress/progress-card';
 import { ROLE_ICONS } from '@/features/users/role-icon';
 import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
@@ -226,6 +227,13 @@ export function AdminView({ data }: { data: AdminDashboard }) {
               hint={data.counts.live_sessions > 0 ? 'Being taught right now' : 'None in progress'}
             />
           </div>
+
+          <ProgressOverviewPanel
+            index={5}
+            title="Student progress"
+            rows={data.progress}
+            empty="No students yet."
+          />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Panel index={5} title="Latest sessions" action={{ label: 'All sessions', to: '/sessions' }}>
@@ -487,6 +495,13 @@ export function TutorView({ data }: { data: TutorDashboard }) {
             )}
           </Panel>
 
+          <ProgressOverviewPanel
+            index={11}
+            title="Student progress"
+            rows={data.progress}
+            empty="No students assigned to you yet."
+          />
+
           <div className="grid gap-4 lg:grid-cols-2">
             <Panel index={12} title="Your recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
               <SessionList sessions={data.recent_sessions} />
@@ -614,6 +629,15 @@ export function ParentView({ data }: { data: ParentDashboard }) {
         )}
       </Panel>
 
+      {data.progress.map((child, position) => (
+        <StudentProgressCard
+          key={child.student.user_id}
+          index={4 + position}
+          progress={child}
+          title={`${child.student.full_name}'s progress`}
+        />
+      ))}
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel index={4} title="Recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
           <SessionList sessions={data.recent_sessions} showTutor />
@@ -634,7 +658,8 @@ export function ParentView({ data }: { data: ParentDashboard }) {
 export function StudentView({ data }: { data: StudentDashboard }) {
   return (
     <div className="space-y-6">
-      {data.goal && (
+      {/* The learning plan's goal replaces the one-line ambition once there is one. */}
+      {data.goal && !data.progress?.plan && (
         <div className={cn('brand-gradient rounded-lg p-5 text-white', ENTER)} style={stagger(0)}>
           <p className="flex items-center gap-2 text-xs font-medium tracking-wide text-white/80 uppercase">
             <TargetIcon className="size-4" />
@@ -658,6 +683,10 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         />
         <StatCard index={3} label="Tutors" value={data.tutors.length} icon={ROLE_ICONS.tutor} />
       </div>
+
+      {data.progress && (
+        <StudentProgressCard index={4} progress={data.progress} title="Your progress" />
+      )}
 
       <Panel index={4} title="Your tutors">
         {data.tutors.length === 0 ? (

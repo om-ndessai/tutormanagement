@@ -1,5 +1,6 @@
 import type {
   ListSessionsParams,
+  SessionProgress,
   SessionTotals,
   TutoringSession,
   User,
@@ -26,11 +27,16 @@ const SELECT_SESSION = `
          s.charge_amount_cents,
          s.notes,
          s.auto_stopped,
+         sp.session_id AS progress_session_id,
+         sp.goal_rating,
+         (SELECT json_group_array(json_object('topic_id', r.topic_id, 'rating', r.rating))
+            FROM session_topic_ratings r WHERE r.session_id = s.id) AS topic_ratings_json,
          s.created_at,
          s.updated_at
   FROM sessions s
   JOIN users t  ON t.id  = s.tutor_user_id
   JOIN users st ON st.id = s.student_user_id
+  LEFT JOIN session_progress sp ON sp.session_id = s.id
 `;
 
 /**
@@ -50,11 +56,31 @@ export interface StoredSession
   charge_amount_cents: number;
 }
 
-type SessionRow = Omit<StoredSession, 'auto_stopped'> & { auto_stopped: number };
+type SessionRow = Omit<StoredSession, 'auto_stopped' | 'progress'> & {
+  auto_stopped: number;
+  progress_session_id: string | null;
+  goal_rating: SessionProgress['goal_rating'];
+  topic_ratings_json: string | null;
+};
 
-/** D1 stores the flag as 0/1; everything above this layer speaks booleans. */
-function toSession(row: SessionRow): StoredSession {
-  return { ...row, auto_stopped: Number(row.auto_stopped) === 1 };
+/**
+ * D1 stores the flag as 0/1; everything above this layer speaks booleans.
+ * Progress is present exactly when the lesson was scored -- a progress row
+ * exists -- so an unscored lesson reads as null rather than as zero topics.
+ */
+function toSession({
+  progress_session_id,
+  goal_rating,
+  topic_ratings_json,
+  ...row
+}: SessionRow): StoredSession {
+  return {
+    ...row,
+    auto_stopped: Number(row.auto_stopped) === 1,
+    progress: progress_session_id
+      ? { goal_rating, topic_ratings: JSON.parse(topic_ratings_json ?? '[]') }
+      : null,
+  };
 }
 
 /** Builds the shared WHERE for list and totals, so the two cannot disagree. */

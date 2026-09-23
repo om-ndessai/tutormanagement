@@ -16,6 +16,7 @@ import { getSsnReceivedOn, listTutorsMissingSsn } from './users.js';
 import { listAuditEvents } from './audit.js';
 import { listPayments } from './payments.js';
 import { listSessions } from './sessions.js';
+import { buildStudentProgress, listProgressOverview } from './progress.js';
 
 /**
  * Assembles exactly what one dashboard needs.
@@ -95,6 +96,7 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
     recent_activity: activity.events as AuditEvent[],
     recent_sessions: sessions.sessions,
+    progress: await listProgressOverview(db, subject),
   };
 }
 
@@ -151,6 +153,11 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
     recent_activity: activity.events as AuditEvent[],
+    // Only the students they teach: someone who also parents sees their own
+    // children on the parent dashboard, not here.
+    progress: await listProgressOverview(db, subject, {
+      studentIds: (studentsResult.results ?? []).map((row) => String(row.user_id)),
+    }),
   };
 }
 
@@ -172,6 +179,9 @@ async function buildParent(db: D1Database, subject: User): Promise<ParentDashboa
     },
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
+    progress: (
+      await Promise.all(children.map((child) => buildStudentProgress(db, child.student_user_id)))
+    ).filter((row) => row !== null),
   };
 }
 
@@ -218,5 +228,6 @@ async function buildStudent(db: D1Database, subject: User): Promise<StudentDashb
       total_minutes: Number(totals.total_minutes ?? 0),
     },
     recent_sessions: sessions.sessions,
+    progress: await buildStudentProgress(db, subject.id),
   };
 }

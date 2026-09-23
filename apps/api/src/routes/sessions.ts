@@ -21,6 +21,7 @@ import {
   type ApiList,
   type ApiOk,
   type SessionMode,
+  type SessionProgressPayload,
   type SessionTotals,
   type TutoringSession,
 } from '@tmi/shared';
@@ -43,6 +44,7 @@ import {
   toActiveSession,
   updateActive,
 } from '../repositories/active-sessions.js';
+import { findUnknownCurriculumIds, saveSessionProgress } from '../repositories/progress.js';
 import {
   createSession,
   deleteSession,
@@ -52,6 +54,23 @@ import {
 } from '../repositories/sessions.js';
 
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid session id.' }) });
+
+/** A lesson can only be scored against topics that exist in the curriculum. */
+async function assertProgressTopics(db: D1Database, progress: SessionProgressPayload | undefined) {
+  if (!progress) return;
+
+  const unknown = await findUnknownCurriculumIds(
+    db,
+    'curriculum_topics',
+    progress.topic_ratings.map((row) => row.topic_id),
+  );
+
+  if (unknown.length > 0) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      'progress.topic_ratings': [`Not in the curriculum: ${unknown.join(', ')}.`],
+    });
+  }
+}
 
 /** A list response that also carries the totals for the same filter. */
 interface SessionListBody extends ApiList<TutoringSession> {
@@ -96,7 +115,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
       input.ended_at,
     );
 
-    const session = await createSession(c.env.DB, {
+    await assertProgressTopics(c.env.DB, input.progress);
+
+    let session = await createSession(c.env.DB, {
       tutor_user_id: input.tutor_user_id,
       student_user_id: input.student_user_id,
       occurred_on: input.occurred_on,
@@ -113,6 +134,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
       auto_stopped: false,
       recorded_by_user_id: viewer.id,
     });
+
+    if (input.progress) {
+      await saveSessionProgress(c.env.DB, session.id, session.student_user_id, input.progress);
+      session = (await getSession(c.env.DB, session.id)) ?? session;
+    }
 
     await recordAudit(c.env.DB, viewer, {
       action: 'session.recorded',
@@ -355,6 +381,8 @@ export const sessionsRoutes = new Hono<AppEnv>()
         throw new ApiError(403, 'forbidden', 'You can only edit your own sessions.');
       }
 
+      await assertProgressTopics(c.env.DB, input.progress);
+
       const startedAt = input.started_at ?? existing.started_at;
       const endedAt = input.ended_at ?? existing.ended_at;
       const mode = input.mode ?? existing.mode;
@@ -401,6 +429,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
           tutor_amount_cents: computeAmountCents(priced.durationMinutes, tutorRate),
           charge_amount_cents: computeAmountCents(priced.durationMinutes, chargeRate),
         };
+      }
+
+      if (input.progress) {
+        await saveSessionProgress(c.env.DB, id, existing.student_user_id, input.progress);
       }
 
       const updated = await updateSessionRow(c.env.DB, id, {

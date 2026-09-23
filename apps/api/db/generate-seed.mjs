@@ -557,6 +557,216 @@ const comments = [
    q('Room 2 is double-booked on the 24th; we will use room 1 that week only.'), q('2026-09-18T14:00:00.000Z')],
 ];
 
+
+// --- progress (Phase 16) ----------------------------------------------------
+// Assessments, learning plans and lesson scores. Drawn from a SEPARATE random
+// stream, and emitted after everything else, so adding them left every row
+// above byte-for-byte what it was.
+//
+// Invariants kept here, as the API keeps them: one active plan per student,
+// every plan starts before its goal date, every topic id is in the catalog,
+// and a lesson is only scored for a student who has a plan. Scores drift
+// upwards over a student's lessons -- tutoring working -- with the odd slip,
+// so the charts have both shapes to show.
+let progressState = 0x51a7e;
+function prnd() {
+  progressState |= 0;
+  progressState = (progressState + 0x6d2b79f5) | 0;
+  let t = Math.imul(progressState ^ (progressState >>> 15), 1 | progressState);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+const ppick = (list) => list[Math.floor(prnd() * list.length)];
+const pbetween = (lo, hi) => lo + Math.floor(prnd() * (hi - lo + 1));
+
+/** Chapter counts per level, matching the catalog in db/schema.sql. */
+const LEVEL_TOPICS = { BA1: 12, BA2: 12, BA3: 12, BA4: 12, BA5: 12, PRE: 15, ALG: 22, GEO: 19 };
+const LADDER = ['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'];
+const topic = (level, number) => `${level}.${String(number).padStart(2, '0')}`;
+
+const assessments = [];
+const assessmentRatings = [];
+const plans = [];
+const planTopics = [];
+const sessionProgress = [];
+const sessionRatings = [];
+
+/**
+ * One student's whole arc: an assessment, a plan built from the topics it
+ * found weakest, and each lesson since scored against that plan.
+ */
+function progressFor(studentId, spec) {
+  const assessmentId = spec.assessmentId;
+  assessments.push([
+    q(assessmentId), q(studentId), q(CAST.priya), q(spec.assessedOn), q(spec.schoolCourse),
+    q(spec.recommended), q(spec.summary),
+  ]);
+
+  const baseline = new Map(spec.ratings);
+  for (const [topicId, rating] of spec.ratings) {
+    assessmentRatings.push([q(assessmentId), q(topicId), rating]);
+  }
+
+  if (!spec.plan) return;
+
+  const planId = spec.plan.id;
+  plans.push([
+    q(planId), q(studentId), q(assessmentId), q(spec.plan.goal), q(spec.plan.target),
+    q(spec.plan.startsOn), q(spec.plan.targetOn), spec.plan.perWeek, spec.plan.minutes,
+    q(spec.plan.recommendation), q('active'), q(CAST.priya),
+  ]);
+  spec.plan.topics.forEach((topicId, position) => {
+    planTopics.push([q(planId), q(topicId), position]);
+  });
+
+  // Walk the lessons in date order, nudging each plan topic's score upwards.
+  const current = new Map(spec.plan.topics.map((t) => [t, baseline.get(t) ?? 1]));
+  const lessons = sessions
+    .filter((row) => row[2] === q(studentId) && row[3] >= q(spec.plan.startsOn))
+    .sort((a, b) => (a[3] < b[3] ? -1 : a[3] > b[3] ? 1 : 0));
+
+  lessons.forEach((row, index) => {
+    // Most lessons get scored; a hurried few do not.
+    if (index > 0 && prnd() < 0.15) return;
+
+    const sessionId = row[0].slice(1, -1);
+    // Work through the plan roughly in order, two or three topics a lesson.
+    const focus = spec.plan.topics.slice(
+      Math.min(index, spec.plan.topics.length - 1),
+      Math.min(index, spec.plan.topics.length - 1) + pbetween(2, 3),
+    );
+
+    for (const topicId of focus) {
+      const before = current.get(topicId) ?? 1;
+      const step = prnd() < spec.pace ? 1 : prnd() < 0.15 ? -1 : 0;
+      const after = Math.max(1, Math.min(5, before + step));
+      current.set(topicId, after);
+      sessionRatings.push([q(sessionId), q(topicId), after]);
+    }
+
+    const goal = Math.max(1, Math.min(5, Math.round(spec.pace * 5 + (prnd() - 0.5) * 2)));
+    sessionProgress.push([q(sessionId), q(planId), goal]);
+  });
+}
+
+// The named cast, written by hand so the suite can assert on them.
+progressFor(CAST.sofia, {
+  assessmentId: id('d0000000', 1),
+  assessedOn: '2026-08-25',
+  schoolCourse: 'Grade 5 math (school), finished BA3 at home',
+  recommended: 'BA4',
+  summary:
+    'Sofia reads problems carefully and enjoys puzzles. Place value and multiplication are ' +
+    'secure. Fractions are the gap: she can name halves and quarters but cannot compare ' +
+    'unlike fractions or add them. Division with remainders is slow. Recommend starting in ' +
+    'Beast Academy 4 and pulling the Level 3 fractions chapter forward before 4C.',
+  ratings: [
+    ['BA3.04', 5], ['BA3.07', 4], ['BA3.08', 3], ['BA3.10', 1], ['BA3.11', 3],
+    ['BA4.02', 3], ['BA4.05', 2], ['BA4.08', 1], ['BA4.11', 1],
+  ],
+  pace: 0.75,
+  plan: {
+    id: id('e0000000', 1),
+    goal: 'Ready for AoPS Prealgebra by the start of next school year',
+    target: 'PRE',
+    startsOn: '2026-09-01',
+    targetOn: '2027-06-15',
+    perWeek: 2,
+    minutes: 60,
+    recommendation:
+      'Twice a week for an hour. Fractions first (BA3.10, then 4C and 4D), then the rest of ' +
+      'Level 4 and the Level 5 chapters that Prealgebra leans on hardest.',
+    topics: ['BA3.10', 'BA4.05', 'BA4.08', 'BA4.10', 'BA4.11', 'BA5.02', 'BA5.03', 'BA5.06', 'BA5.08'],
+  },
+});
+
+progressFor(CAST.ben, {
+  assessmentId: id('d0000000', 2),
+  assessedOn: '2026-08-28',
+  schoolCourse: 'Grade 4 math',
+  recommended: 'BA3',
+  summary:
+    'Ben is quick with addition and subtraction but multiplication facts past 5 are not ' +
+    'automatic, and long division has no model behind it yet. Start in Beast Academy 3B.',
+  ratings: [['BA3.01', 4], ['BA3.04', 2], ['BA3.05', 2], ['BA3.08', 1], ['BA3.10', 2]],
+  pace: 0.5,
+  plan: {
+    id: id('e0000000', 2),
+    goal: 'Multiplication and division solid before Beast Academy 4',
+    target: 'BA4',
+    startsOn: '2026-09-01',
+    targetOn: '2027-01-31',
+    perWeek: 1,
+    minutes: 60,
+    recommendation: 'Once a week. Level 3B and 3C in order, with fractions last.',
+    topics: ['BA3.04', 'BA3.05', 'BA3.06', 'BA3.08', 'BA3.10'],
+  },
+});
+
+// Sanjay is assessed but has no plan yet: the "assessed, awaiting a plan" state.
+progressFor(CAST.sanjay, {
+  assessmentId: id('d0000000', 3),
+  assessedOn: '2026-09-02',
+  schoolCourse: 'AP Calculus BC',
+  recommended: 'GEO',
+  summary:
+    'Strong algebra. Wants competition geometry alongside school calculus; circle theorems ' +
+    'and power of a point are new to him.',
+  ratings: [['GEO.11', 3], ['GEO.12', 2], ['GEO.13', 1]],
+  pace: 0.8,
+  plan: null,
+});
+
+// Everyone generated: most have been assessed and given a plan, a few have
+// not been seen yet, which is the ordinary state of a new enrolment.
+const castStudents = new Set([CAST.sofia, CAST.ben, CAST.sanjay].map(q));
+const generatedStudents = [...new Set(sessions.map((row) => row[2]))].filter(
+  (student) => !castStudents.has(student),
+);
+
+let progressSeq = 0;
+for (const quoted of generatedStudents) {
+  if (prnd() < 0.2) continue;
+  progressSeq += 1;
+
+  const studentId = quoted.slice(1, -1);
+  const levelIndex = pbetween(1, 5);
+  const level = LADDER[levelIndex];
+  const lower = LADDER[levelIndex - 1];
+  const next = LADDER[Math.min(levelIndex + 1, LADDER.length - 1)];
+
+  const pool = [
+    ...Array.from({ length: 3 }, () => topic(lower, pbetween(1, LEVEL_TOPICS[lower]))),
+    ...Array.from({ length: 6 }, () => topic(level, pbetween(1, LEVEL_TOPICS[level]))),
+  ];
+  const topics = [...new Set(pool)];
+  const ratings = topics.map((t) => [t, pbetween(1, 3)]);
+  const hasPlan = prnd() < 0.85;
+
+  progressFor(studentId, {
+    assessmentId: id('d1111111', progressSeq),
+    assessedOn: isoDay(pbetween(45, 60)),
+    schoolCourse: ppick(COURSES),
+    recommended: level,
+    summary: `Placed at ${level}. Some gaps from ${lower} to close first.`,
+    ratings,
+    pace: ppick([0.35, 0.55, 0.7, 0.85]),
+    plan: hasPlan
+      ? {
+          id: id('e1111111', progressSeq),
+          goal: `Ready for ${next === 'PRE' ? 'AoPS Prealgebra' : next === 'ALG' ? 'Introduction to Algebra' : `Beast Academy ${next.slice(2)}`} by June`,
+          target: next,
+          startsOn: isoDay(pbetween(42, 44)),
+          targetOn: ppick(['2027-01-31', '2027-03-31', '2027-06-15']),
+          perWeek: ppick([1, 1, 2]),
+          minutes: ppick([45, 60, 60, 90]),
+          recommendation: null,
+          topics,
+        }
+      : null,
+  });
+}
+
 const sql = `-- ===========================================================================
 --  Test and development seed  --  GENERATED FILE, DO NOT EDIT BY HAND
 -- ===========================================================================
@@ -577,6 +787,12 @@ const sql = `-- ================================================================
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM session_topic_ratings;
+DELETE FROM session_progress;
+DELETE FROM learning_plan_topics;
+DELETE FROM learning_plans;
+DELETE FROM assessment_topic_ratings;
+DELETE FROM assessments;
 DELETE FROM comments;
 DELETE FROM scheduled_sessions;
 DELETE FROM active_sessions;
@@ -639,6 +855,21 @@ ${insert('scheduled_sessions', ['id', 'tutor_user_id', 'student_user_id', 'day_o
 
 -- --- what people have said about all of it ---------------------------------
 ${insert('comments', ['id', 'author_user_id', 'target_user_id', 'target_session_id', 'target_assignment_id', 'target_scheduled_session_id', 'body', 'created_at'], comments)}
+
+-- --- where each student started, and where they are going (Phase 16) ------
+-- The curriculum catalog itself is part of db/schema.sql, not of this file.
+${insert('assessments', ['id', 'student_user_id', 'assessor_user_id', 'assessed_on', 'school_course', 'recommended_level_id', 'summary'], assessments)}
+
+${insert('assessment_topic_ratings', ['assessment_id', 'topic_id', 'rating'], assessmentRatings, 80)}
+
+${insert('learning_plans', ['id', 'student_user_id', 'assessment_id', 'goal', 'target_level_id', 'starts_on', 'target_on', 'sessions_per_week', 'session_minutes', 'recommendation', 'status', 'created_by_user_id'], plans)}
+
+${insert('learning_plan_topics', ['plan_id', 'topic_id', 'position'], planTopics, 80)}
+
+-- --- each lesson, scored against the plan ----------------------------------
+${insert('session_progress', ['session_id', 'plan_id', 'goal_rating'], sessionProgress, 80)}
+
+${insert('session_topic_ratings', ['session_id', 'topic_id', 'rating'], sessionRatings, 80)}
 `;
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -648,5 +879,6 @@ console.log(
   `seed.sql: ${users.length} users (${counts.admins} admin, ${counts.tutors} tutor, ` +
     `${counts.parents} parent, ${counts.students} student), ${assignments.length} assignments, ` +
     `${sessions.length} sessions, ${payments.length} payments, ${schedules.length} schedules, ` +
-    `${comments.length} comments`,
+    `${comments.length} comments, ${assessments.length} assessments, ${plans.length} plans, ` +
+    `${sessionProgress.length} scored lessons`,
 );

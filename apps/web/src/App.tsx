@@ -10,6 +10,8 @@ import { SessionsPage } from '@/features/teaching/sessions-page';
 import { SchedulesPage } from '@/features/schedules/schedules-page';
 import { BillingPage } from '@/features/payments/billing-page';
 import { UsersPage } from '@/features/users/users-page';
+import { ProgressPage } from '@/features/progress/progress-page';
+import { StudentProgressPage } from '@/features/progress/student-progress-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { ProfilePage } from '@/pages/profile-page';
@@ -29,6 +31,8 @@ export function App() {
           <Route path="users" element={<UsersPage />} />
           <Route path="assignments" element={<AssignmentsPage />} />
           <Route path="sessions" element={<SessionsPage />} />
+          <Route path="progress" element={<ProgressPage />} />
+          <Route path="progress/:studentId" element={<StudentProgressPage />} />
           <Route path="schedule" element={<SchedulesPage />} />
           <Route path="billing" element={<BillingPage />} />
           <Route path="comments" element={<CommentsPage />} />

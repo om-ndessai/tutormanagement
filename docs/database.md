@@ -118,6 +118,21 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE tutor_profiles ADD COLUMN topup_amount_cents INTEGER"
 ```
 
+Phase 16 (progress tracking) adds eight whole tables and their reference data, so every
+constraint and foreign key arrives intact. Both blocks are marked in `schema.sql` and go over
+verbatim; the catalog block is a set of upserts, safe to re-run whenever a chapter name is
+corrected or a chapter added:
+
+```bash
+cd apps/api
+sed -n '/BEGIN PHASE 16 TABLES/,/END PHASE 16 TABLES/p' db/schema.sql > /tmp/phase16.sql
+sed -n '/BEGIN CURRICULUM CATALOG/,/END CURRICULUM CATALOG/p' db/schema.sql >> /tmp/phase16.sql
+npx wrangler d1 execute tmi-portal-db --remote --file=/tmp/phase16.sql
+```
+
+This was rehearsed against a local database built from the previous `schema.sql` and seed:
+every session, payment, user and guardianship survived, and the catalog block re-ran cleanly.
+
 SQLite will not attach the `CHECK` constraints in `schema.sql` to a column added this way, so
 production accepts values the API and the Zod schema would reject. That is tolerable here
 because every write goes through the API, but it is the reason the rebuilt schema is the
