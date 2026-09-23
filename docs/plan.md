@@ -110,3 +110,21 @@ Do a detailed analysis of UI/api code and ensure the data that is shown to the l
 
 Phase 19:
 I want to address another data visibility concern shared from the user feedback. In the sessions page, tutor is expected to use this during the tutoring session to refer to the previous session notes  and or notes for this session. Now it also shows money received by the tutor and paid by parents. The issue is one student can see get a view of the charges since tutor could be on that page infront of the student.  Just line dashboard for admin has finance and tutoring tab, create similar tabs in sessions page and on tutoring tab (selected by default) exclude all financial information
+
+Phase 20: (planned -- do not build until asked)
+Email session notes to the people who can already read them, and send calendar invites in addition to the calendar download.
+
+Sending: use a transactional email provider (Resend or similar) called from the Worker over HTTPS, with its API key as a Worker secret. This keeps the portal on Cloudflare's free tier (Cloudflare's own Email Service needs Workers Paid and the domain's DNS moved to Cloudflare). The domain's DNS is at GoDaddy and its mail is Microsoft 365, so send from a subdomain such as notes@portal.trianglemathinstitute.com and add the provider's SPF/DKIM records for that subdomain only -- the root domain's SPF ("-all") and M365 records stay untouched. Replies go to the tutor or the office via Reply-To. Free tier is about 3,000 emails a month and 100 a day; check that against lessons per day.
+
+Session notes by email:
+- An "Email notes" button on a session for its tutor and admins, showing who will receive it before sending. Automatic sending when a lesson is recorded can come later as a setting.
+- Recipients are the note's existing audience and no wider: the student's guardians, the student if they have an email, admins, and a copy to the tutor. Each person can opt out; the preference belongs to the person (users), not a profile.
+- The email carries the date, length, notes and progress -- never an amount (the Phase 19 concern). The SSN guard on notes already applies.
+- An audit event per send naming the recipients, never the note text. A small send log records delivered/failed so a failed send is visible and can be retried. Never log the body.
+
+Calendar invites:
+- When a schedule is created, email an invite to the tutor, the student and their guardians; when it is edited, an update; when it is removed, a cancellation.
+- The .ics becomes an invitation (METHOD:REQUEST with ORGANIZER and ATTENDEE, METHOD:CANCEL on removal) with times in the institute's time zone (TZID plus VTIMEZONE) instead of floating times, keeping the existing stable UID. Store a per-schedule sequence number, bumped on every edit, so clients replace the event rather than duplicate it.
+- Downloading the calendar file stays as it is.
+
+Alternatives considered: Cloudflare Email Service (needs Workers Paid and a DNS move off GoDaddy), Gmail/Google Calendar APIs through an admin's one-time grant (sends from a personal Gmail, needs Google's sensitive-scope verification, and stops working if the token is revoked), and mailto / "Add to Google Calendar" links (no setup, but nothing is actually sent by the portal).
