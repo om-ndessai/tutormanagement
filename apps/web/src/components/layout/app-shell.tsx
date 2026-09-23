@@ -73,11 +73,10 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
         <p>Mathematics Institute</p>
         <p>of the Triangle</p>
         <p className="mt-2">
-          Developed by: Om Dessai (
-          <a href="mailto:om.ndessai@gmail.com" className="hover:text-primary break-all hover:underline">
-            om.ndessai@gmail.com
+          Developed by:{' '}
+          <a href="mailto:om.ndessai@gmail.com" className="hover:text-primary hover:underline">
+            Om Dessai
           </a>
-          )
         </p>
       </div>
     </div>
