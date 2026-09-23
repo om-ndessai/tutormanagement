@@ -67,6 +67,11 @@ interface FormState {
     highest_education: string;
     school: string;
     area: string;
+    address_line1: string;
+    address_line2: string;
+    city: string;
+    state: string;
+    postal_code: string;
     availability_notes: string;
     virtual_available: boolean;
     /** Dollars as typed; converted to cents on submit. */
@@ -111,6 +116,11 @@ const EMPTY: FormState = {
     highest_education: '',
     school: '',
     area: '',
+    address_line1: '',
+    address_line2: '',
+    city: '',
+    state: '',
+    postal_code: '',
     availability_notes: '',
     virtual_available: false,
     rate_in_person: '',
@@ -153,6 +163,11 @@ function fromDetail(detail: UserDetail): FormState {
       highest_education: detail.tutor_profile?.highest_education ?? '',
       school: detail.tutor_profile?.school ?? '',
       area: detail.tutor_profile?.area ?? '',
+      address_line1: detail.tutor_profile?.address_line1 ?? '',
+      address_line2: detail.tutor_profile?.address_line2 ?? '',
+      city: detail.tutor_profile?.city ?? '',
+      state: detail.tutor_profile?.state ?? '',
+      postal_code: detail.tutor_profile?.postal_code ?? '',
       availability_notes: detail.tutor_profile?.availability_notes ?? '',
       virtual_available: detail.tutor_profile?.virtual_available ?? false,
       rate_in_person: centsToInput(detail.tutor_profile?.default_rate_in_person_cents),
@@ -204,6 +219,11 @@ function toRequest(form: FormState) {
           highest_education: form.tutor.highest_education,
           school: form.tutor.school,
           area: form.tutor.area,
+          address_line1: form.tutor.address_line1,
+          address_line2: form.tutor.address_line2,
+          city: form.tutor.city,
+          state: form.tutor.state,
+          postal_code: form.tutor.postal_code,
           availability_notes: form.tutor.availability_notes,
           virtual_available: form.tutor.virtual_available,
           default_rate_in_person_cents: parseCentsInput(form.tutor.rate_in_person),
@@ -464,7 +484,7 @@ export function UserFormDialog({
                         placeholder="NC State"
                       />
                     </Field>
-                    <Field id="t_area" label="Area" hint="No street address is recorded.">
+                    <Field id="t_area" label="Area" hint="The neighbourhood, for matching families.">
                       <Input
                         id="t_area"
                         value={form.tutor.area}
@@ -483,6 +503,94 @@ export function UserFormDialog({
                       />
                     </Field>
                   </div>
+                  {/* The recipient's address on their 1099-NEC. Only the
+                      office and the tutor can read it back. */}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field
+                      id="t_addr1"
+                      label="Mailing address"
+                      hint="Printed on their 1099. Seen only by the office and the tutor."
+                      error={errors['tutor_profile.address_line1']}
+                      optional
+                    >
+                      <Input
+                        id="t_addr1"
+                        autoComplete="off"
+                        value={form.tutor.address_line1}
+                        onChange={(e) =>
+                          set('tutor', { ...form.tutor, address_line1: e.target.value })
+                        }
+                        placeholder="120 Maple Street"
+                        aria-invalid={Boolean(errors['tutor_profile.address_line1'])}
+                      />
+                    </Field>
+                    <Field
+                      id="t_addr2"
+                      label="Address line 2"
+                      error={errors['tutor_profile.address_line2']}
+                      optional
+                    >
+                      <Input
+                        id="t_addr2"
+                        autoComplete="off"
+                        value={form.tutor.address_line2}
+                        onChange={(e) =>
+                          set('tutor', { ...form.tutor, address_line2: e.target.value })
+                        }
+                        placeholder="Apt 4"
+                        aria-invalid={Boolean(errors['tutor_profile.address_line2'])}
+                      />
+                    </Field>
+                    <Field id="t_city" label="City" error={errors['tutor_profile.city']} optional>
+                      <Input
+                        id="t_city"
+                        autoComplete="off"
+                        value={form.tutor.city}
+                        onChange={(e) => set('tutor', { ...form.tutor, city: e.target.value })}
+                        placeholder="Cary"
+                        aria-invalid={Boolean(errors['tutor_profile.city'])}
+                      />
+                    </Field>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Field
+                        id="t_state"
+                        label="State"
+                        error={errors['tutor_profile.state']}
+                        optional
+                      >
+                        <Input
+                          id="t_state"
+                          autoComplete="off"
+                          maxLength={2}
+                          value={form.tutor.state}
+                          onChange={(e) =>
+                            set('tutor', { ...form.tutor, state: e.target.value.toUpperCase() })
+                          }
+                          placeholder="NC"
+                          aria-invalid={Boolean(errors['tutor_profile.state'])}
+                        />
+                      </Field>
+                      <Field
+                        id="t_zip"
+                        label="ZIP"
+                        error={errors['tutor_profile.postal_code']}
+                        optional
+                      >
+                        <Input
+                          id="t_zip"
+                          autoComplete="off"
+                          inputMode="numeric"
+                          value={form.tutor.postal_code}
+                          onChange={(e) =>
+                            set('tutor', { ...form.tutor, postal_code: e.target.value })
+                          }
+                          placeholder="27513"
+                          aria-invalid={Boolean(errors['tutor_profile.postal_code'])}
+                        />
+                      </Field>
+                    </div>
+                  </div>
+
                   <Checkbox
                     id="t_virtual"
                     label="Available for virtual tutoring"

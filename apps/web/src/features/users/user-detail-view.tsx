@@ -24,6 +24,7 @@ import {
   RELATIONSHIP_LABELS,
   formatCents,
   formatDuration,
+  formatMailingAddress,
   formatTimeRange,
   groupSlotsByDay,
   type UserDetail,
@@ -130,6 +131,16 @@ export function UserDetailView({ user }: { user: UserDetail }) {
             <Detail icon={<MapPinIcon className="size-4" />} label="Area">
               {tutor.area ?? <Muted>Not recorded</Muted>}
             </Detail>
+            {/* For their 1099; the API blanks it for anyone else anyway. */}
+            {seesTutorPay && (
+              <Detail icon={<MailIcon className="size-4" />} label="Mailing address">
+                {formatMailingAddress(tutor) ? (
+                  <span className="whitespace-pre-line">{formatMailingAddress(tutor)}</span>
+                ) : (
+                  <Muted>Not recorded</Muted>
+                )}
+              </Detail>
+            )}
             <Detail icon={<VideoIcon className="size-4" />} label="Virtual tutoring">
               {tutor.virtual_available ? 'Available' : 'In person only'}
             </Detail>

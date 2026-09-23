@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { MailingAddressParts } from './profiles.js';
 
 // ---------------------------------------------------------------------------
 // Tax documents
@@ -60,6 +61,8 @@ export interface TutorTaxStatus {
   ssn_received_on: string | null;
   /** What this tutor has been paid in the tax year, for the year-end document. */
   paid_this_year_cents: number;
+  /** The recipient's address for the 1099, from the tutor's profile. Admin-only. */
+  address: MailingAddressParts;
 }
 
 /** Which calendar year the year-end summary covers. */

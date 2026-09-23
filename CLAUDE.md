@@ -146,6 +146,12 @@ admin, removed with the role like every other profile. It prefills the payer box
 runs through `optionalText`, so the SSN guard applies — a sole proprietor filing under their own
 number is exactly the case that must still be refused.
 
+**A tutor's mailing address is for their 1099, and only they and the office see it.** Five
+columns on `tutor_profiles` (`address_line1` … `postal_code`), formatted by
+`formatMailingAddress` in `packages/shared/src/profiles.ts`. It prefills the recipient box in
+the 1099 dialog and fills the year-end CSV; `scopePersonalDetails` blanks it for every other
+reader. `area` is still the neighbourhood, and is not the address.
+
 **No Social Security number is ever stored, anywhere.** `tutor_profiles.ssn_received_on` is a
 DATE recording that the office holds one — never the number. The one place a number is typed is the 1099 dialog, and it is
 written into a printable window in the BROWSER — never sent to the server, so there is no

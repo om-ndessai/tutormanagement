@@ -155,13 +155,30 @@ export const paymentsRoutes = new Hono<AppEnv>()
     const { year } = c.req.valid('query');
     const tutors = await listTutorTaxStatus(c.env.DB, year);
 
+    // The address is the recipient's address on the 1099, so it travels with
+    // the figures it is filed next to.
     const body = buildCsv(
-      ['Tutor', 'Paid in ' + year, 'SSN on file', 'Confirmed on'],
+      [
+        'Tutor',
+        'Paid in ' + year,
+        'SSN on file',
+        'Confirmed on',
+        'Street address',
+        'Address line 2',
+        'City',
+        'State',
+        'ZIP',
+      ],
       tutors.map((tutor) => [
         tutor.full_name,
         csvMoney(tutor.paid_this_year_cents),
         tutor.ssn_received_on ? 'Yes' : 'NOT RECEIVED',
         tutor.ssn_received_on ?? '',
+        tutor.address.address_line1 ?? '',
+        tutor.address.address_line2 ?? '',
+        tutor.address.city ?? '',
+        tutor.address.state ?? '',
+        tutor.address.postal_code ?? '',
       ]),
     );
 

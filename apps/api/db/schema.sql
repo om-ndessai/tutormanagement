@@ -161,8 +161,17 @@ CREATE TABLE tutor_profiles (
   highest_education TEXT,
   school            TEXT,
 
-  -- Area only. The institute is deliberately not recording street addresses.
+  -- The neighbourhood, for matching a tutor to families nearby.
   area              TEXT,
+
+  -- The tutor's mailing address, printed as the recipient's address on their
+  -- year-end 1099-NEC. Readable only by admins and the tutor themselves.
+  -- All optional: a tutor is often recorded before their paperwork arrives.
+  address_line1     TEXT,
+  address_line2     TEXT,
+  city              TEXT,
+  state             TEXT CHECK (state IS NULL OR (length(state) = 2 AND state = upper(state))),
+  postal_code       TEXT,
 
   -- Free-text caveats on the structured availability in availability_slots
   -- ("term-time only", "alternate Saturdays").

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { TEXTAREA } from '@/features/progress/assessment-dialog';
 
 const INSTITUTE_NAME = 'Mathematics Institute of the Triangle';
 
@@ -43,6 +44,7 @@ export function Form1099Dialog({
   year,
   amountCents,
   instituteTin,
+  recipientAddress,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -51,9 +53,13 @@ export function Form1099Dialog({
   amountCents: number;
   /** From the signed-in admin's record, so it is typed once and not per form. */
   instituteTin?: string | null;
+  /** From the tutor's record (formatMailingAddress), editable for this print only. */
+  recipientAddress?: string | null;
 }) {
   const [ssn, setSsn] = useState('');
-  const [address, setAddress] = useState('');
+  // Prefilled from the tutor's profile. A change here is for this printout
+  // only; the record is corrected on the tutor's page.
+  const [address, setAddress] = useState(recipientAddress ?? '');
   // Prefilled from the admin's own record: the institute files under one
   // number all year, and retyping it on every form is how a digit goes wrong.
   const [payerTin, setPayerTin] = useState(instituteTin ?? '');
@@ -67,7 +73,7 @@ export function Form1099Dialog({
       // The SSN is cleared; the institute's own number is not a secret from
       // the person who recorded it, and clearing it would just be retyping.
       setSsn('');
-      setAddress('');
+      setAddress(recipientAddress ?? '');
       setPayerTin(instituteTin ?? '');
     }
     onOpenChange(next);
@@ -133,16 +139,23 @@ export function Form1099Dialog({
 
           <div className="grid gap-2">
             <Label htmlFor="addr">
-              Recipient’s address <span className="text-muted-foreground">(optional)</span>
+              Recipient’s address{' '}
+              <span className="text-muted-foreground">
+                {recipientAddress ? '(from their record)' : '(optional)'}
+              </span>
             </Label>
-            <Input
+            <textarea
               id="addr"
+              rows={3}
+              className={TEXTAREA}
               value={address}
               onChange={(event) => setAddress(event.target.value)}
-              placeholder="Street, city, state, ZIP"
+              placeholder={'Street\nCity, State ZIP'}
             />
             <p className="text-muted-foreground text-xs">
-              The portal does not keep street addresses, so this is only for the printout.
+              {recipientAddress
+                ? 'A change here is for this printout only. Correct it on the tutor’s record to keep it.'
+                : 'No address is on the tutor’s record. Add it there so next year’s form fills itself.'}
             </p>
           </div>
 
@@ -223,7 +236,7 @@ function documentHtml({
 
   <table>
     <tr><th>Payer</th><td>${INSTITUTE_NAME}${payerTin ? `<br>TIN ${escape(payerTin)}` : ''}</td></tr>
-    <tr><th>Recipient</th><td>${escape(tutorName)}${address ? `<br>${escape(address)}` : ''}</td></tr>
+    <tr><th>Recipient</th><td>${escape(tutorName)}${address.trim() ? `<br>${escape(address.trim()).replace(/\r?\n/g, '<br>')}` : ''}</td></tr>
     <tr><th>Recipient’s TIN</th><td>${escape(ssn)}</td></tr>
     <tr><th>Box 1 — Nonemployee compensation</th><td class="amount">${formatCents(amountCents)}</td></tr>
     <tr><th>Box 4 — Federal income tax withheld</th><td>$0.00</td></tr>

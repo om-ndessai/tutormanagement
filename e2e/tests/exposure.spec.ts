@@ -97,6 +97,9 @@ function check(reader: Reader, source: string, value: unknown, problems: string[
       if (tp.default_rate_in_person_cents != null || tp.default_rate_virtual_cents != null) fail(where, 'R5 tutor default rate');
       if (tp.topup_amount_cents != null) fail(where, 'R6 tutor advance level');
       if (tp.ssn_received_on != null) fail(where, 'R6 SSN receipt');
+      if ([tp.address_line1, tp.address_line2, tp.city, tp.state, tp.postal_code].some((v) => v != null)) {
+        fail(where, 'R6 tutor mailing address');
+      }
     }
     if ('effective_rate_in_person_cents' in row && row.tutor_user_id !== reader.id) {
       if (row.effective_rate_in_person_cents != null || row.effective_rate_virtual_cents != null) {

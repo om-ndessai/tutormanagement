@@ -120,7 +120,12 @@ One optional row per user, primary-keyed on `user_id`.
 
 `tutor_profiles.highest_education` is free text because the plan says it doubles as "currently
 enrolled grade or math course" — for Sanjay it reads *Grade 12 - AP Calculus BC*. `area` is a
-neighbourhood, not an address: *"We are not recording real address yet."*
+neighbourhood, for matching tutors to families. The tutor's mailing address is separate
+(`address_line1`, `address_line2`, `city`, `state`, `postal_code`) and exists for one purpose:
+the recipient's address on their year-end 1099-NEC. It is on `tutor_profiles` rather than
+`users` because the 1099 is the only reason the institute records a street address, and only
+tutors receive one; it goes when the tutor role does. Only admins and the tutor themselves can
+read it (`scopePersonalDetails`).
 
 `virtual_available` appears on both. This is not duplication: a tutor offering online sessions
 and a student accepting them are different facts, and a tutor-student like Sanjay can differ on

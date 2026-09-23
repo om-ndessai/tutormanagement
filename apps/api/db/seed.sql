@@ -242,17 +242,17 @@ INSERT INTO admin_profiles (user_id, tin) VALUES
   ('00000000-0000-4000-8000-000000000002', NULL);
 
 -- --- tutor-only data -------------------------------------------------------
-INSERT INTO tutor_profiles (user_id, highest_education, school, area, availability_notes, virtual_available, default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes, topup_amount_cents, ssn_received_on) VALUES
-  ('00000000-0000-4000-8000-000000000001', 'PhD, Mathematics', 'UNC Chapel Hill', 'Chapel Hill', 'Limited hours during term planning weeks.', 1, 9000, 8000, 180, 30000, '2026-01-12'),
-  ('00000000-0000-4000-8000-000000000003', 'MS, Applied Mathematics', 'NC State', 'Cary', 'Prefers back-to-back sessions.', 1, 7500, 6500, 180, 20000, NULL),
-  ('00000000-0000-4000-8000-000000000004', 'BS, Statistics', 'Duke', 'Durham', 'In person only during school holidays.', 0, 6000, NULL, 120, 15000, '2026-02-02'),
-  ('00000000-0000-4000-8000-000000000005', 'MSc, Mathematics', 'Lund University', 'Chapel Hill', NULL, 1, 7000, 6000, 180, NULL, NULL),
-  ('00000000-0000-4000-8000-000000000006', 'Grade 12 - AP Calculus BC', 'East Chapel Hill High', 'Chapel Hill', 'Only after 5pm on weekdays.', 1, 3500, 3000, 120, 5000, '2026-01-30'),
-  ('11111111-0000-4000-8000-000000000001', 'BS, Physics', 'Phillips Middle', 'Carrboro', 'Term-time only.', 1, 8500, 7700, NULL, 15000, '2026-01-15'),
-  ('11111111-0000-4000-8000-000000000002', 'Grade 11 - Pre-Calculus', 'Chapel Hill High', 'Apex', NULL, 0, 5300, 4800, 240, NULL, '2026-01-15'),
-  ('11111111-0000-4000-8000-000000000003', 'BS, Mathematics', 'Carrboro High', 'Apex', NULL, 0, 5400, 4200, 180, NULL, '2026-01-15'),
-  ('11111111-0000-4000-8000-000000000004', 'BS, Physics', 'Phillips Middle', 'Carrboro', NULL, 0, 8100, 7000, 180, NULL, '2026-01-15'),
-  ('11111111-0000-4000-8000-000000000005', 'PhD, Mathematics', 'Culbreth Middle', 'Carrboro', NULL, 1, 9100, 7600, NULL, NULL, '2026-01-15');
+INSERT INTO tutor_profiles (user_id, highest_education, school, area, availability_notes, virtual_available, default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes, topup_amount_cents, ssn_received_on, address_line1, address_line2, city, state, postal_code) VALUES
+  ('00000000-0000-4000-8000-000000000001', 'PhD, Mathematics', 'UNC Chapel Hill', 'Chapel Hill', 'Limited hours during term planning weeks.', 1, 9000, 8000, 180, 30000, '2026-01-12', '214 Laurel Hill Road', NULL, 'Chapel Hill', 'NC', '27514'),
+  ('00000000-0000-4000-8000-000000000003', 'MS, Applied Mathematics', 'NC State', 'Cary', 'Prefers back-to-back sessions.', 1, 7500, 6500, 180, 20000, NULL, '88 Kildaire Farm Road', 'Apt 12', 'Cary', 'NC', '27513'),
+  ('00000000-0000-4000-8000-000000000004', 'BS, Statistics', 'Duke', 'Durham', 'In person only during school holidays.', 0, 6000, NULL, 120, 15000, '2026-02-02', '1507 Hope Valley Road', NULL, 'Durham', 'NC', '27705'),
+  ('00000000-0000-4000-8000-000000000005', 'MSc, Mathematics', 'Lund University', 'Chapel Hill', NULL, 1, 7000, 6000, 180, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+  ('00000000-0000-4000-8000-000000000006', 'Grade 12 - AP Calculus BC', 'East Chapel Hill High', 'Chapel Hill', 'Only after 5pm on weekdays.', 1, 3500, 3000, 120, 5000, '2026-01-30', '39 Weaver Dairy Road', NULL, 'Chapel Hill', 'NC', '27514'),
+  ('11111111-0000-4000-8000-000000000001', 'BS, Physics', 'Phillips Middle', 'Carrboro', 'Term-time only.', 1, 8500, 7700, NULL, 15000, '2026-01-15', '285 Hope Valley Road', NULL, 'Carrboro', 'NC', '27510'),
+  ('11111111-0000-4000-8000-000000000002', 'Grade 11 - Pre-Calculus', 'Chapel Hill High', 'Apex', NULL, 0, 5300, 4800, 240, NULL, '2026-01-15', '322 Old Chapel Hill Road', NULL, 'Apex', 'NC', '27502'),
+  ('11111111-0000-4000-8000-000000000003', 'BS, Mathematics', 'Carrboro High', 'Apex', NULL, 0, 5400, 4200, 180, NULL, '2026-01-15', NULL, NULL, NULL, NULL, NULL),
+  ('11111111-0000-4000-8000-000000000004', 'BS, Physics', 'Phillips Middle', 'Carrboro', NULL, 0, 8100, 7000, 180, NULL, '2026-01-15', '396 Maple Street', NULL, 'Carrboro', 'NC', '27510'),
+  ('11111111-0000-4000-8000-000000000005', 'PhD, Mathematics', 'Culbreth Middle', 'Carrboro', NULL, 1, 9100, 7600, NULL, NULL, '2026-01-15', '433 Oak Avenue', NULL, 'Carrboro', 'NC', '27510');
 
 -- --- student-only data -----------------------------------------------------
 INSERT INTO student_profiles (user_id, school, current_math_course, academic_year_goal, virtual_available, charge_rate_in_person_cents, charge_rate_virtual_cents, max_session_minutes) VALUES

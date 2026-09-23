@@ -194,7 +194,9 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
       db.prepare('SELECT tin FROM admin_profiles WHERE user_id = ?').bind(id),
       db
         .prepare(
-          `SELECT highest_education, school, area, availability_notes, virtual_available,
+          `SELECT highest_education, school, area,
+                  address_line1, address_line2, city, state, postal_code,
+                  availability_notes, virtual_available,
                   default_rate_in_person_cents, default_rate_virtual_cents,
                   max_session_minutes, topup_amount_cents, ssn_received_on
            FROM tutor_profiles WHERE user_id = ?`,
@@ -264,6 +266,11 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
           highest_education: (rawTutor.highest_education as string | null) ?? null,
           school: (rawTutor.school as string | null) ?? null,
           area: (rawTutor.area as string | null) ?? null,
+          address_line1: (rawTutor.address_line1 as string | null) ?? null,
+          address_line2: (rawTutor.address_line2 as string | null) ?? null,
+          city: (rawTutor.city as string | null) ?? null,
+          state: (rawTutor.state as string | null) ?? null,
+          postal_code: (rawTutor.postal_code as string | null) ?? null,
           availability_notes: (rawTutor.availability_notes as string | null) ?? null,
           virtual_available: rawTutor.virtual_available === 1,
           default_rate_in_person_cents:
@@ -476,16 +483,23 @@ export async function updateUserSections(
         db
           .prepare(
             `INSERT INTO tutor_profiles
-               (user_id, highest_education, school, area, availability_notes, virtual_available,
+               (user_id, highest_education, school, area,
+                address_line1, address_line2, city, state, postal_code,
+                availability_notes, virtual_available,
                 default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes,
                 topup_amount_cents, ssn_received_on)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             id,
             p.highest_education,
             p.school,
             p.area,
+            p.address_line1,
+            p.address_line2,
+            p.city,
+            p.state,
+            p.postal_code,
             p.availability_notes,
             p.virtual_available ? 1 : 0,
             p.default_rate_in_person_cents,
@@ -763,6 +777,7 @@ export async function listTutorTaxStatus(
   const result = await db
     .prepare(
       `SELECT u.id AS user_id, u.full_name, tp.ssn_received_on,
+              tp.address_line1, tp.address_line2, tp.city, tp.state, tp.postal_code,
               COALESCE((SELECT SUM(p.amount_cents) FROM payments p
                         WHERE p.party_user_id = u.id
                           AND p.direction = 'to_tutor'
@@ -781,6 +796,13 @@ export async function listTutorTaxStatus(
     full_name: String(row.full_name),
     ssn_received_on: (row.ssn_received_on as string | null) ?? null,
     paid_this_year_cents: Number(row.paid_this_year_cents ?? 0),
+    address: {
+      address_line1: (row.address_line1 as string | null) ?? null,
+      address_line2: (row.address_line2 as string | null) ?? null,
+      city: (row.city as string | null) ?? null,
+      state: (row.state as string | null) ?? null,
+      postal_code: (row.postal_code as string | null) ?? null,
+    },
   }));
 }
 

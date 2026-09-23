@@ -20,7 +20,7 @@ lessons as a student, in one list.
 | R3 | Every lesson says whose money the reader is seeing (`money_view`: `tutor`, `family` or `none`), and screens label amounts only from that. | `scopeSessionMoney`, `SessionMoney` |
 | R4 | A student's price per hour reaches only that student's own family. | `scopeStudentCharges` |
 | R5 | A tutor's pay rates, both their defaults and their per-pairing rates, reach only that tutor. | `scopeTutorPay`, `scopeAssignmentRates` |
-| R6 | Some things stay on a person's own record: a tutor's advance level, their payment handles, whether the office holds their SSN, and when they last signed in. | `scopeTutorTopup`, `scopePersonalDetails`, the users list |
+| R6 | Some things stay on a person's own record: a tutor's advance level, their mailing address, their payment handles, whether the office holds their SSN, and when they last signed in. | `scopeTutorTopup`, `scopePersonalDetails`, the users list |
 | R7 | A response names nobody the reader could not already see (`visibleUserIds`). The only exception is whoever *acted*: an audit actor, a comment author, an assessor. | the scope helpers in `lib/scope.ts` |
 | R8 | The activity log never carries an amount of money. | the audit descriptions; the repository scrubs older lines |
 | R9 | A lesson, payment, schedule or comment the reader cannot list is "not found" when fetched by id, and never "forbidden", because a 403 confirms it exists. | `getVisibleSession`, `getVisiblePayment`, `canSeeSchedule` |
@@ -36,7 +36,7 @@ lessons as a student, in one list.
 | Session totals | "Earned" | "Charged" | "Charged" |
 | Sessions CSV | Only their "Your pay" columns. | Only their "Charged to you" columns. | Same as parent. |
 | Pairings, `GET /assignments` | Their pairings, with their rates. | Who teaches their children, without rates. | Their own tutors, without rates. |
-| A person's record, `GET /users/:id` | Their own record in full. For others: no pay rates, advance, SSN, handles or last sign-in, and family links cut to people they can see. | Same, but a child's price per hour is shown. | Same, and their own price is shown. |
+| A person's record, `GET /users/:id` | Their own record in full. For others: no pay rates, advance, mailing address, SSN, handles or last sign-in, and family links cut to people they can see. | Same, but a child's price per hour is shown. | Same, and their own price is shown. |
 | Payments | Payments made to them. | Payments for their children. | Payments for themselves. |
 | Balances | Their own tutor balance. | Their children's balances. | Their own balance. |
 | Monthly rundown | What they taught and were paid. | Not offered. | Not offered. |

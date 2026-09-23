@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { formatCents, type TutorTaxStatus } from '@tmi/shared';
+import {
+  formatCents,
+  formatMailingAddress,
+  isMailingAddressComplete,
+  type TutorTaxStatus,
+} from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -93,6 +98,7 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
                     ? `${formatCents(tutor.paid_this_year_cents)} paid in ${year}`
                     : `Nothing paid in ${year}`}
                   {!tutor.ssn_received_on && ' · SSN not on file'}
+                  {!isMailingAddressComplete(tutor.address) && ' · No full address'}
                 </span>
               </span>
 
@@ -117,7 +123,8 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
       )}
 
       <p className="text-muted-foreground mt-3 text-xs">
-        The SSN is typed when the form is printed and is never stored.{' '}
+        The SSN is typed when the form is printed and is never stored. The recipient’s address
+        comes from the tutor’s record.{' '}
         {instituteTin ? (
           <>The payer box is filled from your record ({instituteTin}).</>
         ) : (
@@ -135,6 +142,7 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
           year={year}
           amountCents={printing.paid_this_year_cents}
           instituteTin={instituteTin}
+          recipientAddress={formatMailingAddress(printing.address)}
         />
       )}
     </Panel>

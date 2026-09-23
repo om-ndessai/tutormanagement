@@ -1,4 +1,10 @@
-import { hasRole, type SessionMoneyView, type User } from '@tmi/shared';
+import {
+  EMPTY_MAILING_ADDRESS,
+  hasRole,
+  type MailingAddressParts,
+  type SessionMoneyView,
+  type User,
+} from '@tmi/shared';
 
 /** Admins are unrestricted; everyone else sees only what concerns them. */
 export function isAdmin(viewer: User): boolean {
@@ -308,6 +314,8 @@ export function scopeTutorTopup<
  *                 family, so they are the person's and the office's alone.
  *   SSN receipt   whether the office holds a tutor's SSN is between the two
  *                 of them; a family has no reason to know it is outstanding.
+ *   address       a tutor's mailing address is for their 1099, so it is the
+ *                 office's and theirs alone -- not a family's or a colleague's.
  *   last sign-in  the office's business, not a colleague's or a family's.
  *
  * `visible` is visibleUserIds for the reader (null for an admin).
@@ -319,7 +327,7 @@ export function scopePersonalDetails<
     payment_handles: unknown[];
     guardians: { user_id: string }[];
     dependents: { user_id: string }[];
-    tutor_profile: { ssn_received_on: string | null } | null;
+    tutor_profile: ({ ssn_received_on: string | null } & MailingAddressParts) | null;
   },
 >(detail: T, viewer: User, visible: ReadonlySet<string> | null): T {
   if (isAdmin(viewer) || detail.id === viewer.id) return detail;
@@ -332,7 +340,11 @@ export function scopePersonalDetails<
     payment_handles: [],
     guardians: detail.guardians.filter(seen),
     dependents: detail.dependents.filter(seen),
-    tutor_profile: detail.tutor_profile && { ...detail.tutor_profile, ssn_received_on: null },
+    tutor_profile: detail.tutor_profile && {
+      ...detail.tutor_profile,
+      ...EMPTY_MAILING_ADDRESS,
+      ssn_received_on: null,
+    },
   };
 }
 

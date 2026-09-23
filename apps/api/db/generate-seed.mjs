@@ -227,6 +227,42 @@ for (const row of tutorProfiles) {
   row.push(SSN_ON_FILE[id] ?? (rnd() < 0.8 ? q('2026-01-15') : 'NULL'));
 }
 
+// Each tutor's mailing address, for their 1099. Johan has not given one, so
+// the year-end panel has the "no full address" case to show. The streets are
+// invented; the ZIPs are real ones for each town so the format is honest.
+const ZIP_BY_AREA = {
+  'Chapel Hill': '27514', Carrboro: '27510', Durham: '27705', Cary: '27513',
+  Hillsborough: '27278', Morrisville: '27560', Apex: '27502',
+};
+const STREETS = ['Maple Street', 'Oak Avenue', 'Laurel Hill Road', 'Weaver Dairy Road', 'Kildaire Farm Road', 'Hope Valley Road', 'Old Chapel Hill Road', 'Glenwood Avenue'];
+const TUTOR_ADDRESS = {
+  [CAST.priya]: ['214 Laurel Hill Road', 'NULL', 'Chapel Hill', '27514'],
+  [CAST.alex]: ['88 Kildaire Farm Road', 'Apt 12', 'Cary', '27513'],
+  [CAST.maria]: ['1507 Hope Valley Road', 'NULL', 'Durham', '27705'],
+  [CAST.johan]: null,
+  [CAST.sanjay]: ['39 Weaver Dairy Road', 'NULL', 'Chapel Hill', '27514'],
+};
+// Derived from the row's position, not drawn from rnd(): an extra draw here
+// would shift every random value generated after it, reshuffling the bulk data.
+tutorProfiles.forEach((row, position) => {
+  const id = row[0].slice(1, -1);
+  const area = row[3].slice(1, -1);
+  const known = id in TUTOR_ADDRESS ? TUTOR_ADDRESS[id] : undefined;
+  const address =
+    known === undefined
+      ? position % 7 === 0 || !ZIP_BY_AREA[area]
+        ? null
+        : [`${100 + ((position * 37) % 2900)} ${STREETS[position % STREETS.length]}`, 'NULL', area, ZIP_BY_AREA[area]]
+      : known;
+
+  if (!address) {
+    row.push('NULL', 'NULL', 'NULL', 'NULL', 'NULL');
+  } else {
+    const [line1, line2, city, zip] = address;
+    row.push(q(line1), line2 === 'NULL' ? 'NULL' : q(line2), q(city), q('NC'), q(zip));
+  }
+});
+
 // What the institute CHARGES each family, per hour. Always above what the
 // tutor is paid for the same lesson -- the difference is the margin, and the
 // whole reason these are separate from the tutor's rates.
@@ -833,7 +869,7 @@ ${insert('admin_profiles', ['user_id', 'tin'], [
 ])}
 
 -- --- tutor-only data -------------------------------------------------------
-${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on'], tutorProfiles)}
+${insert('tutor_profiles', ['user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on', 'address_line1', 'address_line2', 'city', 'state', 'postal_code'], tutorProfiles)}
 
 -- --- student-only data -----------------------------------------------------
 ${insert('student_profiles', ['user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], studentProfiles)}

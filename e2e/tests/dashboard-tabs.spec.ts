@@ -83,7 +83,10 @@ test.describe('the dashboard tabs', () => {
     // The endpoint knows whether we hold an SSN, never what it is.
     for (const row of status) {
       expect(Object.keys(row).sort()).toEqual(
-        ['full_name', 'paid_this_year_cents', 'ssn_received_on', 'user_id'],
+        ['address', 'full_name', 'paid_this_year_cents', 'ssn_received_on', 'user_id'],
+      );
+      expect(Object.keys(row.address).sort()).toEqual(
+        ['address_line1', 'address_line2', 'city', 'postal_code', 'state'],
       );
     }
 

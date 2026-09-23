@@ -48,8 +48,38 @@ export const tutorProfileSchema = z.object({
    */
   highest_education: optionalText(shortText(160, 'Education')),
   school: optionalText(shortText(160, 'School')),
-  /** Area only. The institute deliberately does not record street addresses. */
+  /** The neighbourhood, for matching tutors to families. Not the address below. */
   area: optionalText(shortText(120, 'Area')),
+  /**
+   * The tutor's mailing address, for their year-end 1099-NEC. Only an admin
+   * and the tutor themselves may read it (scopePersonalDetails). Every part is
+   * optional -- a tutor is recorded before their paperwork is -- but a 1099
+   * needs all of them, which the year-end panel points out.
+   */
+  address_line1: optionalText(shortText(160, 'Street address')),
+  address_line2: optionalText(shortText(160, 'Address line 2')),
+  city: optionalText(shortText(80, 'City')),
+  state: z
+    .union([
+      z
+        .string()
+        .trim()
+        .toUpperCase()
+        .regex(/^[A-Z]{2}$/, 'Use the two-letter state code, like NC.'),
+      z.literal(''),
+    ])
+    .nullish()
+    .transform((value) => (value === '' || value == null ? null : (value as string))),
+  postal_code: z
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(/^\d{5}(-\d{4})?$/, 'Use a ZIP code like 27513 or 27513-1234.'),
+      z.literal(''),
+    ])
+    .nullish()
+    .transform((value) => (value === '' || value == null ? null : (value as string))),
   /** Free-text caveats on the structured availability slots. */
   availability_notes: optionalText(shortText(1000, 'Notes')),
   /** Whether this tutor will teach online as well as in person. */
@@ -85,6 +115,41 @@ export const tutorProfileSchema = z.object({
 
 export type TutorProfileInput = z.input<typeof tutorProfileSchema>;
 export type TutorProfile = z.output<typeof tutorProfileSchema>;
+
+/** The parts of a mailing address, as a tutor profile holds them. */
+export interface MailingAddressParts {
+  address_line1: string | null;
+  address_line2: string | null;
+  city: string | null;
+  state: string | null;
+  postal_code: string | null;
+}
+
+/** The address fields, blank, for hiding them from a reader who may not see them. */
+export const EMPTY_MAILING_ADDRESS: MailingAddressParts = {
+  address_line1: null,
+  address_line2: null,
+  city: null,
+  state: null,
+  postal_code: null,
+};
+
+/**
+ * "12 Oak St\nApt 4\nCary, NC 27513", or null when nothing is recorded.
+ * Lines that are missing are left out rather than printed blank.
+ */
+export function formatMailingAddress(parts: MailingAddressParts): string | null {
+  const place = [parts.city, [parts.state, parts.postal_code].filter(Boolean).join(' ')]
+    .filter(Boolean)
+    .join(', ');
+  const lines = [parts.address_line1, parts.address_line2, place].filter(Boolean);
+  return lines.length > 0 ? lines.join('\n') : null;
+}
+
+/** Whether every part a 1099 needs is present (line 2 is optional). */
+export function isMailingAddressComplete(parts: MailingAddressParts): boolean {
+  return Boolean(parts.address_line1 && parts.city && parts.state && parts.postal_code);
+}
 
 /**
  * Data that only means anything for an admin: the taxpayer identification

@@ -146,6 +146,18 @@ production accepts values the API and the Zod schema would reject. That is toler
 because every write goes through the API, but it is the reason the rebuilt schema is the
 source of truth and not the live database.
 
+The tutor mailing address (for the 1099) is five columns. The state's `CHECK` is written into
+the `ADD COLUMN`, which SQLite accepts because every existing row holds NULL there:
+
+```bash
+cd apps/api
+npx wrangler d1 execute tmi-portal-db --remote --command="ALTER TABLE tutor_profiles ADD COLUMN address_line1 TEXT"
+npx wrangler d1 execute tmi-portal-db --remote --command="ALTER TABLE tutor_profiles ADD COLUMN address_line2 TEXT"
+npx wrangler d1 execute tmi-portal-db --remote --command="ALTER TABLE tutor_profiles ADD COLUMN city TEXT"
+npx wrangler d1 execute tmi-portal-db --remote --command="ALTER TABLE tutor_profiles ADD COLUMN state TEXT CHECK (state IS NULL OR (length(state) = 2 AND state = upper(state)))"
+npx wrangler d1 execute tmi-portal-db --remote --command="ALTER TABLE tutor_profiles ADD COLUMN postal_code TEXT"
+```
+
 Phase 12 adds a whole table rather than a column, so production takes the `CREATE TABLE
 comments` block and its five indexes from `schema.sql` verbatim:
 
