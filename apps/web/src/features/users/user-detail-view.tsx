@@ -67,9 +67,10 @@ export function UserDetailView({ user }: { user: UserDetail }) {
   const tutor = user.tutor_profile;
   const student = user.student_profile;
   const { user: viewer } = useAuth();
-  // A tutor's rates are their pay: the API sends them to an admin and to the
-  // tutor, and to nobody else. "Not set" would be a false claim to a family,
-  // so for them the rows are left out rather than shown empty.
+  // A tutor's rates are their pay, and their SSN receipt is between them and
+  // the office: the API sends both to an admin and to the tutor, and to nobody
+  // else. "Not set" or "Not received" would be a false claim to a family, so
+  // for them the rows are left out rather than shown empty.
   const seesTutorPay = (viewer?.roles.includes('admin') ?? false) || viewer?.id === user.id;
   const availabilityByDay = groupSlotsByDay(user.availability);
 
@@ -157,13 +158,17 @@ export function UserDetailView({ user }: { user: UserDetail }) {
                 <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)</Muted>
               )}
             </Detail>
-            <Detail icon={<ShieldCheckIcon className="size-4" />} label="SSN on file">
-              <SsnStatus
-                userId={user.id}
-                fullName={user.full_name}
-                receivedOn={tutor.ssn_received_on}
-              />
-            </Detail>
+            {/* Between the tutor and the office: the API blanks it for anyone
+                else, and "Not received" would be a false alarm to a family. */}
+            {seesTutorPay && (
+              <Detail icon={<ShieldCheckIcon className="size-4" />} label="SSN on file">
+                <SsnStatus
+                  userId={user.id}
+                  fullName={user.full_name}
+                  receivedOn={tutor.ssn_received_on}
+                />
+              </Detail>
+            )}
             {/* The API blanks this for anyone but an admin and the tutor
                 themselves: what the office advances a tutor is not the
                 business of the families they teach. */}
@@ -363,7 +368,7 @@ function SsnStatus({
       {receivedOn ? (
         <span>Received {receivedOn}</span>
       ) : (
-        <Badge variant="outline" className="border-amber-500/50 text-amber-700 dark:text-amber-400">
+        <Badge variant="outline" className="border-warning/60 text-warning-foreground dark:text-warning">
           Not received
         </Badge>
       )}

@@ -119,11 +119,19 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
     .all<Record<string, unknown>>();
 
   const balances = await computeBalances(db, subject);
-  const sessions = await listSessions(db, subject, { limit: 6, offset: 0 } as never);
+  // Only lessons they TAUGHT. Someone who also parents (or is taught) would
+  // otherwise see their family's lessons here, priced, under "Your recent
+  // sessions" -- and have them counted as students they teach.
+  const sessions = await listSessions(db, subject, {
+    limit: 6,
+    offset: 0,
+    tutor_user_id: subject.id,
+  } as never);
   const payments = await listPayments(db, subject, {
     limit: 5,
     offset: 0,
     direction: 'to_tutor',
+    party_user_id: subject.id,
   } as never);
   const activity = await listAuditEvents(db, { limit: 8, offset: 0 } as never, subject.id);
 
@@ -163,11 +171,25 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
 
 async function buildParent(db: D1Database, subject: User): Promise<ParentDashboard> {
   const balances = await computeBalances(db, subject);
-  const sessions = await listSessions(db, subject, { limit: 8, offset: 0 } as never);
-  const payments = await listPayments(db, subject, { limit: 5, offset: 0 } as never);
 
-  // computeBalances already scoped to this parent's children.
-  const children = balances.students;
+  // The parent view is about their CHILDREN: their lessons (other than any
+  // the parent taught themselves, which are on the tutor view), and family
+  // payments -- not money the parent was paid as a tutor.
+  const sessions = await listSessions(db, subject, { limit: 8, offset: 0 } as never, {
+    sql:
+      's.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?)' +
+      ' AND s.tutor_user_id <> ?',
+    values: [subject.id, subject.id],
+  });
+  const payments = await listPayments(db, subject, {
+    limit: 5,
+    offset: 0,
+    direction: 'from_parent',
+  } as never);
+
+  // computeBalances scopes to this person's own student row and their
+  // children's; a parent who is also taught is not their own child.
+  const children = balances.students.filter((row) => row.student_user_id !== subject.id);
 
   return {
     kind: 'parent',
@@ -212,7 +234,12 @@ async function buildStudent(db: D1Database, subject: User): Promise<StudentDashb
 
   const profile = (profileResult?.results?.[0] ?? {}) as Record<string, string | null>;
   const totals = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
-  const sessions = await listSessions(db, subject, { limit: 8, offset: 0 } as never);
+  // Their own lessons, not ones they taught or their children's.
+  const sessions = await listSessions(db, subject, {
+    limit: 8,
+    offset: 0,
+    student_user_id: subject.id,
+  } as never);
 
   return {
     kind: 'student',

@@ -24,6 +24,7 @@ import {
   isAdmin,
   scopeAdminTin,
   scopeStudentCharges,
+  scopePersonalDetails,
   scopeTutorPay,
   scopeTutorTopup,
   visibleUserIds,
@@ -123,11 +124,21 @@ export const usersRoutes = new Hono<AppEnv>()
   .get('/', zValidator('query', listUsersQuerySchema), async (c) => {
     const params = c.req.valid('query');
     // Non-admins see only the people they work with; see lib/scope.ts.
-    const visible = await visibleUserIds(c.env.DB, c.get('user'));
-    const { users, total } = await listUsers(c.env.DB, params, visible);
+    const viewer = c.get('user');
+    const visible = await visibleUserIds(c.env.DB, viewer);
+    // Retired people are an admin's concern: nobody else may ask for them.
+    const { users, total } = await listUsers(
+      c.env.DB,
+      visible ? { ...params, include_deleted: false } : params,
+      visible,
+    );
 
     const body: ApiList<User> = {
-      data: users,
+      // When somebody else last signed in is the office's business, not a
+      // colleague's or a family's.
+      data: visible
+        ? users.map((row) => (row.id === viewer.id ? row : { ...row, last_login_at: null }))
+        : users,
       meta: { total, limit: params.limit, offset: params.offset },
     };
     return c.json(body);
@@ -174,10 +185,8 @@ export const usersRoutes = new Hono<AppEnv>()
 
     // Checked before the read so an out-of-scope id is indistinguishable from
     // one that does not exist.
-    if (!isAdmin(viewer)) {
-      const visible = await visibleUserIds(c.env.DB, viewer);
-      if (visible && !visible.has(id)) throw ApiError.notFound('That user does not exist.');
-    }
+    const visible = await visibleUserIds(c.env.DB, viewer);
+    if (visible && !visible.has(id)) throw ApiError.notFound('That user does not exist.');
 
     const detail = await getUserDetail(c.env.DB, id);
 
@@ -185,10 +194,17 @@ export const usersRoutes = new Hono<AppEnv>()
 
     const body: ApiOk<UserDetail> = {
       // Each strips what this viewer may not see: the family's price, the
-      // tutor's pay and advance, the institute's TIN.
-      data: scopeAdminTin(
-        scopeTutorTopup(scopeTutorPay(scopeStudentCharges(detail, viewer), viewer), viewer),
+      // tutor's pay and advance, the institute's TIN, and the person's
+      // handles, SSN receipt and family links beyond the reader's own view.
+      // The charge check reads the guardians, so it runs before they are
+      // trimmed.
+      data: scopePersonalDetails(
+        scopeAdminTin(
+          scopeTutorTopup(scopeTutorPay(scopeStudentCharges(detail, viewer), viewer), viewer),
+          viewer,
+        ),
         viewer,
+        visible,
       ),
     };
     return c.json(body);

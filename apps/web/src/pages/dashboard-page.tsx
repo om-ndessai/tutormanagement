@@ -136,7 +136,12 @@ export function DashboardPage() {
       )}
 
       {response?.data.kind === 'admin' && <AdminView data={response.data} />}
-      {response?.data.kind === 'tutor' && <TutorView data={response.data} />}
+      {response?.data.kind === 'tutor' && (
+        <TutorView
+          data={response.data}
+          subjectId={subject?.viewing_as_other ? subject.user_id : undefined}
+        />
+      )}
       {response?.data.kind === 'parent' && <ParentView data={response.data} />}
       {response?.data.kind === 'student' && <StudentView data={response.data} />}
     </div>

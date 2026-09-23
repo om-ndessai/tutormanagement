@@ -30,6 +30,7 @@ import {
   createPayment,
   deletePayment,
   getPayment,
+  getVisiblePayment,
   listPayments,
   updatePayment,
 } from '../repositories/payments.js';
@@ -174,10 +175,23 @@ export const paymentsRoutes = new Hono<AppEnv>()
    * the institute, a tutor gets their own teaching and their own pay.
    */
   .get('/monthly', zValidator('query', monthlyFinanceQuerySchema), async (c) => {
-    const { year } = c.req.valid('query');
+    const { year, user_id } = c.req.valid('query');
+    const viewer = c.get('user');
+    let subject = viewer;
+
+    // An admin viewing someone's dashboard sees THEIR rundown, which is what
+    // makes "view as" show exactly what that person sees.
+    if (user_id && user_id !== viewer.id) {
+      if (!isAdmin(viewer)) {
+        throw new ApiError(403, 'forbidden', 'Only an administrator can view another rundown.');
+      }
+      const other = await getLiveUserById(c.env.DB, user_id);
+      if (!other) throw ApiError.notFound('That user does not exist.');
+      subject = other;
+    }
 
     const body: ApiOk<MonthlyFinanceResponse> = {
-      data: await computeMonthlyFinance(c.env.DB, c.get('user'), year),
+      data: await computeMonthlyFinance(c.env.DB, subject, year),
     };
     return c.json(body);
   })
@@ -214,20 +228,10 @@ export const paymentsRoutes = new Hono<AppEnv>()
   })
 
   .get('/:id', zValidator('param', idParamSchema), async (c) => {
-    const { id } = c.req.valid('param');
-    const payment = await getPayment(c.env.DB, id);
-
+    // Scoped to the row, not the payer: a guardian who shares one child with
+    // another adult must not reach that adult's payments for a different one.
+    const payment = await getVisiblePayment(c.env.DB, c.get('user'), c.req.valid('param').id);
     if (!payment) throw ApiError.notFound('That payment does not exist.');
-
-    const viewer = c.get('user');
-    if (!isAdmin(viewer)) {
-      const { total } = await listPayments(c.env.DB, viewer, {
-        limit: 1,
-        offset: 0,
-        party_user_id: payment.party_user_id,
-      });
-      if (total === 0) throw ApiError.notFound('That payment does not exist.');
-    }
 
     const body: ApiOk<Payment> = { data: payment };
     return c.json(body);

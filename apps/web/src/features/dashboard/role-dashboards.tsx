@@ -438,11 +438,12 @@ function TopupPanel({ tutors }: { tutors: TutorBalance[] }) {
 // Tutor
 // ---------------------------------------------------------------------------
 
-export function TutorView({ data }: { data: TutorDashboard }) {
+export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId?: string }) {
   // Only shown to a tutor the institute actually pays in advance.
   const advance = data.earnings.topup_amount_cents == null ? null : data.earnings;
   const year = new Date().getFullYear();
-  const monthly = useMonthlyFinance(year);
+  // For an admin's "view as", the rundown is the tutor's, not the institute's.
+  const monthly = useMonthlyFinance(year, subjectId);
 
   return (
     <DashboardTabs

@@ -297,6 +297,46 @@ export function scopeTutorTopup<
 }
 
 /**
+ * Trims a person's record to what a non-admin reading SOMEBODY ELSE needs
+ * (Phase 18).
+ *
+ *   family links  only people the reader can already see. A tutor opening a
+ *                 student's parent learns that parent's other children
+ *                 otherwise; a student opening their tutor, the tutor's.
+ *   handles       the Zelle/Venmo ids the OFFICE pays and bills through.
+ *                 No family pays a tutor directly, and no tutor bills a
+ *                 family, so they are the person's and the office's alone.
+ *   SSN receipt   whether the office holds a tutor's SSN is between the two
+ *                 of them; a family has no reason to know it is outstanding.
+ *   last sign-in  the office's business, not a colleague's or a family's.
+ *
+ * `visible` is visibleUserIds for the reader (null for an admin).
+ */
+export function scopePersonalDetails<
+  T extends {
+    id: string;
+    last_login_at: string | null;
+    payment_handles: unknown[];
+    guardians: { user_id: string }[];
+    dependents: { user_id: string }[];
+    tutor_profile: { ssn_received_on: string | null } | null;
+  },
+>(detail: T, viewer: User, visible: ReadonlySet<string> | null): T {
+  if (isAdmin(viewer) || detail.id === viewer.id) return detail;
+
+  const seen = (link: { user_id: string }) => visible?.has(link.user_id) ?? true;
+
+  return {
+    ...detail,
+    last_login_at: null,
+    payment_handles: [],
+    guardians: detail.guardians.filter(seen),
+    dependents: detail.dependents.filter(seen),
+    tutor_profile: detail.tutor_profile && { ...detail.tutor_profile, ssn_received_on: null },
+  };
+}
+
+/**
  * Hides the institute's TIN from anyone who is not an admin.
  *
  * A tutor or a parent can open an admin's record -- they are people in the

@@ -46,6 +46,9 @@ export const auditRoutes = new Hono<AppEnv>()
 
   /** Actions actually present in the log, for the filter dropdown. */
   .get('/actions', async (c) => {
-    const body: ApiOk<string[]> = { data: await listAuditActions(c.env.DB) };
+    const viewer = c.get('user');
+    const body: ApiOk<string[]> = {
+      data: await listAuditActions(c.env.DB, isAdmin(viewer) ? null : viewer.id),
+    };
     return c.json(body);
   });

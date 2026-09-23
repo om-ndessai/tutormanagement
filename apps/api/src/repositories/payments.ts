@@ -94,6 +94,21 @@ export async function listPayments(
   };
 }
 
+/** One payment, only if the viewer's list would contain it. */
+export async function getVisiblePayment(
+  db: D1Database,
+  viewer: User,
+  id: string,
+): Promise<Payment | null> {
+  const scope = scopeFor(viewer);
+  const row = await db
+    .prepare(`${SELECT_PAYMENT} WHERE p.id = ? ${scope ? `AND ${scope.sql}` : ''}`)
+    .bind(id, ...(scope?.values ?? []))
+    .first<Payment>();
+
+  return row ?? null;
+}
+
 export async function getPayment(db: D1Database, id: string): Promise<Payment | null> {
   const row = await db.prepare(`${SELECT_PAYMENT} WHERE p.id = ?`).bind(id).first<Payment>();
   return row ?? null;

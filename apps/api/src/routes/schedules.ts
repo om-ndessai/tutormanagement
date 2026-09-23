@@ -7,6 +7,7 @@ import {
   scheduleUpdateSchema,
   type ApiOk,
   type ScheduledSession,
+  type User,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -39,6 +40,23 @@ function calendarResponse(schedules: ScheduledSession[]) {
   });
 }
 
+/**
+ * Re-runs the scoped list for this pairing rather than trusting the id, so a
+ * schedule the viewer could not list is reported as missing -- by the
+ * calendar download and by an edit alike. A 403 would confirm it exists.
+ */
+async function canSeeSchedule(
+  db: D1Database,
+  viewer: User,
+  schedule: { id: string; student_user_id: string },
+): Promise<boolean> {
+  const visible = await listSchedules(db, viewer, {
+    include_inactive: true,
+    student_user_id: schedule.student_user_id,
+  });
+  return visible.some((candidate) => candidate.id === schedule.id);
+}
+
 export const schedulesRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listSchedulesQuerySchema), async (c) => {
@@ -64,13 +82,7 @@ export const schedulesRoutes = new Hono<AppEnv>()
 
     if (!schedule) throw ApiError.notFound('That schedule does not exist.');
 
-    // Re-run the scoped list for this pairing rather than trusting the id.
-    const visible = await listSchedules(c.env.DB, c.get('user'), {
-      include_inactive: true,
-      student_user_id: schedule.student_user_id,
-    });
-
-    if (!visible.some((candidate) => candidate.id === id)) {
+    if (!(await canSeeSchedule(c.env.DB, c.get('user'), schedule))) {
       throw ApiError.notFound('That schedule does not exist.');
     }
 
@@ -122,7 +134,9 @@ export const schedulesRoutes = new Hono<AppEnv>()
       const viewer = c.get('user');
 
       const existing = await getSchedule(c.env.DB, id);
-      if (!existing) throw ApiError.notFound('That schedule does not exist.');
+      if (!existing || !(await canSeeSchedule(c.env.DB, viewer, existing))) {
+        throw ApiError.notFound('That schedule does not exist.');
+      }
 
       if (!isAdmin(viewer) && viewer.id !== existing.tutor_user_id) {
         throw new ApiError(403, 'forbidden', 'You can only change your own schedules.');
@@ -149,7 +163,9 @@ export const schedulesRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     const existing = await getSchedule(c.env.DB, id);
-    if (!existing) throw ApiError.notFound('That schedule does not exist.');
+    if (!existing || !(await canSeeSchedule(c.env.DB, viewer, existing))) {
+      throw ApiError.notFound('That schedule does not exist.');
+    }
 
     if (!isAdmin(viewer) && viewer.id !== existing.tutor_user_id) {
       throw new ApiError(403, 'forbidden', 'You can only remove your own schedules.');

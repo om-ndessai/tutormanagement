@@ -87,10 +87,24 @@ function toSession({
   };
 }
 
+/**
+ * An extra condition from inside the API -- never from a query string -- for
+ * views narrower than the viewer's whole scope, like one role's dashboard.
+ */
+export interface SessionNarrowing {
+  sql: string;
+  values: unknown[];
+}
+
 /** Builds the shared WHERE for list and totals, so the two cannot disagree. */
-function buildFilter(viewer: User, params: ListSessionsParams) {
+function buildFilter(viewer: User, params: ListSessionsParams, narrow?: SessionNarrowing) {
   const where: string[] = [];
   const values: unknown[] = [];
+
+  if (narrow) {
+    where.push(narrow.sql);
+    values.push(...narrow.values);
+  }
 
   if (params.tutor_user_id) {
     where.push('s.tutor_user_id = ?');
@@ -133,8 +147,9 @@ export async function listSessions(
   db: D1Database,
   viewer: User,
   params: ListSessionsParams,
+  narrow?: SessionNarrowing,
 ): Promise<ListSessionsResult> {
-  const filter = buildFilter(viewer, params);
+  const filter = buildFilter(viewer, params, narrow);
   const admin = isAdmin(viewer);
 
   // Each side's total is summed over the rows the viewer sees THAT side on,
@@ -203,6 +218,25 @@ export async function listSessions(
         admin || Number(totalsRow.charge_rows ?? 0) > 0 ? Number(totalsRow.charge_sum ?? 0) : null,
     },
   };
+}
+
+/**
+ * One session, but only if the viewer's list would contain it: the id alone
+ * is never proof of access. The same teachingScopeSql the list uses, applied
+ * to the one row, so a lookup can never be wider than the list.
+ */
+export async function getVisibleSession(
+  db: D1Database,
+  viewer: User,
+  id: string,
+): Promise<StoredSession | null> {
+  const scope = teachingScopeSql(viewer, 's');
+  const row = await db
+    .prepare(`${SELECT_SESSION} WHERE s.id = ? ${scope ? `AND ${scope.sql}` : ''}`)
+    .bind(id, ...(scope?.values ?? []))
+    .first<SessionRow>();
+
+  return row ? toSession(row) : null;
 }
 
 export async function getSession(db: D1Database, id: string): Promise<StoredSession | null> {

@@ -93,10 +93,22 @@ export async function listAuditEvents(
   };
 }
 
-/** Distinct actions present in the log, so filters offer only what exists. */
-export async function listAuditActions(db: D1Database): Promise<string[]> {
+/**
+ * Distinct actions present in the log, so filters offer only what exists.
+ * Scoped like the feed: a non-admin's filter lists only actions in their own
+ * events, not every kind of thing the institute has ever logged.
+ */
+export async function listAuditActions(
+  db: D1Database,
+  visibleToUserId?: string | null,
+): Promise<string[]> {
   const result = await db
-    .prepare('SELECT DISTINCT action FROM audit_events ORDER BY action')
+    .prepare(
+      `SELECT DISTINCT action FROM audit_events
+       ${visibleToUserId ? 'WHERE actor_user_id = ? OR subject_user_id = ?' : ''}
+       ORDER BY action`,
+    )
+    .bind(...(visibleToUserId ? [visibleToUserId, visibleToUserId] : []))
     .all<{ action: string }>();
 
   return (result.results ?? []).map((row) => row.action);

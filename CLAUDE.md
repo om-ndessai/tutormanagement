@@ -10,12 +10,13 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 17 are built.** In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 18 are built.** In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
 receipts (14), the Tutoring/Finance dashboard and 1099s (15), progress tracking against a
-curriculum (16), and money labelled by whose side it is (17).
+curriculum (16), money labelled by whose side it is (17), and the non-admin exposure review
+and its crawling test (18).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -172,6 +173,14 @@ the other side, and the UI renders money only through `SessionMoney`, never a ba
 `formatCents`. Pay rates go through `scopeTutorPay` / `scopeAssignmentRates`, prices through
 `scopeStudentCharges` -- do not return a session, pairing or profile from a new route without
 them, and never put an amount in an audit description (tutors read their own log).
+
+**What a non-admin sees is written down, and crawled.** `docs/data-exposure.md` lists the
+rules (R1-R9) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
+kind of non-admin, calls every read endpoint and checks every object returned against them. A
+lookup by id goes through the list's own WHERE (`getVisibleSession`, `getVisiblePayment`) --
+never "can they see anything related" -- and answers 404, not 403, for a row they cannot list.
+A new read route belongs in that spec; a new rule belongs in both files. A role's dashboard shows
+that role's data only: narrow it for someone who holds several.
 
 **Every action a user takes gets an audit event.** Adding a route that changes data means
 adding a `recordAudit` call and an entry in `AUDIT_ACTIONS` in `packages/shared/src/audit.ts`.

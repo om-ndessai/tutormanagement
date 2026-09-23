@@ -18,12 +18,17 @@ export function useDashboard(params: { role?: UserRole; userId?: string }) {
   });
 }
 
-/** The month-by-month rundown, scoped to whoever is asking. */
-export function useMonthlyFinance(year: number) {
+/**
+ * The month-by-month rundown, scoped to whoever is asking -- or, for an admin
+ * viewing someone's dashboard, to that person.
+ */
+export function useMonthlyFinance(year: number, userId?: string) {
   return useQuery({
-    queryKey: ['finance', 'monthly', year],
+    queryKey: ['finance', 'monthly', year, userId ?? 'me'],
     queryFn: () =>
-      apiClient.get<ApiOk<MonthlyFinanceResponse>>(`/payments/monthly?year=${year}`),
+      apiClient.get<ApiOk<MonthlyFinanceResponse>>(
+        `/payments/monthly${toQueryString({ year, user_id: userId })}`,
+      ),
   });
 }
 

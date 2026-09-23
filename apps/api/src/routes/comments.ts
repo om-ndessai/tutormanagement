@@ -15,6 +15,7 @@ import {
 import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
+import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import {
   canAccessTarget,
@@ -140,10 +141,6 @@ export const commentsRoutes = new Hono<AppEnv>()
     const comment = await getComment(c.env.DB, id);
     if (!comment || comment.deleted_at) throw ApiError.notFound('That comment does not exist.');
 
-    if (comment.author_user_id !== viewer.id) {
-      throw new ApiError(403, 'forbidden', 'Only the person who wrote a comment can delete it.');
-    }
-
     const target = comment.target_user_id
       ? ({ target_type: 'user', target_id: comment.target_user_id } as const)
       : comment.target_session_id
@@ -154,6 +151,22 @@ export const commentsRoutes = new Hono<AppEnv>()
               target_type: 'scheduled_session',
               target_id: comment.target_scheduled_session_id!,
             } as const);
+
+    if (comment.author_user_id !== viewer.id) {
+      // Somebody who can read the comment is told it is not theirs to delete.
+      // Somebody who cannot is told it does not exist -- the same thread query
+      // decides, so this can never disagree with what they are shown -- as a
+      // 403 would confirm the id is real.
+      const row = await loadCommentTarget(c.env.DB, target);
+      const readable =
+        isAdmin(viewer) ||
+        (row !== null &&
+          (await canAccessTarget(c.env.DB, viewer, target, row)) &&
+          (await listComments(c.env.DB, viewer, target)).some((visible) => visible.id === id));
+
+      if (!readable) throw ApiError.notFound('That comment does not exist.');
+      throw new ApiError(403, 'forbidden', 'Only the person who wrote a comment can delete it.');
+    }
 
     await softDeleteComment(c.env.DB, id);
 

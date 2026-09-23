@@ -33,7 +33,7 @@ import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { autoStopExpired, recordRunningSession } from '../lib/live-sessions.js';
 import { priceSession } from '../lib/pricing.js';
-import { familyStudentIds, isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
+import { familyStudentIds, isAdmin, scopeSessionMoney } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
 import { getStudentChargeRates } from '../repositories/users.js';
@@ -50,6 +50,7 @@ import {
   createSession,
   deleteSession,
   getSession,
+  getVisibleSession,
   listSessions,
   updateSessionRow,
   type StoredSession,
@@ -358,25 +359,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
   })
 
   .get('/:id', zValidator('param', idParamSchema), async (c) => {
-    const session = await getSession(c.env.DB, c.req.valid('param').id);
-    if (!session) throw ApiError.notFound('That session does not exist.');
-
     const viewer = c.get('user');
-    const scope = teachingScopeSql(viewer, 's');
 
-    if (scope) {
-      const allowed =
-        session.tutor_user_id === viewer.id ||
-        (
-          await listSessions(c.env.DB, viewer, {
-            student_user_id: session.student_user_id,
-            limit: 1,
-            offset: 0,
-          })
-        ).totals.session_count > 0;
-
-      if (!allowed) throw ApiError.notFound('That session does not exist.');
-    }
+    // Scoped to the ROW. This used to ask whether the viewer could see any
+    // lesson of the same student, which let a tutor who had ever taught that
+    // student open another tutor's lesson with them -- and read its price.
+    const session = await getVisibleSession(c.env.DB, viewer, c.req.valid('param').id);
+    if (!session) throw ApiError.notFound('That session does not exist.');
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
     return c.json(body);
@@ -392,7 +381,8 @@ export const sessionsRoutes = new Hono<AppEnv>()
       const input = c.req.valid('json');
       const viewer = c.get('user');
 
-      const existing = await getSession(c.env.DB, id);
+      // A lesson the viewer cannot see does not exist, as far as they know.
+      const existing = await getVisibleSession(c.env.DB, viewer, id);
       if (!existing) throw ApiError.notFound('That session does not exist.');
 
       if (!isAdmin(viewer) && viewer.id !== existing.tutor_user_id) {
@@ -481,7 +471,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const { id } = c.req.valid('param');
     const viewer = c.get('user');
 
-    const existing = await getSession(c.env.DB, id);
+    const existing = await getVisibleSession(c.env.DB, viewer, id);
     if (!existing) throw ApiError.notFound('That session does not exist.');
 
     if (!isAdmin(viewer) && viewer.id !== existing.tutor_user_id) {

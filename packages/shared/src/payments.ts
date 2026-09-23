@@ -83,6 +83,11 @@ export type PaymentUpdatePayload = z.output<typeof paymentUpdateSchema>;
 
 export const monthlyFinanceQuerySchema = z.object({
   year: z.coerce.number().int().min(2000).max(2100),
+  /**
+   * Admin only: the rundown as this person sees it, for "view as". Anyone
+   * else naming somebody other than themselves is refused.
+   */
+  user_id: z.uuid().optional(),
 });
 
 export const listPaymentsQuerySchema = z.object({
