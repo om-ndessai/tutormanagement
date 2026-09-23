@@ -107,3 +107,6 @@ Ensure the data model changes, if any are needed for this. Make the data/api/UI 
 
 Phase 18.
 Do a detailed analysis of UI/api code and ensure the data that is shown to the logged in user (other than admin) is relevant and as expected so the issues like in Phase 17 do not slip through.
+
+Phase 19:
+I want to address another data visibility concern shared from the user feedback. In the sessions page, tutor is expected to use this during the tutoring session to refer to the previous session notes  and or notes for this session. Now it also shows money received by the tutor and paid by parents. The issue is one student can see get a view of the charges since tutor could be on that page infront of the student.  Just line dashboard for admin has finance and tutoring tab, create similar tabs in sessions page and on tutoring tab (selected by default) exclude all financial information

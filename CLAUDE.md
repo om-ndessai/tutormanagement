@@ -10,13 +10,14 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 18 are built.** In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19 are built.** In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
 receipts (14), the Tutoring/Finance dashboard and 1099s (15), progress tracking against a
-curriculum (16), money labelled by whose side it is (17), and the non-admin exposure review
-and its crawling test (18).
+curriculum (16), money labelled by whose side it is (17), the non-admin exposure review
+and its crawling test (18), and the same Tutoring/Finance split on the sessions page, so
+no money is on screen while a tutor reads notes beside a student (19).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -125,11 +126,15 @@ always the live, re-checked user.
 an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
 identity, and it is the whole security boundary of sign-in.
 
-**The dashboard is two tabs: Tutoring and Finance.** `DashboardTabs` in
-`features/dashboard/role-dashboards.tsx` holds both halves and keeps the choice in `?tab=`, so a
-link to the finance view opens the finance view. Money belongs on Finance, teaching on
-Tutoring — put a new panel where its subject lives rather than at the bottom of whichever
-renders first.
+**The dashboard and the sessions page are two tabs: Tutoring and Finance.**
+`TutoringFinanceTabs` in `components/layout/tutoring-finance-tabs.tsx` holds both halves and
+keeps the choice in `?tab=`, so a link to the finance view opens the finance view — a money
+card links to `/sessions?tab=finance`. Money belongs on Finance, teaching on Tutoring — put a
+new panel where its subject lives rather than at the bottom of whichever renders first.
+Tutoring is the default and carries **no money at all**, including in the dialogs it opens
+(`SessionFormDialog`'s `showMoney`): a tutor keeps the sessions page open during a lesson,
+with the student looking at the same screen. The toast when a live timer stops gives the
+length, not the pay, for the same reason.
 
 **Dashboard cards are deliberately tight.** The vendored `Card` carries `py-6` of its own, so
 `StatCard` and `Panel` pass `py-0` and supply their own padding — dropping that is how a card

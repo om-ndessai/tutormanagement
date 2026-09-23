@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   ActivityIcon,
   BookOpenIcon,
-  GraduationCapIcon,
   PiggyBankIcon,
   RadioIcon,
   TargetIcon,
@@ -32,7 +31,7 @@ import { ProgressOverviewPanel, StudentProgressCard } from '@/features/progress/
 import { ROLE_ICONS } from '@/features/users/role-icon';
 import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TutoringFinanceTabs } from '@/components/layout/tutoring-finance-tabs';
 import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { MonthlyFinance } from './monthly-finance';
@@ -44,8 +43,19 @@ import { cn } from '@/lib/utils';
 // Shared pieces
 // ---------------------------------------------------------------------------
 
-/** Sessions newest-first, which is how every role wants to read them. */
-function SessionList({ sessions, showTutor }: { sessions: TutoringSession[]; showTutor?: boolean }) {
+/**
+ * Sessions newest-first, which is how every role wants to read them. On a
+ * Tutoring tab it is passed `hideMoney`: that half carries no money at all.
+ */
+function SessionList({
+  sessions,
+  showTutor,
+  hideMoney,
+}: {
+  sessions: TutoringSession[];
+  showTutor?: boolean;
+  hideMoney?: boolean;
+}) {
   if (sessions.length === 0) return <EmptyNote>No sessions recorded yet.</EmptyNote>;
 
   return (
@@ -72,7 +82,7 @@ function SessionList({ sessions, showTutor }: { sessions: TutoringSession[]; sho
               Auto-stopped
             </Badge>
           )}
-          <SessionMoney session={session} compact className="w-24" />
+          {!hideMoney && <SessionMoney session={session} compact className="w-24" />}
         </li>
       ))}
     </ul>
@@ -149,66 +159,12 @@ function BalanceRow({
 // Admin
 // ---------------------------------------------------------------------------
 
-/**
- * The dashboard's two halves.
- *
- * The application really is two things -- money, and how the teaching is
- * going -- and one scrolling column of cards made the reader find that out
- * for themselves. Splitting them lets each half be dense without either
- * crowding the other, and the tab lives in the URL so a link to the finance
- * view stays the finance view.
- */
-function DashboardTabs({
-  finance,
-  tutoring,
-}: {
-  finance: ReactNode;
-  tutoring: ReactNode;
-}) {
-  const [params, setParams] = useSearchParams();
-  const tab = params.get('tab') === 'finance' ? 'finance' : 'tutoring';
-
-  return (
-    <Tabs
-      value={tab}
-      onValueChange={(value) =>
-        setParams(
-          (current) => {
-            const next = new URLSearchParams(current);
-            next.set('tab', value);
-            return next;
-          },
-          { replace: true },
-        )
-      }
-    >
-      <TabsList className="mb-4">
-        <TabsTrigger value="tutoring">
-          <GraduationCapIcon className="size-4" />
-          Tutoring
-        </TabsTrigger>
-        <TabsTrigger value="finance">
-          <WalletIcon className="size-4" />
-          Finance
-        </TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="tutoring" className="space-y-4">
-        {tutoring}
-      </TabsContent>
-      <TabsContent value="finance" className="space-y-4">
-        {finance}
-      </TabsContent>
-    </Tabs>
-  );
-}
-
 export function AdminView({ data }: { data: AdminDashboard }) {
   const year = new Date().getFullYear();
   const monthly = useMonthlyFinance(year);
 
   return (
-    <DashboardTabs
+    <TutoringFinanceTabs
       tutoring={
         <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -235,7 +191,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Panel index={5} title="Latest sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-              <SessionList sessions={data.recent_sessions} showTutor />
+              <SessionList sessions={data.recent_sessions} showTutor hideMoney />
             </Panel>
 
             <Panel index={6} title="Recent activity" action={{ label: 'Full log', to: '/activity' }}>
@@ -272,7 +228,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
               money
               icon={BookOpenIcon}
               hint={`${data.totals.session_count} sessions`}
-              to="/sessions"
+              to="/sessions?tab=finance"
             />
             <StatCard
               index={3}
@@ -282,7 +238,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
               icon={PiggyBankIcon}
               tone="success"
               hint={`Paid out ${formatCents(data.totals.tutor_cost_all_time_cents)}`}
-              to="/sessions"
+              to="/sessions?tab=finance"
             />
           </div>
 
@@ -446,15 +402,16 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
   const monthly = useMonthlyFinance(year, subjectId);
 
   return (
-    <DashboardTabs
+    <TutoringFinanceTabs
       tutoring={
         <>
-          <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {/* No money on this half: a tutor may have it open beside a
+              student. What they earned is the Finance tab's first figure. */}
+          <div className="grid items-start gap-3 sm:grid-cols-3">
             <StatCard index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
             <StatCard index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
-            <StatCard index={2} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
             <StatCard
-              index={3}
+              index={2}
               label="Students taught this month"
               value={new Set(data.recent_sessions.map((session) => session.student_user_id)).size}
               icon={ROLE_ICONS.tutor}
@@ -481,9 +438,6 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
                     </p>
                     <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
                       <Badge variant="secondary">{student.session_count} sessions</Badge>
-                      <span className="text-muted-foreground">
-                        {formatCents(student.earned_cents)} earned
-                      </span>
                       {student.last_session_on && (
                         <span className="text-muted-foreground">last {student.last_session_on}</span>
                       )}
@@ -503,7 +457,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Panel index={12} title="Your recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-              <SessionList sessions={data.recent_sessions} />
+              <SessionList sessions={data.recent_sessions} hideMoney />
             </Panel>
 
             <Panel index={13} title="Your activity" action={{ label: 'Full log', to: '/activity' }}>
@@ -537,7 +491,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
               advance ? 'lg:grid-cols-4' : 'lg:grid-cols-3',
             )}
           >
-            <StatCard index={1} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions" />
+            <StatCard index={1} label="Earned" value={data.earnings.earned_cents} money icon={WalletIcon} to="/sessions?tab=finance" />
             <StatCard
               index={2}
               label="Paid to you"
@@ -598,7 +552,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard index={0} label="Children" value={data.children.length} icon={ROLE_ICONS.student} />
-        <StatCard index={1} label="Charged" value={data.totals.charged_cents} money icon={BookOpenIcon} to="/sessions" />
+        <StatCard index={1} label="Charged" value={data.totals.charged_cents} money icon={BookOpenIcon} to="/sessions?tab=finance" />
         <StatCard
           index={2}
           label="Outstanding"

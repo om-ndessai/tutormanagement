@@ -60,19 +60,65 @@ test.describe('session money, per reader', () => {
 
   test('the screens label the amount from the reader’s side', async ({ as }) => {
     const tutor = await as('tutor');
-    await tutor.goto('/sessions');
+    await tutor.goto('/sessions?tab=finance');
     await expect(visible(tutor, 'Your pay').first()).toBeVisible();
     await expect(tutor.getByText(/Institute cut|· Institute/)).toHaveCount(0);
 
     const parent = await as('parent');
-    await parent.goto('/sessions');
+    await parent.goto('/sessions?tab=finance');
     await expect(visible(parent, 'You pay').first()).toBeVisible();
     await expect(parent.getByText('Your pay')).toHaveCount(0);
 
     const admin = await as('admin');
-    await admin.goto('/sessions');
+    await admin.goto('/sessions?tab=finance');
     await expect(visible(admin, 'Institute cut')).toBeVisible();
     await expect(visible(admin, /Tutor \$[\d,.]+ · Institute/).first()).toBeVisible();
+  });
+
+  /**
+   * Phase 19: a tutor keeps the sessions page open during a lesson to read the
+   * notes, with the student beside them. Its Tutoring tab is the default and
+   * shows no money to anyone -- not in the totals, not on a lesson, not in the
+   * form that records one.
+   */
+  test('the sessions page opens on a Tutoring tab with no money on it', async ({ as }) => {
+    for (const who of ['tutor', 'parent', 'admin'] as const) {
+      const page = await as(who);
+      await page.goto('/sessions');
+
+      await expect(page.getByRole('tab', { name: 'Tutoring' })).toHaveAttribute('aria-selected', 'true');
+      await expect(visible(page, 'Time taught')).toBeVisible();
+      // Wait for the lessons themselves, so the check below is not of a skeleton.
+      await expect(page.getByRole('button', { name: /^Comments? / }).first()).toBeVisible();
+
+      const text = await page.locator('body').innerText();
+      expect(text, `${who}'s Tutoring tab`).not.toMatch(/\$\s?\d/);
+      for (const label of ['Your pay', 'You pay', 'Charged', 'Earned', 'Institute cut']) {
+        expect(text, `${who}'s Tutoring tab`).not.toContain(label);
+      }
+      await expect(page.getByRole('link', { name: 'CSV' })).toHaveCount(0);
+
+      // The same list, money and all, is one click away.
+      await page.getByRole('tab', { name: 'Finance' }).click();
+      await expect(page).toHaveURL(/tab=finance/);
+      await expect(visible(page, /\$\s?\d/).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'CSV' })).toBeVisible();
+    }
+  });
+
+  test('recording a lesson from the Tutoring tab previews its length, not the pay', async ({ as }) => {
+    const tutor = await as('tutor');
+    await tutor.goto('/sessions');
+    await tutor.getByRole('button', { name: /record a session/i }).first().click();
+
+    const dialog = tutor.getByRole('dialog');
+    await dialog.getByRole('combobox').first().click();
+    await tutor.getByRole('option', { name: /Sofia Okafor/ }).click();
+    await dialog.getByRole('button', { name: '1 hr', exact: true }).click();
+
+    await expect(dialog.getByText('1 hr', { exact: true }).last()).toBeVisible();
+    await expect(dialog.getByText('Your pay')).toHaveCount(0);
+    expect(await dialog.innerText()).not.toMatch(/\$\s?\d/);
   });
 
   test('recording a lesson puts no price in the tutor’s activity log', async ({ as }) => {

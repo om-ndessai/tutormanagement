@@ -30,6 +30,8 @@ lessons as a student, in one list.
 | Screen / endpoint | Tutor | Parent | Student |
 | --- | --- | --- | --- |
 | Sessions list, `GET /sessions` | Lessons they taught, with their pay. | Their children's lessons, with the price. | Their own lessons, with the price. |
+| Sessions page, Tutoring tab (the default) | The same lessons and notes, and no money at all: no totals, amounts, export or pay preview in the record form. A tutor has this open with the student beside them (Phase 19). | Same. | Same. |
+| Sessions page, Finance tab | The list above, with the money and the CSV. | Same. | Same. |
 | Session by id | The same set; anything else is 404. | Same. | Same. |
 | Session totals | "Earned" | "Charged" | "Charged" |
 | Sessions CSV | Only their "Your pay" columns. | Only their "Charged to you" columns. | Same as parent. |

@@ -74,10 +74,16 @@ export function SessionFormDialog({
   open,
   onOpenChange,
   existing,
+  showMoney = true,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   existing: TutoringSession | null;
+  /**
+   * False when opened from the sessions page's Tutoring tab, which a tutor
+   * uses with the student beside them: the preview then shows the length only.
+   */
+  showMoney?: boolean;
 }) {
   const isEdit = existing !== null;
   const { user } = useAuth();
@@ -375,7 +381,12 @@ export function SessionFormDialog({
               })}
             </div>
 
-            <SessionPreview preview={preview} hasAssignment={Boolean(assignment)} isAdmin={isAdmin} />
+            <SessionPreview
+              preview={preview}
+              hasAssignment={Boolean(assignment)}
+              isAdmin={isAdmin}
+              showMoney={showMoney}
+            />
 
             <div className="grid gap-2">
               <Label htmlFor="notes">Session notes</Label>
@@ -427,6 +438,7 @@ function SessionPreview({
   preview,
   hasAssignment,
   isAdmin,
+  showMoney,
 }: {
   preview: {
     elapsed: number;
@@ -437,6 +449,7 @@ function SessionPreview({
   } | null;
   hasAssignment: boolean;
   isAdmin: boolean;
+  showMoney: boolean;
 }) {
   if (!preview) {
     return (
@@ -461,15 +474,19 @@ function SessionPreview({
           )}
         </span>
 
+        {/* A missing rate still warns on the Tutoring tab: it is a problem to
+            fix, not a figure. */}
         {preview.amount != null ? (
-          <span className="text-right">
-            <span className="text-muted-foreground block text-[10px] font-medium tracking-wide uppercase">
-              {isAdmin ? 'Tutor pay' : 'Your pay'}
+          showMoney && (
+            <span className="text-right">
+              <span className="text-muted-foreground block text-[10px] font-medium tracking-wide uppercase">
+                {isAdmin ? 'Tutor pay' : 'Your pay'}
+              </span>
+              <span className="font-display text-lg font-semibold tabular-nums">
+                {formatCents(preview.amount)}
+              </span>
             </span>
-            <span className="font-display text-lg font-semibold tabular-nums">
-              {formatCents(preview.amount)}
-            </span>
-          </span>
+          )
         ) : (
           <span className={cn('text-xs', hasAssignment ? 'text-destructive' : 'text-muted-foreground')}>
             {hasAssignment ? 'No rate set for this mode' : 'Choose a student'}
@@ -477,7 +494,7 @@ function SessionPreview({
         )}
       </div>
 
-      {preview.rate != null && (
+      {showMoney && preview.rate != null && (
         <p className="text-muted-foreground mt-1 text-xs">
           {isAdmin ? 'The tutor is' : 'You are'} paid in quarter hours at{' '}
           {formatCents(preview.rate)}/hr.
@@ -485,7 +502,7 @@ function SessionPreview({
       )}
 
       {/* The admin's view of the same lesson: both sides and the cut. */}
-      {isAdmin && preview.amount != null && (
+      {showMoney && isAdmin && preview.amount != null && (
         <p className="mt-1 text-xs">
           {preview.charge != null ? (
             <>

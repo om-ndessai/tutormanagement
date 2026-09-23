@@ -4,9 +4,7 @@ import { toast } from 'sonner';
 import {
   SESSION_MODE_LABELS,
   elapsedSince,
-  formatCents,
   formatDuration,
-  shownAmountCents,
   formatClockTime,
   formatStopwatch,
   type ActiveSession,
@@ -161,11 +159,11 @@ function StopDialog({
       const result = await stop.mutateAsync({ notes: notes.trim() || null } as never);
       const session = result.data;
 
+      // Said with the student beside the tutor, so the length and never the
+      // money (Phase 19): the amount is on the sessions page's Finance tab.
       toast.success(
         `Session recorded: ${formatClockTime(session.started_at)}–` +
-          `${formatClockTime(session.ended_at)}, ` +
-          `${session.money_view === 'tutor' ? 'your pay ' : ''}` +
-          `${formatCents(shownAmountCents(session) ?? 0)}.`,
+          `${formatClockTime(session.ended_at)}, ${formatDuration(session.duration_minutes)}.`,
       );
       onOpenChange(false);
     } catch (error) {
