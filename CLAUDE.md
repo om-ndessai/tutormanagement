@@ -10,14 +10,15 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 19 are built.** In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
 receipts (14), the Tutoring/Finance dashboard and 1099s (15), progress tracking against a
 curriculum (16), money labelled by whose side it is (17), the non-admin exposure review
 and its crawling test (18), and the same Tutoring/Finance split on the sessions page, so
-no money is on screen while a tutor reads notes beside a student (19).
+no money is on screen while a tutor reads notes beside a student (19), and the Tutoring tab rebuilt
+as Analytics, a sessions carousel, a progress spotlight and recent activity (21).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -135,6 +136,16 @@ Tutoring is the default and carries **no money at all**, including in the dialog
 (`SessionFormDialog`'s `showMoney`): a tutor keeps the sessions page open during a lesson,
 with the student looking at the same screen. The toast when a live timer stops gives the
 length, not the pay, for the same reason.
+
+**The admin and tutor Tutoring tabs are four sections, most important first**
+(`DashboardSection` in `features/dashboard/stat-card.tsx`): Analytics (compact `StatCard`s
+with no hint lines, so the row stays one height), Tutoring Sessions (`SessionsCarousel`: the
+last 5 lessons, "now", then the next ones), Progress (`ProgressSpotlight`: 5 random students
+with the compact `ProgressChart`), and Recent Activity (5 events, payment lines left out).
+Upcoming lessons are never stored: `expandUpcoming` in `packages/shared/src/schedules.ts`
+dates them from the schedules on the institute clock, skipping any already recorded, and
+`GET /api/schedules/upcoming` serves them five at a time. A tutor's carousel passes their own
+`tutor_user_id`, so a tutor who also parents does not see their child's lessons in it.
 
 **Dashboard cards are deliberately tight.** The vendored `Card` carries `py-6` of its own, so
 `StatCard` and `Panel` pass `py-0` and supply their own padding — dropping that is how a card

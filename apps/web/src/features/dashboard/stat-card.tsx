@@ -34,6 +34,7 @@ export function StatCard({
   hint,
   tone = 'default',
   index = 0,
+  compact = false,
 }: {
   label: string;
   value: number | undefined;
@@ -45,6 +46,8 @@ export function StatCard({
   hint?: string;
   tone?: 'default' | 'warning' | 'brand' | 'success';
   index?: number;
+  /** The Analytics row's size: a smaller figure and tighter padding. */
+  compact?: boolean;
 }) {
   const settled = useCountUp(value ?? 0);
   const display =
@@ -67,7 +70,7 @@ export function StatCard({
   // row went (the whole card is the link, and the arrow says so on hover), and
   // the figure sits straight under its label.
   const body = (
-    <CardContent className="px-4 py-3.5">
+    <CardContent className={compact ? 'px-3.5 py-2.5' : 'px-4 py-3.5'}>
       <div className="flex items-center justify-between gap-2">
         <p className="text-muted-foreground truncate text-[11px] font-medium tracking-wide uppercase">
           {label}
@@ -77,7 +80,13 @@ export function StatCard({
         </span>
       </div>
 
-      <p className={cn('font-display mt-1 text-2xl font-semibold tabular-nums', toneClass)}>
+      <p
+        className={cn(
+          'font-display font-semibold tabular-nums',
+          compact ? 'mt-0.5 text-xl' : 'mt-1 text-2xl',
+          toneClass,
+        )}
+      >
         {display}
         {to && (
           <ArrowUpRightIcon className="text-muted-foreground/0 group-hover:text-primary ml-1 inline size-3.5 align-super transition-colors" />
@@ -90,7 +99,8 @@ export function StatCard({
 
   if (!to) {
     return (
-      <Card className={cn('py-0', ENTER)} style={stagger(index)}>
+      // h-full like the linked form, so a row mixing the two lines up.
+      <Card className={cn('h-full py-0', ENTER)} style={stagger(index)}>
         {body}
       </Card>
     );
@@ -141,4 +151,42 @@ export function Panel({
 
 export function EmptyNote({ children }: { children: ReactNode }) {
   return <p className="text-muted-foreground py-6 text-center text-sm">{children}</p>;
+}
+
+/**
+ * A titled band of the dashboard (Phase 21): Analytics, Tutoring Sessions,
+ * Progress, Recent Activity. A heading and an optional link, over content
+ * that brings its own cards -- unlike Panel, which is itself one card.
+ */
+export function DashboardSection({
+  title,
+  action,
+  children,
+  index = 0,
+}: {
+  title: string;
+  action?: { label: string; to: string };
+  children: ReactNode;
+  index?: number;
+}) {
+  const id = `section-${title.toLowerCase().replace(/[^a-z]+/g, '-')}`;
+
+  return (
+    <section aria-labelledby={id} className={cn('min-w-0', ENTER)} style={stagger(index)}>
+      <div className="mb-2 flex items-baseline justify-between gap-2">
+        <h2 id={id} className="font-display text-base font-semibold">
+          {title}
+        </h2>
+        {action && (
+          <Link
+            to={action.to}
+            className="text-muted-foreground hover:text-primary text-xs transition-colors"
+          >
+            {action.label} →
+          </Link>
+        )}
+      </div>
+      {children}
+    </section>
+  );
 }

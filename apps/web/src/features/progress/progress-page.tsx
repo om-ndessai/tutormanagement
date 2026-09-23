@@ -1,12 +1,21 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PROGRESS_STATUS_LABELS, type ProgressStatus } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/providers/auth-provider';
+import { useAssignments } from '@/features/teaching/api';
 import { useProgressOverview } from './api';
 import { ProgressList } from './progress-list';
 
@@ -33,11 +42,54 @@ export function ProgressPage() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<ProgressStatus | 'all'>('all');
 
+  // One student, or one tutor's students (Phase 21). Kept in the URL so a
+  // link or a reload keeps the view. Both narrow the rows the API already
+  // scoped to this reader, so a filter can never show more than the list.
+  const [params, setParams] = useSearchParams();
+  const studentFilter = params.get('student') ?? 'all';
+  const tutorFilter = params.get('tutor') ?? 'all';
+  const setFilter = (key: 'student' | 'tutor', value: string) =>
+    setParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        if (value === 'all') next.delete(key);
+        else next.set(key, value);
+        return next;
+      },
+      { replace: true },
+    );
+
+  // Who teaches whom, from the pairings this reader can see.
+  const { data: assignmentData } = useAssignments({});
+  const tutors = useMemo(() => {
+    const byTutor = new Map<string, { name: string; students: Set<string> }>();
+    for (const pairing of assignmentData?.data ?? []) {
+      const entry = byTutor.get(pairing.tutor_user_id) ?? {
+        name: pairing.tutor_name,
+        students: new Set<string>(),
+      };
+      entry.students.add(pairing.student_user_id);
+      byTutor.set(pairing.tutor_user_id, entry);
+    }
+    return [...byTutor.entries()].sort((a, b) => a[1].name.localeCompare(b[1].name));
+  }, [assignmentData]);
+  const tutorStudents = tutors.find(([id]) => id === tutorFilter)?.[1].students ?? null;
+
+  const students = useMemo(
+    () =>
+      [...(data?.data ?? [])]
+        .map((row) => ({ id: row.student_user_id, name: row.student_name }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    [data],
+  );
+
   const rows = useMemo(() => {
     const all = data?.data ?? [];
     const needle = search.trim().toLowerCase();
 
     return all
+      .filter((row) => studentFilter === 'all' || row.student_user_id === studentFilter)
+      .filter((row) => tutorFilter === 'all' || (tutorStudents?.has(row.student_user_id) ?? false))
       .filter((row) => status === 'all' || row.summary.status === status)
       .filter((row) => !needle || row.student_name.toLowerCase().includes(needle))
       .sort(
@@ -45,7 +97,7 @@ export function ProgressPage() {
           STATUS_ORDER.indexOf(a.summary.status) - STATUS_ORDER.indexOf(b.summary.status) ||
           a.student_name.localeCompare(b.student_name),
       );
-  }, [data, search, status]);
+  }, [data, search, status, studentFilter, tutorFilter, tutorStudents]);
 
   const counts = useMemo(() => {
     const map = new Map<ProgressStatus, number>();
@@ -75,6 +127,35 @@ export function ProgressPage() {
           aria-label="Find a student"
           className="sm:w-56"
         />
+        <Select value={studentFilter} onValueChange={(value) => setFilter('student', value)}>
+          <SelectTrigger className="w-full sm:w-48" aria-label="Student">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All students</SelectItem>
+            {students.map((student) => (
+              <SelectItem key={student.id} value={student.id}>
+                {student.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {/* Only worth offering when there is more than one tutor to choose. */}
+        {tutors.length > 1 && (
+          <Select value={tutorFilter} onValueChange={(value) => setFilter('tutor', value)}>
+            <SelectTrigger className="w-full sm:w-48" aria-label="Tutor">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All tutors</SelectItem>
+              {tutors.map(([id, tutor]) => (
+                <SelectItem key={id} value={id}>
+                  {tutor.name}’s students
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
         <div className="flex flex-wrap gap-1.5">
           <Button
             size="sm"
@@ -109,7 +190,7 @@ export function ProgressPage() {
             <ProgressList
               rows={rows}
               empty={
-                search || status !== 'all'
+                search || status !== 'all' || studentFilter !== 'all' || tutorFilter !== 'all'
                   ? 'No student matches.'
                   : 'There are no students for you to follow yet.'
               }

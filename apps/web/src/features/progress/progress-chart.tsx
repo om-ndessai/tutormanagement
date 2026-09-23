@@ -24,8 +24,13 @@ import { ratingStyle } from './rating';
  * line" and "few lessons, steep line" both read at a glance.
  */
 
-const HEIGHT = 240;
-const MARGIN = { top: 26, right: 44, bottom: 30, left: 40 };
+const FULL = { height: 240, margin: { top: 26, right: 44, bottom: 30, left: 40 }, floor: 280 };
+/**
+ * The dashboard's card-sized version (Phase 21): the same geometry with the
+ * words taken off -- no axes, labels, legend or tooltip -- so the shape of the
+ * run against the pace line is what reads. The full chart is one click away.
+ */
+const COMPACT = { height: 64, margin: { top: 6, right: 6, bottom: 6, left: 6 }, floor: 120 };
 const DAY_MS = 86_400_000;
 
 function toDay(iso: string): number {
@@ -48,20 +53,20 @@ function monthLabel(day: number): string {
 }
 
 /** Tracks an element's rendered width so text stays at its real size. */
-function useWidth<T extends HTMLElement>() {
+function useWidth<T extends HTMLElement>(floor: number) {
   const ref = useRef<T | null>(null);
-  const [width, setWidth] = useState(640);
+  const [width, setWidth] = useState(floor === FULL.floor ? 640 : 240);
 
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
 
     const observer = new ResizeObserver(([entry]) => {
-      if (entry) setWidth(Math.max(280, Math.round(entry.contentRect.width)));
+      if (entry) setWidth(Math.max(floor, Math.round(entry.contentRect.width)));
     });
     observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [floor]);
 
   return { ref, width };
 }
@@ -71,13 +76,19 @@ export function ProgressChart({
   summary,
   timeline,
   today,
+  compact = false,
 }: {
   plan: Pick<LearningPlan, 'starts_on' | 'target_on'>;
   summary: ProgressSummary;
   timeline: ProgressPoint[];
   today: string;
+  /** The card-sized sparkline: no axes, labels, legend or tooltip. */
+  compact?: boolean;
 }) {
-  const { ref, width } = useWidth<HTMLDivElement>();
+  const size = compact ? COMPACT : FULL;
+  const HEIGHT = size.height;
+  const MARGIN = size.margin;
+  const { ref, width } = useWidth<HTMLDivElement>(size.floor);
   const [active, setActive] = useState<number | null>(null);
 
   const geometry = useMemo(() => {
@@ -132,7 +143,7 @@ export function ProgressChart({
         ` L${points.at(-1)![0]},${y(0)} Z`,
       endPoint: points.at(-1)!,
     };
-  }, [plan.starts_on, plan.target_on, summary.start_percent, timeline, today, width]);
+  }, [plan.starts_on, plan.target_on, summary.start_percent, timeline, today, width, HEIGHT, MARGIN]);
 
   const { x, y } = geometry;
   const activePoint = active === null ? null : timeline[active];
@@ -156,7 +167,7 @@ export function ProgressChart({
   }
 
   return (
-    <figure className="space-y-3">
+    <figure className={compact ? undefined : 'space-y-3'}>
       <div ref={ref} className="relative">
         <svg
           width={width}
@@ -169,7 +180,7 @@ export function ProgressChart({
           className="block overflow-visible"
         >
           {/* Recessive frame: hairline gridlines at the quarter marks. */}
-          {[0, 25, 50, 75, 100].map((percent) => (
+          {!compact && [0, 25, 50, 75, 100].map((percent) => (
             <g key={percent}>
               <line
                 x1={MARGIN.left}
@@ -191,7 +202,7 @@ export function ProgressChart({
             </g>
           ))}
 
-          {geometry.ticks.map((day) => (
+          {!compact && geometry.ticks.map((day) => (
             <text
               key={day}
               x={x(day)}
@@ -204,7 +215,7 @@ export function ProgressChart({
           ))}
 
           {/* Start and goal: the two ends of the timeline, named. */}
-          {(
+          {!compact && (
             [
               [geometry.start, 'Start'],
               [geometry.goal, 'Goal'],
@@ -265,17 +276,20 @@ export function ProgressChart({
                 strokeOpacity={0.35}
                 strokeWidth={1}
               />
-              <text
-                x={x(geometry.now) + 4}
-                y={y(100) + 10}
-                className="fill-muted-foreground text-[10px]"
-              >
-                Today
-              </text>
+              {!compact && (
+                <text
+                  x={x(geometry.now) + 4}
+                  y={y(100) + 10}
+                  className="fill-muted-foreground text-[10px]"
+                >
+                  Today
+                </text>
+              )}
             </g>
           )}
 
           {/* The one direct label: where the student is now. */}
+          {!compact && (
           <text
             x={geometry.endPoint[0] + 8}
             y={geometry.endPoint[1]}
@@ -284,6 +298,7 @@ export function ProgressChart({
           >
             {summary.percent}%
           </text>
+          )}
 
           {activePoint && (
             <line
@@ -309,13 +324,13 @@ export function ProgressChart({
                 key={point.session_id}
                 cx={cx}
                 cy={cy}
-                r={active === index ? 6 : 4.5}
+                r={compact ? 2.5 : active === index ? 6 : 4.5}
                 fill={fill}
                 stroke="var(--card)"
-                strokeWidth={2}
-                tabIndex={0}
-                role="button"
-                aria-label={
+                strokeWidth={compact ? 1 : 2}
+                tabIndex={compact ? undefined : 0}
+                role={compact ? undefined : 'button'}
+                aria-label={compact ? undefined :
                   `${shortDate(point.occurred_on)} with ${point.tutor_name}: ` +
                   (point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'not scored') +
                   `, ${point.percent}% mastered after it`
@@ -328,6 +343,7 @@ export function ProgressChart({
           })}
 
           {/* A hit layer over the whole plot: the crosshair finds the lesson. */}
+          {!compact && (
           <rect
             x={MARGIN.left}
             y={MARGIN.top}
@@ -337,6 +353,7 @@ export function ProgressChart({
             onPointerMove={handlePointer}
             onPointerLeave={() => setActive(null)}
           />
+          )}
         </svg>
 
         {activePoint && (
@@ -376,6 +393,7 @@ export function ProgressChart({
         )}
       </div>
 
+      {!compact && (
       <figcaption className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
         <span className="flex items-center gap-1.5">
           <span className="bg-primary inline-block h-0.5 w-4 rounded" />
@@ -398,6 +416,7 @@ export function ProgressChart({
           Lesson, darker = bigger step towards the goal
         </span>
       </figcaption>
+      )}
     </figure>
   );
 }

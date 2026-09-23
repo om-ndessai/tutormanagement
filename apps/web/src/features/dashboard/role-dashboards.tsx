@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ActivityIcon,
@@ -27,12 +26,15 @@ import {
 
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { SessionMoney } from '@/features/teaching/session-money';
-import { ProgressOverviewPanel, StudentProgressCard } from '@/features/progress/progress-card';
+import { StudentProgressCard } from '@/features/progress/progress-card';
+import { ProgressSpotlight } from '@/features/progress/progress-spotlight';
 import { ROLE_ICONS } from '@/features/users/role-icon';
 import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { TutoringFinanceTabs } from '@/components/layout/tutoring-finance-tabs';
-import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
+import { DashboardSection, EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
+import { SessionsCarousel } from './sessions-carousel';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { MonthlyFinance } from './monthly-finance';
 import { YearEndPanel } from './year-end-panel';
@@ -166,39 +168,39 @@ export function AdminView({ data }: { data: AdminDashboard }) {
   return (
     <TutoringFinanceTabs
       tutoring={
-        <>
-          <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <StatCard index={0} label="Students" value={data.counts.students} icon={ROLE_ICONS.student} to="/users?role=student" />
-            <StatCard index={1} label="Tutors" value={data.counts.tutors} icon={ROLE_ICONS.tutor} to="/users?role=tutor" />
-            <StatCard index={2} label="Parents" value={data.counts.parents} icon={ROLE_ICONS.parent} to="/users?role=parent" />
-            <StatCard index={3} label="Admins" value={data.counts.admins} icon={ROLE_ICONS.admin} to="/users?role=admin" />
-            <StatCard
-              index={4}
-              label="Sessions running"
-              value={data.counts.live_sessions}
-              icon={RadioIcon}
-              tone={data.counts.live_sessions > 0 ? 'success' : 'default'}
-              hint={data.counts.live_sessions > 0 ? 'Being taught right now' : 'None in progress'}
-            />
-          </div>
+        <div className="space-y-6">
+          <DashboardSection index={0} title="Analytics">
+            <div className="grid grid-cols-2 items-stretch gap-3 lg:grid-cols-4">
+              <StatCard compact index={0} label="Students" value={data.counts.students} icon={ROLE_ICONS.student} to="/users?role=student" />
+              <StatCard compact index={1} label="Tutors" value={data.counts.tutors} icon={ROLE_ICONS.tutor} to="/users?role=tutor" />
+              <StatCard compact index={2} label="Parents" value={data.counts.parents} icon={ROLE_ICONS.parent} to="/users?role=parent" />
+              <StatCard
+                compact
+                index={3}
+                label="Sessions running"
+                value={data.counts.live_sessions}
+                icon={RadioIcon}
+                tone={data.counts.live_sessions > 0 ? 'success' : 'default'}
+              />
+            </div>
+          </DashboardSection>
 
-          <ProgressOverviewPanel
-            index={5}
-            title="Student progress"
-            rows={data.progress}
-            empty="No students yet."
-          />
+          <DashboardSection index={4} title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+            <SessionsCarousel past={data.recent_sessions} showTutor />
+          </DashboardSection>
 
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Panel index={5} title="Latest sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-              <SessionList sessions={data.recent_sessions} showTutor hideMoney />
-            </Panel>
+          <DashboardSection index={5} title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
+            <ProgressSpotlight index={6} students={data.progress_spotlight} empty="No students yet." />
+          </DashboardSection>
 
-            <Panel index={6} title="Recent activity" action={{ label: 'Full log', to: '/activity' }}>
-              <ActivityFeed events={data.recent_activity} />
-            </Panel>
-          </div>
-        </>
+          <DashboardSection index={7} title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+            <Card className="py-0">
+              <CardContent className="px-4 py-2">
+                <ActivityFeed events={data.recent_activity} />
+              </CardContent>
+            </Card>
+          </DashboardSection>
+        </div>
       }
       finance={
         <>
@@ -404,67 +406,49 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
   return (
     <TutoringFinanceTabs
       tutoring={
-        <>
-          {/* No money on this half: a tutor may have it open beside a
-              student. What they earned is the Finance tab's first figure. */}
-          <div className="grid items-start gap-3 sm:grid-cols-3">
-            <StatCard index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
-            <StatCard index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
-            <StatCard
-              index={2}
-              label="Students taught this month"
-              value={new Set(data.recent_sessions.map((session) => session.student_user_id)).size}
-              icon={ROLE_ICONS.tutor}
-              hint="From your latest sessions"
-              to="/sessions"
+        // No money on this half: a tutor may have it open beside a student.
+        // What they earned is the Finance tab's first figure.
+        <div className="space-y-6">
+          <DashboardSection index={0} title="Analytics">
+            <div className="grid grid-cols-2 items-stretch gap-3 lg:grid-cols-4">
+              <StatCard compact index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
+              <StatCard compact index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
+              <StatCard
+                compact
+                index={2}
+                label="Sessions running"
+                value={data.live_sessions}
+                icon={RadioIcon}
+                tone={data.live_sessions > 0 ? 'success' : 'default'}
+              />
+            </div>
+          </DashboardSection>
+
+          <DashboardSection index={3} title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+            {/* Only lessons they teach, even for an admin viewing as them. */}
+            <SessionsCarousel
+              past={data.recent_sessions}
+              tutorUserId={data.earnings.user_id}
+              showTutor={false}
             />
-          </div>
+          </DashboardSection>
 
-          <Panel index={4} title="Your students" action={{ label: 'Pairings', to: '/assignments' }}>
-            {data.students.length === 0 ? (
-              <EmptyNote>No students assigned to you yet.</EmptyNote>
-            ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {data.students.map((student, position) => (
-                  <div
-                    key={student.user_id}
-                    className={cn('rounded-lg border p-3 transition-colors hover:border-primary/40', ENTER)}
-                    style={stagger(position + 5)}
-                  >
-                    <p className="font-medium">{student.full_name}</p>
-                    <p className="text-muted-foreground mt-0.5 text-xs">
-                      {student.current_math_course ?? 'No course recorded'}
-                      {student.school ? ` · ${student.school}` : ''}
-                    </p>
-                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                      <Badge variant="secondary">{student.session_count} sessions</Badge>
-                      {student.last_session_on && (
-                        <span className="text-muted-foreground">last {student.last_session_on}</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </Panel>
+          <DashboardSection index={4} title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
+            <ProgressSpotlight
+              index={5}
+              students={data.progress_spotlight}
+              empty="No students assigned to you yet."
+            />
+          </DashboardSection>
 
-          <ProgressOverviewPanel
-            index={11}
-            title="Student progress"
-            rows={data.progress}
-            empty="No students assigned to you yet."
-          />
-
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Panel index={12} title="Your recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-              <SessionList sessions={data.recent_sessions} hideMoney />
-            </Panel>
-
-            <Panel index={13} title="Your activity" action={{ label: 'Full log', to: '/activity' }}>
-              <ActivityFeed events={data.recent_activity} showActor={false} />
-            </Panel>
-          </div>
-        </>
+          <DashboardSection index={6} title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+            <Card className="py-0">
+              <CardContent className="px-4 py-2">
+                <ActivityFeed events={data.recent_activity} showActor={false} />
+              </CardContent>
+            </Card>
+          </DashboardSection>
+        </div>
       }
       finance={
         <>

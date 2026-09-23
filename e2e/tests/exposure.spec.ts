@@ -155,6 +155,7 @@ test.describe('what each non-admin can see', () => {
       await read('/api/payments/monthly?year=2026');
       await read('/api/audit?limit=200');
       await read('/api/schedules');
+      await read('/api/schedules/upcoming?limit=10');
       await read('/api/comments/feed');
       await read('/api/progress');
       await read('/api/sessions/active');
@@ -177,6 +178,14 @@ test.describe('what each non-admin can see', () => {
         } else {
           expect(response.status(), `R9 lesson ${session.id} should be hidden from ${who}`).toBe(404);
         }
+      }
+
+      // Phase 21: every upcoming lesson comes from a schedule this reader can
+      // list, and carries no money -- it is shown on the Tutoring tab.
+      const mySchedules = new Set(((await get(page, '/api/schedules')) as any[]).map((s) => s.id));
+      for (const next of (await get(page, '/api/schedules/upcoming?limit=10')) as any[]) {
+        if (!mySchedules.has(next.schedule_id)) problems.push(`upcoming lesson from hidden schedule ${next.schedule_id}`);
+        if (Object.keys(next).some((key) => key.endsWith('_cents'))) problems.push('upcoming lesson carries money');
       }
 
       const myPayments = new Set(((await get(page, '/api/payments?limit=200')) as any[]).map((p) => p.id));
@@ -223,7 +232,10 @@ test.describe('what each non-admin can see', () => {
     const tutorView = ((await get(maria, '/api/dashboard?role=tutor')) as any).data;
     expect(tutorView.recent_sessions.every((s: any) => s.tutor_user_id === mariaId)).toBe(true);
     expect(tutorView.recent_payments.every((p: any) => p.party_user_id === mariaId)).toBe(true);
-    expect(tutorView.progress.every((p: any) => p.student_user_id !== sofiaId)).toBe(true);
+    expect(tutorView.progress_spotlight.every((p: any) => p.student.user_id !== sofiaId)).toBe(true);
+    // Her carousel asks for her teaching, so Sofia's lessons with Alex are not in it.
+    const upcoming = (await get(maria, `/api/schedules/upcoming?tutor_user_id=${mariaId}&limit=10`)) as any[];
+    expect(upcoming.every((row) => row.tutor_user_id === mariaId)).toBe(true);
 
     const parentView = ((await get(maria, '/api/dashboard?role=parent')) as any).data;
     expect(parentView.recent_sessions.every((s: any) => s.student_user_id === sofiaId)).toBe(true);

@@ -4,7 +4,9 @@ import {
   SESSION_MODES,
   formatDuration,
   formatTimeRange,
+  minutesToClock,
   parseClockTime,
+  zonedClockParts,
   type SessionMode,
 } from './teaching.js';
 import { optionalText } from './users.js';
@@ -116,4 +118,128 @@ export function firstOccurrence(startsOn: string, dayOfWeek: number): string {
   date.setUTCDate(date.getUTCDate() + shift);
 
   return date.toISOString().slice(0, 10);
+}
+
+// ---------------------------------------------------------------------------
+// Upcoming lessons (Phase 21)
+// ---------------------------------------------------------------------------
+
+/**
+ * One dated lesson a schedule says is coming up. Derived, never stored: a
+ * schedule is "every Tuesday at four", and this is "Tuesday the 30th at four".
+ * It carries no money -- it is shown on the Tutoring half of the dashboard.
+ */
+export interface UpcomingSession {
+  schedule_id: string;
+  occurs_on: string;
+  start_time: string;
+  end_time: string;
+  duration_minutes: number;
+  mode: SessionMode;
+  location: string | null;
+  tutor_user_id: string;
+  tutor_name: string;
+  student_user_id: string;
+  student_name: string;
+}
+
+export const upcomingSessionsQuerySchema = z.object({
+  offset: z.coerce.number().int().min(0).max(500).default(0),
+  limit: z.coerce.number().int().min(1).max(10).default(5),
+  /** Only lessons this tutor teaches: a tutor's dashboard, or an admin viewing it. */
+  tutor_user_id: z.uuid().optional(),
+});
+
+export type UpcomingSessionsParams = z.output<typeof upcomingSessionsQuerySchema>;
+
+/**
+ * The list envelope, with `has_more` in place of a total: an open-ended
+ * schedule has no last lesson to count up to.
+ */
+export interface UpcomingSessionsResponse {
+  data: UpcomingSession[];
+  meta: { offset: number; limit: number; has_more: boolean };
+}
+
+function addDays(date: string, days: number): string {
+  const [year, month, day] = date.split('-').map(Number);
+  const value = new Date(Date.UTC(year!, (month ?? 1) - 1, (day ?? 1) + days));
+  return value.toISOString().slice(0, 10);
+}
+
+/** The key `expandUpcoming` matches recorded lessons on. */
+export function upcomingTakenKey(tutorId: string, studentId: string, date: string): string {
+  return `${tutorId}|${studentId}|${date}`;
+}
+
+/**
+ * The next lessons the given schedules produce, soonest first.
+ *
+ * "Now" is read on the institute's clock (zonedClockParts), never from UTC
+ * parts: a lesson at 8pm on a Tuesday is still Tuesday's lesson. Today's
+ * occurrence counts until it has ENDED, so a lesson under way is still listed.
+ * An occurrence already recorded as a session -- the same tutor and student
+ * on that day, in `taken` -- is left out: it is in the past cards instead.
+ *
+ * Each schedule contributes at most `offset + limit + 1` occurrences, which is
+ * all a page can need, so a long-running schedule costs nothing extra.
+ */
+export function expandUpcoming(
+  schedules: ScheduledSession[],
+  nowIso: string,
+  options: { offset: number; limit: number; taken?: ReadonlySet<string> },
+): { items: UpcomingSession[]; has_more: boolean } {
+  const { day: today, minutesOfDay: nowMinutes } = zonedClockParts(nowIso);
+  const wanted = options.offset + options.limit + 1;
+  const all: UpcomingSession[] = [];
+
+  for (const schedule of schedules) {
+    if (!schedule.is_active) continue;
+
+    const start = parseClockTime(schedule.start_time);
+    if (start === null) continue;
+    const end = start + schedule.duration_minutes;
+
+    let date = firstOccurrence(
+      schedule.starts_on > today ? schedule.starts_on : today,
+      schedule.day_of_week,
+    );
+    let found = 0;
+
+    // The guard bounds the walk even if every week were already recorded.
+    for (let guard = 0; found < wanted && guard < wanted + 104; guard += 1, date = addDays(date, 7)) {
+      if (schedule.ends_on && date > schedule.ends_on) break;
+      if (date === today && end <= nowMinutes) continue;
+      if (options.taken?.has(upcomingTakenKey(schedule.tutor_user_id, schedule.student_user_id, date))) {
+        continue;
+      }
+
+      all.push({
+        schedule_id: schedule.id,
+        occurs_on: date,
+        start_time: schedule.start_time,
+        end_time: minutesToClock(end),
+        duration_minutes: schedule.duration_minutes,
+        mode: schedule.mode,
+        location: schedule.location,
+        tutor_user_id: schedule.tutor_user_id,
+        tutor_name: schedule.tutor_name,
+        student_user_id: schedule.student_user_id,
+        student_name: schedule.student_name,
+      });
+      found += 1;
+    }
+  }
+
+  all.sort(
+    (a, b) =>
+      a.occurs_on.localeCompare(b.occurs_on) ||
+      (parseClockTime(a.start_time) ?? 0) - (parseClockTime(b.start_time) ?? 0) ||
+      a.student_name.localeCompare(b.student_name),
+  );
+
+  return {
+    items: all.slice(options.offset, options.offset + options.limit),
+    has_more: all.length > options.offset + options.limit,
+  };
 }

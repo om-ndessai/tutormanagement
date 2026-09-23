@@ -22,7 +22,7 @@ lessons as a student, in one list.
 | R5 | A tutor's pay rates, both their defaults and their per-pairing rates, reach only that tutor. | `scopeTutorPay`, `scopeAssignmentRates` |
 | R6 | Some things stay on a person's own record: a tutor's advance level, their mailing address, their payment handles, whether the office holds their SSN, and when they last signed in. | `scopeTutorTopup`, `scopePersonalDetails`, the users list |
 | R7 | A response names nobody the reader could not already see (`visibleUserIds`). The only exception is whoever *acted*: an audit actor, a comment author, an assessor. | the scope helpers in `lib/scope.ts` |
-| R8 | The activity log never carries an amount of money. | the audit descriptions; the repository scrubs older lines |
+| R8 | The activity log never carries an amount of money. | the audit descriptions (lessons since Phase 17, payments since Phase 21); the repository rewords older lines for non-admin readers, and the dashboard's Tutoring tab leaves payment lines out altogether |
 | R9 | A lesson, payment, schedule or comment the reader cannot list is "not found" when fetched by id, and never "forbidden", because a 403 confirms it exists. | `getVisibleSession`, `getVisiblePayment`, `canSeeSchedule` |
 
 ## Who sees what, by screen
@@ -41,6 +41,7 @@ lessons as a student, in one list.
 | Balances | Their own tutor balance. | Their children's balances. | Their own balance. |
 | Monthly rundown | What they taught and were paid. | Not offered. | Not offered. |
 | Dashboard, tutor tab | Only lessons they taught, payments to them, and the students they teach. | n/a | n/a |
+| Upcoming lessons, `GET /schedules/upcoming` | Dated lessons from schedules they can list; the dashboard asks for their own teaching only. No money. | Their children's. | Their own. |
 | Dashboard, parent tab | n/a | Only their children's lessons (not ones they taught) and family payments. | n/a |
 | Dashboard, student tab | n/a | n/a | Only their own lessons. |
 | Progress (Phase 16) | Students currently assigned to them. | Their children. | Themselves. |

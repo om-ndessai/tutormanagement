@@ -14,10 +14,29 @@ const SELECT_EVENT = `
  */
 const SESSION_PRICE = /\s*\(\d+(?:\.\d+)? USD\)/g;
 
-function withoutSessionPrice(event: AuditEvent): AuditEvent {
-  return event.action.startsWith('session.')
-    ? { ...event, description: event.description.replace(SESSION_PRICE, '') }
-    : event;
+/**
+ * Until Phase 21 a payment's line named its amount too -- "Recorded $241.25
+ * paid to Alex Chen by Zelle" -- and the tutor or parent it concerns reads
+ * their own log. Old lines are reworded the same way on the way out.
+ */
+const PAYMENT_AMOUNT = /\$[\d,]+(?:\.\d{2})?/;
+
+function withoutPaymentAmount(description: string): string {
+  return description
+    .replace(new RegExp(`Recorded ${PAYMENT_AMOUNT.source} paid to`), 'Recorded a payment to')
+    .replace(new RegExp(`Recorded ${PAYMENT_AMOUNT.source} received from`), 'Recorded a payment from')
+    .replace(new RegExp(` a ${PAYMENT_AMOUNT.source} payment`), ' a payment')
+    .replace(new RegExp(PAYMENT_AMOUNT.source, 'g'), 'an amount');
+}
+
+function withoutAmounts(event: AuditEvent): AuditEvent {
+  if (event.action.startsWith('session.')) {
+    return { ...event, description: event.description.replace(SESSION_PRICE, '') };
+  }
+  if (event.action.startsWith('payment.')) {
+    return { ...event, description: withoutPaymentAmount(event.description) };
+  }
+  return event;
 }
 
 export interface ListAuditResult {
@@ -88,7 +107,7 @@ export async function listAuditEvents(
     total: Number((countResult?.results?.[0] as { total?: number } | undefined)?.total ?? 0),
     events: ((pageResult?.results ?? []) as unknown as AuditEvent[]).map((event) =>
       // A scoped read is a non-admin's (or an admin viewing as one).
-      visibleToUserId ? withoutSessionPrice(event) : event,
+      visibleToUserId ? withoutAmounts(event) : event,
     ),
   };
 }

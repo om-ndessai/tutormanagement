@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { AuditEvent } from './audit.js';
 import type { Payment, StudentBalance, TutorBalance } from './payments.js';
-import type { ProgressOverview, StudentProgress } from './progress.js';
+import type { StudentProgress } from './progress.js';
 import type { TutoringSession } from './teaching.js';
 import { USER_ROLES, type UserRole } from './users.js';
 
@@ -39,7 +39,6 @@ export interface AdminDashboard {
     students: number;
     parents: number;
     tutors: number;
-    admins: number;
     /** Lessons being taught right this minute. */
     live_sessions: number;
   };
@@ -62,10 +61,15 @@ export interface AdminDashboard {
    */
   tutors_missing_ssn: { user_id: string; full_name: string }[];
   student_balances: StudentBalance[];
+  /** The last 5 events, newest first, less payments (their lines name amounts). */
   recent_activity: AuditEvent[];
+  /** The last 5 lessons, for the past half of the sessions carousel. */
   recent_sessions: TutoringSession[];
-  /** Every student against their plan, for the Tutoring tab (Phase 16). */
-  progress: ProgressOverview[];
+  /**
+   * Up to 5 students picked at random, those on a plan first, each with the
+   * timeline their card charts (Phase 21). "All Progress" has the rest.
+   */
+  progress_spotlight: StudentProgress[];
 }
 
 export interface TutorDashboard {
@@ -88,11 +92,15 @@ export interface TutorDashboard {
    * portal never offers anywhere to type it.
    */
   ssn_received_on: string | null;
+  /** Their own lesson running right now: 0 or 1. */
+  live_sessions: number;
+  /** The last 5 lessons they taught. */
   recent_sessions: TutoringSession[];
   recent_payments: Payment[];
+  /** The last 5 events they acted in or were the subject of, less payments. */
   recent_activity: AuditEvent[];
-  /** The students this tutor teaches, against their plans. */
-  progress: ProgressOverview[];
+  /** Up to 5 of the students they teach, at random, with timelines. */
+  progress_spotlight: StudentProgress[];
 }
 
 export interface ParentDashboard {

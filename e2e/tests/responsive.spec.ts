@@ -36,6 +36,23 @@ for (const width of WIDTHS) {
   });
 }
 
+// The dashboard's sessions carousel scrolls sideways inside itself; the page
+// around it must not, for a tutor as much as for an admin.
+for (const width of WIDTHS) {
+  test(`a tutor's dashboard does not scroll sideways at ${width}px`, async ({ as }) => {
+    const page = await as('tutor');
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    const overflow = await page.evaluate(() => {
+      const doc = document.documentElement;
+      return doc.scrollWidth - doc.clientWidth;
+    });
+    expect(overflow, `overflows by ${overflow}px`).toBeLessThanOrEqual(0);
+  });
+}
+
 test('the users directory switches to cards on a phone', async ({ as }) => {
   const page = await as('admin');
 

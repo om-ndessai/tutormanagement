@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom';
-import { formatCadence, type ProgressOverview, type StudentProgress } from '@tmi/shared';
+import { formatCadence, type StudentProgress } from '@tmi/shared';
 
 import { EmptyNote, Panel } from '@/features/dashboard/stat-card';
 import { ProgressChart } from './progress-chart';
-import { ProgressList } from './progress-list';
 import { ProgressStatusBadge } from './rating';
 
 function shortDate(iso: string) {
@@ -62,48 +60,6 @@ export function StudentProgressCard({
       </p>
 
       <ProgressChart plan={plan} summary={summary} timeline={progress.timeline} today={progress.today} />
-    </Panel>
-  );
-}
-
-/** A list of students against their plans, trouble first, for a dashboard. */
-export function ProgressOverviewPanel({
-  rows,
-  index,
-  title,
-  empty,
-  limit = 6,
-}: {
-  rows: ProgressOverview[];
-  index: number;
-  title: string;
-  empty: string;
-  limit?: number;
-}) {
-  const rank = { behind: 0, not_started: 1, no_plan: 2, on_track: 3, ahead: 4, achieved: 5, closed: 6 };
-  const sorted = [...rows].sort(
-    (a, b) =>
-      rank[a.summary.status] - rank[b.summary.status] || a.student_name.localeCompare(b.student_name),
-  );
-  const behind = rows.filter((row) => row.summary.status === 'behind').length;
-  const onPlan = rows.filter((row) => row.goal !== null).length;
-
-  return (
-    <Panel index={index} title={title} action={{ label: 'All progress', to: '/progress' }}>
-      {rows.length > 0 && (
-        <p className="text-muted-foreground mb-2 text-xs">
-          {onPlan} of {rows.length} on a plan
-          {behind > 0 && (
-            <>
-              {' · '}
-              <Link to="/progress" className="text-warning-foreground dark:text-warning font-medium">
-                {behind} behind
-              </Link>
-            </>
-          )}
-        </p>
-      )}
-      <ProgressList rows={sorted} empty={empty} limit={limit} />
     </Panel>
   );
 }

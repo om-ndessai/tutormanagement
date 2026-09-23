@@ -4,9 +4,9 @@ import type {
   DashboardData,
   ParentDashboard,
   Payment,
+  StudentProgress,
   StudentDashboard,
   TutorDashboard,
-  TutoringSession,
   User,
   UserRole,
 } from '@tmi/shared';
@@ -16,7 +16,67 @@ import { getSsnReceivedOn, listTutorsMissingSsn } from './users.js';
 import { listAuditEvents } from './audit.js';
 import { listPayments } from './payments.js';
 import { listSessions } from './sessions.js';
-import { buildStudentProgress, listProgressOverview } from './progress.js';
+import { buildStudentProgress } from './progress.js';
+
+/** How many events the Tutoring tab's Recent Activity shows. */
+const ACTIVITY_SIZE = 5;
+
+/**
+ * The newest events for the Tutoring tab, less the money ones. A payment's log
+ * line names its amount, and the Tutoring tab carries no money -- a tutor may
+ * have it open beside a student (Phase 19). Payments are the Finance tab's
+ * business; the full log still lists them.
+ */
+async function teachingActivity(
+  db: D1Database,
+  visibleToUserId?: string,
+): Promise<AuditEvent[]> {
+  const { events } = await listAuditEvents(
+    db,
+    { limit: 40, offset: 0, include_deleted: false } as never,
+    visibleToUserId,
+  );
+  return (events as AuditEvent[])
+    .filter((event) => !event.action.startsWith('payment.'))
+    .slice(0, ACTIVITY_SIZE);
+}
+
+/** How many students the dashboard's Progress section shows. */
+const SPOTLIGHT_SIZE = 5;
+
+/**
+ * Up to five students at random, each with their full progress (timeline
+ * included) so the card can chart it. Students on an active plan come first
+ * -- a card with nothing to chart is the least useful one -- and the rest top
+ * the five up. `among` limits the draw (a tutor's own students); null means
+ * every student, for an admin.
+ */
+async function progressSpotlight(
+  db: D1Database,
+  among: string[] | null,
+): Promise<StudentProgress[]> {
+  if (among !== null && among.length === 0) return [];
+
+  const within = among === null ? '' : `AND u.id IN (${among.map(() => '?').join(', ')})`;
+  const picked = await db
+    .prepare(
+      `SELECT u.id
+       FROM users u
+       JOIN user_roles r ON r.user_id = u.id AND r.role = 'student'
+       WHERE u.deleted_at IS NULL ${within}
+       ORDER BY EXISTS (SELECT 1 FROM learning_plans p
+                        WHERE p.student_user_id = u.id AND p.status = 'active') DESC,
+                RANDOM()
+       LIMIT ${SPOTLIGHT_SIZE}`,
+    )
+    .bind(...(among ?? []))
+    .all<{ id: string }>();
+
+  const progress = await Promise.all(
+    (picked.results ?? []).map((row) => buildStudentProgress(db, row.id)),
+  );
+  return progress.filter((row): row is StudentProgress => row !== null);
+}
 
 /**
  * Assembles exactly what one dashboard needs.
@@ -54,7 +114,6 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
          (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'student' WHERE u.deleted_at IS NULL) AS students,
          (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'parent'  WHERE u.deleted_at IS NULL) AS parents,
          (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'   WHERE u.deleted_at IS NULL) AS tutors,
-         (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'admin'   WHERE u.deleted_at IS NULL) AS admins,
          (SELECT COUNT(*) FROM active_sessions) AS live_sessions`,
     ),
     db.prepare(
@@ -70,8 +129,7 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
 
   const balances = await computeBalances(db, subject);
   const missingSsn = await listTutorsMissingSsn(db);
-  const activity = await listAuditEvents(db, { limit: 8, offset: 0, include_deleted: false } as never);
-  const sessions = await listSessions(db, subject, { limit: 6, offset: 0 } as never);
+  const sessions = await listSessions(db, subject, { limit: 5, offset: 0 } as never);
 
   return {
     kind: 'admin',
@@ -79,7 +137,6 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
       students: Number(counts.students ?? 0),
       parents: Number(counts.parents ?? 0),
       tutors: Number(counts.tutors ?? 0),
-      admins: Number(counts.admins ?? 0),
       live_sessions: Number(counts.live_sessions ?? 0),
     },
     totals: {
@@ -94,9 +151,9 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
     tutor_balances: [...balances.tutors].sort((a, b) => b.balance_cents - a.balance_cents),
     tutors_missing_ssn: missingSsn,
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
-    recent_activity: activity.events as AuditEvent[],
+    recent_activity: await teachingActivity(db),
     recent_sessions: sessions.sessions,
-    progress: await listProgressOverview(db, subject),
+    progress_spotlight: await progressSpotlight(db, null),
   };
 }
 
@@ -123,7 +180,7 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
   // otherwise see their family's lessons here, priced, under "Your recent
   // sessions" -- and have them counted as students they teach.
   const sessions = await listSessions(db, subject, {
-    limit: 6,
+    limit: 5,
     offset: 0,
     tutor_user_id: subject.id,
   } as never);
@@ -133,7 +190,10 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
     direction: 'to_tutor',
     party_user_id: subject.id,
   } as never);
-  const activity = await listAuditEvents(db, { limit: 8, offset: 0 } as never, subject.id);
+  const live = await db
+    .prepare('SELECT COUNT(*) AS n FROM active_sessions WHERE tutor_user_id = ?')
+    .bind(subject.id)
+    .first<{ n: number }>();
 
   return {
     kind: 'tutor',
@@ -158,14 +218,16 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
       session_count: 0,
       topup_amount_cents: null,
     },
+    live_sessions: Number(live?.n ?? 0),
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
-    recent_activity: activity.events as AuditEvent[],
+    recent_activity: await teachingActivity(db, subject.id),
     // Only the students they teach: someone who also parents sees their own
     // children on the parent dashboard, not here.
-    progress: await listProgressOverview(db, subject, {
-      studentIds: (studentsResult.results ?? []).map((row) => String(row.user_id)),
-    }),
+    progress_spotlight: await progressSpotlight(
+      db,
+      (studentsResult.results ?? []).map((row) => String(row.user_id)),
+    ),
   };
 }
 

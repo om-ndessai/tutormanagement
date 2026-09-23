@@ -128,3 +128,13 @@ Calendar invites:
 - Downloading the calendar file stays as it is.
 
 Alternatives considered: Cloudflare Email Service (needs Workers Paid and a DNS move off GoDaddy), Gmail/Google Calendar APIs through an admin's one-time grant (sends from a personal Gmail, needs Google's sensitive-scope verification, and stops working if the token is revoked), and mailto / "Add to Google Calendar" links (no setup, but nothing is actually sent by the portal).
+
+Phase 21: (built)
+The dashboard still needs cleanup.
+There is no point in showing admin card with number of admins.
+Compress the card sized and align then completely. Create a section called analytics and add those cards. No need to mention "none in progress" in running sessions card. That messes up alignment.
+Then section below that should Tutoring Sessions. Make this very aesthetic carousel. Combine the data from the schedules to create a card for upcming 5 sessions. There could be a right arrow indicator to pull the next 5 sessions. Combine the data from past 5 sessions and create cards on the left. The next upcming session card should have size and color indicator to highlight it as the most important.
+The next section under should be "Progress".  This will show a random 5 user cards and will have "All Progress" that will take to the "Progress" to see progress of all students. That page will have filter for student or all students for a specific tutor etc. The card on the dashboard will have a compressed timeline graph that we show on the progresses page.
+The lowest session will be the least important "Recent Activity". This will only show last 5 items in reverse chronological order
+
+

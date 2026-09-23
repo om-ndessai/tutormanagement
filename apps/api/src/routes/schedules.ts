@@ -2,11 +2,16 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import {
   describeSchedule,
+  expandUpcoming,
   listSchedulesQuerySchema,
+  upcomingSessionsQuerySchema,
+  upcomingTakenKey,
+  zonedClockParts,
   scheduleInputSchema,
   scheduleUpdateSchema,
   type ApiOk,
   type ScheduledSession,
+  type UpcomingSessionsResponse,
   type User,
 } from '@tmi/shared';
 
@@ -17,6 +22,7 @@ import { buildCalendar, calendarFilename } from '../lib/ics.js';
 import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
+import { listSessions } from '../repositories/sessions.js';
 import {
   createSchedule,
   deleteSchedule,
@@ -63,6 +69,41 @@ export const schedulesRoutes = new Hono<AppEnv>()
     const schedules = await listSchedules(c.env.DB, c.get('user'), c.req.valid('query'));
 
     const body: ApiOk<ScheduledSession[]> = { data: schedules };
+    return c.json(body);
+  })
+
+  /**
+   * The next lessons the viewer's schedules produce, dated (Phase 21), for the
+   * dashboard's sessions carousel. Scoped by the same rule as the list, and
+   * narrowed to one tutor's teaching when a tutor dashboard asks -- an admin
+   * viewing a tutor's dashboard passes that tutor, and sees what they would.
+   *
+   * A lesson already recorded for that pair on that day is left out, so a
+   * finished lesson moves from "upcoming" to "past" rather than showing twice.
+   */
+  .get('/upcoming', zValidator('query', upcomingSessionsQuerySchema), async (c) => {
+    const { offset, limit, tutor_user_id } = c.req.valid('query');
+    const viewer = c.get('user');
+    const now = new Date().toISOString();
+    const today = zonedClockParts(now).day;
+
+    const schedules = await listSchedules(c.env.DB, viewer, {
+      include_inactive: false,
+      tutor_user_id,
+    });
+    const recorded = await listSessions(c.env.DB, viewer, {
+      from: today,
+      tutor_user_id,
+      limit: 200,
+      offset: 0,
+    } as never);
+    const taken = new Set(
+      recorded.sessions.map((s) => upcomingTakenKey(s.tutor_user_id, s.student_user_id, s.occurred_on)),
+    );
+
+    const { items, has_more } = expandUpcoming(schedules, now, { offset, limit, taken });
+
+    const body: UpcomingSessionsResponse = { data: items, meta: { offset, limit, has_more } };
     return c.json(body);
   })
 

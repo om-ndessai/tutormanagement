@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import {
-  formatCents,
   listPaymentsQuerySchema,
   paymentInputSchema,
   paymentUpdateSchema,
@@ -229,12 +228,13 @@ export const paymentsRoutes = new Hono<AppEnv>()
 
     await recordAudit(c.env.DB, c.get('user'), {
       action: 'payment.recorded',
+      // No amount: the tutor or parent it concerns reads their own log (R8).
+      // The figure is on the payment itself, which the log links to.
       description:
         input.direction === 'from_parent'
-          ? `Recorded ${formatCents(payment.amount_cents)} received from ${payment.party_name}` +
-            ` for ${payment.student_name} by ${PAYMENT_FORM_LABELS[payment.method]}`
-          : `Recorded ${formatCents(payment.amount_cents)} paid to ${payment.party_name}` +
-            ` by ${PAYMENT_FORM_LABELS[payment.method]}`,
+          ? `Recorded a ${PAYMENT_FORM_LABELS[payment.method]} payment from ${payment.party_name}` +
+            ` for ${payment.student_name}`
+          : `Recorded a ${PAYMENT_FORM_LABELS[payment.method]} payment to ${payment.party_name}`,
       subject: { id: payment.party_user_id, full_name: payment.party_name },
       entity_type: 'payment',
       entity_id: payment.id,
@@ -267,7 +267,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
 
       await recordAudit(c.env.DB, c.get('user'), {
         action: 'payment.updated',
-        description: `Updated a ${formatCents(updated.amount_cents)} payment involving ${updated.party_name}`,
+        description: `Updated a payment involving ${updated.party_name}`,
         subject: { id: updated.party_user_id, full_name: updated.party_name },
         entity_type: 'payment',
         entity_id: id,
@@ -289,7 +289,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
     await recordAudit(c.env.DB, c.get('user'), {
       action: 'payment.deleted',
       description: doomed
-        ? `Deleted a ${formatCents(doomed.amount_cents)} payment involving ${doomed.party_name}`
+        ? `Deleted a payment involving ${doomed.party_name}`
         : 'Deleted a payment',
       ...(doomed ? { subject: { id: doomed.party_user_id, full_name: doomed.party_name } } : {}),
       entity_type: 'payment',
