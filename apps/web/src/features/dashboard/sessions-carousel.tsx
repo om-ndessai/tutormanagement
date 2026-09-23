@@ -56,8 +56,10 @@ function countdown(next: UpcomingSession, today: string, nowMinutes: number): st
 /**
  * The dashboard's lessons, as one strip (Phase 21): the last few taught on the
  * left, "now", then what the schedules say is coming. The strip opens with
- * "now" at its left edge, so the next lesson is the first thing in view and
- * the past is one swipe back. The right arrow pulls in five more.
+ * the next lesson centred -- the past to its left, what follows to its right
+ * -- or "now" centred when nothing is scheduled. Spacers at both ends let it
+ * centre even when there is little on one side. The right arrow pulls in
+ * five more.
  *
  * Only the strip scrolls sideways -- never the page, which the responsive
  * spec checks at phone widths. Nothing here carries money: it sits on the
@@ -76,7 +78,6 @@ export function SessionsCarousel({
 }) {
   const upcoming = useUpcomingSessions(tutorUserId);
   const track = useRef<HTMLDivElement | null>(null);
-  const now = useRef<HTMLDivElement | null>(null);
   const placed = useRef(false);
   const [edges, setEdges] = useState({ left: false, right: false });
 
@@ -93,10 +94,17 @@ export function SessionsCarousel({
     });
   }, []);
 
-  // Open on "now" once the first page is in, and never yank the strip after.
+  // Centre the next lesson (or "now") once the first page is in, and never
+  // yank the strip after.
   useLayoutEffect(() => {
-    if (placed.current || upcoming.isPending || !track.current || !now.current) return;
-    track.current.scrollLeft = now.current.offsetLeft - track.current.offsetLeft;
+    const element = track.current;
+    if (placed.current || upcoming.isPending || !element) return;
+    const anchor =
+      element.querySelector<HTMLElement>('[data-anchor="next"]') ??
+      element.querySelector<HTMLElement>('[data-anchor="now"]');
+    if (!anchor) return;
+    element.scrollLeft =
+      anchor.offsetLeft - element.offsetLeft + anchor.offsetWidth / 2 - element.clientWidth / 2;
     placed.current = true;
     measure();
   }, [upcoming.isPending, measure]);
@@ -168,19 +176,20 @@ export function SessionsCarousel({
         data-testid="sessions-track"
         className="flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto pb-2 [scrollbar-width:thin]"
       >
+        <Spacer />
         {pastOldestFirst.map((session) => (
           <PastCard key={session.id} session={session} today={clock.day} showTutor={showTutor} />
         ))}
         {past.length === 0 && (
-          <div className="text-muted-foreground flex w-44 shrink-0 snap-start items-center justify-center rounded-xl border border-dashed p-4 text-center text-xs">
+          <div className="text-muted-foreground flex w-44 shrink-0 snap-center items-center justify-center rounded-xl border border-dashed p-4 text-center text-xs">
             No sessions recorded yet
           </div>
         )}
 
         <div
-          ref={now}
+          data-anchor="now"
           aria-hidden
-          className="flex shrink-0 snap-start flex-col items-center gap-1 self-stretch px-0.5"
+          className="flex shrink-0 snap-center flex-col items-center gap-1 self-stretch px-0.5"
         >
           <span className="text-primary text-[10px] font-semibold tracking-wide uppercase">Now</span>
           <span className="bg-primary/50 w-px flex-1" />
@@ -213,19 +222,29 @@ export function SessionsCarousel({
         {!upcoming.isPending && next.length === 0 && (
           <Link
             to="/schedule"
-            className="text-muted-foreground hover:text-primary flex w-44 shrink-0 snap-start items-center justify-center rounded-xl border border-dashed p-4 text-center text-xs"
+            className="text-muted-foreground hover:text-primary flex w-44 shrink-0 snap-center items-center justify-center rounded-xl border border-dashed p-4 text-center text-xs"
           >
             Nothing scheduled. Set up a schedule →
           </Link>
         )}
 
         {upcoming.isFetchingNextPage && <Skeleton className="h-36 w-56 shrink-0 rounded-xl" />}
+        <Spacer />
       </div>
     </div>
   );
 }
 
-const CARD = 'flex shrink-0 snap-start flex-col rounded-xl border p-3.5 transition-colors';
+/**
+ * Room at each end of the strip, so the card being centred can reach the
+ * middle even with only one or two cards beside it. Half the strip, less half
+ * the 18rem next card and the 0.75rem gap either side of the spacer.
+ */
+function Spacer() {
+  return <div aria-hidden className="w-[max(0px,calc(50%-9.75rem))] shrink-0" />;
+}
+
+const CARD = 'flex shrink-0 snap-center flex-col rounded-xl border p-3.5 transition-colors';
 
 function Who({
   student,
@@ -340,6 +359,7 @@ function NextCard({
   return (
     <Link
       to={`/schedule?focus=${occurrence.schedule_id}`}
+      data-anchor="next"
       className={cn(
         CARD,
         'bg-primary text-primary-foreground border-primary w-72 shadow-md hover:shadow-lg',
