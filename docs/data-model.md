@@ -307,6 +307,14 @@ required and so has it applied directly. The pattern is deliberately narrow: `12
 "SSN" or "social security", so a phone number, invoice reference or student id still goes
 through. A validator that cries wolf gets worked around.
 
+**A 1099 can be produced for any tutor, at any time.** Nothing gates it: the number is typed
+into the dialog when the form is printed, so `ssn_received_on` is a note to the office about its
+own paperwork rather than a precondition -- gating on it meant an admin with the number in front
+of them could not use it. The tax year is chosen rather than assumed, because the work happens
+in January for the year that just ended; pinning it to today's year made the forms that were
+actually due unreachable. Tutors paid nothing in the chosen year stay on the list too, below
+those who were paid.
+
 The year-end 1099 is prepared in the browser. The admin types the number into a dialog, which
 writes a printable sheet into a new window and hands it to the print dialog; **nothing is sent
 to the server**, so the number never reaches a request body, a log line or a row. What prints

@@ -115,16 +115,19 @@ test.describe('tax documents', () => {
       .filter({ hasText: /paid in \d{4}/ })
       .first();
 
-    await expect(row.getByRole('button', { name: '1099-NEC' })).toHaveCount(0);
+    // The 1099 is offered either way -- the number is typed when the form is
+    // printed, so the tick is the office's own paperwork, not a gate.
+    await expect(row.getByRole('button', { name: '1099-NEC' })).toBeVisible();
     await row.getByRole('button', { name: /Mark SSN received/i }).click();
 
-    // The row itself has to change, without a reload: the button that was
-    // blocking the 1099 is gone and the 1099 is offered in its place.
-    await expect(row.getByRole('button', { name: '1099-NEC' })).toBeVisible();
+    // Ticking it clears the prompt from that row, without a reload.
     await expect(row.getByRole('button', { name: /Mark SSN received/i })).toHaveCount(0);
+    await expect(row.getByRole('button', { name: '1099-NEC' })).toBeVisible();
 
-    // And the chase panel, which reads from a different query, agrees.
-    await expect(admin.getByText(/SSN not on file/)).toHaveCount(0);
+    // And the chase panel, which reads from a different query, agrees. Scoped
+    // to its heading: the year-end list below says the same words about any
+    // OTHER tutor who has not handed theirs over, quite correctly.
+    await expect(admin.getByRole('heading', { name: /SSN not on file/ })).toHaveCount(0);
   });
 
   test('the year-end summary carries money and readiness, never a number', async ({ as }) => {
@@ -198,5 +201,51 @@ test.describe('the institute TIN', () => {
     await admin.getByRole('button', { name: '1099-NEC' }).first().click();
     const dialog = admin.getByRole('dialog');
     await expect(dialog.getByLabel(/Payer.s TIN/)).toHaveValue('47-2019388');
+  });
+});
+
+/**
+ * A 1099 has to be producible whenever somebody needs one -- including for a
+ * tutor whose SSN has not been ticked off, and for the year that just ended,
+ * which is when the work actually happens.
+ */
+test.describe('producing a 1099', () => {
+  test('is never blocked by the SSN tick', async ({ as }) => {
+    const admin = await as('admin');
+    const tutorId = await idOf(admin, PEOPLE.tutor.email);
+
+    // Explicitly with nothing on file.
+    await admin.request.post(`/api/users/${tutorId}/ssn-receipt`, { data: { received: false } });
+
+    await admin.goto('/?tab=finance');
+    const row = admin
+      .locator('li')
+      .filter({ hasText: PEOPLE.tutor.name })
+      .filter({ hasText: /paid in \d{4}|Nothing paid in \d{4}/ })
+      .first();
+
+    await expect(row.getByText(/SSN not on file/)).toBeVisible();
+    await expect(row.getByRole('button', { name: '1099-NEC' })).toBeVisible();
+
+    await row.getByRole('button', { name: '1099-NEC' }).click();
+    await expect(admin.getByRole('dialog').getByLabel(/Recipient.s SSN/)).toBeVisible();
+  });
+
+  test('can be produced for the year that just ended', async ({ as }) => {
+    const admin = await as('admin');
+    const lastYear = new Date().getFullYear() - 1;
+
+    await admin.goto('/?tab=finance');
+    await admin.getByLabel('Tax year').click();
+    await admin.getByRole('option', { name: String(lastYear) }).click();
+
+    // Every tutor stays reachable, including anyone paid nothing that year.
+    const buttons = admin.getByRole('button', { name: '1099-NEC' });
+    await expect(buttons.first()).toBeVisible();
+
+    await buttons.first().click();
+    await expect(
+      admin.getByRole('dialog').getByRole('heading', { name: new RegExp(String(lastYear)) }),
+    ).toBeVisible();
   });
 });

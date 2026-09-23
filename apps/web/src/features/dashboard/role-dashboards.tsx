@@ -36,7 +36,7 @@ import { EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { MonthlyFinance } from './monthly-finance';
 import { YearEndPanel } from './year-end-panel';
-import { useMonthlyFinance, useTaxStatus } from './api';
+import { useMonthlyFinance } from './api';
 import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
@@ -207,7 +207,6 @@ function DashboardTabs({
 export function AdminView({ data }: { data: AdminDashboard }) {
   const year = new Date().getFullYear();
   const monthly = useMonthlyFinance(year);
-  const taxStatus = useTaxStatus(year);
 
   return (
     <DashboardTabs
@@ -284,12 +283,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
           <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={4} />
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <YearEndPanel
-              tutors={taxStatus.data?.data ?? []}
-              year={year}
-              isLoading={taxStatus.isPending}
-              index={5}
-            />
+            <YearEndPanel index={5} />
             <SsnPanel tutors={data.tutors_missing_ssn} />
           </div>
 
