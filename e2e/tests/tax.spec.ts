@@ -101,7 +101,11 @@ test.describe('tax documents', () => {
     // with the action right there, because having to go and find the tutor's
     // record to tick it off is what made this impossible to use.
     await admin.goto('/?tab=finance');
-    await expect(admin.getByText(/SSN not on file/)).toBeVisible();
+    // The panel's heading, not the text: each tutor's row in the year-end
+    // list also says "SSN not on file", so a bare getByText matched as many
+    // times as that list happened to have loaded -- once locally, three
+    // times against the deployed test environment.
+    await expect(admin.getByRole('heading', { name: /SSN not on file/ })).toBeVisible();
 
     // Scoped to THIS tutor's row in the year-end list. Asserting that "a"
     // 1099 button exists somewhere passes before the click as well, since
