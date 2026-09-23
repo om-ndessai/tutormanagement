@@ -439,6 +439,13 @@ export interface TutoringSession {
   tutor_amount_cents: number | null;
   charge_rate_cents: number | null;
   charge_amount_cents: number | null;
+  /**
+   * Whose money the reader is looking at on this row, decided by the API
+   * alongside the blanking above. Screens label amounts from this rather than
+   * inferring it from which fields are null -- that inference is what showed a
+   * person who both tutors and parents one list with two meanings of "amount".
+   */
+  money_view: SessionMoneyView;
   notes: string | null;
   /**
    * True when the end was imposed by the session limit rather than observed --
@@ -456,25 +463,48 @@ export interface TutoringSession {
 }
 
 /**
- * The headline money for a session, from the viewer's point of view.
+ * Whose side of a lesson's money a reader sees (Phase 17).
  *
- * Scoping leaves a non-admin with exactly one side populated, so the fallback
- * picks whichever that is: a tutor sees their pay, a family sees the price.
- * An admin has both, and is shown the charge -- the institute's revenue --
- * with the margin alongside it.
+ *   admin  - both: what the family is charged, what the tutor is paid, and
+ *            the institute's cut between them
+ *   tutor  - the reader taught it: their pay, never the price
+ *   family - it is the reader's own lesson or their child's: the price they
+ *            pay, never the tutor's pay
+ *   none   - neither: no money at all
+ *
+ * Per ROW, not per person: someone who tutors and is also a parent reads
+ * their own lessons as pay and their child's as a price, in one list.
  */
+export const SESSION_MONEY_VIEWS = ['admin', 'tutor', 'family', 'none'] as const;
+export type SessionMoneyView = (typeof SESSION_MONEY_VIEWS)[number];
+
+/** How each view names its headline amount. */
+export const SESSION_MONEY_LABELS: Record<SessionMoneyView, string> = {
+  admin: 'Charged',
+  tutor: 'Your pay',
+  family: 'Charge',
+  none: '',
+};
+
+/** The headline money for a session, from the reader's side of it. */
 export function shownAmountCents(session: {
+  money_view: SessionMoneyView;
   tutor_amount_cents: number | null;
   charge_amount_cents: number | null;
 }): number | null {
-  return session.charge_amount_cents ?? session.tutor_amount_cents;
+  if (session.money_view === 'tutor') return session.tutor_amount_cents;
+  if (session.money_view === 'none') return null;
+  return session.charge_amount_cents;
 }
 
 export function shownRateCents(session: {
+  money_view: SessionMoneyView;
   tutor_rate_cents: number | null;
   charge_rate_cents: number | null;
 }): number | null {
-  return session.charge_rate_cents ?? session.tutor_rate_cents;
+  if (session.money_view === 'tutor') return session.tutor_rate_cents;
+  if (session.money_view === 'none') return null;
+  return session.charge_rate_cents;
 }
 
 /**
@@ -502,11 +532,18 @@ export const listSessionsQuerySchema = z.object({
 
 export type ListSessionsParams = z.output<typeof listSessionsQuerySchema>;
 
-/** Totals that accompany a session list, so the UI need not re-add them. */
+/**
+ * Totals that accompany a session list, so the UI need not re-add them.
+ *
+ * Each money total is the sum of THAT side over the rows the reader sees it
+ * on, and null when they see it on none: for a tutor who is also a parent,
+ * `total_tutor_amount_cents` is what they earned and
+ * `total_charge_amount_cents` what their children were charged. An admin
+ * gets both over every row, and the difference is the institute's cut.
+ */
 export interface SessionTotals {
   session_count: number;
   total_minutes: number;
-  /** Null for viewers not entitled to that side; see TutoringSession. */
   total_tutor_amount_cents: number | null;
   total_charge_amount_cents: number | null;
 }

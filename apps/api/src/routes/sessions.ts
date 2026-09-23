@@ -24,6 +24,7 @@ import {
   type SessionProgressPayload,
   type SessionTotals,
   type TutoringSession,
+  type User,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -32,7 +33,7 @@ import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { autoStopExpired, recordRunningSession } from '../lib/live-sessions.js';
 import { priceSession } from '../lib/pricing.js';
-import { isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
+import { familyStudentIds, isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
 import { getStudentChargeRates } from '../repositories/users.js';
@@ -51,6 +52,7 @@ import {
   getSession,
   listSessions,
   updateSessionRow,
+  type StoredSession,
 } from '../repositories/sessions.js';
 
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid session id.' }) });
@@ -70,6 +72,11 @@ async function assertProgressTopics(db: D1Database, progress: SessionProgressPay
       'progress.topic_ratings': [`Not in the curriculum: ${unknown.join(', ')}.`],
     });
   }
+}
+
+/** One stored session, as this viewer may see it. */
+async function scopeFor(db: D1Database, viewer: User, session: StoredSession): Promise<TutoringSession> {
+  return scopeSessionMoney(session, viewer, await familyStudentIds(db, viewer));
 }
 
 /** A list response that also carries the totals for the same filter. */
@@ -145,14 +152,16 @@ export const sessionsRoutes = new Hono<AppEnv>()
       description:
         `Recorded a ${formatDuration(session.duration_minutes)} ` +
         `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
-        `${session.student_name} on ${session.occurred_on} ` +
-        `(${((session.charge_amount_cents ?? 0) / 100).toFixed(2)} USD)`,
+        // No amount: the tutor who recorded it reads this line, and the
+        // figure here was the family's price. The session itself carries
+        // each side's money, scoped to whoever opens it.
+        `${session.student_name} on ${session.occurred_on}`,
       subject: { id: session.student_user_id, full_name: session.student_name },
       entity_type: 'session',
       entity_id: session.id,
     });
 
-    const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
+    const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
     return c.json(body, 201);
   })
 
@@ -164,28 +173,35 @@ export const sessionsRoutes = new Hono<AppEnv>()
   .get('/export.csv', zValidator('query', listSessionsQuerySchema), async (c) => {
     const params = c.req.valid('query');
     // Export the whole filtered set, not just the page the UI happens to show.
-    const { sessions } = await listSessions(c.env.DB, c.get('user'), {
+    const { sessions, totals } = await listSessions(c.env.DB, c.get('user'), {
       ...params,
       limit: 5000,
       offset: 0,
     });
 
+    // Columns follow what the reader may see, so a tutor's spreadsheet has no
+    // empty "Charged" column hinting that one exists, and a family's none
+    // for the tutor's pay. An admin gets both sides and the institute's cut.
+    const admin = isAdmin(c.get('user'));
+    const payColumns = admin || totals.total_tutor_amount_cents !== null;
+    const chargeColumns = admin || totals.total_charge_amount_cents !== null;
+
+    const headers = [
+      'Date',
+      'Student',
+      'Tutor',
+      'Start',
+      'End',
+      'Minutes',
+      'Mode',
+      ...(chargeColumns ? [admin ? 'Charge rate (USD/hr)' : 'Rate charged (USD/hr)', admin ? 'Charged (USD)' : 'Charged to you (USD)'] : []),
+      ...(payColumns ? [admin ? 'Tutor rate (USD/hr)' : 'Your rate (USD/hr)', admin ? 'Tutor pay (USD)' : 'Your pay (USD)'] : []),
+      ...(admin ? ['Institute cut (USD)'] : []),
+      'Notes',
+    ];
+
     const body = buildCsv(
-      [
-        'Date',
-        'Student',
-        'Tutor',
-        'Start',
-        'End',
-        'Minutes',
-        'Mode',
-        'Charge rate (USD/hr)',
-        'Charged (USD)',
-        'Tutor rate (USD/hr)',
-        'Tutor pay (USD)',
-        'Margin (USD)',
-        'Notes',
-      ],
+      headers,
       sessions.map((session) => [
         session.occurred_on,
         session.student_name,
@@ -194,11 +210,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
         formatClockTime(session.ended_at),
         session.duration_minutes,
         SESSION_MODE_LABELS[session.mode],
-        csvMoney(session.charge_rate_cents),
-        csvMoney(session.charge_amount_cents),
-        csvMoney(session.tutor_rate_cents),
-        csvMoney(session.tutor_amount_cents),
-        csvMoney(marginCents(session)),
+        ...(chargeColumns
+          ? [csvMoney(session.charge_rate_cents), csvMoney(session.charge_amount_cents)]
+          : []),
+        ...(payColumns
+          ? [csvMoney(session.tutor_rate_cents), csvMoney(session.tutor_amount_cents)]
+          : []),
+        ...(admin ? [csvMoney(marginCents(session))] : []),
         session.notes ?? '',
       ]),
     );
@@ -327,7 +345,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       notes: c.req.valid('json').notes ?? row.notes,
     });
 
-    const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
+    const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
     return c.json(body, 201);
   })
 
@@ -360,7 +378,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       if (!allowed) throw ApiError.notFound('That session does not exist.');
     }
 
-    const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(session, viewer) };
+    const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
     return c.json(body);
   })
 
@@ -454,7 +472,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
         entity_id: updated.id,
       });
 
-      const body: ApiOk<TutoringSession> = { data: scopeSessionMoney(updated, viewer) };
+      const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, updated) };
       return c.json(body);
     },
   )

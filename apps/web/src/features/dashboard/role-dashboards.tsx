@@ -14,7 +14,6 @@ import {
   SESSION_MODE_LABELS,
   formatCents,
   needsTopup,
-  shownAmountCents,
   formatDuration,
   topupDueCents,
   tutorAdvanceCents,
@@ -28,6 +27,7 @@ import {
 } from '@tmi/shared';
 
 import { ActivityFeed } from '@/features/audit/activity-feed';
+import { SessionMoney } from '@/features/teaching/session-money';
 import { ProgressOverviewPanel, StudentProgressCard } from '@/features/progress/progress-card';
 import { ROLE_ICONS } from '@/features/users/role-icon';
 import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
@@ -67,14 +67,12 @@ function SessionList({ sessions, showTutor }: { sessions: TutoringSession[]; sho
           {session.auto_stopped && (
             <Badge
               variant="outline"
-              className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
+              className="border-warning/60 text-warning-foreground dark:text-warning text-[10px]"
             >
               Auto-stopped
             </Badge>
           )}
-          <span className="w-16 text-right text-sm font-medium tabular-nums">
-            {formatCents(shownAmountCents(session) ?? 0)}
-          </span>
+          <SessionMoney session={session} compact className="w-24" />
         </li>
       ))}
     </ul>

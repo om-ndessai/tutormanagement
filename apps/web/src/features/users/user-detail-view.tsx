@@ -66,6 +66,11 @@ export function UserDetailView({ user }: { user: UserDetail }) {
   const admin = user.admin_profile;
   const tutor = user.tutor_profile;
   const student = user.student_profile;
+  const { user: viewer } = useAuth();
+  // A tutor's rates are their pay: the API sends them to an admin and to the
+  // tutor, and to nobody else. "Not set" would be a false claim to a family,
+  // so for them the rows are left out rather than shown empty.
+  const seesTutorPay = (viewer?.roles.includes('admin') ?? false) || viewer?.id === user.id;
   const availabilityByDay = groupSlotsByDay(user.availability);
 
   return (
@@ -127,20 +132,24 @@ export function UserDetailView({ user }: { user: UserDetail }) {
             <Detail icon={<VideoIcon className="size-4" />} label="Virtual tutoring">
               {tutor.virtual_available ? 'Available' : 'In person only'}
             </Detail>
-            <Detail icon={<WalletIcon className="size-4" />} label="In-person rate">
-              {tutor.default_rate_in_person_cents != null ? (
-                `${formatCents(tutor.default_rate_in_person_cents)} / hr`
-              ) : (
-                <Muted>Not set</Muted>
-              )}
-            </Detail>
-            <Detail icon={<WalletIcon className="size-4" />} label="Virtual rate">
-              {tutor.default_rate_virtual_cents != null ? (
-                `${formatCents(tutor.default_rate_virtual_cents)} / hr`
-              ) : (
-                <Muted>Not set</Muted>
-              )}
-            </Detail>
+            {seesTutorPay && (
+              <>
+                <Detail icon={<WalletIcon className="size-4" />} label="In-person pay rate">
+                  {tutor.default_rate_in_person_cents != null ? (
+                    `${formatCents(tutor.default_rate_in_person_cents)} / hr`
+                  ) : (
+                    <Muted>Not set</Muted>
+                  )}
+                </Detail>
+                <Detail icon={<WalletIcon className="size-4" />} label="Virtual pay rate">
+                  {tutor.default_rate_virtual_cents != null ? (
+                    `${formatCents(tutor.default_rate_virtual_cents)} / hr`
+                  ) : (
+                    <Muted>Not set</Muted>
+                  )}
+                </Detail>
+              </>
+            )}
             <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
               {tutor.max_session_minutes != null ? (
                 formatDuration(tutor.max_session_minutes)
@@ -185,8 +194,9 @@ export function UserDetailView({ user }: { user: UserDetail }) {
             <Detail icon={<VideoIcon className="size-4" />} label="Virtual sessions">
               {student.virtual_available ? 'Available' : 'In person only'}
             </Detail>
-            {/* The API blanks these for anyone but an admin: a tutor who knows
-                their own rate would otherwise learn the institute's margin. */}
+            {/* The API sends these to an admin and to the student's own
+                family -- it is what they pay -- and blanks them for a tutor,
+                who knows their own rate and would learn the margin. */}
             {student.charge_rate_in_person_cents != null && (
               <Detail icon={<WalletIcon className="size-4" />} label="In-person price">
                 {`${formatCents(student.charge_rate_in_person_cents)} / hr`}

@@ -1,4 +1,4 @@
-import { hasRole, type User } from '@tmi/shared';
+import { hasRole, type SessionMoneyView, type User } from '@tmi/shared';
 
 /** Admins are unrestricted; everyone else sees only what concerns them. */
 export function isAdmin(viewer: User): boolean {
@@ -115,46 +115,84 @@ export function studentScopeSql(
 }
 
 /**
- * Hides the half of a session's money the viewer has no business seeing.
+ * The students whose lessons a viewer pays for: themselves, and everyone they
+ * are a guardian of. The "family" side of scopeSessionMoney.
+ *
+ * Read once per request and handed to the scoper, because scoping runs row by
+ * row after the query and must not go back to the database for each one.
+ */
+export async function familyStudentIds(db: D1Database, viewer: User): Promise<Set<string>> {
+  const result = await db
+    .prepare('SELECT dependent_user_id AS id FROM guardianships WHERE guardian_user_id = ?')
+    .bind(viewer.id)
+    .all<{ id: string }>();
+
+  return new Set([viewer.id, ...(result.results ?? []).map((row) => row.id)]);
+}
+
+/**
+ * Shows each party their own side of a lesson's money, and labels which side
+ * that is (`money_view`).
  *
  * The institute buys tutoring at one rate and sells it at another, and keeps
  * the difference. Showing a tutor what the family pays, or a family what the
- * tutor is paid, would expose that margin to both sides of the deal, so each
- * party sees only their own side. An admin sees both, which is what makes the
- * margin visible to them alone.
+ * tutor is paid, would expose that margin to both sides of the deal:
  *
- * Applied on the way out, after the query: the columns are always read, so the
- * totals an admin sees and the ones a tutor sees come from the same rows.
+ *   admin                     both sides, so the margin is theirs to see
+ *   the lesson's tutor        their pay only
+ *   the student or guardian   the price only
+ *   anybody else              nothing -- no path should hand them the row,
+ *                             but if one ever does, it carries no money
+ *
+ * The tutor test comes first: a tutor teaching their own child is being paid
+ * for that lesson, and that is the side they act on.
+ *
+ * Applied on the way out, after the query: the columns are always read, so
+ * the totals an admin sees and the ones a tutor sees come from the same rows.
  */
 export function scopeSessionMoney<
   T extends {
     tutor_user_id: string;
+    student_user_id: string;
     tutor_rate_cents: number | null;
     tutor_amount_cents: number | null;
     charge_rate_cents: number | null;
     charge_amount_cents: number | null;
   },
->(row: T, viewer: User): T {
-  if (isAdmin(viewer)) return row;
+>(row: T, viewer: User, family: ReadonlySet<string>): T & { money_view: SessionMoneyView } {
+  if (isAdmin(viewer)) return { ...row, money_view: 'admin' };
 
-  // A tutor looking at a lesson they taught sees their pay, not the price.
-  // Everybody else here is the student or their guardian, so they see the
-  // price and not the tutor's pay.
-  return row.tutor_user_id === viewer.id
-    ? { ...row, charge_rate_cents: null, charge_amount_cents: null }
-    : { ...row, tutor_rate_cents: null, tutor_amount_cents: null };
+  if (row.tutor_user_id === viewer.id) {
+    return { ...row, charge_rate_cents: null, charge_amount_cents: null, money_view: 'tutor' };
+  }
+
+  if (family.has(row.student_user_id)) {
+    return { ...row, tutor_rate_cents: null, tutor_amount_cents: null, money_view: 'family' };
+  }
+
+  return {
+    ...row,
+    tutor_rate_cents: null,
+    tutor_amount_cents: null,
+    charge_rate_cents: null,
+    charge_amount_cents: null,
+    money_view: 'none',
+  };
 }
 
 /**
- * Hides what a student's family is charged from anyone but an admin.
+ * Hides what a student's family is charged from anyone but an admin and that
+ * family.
  *
- * A tutor can read the record of a student they teach, and already knows their
- * own rate; showing them the price alongside it would hand them the
- * institute's margin. The same reasoning as scopeSessionMoney, applied to the
- * profile the price is set on.
+ * The student and their guardians see the price: it is what they pay, and
+ * every lesson already shows it. A tutor can read the record of a student
+ * they teach, and already knows their own rate; showing them the price
+ * alongside it would hand them the institute's margin.
  */
 export function scopeStudentCharges<
   T extends {
+    id: string;
+    guardians: { user_id: string }[];
     student_profile: {
       charge_rate_in_person_cents: number | null;
       charge_rate_virtual_cents: number | null;
@@ -163,6 +201,10 @@ export function scopeStudentCharges<
 >(detail: T, viewer: User): T {
   if (isAdmin(viewer) || !detail.student_profile) return detail;
 
+  const isFamily =
+    detail.id === viewer.id || detail.guardians.some((guardian) => guardian.user_id === viewer.id);
+  if (isFamily) return detail;
+
   return {
     ...detail,
     student_profile: {
@@ -170,6 +212,59 @@ export function scopeStudentCharges<
       charge_rate_in_person_cents: null,
       charge_rate_virtual_cents: null,
     },
+  };
+}
+
+/**
+ * Hides what a tutor is paid from anyone but an admin and that tutor.
+ *
+ * The mirror of scopeStudentCharges. A parent can open the record of the
+ * tutor teaching their child, and already sees the price of every lesson;
+ * the tutor's default rates beside it are the other half of the margin.
+ */
+export function scopeTutorPay<
+  T extends {
+    id: string;
+    tutor_profile: {
+      default_rate_in_person_cents: number | null;
+      default_rate_virtual_cents: number | null;
+    } | null;
+  },
+>(detail: T, viewer: User): T {
+  if (isAdmin(viewer) || detail.id === viewer.id || !detail.tutor_profile) return detail;
+
+  return {
+    ...detail,
+    tutor_profile: {
+      ...detail.tutor_profile,
+      default_rate_in_person_cents: null,
+      default_rate_virtual_cents: null,
+    },
+  };
+}
+
+/**
+ * A pairing's rates are what its TUTOR is paid, so only that tutor and an
+ * admin see them. A family reading "who teaches my child" gets the pairing
+ * without the pay.
+ */
+export function scopeAssignmentRates<
+  T extends {
+    tutor_user_id: string;
+    rate_in_person_cents: number | null;
+    rate_virtual_cents: number | null;
+    effective_rate_in_person_cents: number | null;
+    effective_rate_virtual_cents: number | null;
+  },
+>(row: T, viewer: User): T {
+  if (isAdmin(viewer) || row.tutor_user_id === viewer.id) return row;
+
+  return {
+    ...row,
+    rate_in_person_cents: null,
+    rate_virtual_cents: null,
+    effective_rate_in_person_cents: null,
+    effective_rate_virtual_cents: null,
   };
 }
 

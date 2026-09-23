@@ -55,8 +55,9 @@ export async function recordRunningSession(
   const shape =
     `${formatDuration(session.duration_minutes)} ` +
     `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
-    `${session.student_name} on ${session.occurred_on} ` +
-    `(${(session.charge_amount_cents / 100).toFixed(2)} USD)`;
+    // No amount: the tutor reads this line, and a price here would be the
+    // family's. See the same note in routes/sessions.ts.
+    `${session.student_name} on ${session.occurred_on}`;
 
   await recordAudit(db, actor, {
     action: actor ? 'session.recorded' : 'session.auto_stopped',

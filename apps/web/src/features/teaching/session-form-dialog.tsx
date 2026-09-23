@@ -9,6 +9,7 @@ import {
   formatCents,
   formatDuration,
   parseClockTime,
+  resolveChargeRateCents,
   resolveRateCents,
   roundToQuarterHour,
   GOAL_RATING_LABELS,
@@ -40,6 +41,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useStudentProgress, useTopicIndex } from '@/features/progress/api';
+import { useUserDetail } from '@/features/users/api';
 import { RatingPicker, TopicName } from '@/features/progress/rating';
 import { useAssignments, useRecordSession, useUpdateSession } from './api';
 
@@ -139,6 +141,11 @@ export function SessionFormDialog({
   const assignment: Assignment | undefined = assignments.find((a) => a.id === assignmentId);
   const studentId = existing?.student_user_id ?? assignment?.student_user_id;
 
+  // The price is set on the student and only an admin may read it, so only
+  // an admin's preview can show the family's side and the institute's cut.
+  const { data: studentDetail } = useUserDetail(isAdmin && studentId ? studentId : null);
+  const studentPrices = studentDetail?.data.student_profile ?? null;
+
   /**
    * Only sent when there is something to say: a lesson scored for the first
    * time, or an existing score being changed or cleared. Otherwise the
@@ -173,15 +180,17 @@ export function SessionFormDialog({
         )
       : null;
 
-    // The tutor's side only. The charge is priced on the student and is not
-    // fetched here, so this preview deliberately does not claim to show it.
+    const chargeRate = studentPrices ? resolveChargeRateCents(mode, studentPrices) : null;
+
     return {
       elapsed,
       billed,
       rate,
       amount: rate == null ? null : computeAmountCents(billed, rate),
+      // Admin only: null for a tutor, who is never sent the price.
+      charge: chargeRate == null ? null : computeAmountCents(billed, chargeRate),
     };
-  }, [startedAt, endedAt, mode, assignment]);
+  }, [startedAt, endedAt, mode, assignment, studentPrices]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -366,7 +375,7 @@ export function SessionFormDialog({
               })}
             </div>
 
-            <SessionPreview preview={preview} hasAssignment={Boolean(assignment)} />
+            <SessionPreview preview={preview} hasAssignment={Boolean(assignment)} isAdmin={isAdmin} />
 
             <div className="grid gap-2">
               <Label htmlFor="notes">Session notes</Label>
@@ -417,9 +426,17 @@ export function SessionFormDialog({
 function SessionPreview({
   preview,
   hasAssignment,
+  isAdmin,
 }: {
-  preview: { elapsed: number; billed: number; rate: number | null; amount: number | null } | null;
+  preview: {
+    elapsed: number;
+    billed: number;
+    rate: number | null;
+    amount: number | null;
+    charge: number | null;
+  } | null;
   hasAssignment: boolean;
+  isAdmin: boolean;
 }) {
   if (!preview) {
     return (
@@ -445,8 +462,13 @@ function SessionPreview({
         </span>
 
         {preview.amount != null ? (
-          <span className="font-display text-lg font-semibold tabular-nums">
-            {formatCents(preview.amount)}
+          <span className="text-right">
+            <span className="text-muted-foreground block text-[10px] font-medium tracking-wide uppercase">
+              {isAdmin ? 'Tutor pay' : 'Your pay'}
+            </span>
+            <span className="font-display text-lg font-semibold tabular-nums">
+              {formatCents(preview.amount)}
+            </span>
           </span>
         ) : (
           <span className={cn('text-xs', hasAssignment ? 'text-destructive' : 'text-muted-foreground')}>
@@ -457,8 +479,25 @@ function SessionPreview({
 
       {preview.rate != null && (
         <p className="text-muted-foreground mt-1 text-xs">
-          Tutor is paid in quarter hours at {formatCents(preview.rate)}/hr. What the family
-          is charged is priced separately, on the student.
+          {isAdmin ? 'The tutor is' : 'You are'} paid in quarter hours at{' '}
+          {formatCents(preview.rate)}/hr.
+        </p>
+      )}
+
+      {/* The admin's view of the same lesson: both sides and the cut. */}
+      {isAdmin && preview.amount != null && (
+        <p className="mt-1 text-xs">
+          {preview.charge != null ? (
+            <>
+              Family charged <span className="font-medium tabular-nums">{formatCents(preview.charge)}</span>{' '}
+              · Institute keeps{' '}
+              <span className="font-medium tabular-nums">
+                {formatCents(preview.charge - preview.amount)}
+              </span>
+            </>
+          ) : (
+            <span className="text-destructive">No price is set on this student for this mode.</span>
+          )}
         </p>
       )}
     </div>

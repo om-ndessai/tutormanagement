@@ -10,12 +10,12 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 16 are built.** In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 17 are built.** In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
-receipts (14), the Tutoring/Finance dashboard and 1099s (15), and progress tracking against a
-curriculum (16).
+receipts (14), the Tutoring/Finance dashboard and 1099s (15), progress tracking against a
+curriculum (16), and money labelled by whose side it is (17).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -166,9 +166,12 @@ derived on the server: a client may send times, never a price.
 paid `tutor_rate_cents` (from `tutor_profiles`, overridable per pairing on `assignments`); the
 family is charged `charge_rate_cents` (from `student_profiles`, no override). Both are frozen
 onto the session. The margin is always derived, never stored. Never make one column serve both
-sides -- that is the bug these columns were split to fix. Each party sees only their own side:
-`scopeSessionMoney` and `scopeStudentCharges` enforce that in the API, so do not return a
-session or a student profile from a new route without them.
+sides -- that is the bug these columns were split to fix. Each party sees only their own side, labelled:
+`scopeSessionMoney` sets `money_view` (`admin` / `tutor` / `family` / `none`) per row and blanks
+the other side, and the UI renders money only through `SessionMoney`, never a bare
+`formatCents`. Pay rates go through `scopeTutorPay` / `scopeAssignmentRates`, prices through
+`scopeStudentCharges` -- do not return a session, pairing or profile from a new route without
+them, and never put an amount in an audit description (tutors read their own log).
 
 **Every action a user takes gets an audit event.** Adding a route that changes data means
 adding a `recordAudit` call and an entry in `AUDIT_ACTIONS` in `packages/shared/src/audit.ts`.

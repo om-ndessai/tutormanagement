@@ -6,6 +6,20 @@ const SELECT_EVENT = `
   FROM audit_events
 `;
 
+/**
+ * Until Phase 17 a recorded lesson's log line ended with the FAMILY's price,
+ * "(95.00 USD)" -- and the tutor who recorded it reads their own activity.
+ * New lines carry no amount. The old ones cannot be rewritten (the log is
+ * append-only), so the figure is taken out on the way to anyone but an admin.
+ */
+const SESSION_PRICE = /\s*\(\d+(?:\.\d+)? USD\)/g;
+
+function withoutSessionPrice(event: AuditEvent): AuditEvent {
+  return event.action.startsWith('session.')
+    ? { ...event, description: event.description.replace(SESSION_PRICE, '') }
+    : event;
+}
+
 export interface ListAuditResult {
   events: AuditEvent[];
   total: number;
@@ -72,7 +86,10 @@ export async function listAuditEvents(
 
   return {
     total: Number((countResult?.results?.[0] as { total?: number } | undefined)?.total ?? 0),
-    events: (pageResult?.results ?? []) as unknown as AuditEvent[],
+    events: ((pageResult?.results ?? []) as unknown as AuditEvent[]).map((event) =>
+      // A scoped read is a non-admin's (or an admin viewing as one).
+      visibleToUserId ? withoutSessionPrice(event) : event,
+    ),
   };
 }
 

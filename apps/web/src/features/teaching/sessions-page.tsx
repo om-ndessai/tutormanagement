@@ -7,9 +7,6 @@ import {
   formatCents,
   formatClockTime,
   formatDuration,
-  marginCents,
-  shownAmountCents,
-  shownRateCents,
   type TutoringSession,
 } from '@tmi/shared';
 
@@ -35,6 +32,7 @@ import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { SessionFormDialog } from './session-form-dialog';
+import { SessionMoney, describeSessionMoney } from './session-money';
 import { StartSessionButton } from './start-session-button';
 import { useDeleteSession, useSession, useSessions } from './api';
 
@@ -159,22 +157,56 @@ export function SessionsPage() {
         }
       />
 
-      {/* The running total is the point of the page, so it leads. */}
-      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+      {/* The running totals are the point of the page, so they lead. Each
+          money tile is one side, labelled from the reader's point of view,
+          and appears only when the reader sees that side on some lesson: a
+          tutor who is also a parent gets both "Earned" and "Charged". */}
+      <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <SummaryTile label="Sessions" value={totals ? String(totals.session_count) : undefined} />
         <SummaryTile
           label="Time taught"
           value={totals ? formatDuration(totals.total_minutes) : undefined}
         />
-        <SummaryTile
-          label={isAdmin ? 'Billed' : isTutor ? 'Earned' : 'Charged'}
-          value={
-            totals
-              ? formatCents(totals.total_charge_amount_cents ?? totals.total_tutor_amount_cents ?? 0)
-              : undefined
-          }
-          emphasis
-        />
+        {isAdmin ? (
+          <>
+            <SummaryTile
+              label="Charged"
+              value={totals ? formatCents(totals.total_charge_amount_cents) : undefined}
+              hint={totals ? `${formatCents(totals.total_tutor_amount_cents)} paid to tutors` : undefined}
+              emphasis
+            />
+            <SummaryTile
+              label="Institute cut"
+              value={
+                totals
+                  ? formatCents(
+                      (totals.total_charge_amount_cents ?? 0) - (totals.total_tutor_amount_cents ?? 0),
+                    )
+                  : undefined
+              }
+              emphasis
+            />
+          </>
+        ) : (
+          <>
+            {(totals?.total_tutor_amount_cents != null || (!totals && isTutor)) && (
+              <SummaryTile
+                label="Earned"
+                value={totals ? formatCents(totals.total_tutor_amount_cents) : undefined}
+                hint="Paid to you for these lessons"
+                emphasis
+              />
+            )}
+            {totals?.total_charge_amount_cents != null && (
+              <SummaryTile
+                label="Charged"
+                value={formatCents(totals.total_charge_amount_cents)}
+                hint={isTutor ? 'For your own or your family’s lessons' : 'What these lessons cost you'}
+                emphasis
+              />
+            )}
+          </>
+        )}
       </div>
 
       <FocusNotice
@@ -282,7 +314,7 @@ export function SessionsPage() {
                         {session.auto_stopped && (
                           <Badge
                             variant="outline"
-                            className="border-amber-500/50 text-[10px] text-amber-700 dark:text-amber-400"
+                            className="border-warning/60 text-warning-foreground dark:text-warning text-[10px]"
                           >
                             Auto-stopped
                           </Badge>
@@ -299,20 +331,7 @@ export function SessionsPage() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <div className="text-right">
-                        <p className="font-display font-semibold tabular-nums">
-                          {formatCents(shownAmountCents(session) ?? 0)}
-                        </p>
-                        <p className="text-muted-foreground text-[11px]">
-                          {formatCents(shownRateCents(session) ?? 0)}/hr
-                        </p>
-                        {/* Only an admin sees both sides, so only they see this. */}
-                        {marginCents(session) !== null && (
-                          <p className="text-muted-foreground text-[11px]">
-                            {formatCents(marginCents(session)!)} kept
-                          </p>
-                        )}
-                      </div>
+                      <SessionMoney session={session} />
 
                       <CommentsButton
                         target={{ target_type: 'session', target_id: session.id }}
@@ -404,10 +423,9 @@ export function SessionsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this session?</AlertDialogTitle>
             <AlertDialogDescription>
-              The {removing?.occurred_on} session with {removing?.student_name} and its{' '}
-              {formatCents(shownAmountCents(removing ?? { tutor_amount_cents: null, charge_amount_cents: null }) ?? 0)}{' '}
-              charge will be removed. This cannot be
-              undone.
+              The {removing?.occurred_on} session with {removing?.student_name}, and{' '}
+              {removing ? describeSessionMoney(removing) : 'its record'}, will be removed. This
+              cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -429,10 +447,12 @@ export function SessionsPage() {
 function SummaryTile({
   label,
   value,
+  hint,
   emphasis,
 }: {
   label: string;
   value: string | undefined;
+  hint?: string;
   emphasis?: boolean;
 }) {
   return (
@@ -450,6 +470,7 @@ function SummaryTile({
             {value}
           </p>
         )}
+        {hint && <p className="text-muted-foreground mt-0.5 text-xs">{hint}</p>}
       </CardContent>
     </Card>
   );

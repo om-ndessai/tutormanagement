@@ -164,6 +164,7 @@ function StopDialog({
       toast.success(
         `Session recorded: ${formatClockTime(session.started_at)}–` +
           `${formatClockTime(session.ended_at)}, ` +
+          `${session.money_view === 'tutor' ? 'your pay ' : ''}` +
           `${formatCents(shownAmountCents(session) ?? 0)}.`,
       );
       onOpenChange(false);

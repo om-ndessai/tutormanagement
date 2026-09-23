@@ -24,6 +24,7 @@ import {
   isAdmin,
   scopeAdminTin,
   scopeStudentCharges,
+  scopeTutorPay,
   scopeTutorTopup,
   visibleUserIds,
 } from '../lib/scope.js';
@@ -183,7 +184,12 @@ export const usersRoutes = new Hono<AppEnv>()
     if (!detail) throw ApiError.notFound('That user does not exist.');
 
     const body: ApiOk<UserDetail> = {
-      data: scopeAdminTin(scopeTutorTopup(scopeStudentCharges(detail, viewer), viewer), viewer),
+      // Each strips what this viewer may not see: the family's price, the
+      // tutor's pay and advance, the institute's TIN.
+      data: scopeAdminTin(
+        scopeTutorTopup(scopeTutorPay(scopeStudentCharges(detail, viewer), viewer), viewer),
+        viewer,
+      ),
     };
     return c.json(body);
   })

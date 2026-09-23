@@ -11,7 +11,7 @@ import {
 import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
-import { isAdmin } from '../lib/scope.js';
+import { isAdmin, scopeAssignmentRates } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
 import {
@@ -56,9 +56,13 @@ async function assertRoles(db: D1Database, tutorId: string, studentId: string) {
 export const assignmentsRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listAssignmentsQuerySchema), async (c) => {
-    const assignments = await listAssignments(c.env.DB, c.get('user'), c.req.valid('query'));
+    const viewer = c.get('user');
+    const assignments = await listAssignments(c.env.DB, viewer, c.req.valid('query'));
 
-    const body: ApiOk<Assignment[]> = { data: assignments };
+    // The rates are the tutor's pay: theirs and the office's to see.
+    const body: ApiOk<Assignment[]> = {
+      data: assignments.map((row) => scopeAssignmentRates(row, viewer)),
+    };
     return c.json(body);
   })
 
@@ -103,7 +107,7 @@ export const assignmentsRoutes = new Hono<AppEnv>()
       if (visible.length === 0) throw ApiError.notFound('That assignment does not exist.');
     }
 
-    const body: ApiOk<Assignment> = { data: assignment };
+    const body: ApiOk<Assignment> = { data: scopeAssignmentRates(assignment, viewer) };
     return c.json(body);
   })
 

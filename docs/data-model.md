@@ -172,11 +172,38 @@ wherever it is shown (`marginCents`), so it cannot drift out of step with the tw
 comes from. Storing one amount for both sides is what made the margin structurally zero before
 these columns were split.
 
-**Each party sees only their own side.** `scopeSessionMoney` blanks the charge for a tutor and
-the pay for a family, and `scopeStudentCharges` hides a student's price from anyone but an
-admin. Both run in the API, not the UI: a tutor who knows their own rate would otherwise be one
-API call away from the institute's markup. Only an admin sees both, which is what makes the
-margin visible to them alone -- and why the money fields on `TutoringSession` are nullable.
+**Each party sees only their own side, and is told which side it is** (Phase 17). The API
+decides per ROW, not per person, and labels the result `money_view`:
+
+| Reader of a lesson | `money_view` | Sees |
+| --- | --- | --- |
+| an admin | `admin` | the family's charge, the tutor's pay, and the institute's cut between them |
+| the lesson's tutor | `tutor` | their pay and rate; the price is blanked |
+| the student, or a guardian of theirs | `family` | the price and rate they pay; the pay is blanked |
+| anybody else | `none` | no money at all |
+
+`scopeSessionMoney` applies it, with the reader's family (themselves plus their dependents,
+`familyStudentIds`) read once per request. The tutor test comes first, so a tutor teaching their
+own child sees their pay. Screens label every amount from `money_view` through one component
+(`SessionMoney`) -- "Your pay", "You pay", or "Charged · Tutor · Institute" -- because a bare
+figure meant the price to one reader and the pay to another, and a person who both tutors and
+is taught (or parents) saw both meanings in one list. List totals follow the same rule side by
+side: `total_tutor_amount_cents` is summed over the rows the reader was paid for,
+`total_charge_amount_cents` over the rows that are their family's, each null when there are
+none, so such a person sees both "Earned" and "Charged".
+
+The same rule reaches every other place a rate appears. A pairing's rates are the tutor's pay
+(`scopeAssignmentRates`); a tutor's default rates are theirs and the office's
+(`scopeTutorPay`); a student's price is shown to admins and to that student's own family, who
+pay it, but never to a tutor (`scopeStudentCharges`). The sessions spreadsheet carries only the
+columns the reader has. The activity log carries no amount at all: the `session.recorded` line
+used to end with the family's price, and the tutor who recorded it reads their own activity --
+older lines keep it on disk (the log is append-only) and have it removed on every non-admin
+read.
+
+**No schema change was needed for this.** Both rates and both amounts were already frozen onto
+every session when the price was split from the pay; what was missing was saying, for each
+reader, which of them is theirs. The margin stays derived.
 
 **A session cannot be recorded until both rates exist.** A missing tutor rate and a missing
 student price each fail validation on the way in, rather than billing zero quietly.

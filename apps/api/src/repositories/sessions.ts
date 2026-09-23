@@ -6,7 +6,7 @@ import type {
   User,
 } from '@tmi/shared';
 
-import { scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
+import { familyStudentIds, isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -48,7 +48,11 @@ const SELECT_SESSION = `
 export interface StoredSession
   extends Omit<
     TutoringSession,
-    'tutor_rate_cents' | 'tutor_amount_cents' | 'charge_rate_cents' | 'charge_amount_cents'
+    | 'tutor_rate_cents'
+    | 'tutor_amount_cents'
+    | 'charge_rate_cents'
+    | 'charge_amount_cents'
+    | 'money_view'
   > {
   tutor_rate_cents: number;
   tutor_amount_cents: number;
@@ -131,17 +135,47 @@ export async function listSessions(
   params: ListSessionsParams,
 ): Promise<ListSessionsResult> {
   const filter = buildFilter(viewer, params);
+  const admin = isAdmin(viewer);
+
+  // Each side's total is summed over the rows the viewer sees THAT side on,
+  // by the same rule scopeSessionMoney applies row by row: pay where they
+  // taught, the price where it is their own or their child's lesson and they
+  // did not teach it. An admin sums both over everything.
+  const family =
+    '(s.student_user_id = ? OR s.student_user_id IN ' +
+    '(SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?))';
+  const sides = admin
+    ? {
+        sql: `COALESCE(SUM(s.tutor_amount_cents), 0)  AS tutor_sum, COUNT(*) AS tutor_rows,
+              COALESCE(SUM(s.charge_amount_cents), 0) AS charge_sum, COUNT(*) AS charge_rows`,
+        values: [] as unknown[],
+      }
+    : {
+        sql: `COALESCE(SUM(CASE WHEN s.tutor_user_id = ? THEN s.tutor_amount_cents END), 0) AS tutor_sum,
+              COALESCE(SUM(CASE WHEN s.tutor_user_id = ? THEN 1 END), 0) AS tutor_rows,
+              COALESCE(SUM(CASE WHEN s.tutor_user_id <> ? AND ${family} THEN s.charge_amount_cents END), 0) AS charge_sum,
+              COALESCE(SUM(CASE WHEN s.tutor_user_id <> ? AND ${family} THEN 1 END), 0) AS charge_rows`,
+        values: [
+          viewer.id,
+          viewer.id,
+          viewer.id,
+          viewer.id,
+          viewer.id,
+          viewer.id,
+          viewer.id,
+          viewer.id,
+        ],
+      };
 
   const [totalsResult, pageResult] = await db.batch<Record<string, unknown>>([
     db
       .prepare(
         `SELECT COUNT(*) AS session_count,
                 COALESCE(SUM(s.duration_minutes), 0) AS total_minutes,
-                COALESCE(SUM(s.tutor_amount_cents), 0) AS total_tutor_amount_cents,
-                COALESCE(SUM(s.charge_amount_cents), 0) AS total_charge_amount_cents
+                ${sides.sql}
          FROM sessions s ${filter.sql}`,
       )
-      .bind(...filter.values),
+      .bind(...sides.values, ...filter.values),
     db
       .prepare(
         `${SELECT_SESSION} ${filter.sql}
@@ -152,28 +186,21 @@ export async function listSessions(
   ]);
 
   const totalsRow = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
+  const familyIds = await familyStudentIds(db, viewer);
 
   const sessions = ((pageResult?.results ?? []) as unknown as SessionRow[]).map((row) =>
-    scopeSessionMoney(toSession(row), viewer),
+    scopeSessionMoney(toSession(row), viewer, familyIds),
   );
-
-  // A list can mix lessons the viewer taught with lessons their child took, so
-  // the totals follow the rows: a side is shown only if it survived scoping on
-  // every row, otherwise the figure would silently be a partial sum.
-  const showsTutorSide = sessions.every((row) => row.tutor_amount_cents !== null);
-  const showsChargeSide = sessions.every((row) => row.charge_amount_cents !== null);
 
   return {
     sessions,
     totals: {
       session_count: Number(totalsRow.session_count ?? 0),
       total_minutes: Number(totalsRow.total_minutes ?? 0),
-      total_tutor_amount_cents: showsTutorSide
-        ? Number(totalsRow.total_tutor_amount_cents ?? 0)
-        : null,
-      total_charge_amount_cents: showsChargeSide
-        ? Number(totalsRow.total_charge_amount_cents ?? 0)
-        : null,
+      total_tutor_amount_cents:
+        admin || Number(totalsRow.tutor_rows ?? 0) > 0 ? Number(totalsRow.tutor_sum ?? 0) : null,
+      total_charge_amount_cents:
+        admin || Number(totalsRow.charge_rows ?? 0) > 0 ? Number(totalsRow.charge_sum ?? 0) : null,
     },
   };
 }

@@ -66,6 +66,15 @@ export function AssignmentsPage() {
    */
   const focusId = searchParams.get('focus');
   const all = data?.data ?? [];
+
+  /**
+   * A pairing's rates are what its tutor is paid, so the API blanks them for
+   * everyone but that tutor and an admin. The columns appear only when the
+   * reader can see some rate, and a row whose pay is not theirs reads "—"
+   * rather than "No rate set", which would be a claim about the tutor.
+   */
+  const seesPay = (row: Assignment) => isAdmin || row.tutor_user_id === user?.id;
+  const showRates = all.some(seesPay);
   const assignments = focusId ? all.filter((row) => row.id === focusId) : all;
   const clearFocus = () =>
     setSearchParams(
@@ -158,9 +167,10 @@ export function AssignmentsPage() {
               </span>
             </div>
 
+            {seesPay(assignment) && (
             <div className="text-muted-foreground mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
               <span className="flex items-center gap-1.5">
-                In person:
+                {isAdmin ? 'Tutor pay, in person:' : 'Your rate, in person:'}
                 <RateCell
                   effective={assignment.effective_rate_in_person_cents}
                   override={assignment.rate_in_person_cents}
@@ -174,6 +184,7 @@ export function AssignmentsPage() {
                 />
               </span>
             </div>
+            )}
           </li>
         ))}
         {!isPending && assignments.length === 0 && (
@@ -189,8 +200,12 @@ export function AssignmentsPage() {
             <TableRow className="hover:bg-transparent">
               <TableHead>Tutor</TableHead>
               <TableHead>Student</TableHead>
-              <TableHead>In person</TableHead>
-              <TableHead>Virtual</TableHead>
+              {showRates && (
+                <>
+                  <TableHead>{isAdmin ? 'Tutor pay, in person' : 'Your rate, in person'}</TableHead>
+                  <TableHead>Virtual</TableHead>
+                </>
+              )}
               <TableHead className="w-28">
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -200,7 +215,7 @@ export function AssignmentsPage() {
             {isPending &&
               Array.from({ length: 3 }).map((_, index) => (
                 <TableRow key={index}>
-                  {Array.from({ length: 5 }).map((__, cell) => (
+                  {Array.from({ length: showRates || isAdmin ? 5 : 3 }).map((__, cell) => (
                     <TableCell key={cell}>
                       <Skeleton className="h-5 w-24" />
                     </TableCell>
@@ -210,7 +225,7 @@ export function AssignmentsPage() {
 
             {!isPending && assignments.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={5} className="h-28 text-center">
+                <TableCell colSpan={showRates ? 5 : 3} className="h-28 text-center">
                   <p className="text-muted-foreground text-sm">
                     {empty}
                     {isAdmin && ' Assign one to let their tutor record sessions.'}
@@ -223,18 +238,28 @@ export function AssignmentsPage() {
               <TableRow key={assignment.id}>
                 <TableCell className="font-medium">{assignment.tutor_name}</TableCell>
                 <TableCell>{assignment.student_name}</TableCell>
-                <TableCell>
-                  <RateCell
-                    effective={assignment.effective_rate_in_person_cents}
-                    override={assignment.rate_in_person_cents}
-                  />
-                </TableCell>
-                <TableCell>
-                  <RateCell
-                    effective={assignment.effective_rate_virtual_cents}
-                    override={assignment.rate_virtual_cents}
-                  />
-                </TableCell>
+                {showRates &&
+                  (seesPay(assignment) ? (
+                    <>
+                      <TableCell>
+                        <RateCell
+                          effective={assignment.effective_rate_in_person_cents}
+                          override={assignment.rate_in_person_cents}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <RateCell
+                          effective={assignment.effective_rate_virtual_cents}
+                          override={assignment.rate_virtual_cents}
+                        />
+                      </TableCell>
+                    </>
+                  ) : (
+                    <>
+                      <TableCell className="text-muted-foreground">—</TableCell>
+                      <TableCell className="text-muted-foreground">—</TableCell>
+                    </>
+                  ))}
                 <TableCell>
                   <div className="flex items-center gap-1">
                     <AssignmentComments assignment={assignment} />
@@ -308,7 +333,7 @@ export function AssignmentsPage() {
 function copyFor(roles: UserRole[]): { description: string; empty: string } {
   if (roles.includes('admin')) {
     return {
-      description: 'Which tutor teaches which student, and at what rate.',
+      description: 'Which tutor teaches which student, and what the tutor is paid for it.',
       empty: 'No students are assigned yet.',
     };
   }
