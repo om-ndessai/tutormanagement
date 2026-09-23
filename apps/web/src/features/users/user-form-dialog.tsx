@@ -40,6 +40,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import { useStudentProgress } from '@/features/progress/api';
 import { useCreateUser, useUpdateUser, useUserDetail } from './api';
 import { AvailabilityPicker } from './availability-picker';
 import { GuardianPicker } from './guardian-picker';
@@ -249,6 +250,12 @@ export function UserFormDialog({
 }) {
   const isEdit = userId !== null;
   const { data: detail, isPending: loadingDetail } = useUserDetail(open && isEdit ? userId : null);
+  // A student's goal is also their active learning plan's goal, kept in step
+  // by the API; the field says so, so nobody edits one expecting the other to
+  // stay as it was.
+  const isStudentRecord = detail?.data.roles.includes('student') ?? false;
+  const { data: progress } = useStudentProgress(open && isEdit && isStudentRecord ? userId! : undefined);
+  const activePlan = progress?.data.plan ?? null;
 
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -590,7 +597,16 @@ export function UserFormDialog({
                       />
                     </Field>
                   </div>
-                  <Field id="s_goal" label="Goal for this academic year">
+                  <Field
+                    id="s_goal"
+                    label="Goal for this academic year"
+                    error={errors['student_profile.academic_year_goal']}
+                    hint={
+                      activePlan
+                        ? 'This is also the goal of their learning plan — changing it here changes the plan.'
+                        : 'Becomes the goal of their learning plan when one is set.'
+                    }
+                  >
                     <Input
                       id="s_goal"
                       value={form.student.academic_year_goal}

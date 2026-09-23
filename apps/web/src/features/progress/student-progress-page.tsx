@@ -416,6 +416,7 @@ export function StudentProgressPage() {
             studentName={student.full_name}
             existing={planning.existing}
             assessment={latest}
+            defaultGoal={student.academic_year_goal}
           />
         </>
       )}

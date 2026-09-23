@@ -123,6 +123,54 @@ test.describe('progress tracking', () => {
     await admin.request.delete(`/api/progress/plans/${plan.plan.id}`);
   });
 
+  test('the goal on the student’s record and on their plan are one goal', async ({ as }) => {
+    const admin = await as('admin');
+    const sofiaId = await idOf(admin, PEOPLE.student.email);
+
+    const readBoth = async () => {
+      const record = await unwrap<any>(await admin.request.get(`/api/users/${sofiaId}`), 'record');
+      const progress = await unwrap<any>(await admin.request.get(`/api/progress/${sofiaId}`), 'plan');
+      return { record, profileGoal: record.student_profile.academic_year_goal, planGoal: progress.plan.goal, planId: progress.plan.id };
+    };
+
+    const before = await readBoth();
+    expect(before.profileGoal).toBe(before.planGoal);
+
+    // Changing the plan's goal changes the record's.
+    await unwrap(
+      await admin.request.patch(`/api/progress/plans/${before.planId}`, {
+        data: { goal: 'Prealgebra-ready by June, via the plan' },
+      }),
+      'editing the plan goal',
+    );
+    expect((await readBoth()).profileGoal).toBe('Prealgebra-ready by June, via the plan');
+
+    // Changing the record's goal in the user dialog changes the plan's.
+    await unwrap(
+      await admin.request.patch(`/api/users/${sofiaId}`, {
+        data: {
+          student_profile: { ...before.record.student_profile, academic_year_goal: 'Prealgebra-ready by June, via the record' },
+        },
+      }),
+      'editing the record goal',
+    );
+    expect((await readBoth()).planGoal).toBe('Prealgebra-ready by June, via the record');
+
+    // Clearing it on the record cannot leave the plan without one: the
+    // plan's goal is put back.
+    await unwrap(
+      await admin.request.patch(`/api/users/${sofiaId}`, {
+        data: { student_profile: { ...before.record.student_profile, academic_year_goal: '' } },
+      }),
+      'clearing the record goal',
+    );
+    const cleared = await readBoth();
+    expect(cleared.profileGoal).toBe(cleared.planGoal);
+
+    // Restore the seeded goal for the rest of the suite.
+    await admin.request.patch(`/api/progress/plans/${before.planId}`, { data: { goal: before.planGoal } });
+  });
+
   test('a tutor scores a lesson against the plan from the session form', async ({ as }) => {
     const tutor = await as('tutor');
     await tutor.goto('/sessions');

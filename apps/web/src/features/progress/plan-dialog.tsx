@@ -59,6 +59,7 @@ export function PlanDialog({
   studentName,
   existing,
   assessment,
+  defaultGoal,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -67,6 +68,11 @@ export function PlanDialog({
   existing: LearningPlan | null;
   /** The assessment a new plan answers: the student's latest. */
   assessment: Assessment | null;
+  /**
+   * The goal already on the student's record. A new plan starts from it,
+   * because the two are one goal: saving the plan writes its goal back.
+   */
+  defaultGoal?: string | null;
 }) {
   const { data } = useCurriculum();
   const levels = useMemo(() => data?.data ?? [], [data]);
@@ -118,7 +124,7 @@ export function PlanDialog({
       .map((row) => row.topic_id);
 
     const today = localToday();
-    setGoal('');
+    setGoal(defaultGoal ?? '');
     setTargetLevel('');
     setStartsOn(today);
     setTargetOn(aYearOn(today));
@@ -127,7 +133,7 @@ export function PlanDialog({
     setRecommendation('');
     setTopics(weakest);
     setStatus('active');
-  }, [open, existing, assessment, levels]);
+  }, [open, existing, assessment, levels, defaultGoal]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -201,7 +207,13 @@ export function PlanDialog({
                 onChange={(event) => setGoal(event.target.value)}
                 aria-invalid={Boolean(errors.goal)}
               />
-              {fieldError('goal')}
+              {fieldError('goal') ?? (
+                <p className="text-muted-foreground text-xs">
+                  {existing && existing.status !== 'active'
+                    ? 'This plan is finished, so its goal is kept as history.'
+                    : `Also the goal on ${studentName}’s record — the two are always the same.`}
+                </p>
+              )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">

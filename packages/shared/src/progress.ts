@@ -187,7 +187,11 @@ export const PLAN_STATUS_LABELS: Record<PlanStatus, string> = {
 const planFields = {
   // Required, so not built from optionalText -- the SSN guard is applied
   // directly, as on a comment body.
-  goal: refuseSsn(z.string().trim().min(1, 'Say what the goal is.').max(500)),
+  // 1000, like the profile's goal: the two are the same fact kept in step,
+  // so what one accepts the other must too.
+  goal: refuseSsn(
+    z.string().trim().min(1, 'Say what the goal is.').max(1000, 'Goal must be 1000 characters or fewer.'),
+  ),
   target_level_id: levelId.nullish().transform((value) => value ?? null),
   starts_on: isoDate,
   target_on: isoDate,
@@ -359,7 +363,13 @@ export interface ProgressSummary {
 export interface StudentProgress {
   /** The date the summary was computed for, on the institute's clock. */
   today: string;
-  student: { user_id: string; full_name: string; current_math_course: string | null };
+  student: {
+    user_id: string;
+    full_name: string;
+    current_math_course: string | null;
+    /** The goal on their profile -- the active plan's goal, when there is one. */
+    academic_year_goal: string | null;
+  };
   assessments: Assessment[];
   plan: LearningPlan | null;
   /** Plans that are no longer active, newest first. */

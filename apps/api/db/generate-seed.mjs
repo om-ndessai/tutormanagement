@@ -767,6 +767,15 @@ for (const quoted of generatedStudents) {
   });
 }
 
+// A student's goal is one fact: once a plan is active, the profile carries the
+// plan's goal, exactly as the API keeps them (goalSyncFromProfile /
+// planGoalSyncStatement). Students without a plan keep their own.
+for (const plan of plans) {
+  if (plan[10] !== q('active')) continue;
+  const profile = studentProfiles.find((row) => row[0] === plan[1]);
+  if (profile) profile[3] = plan[3];
+}
+
 const sql = `-- ===========================================================================
 --  Test and development seed  --  GENERATED FILE, DO NOT EDIT BY HAND
 -- ===========================================================================

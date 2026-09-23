@@ -291,6 +291,24 @@ function planTopicStatements(db: D1Database, planId: string, topicIds: string[])
   ];
 }
 
+/**
+ * The plan side of keeping a student's goal in one piece: once this plan is
+ * the active one, its goal is the student's goal, and the profile the user
+ * dialog edits is brought into line. Run after every plan write, in the same
+ * batch; a plan that is not active leaves the profile alone. The profile side
+ * is goalSyncFromProfile in the users repository.
+ */
+function planGoalSyncStatement(db: D1Database, planId: string) {
+  return db
+    .prepare(
+      `UPDATE student_profiles
+       SET academic_year_goal = (SELECT goal FROM learning_plans WHERE id = ?)
+       WHERE user_id = (SELECT student_user_id FROM learning_plans
+                        WHERE id = ? AND status = 'active')`,
+    )
+    .bind(planId, planId);
+}
+
 export async function createPlan(
   db: D1Database,
   input: PlanPayload,
@@ -320,6 +338,7 @@ export async function createPlan(
         createdBy,
       ),
     ...planTopicStatements(db, id, input.topic_ids).slice(1),
+    planGoalSyncStatement(db, id),
   ]);
 
   const created = await getPlan(db, id);
@@ -357,6 +376,7 @@ export async function updatePlan(
   const [update] = await db.batch([
     db.prepare(`UPDATE learning_plans SET ${sets.join(', ')} WHERE id = ?`).bind(...values, id),
     ...(input.topic_ids ? planTopicStatements(db, id, input.topic_ids) : []),
+    planGoalSyncStatement(db, id),
   ]);
 
   if (!update?.meta.changes) return null;
@@ -459,7 +479,7 @@ export async function buildStudentProgress(
 ): Promise<StudentProgress | null> {
   const student = await db
     .prepare(
-      `SELECT u.id AS user_id, u.full_name, sp.current_math_course
+      `SELECT u.id AS user_id, u.full_name, sp.current_math_course, sp.academic_year_goal
        FROM users u LEFT JOIN student_profiles sp ON sp.user_id = u.id
        WHERE u.id = ? AND u.deleted_at IS NULL`,
     )

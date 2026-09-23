@@ -842,9 +842,13 @@ CREATE TABLE assessment_topic_ratings (
 -- learning_plans - the recommended course of tutoring towards a goal
 -- ---------------------------------------------------------------------------
 -- "Get ready for prealgebra by next academic year": a goal, a date, the
--- topics that lead there, and how often to meet. Distinct from
--- student_profiles.academic_year_goal, which is the family's one-line
--- ambition; this is the institute's plan for reaching one.
+-- topics that lead there, and how often to meet.
+--
+-- The goal is the same fact as student_profiles.academic_year_goal: the
+-- profile holds it before any plan exists, and while a plan is active the
+-- API keeps the two equal on every write, from either side, in one batch
+-- (goalSyncFromProfile, planGoalSyncStatement). A finished plan keeps the
+-- goal it had, as history.
 CREATE TABLE learning_plans (
   id                 TEXT PRIMARY KEY,
   student_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,

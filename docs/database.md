@@ -130,6 +130,14 @@ sed -n '/BEGIN CURRICULUM CATALOG/,/END CURRICULUM CATALOG/p' db/schema.sql >> /
 npx wrangler d1 execute tmi-portal-db --remote --file=/tmp/phase16.sql
 ```
 
+Keeping a student's goal and their active plan's goal equal needs no schema change -- the API
+does it on every write -- but rows written before that rule existed are brought into line once,
+from the plan side. Safe to re-run; it changes nothing that already matches:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote --command="UPDATE student_profiles SET academic_year_goal = (SELECT p.goal FROM learning_plans p WHERE p.student_user_id = student_profiles.user_id AND p.status = 'active') WHERE EXISTS (SELECT 1 FROM learning_plans p WHERE p.student_user_id = student_profiles.user_id AND p.status = 'active' AND p.goal IS NOT student_profiles.academic_year_goal)"
+```
+
 This was rehearsed against a local database built from the previous `schema.sql` and seed:
 every session, payment, user and guardianship survived, and the catalog block re-ran cleanly.
 

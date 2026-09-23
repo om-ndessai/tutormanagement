@@ -412,6 +412,42 @@ export async function updateUser(
  * Replaces whole sections rather than diffing them, which keeps "set my
  * availability" one idempotent call. An omitted key leaves that section alone.
  */
+/**
+ * A student's goal is ONE fact, held in two places: the profile carries it
+ * before any plan exists, and the active learning plan carries it after. The
+ * two are kept equal on every write, in the same batch, so neither screen can
+ * show a goal the other does not.
+ *
+ * From the profile side: a goal typed in the user dialog becomes the active
+ * plan's goal. A plan cannot be without one, so clearing it in the dialog
+ * puts the plan's goal back rather than leaving the two apart.
+ * The plan side is in the progress repository (planGoalSyncStatement).
+ */
+function goalSyncFromProfile(db: D1Database, studentId: string, goal: string | null) {
+  return goal === null
+    ? [
+        db
+          .prepare(
+            `UPDATE student_profiles
+             SET academic_year_goal = (SELECT goal FROM learning_plans
+                                       WHERE student_user_id = ? AND status = 'active')
+             WHERE user_id = ?
+               AND EXISTS (SELECT 1 FROM learning_plans
+                           WHERE student_user_id = ? AND status = 'active')`,
+          )
+          .bind(studentId, studentId, studentId),
+      ]
+    : [
+        db
+          .prepare(
+            `UPDATE learning_plans
+             SET goal = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+             WHERE student_user_id = ? AND status = 'active' AND goal <> ?`,
+          )
+          .bind(goal, studentId, goal),
+      ];
+}
+
 export async function updateUserSections(
   db: D1Database,
   id: string,
@@ -485,6 +521,7 @@ export async function updateUserSections(
             p.charge_rate_virtual_cents,
             p.max_session_minutes,
           ),
+        ...goalSyncFromProfile(db, id, p.academic_year_goal),
       );
     }
   }

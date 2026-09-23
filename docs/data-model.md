@@ -343,8 +343,16 @@ never overwritten.
 cadence (`sessions_per_week` × `session_minutes`), the prose recommendation, and the topics to
 cover in teaching order -- which may reach into a lower level. A partial unique index allows
 **one active plan per student**, so "the plan" a lesson is scored against is never ambiguous;
-finished plans stay as `achieved` or `closed` history. Distinct from
-`student_profiles.academic_year_goal`, the family's one-line ambition.
+finished plans stay as `achieved` or `closed` history.
+
+**A student has one goal.** It is stored twice -- `student_profiles.academic_year_goal`, which
+the user dialog edits, and the active plan's `goal` -- because it exists before any plan does.
+While a plan is active the API keeps the two equal on every write, from either side, in the same
+batch: saving the plan writes its goal onto the profile (`planGoalSyncStatement`), and saving the
+profile writes its goal onto the plan (`goalSyncFromProfile`). A plan cannot be without a goal,
+so clearing it in the user dialog puts the plan's back. A new plan starts from the goal on the
+record, and both forms say that editing one edits the other. Finished plans keep their own goal
+as history.
 
 **Session progress** sits beside `sessions` rather than in it: the session is the billing
 record, and how a lesson moved the goal is an optional teaching judgement. `session_progress`
