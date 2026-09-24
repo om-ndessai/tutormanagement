@@ -10,7 +10,7 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 19, and 21 to 23, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 24, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -19,7 +19,8 @@ curriculum (16), money labelled by whose side it is (17), the non-admin exposure
 and its crawling test (18), and the same Tutoring/Finance split on the sessions page, so
 no money is on screen while a tutor reads notes beside a student (19), the Tutoring tab rebuilt
 as Analytics, a sessions carousel, a progress spotlight and recent activity (21), session drafts
-(22), and a lesson's notes written up in parts, with an assessment from anyone it concerns (23).
+(22), a lesson's notes written up in parts, with an assessment from anyone it concerns (23), and
+one lesson of a standing schedule cancelled and restored, without touching the series (24).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -138,6 +139,15 @@ the reader relates to the lesson — never sent by the client — and the assess
 author, so nobody can write or withdraw anybody else's. On a draft both travel as JSON and are
 published by posting. The log says an assessment was given, never its words or its score.
 
+**A cancelled lesson is a `schedule_cancellations` row, never an edit to the schedule.** One
+date of a series, keyed `(schedule_id, occurs_on)`; restoring deletes the row. The capacity
+(`cancelled_as`) comes from `scheduleCancellerRole`, never the client; a student cannot cancel, a
+parent acts only on today or later and restores only their own, the tutor and the office may also
+mark a past date. A recorded lesson outranks a cancellation everywhere — every read goes through
+`NOT_OVERTAKEN_SQL` — and progress nets cancellations out of "planned so far". The note reaches
+the schedule's audience only, including through progress (R11), and never the audit log or the
+calendar file.
+
 **Deletes are soft.** `DELETE /api/users/:id` sets `deleted_at`. Hard delete needs an explicit
 `?hard=true`. The unique email index covers live rows only, so restoring can conflict; that
 case is already handled in `POST /api/users/:id/restore`.
@@ -170,7 +180,9 @@ with the compact `ProgressChart`), and Recent Activity (5 events, payment lines 
 Upcoming lessons are never stored: `expandUpcoming` in `packages/shared/src/schedules.ts`
 dates them from the schedules on the institute clock, skipping any already recorded, and
 `GET /api/schedules/upcoming` serves them five at a time. A tutor's carousel passes their own
-`tutor_user_id`, so a tutor who also parents does not see their child's lessons in it.
+`tutor_user_id`, so a tutor who also parents does not see their child's lessons in it. A
+cancelled date stays in the list, flagged (`cancellation`), and counts toward the page; the
+highlighted "next" card is the first one that is not cancelled.
 
 **Dashboard cards are deliberately tight.** The vendored `Card` carries `py-6` of its own, so
 `StatCard` and `Panel` pass `py-0` and supply their own padding — dropping that is how a card
@@ -222,7 +234,7 @@ the other side, and the UI renders money only through `SessionMoney`, never a ba
 them, and never put an amount in an audit description (tutors read their own log).
 
 **What a non-admin sees is written down, and crawled.** `docs/data-exposure.md` lists the
-rules (R1-R9) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
+rules (R1-R11) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
 kind of non-admin, calls every read endpoint and checks every object returned against them. A
 lookup by id goes through the list's own WHERE (`getVisibleSession`, `getVisiblePayment`) --
 never "can they see anything related" -- and answers 404, not 403, for a row they cannot list.

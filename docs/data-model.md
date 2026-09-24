@@ -242,6 +242,51 @@ the first place. Attaching a timezone would mean shipping a `VTIMEZONE` block an
 transitions right, to express something the institute does not actually mean. The `UID` is
 derived from the schedule id, so re-downloading updates the event rather than duplicating it.
 
+### `schedule_cancellations`
+
+Phase 24. One date of a standing schedule called off — a vacation week, a sick day — without
+touching the series. Before this, a lesson that simply did not happen was indistinguishable from
+one somebody forgot to record, and the progress tracker counted it as missed.
+
+**A fact about one date, never an edit to the schedule.** The row is `(schedule_id, occurs_on)`:
+every other week of the series is untouched, the upcoming list shows that date flagged
+"Cancelled", and the calendar file leaves it out with an `EXDATE` at the series' current start
+time (floating, the same value type as `DTSTART`, or clients ignore it). **Restoring deletes the
+row**, and the date is back in the series as if nothing had happened; the audit log keeps the
+trail of both. There is no `updated_at`: a note is not edited, it is restored and cancelled again.
+
+**Who, and in what capacity, is decided by the API.** `scheduleCancellerRole` in `lib/scope.ts`
+asks how the reader relates to the schedule — its tutor, a guardian of the student, or failing
+those an admin — and that capacity is stored as `cancelled_as` (`tutor`, `parent`, `admin`),
+frozen like `session_assessments.author_role`. A student has none: the plan gives cancelling to
+"a parent/tutor or admin". What somebody may *do* also depends on `isAdmin`, so an admin who is
+the student's parent cancels as the family but keeps the office's reach:
+
+| | Cancel today or later | Cancel a past date | Restore |
+| --- | --- | --- | --- |
+| The schedule's tutor, or an admin | yes | yes, if no lesson was recorded that day | any |
+| A guardian of the student | yes | no | their own, while it is still ahead |
+| The student | no (403) | no | no |
+| Anybody else | 404 | 404 | 404 |
+
+**A recorded lesson outranks a cancellation.** If a lesson was recorded for that pair on that
+date, the cancellation is ignored everywhere — the lists, the calendar file, the progress count —
+through one SQL fragment, `NOT_OVERTAKEN_SQL` in `repositories/schedule-cancellations.ts`, so no
+figure can count a lesson as both held and called off. Deleting the lesson brings it back.
+Cancelling a date a lesson was already recorded on is refused.
+
+**Moving a series tidies up after itself.** An edit to `day_of_week`, `starts_on` or `ends_on`
+clears the *future* cancellations the series no longer falls on, in the same batch as the edit.
+Past ones stay, as the record of what happened. Removing a schedule cascades its cancellations,
+so they stop counting in progress; the Remove dialog says so, and suggests an end date instead.
+
+**In progress, a cancelled lesson is not a missed one.** `computeProgress` subtracts the plan
+window's cancellations before today from `sessions_planned_to_date`, and reports
+`sessions_cancelled_to_date` and `sessions_cancelled_upcoming`. Progress is read by every tutor
+teaching the student — wider than any one schedule's audience — so a reader who could not list
+that schedule sees the date and the tutor (as the timeline already shows every lesson), but not
+the note or who cancelled it. The counts use every row, so every reader's summary agrees.
+
 ### `active_sessions`
 
 Phase 7. A lesson being taught right now: the tutor presses start, teaches, presses stop, and a
@@ -617,11 +662,14 @@ The schema carries every rule it is capable of carrying:
 | A comment is about exactly one thing | `CHECK` over the four target columns |
 | A comment cannot be empty | `CHECK (length(trim(body)) > 0)` |
 | Deleting a lesson removes its comments | `ON DELETE CASCADE` on each target |
+| One decision per date of a series | `PRIMARY KEY (schedule_id, occurs_on)` on `schedule_cancellations` |
+| The capacity somebody cancelled in is one of three | `CHECK` on `schedule_cancellations.cancelled_as` |
+| Removing a schedule removes its cancellations | `ON DELETE CASCADE` |
 | One assessment per person per lesson | `PRIMARY KEY (session_id, author_user_id)` on `session_assessments` |
 | An assessment says something | `CHECK (rating IS NOT NULL OR length(trim(body)) > 0)` |
 | A homework status is one of four | `CHECK` on `session_write_ups.homework_status` |
 
-Six rules **cannot** be constraints, and live in the API instead. They are called out here
+Seven rules **cannot** be constraints, and live in the API instead. They are called out here
 because "the database guarantees it" would be wrong:
 
 1. **"A student must have at least one parent relationship."** A cross-row invariant: the
@@ -658,6 +706,12 @@ because "the database guarantees it" would be wrong:
    guardians or the office the reader is depends on guardianship and on roles, rows the
    assessment cannot see. `sessionAssessorRole` decides it, the routes take no author, and a
    lesson the reader cannot see is reported as missing.
+
+7. **Which dates a cancellation may name, and who may make or undo it.** Whether a date is one
+   the series falls on needs the weekday rule; who may act needs guardianship and roles; "no
+   lesson recorded that day" needs `sessions`. `isOccurrenceOf`, `scheduleCancellerRole`,
+   `mayCancelOn` and `mayRestoreCancellation` decide it, and the recorded-lesson rule is the one
+   SQL fragment every read uses.
 
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
 a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's

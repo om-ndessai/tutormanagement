@@ -40,7 +40,9 @@ test.describe('the Tutoring tab’s sections', () => {
     await expect(sessions.getByRole('link', { name: /^Next session:/ })).toBeVisible();
     await expect(sessions.getByRole('link', { name: /^Past session:/ })).toHaveCount(5);
 
-    const upcoming = sessions.getByRole('link', { name: /^Upcoming session:/ });
+    // A cancelled date keeps its card (Phase 24), so it counts as one of the
+    // five: seeded cancellations come into range as the real clock moves on.
+    const upcoming = sessions.getByRole('link', { name: /^(Upcoming|Cancelled) session:/ });
     await expect(upcoming).toHaveCount(4);
     await sessions.getByRole('button', { name: 'Later sessions' }).click();
     await expect(upcoming).toHaveCount(9);

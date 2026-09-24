@@ -2,6 +2,7 @@ import {
   EMPTY_MAILING_ADDRESS,
   hasRole,
   type MailingAddressParts,
+  type ScheduleCancellerRole,
   type SessionAssessorRole,
   type SessionMoneyView,
   type User,
@@ -205,6 +206,42 @@ export function sessionAssessorRole(
   if (row.tutor_user_id === viewer.id) return 'tutor';
   if (row.student_user_id === viewer.id) return 'student';
   if (family.has(row.student_user_id)) return 'parent';
+  if (isAdmin(viewer)) return 'admin';
+  return null;
+}
+
+/**
+ * teachingScopeSql for a row already read: whether it concerns the reader as
+ * its tutor, its student, a guardian of the student, or an admin. The same
+ * people, decided the same way, as sessionAssessorRole -- which is why it is
+ * that function rather than a fourth copy of the rule.
+ */
+export function inTeachingScope(
+  row: { tutor_user_id: string; student_user_id: string },
+  viewer: User,
+  family: ReadonlySet<string>,
+): boolean {
+  return sessionAssessorRole(row, viewer, family) !== null;
+}
+
+/**
+ * The capacity a reader would call off a lesson of this schedule in (Phase
+ * 24), or null when they may not -- the student themselves, or anybody the
+ * schedule does not concern.
+ *
+ * The same order as sessionAssessorRole: whoever teaches it speaks as its
+ * tutor, a guardian as the family, the office last. This is the capacity that
+ * is RECORDED; what they may do also depends on isAdmin, so an admin who is
+ * the student's parent cancels as the family and keeps the office's reach
+ * (see mayCancelOn in the shared package).
+ */
+export function scheduleCancellerRole(
+  row: { tutor_user_id: string; student_user_id: string },
+  viewer: User,
+  family: ReadonlySet<string>,
+): ScheduleCancellerRole | null {
+  if (row.tutor_user_id === viewer.id) return 'tutor';
+  if (row.student_user_id !== viewer.id && family.has(row.student_user_id)) return 'parent';
   if (isAdmin(viewer)) return 'admin';
   return null;
 }

@@ -57,9 +57,20 @@ export function StudentProgressCard({
       <p className="text-muted-foreground mb-2 text-xs">
         {summary.mastered_count} of {summary.topic_count} topics mastered · {summary.sessions_held}{' '}
         of {summary.sessions_planned_to_date} planned sessions held
+        {summary.sessions_cancelled_to_date > 0 && ` · ${summary.sessions_cancelled_to_date} cancelled`}
+        {summary.sessions_cancelled_upcoming > 0 &&
+          ` · ${summary.sessions_cancelled_upcoming} upcoming ${
+            summary.sessions_cancelled_upcoming === 1 ? 'lesson' : 'lessons'
+          } cancelled`}
       </p>
 
-      <ProgressChart plan={plan} summary={summary} timeline={progress.timeline} today={progress.today} />
+      <ProgressChart
+        plan={plan}
+        summary={summary}
+        timeline={progress.timeline}
+        today={progress.today}
+        cancellations={progress.cancellations}
+      />
     </Panel>
   );
 }

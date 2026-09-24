@@ -1,4 +1,7 @@
 import { z } from 'zod';
+// Type-only, so erased at build: schedules.ts imports teaching.ts, which
+// imports this module, and a runtime import back would close the cycle.
+import type { ScheduleCancellerRole } from './schedules.js';
 import { refuseSsn } from './tax.js';
 import { optionalText } from './users.js';
 
@@ -342,6 +345,26 @@ export interface ProgressPoint {
   percent: number;
 }
 
+/**
+ * A lesson of the student's standing schedule that was called off (Phase 24),
+ * past or still ahead, within the plan's dates.
+ *
+ * Deliberately without ids, like ProgressPoint: progress is read by every tutor
+ * currently teaching the student, a wider audience than any one schedule's. The
+ * date and the tutor are the same kind of fact as a lesson on the timeline;
+ * the note and who cancelled are not, and reach only readers of the schedule
+ * itself -- null for anybody else.
+ */
+export interface ProgressCancellation {
+  schedule_id: string;
+  occurs_on: string;
+  start_time: string;
+  tutor_name: string;
+  cancelled_as: ScheduleCancellerRole;
+  note: string | null;
+  cancelled_by_name: string | null;
+}
+
 export interface ProgressSummary {
   status: ProgressStatus;
   topic_count: number;
@@ -353,8 +376,16 @@ export interface ProgressSummary {
   /** Where a straight line from start to goal says it should be today, 0-100. */
   expected_percent: number;
   sessions_held: number;
-  /** What the recommended cadence adds up to between the start and today. */
+  /**
+   * What the recommended cadence adds up to between the start and today, less
+   * the lessons cancelled in that time: a vacation week was never going to be
+   * held, so it is not counted as missed.
+   */
   sessions_planned_to_date: number;
+  /** Lessons cancelled in the plan window before today. */
+  sessions_cancelled_to_date: number;
+  /** Lessons cancelled from today to the goal date. */
+  sessions_cancelled_upcoming: number;
   /** Mean of the goal ratings of the last few scored lessons. */
   recent_goal_rating: number | null;
 }
@@ -377,6 +408,8 @@ export interface StudentProgress {
   summary: ProgressSummary;
   topics: TopicProgress[];
   timeline: ProgressPoint[];
+  /** Called-off lessons in the plan's dates, soonest first (Phase 24). */
+  cancellations: ProgressCancellation[];
 }
 
 /** One row of GET /api/progress: a student the viewer may follow. */
@@ -436,8 +469,18 @@ export function computeProgress(input: {
     goal_rating: Rating | null;
     topic_ratings: { topic_id: string; rating: Rating }[];
   }[];
+  /**
+   * Called-off lessons of the student's schedules, any order -- ones a lesson
+   * was recorded on anyway already left out, since a recorded lesson wins.
+   */
+  cancellations?: ProgressCancellation[];
   today?: string;
-}): { summary: ProgressSummary; topics: TopicProgress[]; timeline: ProgressPoint[] } {
+}): {
+  summary: ProgressSummary;
+  topics: TopicProgress[];
+  timeline: ProgressPoint[];
+  cancellations: ProgressCancellation[];
+} {
   const today = input.today ?? isoToday();
   const plan = input.plan;
   const planTopics = plan?.topic_ids ?? [];
@@ -517,6 +560,18 @@ export function computeProgress(input: {
     ? ordered.filter((s) => s.occurred_on >= plan.starts_on && s.occurred_on <= today)
     : [];
 
+  // Cancellations count inside the plan's own dates. "To date" is strictly
+  // before today, matching the cadence below, which does not count today's
+  // lesson until the day is out.
+  const cancellations = plan
+    ? (input.cancellations ?? [])
+        .filter((row) => row.occurs_on >= plan.starts_on && row.occurs_on <= plan.target_on)
+        .sort(
+          (a, b) => a.occurs_on.localeCompare(b.occurs_on) || a.start_time.localeCompare(b.start_time),
+        )
+    : [];
+  const cancelledToDate = cancellations.filter((row) => row.occurs_on < today).length;
+
   let expected = 0;
   let plannedToDate = 0;
 
@@ -526,7 +581,10 @@ export function computeProgress(input: {
     const now = Math.min(dayNumber(today), end);
     const elapsed = Math.max(0, now - start);
     expected = end > start ? Math.round((elapsed / (end - start)) * 100) : 0;
-    plannedToDate = Math.floor((elapsed / 7) * plan.sessions_per_week);
+    plannedToDate = Math.max(
+      0,
+      Math.floor((elapsed / 7) * plan.sessions_per_week) - cancelledToDate,
+    );
   }
 
   const percent = percentNow();
@@ -553,10 +611,13 @@ export function computeProgress(input: {
       expected_percent: expected,
       sessions_held: inWindow.length,
       sessions_planned_to_date: plannedToDate,
+      sessions_cancelled_to_date: cancelledToDate,
+      sessions_cancelled_upcoming: cancellations.length - cancelledToDate,
       recent_goal_rating: recentGoalRating,
     },
     topics,
     timeline,
+    cancellations,
   };
 }
 

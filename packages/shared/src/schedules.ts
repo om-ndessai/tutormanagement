@@ -73,12 +73,25 @@ export const scheduleUpdateSchema = z
   .object({
     day_of_week: z.number().int().min(0).max(6).optional(),
     start_time: clockTime.optional(),
-    duration_minutes: z.number().int().min(15).max(8 * 60).optional(),
+    duration_minutes: z
+      .number()
+      .int()
+      .min(15)
+      .max(8 * 60)
+      .refine((value) => value % 15 === 0, 'Use a multiple of 15 minutes.')
+      .optional(),
     mode: z.enum(SESSION_MODES).optional(),
     starts_on: isoDate.optional(),
-    ends_on: z.union([isoDate, z.literal('')]).nullish().transform((v) => (v ? v : null)),
-    location: optionalText(z.string().trim().max(300)),
-    notes: optionalText(z.string().trim().max(1000)),
+    // `.optional()` after each transform is what keeps an omitted key omitted:
+    // Zod runs a transform on a missing key too, and without it a PATCH of
+    // { is_active } alone erased the end date, the location and the notes.
+    ends_on: z
+      .union([isoDate, z.literal('')])
+      .nullish()
+      .transform((v) => (v ? v : null))
+      .optional(),
+    location: optionalText(z.string().trim().max(300)).optional(),
+    notes: optionalText(z.string().trim().max(1000)).optional(),
     is_active: z.boolean().optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
@@ -106,6 +119,36 @@ export function describeSchedule(schedule: ScheduledSession): string {
   return (
     `${day}s ${formatTimeRange(start, start + schedule.duration_minutes)}` +
     ` · ${formatDuration(schedule.duration_minutes)}`
+  );
+}
+
+/** The weekday a YYYY-MM-DD date falls on, 0 = Sunday, read as a calendar date. */
+export function weekdayOf(date: string): number {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(Date.UTC(year!, (month ?? 1) - 1, day ?? 1)).getUTCDay();
+}
+
+/** True for a date that exists: "2026-02-31" is the right shape and not a day. */
+export function isRealDate(date: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(Date.UTC(year!, month! - 1, day!)).toISOString().slice(0, 10) === date;
+}
+
+/**
+ * Whether a series falls on a date: the right weekday, within its dates.
+ * Says nothing about whether it is active or already recorded -- only whether
+ * "Tuesday the 24th" is one of "every Tuesday from the 1st to the 18th".
+ */
+export function isOccurrenceOf(
+  schedule: Pick<ScheduledSession, 'day_of_week' | 'starts_on' | 'ends_on'>,
+  date: string,
+): boolean {
+  return (
+    isRealDate(date) &&
+    weekdayOf(date) === schedule.day_of_week &&
+    date >= schedule.starts_on &&
+    (!schedule.ends_on || date <= schedule.ends_on)
   );
 }
 
@@ -141,6 +184,12 @@ export interface UpcomingSession {
   tutor_name: string;
   student_user_id: string;
   student_name: string;
+  /**
+   * Set when this date has been called off (Phase 24). A cancelled lesson
+   * stays in the list, flagged, so the gap in the week is explained rather
+   * than silent -- and so it can be restored from where it is seen.
+   */
+  cancellation: UpcomingCancellation | null;
 }
 
 export const upcomingSessionsQuerySchema = z.object({
@@ -148,6 +197,8 @@ export const upcomingSessionsQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(10).default(5),
   /** Only lessons this tutor teaches: a tutor's dashboard, or an admin viewing it. */
   tutor_user_id: z.uuid().optional(),
+  /** Only the dates of one series: the Schedule page's list of its dates. */
+  schedule_id: z.uuid().optional(),
 });
 
 export type UpcomingSessionsParams = z.output<typeof upcomingSessionsQuerySchema>;
@@ -167,6 +218,11 @@ function addDays(date: string, days: number): string {
   return value.toISOString().slice(0, 10);
 }
 
+/** The key `expandUpcoming` matches cancelled dates on: one series, one date. */
+export function cancellationKey(scheduleId: string, date: string): string {
+  return `${scheduleId}|${date}`;
+}
+
 /** The key `expandUpcoming` matches recorded lessons on. */
 export function upcomingTakenKey(tutorId: string, studentId: string, date: string): string {
   return `${tutorId}|${studentId}|${date}`;
@@ -180,6 +236,11 @@ export function upcomingTakenKey(tutorId: string, studentId: string, date: strin
  * occurrence counts until it has ENDED, so a lesson under way is still listed.
  * An occurrence already recorded as a session -- the same tutor and student
  * on that day, in `taken` -- is left out: it is in the past cards instead.
+ * A recorded lesson outranks a cancellation, so that check comes first.
+ *
+ * A cancelled date (Phase 24, in `cancelled`) is NOT left out: it is returned
+ * flagged, and counts toward the page like any other card. So a run of
+ * cancellations never lengthens the walk, and `has_more` keeps its meaning.
  *
  * Each schedule contributes at most `offset + limit + 1` occurrences, which is
  * all a page can need, so a long-running schedule costs nothing extra.
@@ -187,7 +248,12 @@ export function upcomingTakenKey(tutorId: string, studentId: string, date: strin
 export function expandUpcoming(
   schedules: ScheduledSession[],
   nowIso: string,
-  options: { offset: number; limit: number; taken?: ReadonlySet<string> },
+  options: {
+    offset: number;
+    limit: number;
+    taken?: ReadonlySet<string>;
+    cancelled?: ReadonlyMap<string, UpcomingCancellation>;
+  },
 ): { items: UpcomingSession[]; has_more: boolean } {
   const { day: today, minutesOfDay: nowMinutes } = zonedClockParts(nowIso);
   const wanted = options.offset + options.limit + 1;
@@ -226,6 +292,7 @@ export function expandUpcoming(
         tutor_name: schedule.tutor_name,
         student_user_id: schedule.student_user_id,
         student_name: schedule.student_name,
+        cancellation: options.cancelled?.get(cancellationKey(schedule.id, date)) ?? null,
       });
       found += 1;
     }
@@ -243,3 +310,121 @@ export function expandUpcoming(
     has_more: all.length > options.offset + options.limit,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Cancelling one lesson of a series (Phase 24)
+// ---------------------------------------------------------------------------
+// A vacation week or a sick day calls off ONE date of a standing schedule
+// without touching the rest of it. Restoring it puts the date back. Neither
+// is an edit to the schedule, and neither carries money.
+
+/**
+ * The capacity somebody cancels in. Decided by the API from how they relate
+ * to the schedule, never sent, and stored with the cancellation. A student
+ * has none: the plan gives cancelling to "a parent/tutor or admin".
+ */
+export const SCHEDULE_CANCELLER_ROLES = ['tutor', 'parent', 'admin'] as const;
+export type ScheduleCancellerRole = (typeof SCHEDULE_CANCELLER_ROLES)[number];
+
+/** "Cancelled by the family" */
+export const SCHEDULE_CANCELLER_LABELS: Record<ScheduleCancellerRole, string> = {
+  tutor: 'the tutor',
+  parent: 'the family',
+  admin: 'the office',
+};
+
+/**
+ * Whether somebody in this capacity may call off a lesson on `date`.
+ *
+ * A parent may cancel today or later, never a lesson already past: marking
+ * one "cancelled" after the fact would un-count a lesson the tutor may yet
+ * record. The tutor and the office may mark a past date too, provided no
+ * lesson was recorded for it -- which the API checks separately. An admin who
+ * is also the student's parent cancels as the family but keeps the office's
+ * reach, which is why rights take `viewerIsAdmin` as well as the role.
+ */
+export function mayCancelOn(
+  role: ScheduleCancellerRole | null,
+  viewerIsAdmin: boolean,
+  date: string,
+  today: string,
+): boolean {
+  if (!role) return false;
+  if (role !== 'parent' || viewerIsAdmin) return true;
+  return date >= today;
+}
+
+/**
+ * Whether somebody may put a cancelled lesson back: the tutor, the office, or
+ * whoever cancelled it. A parent can undo their own, not the tutor's -- the
+ * tutor may be off sick -- and only while it is still ahead, for the same
+ * reason they cannot cancel a past one.
+ */
+export function mayRestoreCancellation(
+  role: ScheduleCancellerRole | null,
+  viewerIsAdmin: boolean,
+  viewerId: string,
+  cancellation: { cancelled_by_user_id: string | null; occurs_on: string },
+  today: string,
+): boolean {
+  if (!role) return false;
+  if (viewerIsAdmin || role === 'tutor' || role === 'admin') return true;
+  return cancellation.cancelled_by_user_id === viewerId && cancellation.occurs_on >= today;
+}
+
+export const scheduleCancellationInputSchema = z.object({
+  occurs_on: isoDate.refine(isRealDate, 'That is not a real date.'),
+  /** Optional, and under the SSN guard like every other note. */
+  note: optionalText(z.string().trim().max(500)),
+});
+
+export type ScheduleCancellationInput = z.input<typeof scheduleCancellationInputSchema>;
+export type ScheduleCancellationPayload = z.output<typeof scheduleCancellationInputSchema>;
+
+/** One called-off lesson, as the schedule's audience reads it. No money. */
+export interface ScheduleCancellation {
+  schedule_id: string;
+  occurs_on: string;
+  start_time: string;
+  end_time: string;
+  duration_minutes: number;
+  tutor_user_id: string;
+  tutor_name: string;
+  student_user_id: string;
+  student_name: string;
+  note: string | null;
+  /** Who acted. Null once they have been purged; the cancellation stands. */
+  cancelled_by_user_id: string | null;
+  cancelled_by_name: string | null;
+  cancelled_as: ScheduleCancellerRole;
+  created_at: string;
+  /** Whether THIS reader may put the lesson back. Decided by the API. */
+  can_restore: boolean;
+}
+
+/** What a flagged upcoming lesson carries about its cancellation. */
+export type UpcomingCancellation = Pick<
+  ScheduleCancellation,
+  'note' | 'cancelled_by_user_id' | 'cancelled_by_name' | 'cancelled_as' | 'created_at' | 'can_restore'
+>;
+
+/**
+ * A schedule as one reader sees it: with the capacity they could cancel its
+ * lessons in, or null when they cannot (a student). Per reader, decided by the
+ * API, so the page offers exactly what the route would allow.
+ */
+export interface VisibleSchedule extends ScheduledSession {
+  cancel_as: ScheduleCancellerRole | null;
+}
+
+export const listScheduleCancellationsQuerySchema = z.object({
+  /** Inclusive date bounds, YYYY-MM-DD. */
+  from: isoDate.optional(),
+  to: isoDate.optional(),
+  schedule_id: z.uuid().optional(),
+  student_user_id: z.uuid().optional(),
+  tutor_user_id: z.uuid().optional(),
+  limit: z.coerce.number().int().min(1).max(200).default(100),
+});
+
+export type ListScheduleCancellationsParams = z.output<typeof listScheduleCancellationsQuerySchema>;

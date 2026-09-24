@@ -84,6 +84,9 @@ export function SessionsCarousel({
   const clock = zonedClockParts(new Date().toISOString());
   const pastOldestFirst = [...past].reverse();
   const next = upcoming.data?.pages.flatMap((page) => page.data) ?? [];
+  // The highlighted lesson is the next one actually happening: a cancelled
+  // date keeps its place in the strip, but is never "next up".
+  const firstLive = next.findIndex((occurrence) => !occurrence.cancellation);
 
   const measure = useCallback(() => {
     const element = track.current;
@@ -201,7 +204,14 @@ export function SessionsCarousel({
           ))}
 
         {next.map((occurrence, index) =>
-          index === 0 ? (
+          occurrence.cancellation ? (
+            <CancelledCard
+              key={`${occurrence.schedule_id}-${occurrence.occurs_on}`}
+              occurrence={occurrence}
+              today={clock.day}
+              showTutor={showTutor}
+            />
+          ) : index === firstLive ? (
             <NextCard
               key={`${occurrence.schedule_id}-${occurrence.occurs_on}`}
               occurrence={occurrence}
@@ -338,6 +348,47 @@ function UpcomingCard({
       </p>
       <Who student={occurrence.student_name} tutor={occurrence.tutor_name} showTutor={showTutor} />
       <Place occurrence={occurrence} />
+    </Link>
+  );
+}
+
+/**
+ * A date the schedule would have had a lesson on, called off (Phase 24).
+ * Muted and dashed, so the gap in the week is explained rather than silent;
+ * it links to that date on the Schedule page, where it can be put back.
+ */
+function CancelledCard({
+  occurrence,
+  today,
+  showTutor,
+}: {
+  occurrence: UpcomingSession;
+  today: string;
+  showTutor: boolean;
+}) {
+  const start = parseClockTime(occurrence.start_time) ?? 0;
+
+  return (
+    <Link
+      to={`/schedule?focus=${occurrence.schedule_id}&on=${occurrence.occurs_on}`}
+      className={cn(CARD, 'bg-muted/40 hover:border-primary/40 w-56 border-dashed')}
+      aria-label={`Cancelled session: ${occurrence.student_name}, ${relativeDay(occurrence.occurs_on, today)}`}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
+          {relativeDay(occurrence.occurs_on, today)}
+        </p>
+        <Badge variant="outline" className="text-[10px]">
+          Cancelled
+        </Badge>
+      </div>
+      <p className="text-muted-foreground text-xs tabular-nums line-through">
+        {formatMinutesOfDay(start)}–{formatClockTime(occurrence.end_time)}
+      </p>
+      <Who student={occurrence.student_name} tutor={occurrence.tutor_name} showTutor={showTutor} />
+      {occurrence.cancellation?.note && (
+        <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">{occurrence.cancellation.note}</p>
+      )}
     </Link>
   );
 }

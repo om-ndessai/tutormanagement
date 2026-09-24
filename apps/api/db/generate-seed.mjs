@@ -594,6 +594,32 @@ const comments = [
 ];
 
 
+// --- cancelled lessons (Phase 24) --------------------------------------------
+// One date of a standing schedule called off, by somebody that schedule
+// concerns, in the capacity the API would record. Plain literals, drawing on
+// neither random stream. Each is checked below to be a date the series falls
+// on and one no lesson was recorded for -- the API refuses anything else, and
+// the seed must not show what the API would not allow.
+const scheduleCancellations = [
+  // Alex/Sofia (Tuesdays): her mother, ahead of time.
+  [q(id('70000000', 1)), q('2026-11-24'), q('Thanksgiving week — we are travelling.'), q(CAST.maria), q('parent'), q('2026-09-18T20:15:00.000Z')],
+  // Alex/Ben (Saturdays): the tutor, marking a past one. Inside Ben's plan, so
+  // it shows in his progress -- which Sanjay, who also teaches Ben but not on
+  // this schedule, reads without the note.
+  [q(id('70000000', 2)), q('2026-09-19'), q('Tutor unwell.'), q(CAST.alex), q('tutor'), q('2026-09-19T07:30:00.000Z')],
+  // Priya/Sanjay (Thursdays): his mother, matching her comment about the trip.
+  [q(id('70000000', 3)), q('2026-10-29'), q('Away the last week of October — family trip.'), q(CAST.anita), q('parent'), q('2026-09-17T09:15:00.000Z')],
+];
+
+for (const [scheduleId, date] of scheduleCancellations) {
+  const schedule = schedules.find((row) => row[0] === scheduleId);
+  const day = new Date(`${date.slice(1, -1)}T00:00:00Z`).getUTCDay();
+  if (!schedule || schedule[3] !== day) throw new Error(`Seed cancellation ${date} is not a date its schedule falls on.`);
+  if (sessions.some((row) => row[1] === schedule[1] && row[2] === schedule[2] && row[3] === date)) {
+    throw new Error(`Seed cancellation ${date} has a lesson recorded on it.`);
+  }
+}
+
 // --- lesson write-ups and assessments (Phase 23) ----------------------------
 // Only on the named cast's lessons, and each assessment is by somebody that
 // lesson concerns -- its tutor, the student, or the student's parent -- so the
@@ -861,6 +887,7 @@ const sql = `-- ================================================================
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
 DELETE FROM session_write_ups;
 DELETE FROM session_drafts;
@@ -930,6 +957,9 @@ ${insert('payments', ['id', 'direction', 'party_user_id', 'student_user_id', 'am
 -- --- standing weekly lessons -----------------------------------------------
 ${insert('scheduled_sessions', ['id', 'tutor_user_id', 'student_user_id', 'day_of_week', 'start_time', 'duration_minutes', 'mode', 'starts_on', 'ends_on', 'location', 'notes'], schedules)}
 
+-- --- single lessons of those called off (Phase 24) -------------------------
+${insert('schedule_cancellations', ['schedule_id', 'occurs_on', 'note', 'cancelled_by_user_id', 'cancelled_as', 'created_at'], scheduleCancellations)}
+
 -- --- what people have said about all of it ---------------------------------
 ${insert('comments', ['id', 'author_user_id', 'target_user_id', 'target_session_id', 'target_assignment_id', 'target_scheduled_session_id', 'body', 'created_at'], comments)}
 
@@ -963,5 +993,6 @@ console.log(
     `${sessions.length} sessions, ${payments.length} payments, ${schedules.length} schedules, ` +
     `${comments.length} comments, ${assessments.length} assessments, ${plans.length} plans, ` +
     `${sessionProgress.length} scored lessons, ${writeUps.length} write-ups, ` +
-    `${sessionAssessments.length} lesson assessments`,
+    `${sessionAssessments.length} lesson assessments, ` +
+    `${scheduleCancellations.length} cancelled lessons`,
 );

@@ -66,6 +66,7 @@ function ProgressSpotlightCard({ progress, index }: { progress: StudentProgress;
                 summary={summary}
                 timeline={progress.timeline}
                 today={progress.today}
+                cancellations={progress.cancellations}
               />
             ) : (
               <div className="bg-muted/50 h-16 rounded-md" aria-hidden />

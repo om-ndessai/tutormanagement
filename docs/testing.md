@@ -119,6 +119,15 @@ records a lesson → it is priced server-side (1 hr 52 min rounds to 1 hr 45 at 
 the family owes exactly that → the admin records payment → the balance clears → and every step
 appears in the audit log.
 
+`schedule-cancellations.spec.ts` (Phase 24) — one lesson of a series called off and put back:
+who may (a student may not; nobody outside the schedule can find it), which dates (only ones the
+series falls on; a parent only from today on), who may restore (the tutor anyone's, a parent
+their own), a recorded lesson outranking a cancellation, progress no longer counting it as
+missed, the note hidden from a progress reader outside the schedule, an edit clearing orphaned
+dates, and the Schedule page, the dashboard carousel and the sessions page showing it. Each test
+makes its own Wednesday slot and takes its dates from the API, so it does not depend on the day
+the suite runs.
+
 ## Notes
 
 - `workers: 1`, no parallelism. Every spec assumes the seeded roster against one shared

@@ -1,4 +1,10 @@
-import { SESSION_MODE_LABELS, firstOccurrence, parseClockTime, type ScheduledSession } from '@tmi/shared';
+import {
+  SESSION_MODE_LABELS,
+  firstOccurrence,
+  isOccurrenceOf,
+  parseClockTime,
+  type ScheduledSession,
+} from '@tmi/shared';
 
 /** RFC 5545 weekday codes, indexed the same way as day_of_week. */
 const BYDAY = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'] as const;
@@ -10,7 +16,7 @@ const BYDAY = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'] as const;
 function escapeText(value: string): string {
   return value
     .replace(/\\/g, '\\\\')
-    .replace(/;/g, '\;')
+    .replace(/;/g, '\\;')
     .replace(/,/g, '\\,')
     .replace(/\r?\n/g, '\\n');
 }
@@ -61,7 +67,7 @@ function utcStamp(date: Date): string {
  * shipping a VTIMEZONE block and getting DST transitions right, to express
  * something the institute does not actually mean.
  */
-function toEvent(schedule: ScheduledSession, now: Date): string[] {
+function toEvent(schedule: ScheduledSession, cancelled: readonly string[], now: Date): string[] {
   const start = firstOccurrence(schedule.starts_on, schedule.day_of_week);
   const startMinutes = parseClockTime(schedule.start_time) ?? 0;
   const endMinutes = startMinutes + schedule.duration_minutes;
@@ -96,6 +102,14 @@ function toEvent(schedule: ScheduledSession, now: Date): string[] {
     `DTSTART:${localStamp(start, schedule.start_time)}`,
     `DTEND:${localStamp(start, endTime)}`,
     `RRULE:${rrule.join(';')}`,
+    // One EXDATE per called-off lesson (Phase 24). It must be the same value
+    // type as DTSTART -- floating, no Z -- and at the series' CURRENT start
+    // time, or clients silently ignore it. A date the series no longer falls
+    // on has nothing to exclude. Never the note: a calendar is shared on.
+    ...cancelled
+      .filter((date) => isOccurrenceOf(schedule, date))
+      .sort()
+      .map((date) => `EXDATE:${localStamp(date, schedule.start_time)}`),
     `SUMMARY:${escapeText(`Math tutoring: ${schedule.student_name} with ${schedule.tutor_name}`)}`,
     `DESCRIPTION:${escapeText(description)}`,
   ];
@@ -106,15 +120,22 @@ function toEvent(schedule: ScheduledSession, now: Date): string[] {
   return lines;
 }
 
-/** A complete .ics document for one or more standing lessons. */
-export function buildCalendar(schedules: ScheduledSession[], now: Date = new Date()): string {
+/**
+ * A complete .ics document for one or more standing lessons, leaving out the
+ * dates in `cancelled` (schedule id -> cancelled dates).
+ */
+export function buildCalendar(
+  schedules: ScheduledSession[],
+  cancelled: ReadonlyMap<string, readonly string[]> = new Map(),
+  now: Date = new Date(),
+): string {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//Mathematics Institute of the Triangle//TMI Portal//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    ...schedules.flatMap((schedule) => toEvent(schedule, now)),
+    ...schedules.flatMap((schedule) => toEvent(schedule, cancelled.get(schedule.id) ?? [], now)),
     'END:VCALENDAR',
   ];
 

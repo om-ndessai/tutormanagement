@@ -33,6 +33,10 @@ import { PEOPLE, type PersonKey } from '../support/people.js';
  *                    "not found" when fetched by id
  *   R10 drafts       an unposted write-up -- its notes, parts and assessment --
  *                    reaches only its author, whoever else it names
+ *   R11 cancellations a cancelled lesson comes from a schedule the reader can
+ *                    list; through progress (read more widely) its date may
+ *                    reach any reader, but its note and canceller only the
+ *                    schedule's own audience
  */
 
 const PERSONAS: PersonKey[] = ['tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
@@ -44,6 +48,7 @@ const ACTOR_KEYS = new Set([
   'assessor_user_id',
   'recorded_by_user_id',
   'created_by_user_id',
+  'cancelled_by_user_id',
 ]);
 
 interface Reader {
@@ -214,6 +219,30 @@ test.describe('what each non-admin can see', () => {
       // Phase 21: every upcoming lesson comes from a schedule this reader can
       // list, and carries no money -- it is shown on the Tutoring tab.
       const mySchedules = new Set(((await get(page, '/api/schedules')) as any[]).map((s) => s.id));
+
+      // R11: every cancellation listed comes from a schedule this reader can
+      // list, and carries no money. Each schedule's own dates are crawled too.
+      const cancellations = (await get(page, '/api/schedules/cancellations')) as any[];
+      check(reader, '/api/schedules/cancellations', cancellations, problems);
+      for (const row of cancellations) {
+        if (!mySchedules.has(row.schedule_id)) problems.push(`R11 cancellation from hidden schedule ${row.schedule_id}`);
+        if (Object.keys(row).some((key) => key.endsWith('_cents'))) problems.push('R11 cancellation carries money');
+      }
+      for (const scheduleId of mySchedules) {
+        await read(`/api/schedules/upcoming?schedule_id=${scheduleId}&limit=10`);
+      }
+
+      // R11 through progress: the details of a cancellation only for a
+      // schedule the reader can list (Sanjay reading Ben's is the seeded case).
+      for (const row of followed) {
+        const progress = (await get(page, `/api/progress/${row.student_user_id}`)) as any;
+        for (const cancelled of progress.cancellations) {
+          const detailed = cancelled.note !== null || cancelled.cancelled_by_name !== null;
+          if (detailed && !mySchedules.has(cancelled.schedule_id)) {
+            problems.push(`R11 cancellation note from hidden schedule ${cancelled.schedule_id}`);
+          }
+        }
+      }
       for (const next of (await get(page, '/api/schedules/upcoming?limit=10')) as any[]) {
         if (!mySchedules.has(next.schedule_id)) problems.push(`upcoming lesson from hidden schedule ${next.schedule_id}`);
         if (Object.keys(next).some((key) => key.endsWith('_cents'))) problems.push('upcoming lesson carries money');
@@ -247,6 +276,16 @@ test.describe('what each non-admin can see', () => {
     // Anita's note about her son Sanjay, whom Alex does not teach.
     const alex = await as('tutor');
     expect((await alex.request.delete('/api/comments/c0000000-0000-4000-8000-000000000003')).status()).toBe(404);
+
+    // Somebody else's schedule, and a lesson cancelled on it: missing, whether
+    // cancelling or restoring. Seeded: Anita cancelled Sanjay's lesson on
+    // 2026-10-29, on Priya's schedule, which Alex has nothing to do with.
+    const theirs = '70000000-0000-4000-8000-000000000003';
+    expect((await alex.request.delete(`/api/schedules/${theirs}/cancellations/2026-10-29`)).status()).toBe(404);
+    expect(
+      (await alex.request.post(`/api/schedules/${theirs}/cancellations`, { data: { occurs_on: '2026-11-05' } }))
+        .status(),
+    ).toBe(404);
 
     // The audit filter offers only actions in the reader's own events.
     const actions = (await get(parent, '/api/audit/actions')) as string[];

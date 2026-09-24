@@ -1,15 +1,20 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
+  ListScheduleCancellationsParams,
   ListSchedulesParams,
+  ScheduleCancellation,
+  ScheduleCancellationInput,
   SchedulePayload,
   ScheduleUpdatePayload,
   ScheduledSession,
   UpcomingSessionsResponse,
+  VisibleSchedule,
 } from '@tmi/shared';
 
 import { apiClient, toQueryString } from '@/lib/api-client';
 import { auditKeys } from '@/features/audit/api';
+import { progressKeys } from '@/features/progress/api';
 
 function useScheduleInvalidation() {
   const queryClient = useQueryClient();
@@ -24,7 +29,7 @@ export function useSchedules(params: Partial<ListSchedulesParams> = {}) {
   return useQuery({
     queryKey: ['schedules', params],
     queryFn: () =>
-      apiClient.get<ApiOk<ScheduledSession[]>>(
+      apiClient.get<ApiOk<VisibleSchedule[]>>(
         `/schedules${toQueryString({
           tutor_user_id: params.tutor_user_id,
           student_user_id: params.student_user_id,
@@ -52,6 +57,87 @@ export function useUpcomingSessions(tutorUserId?: string) {
       ),
     getNextPageParam: (last) =>
       last.meta.has_more ? last.meta.offset + last.meta.limit : undefined,
+  });
+}
+
+/**
+ * One series' coming dates, six at a time, with any that are cancelled
+ * flagged -- the Schedule page's list of a slot's dates (Phase 24).
+ */
+export function useScheduleOccurrences(scheduleId: string, enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: ['schedules', 'upcoming', 'schedule', scheduleId],
+    initialPageParam: 0,
+    enabled,
+    queryFn: ({ pageParam }) =>
+      apiClient.get<UpcomingSessionsResponse>(
+        `/schedules/upcoming${toQueryString({
+          offset: pageParam,
+          limit: 6,
+          schedule_id: scheduleId,
+        })}`,
+      ),
+    getNextPageParam: (last) =>
+      last.meta.has_more ? last.meta.offset + last.meta.limit : undefined,
+  });
+}
+
+/** Called-off lessons the reader may list, soonest first. */
+export function useScheduleCancellations(
+  params: Partial<ListScheduleCancellationsParams>,
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: ['schedules', 'cancellations', params],
+    enabled,
+    queryFn: () =>
+      apiClient.get<ApiOk<ScheduleCancellation[]>>(
+        `/schedules/cancellations${toQueryString({
+          from: params.from,
+          to: params.to,
+          schedule_id: params.schedule_id,
+          student_user_id: params.student_user_id,
+          tutor_user_id: params.tutor_user_id,
+          limit: params.limit,
+        })}`,
+      ),
+  });
+}
+
+/**
+ * A cancellation moves the schedule's dates, the carousel, the calendar file
+ * and the student's progress ("planned so far"), so it refreshes all of them.
+ */
+function useCancellationInvalidation() {
+  const queryClient = useQueryClient();
+
+  return () => {
+    void queryClient.invalidateQueries({ queryKey: ['schedules'] });
+    void queryClient.invalidateQueries({ queryKey: progressKeys.all });
+    void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    void queryClient.invalidateQueries({ queryKey: auditKeys.all });
+  };
+}
+
+/** Calls off one lesson of a series. */
+export function useCancelLesson() {
+  const invalidate = useCancellationInvalidation();
+
+  return useMutation({
+    mutationFn: ({ scheduleId, input }: { scheduleId: string; input: ScheduleCancellationInput }) =>
+      apiClient.post<ApiOk<ScheduleCancellation>>(`/schedules/${scheduleId}/cancellations`, input),
+    onSuccess: invalidate,
+  });
+}
+
+/** Puts a cancelled lesson back in its series. */
+export function useRestoreLesson() {
+  const invalidate = useCancellationInvalidation();
+
+  return useMutation({
+    mutationFn: ({ scheduleId, occursOn }: { scheduleId: string; occursOn: string }) =>
+      apiClient.delete<undefined>(`/schedules/${scheduleId}/cancellations/${occursOn}`),
+    onSuccess: invalidate,
   });
 }
 

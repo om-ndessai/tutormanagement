@@ -7,6 +7,7 @@ import type {
 } from '@tmi/shared';
 
 import { teachingScopeSql } from '../lib/scope.js';
+import { clearCancellationsStatement } from './schedule-cancellations.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -107,10 +108,17 @@ export async function createSchedule(
   return created;
 }
 
+/**
+ * Applies an edit. `clearCancellations` names cancelled dates the edit leaves
+ * the series no longer falling on -- a move from Tuesdays to Thursdays, an
+ * earlier end -- which are removed in the same batch, so the edit and its
+ * tidying cannot come apart.
+ */
 export async function updateSchedule(
   db: D1Database,
   id: string,
   input: ScheduleUpdatePayload,
+  options: { clearCancellations?: readonly string[] } = {},
 ): Promise<ScheduledSession | null> {
   const assignments: string[] = [];
   const values: unknown[] = [];
@@ -140,12 +148,17 @@ export async function updateSchedule(
 
   assignments.push(`updated_at = ${NOW}`);
 
-  const result = await db
-    .prepare(`UPDATE scheduled_sessions SET ${assignments.join(', ')} WHERE id = ?`)
-    .bind(...values, id)
-    .run();
+  const statements = [
+    db
+      .prepare(`UPDATE scheduled_sessions SET ${assignments.join(', ')} WHERE id = ?`)
+      .bind(...values, id),
+  ];
+  if (options.clearCancellations?.length) {
+    statements.push(clearCancellationsStatement(db, id, options.clearCancellations));
+  }
 
-  if (!result.meta.changes) return null;
+  const [result] = await db.batch(statements);
+  if (!result?.meta.changes) return null;
   return getSchedule(db, id);
 }
 

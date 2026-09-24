@@ -14,9 +14,12 @@ import { toast } from 'sonner';
 import {
   GOAL_RATING_LABELS,
   PLAN_STATUS_LABELS,
+  SCHEDULE_CANCELLER_LABELS,
   formatCadence,
   type Assessment,
   type LearningPlan,
+  type ProgressCancellation,
+  type ProgressPoint,
   type Rating,
 } from '@tmi/shared';
 
@@ -55,6 +58,75 @@ import { PlanDialog } from './plan-dialog';
 import { ProgressChart } from './progress-chart';
 import { ProgressMeter } from './progress-list';
 import { ProgressStatusBadge, RatingChip, RatingLegend, TopicName } from './rating';
+
+/**
+ * The plan's lessons and its cancelled ones, newest first, as one list: a
+ * cancelled week sits where it happened, so the table explains its own gaps.
+ * Upcoming cancellations lead.
+ */
+function lessonRows(
+  timeline: ProgressPoint[],
+  cancellations: ProgressCancellation[],
+): ({ kind: 'lesson'; day: string; item: ProgressPoint } | { kind: 'cancelled'; day: string; item: ProgressCancellation })[] {
+  return [
+    ...timeline.map((item) => ({ kind: 'lesson' as const, day: item.occurred_on, item })),
+    ...cancellations.map((item) => ({ kind: 'cancelled' as const, day: item.occurs_on, item })),
+  ].sort((a, b) => b.day.localeCompare(a.day));
+}
+
+/** One lesson of the plan: when, with whom, how it moved them, and where it left them. */
+function LessonRow({ point }: { point: ProgressPoint }) {
+  return (
+    <TableRow>
+      <TableCell className="whitespace-nowrap">
+        <Link to={`/sessions?focus=${point.session_id}`} className="hover:text-primary">
+          {longDate(point.occurred_on)}
+        </Link>
+      </TableCell>
+      <TableCell>{point.tutor_name}</TableCell>
+      <TableCell>
+        <span className="flex items-center gap-2">
+          <RatingChip rating={point.goal_rating} labels={GOAL_RATING_LABELS} />
+          <span className="text-muted-foreground text-xs">
+            {point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'Not scored'}
+          </span>
+        </span>
+      </TableCell>
+      <TableCell className="text-right tabular-nums">{point.topics_rated}</TableCell>
+      <TableCell className="text-right tabular-nums">{point.percent}%</TableCell>
+    </TableRow>
+  );
+}
+
+/** A called-off lesson in the plan's table: when, with whom, and why if the reader may know. */
+function CancelledLessonRow({ row, upcoming }: { row: ProgressCancellation; upcoming: boolean }) {
+  return (
+    <TableRow className="text-muted-foreground">
+      <TableCell className="whitespace-nowrap">
+        <span className="line-through">{longDate(row.occurs_on)}</span>
+        {upcoming && (
+          <Badge variant="secondary" className="ml-2 text-[10px]">
+            Upcoming
+          </Badge>
+        )}
+      </TableCell>
+      <TableCell>{row.tutor_name}</TableCell>
+      <TableCell>
+        <span className="flex flex-wrap items-center gap-2">
+          <Badge variant="outline" className="text-[10px]">
+            Cancelled
+          </Badge>
+          <span className="text-xs">
+            by {row.cancelled_by_name ?? SCHEDULE_CANCELLER_LABELS[row.cancelled_as]}
+          </span>
+        </span>
+        {row.note && <span className="mt-0.5 block text-xs whitespace-normal">{row.note}</span>}
+      </TableCell>
+      <TableCell className="text-right">—</TableCell>
+      <TableCell className="text-right">—</TableCell>
+    </TableRow>
+  );
+}
 
 function longDate(iso: string) {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
@@ -214,7 +286,14 @@ export function StudentProgressPage() {
                 label="Sessions held"
                 value={summary.sessions_held}
                 icon={ClipboardCheckIcon}
-                hint={`${summary.sessions_planned_to_date} planned so far`}
+                hint={
+                  // Planned is already net of cancellations (Phase 24): a
+                  // vacation week is not a missed lesson.
+                  `${summary.sessions_planned_to_date} planned so far` +
+                  (summary.sessions_cancelled_to_date > 0
+                    ? ` · ${summary.sessions_cancelled_to_date} cancelled`
+                    : '')
+                }
               />
               <StatCard
                 index={3}
@@ -236,6 +315,7 @@ export function StudentProgressPage() {
                 summary={summary}
                 timeline={progress.timeline}
                 today={progress.today}
+                cancellations={progress.cancellations}
               />
             </Panel>
 
@@ -328,7 +408,7 @@ export function StudentProgressPage() {
           onDelete={(row) => setDeleting({ kind: 'assessment', row })}
         />
 
-        {progress.timeline.length > 0 && (
+        {(progress.timeline.length > 0 || progress.cancellations.length > 0) && (
           <Panel index={8} title="Lessons in this plan">
             {/* The chart's table view: every value it plots, without hovering. */}
             <div className="overflow-x-auto">
@@ -343,26 +423,17 @@ export function StudentProgressPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {[...progress.timeline].reverse().map((point) => (
-                    <TableRow key={point.session_id}>
-                      <TableCell className="whitespace-nowrap">
-                        <Link to={`/sessions?focus=${point.session_id}`} className="hover:text-primary">
-                          {longDate(point.occurred_on)}
-                        </Link>
-                      </TableCell>
-                      <TableCell>{point.tutor_name}</TableCell>
-                      <TableCell>
-                        <span className="flex items-center gap-2">
-                          <RatingChip rating={point.goal_rating} labels={GOAL_RATING_LABELS} />
-                          <span className="text-muted-foreground text-xs">
-                            {point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'Not scored'}
-                          </span>
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">{point.topics_rated}</TableCell>
-                      <TableCell className="text-right tabular-nums">{point.percent}%</TableCell>
-                    </TableRow>
-                  ))}
+                  {lessonRows(progress.timeline, progress.cancellations).map((row) =>
+                    row.kind === 'cancelled' ? (
+                      <CancelledLessonRow
+                        key={`${row.item.schedule_id}-${row.item.occurs_on}`}
+                        row={row.item}
+                        upcoming={row.item.occurs_on >= progress.today}
+                      />
+                    ) : (
+                      <LessonRow key={row.item.session_id} point={row.item} />
+                    ),
+                  )}
                 </TableBody>
               </Table>
             </div>

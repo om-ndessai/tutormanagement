@@ -55,6 +55,7 @@ DROP TABLE IF EXISTS curriculum_levels;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS session_assessments;
 DROP TABLE IF EXISTS session_write_ups;
+DROP TABLE IF EXISTS schedule_cancellations;
 DROP TABLE IF EXISTS scheduled_sessions;
 DROP TABLE IF EXISTS session_drafts;
 DROP TABLE IF EXISTS active_sessions;
@@ -543,6 +544,47 @@ CREATE TABLE scheduled_sessions (
 
 CREATE INDEX scheduled_sessions_tutor_idx   ON scheduled_sessions (tutor_user_id)   WHERE is_active = 1;
 CREATE INDEX scheduled_sessions_student_idx ON scheduled_sessions (student_user_id) WHERE is_active = 1;
+
+-- BEGIN PHASE 24 TABLES
+-- ---------------------------------------------------------------------------
+-- schedule_cancellations - one lesson of a standing schedule that is not happening
+-- ---------------------------------------------------------------------------
+-- A vacation week, a sick day: one DATE of a series called off, without
+-- touching the series. It is a fact about that date, never an edit to the
+-- schedule, so every other week is unaffected and the calendar file simply
+-- leaves the date out.
+--
+-- Restoring the lesson deletes the row -- the date is back in the series as if
+-- nothing had happened -- and the audit log keeps the trail of both. There is
+-- no updated_at: a note is not edited, it is restored and cancelled again.
+--
+-- The API guarantees `occurs_on` was a date the series fell on when it was
+-- cancelled (the database cannot see the weekday rule). `cancelled_as` is the
+-- capacity they cancelled in -- the tutor, the family, the office -- decided by
+-- the API from how they relate to the schedule and frozen here, like
+-- session_assessments.author_role.
+--
+-- Named for what it holds. Moves and no-shows (roadmap S1) would extend it
+-- additively: a rename and a `kind` column, keeping this key -- one decision
+-- per date of a series.
+CREATE TABLE schedule_cancellations (
+  schedule_id          TEXT NOT NULL REFERENCES scheduled_sessions (id) ON DELETE CASCADE,
+  occurs_on            TEXT NOT NULL,
+
+  -- Why, in the canceller's words. Read by the schedule's audience only.
+  note                 TEXT,
+
+  -- Who cancelled it. SET NULL if they are purged: the cancellation stands.
+  cancelled_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+  cancelled_as         TEXT NOT NULL CHECK (cancelled_as IN ('tutor', 'parent', 'admin')),
+
+  created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (schedule_id, occurs_on)
+);
+
+CREATE INDEX schedule_cancellations_on_idx ON schedule_cancellations (occurs_on);
+-- END PHASE 24 TABLES
 
 
 -- ---------------------------------------------------------------------------

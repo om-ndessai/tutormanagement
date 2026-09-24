@@ -43,6 +43,8 @@ export const AUDIT_ACTIONS = [
   'schedule.created',
   'schedule.updated',
   'schedule.removed',
+  'schedule.occurrence_cancelled',
+  'schedule.occurrence_restored',
 
   'assessment.recorded',
   'assessment.updated',
@@ -96,6 +98,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'schedule.created': 'Session scheduled',
   'schedule.updated': 'Schedule updated',
   'schedule.removed': 'Schedule removed',
+  'schedule.occurrence_cancelled': 'Lesson cancelled',
+  'schedule.occurrence_restored': 'Cancelled lesson restored',
 
   'assessment.recorded': 'Assessment recorded',
   'assessment.updated': 'Assessment updated',

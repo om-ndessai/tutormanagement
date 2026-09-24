@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   GOAL_RATING_LABELS,
+  SCHEDULE_CANCELLER_LABELS,
+  formatClockTime,
   formatDuration,
   type LearningPlan,
+  type ProgressCancellation,
   type ProgressPoint,
   type ProgressSummary,
 } from '@tmi/shared';
@@ -22,6 +25,10 @@ import { ratingStyle } from './rating';
  * each lesson that moved a topic over the line. Each lesson is a dot, shaded
  * by how the tutor rated its step towards the goal, so "lots of lessons, flat
  * line" and "few lessons, steep line" both read at a glance.
+ *
+ * A lesson of the schedule that was called off (Phase 24) is a small cross on
+ * the baseline at its date, fainter while it is still ahead: not a step and
+ * not a series, just the reason a week has no dot.
  */
 
 const FULL = { height: 240, margin: { top: 26, right: 44, bottom: 30, left: 40 }, floor: 280 };
@@ -71,17 +78,23 @@ function useWidth<T extends HTMLElement>(floor: number) {
   return { ref, width };
 }
 
+/** The mark under the pointer or the keyboard: a lesson, or a cancelled one. */
+type Active = { kind: 'lesson' | 'cancelled'; index: number } | null;
+
 export function ProgressChart({
   plan,
   summary,
   timeline,
   today,
+  cancellations = [],
   compact = false,
 }: {
   plan: Pick<LearningPlan, 'starts_on' | 'target_on'>;
   summary: ProgressSummary;
   timeline: ProgressPoint[];
   today: string;
+  /** Lessons of the schedule that were called off, inside the plan's dates. */
+  cancellations?: ProgressCancellation[];
   /** The card-sized sparkline: no axes, labels, legend or tooltip. */
   compact?: boolean;
 }) {
@@ -89,7 +102,7 @@ export function ProgressChart({
   const HEIGHT = size.height;
   const MARGIN = size.margin;
   const { ref, width } = useWidth<HTMLDivElement>(size.floor);
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState<Active>(null);
 
   const geometry = useMemo(() => {
     const start = toDay(plan.starts_on);
@@ -146,23 +159,31 @@ export function ProgressChart({
   }, [plan.starts_on, plan.target_on, summary.start_percent, timeline, today, width, HEIGHT, MARGIN]);
 
   const { x, y } = geometry;
-  const activePoint = active === null ? null : timeline[active];
+  const activePoint = active?.kind === 'lesson' ? timeline[active.index] : null;
+  const activeCancellation = active?.kind === 'cancelled' ? cancellations[active.index] : null;
+  const activeDay = activePoint?.occurred_on ?? activeCancellation?.occurs_on ?? null;
+  const cancelledCount = cancellations.length;
 
-  /** Snap the pointer to the nearest lesson: readers aim at a date, not a dot. */
+  /**
+   * Snap the pointer to the nearest lesson or cancelled one: readers aim at a
+   * date, not a dot.
+   */
   function handlePointer(event: React.PointerEvent<SVGRectElement>) {
-    if (timeline.length === 0) return;
+    if (timeline.length === 0 && cancellations.length === 0) return;
     const bounds = event.currentTarget.ownerSVGElement!.getBoundingClientRect();
     const px = event.clientX - bounds.left;
 
-    let nearest = 0;
+    let nearest: Active = null;
     let distance = Infinity;
-    timeline.forEach((point, index) => {
-      const gap = Math.abs(x(toDay(point.occurred_on)) - px);
+    const consider = (kind: 'lesson' | 'cancelled', day: string, index: number) => {
+      const gap = Math.abs(x(toDay(day)) - px);
       if (gap < distance) {
         distance = gap;
-        nearest = index;
+        nearest = { kind, index };
       }
-    });
+    };
+    timeline.forEach((point, index) => consider('lesson', point.occurred_on, index));
+    cancellations.forEach((row, index) => consider('cancelled', row.occurs_on, index));
     setActive(distance < 40 ? nearest : null);
   }
 
@@ -175,7 +196,10 @@ export function ProgressChart({
           role="img"
           aria-label={
             `Progress towards the goal: ${summary.percent}% of plan topics mastered, ` +
-            `against ${summary.expected_percent}% expected by today.`
+            `against ${summary.expected_percent}% expected by today.` +
+            (cancelledCount > 0
+              ? ` ${cancelledCount} ${cancelledCount === 1 ? 'lesson' : 'lessons'} cancelled.`
+              : '')
           }
           className="block overflow-visible"
         >
@@ -288,11 +312,20 @@ export function ProgressChart({
             </g>
           )}
 
-          {/* The one direct label: where the student is now. */}
+          {/* The one direct label: where the student is now -- lifted clear
+              of a cancelled-lesson cross that sits just after today. */}
           {!compact && (
           <text
             x={geometry.endPoint[0] + 8}
-            y={geometry.endPoint[1]}
+            y={
+              geometry.endPoint[1] -
+              (cancellations.some((row) => {
+                const cx = x(toDay(row.occurs_on));
+                return cx >= geometry.endPoint[0] - 4 && cx <= geometry.endPoint[0] + 36;
+              }) && geometry.endPoint[1] > y(0) - 16
+                ? 14
+                : 0)
+            }
             dy="0.32em"
             className="fill-foreground text-[11px] font-semibold tabular-nums"
           >
@@ -300,10 +333,10 @@ export function ProgressChart({
           </text>
           )}
 
-          {activePoint && (
+          {activeDay && (
             <line
-              x1={x(toDay(activePoint.occurred_on))}
-              x2={x(toDay(activePoint.occurred_on))}
+              x1={x(toDay(activeDay))}
+              x2={x(toDay(activeDay))}
               y1={MARGIN.top}
               y2={y(0)}
               stroke="var(--primary)"
@@ -324,7 +357,7 @@ export function ProgressChart({
                 key={point.session_id}
                 cx={cx}
                 cy={cy}
-                r={compact ? 2.5 : active === index ? 6 : 4.5}
+                r={compact ? 2.5 : active?.kind === 'lesson' && active.index === index ? 6 : 4.5}
                 fill={fill}
                 stroke="var(--card)"
                 strokeWidth={compact ? 1 : 2}
@@ -335,10 +368,42 @@ export function ProgressChart({
                   (point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'not scored') +
                   `, ${point.percent}% mastered after it`
                 }
-                onFocus={() => setActive(index)}
+                onFocus={() => setActive({ kind: 'lesson', index })}
                 onBlur={() => setActive(null)}
                 className="outline-none"
               />
+            );
+          })}
+
+          {/* Cancelled lessons: a cross on the baseline at the date, fainter
+              while still ahead. Muted ink, not a series colour -- it marks an
+              absence, and its label says so. */}
+          {cancellations.map((row, index) => {
+            const cx = x(toDay(row.occurs_on));
+            const cy = y(0) - (compact ? 3 : 6);
+            const arm = compact ? 2.5 : active?.kind === 'cancelled' && active.index === index ? 5 : 4;
+            const ahead = row.occurs_on >= today;
+
+            return (
+              <g
+                key={`${row.schedule_id}-${row.occurs_on}`}
+                data-cancelled-mark
+                stroke="var(--muted-foreground)"
+                strokeOpacity={ahead ? 0.5 : 0.95}
+                strokeWidth={compact ? 1.25 : 1.75}
+                strokeLinecap="round"
+                tabIndex={compact ? undefined : 0}
+                role={compact ? undefined : 'button'}
+                aria-label={compact ? undefined : cancellationLabel(row)}
+                onFocus={() => setActive({ kind: 'cancelled', index })}
+                onBlur={() => setActive(null)}
+                className="outline-none"
+              >
+                {/* A wider invisible disc, so focus has something to ring. */}
+                {!compact && <circle cx={cx} cy={cy} r={7} fill="transparent" stroke="none" />}
+                <line x1={cx - arm} y1={cy - arm} x2={cx + arm} y2={cy + arm} />
+                <line x1={cx - arm} y1={cy + arm} x2={cx + arm} y2={cy - arm} />
+              </g>
             );
           })}
 
@@ -355,6 +420,32 @@ export function ProgressChart({
           />
           )}
         </svg>
+
+        {activeCancellation && (
+          <div
+            role="status"
+            className="bg-popover text-popover-foreground pointer-events-none absolute z-10 w-56 rounded-md border px-3 py-2 text-xs shadow-md"
+            style={{
+              left: Math.min(
+                Math.max(0, x(toDay(activeCancellation.occurs_on)) - 112),
+                Math.max(0, width - 224),
+              ),
+              top: Math.max(0, y(0) - 104),
+            }}
+          >
+            <p className="text-sm font-semibold">
+              Cancelled{activeCancellation.occurs_on >= today ? ' · upcoming' : ''}
+            </p>
+            <p className="text-muted-foreground">
+              {shortDate(activeCancellation.occurs_on)} ·{' '}
+              {formatClockTime(activeCancellation.start_time)} with {activeCancellation.tutor_name}
+            </p>
+            <p className="text-muted-foreground">
+              By {activeCancellation.cancelled_by_name ?? SCHEDULE_CANCELLER_LABELS[activeCancellation.cancelled_as]}
+            </p>
+            {activeCancellation.note && <p className="mt-1">{activeCancellation.note}</p>}
+          </div>
+        )}
 
         {activePoint && (
           <div
@@ -415,8 +506,28 @@ export function ProgressChart({
           </span>
           Lesson, darker = bigger step towards the goal
         </span>
+        {cancelledCount > 0 && (
+          <span className="flex items-center gap-1.5">
+            <svg width="10" height="10" aria-hidden className="shrink-0">
+              <g stroke="var(--muted-foreground)" strokeWidth={1.75} strokeLinecap="round">
+                <line x1={1} y1={1} x2={9} y2={9} />
+                <line x1={1} y1={9} x2={9} y2={1} />
+              </g>
+            </svg>
+            Cancelled lesson
+          </span>
+        )}
       </figcaption>
       )}
     </figure>
+  );
+}
+
+/** How a cancelled lesson reads to a screen reader. */
+function cancellationLabel(row: ProgressCancellation): string {
+  return (
+    `Cancelled lesson, ${shortDate(row.occurs_on)} with ${row.tutor_name}, ` +
+    `by ${row.cancelled_by_name ?? SCHEDULE_CANCELLER_LABELS[row.cancelled_as]}` +
+    (row.note ? `: ${row.note}` : '')
   );
 }

@@ -18,6 +18,7 @@
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
 DELETE FROM session_write_ups;
 DELETE FROM session_drafts;
@@ -996,6 +997,12 @@ INSERT INTO scheduled_sessions (id, tutor_user_id, student_user_id, day_of_week,
   ('71111111-0000-4000-8000-000000000020', '11111111-0000-4000-8000-000000000003', '33333333-0000-4000-8000-000000000073', 4, '18:00', 45, 'in_person', '2026-09-01', '2026-12-18', 'Institute, room 3', NULL),
   ('71111111-0000-4000-8000-000000000021', '11111111-0000-4000-8000-000000000004', '33333333-0000-4000-8000-000000000074', 2, '18:00', 45, 'in_person', '2026-09-01', NULL, 'Institute, room 1', NULL),
   ('71111111-0000-4000-8000-000000000022', '11111111-0000-4000-8000-000000000001', '33333333-0000-4000-8000-000000000076', 2, '18:00', 60, 'in_person', '2026-09-01', NULL, 'Institute, room 3', NULL);
+
+-- --- single lessons of those called off (Phase 24) -------------------------
+INSERT INTO schedule_cancellations (schedule_id, occurs_on, note, cancelled_by_user_id, cancelled_as, created_at) VALUES
+  ('70000000-0000-4000-8000-000000000001', '2026-11-24', 'Thanksgiving week — we are travelling.', '00000000-0000-4000-8000-000000000004', 'parent', '2026-09-18T20:15:00.000Z'),
+  ('70000000-0000-4000-8000-000000000002', '2026-09-19', 'Tutor unwell.', '00000000-0000-4000-8000-000000000003', 'tutor', '2026-09-19T07:30:00.000Z'),
+  ('70000000-0000-4000-8000-000000000003', '2026-10-29', 'Away the last week of October — family trip.', '00000000-0000-4000-8000-000000000007', 'parent', '2026-09-17T09:15:00.000Z');
 
 -- --- what people have said about all of it ---------------------------------
 INSERT INTO comments (id, author_user_id, target_user_id, target_session_id, target_assignment_id, target_scheduled_session_id, body, created_at) VALUES

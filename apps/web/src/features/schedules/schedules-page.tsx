@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CalendarPlusIcon, DownloadIcon, PencilIcon, Trash2Icon } from 'lucide-react';
+import {
+  CalendarDaysIcon,
+  CalendarPlusIcon,
+  DownloadIcon,
+  PencilIcon,
+  Trash2Icon,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DAYS_OF_WEEK,
@@ -28,6 +34,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
+import { ScheduleDates } from './schedule-dates';
 import { ScheduleDialog } from './schedule-dialog';
 import { calendarHref, useDeleteSchedule, useSchedules } from './api';
 
@@ -44,6 +51,7 @@ export function SchedulesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<ScheduledSession | null>(null);
   const [removing, setRemoving] = useState<ScheduledSession | null>(null);
+  const [showingDates, setShowingDates] = useState(new Set<string>());
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { data, isPending } = useSchedules();
@@ -51,6 +59,8 @@ export function SchedulesPage() {
 
   /** One slot, when a comment in the feed links straight to it. */
   const focusId = searchParams.get('focus');
+  // A link from the dashboard's carousel names one date of the series too.
+  const focusDate = searchParams.get('on');
   const all = data?.data ?? [];
   const schedules = focusId ? all.filter((row) => row.id === focusId) : all;
   const clearFocus = () =>
@@ -58,6 +68,7 @@ export function SchedulesPage() {
       (current) => {
         const next = new URLSearchParams(current);
         next.delete('focus');
+        next.delete('on');
         return next;
       },
       { replace: true },
@@ -152,6 +163,15 @@ export function SchedulesPage() {
             <ul className="space-y-2">
               {items.map((schedule) => {
                 const canEdit = isAdmin || schedule.tutor_user_id === user?.id;
+                // Its dates open by themselves when a link points at this slot.
+                const datesOpen = showingDates.has(schedule.id) || schedule.id === focusId;
+                const toggleDates = () =>
+                  setShowingDates((current) => {
+                    const next = new Set(current);
+                    if (datesOpen) next.delete(schedule.id);
+                    else next.add(schedule.id);
+                    return next;
+                  });
 
                 return (
                   <li key={schedule.id}>
@@ -183,6 +203,16 @@ export function SchedulesPage() {
                         </div>
 
                         <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            aria-expanded={datesOpen}
+                            onClick={toggleDates}
+                          >
+                            <CalendarDaysIcon />
+                            <span className="max-sm:sr-only">Dates</span>
+                          </Button>
+
                           <CommentsButton
                             target={{ target_type: 'scheduled_session', target_id: schedule.id }}
                             title={`${schedule.student_name}’s recurring session`}
@@ -219,6 +249,15 @@ export function SchedulesPage() {
                             </>
                           )}
                         </div>
+
+                        {datesOpen && (
+                          <div className="basis-full">
+                            <ScheduleDates
+                              schedule={schedule}
+                              highlight={schedule.id === focusId ? focusDate : null}
+                            />
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   </li>
@@ -237,7 +276,9 @@ export function SchedulesPage() {
             <AlertDialogTitle>Remove this recurring session?</AlertDialogTitle>
             <AlertDialogDescription>
               {removing?.student_name}&apos;s {removing && describeSchedule(removing)} slot will no
-              longer appear. Sessions already taught are unaffected.
+              longer appear, and any of its lessons that were cancelled go with it — so they stop
+              counting as cancelled in the student&apos;s progress. Sessions already taught are
+              unaffected. To stop a series but keep its record, give it an end date instead.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

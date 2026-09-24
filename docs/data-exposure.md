@@ -9,7 +9,7 @@ Read this before adding a route or a screen that returns people, lessons or mone
 
 ## The rules
 
-Admins see everything, except another person's draft (R10). For everyone else there are ten rules. A person may hold several roles,
+Admins see everything, except another person's draft (R10). For everyone else there are eleven rules. A person may hold several roles,
 so each rule applies **per row**: Sanjay reads the lessons he teaches as a tutor and his own
 lessons as a student, in one list.
 
@@ -25,6 +25,7 @@ lessons as a student, in one list.
 | R8 | The activity log never carries an amount of money. | the audit descriptions (lessons since Phase 17, payments since Phase 21); the repository rewords older lines for non-admin readers, and the dashboard's Tutoring tab leaves payment lines out altogether |
 | R9 | A lesson, payment, schedule or comment the reader cannot list is "not found" when fetched by id, and never "forbidden", because a 403 confirms it exists. | `getVisibleSession`, `getVisiblePayment`, `canSeeSchedule` |
 | R10 | An unposted write-up (Phase 22) — its notes, its parts and its author's assessment (Phase 23) — reaches only its author, whoever else it names. Admins included. | `listMyDrafts`, `assertMyDraft` |
+| R11 | A cancelled lesson (Phase 24) is listed only from a schedule the reader can list. Through progress, which more people read, its date and tutor may reach any reader of the student's progress, but its note and who cancelled it only the schedule's own audience. | `listScheduleCancellations`, `toProgressCancellation` |
 
 ## Who sees what, by screen
 
@@ -37,6 +38,8 @@ lessons as a student, in one list.
 | A lesson's write-up and assessments (Phase 23), on every session returned | Everything written on the lessons they may see: the plan, the review, the homework, the notes, and every assessment with who gave it. No money. | Same, for their children's lessons. | Same, for their own. |
 | Assessing a lesson, `PUT`/`DELETE /sessions/:id/assessment` | Their own assessment only, as the tutor. Any other lesson is 404. | Their own, as a parent. | Their own, as the student. |
 | Drafts, `GET /sessions/drafts` | Their own drafts only. | Same. | Same. |
+| Cancelled lessons, `GET /schedules/cancellations` (Phase 24) | Those of schedules they teach, with the note and who cancelled. No money. | Their children's. | Their own. |
+| Cancelling or restoring a lesson, `POST`/`DELETE /schedules/:id/cancellations` | Their own schedules: any date with no lesson recorded; restore any. | Their children's: today or later; restore only their own. | 403: a student may not cancel. |
 | Session totals | "Earned" | "Charged" | "Charged" |
 | Sessions CSV | Only their "Your pay" columns. | Only their "Charged to you" columns. | Same as parent. |
 | Pairings, `GET /assignments` | Their pairings, with their rates. | Who teaches their children, without rates. | Their own tutors, without rates. |
@@ -48,7 +51,7 @@ lessons as a student, in one list.
 | Upcoming lessons, `GET /schedules/upcoming` | Dated lessons from schedules they can list; the dashboard asks for their own teaching only. No money. | Their children's. | Their own. |
 | Dashboard, parent tab | n/a | Only their children's lessons (not ones they taught) and family payments. | n/a |
 | Dashboard, student tab | n/a | n/a | Only their own lessons. |
-| Progress (Phase 16) | Students currently assigned to them. | Their children. | Themselves. |
+| Progress (Phase 16) | Students currently assigned to them. Cancelled lessons on another tutor's schedule show without the note or who cancelled (R11). | Their children. | Themselves. |
 | Activity log | Events they acted in or were the subject of, with no amounts. | Same. | Same. |
 | Comments | See `docs/data-model.md`. | Same. | Same. |
 
@@ -114,6 +117,7 @@ every read endpoint:
 - balances
 - the monthly rundown
 - their drafts, after the office has saved one naming a lesson they can see (R10)
+- cancelled lessons, and each schedule's own dates (R11)
 
 It then walks **every object in every response** against R1–R8, whichever endpoint returned it.
 An assessment names its author (`author_user_id`), who is exempt from R7 as whoever acted, as a

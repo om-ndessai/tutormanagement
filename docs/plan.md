@@ -144,3 +144,6 @@ Phase 23:
 Session notes extensions.
 The current scheme allows tutor to draft notes on the session and then later save it. Lets build an extensive session notes so eventually it can auto build summary.
 The session capture should allow tracking - what was originally planned, previous session review, homework review from previous session, homework given in this session, optionally tutor, student, admin, parent can record an assessment of this session. Same as prior phase allow this to be in "draft" state - visuble only to the tutor and then saved state - visuble to all relevant parties
+
+Phase 24:
+Support overriding or canceling sessions. The current calendar scheduling is driven by the recurring schedule. Sometimes the scheduled sessions need to be canceled without affecting the entire scheduled series. Allow either a parent/tutor or admin to cancel a session within the series that could fall on a vacation day or so on. Allow the party cancelling the session within a series to record a note for cancellation. Allow a feature to cancel the cancellation so it starts showing up in the series of sessions. Cancelled session or future cancellations should show up in the progress tracker.

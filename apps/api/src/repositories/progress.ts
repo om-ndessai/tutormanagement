@@ -8,6 +8,7 @@ import {
   type LearningPlan,
   type PlanPayload,
   type PlanUpdatePayload,
+  type ProgressCancellation,
   type ProgressOverview,
   type Rating,
   type SessionProgressPayload,
@@ -16,7 +17,11 @@ import {
   zonedClockParts,
 } from '@tmi/shared';
 
-import { studentScopeSql } from '../lib/scope.js';
+import { familyStudentIds, inTeachingScope, studentScopeSql } from '../lib/scope.js';
+import {
+  listCancellationsForStudents,
+  type StoredCancellation,
+} from './schedule-cancellations.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -471,10 +476,57 @@ function baselineFor(plan: LearningPlan | null, assessments: Assessment[]): Asse
   return assessments[0] ?? null;
 }
 
-/** Everything the progress page shows for one student. Authorise first. */
+/**
+ * Who is reading a student's progress, for the one part of it that depends
+ * on the reader: the details of a cancelled lesson (Phase 24).
+ */
+export interface ProgressReader {
+  viewer: User;
+  family: ReadonlySet<string>;
+}
+
+export async function progressReader(db: D1Database, viewer: User): Promise<ProgressReader> {
+  return { viewer, family: await familyStudentIds(db, viewer) };
+}
+
+/**
+ * A cancellation as the progress page shows it.
+ *
+ * Progress is read by every tutor currently teaching the student -- wider than
+ * any one schedule's audience. That a lesson was called off, and with which
+ * tutor, is the same kind of fact the timeline already shows; the note and who
+ * cancelled are the schedule's business, and are blanked for a reader who
+ * could not list that schedule. The counts use every row either way, so every
+ * reader's summary agrees.
+ */
+function toProgressCancellation(
+  row: StoredCancellation,
+  reader: ProgressReader | null,
+): ProgressCancellation {
+  const mayReadDetails = reader !== null && inTeachingScope(row, reader.viewer, reader.family);
+
+  return {
+    schedule_id: row.schedule_id,
+    occurs_on: row.occurs_on,
+    start_time: row.start_time,
+    tutor_name: row.tutor_name,
+    cancelled_as: row.cancelled_as,
+    note: mayReadDetails ? row.note : null,
+    cancelled_by_name: mayReadDetails ? row.cancelled_by_name : null,
+  };
+}
+
+/**
+ * Everything the progress page shows for one student. Authorise first.
+ *
+ * `reader` is whoever the page is FOR: the signed-in person on the progress
+ * page, the dashboard's subject on a dashboard -- so an admin viewing
+ * somebody's dashboard sees what that person would.
+ */
 export async function buildStudentProgress(
   db: D1Database,
   studentId: string,
+  reader: ProgressReader,
   today?: string,
 ): Promise<StudentProgress | null> {
   const student = await db
@@ -488,13 +540,14 @@ export async function buildStudentProgress(
 
   if (!student) return null;
 
-  const [assessments, plans, sessions] = await Promise.all([
+  const [assessments, plans, sessions, cancellations] = await Promise.all([
     listAssessments(db, studentId),
     listPlans(db, studentId),
     db
       .prepare(`${SELECT_PROGRESS_SESSIONS} WHERE s.student_user_id = ?`)
       .bind(studentId)
       .all<ProgressSessionRow>(),
+    listCancellationsForStudents(db, [studentId]),
   ]);
 
   const plan = plans.find((candidate) => candidate.status === 'active') ?? null;
@@ -506,6 +559,7 @@ export async function buildStudentProgress(
     baseline: baseline?.ratings ?? [],
     baselineOn: baseline?.assessed_on ?? null,
     sessions: (sessions.results ?? []).map(toProgressSession),
+    cancellations: cancellations.map((row) => toProgressCancellation(row, reader)),
     today: on,
   });
 
@@ -552,15 +606,21 @@ export async function listProgressOverview(
   const ids = JSON.stringify(rows.map((row) => row.id));
   const inStudents = '(SELECT value FROM json_each(?))';
 
-  const [planResult, assessmentResult, sessionResult] = await db.batch<Record<string, unknown>>([
-    db.prepare(`${SELECT_PLAN} WHERE p.status = 'active' AND p.student_user_id IN ${inStudents}`).bind(ids),
-    db
-      .prepare(
-        `${SELECT_ASSESSMENT} WHERE a.student_user_id IN ${inStudents}
-         ORDER BY a.assessed_on DESC, a.created_at DESC`,
-      )
-      .bind(ids),
-    db.prepare(`${SELECT_PROGRESS_SESSIONS} WHERE s.student_user_id IN ${inStudents}`).bind(ids),
+  const [[planResult, assessmentResult, sessionResult], cancellationRows] = await Promise.all([
+    db.batch<Record<string, unknown>>([
+      db.prepare(`${SELECT_PLAN} WHERE p.status = 'active' AND p.student_user_id IN ${inStudents}`).bind(ids),
+      db
+        .prepare(
+          `${SELECT_ASSESSMENT} WHERE a.student_user_id IN ${inStudents}
+           ORDER BY a.assessed_on DESC, a.created_at DESC`,
+        )
+        .bind(ids),
+      db.prepare(`${SELECT_PROGRESS_SESSIONS} WHERE s.student_user_id IN ${inStudents}`).bind(ids),
+    ]),
+    listCancellationsForStudents(
+      db,
+      rows.map((row) => row.id),
+    ),
   ]);
 
   const plans = new Map<string, LearningPlan>();
@@ -573,6 +633,15 @@ export async function listProgressOverview(
     const list = assessments.get(row.student_user_id) ?? [];
     list.push(toAssessment(row));
     assessments.set(row.student_user_id, list);
+  }
+
+  // Only the summary leaves this function, and counts need no reader: the
+  // details are blanked for everybody here.
+  const cancellations = new Map<string, ProgressCancellation[]>();
+  for (const row of cancellationRows) {
+    const list = cancellations.get(row.student_user_id) ?? [];
+    list.push(toProgressCancellation(row, null));
+    cancellations.set(row.student_user_id, list);
   }
 
   const sessions = new Map<string, ReturnType<typeof toProgressSession>[]>();
@@ -592,6 +661,7 @@ export async function listProgressOverview(
       baseline: baseline?.ratings ?? [],
       baselineOn: baseline?.assessed_on ?? null,
       sessions: sessions.get(student.id) ?? [],
+      cancellations: cancellations.get(student.id) ?? [],
       today: options.today ?? instituteToday(),
     });
 

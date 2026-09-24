@@ -34,6 +34,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CommentsButton } from '@/features/comments/comments-button';
+import { CancelledLessonsPanel } from '@/features/schedules/cancelled-lessons-panel';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { DraftsPanel } from './drafts-panel';
@@ -204,6 +205,10 @@ export function SessionsPage() {
           what="session"
           onClear={clearFocus}
         />
+
+        {/* Why a week has no entry below (Phase 24). Teaching, so Tutoring
+            only; and out of the way while one session is in focus. */}
+        {!money && !focusId && <CancelledLessonsPanel />}
 
         {!focusId && (
         <div className="flex flex-wrap items-end gap-3">

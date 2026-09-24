@@ -22,6 +22,7 @@ import { requireAdmin } from '../middleware/require-admin.js';
 import { getLiveUserById } from '../repositories/users.js';
 import {
   buildStudentProgress,
+  progressReader,
   canViewStudentProgress,
   createAssessment,
   createPlan,
@@ -343,7 +344,11 @@ export const progressRoutes = new Hono<AppEnv>()
       throw ApiError.notFound('That student does not exist.');
     }
 
-    const progress = await buildStudentProgress(c.env.DB, studentId);
+    const progress = await buildStudentProgress(
+      c.env.DB,
+      studentId,
+      await progressReader(c.env.DB, c.get('user')),
+    );
     if (!progress) throw ApiError.notFound('That student does not exist.');
 
     const body: ApiOk<StudentProgress> = { data: progress };

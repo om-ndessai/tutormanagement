@@ -16,7 +16,7 @@ import { getSsnReceivedOn, listTutorsMissingSsn } from './users.js';
 import { listAuditEvents } from './audit.js';
 import { listPayments } from './payments.js';
 import { listSessions } from './sessions.js';
-import { buildStudentProgress } from './progress.js';
+import { buildStudentProgress, progressReader, type ProgressReader } from './progress.js';
 
 /** How many events the Tutoring tab's Recent Activity shows. */
 const ACTIVITY_SIZE = 5;
@@ -54,6 +54,7 @@ const SPOTLIGHT_SIZE = 5;
 async function progressSpotlight(
   db: D1Database,
   among: string[] | null,
+  reader: ProgressReader,
 ): Promise<StudentProgress[]> {
   if (among !== null && among.length === 0) return [];
 
@@ -73,7 +74,7 @@ async function progressSpotlight(
     .all<{ id: string }>();
 
   const progress = await Promise.all(
-    (picked.results ?? []).map((row) => buildStudentProgress(db, row.id)),
+    (picked.results ?? []).map((row) => buildStudentProgress(db, row.id, reader)),
   );
   return progress.filter((row): row is StudentProgress => row !== null);
 }
@@ -153,7 +154,7 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
     recent_activity: await teachingActivity(db),
     recent_sessions: sessions.sessions,
-    progress_spotlight: await progressSpotlight(db, null),
+    progress_spotlight: await progressSpotlight(db, null, await progressReader(db, subject)),
   };
 }
 
@@ -227,6 +228,7 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
     progress_spotlight: await progressSpotlight(
       db,
       (studentsResult.results ?? []).map((row) => String(row.user_id)),
+      await progressReader(db, subject),
     ),
   };
 }
@@ -263,9 +265,14 @@ async function buildParent(db: D1Database, subject: User): Promise<ParentDashboa
     },
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
-    progress: (
-      await Promise.all(children.map((child) => buildStudentProgress(db, child.student_user_id)))
-    ).filter((row) => row !== null),
+    progress: await (async () => {
+      // Built for the dashboard's subject, once for all their children.
+      const reader = await progressReader(db, subject);
+      const rows = await Promise.all(
+        children.map((child) => buildStudentProgress(db, child.student_user_id, reader)),
+      );
+      return rows.filter((row) => row !== null);
+    })(),
   };
 }
 
@@ -317,6 +324,6 @@ async function buildStudent(db: D1Database, subject: User): Promise<StudentDashb
       total_minutes: Number(totals.total_minutes ?? 0),
     },
     recent_sessions: sessions.sessions,
-    progress: await buildStudentProgress(db, subject.id),
+    progress: await buildStudentProgress(db, subject.id, await progressReader(db, subject)),
   };
 }
