@@ -89,7 +89,7 @@ test.describe('session write-ups and assessments', () => {
     );
 
     // The capacity comes from the relationship, never from the request.
-    const expected = { parentTutor: 'parent', student: 'student', admin: 'admin' } as const;
+    const expected = { parentTutor: 'parent', admin: 'admin' } as const;
     for (const [who, role] of Object.entries(expected)) {
       const page = await as(who as keyof typeof expected);
       const after = await unwrap<any>(
@@ -102,18 +102,19 @@ test.describe('session write-ups and assessments', () => {
       expect(theirs.author_role).toBe(role);
     }
 
+    // The student reflects on a lesson rather than assessing it (Phase 25).
+    const sofia = await as('student');
+    expect(
+      (await sofia.request.put(`/api/sessions/${session.id}/assessment`, { data: { rating: 5 } })).status(),
+    ).toBe(403);
+
     // Revising keeps one each.
     const maria = await as('parentTutor');
     const revised = await unwrap<any>(
       await maria.request.put(`/api/sessions/${session.id}/assessment`, { data: { rating: 3 } }),
       'revising',
     );
-    expect(revised.assessments.map((row: any) => row.author_role)).toEqual([
-      'tutor',
-      'student',
-      'parent',
-      'admin',
-    ]);
+    expect(revised.assessments.map((row: any) => row.author_role)).toEqual(['tutor', 'parent', 'admin']);
     expect(revised.assessments.find((row: any) => row.author_role === 'parent').rating).toBe(3);
 
     // Somebody the lesson does not concern cannot assess it, or learn it exists.
@@ -132,7 +133,7 @@ test.describe('session write-ups and assessments', () => {
     expect((await maria.request.delete(`/api/sessions/${session.id}/assessment`)).status()).toBe(204);
     expect((await maria.request.delete(`/api/sessions/${session.id}/assessment`)).status()).toBe(404);
     const left = await unwrap<any>(await tutor.request.get(`/api/sessions/${session.id}`), 'reading');
-    expect(left.assessments.map((row: any) => row.author_role)).toEqual(['tutor', 'student', 'admin']);
+    expect(left.assessments.map((row: any) => row.author_role)).toEqual(['tutor', 'admin']);
 
     await admin.request.delete(`/api/sessions/${session.id}`);
   });

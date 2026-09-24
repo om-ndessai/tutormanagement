@@ -174,3 +174,168 @@ export function sortAssessments<T extends Pick<SessionAssessment, 'author_role' 
       a.created_at.localeCompare(b.created_at),
   );
 }
+
+// ---------------------------------------------------------------------------
+// The student's reflection (Phase 25)
+// ---------------------------------------------------------------------------
+// After a lesson is recorded, the student's own view of it: four 1-5 answers
+// and notes on the homework. It replaces the student's Phase 23 assessment.
+// Most students never sign in, so a parent sitting with them or the tutor at
+// the end of the lesson may type it -- but the words stay the student's.
+
+/**
+ * Who typed a reflection. Decided by the API from how they relate to the
+ * lesson; the office reads reflections but does not enter them.
+ */
+export const SESSION_REFLECTOR_ROLES = ['student', 'parent', 'tutor'] as const;
+export type SessionReflectorRole = (typeof SESSION_REFLECTOR_ROLES)[number];
+
+export const SESSION_REFLECTOR_LABELS: Record<SessionReflectorRole, string> = {
+  student: 'the student',
+  parent: 'a parent',
+  tutor: 'the tutor',
+};
+
+export type ReflectionKey = 'learned_new' | 'difficulty' | 'understanding' | 'pace';
+
+/**
+ * The four questions, in the order they are asked.
+ *
+ * Two kinds of scale. Learned-new and understanding run low to high: more is
+ * better. Difficulty and pace are CENTRED: 3 is about right, and 1 and 5 are
+ * the two ways a lesson can miss -- which is why a screen must never shade
+ * them darker-is-better.
+ */
+export const REFLECTION_QUESTIONS: readonly {
+  key: ReflectionKey;
+  /** Short name, for a chip or a column. */
+  short: string;
+  centred: boolean;
+  /** Put to the student. */
+  ask: string;
+  /** Put to an adult entering it for them. */
+  askAbout: (name: string) => string;
+  labels: Record<Rating, string>;
+}[] = [
+  {
+    key: 'learned_new',
+    short: 'Learned',
+    centred: false,
+    ask: 'Did you learn anything new?',
+    askAbout: (name) => `Did ${name} learn anything new?`,
+    labels: { 1: 'Nothing new', 2: 'A little', 3: 'Some', 4: 'Quite a lot', 5: 'A lot' },
+  },
+  {
+    key: 'difficulty',
+    short: 'Difficulty',
+    centred: true,
+    ask: 'How difficult was the topic?',
+    askAbout: (name) => `How difficult was the topic for ${name}?`,
+    labels: { 1: 'Far too easy', 2: 'A bit easy', 3: 'About right', 4: 'A bit hard', 5: 'Far too hard' },
+  },
+  {
+    key: 'understanding',
+    short: 'Understanding',
+    centred: false,
+    ask: 'Has your understanding of the topic improved?',
+    askAbout: (name) => `Has ${name}’s understanding of the topic improved?`,
+    labels: {
+      1: 'No better',
+      2: 'A little better',
+      3: 'Somewhat better',
+      4: 'Clearly better',
+      5: 'Much better',
+    },
+  },
+  {
+    key: 'pace',
+    short: 'Pace',
+    centred: true,
+    ask: 'How was the pace?',
+    askAbout: (name) => `How was the pace for ${name}?`,
+    labels: { 1: 'Far too slow', 2: 'A bit slow', 3: 'Just right', 4: 'A bit fast', 5: 'Far too fast' },
+  },
+];
+
+const reflectionRating = z
+  .number()
+  .int('Answers are whole numbers from 1 to 5.')
+  .min(1, 'Answers run from 1 to 5.')
+  .max(5, 'Answers run from 1 to 5.')
+  .nullish()
+  .transform((value) => value ?? null);
+
+/**
+ * Every answer optional -- a child may not have a view on the pace -- but not
+ * all of them empty. Free text runs through optionalText, so the SSN guard
+ * applies. A PUT replaces the whole reflection, so omitted answers are cleared.
+ */
+export const sessionReflectionInputSchema = z
+  .object({
+    learned_new: reflectionRating,
+    difficulty: reflectionRating,
+    understanding: reflectionRating,
+    pace: reflectionRating,
+    homework_notes: part(1000),
+    comment: part(1000),
+  })
+  .refine(
+    (value) =>
+      value.learned_new !== null ||
+      value.difficulty !== null ||
+      value.understanding !== null ||
+      value.pace !== null ||
+      value.homework_notes !== null ||
+      value.comment !== null,
+    { message: 'Answer at least one question.', path: ['learned_new'] },
+  );
+
+export type SessionReflectionInput = z.input<typeof sessionReflectionInputSchema>;
+export type SessionReflectionPayload = z.output<typeof sessionReflectionInputSchema>;
+
+export interface SessionReflection {
+  session_id: string;
+  learned_new: Rating | null;
+  difficulty: Rating | null;
+  understanding: Rating | null;
+  pace: Rating | null;
+  homework_notes: string | null;
+  comment: string | null;
+  /** Whose hands typed it. Null once they have been purged. */
+  entered_by_user_id: string | null;
+  entered_by_name: string | null;
+  entered_as: SessionReflectorRole;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * The few words a tutor needs from a reflection: where the lesson missed.
+ * Off-centre by one or more on a centred scale, or low on the other two.
+ */
+export function reflectionFlags(
+  reflection: Pick<SessionReflection, 'learned_new' | 'difficulty' | 'understanding' | 'pace'>,
+): string[] {
+  const flags: string[] = [];
+  const { difficulty, pace, learned_new, understanding } = reflection;
+
+  if (difficulty !== null && difficulty >= 4) flags.push('Too hard');
+  if (difficulty !== null && difficulty <= 2) flags.push('Too easy');
+  if (pace !== null && pace >= 4) flags.push('Too fast');
+  if (pace !== null && pace <= 2) flags.push('Too slow');
+  if (learned_new !== null && learned_new <= 2) flags.push('Little new');
+  if (understanding !== null && understanding <= 2) flags.push('Not much clearer');
+
+  return flags;
+}
+
+/** "Learned 4 · Difficulty 3 · Understanding 4 · Pace 3", for a line of text. */
+export function describeReflection(
+  reflection: Pick<SessionReflection, ReflectionKey | 'homework_notes'>,
+): string {
+  const answers = REFLECTION_QUESTIONS.filter((question) => reflection[question.key] !== null).map(
+    (question) => `${question.short} ${reflection[question.key]}`,
+  );
+  if (reflection.homework_notes) answers.push(`Homework: ${reflection.homework_notes}`);
+  return answers.join(' · ');
+}

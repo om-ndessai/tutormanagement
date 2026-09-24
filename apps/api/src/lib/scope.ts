@@ -4,6 +4,7 @@ import {
   type MailingAddressParts,
   type ScheduleCancellerRole,
   type SessionAssessorRole,
+  type SessionReflectorRole,
   type SessionMoneyView,
   type User,
 } from '@tmi/shared';
@@ -207,6 +208,24 @@ export function sessionAssessorRole(
   if (row.student_user_id === viewer.id) return 'student';
   if (family.has(row.student_user_id)) return 'parent';
   if (isAdmin(viewer)) return 'admin';
+  return null;
+}
+
+/**
+ * Whose hands may type the student's reflection on a lesson (Phase 25), and
+ * as whom -- or null. The student first: it is their reflection. Then the
+ * lesson's tutor, who may hand over the screen at the end of the lesson, and
+ * a parent sitting with a child who has no login. The office reads
+ * reflections but does not enter them, unless it is also one of these.
+ */
+export function sessionReflectorRole(
+  row: { tutor_user_id: string; student_user_id: string },
+  viewer: User,
+  family: ReadonlySet<string>,
+): SessionReflectorRole | null {
+  if (row.student_user_id === viewer.id) return 'student';
+  if (row.tutor_user_id === viewer.id) return 'tutor';
+  if (family.has(row.student_user_id)) return 'parent';
   return null;
 }
 

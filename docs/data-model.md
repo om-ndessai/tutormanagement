@@ -558,6 +558,36 @@ It is **read by the lesson's audience**, embedded in every session the API retur
 The log records that an assessment was given, revised or withdrawn and in what capacity, never its
 words or its score: the log is read by admins and by the student it concerns.
 
+### `session_reflections`
+
+Phase 25. The student's own view of a lesson, after the tutor has recorded it: did they learn
+anything new, how difficult was the topic, has their understanding improved, how was the pace
+(each 1–5), and notes on the homework, with an optional comment. One per lesson, because a
+lesson has one student; beside the billing row, like `session_progress`.
+
+**It replaces the student's Phase 23 assessment.** The API refuses a new `session_assessments`
+row in the student's capacity; ones given before still show, and may still be withdrawn. Tutors,
+parents and the office keep their assessments.
+
+**Two kinds of scale.** Learned-new and understanding run low to high. Difficulty and pace are
+**centred**: 3 is about right, 1 and 5 the two ways to miss. `REFLECTION_QUESTIONS` in
+`packages/shared/src/session-notes.ts` carries both, and screens never shade a centred answer
+darker-is-better (`RatingPicker`'s `neutral`, `ScaleChip`). `reflectionFlags` turns a
+reflection into what a tutor needs — "Too fast", "Too hard", "Little new".
+
+**Whose hands, and whose words.** Most students are children who never sign in, so a
+reflection may be typed by the student, a parent sitting with them, or the lesson's tutor at
+the end of the lesson; `entered_as` records which, decided by `sessionReflectorRole`. The office
+reads reflections but does not enter them. **The words stay the student's:** once the student
+has entered it themselves, no adult may revise or withdraw it; an adult may revise one another
+adult typed.
+
+It is **read by the lesson's audience**, embedded in every session the API returns, and carries
+no money. The student's and parent's dashboards prompt for the last 21 days' lessons still
+without one (`ReflectionPrompt`, which names the lesson and nothing more); the tutor's Tutoring
+tab lists the latest reflections on lessons they taught. The log says a reflection was recorded
+and by whom, never an answer.
+
 ### `payments`
 
 Phase 5. A ledger of money that moved **outside** the portal, so the institute can answer two
@@ -665,11 +695,14 @@ The schema carries every rule it is capable of carrying:
 | One decision per date of a series | `PRIMARY KEY (schedule_id, occurs_on)` on `schedule_cancellations` |
 | The capacity somebody cancelled in is one of three | `CHECK` on `schedule_cancellations.cancelled_as` |
 | Removing a schedule removes its cancellations | `ON DELETE CASCADE` |
+| One reflection per lesson | `PRIMARY KEY (session_id)` on `session_reflections` |
+| Reflection answers are 1–5, and something is answered | `CHECK` constraints |
+| Deleting a lesson removes its reflection | `ON DELETE CASCADE` |
 | One assessment per person per lesson | `PRIMARY KEY (session_id, author_user_id)` on `session_assessments` |
 | An assessment says something | `CHECK (rating IS NOT NULL OR length(trim(body)) > 0)` |
 | A homework status is one of four | `CHECK` on `session_write_ups.homework_status` |
 
-Seven rules **cannot** be constraints, and live in the API instead. They are called out here
+Eight rules **cannot** be constraints, and live in the API instead. They are called out here
 because "the database guarantees it" would be wrong:
 
 1. **"A student must have at least one parent relationship."** A cross-row invariant: the
@@ -712,6 +745,10 @@ because "the database guarantees it" would be wrong:
    lesson recorded that day" needs `sessions`. `isOccurrenceOf`, `scheduleCancellerRole`,
    `mayCancelOn` and `mayRestoreCancellation` decide it, and the recorded-lesson rule is the one
    SQL fragment every read uses.
+
+8. **Whose words a reflection is.** Who may type one depends on guardianship and on who taught
+   the lesson, and "no adult overwrites the student's own" depends on who entered it last.
+   `sessionReflectorRole` and the route in `routes/sessions.ts` decide it.
 
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
 a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's

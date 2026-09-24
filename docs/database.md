@@ -121,6 +121,15 @@ npx wrangler d1 execute tmi-portal-db --remote \
 If Phase 22's `session_drafts` has not reached production yet, create it from `schema.sql` as
 above instead — it now carries both columns — and skip the two `ALTER`s.
 
+Phase 25 adds one table and its trigger, marked in `schema.sql`. **Run it before deploying the
+Worker**: every session read joins it, so a Worker deployed ahead of it fails on every lesson.
+
+```bash
+cd apps/api
+sed -n '/BEGIN PHASE 25 TABLES/,/END PHASE 25 TABLES/p' db/schema.sql > /tmp/phase25.sql
+npx wrangler d1 execute tmi-portal-db --remote --file=/tmp/phase25.sql
+```
+
 Phase 24 adds one table, marked in `schema.sql`. **Run it before deploying the Worker**: the
 upcoming lessons, the calendar files, progress and every dashboard read it, so a Worker deployed
 ahead of it fails on all of them.

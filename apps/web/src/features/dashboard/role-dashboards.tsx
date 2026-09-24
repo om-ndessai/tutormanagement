@@ -33,6 +33,7 @@ import { WalletMinusIcon, WalletPlusIcon } from './money-icon';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { TutoringFinanceTabs } from '@/components/layout/tutoring-finance-tabs';
+import { ReflectionPrompts, RecentReflections } from './reflections';
 import { DashboardSection, EmptyNote, ENTER, Panel, StatCard, stagger } from './stat-card';
 import { SessionsCarousel } from './sessions-carousel';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
@@ -433,15 +434,25 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
             />
           </DashboardSection>
 
-          <DashboardSection index={4} title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
+          {/* Phase 25: what their students made of recent lessons, beside the
+              lessons themselves. Teaching, so here; and never money. */}
+          <DashboardSection index={4} title="Student Reflections" action={{ label: 'All sessions', to: '/sessions' }}>
+            <Card className="py-0">
+              <CardContent className="px-4 py-2">
+                <RecentReflections digests={data.recent_reflections} />
+              </CardContent>
+            </Card>
+          </DashboardSection>
+
+          <DashboardSection index={5} title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
             <ProgressSpotlight
-              index={5}
+              index={6}
               students={data.progress_spotlight}
               empty="No students assigned to you yet."
             />
           </DashboardSection>
 
-          <DashboardSection index={6} title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+          <DashboardSection index={7} title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
             <Card className="py-0">
               <CardContent className="px-4 py-2">
                 <ActivityFeed events={data.recent_activity} showActor={false} />
@@ -566,6 +577,10 @@ export function ParentView({ data }: { data: ParentDashboard }) {
         )}
       </Panel>
 
+      {/* Phase 25: their children's recent lessons still waiting for a
+          reflection -- most children never sign in, so it is answered together. */}
+      <ReflectionPrompts index={4} prompts={data.awaiting_reflection} forChildren />
+
       {data.progress.map((child, position) => (
         <StudentProgressCard
           key={child.student.user_id}
@@ -620,6 +635,10 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         />
         <StatCard index={3} label="Tutors" value={data.tutors.length} icon={ROLE_ICONS.tutor} />
       </div>
+
+      {/* Phase 25: the lessons still waiting for their reflection, near the
+          top, because it is the one thing here they are asked to do. */}
+      <ReflectionPrompts index={4} prompts={data.awaiting_reflection} />
 
       {data.progress && (
         <StudentProgressCard index={4} progress={data.progress} title="Your progress" />

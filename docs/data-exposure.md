@@ -9,7 +9,7 @@ Read this before adding a route or a screen that returns people, lessons or mone
 
 ## The rules
 
-Admins see everything, except another person's draft (R10). For everyone else there are eleven rules. A person may hold several roles,
+Admins see everything, except another person's draft (R10). For everyone else there are twelve rules. A person may hold several roles,
 so each rule applies **per row**: Sanjay reads the lessons he teaches as a tutor and his own
 lessons as a student, in one list.
 
@@ -26,6 +26,7 @@ lessons as a student, in one list.
 | R9 | A lesson, payment, schedule or comment the reader cannot list is "not found" when fetched by id, and never "forbidden", because a 403 confirms it exists. | `getVisibleSession`, `getVisiblePayment`, `canSeeSchedule` |
 | R10 | An unposted write-up (Phase 22) — its notes, its parts and its author's assessment (Phase 23) — reaches only its author, whoever else it names. Admins included. | `listMyDrafts`, `assertMyDraft` |
 | R11 | A cancelled lesson (Phase 24) is listed only from a schedule the reader can list. Through progress, which more people read, its date and tutor may reach any reader of the student's progress, but its note and who cancelled it only the schedule's own audience. | `listScheduleCancellations`, `toProgressCancellation` |
+| R12 | A student's reflection (Phase 25) reaches its lesson's audience only. The tutor dashboard's digest of reflections covers lessons that tutor taught, and a student's or parent's prompt for one names only their own or their children's lessons, with no money. | `SELECT_SESSION`, `listRecentReflections`, `listAwaitingReflection` |
 
 ## Who sees what, by screen
 
@@ -39,6 +40,7 @@ lessons as a student, in one list.
 | Assessing a lesson, `PUT`/`DELETE /sessions/:id/assessment` | Their own assessment only, as the tutor. Any other lesson is 404. | Their own, as a parent. | Their own, as the student. |
 | Drafts, `GET /sessions/drafts` | Their own drafts only. | Same. | Same. |
 | Cancelled lessons, `GET /schedules/cancellations` (Phase 24) | Those of schedules they teach, with the note and who cancelled. No money. | Their children's. | Their own. |
+| A lesson's reflection (Phase 25), `PUT`/`DELETE /sessions/:id/reflection` | Enter one for their own students' lessons, and revise one an adult typed; never the student's own. Their Tutoring tab lists the latest on lessons they taught. | Enter one with their child; the dashboard prompts for recent lessons without one. Never overwrite the child's own. | Their own, always theirs to change. The dashboard prompts for recent lessons. |
 | Cancelling or restoring a lesson, `POST`/`DELETE /schedules/:id/cancellations` | Their own schedules: any date with no lesson recorded; restore any. | Their children's: today or later; restore only their own. | 403: a student may not cancel. |
 | Session totals | "Earned" | "Charged" | "Charged" |
 | Sessions CSV | Only their "Your pay" columns. | Only their "Charged to you" columns. | Same as parent. |

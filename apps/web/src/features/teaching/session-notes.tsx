@@ -458,6 +458,9 @@ export function AssessButton({
   const { user } = useAuth();
   const mine = session.assessments.some((row) => row.author_user_id === user?.id);
 
+  // The lesson's student reflects on it instead (Phase 25).
+  if (user && session.student_user_id === user.id) return null;
+
   return (
     <Button
       variant="ghost"

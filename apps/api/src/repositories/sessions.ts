@@ -3,6 +3,7 @@ import {
   type ListSessionsParams,
   type SessionAssessment,
   type SessionProgress,
+  type SessionReflection,
   type SessionTotals,
   type SessionWriteUp,
   type TutoringSession,
@@ -51,6 +52,18 @@ const SELECT_SESSION = `
                    'updated_at', a.updated_at))
             FROM session_assessments a JOIN users au ON au.id = a.author_user_id
             WHERE a.session_id = s.id) AS assessments_json,
+         sr.session_id AS r_session_id,
+         sr.learned_new AS r_learned_new,
+         sr.difficulty AS r_difficulty,
+         sr.understanding AS r_understanding,
+         sr.pace AS r_pace,
+         sr.homework_notes AS r_homework_notes,
+         sr.comment AS r_comment,
+         sr.entered_by_user_id AS r_entered_by_user_id,
+         rb.full_name AS r_entered_by_name,
+         sr.entered_as AS r_entered_as,
+         sr.created_at AS r_created_at,
+         sr.updated_at AS r_updated_at,
          s.created_at,
          s.updated_at
   FROM sessions s
@@ -58,6 +71,8 @@ const SELECT_SESSION = `
   JOIN users st ON st.id = s.student_user_id
   LEFT JOIN session_progress sp ON sp.session_id = s.id
   LEFT JOIN session_write_ups w ON w.session_id = s.id
+  LEFT JOIN session_reflections sr ON sr.session_id = s.id
+  LEFT JOIN users rb ON rb.id = sr.entered_by_user_id
 `;
 
 /**
@@ -81,8 +96,17 @@ export interface StoredSession
   charge_amount_cents: number;
 }
 
-type SessionRow = Omit<StoredSession, 'auto_stopped' | 'progress' | 'write_up' | 'assessments'> &
-  SessionWriteUp & {
+/** The reflection's columns, prefixed `r_` so none collides with the session's. */
+type ReflectionColumns = {
+  [K in keyof SessionReflection as `r_${K & string}`]: SessionReflection[K] | null;
+};
+
+type SessionRow = Omit<
+  StoredSession,
+  'auto_stopped' | 'progress' | 'write_up' | 'assessments' | 'reflection'
+> &
+  SessionWriteUp &
+  ReflectionColumns & {
     auto_stopped: number;
     progress_session_id: string | null;
     goal_rating: SessionProgress['goal_rating'];
@@ -108,6 +132,18 @@ function toSession({
   homework_status,
   homework_assigned,
   assessments_json,
+  r_session_id,
+  r_learned_new,
+  r_difficulty,
+  r_understanding,
+  r_pace,
+  r_homework_notes,
+  r_comment,
+  r_entered_by_user_id,
+  r_entered_by_name,
+  r_entered_as,
+  r_created_at,
+  r_updated_at,
   ...row
 }: SessionRow): StoredSession {
   return {
@@ -120,6 +156,22 @@ function toSession({
       ? { planned, previous_review, homework_review, homework_status, homework_assigned }
       : null,
     assessments: sortAssessments(JSON.parse(assessments_json ?? '[]') as SessionAssessment[]),
+    reflection: r_session_id
+      ? {
+          session_id: r_session_id,
+          learned_new: r_learned_new,
+          difficulty: r_difficulty,
+          understanding: r_understanding,
+          pace: r_pace,
+          homework_notes: r_homework_notes,
+          comment: r_comment,
+          entered_by_user_id: r_entered_by_user_id,
+          entered_by_name: r_entered_by_name,
+          entered_as: r_entered_as!,
+          created_at: r_created_at!,
+          updated_at: r_updated_at!,
+        }
+      : null,
   };
 }
 

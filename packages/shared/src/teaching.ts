@@ -5,6 +5,7 @@ import {
   sessionWriteUpInputSchema,
   type SessionAssessment,
   type SessionAssessmentContent,
+  type SessionReflection,
   type SessionWriteUp,
 } from './session-notes.js';
 import { optionalText } from './users.js';
@@ -490,6 +491,11 @@ export interface TutoringSession {
    * audience as the lesson itself; never money.
    */
   assessments: SessionAssessment[];
+  /**
+   * The student's own view of the lesson (Phase 25), or null when none was
+   * given. The lesson's audience, and never money.
+   */
+  reflection: SessionReflection | null;
   created_at: string;
   updated_at: string;
 }

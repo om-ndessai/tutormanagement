@@ -49,6 +49,12 @@ import {
   SessionNotesView,
   hasWrittenNotes,
 } from './session-notes';
+import {
+  ReflectButton,
+  ReflectionDialog,
+  ReflectionFlags,
+  ReflectionView,
+} from './session-reflection';
 import { StartSessionButton } from './start-session-button';
 import { useDeleteSession, useSession, useSessions } from './api';
 
@@ -78,6 +84,7 @@ export function SessionsPage() {
   const [editingDraft, setEditingDraft] = useState<SessionDraft | null>(null);
   const [removing, setRemoving] = useState<TutoringSession | null>(null);
   const [assessing, setAssessing] = useState<TutoringSession | null>(null);
+  const [reflecting, setReflecting] = useState<TutoringSession | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [tab] = useTutoringFinanceTab();
   const showMoney = tab === 'finance';
@@ -375,7 +382,9 @@ export function SessionsPage() {
                         here on either tab: this is what a tutor reads with
                         the student beside them. */}
                     <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t pt-3">
-                      {(hasWrittenNotes(session) || session.assessments.length > 0) && (
+                      {(hasWrittenNotes(session) ||
+                        session.assessments.length > 0 ||
+                        session.reflection) && (
                         <button
                           type="button"
                           onClick={() => setExpanded(isOpen ? null : session.id)}
@@ -389,7 +398,9 @@ export function SessionsPage() {
                             ? 'Hide notes'
                             : hasWrittenNotes(session)
                               ? 'Session notes'
-                              : 'Assessments'}
+                              : session.reflection
+                                ? 'Reflection'
+                                : 'Assessments'}
                         </button>
                       )}
                       {/* Opened, the badge sits by the homework review instead. */}
@@ -397,13 +408,30 @@ export function SessionsPage() {
                         <HomeworkStatusBadge status={session.write_up.homework_status} />
                       )}
                       <AssessmentChips assessments={session.assessments} />
-                      <span className="ml-auto">
+                      {/* The student's view of it (Phase 25): that they gave
+                          one, and where the lesson missed for them. */}
+                      {session.reflection && (
+                        <>
+                          <Badge variant="secondary" className="text-[10px]">
+                            Student reflected
+                          </Badge>
+                          <ReflectionFlags reflection={session.reflection} />
+                        </>
+                      )}
+                      <span className="ml-auto flex flex-wrap items-center gap-1">
+                        <ReflectButton session={session} onReflect={setReflecting} />
                         <AssessButton session={session} onAssess={setAssessing} />
                       </span>
                     </div>
                     {isOpen && (
                       <div className="mt-3 grid gap-4">
                         <SessionNotesView session={session} />
+                        {session.reflection && (
+                          <ReflectionView
+                            reflection={session.reflection}
+                            studentName={session.student_name}
+                          />
+                        )}
                         <AssessmentsView assessments={session.assessments} />
                       </div>
                     )}
@@ -503,6 +531,8 @@ export function SessionsPage() {
         session={assessing}
         onOpenChange={(open) => !open && setAssessing(null)}
       />
+
+      <ReflectionDialog session={reflecting} onClose={() => setReflecting(null)} />
 
       <AlertDialog open={removing !== null} onOpenChange={(open) => !open && setRemoving(null)}>
         <AlertDialogContent>

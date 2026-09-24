@@ -35,6 +35,8 @@ export const AUDIT_ACTIONS = [
   'session.deleted',
   'session.assessed',
   'session.assessment_withdrawn',
+  'session.reflected',
+  'session.reflection_withdrawn',
 
   'payment.recorded',
   'payment.updated',
@@ -90,6 +92,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'session.deleted': 'Session deleted',
   'session.assessed': 'Session assessed',
   'session.assessment_withdrawn': 'Session assessment withdrawn',
+  'session.reflected': 'Reflection recorded',
+  'session.reflection_withdrawn': 'Reflection withdrawn',
 
   'payment.recorded': 'Payment recorded',
   'payment.updated': 'Payment updated',

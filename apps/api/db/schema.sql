@@ -38,6 +38,7 @@ DROP TRIGGER IF EXISTS assessments_set_updated_at;
 DROP TRIGGER IF EXISTS session_progress_set_updated_at;
 DROP TRIGGER IF EXISTS session_assessments_set_updated_at;
 DROP TRIGGER IF EXISTS session_write_ups_set_updated_at;
+DROP TRIGGER IF EXISTS session_reflections_set_updated_at;
 
 -- Progress tracking (Phase 16) references sessions, users and the curriculum,
 -- so it goes before any of them.
@@ -53,6 +54,7 @@ DROP TABLE IF EXISTS curriculum_levels;
 -- Comments first: they reference four of the tables below, and SQLite will
 -- not drop a table something still points at.
 DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS session_reflections;
 DROP TABLE IF EXISTS session_assessments;
 DROP TABLE IF EXISTS session_write_ups;
 DROP TABLE IF EXISTS schedule_cancellations;
@@ -713,6 +715,56 @@ BEGIN
   WHERE session_id = NEW.session_id AND author_user_id = NEW.author_user_id;
 END;
 -- END PHASE 23 TABLES
+
+-- BEGIN PHASE 25 TABLES
+-- ---------------------------------------------------------------------------
+-- session_reflections - the student's own view of a lesson
+-- ---------------------------------------------------------------------------
+-- After a lesson is recorded, the student says what it was like for them:
+-- whether they learned something new, how hard the topic was, whether they
+-- understand it better, how the pace felt, and notes on the homework.
+--
+-- One per lesson, because a lesson has one student. It replaces the student's
+-- Phase 23 assessment (session_assessments keeps those given before), and it
+-- sits beside the billing row for the same reason that table does.
+--
+-- Most students are children who never sign in, so the answers may be typed
+-- by the student, a parent sitting with them, or the tutor at the end of the
+-- lesson -- `entered_as` records whose hands, decided by the API. The words
+-- stay the student's: an adult may not overwrite what the student entered
+-- themselves.
+--
+-- Difficulty and pace are CENTRED scales: 3 is about right, 1 and 5 are the
+-- two ways to be off. Learned-new and understanding run low to high.
+CREATE TABLE session_reflections (
+  session_id         TEXT PRIMARY KEY REFERENCES sessions (id) ON DELETE CASCADE,
+
+  learned_new        INTEGER CHECK (learned_new   BETWEEN 1 AND 5),
+  difficulty         INTEGER CHECK (difficulty    BETWEEN 1 AND 5),
+  understanding      INTEGER CHECK (understanding BETWEEN 1 AND 5),
+  pace               INTEGER CHECK (pace          BETWEEN 1 AND 5),
+  homework_notes     TEXT,
+  comment            TEXT,
+
+  -- Who typed it, and as whom. SET NULL if they are purged: the answers stand.
+  entered_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+  entered_as         TEXT NOT NULL CHECK (entered_as IN ('student', 'parent', 'tutor')),
+
+  created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  -- Something answered; never an empty row.
+  CHECK (learned_new IS NOT NULL OR difficulty IS NOT NULL OR understanding IS NOT NULL
+         OR pace IS NOT NULL OR length(trim(homework_notes)) > 0 OR length(trim(comment)) > 0)
+);
+
+CREATE TRIGGER session_reflections_set_updated_at
+AFTER UPDATE ON session_reflections FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE session_reflections SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE session_id = NEW.session_id;
+END;
+-- END PHASE 25 TABLES
 
 
 -- ---------------------------------------------------------------------------

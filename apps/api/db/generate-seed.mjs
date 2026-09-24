@@ -649,6 +649,19 @@ const sessionAssessments = [
   [q(id('50000000', 5)), q(CAST.anita), q('parent'), 4, 'NULL', q('2026-09-11T08:30:00.000Z')],
 ].map((row) => [...row, row[row.length - 1]]);
 
+// --- the student's reflection on a lesson (Phase 25) -------------------------
+// Typed by the student where they can sign in, and by the tutor for Ben, who
+// cannot -- the three ways a reflection is entered, minus the parent, which
+// the suite exercises itself. Sofia's 8 Sept lesson keeps its Phase 23
+// student assessment instead: those given before reflections still show.
+// Columns: learned_new, difficulty, understanding, pace (difficulty and pace
+// centred on 3), homework notes, comment, who typed it, as whom.
+const sessionReflections = [
+  [q(id('50000000', 2)), 4, 3, 4, 4, q('Problem 5 took me ages.'), 'NULL', q(CAST.sofia), q('student'), q('2026-09-15T20:30:00.000Z')],
+  [q(id('50000000', 3)), 3, 4, 3, 2, q('Wants more practice on long division.'), 'NULL', q(CAST.alex), q('tutor'), q('2026-09-12T11:05:00.000Z')],
+  [q(id('50000000', 5)), 4, 4, 5, 3, 'NULL', q('Related rates finally make sense.'), q(CAST.sanjay), q('student'), q('2026-09-10T19:40:00.000Z')],
+].map((row) => [...row, row[row.length - 1]]);
+
 // --- progress (Phase 16) ----------------------------------------------------
 // Assessments, learning plans and lesson scores. Drawn from a SEPARATE random
 // stream, and emitted after everything else, so adding them left every row
@@ -887,6 +900,7 @@ const sql = `-- ================================================================
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM session_reflections;
 DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
 DELETE FROM session_write_ups;
@@ -982,6 +996,9 @@ ${insert('session_topic_ratings', ['session_id', 'topic_id', 'rating'], sessionR
 ${insert('session_write_ups', ['session_id', 'planned', 'previous_review', 'homework_review', 'homework_status', 'homework_assigned'], writeUps)}
 
 ${insert('session_assessments', ['session_id', 'author_user_id', 'author_role', 'rating', 'body', 'created_at', 'updated_at'], sessionAssessments)}
+
+-- --- what the students made of their lessons (Phase 25) --------------------
+${insert('session_reflections', ['session_id', 'learned_new', 'difficulty', 'understanding', 'pace', 'homework_notes', 'comment', 'entered_by_user_id', 'entered_as', 'created_at', 'updated_at'], sessionReflections)}
 `;
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -994,5 +1011,5 @@ console.log(
     `${comments.length} comments, ${assessments.length} assessments, ${plans.length} plans, ` +
     `${sessionProgress.length} scored lessons, ${writeUps.length} write-ups, ` +
     `${sessionAssessments.length} lesson assessments, ` +
-    `${scheduleCancellations.length} cancelled lessons`,
+    `${scheduleCancellations.length} cancelled lessons, ${sessionReflections.length} reflections`,
 );

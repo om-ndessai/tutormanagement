@@ -37,6 +37,9 @@ import { PEOPLE, type PersonKey } from '../support/people.js';
  *                    list; through progress (read more widely) its date may
  *                    reach any reader, but its note and canceller only the
  *                    schedule's own audience
+ *   R12 reflections  a student's reflection, the tutor dashboard's digest of
+ *                    them and a parent's or student's prompt for one are all
+ *                    about lessons the reader lists, and a prompt has no money
  */
 
 const PERSONAS: PersonKey[] = ['tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
@@ -49,6 +52,7 @@ const ACTOR_KEYS = new Set([
   'recorded_by_user_id',
   'created_by_user_id',
   'cancelled_by_user_id',
+  'entered_by_user_id',
 ]);
 
 interface Reader {
@@ -205,6 +209,19 @@ test.describe('what each non-admin can see', () => {
       // R9: every lesson and payment the admin can see, fetched by id, is
       // either one this reader lists or "not found".
       const mine = new Set(((await get(page, '/api/sessions?limit=200')) as any[]).map((s) => s.id));
+
+      // R12: reflections, on every dashboard this reader has, are about their
+      // own lessons, and a prompt for one names a lesson and nothing else.
+      for (const role of me.roles) {
+        const dashboard = ((await get(page, `/api/dashboard?role=${role}`)) as any).data;
+        for (const digest of dashboard.recent_reflections ?? []) {
+          if (!mine.has(digest.session_id)) problems.push(`R12 reflection on hidden lesson ${digest.session_id}`);
+        }
+        for (const prompt of dashboard.awaiting_reflection ?? []) {
+          if (!mine.has(prompt.session_id)) problems.push(`R12 prompt for hidden lesson ${prompt.session_id}`);
+          if (Object.keys(prompt).some((key) => key.endsWith('_cents'))) problems.push('R12 prompt carries money');
+        }
+      }
       const all = (await get(admin, '/api/sessions?limit=200')) as any[];
       for (const session of all) {
         const response = await page.request.get(`/api/sessions/${session.id}`);

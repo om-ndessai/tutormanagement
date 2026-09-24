@@ -128,6 +128,13 @@ dates, and the Schedule page, the dashboard carousel and the sessions page showi
 makes its own Wednesday slot and takes its dates from the API, so it does not depend on the day
 the suite runs.
 
+`session-reflections.spec.ts` (Phase 25) — the student's reflection on a lesson: the student
+reflects and the lesson's audience reads it; a parent or the tutor may enter it for them, but
+never overwrite what the student entered; the office reads but does not enter; a student no
+longer gives a Phase 23 assessment; the student's and parent's dashboards prompt for it and the
+tutor's lists it, flagged; and the card, the tutor's section and the parent's prompt in the
+browser. Each test records its own lesson dated today, so the 21-day prompt finds it.
+
 ## Notes
 
 - `workers: 1`, no parallelism. Every spec assumes the seeded roster against one shared

@@ -32,6 +32,10 @@ import {
   SESSION_ASSESSOR_LABELS,
   sessionAssessmentInputSchema,
   type SessionAssessmentPayload,
+  SESSION_REFLECTOR_LABELS,
+  describeReflection,
+  sessionReflectionInputSchema,
+  type SessionReflectionPayload,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -45,6 +49,7 @@ import {
   isAdmin,
   scopeSessionMoney,
   sessionAssessorRole,
+  sessionReflectorRole,
 } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
@@ -66,6 +71,7 @@ import {
   updateDraft,
 } from '../repositories/session-drafts.js';
 import { deleteAssessment, saveAssessment, saveWriteUp } from '../repositories/session-notes.js';
+import { deleteReflection, saveReflection } from '../repositories/session-reflections.js';
 import {
   createSession,
   deleteSession,
@@ -151,6 +157,16 @@ async function applyOwnAssessment(
   const role = sessionAssessorRole(session, viewer, await familyStudentIds(db, viewer));
   if (!role) throw ApiError.notFound('That session does not exist.');
 
+  // Phase 25: the student's voice is their reflection now. One they gave
+  // before still shows, and may still be withdrawn, but not given afresh.
+  if (role === 'student' && input !== null) {
+    throw new ApiError(
+      403,
+      'forbidden',
+      'A student reflects on a lesson rather than assessing it: use Reflect instead.',
+    );
+  }
+
   const lesson = `the ${session.occurred_on} session with ${session.student_name}`;
   const audit = {
     subject: { id: session.student_user_id, full_name: session.student_name },
@@ -176,6 +192,72 @@ async function applyOwnAssessment(
     description: `${revised ? 'Revised their' : 'Gave an'} assessment of ${lesson}, as ${
       role === 'admin' ? 'the office' : `the ${SESSION_ASSESSOR_LABELS[role].toLowerCase()}`
     }`,
+    ...audit,
+  });
+}
+
+/**
+ * Records, revises or (with null) withdraws the student's reflection on a
+ * lesson (Phase 25).
+ *
+ * Typed by the student, a parent sitting with them, or the tutor at the end
+ * of the lesson -- but the words stay the student's: once they have entered
+ * it themselves, no adult may overwrite or withdraw it. The log says that a
+ * reflection was recorded and by whom, never an answer.
+ */
+async function applyReflection(
+  db: D1Database,
+  viewer: User,
+  session: StoredSession,
+  input: SessionReflectionPayload | null,
+) {
+  const role = sessionReflectorRole(session, viewer, await familyStudentIds(db, viewer));
+  if (!role) {
+    throw new ApiError(
+      403,
+      'forbidden',
+      'Only the student, a parent of theirs or their tutor can record a reflection.',
+    );
+  }
+
+  if (session.reflection?.entered_as === 'student' && role !== 'student') {
+    throw new ApiError(
+      403,
+      'forbidden',
+      `This is ${session.student_name}’s own reflection, so only they can change it.`,
+    );
+  }
+
+  const lesson = `the ${session.occurred_on} session`;
+  const audit = {
+    subject: { id: session.student_user_id, full_name: session.student_name },
+    entity_type: 'session',
+    entity_id: session.id,
+  };
+
+  if (input === null) {
+    if (!(await deleteReflection(db, session.id))) {
+      throw ApiError.notFound('There is no reflection on that session.');
+    }
+    await recordAudit(db, viewer, {
+      action: 'session.reflection_withdrawn',
+      description:
+        role === 'student'
+          ? `Withdrew their reflection on ${lesson} with ${session.tutor_name}`
+          : `Withdrew ${session.student_name}’s reflection on ${lesson}, as ${SESSION_REFLECTOR_LABELS[role]}`,
+      ...audit,
+    });
+    return;
+  }
+
+  const { revised } = await saveReflection(db, session.id, { user_id: viewer.id, role }, input);
+  await recordAudit(db, viewer, {
+    action: 'session.reflected',
+    description:
+      role === 'student'
+        ? `${revised ? 'Revised' : 'Recorded'} their reflection on ${lesson} with ${session.tutor_name}`
+        : `${revised ? 'Revised' : 'Recorded'} ${session.student_name}’s reflection on ${lesson}, ` +
+          `as ${SESSION_REFLECTOR_LABELS[role]}`,
     ...audit,
   });
 }
@@ -464,6 +546,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       'Notes',
       'Homework set',
       'Assessments',
+      'Student reflection',
     ];
 
     const body = buildCsv(
@@ -500,6 +583,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
               (row.body ? `: ${row.body}` : ''),
           )
           .join('; '),
+        session.reflection
+          ? describeReflection(session.reflection) +
+            (session.reflection.comment ? ` · ${session.reflection.comment}` : '')
+          : '',
       ]),
     );
 
@@ -788,6 +875,42 @@ export const sessionsRoutes = new Hono<AppEnv>()
       return c.json(body);
     },
   )
+
+  // -------------------------------------------------------------------------
+  // The student's reflection (Phase 25)
+  // -------------------------------------------------------------------------
+
+  /** Records or revises the student's reflection. Returns the lesson with it. */
+  .put(
+    '/:id/reflection',
+    zValidator('param', idParamSchema),
+    zValidator('json', sessionReflectionInputSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const viewer = c.get('user');
+
+      const session = await getVisibleSession(c.env.DB, viewer, id);
+      if (!session) throw ApiError.notFound('That session does not exist.');
+
+      await applyReflection(c.env.DB, viewer, session, c.req.valid('json'));
+
+      const updated = (await getSession(c.env.DB, id)) ?? session;
+      const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, updated) };
+      return c.json(body);
+    },
+  )
+
+  /** Withdraws the student's reflection, on the same terms as revising it. */
+  .delete('/:id/reflection', zValidator('param', idParamSchema), async (c) => {
+    const { id } = c.req.valid('param');
+    const viewer = c.get('user');
+
+    const session = await getVisibleSession(c.env.DB, viewer, id);
+    if (!session) throw ApiError.notFound('That session does not exist.');
+
+    await applyReflection(c.env.DB, viewer, session, null);
+    return c.body(null, 204);
+  })
 
   /** Withdraws the reader's assessment. Nobody else's can be removed. */
   .delete('/:id/assessment', zValidator('param', idParamSchema), async (c) => {

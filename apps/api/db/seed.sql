@@ -18,6 +18,7 @@
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM session_reflections;
 DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
 DELETE FROM session_write_ups;
@@ -2138,3 +2139,9 @@ INSERT INTO session_assessments (session_id, author_user_id, author_role, rating
   ('50000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000004', 'parent', 5, 'She came home and explained the problems to me.', '2026-09-15T20:10:00.000Z', '2026-09-15T20:10:00.000Z'),
   ('50000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000001', 'tutor', 4, 'Exam-ready on this topic.', '2026-09-10T16:00:00.000Z', '2026-09-10T16:00:00.000Z'),
   ('50000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000007', 'parent', 4, NULL, '2026-09-11T08:30:00.000Z', '2026-09-11T08:30:00.000Z');
+
+-- --- what the students made of their lessons (Phase 25) --------------------
+INSERT INTO session_reflections (session_id, learned_new, difficulty, understanding, pace, homework_notes, comment, entered_by_user_id, entered_as, created_at, updated_at) VALUES
+  ('50000000-0000-4000-8000-000000000002', 4, 3, 4, 4, 'Problem 5 took me ages.', NULL, '00000000-0000-4000-8000-000000000008', 'student', '2026-09-15T20:30:00.000Z', '2026-09-15T20:30:00.000Z'),
+  ('50000000-0000-4000-8000-000000000003', 3, 4, 3, 2, 'Wants more practice on long division.', NULL, '00000000-0000-4000-8000-000000000003', 'tutor', '2026-09-12T11:05:00.000Z', '2026-09-12T11:05:00.000Z'),
+  ('50000000-0000-4000-8000-000000000005', 4, 4, 5, 3, NULL, 'Related rates finally make sense.', '00000000-0000-4000-8000-000000000006', 'student', '2026-09-10T19:40:00.000Z', '2026-09-10T19:40:00.000Z');

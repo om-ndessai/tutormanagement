@@ -147,3 +147,12 @@ The session capture should allow tracking - what was originally planned, previou
 
 Phase 24:
 Support overriding or canceling sessions. The current calendar scheduling is driven by the recurring schedule. Sometimes the scheduled sessions need to be canceled without affecting the entire scheduled series. Allow either a parent/tutor or admin to cancel a session within the series that could fall on a vacation day or so on. Allow the party cancelling the session within a series to record a note for cancellation. Allow a feature to cancel the cancellation so it starts showing up in the series of sessions. Cancelled session or future cancellations should show up in the progress tracker.
+
+Phase 25:
+This phase is about student interacting with session after the tutor entered it in the system.
+Its should capture below. 
+Did you learn anything new? 1-5
+Difficulty level of the topic 1-5
+Has the topic understnading improved in the session 1-5
+How is the pace of learning 1-5
+Homeowrk notes

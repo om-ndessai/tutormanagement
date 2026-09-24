@@ -1,14 +1,16 @@
-import type {
-  AdminDashboard,
-  AuditEvent,
-  DashboardData,
-  ParentDashboard,
-  Payment,
-  StudentProgress,
-  StudentDashboard,
-  TutorDashboard,
-  User,
-  UserRole,
+import {
+  REFLECTION_PROMPT_DAYS,
+  zonedClockParts,
+  type AdminDashboard,
+  type AuditEvent,
+  type DashboardData,
+  type ParentDashboard,
+  type Payment,
+  type StudentProgress,
+  type StudentDashboard,
+  type TutorDashboard,
+  type User,
+  type UserRole,
 } from '@tmi/shared';
 
 import { computeBalances } from './balances.js';
@@ -17,6 +19,18 @@ import { listAuditEvents } from './audit.js';
 import { listPayments } from './payments.js';
 import { listSessions } from './sessions.js';
 import { buildStudentProgress, progressReader, type ProgressReader } from './progress.js';
+import { listAwaitingReflection, listRecentReflections } from './session-reflections.js';
+
+/**
+ * The first day a dashboard still asks for a reflection on, on the
+ * institute's clock. Older lessons can have one; they are just not nagged.
+ */
+function reflectionPromptSince(): string {
+  const [year, month, day] = zonedClockParts(new Date().toISOString()).day.split('-').map(Number);
+  return new Date(Date.UTC(year!, month! - 1, day! - REFLECTION_PROMPT_DAYS))
+    .toISOString()
+    .slice(0, 10);
+}
 
 /** How many events the Tutoring tab's Recent Activity shows. */
 const ACTIVITY_SIZE = 5;
@@ -230,6 +244,8 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
       (studentsResult.results ?? []).map((row) => String(row.user_id)),
       await progressReader(db, subject),
     ),
+    // Only lessons they taught, like everything else on this dashboard.
+    recent_reflections: await listRecentReflections(db, subject.id),
   };
 }
 
@@ -273,6 +289,18 @@ async function buildParent(db: D1Database, subject: User): Promise<ParentDashboa
       );
       return rows.filter((row) => row !== null);
     })(),
+    // Their children's lessons, less any they taught themselves -- the same
+    // narrowing as the lessons above.
+    awaiting_reflection: await listAwaitingReflection(
+      db,
+      {
+        sql:
+          's.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?)' +
+          ' AND s.tutor_user_id <> ?',
+        values: [subject.id, subject.id],
+      },
+      reflectionPromptSince(),
+    ),
   };
 }
 
@@ -325,5 +353,10 @@ async function buildStudent(db: D1Database, subject: User): Promise<StudentDashb
     },
     recent_sessions: sessions.sessions,
     progress: await buildStudentProgress(db, subject.id, await progressReader(db, subject)),
+    awaiting_reflection: await listAwaitingReflection(
+      db,
+      { sql: 's.student_user_id = ?', values: [subject.id] },
+      reflectionPromptSince(),
+    ),
   };
 }

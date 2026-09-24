@@ -18,6 +18,7 @@ import type {
   SessionDraft,
   SessionDraftInput,
   SessionAssessmentInput,
+  SessionReflectionInput,
 } from '@tmi/shared';
 
 import { apiClient, toQueryString } from '@/lib/api-client';
@@ -337,5 +338,31 @@ export function usePreviousSession(
           (session.occurred_on < before.occurredOn ||
             (session.occurred_on === before.occurredOn && session.started_at < before.startedAt)),
       ) ?? null,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// The student's reflection (Phase 25)
+// ---------------------------------------------------------------------------
+
+/** Records or revises the student's reflection on a lesson. */
+export function useSaveReflection() {
+  const invalidate = useAssessmentInvalidation();
+
+  return useMutation({
+    mutationFn: ({ sessionId, input }: { sessionId: string; input: SessionReflectionInput }) =>
+      apiClient.put<ApiOk<TutoringSession>>(`/sessions/${sessionId}/reflection`, input),
+    onSuccess: invalidate,
+  });
+}
+
+/** Withdraws the student's reflection, where the reader may. */
+export function useWithdrawReflection() {
+  const invalidate = useAssessmentInvalidation();
+
+  return useMutation({
+    mutationFn: (sessionId: string) =>
+      apiClient.delete<undefined>(`/sessions/${sessionId}/reflection`),
+    onSuccess: invalidate,
   });
 }

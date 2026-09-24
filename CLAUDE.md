@@ -10,7 +10,7 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 19, and 21 to 24, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 25, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -19,8 +19,9 @@ curriculum (16), money labelled by whose side it is (17), the non-admin exposure
 and its crawling test (18), and the same Tutoring/Finance split on the sessions page, so
 no money is on screen while a tutor reads notes beside a student (19), the Tutoring tab rebuilt
 as Analytics, a sessions carousel, a progress spotlight and recent activity (21), session drafts
-(22), a lesson's notes written up in parts, with an assessment from anyone it concerns (23), and
-one lesson of a standing schedule cancelled and restored, without touching the series (24).
+(22), a lesson's notes written up in parts, with an assessment from anyone it concerns (23),
+one lesson of a standing schedule cancelled and restored, without touching the series (24), and
+the student's own reflection on each lesson (25).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -68,7 +69,16 @@ Run from the repo root.
 `npm run db:rebuild:remote` **destroys all production data**, which since 2026-09-21 means real
 institute records. **Never run it.** Carry schema changes to production by hand and additively
 (`ALTER TABLE ... ADD COLUMN`, `CREATE TABLE`), writing the statements into `docs/database.md`
-as part of the change — and never run any `--remote` wrangler command without being asked.
+as part of the change. Run `--remote` wrangler commands only as part of a release the owner has
+approved: **approving a phase's plan is that approval**, for the whole release, with no further
+asking —
+1. commit and push to `main`;
+2. `npm run e2e` (wipes only the test database);
+3. back up production (`wrangler d1 export --remote`);
+4. apply the phase's additive schema block and check the new queries read-only against production;
+5. `npm run deploy`, then smoke-test.
+
+Stop and report if any step fails. Outside an approved release, ask first.
 
 ## Rules
 
@@ -148,6 +158,14 @@ mark a past date. A recorded lesson outranks a cancellation everywhere — every
 the schedule's audience only, including through progress (R11), and never the audit log or the
 calendar file.
 
+**A student's reflection is theirs, whoever typed it.** `session_reflections` holds one per
+lesson: four 1–5 answers (difficulty and pace are centred on 3 — never shade them
+darker-is-better) and homework notes. It replaces the student's Phase 23 assessment, which the
+API now refuses in that capacity. The student, a parent or the lesson's tutor may type it
+(`sessionReflectorRole`; the office reads, does not enter), `entered_as` says which, and once
+the student has entered it themselves no adult may change it. The lesson's audience reads it;
+the log never carries an answer.
+
 **Deletes are soft.** `DELETE /api/users/:id` sets `deleted_at`. Hard delete needs an explicit
 `?hard=true`. The unique email index covers live rows only, so restoring can conflict; that
 case is already handled in `POST /api/users/:id/restore`.
@@ -176,7 +194,8 @@ length, not the pay, for the same reason.
 (`DashboardSection` in `features/dashboard/stat-card.tsx`): Analytics (compact `StatCard`s
 with no hint lines, so the row stays one height), Tutoring Sessions (`SessionsCarousel`: the
 last 5 lessons, "now", then the next ones), Progress (`ProgressSpotlight`: 5 random students
-with the compact `ProgressChart`), and Recent Activity (5 events, payment lines left out).
+with the compact `ProgressChart`), and Recent Activity (5 events, payment lines left out). The
+tutor's has a fifth, Student Reflections (Phase 25), between Tutoring Sessions and Progress.
 Upcoming lessons are never stored: `expandUpcoming` in `packages/shared/src/schedules.ts`
 dates them from the schedules on the institute clock, skipping any already recorded, and
 `GET /api/schedules/upcoming` serves them five at a time. A tutor's carousel passes their own
@@ -234,7 +253,7 @@ the other side, and the UI renders money only through `SessionMoney`, never a ba
 them, and never put an amount in an audit description (tutors read their own log).
 
 **What a non-admin sees is written down, and crawled.** `docs/data-exposure.md` lists the
-rules (R1-R11) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
+rules (R1-R12) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
 kind of non-admin, calls every read endpoint and checks every object returned against them. A
 lookup by id goes through the list's own WHERE (`getVisibleSession`, `getVisiblePayment`) --
 never "can they see anything related" -- and answers 404, not 403, for a row they cannot list.

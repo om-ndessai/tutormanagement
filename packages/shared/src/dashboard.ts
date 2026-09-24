@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { AuditEvent } from './audit.js';
 import type { Payment, StudentBalance, TutorBalance } from './payments.js';
 import type { StudentProgress } from './progress.js';
+import type { SessionReflection } from './session-notes.js';
 import type { TutoringSession } from './teaching.js';
 import { USER_ROLES, type UserRole } from './users.js';
 
@@ -72,6 +73,33 @@ export interface AdminDashboard {
   progress_spotlight: StudentProgress[];
 }
 
+/** A student's reflection on a lesson the reader taught (Phase 25). */
+export interface ReflectionDigest {
+  session_id: string;
+  occurred_on: string;
+  student_user_id: string;
+  student_name: string;
+  reflection: SessionReflection;
+}
+
+/**
+ * A recent lesson still waiting for the student's reflection. Deliberately
+ * not a TutoringSession: a prompt carries no money, only enough to name the
+ * lesson and open it.
+ */
+export interface ReflectionPrompt {
+  session_id: string;
+  occurred_on: string;
+  started_at: string;
+  student_user_id: string;
+  student_name: string;
+  tutor_user_id: string;
+  tutor_name: string;
+}
+
+/** How far back a dashboard asks for reflections. Older lessons can still have one. */
+export const REFLECTION_PROMPT_DAYS = 21;
+
 export interface TutorDashboard {
   kind: 'tutor';
   students: {
@@ -101,6 +129,8 @@ export interface TutorDashboard {
   recent_activity: AuditEvent[];
   /** Up to 5 of the students they teach, at random, with timelines. */
   progress_spotlight: StudentProgress[];
+  /** The last 5 reflections on lessons they taught, newest first (Phase 25). */
+  recent_reflections: ReflectionDigest[];
 }
 
 export interface ParentDashboard {
@@ -111,6 +141,8 @@ export interface ParentDashboard {
   recent_payments: Payment[];
   /** Each child's plan and progress in full, so the dashboard can chart it. */
   progress: StudentProgress[];
+  /** Their children's recent lessons still waiting for a reflection. */
+  awaiting_reflection: ReflectionPrompt[];
 }
 
 export interface StudentDashboard {
@@ -122,6 +154,8 @@ export interface StudentDashboard {
   recent_sessions: TutoringSession[];
   /** Their own plan and progress. */
   progress: StudentProgress | null;
+  /** Their recent lessons still waiting for their reflection. */
+  awaiting_reflection: ReflectionPrompt[];
 }
 
 export type DashboardData =

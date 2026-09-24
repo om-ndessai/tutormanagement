@@ -77,6 +77,7 @@ export function RatingPicker({
   labels = TOPIC_RATING_LABELS,
   name,
   allowClear = true,
+  neutral = false,
 }: {
   value: Rating | null;
   onChange: (value: Rating | null) => void;
@@ -84,6 +85,12 @@ export function RatingPicker({
   /** Accessible name of the group, e.g. the topic being rated. */
   name: string;
   allowClear?: boolean;
+  /**
+   * For a CENTRED scale -- 3 is right, 1 and 5 are the two ways to miss
+   * (Phase 25's difficulty and pace). The chosen step takes the primary
+   * colour instead of the rating ramp, which would read darker as better.
+   */
+  neutral?: boolean;
 }) {
   return (
     <div role="radiogroup" aria-label={name} className="flex items-center gap-1">
@@ -102,14 +109,48 @@ export function RatingPicker({
             className={cn(
               'focus-visible:ring-ring/50 inline-flex size-7 items-center justify-center rounded-md border text-xs font-semibold tabular-nums transition-all outline-none focus-visible:ring-[3px]',
               selected ? 'border-transparent shadow-sm' : 'text-muted-foreground hover:bg-accent',
+              selected && neutral && 'bg-primary text-primary-foreground',
             )}
-            style={selected ? ratingStyle(rating) : undefined}
+            style={selected && !neutral ? ratingStyle(rating) : undefined}
           >
             {rating}
           </button>
         );
       })}
     </div>
+  );
+}
+
+/**
+ * A value on a CENTRED 1-5 scale, as a chip: neutral in the middle, and the
+ * warning tone at either end -- "far too easy" is as much a miss as "far too
+ * hard". The number is always printed and the label is its title.
+ */
+export function ScaleChip({
+  value,
+  labels,
+  className,
+}: {
+  value: Rating | null;
+  labels: Record<Rating, string>;
+  className?: string;
+}) {
+  if (value === null) return <RatingChip rating={null} className={className} />;
+
+  const extreme = value === 1 || value === 5;
+  return (
+    <span
+      className={cn(
+        'inline-flex size-6 items-center justify-center rounded-md border text-xs font-semibold tabular-nums',
+        extreme
+          ? 'border-warning/60 text-warning-foreground dark:text-warning bg-warning/15'
+          : 'bg-muted text-foreground border-transparent',
+        className,
+      )}
+      title={`${value} · ${labels[value]}`}
+    >
+      {value}
+    </span>
   );
 }
 
