@@ -10,15 +10,16 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 19, and 21, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 23, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
 receipts (14), the Tutoring/Finance dashboard and 1099s (15), progress tracking against a
 curriculum (16), money labelled by whose side it is (17), the non-admin exposure review
 and its crawling test (18), and the same Tutoring/Finance split on the sessions page, so
-no money is on screen while a tutor reads notes beside a student (19), and the Tutoring tab rebuilt
-as Analytics, a sessions carousel, a progress spotlight and recent activity (21).
+no money is on screen while a tutor reads notes beside a student (19), the Tutoring tab rebuilt
+as Analytics, a sessions carousel, a progress spotlight and recent activity (21), session drafts
+(22), and a lesson's notes written up in parts, with an assessment from anyone it concerns (23).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -114,6 +115,9 @@ a `mailto:` — use `EmailOrNone`.
 or a form. Add or change the Zod schema, then use it on both sides. Note the split between
 `userFieldsSchema` (no defaults, the basis for PATCH) and `createUserSchema` (adds defaults) —
 a `.default()` survives `.partial()`, which would make PATCH silently overwrite omitted fields.
+For the same reason, `optionalText` on a PATCH schema needs `.optional()` (or `.partial()`): it is
+a transform, which Zod runs on a MISSING key too, so an omitted field arrives as `null` — that
+erased a lesson's notes on every edit that left them out, until Phase 23.
 
 **SQL lives in `apps/api/src/repositories/`.** Route handlers translate HTTP to repository
 calls and back; they never build SQL. Always bind parameters — the only values interpolated
@@ -124,6 +128,15 @@ billing record; a draft is not billed, not counted and not readable by anyone bu
 Keeping them in separate tables is what stops a draft reaching a total — do not "simplify" this
 into a flag on `sessions`, which would put the burden on every one of the sixteen queries that
 read them. Drafts scope on `author_user_id`, admins included, and are priced at posting.
+
+**A lesson's write-up is in parts, and an assessment is always the reader's own.** Beside
+`sessions.notes` ("what was covered") sit `session_write_ups` (planned, previous-session review,
+homework review and status, homework set), off the billing row for the same reason as
+`session_progress`, and `session_assessments`, one per person per lesson. Both reach exactly the
+lesson's audience and carry no money. `author_role` is decided by `sessionAssessorRole` from how
+the reader relates to the lesson — never sent by the client — and the assessment routes take no
+author, so nobody can write or withdraw anybody else's. On a draft both travel as JSON and are
+published by posting. The log says an assessment was given, never its words or its score.
 
 **Deletes are soft.** `DELETE /api/users/:id` sets `deleted_at`. Hard delete needs an explicit
 `?hard=true`. The unique email index covers live rows only, so restoring can conflict; that

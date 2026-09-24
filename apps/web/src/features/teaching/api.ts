@@ -17,6 +17,7 @@ import type {
   TutoringSession,
   SessionDraft,
   SessionDraftInput,
+  SessionAssessmentInput,
 } from '@tmi/shared';
 
 import { apiClient, toQueryString } from '@/lib/api-client';
@@ -268,5 +269,73 @@ export function usePostDraft() {
       invalidateDrafts();
       invalidateTeaching();
     },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Assessments (Phase 23)
+// ---------------------------------------------------------------------------
+
+/** An assessment changes the lesson it is on, and the log; nothing with money. */
+function useAssessmentInvalidation() {
+  const queryClient = useQueryClient();
+
+  return () => {
+    void queryClient.invalidateQueries({ queryKey: ['sessions'] });
+    void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    void queryClient.invalidateQueries({ queryKey: auditKeys.all });
+  };
+}
+
+/** Gives or revises the reader's own assessment of a lesson. */
+export function useSaveSessionAssessment() {
+  const invalidate = useAssessmentInvalidation();
+
+  return useMutation({
+    mutationFn: ({ sessionId, input }: { sessionId: string; input: SessionAssessmentInput }) =>
+      apiClient.put<ApiOk<TutoringSession>>(`/sessions/${sessionId}/assessment`, input),
+    onSuccess: invalidate,
+  });
+}
+
+/** Withdraws the reader's own assessment. There is no way to remove another's. */
+export function useWithdrawSessionAssessment() {
+  const invalidate = useAssessmentInvalidation();
+
+  return useMutation({
+    mutationFn: (sessionId: string) =>
+      apiClient.delete<undefined>(`/sessions/${sessionId}/assessment`),
+    onSuccess: invalidate,
+  });
+}
+
+/**
+ * The lesson before this one with the same student, for the review parts of
+ * the write-up: what was set last time is what is being checked now.
+ *
+ * Read through the ordinary list, so it is only ever a lesson the reader may
+ * already see -- for a tutor, the last one THEY taught that student.
+ */
+export function usePreviousSession(
+  studentId: string | undefined,
+  before: { occurredOn: string; startedAt: string },
+  excludeId: string | undefined,
+) {
+  return useQuery({
+    // The time and the lesson being edited are applied in `select`, so moving
+    // the start time re-filters what was fetched rather than fetching again.
+    queryKey: ['sessions', 'previous', studentId, before.occurredOn],
+    queryFn: () =>
+      apiClient.get<SessionListResponse>(
+        `/sessions${toQueryString({ student_user_id: studentId, to: before.occurredOn, limit: 5 })}`,
+      ),
+    enabled: Boolean(studentId && before.occurredOn),
+    select: (response) =>
+      response.data.find(
+        (session) =>
+          session.id !== excludeId &&
+          (session.occurred_on < before.occurredOn ||
+            (session.occurred_on === before.occurredOn && session.started_at < before.startedAt)),
+      ) ?? null,
   });
 }

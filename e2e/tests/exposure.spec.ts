@@ -31,6 +31,8 @@ import { PEOPLE, type PersonKey } from '../support/people.js';
  *   R8 log           no amount of money in any audit line
  *   R9 by id         a lesson or payment that is not in the reader's list is
  *                    "not found" when fetched by id
+ *   R10 drafts       an unposted write-up -- its notes, parts and assessment --
+ *                    reaches only its author, whoever else it names
  */
 
 const PERSONAS: PersonKey[] = ['tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
@@ -148,6 +150,28 @@ test.describe('what each non-admin can see', () => {
       const problems: string[] = [];
       const read = async (path: string) => check(reader, path, await get(page, path), problems);
 
+      // R10: somebody else's draft about a lesson this reader can see. The
+      // office drafting Alex's lesson with Sofia names Alex, Sofia and (as
+      // her mother) Maria's family -- and none of them may read it.
+      const alexId = await idOf(admin, PEOPLE.tutor.email);
+      const sofiaId = await idOf(admin, PEOPLE.student.email);
+      const othersDraft = await unwrap<any>(
+        await admin.request.post('/api/sessions/drafts', {
+          data: {
+            tutor_user_id: alexId,
+            student_user_id: sofiaId,
+            occurred_on: '2026-09-22',
+            started_at: '16:00',
+            ended_at: '17:00',
+            mode: 'in_person',
+            notes: 'Not ready to be read.',
+            write_up: { planned: 'Not ready either.' },
+            assessment: { rating: 1, body: 'Private until posted.' },
+          },
+        }),
+        'the office saving a draft',
+      );
+
       await read('/api/sessions?limit=200');
       await read('/api/assignments?include_inactive=true');
       await read('/api/payments?limit=200');
@@ -159,6 +183,13 @@ test.describe('what each non-admin can see', () => {
       await read('/api/comments/feed');
       await read('/api/progress');
       await read('/api/sessions/active');
+
+      const drafts = (await get(page, '/api/sessions/drafts')) as any[];
+      check(reader, '/api/sessions/drafts', drafts, problems);
+      for (const draft of drafts) {
+        if (draft.author_user_id !== id) problems.push(`R10 somebody else's draft ${draft.id}`);
+      }
+      if (drafts.some((draft) => draft.id === othersDraft.id)) problems.push('R10 the office’s draft');
 
       for (const role of me.roles) await read(`/api/dashboard?role=${role}`);
       for (const person of people) await read(`/api/users/${person.id}`);
@@ -194,6 +225,8 @@ test.describe('what each non-admin can see', () => {
         const status = (await page.request.get(`/api/payments/${payment.id}`)).status();
         expect(status, `R9 payment ${payment.id} for ${who}`).toBe(myPayments.has(payment.id) ? 200 : 404);
       }
+
+      await admin.request.delete(`/api/sessions/drafts/${othersDraft.id}`);
 
       expect(problems, problems.slice(0, 20).join('\n')).toEqual([]);
     });

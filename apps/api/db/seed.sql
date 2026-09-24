@@ -18,6 +18,9 @@
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM session_assessments;
+DELETE FROM session_write_ups;
+DELETE FROM session_drafts;
 DELETE FROM session_topic_ratings;
 DELETE FROM session_progress;
 DELETE FROM learning_plan_topics;
@@ -2115,3 +2118,16 @@ INSERT INTO session_topic_ratings (session_id, topic_id, rating) VALUES
   ('51111111-0000-4000-8000-000000000207', 'BA4.05', 2),
   ('51111111-0000-4000-8000-000000000205', 'BA4.05', 3),
   ('51111111-0000-4000-8000-000000000205', 'BA4.01', 2);
+
+-- --- how lessons were written up, and what people thought of them (Phase 23)
+INSERT INTO session_write_ups (session_id, planned, previous_review, homework_review, homework_status, homework_assigned) VALUES
+  ('50000000-0000-4000-8000-000000000001', 'Equivalent fractions with fraction strips, then a first look at thirds.', NULL, NULL, 'none_set', 'Worksheet 3a: equivalent fractions, all twelve.'),
+  ('50000000-0000-4000-8000-000000000002', 'Word problems: turning the sentence into an operation.', 'Recapped equivalent fractions. Thirds are much steadier than last week.', 'Worksheet 3a finished; two slips on sixths, corrected together.', 'done', 'Five word problems from the green book, pages 22 and 23.'),
+  ('50000000-0000-4000-8000-000000000005', 'Related rates: past-paper practice under time.', 'Implicit differentiation from last time is solid.', 'About half of the implicit differentiation set was attempted.', 'partial', 'Finish the implicit differentiation set.');
+
+INSERT INTO session_assessments (session_id, author_user_id, author_role, rating, body, created_at, updated_at) VALUES
+  ('50000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000008', 'student', 3, 'Thirds are still confusing.', '2026-09-08T19:00:00.000Z', '2026-09-08T19:00:00.000Z'),
+  ('50000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000003', 'tutor', 4, 'Engaged throughout, and starting to check her own answers.', '2026-09-15T18:00:00.000Z', '2026-09-15T18:00:00.000Z'),
+  ('50000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000004', 'parent', 5, 'She came home and explained the problems to me.', '2026-09-15T20:10:00.000Z', '2026-09-15T20:10:00.000Z'),
+  ('50000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000001', 'tutor', 4, 'Exam-ready on this topic.', '2026-09-10T16:00:00.000Z', '2026-09-10T16:00:00.000Z'),
+  ('50000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000007', 'parent', 4, NULL, '2026-09-11T08:30:00.000Z', '2026-09-11T08:30:00.000Z');

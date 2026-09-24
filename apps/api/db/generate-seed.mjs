@@ -594,6 +594,35 @@ const comments = [
 ];
 
 
+// --- lesson write-ups and assessments (Phase 23) ----------------------------
+// Only on the named cast's lessons, and each assessment is by somebody that
+// lesson concerns -- its tutor, the student, or the student's parent -- so the
+// seed cannot show an assessment the API would refuse to take. Plain literals,
+// drawing on neither random stream, so every row above stays as it was.
+const writeUps = [
+  // Alex with Sofia, 8 Sept: the first lesson, so nothing to review yet.
+  [q(id('50000000', 1)), q('Equivalent fractions with fraction strips, then a first look at thirds.'),
+   'NULL', 'NULL', q('none_set'), q('Worksheet 3a: equivalent fractions, all twelve.')],
+  // Alex with Sofia, 15 Sept: reviews the 8th and its homework.
+  [q(id('50000000', 2)), q('Word problems: turning the sentence into an operation.'),
+   q('Recapped equivalent fractions. Thirds are much steadier than last week.'),
+   q('Worksheet 3a finished; two slips on sixths, corrected together.'), q('done'),
+   q('Five word problems from the green book, pages 22 and 23.')],
+  // Priya with Sanjay, 10 Sept.
+  [q(id('50000000', 5)), q('Related rates: past-paper practice under time.'),
+   q('Implicit differentiation from last time is solid.'),
+   q('About half of the implicit differentiation set was attempted.'), q('partial'),
+   q('Finish the implicit differentiation set.')],
+];
+
+const sessionAssessments = [
+  [q(id('50000000', 1)), q(CAST.sofia), q('student'), 3, q('Thirds are still confusing.'), q('2026-09-08T19:00:00.000Z')],
+  [q(id('50000000', 2)), q(CAST.alex), q('tutor'), 4, q('Engaged throughout, and starting to check her own answers.'), q('2026-09-15T18:00:00.000Z')],
+  [q(id('50000000', 2)), q(CAST.maria), q('parent'), 5, q('She came home and explained the problems to me.'), q('2026-09-15T20:10:00.000Z')],
+  [q(id('50000000', 5)), q(CAST.priya), q('tutor'), 4, q('Exam-ready on this topic.'), q('2026-09-10T16:00:00.000Z')],
+  [q(id('50000000', 5)), q(CAST.anita), q('parent'), 4, 'NULL', q('2026-09-11T08:30:00.000Z')],
+].map((row) => [...row, row[row.length - 1]]);
+
 // --- progress (Phase 16) ----------------------------------------------------
 // Assessments, learning plans and lesson scores. Drawn from a SEPARATE random
 // stream, and emitted after everything else, so adding them left every row
@@ -832,6 +861,9 @@ const sql = `-- ================================================================
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM session_assessments;
+DELETE FROM session_write_ups;
+DELETE FROM session_drafts;
 DELETE FROM session_topic_ratings;
 DELETE FROM session_progress;
 DELETE FROM learning_plan_topics;
@@ -915,6 +947,11 @@ ${insert('learning_plan_topics', ['plan_id', 'topic_id', 'position'], planTopics
 ${insert('session_progress', ['session_id', 'plan_id', 'goal_rating'], sessionProgress, 80)}
 
 ${insert('session_topic_ratings', ['session_id', 'topic_id', 'rating'], sessionRatings, 80)}
+
+-- --- how lessons were written up, and what people thought of them (Phase 23)
+${insert('session_write_ups', ['session_id', 'planned', 'previous_review', 'homework_review', 'homework_status', 'homework_assigned'], writeUps)}
+
+${insert('session_assessments', ['session_id', 'author_user_id', 'author_role', 'rating', 'body', 'created_at', 'updated_at'], sessionAssessments)}
 `;
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -925,5 +962,6 @@ console.log(
     `${counts.parents} parent, ${counts.students} student), ${assignments.length} assignments, ` +
     `${sessions.length} sessions, ${payments.length} payments, ${schedules.length} schedules, ` +
     `${comments.length} comments, ${assessments.length} assessments, ${plans.length} plans, ` +
-    `${sessionProgress.length} scored lessons`,
+    `${sessionProgress.length} scored lessons, ${writeUps.length} write-ups, ` +
+    `${sessionAssessments.length} lesson assessments`,
 );

@@ -139,3 +139,8 @@ The lowest session will be the least important "Recent Activity". This will only
 
 Phase 22:
 As a tutor while recording session I would like the ability to save a rough draft of the Session Notes before posting them. In addition to Record Session and Cancel, give the user the ability to Save Draft. This session in draft will also be shown in sessions and tutor can edit it and then save. Upon save that session will be visible to other relevant users
+
+Phase 23:
+Session notes extensions.
+The current scheme allows tutor to draft notes on the session and then later save it. Lets build an extensive session notes so eventually it can auto build summary.
+The session capture should allow tracking - what was originally planned, previous session review, homework review from previous session, homework given in this session, optionally tutor, student, admin, parent can record an assessment of this session. Same as prior phase allow this to be in "draft" state - visuble only to the tutor and then saved state - visuble to all relevant parties

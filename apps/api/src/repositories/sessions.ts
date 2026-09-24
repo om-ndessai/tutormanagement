@@ -1,9 +1,12 @@
-import type {
-  ListSessionsParams,
-  SessionProgress,
-  SessionTotals,
-  TutoringSession,
-  User,
+import {
+  sortAssessments,
+  type ListSessionsParams,
+  type SessionAssessment,
+  type SessionProgress,
+  type SessionTotals,
+  type SessionWriteUp,
+  type TutoringSession,
+  type User,
 } from '@tmi/shared';
 
 import { familyStudentIds, isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
@@ -31,12 +34,30 @@ const SELECT_SESSION = `
          sp.goal_rating,
          (SELECT json_group_array(json_object('topic_id', r.topic_id, 'rating', r.rating))
             FROM session_topic_ratings r WHERE r.session_id = s.id) AS topic_ratings_json,
+         w.session_id AS write_up_session_id,
+         w.planned,
+         w.previous_review,
+         w.homework_review,
+         w.homework_status,
+         w.homework_assigned,
+         (SELECT json_group_array(json_object(
+                   'session_id', a.session_id,
+                   'author_user_id', a.author_user_id,
+                   'author_name', au.full_name,
+                   'author_role', a.author_role,
+                   'rating', a.rating,
+                   'body', a.body,
+                   'created_at', a.created_at,
+                   'updated_at', a.updated_at))
+            FROM session_assessments a JOIN users au ON au.id = a.author_user_id
+            WHERE a.session_id = s.id) AS assessments_json,
          s.created_at,
          s.updated_at
   FROM sessions s
   JOIN users t  ON t.id  = s.tutor_user_id
   JOIN users st ON st.id = s.student_user_id
   LEFT JOIN session_progress sp ON sp.session_id = s.id
+  LEFT JOIN session_write_ups w ON w.session_id = s.id
 `;
 
 /**
@@ -60,22 +81,33 @@ export interface StoredSession
   charge_amount_cents: number;
 }
 
-type SessionRow = Omit<StoredSession, 'auto_stopped' | 'progress'> & {
-  auto_stopped: number;
-  progress_session_id: string | null;
-  goal_rating: SessionProgress['goal_rating'];
-  topic_ratings_json: string | null;
-};
+type SessionRow = Omit<StoredSession, 'auto_stopped' | 'progress' | 'write_up' | 'assessments'> &
+  SessionWriteUp & {
+    auto_stopped: number;
+    progress_session_id: string | null;
+    goal_rating: SessionProgress['goal_rating'];
+    topic_ratings_json: string | null;
+    write_up_session_id: string | null;
+    assessments_json: string | null;
+  };
 
 /**
  * D1 stores the flag as 0/1; everything above this layer speaks booleans.
  * Progress is present exactly when the lesson was scored -- a progress row
  * exists -- so an unscored lesson reads as null rather than as zero topics.
+ * The write-up follows the same rule.
  */
 function toSession({
   progress_session_id,
   goal_rating,
   topic_ratings_json,
+  write_up_session_id,
+  planned,
+  previous_review,
+  homework_review,
+  homework_status,
+  homework_assigned,
+  assessments_json,
   ...row
 }: SessionRow): StoredSession {
   return {
@@ -84,6 +116,10 @@ function toSession({
     progress: progress_session_id
       ? { goal_rating, topic_ratings: JSON.parse(topic_ratings_json ?? '[]') }
       : null,
+    write_up: write_up_session_id
+      ? { planned, previous_review, homework_review, homework_status, homework_assigned }
+      : null,
+    assessments: sortAssessments(JSON.parse(assessments_json ?? '[]') as SessionAssessment[]),
   };
 }
 

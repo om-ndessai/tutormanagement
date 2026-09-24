@@ -2,6 +2,7 @@ import {
   EMPTY_MAILING_ADDRESS,
   hasRole,
   type MailingAddressParts,
+  type SessionAssessorRole,
   type SessionMoneyView,
   type User,
 } from '@tmi/shared';
@@ -184,6 +185,28 @@ export function scopeSessionMoney<
     charge_amount_cents: null,
     money_view: 'none',
   };
+}
+
+/**
+ * The capacity a reader would assess a lesson in (Phase 23), or null when the
+ * lesson is none of their business.
+ *
+ * The same people as the lesson's audience (teachingScopeSql), in the order
+ * that says the most: whoever taught it speaks as its tutor even when they
+ * are also an admin, a student about their own lesson speaks as the student,
+ * and a guardian as a parent. The office is the fallback, for an admin with
+ * no closer tie. `family` is familyStudentIds, which includes the reader.
+ */
+export function sessionAssessorRole(
+  row: { tutor_user_id: string; student_user_id: string },
+  viewer: User,
+  family: ReadonlySet<string>,
+): SessionAssessorRole | null {
+  if (row.tutor_user_id === viewer.id) return 'tutor';
+  if (row.student_user_id === viewer.id) return 'student';
+  if (family.has(row.student_user_id)) return 'parent';
+  if (isAdmin(viewer)) return 'admin';
+  return null;
 }
 
 /**

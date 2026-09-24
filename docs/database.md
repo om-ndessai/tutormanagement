@@ -103,6 +103,24 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="$(sed -n '/^CREATE TABLE session_drafts/,/^);/p' apps/api/db/schema.sql)"
 ```
 
+Phase 23 adds two tables and two draft columns. **Run these before deploying the Worker**: every
+session read now joins `session_write_ups` and `session_assessments`, so a Worker deployed ahead
+of them fails on every lesson, not just on new ones. Both tables are marked in `schema.sql`, with
+their triggers, and go over in one file:
+
+```bash
+cd apps/api
+sed -n '/BEGIN PHASE 23 TABLES/,/END PHASE 23 TABLES/p' db/schema.sql > /tmp/phase23.sql
+npx wrangler d1 execute tmi-portal-db --remote --file=/tmp/phase23.sql
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE session_drafts ADD COLUMN write_up_json TEXT"
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="ALTER TABLE session_drafts ADD COLUMN assessment_json TEXT"
+```
+
+If Phase 22's `session_drafts` has not reached production yet, create it from `schema.sql` as
+above instead — it now carries both columns — and skip the two `ALTER`s.
+
 The admin TIN is a new table, taken from `schema.sql` verbatim:
 
 ```bash

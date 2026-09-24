@@ -453,7 +453,65 @@ The point of the feature is notes that are not ready to be read.
 
 `progress_json` holds the ratings the form was holding, as the form held them — unposted working
 state rather than a record. Nothing reads it but the form it came from, and posting turns it
-into real progress rows.
+into real progress rows. `write_up_json` and `assessment_json` (Phase 23) do the same for the
+structured parts of the notes and for the author's own assessment: private with the rest of the
+draft, and turned into `session_write_ups` and `session_assessments` rows by posting. Each is
+read back through the Zod schema that let it in, so a draft whose JSON has gone bad still opens,
+minus that part.
+
+### `session_write_ups`
+
+Phase 23. The notes on a lesson used to be one free-text box, which is hard to build anything
+from: a progress report, a family digest, or eventually a generated summary. A write-up is now in
+the parts a tutor actually works through, in the order the lesson runs:
+
+| Part | Column | |
+| --- | --- | --- |
+| What was planned | `planned` | written before the lesson (a draft is the natural place) or looking back |
+| Previous session review | `previous_review` | how much of last time had stuck |
+| Homework review | `homework_review`, `homework_status` | how last time's homework went; the status is `done`, `partial`, `not_done` or `none_set` |
+| What was covered | `sessions.notes` | unchanged, so every lesson recorded before Phase 23 keeps its notes |
+| Homework set | `homework_assigned` | what is to be done before next time |
+
+**Beside the billing row, not on it**, for the same reason as `session_progress`: sixteen queries
+read `sessions` for money and counts, and none of them has any business with this. One row per
+lesson, present only when a part was written (a write-up with every part empty is deleted rather
+than stored, so it reads as `null`), and deleting the lesson deletes it.
+
+It is **read by exactly the people who may read the lesson's notes** and carries no money — it is
+on screen on the Tutoring tab with the student beside the tutor. The status is an enum rather than
+prose so a summary can say "homework done three weeks running" without reading sentences.
+
+The record form shows the reader's previous lesson with the same student — its homework set and
+notes — above the review parts, read through the ordinary sessions list. For a tutor that is the
+last lesson *they* taught that student; the lookup cannot widen what the list shows.
+
+### `session_assessments`
+
+Phase 23. Anybody a lesson concerns may say how it went: a 1–5 rating (`SESSION_RATING_LABELS`,
+"Did not go well" … "Excellent"), a few words, or both — a `CHECK` refuses neither. One per
+person per lesson (the primary key), which they may revise or withdraw.
+
+**Who may, and in what capacity, is decided by the API**, never sent: `sessionAssessorRole` in
+`lib/scope.ts` asks how the reader relates to the lesson — its tutor, the student, a guardian of
+the student, or failing those an admin — in that order, so an admin who taught the lesson speaks as
+its tutor. That is the same set of people as `teachingScopeSql`, so anyone who can see a lesson may
+assess it and nobody else can. The role is stored with the assessment (`author_role`): the
+capacity somebody wrote in is part of what they said.
+
+**It is always the reader's own.** `PUT` and `DELETE /api/sessions/:id/assessment` take no author,
+so there is nothing to point at somebody else's; the tutor's form and a draft carry only the
+author's own too. An admin editing a tutor's lesson sees and edits the *office's* assessment, not
+the tutor's.
+
+**Not a comment, and not a placement assessment.** A comment is a remark addressed to people and is
+never edited; an assessment is one person's standing answer to one question, and revising it is
+the point. `assessments` (Phase 16) is the office's reading of where a *student* stands; this is a
+reading of one *lesson*.
+
+It is **read by the lesson's audience**, embedded in every session the API returns, tutor first.
+The log records that an assessment was given, revised or withdrawn and in what capacity, never its
+words or its score: the log is read by admins and by the student it concerns.
 
 ### `payments`
 
@@ -559,8 +617,11 @@ The schema carries every rule it is capable of carrying:
 | A comment is about exactly one thing | `CHECK` over the four target columns |
 | A comment cannot be empty | `CHECK (length(trim(body)) > 0)` |
 | Deleting a lesson removes its comments | `ON DELETE CASCADE` on each target |
+| One assessment per person per lesson | `PRIMARY KEY (session_id, author_user_id)` on `session_assessments` |
+| An assessment says something | `CHECK (rating IS NOT NULL OR length(trim(body)) > 0)` |
+| A homework status is one of four | `CHECK` on `session_write_ups.homework_status` |
 
-Three rules **cannot** be constraints, and live in the API instead. They are called out here
+Six rules **cannot** be constraints, and live in the API instead. They are called out here
 because "the database guarantees it" would be wrong:
 
 1. **"A student must have at least one parent relationship."** A cross-row invariant: the
@@ -592,6 +653,11 @@ because "the database guarantees it" would be wrong:
    `apps/api/src/repositories/comments.ts`, and every route there resolves the TARGET before it
    touches a comment, so a thread can never be reached through an id the viewer would not have
    been allowed to see in the first place.
+
+6. **Whose assessment it is, and in what capacity.** Which of the lesson's tutor, student,
+   guardians or the office the reader is depends on guardianship and on roles, rows the
+   assessment cannot see. `sessionAssessorRole` decides it, the routes take no author, and a
+   lesson the reader cannot see is reported as missing.
 
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
 a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's

@@ -39,6 +39,15 @@ import { useAuth } from '@/providers/auth-provider';
 import { DraftsPanel } from './drafts-panel';
 import { SessionFormDialog } from './session-form-dialog';
 import { SessionMoney, describeSessionMoney } from './session-money';
+import {
+  AssessButton,
+  AssessmentChips,
+  AssessmentsView,
+  HomeworkStatusBadge,
+  SessionAssessmentDialog,
+  SessionNotesView,
+  hasWrittenNotes,
+} from './session-notes';
 import { StartSessionButton } from './start-session-button';
 import { useDeleteSession, useSession, useSessions } from './api';
 
@@ -67,6 +76,7 @@ export function SessionsPage() {
   const [editing, setEditing] = useState<TutoringSession | null>(null);
   const [editingDraft, setEditingDraft] = useState<SessionDraft | null>(null);
   const [removing, setRemoving] = useState<TutoringSession | null>(null);
+  const [assessing, setAssessing] = useState<TutoringSession | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [tab] = useTutoringFinanceTab();
   const showMoney = tab === 'finance';
@@ -356,8 +366,11 @@ export function SessionsPage() {
                       </div>
                     </div>
 
-                    {session.notes && (
-                      <div className="mt-3 border-t pt-3">
+                    {/* The write-up and the assessments (Phase 23). No money
+                        here on either tab: this is what a tutor reads with
+                        the student beside them. */}
+                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t pt-3">
+                      {(hasWrittenNotes(session) || session.assessments.length > 0) && (
                         <button
                           type="button"
                           onClick={() => setExpanded(isOpen ? null : session.id)}
@@ -367,11 +380,26 @@ export function SessionsPage() {
                           <ChevronDownIcon
                             className={`size-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                           />
-                          {isOpen ? 'Hide notes' : 'Session notes'}
+                          {isOpen
+                            ? 'Hide notes'
+                            : hasWrittenNotes(session)
+                              ? 'Session notes'
+                              : 'Assessments'}
                         </button>
-                        {isOpen && (
-                          <p className="mt-2 text-sm whitespace-pre-wrap">{session.notes}</p>
-                        )}
+                      )}
+                      {/* Opened, the badge sits by the homework review instead. */}
+                      {!isOpen && session.write_up?.homework_status && (
+                        <HomeworkStatusBadge status={session.write_up.homework_status} />
+                      )}
+                      <AssessmentChips assessments={session.assessments} />
+                      <span className="ml-auto">
+                        <AssessButton session={session} onAssess={setAssessing} />
+                      </span>
+                    </div>
+                    {isOpen && (
+                      <div className="mt-3 grid gap-4">
+                        <SessionNotesView session={session} />
+                        <AssessmentsView assessments={session.assessments} />
                       </div>
                     )}
                   </CardContent>
@@ -464,6 +492,11 @@ export function SessionsPage() {
         existing={editing}
         draft={editingDraft}
         showMoney={showMoney}
+      />
+
+      <SessionAssessmentDialog
+        session={assessing}
+        onOpenChange={(open) => !open && setAssessing(null)}
       />
 
       <AlertDialog open={removing !== null} onOpenChange={(open) => !open && setRemoving(null)}>

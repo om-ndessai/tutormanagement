@@ -196,7 +196,10 @@ function StopDialog({
             placeholder="What was covered, how it went, progress towards their goal, homework set…"
             className="border-input bg-transparent placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 w-full rounded-md border px-3 py-2 text-sm shadow-xs outline-none focus-visible:ring-[3px]"
           />
-          <p className="text-muted-foreground text-xs">Optional — you can add these later.</p>
+          <p className="text-muted-foreground text-xs">
+            Optional. The rest of the write-up — the plan, the homework and your assessment — can
+            be added by editing the session afterwards.
+          </p>
         </div>
 
         <DialogFooter>

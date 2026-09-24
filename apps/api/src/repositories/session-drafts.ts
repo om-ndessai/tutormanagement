@@ -1,9 +1,16 @@
-import { sessionProgressInputSchema } from '@tmi/shared';
+import {
+  sessionAssessmentInputSchema,
+  sessionProgressInputSchema,
+  sessionWriteUpInputSchema,
+  isWriteUpEmpty,
+} from '@tmi/shared';
 import type {
   Rating,
+  SessionAssessmentContent,
   SessionDraft,
   SessionDraftPayload,
   SessionProgress,
+  SessionWriteUp,
 } from '@tmi/shared';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
@@ -12,7 +19,8 @@ const SELECT_DRAFT = `
   SELECT d.id, d.tutor_user_id, t.full_name AS tutor_name,
          d.student_user_id, s.full_name AS student_name,
          d.author_user_id, d.occurred_on, d.started_at, d.ended_at, d.mode,
-         d.notes, d.progress_json, d.created_at, d.updated_at
+         d.notes, d.progress_json, d.write_up_json, d.assessment_json,
+         d.created_at, d.updated_at
   FROM session_drafts d
   JOIN users t ON t.id = d.tutor_user_id
   JOIN users s ON s.id = d.student_user_id
@@ -31,8 +39,33 @@ interface DraftRow {
   mode: SessionDraft['mode'];
   notes: string | null;
   progress_json: string | null;
+  write_up_json: string | null;
+  assessment_json: string | null;
   created_at: string;
   updated_at: string;
+}
+
+/** Stored working state, read back through the schema that let it in. */
+function parseJson(text: string | null): unknown {
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
+function toWriteUp(text: string | null): SessionWriteUp | null {
+  const parsed = sessionWriteUpInputSchema.safeParse(parseJson(text));
+  return parsed.success && !isWriteUpEmpty(parsed.data) ? parsed.data : null;
+}
+
+function toAssessment(text: string | null): SessionAssessmentContent | null {
+  const parsed = sessionAssessmentInputSchema.safeParse(parseJson(text));
+  // Held to 1-5 by the schema; the narrowing restates that for the compiler.
+  return parsed.success
+    ? { rating: parsed.data.rating as Rating | null, body: parsed.data.body }
+    : null;
 }
 
 function toDraft(row: DraftRow): SessionDraft {
@@ -42,7 +75,7 @@ function toDraft(row: DraftRow): SessionDraft {
   // a draft whose JSON went bad should still open, minus the ratings, instead
   // of taking the page down or handing the form something it cannot render.
   if (row.progress_json) {
-    const parsed = sessionProgressInputSchema.safeParse(JSON.parse(row.progress_json));
+    const parsed = sessionProgressInputSchema.safeParse(parseJson(row.progress_json));
 
     // The schema has already held each rating to 1-5; the narrowing to Rating
     // is that guarantee restated for the type system, at the one boundary
@@ -58,8 +91,22 @@ function toDraft(row: DraftRow): SessionDraft {
       : null;
   }
 
-  const { progress_json: _ignored, ...rest } = row;
-  return { ...rest, progress };
+  const { progress_json: _progress, write_up_json, assessment_json, ...rest } = row;
+  return {
+    ...rest,
+    progress,
+    write_up: toWriteUp(write_up_json),
+    assessment: toAssessment(assessment_json),
+  };
+}
+
+/** The JSON a draft keeps for its write-up and assessment, or NULL for none. */
+function workingState(input: SessionDraftPayload) {
+  return {
+    write_up:
+      input.write_up && !isWriteUpEmpty(input.write_up) ? JSON.stringify(input.write_up) : null,
+    assessment: input.assessment ? JSON.stringify(input.assessment) : null,
+  };
 }
 
 /**
@@ -90,13 +137,15 @@ export async function createDraft(
   input: SessionDraftPayload,
 ): Promise<SessionDraft> {
   const id = crypto.randomUUID();
+  const state = workingState(input);
 
   await db
     .prepare(
       `INSERT INTO session_drafts
          (id, tutor_user_id, student_user_id, author_user_id, occurred_on,
-          started_at, ended_at, mode, notes, progress_json)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          started_at, ended_at, mode, notes, progress_json, write_up_json,
+          assessment_json)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -109,6 +158,8 @@ export async function createDraft(
       input.mode,
       input.notes,
       input.progress ? JSON.stringify(input.progress) : null,
+      state.write_up,
+      state.assessment,
     )
     .run();
 
@@ -123,11 +174,14 @@ export async function updateDraft(
   id: string,
   input: SessionDraftPayload,
 ): Promise<SessionDraft | null> {
+  const state = workingState(input);
+
   const result = await db
     .prepare(
       `UPDATE session_drafts
        SET tutor_user_id = ?, student_user_id = ?, occurred_on = ?, started_at = ?,
-           ended_at = ?, mode = ?, notes = ?, progress_json = ?, updated_at = ${NOW}
+           ended_at = ?, mode = ?, notes = ?, progress_json = ?, write_up_json = ?,
+           assessment_json = ?, updated_at = ${NOW}
        WHERE id = ?`,
     )
     .bind(
@@ -139,6 +193,8 @@ export async function updateDraft(
       input.mode,
       input.notes,
       input.progress ? JSON.stringify(input.progress) : null,
+      state.write_up,
+      state.assessment,
       id,
     )
     .run();

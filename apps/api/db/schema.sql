@@ -36,6 +36,8 @@ DROP TRIGGER IF EXISTS users_set_updated_at;
 DROP TRIGGER IF EXISTS learning_plans_set_updated_at;
 DROP TRIGGER IF EXISTS assessments_set_updated_at;
 DROP TRIGGER IF EXISTS session_progress_set_updated_at;
+DROP TRIGGER IF EXISTS session_assessments_set_updated_at;
+DROP TRIGGER IF EXISTS session_write_ups_set_updated_at;
 
 -- Progress tracking (Phase 16) references sessions, users and the curriculum,
 -- so it goes before any of them.
@@ -51,6 +53,8 @@ DROP TABLE IF EXISTS curriculum_levels;
 -- Comments first: they reference four of the tables below, and SQLite will
 -- not drop a table something still points at.
 DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS session_assessments;
+DROP TABLE IF EXISTS session_write_ups;
 DROP TABLE IF EXISTS scheduled_sessions;
 DROP TABLE IF EXISTS session_drafts;
 DROP TABLE IF EXISTS active_sessions;
@@ -542,20 +546,8 @@ CREATE INDEX scheduled_sessions_student_idx ON scheduled_sessions (student_user_
 
 
 -- ---------------------------------------------------------------------------
--- active_sessions - a lesson being taught right now
+-- session_drafts - a lesson written up but not yet posted (Phase 22)
 -- ---------------------------------------------------------------------------
--- The tutor presses start, teaches, then presses stop, at which point a row in
--- `sessions` is written and this one is removed.
---
--- Deliberately NOT a half-filled `sessions` row. A session is the billing
--- record and every column it carries must be true of it; a lesson in progress
--- has no end, no duration and no amount. Making those nullable would weaken
--- the constraints that protect every completed session.
---
--- Living in the database rather than the browser means a tutor can start on
--- their phone and stop on a laptop, and a refresh does not lose the lesson.
--- A lesson a tutor has written up but not yet posted.
---
 -- Deliberately NOT a `sessions` row with a flag on it, for the same reason
 -- `active_sessions` is not: a session is the billing record, and every figure
 -- that reads it -- balances, the monthly rundown, the dashboards, the exports,
@@ -588,6 +580,13 @@ CREATE TABLE session_drafts (
   -- came from, and posting turns it into real progress rows.
   progress_json   TEXT,
 
+  -- The same for the structured parts of the notes (Phase 23), and for the
+  -- author's own assessment of the lesson: held as the form held them, and
+  -- turned into `session_write_ups` and `session_assessments` rows on posting.
+  -- Private with the rest of the draft until then.
+  write_up_json   TEXT,
+  assessment_json TEXT,
+
   created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
@@ -597,6 +596,96 @@ CREATE TABLE session_drafts (
 CREATE INDEX session_drafts_author_idx
   ON session_drafts (author_user_id, updated_at DESC);
 
+-- BEGIN PHASE 23 TABLES
+-- ---------------------------------------------------------------------------
+-- session_write_ups - the structured parts of a lesson's notes
+-- ---------------------------------------------------------------------------
+-- What was planned, how the previous lesson and its homework held up, and
+-- what was set for next time. `sessions.notes` stays as "what was covered",
+-- so every lesson recorded before these parts existed keeps its notes.
+--
+-- Beside the billing row rather than on it, for the same reason
+-- `session_progress` is: sixteen queries read `sessions` for money and counts,
+-- and none of them has any business with this. One row per lesson, present
+-- only when something was written; deleting the lesson deletes it.
+--
+-- Read by exactly the people who may read the lesson, and never money: this
+-- is what a tutor has open with the student beside them.
+CREATE TABLE session_write_ups (
+  session_id        TEXT PRIMARY KEY REFERENCES sessions (id) ON DELETE CASCADE,
+
+  planned           TEXT,
+  previous_review   TEXT,
+  homework_review   TEXT,
+  -- How the homework set last time went. NULL when the tutor did not say.
+  homework_status   TEXT CHECK (homework_status IN ('done', 'partial', 'not_done', 'none_set')),
+  homework_assigned TEXT,
+
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE TRIGGER session_write_ups_set_updated_at
+AFTER UPDATE ON session_write_ups FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE session_write_ups SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE session_id = NEW.session_id;
+END;
+
+-- ---------------------------------------------------------------------------
+-- session_assessments - what the people a lesson concerns thought of it
+-- ---------------------------------------------------------------------------
+-- Its tutor, the student, the student's parents and the office may each say
+-- how a lesson went: a 1-5 rating, a few words, or both. One each -- the
+-- primary key -- which they may change or withdraw.
+--
+-- Not a comment: a comment is a remark addressed to people and is never
+-- edited, while this is one person's standing answer to one question, and
+-- revising it is the point. Not a placement assessment either (`assessments`,
+-- Phase 16), which is the office's reading of a student rather than of one
+-- lesson.
+--
+-- The audience is the lesson's, as for `notes`. `author_role` is the capacity
+-- they wrote in, decided by the API from how they relate to the lesson and
+-- frozen here: a parent who later stops being one still wrote as a parent.
+CREATE TABLE session_assessments (
+  session_id     TEXT NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+  author_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  author_role    TEXT NOT NULL CHECK (author_role IN ('tutor', 'student', 'parent', 'admin')),
+
+  rating         INTEGER CHECK (rating BETWEEN 1 AND 5),
+  body           TEXT,
+
+  created_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (session_id, author_user_id),
+  -- A rating, some words, or both; never an empty row.
+  CHECK (rating IS NOT NULL OR length(trim(body)) > 0)
+);
+
+CREATE TRIGGER session_assessments_set_updated_at
+AFTER UPDATE ON session_assessments FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE session_assessments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE session_id = NEW.session_id AND author_user_id = NEW.author_user_id;
+END;
+-- END PHASE 23 TABLES
+
+
+-- ---------------------------------------------------------------------------
+-- active_sessions - a lesson being taught right now
+-- ---------------------------------------------------------------------------
+-- The tutor presses start, teaches, then presses stop, at which point a row in
+-- `sessions` is written and this one is removed.
+--
+-- Deliberately NOT a half-filled `sessions` row. A session is the billing
+-- record and every column it carries must be true of it; a lesson in progress
+-- has no end, no duration and no amount. Making those nullable would weaken
+-- the constraints that protect every completed session.
+--
+-- Living in the database rather than the browser means a tutor can start on
+-- their phone and stop on a laptop, and a refresh does not lose the lesson.
 CREATE TABLE active_sessions (
   -- One live session per tutor: you cannot teach two lessons at once, and the
   -- primary key is what enforces it.

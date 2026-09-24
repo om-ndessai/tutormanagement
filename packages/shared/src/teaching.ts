@@ -1,5 +1,12 @@
 import { z } from 'zod';
 import { sessionProgressInputSchema, type SessionProgress } from './progress.js';
+import {
+  sessionAssessmentInputSchema,
+  sessionWriteUpInputSchema,
+  type SessionAssessment,
+  type SessionAssessmentContent,
+  type SessionWriteUp,
+} from './session-notes.js';
 import { optionalText } from './users.js';
 
 // ---------------------------------------------------------------------------
@@ -393,6 +400,14 @@ export const sessionInputSchema = z
      * leaving it out records the lesson and scores nothing.
      */
     progress: sessionProgressInputSchema.optional(),
+    /** The structured parts of the notes (Phase 23). Optional throughout. */
+    write_up: sessionWriteUpInputSchema.optional(),
+    /**
+     * The recorder's own assessment of the lesson. Whose it is -- the tutor's,
+     * or the office's when an admin records for somebody -- is decided by the
+     * API from who is asking.
+     */
+    assessment: sessionAssessmentInputSchema.optional(),
   })
   .refine((value) => elapsedMinutes(value.started_at, value.ended_at) !== null, {
     message: 'The end time must be after the start time.',
@@ -408,9 +423,16 @@ export const sessionUpdateSchema = z
     started_at: clockTime.optional(),
     ended_at: clockTime.optional(),
     mode: z.enum(SESSION_MODES).optional(),
-    notes: optionalText(z.string().trim().max(4000)),
+    // `.optional()` is what keeps an omitted key omitted. optionalText is a
+    // transform, which Zod runs on a missing key too, turning it into null --
+    // and a PATCH that left the notes out then erased them.
+    notes: optionalText(z.string().trim().max(4000)).optional(),
     /** When sent, replaces the lesson's whole progress record. */
     progress: sessionProgressInputSchema.optional(),
+    /** When sent, replaces the whole write-up; all parts empty removes it. */
+    write_up: sessionWriteUpInputSchema.optional(),
+    /** When sent, replaces the editor's own assessment; null withdraws it. */
+    assessment: sessionAssessmentInputSchema.nullable().optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
     message: 'Provide at least one field to update.',
@@ -458,6 +480,16 @@ export interface TutoringSession {
    * not. Carries no money, so it is shown to everyone who may see the lesson.
    */
   progress: SessionProgress | null;
+  /**
+   * The structured parts of the notes, or null when none were written. Read
+   * by exactly the people who may read `notes`, and carries no money.
+   */
+  write_up: SessionWriteUp | null;
+  /**
+   * What the people the lesson concerns thought of it, tutor first. The same
+   * audience as the lesson itself; never money.
+   */
+  assessments: SessionAssessment[];
   created_at: string;
   updated_at: string;
 }
@@ -595,7 +627,9 @@ export type StartSessionPayload = z.output<typeof startSessionSchema>;
 export const updateActiveSessionSchema = z
   .object({
     mode: z.enum(SESSION_MODES).optional(),
-    notes: optionalText(z.string().trim().max(4000)),
+    // Optional for the same reason as on sessionUpdateSchema: changing the
+    // mode alone must not erase the notes.
+    notes: optionalText(z.string().trim().max(4000)).optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
     message: 'Provide at least one field to update.',
@@ -644,6 +678,10 @@ export const sessionDraftInputSchema = z
     notes: optionalText(z.string().trim().max(4000)),
     /** Held as the form held it, and only applied when the draft is posted. */
     progress: sessionProgressInputSchema.optional(),
+    /** The structured parts, private with the rest of the draft. */
+    write_up: sessionWriteUpInputSchema.optional(),
+    /** The author's own assessment, published only when the draft is posted. */
+    assessment: sessionAssessmentInputSchema.optional(),
   })
   .refine((value) => elapsedMinutes(value.started_at, value.ended_at) !== null, {
     message: 'The end time must be after the start time.',
@@ -673,6 +711,9 @@ export interface SessionDraft {
   mode: SessionMode;
   notes: string | null;
   progress: SessionProgress | null;
+  write_up: SessionWriteUp | null;
+  /** The author's assessment, as it will be published when this is posted. */
+  assessment: SessionAssessmentContent | null;
   created_at: string;
   updated_at: string;
 }

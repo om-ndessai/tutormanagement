@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ClockIcon, Loader2Icon } from 'lucide-react';
+import { ClockIcon, HistoryIcon, Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   SESSION_MODES,
@@ -14,6 +14,7 @@ import {
   roundToQuarterHour,
   GOAL_RATING_LABELS,
   type Assignment,
+  type HomeworkStatus,
   type Rating,
   type SessionDraft,
   type SessionMode,
@@ -47,10 +48,17 @@ import { RatingPicker, TopicName } from '@/features/progress/rating';
 import {
   useAssignments,
   usePostDraft,
+  usePreviousSession,
   useRecordSession,
   useSaveDraft,
   useUpdateSession,
 } from './api';
+import {
+  AssessmentFields,
+  HomeworkStatusPicker,
+  NoteField,
+  likelyAssessorRole,
+} from './session-notes';
 
 /** Common lesson lengths, offered as one tap rather than clock arithmetic. */
 const QUICK_LENGTHS = [45, 60, 75, 90, 120];
@@ -111,6 +119,16 @@ export function SessionFormDialog({
   const [notes, setNotes] = useState('');
   const [goalRating, setGoalRating] = useState<Rating | null>(null);
   const [topicRatings, setTopicRatings] = useState(new Map<string, Rating>());
+  // The structured write-up (Phase 23), in the order a lesson runs.
+  const [planned, setPlanned] = useState('');
+  const [previousReview, setPreviousReview] = useState('');
+  const [homeworkReview, setHomeworkReview] = useState('');
+  const [homeworkStatus, setHomeworkStatus] = useState<HomeworkStatus | null>(null);
+  const [homeworkAssigned, setHomeworkAssigned] = useState('');
+  // The writer's OWN assessment. On an existing lesson that is theirs alone:
+  // an admin editing a tutor's lesson sees and edits the office's, not the tutor's.
+  const [myRating, setMyRating] = useState<Rating | null>(null);
+  const [myAssessment, setMyAssessment] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // A tutor only ever sees their own pairings; an admin sees all of them.
@@ -146,6 +164,10 @@ export function SessionFormDialog({
       setTopicRatings(
         new Map((existing.progress?.topic_ratings ?? []).map((row) => [row.topic_id, row.rating])),
       );
+      fillWriteUp(existing.write_up);
+      const mine = existing.assessments.find((row) => row.author_user_id === user?.id);
+      setMyRating(mine?.rating ?? null);
+      setMyAssessment(mine?.body ?? '');
     } else if (draft) {
       const match = assignments.find(
         (a) =>
@@ -162,6 +184,9 @@ export function SessionFormDialog({
       setTopicRatings(
         new Map((draft.progress?.topic_ratings ?? []).map((row) => [row.topic_id, row.rating])),
       );
+      fillWriteUp(draft.write_up);
+      setMyRating(draft.assessment?.rating ?? null);
+      setMyAssessment(draft.assessment?.body ?? '');
     } else {
       setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
       setOccurredOn(todayIso());
@@ -171,14 +196,40 @@ export function SessionFormDialog({
       setNotes('');
       setGoalRating(null);
       setTopicRatings(new Map());
+      fillWriteUp(null);
+      setMyRating(null);
+      setMyAssessment('');
     }
     // `assignments` is intentionally excluded: repopulating mid-edit would
     // stomp on what the user has typed when the query refetches.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, existing, draft]);
 
+  function fillWriteUp(writeUp: TutoringSession['write_up']) {
+    setPlanned(writeUp?.planned ?? '');
+    setPreviousReview(writeUp?.previous_review ?? '');
+    setHomeworkReview(writeUp?.homework_review ?? '');
+    setHomeworkStatus(writeUp?.homework_status ?? null);
+    setHomeworkAssigned(writeUp?.homework_assigned ?? '');
+  }
+
   const assignment: Assignment | undefined = assignments.find((a) => a.id === assignmentId);
   const studentId = existing?.student_user_id ?? assignment?.student_user_id;
+
+  // The lesson before this one, whose homework and notes are what the review
+  // parts look back on.
+  const { data: previous } = usePreviousSession(
+    open ? studentId : undefined,
+    { occurredOn, startedAt },
+    existing?.id,
+  );
+
+  /** Whose assessment the form is holding, for wording the question. */
+  const myRole = existing && user
+    ? likelyAssessorRole(existing, user)
+    : isAdmin && assignment && assignment.tutor_user_id !== user?.id
+      ? 'admin'
+      : 'tutor';
 
   // The price is set on the student and only an admin may read it, so only
   // an admin's preview can show the family's side and the institute's cut.
@@ -231,6 +282,21 @@ export function SessionFormDialog({
     };
   }, [startedAt, endedAt, mode, assignment, studentPrices]);
 
+  /** Every part of the write-up; the API stores none of it when all are empty. */
+  const writeUpBody = {
+    planned: planned.trim() || null,
+    previous_review: previousReview.trim() || null,
+    homework_review: homeworkReview.trim() || null,
+    homework_status: homeworkStatus,
+    homework_assigned: homeworkAssigned.trim() || null,
+  };
+
+  /** The writer's own assessment, or undefined when they gave none. */
+  const assessmentBody =
+    myRating !== null || myAssessment.trim()
+      ? { rating: myRating, body: myAssessment.trim() || null }
+      : undefined;
+
   /** Everything the form is holding, in the shape both the draft and the
    *  session endpoints take. */
   function formBody() {
@@ -243,6 +309,8 @@ export function SessionFormDialog({
       mode,
       notes: notes.trim() || null,
       ...(progressBody ? { progress: progressBody } : {}),
+      write_up: writeUpBody,
+      ...(assessmentBody ? { assessment: assessmentBody } : {}),
     };
   }
 
@@ -301,6 +369,8 @@ export function SessionFormDialog({
 
     try {
       if (isEdit) {
+        const hadMine = existing.assessments.some((row) => row.author_user_id === user?.id);
+
         await update.mutateAsync({
           id: existing.id,
           input: {
@@ -310,6 +380,13 @@ export function SessionFormDialog({
             mode,
             notes: notes.trim() || null,
             ...(progressBody ? { progress: progressBody } : {}),
+            write_up: writeUpBody,
+            // Emptying the fields withdraws an assessment given before.
+            ...(assessmentBody
+              ? { assessment: assessmentBody }
+              : hadMine
+                ? { assessment: null }
+                : {}),
           } as never,
         });
         toast.success('Session updated.');
@@ -323,6 +400,8 @@ export function SessionFormDialog({
           mode,
           notes: notes.trim() || null,
           ...(progressBody ? { progress: progressBody } : {}),
+          write_up: writeUpBody,
+          ...(assessmentBody ? { assessment: assessmentBody } : {}),
         } as never);
         toast.success('Session recorded.');
       }
@@ -339,7 +418,7 @@ export function SessionFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-lg">
+      <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-2xl">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
             <DialogTitle>
@@ -482,23 +561,67 @@ export function SessionFormDialog({
               showMoney={showMoney}
             />
 
-            <div className="grid gap-2">
-              <Label htmlFor="notes">Session notes</Label>
-              <textarea
-                id="notes"
-                value={notes}
-                onChange={(event) => setNotes(event.target.value)}
-                rows={5}
-                placeholder="What was covered, how it went, progress towards their goal, homework set…"
-                className="border-input bg-transparent placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 w-full rounded-md border px-3 py-2 text-sm shadow-xs outline-none focus-visible:ring-[3px]"
-              />
-            </div>
-
             {errors.mode && (
               <p role="alert" className="text-destructive text-xs">
                 {errors.mode}
               </p>
             )}
+
+            {/* The write-up, in the order the lesson ran. Every part is
+                optional; together they are what a summary is built from. */}
+            <FormSection
+              title="Looking back"
+              description="What this lesson was for, and how last time held up."
+            >
+              {previous && <PreviousLesson session={previous} showTutor={isAdmin} />}
+              <NoteField
+                id="planned"
+                label="What was planned"
+                value={planned}
+                onChange={setPlanned}
+                placeholder="What this lesson set out to cover"
+                error={errors['write_up.planned']}
+              />
+              <NoteField
+                id="previous-review"
+                label="Previous session review"
+                value={previousReview}
+                onChange={setPreviousReview}
+                placeholder="How much of last time had stuck"
+                error={errors['write_up.previous_review']}
+              />
+              <div className="grid gap-1.5">
+                <NoteField
+                  id="homework-review"
+                  label="Homework review"
+                  value={homeworkReview}
+                  onChange={setHomeworkReview}
+                  placeholder="How the homework from last time went"
+                  error={errors['write_up.homework_review']}
+                />
+                <HomeworkStatusPicker value={homeworkStatus} onChange={setHomeworkStatus} />
+              </div>
+            </FormSection>
+
+            <FormSection title="This lesson">
+              <NoteField
+                id="notes"
+                label="Session notes"
+                value={notes}
+                onChange={setNotes}
+                rows={5}
+                placeholder="What was covered, and how it went"
+                error={errors.notes}
+              />
+              <NoteField
+                id="homework-assigned"
+                label="Homework set"
+                value={homeworkAssigned}
+                onChange={setHomeworkAssigned}
+                placeholder="What they are to do before next time"
+                error={errors['write_up.homework_assigned']}
+              />
+            </FormSection>
 
             {studentId && (
               <ProgressSection
@@ -510,6 +633,28 @@ export function SessionFormDialog({
                 error={errors['progress.topic_ratings']}
               />
             )}
+
+            <FormSection
+              title="Your assessment"
+              description={
+                isEdit
+                  ? 'Optional. Everyone this lesson concerns can read it.'
+                  : 'Optional. Private with the rest of a draft; everyone this lesson concerns can read it once it is recorded.'
+              }
+            >
+              <AssessmentFields
+                idPrefix="form"
+                role={myRole}
+                rating={myRating}
+                onRating={setMyRating}
+                body={myAssessment}
+                onBody={setMyAssessment}
+                errors={{
+                  rating: errors['assessment.rating'] ?? errors.assessment,
+                  body: errors['assessment.body'],
+                }}
+              />
+            </FormSection>
           </div>
 
           <DialogFooter>
@@ -727,5 +872,50 @@ function ProgressSection({
         </p>
       )}
     </fieldset>
+  );
+}
+
+/** A titled group of fields in the write-up. */
+function FormSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <fieldset className="grid gap-3 rounded-md border p-3">
+      <legend className="px-1 text-sm font-medium">{title}</legend>
+      {description && <p className="text-muted-foreground -mt-1 text-xs">{description}</p>}
+      {children}
+    </fieldset>
+  );
+}
+
+/**
+ * The last lesson with this student, as a reminder of what is being reviewed:
+ * the homework that was set, and what was covered. Read-only, and never money.
+ */
+function PreviousLesson({ session, showTutor }: { session: TutoringSession; showTutor: boolean }) {
+  const homework = session.write_up?.homework_assigned;
+
+  return (
+    <div className="bg-muted/50 grid gap-1 rounded-md px-3 py-2.5 text-xs">
+      <p className="text-muted-foreground flex items-center gap-1.5 font-medium">
+        <HistoryIcon className="size-3.5" />
+        Last lesson, {session.occurred_on}
+        {showTutor && ` with ${session.tutor_name}`}
+      </p>
+      {homework ? (
+        <p>
+          <span className="font-medium">Homework set:</span> {homework}
+        </p>
+      ) : (
+        <p className="text-muted-foreground">No homework was recorded.</p>
+      )}
+      {session.notes && <p className="text-muted-foreground line-clamp-2">{session.notes}</p>}
+    </div>
   );
 }

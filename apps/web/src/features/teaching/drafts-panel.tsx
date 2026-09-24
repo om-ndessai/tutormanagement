@@ -74,7 +74,7 @@ export function DraftsPanel({ onEdit }: { onEdit: (draft: SessionDraft) => void 
                   <span className="text-muted-foreground text-xs">
                     {draft.occurred_on} · {formatClockTime(draft.started_at)}–
                     {formatClockTime(draft.ended_at)} · {SESSION_MODE_LABELS[draft.mode]}
-                    {draft.notes ? '' : ' · no notes yet'}
+                    {draft.notes || draft.write_up ? '' : ' · no notes yet'}
                   </span>
                 </span>
 

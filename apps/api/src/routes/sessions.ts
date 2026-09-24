@@ -28,6 +28,10 @@ import {
   sessionDraftInputSchema,
   sessionProgressInputSchema,
   type SessionDraft,
+  HOMEWORK_STATUS_LABELS,
+  SESSION_ASSESSOR_LABELS,
+  sessionAssessmentInputSchema,
+  type SessionAssessmentPayload,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -36,7 +40,12 @@ import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { autoStopExpired, recordRunningSession } from '../lib/live-sessions.js';
 import { priceSession } from '../lib/pricing.js';
-import { familyStudentIds, isAdmin, scopeSessionMoney } from '../lib/scope.js';
+import {
+  familyStudentIds,
+  isAdmin,
+  scopeSessionMoney,
+  sessionAssessorRole,
+} from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
 import { getStudentChargeRates } from '../repositories/users.js';
@@ -56,6 +65,7 @@ import {
   listMyDrafts,
   updateDraft,
 } from '../repositories/session-drafts.js';
+import { deleteAssessment, saveAssessment, saveWriteUp } from '../repositories/session-notes.js';
 import {
   createSession,
   deleteSession,
@@ -68,7 +78,6 @@ import {
 
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid session id.' }) });
 
-/** A lesson can only be scored against topics that exist in the curriculum. */
 /**
  * A tutor writes up their own lessons; an admin may write up anybody's. The
  * pairing has to exist either way, so a draft cannot name a student who is
@@ -104,6 +113,7 @@ async function assertMyDraft(db: D1Database, viewer: User, id: string) {
   return draft;
 }
 
+/** A lesson can only be scored against topics that exist in the curriculum. */
 async function assertProgressTopics(db: D1Database, progress: SessionProgressPayload | undefined) {
   if (!progress) return;
 
@@ -118,6 +128,56 @@ async function assertProgressTopics(db: D1Database, progress: SessionProgressPay
       'progress.topic_ratings': [`Not in the curriculum: ${unknown.join(', ')}.`],
     });
   }
+}
+
+/**
+ * Records, revises or (with null) withdraws the viewer's OWN assessment of a
+ * lesson. There is no way to write or remove anybody else's.
+ *
+ * The capacity they write in is decided here from how they relate to the
+ * lesson, never taken from the client. Somebody the lesson does not concern
+ * is told it does not exist, as for every other read of it.
+ *
+ * The log line says that an assessment was given, never what it said or how
+ * it scored: the log is read by admins and by the subject, and an assessment
+ * is addressed to the lesson's own audience.
+ */
+async function applyOwnAssessment(
+  db: D1Database,
+  viewer: User,
+  session: StoredSession,
+  input: SessionAssessmentPayload | null,
+) {
+  const role = sessionAssessorRole(session, viewer, await familyStudentIds(db, viewer));
+  if (!role) throw ApiError.notFound('That session does not exist.');
+
+  const lesson = `the ${session.occurred_on} session with ${session.student_name}`;
+  const audit = {
+    subject: { id: session.student_user_id, full_name: session.student_name },
+    entity_type: 'session',
+    entity_id: session.id,
+  };
+
+  if (input === null) {
+    if (!(await deleteAssessment(db, session.id, viewer.id))) {
+      throw ApiError.notFound('You have not assessed that session.');
+    }
+    await recordAudit(db, viewer, {
+      action: 'session.assessment_withdrawn',
+      description: `Withdrew their assessment of ${lesson}`,
+      ...audit,
+    });
+    return;
+  }
+
+  const { revised } = await saveAssessment(db, session.id, viewer.id, role, input);
+  await recordAudit(db, viewer, {
+    action: 'session.assessed',
+    description: `${revised ? 'Revised their' : 'Gave an'} assessment of ${lesson}, as ${
+      role === 'admin' ? 'the office' : `the ${SESSION_ASSESSOR_LABELS[role].toLowerCase()}`
+    }`,
+    ...audit,
+  });
 }
 
 /** One stored session, as this viewer may see it. */
@@ -190,8 +250,8 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     if (input.progress) {
       await saveSessionProgress(c.env.DB, session.id, session.student_user_id, input.progress);
-      session = (await getSession(c.env.DB, session.id)) ?? session;
     }
+    if (input.write_up) await saveWriteUp(c.env.DB, session.id, input.write_up);
 
     await recordAudit(c.env.DB, viewer, {
       action: 'session.recorded',
@@ -206,6 +266,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
       entity_type: 'session',
       entity_id: session.id,
     });
+
+    // After the lesson is on the record, so the log reads in the order it happened.
+    if (input.assessment) await applyOwnAssessment(c.env.DB, viewer, session, input.assessment);
+
+    session = (await getSession(c.env.DB, session.id)) ?? session;
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
     return c.json(body, 201);
@@ -334,8 +399,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
       const progress = sessionProgressInputSchema.parse(draft.progress);
       await assertProgressTopics(c.env.DB, progress);
       await saveSessionProgress(c.env.DB, session.id, session.student_user_id, progress);
-      session = (await getSession(c.env.DB, session.id)) ?? session;
     }
+    // The write-up and the author's assessment were private with the draft;
+    // posting is what shows them to everybody the lesson concerns.
+    if (draft.write_up) await saveWriteUp(c.env.DB, session.id, draft.write_up);
 
     await deleteDraft(c.env.DB, id);
 
@@ -349,6 +416,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
       entity_type: 'session',
       entity_id: session.id,
     });
+
+    if (draft.assessment) await applyOwnAssessment(c.env.DB, viewer, session, draft.assessment);
+
+    session = (await getSession(c.env.DB, session.id)) ?? session;
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
     return c.json(body, 201);
@@ -386,7 +457,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
       ...(chargeColumns ? [admin ? 'Charge rate (USD/hr)' : 'Rate charged (USD/hr)', admin ? 'Charged (USD)' : 'Charged to you (USD)'] : []),
       ...(payColumns ? [admin ? 'Tutor rate (USD/hr)' : 'Your rate (USD/hr)', admin ? 'Tutor pay (USD)' : 'Your pay (USD)'] : []),
       ...(admin ? ['Institute cut (USD)'] : []),
+      'Planned',
+      'Previous session review',
+      'Homework status',
+      'Homework review',
       'Notes',
+      'Homework set',
+      'Assessments',
     ];
 
     const body = buildCsv(
@@ -406,7 +483,23 @@ export const sessionsRoutes = new Hono<AppEnv>()
           ? [csvMoney(session.tutor_rate_cents), csvMoney(session.tutor_amount_cents)]
           : []),
         ...(admin ? [csvMoney(marginCents(session))] : []),
+        session.write_up?.planned ?? '',
+        session.write_up?.previous_review ?? '',
+        session.write_up?.homework_status
+          ? HOMEWORK_STATUS_LABELS[session.write_up.homework_status]
+          : '',
+        session.write_up?.homework_review ?? '',
         session.notes ?? '',
+        session.write_up?.homework_assigned ?? '',
+        // "Tutor (Alex Chen) 4/5; Parent (Maria Okafor): Loved it." -- who said what, in one cell.
+        session.assessments
+          .map(
+            (row) =>
+              `${SESSION_ASSESSOR_LABELS[row.author_role]} (${row.author_name})` +
+              (row.rating ? ` ${row.rating}/5` : '') +
+              (row.body ? `: ${row.body}` : ''),
+          )
+          .join('; '),
       ]),
     );
 
@@ -630,8 +723,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
       if (input.progress) {
         await saveSessionProgress(c.env.DB, id, existing.student_user_id, input.progress);
       }
+      if (input.write_up) await saveWriteUp(c.env.DB, id, input.write_up);
 
-      const updated = await updateSessionRow(c.env.DB, id, {
+      let updated = await updateSessionRow(c.env.DB, id, {
         ...(input.occurred_on !== undefined ? { occurred_on: input.occurred_on } : {}),
         ...(input.started_at !== undefined ? { started_at: input.started_at } : {}),
         ...(input.ended_at !== undefined ? { ended_at: input.ended_at } : {}),
@@ -642,18 +736,70 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
       if (!updated) throw ApiError.notFound('That session does not exist.');
 
-      await recordAudit(c.env.DB, viewer, {
-        action: 'session.updated',
-        description: `Updated the ${updated.occurred_on} session with ${updated.student_name}`,
-        subject: { id: updated.student_user_id, full_name: updated.student_name },
-        entity_type: 'session',
-        entity_id: updated.id,
-      });
+      // An edit that only revises the editor's own assessment is logged as
+      // that, not also as a change to the lesson.
+      if (Object.keys(input).some((key) => key !== 'assessment')) {
+        await recordAudit(c.env.DB, viewer, {
+          action: 'session.updated',
+          description: `Updated the ${updated.occurred_on} session with ${updated.student_name}`,
+          subject: { id: updated.student_user_id, full_name: updated.student_name },
+          entity_type: 'session',
+          entity_id: updated.id,
+        });
+      }
+
+      if (input.assessment !== undefined) {
+        const had = existing.assessments.some((row) => row.author_user_id === viewer.id);
+        // Clearing an assessment that was never given is nothing to do, not an error.
+        if (input.assessment !== null || had) {
+          await applyOwnAssessment(c.env.DB, viewer, updated, input.assessment);
+        }
+        updated = (await getSession(c.env.DB, id)) ?? updated;
+      }
 
       const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, updated) };
       return c.json(body);
     },
   )
+
+  // -------------------------------------------------------------------------
+  // Assessments (Phase 23)
+  // -------------------------------------------------------------------------
+  // Anybody the lesson concerns -- its tutor, the student, their parents, the
+  // office -- may say how it went, once each. Only ever the reader's own: the
+  // routes take no author, so there is nothing to point at somebody else's.
+
+  /** Gives or revises the reader's assessment. Returns the lesson with it. */
+  .put(
+    '/:id/assessment',
+    zValidator('param', idParamSchema),
+    zValidator('json', sessionAssessmentInputSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const viewer = c.get('user');
+
+      const session = await getVisibleSession(c.env.DB, viewer, id);
+      if (!session) throw ApiError.notFound('That session does not exist.');
+
+      await applyOwnAssessment(c.env.DB, viewer, session, c.req.valid('json'));
+
+      const updated = (await getSession(c.env.DB, id)) ?? session;
+      const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, updated) };
+      return c.json(body);
+    },
+  )
+
+  /** Withdraws the reader's assessment. Nobody else's can be removed. */
+  .delete('/:id/assessment', zValidator('param', idParamSchema), async (c) => {
+    const { id } = c.req.valid('param');
+    const viewer = c.get('user');
+
+    const session = await getVisibleSession(c.env.DB, viewer, id);
+    if (!session) throw ApiError.notFound('That session does not exist.');
+
+    await applyOwnAssessment(c.env.DB, viewer, session, null);
+    return c.body(null, 204);
+  })
 
   .delete('/:id', zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');

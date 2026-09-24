@@ -9,7 +9,7 @@ Read this before adding a route or a screen that returns people, lessons or mone
 
 ## The rules
 
-Admins see everything. For everyone else there are nine rules. A person may hold several roles,
+Admins see everything, except another person's draft (R10). For everyone else there are ten rules. A person may hold several roles,
 so each rule applies **per row**: Sanjay reads the lessons he teaches as a tutor and his own
 lessons as a student, in one list.
 
@@ -24,6 +24,7 @@ lessons as a student, in one list.
 | R7 | A response names nobody the reader could not already see (`visibleUserIds`). The only exception is whoever *acted*: an audit actor, a comment author, an assessor. | the scope helpers in `lib/scope.ts` |
 | R8 | The activity log never carries an amount of money. | the audit descriptions (lessons since Phase 17, payments since Phase 21); the repository rewords older lines for non-admin readers, and the dashboard's Tutoring tab leaves payment lines out altogether |
 | R9 | A lesson, payment, schedule or comment the reader cannot list is "not found" when fetched by id, and never "forbidden", because a 403 confirms it exists. | `getVisibleSession`, `getVisiblePayment`, `canSeeSchedule` |
+| R10 | An unposted write-up (Phase 22) — its notes, its parts and its author's assessment (Phase 23) — reaches only its author, whoever else it names. Admins included. | `listMyDrafts`, `assertMyDraft` |
 
 ## Who sees what, by screen
 
@@ -33,6 +34,9 @@ lessons as a student, in one list.
 | Sessions page, Tutoring tab (the default) | The same lessons and notes, and no money at all: no totals, amounts, export or pay preview in the record form. A tutor has this open with the student beside them (Phase 19). | Same. | Same. |
 | Sessions page, Finance tab | The list above, with the money and the CSV. | Same. | Same. |
 | Session by id | The same set; anything else is 404. | Same. | Same. |
+| A lesson's write-up and assessments (Phase 23), on every session returned | Everything written on the lessons they may see: the plan, the review, the homework, the notes, and every assessment with who gave it. No money. | Same, for their children's lessons. | Same, for their own. |
+| Assessing a lesson, `PUT`/`DELETE /sessions/:id/assessment` | Their own assessment only, as the tutor. Any other lesson is 404. | Their own, as a parent. | Their own, as the student. |
+| Drafts, `GET /sessions/drafts` | Their own drafts only. | Same. | Same. |
 | Session totals | "Earned" | "Charged" | "Charged" |
 | Sessions CSV | Only their "Your pay" columns. | Only their "Charged to you" columns. | Same as parent. |
 | Pairings, `GET /assignments` | Their pairings, with their rates. | Who teaches their children, without rates. | Their own tutors, without rates. |
@@ -109,8 +113,11 @@ every read endpoint:
 - comments
 - balances
 - the monthly rundown
+- their drafts, after the office has saved one naming a lesson they can see (R10)
 
 It then walks **every object in every response** against R1–R8, whichever endpoint returned it.
+An assessment names its author (`author_user_id`), who is exempt from R7 as whoever acted, as a
+comment author is.
 For R9 it fetches every lesson and every payment in the institute by id, and expects either the
 row or a 404.
 
