@@ -177,9 +177,10 @@ student-facing idea: *most students cannot sign in*.
 - **Child mode on a guardian's session.** A guardian signs in as usual and picks "Continue as
   Sofia". The Worker issues a signed cookie that acts as the student, and records
   `acting_guardian_id` for the audit log.
-- **In-lesson code.** A tutor can show a six-digit code or QR code at the start of a lesson.
-  It signs the student in on the tutor's device for that lesson only, and expires when the
-  lesson stops.
+- **In-lesson code.** At the start of a lesson the tutor shows a six-digit code or QR code.
+  The student enters it on whatever device they are using, such as a family tablet or an
+  institute laptop. That device is signed in as the student for this lesson only, and the
+  code expires when the lesson stops.
 
 **Later.** Per-student PIN on a family's shared tablet; a student Google account linked
 when one exists.
@@ -194,8 +195,8 @@ rate-limited). A "Switch to…" item in the user menu.
 **Guard rails.**
 - The child's view is the student's view: the crawl in `exposure.spec.ts` gets a persona for it.
 - An audit event on every switch.
-- No child session can reach Finance, because students see no money but their own price, and
-  a child session should see none at all.
+- No child session can reach Finance. Students who sign in today see their own price,
+  balance and payments; a child session should see no money at all.
 
 **Needs.** F7: a child account is collecting data online from a child, so a guardian's
 verifiable consent comes first. **Cost.** $0. **Size.** M.
@@ -215,11 +216,14 @@ library), and Canvas's Files tool is central to it.
 - **Downloads.** Each download is authorised through the same scoping as the record the file
   hangs off (a session, a homework, a person), so a file is never readable by more people
   than its parent record.
-- **Limits.** Type and size limits of 20 MB, images and PDFs only.
+- **Limits.** Images and PDFs only, up to 20 MB each.
+- **Never tax forms.** A scanned W-9 carries an SSN, and the SSN guard can only check text.
+  The upload screen says tax forms are never uploaded, and T1 records only the date a form was
+  received.
 
 **Later.**
 - Image downscaling in the browser before upload.
-- Retention rules, such as deleting homework photos a year after the plan closes.
+- Deletion on the retention schedule (A3), e.g. homework photos after 12 months.
 - Virus scanning through a third-party API.
 
 **Data.** `files` with these columns:
@@ -408,8 +412,12 @@ on whether data is collected online *from* a child:
 **Later.** Data export ("download everything about my child") and verified deletion
 requests (A3).
 
-**Needs.** None. **Cost.** $0. **Size.** M. **Must come before** F1, any student-facing
-upload, and every feature in [future-ai.md](future-ai.md). It also comes before V1–V3 and M4.
+**Needs.** None. **Cost.** $0. **Size.** M. **Must come before:**
+- F1
+- any upload by a student
+- every feature that sends a child's own work (a photo, handwriting, voice, typed answers)
+  to an outside provider, as listed in [future-ai.md](future-ai.md)
+- V1–V3 and M4
 
 ### F8 · Self-service profile editing
 
@@ -625,7 +633,8 @@ cheapest way to cut no-shows.
 - Tutor reminders to record lessons not yet recorded by the evening.
 
 **Guard rails.**
-- Recipients are exactly the lesson's audience (`teachingScopeSql`).
+- Recipients are the lesson's tutor, the student if they have an email, and the student's
+  guardians. These are the people who can read the lesson, apart from admins.
 - No money in the reminder.
 - A person's opt-out, held in F3, is respected.
 
@@ -635,7 +644,8 @@ two reminders a lesson). **Size.** S.
 ### S3 · Scheduling assistant
 
 **Why.** The portal already holds every person's free hours (`availability_slots`, hour by
-hour, for tutors and students alike), but nothing uses them. Matching availability is how
+hour, for tutors and students alike). It is shown and edited on each person's record, but
+nothing uses it for scheduling. Matching availability is how
 Teachworks and TutorCruncher help an office place a new student. It is the feature
 `docs/data-model.md` said the hour blocks were designed for.
 
@@ -663,8 +673,8 @@ person is busy.
 
 ### S4 · Family requests: change, cancel, extra lesson
 
-**Why.** Only an admin can change a schedule today, so every family request becomes a phone
-call or a text to the office. Six of the eight business platforms let families book or cancel
+**Why.** Only the office, or the lesson's own tutor, can change a schedule today, so every
+family request becomes a phone call or a text. Six of the eight business platforms let families book or cancel
 online: Jackrabbit's parent portal books make-ups and reports future absences, and Teachworks
 lets families cancel within policy. Mathnasium's new myMathnasium app (September 2026) does
 scheduling at some centres.
@@ -672,8 +682,10 @@ scheduling at some centres.
 **Build.** A guardian can ask to:
 - move one lesson
 - change the standing slot
-- cancel within policy
 - book an extra lesson
+- cancel inside the notice period
+
+An on-time cancellation needs no request: the guardian simply cancels, under S1.
 
 Each request goes to the office, and to the tutor for a move. Approving it applies the S1
 exception or edits the schedule. Every request, and its answer, is notified (F3).
@@ -713,10 +725,13 @@ occurrences, tagged as institute closures so they are neither charged nor counte
   calendars poll a feed URL and stay current by themselves.
 
 **Build.**
-- **The feed.** A secret, revocable feed URL per person: `/cal/<token>.ics`. It carries that
-  person's upcoming lessons, with moves and cancellations (S1) applied. Like the payment
-  webhook (B1) and the enquiry form (G1), it is a deliberate addition to `publicRoutes`: the
-  token is its authentication.
+- **The feed.** A secret, revocable feed URL per person, such as
+  `/api/calendar/<token>.ics`. It carries that person's upcoming lessons, with moves and
+  cancellations (S1) applied.
+- **Why under `/api`.** The feed must sit under `/api`, because only `/api/*` reaches the
+  Worker (`run_worker_first`); anything else is served the app.
+- **A deliberate public route.** Like the payment webhook (B1) and the enquiry form (G1), it
+  is added to `publicRoutes` on purpose. The token is its authentication.
 - **Why a token.** Calendar apps cannot send the session cookie. The token is scoped to
   exactly what `GET /api/schedules/upcoming` would show that person.
 
@@ -802,7 +817,7 @@ for Canvas parity ([canvas-gap-analysis.md](canvas-gap-analysis.md)).
 
 **Where the portal is today.**
 - **Money is a ledger.** Lessons create charges and tutor pay. Payments are typed in by the
-  office after the money has moved by Zelle, Venmo, cash or cheque.
+  office after the money has moved by Zelle, Venmo, cash or check.
 - **Balances are derived.** Balances and 1099s come from that ledger.
 
 **What the survey found.** Every business-management product surveyed goes further in one
@@ -874,9 +889,12 @@ family. The office can then match a transfer to a family at a glance.
 - **What a statement shows.** One statement per family per month: every lesson, at its
   charge, with the date, length and tutor. It also shows payments received, and the balance
   carried forward.
-- **How it's made.** A statement is generated as a printable page in the browser, like the
-  1099, and saved to PDF.
-- **Delivery.** It is emailed on the first of the month (F3, F4) with a "Pay now" link (B1).
+- **How it's made.** A statement is a page in the portal, built from its frozen snapshot.
+  Families print it or save it as a PDF from the browser, as the 1099 is printed today.
+- **Delivery.** On the first of the month, families are emailed a link to it (F3, F4), with a
+  "Pay now" link once B1 exists.
+- **Attachments later.** A PDF attached to the email needs it made on the server: Browser Run
+  fits the free plan at this size (see L5).
 
 **Later.**
 - A statement number sequence and "paid" stamps.
@@ -1005,8 +1023,9 @@ for 10 or more information returns of all types combined.
 - **At 10 or more.** Add an export in the layout accepted by a filing service (Track1099, Tax1099),
   who file with the IRS.
 
-**Later.** Direct IRIS (IRS) e-filing. The SSN is still never stored: the tutor's number would
-have to be typed at filing time, exactly as in the 1099 dialog today.
+**Later.** The office files directly on the IRS's own IRIS portal. The portal exports
+everything on the form except the tutor's number, which the office types into IRIS itself.
+The portal never files, because filing through the Worker would put the SSN in a request.
 
 **Guard rails.** No SSN is ever stored or sent through the Worker. That rule is absolute
 (`CLAUDE.md`), and it is why filing goes through a service the office logs into directly.
