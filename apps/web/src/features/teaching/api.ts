@@ -15,6 +15,8 @@ import type {
   UpdateActiveSessionPayload,
   SessionUpdatePayload,
   TutoringSession,
+  SessionDraft,
+  SessionDraftInput,
 } from '@tmi/shared';
 
 import { apiClient, toQueryString } from '@/lib/api-client';
@@ -210,5 +212,61 @@ export function useDeleteSession() {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete<undefined>(`/sessions/${id}`),
     onSuccess: invalidate,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Drafts
+// ---------------------------------------------------------------------------
+
+/** The viewer's own unposted write-ups. Nobody else's are ever returned. */
+export function useMyDrafts() {
+  return useQuery({
+    queryKey: ['session-drafts'],
+    queryFn: () => apiClient.get<ApiOk<SessionDraft[]>>('/sessions/drafts'),
+  });
+}
+
+function useDraftInvalidation() {
+  const queryClient = useQueryClient();
+  return () => void queryClient.invalidateQueries({ queryKey: ['session-drafts'] });
+}
+
+export function useSaveDraft() {
+  const invalidateDrafts = useDraftInvalidation();
+
+  return useMutation({
+    mutationFn: ({ id, input }: { id?: string; input: SessionDraftInput }) =>
+      id
+        ? apiClient.patch<ApiOk<SessionDraft>>(`/sessions/drafts/${id}`, input)
+        : apiClient.post<ApiOk<SessionDraft>>('/sessions/drafts', input),
+    onSuccess: invalidateDrafts,
+  });
+}
+
+export function useDiscardDraft() {
+  const invalidateDrafts = useDraftInvalidation();
+
+  return useMutation({
+    mutationFn: (id: string) => apiClient.delete<void>(`/sessions/drafts/${id}`),
+    onSuccess: invalidateDrafts,
+  });
+}
+
+/**
+ * Posts a draft. This is the moment it becomes a lesson everybody concerned
+ * can see, so it invalidates the teaching views as well as the drafts.
+ */
+export function usePostDraft() {
+  const invalidateDrafts = useDraftInvalidation();
+  const invalidateTeaching = useTeachingInvalidation();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiClient.post<ApiOk<TutoringSession>>(`/sessions/drafts/${id}/post`),
+    onSuccess: () => {
+      invalidateDrafts();
+      invalidateTeaching();
+    },
   });
 }

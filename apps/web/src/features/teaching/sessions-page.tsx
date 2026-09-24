@@ -8,6 +8,7 @@ import {
   formatClockTime,
   formatDuration,
   type TutoringSession,
+  type SessionDraft,
 } from '@tmi/shared';
 
 import { FocusNotice } from '@/components/layout/focus-notice';
@@ -35,6 +36,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
+import { DraftsPanel } from './drafts-panel';
 import { SessionFormDialog } from './session-form-dialog';
 import { SessionMoney, describeSessionMoney } from './session-money';
 import { StartSessionButton } from './start-session-button';
@@ -63,6 +65,7 @@ export function SessionsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<TutoringSession | null>(null);
+  const [editingDraft, setEditingDraft] = useState<SessionDraft | null>(null);
   const [removing, setRemoving] = useState<TutoringSession | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [tab] = useTutoringFinanceTab();
@@ -426,6 +429,7 @@ export function SessionsPage() {
               <Button
                 onClick={() => {
                   setEditing(null);
+                  setEditingDraft(null);
                   setFormOpen(true);
                 }}
               >
@@ -437,12 +441,28 @@ export function SessionsPage() {
         }
       />
 
+      {/* A draft is the author's alone, so it sits above the log rather than
+          in it -- the log's totals do not count it and never should. */}
+      <div className="mb-4">
+        <DraftsPanel
+          onEdit={(draft) => {
+            setEditing(null);
+            setEditingDraft(draft);
+            setFormOpen(true);
+          }}
+        />
+      </div>
+
       <TutoringFinanceTabs tutoring={renderView(false)} finance={renderView(true)} />
 
       <SessionFormDialog
         open={formOpen}
-        onOpenChange={setFormOpen}
+        onOpenChange={(open) => {
+          setFormOpen(open);
+          if (!open) setEditingDraft(null);
+        }}
         existing={editing}
+        draft={editingDraft}
         showMoney={showMoney}
       />
 

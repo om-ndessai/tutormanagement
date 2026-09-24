@@ -52,6 +52,7 @@ DROP TABLE IF EXISTS curriculum_levels;
 -- not drop a table something still points at.
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS scheduled_sessions;
+DROP TABLE IF EXISTS session_drafts;
 DROP TABLE IF EXISTS active_sessions;
 DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS audit_events;
@@ -553,6 +554,49 @@ CREATE INDEX scheduled_sessions_student_idx ON scheduled_sessions (student_user_
 --
 -- Living in the database rather than the browser means a tutor can start on
 -- their phone and stop on a laptop, and a refresh does not lose the lesson.
+-- A lesson a tutor has written up but not yet posted.
+--
+-- Deliberately NOT a `sessions` row with a flag on it, for the same reason
+-- `active_sessions` is not: a session is the billing record, and every figure
+-- that reads it -- balances, the monthly rundown, the dashboards, the exports,
+-- a student's progress -- would then have to remember to exclude drafts. One
+-- forgotten WHERE bills a family for notes a tutor was still drafting. Kept in
+-- its own table, no query can see a draft by accident.
+--
+-- Nothing here is money. A draft is priced when it is posted, at the rates
+-- that apply then, and posting is what produces the `sessions` row.
+CREATE TABLE session_drafts (
+  id              TEXT PRIMARY KEY,
+
+  tutor_user_id   TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  student_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  -- Whoever is writing it. A draft is theirs alone until it is posted: an
+  -- admin recording on a tutor's behalf sees their own, not the tutor's.
+  author_user_id  TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  occurred_on     TEXT NOT NULL,
+  started_at      TEXT NOT NULL,
+  ended_at        TEXT NOT NULL,
+  mode            TEXT NOT NULL CHECK (mode IN ('in_person', 'virtual')),
+
+  -- The point of the feature: notes that are not ready to be read yet.
+  notes           TEXT,
+
+  -- The progress ratings the form was holding, as the form held them. Unposted
+  -- working state rather than a record -- nothing reads this but the form it
+  -- came from, and posting turns it into real progress rows.
+  progress_json   TEXT,
+
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK (ended_at > started_at)
+);
+
+CREATE INDEX session_drafts_author_idx
+  ON session_drafts (author_user_id, updated_at DESC);
+
 CREATE TABLE active_sessions (
   -- One live session per tutor: you cannot teach two lessons at once, and the
   -- primary key is what enforces it.
@@ -1009,6 +1053,13 @@ CREATE TRIGGER assignments_set_updated_at
 AFTER UPDATE ON assignments FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE assignments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER session_drafts_set_updated_at
+AFTER UPDATE ON session_drafts FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE session_drafts SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE id = NEW.id;
 END;
 
 CREATE TRIGGER sessions_set_updated_at

@@ -95,6 +95,14 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE sessions ADD COLUMN auto_stopped INTEGER NOT NULL DEFAULT 0"
 ```
 
+Phase 22's drafts table is taken from `schema.sql` verbatim, with its index and trigger as
+separate statements:
+
+```bash
+npx wrangler d1 execute tmi-portal-db --remote \
+  --command="$(sed -n '/^CREATE TABLE session_drafts/,/^);/p' apps/api/db/schema.sql)"
+```
+
 The admin TIN is a new table, taken from `schema.sql` verbatim:
 
 ```bash

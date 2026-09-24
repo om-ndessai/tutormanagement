@@ -137,4 +137,5 @@ Then section below that should Tutoring Sessions. Make this very aesthetic carou
 The next section under should be "Progress".  This will show a random 5 user cards and will have "All Progress" that will take to the "Progress" to see progress of all students. That page will have filter for student or all students for a specific tutor etc. The card on the dashboard will have a compressed timeline graph that we show on the progresses page.
 The lowest session will be the least important "Recent Activity". This will only show last 5 items in reverse chronological order
 
-
+Phase 22:
+As a tutor while recording session I would like the ability to save a rough draft of the Session Notes before posting them. In addition to Record Session and Cancel, give the user the ability to Save Draft. This session in draft will also be shown in sessions and tutor can edit it and then save. Upon save that session will be visible to other relevant users

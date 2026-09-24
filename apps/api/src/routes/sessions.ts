@@ -25,6 +25,9 @@ import {
   type SessionTotals,
   type TutoringSession,
   type User,
+  sessionDraftInputSchema,
+  sessionProgressInputSchema,
+  type SessionDraft,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -47,6 +50,13 @@ import {
 } from '../repositories/active-sessions.js';
 import { findUnknownCurriculumIds, saveSessionProgress } from '../repositories/progress.js';
 import {
+  createDraft,
+  deleteDraft,
+  getDraft,
+  listMyDrafts,
+  updateDraft,
+} from '../repositories/session-drafts.js';
+import {
   createSession,
   deleteSession,
   getSession,
@@ -59,6 +69,41 @@ import {
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid session id.' }) });
 
 /** A lesson can only be scored against topics that exist in the curriculum. */
+/**
+ * A tutor writes up their own lessons; an admin may write up anybody's. The
+ * pairing has to exist either way, so a draft cannot name a student who is
+ * not being taught by that tutor.
+ */
+async function assertMayWriteFor(
+  db: D1Database,
+  viewer: User,
+  tutorUserId: string,
+  studentUserId: string,
+) {
+  if (!isAdmin(viewer) && viewer.id !== tutorUserId) {
+    throw new ApiError(403, 'forbidden', 'You can only write up your own sessions.');
+  }
+
+  if (!(await getActiveAssignmentFor(db, tutorUserId, studentUserId))) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      student_user_id: ['That student is not currently assigned to this tutor.'],
+    });
+  }
+}
+
+/**
+ * A draft belongs to whoever is writing it and to nobody else -- not the
+ * tutor it names, not an admin. Reported as missing rather than forbidden:
+ * that somebody has an unfinished write-up is itself theirs to know.
+ */
+async function assertMyDraft(db: D1Database, viewer: User, id: string) {
+  const draft = await getDraft(db, id);
+  if (!draft || draft.author_user_id !== viewer.id) {
+    throw ApiError.notFound('That draft does not exist.');
+  }
+  return draft;
+}
+
 async function assertProgressTopics(db: D1Database, progress: SessionProgressPayload | undefined) {
   if (!progress) return;
 
@@ -156,6 +201,149 @@ export const sessionsRoutes = new Hono<AppEnv>()
         // No amount: the tutor who recorded it reads this line, and the
         // figure here was the family's price. The session itself carries
         // each side's money, scoped to whoever opens it.
+        `${session.student_name} on ${session.occurred_on}`,
+      subject: { id: session.student_user_id, full_name: session.student_name },
+      entity_type: 'session',
+      entity_id: session.id,
+    });
+
+    const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, viewer, session) };
+    return c.json(body, 201);
+  })
+
+  // -------------------------------------------------------------------------
+  // Drafts
+  // -------------------------------------------------------------------------
+  // A write-up in progress. Registered above /:id so "drafts" is not read as
+  // a session id, and scoped to its author throughout: a draft is nobody
+  // else's business until it is posted, admins included.
+
+  /** The viewer's own unposted write-ups, newest first. */
+  .get('/drafts', async (c) => {
+    const body: ApiOk<SessionDraft[]> = {
+      data: await listMyDrafts(c.env.DB, c.get('user').id),
+    };
+    return c.json(body);
+  })
+
+  .post('/drafts', zValidator('json', sessionDraftInputSchema), async (c) => {
+    const input = c.req.valid('json');
+    const viewer = c.get('user');
+
+    await assertMayWriteFor(c.env.DB, viewer, input.tutor_user_id, input.student_user_id);
+    await assertProgressTopics(c.env.DB, input.progress);
+
+    const draft = await createDraft(c.env.DB, viewer.id, input);
+
+    await recordAudit(c.env.DB, viewer, {
+      action: 'session.drafted',
+      // Says a draft exists, never what is in it: the notes are the part that
+      // is not ready to be read.
+      description: `Saved a draft session with ${draft.student_name} on ${draft.occurred_on}`,
+      subject: { id: draft.student_user_id, full_name: draft.student_name },
+      entity_type: 'session_draft',
+      entity_id: draft.id,
+    });
+
+    const body: ApiOk<SessionDraft> = { data: draft };
+    return c.json(body, 201);
+  })
+
+  .patch(
+    '/drafts/:id',
+    zValidator('param', idParamSchema),
+    zValidator('json', sessionDraftInputSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const input = c.req.valid('json');
+      const viewer = c.get('user');
+
+      await assertMyDraft(c.env.DB, viewer, id);
+      await assertMayWriteFor(c.env.DB, viewer, input.tutor_user_id, input.student_user_id);
+      await assertProgressTopics(c.env.DB, input.progress);
+
+      const draft = await updateDraft(c.env.DB, id, input);
+      if (!draft) throw ApiError.notFound('That draft does not exist.');
+
+      const body: ApiOk<SessionDraft> = { data: draft };
+      return c.json(body);
+    },
+  )
+
+  .delete('/drafts/:id', zValidator('param', idParamSchema), async (c) => {
+    const { id } = c.req.valid('param');
+    const viewer = c.get('user');
+
+    const draft = await assertMyDraft(c.env.DB, viewer, id);
+    await deleteDraft(c.env.DB, id);
+
+    await recordAudit(c.env.DB, viewer, {
+      action: 'session.draft_discarded',
+      description: `Discarded a draft session with ${draft.student_name} on ${draft.occurred_on}`,
+      subject: { id: draft.student_user_id, full_name: draft.student_name },
+      entity_type: 'session_draft',
+      entity_id: draft.id,
+    });
+
+    return c.body(null, 204);
+  })
+
+  /**
+   * Posts a draft: the moment it becomes a lesson everybody concerned can see.
+   *
+   * Priced here rather than when it was drafted, at whatever rates apply now,
+   * so a draft left sitting over a rate change cannot post at yesterday's
+   * price. The draft is removed in the same breath -- one write-up must not
+   * become two records.
+   */
+  .post('/drafts/:id/post', zValidator('param', idParamSchema), async (c) => {
+    const { id } = c.req.valid('param');
+    const viewer = c.get('user');
+
+    const draft = await assertMyDraft(c.env.DB, viewer, id);
+    await assertMayWriteFor(c.env.DB, viewer, draft.tutor_user_id, draft.student_user_id);
+
+    const priced = await priceSession(
+      c.env.DB,
+      draft.tutor_user_id,
+      draft.student_user_id,
+      draft.mode,
+      draft.started_at,
+      draft.ended_at,
+    );
+
+    let session = await createSession(c.env.DB, {
+      tutor_user_id: draft.tutor_user_id,
+      student_user_id: draft.student_user_id,
+      occurred_on: draft.occurred_on,
+      started_at: draft.started_at,
+      ended_at: draft.ended_at,
+      duration_minutes: priced.durationMinutes,
+      mode: draft.mode,
+      tutor_rate_cents: priced.tutorRateCents,
+      tutor_amount_cents: priced.tutorAmountCents,
+      charge_rate_cents: priced.chargeRateCents,
+      charge_amount_cents: priced.chargeAmountCents,
+      notes: draft.notes,
+      // A person is asserting what happened, so the end is observed.
+      auto_stopped: false,
+      recorded_by_user_id: viewer.id,
+    });
+
+    if (draft.progress) {
+      const progress = sessionProgressInputSchema.parse(draft.progress);
+      await assertProgressTopics(c.env.DB, progress);
+      await saveSessionProgress(c.env.DB, session.id, session.student_user_id, progress);
+      session = (await getSession(c.env.DB, session.id)) ?? session;
+    }
+
+    await deleteDraft(c.env.DB, id);
+
+    await recordAudit(c.env.DB, viewer, {
+      action: 'session.recorded',
+      description:
+        `Posted a drafted ${formatDuration(session.duration_minutes)} ` +
+        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
         `${session.student_name} on ${session.occurred_on}`,
       subject: { id: session.student_user_id, full_name: session.student_name },
       entity_type: 'session',

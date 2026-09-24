@@ -432,6 +432,29 @@ summary (`GET /api/payments/tax-summary.csv?year=`) pairs what each tutor was PA
 calendar year with whether the office can file for them; payments rather than earnings, because
 a tax document reports money that moved.
 
+### `session_drafts`
+
+Phase 22. A lesson a tutor has written up but not posted.
+
+**Deliberately not a `sessions` row with a flag on it**, for the same reason `active_sessions`
+is not. A session is the billing record, and every figure that reads it — balances, the monthly
+rundown, the dashboards, the exports, a student's progress — would then have to remember to
+exclude drafts. That is sixteen query sites, and one forgotten `WHERE` bills a family for notes
+a tutor was still drafting. In its own table, no query can see a draft by accident.
+
+A draft carries **no money at all**: it is priced when it is posted, at whatever rates apply
+then, so one left sitting over a rate change cannot post at yesterday's price. Posting creates
+the session and deletes the draft in the same request — one write-up must not become two records.
+
+**It belongs to its author, not to the tutor it names and not to admins.** `author_user_id` is
+what every draft route scopes on, and a draft somebody else asks for is reported as missing
+rather than forbidden: that a colleague has an unfinished write-up is itself theirs to know.
+The point of the feature is notes that are not ready to be read.
+
+`progress_json` holds the ratings the form was holding, as the form held them — unposted working
+state rather than a record. Nothing reads it but the form it came from, and posting turns it
+into real progress rows.
+
 ### `payments`
 
 Phase 5. A ledger of money that moved **outside** the portal, so the institute can answer two

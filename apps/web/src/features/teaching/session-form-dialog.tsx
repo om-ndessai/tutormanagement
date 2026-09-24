@@ -15,6 +15,7 @@ import {
   GOAL_RATING_LABELS,
   type Assignment,
   type Rating,
+  type SessionDraft,
   type SessionMode,
   type TutoringSession,
 } from '@tmi/shared';
@@ -43,7 +44,13 @@ import { useAuth } from '@/providers/auth-provider';
 import { useStudentProgress, useTopicIndex } from '@/features/progress/api';
 import { useUserDetail } from '@/features/users/api';
 import { RatingPicker, TopicName } from '@/features/progress/rating';
-import { useAssignments, useRecordSession, useUpdateSession } from './api';
+import {
+  useAssignments,
+  usePostDraft,
+  useRecordSession,
+  useSaveDraft,
+  useUpdateSession,
+} from './api';
 
 /** Common lesson lengths, offered as one tap rather than clock arithmetic. */
 const QUICK_LENGTHS = [45, 60, 75, 90, 120];
@@ -74,11 +81,17 @@ export function SessionFormDialog({
   open,
   onOpenChange,
   existing,
+  draft = null,
   showMoney = true,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   existing: TutoringSession | null;
+  /**
+   * An unposted write-up being picked back up. Mutually exclusive with
+   * `existing`: one is a lesson on the record, the other is not yet.
+   */
+  draft?: SessionDraft | null;
   /**
    * False when opened from the sessions page's Tutoring tab, which a tutor
    * uses with the student beside them: the preview then shows the length only.
@@ -86,6 +99,7 @@ export function SessionFormDialog({
   showMoney?: boolean;
 }) {
   const isEdit = existing !== null;
+  const isDraft = draft !== null;
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
 
@@ -107,7 +121,10 @@ export function SessionFormDialog({
 
   const record = useRecordSession();
   const update = useUpdateSession();
-  const saving = record.isPending || update.isPending;
+  const saveDraft = useSaveDraft();
+  const postDraft = usePostDraft();
+  const saving =
+    record.isPending || update.isPending || saveDraft.isPending || postDraft.isPending;
 
   useEffect(() => {
     if (!open) return;
@@ -129,6 +146,22 @@ export function SessionFormDialog({
       setTopicRatings(
         new Map((existing.progress?.topic_ratings ?? []).map((row) => [row.topic_id, row.rating])),
       );
+    } else if (draft) {
+      const match = assignments.find(
+        (a) =>
+          a.tutor_user_id === draft.tutor_user_id &&
+          a.student_user_id === draft.student_user_id,
+      );
+      setAssignmentId(match?.id ?? '');
+      setOccurredOn(draft.occurred_on);
+      setStartedAt(draft.started_at);
+      setEndedAt(draft.ended_at);
+      setMode(draft.mode);
+      setNotes(draft.notes ?? '');
+      setGoalRating(draft.progress?.goal_rating ?? null);
+      setTopicRatings(
+        new Map((draft.progress?.topic_ratings ?? []).map((row) => [row.topic_id, row.rating])),
+      );
     } else {
       setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
       setOccurredOn(todayIso());
@@ -142,7 +175,7 @@ export function SessionFormDialog({
     // `assignments` is intentionally excluded: repopulating mid-edit would
     // stomp on what the user has typed when the query refetches.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, existing]);
+  }, [open, existing, draft]);
 
   const assignment: Assignment | undefined = assignments.find((a) => a.id === assignmentId);
   const studentId = existing?.student_user_id ?? assignment?.student_user_id;
@@ -198,8 +231,67 @@ export function SessionFormDialog({
     };
   }, [startedAt, endedAt, mode, assignment, studentPrices]);
 
+  /** Everything the form is holding, in the shape both the draft and the
+   *  session endpoints take. */
+  function formBody() {
+    return {
+      tutor_user_id: assignment?.tutor_user_id ?? draft?.tutor_user_id ?? '',
+      student_user_id: assignment?.student_user_id ?? draft?.student_user_id ?? '',
+      occurred_on: occurredOn,
+      started_at: startedAt,
+      ended_at: endedAt,
+      mode,
+      notes: notes.trim() || null,
+      ...(progressBody ? { progress: progressBody } : {}),
+    };
+  }
+
+  /**
+   * Keeps the write-up without posting it. Nobody else can see a draft, so
+   * this is the safe button: it never puts an unfinished note in front of a
+   * family, and it never bills anything.
+   */
+  async function handleSaveDraft() {
+    setErrors({});
+
+    if (!assignment && !draft) {
+      setErrors({ assignment: 'Choose which student this session was with.' });
+      return;
+    }
+
+    try {
+      await saveDraft.mutateAsync({ id: draft?.id, input: formBody() as never });
+      toast.success(draft ? 'Draft saved.' : 'Saved as a draft. Only you can see it.');
+      onOpenChange(false);
+    } catch (error) {
+      if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
+      toast.error(error instanceof ApiRequestError ? error.message : 'Could not save the draft.');
+    }
+  }
+
+  /** Saves any edits, then posts: one button, because the tutor pressed post. */
+  async function handlePostDraft() {
+    setErrors({});
+
+    try {
+      await saveDraft.mutateAsync({ id: draft!.id, input: formBody() as never });
+      await postDraft.mutateAsync(draft!.id);
+      toast.success('Session recorded. Everyone concerned can see it now.');
+      onOpenChange(false);
+    } catch (error) {
+      if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
+      toast.error(error instanceof ApiRequestError ? error.message : 'Could not post the draft.');
+    }
+  }
+
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+
+    if (isDraft) {
+      await handlePostDraft();
+      return;
+    }
+
     setErrors({});
 
     if (!isEdit && !assignment) {
@@ -250,7 +342,9 @@ export function SessionFormDialog({
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-lg">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
-            <DialogTitle>{isEdit ? 'Edit session' : 'Record a session'}</DialogTitle>
+            <DialogTitle>
+              {isEdit ? 'Edit session' : isDraft ? 'Finish this draft' : 'Record a session'}
+            </DialogTitle>
             <DialogDescription>
               {isEdit
                 ? `${existing.tutor_name} with ${existing.student_name}.`
@@ -422,9 +516,21 @@ export function SessionFormDialog({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
               Cancel
             </Button>
+
+            {/* Offered while writing up a lesson, and while picking a draft
+                back up. Not while editing a session already on the record:
+                that one has been posted, and un-posting it is a different
+                thing than saving a draft. */}
+            {!isEdit && (
+              <Button type="button" variant="secondary" onClick={handleSaveDraft} disabled={saving}>
+                {saveDraft.isPending && <Loader2Icon className="animate-spin" />}
+                Save draft
+              </Button>
+            )}
+
             <Button type="submit" disabled={saving}>
               {saving && <Loader2Icon className="animate-spin" />}
-              {isEdit ? 'Save changes' : 'Record session'}
+              {isEdit ? 'Save changes' : isDraft ? 'Post session' : 'Record session'}
             </Button>
           </DialogFooter>
         </form>

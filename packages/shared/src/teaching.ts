@@ -625,3 +625,54 @@ export function formatStopwatch(totalSeconds: number): string {
 
   return `${hours}:${pad(minutes)}:${pad(seconds)}`;
 }
+
+// ---------------------------------------------------------------------------
+// Drafts
+// ---------------------------------------------------------------------------
+// Phase 22. A tutor writing up a lesson can save what they have and come back
+// to it. A draft is not a session: it is not billed, not counted, and not
+// readable by anybody but the person writing it, until they post it.
+
+export const sessionDraftInputSchema = z
+  .object({
+    tutor_user_id: z.uuid(),
+    student_user_id: z.uuid(),
+    occurred_on: isoDate,
+    started_at: clockTime,
+    ended_at: clockTime,
+    mode: z.enum(SESSION_MODES),
+    notes: optionalText(z.string().trim().max(4000)),
+    /** Held as the form held it, and only applied when the draft is posted. */
+    progress: sessionProgressInputSchema.optional(),
+  })
+  .refine((value) => elapsedMinutes(value.started_at, value.ended_at) !== null, {
+    message: 'The end time must be after the start time.',
+    path: ['ended_at'],
+  });
+
+export type SessionDraftInput = z.input<typeof sessionDraftInputSchema>;
+export type SessionDraftPayload = z.output<typeof sessionDraftInputSchema>;
+
+/**
+ * An unposted write-up.
+ *
+ * It carries no money at all -- not a rate, not an amount. A draft is priced
+ * when it is posted, at whatever applies then, so a draft left over a rate
+ * change cannot post at yesterday's price.
+ */
+export interface SessionDraft {
+  id: string;
+  tutor_user_id: string;
+  tutor_name: string;
+  student_user_id: string;
+  student_name: string;
+  author_user_id: string;
+  occurred_on: string;
+  started_at: string;
+  ended_at: string;
+  mode: SessionMode;
+  notes: string | null;
+  progress: SessionProgress | null;
+  created_at: string;
+  updated_at: string;
+}

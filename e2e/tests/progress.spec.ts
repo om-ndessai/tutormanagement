@@ -84,7 +84,12 @@ test.describe('progress tracking', () => {
 
     const after = await unwrap<any>(await tutor.request.get(`/api/progress/${sofiaId}`), 'after');
     expect(after.summary.mastered_count).toBe(before.summary.mastered_count + 1);
-    expect(after.timeline.at(-1)).toMatchObject({ session_id: session.id, goal_rating: 5 });
+    // Found by id rather than taken as the last entry: other specs record
+    // lessons for this student on the same day, and which one happens to sort
+    // last is not what this test is about. (Pre-existing flake, not phase 22.)
+    expect(after.timeline.find((entry: any) => entry.session_id === session.id)).toMatchObject({
+      goal_rating: 5,
+    });
 
     // An unknown topic is refused rather than half-saved.
     const bad = await tutor.request.patch(`/api/sessions/${session.id}`, {

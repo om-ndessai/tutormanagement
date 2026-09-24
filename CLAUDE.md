@@ -113,6 +113,12 @@ a `.default()` survives `.partial()`, which would make PATCH silently overwrite 
 calls and back; they never build SQL. Always bind parameters — the only values interpolated
 into SQL are ones that came from a Zod enum (sort column, sort direction).
 
+**An unposted write-up is a `session_drafts` row, never a `sessions` row.** A session is the
+billing record; a draft is not billed, not counted and not readable by anyone but its author.
+Keeping them in separate tables is what stops a draft reaching a total — do not "simplify" this
+into a flag on `sessions`, which would put the burden on every one of the sixteen queries that
+read them. Drafts scope on `author_user_id`, admins included, and are priced at posting.
+
 **Deletes are soft.** `DELETE /api/users/:id` sets `deleted_at`. Hard delete needs an explicit
 `?hard=true`. The unique email index covers live rows only, so restoring can conflict; that
 case is already handled in `POST /api/users/:id/restore`.
