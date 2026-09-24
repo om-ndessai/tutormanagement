@@ -30,6 +30,11 @@ it explains why each table is where it is and which rules the database cannot en
 **Ask before starting the next phase.** `docs/plan.md` is the roadmap, but it is a plan, not a
 licence — do not build ahead of what has been asked for.
 
+`docs/roadmap/` (2026-09-24) is an industry audit with a plan per candidate feature, Canvas
+compatibility and future AI. **None of it is scheduled**: a feature is built only once the owner
+has written it into `docs/plan.md` as a phase. Use its plan as the starting point for that
+phase, and re-check its figures, which were researched on that date.
+
 ## Layout
 
 ```
@@ -37,6 +42,7 @@ apps/api/          Cloudflare Worker: Hono routes, auth, D1 access, db/schema.sq
 apps/web/          Vite + React 19 + TypeScript + Tailwind v4 + shadcn/ui
 packages/shared/   Zod schemas and types imported by BOTH sides
 docs/              plan.md (roadmap), architecture, database, branding, Google setup
+docs/roadmap/      candidate features and their plans (unscheduled; see its README)
 ```
 
 `packages/shared` is the contract. A field only exists once: define it there, and the Worker
