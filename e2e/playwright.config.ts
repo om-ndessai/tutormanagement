@@ -19,7 +19,17 @@ export default defineConfig({
   workers: 1,
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
-  retries: process.env.CI ? 1 : 0,
+  /**
+   * One retry when driving a deployment, none locally.
+   *
+   * The deployed suite takes two and a half times as long as the local one --
+   * every request crosses the network and D1 is remote -- and three times now a
+   * single test has failed on a first run and passed on an immediate re-run.
+   * The cause has never been caught in the act, so this does not hide it:
+   * Playwright reports a retried test as FLAKY, distinctly from passed, which
+   * is the information worth having. A genuine regression still fails twice.
+   */
+  retries: process.env.CI || process.env.E2E_BASE_URL?.startsWith('https://') ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list']],
 
   timeout: 45_000,
