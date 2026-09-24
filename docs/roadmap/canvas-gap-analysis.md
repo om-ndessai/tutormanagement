@@ -80,7 +80,7 @@ Every major Canvas capability, what the portal has today, and what to do about i
 
 | Canvas | Portal today | Relevance | Approach | Plan |
 | --- | --- | --- | --- | --- |
-| Modules: completion requirements, prerequisites, MasteryPaths | A plan's ordered topics; mastery at 4 drives the chart | H | Have the sequence. Build prerequisites (L13), and resources and homework on each topic | L13, L1, L2 |
+| Modules: completion requirements, prerequisites, MasteryPaths | A plan's ordered topics; mastery at 4 drives the chart | H | Build: the sequence exists (a plan's ordered topics); add prerequisites, and resources and homework on each topic | L13, L1, L2 |
 | Pages (new Block Content Editor in early access) | — | L | Build only as resource descriptions | L2 |
 | Files | — | H | Build | F2 |
 | Rich Content Editor: LaTeX equation editor, accessibility checker | Plain text | M | Build maths rendering and input | F6 |
@@ -97,7 +97,7 @@ Every major Canvas capability, what the portal has today, and what to do about i
 | Gradebook: weighted groups, late and missing policies, grading schemes, posting policies | 1–5 topic ratings, no grades | M | Build a homework record (done / partly / not done, topic scores); skip weights and letter grades | L1 |
 | SpeedGrader: document annotation, rubrics, audio and video comments, comment library | — | M | Build a review queue with annotation | C5 |
 | Enhanced Rubrics (mandatory from 19 December 2026) | 1–5 goal and topic scales | M | Build rubrics for homework review | C5 |
-| Outcomes, mastery scales, calculation methods, Learning Mastery Gradebook | Curriculum topics, 1–5 ratings, mastered at 4, a pace chart | H | **Have the model.** Build rating anchors and a mastery estimate, and the grid | L12, L9 |
+| Outcomes, mastery scales, calculation methods, Learning Mastery Gradebook | Curriculum topics, 1–5 ratings, mastered at 4, a pace chart | H | Build: **the model exists**; add rating anchors, a mastery estimate and the grid | L12, L9 |
 | Moderated and anonymous grading, plagiarism checking | — | — | Skip | — |
 | Mastery Connect (separate K-12 product) | — | — | Skip | — |
 
@@ -144,13 +144,14 @@ Of the 45 capabilities in the tables above:
 
 | Status | Count | Meaning |
 | --- | --- | --- |
-| **Have** | 5 | Already equivalent, or the portal's design makes it unnecessary |
-| **Build** | 31 | Planned, in [feature-plans.md](feature-plans.md) or below |
+| **Have** | 3 | Already equivalent, or the portal's design makes it unnecessary |
+| **Build** | 33 | Planned, in [feature-plans.md](feature-plans.md) or below. Two of them start from a model the portal already has (the plan's topic sequence, and curriculum ratings) |
 | **Link** | 1 | Interoperate with the school's Canvas instead |
 | **Skip** | 8 | Deliberately not built: they serve districts, not a tutoring institute |
 
-**Reaching practical parity.** It means building the **31**. They are listed in the staged plan
-below; most are already planned for their own sake.
+**Reaching practical parity.** It means building the **33**, plus the foundations they stand
+on: student sign-in (F1), background jobs (F4) and consent (F7). Every one of them is placed
+in the staged plan below, and most are already planned for their own sake.
 
 ---
 
@@ -379,10 +380,18 @@ once there is a consumer, such as Zapier or a school partner.
 - **Registering a URL.** An admin registers a URL and picks events: lesson recorded, payment
   recorded, plan created.
 - **What is sent.** A signed JSON body carrying ids and kinds only, never names, notes or
-  amounts. The receiver fetches details with its own credentials.
+  amounts.
+- **Getting the details.** The portal has no public API, so this feature adds one narrow read
+  endpoint for it.
+  - **Authentication.** A token issued per webhook.
+  - **What it can read.** Only the records its own events named, and only the fields the admin
+    chose when registering the webhook.
+- **The only public API.** It is deliberately that, a small one, not a general public API.
+- **A deliberate public route.** It is added to `publicRoutes` on purpose and covered by the
+  exposure crawl.
 - **Reliability.** Deliveries are retried through the job queue (F4).
 
-**Needs.** F4. **Size.** S.
+**Needs.** F4. **Size.** S–M.
 
 ---
 
@@ -407,10 +416,18 @@ Each stage is useful on its own, and each builds on the one before.
 
 | Stage | Goal | Builds | Canvas equivalent reached |
 | --- | --- | --- | --- |
-| **1. Speak Canvas** | The portal knows what school is asking of each student, and families can reach it like any modern school system | C1 school calendar import · C2 school results · F12 sign-in links · F3 notifications · F5 installable app · C6 parent alerts | Calendar feeds, the Parent app and its alerts |
-| **2. The core of an LMS for tutoring** | Work between lessons is set, done, reviewed and visible | L1 homework · C5 review queue and rubrics · L2 library · L3 practice and item bank · F6 maths input · M1 messaging · M2 announcements · L9 mastery grid · L12 anchors | Assignments, SpeedGrader, rubrics, New Quizzes, Inbox, Announcements, Learning Mastery Gradebook |
-| **3. Depth** | Diagnostics, groups and the operator's view | L4 diagnostics · L13 prerequisites (MasteryPaths-like) · S9 classes · G2 booking · S1 attendance · A1 analytics · C7 view-as · C8 bulk import · Q1 accessibility | Placement quizzes, MasteryPaths, courses and sections, Scheduler, Roll Call, Analytics, Student View, SIS import |
+| **1. Speak Canvas** | The portal knows what school is asking of each student, and families reach it like any modern school system | F4 background jobs · F3 notifications (after Phase 20) · F7 consent · F12 sign-in links · F5 installable app · S1 attendance · S6 calendar feeds · S7 meeting links · C1 school calendar import · C2 school results · C6 parent alerts | Calendar feeds, Roll Call, the Parent app, Conferences links, more sign-in providers |
+| **2. The core of an LMS for tutoring** | Work between lessons is set, done, reviewed and visible | F1 student sign-in · F2 files · F6 maths input · L1 homework · C5 review queue and rubrics · L2 library · L3 practice and item bank · M1 messaging · M2 announcements · L9 mastery grid · L12 rating anchors | Assignments, Files, the equation editor, SpeedGrader, rubrics, New Quizzes, Inbox, Announcements, Learning Mastery Gradebook |
+| **3. Depth** | Diagnostics, groups and the operator's view | L4 diagnostics · L13 prerequisites · L14 stalled-topic alerts · G6 at-risk students · S9 classes with G1 registration · G2 booking (with G3) · V1 video lessons (with L6) · A1 analytics · A4 staff roles · C7 view-as · C8 bulk import · Q1 accessibility | Placement quizzes, MasteryPaths, Intelligent Insights, courses and sections, Catalog, Scheduler, Conferences, Analytics, roles, Student View, SIS import |
 | **4. Ecosystem, only with a reason** | Exchange data with schools and tools | C4 Common Cartridge and QTI export · C3 partner-school connection · C9 webhooks | Common Cartridge, LTI 1.3, Live Events |
+
+**Parent alerts grow with the stages.** They start in stage 1 with the alerts whose features
+exist then: a plan behind pace, a lesson cancelled or moved, a balance overdue. Missing
+homework and new reports are added in stage 2 and later.
+
+**AI.** The AI row of the capability map is its own track, in
+[future-ai.md](future-ai.md#where-to-start), and runs alongside these stages rather than
+inside one.
 
 **Deliberately never built.**
 - Blueprint courses and Commons.

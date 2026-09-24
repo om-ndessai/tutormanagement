@@ -78,7 +78,8 @@ tutoring:
 - S — students
 
 **Value:** H — high, M — medium, L — low. **Size:** S, M, L, XL, as defined in
-[feature-plans.md](feature-plans.md#how-each-plan-is-written).
+[feature-plans.md](feature-plans.md#how-each-plan-is-written). **Needs:** what must be built
+first. Anything in brackets only makes the feature better, and is not required.
 
 **Suggested wave:**
 1. quick wins on today's data
@@ -126,7 +127,7 @@ V is vision.
 | [B1](feature-plans.md#b1--online-payments-card-and-bank-transfer) | Online payments (card and bank transfer) | O F | H | M | — | 2 |
 | [B2](feature-plans.md#b2--monthly-statements-and-invoices) | Monthly statements and invoices | O F | H | M | F3, F4 (B1 for the pay link) | 2 |
 | [B3](feature-plans.md#b3--autopay-and-payment-reminders) | Autopay and payment reminders | O F | M | M | B1, B2 | 3 |
-| [B4](feature-plans.md#b4--lesson-packages-and-prepaid-credit) | Lesson packages and prepaid credit | O F | M | M | — (B1 helps) | 4 |
+| [B4](feature-plans.md#b4--lesson-packages-and-prepaid-credit) | Lesson packages and prepaid credit | O F | M | M | — (build B1 first if both) | 4 |
 | [B5](feature-plans.md#b5--discounts-sibling-pricing-and-scholarships) | Discounts, sibling pricing and scholarships | O F | L | S | — | 1 |
 | [B6](feature-plans.md#b6--tutor-pay-runs-and-pay-statements) | Tutor pay runs and pay statements | O T | M | M | — | 2 |
 | [B7](feature-plans.md#b7--accounting-export) | Accounting export | O | M | S | — | 1 |
@@ -186,7 +187,7 @@ V is vision.
 
 | ID | Feature | For | Value | Size | Needs | Suggested wave |
 | --- | --- | --- | --- | --- | --- | --- |
-| [L1](feature-plans.md#l1--homework-set-submit-review) | Homework: set, submit, review | T F S | H | M | — (F1, F2 for student uploads) | 3 |
+| [L1](feature-plans.md#l1--homework-set-submit-review) | Homework: set, submit, review | T F S | H | M | — (F2 for photos; F1, F7 for student uploads) | 3 |
 | [L2](feature-plans.md#l2--resource-library-mapped-to-the-curriculum) | Resource library mapped to the curriculum | T | M | S | F2 | 3 |
 | [L3](feature-plans.md#l3--practice-sets-with-automatic-checking) | Practice sets with automatic checking | S T | H | L | F1, F6 | 4 |
 | [L4](feature-plans.md#l4--diagnostic-placement-test) | Diagnostic placement test | O T | M | M | L3 | 4 |
@@ -197,7 +198,7 @@ V is vision.
 | [L9](feature-plans.md#l9--class-wide-mastery-heatmap) | Class-wide mastery heatmap | O T | M | S | — | 1 |
 | [L10](feature-plans.md#l10--bringing-in-outside-learning-platforms) | Bringing in outside learning platforms | T | L | S | — | 4 |
 | [L11](feature-plans.md#l11--a-students-own-space) | A student's own space | S | M | S | F1 | 3 |
-| [L12](feature-plans.md#l12--rating-anchors-and-evidence-weighted-mastery) | Rating anchors and evidence-weighted mastery | T | M | S | — (L1 or L3 for the estimate) | 1 |
+| [L12](feature-plans.md#l12--rating-anchors-and-evidence-weighted-mastery) | Rating anchors and evidence-weighted mastery | T | M | S–M | — (L1 or L3 for the estimate) | 1 |
 | [L13](feature-plans.md#l13--prerequisite-map) | Prerequisite map | T O | M | M | — | 2 |
 | [L14](feature-plans.md#l14--stalled-topic-alerts) | Stalled-topic alerts | T O | M | S | — (F3 to notify) | 1 |
 | [L15](feature-plans.md#l15--interactive-graphing-and-geometry) | Interactive graphing and geometry | T S | L | S | L6 | 4 |
@@ -217,36 +218,35 @@ V is vision.
 | [C1](canvas-gap-analysis.md#c1--school-calendar-import) | School calendar import | T F | H | S | F4, F7 | 3 |
 | [C2](canvas-gap-analysis.md#c2--school-results-by-hand) | School results, by hand | T F | M | S | — (F2 for photos) | 1 |
 | [C3](canvas-gap-analysis.md#c3--a-deeper-connection-for-a-partner-school) | A deeper connection for a partner school | O | L | L | F7, F10 | V |
-| [C4](canvas-gap-analysis.md#c4--export-to-canvas-common-cartridge-and-qti) | Export to Canvas: Common Cartridge and QTI | O T | L | M | L2, L3 | 4 |
+| [C4](canvas-gap-analysis.md#c4--export-to-canvas-common-cartridge-and-qti) | Export to Canvas: Common Cartridge and QTI | O T | L | M | L2 or L3 | 4 |
 | [C5](canvas-gap-analysis.md#c5--review-queue-with-annotation-and-rubrics) | Review queue with annotation and rubrics | T | H | M | L1, F2 | 3 |
 | [C6](canvas-gap-analysis.md#c6--parent-alerts) | Parent alerts | F | H | S | F3 (more alerts with L1, S1, L5) | 2 |
 | [C7](canvas-gap-analysis.md#c7--view-as-everywhere) | "View as" everywhere | O | M | M | — | 2 |
 | [C8](canvas-gap-analysis.md#c8--bulk-import-of-families) | Bulk import of families | O | M | S | — | 1 |
-| [C9](canvas-gap-analysis.md#c9--outbound-webhooks) | Outbound webhooks | O | L | S | F4 | V |
+| [C9](canvas-gap-analysis.md#c9--outbound-webhooks) | Outbound webhooks | O | L | S–M | F4 | V |
 
 ### AI and handwriting
 
 | ID | Feature | For | Value | Size | Needs | Suggested wave |
 | --- | --- | --- | --- | --- | --- | --- |
 | [AI-1](future-ai.md#ai-1--automated-homework-evaluation) | Automated homework evaluation | T F | H | XL | F1, F2, F4, F7, F11, L1, C5 | V |
-| [AI-2](future-ai.md#ai-2--lesson-notes-assistant) | Lesson-notes assistant | T | H | M | F11, L7, L6 | 3 |
-| [AI-3](future-ai.md#ai-3--family-digests-and-progress-narratives) | Family digests and progress narratives | F T | M | S | M3, L5, F11 | 3 |
+| [AI-2](future-ai.md#ai-2--lesson-notes-assistant) | Lesson-notes assistant | T | H | M | F11, L7 (L6 helps) | 3 |
+| [AI-3](future-ai.md#ai-3--family-digests-and-progress-narratives) | Family digests and progress narratives | F T | M | S | F11; M3 or L5 | 3 |
 | [AI-4](future-ai.md#ai-4--adaptive-practice-and-generated-problems) | Adaptive practice and generated problems | S T | M | L | L3, F11 | 4 |
 | [AI-5](future-ai.md#ai-5--goal-readiness-forecast-no-ai-provider) | Goal-readiness forecast (no AI provider) | F O | H | S | — | 1 |
 | [AI-6](future-ai.md#ai-6--misconception-tagging) | Misconception tagging | T | M | M | — (L3 or AI-1 to suggest) | 3 |
-| [AI-7](future-ai.md#ai-7--live-handwriting-recognition-while-solving) | Live handwriting recognition while solving | S T | M | XL | F1, F7, V2, F2 | V |
+| [AI-7](future-ai.md#ai-7--live-handwriting-recognition-while-solving) | Live handwriting recognition while solving | S T | M | XL | F1, F7, F11, V2, F2 | V |
 | [AI-8](future-ai.md#ai-8--ask-the-portal) | "Ask the portal" | O | M | M | F11 | 4 |
-| [AI-9](future-ai.md#ai-9--a-study-helper-between-lessons) | A study helper between lessons | S | L | L | F1, F7, F11, L1, L3, M1 | V |
+| [AI-9](future-ai.md#ai-9--a-study-helper-between-lessons) | A study helper between lessons | S | L | L | F1, F7, F11, M1; L1 or L3 | V |
 | [AI-10](future-ai.md#ai-10--smarter-operations-no-ai-provider) | Smarter operations (no AI provider) | O | M | M | S3 or G6 | 4 |
 | [AI-11](future-ai.md#ai-11--explain-your-thinking-recordings) | Explain-your-thinking recordings | S T | L | L | AI-7, F2, F7, F11 | V |
-| [AI-12](future-ai.md#ai-12--pre-lesson-brief) | Pre-lesson brief | T | H | S | L6, L7, L1, L8, L14, AI-6 | 3 |
-
+| [AI-12](future-ai.md#ai-12--pre-lesson-brief) | Pre-lesson brief | T | H | S | F11, L6, L7 (L1, L8, L14, AI-6 help) | 3 |
 
 ### What each wave achieves
 
 | Wave | Theme | Features | What the institute gets |
 | --- | --- | --- | --- |
-| 1 | Quick wins on today's data | 22 | Mostly small, and no new infrastructure. It uses data the portal already holds but does nothing with: availability, ratings, `last_rated_on`. It adds backups, compliance records for tutors, maths rendering, and a forecast of each student's finish date. |
+| 1 | Quick wins on today's data | 22 | Mostly small, and no new infrastructure. It acts on data the portal already holds: people's available hours, lesson ratings, and when each topic was last rated. It adds backups, compliance records for tutors, maths rendering, and a forecast of each student's finish date. |
 | 2 | Run the business in the portal | 22 | Email and notifications (after Phase 20), attendance and cancellations, reminders, statements and online payment, enquiries, messages to families, the lesson cockpit, an installable app. This is where the table-stakes gap closes. |
 | 3 | Learning between lessons | 19 | Consent, student sign-in and files, then homework, reports, review of mastered topics, messaging, the school calendar, and the first tutor-facing AI: the pre-lesson brief, dictated notes, drafted digests. |
 | 4 | Practice, groups and growth | 18 | Practice sets and diagnostics, group classes, packages, onboarding, matching, staff roles, adaptive practice. |
@@ -263,10 +263,11 @@ A few choices shape many plans at once. Settling them before picking features sa
    - **For.** Money arriving by itself, and the end of reconciling Zelle payments by hand.
    - **Against.** About 3% in card fees (under 1% by bank transfer), and a card-security
      self-assessment, the lightest level.
-2. **The $5 a month plan.** Most features fit Cloudflare's free plan. The recommendation is to
-   move to Workers Paid when the first AI or student-facing feature ships. That is less for
-   the extra capacity than because, on the free plan, a busy day stops the portal until
-   midnight UTC ([details](future-ai.md#running-it-on-cloudflare)).
+2. **The $5 a month plan.** Most features fit Cloudflare's free plan. The recommendation is
+   to move to Workers Paid the first time a chosen feature needs it, and in any case before
+   the first AI or student-facing feature ships, whichever comes first. That is less for the
+   extra capacity than because, on the free plan, a busy day stops the portal until midnight
+   UTC ([details](future-ai.md#running-it-on-cloudflare)).
 3. **Students signing in.** Letting children sign in (F1) is what every student-facing feature
    needs, and it is also what brings the amended COPPA rule fully into play: verifiable
    parental consent, a published notice, a retention policy and a written security programme
@@ -316,12 +317,14 @@ papers, Cloudflare's documentation and the relevant law:
 5. Cloudflare's limits and compliance
 
 Every figure in these documents comes from one of those sources, which are listed at the end
-of each part. A few could not be confirmed and are flagged where they are used:
-- some vendor prices
-- Teachworks' lack of a native app
-- MyScript's current pricing
-- recognition latency, which no vendor publishes
+of each part. A few claims could be confirmed only from search results or older sources, and
+each is marked where it is used:
+- Kumon Connect's grading and replay (L1)
+- Sylvan's re-assessment interval (L4)
+- TutorCruncher's mandatory lesson reports (L7)
+- tldraw's licence price (V2)
 
-Estimates marked as such (video data per lesson, PDFs per day) are the researchers', not the
-vendors'. Nothing here is legal advice: the compliance notes summarise the law as published,
+No vendor publishes recognition latency, so AI-7 says it must be measured. Figures marked "an
+estimate" are the researchers', not the vendors': video data per lesson (V1) and PDFs per day
+(L5). Nothing here is legal advice: the compliance notes summarise the law as published,
 for a lawyer to confirm.

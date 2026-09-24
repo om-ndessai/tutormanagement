@@ -53,7 +53,7 @@ not found, not absent.
 | Policy acceptance, e-signature | 2 | differentiator | No | G3 |
 | Branded native app | 2 | differentiator | Web only, like most | F5 |
 | AI lesson summaries | 2, and spreading fast | differentiator | No | [AI-2](future-ai.md#ai-2--lesson-notes-assistant) |
-| Surveys and reviews; tutor matching | 2 each | differentiator | No; availability stored but unused | G4, T3 |
+| Surveys and reviews; tutor matching | 2 each | differentiator | No; availability is stored and shown, not used for matching | G4, T3 |
 | Assessment that produces a learning plan | 1, plus every franchise | differentiator | **Has** | — |
 | 1099 generation; tutor advance threshold | 0 | — | **Has** | — |
 
@@ -141,7 +141,7 @@ Every feature has the same fields, so they can be compared side by side:
 | **Why** | The problem, and the evidence from comparable products |
 | **Build** | What the first version does: the smallest useful slice |
 | **Later** | What can wait for a second pass |
-| **Data** | New tables or columns. Production changes are additive only (`docs/database.md`) |
+| **Data** | New tables or columns. Production changes are additive only (`docs/database.md`). Two plans are the exception, and each says so: B1 and A4 each rebuild one table whose CHECK constraint must change |
 | **Screens / API** | Where it lives in the portal |
 | **Guard rails** | The existing rules it touches: exposure R1–R9, the money-free Tutoring tab, audit events, the SSN guard, COPPA |
 | **Needs** | Other features that must come first |
@@ -275,8 +275,15 @@ channel, status, provider id, error).
   read, and the exposure crawl covers `GET /api/notifications`.
 - Never an amount on a Tutoring-kind notification (the Phase 19 rule).
 
-**Needs.** Phase 20's email provider. **Cost.** The email provider's free tier (about 3,000 a
-month). **Size.** M.
+**Needs.** Phase 20's email provider. **Cost.** The email provider's free tier, which Phase 20
+puts at about 3,000 a month and **100 a day**.
+- **The daily cap binds first.** On the first of a month that falls on a Sunday, statements
+  (B2), digests (M3), reminders (S2) and lesson notes together could pass 100.
+- **Spreading the sends.** The job queue (F4) spreads sends through the day and holds anything
+  over the cap until tomorrow.
+- **Beyond that.** The provider's paid plan removes the cap.
+
+**Size.** M.
 
 ### F4 · Background jobs
 
@@ -315,9 +322,10 @@ plan.
 > It also turns every free daily cap into billed overage. That last point may matter most:
 > on the free plan a busy day makes calls **fail until midnight UTC**.
 >
-> The recommendation is to adopt it the first time a chosen feature needs it, rather than
-> engineer around a limit. Each plan says when that point is reached, and
-> [future-ai.md](future-ai.md#running-it-on-cloudflare) has the full table.
+> **The recommendation: move to Workers Paid the first time a chosen feature needs it, and in
+> any case before the first AI or student-facing feature ships, whichever comes first.**
+> Engineering around a limit costs more than $5. Each plan says when it needs the paid plan,
+> and [future-ai.md](future-ai.md#running-it-on-cloudflare) has the full table.
 
 ### F5 · Installable app and push notifications
 
@@ -428,6 +436,10 @@ tutors keep their own details current.
 **Build.**
 - **Parents** can edit their own phone, email and payment handles, and their children's
   school, current course and availability.
+- **A changed email is verified first.** The email address is the sign-in key, and F12's
+  sign-in links go to it, so an unverified change would hand the account to whoever owns the
+  new address. The change waits for a confirmation link sent to the *new* address, and the
+  *old* address is told.
 - **Tutors** can edit their own availability, availability notes, education and area.
 - **Office stays in control.** Each field is on an allowlist per role. The office can
   require approval for chosen fields, and a change waits in a queue until approved.
@@ -788,7 +800,11 @@ for Canvas parity ([canvas-gap-analysis.md](canvas-gap-analysis.md)).
   price per student per lesson.
 - **One lesson, several students.** A class lesson records one session with several
   students.
-- **Billing.** Each student's family is charged its own row.
+- **Billing.** Each student's family is charged its own row, at the class price. The class
+  price stands in for the student's own charge rate for class lessons. That is a deliberate
+  change to the rule that a family's charge rate has no override (`CLAUDE.md`), and has to be
+  written into `docs/data-model.md` with it.
+- **Tutor pay.** The tutor is paid once per class lesson, not once per student.
 - **Progress.** Scores are recorded per student.
 
 **Later.**
@@ -797,12 +813,20 @@ for Canvas parity ([canvas-gap-analysis.md](canvas-gap-analysis.md)).
 
 **Data.**
 - `classes`, `class_tutors`, `class_enrollments`.
-- A change in how a lesson is billed, and this is the hard part. A `sessions` row is one
-  tutor with one student today. Group lessons need either:
-  - one row per student (simplest: the billing rules keep working, and the rows share a
-    `class_session_id`), or
-  - a `session_attendees` table.
-- The first option keeps R1–R3 and every total unchanged, and is recommended.
+- **A change in how a lesson is billed, and this is the hard part.** A `sessions` row is one
+  tutor with one student today. The recommended shape is **one row per student**, sharing a
+  `class_session_id`:
+  - **Family side.** Each row carries that family's charge, so the family side (R2–R4) and
+    family balances need no change.
+  - **Tutor side.** The tutor's pay for the class lesson is *apportioned* across the rows: the
+    class pay divided by the number of students, with the leftover cents on the first rows.
+    The rows then add up to exactly one lesson's pay, and balances, advances and 1099 totals
+    stay right.
+- **What still changes.** Every *hours* figure (time taught, the monthly rundown, utilisation)
+  must count a class lesson once, not once per student. Those queries count distinct
+  `class_session_id`s for class rows.
+- **The alternative.** A `session_attendees` table, with one lesson row holding the tutor's
+  pay. It keeps the hours right, but every family-side query would have to change instead.
 
 **Guard rails.**
 - A class roster is visible to its tutors and admins, and to each family only for their own
@@ -946,7 +970,10 @@ mirror of the tutor advance this portal already has (Phase 13).
 - **Buying it.** The purchase is a payment.
 - **Using it up.** Each lesson recorded for that student draws the package down.
 - **What it charges.** The lesson's `charge_rate_cents` is the package's effective hourly
-  rate, frozen onto the session as today, so every existing rule still holds.
+  rate, frozen onto the session as today.
+- **A deliberate exception.** The package stands in for the student's own rate while it
+  lasts. That is a deliberate exception to the rule that a family's charge rate has no
+  override (`CLAUDE.md`), to be recorded in `docs/data-model.md` with it.
 
 **Later.** Monthly memberships, meaning a fixed fee for a fixed number of lessons.
 
@@ -957,7 +984,14 @@ mirror of the tutor advance this portal already has (Phase 13).
 - The price a lesson is charged at is still derived on the server, never sent by a client.
 - A package is family-side money: never shown to the tutor (R2, R4).
 
-**Needs.** B1 helps; not required. **Cost.** $0. **Size.** M.
+**Needs.** Nothing, but **order matters with B1**.
+- **Why.** `packages` references `payments`, and B1 rebuilds `payments` to allow card and
+  bank methods.
+- **The risk.** Once another table references `payments`, that rebuild would cascade into it,
+  which is the failure `docs/database.md` warns about.
+- **So.** If both are chosen, build B1 first.
+
+**Cost.** $0. **Size.** M.
 
 ### B5 · Discounts, sibling pricing and scholarships
 
@@ -1044,7 +1078,10 @@ tool is editing or deleting a lesson or payment, which changes history.
 
 **Data.** `ledger_adjustments` (party, student, amount_cents signed, reason, created_by).
 
-**Guard rails.** It is an admin-only write, audited without the amount.
+**Guard rails.**
+- **Writes.** It is an admin-only write, audited without the amount.
+- **Reads.** A family sees its own adjustments on Finance, and a tutor theirs. Both reads are
+  added to the exposure crawl.
 
 **Needs.** None. **Cost.** $0. **Size.** S.
 
@@ -1109,6 +1146,10 @@ inbox, and conversion can finally be measured.
 **Build.**
 - **Self-booking.** A lead or a new family books an assessment slot from the admin's published
   free times (`availability_slots`).
+  - **Reaching the page.** A lead has no account, so the booking page is reached through a
+    one-time link emailed after their enquiry.
+  - **A deliberate public route.** Like the enquiry form, the page is added to `publicRoutes`
+    on purpose, and is Turnstile-protected and rate-limited.
 - **Checklist.** A new family's record shows a checklist:
   - assessment done
   - plan set
@@ -1133,7 +1174,8 @@ written refund schedule.
 - who may collect a child from an in-person lesson
 
 It should avoid health information. If allergies must be known for in-person safety, record
-them on the student, readable by admins and that student's tutors only.
+them on the student, readable by admins, that student's tutors and the student's guardians,
+and nobody else. That read is added to the exposure crawl.
 
 **Build.**
 - **Policy documents.** Stored with versions: markdown, plus a content hash.
@@ -1181,15 +1223,16 @@ a friend's first lesson free, get one free") is common in the survey.
 ### G6 · At-risk students and re-enrolment
 
 **Why.** A student who has not had a lesson in three weeks is usually about to leave. The
-portal already knows who has not had a lesson in a while, whose plan is behind, and whose
-balance is growing.
+portal already knows who has not had a lesson in a while, and whose plan is behind.
 
 **Build.**
 - **Where it shows.** An "At risk" panel on the admin's Tutoring tab.
 - **Flags.** It lists students with:
   - no lesson in 21 days while a schedule exists
-  - a plan more than 20 points behind pace
+  - a plan more than 20 percentage points behind pace
   - three cancellations in a month
+- **Money signals stay on Finance.** A growing balance is a sign too, but it is money, so it
+  appears on the Finance tab's overdue list (B3), never on the Tutoring tab.
 - **Re-enrolment.** A term-end re-enrolment prompt goes to families whose plan finished.
 
 **Needs.** S1 makes the signal sharper. **Cost.** $0. **Size.** S.
@@ -1227,8 +1270,10 @@ created_at, deleted_at).
 **Guard rails.**
 - **Scope.** The thread scope reuses the comments scope fragments. No fourth copy of the rule
   (the comments rule in `CLAUDE.md`).
-- **Guards.** The SSN guard applies to the body, which goes through `optionalText`.
-- **Audit.** An audit event is written per thread created, never with message text.
+- **SSN guard.** It applies to the body directly (`refuseSsn`), as it does to a comment's
+  body.
+- **Audit.** An audit event is written for each message sent and each one withdrawn, as for
+  comments, and never with the message's text.
 - **Crawl.** The exposure crawl reads every thread as every persona.
 
 **Needs.** F3. **Cost.** $0. **Size.** M.
@@ -1246,6 +1291,11 @@ by group email outside the portal. Canvas Announcements and every parent app hav
 
 **Data.** `announcements` (audience, title, body, starts, ends, created_by);
 `announcement_reads`.
+
+**Guard rails.**
+- **Who reads it.** An announcement to one class or level reaches only that audience.
+- **Crawl.** The read route is added to the exposure crawl.
+- **Audit.** Posting and withdrawing are audited.
 
 **Needs.** F3. **Cost.** $0. **Size.** S.
 
@@ -1372,7 +1422,8 @@ The office sees the reasons for each match; the admin still decides.
   - attendance
   - average progress velocity (topics mastered per ten lessons)
   - survey scores (G4)
-- **Tutor's own view.** Each tutor sees their own figures, never other tutors'.
+- **Tutor's own view.** Each tutor sees their own figures, never other tutors'. The exposure
+  crawl checks this as each tutor persona.
 
 **Guard rails.**
 - **Fairness.** Velocity is presented with the student count and level mix beside it, so a
@@ -1431,6 +1482,10 @@ Finance tab has a monthly rundown; nothing shows trends or unit economics.
 - **Saved reports.** A small set of saved reports (e.g. lessons by tutor by month, balances
   by family), each as a scoped CSV.
 - **Google Sheets.** A Google Sheets `IMPORTDATA` link, using a per-report token like S6's.
+  - **A deliberate public route.** Like the calendar feed, it is added to `publicRoutes` under
+    `/api` on purpose.
+  - **A secret link.** Only an admin can create it, it is revocable, and it returns exactly
+    what the admin would see. Treat it like a password.
 
 **Later.** A natural-language question box ([future-ai.md](future-ai.md#ai-8--ask-the-portal)).
 
@@ -1444,18 +1499,27 @@ way to answer "delete everything about my child" beyond a hard delete that the a
 outlives by design.
 
 **Build.**
-- **A retention schedule in settings (F9).** For example:
+- **A retention schedule in settings (F9).** It is the one schedule every other plan refers
+  to. For example:
   - leads purged after 12 months
-  - homework images after 12 months
+  - homework photos and annotated work after 12 months, or sooner at the family's request
+  - explanation recordings (AI-11) after 30 days
+  - dictated audio (AI-2) as soon as it is transcribed
+  - lesson replays (V3) after 12 months
   - retired families' personal details anonymised after 7 years
-  - money rows kept for tax purposes
+  - money rows kept for tax purposes, with names removed
 - **A monthly job (F4) that applies it.**
-- **A "data request" tool.** An admin can export or erase one person. Erasure anonymises the
-  audit snapshot names but keeps the events.
+- **A "data request" tool.** An admin can export or erase one person. Erasure keeps the audit
+  events but removes the person from them, in two places:
+  - the name snapshot columns
+  - their name *inside* description sentences, which name people by design ("Updated Ben
+    Whitfield's schedule…")
 
 **Guard rails.**
-- The audit log stays append-only. Anonymising a *name snapshot* is the documented exception.
-- This must be written into `docs/data-model.md` before it is built.
+- **The one exception to "never update `audit_events` rows".** Erasure rewrites names in
+  audit rows, and nothing else ever may. It must be written into `CLAUDE.md` and
+  `docs/data-model.md` before it is built, and every erasure is itself audited.
+- **Money rows.** They are kept for tax purposes, with the person's name removed.
 
 **Needs.** F7, F4. **Cost.** $0. **Size.** M.
 
@@ -1576,8 +1640,9 @@ They also add **what the family receives**: reports.
 
 **Why.** Homework is how tutoring hours turn into progress, and the portal has no homework at
 all. It lives in the free-text notes ("Homework: worksheet 3a"). Here is how others handle it:
-- **Learning centres.** RSM runs online homework with instant feedback. Kumon Connect grades
-  stylus worksheets within about a day, and lets instructors replay the work.
+- **Learning centres.** RSM runs online homework with instant feedback. Kumon Connect is
+  reported to grade stylus worksheets within about a day and to let instructors replay the
+  work; that comes from search results, since Kumon's own pages could not be opened.
 - **Software.** DeltaMath and IXL track assigned work, and Canvas is built around assignments.
 - **The evidence.** Homework *with feedback* raised maths achievement in a randomised trial of
   2,850 students (ASSISTments, effect size g = 0.18).
@@ -1621,8 +1686,13 @@ It is also the thing parents most want to see.
 - **Book content.** Only references to AoPS/Beast Academy problems are stored, never their
   text. Their content is copyrighted.
 
-**Needs.** F1 for the student to mark and upload, and F2 for photos. Both are optional for a
-first cut, where a parent does it. **Cost.** $0. **Size.** M.
+**Needs.**
+- **For a first cut:** nothing. A parent marks homework done.
+- **For photos:** F2.
+- **For the student to mark and upload it:** F1, and F7, because a photo uploaded by a child
+  is collected from a child.
+
+**Cost.** $0. **Size.** M.
 
 ### L2 · Resource library mapped to the curriculum
 
@@ -1668,8 +1738,10 @@ cannot give them anything to do.
 - **An item bank of the institute's own problems.** Each item is tagged to a topic, with an
   answer checker:
   - **Number.** A number within a tolerance.
-  - **Expression.** Equivalent expressions, checked by a JavaScript maths engine in the Worker
-    (see [future-ai.md](future-ai.md#checking-the-maths) for the choice).
+  - **Expression.** Equivalent expressions. The student's browser evaluates their answer and
+    the Worker compares the numbers with the item's fingerprint, so the correct answer never
+    leaves the server (see below, and
+    [future-ai.md](future-ai.md#checking-the-maths)).
   - **Multiple choice.**
   - **Short text.**
 - **Practice sets.** A tutor builds a set by choosing topics, and the portal draws items from
@@ -1714,9 +1786,8 @@ cannot give them anything to do.
     method is described in [future-ai.md](future-ai.md#checking-the-maths).
 - **Crawl.** Attempts are student data, scoped like session progress.
 
-**Needs.** F1, F6. **Cost.** $0. Checking a number or sampling an expression takes a
-millisecond or two, well inside the free plan's CPU budget. Heavier symbolic work is the
-point at which the $5 plan pays for itself (see F4). **Size.** L.
+**Needs.** F1, F6. **Cost.** $0. The Worker only compares numbers, which takes microseconds,
+well inside the free plan's CPU budget. **Size.** L.
 
 ### L4 · Diagnostic placement test
 
@@ -1730,8 +1801,8 @@ placement exists everywhere in the category:
 - **Math Academy.** Its diagnostic finds the student's "knowledge frontier" and projects
   completion dates.
 - **Mathnasium, Sylvan and Oases.** Mathnasium builds plans from a spoken and written
-  assessment. Sylvan re-assesses every 24 sessions. Oases generates learning plans from tests
-  automatically.
+  assessment. Sylvan re-assesses every 24 sessions, according to an older Sylvan white
+  paper. Oases generates learning plans from tests automatically.
 
 A structured diagnostic makes the Phase 16 assessment faster and comparable between students.
 
@@ -1748,8 +1819,8 @@ A structured diagnostic makes the Phase 16 assessment faster and comparable betw
 - **Readiness checks.** A short check of 10–15 questions on prerequisites before a student
   starts a new level, as Mathspace and Prodigy do. Its results are saved as another
   assessment.
-- **Scheduled re-assessment.** "Check-up due" after a set number of lessons (Sylvan uses 24)
-  or each term.
+- **Scheduled re-assessment.** "Check-up due" after a set number of lessons (Sylvan's white
+  paper says 24) or each term.
 - **Growth.** Two assessments shown side by side.
 
 **Data.** `diagnostic_runs` (student, started, finished, draft_assessment_id).
@@ -1784,8 +1855,8 @@ copied. The diagnostic uses the institute's own items (L3).
   browser, the way the 1099 is printed today.
 - **Attachments later.** A PDF *attached* to the email needs the PDF made on the server,
   with Cloudflare Browser Run (formerly Browser Rendering). Its free allowance of 10
-  browser-minutes a day makes roughly a hundred short PDFs, which is enough for monthly
-  reports at this size.
+  browser-minutes a day makes roughly a hundred short PDFs (an estimate), which is enough for
+  monthly reports at this size.
 
 **Later.**
 - An AI first draft of the tutor's comment ([future-ai.md](future-ai.md#ai-3--family-digests-and-progress-narratives)).
@@ -1828,8 +1899,12 @@ Ending the lesson records the session with its progress in one step.
 - The whiteboard (V2) embedded.
 - The practice player (L3) on a second screen for the student.
 
-**Guard rails.** Money-free by construction: this page reads only Tutoring-side fields, and an
-e2e test asserts that no currency appears on it.
+**Guard rails.**
+- **No money.** It is money-free by construction: this page reads only Tutoring-side fields,
+  and an e2e test asserts that no currency appears on it.
+- **The student may be looking.** This is the screen the student sits beside, the Phase 19
+  concern. So staff-only note parts (L7) and the pre-lesson brief (AI-12) open collapsed,
+  behind a "Tutor only" toggle, and collapse again when the timer starts.
 
 **Needs.** L1 makes it richer. **Cost.** $0. **Size.** M.
 
@@ -1839,7 +1914,7 @@ e2e test asserts that no currency appears on it.
 work far better from structure:
 - **TutorBird.** It has note templates with separate student, parent and **private**
   sections.
-- **TutorCruncher.** It can make lesson reports mandatory.
+- **TutorCruncher.** It is reported to be able to make lesson reports mandatory.
 - **myMathnasium.** It sends families session summaries.
 
 **Build.**
@@ -1850,9 +1925,15 @@ work far better from structure:
   - homework (becomes an L1 item)
   - next time
 - **Templates.** Per level, set by the office.
-- **Staff-only part.** Each part is either family-visible or staff-only. Candid notes ("mum
-  says he's anxious about tests") can then be written without reaching the family, while the
-  rest goes into the digest and reports.
+- **Staff-only part.** Each part is either family-visible or staff-only. Candid notes (a
+  parent says he's anxious about tests) can then be written without reaching the family, while
+  the rest goes into the digest and reports.
+- **A new visibility rule.** Staff-only parts are readable by tutors and admins only.
+  - **Where it's written down.** It is added to `docs/data-exposure.md` as a tenth rule, and
+    to `exposure.spec.ts`.
+  - **What it covers.** A guardian or student must never receive a staff-only part: not by
+    API, email, report or digest.
+  - **The cockpit.** On the lesson screen, staff-only parts stay collapsed (L6).
 - **Required notes.** Optionally, the office can require a note before a lesson can be
   recorded.
 - **Compatibility.** Old notes stay as free text.
@@ -1871,7 +1952,8 @@ of Education Sciences' practice guide, and the leading products build it in:
 - Alcumus mixes review problems in.
 - Math Academy's spaced-repetition system gives partial review credit to prerequisites.
 
-The portal already stores when each topic was last rated (`last_rated_on`), which is
+The portal already works out when each plan topic was last rated, from the assessment and
+the lesson scores (`computeProgress` computes it as `last_rated_on`; it is not stored). That is
 everything a review queue needs.
 
 **Build.**
@@ -1978,8 +2060,8 @@ times at 4 or above", like Canvas Outcomes.
 **Guard rails.** The tutor's rating stays the source of truth for the plan (Phase 16). The
 estimate is advice, and derived, never stored.
 
-**Needs.** None for anchors; L1 or L3 for the estimate to mean much. **Cost.** $0. **Size.** S
-for anchors; M with the estimate.
+**Needs.** None for anchors; L1 or L3 for the estimate to mean much. **Cost.** $0. **Size.**
+S–M: S for anchors, M with the estimate.
 
 ### L13 · Prerequisite map
 
@@ -1996,8 +2078,9 @@ leading products all run on a map of which topic depends on which:
   Examples:
   - `PRE.04` Fractions requires `BA4.08` and `BA4.10`.
   - `ALG.03` requires `PRE.05`.
-- **Where it's stored.** It is reference data like the catalog: upserts in `schema.sql`'s
-  catalog block, written once by the office and reviewed.
+- **Where it's stored.** It is reference data like the catalog. The tutors draw up the links
+  on paper or in a spreadsheet, and the phase that builds this feature adds them to
+  `schema.sql`'s catalog block as upserts.
 - **What it does.**
   - **Plans.** The plan dialog suggests missing prerequisites: "BA4.10 is rated 2 and
     PRE.04 needs it".
@@ -2102,8 +2185,9 @@ whiteboard, and it is also the input surface for the live handwriting recognitio
   pixels, and drawn with perfect-freehand (MIT licence). Strokes sync through a Cloudflare
   Durable Object, one per lesson, which relays them over WebSockets and keeps the board's
   state.
-- **Why not a library.** tldraw needs a paid licence to use without its watermark, reported at
-  around $6,000 a year. A shared-editing library (Yjs) waits until two people write at once.
+- **Why not a library.** tldraw needs a paid licence to use without its watermark. The
+  research found a report of about $6,000 a year, which could not be verified. A
+  shared-editing library (Yjs) waits until two people write at once.
 - **Keeping it.** The board is saved to the lesson when it ends. It works in person too, on a
   shared tablet.
 
@@ -2119,9 +2203,14 @@ whiteboard, and it is also the input surface for the live handwriting recognitio
 - **Who sees a board.** Its audience is the lesson's (`teachingScopeSql`).
 - **No money.** The board never shows any.
 
-**Needs.** F1, F2. **Cost.** $0: Durable Objects are on the free plan. Incoming WebSocket
-messages are billed at 20 to one request, which allows roughly 55 student-hours of live board a
-day at ten messages a second. **Size.** L.
+**Needs.** F1, F2. **Cost.** $0: Durable Objects are on the free plan.
+- **Time binds first.** The free plan's 13,000 GB-seconds a day of active time allow about 28
+  hours of live board a day, since an active board cannot hibernate between strokes.
+- **Messages are not the limit.** The message allowance would allow about twice that.
+- **Enough for now.** 28 hours is well above the number of lessons a day at the institute's
+  present size.
+
+**Size.** L.
 
 ### V3 · Replay: how the student solved it
 
@@ -2144,11 +2233,15 @@ and the order they worked in. That is useful for:
 
 ## Sources
 
-Vendor pages were read on 24 September 2026. The research could not verify some claims and
-said so; these are noted in the plans where they matter:
-- Wise's prices.
-- Teachworks' lack of a native app.
-- A few franchise details.
+Vendor pages were read on 24 September 2026. A few claims used in the plans could be confirmed
+only from search results or secondary sources, and each is marked where it is used:
+- Kumon Connect's grading and replay (L1)
+- Sylvan's re-assessment interval (L4)
+- TutorCruncher's mandatory lesson reports (L7)
+- tldraw's licence price (V2)
+
+The figures marked "an estimate" were estimated by the research, not published by the
+vendors: video data per lesson (V1) and PDFs per day (L5).
 
 **Business platforms.**
 - **TutorBird.**

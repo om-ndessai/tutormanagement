@@ -115,7 +115,7 @@ flowchart LR
    - a confidence for each line
    - **no correction of the student's errors**, which is the silent-fix failure above
 
-   The image is cropped to the work, with no name and no worksheet header (G2).
+   The image is cropped to the work, with no name and no worksheet header (AG2).
 3. **Check symbolically.** The maths engine compares each final answer with the key, and each
    line with the one before (see [Checking the maths](#checking-the-maths)). The engine
    decides right and wrong; the language model never does.
@@ -130,11 +130,14 @@ flowchart LR
    scores.
 5. **The tutor decides.** Everything lands in the review queue (C5) as a draft. The tutor fixes
    the transcript if it was misread (the verdicts recompute), edits the hint, and approves.
-   Only approved feedback reaches the student and family (G4). It is audited without its
-   content (G7).
-6. **Delete what's no longer needed.** Photos are deleted a set time after approval, e.g. 90
-   days, per the retention policy (A3). The approved transcript and verdicts stay, and they
-   are text.
+   Only approved feedback reaches the student and family (AG4). It is audited without its
+   content (AG7).
+6. **Delete what's no longer needed.**
+   - **Providers.** They keep nothing (AG3).
+   - **The portal's own copy.** The photo follows the retention schedule (A3), e.g. 12 months,
+     so the family and the next tutor can look back at the work. The family can delete it
+     sooner.
+   - **The text.** The approved transcript and verdicts stay, as text.
 
 **Staged path.**
 
@@ -233,15 +236,16 @@ flowchart LR
   tutor's screen over WebSockets and saves the board.
   - **One writer.** The student is the only writer. A simple relay is enough, with no
     shared-editing library (Yjs) until tutors annotate too.
-  - **Free-plan capacity.** It fits the free plan. Incoming WebSocket messages count 20 to one
-    request, which allows roughly 55 student-hours of live board a day at ten messages a
-    second.
+  - **Free-plan capacity.** It fits the free plan. The binding limit is the Durable Objects
+    time allowance, 13,000 GB-seconds a day: about 28 hours of live board a day, since an
+    active board cannot hibernate between strokes. That is well above the institute's
+    lessons a day.
 
 **Staged path.**
 
 | Stage | Adds |
 | --- | --- |
-| 1 | The pen canvas, a **Check** button, cloud recognition, confirm-the-line, first-wrong-step marking. No AI model. |
+| 1 | The pen canvas, a **Check** button, cloud recognition, confirm-the-line, first-wrong-step marking. No language model. |
 | 2 | Automatic recognition on pause, tap-to-fix, the tutor's live view, hints on request (text only), saving for replay (V3). |
 | 3 | On-device recognition with cloud fallback; SymPy for inequalities and harder algebra; per-topic analytics feeding progress; ink as a homework submission (AI-1 stage 3). |
 
@@ -253,8 +257,12 @@ recognition is $0 per use.
 **Unknowns to measure first.** No vendor publishes latency. The target is under a second
 from pause to mark, and it has to be measured on the iPads students actually use.
 
-**Needs.** F1 (the student must be signed in), F7 (the ink leaves the device in stages 1–2), V2
-(the canvas is the whiteboard's), F2 (replay). **Maturity.** Emerging. **Size.** XL, of which
+**Needs.**
+- **F1.** The student must be signed in.
+- **F7.** The ink leaves the device in stages 1–2.
+- **F11.** Its consent check and provider allowlist govern the recognition service.
+- **V2.** The canvas is the whiteboard's.
+- **F2.** For replay. **Maturity.** Emerging. **Size.** XL, of which
 stage 1 is an L.
 
 ### AI-2 · Lesson-notes assistant
@@ -285,11 +293,11 @@ by the tutor gets the same notes from an adult's voice instead.
 4. It also proposes topic ratings for the plan topics mentioned ("BA4.08 Fractions → 3"),
    drawn only from the student's plan topics.
 5. Everything lands in the lesson form as a draft. The tutor edits and saves; nothing is saved
-   unreviewed (G4).
+   unreviewed (AG4).
 
 **Why it is safe.**
 - The audio is the tutor's voice, not the child's.
-- Names are replaced before the language model sees the text (G2).
+- Names are replaced before the language model sees the text (AG2).
 - The transcript is discarded once the note is saved.
 - Audit: "notes drafted by voice for Sofia's lesson", without the words.
 
@@ -319,12 +327,12 @@ student.
 
 It drafts two or three sentences in the institute's voice. The tutor approves the draft before
 it goes out; after a term of approvals with few edits, the office may switch that tutor's
-digests to automatic (G4).
+digests to automatic (AG4).
 
 **Guard rails.**
-- **Scoped inputs.** They come from the same scoped functions as the parent's dashboard (G5),
+- **Scoped inputs.** They come from the same scoped functions as the parent's dashboard (AG5),
   so the paragraph cannot contain anything the parent's screen would not.
-- **No money.** No money, ever (G6).
+- **No money.** No money, ever (AG6).
 - **No invented facts.** The prompt forbids new facts: every claim must come from the input.
   A check rejects a draft that names a topic not in the input.
 
@@ -356,6 +364,10 @@ review-before-use pattern.
   - the wording must be self-contained
 
   Items that fail are discarded. Survivors wait for a tutor's approval.
+- **Where the checking runs.** On the free plan, generated drafts are checked by the maths
+  engine in the tutor's browser as they open the drafts for review; failures are discarded
+  there. Generating and checking items in bulk ahead of review runs on the server, which
+  needs the $5 plan (see [Checking the maths](#checking-the-maths)).
 - **Where the results go.** Mastery estimates *suggest* topic ratings. The 1–5 ratings
   stay tutor-owned (Phase 16).
 
@@ -434,7 +446,8 @@ Canvas and business tools answer with report builders. A question box is faster.
   lists.
 
 **Guard rails.**
-- **Exposure rules.** Rule G5 is the whole design, and the exposure crawl gains a test that asks
+- **Exposure rules.** Reading only as the person asking (AG5) is the whole design, and the
+  exposure crawl gains a test that asks
   leading questions as each persona ("what does Sofia's family pay?" asked as her tutor must
   come back empty).
 - **Rollout.** Admin-only for the first version.
@@ -488,11 +501,12 @@ active student.
   - weeks since the last lesson
   - recent cancellations (S1)
   - a plan behind pace
-  - a growing balance
   - no guardian sign-in in 30 days
 
-  The top of the list shows on the at-risk panel (G6). A transparent points score comes first,
-  and a fitted model only once there is a year of history to fit it to.
+  The top of the list shows on the at-risk panel (G6), which is on the Tutoring tab and so
+  carries no money. A growing balance is a signal too, but only in a separate Finance-tab
+  version of the list. A transparent points score comes first, and a fitted model only once
+  there is a year of history to fit it to.
 
 **Needs.** S3 or G6. **Maturity.** Proven. **Cost.** $0.
 
@@ -501,7 +515,7 @@ active student.
 **Why.** Snorkl's insight is that asking a student to *explain* a solution aloud while they
 write shows understanding better than the answer does. It also gives feedback on the
 reasoning, not just the result. Snorkl states that it complies with COPPA and FERPA and does
-not train on student data. Any provider used here must say the same (G3).
+not train on student data. Any provider used here must say the same (AG3).
 
 **How it works.**
 - **Recording.** On a practice or homework problem, the student records a short explanation:
@@ -514,7 +528,8 @@ not train on student data. Any provider used here must say the same (G3).
 **Guard rails.**
 - **Voice consent.** A child's voice is sensitive personal data under the amended COPPA
   Rule's broader definition. It needs specific consent (F7).
-- **Retention.** Audio is kept for the shortest time needed, e.g. 30 days, and deleted.
+- **Retention.** Audio is deleted after 30 days, per the retention schedule (A3). The
+  transcript and the tutor's feedback stay, as text.
 
 **Needs.** AI-7 (ink), F2, F7, F11. **Maturity.** Emerging. **Cost.** Low.
 
@@ -541,13 +556,17 @@ The brief is built entirely from the portal's own data for that student. A langu
 writes only the connecting sentences and the questions; the facts are listed, not generated.
 
 **Guard rails.**
-- **Who sees it.** Tutor-facing only, so it never reaches a family.
-- **Consent.** Built from structured fields with names replaced (G2). The prompt carries no
+- **Who sees it.**
+  - **The tutor only.** It never reaches a family.
+  - **Not the student either.** The student sits beside the tutor during the lesson (the
+    Phase 19 concern), so the brief is read on the tutor's own screen before the lesson, and
+    in the cockpit it opens collapsed behind a "Tutor only" toggle (L6).
+- **Consent.** Built from structured fields with names replaced (AG2). The prompt carries no
   image, voice or child-authored text, which makes it the easiest AI feature to clear under
   consent.
-- **No money** (G6).
+- **No money** (AG6).
 
-**Needs.** L6, L7; better with L1, L8, L14, AI-6. **Maturity.** Proven pattern. **Cost.** Within
+**Needs.** F11, L6, L7; better with L1, L8, L14, AI-6. **Maturity.** Proven pattern. **Cost.** Within
 the Workers AI free allowance: one short generation per lesson. **Size.** S.
 
 ---
@@ -567,8 +586,8 @@ never a language model.
 | **SymPy in Pyodide** | A full computer algebra system that handles inequalities and domains, running in the browser in a Web Worker. It is a download of several MB, so load it only when needed. Python Workers can run it on the server, but only practically on the paid plan. |
 | mathjs, nerdamer, Algebrite | Too limited for step checking. |
 
-**Where it runs.** The free plan's 10 ms of CPU per request rules out a maths engine on the
-server, which leaves three places for it:
+**Where it runs.** The free plan's 10 ms of CPU per request rules out running a maths engine in
+the Worker. So the engine runs in a browser, and the Worker at most compares numbers:
 
 | Where | Used for | Why it is safe |
 | --- | --- | --- |
@@ -620,7 +639,7 @@ daily limit makes calls fail until 00:00 UTC; on Paid the overage is billed inst
 | Workers AI | 10,000 "neurons" a day, then $0.011 per 1,000 | Speech-to-text, summaries, vision (see below) |
 | AI Gateway | Caching, rate limits and analytics are free | The F11 layer. Its logs contain prompts, so logging of child data stays off |
 | Vectorize | About 4,900 vectors of 1,024 dimensions stored free | Searching notes and resources, if ever needed |
-| Browser Run (formerly Browser Rendering) | 10 browser-minutes a day | PDF reports and statements made on the server (L5, B2) |
+| Browser Run (formerly Browser Rendering) | 10 browser-minutes a day | PDFs made on the server, if reports and statements are ever emailed as attachments rather than links (L5, B2) |
 | Realtime SFU and TURN | 1,000 GB of egress a month, then $0.05/GB | Video lessons (V1) |
 | RealtimeKit | No free allowance published; $0.002 per participant-minute | A ready-made meeting UI with recording (V1 alternative) |
 | Email Sending | **Paid only**, in beta: 3,000 a month included | Not used: Phase 20 chose an outside provider so email stays free |
@@ -648,9 +667,8 @@ daily limit makes calls fail until 00:00 UTC; on Paid the overage is billed inst
 - more than the free daily caps
 
 The last matters most for a live business, because on the free plan a busy day stops the
-portal until midnight UTC rather than costing a few cents. **The recommendation is to move to
-Workers Paid when the first AI or student-facing feature ships.**
-
+portal until midnight UTC rather than costing a few cents. **The recommendation: move to Workers Paid the first time a chosen feature needs it, and in any
+case before the first AI or student-facing feature ships, whichever comes first.**
 
 ---
 
@@ -658,20 +676,21 @@ Workers Paid when the first AI or student-facing feature ships.**
 
 These rules apply to every feature in this document. They are written so that each can be
 enforced in code, in the F11 AI layer ([feature-plans.md](feature-plans.md#f11--ai-platform-layer)),
-and checked by a test.
+and checked by a test. They are numbered AG1–AG10 ("AI governance") to keep them apart from
+the growth features G1–G6.
 
 | # | Rule | Why | Enforced by |
 | --- | --- | --- | --- |
-| G1 | **Nothing a child produced is sent to an AI or recognition service without that purpose's parental consent.** That covers photos, handwriting, voice and typed answers. Records the *tutor* wrote about a child are different: they can be processed by an allowlisted provider acting on the institute's behalf, with names removed (G2), and the privacy notice says so. | COPPA governs data collected online *from* a child. A vendor that keeps or trains on it makes it a disclosure needing separate consent. | `ai.run` refuses child-produced input without an `ai_processing` consent row (F7); an e2e test proves the refusal. |
-| G2 | **Send the least.** Names, emails and phone numbers are replaced with tokens before a prompt leaves the Worker, and put back only in the reply. Images are cropped to the work. | A prompt log at a provider is a copy of a child's record. | The redaction step in `ai.run`; a unit test with a known name. |
-| G3 | **Only providers whose terms allow children's data, and that neither train on it nor keep it longer than needed.** See the provider table in [Compliance notes](#compliance-notes). | A vendor that trains on or keeps a child's data is a third-party disclosure under COPPA, needing separate consent; some vendors' terms forbid this use outright. | A provider allowlist in code; each vendor's terms and settings recorded in `docs/`. |
-| G4 | **A tutor sees it before a family does.** In every first version, AI output is a *draft* a tutor accepts, edits or discards. Automatic release is a later, per-feature setting, and only above a measured accuracy. | Wrong feedback to a child is worse than slow feedback. | Draft tables with `accepted_by`; the family's read routes return only accepted rows. |
-| G5 | **AI answers obey the exposure rules.** An assistant that reads portal data reads it through the same scoped repositories as the screens, as the person asking. | A chat box is a read endpoint, and must not become a way round R1–R9. | The assistant's tools call the scoped repositories; `exposure.spec.ts` asks it leading questions. |
-| G6 | **No money in anything a student or a Tutoring view can reach.** | The Phase 19 rule, applied to generated text. | Prompts for student-facing tasks are built from money-free fields only. |
-| G7 | **Log what was done, never what was said.** Audit events record "AI feedback drafted for Sofia's homework", never the text, the image or the prompt. | The audit log is read by admins; a child's work is not the log's business. | `recordAudit` calls in `ai.run`; the existing "no comment text in the log" rule extended. |
-| G8 | **Every AI feature has an off switch.** Per feature, in institute settings (F9), and per family through consent. | Providers change terms; families change their minds. | A settings check at the top of each AI route. |
-| G9 | **Cost caps.** A daily and monthly spend cap per feature; beyond it, work queues rather than failing silently. | A runaway loop should cost dollars, not hundreds. | AI Gateway rate limits plus a counter in D1. |
-| G10 | **The SSN guard applies to prompts and outputs.** | "Never stored anywhere" includes a provider's logs. | `containsSsn` runs on every prompt and every reply. |
+| AG1 | **Nothing a child produced is sent to an AI or recognition service without that purpose's parental consent.** That covers photos, handwriting, voice and typed answers. Records the *tutor* wrote about a child are different: they can be processed by an allowlisted provider acting on the institute's behalf, with names removed (AG2), and the privacy notice says so. | COPPA governs data collected online *from* a child. A vendor that keeps or trains on it makes it a disclosure needing separate consent. | `ai.run` refuses child-produced input without an `ai_processing` consent row (F7); an e2e test proves the refusal. |
+| AG2 | **Send the least.** Names, emails and phone numbers are replaced with tokens before a prompt leaves the Worker, and put back only in the reply. Images are cropped to the work. | A prompt log at a provider is a copy of a child's record. | The redaction step in `ai.run`; a unit test with a known name. |
+| AG3 | **Only providers whose terms allow children's data, and that neither train on it nor keep it longer than needed.** See the provider table in [Compliance notes](#compliance-notes). | A vendor that trains on or keeps a child's data is a third-party disclosure under COPPA, needing separate consent; some vendors' terms forbid this use outright. | A provider allowlist in code; each vendor's terms and settings recorded in `docs/`. |
+| AG4 | **A tutor sees it before a family does.** In every first version, AI output is a *draft* a tutor accepts, edits or discards. Automatic release is a later, per-feature setting, and only above a measured accuracy. | Wrong feedback to a child is worse than slow feedback. | Draft tables with `accepted_by`; the family's read routes return only accepted rows. |
+| AG5 | **AI answers obey the exposure rules.** An assistant that reads portal data reads it through the same scoped repositories as the screens, as the person asking. | A chat box is a read endpoint, and must not become a way round R1–R9. | The assistant's tools call the scoped repositories; `exposure.spec.ts` asks it leading questions. |
+| AG6 | **No money in anything a student or a Tutoring view can reach.** | The Phase 19 rule, applied to generated text. | Prompts for student-facing tasks are built from money-free fields only. |
+| AG7 | **Log what was done, never what was said.** Audit events record "AI feedback drafted for Sofia's homework", never the text, the image or the prompt. | The audit log is read by admins; a child's work is not the log's business. | `recordAudit` calls in `ai.run`; the existing "no comment text in the log" rule extended. |
+| AG8 | **Every AI feature has an off switch.** Per feature, in institute settings (F9), and per family through consent. | Providers change terms; families change their minds. | A settings check at the top of each AI route. |
+| AG9 | **Cost caps.** A daily and monthly spend cap per feature; beyond it, work queues rather than failing silently. | A runaway loop should cost dollars, not hundreds. | AI Gateway rate limits plus a counter in D1. |
+| AG10 | **The SSN guard applies to prompts and outputs.** | "Never stored anywhere" includes a provider's logs. | `containsSsn` runs on every prompt and every reply. |
 
 ---
 
@@ -691,7 +710,11 @@ features specifically:
 - **The narrow audio exception.** It covers only a child's voice used in place of typing and
   deleted at once. It does not cover recorded explanations (AI-11) or lessons (V1).
 - **Biometrics.** Voiceprints and faceprints are now personal information. Never use face or
-  voice recognition, and delete raw photos and audio once the text has been extracted.
+  voice recognition.
+- **Deleting what is no longer needed.** Outside providers keep nothing (AG3). The portal's
+  own copies of photos and recordings follow one retention schedule (A3): for example,
+  homework photos 12 months and explanation recordings 30 days, with dictated audio deleted
+  as soon as it is transcribed.
 - **Tutors instead of children.** A tutor dictating notes is an adult's voice (AI-2). Prefer
   designs like this over recording children.
 
@@ -718,7 +741,6 @@ features specifically:
 | **Text messages** | Business texting needs carrier registration (10DLC) through Twilio or similar, taking 10–15 days. Reminders need prior consent; marketing needs prior *written* consent. Opt-outs sent "by any reasonable means" must be honoured within 10 business days. **Text parents only, never children.** | F3, S2 |
 | **Accessibility** | ADA Title III reaches private places of education, and WCAG 2.1/2.2 AA is the benchmark in practice. The 2024 rule for public bodies binds the institute only through a contract with a public school district. | Q1 |
 | **Recording lessons** | NC is a one-party-consent state, but a family in an all-party-consent state changes that. Recordings of under-13s are personal information under COPPA. The standard to meet: written parental consent covering purpose, viewers and retention (e.g. 30–90 days), a visible recording indicator, and private storage with audited access. | V1, AI-11 |
-
 
 ---
 
