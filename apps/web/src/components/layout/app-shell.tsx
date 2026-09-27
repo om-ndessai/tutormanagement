@@ -72,7 +72,7 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
       <LogoLockup className="px-1 py-2" />
       <Separator className="bg-sidebar-border" />
       <NavItems onNavigate={onNavigate} />
-      <div className="text-muted-foreground mt-auto px-1 text-xs">
+      <div className="text-sidebar-muted-foreground mt-auto px-1 text-xs">
         {/* One line, wrapping as it likes: a second hardcoded line only ever
             read correctly for one institute. */}
         <p className="text-pretty">{brand.name}</p>
@@ -96,7 +96,7 @@ export function AppShell() {
 
   return (
     <div className="bg-background flex min-h-full">
-      <aside className="bg-sidebar border-sidebar-border hidden w-64 shrink-0 border-r lg:block">
+      <aside className="bg-sidebar text-sidebar-foreground border-sidebar-border hidden w-64 shrink-0 border-r lg:block">
         <div className="sticky top-0 h-dvh">
           <SidebarContents />
         </div>
@@ -110,7 +110,7 @@ export function AppShell() {
             className="absolute inset-0 bg-black/50"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="bg-sidebar border-sidebar-border animate-in slide-in-from-left absolute inset-y-0 left-0 w-72 border-r shadow-xl">
+          <div className="bg-sidebar text-sidebar-foreground border-sidebar-border animate-in slide-in-from-left absolute inset-y-0 left-0 w-72 border-r shadow-xl">
             <SidebarContents onNavigate={() => setMobileOpen(false)} />
           </div>
         </div>

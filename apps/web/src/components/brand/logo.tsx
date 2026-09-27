@@ -161,7 +161,7 @@ export function LogoLockup({ className }: { className?: string }) {
       <LogoMark className="size-10" />
       <div className="min-w-0 leading-tight">
         <p className="font-display truncate text-sm font-semibold">{brand.short}</p>
-        <p className="text-muted-foreground truncate text-xs">{brand.tagline}</p>
+        <p className="text-sidebar-muted-foreground truncate text-xs">{brand.tagline}</p>
       </div>
     </div>
   );
