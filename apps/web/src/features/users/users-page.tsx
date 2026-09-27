@@ -40,6 +40,7 @@ import { useDeleteUser, useRestoreUser, useUsers } from './api';
 import { UserDetailDialog } from './user-detail-dialog';
 import { UserFormDialog } from './user-form-dialog';
 import { UsersTable } from './users-table';
+import { useBrand } from '@/providers/brand-provider';
 
 const PAGE_SIZE = 25;
 const ANY = 'any';
@@ -51,6 +52,7 @@ type PendingAction =
   | null;
 
 export function UsersPage() {
+  const brand = useBrand();
   const [search, setSearch] = useState('');
   const [role, setRole] = useState<UserRole | typeof ANY>(ANY);
   const [status, setStatus] = useState<UserStatus | typeof ANY>(ANY);
@@ -160,7 +162,7 @@ export function UsersPage() {
     <div className="mx-auto max-w-6xl">
       <PageHeader
         title="Users"
-        description="Everyone at the Mathematics Institute of the Triangle. A person can hold more than one role."
+        description={`Everyone at ${brand.name}. A person can hold more than one role.`}
         actions={
           <Button onClick={openCreate}>
             <PlusIcon />

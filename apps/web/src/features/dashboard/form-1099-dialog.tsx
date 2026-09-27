@@ -13,9 +13,10 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useBrand } from '@/providers/brand-provider';
 import { TEXTAREA } from '@/features/progress/assessment-dialog';
 
-const INSTITUTE_NAME = 'Mathematics Institute of the Triangle';
+
 
 /** "123-45-6789" from whatever the admin typed, or null if it is not nine digits. */
 function normaliseSsn(raw: string): string | null {
@@ -64,6 +65,7 @@ export function Form1099Dialog({
   // number all year, and retyping it on every form is how a digit goes wrong.
   const [payerTin, setPayerTin] = useState(instituteTin ?? '');
 
+  const brand = useBrand();
   const formatted = normaliseSsn(ssn);
 
   function close(next: boolean) {
@@ -86,6 +88,7 @@ export function Form1099Dialog({
     if (!sheet) return;
 
     sheet.document.write(documentHtml({
+      payerName: brand.name,
       tutorName,
       year,
       amountCents,
@@ -199,6 +202,7 @@ export function Form1099Dialog({
 
 /** The printable sheet: plain HTML, written into a window that is never saved. */
 function documentHtml({
+  payerName,
   tutorName,
   year,
   amountCents,
@@ -206,6 +210,7 @@ function documentHtml({
   address,
   payerTin,
 }: {
+  payerName: string;
   tutorName: string;
   year: number;
   amountCents: number;
@@ -235,7 +240,7 @@ function documentHtml({
   <p class="sub">Tax year ${year} · recipient copy and payer’s record</p>
 
   <table>
-    <tr><th>Payer</th><td>${INSTITUTE_NAME}${payerTin ? `<br>TIN ${escape(payerTin)}` : ''}</td></tr>
+    <tr><th>Payer</th><td>${escape(payerName)}${payerTin ? `<br>TIN ${escape(payerTin)}` : ''}</td></tr>
     <tr><th>Recipient</th><td>${escape(tutorName)}${address.trim() ? `<br>${escape(address.trim()).replace(/\r?\n/g, '<br>')}` : ''}</td></tr>
     <tr><th>Recipient’s TIN</th><td>${escape(ssn)}</td></tr>
     <tr><th>Box 1 — Nonemployee compensation</th><td class="amount">${formatCents(amountCents)}</td></tr>
@@ -243,7 +248,7 @@ function documentHtml({
   </table>
 
   <p class="note">
-    Box 1 is the total paid to this person by ${INSTITUTE_NAME} between 1 January and
+    Box 1 is the total paid to this person by ${escape(payerName)} between 1 January and
     31 December ${year}, as recorded in the portal. Copy A is filed with the IRS
     electronically or on official scannable stock — it cannot be printed from this page.
     This sheet carries a Social Security number: treat it as you would the paper it

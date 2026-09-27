@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useUserDetail } from '@/features/users/api';
 import { UserDetailView } from '@/features/users/user-detail-view';
 import { useAuth } from '@/providers/auth-provider';
+import { useBrand } from '@/providers/brand-provider';
 
 /**
  * Where a successful Google sign-in lands: the portal's own record of the
@@ -12,6 +13,7 @@ import { useAuth } from '@/providers/auth-provider';
  * Phase 2 model knows about them.
  */
 export function ProfilePage() {
+  const brand = useBrand();
   const { user, impersonated } = useAuth();
   const { data, isPending, isError } = useUserDetail(user?.id ?? null);
 
@@ -21,7 +23,7 @@ export function ProfilePage() {
     <div className="mx-auto max-w-3xl">
       <PageHeader
         title="My profile"
-        description="How the Mathematics Institute of the Triangle has you on file."
+        description={`How ${brand.name} has you on file.`}
       />
 
       {impersonated && (

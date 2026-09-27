@@ -7,6 +7,7 @@ import { App } from '@/App';
 import { Toaster } from '@/components/ui/sonner';
 import { ApiRequestError } from '@/lib/api-client';
 import { AuthProvider } from '@/providers/auth-provider';
+import { BrandProvider } from '@/providers/brand-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 import './index.css';
@@ -39,9 +40,11 @@ createRoot(container).render(
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <BrandProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </BrandProvider>
         </AuthProvider>
         <Toaster position="bottom-right" richColors closeButton />
       </QueryClientProvider>

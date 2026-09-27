@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { ApiErrorCode } from './api.js';
+import type { BrandId } from './brand.js';
 import type { User } from './users.js';
 
 /**
@@ -12,6 +13,12 @@ export interface AuthConfig {
   google_client_id: string | null;
   /** False while AUTH_ENABLED is "false"; the SPA then skips the login screen. */
   auth_enabled: boolean;
+  /**
+   * Which identity this deployment wears. Runtime rather than build-time, so
+   * one build can serve the institute and the demo without either being able
+   * to show up as the other.
+   */
+  brand: BrandId;
 }
 
 /** The signed-in user, plus how they got here. */

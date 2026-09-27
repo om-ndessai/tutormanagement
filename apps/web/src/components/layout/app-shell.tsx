@@ -22,6 +22,7 @@ import { LiveSessionBar } from '@/features/teaching/live-session-bar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { useBrand } from '@/providers/brand-provider';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true },
@@ -64,14 +65,17 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
+  const brand = useBrand();
+
   return (
     <div className="flex h-full flex-col gap-4 p-4">
       <LogoLockup className="px-1 py-2" />
       <Separator className="bg-sidebar-border" />
       <NavItems onNavigate={onNavigate} />
       <div className="text-muted-foreground mt-auto px-1 text-xs">
-        <p>Mathematics Institute</p>
-        <p>of the Triangle</p>
+        {/* One line, wrapping as it likes: a second hardcoded line only ever
+            read correctly for one institute. */}
+        <p className="text-pretty">{brand.name}</p>
         <p className="mt-2">
           Developed by:{' '}
           <a href="mailto:om.ndessai@gmail.com" className="hover:text-primary hover:underline">

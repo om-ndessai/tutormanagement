@@ -243,3 +243,21 @@ now, so this needs a hand-written `ALTER TABLE`, not a rebuild.
 `SESSION_SECRET` is missing, shorter than 32 characters, or changed between
 requests. Check `apps/api/.dev.vars` locally and `wrangler secret list` in
 production.
+
+## The demo deployment
+
+The `test` Worker signs people in for real, so its origin needs to be an **Authorised JavaScript
+origin** on the same OAuth client production uses:
+
+```
+https://tmi-portal-test.om-ndessai.workers.dev
+```
+
+Without it, Google refuses the sign-in with `origin_mismatch` before the portal is involved. No
+redirect URI is needed — the portal uses Google Identity Services in the browser and posts the
+ID token to `/api/auth/google`, so there is no redirect to register.
+
+`BOOTSTRAP_ADMIN_EMAILS` on that deployment names the demonstrator, but the escape hatch only
+opens while the database holds **no** admin, and the seeded roster ships with two. That is why
+`npm run demo:reset` adds `om.ndessai@gmail.com` as a real admin row (`db/demo-admin.sql`)
+rather than relying on the bootstrap.

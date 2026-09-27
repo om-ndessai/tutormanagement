@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAuth } from '@/providers/auth-provider';
+import { useBrand } from '@/providers/brand-provider';
 import { useDashboard } from '@/features/dashboard/api';
 import { UserPicker } from '@/features/dashboard/user-picker';
 import { RoleIcons } from '@/features/users/role-icon';
@@ -31,6 +32,7 @@ import {
  * "show me what this tutor sees" useful rather than a dead end.
  */
 export function DashboardPage() {
+  const brand = useBrand();
   const { user } = useAuth();
   const [params, setParams] = useSearchParams();
 
@@ -64,7 +66,7 @@ export function DashboardPage() {
         description={
           subject?.viewing_as_other
             ? 'You are seeing the portal exactly as they see it.'
-            : 'Mathematics Institute of the Triangle'
+            : brand.name
         }
         actions={
           <div className="flex flex-wrap items-center gap-2">

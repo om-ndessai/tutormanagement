@@ -5,6 +5,7 @@ import {
   type ApiOk,
   type AuthConfig,
   type SessionResponse,
+  resolveBrand,
 } from '@tmi/shared';
 
 import { recordAudit } from '../lib/audit.js';
@@ -51,6 +52,7 @@ export const authRoutes = new Hono<AppEnv>()
       data: {
         google_client_id: enabled ? c.env.GOOGLE_CLIENT_ID : null,
         auth_enabled: enabled,
+        brand: resolveBrand(c.env.BRAND).id,
       },
     };
     return c.json(body);

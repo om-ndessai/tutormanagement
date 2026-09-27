@@ -6,6 +6,7 @@ import { AUTH_ERROR_CODES } from '@tmi/shared';
 import { LogoFull, LogoMark } from '@/components/brand/logo';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { useAuth } from '@/providers/auth-provider';
+import { useBrand } from '@/providers/brand-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
 
 /** Where the router stashes the page the user was trying to reach. */
@@ -19,6 +20,7 @@ function isPlaceholderClientId(clientId: string | null): boolean {
 }
 
 export function LoginPage() {
+  const brand = useBrand();
   const { status, config, error, signInWithGoogle, clearError } = useAuth();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
@@ -74,7 +76,7 @@ export function LoginPage() {
         </div>
 
         <p className="relative text-xs text-white/70">
-          Mathematics Institute of the Triangle · Chapel Hill, North Carolina
+          {brand.name} · {brand.place}
         </p>
       </aside>
 

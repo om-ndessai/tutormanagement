@@ -19,6 +19,7 @@
     "deploy:test": "wrangler deploy --env test",
     "db:rebuild:test": "wrangler d1 execute tmi-portal-test-db --remote --file=./db/schema.sql",
     "db:seed:test": "wrangler d1 execute tmi-portal-test-db --remote --file=./db/seed.sql",
+    "db:demo:admin": "wrangler d1 execute tmi-portal-test-db --remote --file=./db/demo-admin.sql",
     "db:seed:generate": "node db/generate-seed.mjs"
   },
   "dependencies": {

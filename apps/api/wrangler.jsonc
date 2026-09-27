@@ -64,7 +64,11 @@
 		// Chicken-and-egg escape hatch: while the users table contains no admin,
 		// these comma-separated Google accounts may sign in and are created as
 		// admins. Ignored the moment one admin exists.
-		"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com"
+		"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
+
+		// Which identity the portal wears. The institute's own, here and always:
+		// the demo brand belongs to the test deployment and nowhere else.
+		"BRAND": "institute"
 	},
 	"observability": {
 		"enabled": true
@@ -103,12 +107,31 @@
 				// Relaxes the cookie Secure flag and CORS, matching how the suite
 				// may drive it from a local origin.
 				"ENVIRONMENT": "development",
-				// Sign-in is never used here, so no client id is needed.
-				"GOOGLE_CLIENT_ID": "",
-				"AUTH_ENABLED": "false",
-				// Empty: the suite names the user per request with X-Dev-User.
+
+				// This deployment is the DEMO as well as the test target, and it
+				// now signs people in for real. Two consequences, both deliberate:
+				//
+				//   - The end-to-end suite can no longer drive it. The suite acts
+				//     as each kind of user through X-Dev-User, which is honoured
+				//     only while AUTH_ENABLED is "false". Run it against a local
+				//     stack instead (see scripts/e2e.sh, which refuses rather
+				//     than reporting a wall of sign-in failures).
+				//   - The deployment's own origin has to be an authorised
+				//     JavaScript origin on the Google OAuth client, or sign-in
+				//     fails with origin_mismatch. Same public client id as
+				//     production; see docs/google-oauth-setup.md.
+				"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
+				"AUTH_ENABLED": "true",
 				"DEV_USER_EMAIL": "",
-				"BOOTSTRAP_ADMIN_EMAILS": ""
+
+				// Whoever demonstrates the portal. The escape hatch only opens
+				// while the database holds no admin, which is exactly the state a
+				// freshly seeded demo is in.
+				"BOOTSTRAP_ADMIN_EMAILS": "om.ndessai@gmail.com",
+
+				// Its own name, mark and palette. Nothing of the institute's
+				// identity appears in a competition.
+				"BRAND": "chapel_hill"
 			},
 			"observability": {
 				"enabled": true

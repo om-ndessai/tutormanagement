@@ -269,6 +269,21 @@ because it is written once and never reconstructed. Never update or delete `audi
 `{ error: { code, message, details? } }`. Throw `ApiError` from a handler rather than building
 an error response by hand.
 
+**The portal's identity is chosen at RUNTIME, never at build time.** `/api/auth/config` serves
+a `brand` from the Worker's `BRAND` var, `BrandProvider` puts it on `<html data-brand>`, and
+`useBrand()` supplies every name, tagline and mark. One build therefore serves the institute and
+the demo, and neither can appear as the other — a build-time flag could put a demo identity in
+front of real families the next time somebody deployed from the wrong shell. Anything
+unrecognised resolves to the institute (`resolveBrand`), so a typo is never a demo. Never
+hardcode the institute's name or ship its logo files under another brand.
+
+**The `test` deployment is the competition demo.** It signs people in for real
+(`AUTH_ENABLED: "true"`), wears the Chapel Hill brand, and bootstraps `om.ndessai@gmail.com`.
+Two consequences: the e2e suite cannot drive it (X-Dev-User needs auth off — `scripts/e2e.sh`
+refuses before it deploys or wipes anything, and the suite runs against a local stack instead),
+and its origin must be an authorised JavaScript origin on the Google OAuth client. `npm run
+demo:reset` reseeds it and restores the demo admin.
+
 **Colors come from tokens, never from literals.** `apps/web/src/index.css` holds a brand ramp
 (`--brand-50` … `--brand-950`, sampled from the institute logo) and the semantic tokens
 components consume (`--primary`, `--muted`, `--sidebar`, …). Use Tailwind classes that map to

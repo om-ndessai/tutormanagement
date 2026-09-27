@@ -31,6 +31,32 @@ case "$TEST_URL" in
   *) echo "Refusing to run: '$TEST_URL' does not look like a test target." >&2; exit 1 ;;
 esac
 
+# The test deployment doubles as the competition demo, and a demo signs people
+# in for real. The suite acts as each kind of user through X-Dev-User, which is
+# honoured only while AUTH_ENABLED is "false", so it cannot drive that -- and
+# the rebuild below would wipe the demo's data on the way to finding out.
+# Checked before anything is built, deployed or dropped.
+echo "==> Checking $TEST_URL can be driven by the suite"
+auth=$(curl -s --max-time 15 "$TEST_URL/api/auth/config" || true)
+case "$auth" in
+  *'"auth_enabled":true'*)
+    cat >&2 <<MESSAGE
+Refusing to run: $TEST_URL has authentication ENABLED.
+
+The suite names the user it wants per request with X-Dev-User, which the Worker
+honours only while AUTH_ENABLED is "false". Nothing was deployed and no data
+was touched.
+
+  - To run the suite, drive a local stack instead:
+      npm run dev
+      E2E_BASE_URL=http://localhost:5173 npm run e2e:test
+  - To hand this deployment back to the suite, set AUTH_ENABLED to "false" in
+    the "test" env of apps/api/wrangler.jsonc and deploy it.
+MESSAGE
+    exit 1
+    ;;
+esac
+
 echo "==> Building the SPA"
 npm run build >/dev/null
 

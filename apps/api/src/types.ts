@@ -16,6 +16,13 @@ export interface Env {
   GOOGLE_CLIENT_ID: string;
   /** "true" | "false". See wrangler.jsonc. */
   AUTH_ENABLED: string;
+  /**
+   * Which identity this deployment wears: "institute" (the default, and what
+   * production ships) or "chapel_hill" (the demo). Anything unrecognised
+   * resolves to the institute, so a typo cannot put a demo brand in front of
+   * real families.
+   */
+  BRAND: string;
   /** Identity used by every request while AUTH_ENABLED is "false". */
   DEV_USER_EMAIL: string;
   /** Comma-separated emails allowed to self-provision while no admin exists. */

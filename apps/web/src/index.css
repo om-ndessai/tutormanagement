@@ -102,6 +102,113 @@
   --rating-5-ink: var(--rating-dark-ink);
 }
 
+/*
+ * The demo identity: Chapel Hill Math Institute
+ * =============================================
+ * Chosen by the Worker at runtime (data-brand on <html>), so this and the
+ * institute's own palette live in one build and neither can appear as the
+ * other. Only the two layers below change -- no component knows a brand
+ * exists.
+ *
+ * Deep indigo carries the chrome and a teal answers it, which is the pairing
+ * that reads as instrument panel rather than stationery: cool, quiet, and far
+ * enough from the institute's purple that nothing of its identity survives.
+ * Indigo anchors at brand-700 for body use; the teal is a separate accent hue
+ * used for the things a reader is meant to find first.
+ *
+ * Same construction as the institute's ramp -- OKLCH, one hue, perceptually
+ * even steps -- so contrast behaves the same way in both.
+ */
+
+:root[data-brand='chapel_hill'] {
+  --brand-50: oklch(0.977 0.012 274);
+  --brand-100: oklch(0.945 0.028 274);
+  --brand-200: oklch(0.894 0.056 274);
+  --brand-300: oklch(0.822 0.09 274);
+  --brand-400: oklch(0.716 0.138 274);
+  --brand-500: oklch(0.614 0.176 274);
+  --brand-600: oklch(0.53 0.184 274);
+  --brand-700: oklch(0.457 0.166 274);
+  --brand-800: oklch(0.386 0.134 274);
+  --brand-900: oklch(0.33 0.108 274);
+  --brand-950: oklch(0.232 0.078 275);
+
+  /* The answering hue. Used for accents and highlights, never for body text. */
+  --accent-teal-200: oklch(0.9 0.062 197);
+  --accent-teal-400: oklch(0.77 0.111 197);
+  --accent-teal-600: oklch(0.6 0.104 197);
+  --accent-teal-800: oklch(0.42 0.074 198);
+
+  /* Light theme ------------------------------------------------------- */
+  /* A hint of blue in the paper, so white cards lift off the page. */
+  --background: oklch(0.985 0.005 274);
+  --foreground: oklch(0.21 0.026 274);
+
+  --secondary: oklch(0.955 0.021 274);
+  --secondary-foreground: var(--brand-800);
+
+  --muted: oklch(0.958 0.013 274);
+  --muted-foreground: oklch(0.52 0.03 274);
+
+  --accent: var(--accent-teal-200);
+  --accent-foreground: var(--accent-teal-800);
+
+  --border: oklch(0.915 0.016 274);
+  --input: oklch(0.9 0.02 274);
+
+  /*
+   * The immersive part: the rail is dark in BOTH themes. It frames the work
+   * instead of merging into it, and it is the one surface a demo audience
+   * sees on every screen.
+   */
+  --sidebar: oklch(0.278 0.072 275);
+  --sidebar-foreground: oklch(0.93 0.017 274);
+  --sidebar-primary: var(--accent-teal-400);
+  --sidebar-primary-foreground: oklch(0.2 0.04 275);
+  --sidebar-accent: oklch(0.36 0.086 275);
+  --sidebar-accent-foreground: oklch(0.97 0.01 274);
+  --sidebar-border: oklch(0.36 0.06 275);
+  --sidebar-ring: var(--accent-teal-400);
+}
+
+.dark:root[data-brand='chapel_hill'] {
+  --background: oklch(0.168 0.024 275);
+  --foreground: oklch(0.955 0.01 274);
+
+  --card: oklch(0.212 0.032 275);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.212 0.032 275);
+  --popover-foreground: var(--foreground);
+
+  /* Indigo at 700 cannot carry white text on a dark surface, so the dark
+     theme takes a lighter step -- the same adjustment the institute's
+     palette makes for its purple. */
+  --primary: oklch(0.72 0.145 274);
+  --primary-foreground: oklch(0.17 0.04 275);
+
+  --secondary: oklch(0.27 0.042 275);
+  --secondary-foreground: oklch(0.94 0.014 274);
+
+  --muted: oklch(0.268 0.034 275);
+  --muted-foreground: oklch(0.72 0.026 274);
+
+  --accent: oklch(0.33 0.058 240);
+  --accent-foreground: oklch(0.93 0.05 197);
+
+  --border: oklch(0.31 0.036 275);
+  --input: oklch(0.33 0.04 275);
+  --ring: var(--accent-teal-400);
+
+  --sidebar: oklch(0.2 0.038 275);
+  --sidebar-foreground: oklch(0.92 0.016 274);
+  --sidebar-primary: var(--accent-teal-400);
+  --sidebar-primary-foreground: oklch(0.18 0.04 275);
+  --sidebar-accent: oklch(0.29 0.052 275);
+  --sidebar-accent-foreground: oklch(0.96 0.012 274);
+  --sidebar-border: oklch(0.31 0.04 275);
+  --sidebar-ring: var(--accent-teal-400);
+}
+
 .dark {
   --background: oklch(0.175 0.014 320);
   --foreground: oklch(0.96 0.006 324);
