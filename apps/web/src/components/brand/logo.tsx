@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { useBrand } from '@/providers/brand-provider';
+import { useBrand, useBrandReady } from '@/providers/brand-provider';
 
 /** Served straight from `public/`, so no bundler import is needed. */
 const LOGO_MARK_SRC = '/logo-mark.png';
@@ -13,7 +13,27 @@ const LOGO_FULL_SRC = '/logo-full.png';
  * tile that takes its colour from the brand ramp rather than from literals, so
  * it follows the palette and dark mode for free.
  */
-function MathMark({ className }: { className?: string }) {
+function MathMark({ className, bare = false }: { className?: string; bare?: boolean }) {
+  // On a coloured panel the tile has nothing to sit against, so the glyph goes
+  // on alone in white -- the institute's raster mark gets knocked out to white
+  // for the same reason, and neither is achievable with the other's technique.
+  if (bare) {
+    return (
+      <svg
+        viewBox="0 0 48 48"
+        role="img"
+        aria-hidden
+        className={cn('size-9 select-none', className)}
+      >
+        <g fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round">
+          <path d="M11 17h26" />
+          <path d="M19 17v17" />
+          <path d="M30 17v12c0 3 1.6 5 4 5" />
+        </g>
+      </svg>
+    );
+  }
+
   return (
     <svg
       viewBox="0 0 48 48"
@@ -47,23 +67,59 @@ function MathMark({ className }: { className?: string }) {
   );
 }
 
-export function LogoMark({ className }: { className?: string }) {
-  const brand = useBrand();
+/**
+ * Holds the space without claiming an identity, while the deployment is still
+ * saying which one it has.
+ */
+function MarkPlaceholder({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn('bg-muted/60 inline-block size-9 shrink-0 rounded-xl', className)}
+    />
+  );
+}
 
-  if (brand.id !== 'institute') return <MathMark className={className} />;
+export function LogoMark({
+  className,
+  /**
+   * Rendered on a coloured panel. Each brand reaches white its own way, and
+   * the caller should not have to know which: the institute's raster mark is
+   * knocked out with a filter, the drawn mark simply inherits the colour.
+   */
+  onDark = false,
+}: {
+  className?: string;
+  onDark?: boolean;
+}) {
+  const brand = useBrand();
+  const ready = useBrandReady();
+
+  if (!ready) return <MarkPlaceholder className={className} />;
+
+  if (brand.id !== 'institute') {
+    return <MathMark className={className} bare={onDark} />;
+  }
 
   return (
     <img
       src={LOGO_MARK_SRC}
       alt=""
       aria-hidden
-      className={cn('size-9 select-none object-contain', className)}
+      className={cn(
+        'size-9 select-none object-contain',
+        onDark && 'brightness-0 invert drop-shadow-sm',
+        className,
+      )}
     />
   );
 }
 
 export function LogoFull({ className }: { className?: string }) {
   const brand = useBrand();
+  const ready = useBrandReady();
+
+  if (!ready) return <MarkPlaceholder className={cn('h-10 w-40 rounded-lg', className)} />;
 
   if (brand.id !== 'institute') {
     return (
@@ -86,6 +142,19 @@ export function LogoFull({ className }: { className?: string }) {
 /** Mark plus a stacked wordmark, sized for the sidebar header. */
 export function LogoLockup({ className }: { className?: string }) {
   const brand = useBrand();
+  const ready = useBrandReady();
+
+  if (!ready) {
+    return (
+      <div className={cn('flex items-center gap-3', className)}>
+        <MarkPlaceholder className="size-10" />
+        <div className="min-w-0 space-y-1.5">
+          <span className="bg-muted/60 block h-3 w-24 rounded" />
+          <span className="bg-muted/40 block h-2.5 w-32 rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn('flex items-center gap-3', className)}>

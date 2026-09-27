@@ -18,6 +18,8 @@ export interface Brand {
   /** Short name for tight spaces, like the sidebar header. */
   short: string;
   tagline: string;
+  /** The line under the tagline on the sign-in panel. */
+  blurb: string;
   /** Where the institute is, for the sign-in page. */
   place: string;
 }
@@ -28,6 +30,9 @@ export const BRANDS: Record<BrandId, Brand> = {
     name: 'Mathematics Institute of the Triangle',
     short: 'TMI Portal',
     tagline: 'Exploring the fun of Math',
+    blurb:
+      'Small classes, advanced-degree instructors, and a curriculum built around problem ' +
+      'solving — for grades 1 through 12, in person and online.',
     place: 'Chapel Hill, North Carolina',
   },
   /**
@@ -39,6 +44,9 @@ export const BRANDS: Record<BrandId, Brand> = {
     name: 'Chapel Hill Math Institute',
     short: 'CHMI Portal',
     tagline: 'Where numbers click',
+    blurb:
+      'One tutor, one student, one plan at a time — lessons tracked from the first ' +
+      'assessment to the goal they were set against.',
     place: 'Chapel Hill, North Carolina',
   },
 };

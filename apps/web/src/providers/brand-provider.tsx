@@ -3,7 +3,18 @@ import { resolveBrand, type Brand } from '@tmi/shared';
 
 import { useAuth } from './auth-provider';
 
-const BrandContext = createContext<Brand>(resolveBrand(null));
+interface BrandState {
+  brand: Brand;
+  /**
+   * False until the Worker's config has landed. Nothing that names or pictures
+   * an institute may render before then: the boot screen would otherwise show
+   * the default brand's mark for an instant, and on the demo that instant is
+   * the institute's logo appearing in front of an audience.
+   */
+  ready: boolean;
+}
+
+const BrandContext = createContext<BrandState>({ brand: resolveBrand(null), ready: false });
 
 /**
  * Which identity the portal is wearing, from the Worker that served it.
@@ -39,25 +50,40 @@ export function BrandProvider({ children }: { children: ReactNode }) {
     const description = document.querySelector('meta[name="description"]');
     description?.setAttribute('content', `Staff portal for ${brand.name}.`);
 
-    if (brand.id === 'institute') return;
+    // Each brand paints its own icon. The institute's artwork is a file it
+    // owns; the demo's is the same pi mark the sidebar draws, inline, so no
+    // second logo file ever ships.
+    const piMark =
+      `data:image/svg+xml,${encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">` +
+          `<rect width="48" height="48" rx="13" fill="#3a3fb0"/>` +
+          `<g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">` +
+          `<path d="M13 18h22"/><path d="M20 18v14"/>` +
+          `<path d="M29 18v10c0 2.6 1.4 4 3.6 4"/></g></svg>`,
+      )}`;
 
-    const icon = `data:image/svg+xml,${encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">` +
-        `<rect width="48" height="48" rx="13" fill="#3a3fb0"/>` +
-        `<g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">` +
-        `<path d="M13 18h22"/><path d="M20 18v14"/>` +
-        `<path d="M29 18v10c0 2.6 1.4 4 3.6 4"/></g></svg>`,
-    )}`;
+    const icons =
+      brand.id === 'institute'
+        ? { icon: '/favicon.png', touch: '/logo-mark.png', theme: '#773C7D' }
+        : { icon: piMark, touch: piMark, theme: '#3a3fb0' };
 
-    for (const selector of ['link[rel="icon"]', 'link[rel="apple-touch-icon"]']) {
-      document.querySelector(selector)?.setAttribute('href', icon);
-    }
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#3a3fb0');
+    document.querySelector('link[rel="icon"]')?.setAttribute('href', icons.icon);
+    document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute('href', icons.touch);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', icons.theme);
   }, [brand]);
 
-  return <BrandContext.Provider value={brand}>{children}</BrandContext.Provider>;
+  return (
+    <BrandContext.Provider value={{ brand, ready: config !== null }}>
+      {children}
+    </BrandContext.Provider>
+  );
 }
 
 export function useBrand(): Brand {
-  return useContext(BrandContext);
+  return useContext(BrandContext).brand;
+}
+
+/** Whether the deployment has said which brand it is yet. */
+export function useBrandReady(): boolean {
+  return useContext(BrandContext).ready;
 }

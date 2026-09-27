@@ -54,8 +54,8 @@ export function LoginPage() {
           flattens the Penrose illusion into a plain triangle.
         */}
         <LogoMark
+          onDark
           className="pointer-events-none absolute -right-24 -bottom-28 size-[30rem] opacity-[0.14]"
-          aria-hidden
         />
         {/* Soft highlight so the flat gradient has some depth. */}
         <div
@@ -63,16 +63,13 @@ export function LoginPage() {
           className="pointer-events-none absolute -top-32 -left-24 size-96 rounded-full bg-white/15 blur-3xl"
         />
 
-        <LogoMark className="relative size-11 brightness-0 invert drop-shadow-sm" />
+        <LogoMark onDark className="relative size-11" />
 
         <div className="relative max-w-md">
           <h1 className="font-display text-4xl leading-tight font-semibold text-white">
-            Exploring the fun of Math
+            {brand.tagline}
           </h1>
-          <p className="mt-4 text-sm leading-relaxed text-white/80">
-            Small classes, advanced-degree instructors, and a curriculum built around problem
-            solving — for grades 1 through 12, in person and online.
-          </p>
+          <p className="mt-4 text-sm leading-relaxed text-white/80">{brand.blurb}</p>
         </div>
 
         <p className="relative text-xs text-white/70">

@@ -3,13 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/logo-mark.png" />
-    <meta name="theme-color" content="#773C7D" />
-    <meta
-      name="description"
-      content="Staff portal for the Mathematics Institute of the Triangle."
+    <!--
+      Deliberately unbranded. The head is written before anyone knows which
+      deployment will serve it, and the browser fetches whatever is here before
+      React runs -- so naming or picturing one institute here means the other
+      deployment flashes it in the tab. BrandProvider replaces all four of these
+      the moment the runtime config lands.
+    -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='13' fill='%23d4d4d8'/%3E%3C/svg%3E"
     />
+    <link
+      rel="apple-touch-icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='13' fill='%23d4d4d8'/%3E%3C/svg%3E"
+    />
+    <meta name="theme-color" content="#71717a" />
+    <meta name="description" content="Staff portal." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,7 +28,7 @@
       rel="stylesheet"
     />
 
-    <title>TMI Portal</title>
+    <title>Portal</title>
   </head>
   <body class="h-full">
     <div id="root" class="h-full"></div>
