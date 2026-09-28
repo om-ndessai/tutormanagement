@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { EyeIcon, Loader2Icon, XIcon } from 'lucide-react';
+import { CompassIcon, EyeIcon, Loader2Icon, XIcon } from 'lucide-react';
 import { DASHBOARD_ROLE_LABELS, type UserRole } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
@@ -15,6 +15,7 @@ import {
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useDashboard } from '@/features/dashboard/api';
+import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { UserPicker } from '@/features/dashboard/user-picker';
 import { RoleIcons } from '@/features/users/role-icon';
 import {
@@ -50,6 +51,15 @@ export function DashboardPage() {
 
   const roleOptions = useMemo(() => subject?.roles ?? [], [subject]);
 
+  // The tour describes the dashboard on screen: this role's, and never while
+  // looking at somebody else's.
+  const { openWizard, setDashboardRole } = useOnboarding();
+  const shownRole = subject?.viewing_as_other ? null : (response?.role ?? null);
+  useEffect(() => {
+    setDashboardRole(shownRole);
+    return () => setDashboardRole(null);
+  }, [shownRole, setDashboardRole]);
+
   function setParam(key: string, value: string | null) {
     const next = new URLSearchParams(params);
     if (value === null) next.delete(key);
@@ -70,6 +80,14 @@ export function DashboardPage() {
         }
         actions={
           <div className="flex flex-wrap items-center gap-2">
+            {/* Phase 26: the welcome wizard and tour, on demand. */}
+            {!subject?.viewing_as_other && (
+              <Button variant="outline" onClick={openWizard} data-tour="getting-started">
+                <CompassIcon />
+                Getting started
+              </Button>
+            )}
+
             {/* "Handle cases where a single user could have multiple roles and
                 so dashboard should have ability to select the role." */}
             {roleOptions.length > 1 && (

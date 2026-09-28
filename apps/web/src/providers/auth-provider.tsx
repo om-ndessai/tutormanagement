@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import type { ApiOk, AuthConfig, SessionResponse, User } from '@tmi/shared';
+import type { ApiOk, AuthConfig, OnboardingState, SessionResponse, User } from '@tmi/shared';
 
 import { ApiRequestError, UNAUTHENTICATED_EVENT, apiClient } from '@/lib/api-client';
 
@@ -21,6 +21,10 @@ interface AuthContextValue {
   config: AuthConfig | null;
   /** True when the API is running with AUTH_ENABLED=false. */
   impersonated: boolean;
+  /** Whether this person has been through the welcome wizard (Phase 26). */
+  onboarding: OnboardingState | null;
+  /** Records a change the onboarding routes answered with. */
+  setOnboarding: (state: OnboardingState) => void;
   /** Why the last sign-in attempt failed, if it did. */
   error: ApiRequestError | null;
   /**
@@ -50,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [config, setConfig] = useState<AuthConfig | null>(null);
   const [impersonated, setImpersonated] = useState(false);
+  const [onboarding, setOnboarding] = useState<OnboardingState | null>(null);
   const [error, setError] = useState<ApiRequestError | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
@@ -80,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (sessionResult.status === 'fulfilled') {
         setUser(sessionResult.value.data.user);
         setImpersonated(sessionResult.value.data.impersonated);
+        setOnboarding(sessionResult.value.data.onboarding);
         setStatus('authenticated');
         return;
       }
@@ -127,6 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         setUser(response.data.user);
         setImpersonated(response.data.impersonated);
+        setOnboarding(response.data.onboarding);
         setStatus('authenticated');
       } catch (caught) {
         setStatus('unauthenticated');
@@ -161,13 +168,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       config,
       impersonated,
+      onboarding,
+      setOnboarding,
       error,
       statusMessage,
       signInWithGoogle,
       signOut,
       clearError,
     }),
-    [status, user, config, impersonated, error, statusMessage, signInWithGoogle, signOut, clearError],
+    [
+      status,
+      user,
+      config,
+      impersonated,
+      onboarding,
+      error,
+      statusMessage,
+      signInWithGoogle,
+      signOut,
+      clearError,
+    ],
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;

@@ -156,3 +156,13 @@ Difficulty level of the topic 1-5
 Has the topic understnading improved in the session 1-5
 How is the pace of learning 1-5
 Homeowrk notes
+
+Phase 26:
+This is about building onboarding wizard or a walk through of feature set. The wizard will be auto launched on the first launch for a given user or first time app is launched on the browser (so use cookie as well as db state for wizard shown for a given logged in user.)
+The wizard can also be launched from dashboard. 
+The wizard wil have following functionality.
+1. A walk through of the feature set. It will highlight relevant sections of the portal as it mentions what it does.
+2. Allows adding a new student user type. The admin will first have to either create a parent/family account in this flow or select an existing parent account. After adding the user, the admin will be show ability to enter assessment and plan. The wizard can be skipped at any time and the admin can continue the workflow going through regular sections. 
+3. Allow adding a new tutor type. The admin should be able to setup a new tutor in the system by creating a tutor user type. This will also be followed by relevant sections such as financials and avaiability and so on.
+Admin will have access to do all of the above.
+Other users will only be able to do step 1 and on the following pages confirm their own user attributes. Non admins cannot edit their details.

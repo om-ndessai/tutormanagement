@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { ApiErrorCode } from './api.js';
 import type { BrandId } from './brand.js';
+import type { OnboardingState } from './onboarding.js';
 import type { User } from './users.js';
 
 /**
@@ -29,6 +30,11 @@ export interface SessionResponse {
   user: SessionUser;
   /** True when this identity came from the AUTH_ENABLED=false bypass. */
   impersonated: boolean;
+  /**
+   * Whether this person has been through the welcome wizard (Phase 26). Only
+   * ever their own, so the page can decide at once whether to open it.
+   */
+  onboarding: OnboardingState;
 }
 
 /** Body of POST /api/auth/google — the ID token from Google Identity Services. */

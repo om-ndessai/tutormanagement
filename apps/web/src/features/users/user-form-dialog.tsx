@@ -47,11 +47,30 @@ import { GuardianPicker } from './guardian-picker';
 import { PaymentHandlesField } from './payment-handles-field';
 import { RoleSelector } from './role-selector';
 
-interface GuardianValue {
+export interface GuardianValue {
   guardian_user_id: string;
   relationship: 'mother' | 'father' | 'guardian' | 'other';
   is_primary: boolean;
 }
+
+/**
+ * The blocks of the form, so a caller can show only some of them -- the
+ * onboarding wizard (Phase 26) walks a new tutor through their background,
+ * then their financials, then their availability, one block at a time.
+ * Hidden blocks keep their values: the request is always built from the
+ * whole form, so an edit scoped to one block never clears another.
+ */
+export type UserFormSection =
+  | 'identity'
+  | 'roles'
+  | 'admin'
+  | 'tutor-background'
+  | 'tutor-financials'
+  | 'tutor-availability'
+  | 'student'
+  | 'availability'
+  | 'payment-handles'
+  | 'guardians';
 
 interface FormState {
   email: string;
@@ -263,10 +282,23 @@ export function UserFormDialog({
   open,
   onOpenChange,
   userId,
+  preset,
+  sections,
+  title,
+  description,
+  onSaved,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   userId: string | null;
+  /** A new person's roles and guardians, chosen already. Create mode only. */
+  preset?: { roles: UserRole[]; guardians?: GuardianValue[] };
+  /** Show only these blocks; every block when absent. */
+  sections?: UserFormSection[];
+  title?: string;
+  description?: string;
+  /** Called with the saved record, before the dialog closes. */
+  onSaved?: (user: UserDetail) => void;
 }) {
   const isEdit = userId !== null;
   const { data: detail, isPending: loadingDetail } = useUserDetail(open && isEdit ? userId : null);
@@ -288,8 +320,21 @@ export function UserFormDialog({
   useEffect(() => {
     if (!open) return;
     setErrors({});
-    setForm(isEdit ? (detail ? fromDetail(detail.data) : EMPTY) : EMPTY);
+    setForm(
+      isEdit
+        ? detail
+          ? fromDetail(detail.data)
+          : EMPTY
+        : { ...EMPTY, roles: preset?.roles ?? [], guardians: preset?.guardians ?? [] },
+    );
+    // The preset is read when the dialog opens, not on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, isEdit, detail]);
+
+  /** Whether a block is on screen: all of them, unless the caller chose some. */
+  const show = (section: UserFormSection) => !sections || sections.includes(section);
+  const anyTutorBlock =
+    show('tutor-background') || show('tutor-financials') || show('tutor-availability');
 
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
@@ -324,11 +369,13 @@ export function UserFormDialog({
 
     try {
       if (isEdit) {
-        await updateUser.mutateAsync({ id: userId, input: parsed.data as never });
+        const saved = await updateUser.mutateAsync({ id: userId, input: parsed.data as never });
         toast.success(`${form.full_name} updated.`);
+        onSaved?.(saved.data);
       } else {
-        await createUser.mutateAsync(parsed.data as never);
+        const saved = await createUser.mutateAsync(parsed.data as never);
         toast.success(`${form.full_name} added.`);
+        onSaved?.(saved.data);
       }
       onOpenChange(false);
     } catch (error) {
@@ -346,9 +393,10 @@ export function UserFormDialog({
       <DialogContent className="max-h-[92dvh] gap-0 overflow-y-auto sm:max-w-2xl">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
-            <DialogTitle>{isEdit ? 'Edit user' : 'Add user'}</DialogTitle>
+            <DialogTitle>{title ?? (isEdit ? 'Edit user' : 'Add user')}</DialogTitle>
             <DialogDescription>
-              One person, one record. Check every role they hold — the rest of the form follows.
+              {description ??
+                'One person, one record. Check every role they hold — the rest of the form follows.'}
             </DialogDescription>
           </DialogHeader>
 
@@ -359,6 +407,8 @@ export function UserFormDialog({
             </p>
           ) : (
             <div className="grid gap-5 py-4">
+              {show('identity') && (
+              <>
               <Field id="full_name" label="Full name" error={errors.full_name}>
                 <Input
                   id="full_name"
@@ -423,16 +473,22 @@ export function UserFormDialog({
                   </SelectContent>
                 </Select>
               </Field>
+              </>
+              )}
 
-              <Separator />
+              {show('roles') && (
+                <>
+                  <Separator />
 
-              <RoleSelector
-                value={form.roles}
-                onChange={(roles) => set('roles', roles)}
-                error={errors.roles}
-              />
+                  <RoleSelector
+                    value={form.roles}
+                    onChange={(roles) => set('roles', roles)}
+                    error={errors.roles}
+                  />
+                </>
+              )}
 
-              {form.roles.includes('admin') && (
+              {form.roles.includes('admin') && show('admin') && (
                 <>
                   <Separator />
                   <SectionHeading title="Admin details" />
@@ -457,11 +513,13 @@ export function UserFormDialog({
                 </>
               )}
 
-              {isTutor && (
+              {isTutor && anyTutorBlock && (
                 <>
                   <Separator />
                   <SectionHeading title="Tutor details" />
                   <div className="grid gap-4 sm:grid-cols-2">
+                    {show('tutor-background') && (
+                    <>
                     <Field
                       id="t_edu"
                       label="Highest education"
@@ -492,6 +550,9 @@ export function UserFormDialog({
                         placeholder="Chapel Hill"
                       />
                     </Field>
+                    </>
+                    )}
+                    {show('tutor-availability') && (
                     <Field id="t_notes" label="Availability notes" optional>
                       <Input
                         id="t_notes"
@@ -502,9 +563,11 @@ export function UserFormDialog({
                         placeholder="Term-time only"
                       />
                     </Field>
+                    )}
                   </div>
                   {/* The recipient's address on their 1099-NEC. Only the
                       office and the tutor can read it back. */}
+                  {show('tutor-financials') && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Field
                       id="t_addr1"
@@ -590,7 +653,9 @@ export function UserFormDialog({
                       </Field>
                     </div>
                   </div>
+                  )}
 
+                  {show('tutor-availability') && (
                   <Checkbox
                     id="t_virtual"
                     label="Available for virtual tutoring"
@@ -599,7 +664,10 @@ export function UserFormDialog({
                       set('tutor', { ...form.tutor, virtual_available: checked })
                     }
                   />
+                  )}
 
+                  {show('tutor-financials') && (
+                  <>
                   {/* What the tutor is PAID. A per-student override on the
                       assignment beats these. Not what the family is charged --
                       that is priced on the student, below. */}
@@ -648,19 +716,24 @@ export function UserFormDialog({
                       Confirmed on {form.tutor.ssn_received_on}.
                     </p>
                   )}
+                  </>
+                  )}
 
                   <div className="grid gap-4 sm:grid-cols-2">
+                    {show('tutor-availability') && (
                     <SessionLimitField
                       id="t_max_session"
                       value={form.tutor.max_minutes}
                       onChange={(value) => set('tutor', { ...form.tutor, max_minutes: value })}
                       hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
                     />
+                    )}
 
                     {/* The institute pays most tutors up front. This is the
                         level their unworked balance is kept above, not a
                         payment: recording the payment itself is a separate
                         act, on the billing page. */}
+                    {show('tutor-financials') && (
                     <Field
                       id="t_topup"
                       label="Top up below"
@@ -675,11 +748,12 @@ export function UserFormDialog({
                         placeholder="100.00"
                       />
                     </Field>
+                    )}
                   </div>
                 </>
               )}
 
-              {isStudent && (
+              {isStudent && show('student') && (
                 <>
                   <Separator />
                   <SectionHeading title="Student details" />
@@ -774,7 +848,7 @@ export function UserFormDialog({
                 </>
               )}
 
-              {(isTutor || isStudent) && (
+              {(isTutor || isStudent) && (show('availability') || show('tutor-availability')) && (
                 <>
                   <Separator />
                   <AvailabilityPicker
@@ -784,7 +858,7 @@ export function UserFormDialog({
                 </>
               )}
 
-              {(isTutor || isParent) && (
+              {(isTutor || isParent) && show('payment-handles') && (
                 <>
                   <Separator />
                   <PaymentHandlesField
@@ -801,7 +875,7 @@ export function UserFormDialog({
                 </>
               )}
 
-              {(isStudent || isTutor) && (
+              {(isStudent || isTutor) && show('guardians') && (
                 <>
                   <Separator />
                   <GuardianPicker
@@ -818,6 +892,16 @@ export function UserFormDialog({
                 <p role="alert" className="text-destructive text-xs">
                   {errors._}
                 </p>
+              )}
+
+              {/* A scoped form can fail on a field it is not showing; say what,
+                  rather than refuse to save with nothing on screen. */}
+              {sections && Object.keys(errors).length > 0 && (
+                <ul role="alert" className="text-destructive list-disc space-y-0.5 pl-5 text-xs">
+                  {Object.entries(errors).map(([field, message]) => (
+                    <li key={field}>{message}</li>
+                  ))}
+                </ul>
               )}
             </div>
           )}

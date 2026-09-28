@@ -60,6 +60,7 @@ export function ReflectionPrompts({
     <>
       <Panel
         index={index}
+        tourId="dash-reflect"
         title={forChildren ? 'Reflect with your children' : 'How did your lessons go?'}
         action={{ label: 'All sessions', to: '/sessions' }}
       >

@@ -647,6 +647,28 @@ this codebase and is what the plan asks for. There is no `updated_at` and no tri
 schema itself says a comment cannot change: a remark somebody has already read must not be
 rewritten under them. Deleting is soft, and hides it from everyone including its author.
 
+### `user_onboarding`
+
+Phase 26. Whether a person has been through the welcome wizard — the feature tour, and for an
+admin the guided setup of a student or a tutor — and when a non-admin confirmed the office has
+their details right. One row per person, created the first time either happens; **no row means
+"not yet"**, which is how everyone who existed before the wizard is treated on the day it
+ships.
+
+**Off `users` on purpose.** That row is listed to other readers (R6 already has to hide
+`last_login_at`), and this is nobody's business but the person's own: it reaches them in their
+session response and through the two routes under `/api/onboarding`, both of which act on the
+signed-in person only — there is no id to point at anybody else.
+
+**The first outcome is kept.** Finishing or skipping writes `tour_finished_at` and
+`tour_outcome` once; taking the tour again from the dashboard's Getting started changes nothing.
+The device half of "has this been shown" is a cookie, `tmi_tour_seen`: a browser without it
+offers the tour to somebody who has already been through the wizard, rather than opening it.
+
+**Only admins edit a record.** `details_confirmed_at` says the person looked and agreed; a
+correction goes to the office as a comment on their own record (the Phase 12 rules), and the
+office makes it.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application

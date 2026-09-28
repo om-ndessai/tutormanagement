@@ -19,6 +19,7 @@ import { LogoLockup } from '@/components/brand/logo';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { UserMenu } from '@/components/layout/user-menu';
 import { LiveSessionBar } from '@/features/teaching/live-session-bar';
+import { OnboardingProvider } from '@/features/onboarding/onboarding-provider';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -46,6 +47,8 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
           to={to}
           end={end}
           onClick={onNavigate}
+          // What the feature tour (Phase 26) points at: nav-sessions, nav-billing…
+          data-tour={to === '/' ? 'nav-dashboard' : `nav-${to.slice(1)}`}
           className={({ isActive }) =>
             cn(
               'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
@@ -95,6 +98,8 @@ export function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
+    // The welcome wizard and tour (Phase 26) sit over the whole signed-in portal.
+    <OnboardingProvider>
     <div className="bg-background flex min-h-full">
       <aside className="bg-sidebar text-sidebar-foreground border-sidebar-border hidden w-64 shrink-0 border-r lg:block">
         <div className="sticky top-0 h-dvh">
@@ -122,6 +127,7 @@ export function AppShell() {
             variant="ghost"
             size="icon"
             className="lg:hidden"
+            data-tour="nav-toggle"
             aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             onClick={() => setMobileOpen((open) => !open)}
           >
@@ -145,5 +151,6 @@ export function AppShell() {
         </main>
       </div>
     </div>
+    </OnboardingProvider>
   );
 }

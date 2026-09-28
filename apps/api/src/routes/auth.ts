@@ -28,6 +28,7 @@ import {
   recordSignIn,
 } from '../repositories/users.js';
 import { isAuthEnabled, isProduction, type AppEnv, type Env } from '../types.js';
+import { getOnboarding } from '../repositories/onboarding.js';
 
 /** Parses the comma-separated BOOTSTRAP_ADMIN_EMAILS var. */
 function bootstrapEmails(env: Env): string[] {
@@ -110,14 +111,22 @@ export const authRoutes = new Hono<AppEnv>()
     const token = await createSessionToken(user.id, c.env.SESSION_SECRET);
     c.header('Set-Cookie', sessionCookie(token, isProduction(c.env)));
 
-    const body: ApiOk<SessionResponse> = { data: { user, impersonated: false } };
+    const body: ApiOk<SessionResponse> = {
+      data: { user, impersonated: false, onboarding: await getOnboarding(c.env.DB, user.id) },
+    };
     return c.json(body);
   })
 
   /** Who am I? The SPA calls this on load to restore an existing session. */
-  .get('/session', requireAuth, (c) => {
+  .get('/session', requireAuth, async (c) => {
+    const user = c.get('user');
     const body: ApiOk<SessionResponse> = {
-      data: { user: c.get('user'), impersonated: c.get('impersonated') },
+      data: {
+        user,
+        impersonated: c.get('impersonated'),
+        // Whether to open the welcome wizard (Phase 26): theirs, and only theirs.
+        onboarding: await getOnboarding(c.env.DB, user.id),
+      },
     };
     return c.json(body);
   })

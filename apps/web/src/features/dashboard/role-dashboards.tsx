@@ -170,7 +170,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
     <TutoringFinanceTabs
       tutoring={
         <div className="space-y-6">
-          <DashboardSection index={0} title="Analytics">
+          <DashboardSection index={0} tourId="dash-analytics" title="Analytics">
             <div className="grid grid-cols-2 items-stretch gap-3 lg:grid-cols-4">
               <StatCard compact index={0} label="Students" value={data.counts.students} icon={ROLE_ICONS.student} to="/users?role=student" />
               <StatCard compact index={1} label="Tutors" value={data.counts.tutors} icon={ROLE_ICONS.tutor} to="/users?role=tutor" />
@@ -186,15 +186,15 @@ export function AdminView({ data }: { data: AdminDashboard }) {
             </div>
           </DashboardSection>
 
-          <DashboardSection index={4} title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+          <DashboardSection index={4} tourId="dash-sessions" title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
             <SessionsCarousel past={data.recent_sessions} showTutor />
           </DashboardSection>
 
-          <DashboardSection index={5} title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
+          <DashboardSection index={5} tourId="dash-progress" title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
             <ProgressSpotlight index={6} students={data.progress_spotlight} empty="No students yet." />
           </DashboardSection>
 
-          <DashboardSection index={7} title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+          <DashboardSection index={7} tourId="dash-activity" title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
             <Card className="py-0">
               <CardContent className="px-4 py-2">
                 <ActivityFeed events={data.recent_activity} />
@@ -410,7 +410,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
         // No money on this half: a tutor may have it open beside a student.
         // What they earned is the Finance tab's first figure.
         <div className="space-y-6">
-          <DashboardSection index={0} title="Analytics">
+          <DashboardSection index={0} tourId="dash-analytics" title="Analytics">
             <div className="grid grid-cols-2 items-stretch gap-3 lg:grid-cols-4">
               <StatCard compact index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
               <StatCard compact index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
@@ -425,7 +425,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
             </div>
           </DashboardSection>
 
-          <DashboardSection index={3} title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+          <DashboardSection index={3} tourId="dash-sessions" title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
             {/* Only lessons they teach, even for an admin viewing as them. */}
             <SessionsCarousel
               past={data.recent_sessions}
@@ -436,7 +436,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
 
           {/* Phase 25: what their students made of recent lessons, beside the
               lessons themselves. Teaching, so here; and never money. */}
-          <DashboardSection index={4} title="Student Reflections" action={{ label: 'All sessions', to: '/sessions' }}>
+          <DashboardSection index={4} tourId="dash-reflections" title="Student Reflections" action={{ label: 'All sessions', to: '/sessions' }}>
             <Card className="py-0">
               <CardContent className="px-4 py-2">
                 <RecentReflections digests={data.recent_reflections} />
@@ -444,7 +444,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
             </Card>
           </DashboardSection>
 
-          <DashboardSection index={5} title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
+          <DashboardSection index={5} tourId="dash-progress" title="Progress" action={{ label: 'All Progress', to: '/progress' }}>
             <ProgressSpotlight
               index={6}
               students={data.progress_spotlight}
@@ -452,7 +452,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
             />
           </DashboardSection>
 
-          <DashboardSection index={7} title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+          <DashboardSection index={7} tourId="dash-activity" title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
             <Card className="py-0">
               <CardContent className="px-4 py-2">
                 <ActivityFeed events={data.recent_activity} showActor={false} />
@@ -560,7 +560,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
         />
       </div>
 
-      <Panel index={3} title="Your children">
+      <Panel index={3} tourId="dash-children" title="Your children">
         {data.children.length === 0 ? (
           <EmptyNote>No students are linked to you yet.</EmptyNote>
         ) : (
@@ -585,13 +585,14 @@ export function ParentView({ data }: { data: ParentDashboard }) {
         <StudentProgressCard
           key={child.student.user_id}
           index={4 + position}
+          tourId={position === 0 ? 'dash-child-progress' : undefined}
           progress={child}
           title={`${child.student.full_name}'s progress`}
         />
       ))}
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel index={4} title="Recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+        <Panel index={4} tourId="dash-recent-sessions" title="Recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
           <SessionList sessions={data.recent_sessions} showTutor />
         </Panel>
 
@@ -624,7 +625,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         </div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3" data-tour="dash-my-stats">
         <StatCard index={1} label="Sessions" value={data.totals.session_count} icon={BookOpenIcon} to="/sessions" />
         <StatCard
           index={2}
@@ -641,7 +642,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
       <ReflectionPrompts index={4} prompts={data.awaiting_reflection} />
 
       {data.progress && (
-        <StudentProgressCard index={4} progress={data.progress} title="Your progress" />
+        <StudentProgressCard index={4} progress={data.progress} title="Your progress" tourId="dash-my-progress" />
       )}
 
       <Panel index={4} title="Your tutors">
@@ -661,7 +662,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         )}
       </Panel>
 
-      <Panel index={5} title="Your sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+      <Panel index={5} tourId="dash-my-sessions" title="Your sessions" action={{ label: 'All sessions', to: '/sessions' }}>
         <SessionList sessions={data.recent_sessions} showTutor />
       </Panel>
     </div>

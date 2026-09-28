@@ -34,6 +34,7 @@ export function AssessmentDialog({
   studentName,
   existing,
   defaultCourse,
+  onSaved,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -41,6 +42,8 @@ export function AssessmentDialog({
   studentName: string;
   existing: Assessment | null;
   defaultCourse?: string | null;
+  /** Called once it has saved -- the onboarding wizard ticks its step off. */
+  onSaved?: () => void;
 }) {
   const { data } = useCurriculum();
   const levels = data?.data ?? [];
@@ -86,6 +89,7 @@ export function AssessmentDialog({
         await create.mutateAsync({ student_user_id: studentId, ...body });
         toast.success('Assessment recorded.');
       }
+      onSaved?.();
       onOpenChange(false);
     } catch (error) {
       if (error instanceof ApiRequestError) {

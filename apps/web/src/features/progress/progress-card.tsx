@@ -21,17 +21,20 @@ export function StudentProgressCard({
   progress,
   index,
   title,
+  tourId,
 }: {
   progress: StudentProgress;
   index: number;
   title: string;
+  /** What the feature tour (Phase 26) points at. */
+  tourId?: string;
 }) {
   const { plan, summary } = progress;
   const detail = `/progress/${progress.student.user_id}`;
 
   if (!plan) {
     return (
-      <Panel index={index} title={title} action={{ label: 'Details', to: detail }}>
+      <Panel index={index} tourId={tourId} title={title} action={{ label: 'Details', to: detail }}>
         <EmptyNote>
           {progress.assessments.length > 0
             ? 'Assessed — the learning plan is still being set.'
@@ -42,7 +45,7 @@ export function StudentProgressCard({
   }
 
   return (
-    <Panel index={index} title={title} action={{ label: 'Details', to: detail }}>
+    <Panel index={index} tourId={tourId} title={title} action={{ label: 'Details', to: detail }}>
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="font-display font-semibold">{plan.goal}</p>

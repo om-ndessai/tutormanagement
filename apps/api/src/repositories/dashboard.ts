@@ -51,7 +51,8 @@ async function teachingActivity(
     visibleToUserId,
   );
   return (events as AuditEvent[])
-    .filter((event) => !event.action.startsWith('payment.'))
+    // Payments name amounts; "finished the portal tour" is nobody's news.
+    .filter((event) => !event.action.startsWith('payment.') && !event.action.startsWith('onboarding.'))
     .slice(0, ACTIVITY_SIZE);
 }
 

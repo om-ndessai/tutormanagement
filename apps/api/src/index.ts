@@ -16,6 +16,7 @@ import { curriculumRoutes, progressRoutes } from './routes/progress.js';
 import { schedulesRoutes } from './routes/schedules.js';
 import { sessionsRoutes } from './routes/sessions.js';
 import { usersRoutes } from './routes/users.js';
+import { onboardingRoutes } from './routes/onboarding.js';
 
 const app = new Hono<AppEnv>();
 
@@ -87,7 +88,8 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/schedules', schedulesRoutes)
   .route('/payments', paymentsRoutes)
   .route('/curriculum', curriculumRoutes)
-  .route('/progress', progressRoutes);
+  .route('/progress', progressRoutes)
+  .route('/onboarding', onboardingRoutes);
 
 const api = new Hono<AppEnv>().route('/', publicRoutes).route('/', guardedRoutes);
 

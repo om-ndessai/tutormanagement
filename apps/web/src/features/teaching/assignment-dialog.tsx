@@ -46,10 +46,16 @@ export function AssignmentDialog({
   open,
   onOpenChange,
   existing,
+  preset,
+  onSaved,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   existing: Assignment | null;
+  /** A new pairing's tutor or student, chosen already (the onboarding wizard). */
+  preset?: { tutor_user_id?: string; student_user_id?: string };
+  /** Called once it has saved. */
+  onSaved?: () => void;
 }) {
   const isEdit = existing !== null;
 
@@ -74,15 +80,18 @@ export function AssignmentDialog({
   useEffect(() => {
     if (!open) return;
     setErrors({});
-    setTutorId(existing?.tutor_user_id ?? '');
-    setStudentId(existing?.student_user_id ?? '');
+    setTutorId(existing?.tutor_user_id ?? preset?.tutor_user_id ?? '');
+    setStudentId(existing?.student_user_id ?? preset?.student_user_id ?? '');
     setInPerson(centsToInput(existing?.rate_in_person_cents));
     setVirtual(centsToInput(existing?.rate_virtual_cents));
     setNotes(existing?.notes ?? '');
     // An existing assignment already carries its own rates; only a new pairing
     // takes them from the tutor.
     setPrefilledFor(existing ? existing.tutor_user_id : null);
-  }, [open, existing]);
+    // The preset's ids, not the object: a new object each render would reset
+    // the form under the admin's typing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, existing, preset?.tutor_user_id, preset?.student_user_id]);
 
   const selectedTutor = tutors.data?.data.find((candidate) => candidate.id === tutorId);
 
@@ -146,6 +155,7 @@ export function AssignmentDialog({
         } as never);
         toast.success('Student assigned.');
       }
+      onSaved?.();
       onOpenChange(false);
     } catch (error) {
       if (error instanceof ApiRequestError) {

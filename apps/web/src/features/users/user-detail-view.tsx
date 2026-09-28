@@ -63,7 +63,18 @@ function formatTimestamp(value: string | null, fallback: string) {
  * `users`. Sections are hidden rather than shown empty, so the layout reflects
  * which roles the person actually holds.
  */
-export function UserDetailView({ user }: { user: UserDetail }) {
+export function UserDetailView({
+  user,
+  compact = false,
+}: {
+  user: UserDetail;
+  /**
+   * The details alone, without the comment thread and the activity feed --
+   * for the onboarding wizard's "confirm your details" (Phase 26), which has
+   * its own way to tell the office.
+   */
+  compact?: boolean;
+}) {
   const admin = user.admin_profile;
   const tutor = user.tutor_profile;
   const student = user.student_profile;
@@ -284,11 +295,15 @@ export function UserDetailView({ user }: { user: UserDetail }) {
 
       {/* Above the activity feed on purpose: what people have SAID about
           someone matters more on their record than what the system logged. */}
-      <Section title="Comments" icon={<MessageSquareIcon className="size-4" />}>
-        <CommentThread target={{ target_type: 'user', target_id: user.id }} />
-      </Section>
+      {!compact && (
+        <>
+          <Section title="Comments" icon={<MessageSquareIcon className="size-4" />}>
+            <CommentThread target={{ target_type: 'user', target_id: user.id }} />
+          </Section>
 
-      <RecentActivity userId={user.id} />
+          <RecentActivity userId={user.id} />
+        </>
+      )}
     </div>
   );
 }

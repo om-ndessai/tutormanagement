@@ -60,6 +60,7 @@ export function PlanDialog({
   existing,
   assessment,
   defaultGoal,
+  onSaved,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -73,6 +74,8 @@ export function PlanDialog({
    * because the two are one goal: saving the plan writes its goal back.
    */
   defaultGoal?: string | null;
+  /** Called once it has saved -- the onboarding wizard ticks its step off. */
+  onSaved?: () => void;
 }) {
   const { data } = useCurriculum();
   const levels = useMemo(() => data?.data ?? [], [data]);
@@ -162,6 +165,7 @@ export function PlanDialog({
         });
         toast.success('Plan created.');
       }
+      onSaved?.();
       onOpenChange(false);
     } catch (error) {
       if (error instanceof ApiRequestError) {

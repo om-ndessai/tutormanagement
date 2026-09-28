@@ -135,6 +135,16 @@ longer gives a Phase 23 assessment; the student's and parent's dashboards prompt
 tutor's lists it, flagged; and the card, the tutor's section and the parent's prompt in the
 browser. Each test records its own lesson dated today, so the 21-day prompt finds it.
 
+`onboarding.spec.ts` (Phase 26) — the welcome wizard: a new person is welcomed, toured (the
+spotlight lands on their dashboard's sections and the menu) and can send the office a correction
+but not edit; closing it counts as having been through it; a new browser only offers the tour; a
+non-admin gets the tour and not the setup; an admin adds a student (family first, then
+assessment, plan and a tutor) and a tutor (details, financials, availability), each checked
+through the API; and a phone gets a menu step pointed at the menu button. Every other spec's
+browser carries the `tmi_tour_seen` cookie (`support/fixtures.ts`) and every seeded person has
+been through the wizard, so none of them meets it; `as(who, { fresh: true, email })` is how a
+spec meets it on purpose.
+
 ## Notes
 
 - `workers: 1`, no parallelism. Every spec assumes the seeded roster against one shared

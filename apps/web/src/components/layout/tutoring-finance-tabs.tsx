@@ -47,7 +47,7 @@ export function TutoringFinanceTabs({
 
   return (
     <Tabs value={tab} onValueChange={(value) => setTab(value as TutoringFinanceTab)}>
-      <TabsList className="mb-4">
+      <TabsList className="mb-4" data-tour="tabs">
         <TabsTrigger value="tutoring">
           <GraduationCapIcon className="size-4" />
           Tutoring

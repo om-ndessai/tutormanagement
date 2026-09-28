@@ -57,6 +57,10 @@ lessons as a student, in one list.
 | Activity log | Events they acted in or were the subject of, with no amounts. | Same. | Same. |
 | Comments | See `docs/data-model.md`. | Same. | Same. |
 
+Onboarding state (Phase 26) — whether someone has been through the welcome wizard and confirmed
+their details — is only ever the reader's own: it arrives in their session response, and the
+`/api/onboarding` routes take no id.
+
 An admin's "view as" shows exactly this. The dashboard and the monthly rundown are built for the
 person being viewed, not for the admin.
 

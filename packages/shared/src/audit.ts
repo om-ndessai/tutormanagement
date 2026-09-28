@@ -18,6 +18,8 @@ export const AUDIT_ACTIONS = [
   'user.deactivated',
   'user.restored',
   'user.deleted',
+  'user.details_confirmed',
+  'onboarding.tour_finished',
 
   'assignment.created',
   'assignment.updated',
@@ -75,6 +77,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'user.deactivated': 'User deactivated',
   'user.restored': 'User restored',
   'user.deleted': 'User deleted',
+  'user.details_confirmed': 'Details confirmed',
+  'onboarding.tour_finished': 'Portal tour finished',
 
   'assignment.created': 'Student assigned',
   'assignment.updated': 'Assignment updated',

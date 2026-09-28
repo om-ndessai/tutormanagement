@@ -925,6 +925,7 @@ DELETE FROM admin_profiles;
 DELETE FROM student_profiles;
 DELETE FROM tutor_profiles;
 DELETE FROM user_roles;
+DELETE FROM user_onboarding;
 DELETE FROM users;
 
 -- --- people ----------------------------------------------------------------
@@ -932,6 +933,11 @@ ${insert('users', ['id', 'email', 'full_name', 'phone', 'status'], users)}
 
 -- --- what each of them does ------------------------------------------------
 ${insert('user_roles', ['user_id', 'role'], roles)}
+
+-- --- everyone here has been through the welcome wizard (Phase 26) ----------
+-- So neither local development nor the suite meets it; a person added after
+-- the seed has no row, and is welcomed the first time they sign in.
+${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], users.map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
 
 -- --- admin-only data --------------------------------------------------------
 -- The number the institute files its 1099s under. Not a person's, and not an

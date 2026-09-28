@@ -10,7 +10,7 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 19, and 21 to 25, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 26, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -20,8 +20,9 @@ and its crawling test (18), and the same Tutoring/Finance split on the sessions 
 no money is on screen while a tutor reads notes beside a student (19), the Tutoring tab rebuilt
 as Analytics, a sessions carousel, a progress spotlight and recent activity (21), session drafts
 (22), a lesson's notes written up in parts, with an assessment from anyone it concerns (23),
-one lesson of a standing schedule cancelled and restored, without touching the series (24), and
-the student's own reflection on each lesson (25).
+one lesson of a standing schedule cancelled and restored, without touching the series (24), the
+student's own reflection on each lesson (25), and a welcome wizard with a feature tour and guided
+setup of a new student or tutor (26).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -166,6 +167,17 @@ API now refuses in that capacity. The student, a parent or the lesson's tutor ma
 the student has entered it themselves no adult may change it. The lesson's audience reads it;
 the log never carries an answer.
 
+**The welcome wizard only ever opens the portal's own dialogs** (Phase 26). Adding a student or
+a tutor through it uses `UserFormDialog` preset (`preset`) and scoped to a block of fields
+(`sections`), then `AssessmentDialog`, `PlanDialog` and `AssignmentDialog` — never a second copy of
+a form, so validation, the guardian rule and the audit stay in one place. A scoped edit saves the
+whole record, so a step never clears another's fields. The tour points at `data-tour` attributes
+(menu items, `DashboardSection`/`Panel` `tourId`s, the tabs, Getting started): keep them when
+moving markup. Whether someone has been through it is `user_onboarding` (per person) plus the
+`tmi_tour_seen` cookie (per browser); the e2e fixture sets that cookie on every context, and
+`as(who, { fresh: true })` leaves it off. Onboarding lines are left out of the dashboards'
+Recent Activity, as payment lines are.
+
 **Deletes are soft.** `DELETE /api/users/:id` sets `deleted_at`. Hard delete needs an explicit
 `?hard=true`. The unique email index covers live rows only, so restoring can conflict; that
 case is already handled in `POST /api/users/:id/restore`.
@@ -277,12 +289,13 @@ front of real families the next time somebody deployed from the wrong shell. Any
 unrecognised resolves to the institute (`resolveBrand`), so a typo is never a demo. Never
 hardcode the institute's name or ship its logo files under another brand.
 
-**The `test` deployment is the competition demo.** It signs people in for real
-(`AUTH_ENABLED: "true"`), wears the Chapel Hill brand, and bootstraps `om.ndessai@gmail.com`.
-Two consequences: the e2e suite cannot drive it (X-Dev-User needs auth off — `scripts/e2e.sh`
-refuses before it deploys or wipes anything, and the suite runs against a local stack instead),
-and its origin must be an authorised JavaScript origin on the Google OAuth client. `npm run
-demo:reset` reseeds it and restores the demo admin.
+**The `test` deployment is the competition demo.** It wears the Chapel Hill brand and is open:
+`AUTH_ENABLED` is `"false"` there, so a visitor walks straight in as Priya Raghavan
+(`DEV_USER_EMAIL`). The e2e suite drives it, and `npm run e2e` wipes and reseeds its database —
+`scripts/e2e.sh` checks `/api/auth/config` and refuses before touching anything if sign-in has
+been turned back on. `npm run demo:reset` reseeds it and restores the demo admin; run it after a
+suite run to leave the demo clean. Sign-in stays configured (origin, client id), so turning it
+back on is one value.
 
 **Colors come from tokens, never from literals.** `apps/web/src/index.css` holds a brand ramp
 (`--brand-50` … `--brand-950`, sampled from the institute logo) and the semantic tokens

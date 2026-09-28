@@ -11,4 +11,5 @@ export * from './payments.js';
 export * from './dashboard.js';
 export * from './brand.js';
 export * from './auth.js';
+export * from './onboarding.js';
 export * from './api.js';

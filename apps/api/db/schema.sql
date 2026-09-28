@@ -32,6 +32,7 @@ DROP TRIGGER IF EXISTS payment_handles_set_updated_at;
 DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
 DROP TRIGGER IF EXISTS users_set_updated_at;
+DROP TRIGGER IF EXISTS user_onboarding_set_updated_at;
 
 DROP TRIGGER IF EXISTS learning_plans_set_updated_at;
 DROP TRIGGER IF EXISTS assessments_set_updated_at;
@@ -72,6 +73,7 @@ DROP TABLE IF EXISTS admin_profiles;
 DROP TABLE IF EXISTS student_profiles;
 DROP TABLE IF EXISTS tutor_profiles;
 DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS user_onboarding;
 DROP TABLE IF EXISTS users;
 
 
@@ -967,6 +969,43 @@ CREATE INDEX comments_scheduled_idx ON comments (target_scheduled_session_id, cr
 
 -- "Comments I wrote" -- the only thing the author alone may act on.
 CREATE INDEX comments_author_idx ON comments (author_user_id, created_at DESC);
+
+-- BEGIN PHASE 26 TABLES
+-- ---------------------------------------------------------------------------
+-- user_onboarding - whether someone has been through the welcome wizard
+-- ---------------------------------------------------------------------------
+-- The portal opens a welcome wizard and feature tour the first time a person
+-- signs in. This is what remembers they have been through it -- finished or
+-- skipped -- so it does not open again on every device. (A cookie covers the
+-- device side: a browser that has not seen it gets a small offer instead.)
+--
+-- Kept off `users` on purpose: that row is listed to other readers, and this
+-- is nobody's business but the person's own. No row means they have not been
+-- through it, which is how every existing person is treated on the day the
+-- wizard ships.
+CREATE TABLE user_onboarding (
+  user_id              TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+
+  -- When they first went through it, and whether to the end. The first
+  -- outcome is kept: taking the tour again later is not a new fact.
+  tour_finished_at     TEXT,
+  tour_outcome         TEXT CHECK (tour_outcome IN ('completed', 'skipped')),
+
+  -- When a non-admin confirmed the office has their details right. Only
+  -- admins edit a record; this says the person looked and agreed.
+  details_confirmed_at TEXT,
+
+  created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE TRIGGER user_onboarding_set_updated_at
+AFTER UPDATE ON user_onboarding FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE user_onboarding SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE user_id = NEW.user_id;
+END;
+-- END PHASE 26 TABLES
 
 
 -- BEGIN PHASE 16 TABLES

@@ -122,15 +122,18 @@ export function Panel({
   children,
   index = 0,
   className,
+  tourId,
 }: {
   title: string;
   action?: { label: string; to: string };
   children: ReactNode;
   index?: number;
   className?: string;
+  /** What the feature tour (Phase 26) points at; keep it when moving markup. */
+  tourId?: string;
 }) {
   return (
-    <Card className={cn('py-0', ENTER, className)} style={stagger(index)}>
+    <Card className={cn('py-0', ENTER, className)} style={stagger(index)} data-tour={tourId}>
       <CardContent className="px-4 py-4">
         <div className="mb-3 flex items-baseline justify-between gap-2">
           <h2 className="text-sm font-semibold">{title}</h2>
@@ -163,16 +166,24 @@ export function DashboardSection({
   action,
   children,
   index = 0,
+  tourId,
 }: {
   title: string;
   action?: { label: string; to: string };
   children: ReactNode;
   index?: number;
+  /** What the feature tour (Phase 26) points at; keep it when moving markup. */
+  tourId?: string;
 }) {
   const id = `section-${title.toLowerCase().replace(/[^a-z]+/g, '-')}`;
 
   return (
-    <section aria-labelledby={id} className={cn('min-w-0', ENTER)} style={stagger(index)}>
+    <section
+      aria-labelledby={id}
+      className={cn('min-w-0', ENTER)}
+      style={stagger(index)}
+      data-tour={tourId}
+    >
       <div className="mb-2 flex items-baseline justify-between gap-2">
         <h2 id={id} className="font-display text-base font-semibold">
           {title}

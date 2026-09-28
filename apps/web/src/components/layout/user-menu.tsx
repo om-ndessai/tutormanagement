@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { LogOutIcon, UserIcon } from 'lucide-react';
+import { CompassIcon, LogOutIcon, UserIcon } from 'lucide-react';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/providers/auth-provider';
+import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 
 function initials(name: string) {
   return name
@@ -24,6 +25,7 @@ function initials(name: string) {
 
 export function UserMenu() {
   const { user, impersonated, signOut } = useAuth();
+  const { openWizard } = useOnboarding();
   const navigate = useNavigate();
 
   if (!user) return null;
@@ -60,6 +62,11 @@ export function UserMenu() {
         <DropdownMenuItem onSelect={() => navigate('/profile')}>
           <UserIcon className="size-4" />
           My profile
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onSelect={openWizard}>
+          <CompassIcon className="size-4" />
+          Take the tour
         </DropdownMenuItem>
 
         {/* With auth off there is no session to end, so the action would lie. */}
