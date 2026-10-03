@@ -247,7 +247,10 @@ actually hold is `paid - earned` and the shortfall is `topup - held`, both deriv
 `tutorAdvanceCents` / `topupDueCents` in `packages/shared/src/payments.ts`. NULL means the
 tutor is paid for work already done and no top-up is ever due. Only an admin and the tutor
 themselves may see the arrangement — `scopeTutorTopup` blanks it for everyone else, and the
-institute-wide total is admin-only.
+institute-wide total is admin-only. The day a tutor's next top-up falls due is projected from
+their scheduled lessons on every read (`computeTutorPaymentOutlook`, `projectTopupDate`) and
+shown only on the admin's Tutor payments panel, which leads the dashboard's Finance tab — never
+store it, for the same reason upcoming lessons are not stored.
 
 **Money is integer cents, never floats.** `formatCents` / `parseCentsInput` in
 `packages/shared/src/teaching.ts` are the only conversions. Amounts and durations are always

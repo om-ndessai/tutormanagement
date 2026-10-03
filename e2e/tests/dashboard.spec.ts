@@ -16,7 +16,7 @@ test.describe('dashboards', () => {
     await admin.getByRole('tab', { name: /Finance/ }).click();
     await expect(admin.getByText('Owed to tutors')).toBeVisible();
     await expect(admin.getByText('Owed by families')).toBeVisible();
-    await expect(admin.getByText('Tutors awaiting payment')).toBeVisible();
+    await expect(admin.getByRole('heading', { name: 'Tutor payments' })).toBeVisible();
   });
 
   test('a tutor sees their own students and earnings, not the institute', async ({ as }) => {

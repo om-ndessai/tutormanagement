@@ -13,14 +13,12 @@ import {
   formatCents,
   needsTopup,
   formatDuration,
-  topupDueCents,
   tutorAdvanceCents,
   type AdminDashboard,
   type ParentDashboard,
   type Payment,
   type StudentDashboard,
   type TutoringSession,
-  type TutorBalance,
   type TutorDashboard,
 } from '@tmi/shared';
 
@@ -38,6 +36,7 @@ import { DashboardSection, EmptyNote, ENTER, Panel, StatCard, stagger } from './
 import { SessionsCarousel } from './sessions-carousel';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
 import { MonthlyFinance } from './monthly-finance';
+import { TutorPayments } from './tutor-payments';
 import { YearEndPanel } from './year-end-panel';
 import { useMonthlyFinance } from './api';
 import { cn } from '@/lib/utils';
@@ -245,35 +244,14 @@ export function AdminView({ data }: { data: AdminDashboard }) {
             />
           </div>
 
-          <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={4} />
+          <TutorPayments index={4} tutors={data.tutor_balances} />
+
+          <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={5} />
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <YearEndPanel index={5} />
+            <YearEndPanel index={6} />
             <SsnPanel tutors={data.tutors_missing_ssn} />
-          </div>
-
-          <TopupPanel tutors={data.tutor_balances} />
-
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Panel index={8} title="Tutors awaiting payment" action={{ label: 'Billing', to: '/billing' }}>
-              {data.tutor_balances.length === 0 ? (
-                <EmptyNote>No tutors yet.</EmptyNote>
-              ) : (
-                <ul className="divide-border divide-y">
-                  {data.tutor_balances.slice(0, 5).map((tutor) => (
-                    <BalanceRow
-                      key={tutor.user_id}
-                      name={tutor.full_name}
-                      detail={`${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned`}
-                      balance={tutor.balance_cents}
-                      to={`/dashboard?as=${tutor.user_id}&role=tutor`}
-                    />
-                  ))}
-                </ul>
-              )}
-            </Panel>
-
-            <Panel index={9} title="Families with a balance" action={{ label: 'Billing', to: '/billing' }}>
+            <Panel index={8} title="Families with a balance" action={{ label: 'Billing', to: '/billing' }}>
               {data.student_balances.length === 0 ? (
                 <EmptyNote>No students yet.</EmptyNote>
               ) : (
@@ -310,7 +288,7 @@ function SsnPanel({ tutors }: { tutors: { user_id: string; full_name: string }[]
 
   return (
     <Panel
-      index={6}
+      index={7}
       title={`SSN not on file · ${tutors.length}`}
       action={{ label: 'Users', to: '/users' }}
     >
@@ -341,54 +319,6 @@ function SsnPanel({ tutors }: { tutors: { user_id: string; full_name: string }[]
           </li>
         ))}
       </ul>
-    </Panel>
-  );
-}
-
-/**
- * Which tutors on an advance have worked it down past their agreed level, and
- * what it would take to restore each one.
- *
- * The one piece of this feature that is a to-do list rather than a figure, so
- * it leads the panels. It says nothing at all when no tutor is on an advance
- * -- an institute that does not pay up front should not be told about a
- * mechanism it does not use -- but it does speak up when everyone is topped
- * up, because "nothing to do" is the answer the office is looking for.
- */
-function TopupPanel({ tutors }: { tutors: TutorBalance[] }) {
-  const onAdvance = tutors.filter((tutor) => tutor.topup_amount_cents != null);
-  if (onAdvance.length === 0) return null;
-
-  const due = onAdvance.filter((tutor) => needsTopup(tutor));
-  const total = due.reduce((sum, tutor) => sum + (topupDueCents(tutor) ?? 0), 0);
-
-  return (
-    <Panel
-      index={7}
-      title={due.length === 0 ? 'Advances' : `Top-ups due · ${formatCents(total)}`}
-      action={{ label: 'Billing', to: '/billing' }}
-    >
-      {due.length === 0 ? (
-        <EmptyNote>
-          All {onAdvance.length} {onAdvance.length === 1 ? 'tutor' : 'tutors'} on an advance are
-          above their top-up level.
-        </EmptyNote>
-      ) : (
-        <ul className="divide-border divide-y">
-          {due.map((tutor) => (
-            <BalanceRow
-              key={tutor.user_id}
-              name={tutor.full_name}
-              detail={
-                `holds ${formatCents(tutorAdvanceCents(tutor))} of ` +
-                `${formatCents(tutor.topup_amount_cents ?? 0)}`
-              }
-              balance={topupDueCents(tutor) ?? 0}
-              to={`/dashboard?as=${tutor.user_id}&role=tutor`}
-            />
-          ))}
-        </ul>
-      )}
     </Panel>
   );
 }

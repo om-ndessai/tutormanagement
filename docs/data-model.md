@@ -346,6 +346,17 @@ A tutor in arrears has a *negative* advance, and the shortfall formula still hol
 settles what they are owed and restores the float in one payment, which is what "keep the
 balance above the top-up amount" means.
 
+**When the next top-up falls due is projected, never stored.** The admin's Tutor payments panel
+(Finance tab) dates each tutor's next payment: `computeTutorPaymentOutlook` in
+`apps/api/src/repositories/balances.ts` walks the lessons their schedules say are coming (the
+same `expandUpcoming` dates as the sessions carousel, less any already recorded or cancelled,
+looking `TOPUP_PROJECTION_WEEKS` ahead), prices each at the rate it would be recorded at, and
+`projectTopupDate` in `packages/shared/src/payments.ts` returns the first day that leaves the
+tutor holding less than their level. A tutor already below it is past due, with no date. The row
+colour is `tutorPaymentUrgency`: past due, due within `PAYMENT_SOON_DAYS`, or neither; a tutor
+paid after the work is never past due, and is "due soon" while they are owed for lessons taught.
+Recording, cancelling or rescheduling a lesson moves the date on the next read.
+
 **Who may see it**: admins, and the tutor themselves. A parent or student can open the record
 of the tutor teaching them, and what the office advances that tutor is no business of theirs —
 `scopeTutorTopup` blanks it, the same way `scopeStudentCharges` blanks a family's price. The

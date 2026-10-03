@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { AuditEvent } from './audit.js';
-import type { Payment, StudentBalance, TutorBalance } from './payments.js';
+import type { Payment, StudentBalance, TutorBalance, TutorPaymentOutlook } from './payments.js';
 import type { StudentProgress } from './progress.js';
 import type { SessionReflection } from './session-notes.js';
 import type { TutoringSession } from './teaching.js';
@@ -54,7 +54,11 @@ export interface AdminDashboard {
     margin_all_time_cents: number;
     session_count: number;
   };
-  tutor_balances: TutorBalance[];
+  /**
+   * Every tutor, most pressing payment first: what they are owed or hold,
+   * when they were last paid, and when their next top-up falls due.
+   */
+  tutor_balances: TutorPaymentOutlook[];
   /**
    * Tutors whose SSN the office does not have. Empty is the resting state and
    * the panel says so; anything in it is work the admin has to chase before

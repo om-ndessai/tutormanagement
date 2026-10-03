@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { addDays } from './schedules.js';
 import { centsSchema } from './teaching.js';
 import { optionalText } from './users.js';
 
@@ -161,6 +162,100 @@ export function needsTopup(
 ): boolean {
   const due = topupDueCents(balance);
   return due !== null && due > 0;
+}
+
+// ---------------------------------------------------------------------------
+// When each tutor next needs paying (the admin's Tutor payments panel)
+// ---------------------------------------------------------------------------
+
+/** How far ahead the next top-up is looked for: half a year of lessons. */
+export const TOPUP_PROJECTION_WEEKS = 26;
+
+/** A payment falling due within this many days is flagged as coming up. */
+export const PAYMENT_SOON_DAYS = 7;
+
+/**
+ * How pressing a tutor's next payment is, worst first:
+ *
+ *   past_due  - on an advance and already below its top-up level
+ *   due_soon  - due within PAYMENT_SOON_DAYS, or owed for lessons taught by
+ *               a tutor who is paid after the work rather than before it
+ *   on_track  - nothing to pay this week
+ */
+export const TUTOR_PAYMENT_URGENCIES = ['past_due', 'due_soon', 'on_track'] as const;
+export type TutorPaymentUrgency = (typeof TUTOR_PAYMENT_URGENCIES)[number];
+
+/**
+ * A tutor's balance with what the office needs to plan the next payment.
+ * Admin only: it is built from the tutor's advance arrangement.
+ */
+export interface TutorPaymentOutlook extends TutorBalance {
+  /** The most recent payment to this tutor, or null if they have never been paid. */
+  last_paid_cents: number | null;
+  /** When that payment moved: an instant, like `paid_at`. */
+  last_paid_at: string | null;
+  /**
+   * The day the lessons on their schedule are projected to take their advance
+   * below its top-up level, which is when the next top-up falls due. Null when
+   * it already has (they are past due), when they are not on an advance, or
+   * when no lesson in the next TOPUP_PROJECTION_WEEKS weeks gets there.
+   * Derived on every read, never stored, like the lessons it comes from.
+   */
+  next_topup_on: string | null;
+  /** Lessons scheduled within that window, so "not in sight" can say why. */
+  scheduled_lessons: number;
+  urgency: TutorPaymentUrgency;
+}
+
+/**
+ * The first day on which upcoming lessons take a tutor's advance below its
+ * top-up level -- when the office will next have to top them up.
+ *
+ * `lessons` are in date order, each with what the tutor will earn for it.
+ * "Below" is strictly below, as in `needsTopup`: a tutor holding exactly
+ * their level is not yet due. Null when they are not on an advance, when they
+ * are below it already (that is past due, not a date), or when these lessons
+ * never get them there.
+ */
+export function projectTopupDate(
+  balance: Pick<TutorBalance, 'earned_cents' | 'paid_cents' | 'topup_amount_cents'>,
+  lessons: readonly { occurs_on: string; pay_cents: number }[],
+): string | null {
+  const topup = balance.topup_amount_cents;
+  if (topup == null) return null;
+
+  let held = tutorAdvanceCents(balance);
+  if (held < topup) return null;
+
+  for (const lesson of lessons) {
+    held -= lesson.pay_cents;
+    if (held < topup) return lesson.occurs_on;
+  }
+
+  return null;
+}
+
+/**
+ * Which colour a tutor's row is. `today` is the institute's date
+ * (zonedClockParts), and a top-up projected on or before a week from it is
+ * due soon.
+ *
+ * A tutor who is not on an advance has no level to fall below, so they are
+ * never past due; money owed to them for lessons already taught is a payment
+ * waiting to be made, which is what due soon means.
+ */
+export function tutorPaymentUrgency(
+  balance: Pick<TutorBalance, 'earned_cents' | 'paid_cents' | 'balance_cents' | 'topup_amount_cents'>,
+  nextTopupOn: string | null,
+  today: string,
+): TutorPaymentUrgency {
+  if (balance.topup_amount_cents == null) {
+    return balance.balance_cents > 0 ? 'due_soon' : 'on_track';
+  }
+
+  if (needsTopup(balance)) return 'past_due';
+  if (nextTopupOn !== null && nextTopupOn <= addDays(today, PAYMENT_SOON_DAYS)) return 'due_soon';
+  return 'on_track';
 }
 
 /**

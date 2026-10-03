@@ -212,7 +212,8 @@ export interface UpcomingSessionsResponse {
   meta: { offset: number; limit: number; has_more: boolean };
 }
 
-function addDays(date: string, days: number): string {
+/** A calendar date (YYYY-MM-DD) moved by whole days. */
+export function addDays(date: string, days: number): string {
   const [year, month, day] = date.split('-').map(Number);
   const value = new Date(Date.UTC(year!, (month ?? 1) - 1, (day ?? 1) + days));
   return value.toISOString().slice(0, 10);

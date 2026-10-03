@@ -1,14 +1,31 @@
-import { topupDueCents } from '@tmi/shared';
+import {
+  TOPUP_PROJECTION_WEEKS,
+  addDays,
+  cancellationKey,
+  computeAmountCents,
+  expandUpcoming,
+  projectTopupDate,
+  resolveRateCents,
+  topupDueCents,
+  tutorPaymentUrgency,
+  upcomingTakenKey,
+  zonedClockParts,
+} from '@tmi/shared';
 import type {
   BalancesResponse,
   MonthlyFinanceResponse,
   MonthlyFinanceRow,
   StudentBalance,
   TutorBalance,
+  TutorPaymentOutlook,
+  TutorPaymentUrgency,
   User,
 } from '@tmi/shared';
 
 import { isAdmin } from '../lib/scope.js';
+import { listAssignments } from './assignments.js';
+import { listCancellationsForSchedules } from './schedule-cancellations.js';
+import { listSchedules } from './schedules.js';
 
 /**
  * What everybody owes and is owed.
@@ -143,6 +160,152 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
         : null,
     },
   };
+}
+
+const URGENCY_ORDER: Record<TutorPaymentUrgency, number> = { past_due: 0, due_soon: 1, on_track: 2 };
+
+/** Soonest first, and no date after every date. */
+function bySoonest(a: string | null, b: string | null): number {
+  if (a === b) return 0;
+  if (a === null) return 1;
+  if (b === null) return -1;
+  return a < b ? -1 : 1;
+}
+
+/**
+ * The tutors' balances with what the admin's Tutor payments panel adds: the
+ * last payment each received, and the day their schedule is projected to
+ * take their advance below its top-up level. Most pressing first.
+ *
+ * The projection walks the lessons the tutor's schedules say are coming --
+ * the dates the sessions carousel shows (expandUpcoming), less any recorded
+ * already or called off -- priced at the rate each would be recorded at, and
+ * stops at the first that leaves them below their level. Nothing is stored:
+ * recording, cancelling or rescheduling a lesson moves the date on the next
+ * read. A schedule whose pairing has ended, or that has no rate for its mode,
+ * cannot be recorded, so it earns the tutor nothing and is left out.
+ *
+ * Admin only, and the caller must have checked: the arrangement is the
+ * tutor's and the office's, nobody else's.
+ */
+export async function computeTutorPaymentOutlook(
+  db: D1Database,
+  viewer: User,
+  tutors: TutorBalance[],
+  nowIso: string,
+): Promise<TutorPaymentOutlook[]> {
+  const today = zonedClockParts(nowIso).day;
+  const horizon = addDays(today, TOPUP_PROJECTION_WEEKS * 7);
+
+  const [schedules, assignments, [lastPaidResult, recordedResult]] = await Promise.all([
+    listSchedules(db, viewer, { include_inactive: false }),
+    listAssignments(db, viewer, { include_inactive: false }),
+    db.batch<Record<string, unknown>>([
+      db.prepare(
+        `SELECT party_user_id, amount_cents, paid_at
+         FROM (
+           SELECT p.party_user_id, p.amount_cents, p.paid_at,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY p.party_user_id ORDER BY p.paid_at DESC, p.created_at DESC
+                  ) AS position
+           FROM payments p
+           WHERE p.direction = 'to_tutor'
+         )
+         WHERE position = 1`,
+      ),
+      // Lessons already recorded are in what the tutor has earned, so the
+      // schedule's occurrence of them must not be counted a second time.
+      db
+        .prepare('SELECT tutor_user_id, student_user_id, occurred_on FROM sessions WHERE occurred_on >= ?')
+        .bind(today),
+    ]),
+  ]);
+
+  const cancelled = new Set(
+    (
+      await listCancellationsForSchedules(db, schedules.map((s) => s.id), { from: today })
+    ).map((row) => cancellationKey(row.schedule_id, row.occurs_on)),
+  );
+  const taken = new Set(
+    ((recordedResult?.results ?? []) as Record<string, unknown>[]).map((row) =>
+      upcomingTakenKey(String(row.tutor_user_id), String(row.student_user_id), String(row.occurred_on)),
+    ),
+  );
+  const pairings = new Map(assignments.map((a) => [`${a.tutor_user_id}|${a.student_user_id}`, a]));
+
+  const lessonsByTutor = new Map<string, { occurs_on: string; pay_cents: number }[]>();
+
+  for (const schedule of schedules) {
+    const pairing = pairings.get(`${schedule.tutor_user_id}|${schedule.student_user_id}`);
+    if (!pairing) continue;
+
+    // The same resolution a recorded lesson goes through (lib/pricing.ts).
+    const rate = resolveRateCents(
+      schedule.mode,
+      { in_person: pairing.rate_in_person_cents, virtual: pairing.rate_virtual_cents },
+      {
+        in_person: pairing.effective_rate_in_person_cents,
+        virtual: pairing.effective_rate_virtual_cents,
+      },
+    );
+    if (rate == null) continue;
+
+    // One schedule at a time: a week has at most one of its dates, so this
+    // many always reaches the horizon, however many schedules a tutor has.
+    const { items } = expandUpcoming([schedule], nowIso, {
+      offset: 0,
+      limit: TOPUP_PROJECTION_WEEKS + 1,
+      taken,
+    });
+
+    const lessons = lessonsByTutor.get(schedule.tutor_user_id) ?? [];
+    for (const lesson of items) {
+      if (lesson.occurs_on > horizon) break;
+      if (cancelled.has(cancellationKey(schedule.id, lesson.occurs_on))) continue;
+      lessons.push({
+        occurs_on: lesson.occurs_on,
+        pay_cents: computeAmountCents(lesson.duration_minutes, rate),
+      });
+    }
+    lessonsByTutor.set(schedule.tutor_user_id, lessons);
+  }
+
+  const lastPaid = new Map(
+    ((lastPaidResult?.results ?? []) as Record<string, unknown>[]).map((row) => [
+      String(row.party_user_id),
+      { amount_cents: Number(row.amount_cents), paid_at: String(row.paid_at) },
+    ]),
+  );
+
+  const rows = tutors.map((tutor): TutorPaymentOutlook => {
+    // By day only: two lessons on one day cross the level on that day,
+    // whichever is taught first.
+    const lessons = (lessonsByTutor.get(tutor.user_id) ?? []).sort((a, b) =>
+      a.occurs_on.localeCompare(b.occurs_on),
+    );
+    const next = projectTopupDate(tutor, lessons);
+    const paid = lastPaid.get(tutor.user_id);
+
+    return {
+      ...tutor,
+      last_paid_cents: paid?.amount_cents ?? null,
+      last_paid_at: paid?.paid_at ?? null,
+      next_topup_on: next,
+      scheduled_lessons: lessons.length,
+      urgency: tutorPaymentUrgency(tutor, next, today),
+    };
+  });
+
+  // Within a colour: the biggest shortfall, then the soonest top-up, then
+  // whoever is owed the most.
+  return rows.sort(
+    (a, b) =>
+      URGENCY_ORDER[a.urgency] - URGENCY_ORDER[b.urgency] ||
+      (topupDueCents(b) ?? 0) - (topupDueCents(a) ?? 0) ||
+      bySoonest(a.next_topup_on, b.next_topup_on) ||
+      b.balance_cents - a.balance_cents ||
+      a.full_name.localeCompare(b.full_name),
+  );
 }
 
 /**

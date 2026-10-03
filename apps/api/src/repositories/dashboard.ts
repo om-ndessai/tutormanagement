@@ -13,7 +13,7 @@ import {
   type UserRole,
 } from '@tmi/shared';
 
-import { computeBalances } from './balances.js';
+import { computeBalances, computeTutorPaymentOutlook } from './balances.js';
 import { getSsnReceivedOn, listTutorsMissingSsn } from './users.js';
 import { listAuditEvents } from './audit.js';
 import { listPayments } from './payments.js';
@@ -163,8 +163,14 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
       margin_all_time_cents: Number(totals.billed ?? 0) - Number(totals.tutor_cost ?? 0),
       session_count: Number(totals.sessions ?? 0),
     },
-    // Worth chasing first.
-    tutor_balances: [...balances.tutors].sort((a, b) => b.balance_cents - a.balance_cents),
+    // Every tutor, most pressing payment first (the Finance tab's Tutor
+    // payments panel). Only ever built here, for an admin.
+    tutor_balances: await computeTutorPaymentOutlook(
+      db,
+      subject,
+      balances.tutors,
+      new Date().toISOString(),
+    ),
     tutors_missing_ssn: missingSsn,
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
     recent_activity: await teachingActivity(db),
