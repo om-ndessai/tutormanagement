@@ -166,3 +166,11 @@ The wizard wil have following functionality.
 3. Allow adding a new tutor type. The admin should be able to setup a new tutor in the system by creating a tutor user type. This will also be followed by relevant sections such as financials and avaiability and so on.
 Admin will have access to do all of the above.
 Other users will only be able to do step 1 and on the following pages confirm their own user attributes. Non admins cannot edit their details.
+
+Phase 27:
+I want to support multiple organizations. The current portal is built for the Triangle Math Institute. So every user is associated with this organization. I want to audit and analyze the current data model/services and portal UI to plan out supporting multiple organizations. This will be super admin users who have ability to add organizations and add users who are admins of that organization. From there on, the current feature set of portal will behave exactly as it is now. 
+Each organization could have its onw logo / color scheme.
+An user could be part of multiple organizations. In that case, user would be allowed to select an organization post login and can use the portal in the context of that organization. The user owuld be allowed to switch organizations.
+This phase is a plan mode phase. The outcome of the phase is a detailed plan on how to extend the current portal.
+
+Plan (2026-10-04): docs/multi-organization.md. Proposed build: protect the demo first, then Phases 28-31.
