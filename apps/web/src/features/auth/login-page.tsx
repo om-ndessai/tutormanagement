@@ -4,9 +4,10 @@ import { AlertTriangleIcon, Loader2Icon, SettingsIcon } from 'lucide-react';
 import { AUTH_ERROR_CODES } from '@tmi/shared';
 
 import { LogoFull, LogoMark } from '@/components/brand/logo';
+import { DeveloperCredit } from '@/components/layout/developer-credit';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { useAuth } from '@/providers/auth-provider';
-import { useBrand } from '@/providers/brand-provider';
+import { useBrand, useBrandReady } from '@/providers/brand-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
 
 /** Where the router stashes the page the user was trying to reach. */
@@ -21,6 +22,7 @@ function isPlaceholderClientId(clientId: string | null): boolean {
 
 export function LoginPage() {
   const brand = useBrand();
+  const brandReady = useBrandReady();
   const { status, config, error, signInWithGoogle, clearError } = useAuth();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
@@ -63,7 +65,19 @@ export function LoginPage() {
           className="pointer-events-none absolute -top-32 -left-24 size-96 rounded-full bg-white/15 blur-3xl"
         />
 
-        <LogoMark onDark className="relative size-11" />
+        {/* The mark with the name beside it, as the wordmark has on narrow
+            screens. The name waits for the brand, like the mark does, so the
+            demo never shows the institute's for an instant. */}
+        <div className="relative flex items-center gap-3">
+          <LogoMark onDark className="size-11" />
+          {brandReady ? (
+            <p className="font-display text-lg leading-tight font-semibold text-white">
+              {brand.name}
+            </p>
+          ) : (
+            <span aria-hidden className="block h-4 w-56 rounded bg-white/20" />
+          )}
+        </div>
 
         <div className="relative max-w-md">
           <h1 className="font-display text-4xl leading-tight font-semibold text-white">
@@ -72,9 +86,12 @@ export function LoginPage() {
           <p className="mt-4 text-sm leading-relaxed text-white/80">{brand.blurb}</p>
         </div>
 
-        <p className="relative text-xs text-white/70">
-          {brand.name} · {brand.place}
-        </p>
+        <div className="relative space-y-1 text-xs text-white/70">
+          <p>
+            {brand.name} · {brand.place}
+          </p>
+          <DeveloperCredit linkClassName="hover:text-white" />
+        </div>
       </aside>
 
       <main className="flex min-h-dvh flex-col">
@@ -82,7 +99,7 @@ export function LoginPage() {
           <ThemeToggle />
         </div>
 
-        <div className="flex flex-1 items-center justify-center px-6 pb-20">
+        <div className="flex flex-1 items-center justify-center px-6 pb-10 lg:pb-20">
           <div className="w-full max-w-sm">
             {/* The wordmark stands in for the brand panel on narrow screens. */}
             <div className="mb-10 flex justify-center lg:hidden">
@@ -133,6 +150,11 @@ export function LoginPage() {
             </p>
           </div>
         </div>
+
+        {/* The brand panel carries it on wide screens; phones have no panel. */}
+        <footer className="text-muted-foreground px-6 pb-6 text-center text-xs lg:hidden">
+          <DeveloperCredit />
+        </footer>
       </main>
     </div>
   );

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 import { LogoLockup } from '@/components/brand/logo';
+import { DeveloperCredit } from '@/components/layout/developer-credit';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { UserMenu } from '@/components/layout/user-menu';
 import { LiveSessionBar } from '@/features/teaching/live-session-bar';
@@ -79,12 +80,7 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
         {/* One line, wrapping as it likes: a second hardcoded line only ever
             read correctly for one institute. */}
         <p className="text-pretty">{brand.name}</p>
-        <p className="mt-2">
-          Developed by:{' '}
-          <a href="mailto:om.ndessai@gmail.com" className="hover:text-primary hover:underline">
-            Om Dessai
-          </a>
-        </p>
+        <DeveloperCredit className="mt-2" />
       </div>
     </div>
   );
