@@ -2,7 +2,6 @@ import {
   USER_ROLES,
   type AvailabilitySlot,
   type CreateUserPayload,
-  type AdminProfile,
   type GuardianLink,
   type TutorTaxStatus,
   type ListUsersParams,
@@ -16,31 +15,46 @@ import {
   type UserRole,
   type UserSortField,
 } from '@tmi/shared';
+import type { OrgId } from '../lib/org.js';
 
 /**
- * Columns of `users` itself. Roles live in their own table and are folded in
- * by ROLES_CSV below; `google_sub` is never exposed.
+ * A person AS A MEMBER OF ONE ORGANIZATION. Every function here takes the
+ * organization, and every read goes through the membership:
+ *
+ *   status        - the membership's (suspending in one organization leaves
+ *                   the others alone)
+ *   roles         - held in this organization only (ROLES_CSV)
+ *   created_at    - when they joined this organization
+ *   last_login_at - when they last ENTERED this organization; their global
+ *                   sign-in time is nobody's business here
+ *   deleted_at    - when they were removed from this organization
+ *
+ * `google_sub` is never exposed.
  */
 const COLUMNS = [
   'u.id',
   'u.email',
   'u.full_name',
   'u.phone',
-  'u.status',
-  'u.created_at',
+  'm.status',
+  'm.created_at',
   'u.updated_at',
-  'u.last_login_at',
-  'u.deleted_at',
+  'm.last_entered_at AS last_login_at',
+  'm.removed_at AS deleted_at',
 ].join(', ');
 
 /**
- * Folds the many-to-many roles into one column so listing users stays a single
- * query. Role names contain no commas, so the default separator is safe.
+ * Folds the person's roles IN THIS ORGANIZATION into one column. This is the
+ * hinge of the whole design: every admin check reads `user.roles`, so filtering
+ * them here is what makes an admin of one organization nobody special in
+ * another.
  */
-const ROLES_CSV =
-  '(SELECT GROUP_CONCAT(r.role) FROM user_roles r WHERE r.user_id = u.id) AS roles_csv';
+const ROLES_CSV = `(SELECT GROUP_CONCAT(r.role) FROM user_roles r
+   WHERE r.organization_id = m.organization_id AND r.user_id = u.id) AS roles_csv`;
 
-const SELECT_USER = `SELECT ${COLUMNS}, ${ROLES_CSV} FROM users u`;
+/** Always followed by a WHERE that starts with `m.organization_id = ?`. */
+const SELECT_USER = `SELECT ${COLUMNS}, ${ROLES_CSV}
+  FROM org_members m JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL`;
 
 /** SQLite has no date type, so the app writes ISO-8601 UTC strings. */
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
@@ -48,8 +62,8 @@ const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 const SORT_SQL: Record<UserSortField, string> = {
   full_name: 'u.full_name COLLATE NOCASE',
   email: 'u.email COLLATE NOCASE',
-  status: 'u.status',
-  created_at: 'u.created_at',
+  status: 'm.status',
+  created_at: 'm.created_at',
 };
 
 interface UserRow {
@@ -89,6 +103,7 @@ export interface ListUsersResult {
 
 export async function listUsers(
   db: D1Database,
+  org: OrgId,
   params: ListUsersParams,
   /**
    * Ids this viewer may see, or null for an admin. Applied here rather than in
@@ -96,8 +111,8 @@ export async function listUsers(
    */
   visibleIds?: Set<string> | null,
 ): Promise<ListUsersResult> {
-  const where: string[] = [];
-  const values: unknown[] = [];
+  const where: string[] = ['m.organization_id = ?'];
+  const values: unknown[] = [org];
 
   if (visibleIds) {
     if (visibleIds.size === 0) return { users: [], total: 0 };
@@ -105,7 +120,7 @@ export async function listUsers(
     values.push(...visibleIds);
   }
 
-  if (!params.include_deleted) where.push('u.deleted_at IS NULL');
+  if (!params.include_deleted) where.push('m.removed_at IS NULL');
 
   if (params.search) {
     const term = `%${params.search.toLowerCase()}%`;
@@ -115,21 +130,28 @@ export async function listUsers(
 
   // "Holds this role", not "is exactly this role" -- users have several.
   if (params.role) {
-    where.push('EXISTS (SELECT 1 FROM user_roles r WHERE r.user_id = u.id AND r.role = ?)');
+    where.push(
+      'EXISTS (SELECT 1 FROM user_roles r WHERE r.organization_id = m.organization_id AND r.user_id = u.id AND r.role = ?)',
+    );
     values.push(params.role);
   }
 
   if (params.status) {
-    where.push('u.status = ?');
+    where.push('m.status = ?');
     values.push(params.status);
   }
 
-  const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
+  const whereSql = `WHERE ${where.join(' AND ')}`;
   // `sort` and `order` come from Zod enums, so they are safe to interpolate.
   const orderSql = `ORDER BY ${SORT_SQL[params.sort]} ${params.order === 'desc' ? 'DESC' : 'ASC'}, u.id ASC`;
 
   const [countResult, pageResult] = await db.batch<Record<string, unknown>>([
-    db.prepare(`SELECT COUNT(*) AS total FROM users u ${whereSql}`).bind(...values),
+    db
+      .prepare(
+        `SELECT COUNT(*) AS total FROM org_members m
+         JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL ${whereSql}`,
+      )
+      .bind(...values),
     db
       .prepare(`${SELECT_USER} ${whereSql} ${orderSql} LIMIT ? OFFSET ?`)
       .bind(...values, params.limit, params.offset),
@@ -141,36 +163,54 @@ export async function listUsers(
   };
 }
 
-export async function getUserById(db: D1Database, id: string): Promise<User | null> {
-  const row = await db.prepare(`${SELECT_USER} WHERE u.id = ?`).bind(id).first<UserRow>();
+/** A member of this organization, removed ones included. */
+export async function getUserById(db: D1Database, org: OrgId, id: string): Promise<User | null> {
+  const row = await db
+    .prepare(`${SELECT_USER} WHERE m.organization_id = ? AND u.id = ?`)
+    .bind(org, id)
+    .first<UserRow>();
   return row ? toUser(row) : null;
 }
 
-export async function getLiveUserById(db: D1Database, id: string): Promise<User | null> {
+/** A current member of this organization. Anyone else -- elsewhere, or nowhere -- is null. */
+export async function getLiveUserById(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+): Promise<User | null> {
   const row = await db
-    .prepare(`${SELECT_USER} WHERE u.id = ? AND u.deleted_at IS NULL`)
-    .bind(id)
+    .prepare(`${SELECT_USER} WHERE m.organization_id = ? AND u.id = ? AND m.removed_at IS NULL`)
+    .bind(org, id)
     .first<UserRow>();
 
   return row ? toUser(row) : null;
 }
 
-/**
- * Sign-in matches on email, because an admin creates the row long before the
- * person has ever presented a Google token.
- */
-export async function getLiveUserByEmail(db: D1Database, email: string): Promise<User | null> {
-  // A blank address must never match. SQL equality against NULL is already
-  // never true, so a child's row is unreachable this way; this guards the
-  // other direction, where a caller passes "" and matches a row storing "".
+/** A current member of this organization with this address. */
+export async function getLiveUserByEmail(
+  db: D1Database,
+  org: OrgId,
+  email: string,
+): Promise<User | null> {
   if (!email.trim()) return null;
 
   const row = await db
-    .prepare(`${SELECT_USER} WHERE lower(u.email) = ? AND u.deleted_at IS NULL`)
-    .bind(email.trim().toLowerCase())
+    .prepare(
+      `${SELECT_USER} WHERE m.organization_id = ? AND lower(u.email) = ? AND m.removed_at IS NULL`,
+    )
+    .bind(org, email.trim().toLowerCase())
     .first<UserRow>();
 
   return row ? toUser(row) : null;
+}
+
+/** Whether this person belongs to any OTHER organization; their shared fields are then locked. */
+export async function belongsElsewhere(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const row = await db
+    .prepare('SELECT 1 AS ok FROM org_members WHERE user_id = ? AND organization_id <> ? LIMIT 1')
+    .bind(id, org)
+    .first<{ ok: number }>();
+  return row?.ok === 1;
 }
 
 /**
@@ -178,10 +218,14 @@ export async function getLiveUserByEmail(db: D1Database, email: string): Promise
  * everything that hangs off them. Issued as one batch, so it costs a single
  * round trip to D1.
  */
-export async function getUserDetail(db: D1Database, id: string): Promise<UserDetail | null> {
+export async function getUserDetail(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+): Promise<UserDetail | null> {
   const [
     userRes,
-    adminRes,
+    elsewhereRes,
     tutorRes,
     studentRes,
     payRes,
@@ -190,8 +234,10 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
     dependentsRes,
   ] =
     await db.batch<Record<string, unknown>>([
-      db.prepare(`${SELECT_USER} WHERE u.id = ?`).bind(id),
-      db.prepare('SELECT tin FROM admin_profiles WHERE user_id = ?').bind(id),
+      db.prepare(`${SELECT_USER} WHERE m.organization_id = ? AND u.id = ?`).bind(org, id),
+      db
+        .prepare('SELECT COUNT(*) AS total FROM org_members WHERE user_id = ? AND organization_id <> ?')
+        .bind(id, org),
       db
         .prepare(
           `SELECT highest_education, school, area,
@@ -199,50 +245,55 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
                   availability_notes, virtual_available,
                   default_rate_in_person_cents, default_rate_virtual_cents,
                   max_session_minutes, topup_amount_cents, ssn_received_on
-           FROM tutor_profiles WHERE user_id = ?`,
+           FROM tutor_profiles WHERE organization_id = ? AND user_id = ?`,
         )
-        .bind(id),
+        .bind(org, id),
       db
         .prepare(
           `SELECT school, current_math_course, academic_year_goal, virtual_available,
                   charge_rate_in_person_cents, charge_rate_virtual_cents,
                   max_session_minutes
-           FROM student_profiles WHERE user_id = ?`,
+           FROM student_profiles WHERE organization_id = ? AND user_id = ?`,
         )
-        .bind(id),
+        .bind(org, id),
       db
-        .prepare('SELECT method, handle FROM payment_handles WHERE user_id = ? ORDER BY method')
-        .bind(id),
+        .prepare(
+          `SELECT method, handle FROM payment_handles
+           WHERE organization_id = ? AND user_id = ? ORDER BY method`,
+        )
+        .bind(org, id),
       db
         .prepare(
           `SELECT day_of_week, hour FROM availability_slots
-           WHERE user_id = ? ORDER BY day_of_week, hour`,
+           WHERE organization_id = ? AND user_id = ? ORDER BY day_of_week, hour`,
         )
-        .bind(id),
+        .bind(org, id),
       // People responsible for this user.
       db
         .prepare(
           `SELECT g.guardian_user_id AS user_id, p.full_name, p.email, g.relationship, g.is_primary
            FROM guardianships g JOIN users p ON p.id = g.guardian_user_id
-           WHERE g.dependent_user_id = ?
+           WHERE g.organization_id = ? AND g.dependent_user_id = ?
            ORDER BY g.is_primary DESC, p.full_name`,
         )
-        .bind(id),
+        .bind(org, id),
       // People this user is responsible for.
       db
         .prepare(
           `SELECT g.dependent_user_id AS user_id, c.full_name, c.email, g.relationship, g.is_primary
            FROM guardianships g JOIN users c ON c.id = g.dependent_user_id
-           WHERE g.guardian_user_id = ?
+           WHERE g.organization_id = ? AND g.guardian_user_id = ?
            ORDER BY c.full_name`,
         )
-        .bind(id),
+        .bind(org, id),
     ]);
 
   const userRow = userRes?.results?.[0] as UserRow | undefined;
   if (!userRow) return null;
 
-  const rawAdmin = adminRes?.results?.[0] as Record<string, unknown> | undefined;
+  const elsewhere = Number(
+    (elsewhereRes?.results?.[0] as { total?: number } | undefined)?.total ?? 0,
+  );
   const rawTutor = tutorRes?.results?.[0] as Record<string, unknown> | undefined;
   const rawStudent = studentRes?.results?.[0] as Record<string, unknown> | undefined;
 
@@ -256,11 +307,11 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
       is_primary: row.is_primary === 1,
     }));
 
+  const member = toUser(userRow);
   return {
-    ...toUser(userRow),
-    admin_profile: rawAdmin
-      ? ({ tin: (rawAdmin.tin as string | null) ?? null } satisfies AdminProfile)
-      : null,
+    ...member,
+    shared_fields_locked: elsewhere > 0,
+    last_entered_at: member.last_login_at,
     tutor_profile: rawTutor
       ? ({
           highest_education: (rawTutor.highest_education as string | null) ?? null,
@@ -302,24 +353,48 @@ export async function getUserDetail(db: D1Database, id: string): Promise<UserDet
   };
 }
 
-/** How many guardians a user currently has. Backs the "students need a parent" rule. */
-export async function countGuardians(db: D1Database, dependentId: string): Promise<number> {
+/**
+ * How many guardians a student has IN THIS ORGANIZATION. Backs the rule "a
+ * student has at least one guardian who is a member here".
+ */
+export async function countGuardians(
+  db: D1Database,
+  org: OrgId,
+  dependentId: string,
+): Promise<number> {
   const row = await db
-    .prepare('SELECT COUNT(*) AS total FROM guardianships WHERE dependent_user_id = ?')
-    .bind(dependentId)
+    .prepare(
+      `SELECT COUNT(*) AS total FROM guardianships g
+       JOIN org_members m ON m.organization_id = g.organization_id AND m.user_id = g.guardian_user_id
+       WHERE g.organization_id = ? AND g.dependent_user_id = ? AND m.removed_at IS NULL`,
+    )
+    .bind(org, dependentId)
     .first<{ total: number }>();
 
   return Number(row?.total ?? 0);
 }
 
-/** Validates guardian ids before they are written, so FK errors never surface raw. */
-export async function findMissingUserIds(db: D1Database, ids: string[]): Promise<string[]> {
+/**
+ * The ids that are NOT current members of this organization. Every person a
+ * write names goes through here, so somebody from another organization
+ * answers exactly as somebody who does not exist.
+ */
+export async function findMissingUserIds(
+  db: D1Database,
+  org: OrgId,
+  ids: string[],
+): Promise<string[]> {
   if (ids.length === 0) return [];
 
-  const placeholders = ids.map(() => '?').join(', ');
+  const unique = [...new Set(ids)];
+  const placeholders = unique.map(() => '?').join(', ');
   const result = await db
-    .prepare(`SELECT id FROM users WHERE id IN (${placeholders}) AND deleted_at IS NULL`)
-    .bind(...ids)
+    .prepare(
+      `SELECT m.user_id AS id FROM org_members m JOIN users u ON u.id = m.user_id
+       WHERE m.organization_id = ? AND m.user_id IN (${placeholders})
+         AND m.removed_at IS NULL AND u.deleted_at IS NULL`,
+    )
+    .bind(org, ...unique)
     .all<{ id: string }>();
 
   const found = new Set((result.results ?? []).map((row) => row.id));
@@ -330,95 +405,166 @@ export async function findMissingUserIds(db: D1Database, ids: string[]): Promise
 // Writes
 // ---------------------------------------------------------------------------
 
-function roleStatements(db: D1Database, userId: string, roles: UserRole[]) {
+function roleStatements(db: D1Database, org: OrgId, userId: string, roles: UserRole[]) {
   return roles.map((role) =>
-    db.prepare('INSERT INTO user_roles (user_id, role) VALUES (?, ?)').bind(userId, role),
+    db
+      .prepare('INSERT INTO user_roles (organization_id, user_id, role) VALUES (?, ?, ?)')
+      .bind(org, userId, role),
   );
 }
 
 /**
- * A profile row may exist only while its role is held, so dropping a role
- * drops the profile with it rather than leaving an orphan behind.
+ * A profile row may exist only while its role is held -- in this
+ * organization -- so dropping a role drops the profile with it.
  */
-function profileCleanupStatements(db: D1Database, userId: string, roles: UserRole[]) {
+function profileCleanupStatements(db: D1Database, org: OrgId, userId: string, roles: UserRole[]) {
   const statements = [];
 
-  if (!roles.includes('admin')) {
-    statements.push(db.prepare('DELETE FROM admin_profiles WHERE user_id = ?').bind(userId));
-  }
   if (!roles.includes('tutor')) {
-    statements.push(db.prepare('DELETE FROM tutor_profiles WHERE user_id = ?').bind(userId));
+    statements.push(
+      db
+        .prepare('DELETE FROM tutor_profiles WHERE organization_id = ? AND user_id = ?')
+        .bind(org, userId),
+    );
   }
   if (!roles.includes('student')) {
-    statements.push(db.prepare('DELETE FROM student_profiles WHERE user_id = ?').bind(userId));
+    statements.push(
+      db
+        .prepare('DELETE FROM student_profiles WHERE organization_id = ? AND user_id = ?')
+        .bind(org, userId),
+    );
   }
 
   return statements;
 }
 
-export async function createUser(db: D1Database, input: CreateUserPayload): Promise<User> {
+/** What creating a user turned out to be. */
+export type CreateUserOutcome =
+  /** A brand-new person, invited until they first sign in (or active, if so asked). */
+  | { kind: 'created'; user: User }
+  /**
+   * Someone with an account already: they are invited to this organization
+   * and accept when they next sign in. Answered exactly like `created`, so an
+   * admin cannot use it to learn whether an address has an account.
+   */
+  | { kind: 'invited'; user: User }
+  /** Already a member here (or once was): the address is taken. */
+  | { kind: 'already_member' };
+
+export async function createUser(
+  db: D1Database,
+  org: OrgId,
+  input: CreateUserPayload,
+): Promise<CreateUserOutcome> {
+  if (input.email) {
+    const existing = await db
+      .prepare('SELECT id FROM users WHERE lower(email) = ? AND deleted_at IS NULL')
+      .bind(input.email.toLowerCase())
+      .first<{ id: string }>();
+
+    if (existing) {
+      const membership = await db
+        .prepare('SELECT 1 AS ok FROM org_members WHERE organization_id = ? AND user_id = ?')
+        .bind(org, existing.id)
+        .first<{ ok: number }>();
+      if (membership) return { kind: 'already_member' };
+
+      // Their shared fields are theirs: the name and phone typed here do not
+      // overwrite what they already have.
+      await db.batch([
+        db
+          .prepare(
+            "INSERT INTO org_members (organization_id, user_id, status) VALUES (?, ?, 'invited')",
+          )
+          .bind(org, existing.id),
+        ...roleStatements(db, org, existing.id, input.roles),
+      ]);
+
+      const user = await getUserById(db, org, existing.id);
+      if (!user) throw new Error('Membership insert returned no row.');
+      return { kind: 'invited', user };
+    }
+  }
+
   const id = crypto.randomUUID();
 
-  // Batched, so a failure part-way leaves no user without roles.
+  // Batched, so a failure part-way leaves no member without roles.
   await db.batch([
     db
-      .prepare('INSERT INTO users (id, email, full_name, phone, status) VALUES (?, ?, ?, ?, ?)')
-      .bind(id, input.email, input.full_name, input.phone, input.status),
-    ...roleStatements(db, id, input.roles),
+      .prepare('INSERT INTO users (id, email, full_name, phone) VALUES (?, ?, ?, ?)')
+      .bind(id, input.email, input.full_name, input.phone),
+    db
+      .prepare('INSERT INTO org_members (organization_id, user_id, status) VALUES (?, ?, ?)')
+      .bind(org, id, input.status),
+    ...roleStatements(db, org, id, input.roles),
   ]);
 
-  const user = await getUserById(db, id);
+  const user = await getUserById(db, org, id);
   if (!user) throw new Error('Insert into users returned no row.');
 
-  return user;
+  return { kind: 'created', user };
 }
 
-/** Returns null when no live user has that id. */
+/**
+ * Returns null when this organization has no current member with that id.
+ *
+ * Shared fields (name, email, phone) are written only when the caller has
+ * already decided they may be -- see the users route: a person who belongs to
+ * another organization too is changed by a platform admin, not from here.
+ */
 export async function updateUser(
   db: D1Database,
+  org: OrgId,
   id: string,
   input: UpdateUserPayload,
 ): Promise<User | null> {
-  const existing = await getLiveUserById(db, id);
+  const existing = await getLiveUserById(db, org, id);
   if (!existing) return null;
 
-  const assignments: string[] = [];
-  const values: unknown[] = [];
+  const personSets: string[] = [];
+  const personValues: unknown[] = [];
 
-  for (const field of ['email', 'full_name', 'phone', 'status'] as const) {
+  for (const field of ['email', 'full_name', 'phone'] as const) {
     if (field in input) {
-      assignments.push(`${field} = ?`);
-      values.push(input[field]);
+      personSets.push(`${field} = ?`);
+      personValues.push(input[field]);
     }
   }
 
   // Always bump updated_at, even for a roles-only change: the person's record
   // did change. Setting it inline also stops the trigger doing a second write.
-  assignments.push(`updated_at = ${NOW}`);
+  personSets.push(`updated_at = ${NOW}`);
 
   const statements = [
     db
-      .prepare(`UPDATE users SET ${assignments.join(', ')} WHERE id = ? AND deleted_at IS NULL`)
-      .bind(...values, id),
+      .prepare(`UPDATE users SET ${personSets.join(', ')} WHERE id = ? AND deleted_at IS NULL`)
+      .bind(...personValues, id),
   ];
 
-  // Supplying `roles` replaces the whole set.
+  if (input.status) {
+    statements.push(
+      db
+        .prepare(
+          `UPDATE org_members SET status = ?, updated_at = ${NOW}
+           WHERE organization_id = ? AND user_id = ?`,
+        )
+        .bind(input.status, org, id),
+    );
+  }
+
+  // Supplying `roles` replaces the whole set -- in this organization.
   if (input.roles) {
     statements.push(
-      db.prepare('DELETE FROM user_roles WHERE user_id = ?').bind(id),
-      ...roleStatements(db, id, input.roles),
-      ...profileCleanupStatements(db, id, input.roles),
+      db.prepare('DELETE FROM user_roles WHERE organization_id = ? AND user_id = ?').bind(org, id),
+      ...roleStatements(db, org, id, input.roles),
+      ...profileCleanupStatements(db, org, id, input.roles),
     );
   }
 
   await db.batch(statements);
-  return getUserById(db, id);
+  return getUserById(db, org, id);
 }
 
-/**
- * Replaces whole sections rather than diffing them, which keeps "set my
- * availability" one idempotent call. An omitted key leaves that section alone.
- */
 /**
  * A student's goal is ONE fact, held in two places: the profile carries it
  * before any plan exists, and the active learning plan carries it after. The
@@ -430,52 +576,51 @@ export async function updateUser(
  * puts the plan's goal back rather than leaving the two apart.
  * The plan side is in the progress repository (planGoalSyncStatement).
  */
-function goalSyncFromProfile(db: D1Database, studentId: string, goal: string | null) {
+function goalSyncFromProfile(db: D1Database, org: OrgId, studentId: string, goal: string | null) {
   return goal === null
     ? [
         db
           .prepare(
             `UPDATE student_profiles
              SET academic_year_goal = (SELECT goal FROM learning_plans
-                                       WHERE student_user_id = ? AND status = 'active')
-             WHERE user_id = ?
+                                       WHERE organization_id = ? AND student_user_id = ?
+                                         AND status = 'active')
+             WHERE organization_id = ? AND user_id = ?
                AND EXISTS (SELECT 1 FROM learning_plans
-                           WHERE student_user_id = ? AND status = 'active')`,
+                           WHERE organization_id = ? AND student_user_id = ? AND status = 'active')`,
           )
-          .bind(studentId, studentId, studentId),
+          .bind(org, studentId, org, studentId, org, studentId),
       ]
     : [
         db
           .prepare(
             `UPDATE learning_plans
              SET goal = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-             WHERE student_user_id = ? AND status = 'active' AND goal <> ?`,
+             WHERE organization_id = ? AND student_user_id = ? AND status = 'active' AND goal <> ?`,
           )
-          .bind(goal, studentId, goal),
+          .bind(goal, org, studentId, goal),
       ];
 }
 
+/**
+ * Replaces whole sections rather than diffing them, which keeps "set my
+ * availability" one idempotent call. An omitted key leaves that section alone.
+ * Every section is this organization's own.
+ */
 export async function updateUserSections(
   db: D1Database,
+  org: OrgId,
   id: string,
   sections: UpdateUserSectionsPayload,
 ): Promise<void> {
   const statements = [];
 
-  if (sections.admin_profile !== undefined) {
-    statements.push(db.prepare('DELETE FROM admin_profiles WHERE user_id = ?').bind(id));
-
-    if (sections.admin_profile !== null) {
-      statements.push(
-        db
-          .prepare('INSERT INTO admin_profiles (user_id, tin) VALUES (?, ?)')
-          .bind(id, sections.admin_profile.tin),
-      );
-    }
-  }
-
   if (sections.tutor_profile !== undefined) {
-    statements.push(db.prepare('DELETE FROM tutor_profiles WHERE user_id = ?').bind(id));
+    statements.push(
+      db
+        .prepare('DELETE FROM tutor_profiles WHERE organization_id = ? AND user_id = ?')
+        .bind(org, id),
+    );
 
     if (sections.tutor_profile !== null) {
       const p = sections.tutor_profile;
@@ -483,14 +628,15 @@ export async function updateUserSections(
         db
           .prepare(
             `INSERT INTO tutor_profiles
-               (user_id, highest_education, school, area,
+               (organization_id, user_id, highest_education, school, area,
                 address_line1, address_line2, city, state, postal_code,
                 availability_notes, virtual_available,
                 default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes,
                 topup_amount_cents, ssn_received_on)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
+            org,
             id,
             p.highest_education,
             p.school,
@@ -513,7 +659,11 @@ export async function updateUserSections(
   }
 
   if (sections.student_profile !== undefined) {
-    statements.push(db.prepare('DELETE FROM student_profiles WHERE user_id = ?').bind(id));
+    statements.push(
+      db
+        .prepare('DELETE FROM student_profiles WHERE organization_id = ? AND user_id = ?')
+        .bind(org, id),
+    );
 
     if (sections.student_profile !== null) {
       const p = sections.student_profile;
@@ -521,11 +671,13 @@ export async function updateUserSections(
         db
           .prepare(
             `INSERT INTO student_profiles
-               (user_id, school, current_math_course, academic_year_goal, virtual_available,
-                charge_rate_in_person_cents, charge_rate_virtual_cents, max_session_minutes)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+               (organization_id, user_id, school, current_math_course, academic_year_goal,
+                virtual_available, charge_rate_in_person_cents, charge_rate_virtual_cents,
+                max_session_minutes)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
+            org,
             id,
             p.school,
             p.current_math_course,
@@ -535,187 +687,201 @@ export async function updateUserSections(
             p.charge_rate_virtual_cents,
             p.max_session_minutes,
           ),
-        ...goalSyncFromProfile(db, id, p.academic_year_goal),
+        ...goalSyncFromProfile(db, org, id, p.academic_year_goal),
       );
     }
   }
 
   if (sections.payment_handles) {
-    statements.push(db.prepare('DELETE FROM payment_handles WHERE user_id = ?').bind(id));
+    statements.push(
+      db
+        .prepare('DELETE FROM payment_handles WHERE organization_id = ? AND user_id = ?')
+        .bind(org, id),
+    );
     for (const handle of sections.payment_handles) {
       statements.push(
         db
-          .prepare('INSERT INTO payment_handles (user_id, method, handle) VALUES (?, ?, ?)')
-          .bind(id, handle.method, handle.handle),
+          .prepare(
+            'INSERT INTO payment_handles (organization_id, user_id, method, handle) VALUES (?, ?, ?, ?)',
+          )
+          .bind(org, id, handle.method, handle.handle),
       );
     }
   }
 
   if (sections.availability) {
-    statements.push(db.prepare('DELETE FROM availability_slots WHERE user_id = ?').bind(id));
+    statements.push(
+      db
+        .prepare('DELETE FROM availability_slots WHERE organization_id = ? AND user_id = ?')
+        .bind(org, id),
+    );
     for (const slot of sections.availability) {
       statements.push(
         db
-          .prepare('INSERT INTO availability_slots (user_id, day_of_week, hour) VALUES (?, ?, ?)')
-          .bind(id, slot.day_of_week, slot.hour),
+          .prepare(
+            `INSERT INTO availability_slots (organization_id, user_id, day_of_week, hour)
+             VALUES (?, ?, ?, ?)`,
+          )
+          .bind(org, id, slot.day_of_week, slot.hour),
       );
     }
   }
 
   if (sections.guardians) {
-    statements.push(db.prepare('DELETE FROM guardianships WHERE dependent_user_id = ?').bind(id));
+    statements.push(
+      db
+        .prepare('DELETE FROM guardianships WHERE organization_id = ? AND dependent_user_id = ?')
+        .bind(org, id),
+    );
     for (const link of sections.guardians) {
       statements.push(
         db
           .prepare(
             `INSERT INTO guardianships
-               (guardian_user_id, dependent_user_id, relationship, is_primary)
-             VALUES (?, ?, ?, ?)`,
+               (organization_id, guardian_user_id, dependent_user_id, relationship, is_primary)
+             VALUES (?, ?, ?, ?, ?)`,
           )
-          .bind(link.guardian_user_id, id, link.relationship, link.is_primary ? 1 : 0),
+          .bind(org, link.guardian_user_id, id, link.relationship, link.is_primary ? 1 : 0),
       );
     }
   }
 
   if (statements.length > 0) {
     // One batch, so a half-applied section is impossible.
-    statements.push(db.prepare(`UPDATE users SET updated_at = ${NOW} WHERE id = ?`).bind(id));
+    statements.push(
+      db
+        .prepare(
+          `UPDATE org_members SET updated_at = ${NOW} WHERE organization_id = ? AND user_id = ?`,
+        )
+        .bind(org, id),
+    );
     await db.batch(statements);
   }
 }
 
-/** Soft delete. Returns null if the user is missing or already deleted. */
-export async function deactivateUser(db: D1Database, id: string): Promise<User | null> {
+/** Removes someone from THIS organization. Null if they are not a current member. */
+export async function deactivateUser(db: D1Database, org: OrgId, id: string): Promise<User | null> {
   const result = await db
     .prepare(
-      `UPDATE users SET deleted_at = ${NOW}, updated_at = ${NOW}
-       WHERE id = ? AND deleted_at IS NULL`,
+      `UPDATE org_members SET removed_at = ${NOW}, updated_at = ${NOW}
+       WHERE organization_id = ? AND user_id = ? AND removed_at IS NULL`,
     )
-    .bind(id)
+    .bind(org, id)
     .run();
 
   if (!result.meta.changes) return null;
-  return getUserById(db, id);
+  return getUserById(db, org, id);
 }
 
-/** Returns null if the user is missing or was never deleted. */
-export async function restoreUser(db: D1Database, id: string): Promise<User | null> {
+/** Null if they were never removed from this organization. */
+export async function restoreUser(db: D1Database, org: OrgId, id: string): Promise<User | null> {
   const result = await db
     .prepare(
-      `UPDATE users SET deleted_at = NULL, updated_at = ${NOW}
-       WHERE id = ? AND deleted_at IS NOT NULL`,
+      `UPDATE org_members SET removed_at = NULL, updated_at = ${NOW}
+       WHERE organization_id = ? AND user_id = ? AND removed_at IS NOT NULL`,
     )
-    .bind(id)
+    .bind(org, id)
     .run();
 
   if (!result.meta.changes) return null;
-  return getUserById(db, id);
-}
-
-/** Permanent removal. Roles, profiles and links go with it via ON DELETE CASCADE. */
-export async function purgeUser(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM users WHERE id = ?').bind(id).run();
-  return Boolean(result.meta.changes);
-}
-
-// ---------------------------------------------------------------------------
-// Sign-in support
-// ---------------------------------------------------------------------------
-
-/** Used by the AUTH_ENABLED=false bypass when no DEV_USER_EMAIL is configured. */
-export async function getFirstAdmin(db: D1Database): Promise<User | null> {
-  const row = await db
-    .prepare(
-      `${SELECT_USER}
-       WHERE u.deleted_at IS NULL
-         AND EXISTS (SELECT 1 FROM user_roles r WHERE r.user_id = u.id AND r.role = 'admin')
-       ORDER BY u.created_at ASC, u.id ASC
-       LIMIT 1`,
-    )
-    .first<UserRow>();
-
-  return row ? toUser(row) : null;
-}
-
-/** Last-resort identity for the AUTH_ENABLED=false bypass. */
-export async function getFirstLiveUser(db: D1Database): Promise<User | null> {
-  const row = await db
-    .prepare(`${SELECT_USER} WHERE u.deleted_at IS NULL ORDER BY u.created_at ASC, u.id ASC LIMIT 1`)
-    .first<UserRow>();
-
-  return row ? toUser(row) : null;
-}
-
-/** Gate for the bootstrap-admin path: once any admin exists, it closes. */
-export async function countAdmins(db: D1Database): Promise<number> {
-  const row = await db
-    .prepare(
-      `SELECT COUNT(*) AS total FROM users u
-       WHERE u.deleted_at IS NULL
-         AND EXISTS (SELECT 1 FROM user_roles r WHERE r.user_id = u.id AND r.role = 'admin')`,
-    )
-    .first<{ total: number }>();
-
-  return Number(row?.total ?? 0);
+  return getUserById(db, org, id);
 }
 
 /**
- * Records a successful sign-in and pins the Google `sub` the first time we see
- * it, so the account survives a later email change.
+ * Erases everything THIS organization holds about a person, then the
+ * membership. Explicit deletes by organization -- never a cascade from
+ * `users`, which would reach every organization they belong to. The person
+ * themselves is erased only when no membership remains anywhere.
  */
-export async function recordSignIn(
-  db: D1Database,
-  id: string,
-  googleSub: string,
-): Promise<User | null> {
-  const result = await db
-    .prepare(
-      `UPDATE users
-       SET last_login_at = ${NOW},
-           updated_at = ${NOW},
-           google_sub = COALESCE(google_sub, ?),
-           -- 'invited' means "added, but has never signed in", so the first
-           -- successful sign-in is exactly when it stops being true.
-           status = CASE WHEN status = 'invited' THEN 'active' ELSE status END
-       WHERE id = ? AND deleted_at IS NULL`,
-    )
-    .bind(googleSub, id)
-    .run();
+export async function purgeUser(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const member = await db
+    .prepare('SELECT 1 AS ok FROM org_members WHERE organization_id = ? AND user_id = ?')
+    .bind(org, id)
+    .first<{ ok: number }>();
+  if (!member) return false;
 
-  if (!result.meta.changes) return null;
-  return getUserById(db, id);
-}
-
-/** Creates the very first admin from BOOTSTRAP_ADMIN_EMAILS on their first sign-in. */
-export async function createBootstrapAdmin(
-  db: D1Database,
-  input: { email: string; full_name: string; google_sub: string | null },
-): Promise<User> {
-  const id = crypto.randomUUID();
+  const byPerson = (sql: string, binds: number) =>
+    db.prepare(sql).bind(org, ...Array<string>(binds).fill(id));
 
   await db.batch([
+    byPerson(
+      'DELETE FROM comments WHERE organization_id = ? AND (author_user_id = ? OR target_user_id = ?)',
+      2,
+    ),
+    byPerson(
+      'DELETE FROM session_drafts WHERE organization_id = ? AND (tutor_user_id = ? OR student_user_id = ? OR author_user_id = ?)',
+      3,
+    ),
+    byPerson(
+      'DELETE FROM active_sessions WHERE organization_id = ? AND (tutor_user_id = ? OR student_user_id = ?)',
+      2,
+    ),
+    byPerson(
+      'DELETE FROM sessions WHERE organization_id = ? AND (tutor_user_id = ? OR student_user_id = ?)',
+      2,
+    ),
+    byPerson(
+      'DELETE FROM scheduled_sessions WHERE organization_id = ? AND (tutor_user_id = ? OR student_user_id = ?)',
+      2,
+    ),
+    byPerson(
+      'DELETE FROM assignments WHERE organization_id = ? AND (tutor_user_id = ? OR student_user_id = ?)',
+      2,
+    ),
+    byPerson(
+      'DELETE FROM payments WHERE organization_id = ? AND (party_user_id = ? OR student_user_id = ?)',
+      2,
+    ),
+    byPerson('DELETE FROM learning_plans WHERE organization_id = ? AND student_user_id = ?', 1),
+    byPerson('DELETE FROM assessments WHERE organization_id = ? AND student_user_id = ?', 1),
+    // Roles, profiles, handles, availability and guardianships cascade from the membership.
+    byPerson('DELETE FROM org_members WHERE organization_id = ? AND user_id = ?', 1),
     db
       .prepare(
-        `INSERT INTO users (id, email, full_name, status, google_sub, last_login_at)
-         VALUES (?, ?, ?, 'active', ?, ${NOW})`,
+        // org-scope: erases the PERSON only once no organization has them.
+        `DELETE FROM users WHERE id = ?
+           AND NOT EXISTS (SELECT 1 FROM org_members WHERE user_id = ?)
+           AND NOT EXISTS (SELECT 1 FROM platform_admins WHERE user_id = ?)`,
       )
-      .bind(id, input.email, input.full_name, input.google_sub),
-    db.prepare("INSERT INTO user_roles (user_id, role) VALUES (?, 'admin')").bind(id),
+      .bind(id, id, id),
   ]);
+  return true;
+}
 
-  const user = await getUserById(db, id);
-  if (!user) throw new Error('Bootstrap admin insert returned no row.');
+// ---------------------------------------------------------------------------
+// Sign-in-off support
+// ---------------------------------------------------------------------------
 
-  return user;
+/**
+ * The first admin of any organization, with that organization -- the
+ * AUTH_ENABLED=false bypass runs as them when nobody is named.
+ */
+export async function getFirstAdminMembership(
+  db: D1Database,
+): Promise<{ user_id: string; organization_id: string } | null> {
+  const row = await db
+    .prepare(
+      `SELECT r.user_id, r.organization_id
+       FROM user_roles r
+       JOIN org_members m ON m.organization_id = r.organization_id AND m.user_id = r.user_id
+       JOIN organizations o ON o.id = r.organization_id
+       JOIN users u ON u.id = r.user_id
+       WHERE r.role = 'admin' AND m.removed_at IS NULL AND m.status <> 'suspended'
+         AND o.archived_at IS NULL AND u.deleted_at IS NULL
+       ORDER BY o.created_at, u.created_at, u.id
+       LIMIT 1`,
+    )
+    .first<{ user_id: string; organization_id: string }>();
+  return row ?? null;
 }
 
 /**
- * The hourly prices charged for one student, or null if they have no student
- * profile. Its own query because pricing a session needs nothing else from the
- * profile, and runs on every session write.
+ * The hourly prices this organization charges for one student, or null if
+ * they have no student profile here.
  */
 export async function getStudentChargeRates(
   db: D1Database,
+  org: OrgId,
   studentUserId: string,
 ): Promise<{
   charge_rate_in_person_cents: number | null;
@@ -724,9 +890,9 @@ export async function getStudentChargeRates(
   const row = await db
     .prepare(
       `SELECT charge_rate_in_person_cents, charge_rate_virtual_cents
-       FROM student_profiles WHERE user_id = ?`,
+       FROM student_profiles WHERE organization_id = ? AND user_id = ?`,
     )
-    .bind(studentUserId)
+    .bind(org, studentUserId)
     .first<{
       charge_rate_in_person_cents: number | null;
       charge_rate_virtual_cents: number | null;
@@ -736,11 +902,13 @@ export async function getStudentChargeRates(
 }
 
 /**
- * Records, or withdraws, the office's confirmation that it holds a tutor's
- * SSN. The number is not a parameter here and has nowhere to go if it were.
+ * Records, or withdraws, this organization's confirmation that it holds a
+ * tutor's SSN. The number is not a parameter here and has nowhere to go if it
+ * were.
  */
 export async function setSsnReceived(
   db: D1Database,
+  org: OrgId,
   userId: string,
   received: boolean,
 ): Promise<string | null> {
@@ -749,29 +917,21 @@ export async function setSsnReceived(
       `UPDATE tutor_profiles
        SET ssn_received_on = ${received ? "date('now')" : 'NULL'},
            updated_at = ${NOW}
-       WHERE user_id = ?`,
+       WHERE organization_id = ? AND user_id = ?`,
     )
-    .bind(userId)
+    .bind(org, userId)
     .run();
 
-  const row = await db
-    .prepare('SELECT ssn_received_on FROM tutor_profiles WHERE user_id = ?')
-    .bind(userId)
-    .first<{ ssn_received_on: string | null }>();
-
-  return row?.ssn_received_on ?? null;
+  return getSsnReceivedOn(db, org, userId);
 }
 
 /**
- * Every tutor's tax-document readiness, with what they have been paid in the
- * given calendar year.
- *
- * One query rather than a balance recomputation: a year-end document covers
- * money that MOVED in that year, which is the payments table, not the
- * sessions that earned it.
+ * Every tutor's tax-document readiness in this organization, with what it paid
+ * them in the given calendar year.
  */
 export async function listTutorTaxStatus(
   db: D1Database,
+  org: OrgId,
   year: number,
 ): Promise<TutorTaxStatus[]> {
   const result = await db
@@ -779,16 +939,19 @@ export async function listTutorTaxStatus(
       `SELECT u.id AS user_id, u.full_name, tp.ssn_received_on,
               tp.address_line1, tp.address_line2, tp.city, tp.state, tp.postal_code,
               COALESCE((SELECT SUM(p.amount_cents) FROM payments p
-                        WHERE p.party_user_id = u.id
+                        WHERE p.organization_id = m.organization_id
+                          AND p.party_user_id = u.id
                           AND p.direction = 'to_tutor'
                           AND p.paid_at >= ? AND p.paid_at < ?), 0) AS paid_this_year_cents
-       FROM users u
-       JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'
-       LEFT JOIN tutor_profiles tp ON tp.user_id = u.id
-       WHERE u.deleted_at IS NULL
+       FROM org_members m
+       JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+       JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                        AND r.role = 'tutor'
+       LEFT JOIN tutor_profiles tp ON tp.organization_id = m.organization_id AND tp.user_id = u.id
+       WHERE m.organization_id = ? AND m.removed_at IS NULL
        ORDER BY u.full_name`,
     )
-    .bind(`${year}-01-01`, `${year + 1}-01-01`)
+    .bind(`${year}-01-01`, `${year + 1}-01-01`, org)
     .all<Record<string, unknown>>();
 
   return (result.results ?? []).map((row) => ({
@@ -806,30 +969,40 @@ export async function listTutorTaxStatus(
   }));
 }
 
-/** Tutors the office cannot file a tax document for yet. */
+/** Tutors this organization cannot file a tax document for yet. */
 export async function listTutorsMissingSsn(
   db: D1Database,
+  org: OrgId,
 ): Promise<{ user_id: string; full_name: string }[]> {
   const result = await db
     .prepare(
       `SELECT u.id AS user_id, u.full_name
-       FROM users u
-       JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'
-       LEFT JOIN tutor_profiles tp ON tp.user_id = u.id
-       WHERE u.deleted_at IS NULL AND u.status <> 'suspended'
+       FROM org_members m
+       JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+       JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                        AND r.role = 'tutor'
+       LEFT JOIN tutor_profiles tp ON tp.organization_id = m.organization_id AND tp.user_id = u.id
+       WHERE m.organization_id = ? AND m.removed_at IS NULL AND m.status <> 'suspended'
          AND tp.ssn_received_on IS NULL
        ORDER BY u.full_name`,
     )
+    .bind(org)
     .all<{ user_id: string; full_name: string }>();
 
   return result.results ?? [];
 }
 
-/** One tutor's own tax-document readiness, for their dashboard. */
-export async function getSsnReceivedOn(db: D1Database, userId: string): Promise<string | null> {
+/** One tutor's own tax-document readiness in this organization. */
+export async function getSsnReceivedOn(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+): Promise<string | null> {
   const row = await db
-    .prepare('SELECT ssn_received_on FROM tutor_profiles WHERE user_id = ?')
-    .bind(userId)
+    .prepare(
+      'SELECT ssn_received_on FROM tutor_profiles WHERE organization_id = ? AND user_id = ?',
+    )
+    .bind(org, userId)
     .first<{ ssn_received_on: string | null }>();
 
   return row?.ssn_received_on ?? null;

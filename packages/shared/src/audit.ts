@@ -11,6 +11,7 @@ export const AUDIT_ACTIONS = [
   'auth.signed_in',
   'auth.signed_out',
   'auth.denied',
+  'auth.entered',
 
   'user.created',
   'user.updated',
@@ -57,6 +58,23 @@ export const AUDIT_ACTIONS = [
   'plan.created',
   'plan.updated',
   'plan.deleted',
+
+  'membership.invited',
+  'membership.accepted',
+  'membership.declined',
+
+  'organization.created',
+  'organization.updated',
+  'organization.archived',
+  'organization.restored',
+  'organization.logo_updated',
+  'organization.settings_updated',
+  'organization.admin_added',
+  'organization.admin_removed',
+
+  'platform_admin.added',
+  'person.updated_by_platform',
+  'person.sign_in_unpinned',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -70,6 +88,7 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'auth.signed_in': 'Signed in',
   'auth.signed_out': 'Signed out',
   'auth.denied': 'Sign-in denied',
+  'auth.entered': 'Entered the organization',
 
   'user.created': 'User created',
   'user.updated': 'User updated',
@@ -116,6 +135,23 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'plan.created': 'Learning plan created',
   'plan.updated': 'Learning plan updated',
   'plan.deleted': 'Learning plan deleted',
+
+  'membership.invited': 'Invited to the organization',
+  'membership.accepted': 'Invitation accepted',
+  'membership.declined': 'Invitation declined',
+
+  'organization.created': 'Organization created',
+  'organization.updated': 'Organization updated',
+  'organization.archived': 'Organization archived',
+  'organization.restored': 'Organization restored',
+  'organization.logo_updated': 'Logo updated',
+  'organization.settings_updated': 'Organization settings updated',
+  'organization.admin_added': 'Admin added by the platform',
+  'organization.admin_removed': 'Admin removed by the platform',
+
+  'platform_admin.added': 'Platform admin added',
+  'person.updated_by_platform': 'Shared details updated by the platform',
+  'person.sign_in_unpinned': 'Google sign-in unpinned',
 };
 
 export interface AuditEvent {

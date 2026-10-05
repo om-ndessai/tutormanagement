@@ -39,6 +39,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { PaymentDialog } from './payment-dialog';
 import { useBalances, useDeletePayment, usePayments } from './api';
+import { withOrg } from '@/lib/organization';
 
 /**
  * Balances and the payment log on one screen, because the log is only
@@ -80,7 +81,7 @@ export function BillingPage() {
         actions={
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" asChild>
-              <a href="/api/payments/export.csv" download>
+              <a href={withOrg('/api/payments/export.csv')} download>
                 <DownloadIcon />
                 CSV
               </a>
@@ -93,7 +94,7 @@ export function BillingPage() {
             {isAdmin && (
               <Button variant="outline" asChild>
                 <a
-                  href={`/api/payments/tax-summary.csv?year=${new Date().getFullYear()}`}
+                  href={withOrg(`/api/payments/tax-summary.csv?year=${new Date().getFullYear()}`)}
                   download
                 >
                   <DownloadIcon />

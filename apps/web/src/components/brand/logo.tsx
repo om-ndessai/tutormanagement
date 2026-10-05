@@ -1,17 +1,17 @@
 import { cn } from '@/lib/utils';
 import { useBrand, useBrandReady } from '@/providers/brand-provider';
 
-/** Served straight from `public/`, so no bundler import is needed. */
+/**
+ * The institute's own artwork, shipped in `public/`. Only an organization a
+ * platform admin has given `builtin_logo: 'institute'` wears it.
+ */
 const LOGO_MARK_SRC = '/logo-mark.png';
 const LOGO_FULL_SRC = '/logo-full.png';
 
 /**
- * A drawn mark for any brand that is not the institute.
- *
- * The institute's own artwork is its property and appears nowhere but its own
- * deployment, so the demo gets a mark of its own: pi over a rule, inside a
- * tile that takes its colour from the brand ramp rather than from literals, so
- * it follows the palette and dark mode for free.
+ * The drawn mark, for an organization with no logo of its own and for the
+ * platform itself: pi over a rule, inside a tile that takes its colour from
+ * the palette rather than from literals, so it follows dark mode for free.
  */
 function MathMark({ className, bare = false }: { className?: string; bare?: boolean }) {
   // On a coloured panel the tile has nothing to sit against, so the glyph goes
@@ -97,13 +97,25 @@ export function LogoMark({
 
   if (!ready) return <MarkPlaceholder className={className} />;
 
-  if (brand.id !== 'institute') {
+  const src = brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? LOGO_MARK_SRC : null);
+  if (!src) {
     return <MathMark className={className} bare={onDark} />;
+  }
+
+  // On a coloured panel the institute's transparent artwork is knocked out to
+  // white. An uploaded logo may well be opaque -- knocking it out would leave a
+  // white block -- so it sits on a light chip instead.
+  if (onDark && brand.logo_mark_url) {
+    return (
+      <span className={cn('inline-flex size-9 items-center justify-center rounded-xl bg-white p-1', className)}>
+        <img src={src} alt="" aria-hidden className="size-full select-none object-contain" />
+      </span>
+    );
   }
 
   return (
     <img
-      src={LOGO_MARK_SRC}
+      src={src}
       alt=""
       aria-hidden
       className={cn(
@@ -121,10 +133,11 @@ export function LogoFull({ className }: { className?: string }) {
 
   if (!ready) return <MarkPlaceholder className={cn('h-10 w-40 rounded-lg', className)} />;
 
-  if (brand.id !== 'institute') {
+  const src = brand.logo_full_url ?? (brand.builtin_logo === 'institute' ? LOGO_FULL_SRC : null);
+  if (!src) {
     return (
       <span className={cn('flex items-center gap-3', className)}>
-        <MathMark className="size-10" />
+        <LogoMark className="size-10" />
         <span className="font-display text-lg leading-tight font-semibold">{brand.name}</span>
       </span>
     );
@@ -132,7 +145,7 @@ export function LogoFull({ className }: { className?: string }) {
 
   return (
     <img
-      src={LOGO_FULL_SRC}
+      src={src}
       alt={brand.name}
       className={cn('h-10 w-auto select-none object-contain', className)}
     />

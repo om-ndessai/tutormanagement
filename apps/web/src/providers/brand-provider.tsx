@@ -1,82 +1,85 @@
-import { createContext, useContext, useEffect, type ReactNode } from 'react';
-import { resolveBrand, type Brand } from '@tmi/shared';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { ORG_PALETTE_HEX, PLATFORM_BRAND, brandFromOrganization, type Brand } from '@tmi/shared';
 
 import { useAuth } from './auth-provider';
 
 interface BrandState {
   brand: Brand;
   /**
-   * False until the Worker's config has landed. Nothing that names or pictures
-   * an institute may render before then: the boot screen would otherwise show
-   * the default brand's mark for an instant, and on the demo that instant is
-   * the institute's logo appearing in front of an audience.
+   * False until the Worker has said who the portal is. Nothing that names or
+   * pictures an organization may render before then, or the neutral platform
+   * mark would flash in front of an organization's own.
    */
   ready: boolean;
+  /** Wears the platform's own identity while the platform console is open. */
+  setPlatformMode: (on: boolean) => void;
 }
 
-const BrandContext = createContext<BrandState>({ brand: resolveBrand(null), ready: false });
+const BrandContext = createContext<BrandState>({
+  brand: PLATFORM_BRAND,
+  ready: false,
+  setPlatformMode: () => undefined,
+});
 
 /**
- * Which identity the portal is wearing, from the Worker that served it.
- *
- * The brand arrives with the public auth config rather than being built in, so
- * one build serves the institute and the demo and neither can appear as the
- * other. Until the config lands, the institute is assumed: a blank first paint
- * is worse than the right name a moment early, and the institute is the
- * answer that is never wrong to show its own staff.
+ * Which identity the portal is wearing: the organization this tab is in, or
+ * -- before one is chosen, and on the sign-in page -- what the Worker's config
+ * says (the organization this browser last used, else the neutral platform
+ * brand). Data, not a build flag: one build serves every organization, and
+ * none can appear as another.
  */
 export function BrandProvider({ children }: { children: ReactNode }) {
-  const { config } = useAuth();
-  const brand = resolveBrand(config?.brand);
+  const { config, organization, status } = useAuth();
+  const [platformMode, setPlatformMode] = useState(false);
+  const brand = platformMode
+    ? PLATFORM_BRAND
+    : organization
+      ? brandFromOrganization(organization)
+      : (config?.brand ?? PLATFORM_BRAND);
 
   // The palette is chosen in CSS off this attribute, so every component
-  // follows without knowing a brand exists.
+  // follows without knowing an organization exists.
   useEffect(() => {
-    document.documentElement.dataset.brand = brand.id;
-  }, [brand.id]);
+    document.documentElement.dataset.palette = brand.palette;
+  }, [brand.palette]);
 
   /**
-   * The head is static HTML, written before anyone knows which deployment is
-   * serving it, so the parts that name or picture the institute are replaced
-   * here. Without this the demo's browser tab still says TMI and still shows
-   * the institute's mark -- the two places an audience looks first.
-   *
-   * The demo's icon is a data URI of the same pi mark the sidebar draws, so
-   * no second logo file ships.
+   * The head is static HTML, written before anyone knows which organization
+   * is being shown, so its name and icon are replaced here -- the two places a
+   * person looks first.
    */
   useEffect(() => {
-    // The platform's short name and full name are the same words; say them once.
     document.title = brand.short === brand.name ? brand.name : `${brand.short} · ${brand.name}`;
 
     const description = document.querySelector('meta[name="description"]');
-    description?.setAttribute('content', `Staff portal for ${brand.name}.`);
+    description?.setAttribute('content', `Tutoring portal for ${brand.name}.`);
 
-    // Each brand paints its own icon. The institute's artwork is a file it
-    // owns; every other brand gets the same pi mark the sidebar draws, inline
-    // and tinted to its palette's brand-700, so no second logo file ever ships.
-    // The head cannot read CSS variables, hence the one hex per brand here.
-    const piMark = (tile: string) =>
-      `data:image/svg+xml,${encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">` +
-          `<rect width="48" height="48" rx="13" fill="${tile}"/>` +
-          `<g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">` +
-          `<path d="M13 18h22"/><path d="M20 18v14"/>` +
-          `<path d="M29 18v10c0 2.6 1.4 4 3.6 4"/></g></svg>`,
-      )}`;
+    // An uploaded mark, then the institute's own artwork, then the drawn pi
+    // mark tinted to the palette. The head cannot read CSS variables, hence
+    // the one hex per palette.
+    const tile = ORG_PALETTE_HEX[brand.palette];
+    const piMark = `data:image/svg+xml,${encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">` +
+        `<rect width="48" height="48" rx="13" fill="${tile}"/>` +
+        `<g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">` +
+        `<path d="M13 18h22"/><path d="M20 18v14"/>` +
+        `<path d="M29 18v10c0 2.6 1.4 4 3.6 4"/></g></svg>`,
+    )}`;
 
-    const tile = brand.id === 'platform' ? '#30577D' : '#3a3fb0';
-    const icons =
-      brand.id === 'institute'
-        ? { icon: '/favicon.png', touch: '/logo-mark.png', theme: '#773C7D' }
-        : { icon: piMark(tile), touch: piMark(tile), theme: tile };
+    const icon =
+      brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? '/favicon.png' : piMark);
+    const touch =
+      brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? '/logo-mark.png' : piMark);
 
-    document.querySelector('link[rel="icon"]')?.setAttribute('href', icons.icon);
-    document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute('href', icons.touch);
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', icons.theme);
+    document.querySelector('link[rel="icon"]')?.setAttribute('href', icon);
+    document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute('href', touch);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', tile);
   }, [brand]);
 
   return (
-    <BrandContext.Provider value={{ brand, ready: config !== null }}>
+    <BrandContext.Provider
+      value={{ brand, ready: config !== null && status !== 'loading', setPlatformMode }}
+    >
       {children}
     </BrandContext.Provider>
   );
@@ -86,7 +89,16 @@ export function useBrand(): Brand {
   return useContext(BrandContext).brand;
 }
 
-/** Whether the deployment has said which brand it is yet. */
+/** Puts the platform's own identity on for as long as the caller is mounted. */
+export function usePlatformBrand(): void {
+  const { setPlatformMode } = useContext(BrandContext);
+  useEffect(() => {
+    setPlatformMode(true);
+    return () => setPlatformMode(false);
+  }, [setPlatformMode]);
+}
+
+/** Whether the portal has said who it is yet. */
 export function useBrandReady(): boolean {
   return useContext(BrandContext).ready;
 }

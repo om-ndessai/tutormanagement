@@ -154,11 +154,10 @@
 		 * inherit `assets`, `d1_databases` or `vars`, and neither of these may
 		 * ever reach the institute's database by inheriting its binding.
 		 *
-		 * Both databases start EMPTY -- no tables. Their first schema is the one
-		 * with organization support, so `db/schema.sql` is deliberately not
-		 * applied to them. Until it is, every data route answers with an error,
-		 * and the cron is switched off (an empty list) so the lesson sweep does
-		 * not fail every fifteen minutes. Put the crons back with the schema.
+		 * Both run the organization-aware schema (db/schema.sql on the
+		 * `orgsupport` branch), built clean on 2026-10-05: `tutoring` with the
+		 * schema and the platform admin only, `tutoring-test` with the seed too.
+		 * Deploy them from `orgsupport`, never from `main`.
 		 */
 		"tutoring": {
 			"name": "tutoring",
@@ -171,7 +170,9 @@
 				]
 			},
 			"triggers": {
-				"crons": []
+				"crons": [
+					"*/15 * * * *"
+				]
 			},
 			"d1_databases": [
 				{
@@ -191,10 +192,14 @@
 				"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
 				"AUTH_ENABLED": "true",
 				"DEV_USER_EMAIL": "",
+				// While the platform has no platform admin, this address becomes
+				// one on signing in. The release inserts it anyway
+				// (db/platform-admin.sql), so this is only the escape hatch.
 				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
 
-				// The neutral platform identity: not the institute's, not the
-				// demo's. Each organization's own look arrives with Phase 30.
+				// Not read by the organization-aware code -- the look is each
+				// organization's own. Restated so wrangler's check that every
+				// top-level var exists here stays quiet.
 				"BRAND": "platform"
 			},
 			"observability": {
@@ -213,7 +218,9 @@
 				]
 			},
 			"triggers": {
-				"crons": []
+				"crons": [
+					"*/15 * * * *"
+				]
 			},
 			"d1_databases": [
 				{
@@ -235,6 +242,9 @@
 				"DEV_USER_EMAIL": "",
 				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
 
+				// Not read by the organization-aware code -- the look is each
+				// organization's own. Restated so wrangler's check that every
+				// top-level var exists here stays quiet.
 				"BRAND": "platform"
 			},
 			"observability": {

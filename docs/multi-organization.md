@@ -12,6 +12,23 @@ Nothing here is built. The build is proposed as a demo-protection step and then 
 numbers in the appendix were checked on 2026-10-04 against commit `1e219f9`; re-check them before
 building.
 
+## Status: built on `orgsupport` (2026-10-05)
+
+Phases 27-31 are built on the `orgsupport` branch and deployed to `tutoring` and
+`tutoring-test` only. Where the build differs from the design below:
+
+- **The per-person tables kept their names.** `user_roles`, `tutor_profiles`,
+  `student_profiles`, `guardianships`, `payment_handles` and `availability_slots` gained
+  `organization_id` in their keys rather than being renamed `org_*`: on a clean build the renames
+  bought nothing, and kept names halved the churn. `org_members` is new.
+- **No legacy tables, backfills or §5 release** -- the tutoring databases were built clean.
+- **Invitations.** A person who already has an account is invited, and accepts at sign-in; a
+  brand-new person takes the status the admin chose. The admin can therefore tell the two apart
+  -- the price of asking an existing person's consent, rather than making every new person
+  accept too.
+- **The time zone is offered now** (Phase 31 was built with the rest): `ORG_TIME_ZONES`, the US
+  zones.
+
 ## Where it is built (2026-10-05)
 
 The owner chose not to migrate the institute's production in place. Multi-organization support is

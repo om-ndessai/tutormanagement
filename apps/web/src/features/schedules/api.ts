@@ -15,6 +15,7 @@ import type {
 import { apiClient, toQueryString } from '@/lib/api-client';
 import { auditKeys } from '@/features/audit/api';
 import { progressKeys } from '@/features/progress/api';
+import { withOrg } from '@/lib/organization';
 
 function useScheduleInvalidation() {
   const queryClient = useQueryClient();
@@ -176,6 +177,6 @@ export function useDeleteSchedule() {
  * the file the right name without any blob juggling.
  */
 export const calendarHref = {
-  all: '/api/schedules/calendar.ics',
-  one: (id: string) => `/api/schedules/${id}/calendar.ics`,
+  all: () => withOrg('/api/schedules/calendar.ics'),
+  one: (id: string) => withOrg(`/api/schedules/${id}/calendar.ics`),
 };

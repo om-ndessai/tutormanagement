@@ -1,5 +1,6 @@
 import type { ListPaymentsParams, Payment, PaymentPayload, PaymentUpdatePayload, User } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { isAdmin } from '../lib/scope.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
@@ -18,15 +19,17 @@ const SELECT_PAYMENT = `
  * You see a payment if you are the party to it, or if it concerns one of your
  * children. Tutors see what they were paid; parents see what they paid.
  */
-function scopeFor(viewer: User): { sql: string; values: unknown[] } | null {
-  if (isAdmin(viewer)) return null;
+function scopeFor(org: OrgId, viewer: User): { sql: string; values: unknown[] } {
+  // The organization first, for everyone: an admin's view is exactly this.
+  if (isAdmin(viewer)) return { sql: 'p.organization_id = ?', values: [org] };
 
   return {
     sql:
-      '(p.party_user_id = ?' +
+      '(p.organization_id = ? AND (p.party_user_id = ?' +
       ' OR p.student_user_id = ?' +
-      ' OR p.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?))',
-    values: [viewer.id, viewer.id, viewer.id],
+      ' OR p.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g' +
+      ' WHERE g.organization_id = ? AND g.guardian_user_id = ?)))',
+    values: [org, viewer.id, viewer.id, org, viewer.id],
   };
 }
 
@@ -38,6 +41,7 @@ export interface ListPaymentsResult {
 
 export async function listPayments(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   params: ListPaymentsParams,
 ): Promise<ListPaymentsResult> {
@@ -65,13 +69,11 @@ export async function listPayments(
     values.push(`${params.to}T23:59:59.999Z`);
   }
 
-  const scope = scopeFor(viewer);
-  if (scope) {
-    where.push(scope.sql);
-    values.push(...scope.values);
-  }
+  const scope = scopeFor(org, viewer);
+  where.push(scope.sql);
+  values.push(...scope.values);
 
-  const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
+  const whereSql = `WHERE ${where.join(' AND ')}`;
 
   const [totalsResult, pageResult] = await db.batch<Record<string, unknown>>([
     db
@@ -97,35 +99,46 @@ export async function listPayments(
 /** One payment, only if the viewer's list would contain it. */
 export async function getVisiblePayment(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   id: string,
 ): Promise<Payment | null> {
-  const scope = scopeFor(viewer);
+  const scope = scopeFor(org, viewer);
   const row = await db
-    .prepare(`${SELECT_PAYMENT} WHERE p.id = ? ${scope ? `AND ${scope.sql}` : ''}`)
-    .bind(id, ...(scope?.values ?? []))
+    .prepare(`${SELECT_PAYMENT} WHERE p.id = ? AND ${scope.sql}`)
+    .bind(id, ...scope.values)
     .first<Payment>();
 
   return row ?? null;
 }
 
-export async function getPayment(db: D1Database, id: string): Promise<Payment | null> {
-  const row = await db.prepare(`${SELECT_PAYMENT} WHERE p.id = ?`).bind(id).first<Payment>();
+/** A payment of this organization. One from elsewhere is null. */
+export async function getPayment(db: D1Database, org: OrgId, id: string): Promise<Payment | null> {
+  const row = await db
+    .prepare(`${SELECT_PAYMENT} WHERE p.organization_id = ? AND p.id = ?`)
+    .bind(org, id)
+    .first<Payment>();
   return row ?? null;
 }
 
-export async function createPayment(db: D1Database, input: PaymentPayload, recordedBy: string) {
+export async function createPayment(
+  db: D1Database,
+  org: OrgId,
+  input: PaymentPayload,
+  recordedBy: string,
+) {
   const id = crypto.randomUUID();
 
   await db
     .prepare(
       `INSERT INTO payments
-         (id, direction, party_user_id, student_user_id, amount_cents, method,
+         (id, organization_id, direction, party_user_id, student_user_id, amount_cents, method,
           paid_at, reference, notes, recorded_by_user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
+      org,
       input.direction,
       input.party_user_id,
       // A payment to a tutor is not about any one student.
@@ -139,7 +152,7 @@ export async function createPayment(db: D1Database, input: PaymentPayload, recor
     )
     .run();
 
-  const created = await getPayment(db, id);
+  const created = await getPayment(db, org, id);
   if (!created) throw new Error('Insert into payments returned no row.');
 
   return created;
@@ -147,6 +160,7 @@ export async function createPayment(db: D1Database, input: PaymentPayload, recor
 
 export async function updatePayment(
   db: D1Database,
+  org: OrgId,
   id: string,
   input: PaymentUpdatePayload,
 ): Promise<Payment | null> {
@@ -160,20 +174,23 @@ export async function updatePayment(
     }
   }
 
-  if (assignments.length === 0) return getPayment(db, id);
+  if (assignments.length === 0) return getPayment(db, org, id);
 
   assignments.push(`updated_at = ${NOW}`);
 
   const result = await db
-    .prepare(`UPDATE payments SET ${assignments.join(', ')} WHERE id = ?`)
-    .bind(...values, id)
+    .prepare(`UPDATE payments SET ${assignments.join(', ')} WHERE organization_id = ? AND id = ?`)
+    .bind(...values, org, id)
     .run();
 
   if (!result.meta.changes) return null;
-  return getPayment(db, id);
+  return getPayment(db, org, id);
 }
 
-export async function deletePayment(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM payments WHERE id = ?').bind(id).run();
+export async function deletePayment(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM payments WHERE organization_id = ? AND id = ?')
+    .bind(org, id)
+    .run();
   return Boolean(result.meta.changes);
 }

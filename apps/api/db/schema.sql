@@ -1,19 +1,28 @@
 -- ===========================================================================
---  TMI portal - complete database schema
+--  Tutor Portal - complete database schema (organization support)
 -- ===========================================================================
 --
 --  This project is greenfield: there are no migrations. This file is the
 --  single source of truth, and `npm run db:rebuild` DROPS everything below and
 --  recreates it. To change the model, edit this file and re-run the rebuild.
 --
+--  This is the multi-organization schema (docs/multi-organization.md), built
+--  clean on the `tutoring` deployments. The institute's tmi-portal database
+--  still runs the single-organization schema on `main`; never apply this file
+--  to it.
+--
 --  Design notes live in docs/data-model.md. The short version:
 --
---    * One person = one `users` row, whatever they do at the institute.
---    * What they DO is `user_roles` (many per user), not a column on `users`.
---    * Attributes that only make sense for one role live in that role's
---      profile table. Attributes that describe the PERSON (when they are free,
---      how they are paid) hang off `users`, so someone who is both a parent
---      and a tutor cannot end up with two conflicting copies.
+--    * One person = one `users` row, across every organization: their sign-in
+--      identity and how to reach them (name, email, phone). Nothing else.
+--    * Belonging to an organization is `org_members`; what they do there is
+--      `user_roles`, keyed by organization. Everything an organization decides
+--      or records about a person -- profiles, pay, prices, guardians, payment
+--      handles, availability -- carries `organization_id` too, because two
+--      organizations can sensibly disagree about all of it.
+--    * Every teaching and money row carries `organization_id`, NOT NULL, and a
+--      trigger refuses one whose people are not members of that organization.
+--      A row never moves between organizations.
 --
 --  Conventions:
 --    * Ids are UUIDv4 text from crypto.randomUUID().
@@ -23,26 +32,9 @@
 --    * day_of_week is 0=Sunday .. 6=Saturday, matching JS Date#getDay().
 -- ===========================================================================
 
--- Dropped children-first so foreign keys never block the rebuild.
-DROP TRIGGER IF EXISTS payments_set_updated_at;
-DROP TRIGGER IF EXISTS scheduled_sessions_set_updated_at;
-DROP TRIGGER IF EXISTS sessions_set_updated_at;
-DROP TRIGGER IF EXISTS assignments_set_updated_at;
-DROP TRIGGER IF EXISTS payment_handles_set_updated_at;
-DROP TRIGGER IF EXISTS student_profiles_set_updated_at;
-DROP TRIGGER IF EXISTS tutor_profiles_set_updated_at;
-DROP TRIGGER IF EXISTS users_set_updated_at;
-DROP TRIGGER IF EXISTS user_onboarding_set_updated_at;
-
-DROP TRIGGER IF EXISTS learning_plans_set_updated_at;
-DROP TRIGGER IF EXISTS assessments_set_updated_at;
-DROP TRIGGER IF EXISTS session_progress_set_updated_at;
-DROP TRIGGER IF EXISTS session_assessments_set_updated_at;
-DROP TRIGGER IF EXISTS session_write_ups_set_updated_at;
-DROP TRIGGER IF EXISTS session_reflections_set_updated_at;
-
--- Progress tracking (Phase 16) references sessions, users and the curriculum,
--- so it goes before any of them.
+-- Dropped children-first so foreign keys never block the rebuild. Triggers go
+-- with their tables; the old single-organization names are listed so this file
+-- also clears a database that had the earlier schema.
 DROP TABLE IF EXISTS session_topic_ratings;
 DROP TABLE IF EXISTS session_progress;
 DROP TABLE IF EXISTS learning_plan_topics;
@@ -52,8 +44,6 @@ DROP TABLE IF EXISTS assessments;
 DROP TABLE IF EXISTS curriculum_topics;
 DROP TABLE IF EXISTS curriculum_levels;
 
--- Comments first: they reference four of the tables below, and SQLite will
--- not drop a table something still points at.
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS session_reflections;
 DROP TABLE IF EXISTS session_assessments;
@@ -73,98 +63,198 @@ DROP TABLE IF EXISTS admin_profiles;
 DROP TABLE IF EXISTS student_profiles;
 DROP TABLE IF EXISTS tutor_profiles;
 DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS org_members;
+DROP TABLE IF EXISTS platform_admins;
+DROP TABLE IF EXISTS organization_logos;
+DROP TABLE IF EXISTS organizations;
 DROP TABLE IF EXISTS user_onboarding;
 DROP TABLE IF EXISTS users;
 
 
 -- ---------------------------------------------------------------------------
--- users - every person at the institute, regardless of what they do
+-- users - a person, once, whichever organizations they belong to
 -- ---------------------------------------------------------------------------
--- Admins, tutors, students and parents are all rows here. There is no `role`
--- column: a person can hold several roles at once (a parent who tutors, a
--- senior student who tutors younger ones), so roles are a separate table.
+-- Their sign-in identity and how to reach them. Everything an organization
+-- records about them lives in that organization's rows below, so one
+-- organization can never read or overwrite another's view of the same person.
+--
+-- There is no status here: suspending someone is per organization
+-- (org_members.status), so suspending in one leaves the others alone.
 CREATE TABLE users (
   id            TEXT PRIMARY KEY,
 
-  -- Sign-in matches on this. Any Google-backed address is accepted; Google
-  -- sign-in is what proves the account is real, so no domain is hard-coded.
-  --
-  -- NULL is allowed, and means exactly what it says: this person has no email
-  -- address. Most students are children who do not have one and never sign in
-  -- -- their parents read their dashboard from their own login. Requiring an
-  -- address here forced made-up ones like `child-no-email@noemail.com` into
-  -- the directory, which look like contact details and are not.
-  --
-  -- Nobody can sign in without one, so the API requires an address from anyone
-  -- who holds a role other than `student`; see docs/data-model.md.
+  -- Sign-in matches on this (after google_sub). NULL means this person has no
+  -- address -- most students are children who never sign in. The API requires
+  -- one from anyone holding a role other than `student`; docs/data-model.md.
   email         TEXT,
   full_name     TEXT NOT NULL,
   phone         TEXT,
 
-  --   active    - taking part normally
-  --   invited   - record created by an admin, has never signed in
-  --   suspended - access revoked, record kept
-  status        TEXT NOT NULL DEFAULT 'active'
-                CHECK (status IN ('active', 'invited', 'suspended')),
-
-  -- Google's permanent id for the account, pinned on first sign-in. Matching
-  -- is on email because admins create rows before anyone signs in, but `sub`
-  -- survives a Google account changing its address.
+  -- Google's permanent id for the account, pinned on first sign-in. Sign-in
+  -- looks this up FIRST, and refuses an email match whose pinned sub differs:
+  -- otherwise whoever could edit an email could take over the account in
+  -- every organization the person belongs to.
   google_sub    TEXT,
 
   created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   last_login_at TEXT,
 
-  -- Soft delete. Retired people stay referenced by schedules and history.
-  -- Distinct from status: `suspended` is "still ours, no access", while
-  -- deleted_at is "no longer part of the institute".
+  -- The ACCOUNT erased. Leaving an organization never sets this (that is
+  -- org_members.removed_at): the live-email index below would then let a
+  -- second row take the same address, which would be a duplicate person.
   deleted_at    TEXT
 );
 
--- Unique among LIVE rows that HAVE an address, so a retired person's address
--- can be reused and any number of children can have none at all. Lowercased
--- because SQLite's default collation is case-sensitive.
 CREATE UNIQUE INDEX users_email_unique
   ON users (lower(email)) WHERE deleted_at IS NULL AND email IS NOT NULL;
 
 CREATE UNIQUE INDEX users_google_sub_unique
   ON users (google_sub) WHERE google_sub IS NOT NULL AND deleted_at IS NULL;
 
-CREATE INDEX users_status_idx    ON users (status)    WHERE deleted_at IS NULL;
 CREATE INDEX users_full_name_idx ON users (full_name) WHERE deleted_at IS NULL;
 
 
 -- ---------------------------------------------------------------------------
--- user_roles - what each person does. Many rows per user.
+-- organizations - a tutoring business on the platform
 -- ---------------------------------------------------------------------------
--- This table is the whole reason the model looks the way it does. "A user can
--- have multiple roles" makes a single `users.role` column unrepresentable.
---
---   admin   - owns the institute or has admin access. Only admins may add users.
+-- Created and branded by platform admins. Never deleted -- archived -- so no
+-- foreign key to it needs an ON DELETE action, and none has one.
+CREATE TABLE organizations (
+  id              TEXT PRIMARY KEY,
+
+  -- In the X-Organization header, the tmi_last_org cookie, file names and logo
+  -- URLs. Lower-case letters, digits and hyphens; validated in packages/shared.
+  slug            TEXT NOT NULL UNIQUE,
+  name            TEXT NOT NULL,
+  short_name      TEXT NOT NULL,
+  tagline         TEXT,
+  blurb           TEXT,
+  place           TEXT,
+
+  -- One of ORG_PALETTES in packages/shared. No CHECK, deliberately: adding a
+  -- palette must never need a table change.
+  palette         TEXT NOT NULL DEFAULT 'platform',
+
+  -- A logo shipped with the app rather than uploaded. Set by platform admins
+  -- only, so no organization can wear another's artwork.
+  builtin_logo    TEXT CHECK (builtin_logo IN ('institute')),
+
+  -- The payer on every 1099 this organization issues. NOT an SSN: the API's
+  -- `containsSsn` guard applies, as on every free-text field.
+  tin             TEXT,
+  payer_address_line1 TEXT,
+  payer_address_line2 TEXT,
+  payer_city          TEXT,
+  payer_state         TEXT CHECK (payer_state IS NULL
+                                  OR (length(payer_state) = 2 AND payer_state = upper(payer_state))),
+  payer_postal_code   TEXT,
+
+  -- The clock every lesson of this organization is recorded against.
+  time_zone       TEXT NOT NULL DEFAULT 'America/New_York',
+
+  -- The domain in every calendar UID. Never changed once set: a new UID
+  -- duplicates every event in every subscriber's calendar.
+  calendar_domain TEXT NOT NULL,
+
+  archived_at     TEXT,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK (slug = lower(slug) AND length(slug) BETWEEN 2 AND 40)
+);
+
+-- An organization's own artwork: a square mark and a full lockup. PNG or WebP
+-- only (SVG can carry script), at most 256 KB, checked by the API. Bound as a
+-- parameter, so D1's statement size limit never applies.
+CREATE TABLE organization_logos (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  kind            TEXT NOT NULL CHECK (kind IN ('mark', 'full')),
+  content_type    TEXT NOT NULL CHECK (content_type IN ('image/png', 'image/webp')),
+  bytes           BLOB NOT NULL,
+  -- The ?v= of its URL, so it can be cached forever and still change.
+  sha256          TEXT NOT NULL,
+  updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (organization_id, kind)
+);
+
+
+-- ---------------------------------------------------------------------------
+-- platform_admins - who runs the platform itself
+-- ---------------------------------------------------------------------------
+-- Not a role: roles belong to an organization, and a platform admin need not
+-- belong to any. They create organizations and their admins, and see nothing
+-- inside an organization unless they are also a member of it.
+CREATE TABLE platform_admins (
+  user_id    TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+
+-- ---------------------------------------------------------------------------
+-- org_members - who belongs to which organization
+-- ---------------------------------------------------------------------------
+-- Every per-organization row about a person references this, so nothing can
+-- be recorded about someone an organization does not have.
+CREATE TABLE org_members (
+  organization_id      TEXT NOT NULL REFERENCES organizations (id),
+  user_id              TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  --   active    - taking part normally
+  --   invited   - added, not yet accepted (someone who already belongs to
+  --               another organization accepts at sign-in; a brand-new person
+  --               accepts by signing in)
+  --   suspended - access to THIS organization revoked, record kept
+  status               TEXT NOT NULL DEFAULT 'invited'
+                       CHECK (status IN ('active', 'invited', 'suspended')),
+
+  -- "No longer part of this organization". Their history stays.
+  removed_at           TEXT,
+
+  first_entered_at     TEXT,
+  last_entered_at      TEXT,
+
+  -- When a non-admin confirmed this organization has their details right.
+  details_confirmed_at TEXT,
+
+  created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (organization_id, user_id)
+);
+
+CREATE INDEX org_members_user_idx ON org_members (user_id);
+
+
+-- ---------------------------------------------------------------------------
+-- user_roles - what each person does, in each organization
+-- ---------------------------------------------------------------------------
+--   admin   - runs the organization. Only admins may add or change people.
 --   tutor   - offers tutoring
 --   student - enrolled for tutoring
 --   parent  - responsible for costs, communication and monitoring
 CREATE TABLE user_roles (
-  user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-  role       TEXT NOT NULL CHECK (role IN ('admin', 'tutor', 'student', 'parent')),
-  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  organization_id TEXT NOT NULL,
+  user_id         TEXT NOT NULL,
+  role            TEXT NOT NULL CHECK (role IN ('admin', 'tutor', 'student', 'parent')),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
-  PRIMARY KEY (user_id, role)
+  PRIMARY KEY (organization_id, user_id, role),
+  FOREIGN KEY (organization_id, user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE
 );
 
--- Answers "list every tutor" without scanning users.
-CREATE INDEX user_roles_by_role_idx ON user_roles (role, user_id);
+CREATE INDEX user_roles_by_role_idx ON user_roles (organization_id, role, user_id);
 
 
 -- ---------------------------------------------------------------------------
--- tutor_profiles - data that only means anything for a tutor
+-- tutor_profiles - what an organization records about one of its tutors
 -- ---------------------------------------------------------------------------
--- 1:1 with users, and present only while the person holds the tutor role.
--- Kept out of `users` so that "which fields apply to this person" is answered
--- by the schema rather than by convention.
+-- Present only while the person holds the tutor role IN THAT organization.
 CREATE TABLE tutor_profiles (
-  user_id           TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  organization_id   TEXT NOT NULL,
+  user_id           TEXT NOT NULL,
 
   -- Highest education reached -- or, for a tutor still at school, their
   -- current grade or math course. Free text because it is one or the other.
@@ -174,243 +264,169 @@ CREATE TABLE tutor_profiles (
   -- The neighbourhood, for matching a tutor to families nearby.
   area              TEXT,
 
-  -- The tutor's mailing address, printed as the recipient's address on their
-  -- year-end 1099-NEC. Readable only by admins and the tutor themselves.
-  -- All optional: a tutor is often recorded before their paperwork arrives.
+  -- The tutor's mailing address, printed as the recipient's address on the
+  -- 1099-NEC this organization issues. Readable only by its admins and the
+  -- tutor themselves.
   address_line1     TEXT,
   address_line2     TEXT,
   city              TEXT,
   state             TEXT CHECK (state IS NULL OR (length(state) = 2 AND state = upper(state))),
   postal_code       TEXT,
 
-  -- Free-text caveats on the structured availability in availability_slots
-  -- ("term-time only", "alternate Saturdays").
+  -- Free-text caveats on the structured availability in availability_slots.
   availability_notes TEXT,
 
-  -- Whether this tutor will teach online as well as in person.
   virtual_available INTEGER NOT NULL DEFAULT 0 CHECK (virtual_available IN (0, 1)),
 
-  -- Default hourly rates, in whole cents. Integers rather than REAL because
-  -- money in floating point accumulates rounding error, and these feed billing.
-  -- The two can differ: virtual sessions are often priced lower.
-  -- A per-student override on `assignments` beats these; see rate resolution
-  -- in docs/data-model.md.
+  -- Default hourly pay, in whole cents. A per-student override on
+  -- `assignments` beats these.
   default_rate_in_person_cents INTEGER CHECK (default_rate_in_person_cents >= 0),
   default_rate_virtual_cents   INTEGER CHECK (default_rate_virtual_cents >= 0),
 
-  -- WHEN the office confirmed it had the tutor's SSN, as YYYY-MM-DD. NULL
-  -- means it has not been received and a tax document cannot be issued.
-  --
-  -- The number itself is NEVER stored -- not here, not anywhere in this
-  -- database, and not in the portal. This column is a receipt, not a record:
-  -- it answers "may we file for this tutor yet", which is the only question
-  -- the institute needs answered all year. The SSN lives wherever the office
-  -- keeps its paper, and `containsSsn` in packages/shared rejects anything
-  -- that looks like one from every free-text field, so it cannot arrive here
-  -- by the back door either.
+  -- WHEN this organization confirmed it holds the tutor's SSN, YYYY-MM-DD.
+  -- The number itself is NEVER stored, anywhere.
   ssn_received_on   TEXT,
 
-  -- The floor the institute keeps this tutor's advance above, in whole cents.
-  --
-  -- Tutors here are paid BEFORE they teach: the office hands over, say, $100,
-  -- and the tutor works it off. `topup_amount_cents` is the level at which
-  -- another payment is due -- when what the tutor still holds falls below it,
-  -- the office tops them back up.
-  --
-  -- Only the threshold is stored. What the tutor currently holds is
-  -- paid - earned, derived wherever it is shown like every other balance, so
-  -- it cannot drift out of step with the payments and sessions it comes from.
-  --
-  -- NULL means this tutor is not on an advance: they are paid for work already
-  -- done, and no top-up is ever due.
+  -- The floor this tutor's advance is kept above, in whole cents. NULL means
+  -- they are paid for work already done and no top-up is ever due.
   topup_amount_cents INTEGER CHECK (topup_amount_cents >= 0),
 
-  -- The longest single lesson this tutor teaches. A live session that passes
-  -- it is closed at it and marked auto_stopped, so a timer left running does
-  -- not bill a family for the rest of the night.
-  --
-  -- NULL means "no limit of their own": the student's limit applies, and if
-  -- neither sets one, DEFAULT_MAX_SESSION_MINUTES in packages/shared does.
-  -- A multiple of 15 because that is the unit sessions are recorded in.
+  -- The longest single lesson this tutor teaches here; see the student's.
   max_session_minutes INTEGER
                       CHECK (max_session_minutes IS NULL
                              OR (max_session_minutes > 0
                                  AND max_session_minutes % 15 = 0)),
 
   created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (organization_id, user_id),
+  FOREIGN KEY (organization_id, user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE
 );
 
 
 -- ---------------------------------------------------------------------------
--- student_profiles - data that only means anything for a student
+-- student_profiles - what an organization records about one of its students
 -- ---------------------------------------------------------------------------
--- Role data for an admin. Today that is one field: the taxpayer identification
--- number the institute files under, which every 1099 it issues has to carry.
---
--- Kept per admin, beside the tutor's and the student's profile rather than in
--- a settings table, because it follows the same rule as they do -- it exists
--- while the role does, and goes when the role goes. An institute with two
--- admins records it twice, which is the price of the model being one rule
--- rather than two.
---
--- It is NOT a Social Security number. A sole proprietor may file under theirs,
--- and the API refuses that: `containsSsn` rejects SSN-shaped text everywhere,
--- this field included, because the promise that the portal never stores one
--- cannot have an exception for the field named after tax.
-CREATE TABLE admin_profiles (
-  user_id     TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
-
-  -- The institute's EIN, as it should read on a 1099. Free text: it is printed
-  -- rather than computed with, and the formats vary.
-  tin         TEXT,
-
-  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  updated_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
-);
-
 CREATE TABLE student_profiles (
-  user_id             TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  organization_id     TEXT NOT NULL,
+  user_id             TEXT NOT NULL,
 
   school              TEXT,
-  -- The math course or grade they are currently enrolled in.
   current_math_course TEXT,
-  -- What they are working towards this academic year.
   academic_year_goal  TEXT,
 
-  -- Whether this student will take online sessions.
   virtual_available   INTEGER NOT NULL DEFAULT 0 CHECK (virtual_available IN (0, 1)),
 
-  -- What the institute CHARGES this student's family per hour, in whole cents.
-  -- Deliberately separate from what the tutor is PAID (tutor_profiles and
-  -- assignments): the institute keeps the difference, so the two sides must be
-  -- able to move independently. Storing only one rate made the margin
-  -- structurally zero.
-  --
-  -- Nullable so a student can exist before pricing is agreed, but a session
-  -- cannot be recorded until the mode being taught has a rate -- see
-  -- priceSession in routes/sessions.ts.
+  -- What this organization CHARGES the family per hour, in whole cents.
+  -- Separate from what the tutor is PAID: the margin is the difference.
   charge_rate_in_person_cents INTEGER CHECK (charge_rate_in_person_cents >= 0),
   charge_rate_virtual_cents   INTEGER CHECK (charge_rate_virtual_cents >= 0),
 
-  -- The longest single lesson this student sits. Held here as well as on the
-  -- tutor because the two are different facts -- a tutor who will teach three
-  -- hours straight and a nine-year-old who cannot sit for more than one both
-  -- get to be true -- and the SHORTER of the two is what applies.
+  -- The longest single lesson this student sits. The SHORTER of the tutor's
+  -- and the student's applies.
   max_session_minutes INTEGER
                       CHECK (max_session_minutes IS NULL
                              OR (max_session_minutes > 0
                                  AND max_session_minutes % 15 = 0)),
 
   created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+  updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (organization_id, user_id),
+  FOREIGN KEY (organization_id, user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE
 );
 
--- NOTE: there is deliberately no `parent_profiles` table. The plan gives
--- parents no attributes of their own beyond a payment handle, and payment
--- handles belong to the person (see below). Being a parent is therefore a role
--- plus a set of guardianship links -- an empty profile table would carry no
--- information.
+-- There is no admin_profiles: the TIN an admin used to carry is the
+-- organization's (organizations.tin), and there is no parent_profiles, since a
+-- parent is a role plus guardianship links.
 
 
 -- ---------------------------------------------------------------------------
--- payment_handles - how money reaches or leaves a person
+-- payment_handles - how this organization pays or bills a person
 -- ---------------------------------------------------------------------------
--- Tutors are paid through these; parents are billed through them. That is the
--- same fact about a person viewed from two sides, so it hangs off users rather
--- than off tutor_profiles and a parent table. A parent who also tutors has one
--- Zelle id, not two that can disagree.
---
--- The composite primary key allows at most one handle per method per person,
--- so someone may register both a Zelle and a Venmo id but not two of either.
+-- Per organization on purpose: a handle any organization's admin could edit
+-- would let one organization redirect another's payouts.
 CREATE TABLE payment_handles (
-  user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-  method     TEXT NOT NULL CHECK (method IN ('zelle', 'venmo')),
-
-  -- Phone, email or @username, depending on the service. Stored as given.
-  handle     TEXT NOT NULL,
+  organization_id TEXT NOT NULL,
+  user_id         TEXT NOT NULL,
+  method          TEXT NOT NULL CHECK (method IN ('zelle', 'venmo')),
+  handle          TEXT NOT NULL,
 
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
-  PRIMARY KEY (user_id, method)
+  PRIMARY KEY (organization_id, user_id, method),
+  FOREIGN KEY (organization_id, user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE
 );
 
 
 -- ---------------------------------------------------------------------------
--- availability_slots - when a person is free, as day + hour blocks
+-- availability_slots - when a person is free for this organization
 -- ---------------------------------------------------------------------------
--- Required by tutors and by students, so again keyed on the person: someone
--- who both tutors and studies is free at one set of times, not two.
---
--- One row is one hour block, e.g. (Tuesday, 16) = Tuesday 16:00-17:00. The
--- composite primary key makes a duplicate slot impossible.
 CREATE TABLE availability_slots (
-  user_id     TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-
-  -- 0 = Sunday .. 6 = Saturday (JS Date#getDay()).
-  day_of_week INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
-  -- Start of the block in 24h local time; the block runs to hour + 1.
-  hour        INTEGER NOT NULL CHECK (hour BETWEEN 0 AND 23),
+  organization_id TEXT NOT NULL,
+  user_id         TEXT NOT NULL,
+  day_of_week     INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
+  hour            INTEGER NOT NULL CHECK (hour BETWEEN 0 AND 23),
 
   created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
-  PRIMARY KEY (user_id, day_of_week, hour)
+  PRIMARY KEY (organization_id, user_id, day_of_week, hour),
+  FOREIGN KEY (organization_id, user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE
 );
 
--- Answers "who is free on Tuesday at 16:00", which is what scheduling will ask.
-CREATE INDEX availability_slots_when_idx ON availability_slots (day_of_week, hour);
+CREATE INDEX availability_slots_when_idx
+  ON availability_slots (organization_id, day_of_week, hour);
 
 
 -- ---------------------------------------------------------------------------
--- guardianships - which adult is responsible for which young person
+-- guardianships - which adult this organization treats as responsible for whom
 -- ---------------------------------------------------------------------------
--- The plan needs this twice: every student must have at least one parent, and
--- a tutor may have one too (a senior student tutoring younger children is
--- still someone's child). Both are the same shape -- one user is responsible
--- for another -- so one table serves both instead of a students-only link.
+-- Per organization: who is billed and kept informed is that organization's
+-- arrangement. Both people must be its members.
 --
--- INVARIANT NOT ENFORCED HERE: "a student must have at least one parent".
--- That cannot be a constraint: the student row has to exist before any link to
--- it can, so no CHECK or foreign key can express it. The API enforces it.
+-- INVARIANT NOT ENFORCED HERE: "a student has at least one guardian who is a
+-- member of this organization". The API enforces it.
 CREATE TABLE guardianships (
-  guardian_user_id  TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-  dependent_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  organization_id   TEXT NOT NULL,
+  guardian_user_id  TEXT NOT NULL,
+  dependent_user_id TEXT NOT NULL,
 
   relationship      TEXT NOT NULL DEFAULT 'guardian'
                     CHECK (relationship IN ('mother', 'father', 'guardian', 'other')),
-
-  -- The first point of contact when a student has more than one guardian.
   is_primary        INTEGER NOT NULL DEFAULT 0 CHECK (is_primary IN (0, 1)),
 
   created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
-  PRIMARY KEY (guardian_user_id, dependent_user_id),
+  PRIMARY KEY (organization_id, guardian_user_id, dependent_user_id),
+  FOREIGN KEY (organization_id, guardian_user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE,
+  FOREIGN KEY (organization_id, dependent_user_id)
+    REFERENCES org_members (organization_id, user_id) ON DELETE CASCADE,
 
-  -- Nobody is their own guardian.
   CHECK (guardian_user_id <> dependent_user_id)
 );
 
--- Answers "who are this student's parents", the common direction.
-CREATE INDEX guardianships_dependent_idx ON guardianships (dependent_user_id);
+CREATE INDEX guardianships_dependent_idx ON guardianships (organization_id, dependent_user_id);
+CREATE INDEX guardianships_guardian_idx  ON guardianships (guardian_user_id);
 
--- At most one primary guardian per dependent.
 CREATE UNIQUE INDEX guardianships_one_primary_idx
-  ON guardianships (dependent_user_id) WHERE is_primary = 1;
+  ON guardianships (organization_id, dependent_user_id) WHERE is_primary = 1;
 
 
 -- ---------------------------------------------------------------------------
 -- assignments - which tutor teaches which student, and at what rate
 -- ---------------------------------------------------------------------------
--- Created by an admin. A session can only be recorded for a pair that has an
--- active assignment, which is what stops a tutor billing for a student who was
--- never given to them.
---
--- The two rate columns are OPTIONAL overrides. NULL means "use the tutor's
--- default for that mode", so the common case needs no per-pair setup and the
--- exception is one field.
+-- A session can only be recorded for a pair with an active assignment.
+-- The rate columns are OPTIONAL overrides of the tutor's defaults.
 CREATE TABLE assignments (
   id                   TEXT PRIMARY KEY,
+  organization_id      TEXT NOT NULL REFERENCES organizations (id),
 
   tutor_user_id        TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
   student_user_id      TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -418,22 +434,21 @@ CREATE TABLE assignments (
   rate_in_person_cents INTEGER CHECK (rate_in_person_cents >= 0),
   rate_virtual_cents   INTEGER CHECK (rate_virtual_cents >= 0),
 
-  -- Ending an assignment keeps its history; it just stops new sessions.
   is_active            INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
   notes                TEXT,
 
   created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
-  -- One pairing per tutor/student. Re-assigning reactivates the same row.
-  UNIQUE (tutor_user_id, student_user_id),
+  -- One pairing per tutor/student in an organization. Re-assigning
+  -- reactivates the same row.
+  UNIQUE (organization_id, tutor_user_id, student_user_id),
 
-  -- A user can be both a tutor and a student here, but not their own tutor.
   CHECK (tutor_user_id <> student_user_id)
 );
 
-CREATE INDEX assignments_tutor_idx   ON assignments (tutor_user_id)   WHERE is_active = 1;
-CREATE INDEX assignments_student_idx ON assignments (student_user_id) WHERE is_active = 1;
+CREATE INDEX assignments_tutor_idx   ON assignments (organization_id, tutor_user_id)   WHERE is_active = 1;
+CREATE INDEX assignments_student_idx ON assignments (organization_id, student_user_id) WHERE is_active = 1;
 
 
 -- ---------------------------------------------------------------------------
@@ -447,6 +462,7 @@ CREATE INDEX assignments_student_idx ON assignments (student_user_id) WHERE is_a
 -- student later must not delete the history of lessons already taught.
 CREATE TABLE sessions (
   id                 TEXT PRIMARY KEY,
+  organization_id    TEXT NOT NULL REFERENCES organizations (id),
 
   tutor_user_id      TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
   student_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -499,9 +515,9 @@ CREATE TABLE sessions (
   CHECK (ended_at > started_at)
 );
 
-CREATE INDEX sessions_tutor_idx   ON sessions (tutor_user_id, occurred_on);
-CREATE INDEX sessions_student_idx ON sessions (student_user_id, occurred_on);
-CREATE INDEX sessions_date_idx    ON sessions (occurred_on);
+CREATE INDEX sessions_tutor_idx   ON sessions (organization_id, tutor_user_id, occurred_on);
+CREATE INDEX sessions_student_idx ON sessions (organization_id, student_user_id, occurred_on);
+CREATE INDEX sessions_date_idx    ON sessions (organization_id, occurred_on);
 
 -- ---------------------------------------------------------------------------
 -- scheduled_sessions - a standing weekly lesson
@@ -515,6 +531,7 @@ CREATE INDEX sessions_date_idx    ON sessions (occurred_on);
 -- recurrence engine.
 CREATE TABLE scheduled_sessions (
   id               TEXT PRIMARY KEY,
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
 
   tutor_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
   student_user_id  TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -546,8 +563,8 @@ CREATE TABLE scheduled_sessions (
   CHECK (ends_on IS NULL OR ends_on >= starts_on)
 );
 
-CREATE INDEX scheduled_sessions_tutor_idx   ON scheduled_sessions (tutor_user_id)   WHERE is_active = 1;
-CREATE INDEX scheduled_sessions_student_idx ON scheduled_sessions (student_user_id) WHERE is_active = 1;
+CREATE INDEX scheduled_sessions_tutor_idx   ON scheduled_sessions (organization_id, tutor_user_id)   WHERE is_active = 1;
+CREATE INDEX scheduled_sessions_student_idx ON scheduled_sessions (organization_id, student_user_id) WHERE is_active = 1;
 
 -- BEGIN PHASE 24 TABLES
 -- ---------------------------------------------------------------------------
@@ -605,6 +622,7 @@ CREATE INDEX schedule_cancellations_on_idx ON schedule_cancellations (occurs_on)
 -- that apply then, and posting is what produces the `sessions` row.
 CREATE TABLE session_drafts (
   id              TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
 
   tutor_user_id   TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
   student_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -640,7 +658,7 @@ CREATE TABLE session_drafts (
 );
 
 CREATE INDEX session_drafts_author_idx
-  ON session_drafts (author_user_id, updated_at DESC);
+  ON session_drafts (organization_id, author_user_id, updated_at DESC);
 
 -- BEGIN PHASE 23 TABLES
 -- ---------------------------------------------------------------------------
@@ -785,7 +803,9 @@ END;
 CREATE TABLE active_sessions (
   -- One live session per tutor: you cannot teach two lessons at once, and the
   -- primary key is what enforces it.
+  -- In every organization at once: nobody teaches two lessons at the same time.
   tutor_user_id   TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
   student_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
 
   mode            TEXT NOT NULL CHECK (mode IN ('in_person', 'virtual')),
@@ -801,7 +821,7 @@ CREATE TABLE active_sessions (
   created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
-CREATE INDEX active_sessions_student_idx ON active_sessions (student_user_id);
+CREATE INDEX active_sessions_student_idx ON active_sessions (organization_id, student_user_id);
 
 
 -- ---------------------------------------------------------------------------
@@ -815,6 +835,7 @@ CREATE INDEX active_sessions_student_idx ON active_sessions (student_user_id);
 -- `direction` exists rather than two near-identical tables.
 CREATE TABLE payments (
   id                  TEXT PRIMARY KEY,
+  organization_id     TEXT NOT NULL REFERENCES organizations (id),
 
   --   from_parent - a family paying the institute
   --   to_tutor    - the institute paying a tutor
@@ -855,9 +876,9 @@ CREATE TABLE payments (
   CHECK (direction <> 'from_parent' OR student_user_id IS NOT NULL)
 );
 
-CREATE INDEX payments_party_idx   ON payments (party_user_id, paid_at DESC);
-CREATE INDEX payments_student_idx ON payments (student_user_id, paid_at DESC);
-CREATE INDEX payments_recent_idx  ON payments (paid_at DESC);
+CREATE INDEX payments_party_idx   ON payments (organization_id, party_user_id, paid_at DESC);
+CREATE INDEX payments_student_idx ON payments (organization_id, student_user_id, paid_at DESC);
+CREATE INDEX payments_recent_idx  ON payments (organization_id, paid_at DESC);
 
 
 -- audit_events - who did what, and when
@@ -871,6 +892,11 @@ CREATE INDEX payments_recent_idx  ON payments (paid_at DESC);
 -- did, and the log still has to read sensibly afterwards.
 CREATE TABLE audit_events (
   id              TEXT PRIMARY KEY,
+
+  -- Whose log this line is in. NULL only for events that belong to no
+  -- organization: the sign-in itself and platform_admin.*. Feeds always filter
+  -- `organization_id = ?`, never `OR IS NULL`.
+  organization_id TEXT REFERENCES organizations (id),
 
   -- Who performed the action. NULL once that user is purged.
   actor_user_id   TEXT REFERENCES users (id) ON DELETE SET NULL,
@@ -901,9 +927,9 @@ CREATE TABLE audit_events (
 
 -- The three ways the log is read: newest-first overall, and newest-first for
 -- one person as either actor or subject.
-CREATE INDEX audit_events_recent_idx  ON audit_events (created_at DESC);
-CREATE INDEX audit_events_actor_idx   ON audit_events (actor_user_id, created_at DESC);
-CREATE INDEX audit_events_subject_idx ON audit_events (subject_user_id, created_at DESC);
+CREATE INDEX audit_events_recent_idx  ON audit_events (organization_id, created_at DESC);
+CREATE INDEX audit_events_actor_idx   ON audit_events (organization_id, actor_user_id, created_at DESC);
+CREATE INDEX audit_events_subject_idx ON audit_events (organization_id, subject_user_id, created_at DESC);
 
 
 -- ---------------------------------------------------------------------------
@@ -920,6 +946,7 @@ CREATE INDEX audit_events_subject_idx ON audit_events (subject_user_id, created_
 
 CREATE TABLE comments (
   id                TEXT PRIMARY KEY,
+  organization_id   TEXT NOT NULL REFERENCES organizations (id),
 
   -- Who wrote it. Their name is read through this rather than snapshotted:
   -- unlike an audit line, a comment is part of a live conversation, so it
@@ -968,7 +995,8 @@ CREATE INDEX comments_scheduled_idx ON comments (target_scheduled_session_id, cr
   WHERE target_scheduled_session_id IS NOT NULL;
 
 -- "Comments I wrote" -- the only thing the author alone may act on.
-CREATE INDEX comments_author_idx ON comments (author_user_id, created_at DESC);
+CREATE INDEX comments_author_idx ON comments (organization_id, author_user_id, created_at DESC);
+CREATE INDEX comments_org_idx    ON comments (organization_id, created_at DESC);
 
 -- BEGIN PHASE 26 TABLES
 -- ---------------------------------------------------------------------------
@@ -991,9 +1019,7 @@ CREATE TABLE user_onboarding (
   tour_finished_at     TEXT,
   tour_outcome         TEXT CHECK (tour_outcome IN ('completed', 'skipped')),
 
-  -- When a non-admin confirmed the office has their details right. Only
-  -- admins edit a record; this says the person looked and agreed.
-  details_confirmed_at TEXT,
+  -- (Confirming one's details is per organization: org_members.)
 
   created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
@@ -1083,6 +1109,7 @@ CREATE TABLE curriculum_topics (
 -- travelled since stays visible.
 CREATE TABLE assessments (
   id                   TEXT PRIMARY KEY,
+  organization_id      TEXT NOT NULL REFERENCES organizations (id),
   student_user_id      TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
   -- Who assessed. SET NULL so purging a former admin keeps the assessment.
   assessor_user_id     TEXT REFERENCES users (id) ON DELETE SET NULL,
@@ -1099,7 +1126,7 @@ CREATE TABLE assessments (
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
-CREATE INDEX assessments_student_idx ON assessments (student_user_id, assessed_on DESC);
+CREATE INDEX assessments_student_idx ON assessments (organization_id, student_user_id, assessed_on DESC);
 
 -- One row per topic the assessor chose to score -- "topic 10 from level 3,
 -- marked 1". Unscored topics simply have no row: silence is not a 1.
@@ -1126,6 +1153,7 @@ CREATE TABLE assessment_topic_ratings (
 -- goal it had, as history.
 CREATE TABLE learning_plans (
   id                 TEXT PRIMARY KEY,
+  organization_id    TEXT NOT NULL REFERENCES organizations (id),
   student_user_id    TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
   -- The assessment the plan answers. SET NULL: deleting a mistaken
   -- assessment must not take the plan and every lesson's score with it.
@@ -1163,7 +1191,7 @@ CREATE TABLE learning_plans (
 -- A student works towards one plan at a time, so "the plan" a lesson is
 -- scored against is never ambiguous. Finished plans stay as history.
 CREATE UNIQUE INDEX learning_plans_one_active_idx
-  ON learning_plans (student_user_id) WHERE status = 'active';
+  ON learning_plans (organization_id, student_user_id) WHERE status = 'active';
 
 -- The topics the plan covers, in the order they should be taught. May reach
 -- into a lower level than the recommended one, which is exactly the "add some
@@ -1243,32 +1271,38 @@ BEGIN
   UPDATE users SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
 END;
 
+CREATE TRIGGER organizations_set_updated_at
+AFTER UPDATE ON organizations FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE organizations SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER org_members_set_updated_at
+AFTER UPDATE ON org_members FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE org_members SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+  WHERE organization_id = NEW.organization_id AND user_id = NEW.user_id;
+END;
+
 CREATE TRIGGER tutor_profiles_set_updated_at
 AFTER UPDATE ON tutor_profiles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE tutor_profiles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-  WHERE user_id = NEW.user_id;
-END;
-
-CREATE TRIGGER admin_profiles_set_updated_at
-AFTER UPDATE ON admin_profiles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
-BEGIN
-  UPDATE admin_profiles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-  WHERE user_id = NEW.user_id;
+  WHERE organization_id = NEW.organization_id AND user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER student_profiles_set_updated_at
 AFTER UPDATE ON student_profiles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE student_profiles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-  WHERE user_id = NEW.user_id;
+  WHERE organization_id = NEW.organization_id AND user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER payment_handles_set_updated_at
 AFTER UPDATE ON payment_handles FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE payment_handles SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-  WHERE user_id = NEW.user_id AND method = NEW.method;
+  WHERE organization_id = NEW.organization_id AND user_id = NEW.user_id AND method = NEW.method;
 END;
 
 CREATE TRIGGER assignments_set_updated_at
@@ -1301,6 +1335,170 @@ AFTER UPDATE ON scheduled_sessions FOR EACH ROW WHEN NEW.updated_at = OLD.update
 BEGIN
   UPDATE scheduled_sessions SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
   WHERE id = NEW.id;
+END;
+
+-- ---------------------------------------------------------------------------
+-- Rows stay in their organization
+-- ---------------------------------------------------------------------------
+-- Enforced by the database, not left to discipline: a teaching or money row
+-- whose people are not members of its organization is refused, and no row ever
+-- moves to another organization. A comment must also hang off something in its
+-- own organization.
+
+CREATE TRIGGER assignments_same_organization
+BEFORE INSERT ON assignments
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.tutor_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER assignments_organization_fixed
+BEFORE UPDATE OF organization_id ON assignments
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER sessions_same_organization
+BEFORE INSERT ON sessions
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.tutor_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER sessions_organization_fixed
+BEFORE UPDATE OF organization_id ON sessions
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER scheduled_sessions_same_organization
+BEFORE INSERT ON scheduled_sessions
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.tutor_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER scheduled_sessions_organization_fixed
+BEFORE UPDATE OF organization_id ON scheduled_sessions
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER session_drafts_same_organization
+BEFORE INSERT ON session_drafts
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.tutor_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.author_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER session_drafts_organization_fixed
+BEFORE UPDATE OF organization_id ON session_drafts
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER active_sessions_same_organization
+BEFORE INSERT ON active_sessions
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.tutor_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER active_sessions_organization_fixed
+BEFORE UPDATE OF organization_id ON active_sessions
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER payments_same_organization
+BEFORE INSERT ON payments
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.party_user_id)
+  OR (NEW.student_user_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id))
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER payments_organization_fixed
+BEFORE UPDATE OF organization_id ON payments
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER comments_same_organization
+BEFORE INSERT ON comments
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.author_user_id)
+  OR (NEW.target_user_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.target_user_id))
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER comments_organization_fixed
+BEFORE UPDATE OF organization_id ON comments
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER assessments_same_organization
+BEFORE INSERT ON assessments
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER assessments_organization_fixed
+BEFORE UPDATE OF organization_id ON assessments
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER learning_plans_same_organization
+BEFORE INSERT ON learning_plans
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER learning_plans_organization_fixed
+BEFORE UPDATE OF organization_id ON learning_plans
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER comments_target_same_organization
+BEFORE INSERT ON comments
+WHEN (NEW.target_session_id IS NOT NULL AND NOT EXISTS (
+        SELECT 1 FROM sessions s WHERE s.id = NEW.target_session_id
+          AND s.organization_id = NEW.organization_id))
+  OR (NEW.target_assignment_id IS NOT NULL AND NOT EXISTS (
+        SELECT 1 FROM assignments a WHERE a.id = NEW.target_assignment_id
+          AND a.organization_id = NEW.organization_id))
+  OR (NEW.target_scheduled_session_id IS NOT NULL AND NOT EXISTS (
+        SELECT 1 FROM scheduled_sessions s WHERE s.id = NEW.target_scheduled_session_id
+          AND s.organization_id = NEW.organization_id))
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER audit_events_organization_fixed
+BEFORE UPDATE OF organization_id ON audit_events
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
 END;
 
 -- ---------------------------------------------------------------------------

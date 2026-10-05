@@ -19,12 +19,13 @@ export const auditRoutes = new Hono<AppEnv>()
    */
   .get('/', zValidator('query', listAuditQuerySchema), async (c) => {
     const viewer = c.get('user');
+    const org = c.get('org').id;
     const params = c.req.valid('query');
 
     if (!isAdmin(viewer)) {
       // A non-admin asking about someone else gets an empty feed, not an error:
       // whether that person has activity is itself information.
-      const visible = await visibleUserIds(c.env.DB, viewer);
+      const visible = await visibleUserIds(c.env.DB, org, viewer);
 
       if (params.user_id && params.user_id !== viewer.id && !visible?.has(params.user_id)) {
         throw ApiError.notFound('That user does not exist.');
@@ -33,6 +34,7 @@ export const auditRoutes = new Hono<AppEnv>()
 
     const { events, total } = await listAuditEvents(
       c.env.DB,
+      org,
       params,
       isAdmin(viewer) ? null : viewer.id,
     );
@@ -48,7 +50,7 @@ export const auditRoutes = new Hono<AppEnv>()
   .get('/actions', async (c) => {
     const viewer = c.get('user');
     const body: ApiOk<string[]> = {
-      data: await listAuditActions(c.env.DB, isAdmin(viewer) ? null : viewer.id),
+      data: await listAuditActions(c.env.DB, c.get('org').id, isAdmin(viewer) ? null : viewer.id),
     };
     return c.json(body);
   });

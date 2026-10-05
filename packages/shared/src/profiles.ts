@@ -151,22 +151,6 @@ export function isMailingAddressComplete(parts: MailingAddressParts): boolean {
   return Boolean(parts.address_line1 && parts.city && parts.state && parts.postal_code);
 }
 
-/**
- * Data that only means anything for an admin: the taxpayer identification
- * number the institute files its 1099s under.
- *
- * Runs through optionalText like every other free-text field, which means the
- * SSN guard applies to it too. That is deliberate rather than incidental: a
- * sole proprietor may well file under their own Social Security number, and
- * this portal does not keep one whatever the field is called.
- */
-export const adminProfileSchema = z.object({
-  tin: optionalText(shortText(40, 'TIN')),
-});
-
-export type AdminProfileInput = z.input<typeof adminProfileSchema>;
-export type AdminProfile = z.output<typeof adminProfileSchema>;
-
 /** Data that only means anything for a student. */
 export const studentProfileSchema = z.object({
   school: optionalText(shortText(160, 'School')),
@@ -351,8 +335,13 @@ export interface GuardianLink {
  * hold the corresponding role.
  */
 export interface UserDetail extends z.infer<typeof userSchema> {
-  /** Present while the admin role is held. Only admins may read it. */
-  admin_profile: AdminProfile | null;
+  /**
+   * True when this person belongs to more than one organization: their name,
+   * email and phone are then shared, and only a platform admin changes them.
+   */
+  shared_fields_locked: boolean;
+  /** When they last entered THIS organization. Admins only. */
+  last_entered_at: string | null;
   tutor_profile: TutorProfile | null;
   student_profile: StudentProfile | null;
   payment_handles: PaymentHandle[];
@@ -370,7 +359,6 @@ export interface UserDetail extends z.infer<typeof userSchema> {
  */
 export const updateUserSectionsSchema = z.object({
   /** null removes the profile, e.g. when the tutor role is dropped. */
-  admin_profile: adminProfileSchema.nullish(),
   tutor_profile: tutorProfileSchema.nullish(),
   student_profile: studentProfileSchema.nullish(),
   payment_handles: paymentHandlesSchema.optional(),
@@ -382,10 +370,7 @@ export type UpdateUserSectionsInput = z.input<typeof updateUserSectionsSchema>;
 export type UpdateUserSectionsPayload = z.output<typeof updateUserSectionsSchema>;
 
 /** Which profile section a role expects, for UI and validation. */
-export const ROLE_PROFILE_TABLE: Partial<
-  Record<UserRole, 'admin_profile' | 'tutor_profile' | 'student_profile'>
-> = {
-  admin: 'admin_profile',
+export const ROLE_PROFILE_TABLE: Partial<Record<UserRole, 'tutor_profile' | 'student_profile'>> = {
   tutor: 'tutor_profile',
   student: 'student_profile',
 };
@@ -432,7 +417,6 @@ export function splitUserRequest<T extends Partial<UpdateUserSectionsPayload>>(
   body: T,
 ): { user: Omit<T, SectionKey>; sections: UpdateUserSectionsPayload } {
   const {
-    admin_profile,
     tutor_profile,
     student_profile,
     payment_handles,
@@ -445,7 +429,6 @@ export function splitUserRequest<T extends Partial<UpdateUserSectionsPayload>>(
   return {
     user: user as Omit<T, SectionKey>,
     sections: {
-      admin_profile,
       tutor_profile,
       student_profile,
       payment_handles,

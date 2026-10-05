@@ -1,4 +1,5 @@
 import type { AuditEvent, ListAuditParams } from '@tmi/shared';
+import type { OrgId } from '../lib/org.js';
 
 const SELECT_EVENT = `
   SELECT id, actor_user_id, actor_name, subject_user_id, subject_name,
@@ -50,11 +51,14 @@ export interface ListAuditResult {
  */
 export async function listAuditEvents(
   db: D1Database,
+  org: OrgId,
   params: ListAuditParams,
   visibleToUserId?: string | null,
 ): Promise<ListAuditResult> {
-  const where: string[] = [];
-  const values: unknown[] = [];
+  // This organization's log, for everyone. Never `OR organization_id IS NULL`:
+  // a sign-in or a platform event belongs to no organization's feed.
+  const where: string[] = ['organization_id = ?'];
+  const values: unknown[] = [org];
 
   if (visibleToUserId) {
     where.push('(actor_user_id = ? OR subject_user_id = ?)');
@@ -94,7 +98,7 @@ export async function listAuditEvents(
     values.push(`${params.to}T23:59:59.999Z`);
   }
 
-  const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
+  const whereSql = `WHERE ${where.join(' AND ')}`;
 
   const [countResult, pageResult] = await db.batch<Record<string, unknown>>([
     db.prepare(`SELECT COUNT(*) AS total FROM audit_events ${whereSql}`).bind(...values),
@@ -119,15 +123,17 @@ export async function listAuditEvents(
  */
 export async function listAuditActions(
   db: D1Database,
+  org: OrgId,
   visibleToUserId?: string | null,
 ): Promise<string[]> {
   const result = await db
     .prepare(
       `SELECT DISTINCT action FROM audit_events
-       ${visibleToUserId ? 'WHERE actor_user_id = ? OR subject_user_id = ?' : ''}
+       WHERE organization_id = ?
+       ${visibleToUserId ? 'AND (actor_user_id = ? OR subject_user_id = ?)' : ''}
        ORDER BY action`,
     )
-    .bind(...(visibleToUserId ? [visibleToUserId, visibleToUserId] : []))
+    .bind(org, ...(visibleToUserId ? [visibleToUserId, visibleToUserId] : []))
     .all<{ action: string }>();
 
   return (result.results ?? []).map((row) => row.action);

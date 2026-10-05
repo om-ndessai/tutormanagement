@@ -5,6 +5,17 @@ Colors and logo assets are taken from the institute's own logo; the tagline is t
 
 > **Exploring the fun of Math** — Mathematics Institute of the Triangle
 
+## Organizations (orgsupport)
+
+On this branch the identity is each organization's: name and short name, a palette from
+`ORG_PALETTES` (`platform` slate, `indigo`, `teal`, `forest`, `crimson`, `amber`, and the
+institute's `plum`), an uploaded logo (a square mark and a full lockup, PNG or WebP, at most
+256 KB), or the institute's built-in artwork for the one organization a platform admin gives it.
+Each palette is one `:root[data-palette]` block in `index.css`, with a dark block that restates
+every token the light one sets. Before an organization is known the page is the neutral
+`platform` palette (set in `index.html`), so no organization's colour flashes. The sections
+below describe the institute's own palette, which is `plum`.
+
 ## Logo
 
 `apps/web/public/` holds three assets, all derived from the institute's logo with the white

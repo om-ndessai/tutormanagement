@@ -1,6 +1,7 @@
 import { formatCents, marginCents, type TutoringSession } from '@tmi/shared';
 
 import { cn } from '@/lib/utils';
+import { useBrand } from '@/providers/brand-provider';
 
 type Money = Pick<
   TutoringSession,
@@ -34,6 +35,7 @@ export function SessionMoney({
   compact?: boolean;
   className?: string;
 }) {
+  const brand = useBrand();
   if (session.money_view === 'none') return null;
 
   const admin = session.money_view === 'admin';
@@ -47,7 +49,7 @@ export function SessionMoney({
       <span className={cn('text-right', className)}>
         <span className="block text-sm font-medium tabular-nums">{formatCents(amount)}</span>
         <span className="text-muted-foreground block text-[10px] leading-tight">
-          {admin ? `${formatCents(marginCents(session))} to institute` : label}
+          {admin ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
         </span>
       </span>
     );
@@ -60,7 +62,7 @@ export function SessionMoney({
       <p className="text-muted-foreground text-[11px]">{formatCents(rate)}/hr</p>
       {admin && (
         <p className="text-muted-foreground text-[11px] tabular-nums">
-          Tutor {formatCents(session.tutor_amount_cents)} · Institute{' '}
+          Tutor {formatCents(session.tutor_amount_cents)} · {brand.short}{' '}
           <span className="text-foreground font-medium">{formatCents(marginCents(session))}</span>
         </p>
       )}

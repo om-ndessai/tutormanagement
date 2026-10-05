@@ -36,6 +36,32 @@ for (const width of WIDTHS) {
   });
 }
 
+// Choosing an organization, and the platform console, are outside any one
+// organization: the picker for someone in two, the console for its admin.
+const OUTSIDE: { who: 'admin' | 'platformAdmin'; path: string }[] = [
+  { who: 'admin', path: '/select-organization' },
+  { who: 'platformAdmin', path: '/platform' },
+  { who: 'platformAdmin', path: '/platform/admins' },
+  { who: 'platformAdmin', path: '/platform/people' },
+  { who: 'platformAdmin', path: '/platform/activity' },
+];
+for (const width of WIDTHS) {
+  for (const { who, path } of [...OUTSIDE, { who: 'admin' as const, path: '/organization' }]) {
+    test(`${path} does not scroll sideways at ${width}px`, async ({ as }) => {
+      const page = await as(who, path === '/organization' ? {} : { org: null });
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(path);
+      await page.waitForLoadState('networkidle');
+
+      const overflow = await page.evaluate(() => {
+        const doc = document.documentElement;
+        return doc.scrollWidth - doc.clientWidth;
+      });
+      expect(overflow, `${path} overflows by ${overflow}px at ${width}px`).toBeLessThanOrEqual(0);
+    });
+  }
+}
+
 // The dashboard's sessions carousel scrolls sideways inside itself; the page
 // around it must not, for a tutor as much as for an admin.
 for (const width of WIDTHS) {

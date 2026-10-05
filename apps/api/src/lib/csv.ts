@@ -57,7 +57,13 @@ export function csvResponse(filename: string, body: string): Response {
   });
 }
 
-/** "tmi-sessions-2026-09-20.csv", dated on the institute's clock rather than the Worker's. */
-export function datedFilename(prefix: string): string {
-  return `${prefix}-${zonedClockParts(new Date().toISOString()).day}.csv`;
+/**
+ * "tmi-sessions-2026-09-20.csv": the organization's slug, then what it is,
+ * dated on the organization's clock rather than the Worker's.
+ */
+export function datedFilename(
+  org: { slug: string; time_zone: string },
+  what: string,
+): string {
+  return `${org.slug}-${what}-${zonedClockParts(new Date().toISOString(), org.time_zone).day}.csv`;
 }

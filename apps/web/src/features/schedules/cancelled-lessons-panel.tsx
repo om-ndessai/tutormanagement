@@ -11,9 +11,10 @@ import {
   RestoreLessonDialog,
   cancelledByText,
   formatLessonDay,
-  instituteToday,
+  organizationToday,
   shiftDay,
 } from './lesson-cancellation';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 
 const SHOWN = 8;
 
@@ -27,7 +28,7 @@ const SHOWN = 8;
  * family's; renders nothing when there are none.
  */
 export function CancelledLessonsPanel() {
-  const today = instituteToday();
+  const today = organizationToday(useOrgTimeZone());
   const { data } = useScheduleCancellations({ from: shiftDay(today, -28), limit: 100 });
   const [expanded, setExpanded] = useState(false);
   const [restoring, setRestoring] = useState<{

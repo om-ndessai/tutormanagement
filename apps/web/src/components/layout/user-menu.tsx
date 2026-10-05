@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { CompassIcon, LogOutIcon, UserIcon } from 'lucide-react';
+import { ArrowLeftRightIcon, CompassIcon, LogOutIcon, ShieldCheckIcon, UserIcon } from 'lucide-react';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/providers/auth-provider';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
+import { useHasOtherPlaces } from '@/features/organizations/org-switcher';
 
 function initials(name: string) {
   return name
@@ -24,7 +25,8 @@ function initials(name: string) {
 }
 
 export function UserMenu() {
-  const { user, impersonated, signOut } = useAuth();
+  const { user, impersonated, signOut, organization, platformAdmin } = useAuth();
+  const hasOtherPlaces = useHasOtherPlaces();
   const { openWizard } = useOnboarding();
   const navigate = useNavigate();
 
@@ -54,6 +56,7 @@ export function UserMenu() {
           <p className="text-muted-foreground truncate text-xs">{user.email}</p>
             <p className="text-muted-foreground mt-1 text-xs">
             {user.roles.map((role) => USER_ROLE_LABELS[role]).join(" \u00b7 ")}
+            {organization ? ` at ${organization.short_name}` : ''}
           </p>
         </DropdownMenuLabel>
 
@@ -68,6 +71,19 @@ export function UserMenu() {
           <CompassIcon className="size-4" />
           Take the tour
         </DropdownMenuItem>
+
+        {hasOtherPlaces && (
+          <DropdownMenuItem onSelect={() => window.location.assign('/select-organization')}>
+            <ArrowLeftRightIcon className="size-4" />
+            Switch organization
+          </DropdownMenuItem>
+        )}
+        {platformAdmin && (
+          <DropdownMenuItem onSelect={() => window.location.assign('/platform')}>
+            <ShieldCheckIcon className="size-4" />
+            Platform console
+          </DropdownMenuItem>
+        )}
 
         {/* With auth off there is no session to end, so the action would lie. */}
         {!impersonated && (

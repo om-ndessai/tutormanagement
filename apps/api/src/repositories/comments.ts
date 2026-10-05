@@ -9,6 +9,7 @@ import {
   type User,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { isAdmin, teachingScopeSql, visibleUserIds } from '../lib/scope.js';
 
 /**
@@ -42,16 +43,25 @@ export interface CommentTargetRow {
   student_user_id: string | null;
 }
 
+/**
+ * The target, if it is in THIS organization. Something elsewhere is reported
+ * exactly like something that does not exist.
+ */
 export async function loadCommentTarget(
   db: D1Database,
+  org: OrgId,
   target: CommentTarget,
 ): Promise<CommentTargetRow | null> {
   const { target_type, target_id } = target;
 
   if (target_type === 'user') {
     const row = await db
-      .prepare('SELECT full_name FROM users WHERE id = ?')
-      .bind(target_id)
+      .prepare(
+        `SELECT u.full_name FROM users u
+         JOIN org_members m ON m.organization_id = ? AND m.user_id = u.id
+         WHERE u.id = ? AND u.deleted_at IS NULL`,
+      )
+      .bind(org, target_id)
       .first<{ full_name: string }>();
 
     return row
@@ -64,9 +74,9 @@ export async function loadCommentTarget(
       .prepare(
         `SELECT s.tutor_user_id, s.student_user_id, s.occurred_on, st.full_name AS student_name
          FROM sessions s JOIN users st ON st.id = s.student_user_id
-         WHERE s.id = ?`,
+         WHERE s.organization_id = ? AND s.id = ?`,
       )
-      .bind(target_id)
+      .bind(org, target_id)
       .first<{
         tutor_user_id: string;
         student_user_id: string;
@@ -92,9 +102,9 @@ export async function loadCommentTarget(
          FROM assignments a
          JOIN users t  ON t.id  = a.tutor_user_id
          JOIN users st ON st.id = a.student_user_id
-         WHERE a.id = ?`,
+         WHERE a.organization_id = ? AND a.id = ?`,
       )
-      .bind(target_id)
+      .bind(org, target_id)
       .first<{
         tutor_user_id: string;
         student_user_id: string;
@@ -117,9 +127,9 @@ export async function loadCommentTarget(
       `SELECT ss.tutor_user_id, ss.student_user_id, ss.day_of_week, ss.start_time,
               st.full_name AS student_name
        FROM scheduled_sessions ss JOIN users st ON st.id = ss.student_user_id
-       WHERE ss.id = ?`,
+       WHERE ss.organization_id = ? AND ss.id = ?`,
     )
-    .bind(target_id)
+    .bind(org, target_id)
     .first<{
       tutor_user_id: string;
       student_user_id: string;
@@ -141,15 +151,16 @@ export async function loadCommentTarget(
 /** Whether this viewer is responsible for that person. */
 export async function isGuardianOf(
   db: D1Database,
+  org: OrgId,
   guardianUserId: string,
   dependentUserId: string,
 ): Promise<boolean> {
   const row = await db
     .prepare(
       `SELECT 1 AS ok FROM guardianships
-       WHERE guardian_user_id = ? AND dependent_user_id = ?`,
+       WHERE organization_id = ? AND guardian_user_id = ? AND dependent_user_id = ?`,
     )
-    .bind(guardianUserId, dependentUserId)
+    .bind(org, guardianUserId, dependentUserId)
     .first<{ ok: number }>();
 
   return Boolean(row);
@@ -165,20 +176,22 @@ export async function isGuardianOf(
  */
 export async function canAccessTarget(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   target: CommentTarget,
   row: CommentTargetRow,
 ): Promise<boolean> {
+  // `row` came from loadCommentTarget, so it is already this organization's.
   if (isAdmin(viewer)) return true;
 
   if (target.target_type === 'user') {
-    const visible = await visibleUserIds(db, viewer);
+    const visible = await visibleUserIds(db, org, viewer);
     return visible === null || visible.has(target.target_id);
   }
 
   if (row.tutor_user_id === viewer.id || row.student_user_id === viewer.id) return true;
 
-  return row.student_user_id ? isGuardianOf(db, viewer.id, row.student_user_id) : false;
+  return row.student_user_id ? isGuardianOf(db, org, viewer.id, row.student_user_id) : false;
 }
 
 /**
@@ -192,6 +205,7 @@ export async function canAccessTarget(
  */
 async function readsWholeThread(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   target: CommentTarget,
 ): Promise<boolean> {
@@ -199,7 +213,7 @@ async function readsWholeThread(
   if (target.target_type !== 'user') return true;
   if (target.target_id === viewer.id) return true;
 
-  return isGuardianOf(db, viewer.id, target.target_id);
+  return isGuardianOf(db, org, viewer.id, target.target_id);
 }
 
 /**
@@ -212,12 +226,15 @@ async function readsWholeThread(
  * one they are entitled to.
  */
 function personScopeSql(viewer: User, alias = 'c'): { sql: string; values: unknown[] } {
+  // Callers have already restricted `alias` to the organization; the
+  // guardianship is read in the comment's own organization.
   return {
     sql:
       `(${alias}.author_user_id = ?` +
       ` OR ${alias}.target_user_id = ?` +
       ` OR EXISTS (SELECT 1 FROM guardianships g` +
-      ` WHERE g.dependent_user_id = ${alias}.target_user_id AND g.guardian_user_id = ?))`,
+      ` WHERE g.organization_id = ${alias}.organization_id` +
+      ` AND g.dependent_user_id = ${alias}.target_user_id AND g.guardian_user_id = ?))`,
     values: [viewer.id, viewer.id, viewer.id],
   };
 }
@@ -257,20 +274,23 @@ function toComment(row: CommentRow, target: CommentTarget, viewer: User): Commen
 /** One thread, newest first. */
 export async function listComments(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   target: CommentTarget,
 ): Promise<Comment[]> {
   const column = TARGET_COLUMN[target.target_type];
-  const whole = await readsWholeThread(db, viewer, target);
+  const whole = await readsWholeThread(db, org, viewer, target);
 
+  // A comment about a PERSON is this organization's remark about them: the
+  // same person's thread elsewhere is another organization's business.
   const result = await db
     .prepare(
       `${SELECT_COMMENT}
-       WHERE c.deleted_at IS NULL AND c.${column} = ?
+       WHERE c.organization_id = ? AND c.deleted_at IS NULL AND c.${column} = ?
              ${whole ? '' : 'AND c.author_user_id = ?'}
        ORDER BY c.created_at DESC, c.id`,
     )
-    .bind(...(whole ? [target.target_id] : [target.target_id, viewer.id]))
+    .bind(org, ...(whole ? [target.target_id] : [target.target_id, viewer.id]))
     .all<CommentRow>();
 
   return (result.results ?? []).map((row) => toComment(row, target, viewer));
@@ -278,6 +298,7 @@ export async function listComments(
 
 export async function createComment(
   db: D1Database,
+  org: OrgId,
   authorUserId: string,
   input: CommentPayload,
 ): Promise<string> {
@@ -285,22 +306,26 @@ export async function createComment(
   const column = TARGET_COLUMN[input.target_type];
 
   await db
-    .prepare(`INSERT INTO comments (id, author_user_id, ${column}, body) VALUES (?, ?, ?, ?)`)
-    .bind(id, authorUserId, input.target_id, input.body)
+    .prepare(
+      `INSERT INTO comments (id, organization_id, author_user_id, ${column}, body)
+       VALUES (?, ?, ?, ?, ?)`,
+    )
+    .bind(id, org, authorUserId, input.target_id, input.body)
     .run();
 
   return id;
 }
 
-export async function getComment(db: D1Database, id: string) {
+/** A comment of this organization. One from elsewhere is null. */
+export async function getComment(db: D1Database, org: OrgId, id: string) {
   return db
     .prepare(
       `SELECT id, author_user_id, body, deleted_at,
               target_user_id, target_session_id, target_assignment_id,
               target_scheduled_session_id
-       FROM comments WHERE id = ?`,
+       FROM comments WHERE organization_id = ? AND id = ?`,
     )
-    .bind(id)
+    .bind(org, id)
     .first<{
       id: string;
       author_user_id: string;
@@ -318,13 +343,13 @@ export async function getComment(db: D1Database, id: string) {
  * read than one without the line, and because "who said what" is worth keeping
  * even after somebody thinks better of it.
  */
-export async function softDeleteComment(db: D1Database, id: string): Promise<boolean> {
+export async function softDeleteComment(db: D1Database, org: OrgId, id: string): Promise<boolean> {
   const result = await db
     .prepare(
       `UPDATE comments SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-       WHERE id = ? AND deleted_at IS NULL`,
+       WHERE organization_id = ? AND id = ? AND deleted_at IS NULL`,
     )
-    .bind(id)
+    .bind(org, id)
     .run();
 
   return Boolean(result.meta.changes);
@@ -339,12 +364,13 @@ export async function softDeleteComment(db: D1Database, id: string): Promise<boo
  */
 export async function countCommentsByTarget(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   targetType: CommentTargetType,
 ): Promise<Record<string, number>> {
   const column = TARGET_COLUMN[targetType];
   const admin = isAdmin(viewer);
-  const values: unknown[] = [];
+  const values: unknown[] = [org];
   let sql: string;
 
   if (targetType === 'user') {
@@ -353,7 +379,7 @@ export async function countCommentsByTarget(
 
     sql = `SELECT c.${column} AS target_id, COUNT(*) AS total
            FROM comments c
-           WHERE c.deleted_at IS NULL AND c.${column} IS NOT NULL
+           WHERE c.organization_id = ? AND c.deleted_at IS NULL AND c.${column} IS NOT NULL
                  ${person ? `AND ${person.sql}` : ''}
            GROUP BY c.${column}`;
   } else {
@@ -364,13 +390,13 @@ export async function countCommentsByTarget(
           ? 'assignments'
           : 'scheduled_sessions';
 
-    const scope = teachingScopeSql(viewer, 't');
-    if (scope) values.push(...scope.values);
+    const scope = teachingScopeSql(viewer, 't', org);
+    values.push(...scope.values);
 
     sql = `SELECT c.${column} AS target_id, COUNT(*) AS total
            FROM comments c
            JOIN ${table} t ON t.id = c.${column}
-           WHERE c.deleted_at IS NULL ${scope ? `AND ${scope.sql}` : ''}
+           WHERE c.organization_id = ? AND c.deleted_at IS NULL AND ${scope.sql}
            GROUP BY c.${column}`;
   }
 
@@ -395,11 +421,12 @@ export async function countCommentsByTarget(
  */
 export async function listCommentFeed(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   params: ListCommentFeedParams,
 ): Promise<{ entries: CommentFeedEntry[]; total: number }> {
-  const where: string[] = ['c.deleted_at IS NULL'];
-  const values: unknown[] = [];
+  const where: string[] = ['c.organization_id = ?', 'c.deleted_at IS NULL'];
+  const values: unknown[] = [org];
 
   if (params.target_type) {
     where.push(`c.${TARGET_COLUMN[params.target_type]} IS NOT NULL`);
@@ -407,9 +434,9 @@ export async function listCommentFeed(
 
   if (!isAdmin(viewer)) {
     const person = personScopeSql(viewer);
-    const session = teachingScopeSql(viewer, 's')!;
-    const assignment = teachingScopeSql(viewer, 'a')!;
-    const scheduled = teachingScopeSql(viewer, 'sch')!;
+    const session = teachingScopeSql(viewer, 's', org);
+    const assignment = teachingScopeSql(viewer, 'a', org);
+    const scheduled = teachingScopeSql(viewer, 'sch', org);
 
     where.push(
       `((c.target_user_id IS NOT NULL AND ${person.sql})` +

@@ -5,6 +5,51 @@ How the requirements in [plan.md](plan.md) became the schema in
 
 ---
 
+## Organizations (orgsupport, Phases 27-31)
+
+On the `orgsupport` branch the portal holds several organizations. The design and its reasons
+are `docs/multi-organization.md`; in short:
+
+- **The person is global; everything else is the organization's.** `users` is the sign-in
+  identity and how to reach someone (name, email, phone, `google_sub`) -- nothing an organization
+  decides. `org_members` is belonging (`status`, `removed_at`, `first_entered_at`,
+  `last_entered_at`, `details_confirmed_at`), `user_roles` is what they do there, and
+  `tutor_profiles`, `student_profiles`, `guardianships`, `payment_handles` and
+  `availability_slots` are each keyed `(organization_id, user_id, ...)` with a composite foreign
+  key to `org_members`. Removing someone from an organization sets `org_members.removed_at`,
+  never `users.deleted_at`.
+- **Every teaching and money row carries `organization_id`, NOT NULL**: `assignments`,
+  `sessions`, `scheduled_sessions`, `session_drafts`, `active_sessions`, `payments`, `comments`,
+  `assessments`, `learning_plans` (`audit_events` too, NULL only for a sign-in and platform-admin
+  events). Child tables inherit through their parent.
+- **The database keeps rows in their organization**: a `BEFORE INSERT` trigger per root table
+  refuses one whose people are not members of its organization, and `BEFORE UPDATE OF
+  organization_id` refuses a move.
+- **Uniques are per organization**: one pairing per (organization, tutor, student), one active
+  plan and one primary guardian per student per organization. `active_sessions` stays keyed on
+  the tutor: nobody teaches two lessons at once anywhere.
+- **The organization's own data** -- identity, palette, logo, payer TIN and address, clock -- is
+  `organizations` (and `organization_logos`). `admin_profiles` is gone: the TIN was always the
+  organization's.
+- **The guardian rule is per organization**: a student needs at least one guardian who is a
+  member of the same organization. The audit query becomes:
+
+  ```sql
+  SELECT m.organization_id, u.id, u.full_name
+  FROM org_members m
+  JOIN users u ON u.id = m.user_id
+  JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id AND r.role = 'student'
+  WHERE m.removed_at IS NULL
+    AND NOT EXISTS (
+      SELECT 1 FROM guardianships g
+      JOIN org_members gm ON gm.organization_id = g.organization_id AND gm.user_id = g.guardian_user_id
+      WHERE g.organization_id = m.organization_id AND g.dependent_user_id = u.id
+        AND gm.removed_at IS NULL);
+  ```
+
+The sections below describe the model as it was designed for one institute; on this branch read
+each person-keyed table as "per organization".
+
 ## The three decisions that shaped everything
 
 ### 1. Roles are a set, so they are a table

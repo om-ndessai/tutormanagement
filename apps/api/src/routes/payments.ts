@@ -17,6 +17,7 @@ import {
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
+import type { OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
 import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
@@ -47,13 +48,13 @@ interface PaymentListBody extends ApiList<Payment> {
  * ledger.
  */
 async function assertParties(
-  db: D1Database,
+  db: D1Database, org: OrgId,
   direction: string,
   partyId: string,
   studentId: string | null | undefined,
 ) {
   const details: Record<string, string[]> = {};
-  const party = await getLiveUserById(db, partyId);
+  const party = await getLiveUserById(db, org, partyId);
 
   if (!party) {
     details.party_user_id = ['That person no longer exists.'];
@@ -64,7 +65,7 @@ async function assertParties(
   }
 
   if (direction === 'from_parent' && studentId) {
-    const student = await getLiveUserById(db, studentId);
+    const student = await getLiveUserById(db, org, studentId);
 
     if (!student) details.student_user_id = ['That student no longer exists.'];
     else if (!student.roles.includes('student')) {
@@ -81,9 +82,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listPaymentsQuerySchema), async (c) => {
     const params = c.req.valid('query');
-    const { payments, total, total_amount_cents } = await listPayments(
-      c.env.DB,
-      c.get('user'),
+    const { payments, total, total_amount_cents } = await listPayments(c.env.DB, c.get('org').id, c.get('user'),
       params,
     );
 
@@ -98,7 +97,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
   /** The payment ledger as a spreadsheet, scoped exactly like the list. */
   .get('/export.csv', zValidator('query', listPaymentsQuerySchema), async (c) => {
     const params = c.req.valid('query');
-    const { payments } = await listPayments(c.env.DB, c.get('user'), {
+    const { payments } = await listPayments(c.env.DB, c.get('org').id, c.get('user'), {
       ...params,
       limit: 5000,
       offset: 0,
@@ -118,7 +117,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
       ]),
     );
 
-    return csvResponse(datedFilename('tmi-payments'), body);
+    return csvResponse(datedFilename(c.get('org'), 'payments'), body);
   })
 
   /**
@@ -136,7 +135,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
     const { year } = c.req.valid('query');
 
     const body: ApiOk<TutorTaxStatus[]> = {
-      data: await listTutorTaxStatus(c.env.DB, year),
+      data: await listTutorTaxStatus(c.env.DB, c.get('org').id, year),
     };
     return c.json(body);
   })
@@ -152,7 +151,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
    */
   .get('/tax-summary.csv', requireAdmin, zValidator('query', taxSummaryQuerySchema), async (c) => {
     const { year } = c.req.valid('query');
-    const tutors = await listTutorTaxStatus(c.env.DB, year);
+    const tutors = await listTutorTaxStatus(c.env.DB, c.get('org').id, year);
 
     // The address is the recipient's address on the 1099, so it travels with
     // the figures it is filed next to.
@@ -181,7 +180,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
       ]),
     );
 
-    return csvResponse(`tmi-tax-summary-${year}.csv`, body);
+    return csvResponse(`${c.get('org').slug}-tax-summary-${year}.csv`, body);
   })
 
   /**
@@ -201,20 +200,20 @@ export const paymentsRoutes = new Hono<AppEnv>()
       if (!isAdmin(viewer)) {
         throw new ApiError(403, 'forbidden', 'Only an administrator can view another rundown.');
       }
-      const other = await getLiveUserById(c.env.DB, user_id);
+      const other = await getLiveUserById(c.env.DB, c.get('org').id, user_id);
       if (!other) throw ApiError.notFound('That user does not exist.');
       subject = other;
     }
 
     const body: ApiOk<MonthlyFinanceResponse> = {
-      data: await computeMonthlyFinance(c.env.DB, subject, year),
+      data: await computeMonthlyFinance(c.env.DB, c.get('org').id, subject, year),
     };
     return c.json(body);
   })
 
   .get('/balances', async (c) => {
     const body: ApiOk<BalancesResponse> = {
-      data: await computeBalances(c.env.DB, c.get('user')),
+      data: await computeBalances(c.env.DB, c.get('org').id, c.get('user')),
     };
     return c.json(body);
   })
@@ -222,11 +221,11 @@ export const paymentsRoutes = new Hono<AppEnv>()
   /** Only an admin records money: this is the institute's own ledger. */
   .post('/', requireAdmin, zValidator('json', paymentInputSchema), async (c) => {
     const input = c.req.valid('json');
-    await assertParties(c.env.DB, input.direction, input.party_user_id, input.student_user_id);
+    await assertParties(c.env.DB, c.get('org').id, input.direction, input.party_user_id, input.student_user_id);
 
-    const payment = await createPayment(c.env.DB, input, c.get('user').id);
+    const payment = await createPayment(c.env.DB, c.get('org').id, input, c.get('user').id);
 
-    await recordAudit(c.env.DB, c.get('user'), {
+    await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
       action: 'payment.recorded',
       // No amount: the tutor or parent it concerns reads their own log (R8).
       // The figure is on the payment itself, which the log links to.
@@ -247,7 +246,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
   .get('/:id', zValidator('param', idParamSchema), async (c) => {
     // Scoped to the row, not the payer: a guardian who shares one child with
     // another adult must not reach that adult's payments for a different one.
-    const payment = await getVisiblePayment(c.env.DB, c.get('user'), c.req.valid('param').id);
+    const payment = await getVisiblePayment(c.env.DB, c.get('org').id, c.get('user'), c.req.valid('param').id);
     if (!payment) throw ApiError.notFound('That payment does not exist.');
 
     const body: ApiOk<Payment> = { data: payment };
@@ -261,11 +260,11 @@ export const paymentsRoutes = new Hono<AppEnv>()
     zValidator('json', paymentUpdateSchema),
     async (c) => {
       const { id } = c.req.valid('param');
-      const updated = await updatePayment(c.env.DB, id, c.req.valid('json'));
+      const updated = await updatePayment(c.env.DB, c.get('org').id, id, c.req.valid('json'));
 
       if (!updated) throw ApiError.notFound('That payment does not exist.');
 
-      await recordAudit(c.env.DB, c.get('user'), {
+      await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
         action: 'payment.updated',
         description: `Updated a payment involving ${updated.party_name}`,
         subject: { id: updated.party_user_id, full_name: updated.party_name },
@@ -280,13 +279,13 @@ export const paymentsRoutes = new Hono<AppEnv>()
 
   .delete('/:id', requireAdmin, zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
-    const doomed = await getPayment(c.env.DB, id);
+    const doomed = await getPayment(c.env.DB, c.get('org').id, id);
 
-    if (!(await deletePayment(c.env.DB, id))) {
+    if (!(await deletePayment(c.env.DB, c.get('org').id, id))) {
       throw ApiError.notFound('That payment does not exist.');
     }
 
-    await recordAudit(c.env.DB, c.get('user'), {
+    await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
       action: 'payment.deleted',
       description: doomed
         ? `Deleted a payment involving ${doomed.party_name}`

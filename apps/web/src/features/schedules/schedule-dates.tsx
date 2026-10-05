@@ -17,8 +17,9 @@ import {
   RestoreLessonDialog,
   cancelledByText,
   formatLessonDay,
-  instituteToday,
+  organizationToday,
 } from './lesson-cancellation';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 
 /**
  * One series' dates (Phase 24): what is coming, each one cancellable, with
@@ -37,6 +38,7 @@ export function ScheduleDates({
   /** A date to pick out, when a link from the dashboard names one. */
   highlight: string | null;
 }) {
+  const timeZone = useOrgTimeZone();
   const occurrences = useScheduleOccurrences(schedule.id, true);
   const cancellations = useScheduleCancellations({ schedule_id: schedule.id, limit: 50 });
   const [cancelTarget, setCancelTarget] = useState<{ schedule: VisibleSchedule; date: string | null } | null>(
@@ -48,7 +50,7 @@ export function ScheduleDates({
     studentName: string;
   } | null>(null);
 
-  const today = instituteToday();
+  const today = organizationToday(timeZone);
   const dates = occurrences.data?.pages.flatMap((page) => page.data) ?? [];
   const earlier = (cancellations.data?.data ?? [])
     .filter((row) => row.occurs_on < today)

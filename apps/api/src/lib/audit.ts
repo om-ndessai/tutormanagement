@@ -1,4 +1,13 @@
 import type { AuditAction, User } from '@tmi/shared';
+import type { OrgId } from './org.js';
+
+/**
+ * Whose log a line goes in. An organization, or 'platform' -- said explicitly --
+ * for the few events that belong to none: a sign-in, a platform admin added.
+ * Required on every call, because recordAudit swallows its own errors and a
+ * missing organization would otherwise vanish silently.
+ */
+export type AuditScope = OrgId | 'platform';
 
 export interface AuditInput {
   action: AuditAction;
@@ -25,18 +34,20 @@ export interface AuditInput {
 export async function recordAudit(
   db: D1Database,
   actor: Pick<User, 'id' | 'full_name'> | null,
+  scope: AuditScope,
   input: AuditInput,
 ): Promise<void> {
   try {
     await db
       .prepare(
         `INSERT INTO audit_events
-           (id, actor_user_id, actor_name, subject_user_id, subject_name,
+           (id, organization_id, actor_user_id, actor_name, subject_user_id, subject_name,
             action, description, entity_type, entity_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         crypto.randomUUID(),
+        scope === 'platform' ? null : scope,
         actor?.id ?? null,
         // Names are snapshots so the log stays readable after a purge.
         actor?.full_name ?? 'System',

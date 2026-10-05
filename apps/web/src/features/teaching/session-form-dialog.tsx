@@ -59,6 +59,7 @@ import {
   NoteField,
   likelyAssessorRole,
 } from './session-notes';
+import { useBrand } from '@/providers/brand-provider';
 
 /** Common lesson lengths, offered as one tap rather than clock arithmetic. */
 const QUICK_LENGTHS = [45, 60, 75, 90, 120];
@@ -702,6 +703,7 @@ function SessionPreview({
   isAdmin: boolean;
   showMoney: boolean;
 }) {
+  const brand = useBrand();
   if (!preview) {
     return (
       <div className="bg-muted/50 text-muted-foreground rounded-md px-3 py-2.5 text-sm">
@@ -758,7 +760,7 @@ function SessionPreview({
           {preview.charge != null ? (
             <>
               Family charged <span className="font-medium tabular-nums">{formatCents(preview.charge)}</span>{' '}
-              · Institute keeps{' '}
+              · {brand.short} keeps{' '}
               <span className="font-medium tabular-nums">
                 {formatCents(preview.charge - preview.amount)}
               </span>

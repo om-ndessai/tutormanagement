@@ -33,17 +33,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { NoteField } from '@/features/teaching/session-notes';
 import { ApiRequestError } from '@/lib/api-client';
-import { useAuth } from '@/providers/auth-provider';
 import { useCancelLesson, useRestoreLesson } from './api';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 
 // ---------------------------------------------------------------------------
 // Phase 24: calling off one lesson of a standing schedule, and putting it
 // back. Nothing here is money; all of it is shown on the Tutoring side.
 // ---------------------------------------------------------------------------
 
-/** Today on the institute's clock -- the one the API checks "past" against. */
-export function instituteToday(): string {
-  return zonedClockParts(new Date().toISOString()).day;
+/** Today on the organization's clock -- the one the API checks "past" against. */
+export function organizationToday(timeZone: string): string {
+  return zonedClockParts(new Date().toISOString(), timeZone).day;
 }
 
 /** A calendar date moved by whole days, as YYYY-MM-DD. */
@@ -80,6 +80,7 @@ export function CancelLessonDialog({
   target: { schedule: VisibleSchedule; date: string | null } | null;
   onClose: () => void;
 }) {
+  const timeZone = useOrgTimeZone();
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const cancel = useCancelLesson();
@@ -96,7 +97,7 @@ export function CancelLessonDialog({
   }, [target]);
 
   const schedule = target?.schedule;
-  const today = instituteToday();
+  const today = organizationToday(timeZone);
   // A parent may only call off today or later; the tutor and the office may
   // also mark a past lesson. The API holds the same line.
   const futureOnly = schedule?.cancel_as === 'parent' && !isAdmin;

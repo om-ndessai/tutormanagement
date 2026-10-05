@@ -57,6 +57,8 @@ import {
 } from './session-reflection';
 import { StartSessionButton } from './start-session-button';
 import { useDeleteSession, useSession, useSessions } from './api';
+import { withOrg } from '@/lib/organization';
+import { useBrand } from '@/providers/brand-provider';
 
 const PAGE_SIZE = 25;
 
@@ -71,6 +73,7 @@ const PAGE_SIZE = 25;
  * API returns is unchanged; this is about what is on the screen.
  */
 export function SessionsPage() {
+  const brand = useBrand();
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isTutor = user?.roles.includes('tutor') ?? false;
@@ -173,7 +176,7 @@ export function SessionsPage() {
                 emphasis
               />
               <SummaryTile
-                label="Institute cut"
+                label={`${brand.short} cut`}
                 value={
                   totals
                     ? formatCents(
@@ -267,7 +270,7 @@ export function SessionsPage() {
               browser names the file from Content-Disposition. */}
           {money && (
             <Button variant="outline" asChild className="sm:ml-auto">
-              <a href={`/api/sessions/export.csv${exportQuery}`} download>
+              <a href={withOrg(`/api/sessions/export.csv${exportQuery}`)} download>
                 <DownloadIcon />
                 CSV
               </a>

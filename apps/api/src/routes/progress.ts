@@ -15,6 +15,7 @@ import {
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
+import type { OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
@@ -51,8 +52,8 @@ export const curriculumRoutes = new Hono<AppEnv>().get('/', async (c) => {
 });
 
 /** The person being assessed must be a live student. */
-async function requireStudent(db: D1Database, studentId: string) {
-  const student = await getLiveUserById(db, studentId);
+async function requireStudent(db: D1Database, org: OrgId, studentId: string) {
+  const student = await getLiveUserById(db, org, studentId);
 
   if (!student || !student.roles.includes('student')) {
     throw ApiError.validation('Please correct the highlighted fields.', {
@@ -92,7 +93,7 @@ export const progressRoutes = new Hono<AppEnv>()
   /** Every student the viewer may follow, with where each one stands. */
   .get('/', async (c) => {
     const body: ApiOk<ProgressOverview[]> = {
-      data: await listProgressOverview(c.env.DB, c.get('user')),
+      data: await listProgressOverview(c.env.DB, c.get('org'), c.get('user')),
     };
     return c.json(body);
   })
@@ -102,7 +103,7 @@ export const progressRoutes = new Hono<AppEnv>()
 
   .post('/assessments', requireAdmin, zValidator('json', assessmentInputSchema), async (c) => {
     const input = c.req.valid('json');
-    const student = await requireStudent(c.env.DB, input.student_user_id);
+    const student = await requireStudent(c.env.DB, c.get('org').id, input.student_user_id);
 
     await assertCatalogIds(c.env.DB, [
       {
@@ -114,9 +115,9 @@ export const progressRoutes = new Hono<AppEnv>()
     ]);
 
     const viewer = c.get('user');
-    const assessment = await createAssessment(c.env.DB, input, viewer.id);
+    const assessment = await createAssessment(c.env.DB, c.get('org').id, input, viewer.id);
 
-    await recordAudit(c.env.DB, viewer, {
+    await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'assessment.recorded',
       description:
         `Recorded an assessment of ${student.full_name} dated ${assessment.assessed_on}` +
@@ -139,7 +140,7 @@ export const progressRoutes = new Hono<AppEnv>()
       const { id } = c.req.valid('param');
       const input = c.req.valid('json');
 
-      if (!(await getAssessment(c.env.DB, id))) {
+      if (!(await getAssessment(c.env.DB, c.get('org').id, id))) {
         throw ApiError.notFound('That assessment does not exist.');
       }
 
@@ -156,10 +157,10 @@ export const progressRoutes = new Hono<AppEnv>()
         },
       ]);
 
-      const updated = await updateAssessment(c.env.DB, id, input);
+      const updated = await updateAssessment(c.env.DB, c.get('org').id, id, input);
       if (!updated) throw ApiError.notFound('That assessment does not exist.');
 
-      await recordAudit(c.env.DB, c.get('user'), {
+      await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
         action: 'assessment.updated',
         description: `Updated the ${updated.assessed_on} assessment of ${updated.student_name}`,
         subject: { id: updated.student_user_id, full_name: updated.student_name },
@@ -174,13 +175,13 @@ export const progressRoutes = new Hono<AppEnv>()
 
   .delete('/assessments/:id', requireAdmin, zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
-    const doomed = await getAssessment(c.env.DB, id);
+    const doomed = await getAssessment(c.env.DB, c.get('org').id, id);
 
-    if (!doomed || !(await deleteAssessment(c.env.DB, id))) {
+    if (!doomed || !(await deleteAssessment(c.env.DB, c.get('org').id, id))) {
       throw ApiError.notFound('That assessment does not exist.');
     }
 
-    await recordAudit(c.env.DB, c.get('user'), {
+    await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
       action: 'assessment.deleted',
       description: `Deleted the ${doomed.assessed_on} assessment of ${doomed.student_name}`,
       subject: { id: doomed.student_user_id, full_name: doomed.student_name },
@@ -195,18 +196,18 @@ export const progressRoutes = new Hono<AppEnv>()
 
   .post('/plans', requireAdmin, zValidator('json', planInputSchema), async (c) => {
     const input = c.req.valid('json');
-    const student = await requireStudent(c.env.DB, input.student_user_id);
+    const student = await requireStudent(c.env.DB, c.get('org').id, input.student_user_id);
 
     // One active plan per student, which is what makes "the plan" a lesson is
     // scored against unambiguous. The index would refuse it; this says why.
-    if (await getActivePlanId(c.env.DB, student.id)) {
+    if (await getActivePlanId(c.env.DB, c.get('org').id, student.id)) {
       throw ApiError.conflict(
         `${student.full_name} already has an active plan. Mark it achieved or closed first.`,
       );
     }
 
     if (input.assessment_id) {
-      const assessment = await getAssessment(c.env.DB, input.assessment_id);
+      const assessment = await getAssessment(c.env.DB, c.get('org').id, input.assessment_id);
       if (!assessment || assessment.student_user_id !== student.id) {
         throw ApiError.validation('Please correct the highlighted fields.', {
           assessment_id: ['That assessment is not one of this student’s.'],
@@ -224,9 +225,9 @@ export const progressRoutes = new Hono<AppEnv>()
     ]);
 
     const viewer = c.get('user');
-    const plan = await createPlan(c.env.DB, input, viewer.id);
+    const plan = await createPlan(c.env.DB, c.get('org').id, input, viewer.id);
 
-    await recordAudit(c.env.DB, viewer, {
+    await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'plan.created',
       description:
         `Set a learning plan for ${student.full_name}: "${plan.goal}" by ${plan.target_on}` +
@@ -249,7 +250,7 @@ export const progressRoutes = new Hono<AppEnv>()
       const { id } = c.req.valid('param');
       const input = c.req.valid('json');
 
-      const existing = await getPlan(c.env.DB, id);
+      const existing = await getPlan(c.env.DB, c.get('org').id, id);
       if (!existing) throw ApiError.notFound('That plan does not exist.');
 
       // The two dates can arrive separately; the order is checked on the pair
@@ -263,14 +264,14 @@ export const progressRoutes = new Hono<AppEnv>()
       }
 
       if (input.status === 'active' && existing.status !== 'active') {
-        const active = await getActivePlanId(c.env.DB, existing.student_user_id);
+        const active = await getActivePlanId(c.env.DB, c.get('org').id, existing.student_user_id);
         if (active && active !== id) {
           throw ApiError.conflict('This student already has another active plan.');
         }
       }
 
       if (input.assessment_id) {
-        const assessment = await getAssessment(c.env.DB, input.assessment_id);
+        const assessment = await getAssessment(c.env.DB, c.get('org').id, input.assessment_id);
         if (!assessment || assessment.student_user_id !== existing.student_user_id) {
           throw ApiError.validation('Please correct the highlighted fields.', {
             assessment_id: ['That assessment is not one of this student’s.'],
@@ -287,13 +288,13 @@ export const progressRoutes = new Hono<AppEnv>()
         { field: 'topic_ids', table: 'curriculum_topics', ids: input.topic_ids ?? [] },
       ]);
 
-      const updated = await updatePlan(c.env.DB, id, input);
+      const updated = await updatePlan(c.env.DB, c.get('org').id, id, input);
       if (!updated) throw ApiError.notFound('That plan does not exist.');
 
-      const student = await getLiveUserById(c.env.DB, updated.student_user_id);
+      const student = await getLiveUserById(c.env.DB, c.get('org').id, updated.student_user_id);
       const name = student?.full_name ?? 'a student';
 
-      await recordAudit(c.env.DB, c.get('user'), {
+      await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
         action: 'plan.updated',
         description:
           input.status && input.status !== existing.status
@@ -311,15 +312,15 @@ export const progressRoutes = new Hono<AppEnv>()
 
   .delete('/plans/:id', requireAdmin, zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
-    const doomed = await getPlan(c.env.DB, id);
+    const doomed = await getPlan(c.env.DB, c.get('org').id, id);
 
-    if (!doomed || !(await deletePlan(c.env.DB, id))) {
+    if (!doomed || !(await deletePlan(c.env.DB, c.get('org').id, id))) {
       throw ApiError.notFound('That plan does not exist.');
     }
 
-    const student = await getLiveUserById(c.env.DB, doomed.student_user_id);
+    const student = await getLiveUserById(c.env.DB, c.get('org').id, doomed.student_user_id);
 
-    await recordAudit(c.env.DB, c.get('user'), {
+    await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
       action: 'plan.deleted',
       description: `Deleted ${student?.full_name ?? 'a student'}'s learning plan "${doomed.goal}"`,
       subject: student ? { id: student.id, full_name: student.full_name } : null,
@@ -340,14 +341,14 @@ export const progressRoutes = new Hono<AppEnv>()
   .get('/:studentId', zValidator('param', studentParamSchema), async (c) => {
     const { studentId } = c.req.valid('param');
 
-    if (!(await canViewStudentProgress(c.env.DB, c.get('user'), studentId))) {
+    if (!(await canViewStudentProgress(c.env.DB, c.get('org').id, c.get('user'), studentId))) {
       throw ApiError.notFound('That student does not exist.');
     }
 
     const progress = await buildStudentProgress(
       c.env.DB,
       studentId,
-      await progressReader(c.env.DB, c.get('user')),
+      await progressReader(c.env.DB, c.get('org'), c.get('user')),
     );
     if (!progress) throw ApiError.notFound('That student does not exist.');
 

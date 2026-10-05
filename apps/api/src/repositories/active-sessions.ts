@@ -9,24 +9,33 @@ import {
   zonedClockParts,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { isAdmin } from '../lib/scope.js';
 
 const SELECT_ACTIVE = `
-  SELECT a.tutor_user_id, t.full_name AS tutor_name,
+  SELECT a.organization_id, o.time_zone,
+         a.tutor_user_id, t.full_name AS tutor_name,
          a.student_user_id, s.full_name AS student_name,
          a.mode, a.started_at, a.notes,
          tp.max_session_minutes AS tutor_max_session_minutes,
          sp.max_session_minutes AS student_max_session_minutes
   FROM active_sessions a
+  JOIN organizations o ON o.id = a.organization_id
   JOIN users t ON t.id = a.tutor_user_id
   JOIN users s ON s.id = a.student_user_id
   -- Left joins: the limits are optional, and a missing profile must not hide
-  -- a running lesson.
-  LEFT JOIN tutor_profiles   tp ON tp.user_id = a.tutor_user_id
-  LEFT JOIN student_profiles sp ON sp.user_id = a.student_user_id
+  -- a running lesson. Both are the lesson's own organization's.
+  LEFT JOIN tutor_profiles   tp ON tp.organization_id = a.organization_id
+                               AND tp.user_id = a.tutor_user_id
+  LEFT JOIN student_profiles sp ON sp.organization_id = a.organization_id
+                               AND sp.user_id = a.student_user_id
 `;
 
 export interface ActiveRow {
+  /** The lesson's organization. One live lesson per tutor ANYWHERE. */
+  organization_id: string;
+  /** That organization's clock, which the lesson is recorded against. */
+  time_zone: string;
   tutor_user_id: string;
   tutor_name: string;
   student_user_id: string;
@@ -62,11 +71,12 @@ export function toActiveSession(
   chargeRateCents: number | null,
   viewer: User,
 ): ActiveSession {
-  const { day, minutesOfDay } = zonedClockParts(row.started_at);
+  const { day, minutesOfDay } = zonedClockParts(row.started_at, row.time_zone);
   const admin = isAdmin(viewer);
+  const { organization_id: _org, time_zone: _tz, ...lesson } = row;
 
   return {
-    ...row,
+    ...lesson,
     occurred_on: day,
     rounded_start: minutesToClock(roundClockToQuarter(minutesOfDay)),
     max_minutes: maxMinutesFor(row),
@@ -76,36 +86,70 @@ export function toActiveSession(
   };
 }
 
-export async function getActiveRow(db: D1Database, tutorUserId: string) {
+/**
+ * The tutor's live lesson IN THIS ORGANIZATION. A lesson they are teaching
+ * for another organization is not this one's business; `hasActiveElsewhere`
+ * answers only the question the tutor needs answered.
+ */
+export async function getActiveRow(db: D1Database, org: OrgId, tutorUserId: string) {
   return db
-    .prepare(`${SELECT_ACTIVE} WHERE a.tutor_user_id = ?`)
-    .bind(tutorUserId)
+    .prepare(`${SELECT_ACTIVE} WHERE a.organization_id = ? AND a.tutor_user_id = ?`)
+    .bind(org, tutorUserId)
     .first<ActiveRow>();
 }
 
-/** Every live lesson, for the admin's view. */
-export async function listActiveRows(db: D1Database) {
-  const result = await db.prepare(`${SELECT_ACTIVE} ORDER BY a.started_at`).all<ActiveRow>();
+/** Whether the tutor is teaching a lesson for ANOTHER organization right now. */
+export async function hasActiveElsewhere(
+  db: D1Database,
+  org: OrgId,
+  tutorUserId: string,
+): Promise<boolean> {
+  const row = await db
+    .prepare('SELECT 1 AS ok FROM active_sessions WHERE tutor_user_id = ? AND organization_id <> ?')
+    .bind(tutorUserId, org)
+    .first<{ ok: number }>();
+  return row?.ok === 1;
+}
+
+/**
+ * Live lessons: this organization's, for the admin's view -- or, for the
+ * sweep alone, every organization's ('all'), each then closed in its own.
+ */
+export async function listActiveRows(db: D1Database, org: OrgId | 'all') {
+  const result =
+    org === 'all'
+      ? await db
+          .prepare(
+            // org-scope: the sweep alone, closing each lesson in its own organization.
+            `${SELECT_ACTIVE} ORDER BY a.started_at`,
+          )
+          .all<ActiveRow>()
+      : await db
+          .prepare(`${SELECT_ACTIVE} WHERE a.organization_id = ? ORDER BY a.started_at`)
+          .bind(org)
+          .all<ActiveRow>();
   return result.results ?? [];
 }
 
 export async function startActive(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   studentUserId: string,
   mode: SessionMode,
 ): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO active_sessions (tutor_user_id, student_user_id, mode, started_at)
-       VALUES (?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+      `INSERT INTO active_sessions (organization_id, tutor_user_id, student_user_id, mode, started_at)
+       VALUES (?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     )
-    .bind(tutorUserId, studentUserId, mode)
+    .bind(org, tutorUserId, studentUserId, mode)
     .run();
 }
 
 export async function updateActive(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   fields: { mode?: SessionMode; notes?: string | null },
 ): Promise<void> {
@@ -121,15 +165,18 @@ export async function updateActive(
   if (assignments.length === 0) return;
 
   await db
-    .prepare(`UPDATE active_sessions SET ${assignments.join(', ')} WHERE tutor_user_id = ?`)
-    .bind(...values, tutorUserId)
+    .prepare(
+      `UPDATE active_sessions SET ${assignments.join(', ')}
+       WHERE organization_id = ? AND tutor_user_id = ?`,
+    )
+    .bind(...values, org, tutorUserId)
     .run();
 }
 
-export async function clearActive(db: D1Database, tutorUserId: string): Promise<boolean> {
+export async function clearActive(db: D1Database, org: OrgId, tutorUserId: string): Promise<boolean> {
   const result = await db
-    .prepare('DELETE FROM active_sessions WHERE tutor_user_id = ?')
-    .bind(tutorUserId)
+    .prepare('DELETE FROM active_sessions WHERE organization_id = ? AND tutor_user_id = ?')
+    .bind(org, tutorUserId)
     .run();
 
   return Boolean(result.meta.changes);
@@ -167,8 +214,9 @@ export function resolveTimes(
   startedAtIso: string,
   endedAt: Date = new Date(),
   maxMinutes: number = DEFAULT_MAX_SESSION_MINUTES,
+  timeZone?: string,
 ) {
-  const start = zonedClockParts(startedAtIso);
+  const start = zonedClockParts(startedAtIso, timeZone);
 
   // A session belongs to ONE date and its end must stay after its start, so a
   // lesson left running past midnight is recorded up to the end of the day it

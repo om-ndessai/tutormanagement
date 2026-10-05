@@ -175,7 +175,7 @@ export function Form1099Dialog({
               id="ein"
               value={payerTin}
               onChange={(event) => setPayerTin(event.target.value)}
-              placeholder="The institute’s EIN"
+              placeholder="The organization’s EIN"
             />
             {!instituteTin && (
               <p className="text-muted-foreground text-xs">

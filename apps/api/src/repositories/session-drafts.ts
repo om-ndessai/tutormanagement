@@ -12,6 +12,7 @@ import type {
   SessionProgress,
   SessionWriteUp,
 } from '@tmi/shared';
+import type { OrgId } from '../lib/org.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -117,22 +118,34 @@ function workingState(input: SessionDraftPayload) {
  * tutor's behalf should not see the tutor's half-finished notes, nor the
  * tutor theirs.
  */
-export async function listMyDrafts(db: D1Database, authorUserId: string): Promise<SessionDraft[]> {
+export async function listMyDrafts(
+  db: D1Database,
+  org: OrgId,
+  authorUserId: string,
+): Promise<SessionDraft[]> {
   const result = await db
-    .prepare(`${SELECT_DRAFT} WHERE d.author_user_id = ? ORDER BY d.updated_at DESC`)
-    .bind(authorUserId)
+    .prepare(
+      `${SELECT_DRAFT} WHERE d.organization_id = ? AND d.author_user_id = ?
+       ORDER BY d.updated_at DESC`,
+    )
+    .bind(org, authorUserId)
     .all<DraftRow>();
 
   return (result.results ?? []).map(toDraft);
 }
 
-export async function getDraft(db: D1Database, id: string): Promise<SessionDraft | null> {
-  const row = await db.prepare(`${SELECT_DRAFT} WHERE d.id = ?`).bind(id).first<DraftRow>();
+/** A draft of this organization. The route then checks it is the reader's own. */
+export async function getDraft(db: D1Database, org: OrgId, id: string): Promise<SessionDraft | null> {
+  const row = await db
+    .prepare(`${SELECT_DRAFT} WHERE d.organization_id = ? AND d.id = ?`)
+    .bind(org, id)
+    .first<DraftRow>();
   return row ? toDraft(row) : null;
 }
 
 export async function createDraft(
   db: D1Database,
+  org: OrgId,
   authorUserId: string,
   input: SessionDraftPayload,
 ): Promise<SessionDraft> {
@@ -142,13 +155,14 @@ export async function createDraft(
   await db
     .prepare(
       `INSERT INTO session_drafts
-         (id, tutor_user_id, student_user_id, author_user_id, occurred_on,
+         (id, organization_id, tutor_user_id, student_user_id, author_user_id, occurred_on,
           started_at, ended_at, mode, notes, progress_json, write_up_json,
           assessment_json)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
+      org,
       input.tutor_user_id,
       input.student_user_id,
       authorUserId,
@@ -163,7 +177,7 @@ export async function createDraft(
     )
     .run();
 
-  const created = await getDraft(db, id);
+  const created = await getDraft(db, org, id);
   if (!created) throw new Error('Insert into session_drafts returned no row.');
   return created;
 }
@@ -171,6 +185,7 @@ export async function createDraft(
 /** Replaces a draft wholesale: it is one form, saved again. */
 export async function updateDraft(
   db: D1Database,
+  org: OrgId,
   id: string,
   input: SessionDraftPayload,
 ): Promise<SessionDraft | null> {
@@ -182,7 +197,7 @@ export async function updateDraft(
        SET tutor_user_id = ?, student_user_id = ?, occurred_on = ?, started_at = ?,
            ended_at = ?, mode = ?, notes = ?, progress_json = ?, write_up_json = ?,
            assessment_json = ?, updated_at = ${NOW}
-       WHERE id = ?`,
+       WHERE organization_id = ? AND id = ?`,
     )
     .bind(
       input.tutor_user_id,
@@ -195,24 +210,34 @@ export async function updateDraft(
       input.progress ? JSON.stringify(input.progress) : null,
       state.write_up,
       state.assessment,
+      org,
       id,
     )
     .run();
 
   if (!result.meta.changes) return null;
-  return getDraft(db, id);
+  return getDraft(db, org, id);
 }
 
-export async function deleteDraft(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM session_drafts WHERE id = ?').bind(id).run();
+export async function deleteDraft(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM session_drafts WHERE organization_id = ? AND id = ?')
+    .bind(org, id)
+    .run();
   return Boolean(result.meta.changes);
 }
 
-/** How many drafts the viewer has waiting, for the badge on the sessions page. */
-export async function countMyDrafts(db: D1Database, authorUserId: string): Promise<number> {
+/** How many drafts the viewer has waiting here, for the badge on the sessions page. */
+export async function countMyDrafts(
+  db: D1Database,
+  org: OrgId,
+  authorUserId: string,
+): Promise<number> {
   const row = await db
-    .prepare('SELECT COUNT(*) AS total FROM session_drafts WHERE author_user_id = ?')
-    .bind(authorUserId)
+    .prepare(
+      'SELECT COUNT(*) AS total FROM session_drafts WHERE organization_id = ? AND author_user_id = ?',
+    )
+    .bind(org, authorUserId)
     .first<{ total: number }>();
 
   return Number(row?.total ?? 0);

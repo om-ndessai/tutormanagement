@@ -42,6 +42,8 @@ export const ERROR_CODES = [
   'forbidden',
   'no_account',
   'account_suspended',
+  'organization_required',
+  'shared_fields_locked',
   'email_unverified',
 
   // The deployment is missing required configuration. Distinct from

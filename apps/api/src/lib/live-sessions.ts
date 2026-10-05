@@ -11,6 +11,7 @@ import {
   type ActiveRow,
 } from '../repositories/active-sessions.js';
 import { createSession, type StoredSession } from '../repositories/sessions.js';
+import { orgIdFromRow } from './org.js';
 
 type Actor = Pick<User, 'id' | 'full_name'> | null;
 
@@ -30,10 +31,13 @@ export async function recordRunningSession(
   const { actor, now = new Date() } = options;
   const notes = options.notes === undefined ? row.notes : options.notes;
 
-  const times = resolveTimes(row.started_at, now, maxMinutesFor(row));
-  const rates = await resolveSessionRates(db, row.tutor_user_id, row.student_user_id, row.mode);
+  // The lesson is closed in ITS organization, on that organization's clock and
+  // prices, whoever is reading -- the sweep reads every organization's.
+  const org = orgIdFromRow(row.organization_id);
+  const times = resolveTimes(row.started_at, now, maxMinutesFor(row), row.time_zone);
+  const rates = await resolveSessionRates(db, org, row.tutor_user_id, row.student_user_id, row.mode);
 
-  const session = await createSession(db, {
+  const session = await createSession(db, org, {
     tutor_user_id: row.tutor_user_id,
     student_user_id: row.student_user_id,
     occurred_on: times.occurred_on,
@@ -50,7 +54,7 @@ export async function recordRunningSession(
     recorded_by_user_id: actor?.id ?? null,
   });
 
-  await clearActive(db, row.tutor_user_id);
+  await clearActive(db, org, row.tutor_user_id);
 
   const shape =
     `${formatDuration(session.duration_minutes)} ` +
@@ -59,7 +63,7 @@ export async function recordRunningSession(
     // family's. See the same note in routes/sessions.ts.
     `${session.student_name} on ${session.occurred_on}`;
 
-  await recordAudit(db, actor, {
+  await recordAudit(db, actor, org, {
     action: actor ? 'session.recorded' : 'session.auto_stopped',
     description: actor
       ? `Recorded a ${shape}`
@@ -86,7 +90,8 @@ export async function recordRunningSession(
  * is watching settles up promptly.
  */
 export async function autoStopExpired(db: D1Database, now: Date = new Date()): Promise<number> {
-  const rows = await listActiveRows(db);
+  // Every organization's: the sweep is the one reader that is not inside one.
+  const rows = await listActiveRows(db, 'all');
   let closed = 0;
 
   for (const row of rows) {

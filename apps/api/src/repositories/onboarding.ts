@@ -1,17 +1,32 @@
 import type { OnboardingState, TourOutcome } from '@tmi/shared';
+import type { OrgId } from '../lib/org.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
 const NOT_YET: OnboardingState = { tour_finished_at: null, details_confirmed_at: null };
 
-/** Whether this person has been through the welcome wizard. No row is "not yet". */
-export async function getOnboarding(db: D1Database, userId: string): Promise<OnboardingState> {
-  const row = await db
-    .prepare('SELECT tour_finished_at, details_confirmed_at FROM user_onboarding WHERE user_id = ?')
-    .bind(userId)
-    .first<OnboardingState>();
+/**
+ * Whether this person has been through the welcome wizard (per person), and
+ * whether they confirmed THIS organization has their details right (per
+ * organization: each office keeps its own). No row is "not yet".
+ */
+export async function getOnboarding(
+  db: D1Database,
+  org: OrgId | null,
+  userId: string,
+): Promise<OnboardingState> {
+  const [tour, member] = await db.batch<{ tour_finished_at?: string | null; details_confirmed_at?: string | null }>([
+    db.prepare('SELECT tour_finished_at FROM user_onboarding WHERE user_id = ?').bind(userId),
+    db
+      .prepare('SELECT details_confirmed_at FROM org_members WHERE organization_id = ? AND user_id = ?')
+      .bind(org ?? '', userId),
+  ]);
 
-  return row ?? NOT_YET;
+  return {
+    ...NOT_YET,
+    tour_finished_at: tour?.results?.[0]?.tour_finished_at ?? null,
+    details_confirmed_at: member?.results?.[0]?.details_confirmed_at ?? null,
+  };
 }
 
 /**
@@ -40,13 +55,13 @@ export async function finishTour(
   return { first: Boolean(result.meta.changes) };
 }
 
-/** Records that the person confirmed the office has their details right. */
-export async function confirmDetails(db: D1Database, userId: string): Promise<void> {
+/** Records that the person confirmed this organization has their details right. */
+export async function confirmDetails(db: D1Database, org: OrgId, userId: string): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO user_onboarding (user_id, details_confirmed_at) VALUES (?, ${NOW})
-       ON CONFLICT (user_id) DO UPDATE SET details_confirmed_at = ${NOW}, updated_at = ${NOW}`,
+      `UPDATE org_members SET details_confirmed_at = ${NOW}, updated_at = ${NOW}
+       WHERE organization_id = ? AND user_id = ?`,
     )
-    .bind(userId)
+    .bind(org, userId)
     .run();
 }

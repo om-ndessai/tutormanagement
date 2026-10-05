@@ -21,7 +21,7 @@ test.describe('csv export', () => {
     const response = await admin.request.get('/api/sessions/export.csv');
 
     expect(response.headers()['content-type']).toContain('text/csv');
-    expect(response.headers()['content-disposition']).toMatch(/attachment; filename="tmi-sessions-/);
+    expect(response.headers()['content-disposition']).toMatch(/attachment; filename="chmi-sessions-/);
 
     const csv = await response.text();
 

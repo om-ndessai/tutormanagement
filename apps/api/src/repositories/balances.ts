@@ -22,6 +22,7 @@ import type {
   User,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { isAdmin } from '../lib/scope.js';
 import { listAssignments } from './assignments.js';
 import { listCancellationsForSchedules } from './schedule-cancellations.js';
@@ -44,19 +45,26 @@ import { listSchedules } from './schedules.js';
  * The guardians are listed alongside so the screen can still answer "who do we
  * chase".
  */
-export async function computeBalances(db: D1Database, viewer: User): Promise<BalancesResponse> {
+export async function computeBalances(
+  db: D1Database,
+  org: OrgId,
+  viewer: User,
+): Promise<BalancesResponse> {
   const admin = isAdmin(viewer);
   const id = viewer.id;
 
+  // Everything below is this organization's: its members, its lessons, its
+  // payments. A tutor who also teaches elsewhere has a separate ledger there.
   // Non-admins see only their own row, or their children's.
-  const tutorFilter = admin ? '' : 'WHERE u.id = ?';
+  const tutorFilter = admin ? '' : 'AND u.id = ?';
   const tutorValues = admin ? [] : [id];
 
   const studentFilter = admin
     ? ''
-    : `WHERE u.id = ? OR u.id IN (
-         SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?
-       )`;
+    : `AND (u.id = ? OR u.id IN (
+         SELECT g.dependent_user_id FROM guardianships g
+         WHERE g.organization_id = m.organization_id AND g.guardian_user_id = ?
+       ))`;
   const studentValues = admin ? [] : [id, id];
 
   const [tutorResult, studentResult, guardianResult] = await db.batch<Record<string, unknown>>([
@@ -64,36 +72,50 @@ export async function computeBalances(db: D1Database, viewer: User): Promise<Bal
       .prepare(
         `SELECT u.id AS user_id, u.full_name,
                 tp.topup_amount_cents,
-                COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS earned_cents,
-                COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.tutor_user_id = u.id), 0) AS session_count,
-                COALESCE((SELECT SUM(p.amount_cents) FROM payments p WHERE p.party_user_id = u.id AND p.direction = 'to_tutor'), 0) AS paid_cents
-         FROM users u
-         JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'
+                COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s
+                          WHERE s.organization_id = m.organization_id AND s.tutor_user_id = u.id), 0) AS earned_cents,
+                COALESCE((SELECT COUNT(*) FROM sessions s
+                          WHERE s.organization_id = m.organization_id AND s.tutor_user_id = u.id), 0) AS session_count,
+                COALESCE((SELECT SUM(p.amount_cents) FROM payments p
+                          WHERE p.organization_id = m.organization_id AND p.party_user_id = u.id
+                            AND p.direction = 'to_tutor'), 0) AS paid_cents
+         FROM org_members m
+         JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+         JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                          AND r.role = 'tutor'
          -- Left join: a tutor may hold the role with no profile row yet, and
          -- must still appear in the ledger.
-         LEFT JOIN tutor_profiles tp ON tp.user_id = u.id
-         ${tutorFilter}
+         LEFT JOIN tutor_profiles tp ON tp.organization_id = m.organization_id AND tp.user_id = u.id
+         WHERE m.organization_id = ? ${tutorFilter}
          ORDER BY u.full_name`,
       )
-      .bind(...tutorValues),
+      .bind(org, ...tutorValues),
     db
       .prepare(
         `SELECT u.id AS student_user_id, u.full_name AS student_name,
-                COALESCE((SELECT SUM(s.charge_amount_cents) FROM sessions s WHERE s.student_user_id = u.id), 0) AS charged_cents,
-                COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.student_user_id = u.id), 0) AS session_count,
-                COALESCE((SELECT SUM(p.amount_cents) FROM payments p WHERE p.student_user_id = u.id AND p.direction = 'from_parent'), 0) AS paid_cents
-         FROM users u
-         JOIN user_roles r ON r.user_id = u.id AND r.role = 'student'
-         ${studentFilter}
+                COALESCE((SELECT SUM(s.charge_amount_cents) FROM sessions s
+                          WHERE s.organization_id = m.organization_id AND s.student_user_id = u.id), 0) AS charged_cents,
+                COALESCE((SELECT COUNT(*) FROM sessions s
+                          WHERE s.organization_id = m.organization_id AND s.student_user_id = u.id), 0) AS session_count,
+                COALESCE((SELECT SUM(p.amount_cents) FROM payments p
+                          WHERE p.organization_id = m.organization_id AND p.student_user_id = u.id
+                            AND p.direction = 'from_parent'), 0) AS paid_cents
+         FROM org_members m
+         JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+         JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                          AND r.role = 'student'
+         WHERE m.organization_id = ? ${studentFilter}
          ORDER BY u.full_name`,
       )
-      .bind(...studentValues),
+      .bind(org, ...studentValues),
     db
       .prepare(
         `SELECT g.dependent_user_id, g.guardian_user_id, g.is_primary, p.full_name
          FROM guardianships g JOIN users p ON p.id = g.guardian_user_id
+         WHERE g.organization_id = ?
          ORDER BY g.is_primary DESC, p.full_name`,
-      ),
+      )
+      .bind(org),
   ]);
 
   const tutors: TutorBalance[] = ((tutorResult?.results ?? []) as Record<string, unknown>[]).map(
@@ -190,40 +212,47 @@ function bySoonest(a: string | null, b: string | null): number {
  */
 export async function computeTutorPaymentOutlook(
   db: D1Database,
+  org: OrgId,
+  timeZone: string,
   viewer: User,
   tutors: TutorBalance[],
   nowIso: string,
 ): Promise<TutorPaymentOutlook[]> {
-  const today = zonedClockParts(nowIso).day;
+  const today = zonedClockParts(nowIso, timeZone).day;
   const horizon = addDays(today, TOPUP_PROJECTION_WEEKS * 7);
 
   const [schedules, assignments, [lastPaidResult, recordedResult]] = await Promise.all([
-    listSchedules(db, viewer, { include_inactive: false }),
-    listAssignments(db, viewer, { include_inactive: false }),
+    listSchedules(db, org, viewer, { include_inactive: false }),
+    listAssignments(db, org, viewer, { include_inactive: false }),
     db.batch<Record<string, unknown>>([
-      db.prepare(
-        `SELECT party_user_id, amount_cents, paid_at
-         FROM (
-           SELECT p.party_user_id, p.amount_cents, p.paid_at,
-                  ROW_NUMBER() OVER (
-                    PARTITION BY p.party_user_id ORDER BY p.paid_at DESC, p.created_at DESC
-                  ) AS position
-           FROM payments p
-           WHERE p.direction = 'to_tutor'
-         )
-         WHERE position = 1`,
-      ),
+      db
+        .prepare(
+          `SELECT party_user_id, amount_cents, paid_at
+           FROM (
+             SELECT p.party_user_id, p.amount_cents, p.paid_at,
+                    ROW_NUMBER() OVER (
+                      PARTITION BY p.party_user_id ORDER BY p.paid_at DESC, p.created_at DESC
+                    ) AS position
+             FROM payments p
+             WHERE p.organization_id = ? AND p.direction = 'to_tutor'
+           )
+           WHERE position = 1`,
+        )
+        .bind(org),
       // Lessons already recorded are in what the tutor has earned, so the
       // schedule's occurrence of them must not be counted a second time.
       db
-        .prepare('SELECT tutor_user_id, student_user_id, occurred_on FROM sessions WHERE occurred_on >= ?')
-        .bind(today),
+        .prepare(
+          `SELECT tutor_user_id, student_user_id, occurred_on FROM sessions
+           WHERE organization_id = ? AND occurred_on >= ?`,
+        )
+        .bind(org, today),
     ]),
   ]);
 
   const cancelled = new Set(
     (
-      await listCancellationsForSchedules(db, schedules.map((s) => s.id), { from: today })
+      await listCancellationsForSchedules(db, org, schedules.map((s) => s.id), { from: today })
     ).map((row) => cancellationKey(row.schedule_id, row.occurs_on)),
   );
   const taken = new Set(
@@ -256,6 +285,7 @@ export async function computeTutorPaymentOutlook(
       offset: 0,
       limit: TOPUP_PROJECTION_WEEKS + 1,
       taken,
+      timeZone,
     });
 
     const lessons = lessonsByTutor.get(schedule.tutor_user_id) ?? [];
@@ -322,6 +352,7 @@ export async function computeTutorPaymentOutlook(
  */
 export async function computeMonthlyFinance(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   year: number,
 ): Promise<MonthlyFinanceResponse> {
@@ -343,10 +374,10 @@ export async function computeMonthlyFinance(
                 COALESCE(SUM(s.charge_amount_cents), 0) AS billed_cents,
                 COALESCE(SUM(s.tutor_amount_cents), 0) AS earned_cents
          FROM sessions s
-         WHERE s.occurred_on >= ? AND s.occurred_on < ? ${sessionScope}
+         WHERE s.organization_id = ? AND s.occurred_on >= ? AND s.occurred_on < ? ${sessionScope}
          GROUP BY month`,
       )
-      .bind(from, to, ...sessionValues),
+      .bind(org, from, to, ...sessionValues),
     db
       .prepare(
         `SELECT substr(p.paid_at, 1, 7) AS month,
@@ -355,10 +386,10 @@ export async function computeMonthlyFinance(
                 COALESCE(SUM(CASE WHEN p.direction = 'to_tutor' ${admin ? '' : 'AND p.party_user_id = ?'}
                              THEN p.amount_cents END), 0) AS paid_to_tutors_cents
          FROM payments p
-         WHERE p.paid_at >= ? AND p.paid_at < ?
+         WHERE p.organization_id = ? AND p.paid_at >= ? AND p.paid_at < ?
          GROUP BY month`,
       )
-      .bind(...(admin ? [] : [viewer.id]), from, to),
+      .bind(...(admin ? [] : [viewer.id]), org, from, to),
   ]);
 
   const sessions = new Map<string, Record<string, unknown>>();

@@ -8,15 +8,48 @@ import {
   type ReactNode,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import type { ApiOk, AuthConfig, OnboardingState, SessionResponse, User } from '@tmi/shared';
+import { DEFAULT_ORG_TIME_ZONE } from '@tmi/shared';
+import type {
+  ApiOk,
+  AuthConfig,
+  Invitation,
+  Membership,
+  OnboardingState,
+  SessionResponse,
+  User,
+} from '@tmi/shared';
 
-import { ApiRequestError, UNAUTHENTICATED_EVENT, apiClient } from '@/lib/api-client';
+import {
+  ApiRequestError,
+  ORGANIZATION_REQUIRED_EVENT,
+  UNAUTHENTICATED_EVENT,
+  apiClient,
+} from '@/lib/api-client';
+import { clearActiveOrg, getActiveOrg, setActiveOrg } from '@/lib/organization';
+
+/** The organization this tab is in, with its payer details for its admins. */
+export type ActiveOrganization = NonNullable<SessionResponse['organization']>;
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated' | 'error';
 
 interface AuthContextValue {
   status: AuthStatus;
+  /** The person AS A MEMBER of the active organization: roles there only. */
   user: User | null;
+  /** The organization this tab is in; null while choosing, or on the console. */
+  organization: ActiveOrganization | null;
+  /** Every organization the person may enter. */
+  memberships: Membership[];
+  /** Organizations waiting for an answer. */
+  invitations: Invitation[];
+  /** Whether the person may use the platform console. */
+  platformAdmin: boolean;
+  /** True the first time this person has ever opened this organization. */
+  firstVisit: boolean;
+  /** Enters an organization in this tab: everything reloads in it. */
+  chooseOrganization: (slug: string) => void;
+  /** Re-reads the session, e.g. after answering an invitation. */
+  refreshSession: () => Promise<void>;
   /** Public auth config from the Worker; null until it loads. */
   config: AuthConfig | null;
   /** True when the API is running with AUTH_ENABLED=false. */
@@ -52,6 +85,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const [status, setStatus] = useState<AuthStatus>('loading');
   const [user, setUser] = useState<User | null>(null);
+  const [organization, setOrganization] = useState<ActiveOrganization | null>(null);
+  const [memberships, setMemberships] = useState<Membership[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [platformAdmin, setPlatformAdmin] = useState(false);
+  const [firstVisit, setFirstVisit] = useState(false);
+
+  /**
+   * Takes in what the server says about the session, and decides which
+   * organization this tab is in: the one it named, if the person may still
+   * enter it; otherwise, if there is exactly one place to go, that one. With
+   * several, nothing is chosen and the picker asks.
+   */
+  const applySession = useCallback((session: SessionResponse): boolean => {
+    setImpersonated(session.impersonated);
+    setOnboarding(session.onboarding);
+    setMemberships(session.memberships);
+    setInvitations(session.invitations);
+    setPlatformAdmin(session.platform_admin);
+
+    if (session.organization) {
+      setActiveOrg(session.organization.slug);
+      setOrganization(session.organization);
+      setUser(session.user);
+      return true;
+    }
+
+    const active = session.memberships.filter((m) => m.status === 'active');
+    if (active.length === 1 && session.invitations.length === 0 && !session.platform_admin) {
+      // One organization and nothing else: no picker, just go in.
+      setActiveOrg(active[0]!.slug);
+      return false;
+    }
+
+    clearActiveOrg();
+    setOrganization(null);
+    setUser(session.user);
+    return true;
+  }, []);
+
+  const loadSession = useCallback(async () => {
+    let session = (await apiClient.get<ApiOk<SessionResponse>>('/auth/session')).data;
+    // Chosen just now (a single membership): read it again, inside it.
+    if (!applySession(session)) {
+      session = (await apiClient.get<ApiOk<SessionResponse>>('/auth/session')).data;
+      applySession(session);
+    }
+    return session;
+  }, [applySession]);
   const [config, setConfig] = useState<AuthConfig | null>(null);
   const [impersonated, setImpersonated] = useState(false);
   const [onboarding, setOnboarding] = useState<OnboardingState | null>(null);
@@ -66,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function boot() {
       const [configResult, sessionResult] = await Promise.allSettled([
         apiClient.get<ApiOk<AuthConfig>>('/auth/config'),
-        apiClient.get<ApiOk<SessionResponse>>('/auth/session'),
+        loadSession(),
       ]);
 
       if (cancelled) return;
@@ -83,9 +164,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (sessionResult.status === 'fulfilled') {
-        setUser(sessionResult.value.data.user);
-        setImpersonated(sessionResult.value.data.impersonated);
-        setOnboarding(sessionResult.value.data.onboarding);
         setStatus('authenticated');
         return;
       }
@@ -108,7 +186,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [loadSession]);
+
+  // Once a tab is inside an organization, say so -- once per load. The API
+  // logs it there once per sign-in, and answers whether this is the person's
+  // first visit ever, which offers them the tour.
+  const enteredSlug = organization?.slug ?? null;
+  useEffect(() => {
+    if (!enteredSlug) return;
+    apiClient
+      .post<ApiOk<{ first_visit: boolean }>>('/auth/enter')
+      .then((response) => setFirstVisit(response.data.first_visit))
+      .catch(() => undefined);
+  }, [enteredSlug]);
+
+  // The organization this tab named may not be entered any more (archived, or
+  // the person was removed): back to choosing.
+  useEffect(() => {
+    function handleOrganizationRequired() {
+      if (!getActiveOrg()) return;
+      clearActiveOrg();
+      queryClient.clear();
+      setOrganization(null);
+      window.location.assign('/select-organization');
+    }
+
+    window.addEventListener(ORGANIZATION_REQUIRED_EVENT, handleOrganizationRequired);
+    return () => window.removeEventListener(ORGANIZATION_REQUIRED_EVENT, handleOrganizationRequired);
+  }, [queryClient]);
+
+  const chooseOrganization = useCallback(
+    (slug: string) => {
+      setActiveOrg(slug);
+      // A full reload: the brand, every cached query, the onboarding state and
+      // the dashboards all start clean, in the new organization.
+      queryClient.clear();
+      window.location.assign('/');
+    },
+    [queryClient],
+  );
+
+  const refreshSession = useCallback(async () => {
+    await loadSession();
+  }, [loadSession]);
 
   // Any 401 from anywhere in the app drops us back to signed-out.
   useEffect(() => {
@@ -127,13 +247,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(null);
 
       try {
-        const response = await apiClient.post<ApiOk<SessionResponse>>('/auth/google', {
+        await apiClient.post<ApiOk<SessionResponse>>('/auth/google', {
           credential,
         });
 
-        setUser(response.data.user);
-        setImpersonated(response.data.impersonated);
-        setOnboarding(response.data.onboarding);
+        // Read the session again, inside the organization this browser last
+        // used when the person may still enter it.
+        await loadSession();
         setStatus('authenticated');
       } catch (caught) {
         setStatus('unauthenticated');
@@ -144,7 +264,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         );
       }
     },
-    [],
+    [loadSession],
   );
 
   const signOut = useCallback(async () => {
@@ -153,7 +273,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       // Server data was fetched as the previous user; none of it should survive.
       queryClient.clear();
+      clearActiveOrg();
       setUser(null);
+      setOrganization(null);
+      setMemberships([]);
+      setInvitations([]);
+      setPlatformAdmin(false);
       setImpersonated(false);
       setError(null);
       setStatus('unauthenticated');
@@ -166,6 +291,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       status,
       user,
+      organization,
+      memberships,
+      invitations,
+      platformAdmin,
+      firstVisit,
+      chooseOrganization,
+      refreshSession,
       config,
       impersonated,
       onboarding,
@@ -179,6 +311,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [
       status,
       user,
+      organization,
+      memberships,
+      invitations,
+      platformAdmin,
+      firstVisit,
+      chooseOrganization,
+      refreshSession,
       config,
       impersonated,
       onboarding,
@@ -191,6 +330,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;
+}
+
+/**
+ * The clock this organization records its lessons against. Every "today" the
+ * page works out is on it, never on the browser's own zone.
+ */
+export function useOrgTimeZone(): string {
+  const { organization } = useAuth();
+  return organization?.time_zone ?? DEFAULT_ORG_TIME_ZONE;
 }
 
 export function useAuth(): AuthContextValue {

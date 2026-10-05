@@ -257,6 +257,25 @@ npx wrangler d1 execute tmi-portal-db --remote \
 > Worker was deployed expecting `last_login_at` while the database predated it, and every
 > sign-in failed with a 500.
 
+## The tutoring databases (orgsupport)
+
+`tutoring-db` and `tutoring-test-db` were created empty on 2026-10-05 and built CLEAN from this
+branch's `db/schema.sql` -- the organization-aware schema, with no migration from the
+institute's data:
+
+```sh
+# tutoring-test: schema, the two seeded organizations, the platform admin
+npm run tutoring:reset-test            # or: npm run e2e:tutoring, which also deploys and tests
+
+# tutoring (real organizations from then on): schema and the platform admin ONLY, once
+npm run db:rebuild:tutoring --workspace @tmi/api
+npm run db:platform-admin:tutoring --workspace @tmi/api
+```
+
+`db:rebuild:tutoring` drops everything: it was run once, on the empty database. From now on
+`tutoring-db` is treated like the institute's production -- back up first, and carry changes by
+hand and additively.
+
 ## Local development
 
 Local D1 is a SQLite file under `apps/api/.wrangler/state/`, which is gitignored. It is

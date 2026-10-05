@@ -10,6 +10,7 @@ import {
 import { ApiError } from './errors.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
 import { getStudentChargeRates } from '../repositories/users.js';
+import type { OrgId } from './org.js';
 
 /**
  * The two rates a lesson is written with.
@@ -30,11 +31,14 @@ export interface SessionRates {
  */
 export async function resolveSessionRates(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   studentUserId: string,
   mode: SessionMode,
 ): Promise<SessionRates> {
-  const assignment = await getActiveAssignmentFor(db, tutorUserId, studentUserId);
+  // This organization's pairing and this organization's prices: the same two
+  // people paired elsewhere authorise and price nothing here.
+  const assignment = await getActiveAssignmentFor(db, org, tutorUserId, studentUserId);
 
   if (!assignment) {
     throw ApiError.validation('Please correct the highlighted fields.', {
@@ -65,7 +69,7 @@ export async function resolveSessionRates(
 
   // What the family is charged. Priced on the student, so it does not depend
   // on who teaches them.
-  const studentRates = await getStudentChargeRates(db, studentUserId);
+  const studentRates = await getStudentChargeRates(db, org, studentUserId);
   const chargeRateCents = studentRates && resolveChargeRateCents(mode, studentRates);
 
   if (chargeRateCents == null) {
@@ -83,6 +87,7 @@ export async function resolveSessionRates(
 /** Rates plus the money they produce over a typed-in pair of clock times. */
 export async function priceSession(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   studentUserId: string,
   mode: SessionMode,
@@ -91,6 +96,7 @@ export async function priceSession(
 ) {
   const { tutorRateCents, chargeRateCents } = await resolveSessionRates(
     db,
+    org,
     tutorUserId,
     studentUserId,
     mode,

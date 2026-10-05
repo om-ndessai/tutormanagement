@@ -283,7 +283,7 @@ export function ScheduleDialog({
                 value={location}
                 onChange={(event) => setLocation(event.target.value)}
                 placeholder={
-                  mode === 'virtual' ? 'https://meet.example.com/…' : 'Institute, room 2'
+                  mode === 'virtual' ? 'https://meet.example.com/…' : 'Room 2'
                 }
               />
             </Field>

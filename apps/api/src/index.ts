@@ -6,6 +6,8 @@ import { isProduction, type AppEnv, type Env } from './types.js';
 import { autoStopExpired } from './lib/live-sessions.js';
 import { onError, onNotFound } from './middleware/error.js';
 import { requireAuth } from './middleware/auth.js';
+import { requireOrg } from './middleware/require-org.js';
+import { requirePlatformAdmin } from './middleware/require-platform-admin.js';
 import { authRoutes } from './routes/auth.js';
 import { assignmentsRoutes } from './routes/assignments.js';
 import { auditRoutes } from './routes/audit.js';
@@ -17,6 +19,8 @@ import { schedulesRoutes } from './routes/schedules.js';
 import { sessionsRoutes } from './routes/sessions.js';
 import { usersRoutes } from './routes/users.js';
 import { onboardingRoutes } from './routes/onboarding.js';
+import { logoRoutes, organizationRoutes } from './routes/organization.js';
+import { platformRoutes } from './routes/platform.js';
 
 const app = new Hono<AppEnv>();
 
@@ -46,8 +50,8 @@ app.use(
       if (isProduction(c.env)) return '';
       return DEV_ALLOWED_ORIGINS.includes(origin) ? origin : '';
     },
-    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'X-Dev-User'],
+    allowHeaders: ['Content-Type', 'X-Dev-User', 'X-Organization'],
+    allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     maxAge: 600,
   }),
@@ -70,7 +74,18 @@ const publicRoutes = new Hono<AppEnv>()
   })
   // /auth guards itself: /config and /google must be reachable while signed
   // out, /session applies requireAuth on its own.
-  .route('/auth', authRoutes);
+  .route('/auth', authRoutes)
+  // An organization's logo is shown on the sign-in page, before anyone is.
+  .route('/organizations', logoRoutes);
+
+/**
+ * The platform console: signed in and a platform admin, and NOT inside an
+ * organization -- nothing behind it reads one's lessons or money.
+ */
+const platformApi = new Hono<AppEnv>()
+  .use('*', requireAuth)
+  .use('*', requirePlatformAdmin)
+  .route('/', platformRoutes);
 
 /**
  * Everything below this line requires a verified Google identity. The guard is
@@ -79,6 +94,10 @@ const publicRoutes = new Hono<AppEnv>()
  */
 const guardedRoutes = new Hono<AppEnv>()
   .use('*', requireAuth)
+  // Every route below runs inside the organization the request names, as a
+  // member of it -- c.get('user').roles are the roles THERE. See require-org.
+  .use('*', requireOrg)
+  .route('/organization', organizationRoutes)
   .route('/users', usersRoutes)
   .route('/audit', auditRoutes)
   .route('/comments', commentsRoutes)
@@ -91,7 +110,10 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/progress', progressRoutes)
   .route('/onboarding', onboardingRoutes);
 
-const api = new Hono<AppEnv>().route('/', publicRoutes).route('/', guardedRoutes);
+const api = new Hono<AppEnv>()
+  .route('/', publicRoutes)
+  .route('/platform', platformApi)
+  .route('/', guardedRoutes);
 
 app.route('/api', api);
 

@@ -40,6 +40,7 @@ import { TutorPayments } from './tutor-payments';
 import { YearEndPanel } from './year-end-panel';
 import { useMonthlyFinance } from './api';
 import { cn } from '@/lib/utils';
+import { useBrand } from '@/providers/brand-provider';
 
 // ---------------------------------------------------------------------------
 // Shared pieces
@@ -162,6 +163,7 @@ function BalanceRow({
 // ---------------------------------------------------------------------------
 
 export function AdminView({ data }: { data: AdminDashboard }) {
+  const brand = useBrand();
   const year = new Date().getFullYear();
   const monthly = useMonthlyFinance(year);
 
@@ -234,7 +236,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
             />
             <StatCard
               index={3}
-              label="Kept by the institute"
+              label={`Kept by ${brand.short}`}
               value={data.totals.margin_all_time_cents}
               money
               icon={PiggyBankIcon}
@@ -328,6 +330,7 @@ function SsnPanel({ tutors }: { tutors: { user_id: string; full_name: string }[]
 // ---------------------------------------------------------------------------
 
 export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId?: string }) {
+  const brand = useBrand();
   // Only shown to a tutor the institute actually pays in advance.
   const advance = data.earnings.topup_amount_cents == null ? null : data.earnings;
   const year = new Date().getFullYear();
@@ -398,7 +401,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
           {!data.ssn_received_on && (
             <Panel index={0} title="Action needed: your SSN">
               <p className="text-sm">
-                The institute does not have your Social Security number, and needs it to issue
+                {brand.short} does not have your Social Security number, and needs it to issue
                 your tax document at the end of the year.
               </p>
               <p className="text-muted-foreground mt-2 text-sm">

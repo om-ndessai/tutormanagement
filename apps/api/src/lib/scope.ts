@@ -8,18 +8,25 @@ import {
   type SessionMoneyView,
   type User,
 } from '@tmi/shared';
+import type { OrgId } from './org.js';
 
-/** Admins are unrestricted; everyone else sees only what concerns them. */
+/**
+ * Admins are unrestricted WITHIN THEIR ORGANIZATION; everyone else sees only
+ * what concerns them. `viewer.roles` are the roles in the request's
+ * organization (requireOrg), so an admin of one organization is an ordinary
+ * reader of another.
+ */
 export function isAdmin(viewer: User): boolean {
   return hasRole(viewer, 'admin');
 }
 
 /**
- * The people a non-admin may see, as a set of user ids.
+ * The people a non-admin may see in this organization, as a set of user ids.
  *
- * Returns `null` for an admin, meaning "no restriction" -- callers treat null
- * as unbounded rather than empty, which keeps the common case free of an extra
- * query.
+ * Returns `null` for an admin, meaning "every member of this organization" --
+ * callers treat null as unbounded within the organization (every caller's own
+ * query is already filtered to it), which keeps the common case free of an
+ * extra query.
  *
  * The rules, all of which exist so somebody can do their job:
  *   - yourself
@@ -32,65 +39,81 @@ export function isAdmin(viewer: User): boolean {
  * D1 caps how many terms a compound SELECT may have, and the union form
  * exceeded it.
  */
-export async function visibleUserIds(db: D1Database, viewer: User): Promise<Set<string> | null> {
+export async function visibleUserIds(
+  db: D1Database,
+  org: OrgId,
+  viewer: User,
+): Promise<Set<string> | null> {
   if (isAdmin(viewer)) return null;
 
   const id = viewer.id;
 
+  // Every relationship is read within the organization, and only its members
+  // are candidates: the same tutor teaching the same child elsewhere grants
+  // nothing here.
   const result = await db
     .prepare(
-      `SELECT u.id FROM users u
-       WHERE u.id = ?
+      `SELECT m.user_id AS id FROM org_members m
+       WHERE m.organization_id = ?1
+         AND (m.user_id = ?2
           OR EXISTS (
                SELECT 1 FROM assignments a
-               WHERE a.is_active = 1
-                 AND ((a.tutor_user_id = ? AND a.student_user_id = u.id)
-                   OR (a.student_user_id = ? AND a.tutor_user_id = u.id))
+               WHERE a.organization_id = ?1 AND a.is_active = 1
+                 AND ((a.tutor_user_id = ?2 AND a.student_user_id = m.user_id)
+                   OR (a.student_user_id = ?2 AND a.tutor_user_id = m.user_id))
              )
           OR EXISTS (
                SELECT 1 FROM guardianships g
-               WHERE (g.guardian_user_id = ? AND g.dependent_user_id = u.id)
-                  OR (g.dependent_user_id = ? AND g.guardian_user_id = u.id)
+               WHERE g.organization_id = ?1
+                 AND ((g.guardian_user_id = ?2 AND g.dependent_user_id = m.user_id)
+                   OR (g.dependent_user_id = ?2 AND g.guardian_user_id = m.user_id))
              )
           OR EXISTS (
                -- parents of the students I teach
                SELECT 1 FROM guardianships g
-               JOIN assignments a ON a.student_user_id = g.dependent_user_id
-               WHERE a.tutor_user_id = ? AND a.is_active = 1 AND g.guardian_user_id = u.id
+               JOIN assignments a ON a.organization_id = g.organization_id
+                                 AND a.student_user_id = g.dependent_user_id
+               WHERE g.organization_id = ?1 AND a.tutor_user_id = ?2 AND a.is_active = 1
+                 AND g.guardian_user_id = m.user_id
              )
           OR EXISTS (
                -- tutors teaching my children
                SELECT 1 FROM assignments a
-               JOIN guardianships g ON g.dependent_user_id = a.student_user_id
-               WHERE g.guardian_user_id = ? AND a.is_active = 1 AND a.tutor_user_id = u.id
-             )`,
+               JOIN guardianships g ON g.organization_id = a.organization_id
+                                   AND g.dependent_user_id = a.student_user_id
+               WHERE a.organization_id = ?1 AND g.guardian_user_id = ?2 AND a.is_active = 1
+                 AND a.tutor_user_id = m.user_id
+             ))`,
     )
-    .bind(id, id, id, id, id, id, id)
+    .bind(org, id)
     .all<{ id: string }>();
 
   return new Set((result.results ?? []).map((row) => row.id));
 }
 
 /**
- * A WHERE fragment restricting rows that carry `tutor_user_id` and
- * `student_user_id` -- sessions and assignments both do.
+ * A WHERE fragment restricting rows that carry `organization_id`,
+ * `tutor_user_id` and `student_user_id` -- sessions, assignments, schedules.
  *
- * You see a row if you taught it, or if it is about you or one of your
- * children. Returns null for an admin.
+ * Always the organization first: an admin gets exactly that, and never a
+ * missing WHERE. Everyone else sees a row if they taught it, or if it is about
+ * them or one of their children here.
  */
 export function teachingScopeSql(
   viewer: User,
   alias: string,
-): { sql: string; values: unknown[] } | null {
-  if (isAdmin(viewer)) return null;
+  org: OrgId,
+): { sql: string; values: unknown[] } {
+  if (isAdmin(viewer)) return { sql: `${alias}.organization_id = ?`, values: [org] };
 
   return {
     sql:
-      `(${alias}.tutor_user_id = ?` +
+      `(${alias}.organization_id = ? AND (${alias}.tutor_user_id = ?` +
       ` OR ${alias}.student_user_id = ?` +
       ` OR ${alias}.student_user_id IN (` +
-      `SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?))`,
-    values: [viewer.id, viewer.id, viewer.id],
+      `SELECT g.dependent_user_id FROM guardianships g` +
+      ` WHERE g.organization_id = ? AND g.guardian_user_id = ?)))`,
+    values: [org, viewer.id, viewer.id, org, viewer.id],
   };
 }
 
@@ -110,16 +133,20 @@ export function teachingScopeSql(
 export function studentScopeSql(
   viewer: User,
   column: string,
-): { sql: string; values: unknown[] } | null {
-  if (isAdmin(viewer)) return null;
+  org: OrgId,
+): { sql: string; values: unknown[] } {
+  // Only members of this organization are students of it.
+  const member = `${column} IN (SELECT m.user_id FROM org_members m WHERE m.organization_id = ?)`;
+  if (isAdmin(viewer)) return { sql: member, values: [org] };
 
   return {
     sql:
-      `(${column} = ?` +
-      ` OR ${column} IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?)` +
+      `(${member} AND (${column} = ?` +
+      ` OR ${column} IN (SELECT g.dependent_user_id FROM guardianships g` +
+      ` WHERE g.organization_id = ? AND g.guardian_user_id = ?)` +
       ` OR ${column} IN (SELECT a.student_user_id FROM assignments a` +
-      ` WHERE a.tutor_user_id = ? AND a.is_active = 1))`,
-    values: [viewer.id, viewer.id, viewer.id],
+      ` WHERE a.organization_id = ? AND a.tutor_user_id = ? AND a.is_active = 1)))`,
+    values: [org, viewer.id, org, viewer.id, org, viewer.id],
   };
 }
 
@@ -130,10 +157,17 @@ export function studentScopeSql(
  * Read once per request and handed to the scoper, because scoping runs row by
  * row after the query and must not go back to the database for each one.
  */
-export async function familyStudentIds(db: D1Database, viewer: User): Promise<Set<string>> {
+export async function familyStudentIds(
+  db: D1Database,
+  org: OrgId,
+  viewer: User,
+): Promise<Set<string>> {
   const result = await db
-    .prepare('SELECT dependent_user_id AS id FROM guardianships WHERE guardian_user_id = ?')
-    .bind(viewer.id)
+    .prepare(
+      `SELECT dependent_user_id AS id FROM guardianships
+       WHERE organization_id = ? AND guardian_user_id = ?`,
+    )
+    .bind(org, viewer.id)
     .all<{ id: string }>();
 
   return new Set([viewer.id, ...(result.results ?? []).map((row) => row.id)]);
@@ -425,22 +459,4 @@ export function scopePersonalDetails<
       ssn_received_on: null,
     },
   };
-}
-
-/**
- * Hides the institute's TIN from anyone who is not an admin.
- *
- * A tutor or a parent can open an admin's record -- they are people in the
- * same directory -- and the number the institute files its taxes under is not
- * theirs to read. Unlike the tutor's advance, there is no "unless it is your
- * own" clause worth making: an admin's own record is already covered by being
- * an admin.
- */
-export function scopeAdminTin<T extends { admin_profile: { tin: string | null } | null }>(
-  detail: T,
-  viewer: User,
-): T {
-  if (isAdmin(viewer) || !detail.admin_profile) return detail;
-
-  return { ...detail, admin_profile: { ...detail.admin_profile, tin: null } };
 }

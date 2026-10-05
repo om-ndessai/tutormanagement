@@ -18,6 +18,23 @@ export const PEOPLE = {
   student: { email: 'sofia.okafor@gmail.com', name: 'Sofia Okafor' },
   /** Tutors younger children AND is taught himself. */
   studentTutor: { email: 'sanjay.patel.nc@gmail.com', name: 'Sanjay Patel' },
+
+  // --- organization B, Riverside Tutoring (docs/multi-organization.md) ------
+  /** Riverside's admin; belongs to Riverside alone. */
+  orgBAdmin: { email: 'rosa.delgado.tutoring@gmail.com', name: 'Rosa Delgado' },
+  /** Riverside's own tutor. */
+  orgBTutor: { email: 'kwame.mensah.math@gmail.com', name: 'Kwame Mensah' },
+  /** Creates organizations and their admins; belongs to neither. */
+  platformAdmin: { email: 'ndessai@gmail.com', name: 'Nav Dessai' },
+} as const;
+
+/**
+ * The two seeded organizations, by slug. The cast above belongs to A; Priya,
+ * Alex, Anita and Sanjay belong to B as well, in other roles.
+ */
+export const ORGS = {
+  a: { slug: 'chmi', name: 'Chapel Hill Math Institute', short: 'CHMI' },
+  b: { slug: 'riverside', name: 'Riverside Tutoring', short: 'Riverside' },
 } as const;
 
 export type PersonKey = keyof typeof PEOPLE;

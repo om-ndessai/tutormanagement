@@ -46,14 +46,14 @@ export const commentsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
     const target = c.req.valid('query');
 
-    const row = await loadCommentTarget(c.env.DB, target);
-    if (!row || !(await canAccessTarget(c.env.DB, viewer, target, row))) {
+    const row = await loadCommentTarget(c.env.DB, c.get('org').id, target);
+    if (!row || !(await canAccessTarget(c.env.DB, c.get('org').id, viewer, target, row))) {
       throw ApiError.notFound(`That ${COMMENT_TARGET_LABELS[target.target_type]} does not exist.`);
     }
 
     const body: ApiOk<{ comments: Comment[]; target_name: string | null }> = {
       data: {
-        comments: await listComments(c.env.DB, viewer, target),
+        comments: await listComments(c.env.DB, c.get('org').id, viewer, target),
         // Lets the composer name the audience without a second request.
         target_name: row.name,
       },
@@ -74,7 +74,7 @@ export const commentsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
     const params = c.req.valid('query');
 
-    const { entries, total } = await listCommentFeed(c.env.DB, viewer, params);
+    const { entries, total } = await listCommentFeed(c.env.DB, c.get('org').id, viewer, params);
 
     const body: ApiList<CommentFeedEntry> = {
       data: entries,
@@ -92,7 +92,7 @@ export const commentsRoutes = new Hono<AppEnv>()
     const { target_type } = c.req.valid('query');
 
     const body: ApiOk<Record<string, number>> = {
-      data: await countCommentsByTarget(c.env.DB, viewer, target_type),
+      data: await countCommentsByTarget(c.env.DB, c.get('org').id, viewer, target_type),
     };
     return c.json(body);
   })
@@ -101,16 +101,16 @@ export const commentsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
     const input = c.req.valid('json');
 
-    const row = await loadCommentTarget(c.env.DB, input);
-    if (!row || !(await canAccessTarget(c.env.DB, viewer, input, row))) {
+    const row = await loadCommentTarget(c.env.DB, c.get('org').id, input);
+    if (!row || !(await canAccessTarget(c.env.DB, c.get('org').id, viewer, input, row))) {
       throw ApiError.notFound(`That ${COMMENT_TARGET_LABELS[input.target_type]} does not exist.`);
     }
 
-    const id = await createComment(c.env.DB, viewer.id, input);
+    const id = await createComment(c.env.DB, c.get('org').id, viewer.id, input);
 
     // The comment itself is deliberately NOT in the description: the audit log
     // is read by admins, and a comment is not theirs to read by default.
-    await recordAudit(c.env.DB, viewer, {
+    await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'comment.added',
       description: `Commented on ${row.label}`,
       subject:
@@ -119,7 +119,7 @@ export const commentsRoutes = new Hono<AppEnv>()
       entity_id: id,
     });
 
-    const comments = await listComments(c.env.DB, viewer, input);
+    const comments = await listComments(c.env.DB, c.get('org').id, viewer, input);
     const created = comments.find((comment) => comment.id === id);
     if (!created) throw new Error('The comment was written but could not be read back.');
 
@@ -138,7 +138,7 @@ export const commentsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
     const { id } = c.req.valid('param');
 
-    const comment = await getComment(c.env.DB, id);
+    const comment = await getComment(c.env.DB, c.get('org').id, id);
     if (!comment || comment.deleted_at) throw ApiError.notFound('That comment does not exist.');
 
     const target = comment.target_user_id
@@ -157,22 +157,22 @@ export const commentsRoutes = new Hono<AppEnv>()
       // Somebody who cannot is told it does not exist -- the same thread query
       // decides, so this can never disagree with what they are shown -- as a
       // 403 would confirm the id is real.
-      const row = await loadCommentTarget(c.env.DB, target);
+      const row = await loadCommentTarget(c.env.DB, c.get('org').id, target);
       const readable =
         isAdmin(viewer) ||
         (row !== null &&
-          (await canAccessTarget(c.env.DB, viewer, target, row)) &&
-          (await listComments(c.env.DB, viewer, target)).some((visible) => visible.id === id));
+          (await canAccessTarget(c.env.DB, c.get('org').id, viewer, target, row)) &&
+          (await listComments(c.env.DB, c.get('org').id, viewer, target)).some((visible) => visible.id === id));
 
       if (!readable) throw ApiError.notFound('That comment does not exist.');
       throw new ApiError(403, 'forbidden', 'Only the person who wrote a comment can delete it.');
     }
 
-    await softDeleteComment(c.env.DB, id);
+    await softDeleteComment(c.env.DB, c.get('org').id, id);
 
-    const row = await loadCommentTarget(c.env.DB, target);
+    const row = await loadCommentTarget(c.env.DB, c.get('org').id, target);
 
-    await recordAudit(c.env.DB, viewer, {
+    await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'comment.deleted',
       description: `Deleted their comment on ${row?.label ?? 'a record since removed'}`,
       subject:

@@ -29,7 +29,8 @@ export const dashboardRoutes = new Hono<AppEnv>().get(
         throw new ApiError(403, 'forbidden', 'Only an administrator can view another dashboard.');
       }
 
-      const other = await getLiveUserById(c.env.DB, user_id);
+      // Only a member of this organization: an admin's "view as" reaches no further.
+      const other = await getLiveUserById(c.env.DB, c.get('org').id, user_id);
       if (!other) throw ApiError.notFound('That user does not exist.');
 
       subject = other;
@@ -59,7 +60,7 @@ export const dashboardRoutes = new Hono<AppEnv>().get(
           viewing_as_other: subject.id !== viewer.id,
         },
         role,
-        data: await buildDashboard(c.env.DB, subject, role),
+        data: await buildDashboard(c.env.DB, c.get('org'), subject, role),
       },
     };
 

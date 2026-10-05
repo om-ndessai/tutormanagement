@@ -254,9 +254,11 @@ export function expandUpcoming(
     limit: number;
     taken?: ReadonlySet<string>;
     cancelled?: ReadonlyMap<string, UpcomingCancellation>;
+    /** The organization's clock; the default is the original institute's. */
+    timeZone?: string;
   },
 ): { items: UpcomingSession[]; has_more: boolean } {
-  const { day: today, minutesOfDay: nowMinutes } = zonedClockParts(nowIso);
+  const { day: today, minutesOfDay: nowMinutes } = zonedClockParts(nowIso, options.timeZone);
   const wanted = options.offset + options.limit + 1;
   const all: UpcomingSession[] = [];
 

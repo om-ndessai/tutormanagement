@@ -105,7 +105,7 @@ export function SchedulesPage() {
               <Button variant="outline" asChild>
                 {/* A plain link: the cookie goes along and the browser names
                     the file from Content-Disposition. */}
-                <a href={calendarHref.all} download>
+                <a href={calendarHref.all()} download>
                   <DownloadIcon />
                   Add all to calendar
                 </a>

@@ -10,7 +10,9 @@ import { defineConfig, devices } from '@playwright/test';
  * runs with authentication permanently off. Production is never touched.
  * `npm run e2e` deploys it, rebuilds its database and runs this suite.
  */
-const baseURL = process.env.E2E_BASE_URL ?? 'https://tmi-portal-test.om-ndessai.workers.dev';
+// On the orgsupport branch the suite drives the TUTORING test deployment --
+// never the institute's demo.
+const baseURL = process.env.E2E_BASE_URL ?? 'https://tutoring-test.om-ndessai.workers.dev';
 
 export default defineConfig({
   testDir: './tests',

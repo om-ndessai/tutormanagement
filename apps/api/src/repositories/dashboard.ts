@@ -13,6 +13,7 @@ import {
   type UserRole,
 } from '@tmi/shared';
 
+import type { OrgContext } from '../lib/org.js';
 import { computeBalances, computeTutorPaymentOutlook } from './balances.js';
 import { getSsnReceivedOn, listTutorsMissingSsn } from './users.js';
 import { listAuditEvents } from './audit.js';
@@ -23,10 +24,12 @@ import { listAwaitingReflection, listRecentReflections } from './session-reflect
 
 /**
  * The first day a dashboard still asks for a reflection on, on the
- * institute's clock. Older lessons can have one; they are just not nagged.
+ * organization's clock. Older lessons can have one; they are just not nagged.
  */
-function reflectionPromptSince(): string {
-  const [year, month, day] = zonedClockParts(new Date().toISOString()).day.split('-').map(Number);
+function reflectionPromptSince(timeZone: string): string {
+  const [year, month, day] = zonedClockParts(new Date().toISOString(), timeZone)
+    .day.split('-')
+    .map(Number);
   return new Date(Date.UTC(year!, month! - 1, day! - REFLECTION_PROMPT_DAYS))
     .toISOString()
     .slice(0, 10);
@@ -43,10 +46,12 @@ const ACTIVITY_SIZE = 5;
  */
 async function teachingActivity(
   db: D1Database,
+  org: OrgContext,
   visibleToUserId?: string,
 ): Promise<AuditEvent[]> {
   const { events } = await listAuditEvents(
     db,
+    org.id,
     { limit: 40, offset: 0, include_deleted: false } as never,
     visibleToUserId,
   );
@@ -68,6 +73,7 @@ const SPOTLIGHT_SIZE = 5;
  */
 async function progressSpotlight(
   db: D1Database,
+  org: OrgContext,
   among: string[] | null,
   reader: ProgressReader,
 ): Promise<StudentProgress[]> {
@@ -77,15 +83,18 @@ async function progressSpotlight(
   const picked = await db
     .prepare(
       `SELECT u.id
-       FROM users u
-       JOIN user_roles r ON r.user_id = u.id AND r.role = 'student'
-       WHERE u.deleted_at IS NULL ${within}
+       FROM org_members m
+       JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+       JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                        AND r.role = 'student'
+       WHERE m.organization_id = ? AND m.removed_at IS NULL ${within}
        ORDER BY EXISTS (SELECT 1 FROM learning_plans p
-                        WHERE p.student_user_id = u.id AND p.status = 'active') DESC,
+                        WHERE p.organization_id = m.organization_id
+                          AND p.student_user_id = u.id AND p.status = 'active') DESC,
                 RANDOM()
        LIMIT ${SPOTLIGHT_SIZE}`,
     )
-    .bind(...(among ?? []))
+    .bind(org.id, ...(among ?? []))
     .all<{ id: string }>();
 
   const progress = await Promise.all(
@@ -108,44 +117,57 @@ async function progressSpotlight(
  */
 export async function buildDashboard(
   db: D1Database,
+  org: OrgContext,
   subject: User,
   role: UserRole,
 ): Promise<DashboardData> {
   switch (role) {
     case 'admin':
-      return buildAdmin(db, subject);
+      return buildAdmin(db, org, subject);
     case 'tutor':
-      return buildTutor(db, subject);
+      return buildTutor(db, org, subject);
     case 'parent':
-      return buildParent(db, subject);
+      return buildParent(db, org, subject);
     default:
-      return buildStudent(db, subject);
+      return buildStudent(db, org, subject);
   }
 }
 
-async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard> {
+/** Members of this organization holding a role, counted. */
+const MEMBERS_WITH_ROLE = (role: string) =>
+  `(SELECT COUNT(*) FROM user_roles r
+    JOIN org_members m ON m.organization_id = r.organization_id AND m.user_id = r.user_id
+    JOIN users u ON u.id = r.user_id
+    WHERE r.organization_id = ?1 AND r.role = '${role}'
+      AND m.removed_at IS NULL AND u.deleted_at IS NULL)`;
+
+async function buildAdmin(db: D1Database, org: OrgContext, subject: User): Promise<AdminDashboard> {
   const [countsResult, totalsResult] = await db.batch<Record<string, unknown>>([
-    db.prepare(
-      `SELECT
-         (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'student' WHERE u.deleted_at IS NULL) AS students,
-         (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'parent'  WHERE u.deleted_at IS NULL) AS parents,
-         (SELECT COUNT(*) FROM users u JOIN user_roles r ON r.user_id = u.id AND r.role = 'tutor'   WHERE u.deleted_at IS NULL) AS tutors,
-         (SELECT COUNT(*) FROM active_sessions) AS live_sessions`,
-    ),
-    db.prepare(
-      `SELECT COALESCE(SUM(charge_amount_cents), 0) AS billed,
-              COALESCE(SUM(tutor_amount_cents), 0)  AS tutor_cost,
-              COUNT(*) AS sessions
-       FROM sessions`,
-    ),
+    db
+      .prepare(
+        `SELECT
+           ${MEMBERS_WITH_ROLE('student')} AS students,
+           ${MEMBERS_WITH_ROLE('parent')} AS parents,
+           ${MEMBERS_WITH_ROLE('tutor')} AS tutors,
+           (SELECT COUNT(*) FROM active_sessions WHERE organization_id = ?1) AS live_sessions`,
+      )
+      .bind(org.id),
+    db
+      .prepare(
+        `SELECT COALESCE(SUM(charge_amount_cents), 0) AS billed,
+                COALESCE(SUM(tutor_amount_cents), 0)  AS tutor_cost,
+                COUNT(*) AS sessions
+         FROM sessions WHERE organization_id = ?`,
+      )
+      .bind(org.id),
   ]);
 
   const counts = (countsResult?.results?.[0] ?? {}) as Record<string, number>;
   const totals = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
 
-  const balances = await computeBalances(db, subject);
-  const missingSsn = await listTutorsMissingSsn(db);
-  const sessions = await listSessions(db, subject, { limit: 5, offset: 0 } as never);
+  const balances = await computeBalances(db, org.id, subject);
+  const missingSsn = await listTutorsMissingSsn(db, org.id);
+  const sessions = await listSessions(db, org.id, subject, { limit: 5, offset: 0 } as never);
 
   return {
     kind: 'admin',
@@ -167,54 +189,68 @@ async function buildAdmin(db: D1Database, subject: User): Promise<AdminDashboard
     // payments panel). Only ever built here, for an admin.
     tutor_balances: await computeTutorPaymentOutlook(
       db,
+      org.id,
+      org.time_zone,
       subject,
       balances.tutors,
       new Date().toISOString(),
     ),
     tutors_missing_ssn: missingSsn,
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
-    recent_activity: await teachingActivity(db),
+    recent_activity: await teachingActivity(db, org),
     recent_sessions: sessions.sessions,
-    progress_spotlight: await progressSpotlight(db, null, await progressReader(db, subject)),
+    progress_spotlight: await progressSpotlight(
+      db,
+      org,
+      null,
+      await progressReader(db, org, subject),
+    ),
   };
 }
 
-async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard> {
+async function buildTutor(db: D1Database, org: OrgContext, subject: User): Promise<TutorDashboard> {
   const studentsResult = await db
     .prepare(
       `SELECT a.student_user_id AS user_id, u.full_name,
               sp.school, sp.current_math_course,
               a.rate_in_person_cents, a.rate_virtual_cents,
-              COALESCE((SELECT COUNT(*)            FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id), 0) AS session_count,
-              COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id), 0) AS earned_cents,
-              (SELECT MAX(s.occurred_on) FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = a.student_user_id) AS last_session_on
+              COALESCE((SELECT COUNT(*) FROM sessions s
+                        WHERE s.organization_id = a.organization_id AND s.tutor_user_id = a.tutor_user_id
+                          AND s.student_user_id = a.student_user_id), 0) AS session_count,
+              COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s
+                        WHERE s.organization_id = a.organization_id AND s.tutor_user_id = a.tutor_user_id
+                          AND s.student_user_id = a.student_user_id), 0) AS earned_cents,
+              (SELECT MAX(s.occurred_on) FROM sessions s
+               WHERE s.organization_id = a.organization_id AND s.tutor_user_id = a.tutor_user_id
+                 AND s.student_user_id = a.student_user_id) AS last_session_on
        FROM assignments a
        JOIN users u ON u.id = a.student_user_id
-       LEFT JOIN student_profiles sp ON sp.user_id = a.student_user_id
-       WHERE a.tutor_user_id = ? AND a.is_active = 1
+       LEFT JOIN student_profiles sp ON sp.organization_id = a.organization_id
+                                    AND sp.user_id = a.student_user_id
+       WHERE a.organization_id = ? AND a.tutor_user_id = ? AND a.is_active = 1
        ORDER BY u.full_name`,
     )
-    .bind(subject.id)
+    .bind(org.id, subject.id)
     .all<Record<string, unknown>>();
 
-  const balances = await computeBalances(db, subject);
+  const balances = await computeBalances(db, org.id, subject);
   // Only lessons they TAUGHT. Someone who also parents (or is taught) would
   // otherwise see their family's lessons here, priced, under "Your recent
   // sessions" -- and have them counted as students they teach.
-  const sessions = await listSessions(db, subject, {
+  const sessions = await listSessions(db, org.id, subject, {
     limit: 5,
     offset: 0,
     tutor_user_id: subject.id,
   } as never);
-  const payments = await listPayments(db, subject, {
+  const payments = await listPayments(db, org.id, subject, {
     limit: 5,
     offset: 0,
     direction: 'to_tutor',
     party_user_id: subject.id,
   } as never);
   const live = await db
-    .prepare('SELECT COUNT(*) AS n FROM active_sessions WHERE tutor_user_id = ?')
-    .bind(subject.id)
+    .prepare('SELECT COUNT(*) AS n FROM active_sessions WHERE organization_id = ? AND tutor_user_id = ?')
+    .bind(org.id, subject.id)
     .first<{ n: number }>();
 
   return {
@@ -230,7 +266,7 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
       rate_in_person_cents: (row.rate_in_person_cents as number | null) ?? null,
       rate_virtual_cents: (row.rate_virtual_cents as number | null) ?? null,
     })),
-    ssn_received_on: await getSsnReceivedOn(db, subject.id),
+    ssn_received_on: await getSsnReceivedOn(db, org.id, subject.id),
     earnings: balances.tutors.find((t) => t.user_id === subject.id) ?? {
       user_id: subject.id,
       full_name: subject.full_name,
@@ -243,32 +279,36 @@ async function buildTutor(db: D1Database, subject: User): Promise<TutorDashboard
     live_sessions: Number(live?.n ?? 0),
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
-    recent_activity: await teachingActivity(db, subject.id),
+    recent_activity: await teachingActivity(db, org, subject.id),
     // Only the students they teach: someone who also parents sees their own
     // children on the parent dashboard, not here.
     progress_spotlight: await progressSpotlight(
       db,
+      org,
       (studentsResult.results ?? []).map((row) => String(row.user_id)),
-      await progressReader(db, subject),
+      await progressReader(db, org, subject),
     ),
     // Only lessons they taught, like everything else on this dashboard.
-    recent_reflections: await listRecentReflections(db, subject.id),
+    recent_reflections: await listRecentReflections(db, org.id, subject.id),
   };
 }
 
-async function buildParent(db: D1Database, subject: User): Promise<ParentDashboard> {
-  const balances = await computeBalances(db, subject);
+async function buildParent(db: D1Database, org: OrgContext, subject: User): Promise<ParentDashboard> {
+  const balances = await computeBalances(db, org.id, subject);
+  // Their children here: guardianships are each organization's own.
+  const children_sql =
+    's.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g' +
+    ' WHERE g.organization_id = s.organization_id AND g.guardian_user_id = ?)' +
+    ' AND s.tutor_user_id <> ?';
 
   // The parent view is about their CHILDREN: their lessons (other than any
   // the parent taught themselves, which are on the tutor view), and family
   // payments -- not money the parent was paid as a tutor.
-  const sessions = await listSessions(db, subject, { limit: 8, offset: 0 } as never, {
-    sql:
-      's.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?)' +
-      ' AND s.tutor_user_id <> ?',
+  const sessions = await listSessions(db, org.id, subject, { limit: 8, offset: 0 } as never, {
+    sql: children_sql,
     values: [subject.id, subject.id],
   });
-  const payments = await listPayments(db, subject, {
+  const payments = await listPayments(db, org.id, subject, {
     limit: 5,
     offset: 0,
     direction: 'from_parent',
@@ -290,7 +330,7 @@ async function buildParent(db: D1Database, subject: User): Promise<ParentDashboa
     recent_payments: payments.payments as Payment[],
     progress: await (async () => {
       // Built for the dashboard's subject, once for all their children.
-      const reader = await progressReader(db, subject);
+      const reader = await progressReader(db, org, subject);
       const rows = await Promise.all(
         children.map((child) => buildStudentProgress(db, child.student_user_id, reader)),
       );
@@ -300,46 +340,45 @@ async function buildParent(db: D1Database, subject: User): Promise<ParentDashboa
     // narrowing as the lessons above.
     awaiting_reflection: await listAwaitingReflection(
       db,
-      {
-        sql:
-          's.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?)' +
-          ' AND s.tutor_user_id <> ?',
-        values: [subject.id, subject.id],
-      },
-      reflectionPromptSince(),
+      org.id,
+      { sql: children_sql, values: [subject.id, subject.id] },
+      reflectionPromptSince(org.time_zone),
     ),
   };
 }
 
-async function buildStudent(db: D1Database, subject: User): Promise<StudentDashboard> {
+async function buildStudent(db: D1Database, org: OrgContext, subject: User): Promise<StudentDashboard> {
   const [profileResult, tutorsResult, totalsResult] = await db.batch<Record<string, unknown>>([
     db
       .prepare(
-        'SELECT academic_year_goal, current_math_course FROM student_profiles WHERE user_id = ?',
+        `SELECT academic_year_goal, current_math_course FROM student_profiles
+         WHERE organization_id = ? AND user_id = ?`,
       )
-      .bind(subject.id),
+      .bind(org.id, subject.id),
     db
       .prepare(
         `SELECT a.tutor_user_id AS user_id, u.full_name,
-                COALESCE((SELECT COUNT(*) FROM sessions s WHERE s.tutor_user_id = a.tutor_user_id AND s.student_user_id = ?), 0) AS session_count
+                COALESCE((SELECT COUNT(*) FROM sessions s
+                          WHERE s.organization_id = a.organization_id
+                            AND s.tutor_user_id = a.tutor_user_id AND s.student_user_id = ?), 0) AS session_count
          FROM assignments a
          JOIN users u ON u.id = a.tutor_user_id
-         WHERE a.student_user_id = ? AND a.is_active = 1
+         WHERE a.organization_id = ? AND a.student_user_id = ? AND a.is_active = 1
          ORDER BY u.full_name`,
       )
-      .bind(subject.id, subject.id),
+      .bind(subject.id, org.id, subject.id),
     db
       .prepare(
         `SELECT COUNT(*) AS session_count, COALESCE(SUM(duration_minutes), 0) AS total_minutes
-         FROM sessions WHERE student_user_id = ?`,
+         FROM sessions WHERE organization_id = ? AND student_user_id = ?`,
       )
-      .bind(subject.id),
+      .bind(org.id, subject.id),
   ]);
 
   const profile = (profileResult?.results?.[0] ?? {}) as Record<string, string | null>;
   const totals = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
   // Their own lessons, not ones they taught or their children's.
-  const sessions = await listSessions(db, subject, {
+  const sessions = await listSessions(db, org.id, subject, {
     limit: 8,
     offset: 0,
     student_user_id: subject.id,
@@ -359,11 +398,12 @@ async function buildStudent(db: D1Database, subject: User): Promise<StudentDashb
       total_minutes: Number(totals.total_minutes ?? 0),
     },
     recent_sessions: sessions.sessions,
-    progress: await buildStudentProgress(db, subject.id, await progressReader(db, subject)),
+    progress: await buildStudentProgress(db, subject.id, await progressReader(db, org, subject)),
     awaiting_reflection: await listAwaitingReflection(
       db,
+      org.id,
       { sql: 's.student_user_id = ?', values: [subject.id] },
-      reflectionPromptSince(),
+      reflectionPromptSince(org.time_zone),
     ),
   };
 }

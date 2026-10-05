@@ -10,6 +10,7 @@ import {
   type User,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { familyStudentIds, isAdmin, scopeSessionMoney, teachingScopeSql } from '../lib/scope.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
@@ -185,7 +186,12 @@ export interface SessionNarrowing {
 }
 
 /** Builds the shared WHERE for list and totals, so the two cannot disagree. */
-function buildFilter(viewer: User, params: ListSessionsParams, narrow?: SessionNarrowing) {
+function buildFilter(
+  org: OrgId,
+  viewer: User,
+  params: ListSessionsParams,
+  narrow?: SessionNarrowing,
+) {
   const where: string[] = [];
   const values: unknown[] = [];
 
@@ -214,14 +220,12 @@ function buildFilter(viewer: User, params: ListSessionsParams, narrow?: SessionN
     values.push(params.to);
   }
 
-  const scope = teachingScopeSql(viewer, 's');
-  if (scope) {
-    where.push(scope.sql);
-    values.push(...scope.values);
-  }
+  const scope = teachingScopeSql(viewer, 's', org);
+  where.push(scope.sql);
+  values.push(...scope.values);
 
   return {
-    sql: where.length > 0 ? `WHERE ${where.join(' AND ')}` : '',
+    sql: `WHERE ${where.join(' AND ')}`,
     values,
   };
 }
@@ -233,11 +237,12 @@ export interface ListSessionsResult {
 
 export async function listSessions(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   params: ListSessionsParams,
   narrow?: SessionNarrowing,
 ): Promise<ListSessionsResult> {
-  const filter = buildFilter(viewer, params, narrow);
+  const filter = buildFilter(org, viewer, params, narrow);
   const admin = isAdmin(viewer);
 
   // Each side's total is summed over the rows the viewer sees THAT side on,
@@ -246,7 +251,8 @@ export async function listSessions(
   // did not teach it. An admin sums both over everything.
   const family =
     '(s.student_user_id = ? OR s.student_user_id IN ' +
-    '(SELECT g.dependent_user_id FROM guardianships g WHERE g.guardian_user_id = ?))';
+    '(SELECT g.dependent_user_id FROM guardianships g' +
+    ' WHERE g.organization_id = s.organization_id AND g.guardian_user_id = ?))';
   const sides = admin
     ? {
         sql: `COALESCE(SUM(s.tutor_amount_cents), 0)  AS tutor_sum, COUNT(*) AS tutor_rows,
@@ -289,7 +295,7 @@ export async function listSessions(
   ]);
 
   const totalsRow = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
-  const familyIds = await familyStudentIds(db, viewer);
+  const familyIds = await familyStudentIds(db, org, viewer);
 
   const sessions = ((pageResult?.results ?? []) as unknown as SessionRow[]).map((row) =>
     scopeSessionMoney(toSession(row), viewer, familyIds),
@@ -315,20 +321,29 @@ export async function listSessions(
  */
 export async function getVisibleSession(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   id: string,
 ): Promise<StoredSession | null> {
-  const scope = teachingScopeSql(viewer, 's');
+  const scope = teachingScopeSql(viewer, 's', org);
   const row = await db
-    .prepare(`${SELECT_SESSION} WHERE s.id = ? ${scope ? `AND ${scope.sql}` : ''}`)
-    .bind(id, ...(scope?.values ?? []))
+    .prepare(`${SELECT_SESSION} WHERE s.id = ? AND ${scope.sql}`)
+    .bind(id, ...scope.values)
     .first<SessionRow>();
 
   return row ? toSession(row) : null;
 }
 
-export async function getSession(db: D1Database, id: string): Promise<StoredSession | null> {
-  const row = await db.prepare(`${SELECT_SESSION} WHERE s.id = ?`).bind(id).first<SessionRow>();
+/** A lesson of this organization, by id. One from elsewhere is null. */
+export async function getSession(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+): Promise<StoredSession | null> {
+  const row = await db
+    .prepare(`${SELECT_SESSION} WHERE s.organization_id = ? AND s.id = ?`)
+    .bind(org, id)
+    .first<SessionRow>();
   return row ? toSession(row) : null;
 }
 
@@ -353,6 +368,7 @@ export interface CreateSessionRow {
 
 export async function createSession(
   db: D1Database,
+  org: OrgId,
   row: CreateSessionRow,
 ): Promise<StoredSession> {
   const id = crypto.randomUUID();
@@ -360,14 +376,15 @@ export async function createSession(
   await db
     .prepare(
       `INSERT INTO sessions
-         (id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at,
+         (id, organization_id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at,
           duration_minutes, mode, tutor_rate_cents, tutor_amount_cents,
           charge_rate_cents, charge_amount_cents, notes, auto_stopped,
           recorded_by_user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
+      org,
       row.tutor_user_id,
       row.student_user_id,
       row.occurred_on,
@@ -385,7 +402,7 @@ export async function createSession(
     )
     .run();
 
-  const created = await getSession(db, id);
+  const created = await getSession(db, org, id);
   if (!created) throw new Error('Insert into sessions returned no row.');
 
   return created;
@@ -398,6 +415,7 @@ export async function createSession(
  */
 export async function updateSessionRow(
   db: D1Database,
+  org: OrgId,
   id: string,
   fields: Partial<{
     occurred_on: string;
@@ -423,20 +441,25 @@ export async function updateSessionRow(
     values.push(typeof value === 'boolean' ? (value ? 1 : 0) : value);
   }
 
-  if (assignments.length === 0) return getSession(db, id);
+  if (assignments.length === 0) return getSession(db, org, id);
 
   assignments.push(`updated_at = ${NOW}`);
 
   const result = await db
-    .prepare(`UPDATE sessions SET ${assignments.join(', ')} WHERE id = ?`)
-    .bind(...values, id)
+    .prepare(
+      `UPDATE sessions SET ${assignments.join(', ')} WHERE organization_id = ? AND id = ?`,
+    )
+    .bind(...values, org, id)
     .run();
 
   if (!result.meta.changes) return null;
-  return getSession(db, id);
+  return getSession(db, org, id);
 }
 
-export async function deleteSession(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM sessions WHERE id = ?').bind(id).run();
+export async function deleteSession(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM sessions WHERE organization_id = ? AND id = ?')
+    .bind(org, id)
+    .run();
   return Boolean(result.meta.changes);
 }

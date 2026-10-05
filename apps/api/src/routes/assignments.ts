@@ -21,6 +21,7 @@ import {
   updateAssignment,
   upsertAssignment,
 } from '../repositories/assignments.js';
+import type { OrgId } from '../lib/org.js';
 import { getLiveUserById } from '../repositories/users.js';
 
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid assignment id.' }) });
@@ -30,10 +31,12 @@ const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid assignment i
  * is taught, so the roles are checked rather than assumed. Catching it here
  * gives a field-level message instead of a foreign-key error.
  */
-async function assertRoles(db: D1Database, tutorId: string, studentId: string) {
+async function assertRoles(db: D1Database, org: OrgId, tutorId: string, studentId: string) {
+  // Members of THIS organization, with the role HERE: a tutor somewhere else
+  // is nobody's tutor in this one.
   const [tutor, student] = await Promise.all([
-    getLiveUserById(db, tutorId),
-    getLiveUserById(db, studentId),
+    getLiveUserById(db, org, tutorId),
+    getLiveUserById(db, org, studentId),
   ]);
 
   const details: Record<string, string[]> = {};
@@ -57,7 +60,7 @@ export const assignmentsRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listAssignmentsQuerySchema), async (c) => {
     const viewer = c.get('user');
-    const assignments = await listAssignments(c.env.DB, viewer, c.req.valid('query'));
+    const assignments = await listAssignments(c.env.DB, c.get('org').id, viewer, c.req.valid('query'));
 
     // The rates are the tutor's pay: theirs and the office's to see.
     const body: ApiOk<Assignment[]> = {
@@ -76,11 +79,12 @@ export const assignmentsRoutes = new Hono<AppEnv>()
       });
     }
 
-    await assertRoles(c.env.DB, input.tutor_user_id, input.student_user_id);
+    const org = c.get('org').id;
+    await assertRoles(c.env.DB, org, input.tutor_user_id, input.student_user_id);
 
-    const assignment = await upsertAssignment(c.env.DB, input);
+    const assignment = await upsertAssignment(c.env.DB, org, input);
 
-    await recordAudit(c.env.DB, c.get('user'), {
+    await recordAudit(c.env.DB, c.get('user'), org, {
       action: 'assignment.created',
       description: `Assigned ${assignment.student_name} to ${assignment.tutor_name}`,
       subject: { id: assignment.student_user_id, full_name: assignment.student_name },
@@ -93,13 +97,14 @@ export const assignmentsRoutes = new Hono<AppEnv>()
   })
 
   .get('/:id', zValidator('param', idParamSchema), async (c) => {
-    const assignment = await getAssignment(c.env.DB, c.req.valid('param').id);
+    const org = c.get('org').id;
+    const assignment = await getAssignment(c.env.DB, org, c.req.valid('param').id);
     if (!assignment) throw ApiError.notFound('That assignment does not exist.');
 
     // Re-run the list scope for this one row rather than trusting the id.
     const viewer = c.get('user');
     if (!isAdmin(viewer)) {
-      const visible = await listAssignments(c.env.DB, viewer, {
+      const visible = await listAssignments(c.env.DB, org, viewer, {
         include_inactive: true,
         tutor_user_id: assignment.tutor_user_id,
         student_user_id: assignment.student_user_id,
@@ -117,10 +122,16 @@ export const assignmentsRoutes = new Hono<AppEnv>()
     zValidator('param', idParamSchema),
     zValidator('json', assignmentUpdateSchema),
     async (c) => {
-      const updated = await updateAssignment(c.env.DB, c.req.valid('param').id, c.req.valid('json'));
+      const org = c.get('org').id;
+      const updated = await updateAssignment(
+        c.env.DB,
+        org,
+        c.req.valid('param').id,
+        c.req.valid('json'),
+      );
       if (!updated) throw ApiError.notFound('That assignment does not exist.');
 
-      await recordAudit(c.env.DB, c.get('user'), {
+      await recordAudit(c.env.DB, c.get('user'), org, {
         action: 'assignment.updated',
         description: `Updated the assignment of ${updated.student_name} to ${updated.tutor_name}`,
         subject: { id: updated.student_user_id, full_name: updated.student_name },
@@ -139,15 +150,16 @@ export const assignmentsRoutes = new Hono<AppEnv>()
    */
   .delete('/:id', requireAdmin, zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
+    const org = c.get('org').id;
 
     // Read it before it goes, so the log can name both people.
-    const doomed = await getAssignment(c.env.DB, id);
+    const doomed = await getAssignment(c.env.DB, org, id);
 
-    if (!(await deleteAssignment(c.env.DB, id))) {
+    if (!(await deleteAssignment(c.env.DB, org, id))) {
       throw ApiError.notFound('That assignment does not exist.');
     }
 
-    await recordAudit(c.env.DB, c.get('user'), {
+    await recordAudit(c.env.DB, c.get('user'), org, {
       action: 'assignment.removed',
       description: doomed
         ? `Removed ${doomed.student_name} from ${doomed.tutor_name}`

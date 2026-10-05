@@ -17,6 +17,7 @@ import {
   zonedClockParts,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { familyStudentIds, inTeachingScope, studentScopeSql } from '../lib/scope.js';
 import {
   listCancellationsForStudents,
@@ -26,12 +27,12 @@ import {
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
 /**
- * Today on the institute's clock. Lessons are dated in that timezone, so
+ * Today on the organization's clock. Lessons are dated in that timezone, so
  * "where should they be by today" has to be asked in it too -- UTC would roll
  * the day over at eight in the evening.
  */
-function instituteToday(): string {
-  return zonedClockParts(new Date().toISOString()).day;
+function organizationToday(timeZone: string): string {
+  return zonedClockParts(new Date().toISOString(), timeZone).day;
 }
 
 // ---------------------------------------------------------------------------
@@ -93,18 +94,21 @@ export async function findUnknownCurriculumIds(
 /** True when the viewer may read this student's assessments, plan and progress. */
 export async function canViewStudentProgress(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   studentId: string,
 ): Promise<boolean> {
-  const scope = studentScopeSql(viewer, 'u.id');
+  const scope = studentScopeSql(viewer, 'u.id', org);
 
   const row = await db
     .prepare(
       `SELECT 1 AS ok FROM users u
-       JOIN user_roles r ON r.user_id = u.id AND r.role = 'student'
-       WHERE u.id = ? AND u.deleted_at IS NULL ${scope ? `AND ${scope.sql}` : ''}`,
+       JOIN org_members m ON m.organization_id = ? AND m.user_id = u.id AND m.removed_at IS NULL
+       JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                        AND r.role = 'student'
+       WHERE u.id = ? AND u.deleted_at IS NULL AND ${scope.sql}`,
     )
-    .bind(studentId, ...(scope?.values ?? []))
+    .bind(org, studentId, ...scope.values)
     .first<{ ok: number }>();
 
   return row !== null;
@@ -133,19 +137,32 @@ function toAssessment({ ratings_json, ...row }: AssessmentRow): Assessment {
   return { ...row, ratings: JSON.parse(ratings_json ?? '[]') };
 }
 
-export async function listAssessments(db: D1Database, studentId: string): Promise<Assessment[]> {
+export async function listAssessments(
+  db: D1Database,
+  org: OrgId,
+  studentId: string,
+): Promise<Assessment[]> {
   const result = await db
     .prepare(
-      `${SELECT_ASSESSMENT} WHERE a.student_user_id = ? ORDER BY a.assessed_on DESC, a.created_at DESC`,
+      `${SELECT_ASSESSMENT} WHERE a.organization_id = ? AND a.student_user_id = ?
+       ORDER BY a.assessed_on DESC, a.created_at DESC`,
     )
-    .bind(studentId)
+    .bind(org, studentId)
     .all<AssessmentRow>();
 
   return (result.results ?? []).map(toAssessment);
 }
 
-export async function getAssessment(db: D1Database, id: string): Promise<Assessment | null> {
-  const row = await db.prepare(`${SELECT_ASSESSMENT} WHERE a.id = ?`).bind(id).first<AssessmentRow>();
+/** An assessment of this organization. One from elsewhere is null. */
+export async function getAssessment(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+): Promise<Assessment | null> {
+  const row = await db
+    .prepare(`${SELECT_ASSESSMENT} WHERE a.organization_id = ? AND a.id = ?`)
+    .bind(org, id)
+    .first<AssessmentRow>();
   return row ? toAssessment(row) : null;
 }
 
@@ -168,6 +185,7 @@ function ratingStatements(
 
 export async function createAssessment(
   db: D1Database,
+  org: OrgId,
   input: AssessmentPayload,
   assessorId: string,
 ): Promise<Assessment> {
@@ -178,12 +196,13 @@ export async function createAssessment(
     db
       .prepare(
         `INSERT INTO assessments
-           (id, student_user_id, assessor_user_id, assessed_on, school_course,
+           (id, organization_id, student_user_id, assessor_user_id, assessed_on, school_course,
             recommended_level_id, summary)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         id,
+        org,
         input.student_user_id,
         assessorId,
         input.assessed_on,
@@ -194,13 +213,14 @@ export async function createAssessment(
     ...ratingStatements(db, 'assessment_topic_ratings', 'assessment_id', id, input.ratings).slice(1),
   ]);
 
-  const created = await getAssessment(db, id);
+  const created = await getAssessment(db, org, id);
   if (!created) throw new Error('Insert into assessments returned no row.');
   return created;
 }
 
 export async function updateAssessment(
   db: D1Database,
+  org: OrgId,
   id: string,
   input: AssessmentUpdatePayload,
 ): Promise<Assessment | null> {
@@ -218,7 +238,9 @@ export async function updateAssessment(
   sets.push(`updated_at = ${NOW}`);
 
   const statements = [
-    db.prepare(`UPDATE assessments SET ${sets.join(', ')} WHERE id = ?`).bind(...values, id),
+    db
+      .prepare(`UPDATE assessments SET ${sets.join(', ')} WHERE organization_id = ? AND id = ?`)
+      .bind(...values, org, id),
     ...(input.ratings
       ? ratingStatements(db, 'assessment_topic_ratings', 'assessment_id', id, input.ratings)
       : []),
@@ -227,11 +249,14 @@ export async function updateAssessment(
   const [update] = await db.batch(statements);
   if (!update?.meta.changes) return null;
 
-  return getAssessment(db, id);
+  return getAssessment(db, org, id);
 }
 
-export async function deleteAssessment(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM assessments WHERE id = ?').bind(id).run();
+export async function deleteAssessment(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM assessments WHERE organization_id = ? AND id = ?')
+    .bind(org, id)
+    .run();
   return Boolean(result.meta.changes);
 }
 
@@ -259,27 +284,42 @@ function toPlan({ topics_json, ...row }: PlanRow): LearningPlan {
 }
 
 /** Every plan for a student, the active one first, then newest first. */
-export async function listPlans(db: D1Database, studentId: string): Promise<LearningPlan[]> {
+export async function listPlans(
+  db: D1Database,
+  org: OrgId,
+  studentId: string,
+): Promise<LearningPlan[]> {
   const result = await db
     .prepare(
-      `${SELECT_PLAN} WHERE p.student_user_id = ?
+      `${SELECT_PLAN} WHERE p.organization_id = ? AND p.student_user_id = ?
        ORDER BY (p.status = 'active') DESC, p.starts_on DESC, p.created_at DESC`,
     )
-    .bind(studentId)
+    .bind(org, studentId)
     .all<PlanRow>();
 
   return (result.results ?? []).map(toPlan);
 }
 
-export async function getPlan(db: D1Database, id: string): Promise<LearningPlan | null> {
-  const row = await db.prepare(`${SELECT_PLAN} WHERE p.id = ?`).bind(id).first<PlanRow>();
+/** A plan of this organization. One from elsewhere is null. */
+export async function getPlan(db: D1Database, org: OrgId, id: string): Promise<LearningPlan | null> {
+  const row = await db
+    .prepare(`${SELECT_PLAN} WHERE p.organization_id = ? AND p.id = ?`)
+    .bind(org, id)
+    .first<PlanRow>();
   return row ? toPlan(row) : null;
 }
 
-export async function getActivePlanId(db: D1Database, studentId: string): Promise<string | null> {
+export async function getActivePlanId(
+  db: D1Database,
+  org: OrgId,
+  studentId: string,
+): Promise<string | null> {
   const row = await db
-    .prepare(`SELECT id FROM learning_plans WHERE student_user_id = ? AND status = 'active'`)
-    .bind(studentId)
+    .prepare(
+      `SELECT id FROM learning_plans
+       WHERE organization_id = ? AND student_user_id = ? AND status = 'active'`,
+    )
+    .bind(org, studentId)
     .first<{ id: string }>();
 
   return row?.id ?? null;
@@ -303,19 +343,21 @@ function planTopicStatements(db: D1Database, planId: string, topicIds: string[])
  * batch; a plan that is not active leaves the profile alone. The profile side
  * is goalSyncFromProfile in the users repository.
  */
-function planGoalSyncStatement(db: D1Database, planId: string) {
+function planGoalSyncStatement(db: D1Database, org: OrgId, planId: string) {
   return db
     .prepare(
       `UPDATE student_profiles
        SET academic_year_goal = (SELECT goal FROM learning_plans WHERE id = ?)
-       WHERE user_id = (SELECT student_user_id FROM learning_plans
-                        WHERE id = ? AND status = 'active')`,
+       WHERE organization_id = ?
+         AND user_id = (SELECT student_user_id FROM learning_plans
+                        WHERE id = ? AND organization_id = ? AND status = 'active')`,
     )
-    .bind(planId, planId);
+    .bind(planId, org, planId, org);
 }
 
 export async function createPlan(
   db: D1Database,
+  org: OrgId,
   input: PlanPayload,
   createdBy: string,
 ): Promise<LearningPlan> {
@@ -325,12 +367,14 @@ export async function createPlan(
     db
       .prepare(
         `INSERT INTO learning_plans
-           (id, student_user_id, assessment_id, goal, target_level_id, starts_on, target_on,
-            sessions_per_week, session_minutes, recommendation, status, created_by_user_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?)`,
+           (id, organization_id, student_user_id, assessment_id, goal, target_level_id,
+            starts_on, target_on, sessions_per_week, session_minutes, recommendation, status,
+            created_by_user_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?)`,
       )
       .bind(
         id,
+        org,
         input.student_user_id,
         input.assessment_id,
         input.goal,
@@ -343,16 +387,17 @@ export async function createPlan(
         createdBy,
       ),
     ...planTopicStatements(db, id, input.topic_ids).slice(1),
-    planGoalSyncStatement(db, id),
+    planGoalSyncStatement(db, org, id),
   ]);
 
-  const created = await getPlan(db, id);
+  const created = await getPlan(db, org, id);
   if (!created) throw new Error('Insert into learning_plans returned no row.');
   return created;
 }
 
 export async function updatePlan(
   db: D1Database,
+  org: OrgId,
   id: string,
   input: PlanUpdatePayload,
 ): Promise<LearningPlan | null> {
@@ -379,17 +424,22 @@ export async function updatePlan(
   sets.push(`updated_at = ${NOW}`);
 
   const [update] = await db.batch([
-    db.prepare(`UPDATE learning_plans SET ${sets.join(', ')} WHERE id = ?`).bind(...values, id),
+    db
+      .prepare(`UPDATE learning_plans SET ${sets.join(', ')} WHERE organization_id = ? AND id = ?`)
+      .bind(...values, org, id),
     ...(input.topic_ids ? planTopicStatements(db, id, input.topic_ids) : []),
-    planGoalSyncStatement(db, id),
+    planGoalSyncStatement(db, org, id),
   ]);
 
   if (!update?.meta.changes) return null;
-  return getPlan(db, id);
+  return getPlan(db, org, id);
 }
 
-export async function deletePlan(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM learning_plans WHERE id = ?').bind(id).run();
+export async function deletePlan(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM learning_plans WHERE organization_id = ? AND id = ?')
+    .bind(org, id)
+    .run();
   return Boolean(result.meta.changes);
 }
 
@@ -406,11 +456,12 @@ export async function deletePlan(db: D1Database, id: string): Promise<boolean> {
  */
 export async function saveSessionProgress(
   db: D1Database,
+  org: OrgId,
   sessionId: string,
   studentId: string,
   input: SessionProgressPayload,
 ): Promise<void> {
-  const planId = await getActivePlanId(db, studentId);
+  const planId = await getActivePlanId(db, org, studentId);
 
   await db.batch([
     db
@@ -483,10 +534,22 @@ function baselineFor(plan: LearningPlan | null, assessments: Assessment[]): Asse
 export interface ProgressReader {
   viewer: User;
   family: ReadonlySet<string>;
+  /** The organization the progress is read in, and its clock. */
+  org: OrgId;
+  timeZone: string;
 }
 
-export async function progressReader(db: D1Database, viewer: User): Promise<ProgressReader> {
-  return { viewer, family: await familyStudentIds(db, viewer) };
+export async function progressReader(
+  db: D1Database,
+  org: { id: OrgId; time_zone: string },
+  viewer: User,
+): Promise<ProgressReader> {
+  return {
+    viewer,
+    family: await familyStudentIds(db, org.id, viewer),
+    org: org.id,
+    timeZone: org.time_zone,
+  };
 }
 
 /**
@@ -529,30 +592,33 @@ export async function buildStudentProgress(
   reader: ProgressReader,
   today?: string,
 ): Promise<StudentProgress | null> {
+  const org = reader.org;
   const student = await db
     .prepare(
       `SELECT u.id AS user_id, u.full_name, sp.current_math_course, sp.academic_year_goal
-       FROM users u LEFT JOIN student_profiles sp ON sp.user_id = u.id
-       WHERE u.id = ? AND u.deleted_at IS NULL`,
+       FROM users u
+       JOIN org_members m ON m.organization_id = ? AND m.user_id = u.id
+       LEFT JOIN student_profiles sp ON sp.organization_id = m.organization_id AND sp.user_id = u.id
+       WHERE u.id = ? AND u.deleted_at IS NULL AND m.removed_at IS NULL`,
     )
-    .bind(studentId)
+    .bind(org, studentId)
     .first<StudentProgress['student']>();
 
   if (!student) return null;
 
   const [assessments, plans, sessions, cancellations] = await Promise.all([
-    listAssessments(db, studentId),
-    listPlans(db, studentId),
+    listAssessments(db, org, studentId),
+    listPlans(db, org, studentId),
     db
-      .prepare(`${SELECT_PROGRESS_SESSIONS} WHERE s.student_user_id = ?`)
-      .bind(studentId)
+      .prepare(`${SELECT_PROGRESS_SESSIONS} WHERE s.organization_id = ? AND s.student_user_id = ?`)
+      .bind(org, studentId)
       .all<ProgressSessionRow>(),
-    listCancellationsForStudents(db, [studentId]),
+    listCancellationsForStudents(db, org, [studentId]),
   ]);
 
   const plan = plans.find((candidate) => candidate.status === 'active') ?? null;
   const baseline = baselineFor(plan, assessments);
-  const on = today ?? instituteToday();
+  const on = today ?? organizationToday(reader.timeZone);
 
   const computed = computeProgress({
     plan,
@@ -582,22 +648,25 @@ export async function buildStudentProgress(
  */
 export async function listProgressOverview(
   db: D1Database,
+  org: { id: OrgId; time_zone: string },
   viewer: User,
   options: { studentIds?: string[]; today?: string } = {},
 ): Promise<ProgressOverview[]> {
-  const scope = studentScopeSql(viewer, 'u.id');
+  const scope = studentScopeSql(viewer, 'u.id', org.id);
   const only = options.studentIds;
 
   const students = await db
     .prepare(
       `SELECT u.id, u.full_name FROM users u
-       JOIN user_roles r ON r.user_id = u.id AND r.role = 'student'
+       JOIN org_members m ON m.organization_id = ? AND m.user_id = u.id AND m.removed_at IS NULL
+       JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                        AND r.role = 'student'
        WHERE u.deleted_at IS NULL
-         ${scope ? `AND ${scope.sql}` : ''}
+         AND ${scope.sql}
          ${only ? 'AND u.id IN (SELECT value FROM json_each(?))' : ''}
        ORDER BY u.full_name`,
     )
-    .bind(...(scope?.values ?? []), ...(only ? [JSON.stringify(only)] : []))
+    .bind(org.id, ...scope.values, ...(only ? [JSON.stringify(only)] : []))
     .all<{ id: string; full_name: string }>();
 
   const rows = students.results ?? [];
@@ -608,17 +677,27 @@ export async function listProgressOverview(
 
   const [[planResult, assessmentResult, sessionResult], cancellationRows] = await Promise.all([
     db.batch<Record<string, unknown>>([
-      db.prepare(`${SELECT_PLAN} WHERE p.status = 'active' AND p.student_user_id IN ${inStudents}`).bind(ids),
       db
         .prepare(
-          `${SELECT_ASSESSMENT} WHERE a.student_user_id IN ${inStudents}
+          `${SELECT_PLAN} WHERE p.organization_id = ? AND p.status = 'active'
+           AND p.student_user_id IN ${inStudents}`,
+        )
+        .bind(org.id, ids),
+      db
+        .prepare(
+          `${SELECT_ASSESSMENT} WHERE a.organization_id = ? AND a.student_user_id IN ${inStudents}
            ORDER BY a.assessed_on DESC, a.created_at DESC`,
         )
-        .bind(ids),
-      db.prepare(`${SELECT_PROGRESS_SESSIONS} WHERE s.student_user_id IN ${inStudents}`).bind(ids),
+        .bind(org.id, ids),
+      db
+        .prepare(
+          `${SELECT_PROGRESS_SESSIONS} WHERE s.organization_id = ? AND s.student_user_id IN ${inStudents}`,
+        )
+        .bind(org.id, ids),
     ]),
     listCancellationsForStudents(
       db,
+      org.id,
       rows.map((row) => row.id),
     ),
   ]);
@@ -662,7 +741,7 @@ export async function listProgressOverview(
       baselineOn: baseline?.assessed_on ?? null,
       sessions: sessions.get(student.id) ?? [],
       cancellations: cancellations.get(student.id) ?? [],
-      today: options.today ?? instituteToday(),
+      today: options.today ?? organizationToday(org.time_zone),
     });
 
     return {

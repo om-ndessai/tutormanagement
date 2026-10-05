@@ -48,10 +48,9 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
   const { data, isPending } = useTaxStatus(year);
   const tutors = data?.data ?? [];
 
-  // The institute's own TIN, from whoever is signed in.
-  const { user } = useAuth();
-  const me = useUserDetail(user?.id ?? null);
-  const instituteTin = me.data?.data.admin_profile?.tin ?? null;
+  // The organization's own TIN, from its settings (its admins read them).
+  const { organization } = useAuth();
+  const instituteTin = organization?.settings?.tin ?? null;
 
   // Paid first, since those are the forms that have to be filed; everyone else
   // stays reachable underneath rather than being hidden.
@@ -126,10 +125,10 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
         The SSN is typed when the form is printed and is never stored. The recipient’s address
         comes from the tutor’s record.{' '}
         {instituteTin ? (
-          <>The payer box is filled from your record ({instituteTin}).</>
+          <>The payer box is filled from the organization settings ({instituteTin}).</>
         ) : (
           <>
-            Add the institute’s TIN to your own record and it will fill the payer box for you.
+            Add the TIN on the Organization settings page and it will fill the payer box for you.
           </>
         )}
       </p>

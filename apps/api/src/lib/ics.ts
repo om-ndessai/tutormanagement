@@ -67,7 +67,21 @@ function utcStamp(date: Date): string {
  * shipping a VTIMEZONE block and getting DST transitions right, to express
  * something the institute does not actually mean.
  */
-function toEvent(schedule: ScheduledSession, cancelled: readonly string[], now: Date): string[] {
+/** What a calendar file needs to know about the organization it is from. */
+export interface CalendarOrg {
+  name: string;
+  short_name: string;
+  slug: string;
+  /** Fixed for good once set: it is in every UID, and a new UID duplicates events. */
+  calendar_domain: string;
+}
+
+function toEvent(
+  org: CalendarOrg,
+  schedule: ScheduledSession,
+  cancelled: readonly string[],
+  now: Date,
+): string[] {
   const start = firstOccurrence(schedule.starts_on, schedule.day_of_week);
   const startMinutes = parseClockTime(schedule.start_time) ?? 0;
   const endMinutes = startMinutes + schedule.duration_minutes;
@@ -97,7 +111,7 @@ function toEvent(schedule: ScheduledSession, cancelled: readonly string[], now: 
     'BEGIN:VEVENT',
     // Stable per schedule, so re-downloading updates the event rather than
     // creating a duplicate.
-    `UID:schedule-${schedule.id}@trianglemathinstitute.com`,
+    `UID:schedule-${schedule.id}@${org.calendar_domain}`,
     `DTSTAMP:${utcStamp(now)}`,
     `DTSTART:${localStamp(start, schedule.start_time)}`,
     `DTEND:${localStamp(start, endTime)}`,
@@ -125,17 +139,22 @@ function toEvent(schedule: ScheduledSession, cancelled: readonly string[], now: 
  * dates in `cancelled` (schedule id -> cancelled dates).
  */
 export function buildCalendar(
+  org: CalendarOrg,
   schedules: ScheduledSession[],
   cancelled: ReadonlyMap<string, readonly string[]> = new Map(),
   now: Date = new Date(),
 ): string {
+  // The organization's name, with nothing a calendar field cannot carry.
+  const prodName = (value: string) => value.replace(/[\/\r\n]/g, ' ').trim();
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Mathematics Institute of the Triangle//TMI Portal//EN',
+    `PRODID:-//${prodName(org.name)}//${prodName(org.short_name)}//EN`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    ...schedules.flatMap((schedule) => toEvent(schedule, cancelled.get(schedule.id) ?? [], now)),
+    ...schedules.flatMap((schedule) =>
+      toEvent(org, schedule, cancelled.get(schedule.id) ?? [], now),
+    ),
     'END:VCALENDAR',
   ];
 
@@ -144,12 +163,12 @@ export function buildCalendar(
 }
 
 /** A filename that says what the download contains. */
-export function calendarFilename(schedules: ScheduledSession[]): string {
+export function calendarFilename(orgSlug: string, schedules: ScheduledSession[]): string {
   if (schedules.length === 1) {
     const only = schedules[0]!;
     const slug = only.student_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    return `tmi-tutoring-${slug}.ics`;
+    return `${orgSlug}-tutoring-${slug}.ics`;
   }
 
-  return 'tmi-tutoring-schedule.ics';
+  return `${orgSlug}-tutoring-schedule.ics`;
 }

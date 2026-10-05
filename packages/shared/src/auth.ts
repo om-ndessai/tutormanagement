@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { ApiErrorCode } from './api.js';
-import type { BrandId } from './brand.js';
+import type { Brand } from './brand.js';
+import type { Invitation, Membership, Organization, OrganizationSettings } from './organizations.js';
 import type { OnboardingState } from './onboarding.js';
 import type { User } from './users.js';
 
@@ -15,11 +16,10 @@ export interface AuthConfig {
   /** False while AUTH_ENABLED is "false"; the SPA then skips the login screen. */
   auth_enabled: boolean;
   /**
-   * Which identity this deployment wears. Runtime rather than build-time, so
-   * one build can serve the institute and the demo without either being able
-   * to show up as the other.
+   * The identity the sign-in page wears: the organization this browser last
+   * chose (the tmi_last_org cookie), or the neutral platform brand.
    */
-  brand: BrandId;
+  brand: Brand;
 }
 
 /** The signed-in user, plus how they got here. */
@@ -35,6 +35,18 @@ export interface SessionResponse {
    * ever their own, so the page can decide at once whether to open it.
    */
   onboarding: OnboardingState;
+  /**
+   * The organization this request named (X-Organization), when the person is
+   * an active member of it; null while choosing, or on the platform console.
+   * Payer details are included for its admins only.
+   */
+  organization: (Organization & { settings: OrganizationSettings | null }) | null;
+  /** Every organization the person may enter. */
+  memberships: Membership[];
+  /** Organizations waiting for the person to accept or decline. */
+  invitations: Invitation[];
+  /** Whether the person may use the platform console. */
+  platform_admin: boolean;
 }
 
 /** Body of POST /api/auth/google — the ID token from Google Identity Services. */
@@ -53,6 +65,8 @@ export const AUTH_ERROR_CODES = {
   NO_ACCOUNT: 'no_account',
   /** Matching user exists but is suspended. */
   ACCOUNT_SUSPENDED: 'account_suspended',
+  /** The request named no organization, or one the person may not enter. */
+  ORGANIZATION_REQUIRED: 'organization_required',
   /** Google says the address is unverified. */
   EMAIL_UNVERIFIED: 'email_unverified',
   /** No session cookie, or it failed verification. */

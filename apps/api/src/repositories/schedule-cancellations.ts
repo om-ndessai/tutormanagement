@@ -7,6 +7,7 @@ import {
   type User,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { teachingScopeSql } from '../lib/scope.js';
 
 /**
@@ -19,7 +20,8 @@ import { teachingScopeSql } from '../lib/scope.js';
  */
 export const NOT_OVERTAKEN_SQL = `NOT EXISTS (
   SELECT 1 FROM sessions s
-  WHERE s.tutor_user_id = ss.tutor_user_id
+  WHERE s.organization_id = ss.organization_id
+    AND s.tutor_user_id = ss.tutor_user_id
     AND s.student_user_id = ss.student_user_id
     AND s.occurred_on = c.occurs_on)`;
 
@@ -56,6 +58,7 @@ function toCancellation(row: CancellationRow): StoredCancellation {
  */
 export async function listScheduleCancellations(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   params: ListScheduleCancellationsParams,
 ): Promise<StoredCancellation[]> {
@@ -83,11 +86,9 @@ export async function listScheduleCancellations(
     values.push(params.tutor_user_id);
   }
 
-  const scope = teachingScopeSql(viewer, 'ss');
-  if (scope) {
-    where.push(scope.sql);
-    values.push(...scope.values);
-  }
+  const scope = teachingScopeSql(viewer, 'ss', org);
+  where.push(scope.sql);
+  values.push(...scope.values);
 
   const result = await db
     .prepare(
@@ -111,6 +112,7 @@ export async function listScheduleCancellations(
  */
 export async function listCancellationsForSchedules(
   db: D1Database,
+  org: OrgId,
   scheduleIds: readonly string[],
   options: { from?: string } = {},
 ): Promise<StoredCancellation[]> {
@@ -119,12 +121,13 @@ export async function listCancellationsForSchedules(
   const result = await db
     .prepare(
       `${SELECT_CANCELLATION}
-       WHERE c.schedule_id IN (SELECT value FROM json_each(?))
+       WHERE ss.organization_id = ?
+         AND c.schedule_id IN (SELECT value FROM json_each(?))
          AND ${NOT_OVERTAKEN_SQL}
          ${options.from ? 'AND c.occurs_on >= ?' : ''}
        ORDER BY c.occurs_on, ss.start_time`,
     )
-    .bind(JSON.stringify(scheduleIds), ...(options.from ? [options.from] : []))
+    .bind(org, JSON.stringify(scheduleIds), ...(options.from ? [options.from] : []))
     .all<CancellationRow>();
 
   return (result.results ?? []).map(toCancellation);
@@ -137,6 +140,7 @@ export async function listCancellationsForSchedules(
  */
 export async function listCancellationsForStudents(
   db: D1Database,
+  org: OrgId,
   studentIds: readonly string[],
 ): Promise<StoredCancellation[]> {
   if (studentIds.length === 0) return [];
@@ -144,11 +148,12 @@ export async function listCancellationsForStudents(
   const result = await db
     .prepare(
       `${SELECT_CANCELLATION}
-       WHERE ss.student_user_id IN (SELECT value FROM json_each(?))
+       WHERE ss.organization_id = ?
+         AND ss.student_user_id IN (SELECT value FROM json_each(?))
          AND ${NOT_OVERTAKEN_SQL}
        ORDER BY c.occurs_on, ss.start_time`,
     )
-    .bind(JSON.stringify(studentIds))
+    .bind(org, JSON.stringify(studentIds))
     .all<CancellationRow>();
 
   return (result.results ?? []).map(toCancellation);
@@ -157,12 +162,16 @@ export async function listCancellationsForStudents(
 /** One cancellation as stored, whether or not a lesson has since overtaken it. */
 export async function getCancellation(
   db: D1Database,
+  org: OrgId,
   scheduleId: string,
   occursOn: string,
 ): Promise<StoredCancellation | null> {
   const row = await db
-    .prepare(`${SELECT_CANCELLATION} WHERE c.schedule_id = ? AND c.occurs_on = ?`)
-    .bind(scheduleId, occursOn)
+    .prepare(
+      `${SELECT_CANCELLATION}
+       WHERE ss.organization_id = ? AND c.schedule_id = ? AND c.occurs_on = ?`,
+    )
+    .bind(org, scheduleId, occursOn)
     .first<CancellationRow>();
 
   return row ? toCancellation(row) : null;
@@ -171,6 +180,7 @@ export async function getCancellation(
 /** Records a cancellation. False when that date was already cancelled. */
 export async function insertCancellation(
   db: D1Database,
+  org: OrgId,
   row: {
     schedule_id: string;
     occurs_on: string;
@@ -183,10 +193,19 @@ export async function insertCancellation(
     .prepare(
       `INSERT INTO schedule_cancellations
          (schedule_id, occurs_on, note, cancelled_by_user_id, cancelled_as)
-       VALUES (?, ?, ?, ?, ?)
+       SELECT ?, ?, ?, ?, ?
+       WHERE EXISTS (SELECT 1 FROM scheduled_sessions WHERE id = ? AND organization_id = ?)
        ON CONFLICT (schedule_id, occurs_on) DO NOTHING`,
     )
-    .bind(row.schedule_id, row.occurs_on, row.note, row.cancelled_by_user_id, row.cancelled_as)
+    .bind(
+      row.schedule_id,
+      row.occurs_on,
+      row.note,
+      row.cancelled_by_user_id,
+      row.cancelled_as,
+      row.schedule_id,
+      org,
+    )
     .run();
 
   return Boolean(result.meta.changes);
@@ -195,12 +214,16 @@ export async function insertCancellation(
 /** Restores a lesson: the date is back in the series. */
 export async function deleteCancellation(
   db: D1Database,
+  org: OrgId,
   scheduleId: string,
   occursOn: string,
 ): Promise<boolean> {
   const result = await db
-    .prepare('DELETE FROM schedule_cancellations WHERE schedule_id = ? AND occurs_on = ?')
-    .bind(scheduleId, occursOn)
+    .prepare(
+      `DELETE FROM schedule_cancellations WHERE schedule_id = ? AND occurs_on = ?
+         AND schedule_id IN (SELECT id FROM scheduled_sessions WHERE organization_id = ?)`,
+    )
+    .bind(scheduleId, occursOn, org)
     .run();
 
   return Boolean(result.meta.changes);
@@ -209,6 +232,7 @@ export async function deleteCancellation(
 /** Whether a lesson was recorded for this pair on this date. */
 export async function hasLessonOn(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   studentUserId: string,
   date: string,
@@ -216,9 +240,10 @@ export async function hasLessonOn(
   const row = await db
     .prepare(
       `SELECT 1 AS found FROM sessions
-       WHERE tutor_user_id = ? AND student_user_id = ? AND occurred_on = ? LIMIT 1`,
+       WHERE organization_id = ? AND tutor_user_id = ? AND student_user_id = ? AND occurred_on = ?
+       LIMIT 1`,
     )
-    .bind(tutorUserId, studentUserId, date)
+    .bind(org, tutorUserId, studentUserId, date)
     .first<{ found: number }>();
 
   return Boolean(row);
@@ -230,15 +255,18 @@ export async function hasLessonOn(
  */
 export async function listCancelledDates(
   db: D1Database,
+  org: OrgId,
   scheduleId: string,
   from: string,
 ): Promise<string[]> {
   const result = await db
     .prepare(
       `SELECT occurs_on FROM schedule_cancellations
-       WHERE schedule_id = ? AND occurs_on >= ? ORDER BY occurs_on`,
+       WHERE schedule_id = ? AND occurs_on >= ?
+         AND schedule_id IN (SELECT id FROM scheduled_sessions WHERE organization_id = ?)
+       ORDER BY occurs_on`,
     )
-    .bind(scheduleId, from)
+    .bind(scheduleId, from, org)
     .all<{ occurs_on: string }>();
 
   return (result.results ?? []).map((row) => row.occurs_on);

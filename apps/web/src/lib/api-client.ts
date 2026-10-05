@@ -1,4 +1,6 @@
-import type { ApiErrorBody, ApiErrorCode } from '@tmi/shared';
+import { ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
+
+import { getActiveOrg } from './organization';
 
 /**
  * Relative on purpose. In production the Worker serves both the API and this
@@ -12,6 +14,13 @@ const API_BASE = '/api';
  * a TanStack Query retry, which has no access to React context.
  */
 export const UNAUTHENTICATED_EVENT = 'tmi:unauthenticated';
+
+/**
+ * Broadcast when the API says this tab's organization may not be entered --
+ * none chosen, archived, or the person was removed from it -- so the auth
+ * provider can send them to choose again.
+ */
+export const ORGANIZATION_REQUIRED_EVENT = 'tmi:organization-required';
 
 export class ApiRequestError extends Error {
   readonly status: number;
@@ -52,6 +61,7 @@ function isApiErrorBody(value: unknown): value is ApiErrorBody {
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response;
+  const org = getActiveOrg();
 
   try {
     response = await fetch(`${API_BASE}${path}`, {
@@ -62,6 +72,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       credentials: 'include',
       headers: {
         Accept: 'application/json',
+        // Every request names the organization this tab is in; the API checks
+        // the person's membership of it each time.
+        ...(org ? { [ORG_HEADER]: org } : {}),
         ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
         ...init?.headers,
       },
@@ -79,6 +92,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!response.ok) {
     if (response.status === 401) {
       window.dispatchEvent(new CustomEvent(UNAUTHENTICATED_EVENT));
+    }
+    if (isApiErrorBody(payload) && payload.error.code === 'organization_required') {
+      window.dispatchEvent(new CustomEvent(ORGANIZATION_REQUIRED_EVENT));
     }
 
     if (isApiErrorBody(payload)) {
@@ -103,6 +119,9 @@ export const apiClient = {
     request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),
   put: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'PUT', body: JSON.stringify(body) }),
+  /** Sends a file as the raw request body -- a logo upload. */
+  putFile: <T>(path: string, file: Blob) =>
+    request<T>(path, { method: 'PUT', body: file, headers: { 'Content-Type': file.type || 'application/octet-stream' } }),
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
 };
 

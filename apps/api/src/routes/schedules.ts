@@ -26,6 +26,7 @@ import {
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
+import type { OrgContext, OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
 import { buildCalendar, calendarFilename } from '../lib/ics.js';
@@ -58,9 +59,9 @@ const occurrenceParamSchema = z.object({
   occurs_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use a date like 2026-09-20.'),
 });
 
-/** Today's date on the institute's clock -- the one lessons are dated by. */
-function instituteToday(): string {
-  return zonedClockParts(new Date().toISOString()).day;
+/** Today's date on the organization's clock -- the one its lessons are dated by. */
+function organizationToday(timeZone: string): string {
+  return zonedClockParts(new Date().toISOString(), timeZone).day;
 }
 
 /** Each cancellation, with whether THIS reader may put the lesson back. */
@@ -86,16 +87,16 @@ function withRestoreRights(
  * Serves an .ics as a download rather than something the browser renders,
  * leaving out every lesson that has been called off.
  */
-async function calendarResponse(db: D1Database, schedules: ScheduledSession[]) {
+async function calendarResponse(db: D1Database, org: OrgContext, schedules: ScheduledSession[]) {
   const cancelled = new Map<string, string[]>();
-  for (const row of await listCancellationsForSchedules(db, schedules.map((s) => s.id))) {
+  for (const row of await listCancellationsForSchedules(db, org.id, schedules.map((s) => s.id))) {
     cancelled.set(row.schedule_id, [...(cancelled.get(row.schedule_id) ?? []), row.occurs_on]);
   }
 
-  return new Response(buildCalendar(schedules, cancelled), {
+  return new Response(buildCalendar(org, schedules, cancelled), {
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
-      'Content-Disposition': `attachment; filename="${calendarFilename(schedules)}"`,
+      'Content-Disposition': `attachment; filename="${calendarFilename(org.slug, schedules)}"`,
       // A calendar file is a point-in-time export; caching it would hand back
       // a stale schedule after an edit.
       'Cache-Control': 'no-store',
@@ -109,11 +110,11 @@ async function calendarResponse(db: D1Database, schedules: ScheduledSession[]) {
  * calendar download and by an edit alike. A 403 would confirm it exists.
  */
 async function canSeeSchedule(
-  db: D1Database,
+  db: D1Database, org: OrgId,
   viewer: User,
   schedule: { id: string; student_user_id: string },
 ): Promise<boolean> {
-  const visible = await listSchedules(db, viewer, {
+  const visible = await listSchedules(db, org, viewer, {
     include_inactive: true,
     student_user_id: schedule.student_user_id,
   });
@@ -129,8 +130,8 @@ export const schedulesRoutes = new Hono<AppEnv>()
    */
   .get('/', zValidator('query', listSchedulesQuerySchema), async (c) => {
     const viewer = c.get('user');
-    const schedules = await listSchedules(c.env.DB, viewer, c.req.valid('query'));
-    const family = await familyStudentIds(c.env.DB, viewer);
+    const schedules = await listSchedules(c.env.DB, c.get('org').id, viewer, c.req.valid('query'));
+    const family = await familyStudentIds(c.env.DB, c.get('org').id, viewer);
 
     const body: ApiOk<VisibleSchedule[]> = {
       data: schedules.map((schedule) => ({
@@ -157,15 +158,15 @@ export const schedulesRoutes = new Hono<AppEnv>()
     const { offset, limit, tutor_user_id, schedule_id } = c.req.valid('query');
     const viewer = c.get('user');
     const now = new Date().toISOString();
-    const today = zonedClockParts(now).day;
+    const today = zonedClockParts(now, c.get('org').time_zone).day;
 
-    const listed = await listSchedules(c.env.DB, viewer, {
+    const listed = await listSchedules(c.env.DB, c.get('org').id, viewer, {
       include_inactive: false,
       tutor_user_id,
     });
     // Narrowed after scoping, so an id the reader cannot list yields nothing.
     const schedules = schedule_id ? listed.filter((s) => s.id === schedule_id) : listed;
-    const recorded = await listSessions(c.env.DB, viewer, {
+    const recorded = await listSessions(c.env.DB, c.get('org').id, viewer, {
       from: today,
       tutor_user_id,
       limit: 200,
@@ -175,10 +176,10 @@ export const schedulesRoutes = new Hono<AppEnv>()
       recorded.sessions.map((s) => upcomingTakenKey(s.tutor_user_id, s.student_user_id, s.occurred_on)),
     );
 
-    const family = await familyStudentIds(c.env.DB, viewer);
+    const family = await familyStudentIds(c.env.DB, c.get('org').id, viewer);
     const cancelled = new Map<string, UpcomingCancellation>(
       withRestoreRights(
-        await listCancellationsForSchedules(c.env.DB, schedules.map((s) => s.id), { from: today }),
+        await listCancellationsForSchedules(c.env.DB, c.get('org').id, schedules.map((s) => s.id), { from: today }),
         viewer,
         family,
         today,
@@ -195,7 +196,13 @@ export const schedulesRoutes = new Hono<AppEnv>()
       ]),
     );
 
-    const { items, has_more } = expandUpcoming(schedules, now, { offset, limit, taken, cancelled });
+    const { items, has_more } = expandUpcoming(schedules, now, {
+      offset,
+      limit,
+      taken,
+      cancelled,
+      timeZone: c.get('org').time_zone,
+    });
 
     const body: UpcomingSessionsResponse = { data: items, meta: { offset, limit, has_more } };
     return c.json(body);
@@ -207,8 +214,8 @@ export const schedulesRoutes = new Hono<AppEnv>()
    * file -- scoped by the same rule as the list.
    */
   .get('/calendar.ics', zValidator('query', listSchedulesQuerySchema), async (c) => {
-    const schedules = await listSchedules(c.env.DB, c.get('user'), c.req.valid('query'));
-    return calendarResponse(c.env.DB, schedules);
+    const schedules = await listSchedules(c.env.DB, c.get('org').id, c.get('user'), c.req.valid('query'));
+    return calendarResponse(c.env.DB, c.get('org'), schedules);
   })
 
   /**
@@ -218,26 +225,26 @@ export const schedulesRoutes = new Hono<AppEnv>()
    */
   .get('/cancellations', zValidator('query', listScheduleCancellationsQuerySchema), async (c) => {
     const viewer = c.get('user');
-    const rows = await listScheduleCancellations(c.env.DB, viewer, c.req.valid('query'));
-    const family = await familyStudentIds(c.env.DB, viewer);
+    const rows = await listScheduleCancellations(c.env.DB, c.get('org').id, viewer, c.req.valid('query'));
+    const family = await familyStudentIds(c.env.DB, c.get('org').id, viewer);
 
     const body: ApiOk<ScheduleCancellation[]> = {
-      data: withRestoreRights(rows, viewer, family, instituteToday()),
+      data: withRestoreRights(rows, viewer, family, organizationToday(c.get('org').time_zone)),
     };
     return c.json(body);
   })
 
   .get('/:id/calendar.ics', zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
-    const schedule = await getSchedule(c.env.DB, id);
+    const schedule = await getSchedule(c.env.DB, c.get('org').id, id);
 
     if (!schedule) throw ApiError.notFound('That schedule does not exist.');
 
-    if (!(await canSeeSchedule(c.env.DB, c.get('user'), schedule))) {
+    if (!(await canSeeSchedule(c.env.DB, c.get('org').id, c.get('user'), schedule))) {
       throw ApiError.notFound('That schedule does not exist.');
     }
 
-    return calendarResponse(c.env.DB, [schedule]);
+    return calendarResponse(c.env.DB, c.get('org'), [schedule]);
   })
 
   // -------------------------------------------------------------------------
@@ -261,18 +268,18 @@ export const schedulesRoutes = new Hono<AppEnv>()
       const { occurs_on, note } = c.req.valid('json');
       const viewer = c.get('user');
 
-      const schedule = await getSchedule(c.env.DB, id);
-      if (!schedule || !(await canSeeSchedule(c.env.DB, viewer, schedule))) {
+      const schedule = await getSchedule(c.env.DB, c.get('org').id, id);
+      if (!schedule || !(await canSeeSchedule(c.env.DB, c.get('org').id, viewer, schedule))) {
         throw ApiError.notFound('That schedule does not exist.');
       }
 
-      const family = await familyStudentIds(c.env.DB, viewer);
+      const family = await familyStudentIds(c.env.DB, c.get('org').id, viewer);
       const role = scheduleCancellerRole(schedule, viewer, family);
       if (!role) {
         throw new ApiError(403, 'forbidden', 'Only the tutor, a parent or the office can cancel a lesson.');
       }
 
-      const today = instituteToday();
+      const today = organizationToday(c.get('org').time_zone);
       const invalid = (message: string) =>
         ApiError.validation('Please correct the highlighted fields.', { occurs_on: [message] });
 
@@ -288,11 +295,11 @@ export const schedulesRoutes = new Hono<AppEnv>()
       if (!mayCancelOn(role, isAdmin(viewer), occurs_on, today)) {
         throw invalid('That lesson has passed. Only the tutor or the office can mark it cancelled.');
       }
-      if (await hasLessonOn(c.env.DB, schedule.tutor_user_id, schedule.student_user_id, occurs_on)) {
+      if (await hasLessonOn(c.env.DB, c.get('org').id, schedule.tutor_user_id, schedule.student_user_id, occurs_on)) {
         throw invalid('A lesson was already recorded on that date.');
       }
 
-      const inserted = await insertCancellation(c.env.DB, {
+      const inserted = await insertCancellation(c.env.DB, c.get('org').id, {
         schedule_id: id,
         occurs_on,
         note,
@@ -301,7 +308,7 @@ export const schedulesRoutes = new Hono<AppEnv>()
       });
       if (!inserted) throw new ApiError(409, 'conflict', 'That lesson is already cancelled.');
 
-      await recordAudit(c.env.DB, viewer, {
+      await recordAudit(c.env.DB, viewer, c.get('org').id, {
         action: 'schedule.occurrence_cancelled',
         // The date and the people, never the note: the log is read by admins
         // and the student, and the note is addressed to the schedule's audience.
@@ -313,7 +320,7 @@ export const schedulesRoutes = new Hono<AppEnv>()
         entity_id: id,
       });
 
-      const created = await getCancellation(c.env.DB, id, occurs_on);
+      const created = await getCancellation(c.env.DB, c.get('org').id, id, occurs_on);
       const body: ApiOk<ScheduleCancellation> = {
         data: withRestoreRights([created!], viewer, family, today)[0]!,
       };
@@ -332,17 +339,17 @@ export const schedulesRoutes = new Hono<AppEnv>()
       const { id, occurs_on } = c.req.valid('param');
       const viewer = c.get('user');
 
-      const schedule = await getSchedule(c.env.DB, id);
-      if (!schedule || !(await canSeeSchedule(c.env.DB, viewer, schedule))) {
+      const schedule = await getSchedule(c.env.DB, c.get('org').id, id);
+      if (!schedule || !(await canSeeSchedule(c.env.DB, c.get('org').id, viewer, schedule))) {
         throw ApiError.notFound('That schedule does not exist.');
       }
 
-      const cancellation = await getCancellation(c.env.DB, id, occurs_on);
+      const cancellation = await getCancellation(c.env.DB, c.get('org').id, id, occurs_on);
       if (!cancellation) throw ApiError.notFound('That lesson is not cancelled.');
 
-      const family = await familyStudentIds(c.env.DB, viewer);
+      const family = await familyStudentIds(c.env.DB, c.get('org').id, viewer);
       const role = scheduleCancellerRole(schedule, viewer, family);
-      const today = instituteToday();
+      const today = organizationToday(c.get('org').time_zone);
 
       if (!mayRestoreCancellation(role, isAdmin(viewer), viewer.id, cancellation, today)) {
         throw new ApiError(
@@ -354,9 +361,9 @@ export const schedulesRoutes = new Hono<AppEnv>()
         );
       }
 
-      await deleteCancellation(c.env.DB, id, occurs_on);
+      await deleteCancellation(c.env.DB, c.get('org').id, id, occurs_on);
 
-      await recordAudit(c.env.DB, viewer, {
+      await recordAudit(c.env.DB, viewer, c.get('org').id, {
         action: 'schedule.occurrence_restored',
         description:
           `Restored the ${occurs_on} lesson for ${schedule.student_name} with ${schedule.tutor_name}`,
@@ -379,9 +386,7 @@ export const schedulesRoutes = new Hono<AppEnv>()
     }
 
     // The same rule as recording a session: only for a student given to you.
-    const assignment = await getActiveAssignmentFor(
-      c.env.DB,
-      input.tutor_user_id,
+    const assignment = await getActiveAssignmentFor(c.env.DB, c.get('org').id, input.tutor_user_id,
       input.student_user_id,
     );
 
@@ -391,9 +396,9 @@ export const schedulesRoutes = new Hono<AppEnv>()
       });
     }
 
-    const schedule = await createSchedule(c.env.DB, input);
+    const schedule = await createSchedule(c.env.DB, c.get('org').id, input);
 
-    await recordAudit(c.env.DB, viewer, {
+    await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'schedule.created',
       description: `Scheduled ${schedule.student_name}: ${describeSchedule(schedule)}`,
       subject: { id: schedule.student_user_id, full_name: schedule.student_name },
@@ -413,8 +418,8 @@ export const schedulesRoutes = new Hono<AppEnv>()
       const { id } = c.req.valid('param');
       const viewer = c.get('user');
 
-      const existing = await getSchedule(c.env.DB, id);
-      if (!existing || !(await canSeeSchedule(c.env.DB, viewer, existing))) {
+      const existing = await getSchedule(c.env.DB, c.get('org').id, id);
+      if (!existing || !(await canSeeSchedule(c.env.DB, c.get('org').id, viewer, existing))) {
         throw ApiError.notFound('That schedule does not exist.');
       }
 
@@ -438,15 +443,15 @@ export const schedulesRoutes = new Hono<AppEnv>()
       // the edit; past ones stay, as the record of what happened.
       let orphaned: string[] = [];
       if ('day_of_week' in input || 'starts_on' in input || 'ends_on' in input) {
-        orphaned = (await listCancelledDates(c.env.DB, id, instituteToday())).filter(
+        orphaned = (await listCancelledDates(c.env.DB, c.get('org').id, id, organizationToday(c.get('org').time_zone))).filter(
           (date) => !isOccurrenceOf(next, date),
         );
       }
 
-      const updated = await updateSchedule(c.env.DB, id, input, { clearCancellations: orphaned });
+      const updated = await updateSchedule(c.env.DB, c.get('org').id, id, input, { clearCancellations: orphaned });
       if (!updated) throw ApiError.notFound('That schedule does not exist.');
 
-      await recordAudit(c.env.DB, viewer, {
+      await recordAudit(c.env.DB, viewer, c.get('org').id, {
         action: 'schedule.updated',
         description:
           `Updated ${updated.student_name}'s schedule: ${describeSchedule(updated)}` +
@@ -467,8 +472,8 @@ export const schedulesRoutes = new Hono<AppEnv>()
     const { id } = c.req.valid('param');
     const viewer = c.get('user');
 
-    const existing = await getSchedule(c.env.DB, id);
-    if (!existing || !(await canSeeSchedule(c.env.DB, viewer, existing))) {
+    const existing = await getSchedule(c.env.DB, c.get('org').id, id);
+    if (!existing || !(await canSeeSchedule(c.env.DB, c.get('org').id, viewer, existing))) {
       throw ApiError.notFound('That schedule does not exist.');
     }
 
@@ -476,9 +481,9 @@ export const schedulesRoutes = new Hono<AppEnv>()
       throw new ApiError(403, 'forbidden', 'You can only remove your own schedules.');
     }
 
-    await deleteSchedule(c.env.DB, id);
+    await deleteSchedule(c.env.DB, c.get('org').id, id);
 
-    await recordAudit(c.env.DB, viewer, {
+    await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'schedule.removed',
       description: `Removed ${existing.student_name}'s ${describeSchedule(existing)} slot`,
       subject: { id: existing.student_user_id, full_name: existing.student_name },

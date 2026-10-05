@@ -8,3 +8,9 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+/** Renders an ISO-8601 UTC timestamp in the viewer's own locale and zone. */
+export function formatTimestamp(value: string | null, fallback: string) {
+  if (!value) return fallback;
+  return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}

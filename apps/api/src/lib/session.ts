@@ -18,6 +18,8 @@ const ISSUER = 'tmi-portal';
 interface SessionClaims {
   /** users.id */
   sub: string;
+  /** When the session was minted, in seconds. */
+  iat?: number;
 }
 
 function keyFrom(secret: string): Uint8Array {
@@ -60,7 +62,7 @@ export async function readSessionToken(token: string, secret: string): Promise<S
       throw new Error('Session token has no subject.');
     }
 
-    return { sub: payload.sub };
+    return { sub: payload.sub, iat: typeof payload.iat === 'number' ? payload.iat : undefined };
   } catch {
     throw new ApiError(401, 'unauthenticated', 'Your session has expired. Please sign in again.');
   }

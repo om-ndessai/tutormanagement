@@ -174,3 +174,10 @@ An user could be part of multiple organizations. In that case, user would be all
 This phase is a plan mode phase. The outcome of the phase is a detailed plan on how to extend the current portal.
 
 Plan (2026-10-04): docs/multi-organization.md. Proposed build: protect the demo first, then Phases 28-31.
+
+Phases 28-31 (built 2026-10-05, on the `orgsupport` branch only, deployed to `tutoring` and
+`tutoring-test`; the institute's `tmi-portal` is untouched until the owner asks to migrate it):
+28 organizations underneath -- every row and request in one organization; 29 people in several
+organizations -- picker, switcher, invitations, shared-field lock; 30 the platform console --
+organizations, their admins, palettes and logos, with `ndessai@gmail.com` the first platform
+admin; 31 each organization's own clock.

@@ -1,3 +1,4 @@
+import { formatTimestamp } from '@/lib/utils';
 import {
   CalendarClockIcon,
   GraduationCapIcon,
@@ -52,11 +53,6 @@ function initials(name: string) {
     .join('');
 }
 
-/** Renders an ISO-8601 UTC timestamp in the viewer's own locale and zone. */
-function formatTimestamp(value: string | null, fallback: string) {
-  if (!value) return fallback;
-  return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
 
 /**
  * The whole record for one person, assembled from every table that hangs off
@@ -75,7 +71,6 @@ export function UserDetailView({
    */
   compact?: boolean;
 }) {
-  const admin = user.admin_profile;
   const tutor = user.tutor_profile;
   const student = user.student_profile;
   const { user: viewer } = useAuth();
@@ -120,15 +115,6 @@ export function UserDetailView({
         </Detail>
       </dl>
 
-      {admin?.tin && (
-        <Section title="Admin" icon={<ShieldCheckIcon className="size-4" />}>
-          <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-            <Detail icon={<WalletIcon className="size-4" />} label="Institute TIN">
-              {admin.tin}
-            </Detail>
-          </dl>
-        </Section>
-      )}
 
       {tutor && (
         <Section title="Tutor" icon={<GraduationCapIcon className="size-4" />}>

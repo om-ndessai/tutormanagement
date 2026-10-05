@@ -47,7 +47,7 @@ function primaryRole(roles: readonly UserRole[]): UserRole {
  * viewing somebody else's dashboard.
  */
 export function OnboardingProvider({ children }: { children: ReactNode }) {
-  const { user, onboarding } = useAuth();
+  const { user, onboarding, firstVisit, organization } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const finishTour = useFinishTour();
@@ -56,6 +56,9 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [screen, setScreen] = useState<WizardScreen>('welcome');
   const [touring, setTouring] = useState<null | 'wizard' | 'offer'>(null);
   const [offer, setOffer] = useState(false);
+  // Someone who has been through the tour, opening an organization for the
+  // first time, is offered it again there: the people and roles are new.
+  const [offerTitle, setOfferTitle] = useState('New here on this device?');
   const [tourDone, setTourDone] = useState(false);
   const [dashboardRole, setDashboardRole] = useState<UserRole | null>(null);
   const decided = useRef(false);
@@ -76,6 +79,13 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setOffer(true);
     }
   }, [user, onboarding, location.search]);
+
+  useEffect(() => {
+    if (!firstVisit || !onboarding?.tour_finished_at || !organization) return;
+    if (new URLSearchParams(location.search).has('as')) return;
+    setOfferTitle(`Welcome to ${organization.short_name}`);
+    setOffer(true);
+  }, [firstVisit, onboarding?.tour_finished_at, organization, location.search]);
 
   const openWizard = useCallback(() => {
     setOffer(false);
@@ -153,6 +163,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
       {offer && !wizardOpen && !touring && (
         <TourOffer
+          title={offerTitle}
           onTake={() => startTour('offer')}
           onDismiss={() => {
             setOffer(false);
@@ -169,7 +180,15 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
  * seen it: an offer, not the wizard. Out of the way in a corner, and gone for
  * good on this browser once answered.
  */
-function TourOffer({ onTake, onDismiss }: { onTake: () => void; onDismiss: () => void }) {
+function TourOffer({
+  title,
+  onTake,
+  onDismiss,
+}: {
+  title: string;
+  onTake: () => void;
+  onDismiss: () => void;
+}) {
   return (
     <div
       role="dialog"
@@ -186,7 +205,7 @@ function TourOffer({ onTake, onDismiss }: { onTake: () => void; onDismiss: () =>
       </button>
       <p id="tour-offer-title" className="flex items-center gap-2 pr-6 text-sm font-medium">
         <CompassIcon className="text-primary size-4" />
-        New here on this device?
+        {title}
       </p>
       <p className="text-muted-foreground mt-1 text-sm">A two-minute tour of what is where.</p>
       <div className="mt-3 flex gap-2">

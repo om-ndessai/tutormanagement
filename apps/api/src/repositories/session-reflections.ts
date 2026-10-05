@@ -5,6 +5,7 @@ import type {
   SessionReflectionPayload,
   SessionReflectorRole,
 } from '@tmi/shared';
+import type { OrgId } from '../lib/org.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -79,6 +80,7 @@ interface ReflectionRow extends Omit<SessionReflection, 'session_id'> {
  */
 export async function listRecentReflections(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   limit = 5,
 ): Promise<ReflectionDigest[]> {
@@ -92,11 +94,11 @@ export async function listRecentReflections(
        JOIN sessions s  ON s.id  = r.session_id
        JOIN users st    ON st.id = s.student_user_id
        LEFT JOIN users eb ON eb.id = r.entered_by_user_id
-       WHERE s.tutor_user_id = ?
+       WHERE s.organization_id = ? AND s.tutor_user_id = ?
        ORDER BY r.updated_at DESC
        LIMIT ?`,
     )
-    .bind(tutorUserId, limit)
+    .bind(org, tutorUserId, limit)
     .all<ReflectionRow>();
 
   return (result.results ?? []).map(({ occurred_on, student_user_id, student_name, ...reflection }) => ({
@@ -116,6 +118,7 @@ export async function listRecentReflections(
  */
 export async function listAwaitingReflection(
   db: D1Database,
+  org: OrgId,
   where: { sql: string; values: unknown[] },
   since: string,
   limit = 5,
@@ -128,13 +131,13 @@ export async function listAwaitingReflection(
        FROM sessions s
        JOIN users st ON st.id = s.student_user_id
        JOIN users t  ON t.id  = s.tutor_user_id
-       WHERE ${where.sql}
+       WHERE s.organization_id = ? AND ${where.sql}
          AND s.occurred_on >= ?
          AND NOT EXISTS (SELECT 1 FROM session_reflections r WHERE r.session_id = s.id)
        ORDER BY s.occurred_on DESC, s.started_at DESC
        LIMIT ?`,
     )
-    .bind(...where.values, since, limit)
+    .bind(org, ...where.values, since, limit)
     .all<ReflectionPrompt>();
 
   return result.results ?? [];

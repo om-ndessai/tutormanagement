@@ -18,6 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useUpcomingSessions } from '@/features/schedules/api';
 import { cn } from '@/lib/utils';
 import { EmptyNote } from './stat-card';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 
 const DAY_MS = 86_400_000;
 
@@ -76,12 +77,13 @@ export function SessionsCarousel({
   tutorUserId?: string;
   showTutor: boolean;
 }) {
+  const timeZone = useOrgTimeZone();
   const upcoming = useUpcomingSessions(tutorUserId);
   const track = useRef<HTMLDivElement | null>(null);
   const placed = useRef(false);
   const [edges, setEdges] = useState({ left: false, right: false });
 
-  const clock = zonedClockParts(new Date().toISOString());
+  const clock = zonedClockParts(new Date().toISOString(), timeZone);
   const pastOldestFirst = [...past].reverse();
   const next = upcoming.data?.pages.flatMap((page) => page.data) ?? [];
   // The highlighted lesson is the next one actually happening: a cancelled

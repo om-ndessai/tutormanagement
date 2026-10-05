@@ -15,11 +15,12 @@ export const onboardingRoutes = new Hono<AppEnv>()
   /** Finished or skipped the wizard. Recorded once; later re-takes change nothing. */
   .post('/tour', zValidator('json', finishTourSchema), async (c) => {
     const viewer = c.get('user');
+    const org = c.get('org').id;
     const { outcome } = c.req.valid('json');
 
     const { first } = await finishTour(c.env.DB, viewer.id, outcome);
     if (first) {
-      await recordAudit(c.env.DB, viewer, {
+      await recordAudit(c.env.DB, viewer, org, {
         action: 'onboarding.tour_finished',
         description: outcome === 'completed' ? 'Completed the portal tour' : 'Skipped the portal tour',
         entity_type: 'user',
@@ -27,7 +28,7 @@ export const onboardingRoutes = new Hono<AppEnv>()
       });
     }
 
-    const body: ApiOk<OnboardingState> = { data: await getOnboarding(c.env.DB, viewer.id) };
+    const body: ApiOk<OnboardingState> = { data: await getOnboarding(c.env.DB, org, viewer.id) };
     return c.json(body);
   })
 
@@ -37,9 +38,10 @@ export const onboardingRoutes = new Hono<AppEnv>()
    */
   .post('/confirm-details', async (c) => {
     const viewer = c.get('user');
+    const org = c.get('org').id;
 
-    await confirmDetails(c.env.DB, viewer.id);
-    await recordAudit(c.env.DB, viewer, {
+    await confirmDetails(c.env.DB, org, viewer.id);
+    await recordAudit(c.env.DB, viewer, org, {
       action: 'user.details_confirmed',
       description: 'Confirmed their details are correct',
       subject: { id: viewer.id, full_name: viewer.full_name },
@@ -47,6 +49,6 @@ export const onboardingRoutes = new Hono<AppEnv>()
       entity_id: viewer.id,
     });
 
-    const body: ApiOk<OnboardingState> = { data: await getOnboarding(c.env.DB, viewer.id) };
+    const body: ApiOk<OnboardingState> = { data: await getOnboarding(c.env.DB, org, viewer.id) };
     return c.json(body);
   });

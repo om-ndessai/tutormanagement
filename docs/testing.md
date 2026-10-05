@@ -44,6 +44,26 @@ the first page. Assertions search for people instead, which is also how an admin
 somebody. Counts drift upward across runs too, because the specs create users of their own {D}
 never assert an exact row count.
 
+## Organizations (orgsupport)
+
+The seed has two organizations: **A, Chapel Hill Math Institute** (`chmi`, the cast below) and
+**B, Riverside Tutoring** (`riverside`). B shares four people with A -- Priya (A's admin, only a
+tutor in B), Alex (a tutor in A, a parent in B), Anita (a parent in both, with a different child
+in B) and Sanjay (a student in both, taught by Priya in both). `ndessai@gmail.com` is the
+platform admin and belongs to neither.
+
+`as(who, { org })` puts a browser in an organization by setting the `tmi_last_org` cookie
+(organization A by default; `null` for none, i.e. the picker or the console). The page turns it
+into its `X-Organization` header, and with sign-in off the API also accepts the cookie, so
+`page.request` runs in the same organization. New personas: `orgBAdmin` (Rosa), `orgBTutor`
+(Kwame), `platformAdmin`.
+
+On this branch the suite targets `tutoring-test`, never the institute's demo:
+`npm run e2e:tutoring` builds, deploys, rebuilds `tutoring-test-db` and runs it; locally,
+`E2E_BASE_URL=http://localhost:5173 npx playwright test` against `npm run dev`.
+`exposure-organizations.spec.ts` (R13, R14), `organizations.spec.ts` and `platform.spec.ts`
+cover organizations.
+
 ## The two deployments
 
 | | Production | Test |

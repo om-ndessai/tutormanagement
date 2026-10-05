@@ -31,6 +31,13 @@ something to deploy. **The people model** is admins, tutors, students and parent
 person may hold several roles at once: read `docs/data-model.md` before touching the schema, as
 it explains why each table is where it is and which rules the database cannot enforce.
 
+**This is the `orgsupport` branch: multi-organization support (Phases 27-31,
+`docs/multi-organization.md`), built 2026-10-05 and deployed ONLY to `tutoring` and
+`tutoring-test`.** `main` stays single-organization and keeps shipping the institute's
+`tmi-portal` and its demo; on this branch `npm run deploy`, `deploy:test`, `e2e` and
+`demo:reset` refuse. Merge `main` into `orgsupport` to carry institute fixes over, never the
+other way, until the owner explicitly asks to migrate the institute onto organizations.
+
 **Ask before starting the next phase.** `docs/plan.md` is the roadmap, but it is a plan, not a
 licence — do not build ahead of what has been asked for.
 
@@ -38,6 +45,18 @@ licence — do not build ahead of what has been asked for.
 compatibility and future AI. **None of it is scheduled**: a feature is built only once the owner
 has written it into `docs/plan.md` as a phase. Use its plan as the starting point for that
 phase, and re-check its figures, which were researched on that date.
+
+## Deployments
+
+| Deployment | Database | Sign-in | Deploy from |
+| --- | --- | --- | --- |
+| `tmi-portal` (the institute) | `tmi-portal-db` | on | `main`, `npm run deploy` |
+| `tmi-portal-test` (the demo) | `tmi-portal-test-db` | off | `main`, `npm run deploy:test` |
+| `tutoring` (multi-organization) | `tutoring-db` | on | `orgsupport`, `npm run deploy:tutoring` |
+| `tutoring-test` | `tutoring-test-db` | off | `orgsupport`, `npm run deploy:tutoring-test`; `npm run e2e:tutoring` rebuilds and tests it |
+
+`tutoring-db` holds real organizations once in use: never rebuild it; carry schema changes by
+hand and additively, as for the institute (`docs/database.md`).
 
 ## Layout
 
@@ -81,15 +100,11 @@ asking —
 
 Stop and report if any step fails. Outside an approved release, ask first.
 
-**Four deployments, two pipelines.** The institute's: `tmi-portal` (production, real families,
-`tmi-portal-db`) and `tmi-portal-test` (the demo, `tmi-portal-test-db`). The tutoring platform's,
-where multi-organization support (`docs/multi-organization.md`) is built so the institute's
-production is never disturbed by it: `tutoring` (sign-in on, `tutoring-db`,
-`npm run deploy:tutoring`) and `tutoring-test` (sign-in off, `tutoring-test-db`,
-`npm run deploy:tutoring-test`). Both tutoring databases were created EMPTY on 2026-10-05: their
-first schema is the organization-aware one, so never apply today's `db/schema.sql` to them, and
-their crons stay off (`"crons": []`) until that schema exists. Each pair is a named env in
-`apps/api/wrangler.jsonc` that restates every binding — never let one inherit another's database.
+**Four deployments, two pipelines** -- see Deployments above. Each pair is a named env in
+`apps/api/wrangler.jsonc` that restates every binding: never let one inherit another's database.
+The tutoring databases were built clean from this branch's `db/schema.sql` on 2026-10-05 (no
+migration from the institute): `tutoring` holds the schema and the platform admin only,
+`tutoring-test` the seed's two organizations as well.
 
 ## Rules
 
@@ -98,33 +113,57 @@ single source of truth, and `npm run db:rebuild` drops and recreates everything 
 change the data model, edit that file and re-run `npm run db:reset`. Do not add a migrations
 folder or numbered migration files.
 
-**A person is one `users` row; what they do is `user_roles`.** Never add a `role` column, and
-never add `is_tutor`-style booleans. Before putting an attribute on `tutor_profiles` or
-`student_profiles`, ask whether two people holding different roles could sensibly disagree about
-it — if not, it belongs to the person (like `payment_handles` and `availability_slots`, which
-are keyed on `user_id` for exactly this reason).
+**A person is one `users` row across every organization: their sign-in and how to reach them
+(name, email, phone) -- nothing else.** Belonging to an organization is `org_members` (its
+`status` and `removed_at` are per organization); what they do there is `user_roles`, keyed
+`(organization_id, user_id, role)`. Everything an organization decides or records about a person
+carries `organization_id` too: `tutor_profiles`, `student_profiles`, `guardianships`,
+`payment_handles`, `availability_slots` -- the test is "could two organizations sensibly disagree
+about this?". Never add a `role` column or an `is_tutor`-style boolean, and never put a
+per-organization fact on `users`. Platform admins are a table (`platform_admins`), not a role.
 
-**A profile row exists only while its role is held.** Dropping a role deletes its profile, in
-the same batch as the role change (`profileCleanupStatements` in the users repository).
-
-**Three rules live in the API because SQL cannot express them**, and they are easy to break by
-accident: a student must have at least one guardian (which is why creating a student and naming
-their parent is ONE request), only admins may mutate users (`requireAdmin`), and the profile
-rule above. See `docs/data-model.md`.
-
-**A person is one `users` row; what they do is `user_roles`.** Never add a `role` column, and
-never add `is_tutor`-style booleans. Before putting an attribute on `tutor_profiles` or
-`student_profiles`, ask whether two people holding different roles could sensibly disagree about
-it — if not, it belongs to the person (like `payment_handles` and `availability_slots`, which
-are keyed on `user_id` for exactly this reason).
-
-**A profile row exists only while its role is held.** Dropping a role deletes its profile, in
-the same batch as the role change. `profileCleanupStatements` in the users repository does this.
+**A profile row exists only while its role is held -- in that organization.** Dropping a role
+deletes its profile there, in the same batch as the role change (`profileCleanupStatements` in
+the users repository).
 
 **Three rules live in the API because SQL cannot express them**, and they are easy to break by
-accident: a student must have at least one guardian (which is why creating a student and naming
-their parent is ONE request), only admins may mutate users (`requireAdmin`), and the profile
-rule above. See `docs/data-model.md`.
+accident: a student must have at least one guardian WHO IS A MEMBER OF THIS ORGANIZATION (which
+is why creating a student and naming their parent is ONE request), only admins of the
+organization may mutate its users (`requireAdmin`), and the profile rule above. See
+`docs/data-model.md`.
+
+**Every request names its organization, and is re-checked against membership.** The session
+cookie is identity only. The organization travels per request -- the `X-Organization` header on
+fetches, `?org=` on download and calendar links (`withOrg` in `apps/web/src/lib/organization.ts`)
+-- and `requireOrg` (mounted after `requireAuth` on the guarded router) re-reads the membership and
+the person's roles THERE on every request, so `c.get('user').roles` are the roles in that
+organization and an admin of one is nobody special in another. Each tab keeps its own choice in
+`sessionStorage`; the `tmi_last_org` cookie remembers it for the next visit (and, with sign-in
+off only, stands in for the header). `/api/auth/*`, `/api/platform/*` and the public logo route
+sit outside it.
+
+**Every query on an organization's data names the organization.** Repositories take a branded
+`OrgId` (only `requireOrg`, or a row's own column, mints one); scope helpers never return `null` --
+an admin's scope is `alias.organization_id = ?`; a lookup by id adds the organization and answers
+404 for a row elsewhere. `scripts/check-org-scope.mjs` (run by `npm run typecheck`) fails on a
+`.prepare(` touching an organization table without it; a query that genuinely reads across
+organizations (the cron's sweep, sign-in) says so with an `org-scope:` comment. The database
+backs it up: every root table's `BEFORE INSERT` trigger refuses a person who is not a member of
+the row's organization, and `BEFORE UPDATE OF organization_id` refuses any move.
+
+**Platform admins run the platform, not organizations.** The console (`/platform`,
+`routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
+adds their admins by email; it never reads an organization's people, lessons or money. Its
+actions are logged in the affected organization's own log. `ndessai@gmail.com` is the first
+(`db/platform-admin.sql`).
+
+
+
+**Shared fields of a person in two or more organizations are the platform's.** An organization
+admin's PATCH that changes their name, email or phone is refused (409 `shared_fields_locked`):
+one organization changing an email would hand over the account in every other. A platform admin
+corrects them from the console.
+
 
 **A student may have no email; everybody else must.** `users.email` is nullable because most
 students are children who never sign in. Sign-in matches on email, so anyone holding a role
@@ -230,10 +269,10 @@ highlighted "next" card is the first one that is not cancelled.
 silently grows by 48px. Stat grids use `items-start`: a grid row sizes every card to the
 tallest, so one card with a hint line lifts empty space into all the others.
 
-**The institute's TIN lives on `admin_profiles`, and is not an SSN.** One field, one row per
-admin, removed with the role like every other profile. It prefills the payer box on a 1099. It
-runs through `optionalText`, so the SSN guard applies — a sole proprietor filing under their own
-number is exactly the case that must still be refused.
+**An organization's TIN lives on `organizations`, and is not an SSN.** With its payer address,
+edited by its admins on the Organization page (`/organization`, `routes/organization.ts`) and
+prefilled into the 1099's payer box. It runs through `optionalText`, so the SSN guard applies — a
+sole proprietor filing under their own number is exactly the case that must still be refused.
 
 **A tutor's mailing address is for their 1099, and only they and the office see it.** Five
 columns on `tutor_profiles` (`address_line1` … `postal_code`), formatted by
@@ -278,7 +317,7 @@ the other side, and the UI renders money only through `SessionMoney`, never a ba
 them, and never put an amount in an audit description (tutors read their own log).
 
 **What a non-admin sees is written down, and crawled.** `docs/data-exposure.md` lists the
-rules (R1-R12) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
+rules (R1-R14; R13 is "nothing crosses organizations", crawled by `exposure-organizations.spec.ts`) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
 kind of non-admin, calls every read endpoint and checks every object returned against them. A
 lookup by id goes through the list's own WHERE (`getVisibleSession`, `getVisiblePayment`) --
 never "can they see anything related" -- and answers 404, not 403, for a row they cannot list.
@@ -294,16 +333,18 @@ because it is written once and never reconstructed. Never update or delete `audi
 `{ error: { code, message, details? } }`. Throw `ApiError` from a handler rather than building
 an error response by hand.
 
-**The portal's identity is chosen at RUNTIME, never at build time.** `/api/auth/config` serves
-a `brand` from the Worker's `BRAND` var, `BrandProvider` puts it on `<html data-brand>`, and
-`useBrand()` supplies every name, tagline and mark. One build therefore serves the institute, the
-demo and the neutral `platform` brand ("Tutor Portal", the tutoring deployments), and none can
-appear as another — a build-time flag could put a demo identity in
-front of real families the next time somebody deployed from the wrong shell. Anything
-unrecognised resolves to the institute (`resolveBrand`), so a typo is never a demo. Never
-hardcode the institute's name or ship its logo files under another brand.
+**The portal's identity is each organization's data, chosen at RUNTIME.** `BrandProvider` builds
+the brand from the session's organization (`brandFromOrganization`) -- or, before one is chosen
+and on the sign-in page, from `/api/auth/config` (the `tmi_last_org` organization, else
+`PLATFORM_BRAND`, "Tutor Portal"); the console always wears the platform's (`usePlatformBrand`).
+It sets `<html data-palette>`, the title, the favicon and the theme colour, and `useBrand()`
+supplies every name and mark. Palettes are `ORG_PALETTES` (shared) and one `:root[data-palette]`
+block each in `index.css`, light and dark. Logos are uploaded PNG/WebP (checked by their bytes --
+never SVG, which can carry script), at most 256 KB, served at a versioned public URL with
+`nosniff` and `default-src 'none'`; `builtin_logo: 'institute'` (platform admins only) wears the
+institute's shipped artwork. Never hardcode an organization's name: say `brand.short`.
 
-**The `test` deployment is the competition demo.** It wears the Chapel Hill brand and is open:
+**The `test` deployment is the competition demo** (on `main` -- this branch refuses to touch it). It wears the Chapel Hill brand and is open:
 `AUTH_ENABLED` is `"false"` there, so a visitor walks straight in as Priya Raghavan
 (`DEV_USER_EMAIL`). The e2e suite drives it, and `npm run e2e` wipes and reseeds its database —
 `scripts/e2e.sh` checks `/api/auth/config` and refuses before touching anything if sign-in has
@@ -362,10 +403,11 @@ late manual stop too, so it cannot be sidestepped. It deliberately does NOT appl
 typed in afterwards or to an edit: a person vouching for what happened outranks the cap, and
 correcting the times is how a wrongly cut session gets fixed (which clears the flag).
 
-**An instant becomes a clock time only through `zonedClockParts`.** The Worker runs in UTC and a
-browser runs wherever its owner is, so reading UTC parts off a live session shifted every lesson
-by the institute's offset. `INSTITUTE_TIME_ZONE` in `packages/shared/src/teaching.ts` is the one
-clock a lesson is recorded against.
+**An instant becomes a clock time only through `zonedClockParts`, on the organization's clock.**
+The Worker runs in UTC and a browser runs wherever its owner is, so reading UTC parts off a live
+session shifted every lesson by the offset. Each organization records against its own
+`organizations.time_zone` (`ORG_TIME_ZONES`): the API passes `c.get('org').time_zone` (the cron,
+each row's own), the web app `useOrgTimeZone()`. `INSTITUTE_TIME_ZONE` is only the default.
 
 **Exports and calendar files are plain links, not fetches.** The session cookie goes along and
 the browser names the file from `Content-Disposition`. `lib/csv.ts` neutralises formula-leading

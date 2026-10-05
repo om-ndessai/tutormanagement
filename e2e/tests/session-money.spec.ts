@@ -62,7 +62,7 @@ test.describe('session money, per reader', () => {
     const tutor = await as('tutor');
     await tutor.goto('/sessions?tab=finance');
     await expect(visible(tutor, 'Your pay').first()).toBeVisible();
-    await expect(tutor.getByText(/Institute cut|· Institute/)).toHaveCount(0);
+    await expect(tutor.getByText(/CHMI cut|· CHMI/)).toHaveCount(0);
 
     const parent = await as('parent');
     await parent.goto('/sessions?tab=finance');
@@ -71,8 +71,8 @@ test.describe('session money, per reader', () => {
 
     const admin = await as('admin');
     await admin.goto('/sessions?tab=finance');
-    await expect(visible(admin, 'Institute cut')).toBeVisible();
-    await expect(visible(admin, /Tutor \$[\d,.]+ · Institute/).first()).toBeVisible();
+    await expect(visible(admin, 'CHMI cut')).toBeVisible();
+    await expect(visible(admin, /Tutor \$[\d,.]+ · CHMI/).first()).toBeVisible();
   });
 
   /**
@@ -93,7 +93,7 @@ test.describe('session money, per reader', () => {
 
       const text = await page.locator('body').innerText();
       expect(text, `${who}'s Tutoring tab`).not.toMatch(/\$\s?\d/);
-      for (const label of ['Your pay', 'You pay', 'Charged', 'Earned', 'Institute cut']) {
+      for (const label of ['Your pay', 'You pay', 'Charged', 'Earned', 'CHMI cut']) {
         expect(text, `${who}'s Tutoring tab`).not.toContain(label);
       }
       await expect(page.getByRole('link', { name: 'CSV' })).toHaveCount(0);
@@ -199,6 +199,6 @@ test.describe('session money, per reader', () => {
     const admin = await header('admin');
     expect(admin).toContain('Charged (USD)');
     expect(admin).toContain('Tutor pay (USD)');
-    expect(admin).toContain('Institute cut (USD)');
+    expect(admin).toContain('Margin (USD)');
   });
 });

@@ -78,10 +78,6 @@ interface FormState {
   phone: string;
   status: UserStatus;
   roles: UserRole[];
-  admin: {
-    /** The institute's TIN, as it should read on a 1099. */
-    tin: string;
-  };
   tutor: {
     highest_education: string;
     school: string;
@@ -130,7 +126,6 @@ const EMPTY: FormState = {
   phone: '',
   status: 'active',
   roles: [],
-  admin: { tin: '' },
   tutor: {
     highest_education: '',
     school: '',
@@ -177,7 +172,6 @@ function fromDetail(detail: UserDetail): FormState {
     phone: detail.phone ?? '',
     status: detail.status,
     roles: detail.roles,
-    admin: { tin: detail.admin_profile?.tin ?? '' },
     tutor: {
       highest_education: detail.tutor_profile?.highest_education ?? '',
       school: detail.tutor_profile?.school ?? '',
@@ -224,7 +218,6 @@ function toRequest(form: FormState) {
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
 
-  const isAdminRole = form.roles.includes('admin');
 
   return {
     email: form.email,
@@ -232,7 +225,6 @@ function toRequest(form: FormState) {
     phone: form.phone,
     status: form.status,
     roles: form.roles,
-    admin_profile: isAdminRole ? { tin: form.admin.tin } : null,
     tutor_profile: isTutor
       ? {
           highest_education: form.tutor.highest_education,
@@ -302,6 +294,7 @@ export function UserFormDialog({
 }) {
   const isEdit = userId !== null;
   const { data: detail, isPending: loadingDetail } = useUserDetail(open && isEdit ? userId : null);
+  const sharedLocked = Boolean(isEdit && detail?.data.shared_fields_locked);
   // A student's goal is also their active learning plan's goal, kept in step
   // by the API; the field says so, so nobody edits one expecting the other to
   // stay as it was.
@@ -409,9 +402,19 @@ export function UserFormDialog({
             <div className="grid gap-5 py-4">
               {show('identity') && (
               <>
+              {/* Someone who belongs to another organization too shares their
+                  name, email and phone with it; only the platform changes those,
+                  which stops one organization taking over another's member. */}
+              {sharedLocked && (
+                <p className="bg-muted text-muted-foreground rounded-md px-3 py-2 text-xs" data-testid="shared-fields-locked">
+                  This person belongs to another organization too, so their name, email and phone are
+                  shared. A platform administrator changes them.
+                </p>
+              )}
               <Field id="full_name" label="Full name" error={errors.full_name}>
                 <Input
                   id="full_name"
+                  disabled={sharedLocked}
                   value={form.full_name}
                   onChange={(e) => set('full_name', e.target.value)}
                   aria-invalid={Boolean(errors.full_name)}
@@ -437,6 +440,7 @@ export function UserFormDialog({
                   <Input
                     id="email"
                     type="email"
+                    disabled={sharedLocked}
                     value={form.email}
                     onChange={(e) => set('email', e.target.value)}
                     aria-invalid={Boolean(errors.email)}
@@ -448,6 +452,7 @@ export function UserFormDialog({
                   <Input
                     id="phone"
                     type="tel"
+                    disabled={sharedLocked}
                     value={form.phone}
                     onChange={(e) => set('phone', e.target.value)}
                     aria-invalid={Boolean(errors.phone)}
@@ -485,31 +490,6 @@ export function UserFormDialog({
                     onChange={(roles) => set('roles', roles)}
                     error={errors.roles}
                   />
-                </>
-              )}
-
-              {form.roles.includes('admin') && show('admin') && (
-                <>
-                  <Separator />
-                  <SectionHeading title="Admin details" />
-
-                  {/* The institute's own tax identity, not a person's. It
-                      prefills the payer box when a 1099 is printed. */}
-                  <Field
-                    id="a_tin"
-                    label="Institute TIN"
-                    optional
-                    error={errors['admin_profile.tin']}
-                    hint="The EIN the institute files under. Used to prefill the 1099 — never a Social Security number, which the portal refuses to store."
-                  >
-                    <Input
-                      id="a_tin"
-                      value={form.admin.tin}
-                      onChange={(e) => set('admin', { ...form.admin, tin: e.target.value })}
-                      aria-invalid={Boolean(errors['admin_profile.tin'])}
-                      placeholder="12-3456789"
-                    />
-                  </Field>
                 </>
               )}
 

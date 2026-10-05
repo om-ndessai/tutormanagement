@@ -6,6 +6,7 @@ import type {
   User,
 } from '@tmi/shared';
 
+import type { OrgId } from '../lib/org.js';
 import { teachingScopeSql } from '../lib/scope.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
@@ -32,7 +33,8 @@ const SELECT_ASSIGNMENT = `
   FROM assignments a
   JOIN users t ON t.id = a.tutor_user_id
   JOIN users s ON s.id = a.student_user_id
-  LEFT JOIN tutor_profiles tp ON tp.user_id = a.tutor_user_id
+  LEFT JOIN tutor_profiles tp ON tp.organization_id = a.organization_id
+                             AND tp.user_id = a.tutor_user_id
 `;
 
 interface AssignmentRow {
@@ -57,6 +59,7 @@ function toAssignment(row: AssignmentRow): Assignment {
 
 export async function listAssignments(
   db: D1Database,
+  org: OrgId,
   viewer: User,
   params: ListAssignmentsParams,
 ): Promise<Assignment[]> {
@@ -75,13 +78,11 @@ export async function listAssignments(
     values.push(params.student_user_id);
   }
 
-  const scope = teachingScopeSql(viewer, 'a');
-  if (scope) {
-    where.push(scope.sql);
-    values.push(...scope.values);
-  }
+  const scope = teachingScopeSql(viewer, 'a', org);
+  where.push(scope.sql);
+  values.push(...scope.values);
 
-  const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
+  const whereSql = `WHERE ${where.join(' AND ')}`;
 
   const result = await db
     .prepare(`${SELECT_ASSIGNMENT} ${whereSql} ORDER BY t.full_name, s.full_name`)
@@ -91,22 +92,36 @@ export async function listAssignments(
   return (result.results ?? []).map(toAssignment);
 }
 
-export async function getAssignment(db: D1Database, id: string): Promise<Assignment | null> {
-  const row = await db.prepare(`${SELECT_ASSIGNMENT} WHERE a.id = ?`).bind(id).first<AssignmentRow>();
+/** A pairing of this organization. One from elsewhere is null, exactly like a missing one. */
+export async function getAssignment(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+): Promise<Assignment | null> {
+  const row = await db
+    .prepare(`${SELECT_ASSIGNMENT} WHERE a.organization_id = ? AND a.id = ?`)
+    .bind(org, id)
+    .first<AssignmentRow>();
   return row ? toAssignment(row) : null;
 }
 
-/** The live pairing for a tutor/student, used to authorise and price a session. */
+/**
+ * The live pairing for a tutor/student IN THIS ORGANIZATION, used to authorise
+ * and price a session. The same pair teaching elsewhere authorises nothing.
+ */
 export async function getActiveAssignmentFor(
   db: D1Database,
+  org: OrgId,
   tutorUserId: string,
   studentUserId: string,
 ): Promise<Assignment | null> {
   const row = await db
     .prepare(
-      `${SELECT_ASSIGNMENT} WHERE a.tutor_user_id = ? AND a.student_user_id = ? AND a.is_active = 1`,
+      `${SELECT_ASSIGNMENT}
+       WHERE a.organization_id = ? AND a.tutor_user_id = ? AND a.student_user_id = ?
+         AND a.is_active = 1`,
     )
-    .bind(tutorUserId, studentUserId)
+    .bind(org, tutorUserId, studentUserId)
     .first<AssignmentRow>();
 
   return row ? toAssignment(row) : null;
@@ -115,10 +130,12 @@ export async function getActiveAssignmentFor(
 /**
  * Re-assigning a pair that was ended before reactivates the original row
  * instead of creating a duplicate, which is what the UNIQUE constraint on
- * (tutor, student) requires.
+ * (organization, tutor, student) requires. Re-read by id AND organization,
+ * never by the pair alone.
  */
 export async function upsertAssignment(
   db: D1Database,
+  org: OrgId,
   input: AssignmentPayload,
 ): Promise<Assignment> {
   const id = crypto.randomUUID();
@@ -126,9 +143,10 @@ export async function upsertAssignment(
   await db
     .prepare(
       `INSERT INTO assignments
-         (id, tutor_user_id, student_user_id, rate_in_person_cents, rate_virtual_cents, is_active, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?)
-       ON CONFLICT (tutor_user_id, student_user_id) DO UPDATE SET
+         (id, organization_id, tutor_user_id, student_user_id, rate_in_person_cents,
+          rate_virtual_cents, is_active, notes)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (organization_id, tutor_user_id, student_user_id) DO UPDATE SET
          rate_in_person_cents = excluded.rate_in_person_cents,
          rate_virtual_cents   = excluded.rate_virtual_cents,
          is_active            = excluded.is_active,
@@ -137,6 +155,7 @@ export async function upsertAssignment(
     )
     .bind(
       id,
+      org,
       input.tutor_user_id,
       input.student_user_id,
       input.rate_in_person_cents,
@@ -147,8 +166,11 @@ export async function upsertAssignment(
     .run();
 
   const assignment = await db
-    .prepare(`${SELECT_ASSIGNMENT} WHERE a.tutor_user_id = ? AND a.student_user_id = ?`)
-    .bind(input.tutor_user_id, input.student_user_id)
+    .prepare(
+      `${SELECT_ASSIGNMENT}
+       WHERE a.organization_id = ? AND a.tutor_user_id = ? AND a.student_user_id = ?`,
+    )
+    .bind(org, input.tutor_user_id, input.student_user_id)
     .first<AssignmentRow>();
 
   if (!assignment) throw new Error('Assignment upsert returned no row.');
@@ -157,6 +179,7 @@ export async function upsertAssignment(
 
 export async function updateAssignment(
   db: D1Database,
+  org: OrgId,
   id: string,
   input: AssignmentUpdatePayload,
 ): Promise<Assignment | null> {
@@ -175,20 +198,25 @@ export async function updateAssignment(
     values.push(input.is_active ? 1 : 0);
   }
 
-  if (assignments.length === 0) return getAssignment(db, id);
+  if (assignments.length === 0) return getAssignment(db, org, id);
 
   assignments.push(`updated_at = ${NOW}`);
 
   const result = await db
-    .prepare(`UPDATE assignments SET ${assignments.join(', ')} WHERE id = ?`)
-    .bind(...values, id)
+    .prepare(
+      `UPDATE assignments SET ${assignments.join(', ')} WHERE organization_id = ? AND id = ?`,
+    )
+    .bind(...values, org, id)
     .run();
 
   if (!result.meta.changes) return null;
-  return getAssignment(db, id);
+  return getAssignment(db, org, id);
 }
 
-export async function deleteAssignment(db: D1Database, id: string): Promise<boolean> {
-  const result = await db.prepare('DELETE FROM assignments WHERE id = ?').bind(id).run();
+export async function deleteAssignment(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM assignments WHERE organization_id = ? AND id = ?')
+    .bind(org, id)
+    .run();
   return Boolean(result.meta.changes);
 }

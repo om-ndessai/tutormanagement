@@ -22,6 +22,7 @@ import {
 import { formatLessonDay } from '@/features/schedules/lesson-cancellation';
 import { cn } from '@/lib/utils';
 import { EmptyNote, Panel } from './stat-card';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 
 /** The row's colour. The words in Next payment say the same thing. */
 const ROW_TONE: Record<TutorPaymentUrgency, string> = {
@@ -175,7 +176,7 @@ export function TutorPayments({
   tutors: TutorPaymentOutlook[];
   index?: number;
 }) {
-  const today = zonedClockParts(new Date().toISOString()).day;
+  const today = zonedClockParts(new Date().toISOString(), useOrgTimeZone()).day;
 
   const counts = Object.fromEntries(
     TUTOR_PAYMENT_URGENCIES.map((urgency) => [

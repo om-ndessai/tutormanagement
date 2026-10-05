@@ -140,7 +140,7 @@ test.describe('tax documents', () => {
 
     const response = await admin.request.get('/api/payments/tax-summary.csv?year=2026');
     expect(response.status()).toBe(200);
-    expect(response.headers()['content-disposition']).toContain('tmi-tax-summary-2026.csv');
+    expect(response.headers()['content-disposition']).toContain('chmi-tax-summary-2026.csv');
 
     const csv = await response.text();
     expect(csv).toContain('SSN on file');
@@ -154,52 +154,51 @@ test.describe('tax documents', () => {
 });
 
 /**
- * The institute's own tax identity, recorded once on an admin's record and
- * reused on every 1099 it prints.
+ * The organization's own tax identity, kept on its settings and reused on
+ * every 1099 it prints. Each organization has its own.
  */
-test.describe('the institute TIN', () => {
-  test('is admin-only, editable from the user dialog, and never an SSN', async ({ as }) => {
+test.describe('the organization TIN', () => {
+  test('is admin-only, editable on the Organization page, and never an SSN', async ({ as }) => {
     const admin = await as('admin');
-    const adminId = await idOf(admin, PEOPLE.admin.email);
 
-    // Editable through the ordinary user PATCH, like any other profile section.
-    await unwrap(
-      await admin.request.patch(`/api/users/${adminId}`, {
-        data: { admin_profile: { tin: '47-2019388' } },
-      }),
-      'setting the TIN',
-    );
+    await admin.goto('/organization');
+    await admin.getByLabel(/Payer TIN/).fill('47-2019388');
+    await admin.getByRole('button', { name: 'Save' }).click();
+    await expect(admin.getByText('Organization settings saved.')).toBeVisible();
 
-    const detail = await unwrap<any>(
-      await admin.request.get(`/api/users/${adminId}`),
+    const settings = await unwrap<any>(
+      await admin.request.get('/api/organization/settings'),
       'reading it back',
     );
-    expect(detail.admin_profile.tin).toBe('47-2019388');
+    expect(settings.tin).toBe('47-2019388');
 
-    // A family can open an admin's record; the institute's tax identity is
-    // not part of what they may read.
+    // A family has no business with the office's tax identity.
     const parent = await as('parent');
-    const asParent = await unwrap<any>(
-      await parent.request.get(`/api/users/${adminId}`),
-      'reading as a parent',
-    );
-    expect(asParent.admin_profile?.tin ?? null).toBeNull();
+    expect((await parent.request.get('/api/organization/settings')).status()).toBe(403);
 
     // A sole proprietor may file under their SSN; this portal still will not
     // hold one, whatever the field is called.
-    const refused = await admin.request.patch(`/api/users/${adminId}`, {
-      data: { admin_profile: { tin: '123-45-6789' } },
+    const refused = await admin.request.patch('/api/organization/settings', {
+      data: { tin: '123-45-6789' },
     });
     expect(refused.status()).toBe(422);
+
+    // Riverside's admin reads Riverside's TIN, never this one.
+    const other = await as('orgBAdmin', { org: 'riverside' });
+    const theirs = await unwrap<any>(
+      await other.request.get('/api/organization/settings'),
+      'reading Riverside’s settings',
+    );
+    expect(theirs.tin).not.toBe('47-2019388');
   });
 
-  test('prefills the 1099, and the profile goes when the role does', async ({ as }) => {
+  test('prefills the 1099', async ({ as }) => {
     const admin = await as('admin');
-    const adminId = await idOf(admin, PEOPLE.admin.email);
 
-    await admin.request.patch(`/api/users/${adminId}`, {
-      data: { admin_profile: { tin: '47-2019388' } },
-    });
+    await unwrap(
+      await admin.request.patch('/api/organization/settings', { data: { tin: '47-2019388' } }),
+      'setting the TIN',
+    );
 
     await admin.goto('/?tab=finance');
     await admin.getByRole('button', { name: '1099-NEC' }).first().click();

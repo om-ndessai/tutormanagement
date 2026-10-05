@@ -1,4 +1,6 @@
 import type { User } from '@tmi/shared';
+import type { OrgContext } from './lib/org.js';
+import type { Person } from './repositories/people.js';
 
 /**
  * Bindings declared in wrangler.jsonc, plus secrets set with `wrangler secret`.
@@ -16,17 +18,9 @@ export interface Env {
   GOOGLE_CLIENT_ID: string;
   /** "true" | "false". See wrangler.jsonc. */
   AUTH_ENABLED: string;
-  /**
-   * Which identity this deployment wears: "institute" (the default, and what
-   * production ships), "chapel_hill" (the demo) or "platform" (the neutral
-   * Tutor Portal of the `tutoring` deployments). Anything unrecognised
-   * resolves to the institute, so a typo cannot put a demo brand in front of
-   * real families.
-   */
-  BRAND: string;
   /** Identity used by every request while AUTH_ENABLED is "false". */
   DEV_USER_EMAIL: string;
-  /** Comma-separated emails allowed to self-provision while no admin exists. */
+  /** Comma-separated emails that become platform admins while there is none. */
   BOOTSTRAP_ADMIN_EMAILS: string;
 
   /**
@@ -39,11 +33,21 @@ export interface Env {
 
 export interface AppVariables {
   /**
-   * The authenticated user. Set by the auth middleware, so it is always present
-   * inside a guarded route and never present outside one.
+   * The signed-in PERSON, across every organization: identity only. Set by
+   * `requireAuth`.
+   */
+  person: Person;
+  /** Whether the person may use the platform console. Set by `requireAuth`. */
+  platformAdmin: boolean;
+  /**
+   * The person as a member of the request's organization: `roles` and
+   * `status` are theirs IN THAT organization. Set by `requireOrg`, so it is
+   * always present inside an organization route and never outside one.
    */
   user: User;
-  /** True when `user` came from the AUTH_ENABLED=false bypass. */
+  /** The organization the request named and the person may enter. */
+  org: OrgContext;
+  /** True when the person came from the AUTH_ENABLED=false bypass. */
   impersonated: boolean;
 }
 
