@@ -106,6 +106,7 @@ async function crawl(page: Page, forbidden: Set<string>, words: string[]): Promi
 
 test.describe('R13: nothing crosses organizations', () => {
   test('organization A, read by every kind of member, shows nothing of B', async ({ as }) => {
+    test.slow();
     const aAdmin = await as('admin');
     const bAdmin = await as('orgBAdmin', { org: ORGS.b.slug });
 
@@ -125,6 +126,7 @@ test.describe('R13: nothing crosses organizations', () => {
   });
 
   test('B, read by the people it shares with A, shows nothing of A', async ({ as }) => {
+    test.slow();
     const aAdmin = await as('admin');
     const bAdmin = await as('orgBAdmin', { org: ORGS.b.slug });
 

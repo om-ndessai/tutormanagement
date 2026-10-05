@@ -3,8 +3,12 @@ import { createMiddleware } from 'hono/factory';
 import { getCookie } from 'hono/cookie';
 import { LAST_ORG_COOKIE, ORG_HEADER, ORG_QUERY_PARAM } from '@tmi/shared';
 import { ApiError } from '../lib/errors.js';
-import { getMembership, getOrganizationBySlug, toOrgContext } from '../repositories/organizations.js';
-import { getLiveUserById } from '../repositories/users.js';
+import {
+  organizationBySlugStatement,
+  organizationFromRow,
+  toOrgContext,
+} from '../repositories/organizations.js';
+import { getOrgAndMember } from '../repositories/users.js';
 import { isAuthEnabled, type AppEnv } from '../types.js';
 
 /**
@@ -48,25 +52,30 @@ export const requireOrg = createMiddleware<AppEnv>(async (c, next) => {
 
   if (!slug) throw refuse();
 
-  const organization = await getOrganizationBySlug(c.env.DB, slug);
-  if (!organization || organization.archived_at) throw refuse();
+  const person = c.get('person');
+  // One round trip: the organization, and the person's membership and roles in it.
+  const { orgRow, member: user } = await getOrgAndMember(
+    c.env.DB,
+    organizationBySlugStatement(c.env.DB, slug),
+    slug,
+    person.id,
+  );
+  if (!orgRow) throw refuse();
+  const organization = organizationFromRow(orgRow);
+  if (organization.archived_at) throw refuse();
 
   const org = toOrgContext(organization);
-  const person = c.get('person');
-  const membership = await getMembership(c.env.DB, org.id, person.id);
 
-  if (!membership || membership.removed || membership.status === 'invited') throw refuse();
+  // `deleted_at` on a member is their removal from this organization.
+  if (!user || user.deleted_at || user.status === 'invited') throw refuse();
 
-  if (membership.status === 'suspended') {
+  if (user.status === 'suspended') {
     throw new ApiError(
       403,
       'account_suspended',
       `Your access to ${organization.name} has been suspended.`,
     );
   }
-
-  const user = await getLiveUserById(c.env.DB, org.id, person.id);
-  if (!user) throw refuse();
 
   c.set('org', org);
   c.set('user', user);

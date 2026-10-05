@@ -19,6 +19,8 @@ export interface Person {
   last_login_at: string | null;
   created_at: string;
   updated_at: string;
+  /** Read in the same query, so the gate on every request is one round trip. */
+  platform_admin: boolean;
 }
 
 interface PersonRow {
@@ -30,14 +32,16 @@ interface PersonRow {
   last_login_at: string | null;
   created_at: string;
   updated_at: string;
+  platform_admin: number;
 }
 
-const SELECT_PERSON = `SELECT id, email, full_name, phone, google_sub, last_login_at, created_at, updated_at
+const SELECT_PERSON = `SELECT id, email, full_name, phone, google_sub, last_login_at, created_at, updated_at,
+       EXISTS (SELECT 1 FROM platform_admins p WHERE p.user_id = users.id) AS platform_admin
   FROM users`;
 
 function toPerson(row: PersonRow): Person {
-  const { google_sub, ...rest } = row;
-  return { ...rest, google_sub_pinned: google_sub !== null };
+  const { google_sub, platform_admin, ...rest } = row;
+  return { ...rest, google_sub_pinned: google_sub !== null, platform_admin: platform_admin === 1 };
 }
 
 export async function getPersonById(db: D1Database, id: string): Promise<Person | null> {

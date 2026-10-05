@@ -8,7 +8,6 @@ import {
   getFirstPerson,
   getPersonByEmail,
   getPersonById,
-  isPlatformAdmin,
   type Person,
 } from '../repositories/people.js';
 import { getFirstAdminMembership } from '../repositories/users.js';
@@ -35,7 +34,7 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
     const requested = c.req.header(DEV_USER_HEADER)?.trim();
     const person = await resolveBypassPerson(c.env, requested);
     c.set('person', person);
-    c.set('platformAdmin', await isPlatformAdmin(c.env.DB, person.id));
+    c.set('platformAdmin', person.platform_admin);
     c.set('impersonated', true);
     return next();
   }
@@ -54,7 +53,7 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
   }
 
   c.set('person', person);
-  c.set('platformAdmin', await isPlatformAdmin(c.env.DB, person.id));
+  c.set('platformAdmin', person.platform_admin);
   c.set('impersonated', false);
   return next();
 });

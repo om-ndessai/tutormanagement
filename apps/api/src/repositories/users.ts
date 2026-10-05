@@ -163,6 +163,32 @@ export async function listUsers(
   };
 }
 
+/**
+ * The request gate's one round trip: the organization named by `slug`, and
+ * this person's membership of it with their roles there. Batched, because it
+ * runs on every request.
+ */
+export async function getOrgAndMember(
+  db: D1Database,
+  orgStatement: D1PreparedStatement,
+  slug: string,
+  userId: string,
+): Promise<{ orgRow: unknown | null; member: User | null }> {
+  const [orgResult, memberResult] = await db.batch<Record<string, unknown>>([
+    orgStatement,
+    db
+      .prepare(
+        `${SELECT_USER}
+         JOIN organizations o ON o.id = m.organization_id
+         WHERE o.slug = ? AND u.id = ?`,
+      )
+      .bind(slug, userId),
+  ]);
+  const orgRow = orgResult?.results?.[0] ?? null;
+  const memberRow = memberResult?.results?.[0] as UserRow | undefined;
+  return { orgRow, member: memberRow ? toUser(memberRow) : null };
+}
+
 /** A member of this organization, removed ones included. */
 export async function getUserById(db: D1Database, org: OrgId, id: string): Promise<User | null> {
   const row = await db

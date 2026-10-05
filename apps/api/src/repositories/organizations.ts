@@ -92,6 +92,16 @@ function parseRoles(csv: string | null): UserRole[] {
 // Looking organizations up
 // ---------------------------------------------------------------------------
 
+/** The statement behind getOrganizationBySlug, for a batch. */
+export function organizationBySlugStatement(db: D1Database, slug: string): D1PreparedStatement {
+  return db.prepare(`${SELECT_ORG} WHERE o.slug = ?`).bind(slug.toLowerCase());
+}
+
+/** A row from organizationBySlugStatement, as an organization. */
+export function organizationFromRow(row: unknown): Organization {
+  return toOrganization(row as OrgRow);
+}
+
 export async function getOrganizationBySlug(
   db: D1Database,
   slug: string,
