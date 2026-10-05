@@ -12,6 +12,29 @@ Nothing here is built. The build is proposed as a demo-protection step and then 
 numbers in the appendix were checked on 2026-10-04 against commit `1e219f9`; re-check them before
 building.
 
+## Where it is built (2026-10-05)
+
+The owner chose not to migrate the institute's production in place. Multi-organization support is
+built on a **new pipeline**:
+
+| Deployment | Sign-in | Database | Deploy with |
+| --- | --- | --- | --- |
+| `tutoring` | on | `tutoring-db` | `npm run deploy:tutoring` |
+| `tutoring-test` | off | `tutoring-test-db` | `npm run deploy:tutoring-test` |
+
+Both deployments wear the neutral `platform` brand ("Tutor Portal"). Both databases were created
+empty, because their first schema is the one with organization support.
+
+**What this changes in the plan below:**
+- **The tutoring databases start with organization support.** `organization_id` is `NOT NULL`
+  from day one. There are no `legacy_*` renames, no backfill and no re-backfill. §5 (releasing in
+  place) applies only if the institute's records ever move onto the platform, as one organization.
+- **The institute's production keeps running today's single-organization code.** Once
+  organization-aware code is on `main`, `npm run deploy` must not ship it to `tmi-portal`, whose
+  database has no organizations. Before Phase 28 starts, decide how the institute's fixes ship:
+  - a long-lived branch for it, cut from the last single-organization commit; or
+  - moving the institute onto the platform.
+
 ## Decisions
 
 The owner decided these on 2026-10-04:

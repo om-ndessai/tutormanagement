@@ -81,6 +81,16 @@ asking —
 
 Stop and report if any step fails. Outside an approved release, ask first.
 
+**Four deployments, two pipelines.** The institute's: `tmi-portal` (production, real families,
+`tmi-portal-db`) and `tmi-portal-test` (the demo, `tmi-portal-test-db`). The tutoring platform's,
+where multi-organization support (`docs/multi-organization.md`) is built so the institute's
+production is never disturbed by it: `tutoring` (sign-in on, `tutoring-db`,
+`npm run deploy:tutoring`) and `tutoring-test` (sign-in off, `tutoring-test-db`,
+`npm run deploy:tutoring-test`). Both tutoring databases were created EMPTY on 2026-10-05: their
+first schema is the organization-aware one, so never apply today's `db/schema.sql` to them, and
+their crons stay off (`"crons": []`) until that schema exists. Each pair is a named env in
+`apps/api/wrangler.jsonc` that restates every binding — never let one inherit another's database.
+
 ## Rules
 
 **There are no migrations.** This is a greenfield project: `apps/api/db/schema.sql` is the
@@ -286,8 +296,9 @@ an error response by hand.
 
 **The portal's identity is chosen at RUNTIME, never at build time.** `/api/auth/config` serves
 a `brand` from the Worker's `BRAND` var, `BrandProvider` puts it on `<html data-brand>`, and
-`useBrand()` supplies every name, tagline and mark. One build therefore serves the institute and
-the demo, and neither can appear as the other — a build-time flag could put a demo identity in
+`useBrand()` supplies every name, tagline and mark. One build therefore serves the institute, the
+demo and the neutral `platform` brand ("Tutor Portal", the tutoring deployments), and none can
+appear as another — a build-time flag could put a demo identity in
 front of real families the next time somebody deployed from the wrong shell. Anything
 unrecognised resolves to the institute (`resolveBrand`), so a typo is never a demo. Never
 hardcode the institute's name or ship its logo files under another brand.

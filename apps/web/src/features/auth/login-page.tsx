@@ -88,7 +88,7 @@ export function LoginPage() {
 
         <div className="relative space-y-1 text-xs text-white/70">
           <p>
-            {brand.name} · {brand.place}
+            {brand.place ? `${brand.name} · ${brand.place}` : brand.name}
           </p>
           <DeveloperCredit linkClassName="hover:text-white" />
         </div>

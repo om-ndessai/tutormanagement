@@ -18,7 +18,8 @@ export interface Env {
   AUTH_ENABLED: string;
   /**
    * Which identity this deployment wears: "institute" (the default, and what
-   * production ships) or "chapel_hill" (the demo). Anything unrecognised
+   * production ships), "chapel_hill" (the demo) or "platform" (the neutral
+   * Tutor Portal of the `tutoring` deployments). Anything unrecognised
    * resolves to the institute, so a typo cannot put a demo brand in front of
    * real families.
    */

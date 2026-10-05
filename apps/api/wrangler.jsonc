@@ -137,6 +137,109 @@
 			"observability": {
 				"enabled": true
 			}
+		},
+
+		/**
+		 * The TUTORING pipeline: where the multi-organization portal
+		 * (docs/multi-organization.md) is built and run, so that the institute's
+		 * production above -- which real families use every day -- is never
+		 * disturbed by it. Two deployments, each with its own database:
+		 *
+		 *   tutoring       Google sign-in ON; becomes the multi-organization
+		 *                  platform's production. `npm run deploy:tutoring`.
+		 *   tutoring-test  sign-in OFF, for driving and testing it.
+		 *                  `npm run deploy:tutoring-test`.
+		 *
+		 * As with `test`, everything is restated: named environments do not
+		 * inherit `assets`, `d1_databases` or `vars`, and neither of these may
+		 * ever reach the institute's database by inheriting its binding.
+		 *
+		 * Both databases start EMPTY -- no tables. Their first schema is the one
+		 * with organization support, so `db/schema.sql` is deliberately not
+		 * applied to them. Until it is, every data route answers with an error,
+		 * and the cron is switched off (an empty list) so the lesson sweep does
+		 * not fail every fifteen minutes. Put the crons back with the schema.
+		 */
+		"tutoring": {
+			"name": "tutoring",
+			"assets": {
+				"directory": "../web/dist",
+				"binding": "ASSETS",
+				"not_found_handling": "single-page-application",
+				"run_worker_first": [
+					"/api/*"
+				]
+			},
+			"triggers": {
+				"crons": []
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "tutoring-db",
+					"database_id": "b76a2704-491f-47a1-88b6-86b047cfc56d"
+				}
+			],
+			"vars": {
+				// Production values, as at the top of this file: secure cookies
+				// and same-origin CORS.
+				"ENVIRONMENT": "production",
+
+				// The same OAuth client as the institute's. Its origin,
+				// https://tutoring.om-ndessai.workers.dev, has to be an authorised
+				// JavaScript origin on it -- see docs/google-oauth-setup.md.
+				"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
+				"AUTH_ENABLED": "true",
+				"DEV_USER_EMAIL": "",
+				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
+
+				// The neutral platform identity: not the institute's, not the
+				// demo's. Each organization's own look arrives with Phase 30.
+				"BRAND": "platform"
+			},
+			"observability": {
+				"enabled": true
+			}
+		},
+
+		"tutoring-test": {
+			"name": "tutoring-test",
+			"assets": {
+				"directory": "../web/dist",
+				"binding": "ASSETS",
+				"not_found_handling": "single-page-application",
+				"run_worker_first": [
+					"/api/*"
+				]
+			},
+			"triggers": {
+				"crons": []
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "tutoring-test-db",
+					"database_id": "7bba8b52-e104-45f6-9632-d88ce3abadc2"
+				}
+			],
+			"vars": {
+				// Relaxes the cookie Secure flag and CORS, as for `test`.
+				"ENVIRONMENT": "development",
+
+				"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
+
+				// Sign-in OFF: whoever opens it runs as DEV_USER_EMAIL, or the
+				// fallback chain when that is empty. Fiction only, never real
+				// records.
+				"AUTH_ENABLED": "false",
+				"DEV_USER_EMAIL": "",
+				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
+
+				"BRAND": "platform"
+			},
+			"observability": {
+				"enabled": true
+			}
 		}
 	}
 }

@@ -29,6 +29,8 @@
     "e2e:test": "npm run test --workspace @tmi/e2e",
     "e2e:report": "npm run report --workspace @tmi/e2e",
     "deploy:test": "npm run build && npm run deploy:test --workspace @tmi/api",
+    "deploy:tutoring": "npm run build && npm run deploy:tutoring --workspace @tmi/api",
+    "deploy:tutoring-test": "npm run build && npm run deploy:tutoring-test --workspace @tmi/api",
     "demo:reset": "npm run db:rebuild:test --workspace @tmi/api && npm run db:seed:test --workspace @tmi/api && npm run db:demo:admin --workspace @tmi/api"
   },
   "devDependencies": {

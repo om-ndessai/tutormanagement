@@ -17,6 +17,8 @@
     "db:reset": "npm run db:rebuild && npm run db:seed",
     "db:studio": "wrangler d1 execute tmi-portal-db --local --command=\"SELECT id, email, full_name, role, status, last_login_at, deleted_at FROM users ORDER BY full_name\"",
     "deploy:test": "wrangler deploy --env test",
+    "deploy:tutoring": "wrangler deploy --env tutoring",
+    "deploy:tutoring-test": "wrangler deploy --env tutoring-test",
     "db:rebuild:test": "wrangler d1 execute tmi-portal-test-db --remote --file=./db/schema.sql",
     "db:seed:test": "wrangler d1 execute tmi-portal-test-db --remote --file=./db/seed.sql",
     "db:demo:admin": "wrangler d1 execute tmi-portal-test-db --remote --file=./db/demo-admin.sql",

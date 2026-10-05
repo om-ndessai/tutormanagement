@@ -68,6 +68,7 @@ takes effect immediately; no verification submission is needed.
    | `http://localhost:5173` | `npm run dev` — the Vite dev server |
    | `http://localhost:8787` | Hitting the Worker directly via `npm run dev:api` |
    | `https://tmi-portal.<your-subdomain>.workers.dev` | After `npm run deploy` |
+   | `https://tutoring.om-ndessai.workers.dev` | The tutoring platform (`npm run deploy:tutoring`) |
    | `https://portal.trianglemathinstitute.com` | If you attach a custom domain |
 
    Rules Google enforces: scheme + host + port only — **no path and no trailing
@@ -243,6 +244,17 @@ now, so this needs a hand-written `ALTER TABLE`, not a rebuild.
 `SESSION_SECRET` is missing, shorter than 32 characters, or changed between
 requests. Check `apps/api/.dev.vars` locally and `wrangler secret list` in
 production.
+
+## The tutoring deployments
+
+`tutoring` (sign-in on) uses the same OAuth client, so its origin must be on the list too:
+
+```
+https://tutoring.om-ndessai.workers.dev
+```
+
+`tutoring-test` has sign-in off and needs nothing. Its database starts empty, so
+`BOOTSTRAP_ADMIN_EMAILS` (`ndessai@gmail.com`) is what lets the first admin in, once the tables exist.
 
 ## The demo deployment
 

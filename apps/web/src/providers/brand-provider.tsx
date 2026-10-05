@@ -45,27 +45,30 @@ export function BrandProvider({ children }: { children: ReactNode }) {
    * no second logo file ships.
    */
   useEffect(() => {
-    document.title = `${brand.short} · ${brand.name}`;
+    // The platform's short name and full name are the same words; say them once.
+    document.title = brand.short === brand.name ? brand.name : `${brand.short} · ${brand.name}`;
 
     const description = document.querySelector('meta[name="description"]');
     description?.setAttribute('content', `Staff portal for ${brand.name}.`);
 
     // Each brand paints its own icon. The institute's artwork is a file it
-    // owns; the demo's is the same pi mark the sidebar draws, inline, so no
-    // second logo file ever ships.
-    const piMark =
+    // owns; every other brand gets the same pi mark the sidebar draws, inline
+    // and tinted to its palette's brand-700, so no second logo file ever ships.
+    // The head cannot read CSS variables, hence the one hex per brand here.
+    const piMark = (tile: string) =>
       `data:image/svg+xml,${encodeURIComponent(
         `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">` +
-          `<rect width="48" height="48" rx="13" fill="#3a3fb0"/>` +
+          `<rect width="48" height="48" rx="13" fill="${tile}"/>` +
           `<g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">` +
           `<path d="M13 18h22"/><path d="M20 18v14"/>` +
           `<path d="M29 18v10c0 2.6 1.4 4 3.6 4"/></g></svg>`,
       )}`;
 
+    const tile = brand.id === 'platform' ? '#30577D' : '#3a3fb0';
     const icons =
       brand.id === 'institute'
         ? { icon: '/favicon.png', touch: '/logo-mark.png', theme: '#773C7D' }
-        : { icon: piMark, touch: piMark, theme: '#3a3fb0' };
+        : { icon: piMark(tile), touch: piMark(tile), theme: tile };
 
     document.querySelector('link[rel="icon"]')?.setAttribute('href', icons.icon);
     document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute('href', icons.touch);

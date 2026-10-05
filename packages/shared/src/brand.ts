@@ -7,7 +7,7 @@
  * time somebody deployed from the wrong shell, and the institute's own name is
  * the default rather than something that has to be remembered.
  */
-export const BRAND_IDS = ['institute', 'chapel_hill'] as const;
+export const BRAND_IDS = ['institute', 'chapel_hill', 'platform'] as const;
 
 export type BrandId = (typeof BRAND_IDS)[number];
 
@@ -20,8 +20,8 @@ export interface Brand {
   tagline: string;
   /** The line under the tagline on the sign-in panel. */
   blurb: string;
-  /** Where the institute is, for the sign-in page. */
-  place: string;
+  /** Where the institute is, for the sign-in page. A platform is nowhere in particular. */
+  place?: string;
 }
 
 export const BRANDS: Record<BrandId, Brand> = {
@@ -48,6 +48,21 @@ export const BRANDS: Record<BrandId, Brand> = {
       'One tutor, one student, one plan at a time — lessons tracked from the first ' +
       'assessment to the goal they were set against.',
     place: 'Chapel Hill, North Carolina',
+  },
+  /**
+   * The tutoring platform's own identity (the `tutoring` deployments): neutral
+   * on purpose, because it is the frame every organization will sit inside
+   * rather than an organization itself. Each organization's name, logo and
+   * palette replace it once that exists (docs/multi-organization.md, Phase 30).
+   */
+  platform: {
+    id: 'platform',
+    name: 'Tutor Portal',
+    short: 'Tutor Portal',
+    tagline: 'Every lesson, in one place',
+    blurb:
+      'Sessions, schedules, progress and payments for tutoring organizations — each ' +
+      'with its own people, its own records and its own look.',
   },
 };
 
