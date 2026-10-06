@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { ClockIcon, HistoryIcon, Loader2Icon } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { CheckIcon, ClockIcon, CloudOffIcon, HistoryIcon, Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   SESSION_MODES,
@@ -19,6 +19,7 @@ import {
   type SessionDraft,
   type SessionMode,
   type TutoringSession,
+  DRAFT_AUTOSAVE_INTERVAL_MS,
 } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,7 @@ import { useUserDetail } from '@/features/users/api';
 import { RatingPicker, TopicName } from '@/features/progress/rating';
 import {
   useAssignments,
+  useAutosaveDraft,
   usePostDraft,
   usePreviousSession,
   useRecordSession,
@@ -142,12 +144,32 @@ export function SessionFormDialog({
   const update = useUpdateSession();
   const saveDraft = useSaveDraft();
   const postDraft = usePostDraft();
+  const autosave = useAutosaveDraft();
   const saving =
     record.isPending || update.isPending || saveDraft.isPending || postDraft.isPending;
+
+  // Autosave (2026-10). While a lesson is being written up -- a new one, or a
+  // draft picked back up, never a session already on the record -- the form
+  // saves into the writer's own draft every few seconds, quietly: no audit
+  // line, nobody else can read it, nothing is billed. Recording then consumes
+  // that draft (`from_draft_id`), so one write-up never becomes two records.
+  const draftIdRef = useRef<string | null>(null);
+  const lastSavedRef = useRef<string | null>(null);
+  const lastTriedRef = useRef<string | null>(null);
+  const inFlightRef = useRef<Promise<void> | null>(null);
+  const stoppedRef = useRef(false);
+  const [autosaveState, setAutosaveState] = useState<
+    { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; at: Date } | { kind: 'failed' }
+  >({ kind: 'idle' });
 
   useEffect(() => {
     if (!open) return;
     setErrors({});
+    draftIdRef.current = draft?.id ?? null;
+    lastSavedRef.current = null;
+    lastTriedRef.current = null;
+    stoppedRef.current = false;
+    setAutosaveState({ kind: 'idle' });
 
     if (existing) {
       const match = assignments.find(
@@ -315,6 +337,80 @@ export function SessionFormDialog({
     };
   }
 
+  /** True once there is something worth keeping: words, a rating, a status. */
+  const hasContent = Boolean(
+    isDraft ||
+      notes.trim() ||
+      planned.trim() ||
+      previousReview.trim() ||
+      homeworkReview.trim() ||
+      homeworkAssigned.trim() ||
+      homeworkStatus ||
+      assessmentBody ||
+      progressBody,
+  );
+  const autosaves = open && !isEdit;
+  const canAutosave = autosaves && hasContent && Boolean(assignment || draft);
+
+  /** One quiet save, if anything changed since the last. Never two at once. */
+  function runAutosave() {
+    if (!canAutosave || stoppedRef.current || inFlightRef.current) return;
+    const body = formBody();
+    const json = JSON.stringify(body);
+    // Unchanged since the last save -- or the same thing just failed, which
+    // would only fail again (an end before the start, say) until it changes.
+    if (json === lastSavedRef.current || json === lastTriedRef.current) return;
+    lastTriedRef.current = json;
+    setAutosaveState({ kind: 'saving' });
+
+    inFlightRef.current = autosave
+      .mutateAsync({ id: draftIdRef.current ?? undefined, input: body as never })
+      .then((result) => {
+        draftIdRef.current = result.data.id;
+        lastSavedRef.current = json;
+        setAutosaveState({ kind: 'saved', at: new Date() });
+      })
+      .catch(() => setAutosaveState({ kind: 'failed' }))
+      .finally(() => {
+        inFlightRef.current = null;
+      });
+  }
+
+  // The interval reads the latest form through a ref, so it is set up once
+  // per opening rather than on every keystroke.
+  const autosaveRef = useRef(runAutosave);
+  autosaveRef.current = runAutosave;
+  useEffect(() => {
+    if (!autosaves) return;
+    const timer = window.setInterval(() => autosaveRef.current(), DRAFT_AUTOSAVE_INTERVAL_MS);
+    return () => window.clearInterval(timer);
+  }, [autosaves]);
+
+  /** Stops autosaving and lets a save already on its way land first. */
+  async function settleAutosave() {
+    stoppedRef.current = true;
+    await inFlightRef.current;
+  }
+
+  /**
+   * Closing without recording: whatever was typed since the last autosave is
+   * saved too, and the writer is told where to find it.
+   */
+  function handleOpenChange(next: boolean) {
+    if (!next && autosaves && !stoppedRef.current) {
+      void (async () => {
+        await inFlightRef.current;
+        runAutosave();
+        stoppedRef.current = true;
+        await inFlightRef.current;
+        if (!isDraft && draftIdRef.current) {
+          toast.success('Your write-up is kept as a draft. Pick it up from Drafts.');
+        }
+      })();
+    }
+    onOpenChange(next);
+  }
+
   /**
    * Keeps the write-up without posting it. Nobody else can see a draft, so
    * this is the safe button: it never puts an unfinished note in front of a
@@ -328,8 +424,9 @@ export function SessionFormDialog({
       return;
     }
 
+    await settleAutosave();
     try {
-      await saveDraft.mutateAsync({ id: draft?.id, input: formBody() as never });
+      await saveDraft.mutateAsync({ id: draft?.id ?? draftIdRef.current ?? undefined, input: formBody() as never });
       toast.success(draft ? 'Draft saved.' : 'Saved as a draft. Only you can see it.');
       onOpenChange(false);
     } catch (error) {
@@ -342,8 +439,11 @@ export function SessionFormDialog({
   async function handlePostDraft() {
     setErrors({});
 
+    await settleAutosave();
     try {
-      await saveDraft.mutateAsync({ id: draft!.id, input: formBody() as never });
+      // Brings the draft up to date first. Quietly: posting is the action,
+      // and is what the log records.
+      await autosave.mutateAsync({ id: draft!.id, input: formBody() as never });
       await postDraft.mutateAsync(draft!.id);
       toast.success('Session recorded. Everyone concerned can see it now.');
       onOpenChange(false);
@@ -367,6 +467,8 @@ export function SessionFormDialog({
       setErrors({ assignment: 'Choose which student this session was with.' });
       return;
     }
+
+    if (!isEdit) await settleAutosave();
 
     try {
       if (isEdit) {
@@ -403,11 +505,14 @@ export function SessionFormDialog({
           ...(progressBody ? { progress: progressBody } : {}),
           write_up: writeUpBody,
           ...(assessmentBody ? { assessment: assessmentBody } : {}),
+          ...(draftIdRef.current ? { from_draft_id: draftIdRef.current } : {}),
         } as never);
         toast.success('Session recorded.');
       }
       onOpenChange(false);
     } catch (error) {
+      // Not recorded, so keep the write-up safe again.
+      stoppedRef.current = false;
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
         toast.error(error.message);
@@ -418,7 +523,7 @@ export function SessionFormDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-2xl">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
@@ -659,7 +764,8 @@ export function SessionFormDialog({
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
+            {autosaves && <AutosaveStatus state={autosaveState} />}
+            <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={saving}>
               Cancel
             </Button>
 
@@ -682,6 +788,40 @@ export function SessionFormDialog({
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/** Where the quiet save stands, beside the buttons. Announced politely. */
+function AutosaveStatus({
+  state,
+}: {
+  state: { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; at: Date } | { kind: 'failed' };
+}) {
+  return (
+    <p
+      role="status"
+      aria-live="polite"
+      data-testid="autosave-status"
+      className="text-muted-foreground mr-auto flex items-center gap-1.5 self-center text-xs"
+    >
+      {state.kind === 'saving' && (
+        <>
+          <Loader2Icon className="size-3.5 animate-spin" /> Saving draft…
+        </>
+      )}
+      {state.kind === 'saved' && (
+        <>
+          <CheckIcon className="text-success size-3.5" /> Draft autosaved{' '}
+          {state.at.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+        </>
+      )}
+      {state.kind === 'failed' && (
+        <>
+          <CloudOffIcon className="text-destructive size-3.5" /> Not autosaved yet
+        </>
+      )}
+      {state.kind === 'idle' && <>Autosaves as a draft while you write</>}
+    </p>
   );
 }
 

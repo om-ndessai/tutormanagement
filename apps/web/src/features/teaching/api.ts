@@ -246,6 +246,25 @@ export function useSaveDraft() {
   });
 }
 
+/**
+ * The session form keeping up with the typing: saves into the writer's own
+ * draft every few seconds, with `?autosave=true` so the log stays quiet. The
+ * drafts list is refreshed only when the draft first appears, not on every save.
+ */
+export function useAutosaveDraft() {
+  const invalidateDrafts = useDraftInvalidation();
+
+  return useMutation({
+    mutationFn: ({ id, input }: { id?: string; input: SessionDraftInput }) =>
+      id
+        ? apiClient.patch<ApiOk<SessionDraft>>(`/sessions/drafts/${id}?autosave=true`, input)
+        : apiClient.post<ApiOk<SessionDraft>>('/sessions/drafts?autosave=true', input),
+    onSuccess: (_data, { id }) => {
+      if (!id) invalidateDrafts();
+    },
+  });
+}
+
 export function useDiscardDraft() {
   const invalidateDrafts = useDraftInvalidation();
 

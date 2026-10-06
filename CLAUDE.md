@@ -201,6 +201,10 @@ billing record; a draft is not billed, not counted and not readable by anyone bu
 Keeping them in separate tables is what stops a draft reaching a total — do not "simplify" this
 into a flag on `sessions`, which would put the burden on every one of the sixteen queries that
 read them. Drafts scope on `author_user_id`, admins included, and are priced at posting.
+The record form **autosaves** into the writer's own draft every `DRAFT_AUTOSAVE_INTERVAL_MS`
+(3 s) when something changed, with `?autosave=true`, which writes **no audit line** — an explicit
+Save draft, a discard and posting always do. Recording consumes that draft in the same request
+(`from_draft_id`, the recorder's own only), so a write-up never becomes a session and a draft.
 
 **A lesson's write-up is in parts, and an assessment is always the reader's own.** Beside
 `sessions.notes` ("what was covered") sit `session_write_ups` (planned, previous-session review,

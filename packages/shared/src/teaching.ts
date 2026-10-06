@@ -409,6 +409,11 @@ export const sessionInputSchema = z
      * API from who is asking.
      */
     assessment: sessionAssessmentInputSchema.optional(),
+    /**
+     * The recorder's own draft this write-up was autosaved into, consumed in
+     * the same request: one write-up must not become a session AND a draft.
+     */
+    from_draft_id: z.uuid().optional(),
   })
   .refine((value) => elapsedMinutes(value.started_at, value.ended_at) !== null, {
     message: 'The end time must be after the start time.',
@@ -695,6 +700,19 @@ export const sessionDraftInputSchema = z
   });
 
 export type SessionDraftInput = z.input<typeof sessionDraftInputSchema>;
+
+/** How often the session form autosaves what is being written, in milliseconds. */
+export const DRAFT_AUTOSAVE_INTERVAL_MS = 3000;
+
+/**
+ * `?autosave=true` on saving a draft: the form saved it by itself, every few
+ * seconds while somebody types. Not an action the person took, so it writes
+ * no audit line -- the log would otherwise gain twenty an hour. An explicit
+ * save, a discard and posting are always logged.
+ */
+export const draftSaveQuerySchema = z.object({
+  autosave: z.enum(['true', 'false']).optional(),
+});
 export type SessionDraftPayload = z.output<typeof sessionDraftInputSchema>;
 
 /**

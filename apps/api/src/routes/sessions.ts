@@ -25,6 +25,7 @@ import {
   type SessionTotals,
   type TutoringSession,
   type User,
+  draftSaveQuerySchema,
   sessionDraftInputSchema,
   sessionProgressInputSchema,
   type SessionDraft,
@@ -302,6 +303,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
     if (!isAdmin(viewer) && viewer.id !== input.tutor_user_id) {
       throw new ApiError(403, 'forbidden', 'You can only record your own sessions.');
     }
+    // The autosaved draft of this write-up, if there is one: only ever the
+    // recorder's own, checked before anything is written.
+    if (input.from_draft_id) await assertMyDraft(c.env.DB, c.get('org').id, viewer, input.from_draft_id);
 
     const priced = await priceSession(c.env.DB, c.get('org').id, input.tutor_user_id,
       input.student_user_id,
@@ -334,6 +338,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
       await saveSessionProgress(c.env.DB, c.get('org').id, session.id, session.student_user_id, input.progress);
     }
     if (input.write_up) await saveWriteUp(c.env.DB, session.id, input.write_up);
+    // Now on the record, so the draft it was autosaved into goes. Silently:
+    // it was never an action of its own, and the line below covers it.
+    if (input.from_draft_id) await deleteDraft(c.env.DB, c.get('org').id, input.from_draft_id);
 
     await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'session.recorded',
@@ -373,7 +380,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
     return c.json(body);
   })
 
-  .post('/drafts', zValidator('json', sessionDraftInputSchema), async (c) => {
+  .post(
+    '/drafts',
+    zValidator('query', draftSaveQuerySchema),
+    zValidator('json', sessionDraftInputSchema),
+    async (c) => {
     const input = c.req.valid('json');
     const viewer = c.get('user');
 
@@ -382,7 +393,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     const draft = await createDraft(c.env.DB, c.get('org').id, viewer.id, input);
 
-    await recordAudit(c.env.DB, viewer, c.get('org').id, {
+    // An autosave is the form keeping up with the typing, not something the
+    // person did: no line in the log (Phase 22's draft rule, 2026-10).
+    if (c.req.valid('query').autosave !== 'true') await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'session.drafted',
       // Says a draft exists, never what is in it: the notes are the part that
       // is not ready to be read.
@@ -394,11 +407,13 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     const body: ApiOk<SessionDraft> = { data: draft };
     return c.json(body, 201);
-  })
+    },
+  )
 
   .patch(
     '/drafts/:id',
     zValidator('param', idParamSchema),
+    zValidator('query', draftSaveQuerySchema),
     zValidator('json', sessionDraftInputSchema),
     async (c) => {
       const { id } = c.req.valid('param');
@@ -411,6 +426,18 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
       const draft = await updateDraft(c.env.DB, c.get('org').id, id, input);
       if (!draft) throw ApiError.notFound('That draft does not exist.');
+
+      // Pressing Save draft is an action, and is logged -- including on a
+      // draft the form first autosaved, which wrote nothing. Autosaves are not.
+      if (c.req.valid('query').autosave !== 'true') {
+        await recordAudit(c.env.DB, viewer, c.get('org').id, {
+          action: 'session.drafted',
+          description: `Saved a draft session with ${draft.student_name} on ${draft.occurred_on}`,
+          subject: { id: draft.student_user_id, full_name: draft.student_name },
+          entity_type: 'session_draft',
+          entity_id: draft.id,
+        });
+      }
 
       const body: ApiOk<SessionDraft> = { data: draft };
       return c.json(body);
