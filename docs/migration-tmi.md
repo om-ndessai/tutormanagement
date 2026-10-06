@@ -11,6 +11,21 @@ and 168 log lines with identical ids, text and timestamps, plus one line for the
 **Checks:** preflight was empty, and all 32 verify checks were ok. The staging tables and the
 local export were removed afterwards. tmi-portal was not changed.
 
+**The switch (2026-10-06):** the migration was run once more, immediately before the
+`tmi-portal` Worker was redeployed bound to `tutoring-db`, so everything up to the switch came
+across:
+- 14 people, 9 lessons, 169 production log lines;
+- preflight empty, 32 of 32 checks ok.
+
+Backups were taken first:
+- `~/tmi-portal-backups/prod-*-before-switch.sql`;
+- `~/tmi-portal-backups/tutoring-*-before-switch.sql`;
+- tutoring-db Time Travel bookmark `0000000b-00000000-000050fc-474aeed9c6442acca7700244a25c4a2d`.
+
+From then on tmi-portal reads and writes `tutoring-db`, and `tmi-portal-db` is bound to
+nothing. **Do not run this migration again**: it would replace the institute's live records
+with tmi-portal-db's frozen copy.
+
 ## What it does
 
 Brings the Mathematics Institute of the Triangle's records from `tmi-portal-db` (the
