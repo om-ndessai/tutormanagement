@@ -91,6 +91,16 @@ function splitStatements(sql) {
 }
 
 function main() {
+  // Since 2026-10-06 tmi-portal reads and writes tutoring-db, so the copy in
+  // tmi-portal-db is frozen and stale. Migrating it again would replace the
+  // institute's live records with it.
+  if (process.env.MIGRATE_TMI_AGAIN !== 'yes, replace the live records') {
+    console.error(
+      'Refusing: the institute already lives in tutoring-db (docs/migration-tmi.md). ' +
+        'Migrating again would overwrite its live records with tmi-portal-db\'s frozen copy.',
+    );
+    process.exit(1);
+  }
   const [input, output] = process.argv.slice(2);
   if (!input || !output) {
     console.error('Usage: node build-stage.mjs <tmi-data.sql> <stage.sql>');
