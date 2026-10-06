@@ -37,10 +37,11 @@ function listPath(params: UsersListParams) {
   })}`;
 }
 
-export function useUsers(params: UsersListParams) {
+export function useUsers(params: UsersListParams, options: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: userKeys.list(params),
     queryFn: () => apiClient.get<ApiList<User>>(listPath(params)),
+    enabled: options.enabled ?? true,
     // Keeps the current page visible while the next one loads, so filtering
     // and paging do not flash an empty table.
     placeholderData: keepPreviousData,

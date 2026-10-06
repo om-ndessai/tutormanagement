@@ -363,6 +363,13 @@ and is wiped by every `npm run e2e`; `scripts/e2e.sh` checks `/api/auth/config` 
 before touching anything if sign-in has been turned back on. Sign-in stays configured (origin,
 client id), so turning it back on is one value.
 
+**Motion explains a change, and the theme is the only view transition.** The ⌘K command palette
+(`command-palette.tsx`) takes its pages from the sidebar's `NAV_ITEMS` and finds people through
+`useUsers`, so it never offers what the reader cannot reach. `switchTheme` reveals a new theme with
+the View Transitions API; page changes use the CSS `route-enter`, never a view transition, whose
+snapshot overlay swallows clicks. Shadows are `--elevation-1`/`--elevation-2`, glass is the `glass`
+utility, and all of it is stilled by the reduced-motion guard. See `docs/branding.md`.
+
 **Colors come from tokens, never from literals.** `apps/web/src/index.css` holds a brand ramp
 (`--brand-50` … `--brand-950`, sampled from the institute logo) and the semantic tokens
 components consume (`--primary`, `--muted`, `--sidebar`, …). Use Tailwind classes that map to

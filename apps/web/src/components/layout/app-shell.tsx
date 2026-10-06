@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
   ActivityIcon,
   BookOpenIcon,
@@ -20,7 +20,12 @@ import { DeveloperCredit } from '@/components/layout/developer-credit';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { UserMenu } from '@/components/layout/user-menu';
 import { LiveSessionBar } from '@/features/teaching/live-session-bar';
-import { OnboardingProvider } from '@/features/onboarding/onboarding-provider';
+import { OnboardingProvider, useOnboarding } from '@/features/onboarding/onboarding-provider';
+import {
+  CommandPaletteButton,
+  CommandPaletteProvider,
+  type PaletteDestination,
+} from '@/components/layout/command-palette';
 import { OrgSwitcher } from '@/features/organizations/org-switcher';
 import { useAuth } from '@/providers/auth-provider';
 import { Button } from '@/components/ui/button';
@@ -28,28 +33,34 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useBrand } from '@/providers/brand-provider';
 
-const NAV_ITEMS = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true },
-  { to: '/users', label: 'Users', icon: UsersIcon, end: false },
-  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false },
-  { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false },
-  { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false },
-  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false },
-  { to: '/billing', label: 'Billing', icon: WalletIcon, end: false },
-  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false },
-  { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false },
-  { to: '/profile', label: 'My profile', icon: UserIcon, end: false },
+const NAV_ITEMS: (PaletteDestination & { end: boolean; admin?: boolean })[] = [
+  { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true, keywords: ['home', 'overview'] },
+  { to: '/users', label: 'Users', icon: UsersIcon, end: false, keywords: ['people', 'students', 'tutors', 'parents', 'family'] },
+  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, keywords: ['assignments', 'tutor', 'student'] },
+  { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, keywords: ['lessons', 'record', 'notes', 'drafts'] },
+  { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, keywords: ['plans', 'assessments', 'goals'] },
+  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, keywords: ['calendar', 'cancel', 'weekly'] },
+  { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
+  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, keywords: ['notes', 'messages'] },
+  { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },
+  { to: '/profile', label: 'My profile', icon: UserIcon, end: false, keywords: ['me', 'account'] },
   // The organization's own settings (its 1099 payer details): admins only.
-  { to: '/organization', label: 'Organization', icon: Building2Icon, end: false, admin: true },
+  { to: '/organization', label: 'Organization', icon: Building2Icon, end: false, admin: true, keywords: ['settings', 'tin', 'payer'] },
 ];
 
-function NavItems({ onNavigate }: { onNavigate?: () => void }) {
+/** The menu, less what this reader's roles do not reach. */
+function useNavItems() {
   const { user } = useAuth();
   const admin = Boolean(user?.roles.includes('admin'));
+  return NAV_ITEMS.filter((item) => !item.admin || admin);
+}
+
+function NavItems({ onNavigate }: { onNavigate?: () => void }) {
+  const items = useNavItems();
 
   return (
     <nav className="flex flex-col gap-1" aria-label="Main">
-      {NAV_ITEMS.filter((item) => !('admin' in item) || admin).map(({ to, label, icon: Icon, end }) => (
+      {items.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}
           to={to}
@@ -59,15 +70,17 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
           data-tour={to === '/' ? 'nav-dashboard' : `nav-${to.slice(1)}`}
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200',
               'focus-visible:ring-sidebar-ring outline-none focus-visible:ring-2',
+              // The indicator: a bar that grows in beside the page you are on.
+              'before:bg-sidebar-primary before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-full before:transition-transform before:duration-300',
               isActive
-                ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                : 'text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-xs before:scale-y-100'
+                : 'text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground before:scale-y-0 hover:translate-x-0.5',
             )
           }
         >
-          <Icon className="size-4 shrink-0" />
+          <Icon className="icon-pop size-4 shrink-0" />
           {label}
         </NavLink>
       ))}
@@ -105,13 +118,34 @@ function BrandShort() {
  * plain so new sections are one entry in NAV_ITEMS.
  */
 export function AppShell() {
+  return (
+    // The welcome wizard and tour (Phase 26) sit over the whole signed-in portal,
+    // and the command palette (⌘K) over that.
+    <OnboardingProvider>
+      <PaletteLayer>
+        <Shell />
+      </PaletteLayer>
+    </OnboardingProvider>
+  );
+}
+
+function PaletteLayer({ children }: { children: React.ReactNode }) {
+  const { openWizard } = useOnboarding();
+  const items = useNavItems();
+  return (
+    <CommandPaletteProvider destinations={items} onTour={openWizard}>
+      {children}
+    </CommandPaletteProvider>
+  );
+}
+
+function Shell() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   return (
-    // The welcome wizard and tour (Phase 26) sit over the whole signed-in portal.
-    <OnboardingProvider>
-    <div className="bg-background flex min-h-full">
-      <aside className="bg-sidebar text-sidebar-foreground border-sidebar-border hidden w-64 shrink-0 border-r lg:block">
+    <div className="surface-mesh flex min-h-full">
+      <aside className="bg-sidebar/90 text-sidebar-foreground border-sidebar-border hidden w-64 shrink-0 border-r backdrop-blur-xl lg:block">
         <div className="sticky top-0 h-dvh">
           <SidebarContents />
         </div>
@@ -132,7 +166,7 @@ export function AppShell() {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="bg-background/80 border-border sticky top-0 z-40 flex h-14 items-center gap-2 border-b px-4 backdrop-blur-sm lg:px-8">
+        <header className="glass border-border/60 sticky top-0 z-40 flex h-14 items-center gap-2 border-b px-4 lg:px-8">
           <Button
             variant="ghost"
             size="icon"
@@ -147,6 +181,7 @@ export function AppShell() {
           <BrandShort />
 
           <div className="ml-auto flex items-center gap-1">
+            <CommandPaletteButton className="mr-1" />
             <ThemeToggle />
             <UserMenu />
           </div>
@@ -157,10 +192,13 @@ export function AppShell() {
         <LiveSessionBar />
 
         <main className="flex-1 px-4 py-6 lg:px-8 lg:py-8">
-          <Outlet />
+          {/* Each page arrives, rather than appearing: a short rise and fade,
+              keyed on the path so it plays on every page change. */}
+          <div key={location.pathname} className="route-enter">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
-    </OnboardingProvider>
   );
 }

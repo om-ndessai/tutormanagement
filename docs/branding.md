@@ -86,6 +86,31 @@ The `dark` class on `<html>` is owned solely by `src/providers/theme-provider.ts
 supports light / dark / system, persists the choice to `localStorage`, and follows the OS only
 while the user has not chosen explicitly.
 
+## Depth and motion (2026-10)
+
+Researched against the 2026 interface trends (command palettes as primary navigation, layered
+"glass" depth, motion that explains a change, micro-interactions, View Transitions) and applied
+only where they help somebody find or understand something.
+
+- **Command palette, ⌘K / Ctrl+K** (`components/layout/command-palette.tsx`). Pages (the same
+  list as the sidebar, so the two never disagree), people (searched through `GET /api/users`, so
+  the reader only finds whom they may list), and actions: the tour, the theme, switching
+  organization, the platform console, signing out. The header's "Search or jump to…" pill opens
+  it for anyone who does not know the shortcut.
+- **Theme reveal.** Choosing a theme spreads it out in a circle from where it was chosen
+  (`switchTheme` in `components/layout/theme-transition.ts`, the View Transitions API). It is the
+  ONLY view transition: one lays a snapshot over the whole page while it runs, and would swallow
+  a click made straight after navigating. A page change gets a 320 ms CSS rise instead
+  (`route-enter`, keyed on the path in `AppShell`).
+- **Depth.** `--elevation-1` / `--elevation-2` are the only shadows: cards rest on 1, dialogs and
+  menus float on 2. The header is `glass` (translucent, blurred), the sidebar is blurred, and the
+  page sits on `surface-mesh`, a faint wash of the organization's own ramp — so every palette and
+  the dark theme follow without a literal.
+- **Micro-interactions.** `icon-pop` springs an icon when its row is hovered (nav, buttons); a
+  pressed button scales to 0.97; the active nav item carries a bar that grows in; skeletons shimmer.
+- **Reduced motion.** The guard in the base layer stills every animation and transition, and
+  `switchTheme` skips the transition entirely. A new animation needs nothing extra to obey it.
+
 ## Typography
 
 | Token | Family | Used for |
