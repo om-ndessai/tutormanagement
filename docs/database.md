@@ -1,7 +1,10 @@
 # Database
 
-Cloudflare D1 — SQLite at the edge. One database, `tmi-portal-db`, bound to the Worker as
-`DB` in `apps/api/wrangler.jsonc`.
+Cloudflare D1 — SQLite at the edge. Since 2026-10-06 production is **`tutoring-db`**, bound as
+`DB` to both the `tmi-portal` and `tutoring` Workers; the tests share `tutoring-test-db`. The
+institute's old `tmi-portal-db` is no longer bound to anything: its records were migrated into
+`tutoring-db` as the organization `tmi` (`docs/migration-tmi.md`). The phase-by-phase commands
+below were run against `tmi-portal-db` and are kept as history; new changes go to `tutoring-db`.
 
 ## Schema
 
@@ -257,7 +260,7 @@ npx wrangler d1 execute tmi-portal-db --remote \
 > Worker was deployed expecting `last_login_at` while the database predated it, and every
 > sign-in failed with a 500.
 
-## The tutoring databases (orgsupport)
+## The tutoring databases
 
 `tutoring-db` and `tutoring-test-db` were created empty on 2026-10-05 and built CLEAN from this
 branch's `db/schema.sql` -- the organization-aware schema, with no migration from the

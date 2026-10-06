@@ -5,9 +5,9 @@ How the requirements in [plan.md](plan.md) became the schema in
 
 ---
 
-## Organizations (orgsupport, Phases 27-31)
+## Organizations (Phases 27-31)
 
-On the `orgsupport` branch the portal holds several organizations. The design and its reasons
+The portal holds several organizations. The design and its reasons
 are `docs/multi-organization.md`; in short:
 
 - **The person is global; everything else is the organization's.** `users` is the sign-in

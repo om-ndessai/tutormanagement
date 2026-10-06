@@ -1,40 +1,43 @@
 #!/usr/bin/env bash
 #
-# Full end-to-end cycle against the dedicated TEST deployment.
+# Full end-to-end cycle against the test Workers.
 #
 #   1. build the SPA
-#   2. deploy it as `tmi-portal-test`, bound to `tmi-portal-test-db`
-#   3. wipe and rebuild that database from db/schema.sql + db/seed.sql
+#   2. deploy BOTH test Workers -- tmi-portal-test and tutoring-test, which
+#      share `tutoring-test-db` -- so they never run different code
+#   3. wipe and rebuild that database from db/schema.sql + db/seed.sql, and
+#      add the platform admin (db/platform-admin.sql)
 #   4. run the Playwright suite against it
 #
-# Production is never deployed to, never queried, and never wiped. The test
-# Worker runs with authentication permanently off, which is what lets the suite
-# act as each kind of user; it holds seeded fiction and nothing else.
+# Only tutoring-test is TESTED; tmi-portal-test is deployed alongside it but no
+# longer exercised (2026-10-06). Never a production Worker or tutoring-db.
+# The test Worker runs with authentication permanently off, which is what lets
+# the suite act as each kind of user; it holds seeded fiction and nothing else.
 #
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
 API_DIR="apps/api"
-TEST_ENV="test"
-TEST_DB="tmi-portal-test-db"
-TEST_URL="${E2E_BASE_URL:-https://tmi-portal-test.om-ndessai.workers.dev}"
+TEST_ENV="tutoring-test"
+TEST_DB="tutoring-test-db"
+TEST_URL="${E2E_BASE_URL:-https://tutoring-test.om-ndessai.workers.dev}"
 
 # Belt and braces. The destructive step below is driven by these names, so if
 # either is ever edited towards production the script stops instead of running.
 case "$TEST_DB" in
-  *test*) ;;
+  tutoring-test-db) ;;
   *) echo "Refusing to run: '$TEST_DB' is not a test database." >&2; exit 1 ;;
 esac
 case "$TEST_URL" in
-  *test*|*localhost*|*127.0.0.1*) ;;
+  *tutoring-test*|*localhost*|*127.0.0.1*) ;;
   *) echo "Refusing to run: '$TEST_URL' does not look like a test target." >&2; exit 1 ;;
 esac
 
-# The test deployment doubles as the competition demo, and a demo signs people
-# in for real. The suite acts as each kind of user through X-Dev-User, which is
+# If somebody turned sign-in on for this deployment, it signs people in for
+# real. The suite acts as each kind of user through X-Dev-User, which is
 # honoured only while AUTH_ENABLED is "false", so it cannot drive that -- and
-# the rebuild below would wipe the demo's data on the way to finding out.
+# the rebuild below would wipe real sign-ins on the way to finding out.
 # Checked before anything is built, deployed or dropped.
 echo "==> Checking $TEST_URL can be driven by the suite"
 auth=$(curl -s --max-time 15 "$TEST_URL/api/auth/config" || true)
@@ -60,13 +63,15 @@ esac
 echo "==> Building the SPA"
 npm run build >/dev/null
 
-echo "==> Deploying the test Worker"
-( cd "$API_DIR" && npx wrangler deploy --env "$TEST_ENV" >/dev/null )
+echo "==> Deploying both test Workers"
+( cd "$API_DIR" && npx wrangler deploy --env "$TEST_ENV" >/dev/null \
+  && npx wrangler deploy --env test >/dev/null )
 
 echo "==> Rebuilding $TEST_DB (destructive, test data only)"
 ( cd "$API_DIR" \
   && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/schema.sql >/dev/null \
-  && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/seed.sql >/dev/null )
+  && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/seed.sql >/dev/null \
+  && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/platform-admin.sql >/dev/null )
 
 # A deploy and a remote D1 rebuild are both eventually consistent, and the
 # suite starts the instant they return. Twice now the first run after a deploy
@@ -78,7 +83,7 @@ echo "==> Waiting for $TEST_URL to be ready"
 for attempt in $(seq 1 30); do
   health=$(curl -s --max-time 10 "$TEST_URL/api/health" || true)
   people=$(curl -s --max-time 10 -H 'X-Dev-User: priya.raghavan@gmail.com' \
-    "$TEST_URL/api/users?limit=1" || true)
+    -H 'X-Organization: chmi' "$TEST_URL/api/users?limit=1" || true)
 
   case "$health$people" in
     *'"status":"ok"'*'"meta"'*)

@@ -40,7 +40,16 @@ import { isAuthEnabled, type AppEnv } from '../types.js';
  */
 export function requestedOrgSlug(c: Context<AppEnv>): string {
   const remembered = isAuthEnabled(c.env) ? undefined : getCookie(c, LAST_ORG_COOKIE);
-  return (c.req.header(ORG_HEADER) ?? c.req.query(ORG_QUERY_PARAM) ?? remembered ?? '')
+  // Last of all, the organization this address is FOR (DEFAULT_ORGANIZATION):
+  // tmi-portal's own people land in the institute without a picker. It only
+  // picks -- requireOrg still checks the membership.
+  return (
+    c.req.header(ORG_HEADER) ??
+    c.req.query(ORG_QUERY_PARAM) ??
+    remembered ??
+    c.env.DEFAULT_ORGANIZATION ??
+    ''
+  )
     .trim()
     .toLowerCase();
 }

@@ -10,9 +10,12 @@ npm run e2e
 That command:
 
 1. builds the SPA
-2. deploys it as `tmi-portal-test`, bound to `tmi-portal-test-db`
-3. rebuilds that database from `apps/api/db/schema.sql` and `db/seed.sql`
-4. runs the suite against `https://tmi-portal-test.om-ndessai.workers.dev`
+2. deploys BOTH test Workers, `tutoring-test` and `tmi-portal-test`, which share
+   `tutoring-test-db`
+3. rebuilds that database from `apps/api/db/schema.sql`, `db/seed.sql` and
+   `db/platform-admin.sql`
+4. runs the suite against `https://tutoring-test.om-ndessai.workers.dev` -- only there;
+   `tmi-portal-test` is deployed with the same code but no longer tested (2026-10-06)
 
 ## The seeded roster
 
@@ -58,23 +61,22 @@ into its `X-Organization` header, and with sign-in off the API also accepts the 
 `page.request` runs in the same organization. New personas: `orgBAdmin` (Rosa), `orgBTutor`
 (Kwame), `platformAdmin`.
 
-On this branch the suite targets `tutoring-test`, never the institute's demo:
-`npm run e2e:tutoring` builds, deploys, rebuilds `tutoring-test-db` and runs it; locally,
-`E2E_BASE_URL=http://localhost:5173 npx playwright test` against `npm run dev`.
+Locally: `E2E_BASE_URL=http://localhost:5173 npx playwright test` against `npm run dev`
+(after `npm run db:reset`).
 `exposure-organizations.spec.ts` (R13, R14), `organizations.spec.ts` and `platform.spec.ts`
 cover organizations.
 
-## The two deployments
+## The deployments
 
 | | Production | Test |
 | --- | --- | --- |
-| Worker | `tmi-portal` | `tmi-portal-test` |
-| Database | `tmi-portal-db` | `tmi-portal-test-db` |
+| Workers | `tmi-portal` and `tutoring` | `tmi-portal-test` and `tutoring-test` |
+| Database | `tutoring-db` | `tutoring-test-db` |
 | Authentication | **on** — Google sign-in required | **off**, permanently |
-| Data | real staff and families | 88 seeded people, wiped every run |
-| Deployed by | `npm run deploy` | `npm run e2e`, or `npm run deploy:test` |
+| Data | every organization's real records | two seeded organizations, wiped every run |
+| Deployed by | `npm run deploy` (both) | `npm run e2e`, or `npm run deploy:test` (both) |
 
-They are separate Workers with separate databases. The test environment is a named `env` in
+Each pair shares one database. The test environment is a named `env` in
 `apps/api/wrangler.jsonc`, and wrangler does **not** let a named environment inherit `assets`,
 `d1_databases` or `vars` — everything is restated there. That is deliberate: this environment
 must not be able to reach production's database by inheriting its binding.

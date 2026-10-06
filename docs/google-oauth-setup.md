@@ -256,10 +256,11 @@ https://tutoring.om-ndessai.workers.dev
 `tutoring-test` has sign-in off and needs nothing. Its database starts empty, so
 `BOOTSTRAP_ADMIN_EMAILS` (`ndessai@gmail.com`) is what lets the first admin in, once the tables exist.
 
-## The demo deployment
+## The test Workers
 
-The `test` Worker signs people in for real, so its origin needs to be an **Authorised JavaScript
-origin** on the same OAuth client production uses:
+`tmi-portal-test` and `tutoring-test` run with sign-in OFF. If sign-in is ever turned back on
+for `tmi-portal-test`, its origin is already an **Authorised JavaScript origin** on the same
+OAuth client production uses:
 
 ```
 https://tmi-portal-test.om-ndessai.workers.dev
@@ -269,7 +270,5 @@ Without it, Google refuses the sign-in with `origin_mismatch` before the portal 
 redirect URI is needed — the portal uses Google Identity Services in the browser and posts the
 ID token to `/api/auth/google`, so there is no redirect to register.
 
-`BOOTSTRAP_ADMIN_EMAILS` on that deployment names the demonstrator, but the escape hatch only
-opens while the database holds **no** admin, and the seeded roster ships with two. That is why
-`npm run demo:reset` adds `om.ndessai@gmail.com` as a real admin row (`db/demo-admin.sql`)
-rather than relying on the bootstrap.
+Both test Workers read `tutoring-test-db`, seeded with two fictional organizations and
+`ndessai@gmail.com` as platform admin (`db/platform-admin.sql`).

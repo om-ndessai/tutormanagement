@@ -31,12 +31,10 @@ something to deploy. **The people model** is admins, tutors, students and parent
 person may hold several roles at once: read `docs/data-model.md` before touching the schema, as
 it explains why each table is where it is and which rules the database cannot enforce.
 
-**This is the `orgsupport` branch: multi-organization support (Phases 27-31,
-`docs/multi-organization.md`), built 2026-10-05 and deployed ONLY to `tutoring` and
-`tutoring-test`.** `main` stays single-organization and keeps shipping the institute's
-`tmi-portal` and its demo; on this branch `npm run deploy`, `deploy:test`, `e2e` and
-`demo:reset` refuse. Merge `main` into `orgsupport` to carry institute fixes over, never the
-other way, until the owner explicitly asks to migrate the institute onto organizations.
+**Every organization runs on one code version (since 2026-10-06).** Multi-organization support
+(Phases 27-31, `docs/multi-organization.md`) is on `main`; the institute is the organization `tmi`
+in `tutoring-db`, migrated from the old `tmi-portal-db` on 2026-10-05/06
+(`docs/migration-tmi.md`). Work on `main`.
 
 **Ask before starting the next phase.** `docs/plan.md` is the roadmap, but it is a plan, not a
 licence — do not build ahead of what has been asked for.
@@ -48,15 +46,31 @@ phase, and re-check its figures, which were researched on that date.
 
 ## Deployments
 
-| Deployment | Database | Sign-in | Deploy from |
-| --- | --- | --- | --- |
-| `tmi-portal` (the institute) | `tmi-portal-db` | on | `main`, `npm run deploy` |
-| `tmi-portal-test` (the demo) | `tmi-portal-test-db` | off | `main`, `npm run deploy:test` |
-| `tutoring` (multi-organization) | `tutoring-db` | on | `orgsupport`, `npm run deploy:tutoring` |
-| `tutoring-test` | `tutoring-test-db` | off | `orgsupport`, `npm run deploy:tutoring-test`; `npm run e2e:tutoring` rebuilds and tests it |
+Four Workers, one code version, two databases. Each pair shares a database and is deployed
+together; they differ only in address, the organization a visitor lands in
+(`DEFAULT_ORGANIZATION`), and which one runs the lesson sweep.
 
-`tutoring-db` holds real organizations once in use: never rebuild it; carry schema changes by
-hand and additively, as for the institute (`docs/database.md`).
+| Worker | Database | Sign-in | Lands in | Lesson sweep (cron) |
+| --- | --- | --- | --- | --- |
+| `tmi-portal` (the institute's address) | `tutoring-db` | on | `tmi` | no |
+| `tutoring` | `tutoring-db` | on | choose | yes |
+| `tmi-portal-test` | `tutoring-test-db` | off | `chmi` | no |
+| `tutoring-test` | `tutoring-test-db` | off | choose | yes |
+
+- `npm run deploy` deploys BOTH production Workers.
+- `npm run deploy:test` deploys BOTH test Workers.
+- `npm run e2e` deploys both test Workers, rebuilds `tutoring-test-db` from the schema and the
+  seed, and runs the suite on `tutoring-test` only. `tmi-portal-test` is deployed, never tested.
+- **Never deploy one Worker of a pair alone:** the two would serve different code against one
+  database.
+- **Only one Worker of each pair may run the cron:** two sweeps of one database could close the
+  same overrunning lesson twice and bill it twice.
+- `tmi-portal-db` and `tmi-portal-test-db` are no longer bound to anything. They are kept, and
+  the backups in `~/tmi-portal-backups/` are the record of them.
+
+`tutoring-db` holds every organization's real records, the institute's included: never rebuild
+it (`npm run db:rebuild:remote` refuses); carry schema changes by hand and additively
+(`docs/database.md`).
 
 ## Layout
 
@@ -86,25 +100,23 @@ Run from the repo root.
 | `npm run build` | Build the SPA into `apps/web/dist` |
 | `npm run deploy` | Build the SPA, then `wrangler deploy` |
 
-`npm run db:rebuild:remote` **destroys all production data**, which since 2026-09-21 means real
-institute records. **Never run it.** Carry schema changes to production by hand and additively
+`tutoring-db` holds **all production data** -- every organization's real records, the
+institute's since 2026-10-06. **Never rebuild it.** Carry schema changes to production by hand and additively
 (`ALTER TABLE ... ADD COLUMN`, `CREATE TABLE`), writing the statements into `docs/database.md`
 as part of the change. Run `--remote` wrangler commands only as part of a release the owner has
 approved: **approving a phase's plan is that approval**, for the whole release, with no further
 asking —
 1. commit and push to `main`;
-2. `npm run e2e` (wipes only the test database);
-3. back up production (`wrangler d1 export --remote`);
+2. `npm run e2e` (deploys both test Workers, wipes only `tutoring-test-db`, tests `tutoring-test`);
+3. back up production (`wrangler d1 export tutoring-db --remote`);
 4. apply the phase's additive schema block and check the new queries read-only against production;
-5. `npm run deploy`, then smoke-test.
+5. `npm run deploy` (both production Workers), then smoke-test both addresses.
 
 Stop and report if any step fails. Outside an approved release, ask first.
 
-**Four deployments, two pipelines** -- see Deployments above. Each pair is a named env in
-`apps/api/wrangler.jsonc` that restates every binding: never let one inherit another's database.
-The tutoring databases were built clean from this branch's `db/schema.sql` on 2026-10-05 (no
-migration from the institute): `tutoring` holds the schema and the platform admin only,
-`tutoring-test` the seed's two organizations as well.
+**Every Worker restates its own bindings.** Named envs in `apps/api/wrangler.jsonc` do not
+inherit `assets`, `d1_databases`, `vars` or `triggers`, so each restates all four: never let one
+inherit another's database, and do not "tidy" that duplication away.
 
 ## Rules
 
@@ -344,13 +356,12 @@ never SVG, which can carry script), at most 256 KB, served at a versioned public
 `nosniff` and `default-src 'none'`; `builtin_logo: 'institute'` (platform admins only) wears the
 institute's shipped artwork. Never hardcode an organization's name: say `brand.short`.
 
-**The `test` deployment is the competition demo** (on `main` -- this branch refuses to touch it). It wears the Chapel Hill brand and is open:
-`AUTH_ENABLED` is `"false"` there, so a visitor walks straight in as Priya Raghavan
-(`DEV_USER_EMAIL`). The e2e suite drives it, and `npm run e2e` wipes and reseeds its database —
-`scripts/e2e.sh` checks `/api/auth/config` and refuses before touching anything if sign-in has
-been turned back on. `npm run demo:reset` reseeds it and restores the demo admin; run it after a
-suite run to leave the demo clean. Sign-in stays configured (origin, client id), so turning it
-back on is one value.
+**The test Workers are open.** `AUTH_ENABLED` is `"false"` on `tmi-portal-test` and
+`tutoring-test`, so a visitor walks straight in (as Priya Raghavan in `chmi` on
+`tmi-portal-test`, its `DEV_USER_EMAIL`). Both read `tutoring-test-db`, which is seeded fiction
+and is wiped by every `npm run e2e`; `scripts/e2e.sh` checks `/api/auth/config` and refuses
+before touching anything if sign-in has been turned back on. Sign-in stays configured (origin,
+client id), so turning it back on is one value.
 
 **Colors come from tokens, never from literals.** `apps/web/src/index.css` holds a brand ramp
 (`--brand-50` … `--brand-950`, sampled from the institute logo) and the semantic tokens
@@ -431,13 +442,10 @@ can see whom.
 
 ## End-to-end tests
 
-`npm run e2e` deploys and tests `tmi-portal-test`, a separate Worker with its own database
-(`tmi-portal-test-db`) and authentication permanently off. It wipes that database every run.
-**It never touches production.** `npm run e2e:test` runs the suite without deploying or wiping.
-
-The test environment is a named `env` in `apps/api/wrangler.jsonc`. Named environments do not
-inherit `assets`, `d1_databases` or `vars`, so all of them are restated there — deliberately,
-so this environment cannot reach production's database. Do not "tidy" that duplication away.
+`npm run e2e` deploys both test Workers, wipes and reseeds `tutoring-test-db` (schema, seed,
+platform admin) and tests `tutoring-test`, whose authentication is permanently off.
+**It never touches production.** `npm run e2e:test` runs the suite without deploying or wiping;
+`npm run db:reset:test` reseeds without testing.
 
 The suite acts as different people with an `X-Dev-User` header, honoured only while
 `AUTH_ENABLED` is `"false"`. Set it on the browser context, never per request — two values

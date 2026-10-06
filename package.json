@@ -22,17 +22,13 @@
     "db:seed": "npm run db:seed --workspace @tmi/api",
     "db:reset": "npm run db:reset --workspace @tmi/api",
     "db:studio": "npm run db:studio --workspace @tmi/api",
-    "deploy": "node -e \"console.error('Refusing: the orgsupport branch deploys only to tutoring / tutoring-test. The institute (tmi-portal) and the demo (tmi-portal-test) ship from main.'); process.exit(1)\"",
-    "e2e": "node -e \"console.error('Refusing: the orgsupport branch deploys only to tutoring / tutoring-test. The institute (tmi-portal) and the demo (tmi-portal-test) ship from main.'); process.exit(1)\"",
+    "deploy": "npm run build && npm run deploy --workspace @tmi/api",
+    "e2e": "bash scripts/e2e.sh",
     "e2e:test": "npm run test --workspace @tmi/e2e",
     "e2e:report": "npm run report --workspace @tmi/e2e",
-    "deploy:test": "node -e \"console.error('Refusing: the orgsupport branch deploys only to tutoring / tutoring-test. The institute (tmi-portal) and the demo (tmi-portal-test) ship from main.'); process.exit(1)\"",
-    "deploy:tutoring": "npm run build && npm run deploy:tutoring --workspace @tmi/api",
-    "deploy:tutoring-test": "npm run build && npm run deploy:tutoring-test --workspace @tmi/api",
-    "demo:reset": "node -e \"console.error('Refusing: the orgsupport branch deploys only to tutoring / tutoring-test. The institute (tmi-portal) and the demo (tmi-portal-test) ship from main.'); process.exit(1)\"",
-    "e2e:tutoring": "bash scripts/e2e-tutoring.sh",
-    "tutoring:reset-test": "npm run db:rebuild:tutoring-test --workspace @tmi/api && npm run db:seed:tutoring-test --workspace @tmi/api && npm run db:platform-admin:tutoring-test --workspace @tmi/api",
-    "migrate:tmi:stage": "node scripts/migrate-tmi/build-stage.mjs"
+    "deploy:test": "npm run build && npm run deploy:test --workspace @tmi/api",
+    "migrate:tmi:stage": "node scripts/migrate-tmi/build-stage.mjs",
+    "db:reset:test": "npm run db:rebuild:test --workspace @tmi/api && npm run db:seed:test --workspace @tmi/api && npm run db:platform-admin:test --workspace @tmi/api"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

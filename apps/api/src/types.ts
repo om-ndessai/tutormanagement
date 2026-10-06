@@ -18,6 +18,12 @@ export interface Env {
   GOOGLE_CLIENT_ID: string;
   /** "true" | "false". See wrangler.jsonc. */
   AUTH_ENABLED: string;
+  /**
+   * The organization this address is for (a slug, or ""): its sign-in page
+   * wears it, and a member of it lands in it without choosing. It picks; the
+   * membership check still decides.
+   */
+  DEFAULT_ORGANIZATION?: string;
   /** Identity used by every request while AUTH_ENABLED is "false". */
   DEV_USER_EMAIL: string;
   /** Comma-separated emails that become platform admins while there is none. */

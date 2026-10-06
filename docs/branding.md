@@ -5,7 +5,7 @@ Colors and logo assets are taken from the institute's own logo; the tagline is t
 
 > **Exploring the fun of Math** — Mathematics Institute of the Triangle
 
-## Organizations (orgsupport)
+## Organizations
 
 On this branch the identity is each organization's: name and short name, a palette from
 `ORG_PALETTES` (`platform` slate, `indigo`, `teal`, `forest`, `crimson`, `amber`, and the

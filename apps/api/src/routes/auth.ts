@@ -131,7 +131,10 @@ export const authRoutes = new Hono<AppEnv>()
    */
   .get('/config', async (c) => {
     const enabled = isAuthEnabled(c.env);
-    const remembered = getCookie(c, LAST_ORG_COOKIE)?.trim().toLowerCase();
+    // The organization this browser last chose, else the one this address is for.
+    const remembered = (getCookie(c, LAST_ORG_COOKIE) || c.env.DEFAULT_ORGANIZATION || '')
+      .trim()
+      .toLowerCase();
     const brandOrg = remembered ? await getPublicBrand(c.env.DB, remembered) : null;
 
     const body: ApiOk<AuthConfig> = {
