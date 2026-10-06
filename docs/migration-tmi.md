@@ -1,7 +1,15 @@
 # Migrating the institute into tutoring-db
 
-**Status: written and rehearsed locally, NOT run.** Nothing here has touched `tmi-portal-db` or
-`tutoring-db`. Every remote step below waits for the owner's go-ahead.
+**Status: run on 2026-10-05 (21:07 ET).** Backups were taken first:
+- `~/tmi-portal-backups/prod-2026-10-05-2107-before-migration.sql`;
+- `~/tmi-portal-backups/tutoring-2026-10-05-2107-before-migration.sql`;
+- tutoring-db Time Travel bookmark `00000005-00000000-000050fc-e89e8291c0acdf73bc7c0ba7566c4dad`.
+
+**What it carried:** 14 people, 16 roles, 9 lessons (87,375 cents), 1 payment (50,000 cents),
+and 168 log lines with identical ids, text and timestamps, plus one line for the migration.
+
+**Checks:** preflight was empty, and all 32 verify checks were ok. The staging tables and the
+local export were removed afterwards. tmi-portal was not changed.
 
 ## What it does
 
