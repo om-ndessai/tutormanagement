@@ -17,3 +17,6 @@ npm-debug.log*
 !.vscode/extensions.json
 *.tsbuildinfo
 coverage/
+
+# The institute's migration: exports of real records. Never committed.
+scripts/migrate-tmi/out/

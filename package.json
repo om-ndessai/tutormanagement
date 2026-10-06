@@ -31,7 +31,8 @@
     "deploy:tutoring-test": "npm run build && npm run deploy:tutoring-test --workspace @tmi/api",
     "demo:reset": "node -e \"console.error('Refusing: the orgsupport branch deploys only to tutoring / tutoring-test. The institute (tmi-portal) and the demo (tmi-portal-test) ship from main.'); process.exit(1)\"",
     "e2e:tutoring": "bash scripts/e2e-tutoring.sh",
-    "tutoring:reset-test": "npm run db:rebuild:tutoring-test --workspace @tmi/api && npm run db:seed:tutoring-test --workspace @tmi/api && npm run db:platform-admin:tutoring-test --workspace @tmi/api"
+    "tutoring:reset-test": "npm run db:rebuild:tutoring-test --workspace @tmi/api && npm run db:seed:tutoring-test --workspace @tmi/api && npm run db:platform-admin:tutoring-test --workspace @tmi/api",
+    "migrate:tmi:stage": "node scripts/migrate-tmi/build-stage.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
