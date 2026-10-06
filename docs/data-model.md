@@ -13,7 +13,8 @@ are `docs/multi-organization.md`; in short:
 - **The person is global; everything else is the organization's.** `users` is the sign-in
   identity and how to reach someone (name, email, phone, `google_sub`) -- nothing an organization
   decides. `org_members` is belonging (`status`, `removed_at`, `first_entered_at`,
-  `last_entered_at`, `details_confirmed_at`), `user_roles` is what they do there, and
+  `last_entered_at`, `details_confirmed_at`, and `is_default` -- the one organization a person
+  lands in on signing in, at most one per person by a partial unique index), `user_roles` is what they do there, and
   `tutor_profiles`, `student_profiles`, `guardianships`, `payment_handles` and
   `availability_slots` are each keyed `(organization_id, user_id, ...)` with a composite foreign
   key to `org_members`. Removing someone from an organization sets `org_members.removed_at`,

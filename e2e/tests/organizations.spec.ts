@@ -13,10 +13,10 @@ test.describe('people in several organizations', () => {
 
     await expect(priya).toHaveURL(/\/select-organization$/);
     await expect(priya.getByRole('heading', { name: 'Choose an organization' })).toBeVisible();
-    await expect(priya.getByRole('button', { name: /Chapel Hill Math Institute.*Admin · Tutor/ })).toBeVisible();
-    await expect(priya.getByRole('button', { name: /Riverside Tutoring.*Tutor/ })).toBeVisible();
+    await expect(priya.getByRole('button', { name: /^Chapel Hill Math Institute.*Admin · Tutor/ })).toBeVisible();
+    await expect(priya.getByRole('button', { name: /^Riverside Tutoring.*Tutor/ })).toBeVisible();
 
-    await priya.getByRole('button', { name: /Riverside Tutoring/ }).click();
+    await priya.getByRole('button', { name: /^Riverside Tutoring/ }).click();
     await expect(priya).toHaveURL(/\/$/);
     await expect(priya.locator('html')).toHaveAttribute('data-palette', 'teal');
     await expect(priya).toHaveTitle(/Riverside/);
@@ -86,7 +86,7 @@ test.describe('people in several organizations', () => {
 
     await grace.getByRole('button', { name: 'Accept' }).click();
     await expect(grace.getByText('You have joined Riverside Tutoring.')).toBeVisible();
-    await expect(grace.getByRole('button', { name: /Riverside Tutoring/ })).toBeVisible();
+    await expect(grace.getByRole('button', { name: /^Riverside Tutoring/ })).toBeVisible();
     expect(
       (await grace.request.get('/api/dashboard', { headers: { 'X-Organization': ORGS.b.slug } })).status(),
     ).toBe(200);

@@ -163,6 +163,14 @@ organizations (the cron's sweep, sign-in) says so with an `org-scope:` comment. 
 backs it up: every root table's `BEFORE INSERT` trigger refuses a person who is not a member of
 the row's organization, and `BEFORE UPDATE OF organization_id` refuses any move.
 
+**Someone in several organizations may choose a default, where they land on signing in.**
+`org_members.is_default`, at most one per person (`org_members_one_default`), set by
+`PUT /api/auth/default-organization` (the person's own; only an organization they may enter now;
+logged there as `membership.default_set` / `default_cleared`) from a star on the picker or the
+switcher. It decides only where an ARRIVING tab lands -- one with no organization of its own in
+`sessionStorage` (`hasTabOrg`) -- ahead of the `tmi_last_org` cookie and `DEFAULT_ORGANIZATION`;
+it never moves a tab that has chosen.
+
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
 adds their admins by email; it never reads an organization's people, lessons or money. Its

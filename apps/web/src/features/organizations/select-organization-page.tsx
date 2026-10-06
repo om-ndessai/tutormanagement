@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ArrowRightIcon, BuildingIcon, CheckIcon, ShieldCheckIcon, XIcon } from 'lucide-react';
+import { ArrowRightIcon, BuildingIcon, CheckIcon, ShieldCheckIcon, StarIcon, XIcon } from 'lucide-react';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/providers/auth-provider';
-import { useAnswerInvitation } from './api';
+import { useAnswerInvitation, useSetDefaultOrganization } from './api';
 import { OrgAvatar } from './org-avatar';
 
 /**
@@ -22,6 +22,7 @@ export function SelectOrganizationPage() {
   const { user, memberships, invitations, platformAdmin, chooseOrganization, refreshSession, signOut, impersonated } =
     useAuth();
   const answer = useAnswerInvitation();
+  const setDefault = useSetDefaultOrganization();
 
   const active = memberships.filter((m) => m.status === 'active');
   const suspended = memberships.filter((m) => m.status === 'suspended');
@@ -35,6 +36,18 @@ export function SelectOrganizationPage() {
   if (only) return null;
   if (active.length === 0 && invitations.length === 0 && platformAdmin) {
     return <Navigate to="/platform" replace />;
+  }
+
+  /** Where they land on signing in; pressing the current default clears it. */
+  async function toggleDefault(slug: string, name: string, isDefault: boolean) {
+    try {
+      await setDefault.mutateAsync(isDefault ? null : slug);
+      toast.success(
+        isDefault ? `You will choose where to go when you sign in.` : `You will land in ${name} when you sign in.`,
+      );
+    } catch {
+      toast.error('Your default organization could not be changed. Try again.');
+    }
   }
 
   async function respond(slug: string, name: string, accept: boolean) {
@@ -96,22 +109,46 @@ export function SelectOrganizationPage() {
 
         <section className="grid gap-3" aria-label="Your organizations">
           {active.map((org) => (
-            <button
-              key={org.slug}
-              type="button"
-              onClick={() => chooseOrganization(org.slug)}
-              className="bg-card hover:bg-accent/50 focus-visible:ring-ring flex items-center gap-3 rounded-xl border p-4 text-left transition-colors outline-none focus-visible:ring-2"
-            >
-              <OrgAvatar org={org} />
-              <span className="min-w-0 flex-1">
-                <span className="block truncate font-medium">{org.name}</span>
-                <span className="text-muted-foreground block text-xs">
-                  {org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+            <div key={org.slug} className="bg-card flex items-stretch rounded-xl border" data-testid={`org-${org.slug}`}>
+              <button
+                type="button"
+                onClick={() => chooseOrganization(org.slug)}
+                className="hover:bg-accent/50 focus-visible:ring-ring flex min-w-0 flex-1 items-center gap-3 rounded-l-xl p-4 text-left transition-colors outline-none focus-visible:ring-2"
+              >
+                <OrgAvatar org={org} />
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center gap-2">
+                    <span className="truncate font-medium">{org.name}</span>
+                    {org.is_default && <Badge variant="secondary">Default</Badge>}
+                  </span>
+                  <span className="text-muted-foreground block text-xs">
+                    {org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+                  </span>
                 </span>
-              </span>
-              <ArrowRightIcon className="text-muted-foreground size-4" />
-            </button>
+                <ArrowRightIcon className="text-muted-foreground size-4" />
+              </button>
+              {/* Only worth offering with somewhere else to land. */}
+              {active.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => void toggleDefault(org.slug, org.name, org.is_default)}
+                  disabled={setDefault.isPending}
+                  aria-pressed={org.is_default}
+                  aria-label={org.is_default ? `Stop landing in ${org.name} on sign-in` : `Land in ${org.name} on sign-in`}
+                  title={org.is_default ? 'Your default: you land here on signing in' : 'Make this your default'}
+                  className="hover:bg-accent/50 focus-visible:ring-ring text-muted-foreground hover:text-foreground flex w-12 shrink-0 items-center justify-center rounded-r-xl border-l transition-colors outline-none focus-visible:ring-2"
+                >
+                  <StarIcon className={org.is_default ? 'fill-primary text-primary icon-pop size-4' : 'icon-pop size-4'} />
+                </button>
+              )}
+            </div>
           ))}
+          {active.length > 1 && (
+            <p className="text-muted-foreground text-xs">
+              <StarIcon className="mr-1 inline size-3 align-[-1px]" />
+              Star one to land in it whenever you sign in.
+            </p>
+          )}
 
           {suspended.map((org) => (
             <div key={org.slug} className="flex items-center gap-3 rounded-xl border border-dashed p-4 opacity-70">

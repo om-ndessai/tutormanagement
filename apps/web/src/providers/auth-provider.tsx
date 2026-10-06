@@ -1,6 +1,7 @@
 import {
   createContext,
   use,
+  useRef,
   useCallback,
   useEffect,
   useMemo,
@@ -25,7 +26,7 @@ import {
   UNAUTHENTICATED_EVENT,
   apiClient,
 } from '@/lib/api-client';
-import { clearActiveOrg, getActiveOrg, setActiveOrg } from '@/lib/organization';
+import { clearActiveOrg, getActiveOrg, hasTabOrg, setActiveOrg } from '@/lib/organization';
 
 /** The organization this tab is in, with its payer details for its admins. */
 export type ActiveOrganization = NonNullable<SessionResponse['organization']>;
@@ -96,13 +97,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * organization this tab is in: the one it named, if the person may still
    * enter it; otherwise, if there is exactly one place to go, that one. With
    * several, nothing is chosen and the picker asks.
+   *
+   * A tab that is only arriving (no organization of its own yet: just signed
+   * in, or newly opened) lands in the person's default organization when they
+   * have chosen one and may still enter it -- ahead of the browser's last
+   * one and the address's own. Once in, the tab keeps its own choice.
    */
+  // Whether this tab is arriving, decided once when it opens (and again on
+  // signing out) -- not when a response comes back, by which time another
+  // load may already have written the tab's organization and the two would
+  // disagree about where to land.
+  const arrivingRef = useRef(!hasTabOrg());
+
   const applySession = useCallback((session: SessionResponse): boolean => {
     setImpersonated(session.impersonated);
     setOnboarding(session.onboarding);
     setMemberships(session.memberships);
     setInvitations(session.invitations);
     setPlatformAdmin(session.platform_admin);
+
+    const preferred = session.memberships.find((m) => m.is_default && m.status === 'active');
+    if (arrivingRef.current && preferred && session.organization?.slug !== preferred.slug) {
+      setActiveOrg(preferred.slug);
+      return false;
+    }
+    arrivingRef.current = false;
 
     if (session.organization) {
       setActiveOrg(session.organization.slug);
@@ -274,6 +293,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Server data was fetched as the previous user; none of it should survive.
       queryClient.clear();
       clearActiveOrg();
+      // The next sign-in arrives afresh, and lands in their default.
+      arrivingRef.current = true;
       setUser(null);
       setOrganization(null);
       setMemberships([]);

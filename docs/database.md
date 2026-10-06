@@ -227,6 +227,19 @@ npx wrangler d1 execute tmi-portal-db --remote \
 A new table with its constraints intact is the one migration SQLite does properly — unlike the
 added columns above, this one keeps every CHECK and foreign key.
 
+The default organization (2026-10) is one column on `org_members` and a partial unique index,
+so a person has at most one. Existing rows take `0`, which is "no default", so nobody's landing
+changes until they choose. Both statements go to `tutoring-db` (and are in `schema.sql` for
+`tutoring-test-db`, which is rebuilt):
+
+```bash
+cd apps/api
+npx wrangler d1 execute tutoring-db --remote --command="ALTER TABLE org_members ADD COLUMN is_default INTEGER NOT NULL DEFAULT 0 CHECK (is_default IN (0, 1))"
+npx wrangler d1 execute tutoring-db --remote --command="CREATE UNIQUE INDEX org_members_one_default ON org_members (user_id) WHERE is_default = 1"
+# read-only check: nobody has two
+npx wrangler d1 execute tutoring-db --remote --command="SELECT user_id, COUNT(*) FROM org_members WHERE is_default = 1 GROUP BY user_id HAVING COUNT(*) > 1"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

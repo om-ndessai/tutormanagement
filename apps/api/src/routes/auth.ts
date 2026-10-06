@@ -8,6 +8,7 @@ import {
   type ApiOk,
   type AuthConfig,
   type SessionResponse,
+  defaultOrganizationSchema,
 } from '@tmi/shared';
 
 import { recordAudit } from '../lib/audit.js';
@@ -34,6 +35,7 @@ import {
   getPublicBrand,
   listInvitations,
   listMemberships,
+  setDefaultOrganization,
   recordEntry,
 } from '../repositories/organizations.js';
 import {
@@ -300,6 +302,51 @@ export const authRoutes = new Hono<AppEnv>()
     }
 
     const body: ApiOk<{ first_visit: boolean }> = { data: { first_visit: entry.firstEver } };
+    return c.json(body);
+  })
+
+  /**
+   * Chooses the organization the person lands in on signing in, or clears
+   * the choice. Only one the person may enter now, and only their own: the
+   * route takes no person. Logged in that organization's own log.
+   */
+  .put('/default-organization', requireAuth, zValidator('json', defaultOrganizationSchema), async (c) => {
+    const { slug } = c.req.valid('json');
+    const person = c.get('person');
+    const memberships = await listMemberships(c.env.DB, person.id);
+    const previous = memberships.find((m) => m.is_default);
+
+    if (slug === null) {
+      await setDefaultOrganization(c.env.DB, person.id, null);
+      if (previous) {
+        await recordAudit(c.env.DB, person, orgIdFromRow(previous.id), {
+          action: 'membership.default_cleared',
+          description: `${person.full_name} no longer lands in ${previous.name} on signing in`,
+          subject: { id: person.id, full_name: person.full_name },
+          entity_type: 'user',
+          entity_id: person.id,
+        });
+      }
+    } else {
+      // An organization they cannot enter now is reported as missing.
+      const chosen = memberships.find((m) => m.slug === slug && m.status === 'active');
+      if (!chosen) throw ApiError.notFound('Organization not found.');
+
+      if (previous?.slug !== chosen.slug) {
+        await setDefaultOrganization(c.env.DB, person.id, orgIdFromRow(chosen.id));
+        await recordAudit(c.env.DB, person, orgIdFromRow(chosen.id), {
+          action: 'membership.default_set',
+          description: `${person.full_name} made ${chosen.name} their default organization`,
+          subject: { id: person.id, full_name: person.full_name },
+          entity_type: 'user',
+          entity_id: person.id,
+        });
+      }
+    }
+
+    const body: ApiOk<{ default_organization: string | null }> = {
+      data: { default_organization: slug },
+    };
     return c.json(body);
   })
 

@@ -62,6 +62,8 @@ export const AUDIT_ACTIONS = [
   'membership.invited',
   'membership.accepted',
   'membership.declined',
+  'membership.default_set',
+  'membership.default_cleared',
 
   'organization.created',
   'organization.updated',
@@ -139,6 +141,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'membership.invited': 'Invited to the organization',
   'membership.accepted': 'Invitation accepted',
   'membership.declined': 'Invitation declined',
+  'membership.default_set': 'Default organization chosen',
+  'membership.default_cleared': 'Default organization cleared',
 
   'organization.created': 'Organization created',
   'organization.updated': 'Organization updated',

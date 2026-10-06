@@ -1,4 +1,5 @@
-import { CheckIcon, ChevronsUpDownIcon, ShieldCheckIcon } from 'lucide-react';
+import { CheckIcon, ChevronsUpDownIcon, ShieldCheckIcon, StarIcon, StarOffIcon } from 'lucide-react';
+import { toast } from 'sonner';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
@@ -12,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
+import { useSetDefaultOrganization } from './api';
 import { OrgAvatar } from './org-avatar';
 
 /** Whether the person has anywhere else to go: another organization, or the console. */
@@ -29,10 +31,26 @@ export function useHasOtherPlaces(): boolean {
 export function OrgSwitcher({ className }: { className?: string }) {
   const { organization, memberships, invitations, platformAdmin, chooseOrganization } = useAuth();
   const hasOthers = useHasOtherPlaces();
+  const setDefault = useSetDefaultOrganization();
 
   if (!hasOthers) return <LogoLockup className={className} />;
 
   const active = memberships.filter((m) => m.status === 'active');
+  const current = active.find((m) => m.slug === organization?.slug);
+
+  /** Where they land on signing in: this organization, or nowhere in particular. */
+  function toggleDefault() {
+    if (!current) return;
+    setDefault.mutate(current.is_default ? null : current.slug, {
+      onSuccess: () =>
+        toast.success(
+          current.is_default
+            ? 'You will choose where to go when you sign in.'
+            : `You will land in ${current.name} when you sign in.`,
+        ),
+      onError: () => toast.error('Your default organization could not be changed. Try again.'),
+    });
+  }
 
   return (
     <DropdownMenu>
@@ -54,7 +72,12 @@ export function OrgSwitcher({ className }: { className?: string }) {
           <DropdownMenuItem key={org.slug} onSelect={() => org.slug !== organization?.slug && chooseOrganization(org.slug)}>
             <OrgAvatar org={org} className="size-7" />
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm">{org.name}</span>
+              <span className="flex items-center gap-1.5 text-sm">
+                <span className="truncate">{org.name}</span>
+                {org.is_default && (
+                  <StarIcon className="fill-primary text-primary size-3 shrink-0" aria-label="Your default" />
+                )}
+              </span>
               <span className="text-muted-foreground block truncate text-xs">
                 {org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
               </span>
@@ -62,6 +85,18 @@ export function OrgSwitcher({ className }: { className?: string }) {
             {org.slug === organization?.slug && <CheckIcon className="size-4" />}
           </DropdownMenuItem>
         ))}
+
+        {current && active.length > 1 && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={toggleDefault} disabled={setDefault.isPending}>
+              {current.is_default ? <StarOffIcon className="size-4" /> : <StarIcon className="size-4" />}
+              {current.is_default
+                ? `Stop landing in ${current.short_name} on sign-in`
+                : `Land in ${current.short_name} on sign-in`}
+            </DropdownMenuItem>
+          </>
+        )}
 
         {(platformAdmin || invitations.length > 0) && <DropdownMenuSeparator />}
         {invitations.length > 0 && (

@@ -153,7 +153,7 @@ export async function listMemberships(db: D1Database, userId: string): Promise<M
     .prepare(
       `${SELECT_ORG.replace(
         'FROM organizations o',
-        `, m.status AS member_status,
+        `, m.status AS member_status, m.is_default AS member_is_default,
            (SELECT GROUP_CONCAT(r.role) FROM user_roles r
             WHERE r.organization_id = o.id AND r.user_id = m.user_id) AS roles_csv
          FROM organizations o JOIN org_members m ON m.organization_id = o.id`,
@@ -163,13 +163,47 @@ export async function listMemberships(db: D1Database, userId: string): Promise<M
        ORDER BY o.name COLLATE NOCASE`,
     )
     .bind(userId)
-    .all<OrgRow & { member_status: 'active' | 'suspended'; roles_csv: string | null }>();
+    .all<OrgRow & {
+      member_status: 'active' | 'suspended';
+      member_is_default: number;
+      roles_csv: string | null;
+    }>();
 
   return (result.results ?? []).map((row) => ({
     ...toBrand(row),
     roles: parseRoles(row.roles_csv),
     status: row.member_status,
+    is_default: row.member_is_default === 1,
   }));
+}
+
+/**
+ * Makes `org` the organization the person lands in on signing in, or clears
+ * the choice (`null`). One batch, so there is never a moment with two -- the
+ * partial unique index would refuse one anyway. The caller has checked the
+ * person may enter `org`.
+ */
+export async function setDefaultOrganization(
+  db: D1Database,
+  userId: string,
+  org: OrgId | null,
+): Promise<void> {
+  const clear = db
+    .prepare(
+      // org-scope: a person's default is one choice across all their organizations.
+      'UPDATE org_members SET is_default = 0 WHERE user_id = ? AND is_default = 1',
+    )
+    .bind(userId);
+  if (!org) {
+    await clear.run();
+    return;
+  }
+  await db.batch([
+    clear,
+    db
+      .prepare('UPDATE org_members SET is_default = 1 WHERE organization_id = ? AND user_id = ?')
+      .bind(org, userId),
+  ]);
 }
 
 /** Organizations waiting for the person's answer. */

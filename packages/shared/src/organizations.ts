@@ -209,7 +209,18 @@ export interface OrganizationSettings {
 export interface Membership extends OrganizationBrand {
   roles: UserRole[];
   status: 'active' | 'suspended';
+  /** The organization the person lands in on signing in. At most one is. */
+  is_default: boolean;
 }
+
+/**
+ * Choosing where to land on signing in, for someone in several organizations.
+ * `null` clears it: they land wherever they were last, or choose.
+ */
+export const defaultOrganizationSchema = z.object({
+  slug: orgSlugSchema.nullable(),
+});
+export type DefaultOrganizationInput = z.input<typeof defaultOrganizationSchema>;
 
 /** An organization that has invited the signed-in person, pending their answer. */
 export interface Invitation extends OrganizationBrand {

@@ -27,6 +27,19 @@ export function getActiveOrg(): string | null {
   return readCookie(LAST_ORG_COOKIE);
 }
 
+/**
+ * True once this tab has an organization of its own -- chosen, switched to, or
+ * entered. A tab without one is arriving: just signed in, or freshly opened,
+ * and that is when a person's default organization decides where they land.
+ */
+export function hasTabOrg(): boolean {
+  try {
+    return Boolean(sessionStorage.getItem(TAB_KEY));
+  } catch {
+    return false;
+  }
+}
+
 export function setActiveOrg(slug: string): void {
   try {
     sessionStorage.setItem(TAB_KEY, slug);

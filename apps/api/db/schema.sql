@@ -218,6 +218,11 @@ CREATE TABLE org_members (
   -- When a non-admin confirmed this organization has their details right.
   details_confirmed_at TEXT,
 
+  -- The organization this person lands in when they sign in, if they have
+  -- chosen one. At most one per person (org_members_one_default); a default
+  -- they may no longer enter is simply passed over.
+  is_default           INTEGER NOT NULL DEFAULT 0 CHECK (is_default IN (0, 1)),
+
   created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
@@ -225,6 +230,7 @@ CREATE TABLE org_members (
 );
 
 CREATE INDEX org_members_user_idx ON org_members (user_id);
+CREATE UNIQUE INDEX org_members_one_default ON org_members (user_id) WHERE is_default = 1;
 
 
 -- ---------------------------------------------------------------------------
