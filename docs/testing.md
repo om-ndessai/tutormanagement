@@ -10,12 +10,10 @@ npm run e2e
 That command:
 
 1. builds the SPA
-2. deploys BOTH test Workers, `tutoring-test` and `tmi-portal-test`, which share
-   `tutoring-test-db`
+2. deploys `tutoring-test`, the one test Worker (`tmi-portal-test` was retired on 2026-10-06)
 3. rebuilds that database from `apps/api/db/schema.sql`, `db/seed.sql` and
    `db/platform-admin.sql`
-4. runs the suite against `https://tutoring-test.om-ndessai.workers.dev` -- only there;
-   `tmi-portal-test` is deployed with the same code but no longer tested (2026-10-06)
+4. runs the suite against `https://tutoring-test.om-ndessai.workers.dev`
 
 ## The seeded roster
 
@@ -70,7 +68,7 @@ cover organizations.
 
 | | Production | Test |
 | --- | --- | --- |
-| Workers | `tmi-portal` and `tutoring` | `tmi-portal-test` and `tutoring-test` |
+| Workers | `tmi-portal` and `tutoring` | `tutoring-test` |
 | Database | `tutoring-db` | `tutoring-test-db` |
 | Authentication | **on** — Google sign-in required | **off**, permanently |
 | Data | every organization's real records | two seeded organizations, wiped every run |

@@ -1,22 +1,23 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	/**
-	 * FOUR Workers, ONE code version, TWO databases (2026-10-06):
+	 * THREE Workers, ONE code version, TWO databases (2026-10-06):
 	 *
 	 *   Worker            database          sign-in  lands in   lesson sweep
 	 *   tmi-portal        tutoring-db       on       tmi        no
 	 *   tutoring          tutoring-db       on       (choose)   yes
-	 *   tmi-portal-test   tutoring-test-db  OFF      chmi       no
 	 *   tutoring-test     tutoring-test-db  OFF      (choose)   yes
 	 *
-	 * The two of each pair differ only in their address, which organization a
-	 * visitor lands in (DEFAULT_ORGANIZATION), and which of them runs the cron.
+	 * The production pair differ only in their address, which organization a
+	 * visitor lands in and sees on the sign-in page (DEFAULT_ORGANIZATION), and
+	 * which of them runs the cron. tmi-portal-test was retired on 2026-10-06:
+	 * it is no longer deployed, and tutoring-test is the only test Worker.
 	 * tmi-portal-db and tmi-portal-test-db are no longer bound to anything; the
 	 * institute's records live in tutoring-db as the organization `tmi`
 	 * (docs/migration-tmi.md).
 	 *
-	 * Deploy with `npm run deploy:test` (both test Workers) and `npm run deploy`
-	 * (both production Workers) -- never one of a pair alone, or the two would
+	 * Deploy with `npm run deploy:test` (tutoring-test) and `npm run deploy`
+	 * (both production Workers) -- never one of the pair alone, or the two would
 	 * serve different code against one database.
 	 *
 	 * The top level is tmi-portal. Named environments do NOT inherit `assets`,
@@ -86,50 +87,6 @@
 	},
 
 	"env": {
-		/**
-		 * The open test Worker at the institute's test address, with the same
-		 * code as everything else. Sign-in is OFF (a visitor walks in as Priya,
-		 * in the seeded organization `chmi`). It shares tutoring-test-db with
-		 * tutoring-test, where the end-to-end suite runs; it is no longer tested
-		 * itself (2026-10-06).
-		 */
-		"test": {
-			"assets": {
-				"directory": "../web/dist",
-				"binding": "ASSETS",
-				"not_found_handling": "single-page-application",
-				"run_worker_first": [
-					"/api/*"
-				]
-			},
-			// tutoring-test sweeps this database.
-			"triggers": {
-				"crons": []
-			},
-			"d1_databases": [
-				{
-					"binding": "DB",
-					"database_name": "tutoring-test-db",
-					"database_id": "7bba8b52-e104-45f6-9632-d88ce3abadc2"
-				}
-			],
-			"vars": {
-				// Relaxes the cookie Secure flag and CORS, as for every test Worker.
-				"ENVIRONMENT": "development",
-				// Sign-in stays configured so turning it back on is one value.
-				"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
-				"AUTH_ENABLED": "false",
-				// Named rather than left to the fallback, so every visitor sees the
-				// same portal: a seeded admin of `chmi`.
-				"DEV_USER_EMAIL": "priya.raghavan@gmail.com",
-				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
-				"DEFAULT_ORGANIZATION": "chmi"
-			},
-			"observability": {
-				"enabled": true
-			}
-		},
-
 		/** The tutoring platform: sign-in on, every organization, one address. */
 		"tutoring": {
 			"name": "tutoring",

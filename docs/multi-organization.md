@@ -345,7 +345,7 @@ A request that names no organization, or one the person is not an active member 
 **Where the choice lives:**
 - **Each tab** keeps its choice in `sessionStorage`, so two tabs can sit in two organizations
   without a stale tab ever acting in the wrong one.
-- **A `tmi_last_org` cookie** remembers the choice for the next visit and for the sign-in page. It
+- **A `tmi_last_org` cookie** remembers the choice for the next visit (not for the sign-in page). It
   holds the slug, lasts one year, and is not HttpOnly.
 
 **Isolation rules.** These are what Phase 28 builds and what every later change must keep:
@@ -469,8 +469,10 @@ A request that names no organization, or one the person is not an active member 
 - **`BrandProvider`** reads the session's `organization` and sets `data-palette`, the title, the
   favicon and `theme-color`. `useBrand()` keeps its shape, so its seven callers do not change. The
   `BRAND` var, `BrandId` and `resolveBrand` retire.
-- **The sign-in page** is branded by `/api/auth/config`, which reads `tmi_last_org`. Otherwise it
-  shows the neutral `PLATFORM_BRAND` ("Tutor Portal").
+- **The sign-in page** is branded by `/api/auth/config` with the organization the address is for
+  (`DEFAULT_ORGANIZATION`), otherwise the neutral `PLATFORM_BRAND` ("Tutor Portal"). (Until
+  2026-10-06 it read `tmi_last_org`, which put the last organization's look on the shared
+  `tutoring` sign-in page; an organization's look now appears only after entering it.)
 - **Branding is set by platform admins.** An organization's own admins get an **Organization
   settings** page for the TIN and the 1099 payer address, and see the branding read-only. Letting
   them edit branding later is a one-line policy change.

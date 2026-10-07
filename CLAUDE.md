@@ -46,24 +46,24 @@ phase, and re-check its figures, which were researched on that date.
 
 ## Deployments
 
-Four Workers, one code version, two databases. Each pair shares a database and is deployed
-together; they differ only in address, the organization a visitor lands in
-(`DEFAULT_ORGANIZATION`), and which one runs the lesson sweep.
+Three Workers, one code version, two databases. The production pair share `tutoring-db` and are
+deployed together; they differ only in address, the organization a visitor lands in and sees on
+the sign-in page (`DEFAULT_ORGANIZATION`), and which one runs the lesson sweep. `tutoring-test`
+is the one test Worker (`tmi-portal-test` was retired on 2026-10-06: not deployed, not tested).
 
 | Worker | Database | Sign-in | Lands in | Lesson sweep (cron) |
 | --- | --- | --- | --- | --- |
 | `tmi-portal` (the institute's address) | `tutoring-db` | on | `tmi` | no |
 | `tutoring` | `tutoring-db` | on | choose | yes |
-| `tmi-portal-test` | `tutoring-test-db` | off | `chmi` | no |
 | `tutoring-test` | `tutoring-test-db` | off | choose | yes |
 
 - `npm run deploy` deploys BOTH production Workers.
-- `npm run deploy:test` deploys BOTH test Workers.
-- `npm run e2e` deploys both test Workers, rebuilds `tutoring-test-db` from the schema and the
-  seed, and runs the suite on `tutoring-test` only. `tmi-portal-test` is deployed, never tested.
-- **Never deploy one Worker of a pair alone:** the two would serve different code against one
+- `npm run deploy:test` deploys `tutoring-test`.
+- `npm run e2e` deploys `tutoring-test`, rebuilds `tutoring-test-db` from the schema and the
+  seed, and runs the suite there.
+- **Never deploy one production Worker alone:** the two would serve different code against one
   database.
-- **Only one Worker of each pair may run the cron:** two sweeps of one database could close the
+- **Only one Worker per database may run the cron:** two sweeps of one database could close the
   same overrunning lesson twice and bill it twice.
 - `tmi-portal-db` and `tmi-portal-test-db` are no longer bound to anything. They are kept, and
   the backups in `~/tmi-portal-backups/` are the record of them.
@@ -359,8 +359,10 @@ an error response by hand.
 
 **The portal's identity is each organization's data, chosen at RUNTIME.** `BrandProvider` builds
 the brand from the session's organization (`brandFromOrganization`) -- or, before one is chosen
-and on the sign-in page, from `/api/auth/config` (the `tmi_last_org` organization, else
-`PLATFORM_BRAND`, "Tutor Portal"); the console always wears the platform's (`usePlatformBrand`).
+and on the sign-in page, from `/api/auth/config`: the organization the ADDRESS is for
+(`DEFAULT_ORGANIZATION`, so `tmi-portal` wears the institute), else `PLATFORM_BRAND`, "Tutor
+Portal". Never the browser's last organization (`tmi_last_org`): a shared address like `tutoring`
+must not show one organization's logo and colours to everybody who once used it; the console always wears the platform's (`usePlatformBrand`).
 It sets `<html data-palette>`, the title, the favicon and the theme colour, and `useBrand()`
 supplies every name and mark. Palettes are `ORG_PALETTES` (shared) and one `:root[data-palette]`
 block each in `index.css`, light and dark. Logos are uploaded PNG/WebP (checked by their bytes --
@@ -368,9 +370,8 @@ never SVG, which can carry script), at most 256 KB, served at a versioned public
 `nosniff` and `default-src 'none'`; `builtin_logo: 'institute'` (platform admins only) wears the
 institute's shipped artwork. Never hardcode an organization's name: say `brand.short`.
 
-**The test Workers are open.** `AUTH_ENABLED` is `"false"` on `tmi-portal-test` and
-`tutoring-test`, so a visitor walks straight in (as Priya Raghavan in `chmi` on
-`tmi-portal-test`, its `DEV_USER_EMAIL`). Both read `tutoring-test-db`, which is seeded fiction
+**The test Worker is open.** `AUTH_ENABLED` is `"false"` on `tutoring-test`, so a visitor walks
+straight in. It reads `tutoring-test-db`, which is seeded fiction
 and is wiped by every `npm run e2e`; `scripts/e2e.sh` checks `/api/auth/config` and refuses
 before touching anything if sign-in has been turned back on. Sign-in stays configured (origin,
 client id), so turning it back on is one value.

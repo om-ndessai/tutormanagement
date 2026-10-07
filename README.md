@@ -77,7 +77,7 @@ npm run db:seed        # reload sample data into local D1
 npm run db:reset       # rebuild + seed
 npm run db:studio      # dump the users table
 npm run deploy         # build the SPA, then wrangler deploy (production)
-npm run deploy:test    # deploy the test Worker (tmi-portal-test)
+npm run deploy:test    # deploy the test Worker (tutoring-test)
 npm run e2e            # deploy + rebuild the TEST database + run the suite
 npm run e2e:test       # run the suite only, against E2E_BASE_URL
 ```

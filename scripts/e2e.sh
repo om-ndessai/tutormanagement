@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 #
-# Full end-to-end cycle against the test Workers.
+# Full end-to-end cycle against the test Worker.
 #
 #   1. build the SPA
-#   2. deploy BOTH test Workers -- tmi-portal-test and tutoring-test, which
-#      share `tutoring-test-db` -- so they never run different code
+#   2. deploy tutoring-test, the one test Worker (tmi-portal-test was retired
+#      on 2026-10-06)
 #   3. wipe and rebuild that database from db/schema.sql + db/seed.sql, and
 #      add the platform admin (db/platform-admin.sql)
 #   4. run the Playwright suite against it
 #
-# Only tutoring-test is TESTED; tmi-portal-test is deployed alongside it but no
-# longer exercised (2026-10-06). Never a production Worker or tutoring-db.
+# Never a production Worker or tutoring-db.
 # The test Worker runs with authentication permanently off, which is what lets
 # the suite act as each kind of user; it holds seeded fiction and nothing else.
 #
@@ -54,7 +53,7 @@ was touched.
       npm run dev
       E2E_BASE_URL=http://localhost:5173 npm run e2e:test
   - To hand this deployment back to the suite, set AUTH_ENABLED to "false" in
-    the "test" env of apps/api/wrangler.jsonc and deploy it.
+    the "tutoring-test" env of apps/api/wrangler.jsonc and deploy it.
 MESSAGE
     exit 1
     ;;
@@ -63,9 +62,8 @@ esac
 echo "==> Building the SPA"
 npm run build >/dev/null
 
-echo "==> Deploying both test Workers"
-( cd "$API_DIR" && npx wrangler deploy --env "$TEST_ENV" >/dev/null \
-  && npx wrangler deploy --env test >/dev/null )
+echo "==> Deploying the test Worker"
+( cd "$API_DIR" && npx wrangler deploy --env "$TEST_ENV" >/dev/null )
 
 echo "==> Rebuilding $TEST_DB (destructive, test data only)"
 ( cd "$API_DIR" \

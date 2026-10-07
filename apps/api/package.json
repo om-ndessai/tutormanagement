@@ -11,7 +11,7 @@
     "cf-typegen": "wrangler types",
     "db:seed:generate": "node db/generate-seed.mjs",
     "deploy": "wrangler deploy && wrangler deploy --env tutoring",
-    "deploy:test": "wrangler deploy --env test && wrangler deploy --env tutoring-test",
+    "deploy:test": "wrangler deploy --env tutoring-test",
     "db:rebuild": "wrangler d1 execute tutoring-db --local --file=./db/schema.sql",
     "db:seed": "wrangler d1 execute tutoring-db --local --file=./db/seed.sql",
     "db:platform-admin": "wrangler d1 execute tutoring-db --local --file=./db/platform-admin.sql",

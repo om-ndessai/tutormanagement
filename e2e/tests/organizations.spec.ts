@@ -29,6 +29,22 @@ test.describe('people in several organizations', () => {
     expect(session.user.roles).toEqual(['tutor']);
   });
 
+  test('the sign-in page wears the address, never the organization last used', async ({ as }) => {
+    // This browser was last in Riverside. The shared address's sign-in page
+    // still shows the neutral platform look: an organization's logo and
+    // colours appear only once someone signs in and enters it.
+    const priya = await as('admin', { org: ORGS.b.slug });
+    const config = await unwrap<any>(await priya.request.get('/api/auth/config'), 'config');
+    expect(config.brand.name).toBe('Tutor Portal');
+    expect(config.brand.palette).toBe('platform');
+
+    // Signed in but not yet in one: still the platform's look.
+    const choosing = await as('admin', { org: null });
+    await choosing.goto('/select-organization');
+    await expect(choosing.getByRole('heading', { name: 'Choose an organization' })).toBeVisible();
+    await expect(choosing.locator('html')).toHaveAttribute('data-palette', 'platform');
+  });
+
   test('the switcher moves this tab, and another tab stays where it was', async ({ as }) => {
     const priya = await as('admin');
     await priya.goto('/');

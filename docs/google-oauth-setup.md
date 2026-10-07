@@ -258,9 +258,9 @@ https://tutoring.om-ndessai.workers.dev
 
 ## The test Workers
 
-`tmi-portal-test` and `tutoring-test` run with sign-in OFF. If sign-in is ever turned back on
-for `tmi-portal-test`, its origin is already an **Authorised JavaScript origin** on the same
-OAuth client production uses:
+`tutoring-test` runs with sign-in OFF. (`tmi-portal-test` was retired on 2026-10-06; its origin
+below can be removed from the OAuth client.) The retired test origin, on the same OAuth client
+production uses:
 
 ```
 https://tmi-portal-test.om-ndessai.workers.dev

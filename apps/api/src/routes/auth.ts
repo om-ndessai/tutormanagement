@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { getCookie } from 'hono/cookie';
 import {
-  LAST_ORG_COOKIE,
   PLATFORM_BRAND,
   brandFromOrganization,
   googleSignInSchema,
@@ -128,16 +127,19 @@ export const authRoutes = new Hono<AppEnv>()
   /**
    * Public. The SPA calls this before rendering anything: which Google client
    * to use, whether there is a sign-in screen at all, and what the sign-in
-   * page should look like -- the organization this browser last chose, or the
-   * neutral platform brand.
+   * page should look like.
+   *
+   * Only the organization this ADDRESS is for (DEFAULT_ORGANIZATION) may brand
+   * it -- the institute's address wears the institute -- and a shared address
+   * like `tutoring` wears the neutral platform brand. Never the browser's last
+   * organization: that put one organization's logo and colours on the shared
+   * sign-in page for everybody who had once been in it. An organization's own
+   * look appears once someone signs in and enters it.
    */
   .get('/config', async (c) => {
     const enabled = isAuthEnabled(c.env);
-    // The organization this browser last chose, else the one this address is for.
-    const remembered = (getCookie(c, LAST_ORG_COOKIE) || c.env.DEFAULT_ORGANIZATION || '')
-      .trim()
-      .toLowerCase();
-    const brandOrg = remembered ? await getPublicBrand(c.env.DB, remembered) : null;
+    const own = (c.env.DEFAULT_ORGANIZATION || '').trim().toLowerCase();
+    const brandOrg = own ? await getPublicBrand(c.env.DB, own) : null;
 
     const body: ApiOk<AuthConfig> = {
       data: {
