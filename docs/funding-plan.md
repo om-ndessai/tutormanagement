@@ -301,7 +301,8 @@ invitations, text messages, student sign-in, an editable curriculum, self-serve 
    `--remote` command, so it needs the owner's go-ahead.
 5. **Fix the demo's phone header.** `apps/web/src/components/layout/app-shell.tsx:137`
    hard-codes "TMI Portal" below the `lg` width, so the demo shows the institute's name on a
-   phone. Use `brand.short`, typecheck, deploy to the demo only, then `npm run demo:reset`.
+   phone. Use `brand.short`, typecheck, then `npm run e2e` (the demo Worker, `tmi-portal-test`,
+   was retired on 2026-10-06; `tutoring-test` is the one open deployment).
 6. **Write the one-page plan,** targets and budget in the entrant's own words.
 7. **Choose a name for the product.**
 

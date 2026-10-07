@@ -68,7 +68,7 @@ takes effect immediately; no verification submission is needed.
    | `http://localhost:5173` | `npm run dev` — the Vite dev server |
    | `http://localhost:8787` | Hitting the Worker directly via `npm run dev:api` |
    | `https://tmi-portal.<your-subdomain>.workers.dev` | After `npm run deploy` |
-   | `https://tutoring.om-ndessai.workers.dev` | The tutoring platform (`npm run deploy:tutoring`) |
+   | `https://tutoring.om-ndessai.workers.dev` | The tutoring platform (`npm run deploy`) |
    | `https://portal.trianglemathinstitute.com` | If you attach a custom domain |
 
    Rules Google enforces: scheme + host + port only — **no path and no trailing
@@ -256,19 +256,21 @@ https://tutoring.om-ndessai.workers.dev
 `tutoring-test` has sign-in off and needs nothing. Its database starts empty, so
 `BOOTSTRAP_ADMIN_EMAILS` (`ndessai@gmail.com`) is what lets the first admin in, once the tables exist.
 
-## The test Workers
+## The test Worker
 
-`tutoring-test` runs with sign-in OFF. (`tmi-portal-test` was retired on 2026-10-06; its origin
-below can be removed from the OAuth client.) The retired test origin, on the same OAuth client
-production uses:
+`tutoring-test` (`https://tutoring-test.tmi-api.workers.dev`, in the TEST Cloudflare account)
+runs with sign-in OFF, so it needs no origin on the OAuth client. If sign-in is ever turned on
+there, add that origin first, or Google refuses with `origin_mismatch` before the portal is
+involved. No redirect URI is needed either way -- the portal uses Google Identity Services in the
+browser and posts the ID token to `/api/auth/google`.
+
+Two old test origins can be removed from the OAuth client: their Workers were deleted on
+2026-10-06/07.
 
 ```
 https://tmi-portal-test.om-ndessai.workers.dev
+https://tutoring-test.om-ndessai.workers.dev
 ```
 
-Without it, Google refuses the sign-in with `origin_mismatch` before the portal is involved. No
-redirect URI is needed — the portal uses Google Identity Services in the browser and posts the
-ID token to `/api/auth/google`, so there is no redirect to register.
-
-Both test Workers read `tutoring-test-db`, seeded with two fictional organizations and
+`tutoring-test` reads `tutoring-test-db`, seeded with two fictional organizations and
 `ndessai@gmail.com` as platform admin (`db/platform-admin.sql`).

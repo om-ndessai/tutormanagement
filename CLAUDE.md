@@ -74,8 +74,10 @@ checks, which spends no quota at all.
   database.
 - **Only one Worker per database may run the cron:** two sweeps of one database could close the
   same overrunning lesson twice and bill it twice.
-- `tmi-portal-db` and `tmi-portal-test-db` are no longer bound to anything. They are kept, and
-  the backups in `~/tmi-portal-backups/` are the record of them.
+- The production account holds `tmi-portal`, `tutoring`, `tutoring-db` and the old
+  `tmi-portal-db`, unbound and kept as a record beside the backups in `~/tmi-portal-backups/`.
+  The old test Workers (`tmi-portal-test`, and `tutoring-test` before its move to TEST) and the
+  old `tutoring-test-db` there were deleted on 2026-10-07; `tmi-portal-test-db` no longer exists.
 
 `tutoring-db` holds every organization's real records, the institute's included: never rebuild
 it (`npm run db:rebuild:remote` refuses); carry schema changes by hand and additively
@@ -116,7 +118,7 @@ as part of the change. Run `--remote` wrangler commands only as part of a releas
 approved: **approving a phase's plan is that approval**, for the whole release, with no further
 asking —
 1. commit and push to `main`;
-2. `npm run e2e` (deploys both test Workers, wipes only `tutoring-test-db`, tests `tutoring-test`);
+2. `npm run e2e` (deploys `tutoring-test` in the TEST account, wipes only `tutoring-test-db`, tests it);
 3. back up production (`wrangler d1 export tutoring-db --remote`);
 4. apply the phase's additive schema block and check the new queries read-only against production;
 5. `npm run deploy` (both production Workers), then smoke-test both addresses.
@@ -471,8 +473,8 @@ can see whom.
 
 ## End-to-end tests
 
-`npm run e2e` deploys both test Workers, wipes and reseeds `tutoring-test-db` (schema, seed,
-platform admin) and tests `tutoring-test`, whose authentication is permanently off.
+`npm run e2e` deploys `tutoring-test` (in the TEST account), wipes and reseeds `tutoring-test-db`
+(schema, seed, platform admin) and tests it; its authentication is permanently off.
 **It never touches production.** `npm run e2e:test` runs the suite without deploying or wiping;
 `npm run db:reset:test` reseeds without testing.
 

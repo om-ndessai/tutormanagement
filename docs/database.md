@@ -1,7 +1,8 @@
 # Database
 
 Cloudflare D1 — SQLite at the edge. Since 2026-10-06 production is **`tutoring-db`**, bound as
-`DB` to both the `tmi-portal` and `tutoring` Workers; the tests share `tutoring-test-db`. The
+`DB` to both the `tmi-portal` and `tutoring` Workers; the test Worker uses `tutoring-test-db`, which
+lives in a separate TEST Cloudflare account so test runs cannot spend production's D1 quota. The
 institute's old `tmi-portal-db` is no longer bound to anything: its records were migrated into
 `tutoring-db` as the organization `tmi` (`docs/migration-tmi.md`). The phase-by-phase commands
 below were run against `tmi-portal-db` and are kept as history; new changes go to `tutoring-db`.
@@ -280,15 +281,14 @@ branch's `db/schema.sql` -- the organization-aware schema, with no migration fro
 institute's data:
 
 ```sh
-# tutoring-test: schema, the two seeded organizations, the platform admin
-npm run tutoring:reset-test            # or: npm run e2e:tutoring, which also deploys and tests
-
-# tutoring (real organizations from then on): schema and the platform admin ONLY, once
-npm run db:rebuild:tutoring --workspace @tmi/api
-npm run db:platform-admin:tutoring --workspace @tmi/api
+# tutoring-test-db (TEST account): schema, the two seeded organizations, the platform admin
+npm run db:reset:test                  # or: npm run e2e, which also deploys and tests
 ```
 
-`db:rebuild:tutoring` drops everything: it was run once, on the empty database. From now on
+`tutoring-db` was built once, on the empty database, from the schema and `db/platform-admin.sql`
+(the `db:rebuild:tutoring` script that did it has since been removed, so it cannot be re-run).
+The `tutoring-test-db` created on 2026-10-05 was deleted on 2026-10-07; today's lives in the
+TEST account (`ad888b50…`) and is rebuilt by every `npm run e2e`. From now on
 `tutoring-db` is treated like the institute's production -- back up first, and carry changes by
 hand and additively.
 

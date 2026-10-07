@@ -36,8 +36,8 @@ built on a **new pipeline**:
 
 | Deployment | Sign-in | Database | Deploy with |
 | --- | --- | --- | --- |
-| `tutoring` | on | `tutoring-db` | `npm run deploy:tutoring` |
-| `tutoring-test` | off | `tutoring-test-db` | `npm run deploy:tutoring-test` |
+| `tutoring` | on | `tutoring-db` | `npm run deploy` (with `tmi-portal`) |
+| `tutoring-test` | off | `tutoring-test-db` (TEST account since 2026-10-07) | `npm run deploy:test`, or `npm run e2e` |
 
 Both deployments wear the neutral `platform` brand ("Tutor Portal"). Both databases were created
 empty, because their first schema is the one with organization support.

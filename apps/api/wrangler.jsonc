@@ -12,7 +12,7 @@
 	 * visitor lands in and sees on the sign-in page (DEFAULT_ORGANIZATION), and
 	 * which of them runs the cron. tmi-portal-test was retired on 2026-10-06:
 	 * it is no longer deployed, and tutoring-test is the only test Worker.
-	 * tmi-portal-db and tmi-portal-test-db are no longer bound to anything; the
+	 * tmi-portal-db is no longer bound to anything (kept as a record); the
 	 * institute's records live in tutoring-db as the organization `tmi`
 	 * (docs/migration-tmi.md).
 	 *
@@ -72,7 +72,7 @@
 		// Master switch for authentication. Google sign-in is the only way in.
 		// Only the exact string "false" disables auth; any other value leaves it
 		// on, so a typo cannot quietly open up the API. "false" makes the
-		// deployment PUBLIC, so it belongs to the test Workers and nowhere else.
+		// deployment PUBLIC, so it belongs to the test Worker and nowhere else.
 		"AUTH_ENABLED": "true",
 
 		// Who the API runs as while AUTH_ENABLED is "false". Unused here.
@@ -135,8 +135,9 @@
 		},
 
 		/**
-		 * Where the end-to-end suite runs: `npm run e2e` deploys both test Workers,
-		 * rebuilds tutoring-test-db from the schema and the seed, and tests here.
+		 * Where the end-to-end suite runs, in the TEST account: `npm run e2e`
+		 * deploys it, rebuilds tutoring-test-db from the schema and the seed, and
+		 * tests here.
 		 */
 		"tutoring-test": {
 			"name": "tutoring-test",
