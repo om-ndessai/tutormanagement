@@ -95,10 +95,12 @@
 		// on every request -- this picks, it never grants.
 		"DEFAULT_ORGANIZATION": "tmi",
 
-		// Phase 32: the address notifications come from (a domain with Email
-		// Routing on this account), and this Worker's own address for the link
-		// in each one. Empty EMAIL_FROM: every notification is logged skipped.
-		"EMAIL_FROM": "",
+		// Phase 32: the address notifications come from, and this Worker's own
+		// address for the link in each one. Cloudflare sends only from a domain
+		// with Email Routing on this account; a sender it refuses shows as "not
+		// delivered", with its reason, on the Organization page. Empty
+		// EMAIL_FROM: every notification is logged skipped.
+		"EMAIL_FROM": "no-reply@tutoring.om-ndessai.workers.dev",
 		"PUBLIC_URL": "https://tmi-portal.om-ndessai.workers.dev"
 	},
 	"observability": {
@@ -148,7 +150,7 @@
 				// No organization of its own: the sign-in page wears the neutral
 				// platform brand.
 				"DEFAULT_ORGANIZATION": "",
-				"EMAIL_FROM": "",
+				"EMAIL_FROM": "no-reply@tutoring.om-ndessai.workers.dev",
 				"PUBLIC_URL": "https://tutoring.om-ndessai.workers.dev"
 			},
 			"observability": {
