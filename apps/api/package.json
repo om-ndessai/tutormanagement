@@ -17,9 +17,9 @@
     "db:platform-admin": "wrangler d1 execute tutoring-db --local --file=./db/platform-admin.sql",
     "db:reset": "npm run db:rebuild && npm run db:seed && npm run db:platform-admin",
     "db:studio": "wrangler d1 execute tutoring-db --local --command=\"SELECT u.id, u.email, u.full_name, o.slug, m.status, u.last_login_at FROM users u LEFT JOIN org_members m ON m.user_id = u.id LEFT JOIN organizations o ON o.id = m.organization_id ORDER BY u.full_name\"",
-    "db:rebuild:test": "wrangler d1 execute tutoring-test-db --remote --file=./db/schema.sql",
-    "db:seed:test": "wrangler d1 execute tutoring-test-db --remote --file=./db/seed.sql",
-    "db:platform-admin:test": "wrangler d1 execute tutoring-test-db --remote --file=./db/platform-admin.sql",
+    "db:rebuild:test": "wrangler d1 execute tutoring-test-db --env tutoring-test --remote --file=./db/schema.sql",
+    "db:seed:test": "wrangler d1 execute tutoring-test-db --env tutoring-test --remote --file=./db/seed.sql",
+    "db:platform-admin:test": "wrangler d1 execute tutoring-test-db --env tutoring-test --remote --file=./db/platform-admin.sql",
     "db:rebuild:remote": "node -e \"console.error('Refusing: tutoring-db holds every organization\\'s real records. Change it by hand, backed up and additively -- docs/database.md.'); process.exit(1)\""
   },
   "dependencies": {

@@ -46,16 +46,25 @@ phase, and re-check its figures, which were researched on that date.
 
 ## Deployments
 
-Three Workers, one code version, two databases. The production pair share `tutoring-db` and are
+Three Workers, one code version, two databases, **two Cloudflare accounts**. The production pair share `tutoring-db` and are
 deployed together; they differ only in address, the organization a visitor lands in and sees on
 the sign-in page (`DEFAULT_ORGANIZATION`), and which one runs the lesson sweep. `tutoring-test`
 is the one test Worker (`tmi-portal-test` was retired on 2026-10-06: not deployed, not tested).
 
-| Worker | Database | Sign-in | Lands in | Lesson sweep (cron) |
-| --- | --- | --- | --- | --- |
-| `tmi-portal` (the institute's address) | `tutoring-db` | on | `tmi` | no |
-| `tutoring` | `tutoring-db` | on | choose | yes |
-| `tutoring-test` | `tutoring-test-db` | off | choose | yes |
+| Worker | Account | Database | Sign-in | Lands in | Lesson sweep (cron) |
+| --- | --- | --- | --- | --- | --- |
+| `tmi-portal` (the institute's address) | production | `tutoring-db` | on | `tmi` | no |
+| `tutoring` | production | `tutoring-db` | on | choose | yes |
+| `tutoring-test` (`tutoring-test.tmi-api.workers.dev`) | TEST | `tutoring-test-db` | off | choose | yes |
+
+**The test side lives in the TEST account, and must stay there.** D1's free limits (5 million rows
+read a day) are per ACCOUNT, and one suite run reads about 2.3 million. While `tutoring-test-db`
+sat beside `tutoring-db`, three runs used up the day and production stopped answering real users
+(2026-10-06). `wrangler.jsonc` pins each side (`account_id` at the top level, inherited by
+`tutoring`; restated on `tutoring-test`), every test command passes `--env tutoring-test`, and
+`scripts/check-test-account.mjs` (run first by `npm run e2e`) refuses if the two accounts ever
+match. Never point a test command at production's account; prefer the local suite for everyday
+checks, which spends no quota at all.
 
 - `npm run deploy` deploys BOTH production Workers.
 - `npm run deploy:test` deploys `tutoring-test`.

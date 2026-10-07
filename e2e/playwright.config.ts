@@ -11,7 +11,7 @@ import { defineConfig, devices } from '@playwright/test';
  * `npm run e2e` deploys it, rebuilds its database and runs this suite.
  */
 // The suite drives tutoring-test, the one test Worker.
-const baseURL = process.env.E2E_BASE_URL ?? 'https://tutoring-test.om-ndessai.workers.dev';
+const baseURL = process.env.E2E_BASE_URL ?? 'https://tutoring-test.tmi-api.workers.dev';
 
 export default defineConfig({
   testDir: './tests',

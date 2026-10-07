@@ -20,7 +20,7 @@ cd "$(dirname "$0")/.."
 API_DIR="apps/api"
 TEST_ENV="tutoring-test"
 TEST_DB="tutoring-test-db"
-TEST_URL="${E2E_BASE_URL:-https://tutoring-test.om-ndessai.workers.dev}"
+TEST_URL="${E2E_BASE_URL:-https://tutoring-test.tmi-api.workers.dev}"
 
 # Belt and braces. The destructive step below is driven by these names, so if
 # either is ever edited towards production the script stops instead of running.
@@ -32,6 +32,20 @@ case "$TEST_URL" in
   *tutoring-test*|*localhost*|*127.0.0.1*) ;;
   *) echo "Refusing to run: '$TEST_URL' does not look like a test target." >&2; exit 1 ;;
 esac
+
+# The test side lives in its own Cloudflare account, so its D1 reads can never
+# use up production's daily quota again (2026-10-06).
+echo "==> Checking the test Worker is in the TEST account"
+node scripts/check-test-account.mjs
+
+# Under a separate Cloudflare login, the TEST account's API token lives in a
+# gitignored apps/api/.env.test; it applies to this script's commands only.
+if [ -f "$API_DIR/.env.test" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  . "$API_DIR/.env.test"
+  set +a
+fi
 
 # If somebody turned sign-in on for this deployment, it signs people in for
 # real. The suite acts as each kind of user through X-Dev-User, which is
@@ -67,9 +81,9 @@ echo "==> Deploying the test Worker"
 
 echo "==> Rebuilding $TEST_DB (destructive, test data only)"
 ( cd "$API_DIR" \
-  && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/schema.sql >/dev/null \
-  && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/seed.sql >/dev/null \
-  && npx wrangler d1 execute "$TEST_DB" --remote --file=./db/platform-admin.sql >/dev/null )
+  && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/schema.sql >/dev/null \
+  && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/seed.sql >/dev/null \
+  && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/platform-admin.sql >/dev/null )
 
 # A deploy and a remote D1 rebuild are both eventually consistent, and the
 # suite starts the instant they return. Twice now the first run after a deploy

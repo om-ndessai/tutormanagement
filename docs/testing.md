@@ -10,10 +10,26 @@ npm run e2e
 That command:
 
 1. builds the SPA
-2. deploys `tutoring-test`, the one test Worker (`tmi-portal-test` was retired on 2026-10-06)
+2. checks the test Worker is configured for the **TEST** Cloudflare account, not production's
+   (`scripts/check-test-account.mjs`), then deploys `tutoring-test` there
 3. rebuilds that database from `apps/api/db/schema.sql`, `db/seed.sql` and
    `db/platform-admin.sql`
-4. runs the suite against `https://tutoring-test.om-ndessai.workers.dev`
+4. runs the suite against `https://tutoring-test.tmi-api.workers.dev`
+
+### Why the test side has its own Cloudflare account
+
+D1's free limits are per account: 5 million rows read a day. One suite run reads about 2.3
+million (it crawls every read endpoint as every persona), so while the test database shared the
+production account, three runs used up the day and production stopped answering on 2026-10-06.
+Since then `tutoring-test` and `tutoring-test-db` live in the **TEST** account
+(`ad888b50c0b362e4a388fbf5ab3bfa00`), which is about two remote runs a day.
+
+- **Reaching it:** the TEST account is under the same Cloudflare login, so one `wrangler login`
+  reaches both, and `wrangler.jsonc` picks the account per Worker. Under a separate login instead,
+  put that account's API token in a gitignored `apps/api/.env.test`
+  (`CLOUDFLARE_API_TOKEN=...`); `scripts/e2e.sh` loads it for the test commands only.
+- **Everyday checks:** run the suite locally, which spends no quota at all:
+  `npm run dev`, then `E2E_BASE_URL=http://localhost:5173 npm run e2e:test`.
 
 ## The seeded roster
 
@@ -68,11 +84,12 @@ cover organizations.
 
 | | Production | Test |
 | --- | --- | --- |
+| Cloudflare account | production (`fb5359d9…`) | TEST (`ad888b50…`) |
 | Workers | `tmi-portal` and `tutoring` | `tutoring-test` |
 | Database | `tutoring-db` | `tutoring-test-db` |
 | Authentication | **on** — Google sign-in required | **off**, permanently |
 | Data | every organization's real records | two seeded organizations, wiped every run |
-| Deployed by | `npm run deploy` (both) | `npm run e2e`, or `npm run deploy:test` (both) |
+| Deployed by | `npm run deploy` (both) | `npm run e2e`, or `npm run deploy:test` |
 
 Each pair shares one database. The test environment is a named `env` in
 `apps/api/wrangler.jsonc`, and wrangler does **not** let a named environment inherit `assets`,

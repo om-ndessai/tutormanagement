@@ -3,10 +3,10 @@
 	/**
 	 * THREE Workers, ONE code version, TWO databases (2026-10-06):
 	 *
-	 *   Worker            database          sign-in  lands in   lesson sweep
-	 *   tmi-portal        tutoring-db       on       tmi        no
-	 *   tutoring          tutoring-db       on       (choose)   yes
-	 *   tutoring-test     tutoring-test-db  OFF      (choose)   yes
+	 *   Worker          account     database          sign-in  lands in  sweep
+	 *   tmi-portal      production  tutoring-db       on       tmi       no
+	 *   tutoring        production  tutoring-db       on       (choose)  yes
+	 *   tutoring-test   TEST        tutoring-test-db  OFF      (choose)  yes
 	 *
 	 * The production pair differ only in their address, which organization a
 	 * visitor lands in and sees on the sign-in page (DEFAULT_ORGANIZATION), and
@@ -25,6 +25,11 @@
 	 * can reach a database by inheriting someone else's binding.
 	 */
 	"name": "tmi-portal",
+	// The PRODUCTION account. Inherited by `tutoring`, so both production
+	// Workers can only ever deploy here. The test Worker restates its own (the
+	// TEST account): D1's free limits are per account, and a test run sharing
+	// production's used up its daily reads and took the portal down (2026-10-06).
+	"account_id": "fb5359d96054dc32fad24fae2f622d66",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-09-19",
 	// The Worker both serves the API and hosts the built React SPA, so the whole
@@ -135,6 +140,10 @@
 		 */
 		"tutoring-test": {
 			"name": "tutoring-test",
+			// The TEST account, never production's: its D1 reads (millions per
+			// suite run) spend TEST's daily quota. scripts/check-test-account.mjs
+			// refuses to run the suite if this ever matches the account above.
+			"account_id": "ad888b50c0b362e4a388fbf5ab3bfa00",
 			"assets": {
 				"directory": "../web/dist",
 				"binding": "ASSETS",
@@ -153,7 +162,8 @@
 				{
 					"binding": "DB",
 					"database_name": "tutoring-test-db",
-					"database_id": "7bba8b52-e104-45f6-9632-d88ce3abadc2"
+					// In the TEST account (created 2026-10-07).
+					"database_id": "ba6bec89-cdcf-42fe-9fa0-2291daeca8d0"
 				}
 			],
 			"vars": {
