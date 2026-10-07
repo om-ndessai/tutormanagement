@@ -122,12 +122,17 @@ export const organizationFieldsSchema = z.object({
   palette: z.enum(ORG_PALETTES),
   builtin_logo: z.enum(BUILTIN_LOGOS).nullable(),
   time_zone: z.enum(ORG_TIME_ZONES),
+  /** Phase 32: whether the four notifying actions email the people they concern. */
+  email_notifications: z.boolean(),
 });
 
 export const createOrganizationSchema = organizationFieldsSchema.extend({
   palette: z.enum(ORG_PALETTES).default('platform'),
   builtin_logo: z.enum(BUILTIN_LOGOS).nullable().default(null),
   time_zone: z.enum(ORG_TIME_ZONES).default(DEFAULT_ORG_TIME_ZONE),
+  // Off until somebody chooses: an organization never starts emailing people
+  // on its own.
+  email_notifications: z.boolean().default(false),
 });
 export type CreateOrganizationInput = z.input<typeof createOrganizationSchema>;
 export type CreateOrganizationPayload = z.output<typeof createOrganizationSchema>;
@@ -161,6 +166,8 @@ export const organizationSettingsSchema = z.object({
   payer_postal_code: optionalText(
     text(10, 'ZIP code').regex(/^\d{5}(-\d{4})?$/, 'Use a 5-digit ZIP code.'),
   ),
+  /** Its own admins may switch notifications too, as may platform admins. */
+  email_notifications: z.boolean(),
 });
 export const updateOrganizationSettingsSchema = organizationSettingsSchema
   .partial()
@@ -189,6 +196,8 @@ export interface OrganizationBrand {
 /** The organization a request runs in, as its members see it. */
 export interface Organization extends OrganizationBrand {
   time_zone: OrgTimeZone;
+  /** Phase 32: whether its notifying actions send email. */
+  email_notifications: boolean;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -203,6 +212,55 @@ export interface OrganizationSettings {
   payer_city: string | null;
   payer_state: string | null;
   payer_postal_code: string | null;
+  email_notifications: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Email notifications (Phase 32)
+// ---------------------------------------------------------------------------
+// While an organization's flag is on, four actions email the people they
+// concern. An email says no more than its recipient can already read in the
+// portal -- no money, notes, write-ups, comments or assessment text -- and
+// nobody is emailed about their own action (docs/data-exposure.md, R15).
+
+export const NOTIFICATION_KINDS = [
+  'user_added',
+  'plan_added',
+  'assessment_added',
+  'schedule_added',
+  'session_recorded',
+] as const;
+export type NotificationKind = (typeof NOTIFICATION_KINDS)[number];
+
+export const NOTIFICATION_KIND_LABELS: Record<NotificationKind, string> = {
+  user_added: 'Added to the organization',
+  plan_added: 'Learning plan added',
+  assessment_added: 'Assessment added',
+  schedule_added: 'Lesson scheduled',
+  session_recorded: 'Session recorded',
+};
+
+/**
+ * sent    - Cloudflare accepted it
+ * failed  - Cloudflare refused it (on the free plan, an address that is not a
+ *           verified destination)
+ * skipped - this deployment has no mail binding (local and the demo): what
+ *           would have been sent, sent to nobody
+ */
+export const NOTIFICATION_STATUSES = ['sent', 'failed', 'skipped'] as const;
+export type NotificationStatus = (typeof NOTIFICATION_STATUSES)[number];
+
+/** One attempt, as the organization's admins see it. Names, never addresses or text. */
+export interface NotificationLogEntry {
+  id: string;
+  kind: NotificationKind;
+  subject_user_id: string | null;
+  subject_name: string | null;
+  recipient_user_id: string;
+  recipient_name: string;
+  status: NotificationStatus;
+  detail: string | null;
+  created_at: string;
 }
 
 /** One organization the signed-in person belongs to, for the picker and switcher. */

@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { ORG_PALETTE_LABELS, ORG_TIME_ZONE_LABELS, type OrganizationSettings } from '@tmi/shared';
+import {
+  NOTIFICATION_KIND_LABELS,
+  ORG_PALETTE_LABELS,
+  ORG_TIME_ZONE_LABELS,
+  formatRelativeTime,
+  type OrganizationSettings,
+} from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { PageHeader } from '@/components/layout/page-header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,9 +18,15 @@ import { Label } from '@/components/ui/label';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
-import { useOrganizationSettings, useUpdateOrganizationSettings } from './api';
+import {
+  useOrganizationNotifications,
+  useOrganizationSettings,
+  useUpdateOrganizationSettings,
+} from './api';
+import { NotificationsSwitch } from './notifications-switch';
 
-type SettingsForm = Record<keyof OrganizationSettings, string>;
+/** The payer box, as the form holds it. The notifications switch saves on its own. */
+type SettingsForm = Record<Exclude<keyof OrganizationSettings, 'email_notifications'>, string>;
 
 const EMPTY: SettingsForm = {
   tin: '',
@@ -41,10 +54,9 @@ export function OrganizationSettingsPage() {
   useEffect(() => {
     const loaded = settings.data?.data;
     if (!loaded) return;
+    const { email_notifications: _flag, ...payer } = loaded;
     setForm(
-      Object.fromEntries(
-        Object.entries(loaded).map(([key, value]) => [key, value ?? '']),
-      ) as SettingsForm,
+      Object.fromEntries(Object.entries(payer).map(([key, value]) => [key, value ?? ''])) as SettingsForm,
     );
   }, [settings.data]);
 
@@ -128,7 +140,7 @@ export function OrganizationSettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="py-0">
+        <Card className="py-0 lg:row-span-2">
           <CardContent className="grid gap-3 p-5 text-sm">
             <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
               Set by the platform
@@ -153,7 +165,79 @@ export function OrganizationSettingsPage() {
             </p>
           </CardContent>
         </Card>
+
+        <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
       </div>
     </>
+  );
+}
+
+/**
+ * Phase 32: the organization's email notifications -- the switch, what it
+ * does, and who was emailed lately. Names and outcomes only: the log holds no
+ * addresses and no message text.
+ */
+function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
+  const update = useUpdateOrganizationSettings();
+  const log = useOrganizationNotifications(true);
+  const entries = log.data?.data ?? [];
+
+  async function toggle(next: boolean) {
+    try {
+      await update.mutateAsync({ email_notifications: next });
+      toast.success(next ? 'Email notifications are on.' : 'Email notifications are off.');
+    } catch (caught) {
+      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not change notifications.');
+    }
+  }
+
+  return (
+    <Card className="py-0" data-testid="email-notifications">
+      <CardContent className="grid gap-4 p-5 text-sm">
+        <div className="flex items-start gap-4">
+          <div className="grid flex-1 gap-1">
+            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+              Email notifications
+            </h2>
+            <p className="text-muted-foreground text-xs">
+              When on, the people concerned are emailed when someone is added, a plan or assessment
+              is added, lessons are scheduled, or a session is recorded. An email says what happened
+              and links here — never money, notes or scores. On Cloudflare’s free plan only verified
+              addresses receive mail; the others show as not delivered below.
+            </p>
+          </div>
+          <NotificationsSwitch checked={enabled} disabled={update.isPending} onCheckedChange={toggle} />
+        </div>
+
+        <div className="grid gap-2">
+          <h3 className="text-xs font-medium">Recent emails</h3>
+          {entries.length === 0 ? (
+            <p className="text-muted-foreground text-xs">Nothing sent yet.</p>
+          ) : (
+            <ul className="grid gap-1.5" aria-label="Recent emails">
+              {entries.slice(0, 12).map((entry) => (
+                <li key={entry.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
+                  <span className="font-medium">{entry.recipient_name}</span>
+                  <span className="text-muted-foreground">
+                    {NOTIFICATION_KIND_LABELS[entry.kind]}
+                    {entry.subject_name && entry.subject_name !== entry.recipient_name
+                      ? ` · ${entry.subject_name}`
+                      : ''}{' '}
+                    · {formatRelativeTime(entry.created_at)}
+                  </span>
+                  <Badge
+                    variant={entry.status === 'failed' ? 'destructive' : 'secondary'}
+                    title={entry.detail ?? undefined}
+                    className="ml-auto"
+                  >
+                    {entry.status === 'sent' ? 'Sent' : entry.status === 'failed' ? 'Not delivered' : 'Not sent here'}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

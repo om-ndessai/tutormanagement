@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
+  NotificationLogEntry,
   OrganizationSettings,
   UpdateOrganizationSettingsInput,
 } from '@tmi/shared';
@@ -25,6 +26,17 @@ export function useUpdateOrganizationSettings() {
     mutationFn: (input: UpdateOrganizationSettingsInput) =>
       apiClient.patch<ApiOk<OrganizationSettings>>('/organization/settings', input),
     onSuccess: (response) => queryClient.setQueryData(settingsKey, response),
+  });
+}
+
+const notificationsKey = ['organization', 'notifications'] as const;
+
+/** Phase 32: the recent notification attempts, newest first. Its admins only. */
+export function useOrganizationNotifications(enabled: boolean) {
+  return useQuery({
+    queryKey: notificationsKey,
+    queryFn: () => apiClient.get<ApiOk<NotificationLogEntry[]>>('/organization/notifications'),
+    enabled,
   });
 }
 

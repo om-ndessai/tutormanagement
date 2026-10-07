@@ -901,12 +901,14 @@ const organizations = [
    q('One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.'),
    q('Chapel Hill, North Carolina'), q('indigo'), 'NULL', q('47-2019388'),
    q('100 Franklin Street'), 'NULL', q('Chapel Hill'), q('NC'), q('27514'),
-   q('America/New_York'), q('chmi.tutor-portal.invalid')],
+   // Notifications ON in A, so the demo shows the switch and its log of
+   // what would have been sent (the demo has no mail binding: sent to nobody).
+   q('America/New_York'), '1', q('chmi.tutor-portal.invalid')],
   [B, q('riverside'), q('Riverside Tutoring'), q('Riverside'), q('Small groups, big steps'),
    q('Neighbourhood tutoring along the river, for families who want a tutor who knows the school.'),
    q('Durham, North Carolina'), q('teal'), 'NULL', q('56-7788990'),
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
-   q('America/New_York'), q('riverside.tutor-portal.invalid')],
+   q('America/New_York'), '0', q('riverside.tutor-portal.invalid')],
 ];
 
 // The people only B has.
@@ -1022,6 +1024,7 @@ const sql = `-- ================================================================
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM notification_log;
 DELETE FROM session_reflections;
 DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
@@ -1056,7 +1059,7 @@ DELETE FROM users;
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'calendar_domain'], organizations)}
+${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'calendar_domain'], organizations)}
 
 -- --- people ----------------------------------------------------------------
 ${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers])}

@@ -10,7 +10,7 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
-**Phases 1 to 19, and 21 to 26, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 32, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -22,7 +22,8 @@ as Analytics, a sessions carousel, a progress spotlight and recent activity (21)
 (22), a lesson's notes written up in parts, with an assessment from anyone it concerns (23),
 one lesson of a standing schedule cancelled and restored, without touching the series (24), the
 student's own reflection on each lesson (25), and a welcome wizard with a feature tour and guided
-setup of a new student or tutor (26).
+setup of a new student or tutor (26), multiple organizations (27-31), and per-organization email
+notifications (32).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -117,11 +118,16 @@ institute's since 2026-10-06. **Never rebuild it.** Carry schema changes to prod
 as part of the change. Run `--remote` wrangler commands only as part of a release the owner has
 approved: **approving a phase's plan is that approval**, for the whole release, with no further
 asking —
-1. commit and push to `main`;
-2. `npm run e2e` (deploys `tutoring-test` in the TEST account, wipes only `tutoring-test-db`, tests it);
-3. back up production (`wrangler d1 export tutoring-db --remote`);
-4. apply the phase's additive schema block and check the new queries read-only against production;
-5. `npm run deploy` (both production Workers), then smoke-test both addresses.
+1. the full **local** suite green (`npm run db:reset`, `npm run dev`, then
+   `E2E_BASE_URL=http://localhost:5173 npm run e2e:test`) -- since 2026-10-07 the local suite is
+   the gate: it spends no Cloudflare quota;
+2. commit and push to `main`;
+3. refresh the demo: `npm run deploy:test`, and `npm run db:reset:test` when the schema changed.
+   `tutoring-test` is an open **feature demo** now, not a test target: `npm run e2e` (which wipes
+   it and reads ~2.3 M rows) runs only when the owner asks;
+4. back up production (`wrangler d1 export tutoring-db --remote`), unless the owner waives it;
+5. apply the phase's additive schema block and check the new queries read-only against production;
+6. `npm run deploy` (both production Workers), then smoke-test both addresses.
 
 Stop and report if any step fails. Outside an approved release, ask first.
 
@@ -181,6 +187,20 @@ logged there as `membership.default_set` / `default_cleared`) from a star on the
 switcher. It decides only where an ARRIVING tab lands -- one with no organization of its own in
 `sessionStorage` (`hasTabOrg`) -- ahead of the `tmi_last_org` cookie and `DEFAULT_ORGANIZATION`;
 it never moves a tab that has chosen.
+
+**An email says what happened, to whom it concerns, and nothing more** (Phase 32, R15). While an
+organization's `email_notifications` is on, four actions call `notify` (`lib/email.ts`): a person
+added (`routes/users.ts`), a plan or assessment (`routes/progress.ts`), a schedule
+(`routes/schedules.ts`) and a recorded lesson (`routes/sessions.ts` and `recordRunningSession`,
+which covers the stop button and the cron). It runs after the response in `waitUntil` and never
+throws. `recipientsFor` picks live members of THIS organization only -- a student AND their
+guardians, the tutor(s), the admins for a new person -- drops the actor, and dedupes. A message
+carries no money, notes, write-up, comment or assessment text, and no score; a new notifying
+action extends `NotificationEvent` and `describe`, never adds a free-text field. Every attempt is
+a `notification_log` row (ids and outcome, never an address or the text), readable by the
+organization's admins on its Organization page. Only the production pair has the `send_email`
+binding and `EMAIL_FROM`; anywhere else an attempt is logged `skipped`. On Cloudflare's free plan
+only verified destination addresses receive mail -- the rest are logged `failed`.
 
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and

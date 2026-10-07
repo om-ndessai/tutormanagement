@@ -28,6 +28,7 @@ import {
 import type { AppEnv } from '../types.js';
 import type { OrgContext, OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
+import { formatLessonDate, mailerFor, notify } from '../lib/email.js';
 import { ApiError } from '../lib/errors.js';
 import { buildCalendar, calendarFilename } from '../lib/ics.js';
 import { familyStudentIds, isAdmin, scheduleCancellerRole } from '../lib/scope.js';
@@ -404,6 +405,17 @@ export const schedulesRoutes = new Hono<AppEnv>()
       subject: { id: schedule.student_user_id, full_name: schedule.student_name },
       entity_type: 'schedule',
       entity_id: schedule.id,
+    });
+
+    // Phase 32: the student, their parents and the tutor -- when, not where.
+    notify(mailerFor(c), c.get('org'), {
+      kind: 'schedule_added',
+      actorId: viewer.id,
+      studentId: schedule.student_user_id,
+      studentName: schedule.student_name,
+      tutorId: schedule.tutor_user_id,
+      tutorName: schedule.tutor_name,
+      when: `${describeSchedule(schedule)}, starting ${formatLessonDate(schedule.starts_on)}`,
     });
 
     const body: ApiOk<ScheduledSession> = { data: schedule };

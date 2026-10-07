@@ -58,6 +58,8 @@ const READS = [
   '/api/comments/counts?target_type=user',
   '/api/comments/counts?target_type=session',
   '/api/progress',
+  // Phase 32: the organization's notification log (admins; refused to others).
+  '/api/organization/notifications',
 ];
 
 /** Everything an organization's admin can reach in it: its universe of ids. */

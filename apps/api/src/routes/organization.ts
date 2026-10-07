@@ -3,6 +3,7 @@ import {
   LOGO_KINDS,
   updateOrganizationSettingsSchema,
   type ApiOk,
+  type NotificationLogEntry,
   type OrganizationSettings,
 } from '@tmi/shared';
 
@@ -17,6 +18,7 @@ import {
   getOrganizationSettings,
   updateOrganizationSettings,
 } from '../repositories/organizations.js';
+import { listNotifications } from '../repositories/notifications.js';
 
 /**
  * The organization's own settings: the payer box on every 1099 it issues. Its
@@ -42,11 +44,20 @@ export const organizationRoutes = new Hono<AppEnv>()
       const settings = await updateOrganizationSettings(c.env.DB, org.id, input);
 
       // Names what changed, never the TIN itself: the log is read widely.
+      const { email_notifications: notifications, ...details } = input;
+      const changes = Object.keys(details).map((key) =>
+        key === 'tin' ? 'TIN' : key.replace(/^payer_/, '').replace(/_/g, ' '),
+      );
       await recordAudit(c.env.DB, c.get('user'), org.id, {
         action: 'organization.settings_updated',
-        description: `Updated ${org.name}'s ${Object.keys(input)
-          .map((key) => (key === 'tin' ? 'TIN' : key.replace(/^payer_/, '').replace(/_/g, ' ')))
-          .join(', ')}`,
+        description: [
+          changes.length > 0 ? `Updated ${org.name}'s ${changes.join(', ')}` : null,
+          notifications === undefined
+            ? null
+            : `Turned ${org.name}'s email notifications ${notifications ? 'on' : 'off'}`,
+        ]
+          .filter(Boolean)
+          .join('; '),
         entity_type: 'organization',
         entity_id: org.id,
       });
@@ -54,7 +65,19 @@ export const organizationRoutes = new Hono<AppEnv>()
       const body: ApiOk<OrganizationSettings> = { data: settings };
       return c.json(body);
     },
-  );
+  )
+
+  /**
+   * Phase 32: the organization's recent notification attempts, for its
+   * admins -- who was emailed about what, and whether it went. Names only:
+   * the log holds no addresses and no message text.
+   */
+  .get('/notifications', requireAdmin, async (c) => {
+    const body: ApiOk<NotificationLogEntry[]> = {
+      data: await listNotifications(c.env.DB, c.get('org').id),
+    };
+    return c.json(body);
+  });
 
 /**
  * Public: an organization's logo, for the sign-in page as much as anywhere.

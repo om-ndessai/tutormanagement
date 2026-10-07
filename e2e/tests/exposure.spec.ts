@@ -292,6 +292,8 @@ test.describe('what each non-admin can see', () => {
     expect(deleted.every((person) => person.deleted_at === null)).toBe(true);
     expect((await parent.request.get(`/api/dashboard?user_id=${tutorId}`)).status()).toBe(403);
     expect((await parent.request.get(`/api/payments/monthly?year=2026&user_id=${tutorId}`)).status()).toBe(403);
+    // Phase 32: who was emailed about what is the office's to read.
+    expect((await parent.request.get('/api/organization/notifications')).status()).toBe(403);
 
     // A comment the reader cannot read is missing, not forbidden. Seeded:
     // Anita's note about her son Sanjay, whom Alex does not teach.

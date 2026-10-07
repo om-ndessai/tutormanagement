@@ -26,7 +26,7 @@ const ORG_TABLES = [
   'assignments', 'sessions', 'scheduled_sessions', 'session_drafts', 'active_sessions',
   'payments', 'comments', 'assessments', 'learning_plans', 'audit_events',
   'user_roles', 'tutor_profiles', 'student_profiles', 'payment_handles',
-  'availability_slots', 'guardianships', 'org_members',
+  'availability_slots', 'guardianships', 'org_members', 'notification_log',
 ];
 
 const TABLE_RE = new RegExp(

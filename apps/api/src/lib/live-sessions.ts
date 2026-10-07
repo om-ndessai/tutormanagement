@@ -12,6 +12,7 @@ import {
 } from '../repositories/active-sessions.js';
 import { createSession, type StoredSession } from '../repositories/sessions.js';
 import { orgIdFromRow } from './org.js';
+import { notify, sessionRecordedEvent, type Mailer, type NotifyingOrg } from './email.js';
 
 type Actor = Pick<User, 'id' | 'full_name'> | null;
 
@@ -26,7 +27,15 @@ type Actor = Pick<User, 'id' | 'full_name'> | null;
 export async function recordRunningSession(
   db: D1Database,
   row: ActiveRow,
-  options: { actor: Actor; notes?: string | null; now?: Date },
+  options: {
+    actor: Actor;
+    notes?: string | null;
+    now?: Date;
+    /** Phase 32: sends the "lesson recorded" emails when given. */
+    mailer?: Mailer;
+    /** The organization, when the caller has it; otherwise it is read once more. */
+    org?: NotifyingOrg;
+  },
 ): Promise<StoredSession> {
   const { actor, now = new Date() } = options;
   const notes = options.notes === undefined ? row.notes : options.notes;
@@ -74,6 +83,12 @@ export async function recordRunningSession(
     entity_id: session.id,
   });
 
+  // Phase 32. The sweep has no actor, so the tutor hears about their own
+  // lesson being ended for them -- which is the point.
+  if (options.mailer) {
+    notify(options.mailer, options.org ?? org, sessionRecordedEvent(actor?.id ?? null, session));
+  }
+
   return session;
 }
 
@@ -89,7 +104,11 @@ export async function recordRunningSession(
  * sessions -- so a portal nobody has open still settles up, and one somebody
  * is watching settles up promptly.
  */
-export async function autoStopExpired(db: D1Database, now: Date = new Date()): Promise<number> {
+export async function autoStopExpired(
+  db: D1Database,
+  now: Date = new Date(),
+  mailer?: Mailer,
+): Promise<number> {
   // Every organization's: the sweep is the one reader that is not inside one.
   const rows = await listActiveRows(db, 'all');
   let closed = 0;
@@ -98,7 +117,7 @@ export async function autoStopExpired(db: D1Database, now: Date = new Date()): P
     if (autoStopAt(row).getTime() > now.getTime()) continue;
 
     try {
-      await recordRunningSession(db, row, { actor: null, now });
+      await recordRunningSession(db, row, { actor: null, now, mailer });
       closed += 1;
     } catch (error) {
       // The pairing lost the rate it needs to be priced, so there is nothing

@@ -241,6 +241,44 @@ npx wrangler d1 execute tutoring-db --remote --command="CREATE UNIQUE INDEX org_
 npx wrangler d1 execute tutoring-db --remote --command="SELECT user_id, COUNT(*) FROM org_members WHERE is_default = 1 GROUP BY user_id HAVING COUNT(*) > 1"
 ```
 
+Phase 32 (email notifications, 2026-10-07) is one column and one new table, with its index and
+its two triggers. The column defaults to `0`, so no organization emails anybody until an admin
+turns it on:
+
+```sql
+ALTER TABLE organizations ADD COLUMN email_notifications INTEGER NOT NULL DEFAULT 0 CHECK (email_notifications IN (0, 1));
+
+CREATE TABLE notification_log (
+  id                TEXT PRIMARY KEY,
+  organization_id   TEXT NOT NULL REFERENCES organizations (id),
+  kind              TEXT NOT NULL CHECK (kind IN
+                      ('user_added', 'plan_added', 'assessment_added', 'schedule_added', 'session_recorded')),
+  -- Who the email was about (the person added, the student), when anybody.
+  subject_user_id   TEXT REFERENCES users (id) ON DELETE SET NULL,
+  recipient_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  status            TEXT NOT NULL CHECK (status IN ('sent', 'failed', 'skipped')),
+  -- Cloudflare's refusal, or why it was skipped. Never the message.
+  detail            TEXT,
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX notification_log_org_idx ON notification_log (organization_id, created_at);
+
+CREATE TRIGGER notification_log_same_organization
+BEFORE INSERT ON notification_log
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.recipient_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER notification_log_organization_fixed
+BEFORE UPDATE OF organization_id ON notification_log
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

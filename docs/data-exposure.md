@@ -9,7 +9,7 @@ Read this before adding a route or a screen that returns people, lessons or mone
 
 ## The rules
 
-Admins see everything, except another person's draft (R10). For everyone else there are twelve rules. A person may hold several roles,
+Admins see everything, except another person's draft (R10). For everyone else there are the rules below. A person may hold several roles,
 so each rule applies **per row**: Sanjay reads the lessons he teaches as a tutor and his own
 lessons as a student, in one list.
 
@@ -29,6 +29,7 @@ lessons as a student, in one list.
 | R12 | A student's reflection (Phase 25) reaches its lesson's audience only. The tutor dashboard's digest of reflections covers lessons that tutor taught, and a student's or parent's prompt for one names only their own or their children's lessons, with no money. | `SELECT_SESSION`, `listRecentReflections`, `listAwaitingReflection` |
 | R13 | Nothing crosses organizations. Every read, file and "view as" inside one organization returns no row, id or name that belongs only to another -- for every reader, admins included. A row from another organization is "not found" by id, and a write naming one answers as missing. People shared by two organizations are visible in both, as each organization's own record of them. | `requireOrg`, every repository's `organization_id = ?`, the database's same-organization triggers; crawled by `e2e/tests/exposure-organizations.spec.ts` |
 | R14 | The platform console reaches organizations and their admins only: never an organization's people, lessons, money or progress. A platform admin who belongs to no organization is refused by every organization route, and an organization admin by the console. | `requirePlatformAdmin`, `routes/platform.ts`; `exposure-organizations.spec.ts` |
+| R15 | A notification email (Phase 32) says no more than its recipient can already read in the portal: who, what kind of thing (a person added, a plan, an assessment, a schedule, a recorded lesson), when, and a link -- never money, notes, a write-up, comment or assessment text, or a score. It goes only to live members of the organization the action happened in who are concerned by it (the student and their guardians, the lesson's or schedule's tutor, a student's paired tutors, the admins when a person is added), once each, and never to the person who acted. The organization's log of attempts holds names and outcomes, never an address or a message, and only its admins read it. | `lib/email.ts` (`describe`, `compose`), `recipientsFor`, `listNotifications`; `e2e/tests/notifications.spec.ts` |
 
 ## Who sees what, by screen
 

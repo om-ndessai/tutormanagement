@@ -1,7 +1,21 @@
 # End-to-end testing (Phase 6)
 
-Playwright drives a **dedicated test deployment**, wiping and rebuilding its database for each
-run. Production is never deployed to, never queried and never wiped.
+**Since 2026-10-07 the suite runs locally**, against `wrangler dev` and its local D1, which spends
+no Cloudflare quota at all. This is the release gate:
+
+```bash
+npm run db:reset        # rebuild and reseed the LOCAL database
+npm run dev             # Worker on :8787, Vite on :5173
+E2E_BASE_URL=http://localhost:5173 npm run e2e:test
+```
+
+`tutoring-test` (`https://tutoring-test.tmi-api.workers.dev`, TEST account, sign-in off) is now an
+open **feature demo**. Refresh it with `npm run deploy:test`, and reseed it with
+`npm run db:reset:test` when the schema changes. Production is never deployed to, queried or
+wiped by any of this.
+
+The remote cycle below still exists, but runs only when the owner asks: it wipes the demo's data
+and reads about 2.3 million rows of TEST's daily D1 quota.
 
 ```bash
 npm run e2e

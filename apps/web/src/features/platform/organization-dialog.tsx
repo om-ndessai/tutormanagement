@@ -37,6 +37,7 @@ import { Separator } from '@/components/ui/separator';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
+import { NotificationsSwitch } from '@/features/organizations/notifications-switch';
 import {
   useAddOrganizationAdmin,
   useCreateOrganization,
@@ -58,6 +59,7 @@ interface FormState {
   palette: OrgPalette;
   time_zone: OrgTimeZone;
   builtin_institute: boolean;
+  email_notifications: boolean;
 }
 
 const EMPTY: FormState = {
@@ -70,6 +72,7 @@ const EMPTY: FormState = {
   palette: 'platform',
   time_zone: 'America/New_York',
   builtin_institute: false,
+  email_notifications: false,
 };
 
 /** "Riverside Tutoring" -> "riverside-tutoring", as a first suggestion. */
@@ -117,6 +120,7 @@ export function OrganizationDialog({
             palette: existing.palette,
             time_zone: existing.time_zone,
             builtin_institute: existing.builtin_logo === 'institute',
+            email_notifications: existing.email_notifications,
           }
         : EMPTY,
     );
@@ -137,6 +141,7 @@ export function OrganizationDialog({
       place: form.place,
       palette: form.palette,
       time_zone: form.time_zone,
+      email_notifications: form.email_notifications,
       builtin_logo: form.builtin_institute ? ('institute' as const) : null,
     };
     try {
@@ -221,6 +226,23 @@ export function OrganizationDialog({
                 </SelectContent>
               </Select>
             </FormField>
+          </div>
+
+          <div className="flex items-start gap-3 rounded-lg border p-3">
+            <div className="grid flex-1 gap-0.5">
+              <label htmlFor="org-notifications" className="text-sm font-medium">
+                Email notifications
+              </label>
+              <p className="text-muted-foreground text-xs">
+                Emails the people concerned when someone is added, a plan or assessment is added,
+                lessons are scheduled, or a session is recorded. Its own admins can switch it too.
+              </p>
+            </div>
+            <NotificationsSwitch
+              id="org-notifications"
+              checked={form.email_notifications}
+              onCheckedChange={(checked) => set('email_notifications', checked)}
+            />
           </div>
 
           <FormField id="org-blurb" label="Description" optional error={errors.blurb} hint="The line under the tagline on the sign-in page.">

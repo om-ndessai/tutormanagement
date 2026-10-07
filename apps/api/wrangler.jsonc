@@ -57,6 +57,14 @@
 			"database_id": "b76a2704-491f-47a1-88b6-86b047cfc56d"
 		}
 	],
+	// Phase 32: Cloudflare's email binding for notifications. On the free plan
+	// it delivers only to verified destination addresses; others are refused
+	// and logged as not delivered (docs/data-exposure.md, R15).
+	"send_email": [
+		{
+			"name": "EMAIL"
+		}
+	],
 	"vars": {
 		// These are the values a DEPLOY ships with, so the safe setting wins here
 		// and local development opts out. `.dev.vars` overrides anything in this
@@ -85,7 +93,13 @@
 		// The organization this address is FOR: its sign-in page wears it, and a
 		// member of it lands in it without choosing. Membership is still checked
 		// on every request -- this picks, it never grants.
-		"DEFAULT_ORGANIZATION": "tmi"
+		"DEFAULT_ORGANIZATION": "tmi",
+
+		// Phase 32: the address notifications come from (a domain with Email
+		// Routing on this account), and this Worker's own address for the link
+		// in each one. Empty EMAIL_FROM: every notification is logged skipped.
+		"EMAIL_FROM": "",
+		"PUBLIC_URL": "https://tmi-portal.om-ndessai.workers.dev"
 	},
 	"observability": {
 		"enabled": true
@@ -118,6 +132,12 @@
 					"database_id": "b76a2704-491f-47a1-88b6-86b047cfc56d"
 				}
 			],
+			// Not inherited: restated like every binding.
+			"send_email": [
+				{
+					"name": "EMAIL"
+				}
+			],
 			"vars": {
 				"ENVIRONMENT": "production",
 				// The same OAuth client; this origin is authorised on it too.
@@ -125,9 +145,11 @@
 				"AUTH_ENABLED": "true",
 				"DEV_USER_EMAIL": "",
 				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
-				// No organization of its own: the sign-in page wears the last one
-				// this browser used, else the neutral platform brand.
-				"DEFAULT_ORGANIZATION": ""
+				// No organization of its own: the sign-in page wears the neutral
+				// platform brand.
+				"DEFAULT_ORGANIZATION": "",
+				"EMAIL_FROM": "",
+				"PUBLIC_URL": "https://tutoring.om-ndessai.workers.dev"
 			},
 			"observability": {
 				"enabled": true
@@ -174,8 +196,13 @@
 				"AUTH_ENABLED": "false",
 				"DEV_USER_EMAIL": "",
 				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
-				"DEFAULT_ORGANIZATION": ""
+				"DEFAULT_ORGANIZATION": "",
+				// No mail binding here (`send_email` is empty below): the demo never
+				// emails anyone, and logs each notification as skipped.
+				"EMAIL_FROM": "",
+				"PUBLIC_URL": "https://tutoring-test.tmi-api.workers.dev"
 			},
+			"send_email": [],
 			"observability": {
 				"enabled": true
 			}

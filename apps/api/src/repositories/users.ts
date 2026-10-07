@@ -858,6 +858,11 @@ export async function purgeUser(db: D1Database, org: OrgId, id: string): Promise
       'DELETE FROM payments WHERE organization_id = ? AND (party_user_id = ? OR student_user_id = ?)',
       2,
     ),
+    // Phase 32: what was emailed to them, or about them, here.
+    byPerson(
+      'DELETE FROM notification_log WHERE organization_id = ? AND (recipient_user_id = ? OR subject_user_id = ?)',
+      2,
+    ),
     byPerson('DELETE FROM learning_plans WHERE organization_id = ? AND student_user_id = ?', 1),
     byPerson('DELETE FROM assessments WHERE organization_id = ? AND student_user_id = ?', 1),
     // Roles, profiles, handles, availability and guardianships cascade from the membership.

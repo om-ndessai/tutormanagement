@@ -144,10 +144,11 @@ export const platformRoutes = new Hono<AppEnv>()
     async (c) => {
       const { id } = c.req.valid('param');
       const before = await requireOrganization(c.env, id);
+      const input = c.req.valid('json');
       let org: Organization | null;
 
       try {
-        org = await updateOrganization(c.env.DB, id, c.req.valid('json'));
+        org = await updateOrganization(c.env.DB, id, input);
       } catch (error) {
         if (isUniqueConstraintError(error)) throw ApiError.conflict(SLUG_TAKEN);
         throw error;
@@ -156,7 +157,11 @@ export const platformRoutes = new Hono<AppEnv>()
 
       await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
         action: 'organization.updated',
-        description: `Updated the organization ${before.name}`,
+        description:
+          `Updated the organization ${before.name}` +
+          (input.email_notifications !== undefined && input.email_notifications !== before.email_notifications
+            ? `; turned its email notifications ${input.email_notifications ? 'on' : 'off'}`
+            : ''),
         entity_type: 'organization',
         entity_id: id,
       });

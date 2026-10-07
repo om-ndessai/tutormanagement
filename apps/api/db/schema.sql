@@ -35,6 +35,7 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS notification_log;
 DROP TABLE IF EXISTS session_topic_ratings;
 DROP TABLE IF EXISTS session_progress;
 DROP TABLE IF EXISTS learning_plan_topics;
@@ -152,6 +153,11 @@ CREATE TABLE organizations (
 
   -- The clock every lesson of this organization is recorded against.
   time_zone       TEXT NOT NULL DEFAULT 'America/New_York',
+
+  -- Phase 32: whether the four notifying actions (a person added, a plan or
+  -- assessment, a schedule, a recorded session) email the people they
+  -- concern. Off until an admin chooses.
+  email_notifications INTEGER NOT NULL DEFAULT 0 CHECK (email_notifications IN (0, 1)),
 
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
@@ -831,6 +837,30 @@ CREATE INDEX active_sessions_student_idx ON active_sessions (organization_id, st
 
 
 -- ---------------------------------------------------------------------------
+-- notification_log - every email the portal tried to send (Phase 32)
+-- ---------------------------------------------------------------------------
+-- One row per recipient per notifying action, written after the attempt.
+-- Ids only: never an address and never the message, so the log can be shown to
+-- the organization's admins without becoming a second copy of anybody's
+-- details. `skipped` means this deployment has no mail binding (local and the
+-- demo): what would have been sent, sent to nobody.
+CREATE TABLE notification_log (
+  id                TEXT PRIMARY KEY,
+  organization_id   TEXT NOT NULL REFERENCES organizations (id),
+  kind              TEXT NOT NULL CHECK (kind IN
+                      ('user_added', 'plan_added', 'assessment_added', 'schedule_added', 'session_recorded')),
+  -- Who the email was about (the person added, the student), when anybody.
+  subject_user_id   TEXT REFERENCES users (id) ON DELETE SET NULL,
+  recipient_user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  status            TEXT NOT NULL CHECK (status IN ('sent', 'failed', 'skipped')),
+  -- Cloudflare's refusal, or why it was skipped. Never the message.
+  detail            TEXT,
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX notification_log_org_idx ON notification_log (organization_id, created_at);
+
+-- ---------------------------------------------------------------------------
 -- payments - money that changed hands, recorded after the fact
 -- ---------------------------------------------------------------------------
 -- No money moves through the portal. This is a ledger of payments made
@@ -1498,6 +1528,20 @@ WHEN (NEW.target_session_id IS NOT NULL AND NOT EXISTS (
           AND s.organization_id = NEW.organization_id))
 BEGIN
   SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER notification_log_same_organization
+BEFORE INSERT ON notification_log
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.recipient_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER notification_log_organization_fixed
+BEFORE UPDATE OF organization_id ON notification_log
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
 END;
 
 CREATE TRIGGER audit_events_organization_fixed

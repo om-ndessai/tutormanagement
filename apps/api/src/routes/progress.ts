@@ -17,6 +17,7 @@ import {
 import type { AppEnv } from '../types.js';
 import type { OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
+import { mailerFor, notify } from '../lib/email.js';
 import { ApiError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
@@ -127,6 +128,14 @@ export const progressRoutes = new Hono<AppEnv>()
       entity_id: assessment.id,
     });
 
+    // Phase 32: that an assessment exists -- never its ratings or notes.
+    notify(mailerFor(c), c.get('org'), {
+      kind: 'assessment_added',
+      actorId: viewer.id,
+      studentId: student.id,
+      studentName: student.full_name,
+    });
+
     const body: ApiOk<Assessment> = { data: assessment };
     return c.json(body, 201);
   })
@@ -235,6 +244,14 @@ export const progressRoutes = new Hono<AppEnv>()
       subject: student,
       entity_type: 'learning_plan',
       entity_id: plan.id,
+    });
+
+    // Phase 32: that a plan exists -- the goal itself stays in the portal.
+    notify(mailerFor(c), c.get('org'), {
+      kind: 'plan_added',
+      actorId: viewer.id,
+      studentId: student.id,
+      studentName: student.full_name,
     });
 
     const body: ApiOk<LearningPlan> = { data: plan };

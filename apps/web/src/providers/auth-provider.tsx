@@ -26,7 +26,7 @@ import {
   UNAUTHENTICATED_EVENT,
   apiClient,
 } from '@/lib/api-client';
-import { clearActiveOrg, getActiveOrg, hasTabOrg, setActiveOrg } from '@/lib/organization';
+import { clearActiveOrg, getActiveOrg, hasTabOrg, setActiveOrg, takeLinkedOrg } from '@/lib/organization';
 
 /** The organization this tab is in, with its payer details for its admins. */
 export type ActiveOrganization = NonNullable<SessionResponse['organization']>;
@@ -107,7 +107,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // signing out) -- not when a response comes back, by which time another
   // load may already have written the tab's organization and the two would
   // disagree about where to land.
-  const arrivingRef = useRef(!hasTabOrg());
+  // A link that names an organization (a notification email's) enters it,
+  // ahead of the person's default: they followed a link about that one.
+  const arrivingRef = useRef<boolean | null>(null);
+  if (arrivingRef.current === null) {
+    const linked = takeLinkedOrg();
+    if (linked) setActiveOrg(linked);
+    arrivingRef.current = !hasTabOrg();
+  }
 
   const applySession = useCallback((session: SessionResponse): boolean => {
     setImpersonated(session.impersonated);

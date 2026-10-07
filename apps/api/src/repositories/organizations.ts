@@ -31,6 +31,7 @@ interface OrgRow {
   palette: string;
   builtin_logo: string | null;
   time_zone: string;
+  email_notifications: number;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -41,7 +42,7 @@ interface OrgRow {
 
 /** Every organization column, plus the logo versions that make its URLs. */
 const SELECT_ORG = `SELECT o.id, o.slug, o.name, o.short_name, o.tagline, o.blurb, o.place,
-       o.palette, o.builtin_logo, o.time_zone, o.calendar_domain, o.archived_at,
+       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.calendar_domain, o.archived_at,
        o.created_at, o.updated_at,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'mark') AS mark_sha,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'full') AS full_sha
@@ -71,6 +72,7 @@ function toOrganization(row: OrgRow): Organization {
   return {
     ...toBrand(row),
     time_zone: row.time_zone as OrgTimeZone,
+    email_notifications: row.email_notifications === 1,
     calendar_domain: row.calendar_domain,
     archived_at: row.archived_at,
     created_at: row.created_at,
@@ -292,21 +294,24 @@ export async function getOrganizationSettings(
 ): Promise<OrganizationSettings> {
   const row = await db
     .prepare(
-      `SELECT tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code
+      `SELECT tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code,
+              email_notifications
        FROM organizations WHERE id = ?`,
     )
     .bind(org)
-    .first<OrganizationSettings>();
-  return (
-    row ?? {
+    .first<Omit<OrganizationSettings, 'email_notifications'> & { email_notifications: number }>();
+  if (!row) {
+    return {
       tin: null,
       payer_address_line1: null,
       payer_address_line2: null,
       payer_city: null,
       payer_state: null,
       payer_postal_code: null,
-    }
-  );
+      email_notifications: false,
+    };
+  }
+  return { ...row, email_notifications: row.email_notifications === 1 };
 }
 
 export async function updateOrganizationSettings(
@@ -319,7 +324,8 @@ export async function updateOrganizationSettings(
   for (const [key, value] of Object.entries(input)) {
     // Keys come from a Zod object, never from the request directly.
     sets.push(`${key} = ?`);
-    values.push(value ?? null);
+    // SQLite has no boolean: the one flag is stored 0/1.
+    values.push(typeof value === 'boolean' ? (value ? 1 : 0) : (value ?? null));
   }
   if (sets.length > 0) {
     sets.push(`updated_at = ${NOW}`);
@@ -364,8 +370,9 @@ export async function createOrganization(
   await db
     .prepare(
       `INSERT INTO organizations
-         (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone, calendar_domain)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone,
+          email_notifications, calendar_domain)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -378,6 +385,7 @@ export async function createOrganization(
       input.palette,
       input.builtin_logo,
       input.time_zone,
+      input.email_notifications ? 1 : 0,
       calendarDomain,
     )
     .run();
@@ -395,7 +403,8 @@ export async function updateOrganization(
   const values: unknown[] = [];
   for (const [key, value] of Object.entries(input)) {
     sets.push(`${key} = ?`);
-    values.push(value ?? null);
+    // SQLite has no boolean: the one flag is stored 0/1.
+    values.push(typeof value === 'boolean' ? (value ? 1 : 0) : (value ?? null));
   }
   if (sets.length > 0) {
     sets.push(`updated_at = ${NOW}`);

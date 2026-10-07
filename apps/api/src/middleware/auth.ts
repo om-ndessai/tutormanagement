@@ -130,6 +130,7 @@ async function resolveBypassPerson(env: AppEnv['Bindings'], requestedEmail?: str
         palette: 'platform',
         builtin_logo: null,
         time_zone: 'America/New_York',
+        email_notifications: false,
       },
       'local.invalid',
     ));

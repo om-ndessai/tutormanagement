@@ -18,6 +18,7 @@
 --  Safe to re-run: it clears every table first. Never point it at production.
 -- ===========================================================================
 
+DELETE FROM notification_log;
 DELETE FROM session_reflections;
 DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
@@ -52,9 +53,9 @@ DELETE FROM users;
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, calendar_domain) VALUES
-  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 'chmi.tutor-portal.invalid'),
-  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 'riverside.tutor-portal.invalid');
+INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, calendar_domain) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 'chmi.tutor-portal.invalid'),
+  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 'riverside.tutor-portal.invalid');
 
 -- --- people ----------------------------------------------------------------
 INSERT INTO users (id, email, full_name, phone) VALUES

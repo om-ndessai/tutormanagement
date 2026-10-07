@@ -181,3 +181,18 @@ Phases 28-31 (built 2026-10-05, on the `orgsupport` branch only, deployed to `tu
 organizations -- picker, switcher, invitations, shared-field lock; 30 the platform console --
 organizations, their admins, palettes and logos, with `ndessai@gmail.com` the first platform
 admin; 31 each organization's own clock.
+
+Phase 32.
+Each organization will have a flag to support email notifications. If this flag is true following actions will send email notifications:
+1. When an user is added. Email is sent to user and to org admins.
+2. When a plan or assessment is added to the user. Email sent to tutor/student.
+3. When a schedule is added - email sent to student and tutor.
+4. When a session is recorded - email sent to student and tutor.
+All emails will include link to the tutoring portal.
+
+Built 2026-10-07: `organizations.email_notifications` (switched by platform admins in the console
+and by the organization's own admins on its Organization page), `lib/email.ts` and
+`notification_log`. A student's emails also go to their parents; nobody is emailed about their
+own action; an email carries no money, notes or scores (R15). Sent through Cloudflare's
+`send_email` binding on the production pair -- on the free plan, verified destination addresses
+only.

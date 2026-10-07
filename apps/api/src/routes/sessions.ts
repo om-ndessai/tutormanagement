@@ -42,6 +42,7 @@ import {
 import type { AppEnv } from '../types.js';
 import type { OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
+import { mailerFor, notify, sessionRecordedEvent } from '../lib/email.js';
 import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { autoStopExpired, recordRunningSession } from '../lib/live-sessions.js';
@@ -359,6 +360,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
     // After the lesson is on the record, so the log reads in the order it happened.
     if (input.assessment) await applyOwnAssessment(c.env.DB, c.get('org').id, viewer, session, input.assessment);
 
+    // Phase 32: the student, their parents and the tutor (unless it is them).
+    notify(mailerFor(c), c.get('org'), sessionRecordedEvent(viewer.id, session));
+
     session = (await getSession(c.env.DB, c.get('org').id, session.id)) ?? session;
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, c.get('org').id, viewer, session) };
@@ -526,6 +530,9 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     if (draft.assessment) await applyOwnAssessment(c.env.DB, c.get('org').id, viewer, session, draft.assessment);
 
+    // Phase 32: posting is when the lesson is recorded, so that is when it is told.
+    notify(mailerFor(c), c.get('org'), sessionRecordedEvent(viewer.id, session));
+
     session = (await getSession(c.env.DB, c.get('org').id, session.id)) ?? session;
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, c.get('org').id, viewer, session) };
@@ -631,7 +638,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     // Anyone looking at the live sessions also settles up the ones that have
     // outlived their limit, so a forgotten timer does not have to wait for the
     // next scheduled sweep while somebody has the portal open.
-    await autoStopExpired(c.env.DB);
+    await autoStopExpired(c.env.DB, new Date(), mailerFor(c));
 
     const mine = await getActiveRow(c.env.DB, c.get('org').id, viewer.id);
     const others = isAdmin(viewer) ? await listActiveRows(c.env.DB, c.get('org').id) : [];
@@ -678,7 +685,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     // Yesterday's forgotten lesson must not block today's: close anything past
     // its limit before deciding whether this tutor is already teaching.
-    await autoStopExpired(c.env.DB);
+    await autoStopExpired(c.env.DB, new Date(), mailerFor(c));
 
     // The primary key would reject this anyway; catching it here says why.
     if (await getActiveRow(c.env.DB, c.get('org').id, viewer.id)) {
@@ -744,6 +751,8 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const session = await recordRunningSession(c.env.DB, row, {
       actor: viewer,
       notes: c.req.valid('json').notes ?? row.notes,
+      mailer: mailerFor(c),
+      org: c.get('org'),
     });
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, c.get('org').id, viewer, session) };

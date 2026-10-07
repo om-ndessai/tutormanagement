@@ -139,8 +139,12 @@ export default {
 
   // Awaited rather than handed to waitUntil: closing these lessons IS the
   // job, so the invocation should not be able to finish before it is done.
-  async scheduled(_event: ScheduledController, env: Env): Promise<void> {
-    const closed = await autoStopExpired(env.DB);
+  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    // The emails for each lesson closed here go out after it, in waitUntil.
+    const closed = await autoStopExpired(env.DB, new Date(), {
+      env,
+      waitUntil: (work) => ctx.waitUntil(work),
+    });
     if (closed > 0) console.log(`Auto-stopped ${closed} session(s) past their limit.`);
   },
 } satisfies ExportedHandler<Env>;

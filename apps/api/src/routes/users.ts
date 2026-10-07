@@ -18,6 +18,7 @@ import {
 
 import type { AppEnv } from '../types.js';
 import { describeChangedFields, recordAudit } from '../lib/audit.js';
+import { mailerFor, notify } from '../lib/email.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
 import type { OrgId } from '../lib/org.js';
@@ -196,6 +197,15 @@ export const usersRoutes = new Hono<AppEnv>()
       subject: created,
       entity_type: 'user',
       entity_id: created.id,
+    });
+
+    // Phase 32: the person, a student's parents, and the organization's admins.
+    notify(mailerFor(c), c.get('org'), {
+      kind: 'user_added',
+      actorId: c.get('user').id,
+      personId: created.id,
+      personName: created.full_name,
+      isStudent: created.roles.includes('student'),
     });
 
     const detail = await getUserDetail(c.env.DB, org, created.id);

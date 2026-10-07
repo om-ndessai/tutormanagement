@@ -30,6 +30,16 @@ export interface Env {
   BOOTSTRAP_ADMIN_EMAILS: string;
 
   /**
+   * Phase 32: Cloudflare's send_email binding. Bound on the production pair
+   * only; without it (local, the demo) every notification is logged `skipped`.
+   */
+  EMAIL?: SendEmail;
+  /** The address notifications come from, on a domain with Email Routing. */
+  EMAIL_FROM?: string;
+  /** This Worker's own address, for the link in every notification. */
+  PUBLIC_URL?: string;
+
+  /**
    * SECRET. HMAC key for session cookies, >= 32 characters.
    * Set with `wrangler secret put SESSION_SECRET`; locally it comes from
    * apps/api/.dev.vars.

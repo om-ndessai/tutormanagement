@@ -40,6 +40,25 @@ export function hasTabOrg(): boolean {
   }
 }
 
+/**
+ * The organization a link names (`?org=<slug>`, as in every notification
+ * email), taken off the address so a reload or a copied URL does not keep
+ * re-choosing it. Only names a choice: the API still checks membership, and a
+ * slug the person cannot enter simply lands them at the picker.
+ */
+export function takeLinkedOrg(): string | null {
+  try {
+    const url = new URL(window.location.href);
+    const slug = url.searchParams.get(ORG_QUERY_PARAM)?.trim().toLowerCase();
+    if (!slug) return null;
+    url.searchParams.delete(ORG_QUERY_PARAM);
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    return slug;
+  } catch {
+    return null;
+  }
+}
+
 export function setActiveOrg(slug: string): void {
   try {
     sessionStorage.setItem(TAB_KEY, slug);
