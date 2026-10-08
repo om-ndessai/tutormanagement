@@ -1,0 +1,80 @@
+# The tutor's dashboard, Tutoring tab (Alex, tutor in chmi): five sections in order -- Student
+# Reflections between Tutoring Sessions and Progress -- the carousel narrowed to his own lessons,
+# and no money anywhere on the tab, which a tutor may have open beside a student.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible: 'Alex Chen'
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 20000
+- assertVisible:
+    id: tabs-tutoring
+- assertVisible:
+    id: stat-students
+- assertVisible:
+    id: stat-sessions
+- assertVisible:
+    id: stat-sessions-running
+- assertVisible:
+    id: dashboard-section-tutoring-sessions
+- extendedWaitUntil:
+    visible:
+      id: carousel-next
+    timeout: 15000
+- assertVisible:
+    id: carousel-countdown
+- takeScreenshot: dashboard-tutor-top
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-student-reflections
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-student-reflections-action
+    direction: DOWN
+- takeScreenshot: dashboard-tutor-reflections
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-progress
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: progress-spotlight-card
+    direction: DOWN
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-recent-activity
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-recent-activity-action
+    direction: DOWN
+- takeScreenshot: dashboard-tutor-activity
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'

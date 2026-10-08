@@ -24,9 +24,9 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 
 | Web source | What | Mobile | Flow | Status |
 | --- | --- | --- | --- | --- |
-| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | todo |
-| `dashboard/sessions-carousel.tsx` | past 5, now, upcoming | `src/features/dashboard/sessions-carousel.tsx` | `dashboard/tutoring` | todo |
-| `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student` | todo |
+| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance, parent/student, view-as todo |
+| `dashboard/sessions-carousel.tsx` | past 5, now, upcoming | `src/features/dashboard/sessions-carousel.tsx` | `dashboard/tutoring` | tested |
+| `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student` | recent reflections tested (13); prompts todo |
 | `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/*` | `dashboard/finance` | todo |
 | `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/form-1099-html.ts` | `year-end/*` | todo |
 | `dashboard/user-picker.tsx` | admin view-as | `src/features/dashboard/user-picker.tsx` | `dashboard/view-as` | todo |

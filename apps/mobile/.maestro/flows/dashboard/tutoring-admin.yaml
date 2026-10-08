@@ -1,0 +1,87 @@
+# The admin's dashboard, Tutoring tab (Priya, admin + tutor in chmi: the admin view is the
+# default). Four sections in order, the sessions carousel, and no money anywhere on the tab --
+# then the Finance tab's placeholder and back.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible: 'Priya Raghavan'
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 20000
+- assertVisible:
+    id: tabs-tutoring
+- assertVisible:
+    id: stat-students
+- assertVisible:
+    id: stat-tutors
+- assertVisible:
+    id: stat-parents
+- assertVisible:
+    id: stat-sessions-running
+- assertVisible:
+    id: dashboard-section-tutoring-sessions
+- extendedWaitUntil:
+    visible:
+      id: carousel-now
+    timeout: 15000
+- takeScreenshot: dashboard-admin-top
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-progress
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: progress-spotlight-card
+    direction: DOWN
+- takeScreenshot: dashboard-admin-progress
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-recent-activity
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-recent-activity-action
+    direction: DOWN
+- takeScreenshot: dashboard-admin-activity
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+# The Finance half is its own tab, and carries no figure yet.
+- scrollUntilVisible:
+    element:
+      id: tabs-finance
+    direction: UP
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-placeholder
+    timeout: 10000
+- assertNotVisible:
+    id: dashboard-section-analytics
+- tapOn:
+    id: tabs-tutoring
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 10000

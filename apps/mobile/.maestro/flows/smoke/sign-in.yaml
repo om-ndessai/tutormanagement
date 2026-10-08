@@ -37,8 +37,18 @@ tags:
       id: screen-home
     timeout: 20000
 - assertVisible: 'Sofia Okafor'
+# Signing out is in the account sheet (the shell, 12).
 - tapOn:
-    id: home-sign-out
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-sign-out
+- tapOn:
+    id: account-sign-out
 - extendedWaitUntil:
     visible:
       id: screen-sign-in
