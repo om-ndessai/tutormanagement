@@ -1,11 +1,12 @@
 // Ported from apps/web/src/features/teaching/session-form-dialog.tsx @ 1132322 (the form's state
 // and the bodies it sends). Every field lives in one `SessionFormValues` object, and `formBody`
-// builds the body both the session and the draft endpoints take: item 19's autosave reads
-// `formBody` on an interval and posts it as a draft, without changing anything here.
+// builds the body both the session and the draft endpoints take: the autosave
+// (`use-draft-autosave.ts`) reads it on an interval and keeps it as a draft.
 import type {
   Assignment,
   HomeworkStatus,
   Rating,
+  SessionDraft,
   SessionMode,
   SessionUpdatePayload,
   TutoringSession,
@@ -90,6 +91,50 @@ export function formFromSession(
     myRating: mine?.rating ?? null,
     myAssessment: mine?.body ?? '',
   };
+}
+
+/** A draft picked back up: everything as it was kept, the author's own assessment included. */
+export function formFromDraft(
+  draft: SessionDraft,
+  assignments: Pick<Assignment, 'id' | 'tutor_user_id' | 'student_user_id'>[],
+): SessionFormValues {
+  const match = assignments.find(
+    (a) => a.tutor_user_id === draft.tutor_user_id && a.student_user_id === draft.student_user_id,
+  );
+  const writeUp = draft.write_up;
+  return {
+    assignmentId: match?.id ?? '',
+    occurredOn: draft.occurred_on,
+    startedAt: draft.started_at,
+    endedAt: draft.ended_at,
+    mode: draft.mode,
+    notes: draft.notes ?? '',
+    planned: writeUp?.planned ?? '',
+    previousReview: writeUp?.previous_review ?? '',
+    homeworkReview: writeUp?.homework_review ?? '',
+    homeworkStatus: writeUp?.homework_status ?? null,
+    homeworkAssigned: writeUp?.homework_assigned ?? '',
+    goalRating: draft.progress?.goal_rating ?? null,
+    topicRatings: Object.fromEntries(
+      (draft.progress?.topic_ratings ?? []).map((row) => [row.topic_id, row.rating]),
+    ),
+    myRating: draft.assessment?.rating ?? null,
+    myAssessment: draft.assessment?.body ?? '',
+  };
+}
+
+/** True once there is something worth keeping as a draft: words, a rating, a status. */
+export function hasContent(v: SessionFormValues): boolean {
+  return Boolean(
+    v.notes.trim() ||
+    v.planned.trim() ||
+    v.previousReview.trim() ||
+    v.homeworkReview.trim() ||
+    v.homeworkAssigned.trim() ||
+    v.homeworkStatus ||
+    assessmentBody(v) ||
+    progressBody(v, false),
+  );
 }
 
 /** Every part of the write-up; the API stores none of it when all are empty. */

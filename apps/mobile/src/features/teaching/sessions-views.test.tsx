@@ -24,7 +24,12 @@ jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));
 jest.mock('@/lib/download', () => ({ downloadAndShare: jest.fn() }));
-jest.mock('./api', () => ({ useSession: () => ({ data: undefined, isPending: false, isError: false }) }));
+jest.mock('./api', () => ({
+  useSession: () => ({ data: undefined, isPending: false, isError: false }),
+  useMyDrafts: () => ({ data: undefined }),
+  usePostDraft: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useDiscardDraft: () => ({ mutate: jest.fn(), isPending: false }),
+}));
 const mockPages = jest.fn();
 jest.mock('./use-session-pages', () => ({
   SESSIONS_PAGE_SIZE: 25,

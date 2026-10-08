@@ -1,0 +1,166 @@
+# The record sheet keeps a new write-up as a draft every 3 seconds (Alex, tutor in chmi). An
+# SSN-shaped note is refused before it leaves the phone: the sentence shows under the field, the
+# status says it was not autosaved, and closing leaves no draft. Then a note autosaves, closing
+# says where it went, the Drafts panel holds it (no money), and continuing and posting it makes it
+# a lesson and the draft goes. The lesson is deleted at the end, so other flows see the seed.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- assertNotVisible:
+    id: drafts-panel
+# 1. An SSN-shaped note never autosaves.
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: record-planned
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: record-planned
+- inputText: 'SSN 123-45-6789'
+# Return closes the keyboard on the short parts of the write-up.
+- pressKey: Enter
+# Within one autosave tick the field says why, and nothing was sent.
+- extendedWaitUntil:
+    visible: '.*looks like a Social Security number.*'
+    timeout: 15000
+- takeScreenshot: autosave-ssn-refused
+- scrollUntilVisible:
+    element:
+      id: record-autosave-status
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: record-autosave-status
+    text: 'Not autosaved yet'
+- scrollUntilVisible:
+    element:
+      id: record-cancel
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: record-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
+- assertNotVisible: '.*kept as a draft.*'
+- assertNotVisible:
+    id: drafts-panel
+# 2. A note autosaves, and closing keeps it as a draft.
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: record-planned
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: record-planned
+- inputText: 'Autosaved from the phone'
+# Return closes the keyboard on the short parts of the write-up.
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: record-autosave-status
+    direction: DOWN
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: record-autosave-status
+      text: 'Draft autosaved .*'
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: autosave-saved
+- scrollUntilVisible:
+    element:
+      id: record-cancel
+    direction: DOWN
+- tapOn:
+    id: record-cancel
+- extendedWaitUntil:
+    visible: 'Your write-up is kept as a draft. Pick it up from Drafts.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: drafts-panel
+    timeout: 10000
+- assertVisible: 'Your drafts.*Only you can see it'
+- assertVisible:
+    id: 'draft-continue-.*'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: autosave-drafts-panel
+# 3. Continue it, then post it.
+- tapOn:
+    id: 'draft-continue-.*'
+- extendedWaitUntil:
+    visible: 'Finish this draft'
+    timeout: 15000
+- assertNotVisible:
+    id: record-money
+# The write-up comes back as it was kept: the posted lesson below carries its words.
+- scrollUntilVisible:
+    element:
+      id: record-submit
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Post session'
+- tapOn:
+    id: record-submit
+- extendedWaitUntil:
+    visible: 'Session recorded. Everyone concerned can see it now.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: drafts-panel
+    timeout: 10000
+- extendedWaitUntil:
+    visible: 'Autosaved from the phone'
+    timeout: 15000
+- takeScreenshot: autosave-posted
+# Put the data back: delete the lesson from its detail.
+- tapOn: 'Autosaved from the phone'
+- scrollUntilVisible:
+    element:
+      id: session-delete
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: session-delete
+- extendedWaitUntil:
+    visible: 'Delete this session?'
+    timeout: 10000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Session deleted.'
+    timeout: 15000

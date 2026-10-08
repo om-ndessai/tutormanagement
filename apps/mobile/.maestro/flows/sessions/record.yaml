@@ -44,10 +44,11 @@ tags:
     timeout: 30000
 - tapOn:
     id: record-submit
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: record-error
       text: 'Choose which student this session was with.'
+    direction: DOWN
     timeout: 10000
 - scrollUntilVisible:
     element:
@@ -80,7 +81,8 @@ tags:
 - tapOn:
     id: record-notes
 - inputText: 'Recorded from the phone: long division'
-- hideKeyboard
+# A tap on a heading closes the keyboard (the sheet's scroll view lets an unhandled tap through).
+- tapOn: 'This lesson'
 - scrollUntilVisible:
     element:
       id: record-goal-3
@@ -177,3 +179,6 @@ tags:
       id: screen-sessions
     timeout: 10000
 - assertNotVisible: 'Recorded from the phone.*'
+# Recording consumed the draft the sheet autosaved on the way: none is left behind.
+- assertNotVisible:
+    id: drafts-panel

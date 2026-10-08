@@ -7,6 +7,7 @@
 // amounts on the lessons, no export, none in the screens it opens.
 import { formatDuration, type TutoringSession } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
+import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
@@ -28,6 +29,7 @@ import { AccountButton } from '@/features/shell/account-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useSession } from './api';
+import { DraftsPanel } from './drafts-panel';
 import { SessionCard } from './session-card';
 import { SessionFilters } from './session-filters';
 import { SessionMoney } from './session-money';
@@ -40,6 +42,7 @@ export function SessionsScreen() {
   const brand = useBrand();
   const theme = useAppTheme();
   const toast = useToast();
+  const queryClient = useQueryClient();
   const today = organizationToday(useOrgTimeZone());
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isTutor = user?.roles.includes('tutor') ?? false;
@@ -88,7 +91,11 @@ export function SessionsScreen() {
   async function onRefresh() {
     setRefreshing(true);
     try {
-      await Promise.all([pages.refetch(), focusId ? focused.refetch() : null]);
+      await Promise.all([
+        pages.refetch(),
+        focusId ? focused.refetch() : null,
+        queryClient.invalidateQueries({ queryKey: ['session-drafts'] }),
+      ]);
     } finally {
       setRefreshing(false);
     }
@@ -152,6 +159,16 @@ export function SessionsScreen() {
         </Button>
       ) : null}
       <TutoringFinanceSwitch />
+      {/* A draft is the author's alone (R10), so it sits above the list rather than in it -- the
+          totals do not count it and never should. Tutoring only: a draft is a write-up. */}
+      {!money && !focusId ? (
+        <DraftsPanel
+          today={today}
+          onEdit={(draft) =>
+            router.push({ pathname: '/record-session', params: { draft: draft.id, tab: 'tutoring' } })
+          }
+        />
+      ) : null}
       {/* The running totals lead. Only Finance adds the money tiles. */}
       <StatGrid>
         {[

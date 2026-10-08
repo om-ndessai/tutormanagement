@@ -1,0 +1,121 @@
+# A draft is its author's alone (R10). Alex saves a write-up with Sofia as a draft (Save draft, the
+# explicit, logged save). Maria -- a tutor and Sofia's own parent -- and Priya, the admin, see no
+# Drafts panel. Alex discards it, with a confirmation, and the panel goes.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000001
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000001
+- scrollUntilVisible:
+    element:
+      id: record-planned
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: record-planned
+- inputText: 'Private draft from Alex'
+# Return closes the keyboard on the short parts of the write-up.
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: record-save-draft
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: record-save-draft
+- extendedWaitUntil:
+    visible: 'Saved as a draft. Only you can see it.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: drafts-panel
+    timeout: 10000
+- assertVisible: 'Sofia Okafor'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: drafts-alex
+# Maria (Sofia's parent, and a tutor) never sees it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: 'session-card-.*'
+    timeout: 20000
+- assertNotVisible:
+    id: drafts-panel
+- assertNotVisible: 'Private draft from Alex'
+# Nor does the office.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: 'session-card-.*'
+    timeout: 20000
+- assertNotVisible:
+    id: drafts-panel
+# Alex discards it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: drafts-panel
+    timeout: 20000
+- tapOn:
+    id: 'draft-discard-.*'
+- extendedWaitUntil:
+    visible: 'Discard this draft?'
+    timeout: 10000
+- assertVisible: 'Keep it'
+- tapOn: 'Discard'
+- extendedWaitUntil:
+    visible: 'Draft discarded.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: drafts-panel
+    timeout: 10000

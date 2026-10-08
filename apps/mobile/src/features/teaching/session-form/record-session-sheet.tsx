@@ -1,16 +1,20 @@
-// Ported from apps/web/src/features/teaching/session-form-dialog.tsx @ 1132322 (recording a lesson
-// and editing one on the record). The dialog becomes a form sheet, `(org)/record-session`. Drafts
-// and the 3-second autosave arrive with item 19; the form's state (`useSessionForm`) is already
-// shaped for them.
+// Ported from apps/web/src/features/teaching/session-form-dialog.tsx @ 1132322 (recording a lesson,
+// editing one on the record, and picking a draft back up). The dialog becomes a form sheet,
+// `(org)/record-session`. A new write-up autosaves into the writer's own draft every 3 s
+// (`useDraftAutosave`); recording consumes it.
 import {
   SESSION_MODES,
   SESSION_MODE_LABELS,
   formatDuration,
+  sessionDraftInputSchema,
   sessionInputSchema,
   sessionUpdateSchema,
   type Assignment,
+  type SessionDraft,
+  type SessionDraftInput,
   type TutoringSession,
 } from '@tmi/shared';
+import { useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -26,20 +30,34 @@ import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
-import { useAssignments, usePreviousSession, useRecordSession, useSession, useUpdateSession } from '../api';
+import {
+  useAssignments,
+  useAutosaveDraft,
+  useMyDrafts,
+  usePostDraft,
+  usePreviousSession,
+  useRecordSession,
+  useSaveDraft,
+  useSession,
+  useUpdateSession,
+} from '../api';
 import { organizationToday } from '../session-ranges';
 import { AssessmentFields, HomeworkStatusPicker, NoteField, likelyAssessorRole } from '../session-notes';
 import { FormSection } from './form-section';
 import { PairingPicker } from './pairing-picker';
 import { PreviousLesson } from './previous-lesson';
 import { ProgressSection } from './progress-section';
+import { AutosaveStatus } from './autosave-status';
 import { SessionMoneyPreview, previewFigures } from './session-money-preview';
+import { useDraftAutosave } from './use-draft-autosave';
 import {
   QUICK_LENGTHS,
   addMinutes,
   emptyForm,
   formBody,
+  formFromDraft,
   formFromSession,
+  hasContent,
   issuesToErrors,
   toUpdatePayload,
   useSessionForm,
@@ -55,10 +73,13 @@ function close() {
  */
 export function RecordSessionSheet({
   sessionId,
+  draftId,
   showMoney = false,
 }: {
   /** Editing this lesson; a new one when absent. */
   sessionId?: string;
+  /** Picking this draft back up (the writer's own; there is nobody else's to pick). */
+  draftId?: string;
   /** True only when opened from Finance. */
   showMoney?: boolean;
 }) {
@@ -67,20 +88,31 @@ export function RecordSessionSheet({
   // A tutor only ever sees their own pairings; an admin sees all of them.
   const assignments = useAssignments(isAdmin ? {} : { tutor_user_id: user?.id });
   const existing = useSession(sessionId ?? null);
+  // There is no read of one draft: it is found among the writer's own.
+  const drafts = useMyDrafts();
+  const draft = draftId ? (drafts.data?.data.find((row) => row.id === draftId) ?? null) : null;
 
   let body;
-  if (assignments.isPending || (sessionId && existing.isPending)) {
+  if (assignments.isPending || (sessionId && existing.isPending) || (draftId && drafts.isPending)) {
     body = <LoadingState label="Loading…" />;
   } else if (assignments.isError) {
     body = <ErrorState error={assignments.error} onRetry={() => void assignments.refetch()} />;
   } else if (sessionId && (existing.isError || !existing.data)) {
     body = <ErrorState error={existing.error} onRetry={() => void existing.refetch()} />;
+  } else if (draftId && !draft) {
+    body = (
+      <ErrorState
+        error={drafts.error ?? new ApiRequestError(404, 'not_found', 'That draft does not exist.')}
+        onRetry={() => void drafts.refetch()}
+      />
+    );
   } else {
     body = (
       <SessionForm
-        key={sessionId ?? 'new'}
+        key={sessionId ?? draftId ?? 'new'}
         assignments={assignments.data?.data ?? []}
         existing={existing.data?.data ?? null}
+        draft={draft}
         showMoney={showMoney}
       />
     );
@@ -96,30 +128,62 @@ export function RecordSessionSheet({
 function SessionForm({
   assignments,
   existing,
+  draft,
   showMoney,
 }: {
   assignments: Assignment[];
   existing: TutoringSession | null;
+  /** An unposted write-up being picked back up; never together with `existing`. */
+  draft: SessionDraft | null;
   showMoney: boolean;
 }) {
   const { user } = useAuth();
   const theme = useAppTheme();
   const toast = useToast();
+  const queryClient = useQueryClient();
   const today = organizationToday(useOrgTimeZone());
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isEdit = existing !== null;
+  const isDraft = draft !== null;
 
   const { values, set } = useSessionForm(() =>
-    existing ? formFromSession(existing, assignments, user?.id) : emptyForm(today, assignments),
+    existing
+      ? formFromSession(existing, assignments, user?.id)
+      : draft
+        ? formFromDraft(draft, assignments)
+        : emptyForm(today, assignments),
   );
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitErrors, setErrors] = useState<Record<string, string>>({});
+  // What the draft schema said about the last body the autosave looked at; answered by an edit.
+  const [autosaveErrors, setAutosaveErrors] = useState<Record<string, string>>({});
+  const errors = { ...autosaveErrors, ...submitErrors };
   // A sheet covers the app's toasts, so the reason a save failed is also said by the button.
   const [failure, setFailure] = useState<string | null>(null);
   const record = useRecordSession();
   const update = useUpdateSession();
-  const saving = record.isPending || update.isPending;
+  const saveDraft = useSaveDraft();
+  const postDraft = usePostDraft();
+  const autosaveDraft = useAutosaveDraft();
+  const saving = record.isPending || update.isPending || saveDraft.isPending || postDraft.isPending;
 
   const assignment = assignments.find((a) => a.id === values.assignmentId);
+  /** The pairing the write-up names: the one chosen, else the draft's own. */
+  const pair = assignment
+    ? { tutor_user_id: assignment.tutor_user_id, student_user_id: assignment.student_user_id }
+    : draft
+      ? { tutor_user_id: draft.tutor_user_id, student_user_id: draft.student_user_id }
+      : null;
+
+  const autosave = useDraftAutosave({
+    enabled: !isEdit,
+    initialDraftId: draft?.id ?? null,
+    getBody: () =>
+      pair && (isDraft || hasContent(values)) ? (formBody(values, pair) as SessionDraftInput) : null,
+    save: (id, input) => autosaveDraft.mutateAsync({ id, input }),
+    onInvalid: setAutosaveErrors,
+    onValid: () => setAutosaveErrors({}),
+    onKeptAsDraft: () => toast.success('Your write-up is kept as a draft. Pick it up from Drafts.'),
+  });
   const studentId = existing?.student_user_id ?? assignment?.student_user_id;
 
   // The lesson before this one, whose homework and notes the review parts look back on.
@@ -150,9 +214,69 @@ function SessionForm({
     toast.error(message);
   }
 
+  /**
+   * Keeps the write-up without posting it. Nobody else can see a draft, so this is the safe
+   * button: it never puts an unfinished note in front of a family, and it never bills anything.
+   */
+  async function handleSaveDraft() {
+    setErrors({});
+    setFailure(null);
+    if (!pair) {
+      fail('Choose which student this session was with.', {
+        assignment: 'Choose which student this session was with.',
+      });
+      return;
+    }
+    const input = formBody(values, pair) as SessionDraftInput;
+    const parsed = sessionDraftInputSchema.safeParse(input);
+    if (!parsed.success) {
+      fail(parsed.error.issues[0]?.message ?? 'Check the form.', issuesToErrors(parsed.error.issues));
+      return;
+    }
+    await autosave.settle();
+    try {
+      await saveDraft.mutateAsync({ id: autosave.draftId() ?? undefined, input });
+      toast.success(isDraft ? 'Draft saved.' : 'Saved as a draft. Only you can see it.');
+      close();
+    } catch (error) {
+      autosave.resume();
+      if (error instanceof ApiRequestError) fail(error.message, error.fieldErrors);
+      else fail('Could not save the draft.', {});
+    }
+  }
+
+  /** Saves any edits, then posts: one button, because the writer pressed post. */
+  async function handlePostDraft() {
+    if (!draft || !pair) return;
+    const input = formBody(values, pair) as SessionDraftInput;
+    const parsed = sessionDraftInputSchema.safeParse(input);
+    if (!parsed.success) {
+      fail(parsed.error.issues[0]?.message ?? 'Check the form.', issuesToErrors(parsed.error.issues));
+      return;
+    }
+    await autosave.settle();
+    try {
+      // Brings the draft up to date first. Quietly: posting is the action, and is what the log
+      // records.
+      await autosaveDraft.mutateAsync({ id: draft.id, input });
+      await postDraft.mutateAsync(draft.id);
+      toast.success('Session recorded. Everyone concerned can see it now.');
+      close();
+    } catch (error) {
+      autosave.resume();
+      if (error instanceof ApiRequestError) fail(error.message, error.fieldErrors);
+      else fail('Could not post the draft.', {});
+    }
+  }
+
   async function handleSubmit() {
     setErrors({});
     setFailure(null);
+
+    if (isDraft) {
+      await handlePostDraft();
+      return;
+    }
 
     if (!isEdit && !assignment) {
       fail('Choose which student this session was with.', {
@@ -181,12 +305,20 @@ function SessionForm({
           fail(parsed.error.issues[0]?.message ?? 'Check the form.', issuesToErrors(parsed.error.issues));
           return;
         }
-        await record.mutateAsync(parsed.data);
+        // Lets an autosave on its way land, then records from the draft it made, which the
+        // server deletes in the same request: one write-up never becomes a session and a draft.
+        await autosave.settle();
+        const fromDraft = autosave.draftId();
+        await record.mutateAsync({ ...parsed.data, ...(fromDraft ? { from_draft_id: fromDraft } : {}) });
+        // The server deleted that draft; `useRecordSession`'s invalidations (copied from the web)
+        // do not cover the drafts list, so it is refreshed here.
+        if (fromDraft) void queryClient.invalidateQueries({ queryKey: ['session-drafts'] });
         toast.success('Session recorded.');
       }
-      haptics.success();
       close();
     } catch (error) {
+      // Not recorded, so keep the write-up safe again.
+      if (!isEdit) autosave.resume();
       if (error instanceof ApiRequestError) fail(error.message, error.fieldErrors);
       else fail('Could not save the session.', {});
     }
@@ -204,7 +336,7 @@ function SessionForm({
     <View style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          {isEdit ? 'Edit session' : 'Record a session'}
+          {isEdit ? 'Edit session' : isDraft ? 'Finish this draft' : 'Record a session'}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {existing
@@ -377,7 +509,11 @@ function SessionForm({
 
       <FormSection
         title="Your assessment"
-        description="Optional. Everyone this lesson concerns can read it once it is recorded."
+        description={
+          isEdit
+            ? 'Optional. Everyone this lesson concerns can read it.'
+            : 'Optional. Private with the rest of a draft; everyone this lesson concerns can read it once it is recorded.'
+        }
       >
         <AssessmentFields
           testID="record-assessment"
@@ -394,6 +530,7 @@ function SessionForm({
       </FormSection>
 
       <View style={{ gap: space.sm }}>
+        {!isEdit ? <AutosaveStatus state={autosave.state} /> : null}
         {failure ? (
           <HelperText testID="record-error" type="error" padding="none">
             {failure}
@@ -406,8 +543,21 @@ function SessionForm({
           loading={saving}
           disabled={saving}
         >
-          {isEdit ? 'Save changes' : 'Record session'}
+          {isEdit ? 'Save changes' : isDraft ? 'Post session' : 'Record session'}
         </Button>
+        {/* Offered while writing up a lesson, and while picking a draft back up. Not while
+            editing a session already on the record: that one has been posted. */}
+        {!isEdit ? (
+          <Button
+            testID="record-save-draft"
+            mode="contained-tonal"
+            onPress={() => void handleSaveDraft()}
+            loading={saveDraft.isPending}
+            disabled={saving}
+          >
+            Save draft
+          </Button>
+        ) : null}
         <Button testID="record-cancel" mode="outlined" onPress={close} disabled={saving}>
           Cancel
         </Button>
