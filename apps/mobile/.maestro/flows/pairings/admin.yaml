@@ -1,0 +1,97 @@
+# The office pairs a tutor with a student, changes the pairing's rate, and removes it. Priya assigns
+# Adeline Quintero to Alex: the rate fields arrive filled from Alex's own defaults, she raises the
+# in-person one (an override, so "custom"), then edits it, then removes the pairing. Changes data:
+# reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings
+- extendedWaitUntil:
+    visible:
+      id: pairings-add-button
+    timeout: 20000
+- assertVisible: 'Which tutor teaches which student, and what the tutor is paid for it.'
+- assertVisible: 'Tutor pay, in person:'
+- tapOn:
+    id: pairings-add-button
+- extendedWaitUntil:
+    visible:
+      id: assignment-tutor-00000000-0000-4000-8000-000000000003
+    timeout: 15000
+- assertVisible: 'Pair a tutor with a student'
+- tapOn:
+    id: assignment-tutor-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: assignment-student-33333333-0000-4000-8000-000000000042
+    timeout: 10000
+- tapOn:
+    id: assignment-student-33333333-0000-4000-8000-000000000042
+# Prefilled from Alex's profile.
+- extendedWaitUntil:
+    visible: '75.00'
+    timeout: 10000
+- assertVisible: "From Alex Chen's profile.*"
+- tapOn:
+    id: assignment-rate-in-person
+- eraseText: 10
+- inputText: '80'
+- pressKey: Enter
+- tapOn:
+    id: assignment-save
+- extendedWaitUntil:
+    visible: 'Student assigned.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-pairings
+    timeout: 10000
+- scrollUntilVisible:
+    element: "Edit Adeline Quintero's assignment"
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'Adeline Quintero'
+- takeScreenshot: pairings-admin-created
+- tapOn: "Edit Adeline Quintero's assignment"
+- extendedWaitUntil:
+    visible:
+      id: assignment-rate-in-person
+    timeout: 10000
+- assertVisible: 'Edit pairing'
+- assertVisible: '80.00'
+- tapOn:
+    id: assignment-rate-in-person
+- eraseText: 10
+- inputText: '85'
+- pressKey: Enter
+- tapOn:
+    id: assignment-save
+- extendedWaitUntil:
+    visible: 'Pairing updated.'
+    timeout: 15000
+- scrollUntilVisible:
+    element: '\$85\.00'
+    direction: DOWN
+    timeout: 20000
+- tapOn: 'Remove Adeline Quintero from Alex Chen'
+- extendedWaitUntil:
+    visible: 'Remove Adeline Quintero from Alex Chen\?'
+    timeout: 10000
+- tapOn: 'Remove'
+- extendedWaitUntil:
+    visible: 'Adeline Quintero removed from Alex Chen.'
+    timeout: 15000
+- assertNotVisible: "Edit Adeline Quintero's assignment"

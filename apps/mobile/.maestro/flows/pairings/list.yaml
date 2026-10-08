@@ -1,0 +1,92 @@
+# Pairings as their readers see them. Alex, the tutor: his two students, each with HIS rate ("Your
+# rate"), "custom" on Ben's (an override) and not on Sofia's, and none of the admin's actions.
+# Anita, a parent: who teaches Sanjay, with no rate line at all (R5: the API blanks the tutor's
+# pay); a link to a pairing that is not hers reads as "no longer here", not forbidden (R9).
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-a0000000-0000-4000-8000-000000000001
+    timeout: 20000
+- assertVisible: 'The students you teach.'
+- assertVisible:
+    id: pairing-card-a0000000-0000-4000-8000-000000000002
+- assertVisible:
+    id: pairing-rates-a0000000-0000-4000-8000-000000000001
+- assertVisible: 'Your rate, in person:'
+- assertVisible: '\$75\.00'
+- assertNotVisible:
+    id: pairing-custom-in-person-a0000000-0000-4000-8000-000000000001
+- assertVisible:
+    id: pairing-custom-in-person-a0000000-0000-4000-8000-000000000002
+- assertVisible: 'Weekly, building towards the accelerated track.'
+- assertNotVisible: 'Tutor pay.*'
+- assertNotVisible:
+    id: pairings-add-button
+- assertNotVisible:
+    id: pairing-edit-a0000000-0000-4000-8000-000000000001
+- assertNotVisible:
+    id: pairing-remove-a0000000-0000-4000-8000-000000000001
+- takeScreenshot: pairings-tutor
+
+# Anita, Sanjay's parent.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-a0000000-0000-4000-8000-000000000004
+    timeout: 20000
+- assertVisible: 'Who teaches your children.'
+- assertVisible: 'Sanjay Patel'
+- assertVisible: 'with Priya Raghavan'
+- assertNotVisible:
+    id: pairing-rates-a0000000-0000-4000-8000-000000000004
+- assertNotVisible: '.*\$[0-9].*'
+- assertNotVisible: 'No rate set'
+- assertNotVisible:
+    id: pairings-add-button
+- takeScreenshot: pairings-parent
+# A pairing she cannot list: the notice's sentence, and Show all brings hers back.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings?focus=a0000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: focus-notice
+    timeout: 15000
+- assertVisible: 'That assignment is no longer here.*'
+- assertNotVisible: 'Sofia Okafor'
+- tapOn:
+    id: focus-show-all
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-a0000000-0000-4000-8000-000000000004
+    timeout: 10000
