@@ -11,6 +11,7 @@ reviews the branch and merges it; nobody else does.
 | [setup.md](setup.md) | The toolchain on this Mac, and how to run the app and its tests |
 | [parity.md](parity.md) | Each web screen and hook, the mobile file that ports it, and its test flow |
 | [immersive-design.md](immersive-design.md) | Research on immersive mobile design, mapped to each feature |
+| [agent-brief.md](agent-brief.md) | What an agent building one feature needs: the loop, this machine, conventions, checks |
 | [build-log.md](build-log.md) | The architect's design entry for each feature, written before it is built |
 
 ## Decisions
