@@ -19,7 +19,7 @@ the `[~]` item, then carry on down the list.
 - [x] 7. Mobile: API client, server picker and per-request organization
 - [x] 8. Mobile: developer sign-in and session restore
 - [x] 9. Mobile tests: Maestro harness and local seeded runner
-- [ ] 10. Workflow: CI for typecheck, lint, unit tests and bundling
+- [x] 10. Workflow: CI for typecheck, lint, unit tests and bundling
 - [x] 11. Mobile: organization picker, invitations and default organization
 - [ ] 12. Mobile: app shell — role tabs, org switcher, user menu, live lesson banner
 - [ ] 13. Mobile: Dashboard — Tutoring tab

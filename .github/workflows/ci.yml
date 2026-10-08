@@ -1,0 +1,54 @@
+# Checks that need no Cloudflare account, no simulator and no secrets: typecheck, the web
+# build, and the mobile app's lint, unit tests, dependency doctor and a bundle of both
+# platforms (which catches Metro resolution errors without a native build).
+#
+# The end-to-end suites stay local by design: the web suite against `wrangler dev`
+# (docs/testing.md), the mobile suite on simulators (`npm run e2e:mobile`). Running them here
+# is a possible follow-up; see docs/mobile/README.md.
+name: CI
+
+on:
+  push:
+    branches: [main, mobile-app]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: Typecheck and web build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # The root typecheck includes the org-scope check; the mobile part skips itself here
+      # because the mobile job installs its dependencies separately.
+      - run: npm run typecheck
+      - run: npm run build
+
+  mobile:
+    name: Mobile lint, tests and bundle
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npx jest --ci
+      - run: npx expo-doctor
+      - run: npx expo export --platform ios --platform android --output-dir dist
