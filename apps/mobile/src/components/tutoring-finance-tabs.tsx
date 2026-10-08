@@ -21,29 +21,37 @@ export function useTutoringFinanceTab(): [TutoringFinanceTab, (tab: TutoringFina
   return [tab, setTab];
 }
 
+/** The Tutoring / Finance segmented control alone, for a screen that renders its halves itself. */
+export function TutoringFinanceSwitch() {
+  const [tab, setTab] = useTutoringFinanceTab();
+  return (
+    <View nativeID="tabs">
+      <SegmentedButtons
+        value={tab}
+        onValueChange={(value) => {
+          if (value === tab) return;
+          haptics.selection();
+          setTab(value as TutoringFinanceTab);
+        }}
+        buttons={[
+          { value: 'tutoring', label: 'Tutoring', icon: 'school-outline', testID: 'tabs-tutoring' },
+          { value: 'finance', label: 'Finance', icon: 'wallet-outline', testID: 'tabs-finance' },
+        ]}
+      />
+    </View>
+  );
+}
+
 /**
  * A screen's two halves: how the teaching is going, and the money. Only the chosen half is
  * rendered, so nothing from Finance is ever mounted while Tutoring shows.
  */
 export function TutoringFinanceTabs({ tutoring, finance }: { tutoring: ReactNode; finance: ReactNode }) {
-  const [tab, setTab] = useTutoringFinanceTab();
+  const [tab] = useTutoringFinanceTab();
 
   return (
     <View style={{ gap: space.lg }}>
-      <View nativeID="tabs">
-        <SegmentedButtons
-          value={tab}
-          onValueChange={(value) => {
-            if (value === tab) return;
-            haptics.selection();
-            setTab(value as TutoringFinanceTab);
-          }}
-          buttons={[
-            { value: 'tutoring', label: 'Tutoring', icon: 'school-outline', testID: 'tabs-tutoring' },
-            { value: 'finance', label: 'Finance', icon: 'wallet-outline', testID: 'tabs-finance' },
-          ]}
-        />
-      </View>
+      <TutoringFinanceSwitch />
       {tab === 'tutoring' ? tutoring : finance}
     </View>
   );

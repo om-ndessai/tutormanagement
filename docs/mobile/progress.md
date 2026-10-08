@@ -26,7 +26,7 @@ the `[~]` item, then carry on down the list.
 - [x] 14. Mobile: Dashboard — Finance tab
 - [x] 15. Mobile: Dashboard — parent and student views, reflection prompts (926a924)
 - [x] 16. Mobile: Dashboard — admin view-as and role selector
-- [ ] 17. Mobile: Sessions — Tutoring/Finance list, filters and focus
+- [x] 17. Mobile: Sessions — Tutoring/Finance list, filters and focus
 - [ ] 18. Mobile: Sessions — record a lesson
 - [ ] 19. Mobile: Sessions — drafts and 3-second autosave
 - [ ] 20. Mobile: Sessions — live lesson: start, timer, stop, cancel
@@ -68,6 +68,8 @@ the `[~]` item, then carry on down the list.
 - [ ] Docs: running on real devices and what the stores need
 
 ## Blocked / notes
+
+- For #23 (from #17): the cancelled lessons panel on the Sessions Tutoring tab is left to the Schedule item, which ports the cancellations API and the restore dialog; `sessions-screen.tsx` carries a TODO where it goes.
 
 - For the owner (#15): the server sends a student their own lessons with `money_view: 'family'`, and the web's StudentView renders them through SessionMoney, so a student sees "You pay" on the web. The app hides money on the student dashboard; should the web match?
 

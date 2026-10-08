@@ -30,11 +30,11 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/{finance-views,tutor-payments,monthly-finance,money-icon,finance-format}` | `dashboard/finance-*` | tested |
 | `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/form-1099-html.ts`; list in `year-end-finance.tsx` | `year-end/*` | year-end list and SSN receipts tested (14); 1099 todo |
 | `dashboard/user-picker.tsx` | admin view-as | `app/(org)/view-as.tsx`, `src/features/dashboard/{user-picker,view-as,view-as-banner,role-selector}` | `dashboard/view-as`, `dashboard/role-selector` | tested |
-| `teaching/sessions-page.tsx` | sessions list, tabs, filters, focus, CSV | `app/(org)/(tabs)/sessions/*` | `sessions/*` | todo |
+| `teaching/sessions-page.tsx` | sessions list, tabs, filters, focus, CSV | `app/(org)/(tabs)/sessions/*`, `src/features/teaching/{sessions-screen,session-card,session-detail-screen,sessions-finance-summary,session-filters}.tsx`, `src/lib/download.ts` | `sessions/list-*` | tested (17); cancelled-lessons panel with 23; Assess with 21 |
 | `teaching/session-form-dialog.tsx` | record / edit / draft, autosave | `app/(org)/record-session.tsx`, `src/features/teaching/session-form/*` | `sessions/record`, `sessions/autosave` | todo |
 | `teaching/drafts-panel.tsx` | own drafts | `src/features/teaching/drafts-panel.tsx` | `sessions/drafts` | todo |
 | `teaching/live-session-bar.tsx`, `start-session-button.tsx` | live timer | `src/features/teaching/live-session-banner.tsx`, `start-session.tsx` | `sessions/live` | todo |
-| `teaching/session-notes.tsx` | write-up, assessments | `src/features/teaching/session-notes.tsx` | `sessions/notes` | todo |
+| `teaching/session-notes.tsx` | write-up, assessments | `src/features/teaching/session-notes.tsx` | `sessions/notes` | view parts tested in `sessions/list-*` (17); assess dialog todo (21) |
 | `teaching/session-reflection.tsx` | student reflection | `app/(org)/reflection.tsx`, `src/features/teaching/{reflection-form.tsx,reflection-logic.ts}` | `sessions/reflection`, `dashboard/reflection` | dialog and `mayChangeReflection` tested from the dashboard (15); on the sessions page todo (21) |
 | `teaching/session-money.tsx` | money from the reader's side | `src/features/teaching/session-money.tsx` | `exposure/money`, `dashboard/parent` | compact form tested on the parent dashboard (15); rest todo |
 | `teaching/assignments-page.tsx`, `assignment-dialog.tsx` | pairings | `app/(org)/pairings.tsx`, `app/(org)/assignment-form.tsx` | `pairings/*` | todo |

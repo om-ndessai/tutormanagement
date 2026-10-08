@@ -1,0 +1,57 @@
+# A parent's sessions (Anita, parent of Sanjay in chmi): her child's lesson, its write-up on
+# Tutoring with no money, and on Finance the family's side only: "You pay", never "Your pay".
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: session-card-50000000-0000-4000-8000-000000000005
+    timeout: 20000
+- assertVisible: 'Lessons taught, and what they cost.'
+- assertVisible: 'Sanjay Patel with Priya Raghavan'
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: sessions-parent-tutoring
+- tapOn:
+    id: session-card-50000000-0000-4000-8000-000000000005
+- extendedWaitUntil:
+    visible:
+      id: session-notes
+    timeout: 15000
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: tabs-finance
+    timeout: 10000
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: stat-charged
+    timeout: 10000
+- assertVisible:
+    id: stat-charged
+    text: 'Charged: \$[0-9,]+\.[0-9]{2}\. What these lessons cost you'
+- assertNotVisible:
+    id: stat-earned
+- assertVisible:
+    id: session-money
+- assertVisible: '(?i)you pay'
+- assertNotVisible: '(?i)your pay'
+- takeScreenshot: sessions-parent-finance

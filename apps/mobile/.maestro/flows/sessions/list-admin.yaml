@@ -1,0 +1,82 @@
+# The office's sessions (Priya, admin in chmi). Finance shows both sides of the money, labelled for
+# the office: the "Charged" tile with what was paid to tutors, the organization's cut, and each
+# lesson's SessionMoney ("Charged", then the tutor's share). The list grows 25 at a time. Back on
+# Tutoring, no money.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: stat-sessions
+    timeout: 20000
+- assertVisible: 'Every lesson taught, and what it earned.'
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: stat-charged
+    timeout: 10000
+- assertVisible:
+    id: stat-charged
+    text: 'Charged: \$[0-9,]+\.[0-9]{2}\. \$[0-9,]+\.[0-9]{2} paid to tutors'
+- assertVisible:
+    text: '.* cut: \$[0-9,]+\.[0-9]{2}'
+- assertNotVisible:
+    id: stat-earned
+- assertVisible:
+    id: sessions-export
+- scrollUntilVisible:
+    element:
+      id: session-money
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '(?i)charged'
+- assertVisible: 'Tutor \$[0-9,]+\.[0-9]{2} · .*'
+- assertNotVisible: '(?i)your pay'
+- takeScreenshot: sessions-admin-finance
+# The list grows 25 at a time.
+- scrollUntilVisible:
+    element:
+      id: sessions-load-more
+    direction: DOWN
+    speed: 90
+    timeout: 90000
+- assertVisible: 'Showing 1–25 of [0-9]+'
+- tapOn:
+    id: sessions-load-more
+- scrollUntilVisible:
+    element: 'Showing 1–50 of [0-9]+'
+    direction: DOWN
+    speed: 90
+    timeout: 90000
+- takeScreenshot: sessions-admin-more
+- scrollUntilVisible:
+    element:
+      id: tabs-tutoring
+    direction: UP
+    speed: 90
+    timeout: 120000
+- tapOn:
+    id: tabs-tutoring
+- extendedWaitUntil:
+    notVisible:
+      id: sessions-export
+    timeout: 10000
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'

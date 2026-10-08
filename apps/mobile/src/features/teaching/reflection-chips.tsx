@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/teaching/session-reflection.tsx @ 1132322
-// (AnswerChip, ReflectionFlags, ReflectionChips; the dialog arrives with feature 21)
+// (AnswerChip, ReflectionFlags, ReflectionChips, ReflectionView; the dialog is the reflection sheet)
 import {
   REFLECTION_QUESTIONS,
+  SESSION_REFLECTOR_LABELS,
   reflectionFlags,
   type Rating,
   type ReflectionKey,
@@ -13,7 +14,9 @@ import { Text } from 'react-native-paper';
 import { RatingChip, ScaleChip } from '@/features/progress/rating';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
-import { radius } from '@/theme/tokens';
+import { radius, space } from '@/theme/tokens';
+import { firstName } from './reflection-logic';
+import { PartHeading } from './session-notes';
 
 /** One answer as a chip: the rating ramp for low-to-high, neutral for centred. */
 function AnswerChip({ questionKey, value }: { questionKey: ReflectionKey; value: Rating | null }) {
@@ -62,6 +65,54 @@ export function ReflectionChips({ reflection }: { reflection: SessionReflection 
           <Text style={{ fontSize: 11, color: theme.tokens.mutedForeground }}>{question.short}</Text>
         </View>
       ))}
+    </View>
+  );
+}
+
+/** The student's reflection in full, for a lesson's detail. */
+export function ReflectionView({
+  reflection,
+  studentName,
+}: {
+  reflection: SessionReflection;
+  studentName: string;
+}) {
+  const theme = useAppTheme();
+  const muted = theme.tokens.mutedForeground;
+  return (
+    <View testID="session-reflection" style={{ gap: space.sm }}>
+      <PartHeading>{firstName(studentName)}’s reflection</PartHeading>
+      <View style={{ gap: 6 }}>
+        {REFLECTION_QUESTIONS.map((question) => {
+          const value = reflection[question.key];
+          return (
+            <View key={question.key} style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+              <AnswerChip questionKey={question.key} value={value} />
+              <Text variant="bodySmall" style={{ color: muted }}>
+                {question.short}
+              </Text>
+              <Text variant="bodySmall" style={{ flexShrink: 1 }}>
+                {value ? question.labels[value] : 'Not answered'}
+              </Text>
+            </View>
+          );
+        })}
+      </View>
+      {reflection.homework_notes ? (
+        <Text variant="bodyMedium">
+          <Text variant="bodySmall" style={{ color: muted }}>
+            Homework notes:{' '}
+          </Text>
+          {reflection.homework_notes}
+        </Text>
+      ) : null}
+      {reflection.comment ? <Text variant="bodyMedium">{reflection.comment}</Text> : null}
+      {reflection.entered_as !== 'student' ? (
+        <Text variant="bodySmall" style={{ color: muted }}>
+          Entered {reflection.entered_by_name ? `by ${reflection.entered_by_name} ` : ''}(
+          {SESSION_REFLECTOR_LABELS[reflection.entered_as]}) for {firstName(studentName)}.
+        </Text>
+      ) : null}
     </View>
   );
 }

@@ -1,0 +1,132 @@
+# A tutor's sessions (Alex, tutor in chmi). Tutoring is the default and carries no money at all:
+# no money tiles, no SessionMoney, no CSV, and the lesson's detail opened from it has none either.
+# Finance shows his side only ("Earned", "Your pay"), never the family's. A range chip narrows the
+# list; the dashboard's past lesson opens the list on that one lesson, with the way back.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: session-card-50000000-0000-4000-8000-000000000002
+    timeout: 20000
+- assertVisible:
+    id: stat-sessions
+- assertVisible:
+    id: stat-time-taught
+- assertVisible: 'Sofia Okafor with Alex Chen'
+- assertVisible:
+    id: session-preview-50000000-0000-4000-8000-000000000002
+# No money anywhere on Tutoring.
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- assertNotVisible:
+    id: stat-earned
+- assertNotVisible:
+    id: sessions-export
+- takeScreenshot: sessions-tutor-tutoring
+# The lesson's detail, opened from Tutoring: the write-up and assessments, and no money.
+- tapOn:
+    id: session-card-50000000-0000-4000-8000-000000000002
+- extendedWaitUntil:
+    visible:
+      id: session-notes
+    timeout: 15000
+- assertVisible:
+    id: screen-session
+- assertVisible:
+    id: session-assessments
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: sessions-tutor-detail
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: tabs-finance
+    timeout: 10000
+# Finance: his side of the money only.
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: stat-earned
+    timeout: 10000
+- assertVisible:
+    id: stat-earned
+    text: 'Earned: \$[0-9,]+\.[0-9]{2}.*'
+- assertNotVisible:
+    id: stat-charged
+- assertVisible:
+    id: sessions-export
+- assertVisible: 'Your pay'
+- assertNotVisible: 'You pay'
+- takeScreenshot: sessions-tutor-finance
+# The detail from Finance shows his pay.
+- tapOn:
+    id: session-card-50000000-0000-4000-8000-000000000002
+- extendedWaitUntil:
+    visible:
+      id: session-money
+    timeout: 15000
+- assertVisible: 'Your pay'
+- runFlow: ../../subflows/go-back.yaml
+# A range: last month holds the seed's September lessons, this month none of them.
+- extendedWaitUntil:
+    visible:
+      id: sessions-range-this-month
+    timeout: 10000
+- tapOn:
+    id: sessions-range-this-month
+- extendedWaitUntil:
+    visible:
+      id: sessions-empty
+    timeout: 10000
+- assertVisible: 'No sessions recorded in this period.'
+- tapOn:
+    id: sessions-range-all
+- extendedWaitUntil:
+    visible:
+      id: session-card-50000000-0000-4000-8000-000000000002
+    timeout: 10000
+- tapOn:
+    id: tabs-tutoring
+- extendedWaitUntil:
+    notVisible:
+      id: sessions-export
+    timeout: 10000
+- assertNotVisible: '.*\$[0-9].*'
+# One lesson in focus, as the dashboard's carousel links it.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=50000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: focus-notice
+    timeout: 15000
+- assertVisible:
+    id: session-card-50000000-0000-4000-8000-000000000003
+- assertNotVisible:
+    id: session-card-50000000-0000-4000-8000-000000000002
+- takeScreenshot: sessions-tutor-focus
+- tapOn:
+    id: focus-show-all
+- extendedWaitUntil:
+    visible:
+      id: session-card-50000000-0000-4000-8000-000000000002
+    timeout: 10000
+- assertNotVisible:
+    id: focus-notice
