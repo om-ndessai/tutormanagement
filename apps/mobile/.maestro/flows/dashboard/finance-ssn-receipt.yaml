@@ -1,0 +1,45 @@
+# The SSN chase list (Priya): marking a tutor's SSN received records the fact -- no number is
+# typed anywhere -- and the tutor leaves the list. Changes data: reset the database afterwards
+# (npm run e2e:mobile does).
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-admin
+    timeout: 10000
+# Alex Chen is the seed's tutor without a receipt.
+- scrollUntilVisible:
+    element:
+      id: ssn-panel-tutor-00000000-0000-4000-8000-000000000003
+    direction: DOWN
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: ssn-receipt-00000000-0000-4000-8000-000000000003
+    direction: DOWN
+    # Centred, so the button is clear of the floating tab bar before the tap.
+    centerElement: true
+- takeScreenshot: finance-ssn-before
+- tapOn:
+    id: ssn-receipt-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible: "Recorded that we have Alex Chen's SSN."
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible:
+      id: ssn-panel-tutor-00000000-0000-4000-8000-000000000003
+    timeout: 10000
+- takeScreenshot: finance-ssn-after

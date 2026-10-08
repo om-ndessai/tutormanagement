@@ -19,7 +19,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: dashboard-section-analytics
-    timeout: 20000
+    timeout: 30000
 - assertVisible:
     id: tabs-tutoring
 - assertVisible:

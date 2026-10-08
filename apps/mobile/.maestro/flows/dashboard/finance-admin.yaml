@@ -1,0 +1,91 @@
+# The admin's dashboard, Finance tab (Priya, admin + tutor in chmi). The organization's money
+# cards with amounts, Tutor payments first, month by month, year-end documents, the SSN chase
+# list and families with a balance; then back to Tutoring, which shows no money at all.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-admin
+    timeout: 10000
+- assertNotVisible:
+    id: dashboard-section-analytics
+- assertVisible:
+    id: stat-owed-to-tutors
+    text: 'Owed to tutors: \$[0-9,]+\.[0-9]{2}'
+- assertVisible:
+    id: stat-owed-by-families
+    text: 'Owed by families: \$[0-9,]+\.[0-9]{2}'
+- assertVisible:
+    id: stat-billed-all-time
+    text: 'Billed all time: \$[0-9,]+\.[0-9]{2}.*'
+- assertVisible:
+    text: 'Kept by .*: \$[0-9,]+\.[0-9]{2}\. Paid out \$.*'
+- takeScreenshot: finance-admin-top
+- scrollUntilVisible:
+    element:
+      id: tutor-payments-legend
+    direction: DOWN
+- assertVisible: 'Below top-up'
+- assertVisible: 'On track'
+- scrollUntilVisible:
+    element:
+      id: tutor-payments-action
+    direction: DOWN
+- takeScreenshot: finance-admin-tutor-payments
+- scrollUntilVisible:
+    element:
+      id: monthly-finance-year
+    direction: DOWN
+    timeout: 30000
+- assertVisible: '.* month by month'
+- takeScreenshot: finance-admin-monthly
+- scrollUntilVisible:
+    element:
+      id: year-end
+    direction: DOWN
+    visibilityPercentage: 30
+- assertVisible: 'Year-end documents'
+- scrollUntilVisible:
+    element:
+      text: 'SSN not on file · .*'
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: ssn-panel
+- scrollUntilVisible:
+    element:
+      id: family-balances-action
+    direction: DOWN
+- assertVisible: 'Families with a balance'
+- takeScreenshot: finance-admin-bottom
+# Back to Tutoring: no money anywhere.
+- scrollUntilVisible:
+    element:
+      id: tabs-tutoring
+    direction: UP
+    timeout: 60000
+- tapOn:
+    id: tabs-tutoring
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 10000
+- assertNotVisible:
+    id: dashboard-finance-admin
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'

@@ -23,7 +23,7 @@ the `[~]` item, then carry on down the list.
 - [x] 11. Mobile: organization picker, invitations and default organization
 - [x] 12. Mobile: app shell — role tabs, org switcher, user menu, live lesson banner
 - [x] 13. Mobile: Dashboard — Tutoring tab
-- [ ] 14. Mobile: Dashboard — Finance tab
+- [x] 14. Mobile: Dashboard — Finance tab
 - [ ] 15. Mobile: Dashboard — parent and student views, reflection prompts
 - [ ] 16. Mobile: Dashboard — admin view-as and role selector
 - [ ] 17. Mobile: Sessions — Tutoring/Finance list, filters and focus

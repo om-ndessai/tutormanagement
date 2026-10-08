@@ -13,6 +13,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { useDashboard } from './api';
+import { AdminFinance, TutorFinance } from './finance-views';
 import { AdminTutoring, TutorTutoring } from './tutoring-views';
 
 /** The dashboards built so far: the admin's and the tutor's. */
@@ -41,6 +42,7 @@ export function DashboardScreen() {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
         queryClient.invalidateQueries({ queryKey: ['schedules', 'upcoming'] }),
+        queryClient.invalidateQueries({ queryKey: ['finance'] }),
       ]);
     } finally {
       setRefreshing(false);
@@ -79,14 +81,7 @@ function StaffDashboard() {
   return (
     <TutoringFinanceTabs
       tutoring={view.kind === 'admin' ? <AdminTutoring data={view} /> : <TutorTutoring data={view} />}
-      finance={
-        <EmptyState
-          testID="dashboard-finance-placeholder"
-          icon="wallet-outline"
-          title="Finance is on its way"
-          body="What was earned, paid and owed will be here in the next update."
-        />
-      }
+      finance={view.kind === 'admin' ? <AdminFinance data={view} /> : <TutorFinance data={view} />}
     />
   );
 }

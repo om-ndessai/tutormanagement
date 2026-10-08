@@ -24,11 +24,11 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 
 | Web source | What | Mobile | Flow | Status |
 | --- | --- | --- | --- | --- |
-| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance, parent/student, view-as todo |
+| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance tab tested (14); parent/student, view-as todo |
 | `dashboard/sessions-carousel.tsx` | past 5, now, upcoming | `src/features/dashboard/sessions-carousel.tsx` | `dashboard/tutoring` | tested |
 | `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student` | recent reflections tested (13); prompts todo |
-| `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/*` | `dashboard/finance` | todo |
-| `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/form-1099-html.ts` | `year-end/*` | todo |
+| `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/{finance-views,tutor-payments,monthly-finance,money-icon,finance-format}` | `dashboard/finance-*` | tested |
+| `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/form-1099-html.ts`; list in `year-end-finance.tsx` | `year-end/*` | year-end list and SSN receipts tested (14); 1099 todo |
 | `dashboard/user-picker.tsx` | admin view-as | `src/features/dashboard/user-picker.tsx` | `dashboard/view-as` | todo |
 | `teaching/sessions-page.tsx` | sessions list, tabs, filters, focus, CSV | `app/(org)/(tabs)/sessions/*` | `sessions/*` | todo |
 | `teaching/session-form-dialog.tsx` | record / edit / draft, autosave | `app/(org)/record-session.tsx`, `src/features/teaching/session-form/*` | `sessions/record`, `sessions/autosave` | todo |
@@ -40,7 +40,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `teaching/assignments-page.tsx`, `assignment-dialog.tsx` | pairings | `app/(org)/pairings.tsx`, `app/(org)/assignment-form.tsx` | `pairings/*` | todo |
 | `schedules/*` | weekly schedules, dates, cancel / restore, calendar files, cancelled panel | `app/(org)/(tabs)/schedule/*`, `src/features/schedules/*` | `schedule/*` | todo |
 | `progress/*` | list, student page, chart, spotlight, card, assessment / plan dialogs, ratings | `app/(org)/(tabs)/progress/*`, `src/features/progress/*` | `progress/*` | todo |
-| `users/*` | directory, table / cards, detail, form (all sections), availability, guardians, payment handles, badges, SSN receipt | `app/(org)/(tabs)/people/*`, `app/(org)/person-form.tsx`, `src/features/users/*` | `people/*` | todo |
+| `users/*` | directory, table / cards, detail, form (all sections), availability, guardians, payment handles, badges, SSN receipt | `app/(org)/(tabs)/people/*`, `app/(org)/person-form.tsx`, `src/features/users/*` | `people/*` | `api.ts` and SSN receipt button tested (14, `dashboard/finance-ssn-receipt`); rest todo |
 | `payments/*` | billing, balances, log, payment dialog, CSV | `app/(org)/billing.tsx`, `app/(org)/payment-form.tsx` | `billing/*` | todo |
 | `comments/*` | threads, counts, feed, delete own | `app/(org)/comments.tsx`, `src/features/comments/*` | `comments/*` | todo |
 | `audit/*` | activity feed and page | `app/(org)/activity.tsx`, `src/features/audit/*` | `activity/*` | todo |

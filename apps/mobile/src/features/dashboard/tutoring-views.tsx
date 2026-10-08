@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 -- the Tutoring halves
-// of AdminView and TutorView. The Finance halves are feature 14.
+// of AdminView and TutorView. The Finance halves are in finance-views.tsx.
 import type { AdminDashboard, TutorDashboard } from '@tmi/shared';
 import { View } from 'react-native';
 

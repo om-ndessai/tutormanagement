@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/dashboard/stat-card.tsx @ 1132322
 import { router, type Href } from 'expo-router';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import { Card, Icon, Text } from 'react-native-paper';
 
@@ -10,6 +10,9 @@ import type { AppTheme } from '@/theme/paper-theme';
 import { radius, space } from '@/theme/tokens';
 
 export type StatTone = 'default' | 'warning' | 'brand' | 'success';
+
+/** A Material Community icon name, or a drawn glyph (the finance tab's wallet with a sign). */
+export type StatIcon = ComponentProps<typeof Icon>['source'];
 
 /** The text colour of a tone, as the web's `text-warning-foreground dark:text-warning` etc. */
 export function toneColor(theme: AppTheme, tone: StatTone): string | undefined {
@@ -58,8 +61,8 @@ export function StatCard({
   value: number | undefined;
   /** Formats the settled number (minutes, money) instead of printing it plainly. */
   formatValue?: (value: number) => string;
-  /** Material Community icon name. */
-  icon: string;
+  /** Material Community icon name, or a drawn glyph. */
+  icon: StatIcon;
   /** Makes the whole card a link. */
   to?: Href;
   hint?: string;
