@@ -69,4 +69,5 @@ the `[~]` item, then carry on down the list.
 
 ## Blocked / notes
 
-(none)
+- For the Phase 2 audit: a fresh Android launch sometimes waits 20–30 s on "Loading your dashboard…" though `/dashboard` answers in ~20 ms (seen in #14). Find the cause; don't just widen waits.
+- For the owner: the SSN chase list (`/dashboard` `tutors_missing_ssn`) and the year-end list (`/payments/tax-status`) disagree for a tutor with no activity (Johan). Each screen shows what its endpoint sends; it's a web/API question, not a mobile one.
