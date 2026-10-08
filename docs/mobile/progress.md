@@ -28,8 +28,8 @@ the `[~]` item, then carry on down the list.
 - [x] 16. Mobile: Dashboard — admin view-as and role selector
 - [x] 17. Mobile: Sessions — Tutoring/Finance list, filters and focus (701258a)
 - [x] 18. Mobile: Sessions — record a lesson
-- [x] 19. Mobile: Sessions — drafts and 3-second autosave
-- [ ] 20. Mobile: Sessions — live lesson: start, timer, stop, cancel
+- [x] 19. Mobile: Sessions — drafts and 3-second autosave (fa56a01)
+- [x] 20. Mobile: Sessions — live lesson: start, timer, stop, cancel
 - [ ] 21. Mobile: Sessions — notes, assessments and student reflections
 - [ ] 22. Mobile: Pairings — assignments and rate overrides
 - [ ] 23. Mobile: Schedule — weekly view, editor, cancel/restore, calendar files

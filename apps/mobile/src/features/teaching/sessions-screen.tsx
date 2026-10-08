@@ -14,6 +14,7 @@ import { View } from 'react-native';
 import { Button, IconButton, Text } from 'react-native-paper';
 
 import { FocusNotice } from '@/components/focus-notice';
+import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -28,7 +29,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { AccountButton } from '@/features/shell/account-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { useSession } from './api';
+import { useActiveSession, useSession } from './api';
 import { DraftsPanel } from './drafts-panel';
 import { SessionCard } from './session-card';
 import { SessionFilters } from './session-filters';
@@ -87,6 +88,10 @@ export function SessionsScreen() {
   // Recording is for tutors and the office. The sheet shows money only when opened from Finance.
   const mayRecord = isTutor || isAdmin;
   const openRecord = () => router.push({ pathname: '/record-session', params: { tab } });
+  // A live lesson is a tutor's, one at a time: hidden while one is running (the banner has it).
+  const active = useActiveSession();
+  const mayStart = isTutor && active.isSuccess && !active.data.data.mine;
+  const bannerInset = useLiveBannerInset();
 
   async function onRefresh() {
     setRefreshing(true);
@@ -148,15 +153,21 @@ export function SessionsScreen() {
         {description}
       </Text>
       {mayRecord ? (
-        <Button
-          testID="sessions-record-button"
-          mode="contained"
-          icon="plus"
-          onPress={openRecord}
-          style={{ alignSelf: 'flex-start' }}
-        >
-          Record a session
-        </Button>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+          {mayStart ? (
+            <Button
+              testID="sessions-start"
+              mode="outlined"
+              icon="play"
+              onPress={() => router.push('/start-lesson')}
+            >
+              Start a lesson
+            </Button>
+          ) : null}
+          <Button testID="sessions-record-button" mode="contained" icon="plus" onPress={openRecord}>
+            Record a session
+          </Button>
+        </View>
       ) : null}
       <TutoringFinanceSwitch />
       {/* A draft is the author's alone (R10), so it sits above the list rather than in it -- the
@@ -296,12 +307,15 @@ export function SessionsScreen() {
           />
         )
       }
+      // A lesson just recorded arrives at the top, and a reader at the top should see it: FlashList
+      // otherwise keeps the old first card in place and scrolls the header away under the bar.
+      maintainVisibleContentPosition={{ disabled: true }}
       refreshing={refreshing}
       onRefresh={() => void onRefresh()}
       contentInsetAdjustmentBehavior="automatic"
       keyboardShouldPersistTaps="handled"
       style={{ flex: 1, backgroundColor: theme.colors.background }}
-      contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl }}
+      contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
     />
   );
 }

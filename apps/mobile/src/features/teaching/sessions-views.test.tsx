@@ -26,6 +26,7 @@ jest.mock('@/components/toast', () => ({
 jest.mock('@/lib/download', () => ({ downloadAndShare: jest.fn() }));
 jest.mock('./api', () => ({
   useSession: () => ({ data: undefined, isPending: false, isError: false }),
+  useActiveSession: () => ({ isSuccess: true, data: { data: { mine: null, all: [] } } }),
   useMyDrafts: () => ({ data: undefined }),
   usePostDraft: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useDiscardDraft: () => ({ mutate: jest.fn(), isPending: false }),

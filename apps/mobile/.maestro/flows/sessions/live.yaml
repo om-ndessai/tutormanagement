@@ -1,0 +1,168 @@
+# A live lesson (Alex, tutor in chmi). He starts one with Sofia from the Sessions tab; the banner
+# floats above the tab bar with the stopwatch ticking from the server's start, "from" and "ends
+# by", and no money. It follows him to Home and Schedule. Stop with a note: the toast says the
+# times and the LENGTH, never the pay, and the lesson is in the list. A second one is discarded
+# with a confirmation. The recorded lesson is deleted at the end, so other flows see the seed.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-start
+    timeout: 20000
+- assertNotVisible:
+    id: live-banner
+- tapOn:
+    id: sessions-start
+- extendedWaitUntil:
+    visible:
+      id: start-student-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- assertVisible: 'Start a session'
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: start-student-00000000-0000-4000-8000-000000000008
+- tapOn:
+    id: start-mode-virtual
+- tapOn:
+    id: start-submit
+- extendedWaitUntil:
+    visible: 'Session started.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 10000
+- assertVisible:
+    id: live-student
+    text: 'Sofia Okafor.*Virtual'
+- assertVisible:
+    id: live-from
+    text: 'from [0-9]{1,2}:[0-9]{2} (AM|PM).*'
+- assertVisible:
+    id: live-ends-by
+    text: 'ends by [0-9]{1,2}:[0-9]{2} (AM|PM)'
+# The stopwatch ticks, from the server's start instant.
+- extendedWaitUntil:
+    visible:
+      id: live-stopwatch
+      text: '0:00:(0[3-9]|[1-5][0-9])'
+    timeout: 15000
+- assertNotVisible:
+    id: sessions-start
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: live-banner-sessions
+# It follows him around the app.
+- tapOn: 'Home'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertVisible:
+    id: live-banner
+- takeScreenshot: live-banner-home
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 10000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: live-stop
+    timeout: 10000
+# Stop, with a note.
+- tapOn:
+    id: live-stop
+- extendedWaitUntil:
+    visible:
+      id: stop-notes
+    timeout: 15000
+- assertVisible: 'End the session with Sofia Okafor\?'
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: stop-notes
+- inputText: 'Stopped from the phone'
+# A tap on the heading closes the keyboard.
+- tapOn: 'End the session with Sofia Okafor\?'
+- tapOn:
+    id: stop-submit
+- extendedWaitUntil:
+    visible: 'Session recorded: .*, [0-9]+ (min|hr).*\.'
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: live-stopped
+- extendedWaitUntil:
+    notVisible:
+      id: live-banner
+    timeout: 10000
+- extendedWaitUntil:
+    visible: 'Stopped from the phone'
+    timeout: 15000
+# Start again, and discard it.
+- extendedWaitUntil:
+    visible:
+      id: sessions-start
+    timeout: 15000
+# Let the stop sheet finish sliding away first.
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    id: sessions-start
+- extendedWaitUntil:
+    visible:
+      id: start-student-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- tapOn:
+    id: start-student-00000000-0000-4000-8000-000000000008
+- tapOn:
+    id: start-submit
+- extendedWaitUntil:
+    visible:
+      id: live-cancel
+    timeout: 15000
+- tapOn:
+    id: live-cancel
+- extendedWaitUntil:
+    visible: 'Discard this session?'
+    timeout: 10000
+- assertVisible: 'Keep going'
+- tapOn: 'Discard'
+- extendedWaitUntil:
+    visible: 'Session discarded.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: live-banner
+    timeout: 10000
+- assertVisible:
+    id: sessions-start
+# Put the data back: delete the recorded lesson from its detail.
+- tapOn: 'Stopped from the phone'
+- scrollUntilVisible:
+    element:
+      id: session-delete
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: session-delete
+- extendedWaitUntil:
+    visible: 'Delete this session?'
+    timeout: 10000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Session deleted.'
+    timeout: 15000
