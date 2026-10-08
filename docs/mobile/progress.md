@@ -73,7 +73,7 @@ the `[~]` item, then carry on down the list.
 
 - For the owner (#15): the server sends a student their own lessons with `money_view: 'family'`, and the web's StudentView renders them through SessionMoney, so a student sees "You pay" on the web. The app hides money on the student dashboard; should the web match?
 
-- For the Phase 2 audit: a fresh Android launch sometimes waits 20–30 s on "Loading your dashboard…" though `/dashboard` answers in ~20 ms (seen in #14). Find the cause; don't just widen waits.
+- ~~Android launch stall~~ — fixed (2026-10-08): Hermes on Android builds and runs Intl formatters 30–45x slower than iOS, and screens re-rendering each second kept the JS thread saturated. `src/polyfills/intl-cache.ts` reuses one formatter per (locale, options) and memoizes results; 9/9 repeat runs green where 3/9 failed.
   Seen again in #21's final run, eight dashboard/session flows at once on a long-running emulator; it happens with the live lesson banner's host removed too, so it predates #20.
 - For the owner (#19, #21): the web's drafts panel reads the drafts cache, which `useAutosaveDraft` refreshes only when a draft first appears, so "Edit" can open a stale copy of an autosaved draft and posting it writes the stale text back. The app keeps its cache in step (`withDraft`); the web may want the same. Its `useRecordSession` also leaves a consumed draft in the panel until the next refetch.
 - For the owner: the SSN chase list (`/dashboard` `tutors_missing_ssn`) and the year-end list (`/payments/tax-status`) disagree for a tutor with no activity (Johan). Each screen shows what its endpoint sends; it's a web/API question, not a mobile one.

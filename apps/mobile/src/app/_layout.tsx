@@ -1,4 +1,5 @@
 import '@/polyfills/intl';
+import '@/polyfills/intl-cache';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Stack } from 'expo-router';

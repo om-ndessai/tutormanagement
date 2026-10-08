@@ -146,6 +146,12 @@ you are, so the next agent can resume.
 - **Do not edit** `apps/web`, `apps/api` or `packages/shared` in Phase 1. If the API seems to
   need a change, write it in your design entry's risks and work around it.
 
+## Performance note
+
+Hermes on Android formats with Intl 30–45x slower than iOS. `src/polyfills/intl-cache.ts`
+caches formatters and their results, but don't format dates or money in a render that ticks
+every second. Keep a ticking clock in its own small component.
+
 ## Checks before committing (in apps/mobile)
 
 ```sh
