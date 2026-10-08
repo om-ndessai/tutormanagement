@@ -24,15 +24,14 @@ tags:
     timeout: 20000
 - assertNotVisible:
     id: drafts-panel
-# 1. An SSN-shaped note never autosaves.
+# 1. An SSN-shaped note never autosaves. It is typed before the student is chosen (nothing
+# autosaves without a pairing), so no tick can catch it half-typed.
 - tapOn:
     id: sessions-record
 - extendedWaitUntil:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000002
     timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
 - scrollUntilVisible:
     element:
       id: record-planned
@@ -43,6 +42,18 @@ tags:
 - inputText: 'SSN 123-45-6789'
 # Return closes the keyboard on the short parts of the write-up.
 - pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: record-planned
+    direction: DOWN
+    centerElement: true
 # Within one autosave tick the field says why, and nothing was sent.
 - extendedWaitUntil:
     visible: '.*looks like a Social Security number.*'

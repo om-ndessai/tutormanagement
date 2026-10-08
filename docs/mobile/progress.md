@@ -29,8 +29,8 @@ the `[~]` item, then carry on down the list.
 - [x] 17. Mobile: Sessions — Tutoring/Finance list, filters and focus (701258a)
 - [x] 18. Mobile: Sessions — record a lesson
 - [x] 19. Mobile: Sessions — drafts and 3-second autosave (fa56a01)
-- [x] 20. Mobile: Sessions — live lesson: start, timer, stop, cancel
-- [ ] 21. Mobile: Sessions — notes, assessments and student reflections
+- [x] 20. Mobile: Sessions — live lesson: start, timer, stop, cancel (9fbba20)
+- [x] 21. Mobile: Sessions — notes, assessments and student reflections
 - [ ] 22. Mobile: Pairings — assignments and rate overrides
 - [ ] 23. Mobile: Schedule — weekly view, editor, cancel/restore, calendar files
 - [ ] 24. Mobile: Progress — list, chart, assessments, plans
@@ -74,4 +74,6 @@ the `[~]` item, then carry on down the list.
 - For the owner (#15): the server sends a student their own lessons with `money_view: 'family'`, and the web's StudentView renders them through SessionMoney, so a student sees "You pay" on the web. The app hides money on the student dashboard; should the web match?
 
 - For the Phase 2 audit: a fresh Android launch sometimes waits 20–30 s on "Loading your dashboard…" though `/dashboard` answers in ~20 ms (seen in #14). Find the cause; don't just widen waits.
+  Seen again in #21's final run, eight dashboard/session flows at once on a long-running emulator; it happens with the live lesson banner's host removed too, so it predates #20.
+- For the owner (#19, #21): the web's drafts panel reads the drafts cache, which `useAutosaveDraft` refreshes only when a draft first appears, so "Edit" can open a stale copy of an autosaved draft and posting it writes the stale text back. The app keeps its cache in step (`withDraft`); the web may want the same. Its `useRecordSession` also leaves a consumed draft in the panel until the next refetch.
 - For the owner: the SSN chase list (`/dashboard` `tutors_missing_ssn`) and the year-end list (`/payments/tax-status`) disagree for a tutor with no activity (Johan). Each screen shows what its endpoint sends; it's a web/API question, not a mobile one.

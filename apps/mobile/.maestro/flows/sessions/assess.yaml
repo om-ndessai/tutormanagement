@@ -1,0 +1,176 @@
+# Everyone a lesson concerns may assess it, each only in their own name. A lesson yesterday of
+# Alex's with Sofia is recorded through the local Worker. Alex assesses it from its detail and sees
+# his row. Maria -- Sofia's parent (the task named Anita, whose son Sanjay is taught by Priya, not
+# Alex; Maria holds the same capacity here) -- sees Alex's row, assesses as a parent, then sees
+# both; Withdraw is offered for her own only and takes only hers. Sofia, the student, has no
+# Assess: she reflects instead. The lesson is deleted at the end.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runScript:
+    file: ../../scripts/record-recent-lesson.js
+    env:
+      TUTOR_EMAIL: alex.chen.math@gmail.com
+      TUTOR_ID: 00000000-0000-4000-8000-000000000003
+      STUDENT_ID: 00000000-0000-4000-8000-000000000008
+      ORG: chmi
+# Alex, the tutor.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: session-assess-${output.sessionId}
+    timeout: 20000
+- tapOn: 'Open the lesson: .*'
+- extendedWaitUntil:
+    visible:
+      id: session-assess
+    timeout: 15000
+- assertVisible:
+    id: session-assess
+    text: 'Assess( this session)?'
+- tapOn:
+    id: session-assess
+- extendedWaitUntil:
+    visible:
+      id: assess-4
+    timeout: 15000
+- assertVisible: 'How did the lesson go\?'
+- assertNotVisible:
+    id: assess-withdraw
+- tapOn:
+    id: assess-4
+- tapOn:
+    id: assess-body
+- inputText: 'Worked hard on fractions'
+- pressKey: Enter
+- tapOn:
+    id: assess-save
+- extendedWaitUntil:
+    visible: 'Assessment saved.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: session-assessment-00000000-0000-4000-8000-000000000003
+    timeout: 10000
+- assertVisible: 'Worked hard on fractions'
+- assertVisible:
+    id: session-assess
+    text: '(Your|Edit your) assessment'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: assess-tutor
+# Maria, Sofia's parent.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: session-assess-${output.sessionId}
+    timeout: 20000
+- tapOn: 'Open the lesson: .*'
+- extendedWaitUntil:
+    visible:
+      id: session-assessment-00000000-0000-4000-8000-000000000003
+    timeout: 15000
+- tapOn:
+    id: session-assess
+- extendedWaitUntil:
+    visible:
+      id: assess-2
+    timeout: 15000
+- assertVisible: 'How do you feel this lesson went\?'
+# Nothing of Alex's is hers to withdraw (his words stay on the detail behind the sheet).
+- assertNotVisible:
+    id: assess-withdraw
+- tapOn:
+    id: assess-2
+- tapOn:
+    id: assess-save
+- extendedWaitUntil:
+    visible: 'Assessment saved.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: session-assessment-00000000-0000-4000-8000-000000000004
+    timeout: 10000
+- assertVisible:
+    id: session-assessment-00000000-0000-4000-8000-000000000003
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: assess-parent-both
+# Her own, and only hers, may be withdrawn.
+- tapOn:
+    id: session-assess
+- extendedWaitUntil:
+    visible:
+      id: assess-withdraw
+    timeout: 15000
+- assertVisible: 'Your assessment'
+- tapOn:
+    id: assess-withdraw
+- extendedWaitUntil:
+    visible: 'Assessment withdrawn.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: session-assessment-00000000-0000-4000-8000-000000000004
+    timeout: 10000
+- assertVisible:
+    id: session-assessment-00000000-0000-4000-8000-000000000003
+# Sofia, the student, reflects instead.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: session-reflect-${output.sessionId}
+    timeout: 20000
+- assertNotVisible:
+    id: session-assess-${output.sessionId}
+- tapOn: 'Open the lesson: .*'
+- extendedWaitUntil:
+    visible:
+      id: session-reflect
+    timeout: 15000
+- assertNotVisible:
+    id: session-assess
+# Remove the lesson this flow recorded, so the other flows see the seed.
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: DELETE
+      API_PATH: /sessions/${output.sessionId}
+      AS: priya.raghavan@gmail.com
+      ORG: chmi

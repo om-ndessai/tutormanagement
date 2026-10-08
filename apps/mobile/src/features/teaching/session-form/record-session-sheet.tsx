@@ -9,6 +9,7 @@ import {
   sessionDraftInputSchema,
   sessionInputSchema,
   sessionUpdateSchema,
+  type ApiOk,
   type Assignment,
   type SessionDraft,
   type SessionDraftInput,
@@ -49,7 +50,7 @@ import { PreviousLesson } from './previous-lesson';
 import { ProgressSection } from './progress-section';
 import { AutosaveStatus } from './autosave-status';
 import { SessionMoneyPreview, previewFigures } from './session-money-preview';
-import { useDraftAutosave } from './use-draft-autosave';
+import { useDraftAutosave, withDraft } from './use-draft-autosave';
 import {
   QUICK_LENGTHS,
   addMinutes,
@@ -179,7 +180,14 @@ function SessionForm({
     initialDraftId: draft?.id ?? null,
     getBody: () =>
       pair && (isDraft || hasContent(values)) ? (formBody(values, pair) as SessionDraftInput) : null,
-    save: (id, input) => autosaveDraft.mutateAsync({ id, input }),
+    save: async (id, input) => {
+      const result = await autosaveDraft.mutateAsync({ id, input });
+      // Keeps the cached list in step with every quiet save, so "Continue" opens what was kept.
+      queryClient.setQueryData<ApiOk<SessionDraft[]>>(['session-drafts'], (list) =>
+        withDraft(list, result.data),
+      );
+      return result;
+    },
     onInvalid: setAutosaveErrors,
     onValid: () => setAutosaveErrors({}),
     onKeptAsDraft: () => toast.success('Your write-up is kept as a draft. Pick it up from Drafts.'),

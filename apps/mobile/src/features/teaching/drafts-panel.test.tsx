@@ -7,6 +7,8 @@ import { DraftsList } from './drafts-panel';
 jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));
+jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
+jest.mock('@/providers/auth-provider', () => ({ useAuth: () => ({ user: null }) }));
 jest.mock('./api', () => ({
   usePostDraft: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useDiscardDraft: () => ({ mutate: jest.fn(), isPending: false }),

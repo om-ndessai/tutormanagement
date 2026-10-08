@@ -1,0 +1,114 @@
+# The student's reflection is theirs, whoever else may type one. A lesson yesterday of Alex's
+# with Sofia is recorded through the local Worker. Sofia reflects from the lesson's detail; it
+# shows there as "Sofia’s reflection". Maria, her parent, sees it on the detail but is offered no
+# Reflect -- not on the card, not on the detail -- because Sofia entered it herself. The lesson
+# is deleted at the end.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runScript:
+    file: ../../scripts/record-recent-lesson.js
+    env:
+      TUTOR_EMAIL: alex.chen.math@gmail.com
+      TUTOR_ID: 00000000-0000-4000-8000-000000000003
+      STUDENT_ID: 00000000-0000-4000-8000-000000000008
+      ORG: chmi
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: session-reflect-${output.sessionId}
+    timeout: 20000
+- tapOn: 'Open the lesson: .*'
+- extendedWaitUntil:
+    visible:
+      id: session-reflect
+    timeout: 15000
+- assertNotVisible:
+    id: session-reflection
+- tapOn:
+    id: session-reflect
+- extendedWaitUntil:
+    visible:
+      id: reflection-learned_new-4
+    timeout: 15000
+- assertVisible: 'How did this lesson go for you?'
+- tapOn:
+    id: reflection-learned_new-4
+- tapOn:
+    id: reflection-pace-3
+- scrollUntilVisible:
+    element:
+      id: reflection-save
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reflection-save
+- extendedWaitUntil:
+    visible: 'Thanks — your reflection is saved.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: session-reflection
+    timeout: 10000
+- assertVisible: 'Sofia’s reflection'
+- assertVisible:
+    id: session-reflect
+- assertNotVisible:
+    id: session-assess
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: reflection-detail-student
+# Maria, her parent: she reads it, and may not change it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: session-assess-${output.sessionId}
+    timeout: 20000
+- assertVisible:
+    id: session-reflected-${output.sessionId}
+- assertNotVisible:
+    id: session-reflect-${output.sessionId}
+- tapOn: 'Open the lesson: .*'
+- extendedWaitUntil:
+    visible:
+      id: session-reflection
+    timeout: 15000
+- assertVisible: 'Sofia’s reflection'
+- assertNotVisible:
+    id: session-reflect
+- assertVisible:
+    id: session-assess
+- takeScreenshot: reflection-detail-parent
+# Remove the lesson this flow recorded, so the other flows see the seed.
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: DELETE
+      API_PATH: /sessions/${output.sessionId}
+      AS: priya.raghavan@gmail.com
+      ORG: chmi

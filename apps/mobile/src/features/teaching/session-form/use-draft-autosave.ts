@@ -9,7 +9,13 @@
 // Two additions on the phone: the body is checked against the shared draft schema before it is
 // sent (an SSN-shaped note shows its sentence under the field instead of a 400 every 3 s), and the
 // app going to the background saves too, as a phone is put away mid-sentence.
-import { DRAFT_AUTOSAVE_INTERVAL_MS, sessionDraftInputSchema, type SessionDraftInput } from '@tmi/shared';
+import {
+  DRAFT_AUTOSAVE_INTERVAL_MS,
+  sessionDraftInputSchema,
+  type ApiOk,
+  type SessionDraft,
+  type SessionDraftInput,
+} from '@tmi/shared';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 
@@ -150,4 +156,19 @@ export function useDraftAutosave(options: DraftAutosaveOptions) {
   const draftId = useCallback(() => draftIdRef.current, []);
 
   return { state, run, settle, resume, draftId };
+}
+
+/**
+ * The drafts list with one draft put in (replacing its older copy). The quiet saves refresh the
+ * list only when the draft first appears (`useAutosaveDraft`, copied from the web), so without
+ * this the cached copy -- the one "Continue" opens -- keeps whatever the first tick caught,
+ * often a half-typed word, and posting it would write that back over the rest.
+ */
+export function withDraft(
+  list: ApiOk<SessionDraft[]> | undefined,
+  draft: SessionDraft,
+): ApiOk<SessionDraft[]> | undefined {
+  if (!list) return list;
+  const others = list.data.filter((row) => row.id !== draft.id);
+  return { ...list, data: [draft, ...others] };
 }

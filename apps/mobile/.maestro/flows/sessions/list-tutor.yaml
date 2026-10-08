@@ -38,8 +38,9 @@ tags:
     id: sessions-export
 - takeScreenshot: sessions-tutor-tutoring
 # The lesson's detail, opened from Tutoring: the write-up and assessments, and no money.
+# The card's write-up line opens it (its footer holds Assess and Reflect).
 - tapOn:
-    id: session-card-50000000-0000-4000-8000-000000000002
+    id: session-preview-50000000-0000-4000-8000-000000000002
 - extendedWaitUntil:
     visible:
       id: session-notes
@@ -81,8 +82,9 @@ tags:
 - assertNotVisible: 'You pay'
 - takeScreenshot: sessions-tutor-finance
 # The detail from Finance shows his pay.
+# The card's write-up line opens it (its footer holds Assess and Reflect).
 - tapOn:
-    id: session-card-50000000-0000-4000-8000-000000000002
+    id: session-preview-50000000-0000-4000-8000-000000000002
 - extendedWaitUntil:
     visible:
       id: session-money

@@ -168,7 +168,7 @@ export function AssessmentsView({ assessments }: { assessments: SessionAssessmen
     <View testID="session-assessments" style={{ gap: space.xs }}>
       <PartHeading>Assessments</PartHeading>
       {assessments.map((row, index) => (
-        <View key={row.author_user_id}>
+        <View key={row.author_user_id} testID={`session-assessment-${row.author_user_id}`}>
           {index > 0 ? <Divider /> : null}
           <View
             style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: space.sm }}

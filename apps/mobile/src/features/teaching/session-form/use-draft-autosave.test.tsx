@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react-native';
 import type { SessionDraftInput } from '@tmi/shared';
 import { AppState } from 'react-native';
 
-import { useDraftAutosave, type DraftAutosaveOptions } from './use-draft-autosave';
+import { useDraftAutosave, withDraft, type DraftAutosaveOptions } from './use-draft-autosave';
 
 const TUTOR = '00000000-0000-4000-8000-000000000003';
 const STUDENT = '00000000-0000-4000-8000-000000000009';
@@ -229,5 +229,16 @@ describe('the 3-second autosave', () => {
       await Promise.resolve();
     });
     expect(onKeptAsDraft).not.toHaveBeenCalled();
+  });
+});
+
+describe('the cached drafts list', () => {
+  it('takes each quiet save, so Continue opens what was last kept, not the first tick', () => {
+    const half = { id: 'draft-1', notes: 'Aut' } as never;
+    const full = { id: 'draft-1', notes: 'Autosaved from the phone' } as never;
+    const other = { id: 'draft-2', notes: 'Another' } as never;
+    const list = withDraft({ data: [half, other] }, full);
+    expect(list?.data).toEqual([full, other]);
+    expect(withDraft(undefined, full)).toBeUndefined();
   });
 });

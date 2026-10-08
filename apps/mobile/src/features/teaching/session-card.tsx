@@ -6,10 +6,12 @@ import { memo, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import { Card, Divider, Icon, Text } from 'react-native-paper';
 
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { ReflectionFlags } from './reflection-chips';
+import { AssessButton, ReflectButton, assessLabel, reflectLabel } from './session-actions';
 import { formatSessionDay, formatSessionTimes } from './session-format';
 import { AssessmentChips, HomeworkStatusBadge } from './session-notes';
 
@@ -58,8 +60,10 @@ export const SessionCard = memo(function SessionCard({
   money?: ReactNode;
 }) {
   const theme = useAppTheme();
+  const { user } = useAuth();
   const muted = theme.tokens.mutedForeground;
   const day = formatSessionDay(session.occurred_on, today);
+  const hasActions = Boolean(assessLabel(session, user) || reflectLabel(session, user));
   const preview = writeUpPreview(session);
   const homework = session.write_up?.homework_status;
   const hasFooter = Boolean(homework || session.assessments.length > 0 || session.reflection);
@@ -126,6 +130,20 @@ export const SessionCard = memo(function SessionCard({
                   <ReflectionFlags reflection={session.reflection} />
                 </>
               ) : null}
+            </View>
+          ) : null}
+          {/* The web's expanded card offers these too; pressing one does not open the lesson. */}
+          {hasActions ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                marginLeft: -space.sm,
+                marginBottom: -space.sm,
+              }}
+            >
+              <AssessButton session={session} testID={`session-assess-${session.id}`} compact />
+              <ReflectButton session={session} testID={`session-reflect-${session.id}`} compact />
             </View>
           ) : null}
         </View>

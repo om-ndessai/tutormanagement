@@ -25,8 +25,9 @@ tags:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: sessions-parent-tutoring
+# The card's write-up line opens it (its footer holds Assess and Reflect).
 - tapOn:
-    id: session-card-50000000-0000-4000-8000-000000000005
+    id: session-preview-50000000-0000-4000-8000-000000000005
 - extendedWaitUntil:
     visible:
       id: session-notes

@@ -17,7 +17,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useDeleteSession, useSession } from './api';
 import { ReflectionView } from './reflection-chips';
-import { firstName, likelyReflectorRole, mayChangeReflection } from './reflection-logic';
+import { AssessButton, ReflectButton } from './session-actions';
 import { AUTO_STOPPED_NOTE, Tag } from './session-card';
 import { formatSessionDay, formatSessionTimes } from './session-format';
 import { SessionMoney, describeSessionMoney } from './session-money';
@@ -60,7 +60,6 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
   const muted = theme.tokens.mutedForeground;
   const toast = useToast();
   const remove = useDeleteSession();
-  const canReflect = mayChangeReflection(session, user);
   // What the API allows: the office, or the lesson's own tutor.
   const canEdit = Boolean(user && (user.roles.includes('admin') || session.tutor_user_id === user.id));
 
@@ -92,7 +91,6 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
       ],
     );
   }
-  const forStudent = user ? likelyReflectorRole(session, user) === 'student' : false;
 
   return (
     <>
@@ -145,23 +143,12 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
         </View>
       </Card>
 
-      {canReflect ? (
-        <Button
-          testID="session-reflect"
-          mode="outlined"
-          icon="emoticon-happy-outline"
-          style={{ alignSelf: 'flex-start' }}
-          onPress={() => router.push({ pathname: '/reflection', params: { session: session.id } })}
-        >
-          {session.reflection
-            ? forStudent
-              ? 'Your reflection'
-              : 'Edit reflection'
-            : forStudent
-              ? 'Reflect'
-              : `Add ${firstName(session.student_name)}’s reflection`}
-        </Button>
-      ) : null}
+      {/* What the reader thought: their own assessment (never the student's -- they reflect), and
+          the student's reflection for whoever may enter it. */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        <AssessButton session={session} testID="session-assess" />
+        <ReflectButton session={session} testID="session-reflect" />
+      </View>
 
       {canEdit ? (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>

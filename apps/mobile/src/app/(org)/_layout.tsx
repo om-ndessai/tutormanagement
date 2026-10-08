@@ -63,6 +63,15 @@ export default function OrgLayout() {
           }}
         />
         <Stack.Screen
+          name="assess-session"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.6, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="stop-lesson"
           options={{
             presentation: 'formSheet',
