@@ -1,0 +1,23 @@
+# An invitation: Dana has been invited (as admin and parent) and belongs nowhere yet. Accepting
+# joins the organization. Changes the database: the runner resets it before every run.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: dana.whitfield@gmail.com
+      ORG: ""
+- extendedWaitUntil:
+    visible:
+      id: screen-select-organization
+    timeout: 20000
+- assertVisible: "INVITATIONS"
+- assertVisible:
+    id: invitation-chmi
+- tapOn:
+    id: invitation-accept-chmi
+- extendedWaitUntil:
+    visible: "You have joined Chapel Hill Math Institute."
+    timeout: 15000
