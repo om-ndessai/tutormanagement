@@ -1,0 +1,13 @@
+# Sign in as a seeded person (PERSONA, an email) and enter an organization (ORG, a slug; may be
+# empty) through the developer deep link. Starts the app fresh.
+appId: ${APP_ID}
+---
+- runFlow: launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
+- runFlow:
+    file: open-link.yaml
+    env:
+      LINK: tutorportal://dev/link?as=${PERSONA}&org=${ORG}

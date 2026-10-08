@@ -16,8 +16,8 @@ the `[~]` item, then carry on down the list.
 - [x] 4. Workflow: lint, format and unit tests for the mobile app
 - [x] 5. Mobile: shared contract on Hermes — resolution, Intl, diagnostics
 - [x] 6. Mobile: brand palettes and Paper theme from the web tokens
-- [ ] 7. Mobile: API client, server picker and per-request organization
-- [ ] 8. Mobile: developer sign-in and session restore
+- [x] 7. Mobile: API client, server picker and per-request organization
+- [x] 8. Mobile: developer sign-in and session restore
 - [ ] 9. Mobile tests: Maestro harness and local seeded runner
 - [ ] 10. Workflow: CI for typecheck, lint, unit tests and bundling
 - [ ] 11. Mobile: organization picker, invitations and default organization

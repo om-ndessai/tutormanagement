@@ -1,0 +1,45 @@
+# Developer sign-in: the screen lists seeded people, a person lands where they belong, an
+# unknown email is refused by the server, and signing out returns to sign-in.
+appId: ${APP_ID}
+tags:
+  - smoke
+---
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
+- assertVisible: "Tutor Portal"
+- assertVisible: "Developer sign-in"
+# Someone the server does not know is refused, in its words.
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+- tapOn:
+    id: sign-in-email
+- inputText: "nobody@example.com"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: sign-in-error
+    timeout: 15000
+- assertVisible:
+    id: screen-sign-in
+# A student with one organization goes straight in.
+- scrollUntilVisible:
+    element:
+      id: sign-in-persona-sofia.okafor@gmail.com
+    direction: UP
+- tapOn:
+    id: sign-in-persona-sofia.okafor@gmail.com
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- assertVisible: "Sofia Okafor"
+- tapOn:
+    id: home-sign-out
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

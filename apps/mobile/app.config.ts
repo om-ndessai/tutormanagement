@@ -66,6 +66,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-localization',
     // iOS 27 requires the scene life cycle; see the plugin.
     './plugins/with-scene-lifecycle.js',
+    ...(variant === 'development' ? ['./plugins/with-quiet-dev-menu.js'] : []),
   ],
   experiments: { typedRoutes: true, reactCompiler: true },
   extra: {
