@@ -7,7 +7,7 @@
     "start": "expo start",
     "ios": "expo run:ios",
     "android": "scripts/android-env.sh expo run:android",
-    "typecheck": "tsc --noEmit && node scripts/check-mobile-rules.mjs",
+    "typecheck": "tsc --noEmit && node scripts/check-mobile-rules.mjs && node scripts/generate-palettes.mjs --check",
     "lint": "expo lint",
     "test": "jest",
     "export": "expo export --platform ios --platform android --output-dir dist",
