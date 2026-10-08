@@ -1,0 +1,6 @@
+dist
+ios
+android
+.expo
+src/theme/palettes.generated.ts
+package-lock.json
