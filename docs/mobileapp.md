@@ -6,6 +6,7 @@ Mobile app will be built on ReactNative.
 Set up end to end testing and use a local db instance with seeded data to avoid running into cloudflare limits.
 Create a new branch in the repo for mobile app. Do not merge the branch until I review the fully functioning app and merge it myself later. 
 Use ReactNative paper or any advanced UI library. 
+Do intense research on immersive design patterns and write document/plan on using those for features on this tutoring portal.
 The app should be built for both Android and IOS. The end goal of this phase is to have an app running on emulators.
 There is no need to include google authentication.
 Build and support every feature on the tutoring portal (Not TMI portal)
