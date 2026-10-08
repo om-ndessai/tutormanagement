@@ -1,0 +1,5 @@
+# Maestro workspace: every flow under flows/ runs (subflows/ are only ever included by them).
+flows:
+  - "flows/**"
+executionOrder:
+  continueOnFailure: true
