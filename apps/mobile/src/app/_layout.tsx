@@ -1,3 +1,5 @@
+import '@/polyfills/intl';
+
 import { Stack } from 'expo-router';
 
 export default function RootLayout() {

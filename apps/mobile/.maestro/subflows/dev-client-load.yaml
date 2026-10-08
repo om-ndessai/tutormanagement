@@ -1,0 +1,40 @@
+# Point a development build at Metro (localhost:8081; on Android via adb reverse). The dev
+# launcher may not be ready for the first link, so it is retried while the launcher shows.
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible: "Development Build|DEVELOPMENT SERVERS|Development servers"
+    timeout: 15000
+    optional: true
+- repeat:
+    while:
+      visible: "Development Build|DEVELOPMENT SERVERS|Development servers"
+    times: 4
+    commands:
+      - runFlow:
+          file: open-link.yaml
+          env:
+            LINK: exp+tutor-portal://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081
+      - extendedWaitUntil:
+          notVisible: "Development Build|DEVELOPMENT SERVERS|Development servers"
+          timeout: 20000
+          optional: true
+- extendedWaitUntil:
+    visible: "Continue"
+    timeout: 15000
+    optional: true
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+# Android shows the dev menu again once the bundle loads; close it.
+- extendedWaitUntil:
+    visible: "Toggle performance monitor"
+    timeout: 5000
+    optional: true
+- runFlow:
+    when:
+      visible: "Toggle performance monitor"
+    commands:
+      - back

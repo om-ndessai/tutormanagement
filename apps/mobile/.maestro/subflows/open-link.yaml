@@ -1,0 +1,13 @@
+# Open a deep link, accepting iOS's "Open in …?" confirmation when it appears.
+appId: ${APP_ID}
+---
+- openLink: ${LINK}
+- extendedWaitUntil:
+    visible: "Open"
+    timeout: 3000
+    optional: true
+- runFlow:
+    when:
+      visible: "Open"
+    commands:
+      - tapOn: "Open"

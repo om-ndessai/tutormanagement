@@ -15,6 +15,8 @@ const HEX = /['"`]#[0-9a-fA-F]{3,8}['"`]|rgba?\(/;
 // Files allowed to format money. Everything else renders it through these.
 const MONEY_FILES = [
   /^src\/features\/teaching\/session-money\.tsx$/,
+  // The developer diagnostics screen proves formatCents on Hermes.
+  /^src\/app\/dev\/diagnostics\.tsx$/,
   /^src\/features\/(dashboard|payments|teaching|users)\/.*(finance|money|payment|billing|balance|1099|rate|payout|earn).*\.tsx?$/i,
 ];
 

@@ -14,7 +14,7 @@ the `[~]` item, then carry on down the list.
 - [x] 2. Workflow: mobile architect, developer and tester skills
 - [x] 3. Mobile: Expo app scaffold beside the monorepo
 - [x] 4. Workflow: lint, format and unit tests for the mobile app
-- [ ] 5. Mobile: shared contract on Hermes — resolution, Intl, diagnostics
+- [x] 5. Mobile: shared contract on Hermes — resolution, Intl, diagnostics
 - [ ] 6. Mobile: brand palettes and Paper theme from the web tokens
 - [ ] 7. Mobile: API client, server picker and per-request organization
 - [ ] 8. Mobile: developer sign-in and session restore

@@ -1,0 +1,31 @@
+# The shared contract's formatting on Hermes, on each platform (Jest runs on Node, so cannot).
+appId: ${APP_ID}
+tags:
+  - smoke
+---
+- runFlow: ../../subflows/launch.yaml
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://dev/diagnostics
+- extendedWaitUntil:
+    visible:
+      id: screen-dev-diagnostics
+    timeout: 30000
+- assertVisible:
+    id: diag-cents
+    text: '$12,345.67'
+- assertVisible:
+    id: diag-relative
+    text: '3 hours ago'
+- assertVisible:
+    id: diag-ssn
+    text: 'true / false'
+# 16:30 UTC on 1 July 2026, on each organization clock (DST where observed).
+- assertVisible: { id: diag-tz-America-New_York, text: '2026-07-01 12:30' }
+- assertVisible: { id: diag-tz-America-Chicago, text: '2026-07-01 11:30' }
+- assertVisible: { id: diag-tz-America-Denver, text: '2026-07-01 10:30' }
+- assertVisible: { id: diag-tz-America-Phoenix, text: '2026-07-01 09:30' }
+- assertVisible: { id: diag-tz-America-Los_Angeles, text: '2026-07-01 09:30' }
+- assertVisible: { id: diag-tz-America-Anchorage, text: '2026-07-01 08:30' }
+- assertVisible: { id: diag-tz-Pacific-Honolulu, text: '2026-07-01 06:30' }
