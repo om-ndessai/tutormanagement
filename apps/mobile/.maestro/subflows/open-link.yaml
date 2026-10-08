@@ -3,11 +3,11 @@ appId: ${APP_ID}
 ---
 - openLink: ${LINK}
 - extendedWaitUntil:
-    visible: "Open"
+    visible: 'Open'
     timeout: 3000
     optional: true
 - runFlow:
     when:
-      visible: "Open"
+      visible: 'Open'
     commands:
-      - tapOn: "Open"
+      - tapOn: 'Open'

@@ -8,16 +8,16 @@ tags:
     file: ../../subflows/sign-in-as.yaml
     env:
       PERSONA: dana.whitfield@gmail.com
-      ORG: ""
+      ORG: ''
 - extendedWaitUntil:
     visible:
       id: screen-select-organization
     timeout: 20000
-- assertVisible: "INVITATIONS"
+- assertVisible: 'INVITATIONS'
 - assertVisible:
     id: invitation-chmi
 - tapOn:
     id: invitation-accept-chmi
 - extendedWaitUntil:
-    visible: "You have joined Chapel Hill Math Institute."
+    visible: 'You have joined Chapel Hill Math Institute.'
     timeout: 15000

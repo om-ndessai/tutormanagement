@@ -9,6 +9,8 @@ import { DEV_TOOLS } from '@/lib/variant';
 
 // A fixed instant: 16:30 UTC on 1 July 2026.
 const INSTANT = '2026-07-01T16:30:00Z';
+// Three hours later, as "now" for the relative time.
+const LATER = new Date('2026-07-01T19:30:00Z');
 
 function clock(minutesOfDay: number): string {
   const h = Math.floor(minutesOfDay / 60);
@@ -29,11 +31,14 @@ function Row({ id, label, value }: { id: string; label: string; value: string })
 
 export default function Diagnostics() {
   if (!DEV_TOOLS) return <Redirect href="/" />;
-  const hourAgo = new Date(Date.now() - 3 * 3600 * 1000).toISOString();
   return (
     <ScrollView testID="screen-dev-diagnostics" contentContainerStyle={{ padding: 24, paddingTop: 72 }}>
       <Row id="diag-cents" label="formatCents(1234567)" value={formatCents(1234567)} />
-      <Row id="diag-relative" label="formatRelativeTime(3 hours ago)" value={formatRelativeTime(hourAgo)} />
+      <Row
+        id="diag-relative"
+        label="formatRelativeTime(3 hours ago)"
+        value={formatRelativeTime(INSTANT, LATER)}
+      />
       <Row
         id="diag-ssn"
         label="containsSsn: 123-45-6789 / 919-555-0100"

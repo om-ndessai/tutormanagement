@@ -8,7 +8,7 @@ tags:
     file: ../../subflows/sign-in-as.yaml
     env:
       PERSONA: priya.raghavan@gmail.com
-      ORG: ""
+      ORG: ''
 - extendedWaitUntil:
     visible:
       id: screen-select-organization
@@ -17,18 +17,18 @@ tags:
     id: org-chmi
 - assertVisible:
     id: org-riverside
-- assertVisible: "Star one to land in it whenever you sign in."
+- assertVisible: 'Star one to land in it whenever you sign in.'
 # Star a default, then clear it again (the seed has none).
 - tapOn:
     id: org-default-riverside
 - extendedWaitUntil:
-    visible: "You will land in Riverside Tutoring when you sign in."
+    visible: 'You will land in Riverside Tutoring when you sign in.'
     timeout: 10000
-- assertVisible: "Default"
+- assertVisible: 'Default'
 - tapOn:
     id: org-default-riverside
 - extendedWaitUntil:
-    visible: "You will choose where to go when you sign in."
+    visible: 'You will choose where to go when you sign in.'
     timeout: 10000
 # Enter one.
 - tapOn:
