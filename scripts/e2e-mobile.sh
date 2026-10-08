@@ -118,7 +118,7 @@ run_platform() { # $1 ios|android
   local tagargs=()
   [[ -n "$TAGS" ]] && tagargs=(--include-tags="$TAGS")
   maestro --device "$device" test -e APP_ID="$APP_ID" ${tagargs[@]+"${tagargs[@]}"} \
-    --format junit --output "$LOGS/$1.xml" "${FLOWS[@]}"
+    --format junit --output "$LOGS/$1.xml" --test-output-dir "$LOGS/$1" "${FLOWS[@]}"
 }
 
 status=0

@@ -34,7 +34,7 @@ export default function SignInScreen() {
   }
 
   return (
-    <Screen testID="screen-sign-in" edges={['top', 'bottom']} contentStyle={{ paddingTop: space.xxl }}>
+    <Screen testID="screen-sign-in" edges={['top', 'bottom']}>
       <View style={{ alignItems: 'center', gap: space.md }}>
         <LogoMark size={64} />
         <Text variant="headlineMedium" accessibilityRole="header">

@@ -1,0 +1,15 @@
+# Back, on either platform: Android's system back; iOS's header back button.
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Back'
+          index: 0

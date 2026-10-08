@@ -21,7 +21,7 @@ the `[~]` item, then carry on down the list.
 - [x] 9. Mobile tests: Maestro harness and local seeded runner
 - [x] 10. Workflow: CI for typecheck, lint, unit tests and bundling
 - [x] 11. Mobile: organization picker, invitations and default organization
-- [ ] 12. Mobile: app shell — role tabs, org switcher, user menu, live lesson banner
+- [x] 12. Mobile: app shell — role tabs, org switcher, user menu, live lesson banner
 - [ ] 13. Mobile: Dashboard — Tutoring tab
 - [ ] 14. Mobile: Dashboard — Finance tab
 - [ ] 15. Mobile: Dashboard — parent and student views, reflection prompts

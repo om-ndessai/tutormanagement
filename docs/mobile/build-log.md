@@ -16,3 +16,14 @@ feature was designed, built and tested by the three skills.
 **testIDs:** `screen-select-organization`, `org-<slug>`, `org-default-<slug>`, `invitation-<slug>`, `invitation-accept-<slug>`, `invitation-decline-<slug>`, `select-platform-console`, `select-sign-out`.
 **Tests:** `organizations/picker.yaml` (Priya: both organizations, star and clear the default, enter); `organizations/invitation.yaml` (Dana accepts).
 **Verified (2026-10-07):** picker green on iOS 27 (iPhone 17) and Android 37; invitation green on iOS (mutates the seed; the runner resets before each run).
+
+## 12. App shell — tabs, More, account sheet and organization switcher — design (2026-10-07)
+**Scope:** the web AppShell: sidebar NAV_ITEMS, OrgSwitcher, UserMenu, theme toggle. The live lesson banner hooks into this shell with feature 20; ⌘K becomes the Search screen (33).
+**Web sources:** `components/layout/app-shell.tsx`, `user-menu.tsx`, `theme-toggle.tsx`, `features/organizations/org-switcher.tsx`.
+**Endpoints:** `PUT /auth/default-organization` (star), `GET /auth/session` (switch).
+**Screens & routes:** `(org)/(tabs)` native tabs — Home `/dashboard`, `/sessions`, `/schedule`, `/progress`, More — the same four for every role: the web shows every page to everyone and the server scopes the data, and native tabs remount if their set changes (immersive-design.md). Every other NAV_ITEM is a stack screen over the tabs reached from More: `/people`, `/pairings`, `/billing`, `/comments`, `/activity`, `/profile`, `/organization` (admins), `/search`. `(org)/account` is a form sheet. The `(org)` stack is keyed on the organization: a switch remounts every screen (R13).
+**Interaction & motion:** iOS large titles collapsing into the system bar, Liquid Glass tab bar and back button drawn by the system; Material 3 bar on Android; selection haptic on switching and appearance.
+**Exposure checks:** Organization item admin-only (as the web); no organization's name in code; cache cleared and tree remounted on switching.
+**testIDs:** `screen-home|sessions|schedule|progress|more|account`, `more-<tourId>`, `account-button`, `account-org-<slug>`, `account-default-<slug>`, `account-all-organizations`, `appearance-light|dark|system`, `account-sign-out`.
+**Tests:** `shell/navigation.yaml` — every tab, a More page and back, the account sheet, switching organization (roles shown for the new one).
+**Verified (2026-10-07):** green on iOS 27 and Android 37; screenshots reviewed (large titles, glass tab bar, palette changes from indigo to teal on switching to the second organization).
