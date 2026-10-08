@@ -30,7 +30,7 @@ the `[~]` item, then carry on down the list.
 - [x] 18. Mobile: Sessions — record a lesson
 - [x] 19. Mobile: Sessions — drafts and 3-second autosave (fa56a01)
 - [x] 20. Mobile: Sessions — live lesson: start, timer, stop, cancel (9fbba20)
-- [x] 21. Mobile: Sessions — notes, assessments and student reflections
+- [x] 21. Mobile: Sessions — notes, assessments and student reflections (a29e31a)
 - [ ] 22. Mobile: Pairings — assignments and rate overrides
 - [ ] 23. Mobile: Schedule — weekly view, editor, cancel/restore, calendar files
 - [ ] 24. Mobile: Progress — list, chart, assessments, plans
