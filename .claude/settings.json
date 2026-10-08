@@ -9,7 +9,6 @@
       "Grep",
       "WebSearch",
       "WebFetch",
-
       "Bash(npm run typecheck*)",
       "Bash(npm run build*)",
       "Bash(npm run dev*)",
@@ -34,7 +33,6 @@
       "Bash(export *)",
       "Bash(curl *)",
       "Bash(python3 *)",
-
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)",
@@ -43,7 +41,6 @@
       "Bash(git check-ignore*)",
       "Bash(git add*)",
       "Bash(git commit*)",
-
       "Bash(ls*)",
       "Bash(cat *)",
       "Bash(head *)",
@@ -56,7 +53,23 @@
       "Bash(sort *)",
       "Bash(echo *)",
       "Bash(which *)",
-      "Bash(sleep *)"
+      "Bash(sleep *)",
+      "Bash(npm run mobile:*)",
+      "Bash(npm run e2e:mobile*)",
+      "Bash(npm --prefix apps/mobile *)",
+      "Bash(npx expo *)",
+      "Bash(npx jest*)",
+      "Bash(npx eslint*)",
+      "Bash(npx prettier*)",
+      "Bash(maestro *)",
+      "Bash(xcrun simctl *)",
+      "Bash(xcodebuild -version*)",
+      "Bash(adb *)",
+      "Bash(emulator *)",
+      "Bash(pod install*)",
+      "Bash(git switch*)",
+      "Bash(git branch*)",
+      "Bash(bash scripts/e2e-mobile.sh*)"
     ],
     "ask": [
       "Bash(npx wrangler deploy*)",
@@ -69,11 +82,16 @@
       "Bash(git push*)",
       "Bash(git reset*)",
       "Bash(git checkout*)",
-      "Bash(rm *)"
+      "Bash(rm *)",
+      "Bash(npx eas-cli *)",
+      "Bash(eas *)",
+      "Bash(gh pr create*)"
     ],
     "deny": [
       "Bash(npm run db:rebuild:remote*)",
-      "Bash(npm run db:migrate:remote*)"
+      "Bash(npm run db:migrate:remote*)",
+      "Bash(eas submit*)",
+      "Bash(npx eas-cli submit*)"
     ]
   }
 }

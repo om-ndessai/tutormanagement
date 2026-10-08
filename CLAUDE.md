@@ -84,6 +84,22 @@ checks, which spends no quota at all.
 it (`npm run db:rebuild:remote` refuses); carry schema changes by hand and additively
 (`docs/database.md`).
 
+## Mobile app (branch `mobile-app`)
+
+The native iOS/Android app (`apps/mobile`, Expo + React Native Paper) answers
+`docs/mobileapp.md`. It is built on the branch **`mobile-app`**, the one exception to "work on
+`main`". Never merge it: the owner reviews and merges it. The owner asked for its phases to
+run straight through, so they are not paused between phases. `docs/mobile/` holds the plan,
+the resumable `progress.md`, the parity tracker and the build log; `apps/mobile/CLAUDE.md`
+holds the app's rules and commands.
+
+- **Skills.** Use `mobile-architect`, `mobile-developer` and `mobile-tester`
+  (`.claude/skills/`) for every feature.
+- **Separate install.** `apps/mobile` is not an npm workspace: Expo pins its own React and
+  TypeScript. Run `npm run mobile:install` after cloning.
+- **Local only.** Its tests run only against the local Worker and seed, through
+  `npm run e2e:mobile`.
+
 ## Layout
 
 ```

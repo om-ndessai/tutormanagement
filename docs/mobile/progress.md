@@ -9,9 +9,9 @@ the `[~]` item, then carry on down the list.
 
 ## Phase 1 — foundation and parity
 
-- [ ] 1. Docs: mobile plan, setup, progress and parity tracker
+- [x] 1. Docs: mobile plan, setup, progress and parity tracker (0de7cfc)
 - [ ] 1b. Docs: immersive design research
-- [ ] 2. Workflow: mobile architect, developer and tester skills
+- [x] 2. Workflow: mobile architect, developer and tester skills
 - [ ] 3. Mobile: Expo app scaffold beside the monorepo
 - [ ] 4. Workflow: lint, format and unit tests for the mobile app
 - [ ] 5. Mobile: shared contract on Hermes — resolution, Intl, diagnostics
