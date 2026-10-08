@@ -1,11 +1,11 @@
-// Ported from apps/web/src/features/dashboard/reflections.tsx @ 1132322 (RecentReflections;
-// the student's and parent's prompts arrive with feature 15)
-import type { ReflectionDigest } from '@tmi/shared';
+// Ported from apps/web/src/features/dashboard/reflections.tsx @ 1132322
+import { formatClockTime, type ReflectionDigest, type ReflectionPrompt } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
-import { Divider, Text } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
 
-import { EmptyNote } from '@/components/section';
+import { EmptyNote, Panel } from '@/components/section';
+import { firstName } from '@/features/teaching/reflection-logic';
 import { ReflectionChips, ReflectionFlags } from '@/features/teaching/reflection-chips';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
@@ -64,5 +64,80 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
         </View>
       ))}
     </View>
+  );
+}
+
+/**
+ * Recent lessons still waiting for the student's reflection, each with a button that opens the
+ * questions (the reflection sheet). Renders nothing when none are waiting. `forChildren` words it
+ * for a parent, who reflects with each child. No money: a prompt names the lesson, nothing more.
+ */
+export function ReflectionPrompts({
+  prompts,
+  forChildren = false,
+}: {
+  prompts: ReflectionPrompt[];
+  forChildren?: boolean;
+}) {
+  const theme = useAppTheme();
+  if (prompts.length === 0) return null;
+
+  return (
+    <Panel
+      testID="reflection-prompts"
+      tourId="dash-reflect"
+      title={forChildren ? 'Reflect with your children' : 'How did your lessons go?'}
+      action={{ label: 'All sessions', to: '/sessions' }}
+    >
+      <Text
+        variant="bodySmall"
+        style={{ color: theme.tokens.mutedForeground, marginTop: -4, marginBottom: 4 }}
+      >
+        {forChildren
+          ? 'A few questions about each recent lesson, answered together. Their tutor reads them.'
+          : 'A few quick questions about each recent lesson. Your tutor reads them.'}
+      </Text>
+      {prompts.map((prompt, index) => {
+        const time = formatClockTime(prompt.started_at);
+        return (
+          <View key={prompt.session_id}>
+            {index > 0 ? <Divider /> : null}
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm }}
+            >
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <Text variant="bodyMedium" numberOfLines={1}>
+                  {forChildren ? <Text style={{ fontWeight: '500' }}>{prompt.student_name} </Text> : null}
+                  <Text style={forChildren ? { color: theme.tokens.mutedForeground } : { fontWeight: '500' }}>
+                    {forChildren ? 'with ' : 'With '}
+                    {prompt.tutor_name}
+                  </Text>
+                </Text>
+                <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+                  {prompt.occurred_on} · {time}
+                </Text>
+              </View>
+              <Button
+                testID={`reflect-${prompt.session_id}`}
+                mode="outlined"
+                compact
+                icon="emoticon-happy-outline"
+                onPress={() =>
+                  router.push({ pathname: '/reflection', params: { session: prompt.session_id } })
+                }
+                // The date and the time: two lessons on one day stay distinct.
+                accessibilityLabel={
+                  (forChildren
+                    ? `Reflect with ${firstName(prompt.student_name)} on the ${prompt.occurred_on}`
+                    : `Reflect on the ${prompt.occurred_on}`) + ` ${time} lesson`
+                }
+              >
+                Reflect
+              </Button>
+            </View>
+          </View>
+        );
+      })}
+    </Panel>
   );
 }

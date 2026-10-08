@@ -1,0 +1,50 @@
+# A parent's dashboard (Anita, parent of Sanjay): not tabbed, as on the web. Her children, what the
+# family was charged and still owes, each child's progress, recent lessons priced from the
+# family's side ("You pay") and the family's payments -- never a tutor's pay.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-parent
+    timeout: 30000
+- assertNotVisible:
+    id: tabs-finance
+- assertVisible:
+    id: stat-children
+- assertVisible:
+    id: stat-charged
+    text: 'Charged: \$[0-9,]+\.[0-9]{2}'
+- assertVisible:
+    id: stat-outstanding
+    text: 'Outstanding: \$[0-9,]+\.[0-9]{2}\. \$[0-9,]+\.[0-9]{2} paid'
+- assertVisible: 'Your children'
+- assertVisible: '.*sessions · \$[0-9,]+\.[0-9]{2} charged'
+- takeScreenshot: parent-top
+- scrollUntilVisible:
+    element:
+      id: recent-sessions
+    direction: DOWN
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: session-money
+    direction: DOWN
+    centerElement: true
+- assertVisible: 'You pay'
+- assertNotVisible: 'Your pay'
+- takeScreenshot: parent-sessions
+- scrollUntilVisible:
+    element:
+      id: parent-payments-action
+    direction: DOWN
+- assertVisible: 'Your payments'
+- assertNotVisible: 'Your pay'
+- takeScreenshot: parent-bottom

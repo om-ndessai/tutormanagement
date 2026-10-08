@@ -184,3 +184,6 @@ export const tutorDashboard: TutorDashboard = {
   progress_spotlight: [progress],
   recent_reflections: [reflection],
 };
+
+/** One student's progress with a plan, for the progress cards. */
+export { progress as studentProgress };

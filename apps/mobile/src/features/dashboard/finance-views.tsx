@@ -44,7 +44,7 @@ const SECURE_FINANCE = Platform.OS === 'android' && APP_VARIANT === 'production'
 // Shared pieces
 // ---------------------------------------------------------------------------
 
-function PaymentList({ payments }: { payments: Payment[] }) {
+export function PaymentList({ payments }: { payments: Payment[] }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
   const today = orgToday(timeZone);

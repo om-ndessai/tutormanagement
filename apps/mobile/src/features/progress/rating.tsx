@@ -1,12 +1,16 @@
-// Ported from apps/web/src/features/progress/rating.tsx @ 1132322 (the pieces the dashboard uses)
+// Ported from apps/web/src/features/progress/rating.tsx @ 1132322 (the pieces the dashboard and
+// the reflection sheet use)
 import { PROGRESS_STATUS_LABELS, TOPIC_RATING_LABELS, type ProgressStatus, type Rating } from '@tmi/shared';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
+import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
-import { radius } from '@/theme/tokens';
+import { MIN_TARGET, radius } from '@/theme/tokens';
+
+const RATINGS: readonly Rating[] = [1, 2, 3, 4, 5];
 
 /** Fill and text for one step of the 1-5 scale, from the palette's rating tokens. */
 export function ratingStyle(theme: AppTheme, rating: Rating) {
@@ -158,6 +162,80 @@ export function ProgressStatusBadge({ status }: { status: ProgressStatus }) {
     >
       <Icon source={STATUS_ICONS[status]} size={12} color={color} />
       <Text style={{ fontSize: 11, fontWeight: '500', color }}>{PROGRESS_STATUS_LABELS[status]}</Text>
+    </View>
+  );
+}
+
+/**
+ * Five steps to pick from, as a radio group. Tapping the chosen step again clears it
+ * (`allowClear`). For a CENTRED scale (`neutral`: difficulty and pace, where 3 is right and 1 and
+ * 5 are the two ways to miss) the chosen step takes the primary colour instead of the rating
+ * ramp, which would read darker as better.
+ */
+export function RatingPicker({
+  value,
+  onChange,
+  labels = TOPIC_RATING_LABELS,
+  name,
+  allowClear = true,
+  neutral = false,
+  testID,
+}: {
+  value: Rating | null;
+  onChange: (value: Rating | null) => void;
+  labels?: Record<Rating, string>;
+  /** Accessible name of the group, e.g. the question being answered. */
+  name: string;
+  allowClear?: boolean;
+  neutral?: boolean;
+  /** Each step is `<testID>-<n>`. */
+  testID?: string;
+}) {
+  const theme = useAppTheme();
+  return (
+    <View accessibilityRole="radiogroup" accessibilityLabel={name} style={{ flexDirection: 'row', gap: 6 }}>
+      {RATINGS.map((rating) => {
+        const selected = value === rating;
+        const fill = selected
+          ? neutral
+            ? { backgroundColor: theme.colors.primary, color: theme.colors.onPrimary }
+            : ratingStyle(theme, rating)
+          : null;
+        return (
+          <Pressable
+            key={rating}
+            testID={testID ? `${testID}-${rating}` : undefined}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: selected }}
+            accessibilityLabel={`${rating} – ${labels[rating]}`}
+            onPress={() => {
+              haptics.selection();
+              onChange(selected && allowClear ? null : rating);
+            }}
+            style={({ pressed }) => ({
+              width: MIN_TARGET,
+              height: MIN_TARGET,
+              borderRadius: radius.md,
+              borderWidth: 1,
+              borderColor: fill ? 'transparent' : theme.colors.outline,
+              backgroundColor: fill?.backgroundColor ?? (pressed ? theme.tokens.muted : 'transparent'),
+              alignItems: 'center',
+              justifyContent: 'center',
+            })}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: '600',
+                fontVariant: ['tabular-nums'],
+                color: fill?.color ?? theme.tokens.mutedForeground,
+              }}
+            >
+              {rating}
+            </Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }

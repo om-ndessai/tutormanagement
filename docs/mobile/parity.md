@@ -24,9 +24,9 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 
 | Web source | What | Mobile | Flow | Status |
 | --- | --- | --- | --- | --- |
-| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance tab tested (14); parent/student, view-as todo |
+| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance tab tested (14); parent and student views tested (15); view-as todo |
 | `dashboard/sessions-carousel.tsx` | past 5, now, upcoming | `src/features/dashboard/sessions-carousel.tsx` | `dashboard/tutoring` | tested |
-| `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student` | recent reflections tested (13); prompts todo |
+| `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student`, `dashboard/reflection` | recent reflections tested (13); prompts tested (15) |
 | `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/{finance-views,tutor-payments,monthly-finance,money-icon,finance-format}` | `dashboard/finance-*` | tested |
 | `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/form-1099-html.ts`; list in `year-end-finance.tsx` | `year-end/*` | year-end list and SSN receipts tested (14); 1099 todo |
 | `dashboard/user-picker.tsx` | admin view-as | `src/features/dashboard/user-picker.tsx` | `dashboard/view-as` | todo |
@@ -35,11 +35,11 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `teaching/drafts-panel.tsx` | own drafts | `src/features/teaching/drafts-panel.tsx` | `sessions/drafts` | todo |
 | `teaching/live-session-bar.tsx`, `start-session-button.tsx` | live timer | `src/features/teaching/live-session-banner.tsx`, `start-session.tsx` | `sessions/live` | todo |
 | `teaching/session-notes.tsx` | write-up, assessments | `src/features/teaching/session-notes.tsx` | `sessions/notes` | todo |
-| `teaching/session-reflection.tsx` | student reflection | `src/features/teaching/session-reflection.tsx` | `sessions/reflection` | todo |
-| `teaching/session-money.tsx` | money from the reader's side | `src/features/teaching/session-money.tsx` | `exposure/money` | todo |
+| `teaching/session-reflection.tsx` | student reflection | `app/(org)/reflection.tsx`, `src/features/teaching/{reflection-form.tsx,reflection-logic.ts}` | `sessions/reflection`, `dashboard/reflection` | dialog and `mayChangeReflection` tested from the dashboard (15); on the sessions page todo (21) |
+| `teaching/session-money.tsx` | money from the reader's side | `src/features/teaching/session-money.tsx` | `exposure/money`, `dashboard/parent` | compact form tested on the parent dashboard (15); rest todo |
 | `teaching/assignments-page.tsx`, `assignment-dialog.tsx` | pairings | `app/(org)/pairings.tsx`, `app/(org)/assignment-form.tsx` | `pairings/*` | todo |
 | `schedules/*` | weekly schedules, dates, cancel / restore, calendar files, cancelled panel | `app/(org)/(tabs)/schedule/*`, `src/features/schedules/*` | `schedule/*` | todo |
-| `progress/*` | list, student page, chart, spotlight, card, assessment / plan dialogs, ratings | `app/(org)/(tabs)/progress/*`, `src/features/progress/*` | `progress/*` | todo |
+| `progress/*` | list, student page, chart, spotlight, card, assessment / plan dialogs, ratings | `app/(org)/(tabs)/progress/*`, `src/features/progress/*` | `progress/*` | compact chart, spotlight (13), dashboard progress card, RatingPicker (15) tested; rest todo |
 | `users/*` | directory, table / cards, detail, form (all sections), availability, guardians, payment handles, badges, SSN receipt | `app/(org)/(tabs)/people/*`, `app/(org)/person-form.tsx`, `src/features/users/*` | `people/*` | `api.ts` and SSN receipt button tested (14, `dashboard/finance-ssn-receipt`); rest todo |
 | `payments/*` | billing, balances, log, payment dialog, CSV | `app/(org)/billing.tsx`, `app/(org)/payment-form.tsx` | `billing/*` | todo |
 | `comments/*` | threads, counts, feed, delete own | `app/(org)/comments.tsx`, `src/features/comments/*` | `comments/*` | todo |

@@ -24,7 +24,7 @@ the `[~]` item, then carry on down the list.
 - [x] 12. Mobile: app shell — role tabs, org switcher, user menu, live lesson banner
 - [x] 13. Mobile: Dashboard — Tutoring tab
 - [x] 14. Mobile: Dashboard — Finance tab
-- [ ] 15. Mobile: Dashboard — parent and student views, reflection prompts
+- [x] 15. Mobile: Dashboard — parent and student views, reflection prompts
 - [ ] 16. Mobile: Dashboard — admin view-as and role selector
 - [ ] 17. Mobile: Sessions — Tutoring/Finance list, filters and focus
 - [ ] 18. Mobile: Sessions — record a lesson
@@ -68,6 +68,8 @@ the `[~]` item, then carry on down the list.
 - [ ] Docs: running on real devices and what the stores need
 
 ## Blocked / notes
+
+- For the owner (#15): the server sends a student their own lessons with `money_view: 'family'`, and the web's StudentView renders them through SessionMoney, so a student sees "You pay" on the web. The app hides money on the student dashboard; should the web match?
 
 - For the Phase 2 audit: a fresh Android launch sometimes waits 20–30 s on "Loading your dashboard…" though `/dashboard` answers in ~20 ms (seen in #14). Find the cause; don't just widen waits.
 - For the owner: the SSN chase list (`/dashboard` `tutors_missing_ssn`) and the year-end list (`/payments/tax-status`) disagree for a tutor with no activity (Johan). Each screen shows what its endpoint sends; it's a web/API question, not a mobile one.

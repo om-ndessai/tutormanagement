@@ -1,0 +1,72 @@
+# A student answers a reflection prompt (Sofia). The seed's lessons are older than the 21-day
+# prompt window, so a lesson yesterday is recorded for her first through the local Worker. She
+# answers two questions (one centred, which takes the primary colour) and a note, saves, and the
+# prompt leaves her dashboard. Changes data: reset the database afterwards (npm run e2e:mobile does).
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runScript:
+    file: ../../scripts/record-recent-lesson.js
+    env:
+      TUTOR_EMAIL: alex.chen.math@gmail.com
+      TUTOR_ID: 00000000-0000-4000-8000-000000000003
+      STUDENT_ID: 00000000-0000-4000-8000-000000000008
+      ORG: chmi
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: reflect-${output.sessionId}
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'How did your lessons go?'
+- takeScreenshot: reflection-prompt
+- tapOn:
+    id: reflect-${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: reflection-learned_new-4
+    timeout: 15000
+- assertVisible: 'How did this lesson go for you?'
+- assertVisible: 'Did you learn anything new?'
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: reflection-learned_new-4
+- assertVisible: 'Quite a lot'
+- tapOn:
+    id: reflection-difficulty-3
+- assertVisible: 'About right'
+- takeScreenshot: reflection-sheet
+- scrollUntilVisible:
+    element:
+      id: reflection-homework
+    direction: DOWN
+- tapOn:
+    id: reflection-homework
+- inputText: 'All done'
+# Return closes the keyboard (it would cover Save in the sheet).
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: reflection-save
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reflection-save
+- extendedWaitUntil:
+    visible: 'Thanks — your reflection is saved.'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible:
+      id: reflect-${output.sessionId}
+    timeout: 10000
+- takeScreenshot: reflection-saved
