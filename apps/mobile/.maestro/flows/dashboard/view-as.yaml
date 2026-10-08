@@ -1,0 +1,121 @@
+# The admin's "view as" (Priya): find Alex in the people sheet, see his tutor dashboard exactly as
+# he does under a "Viewing as" banner, and come back to her own. Then the Finance tab's tutor
+# card opens that tutor's own Finance tab, as on the web.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- assertNotVisible:
+    id: view-as-banner
+- tapOn:
+    id: dashboard-view-as
+- extendedWaitUntil:
+    visible:
+      id: view-as-self
+    timeout: 10000
+- assertVisible: 'View dashboard as'
+- assertNotVisible:
+    id: view-as-user-00000000-0000-4000-8000-000000000002
+- tapOn:
+    id: view-as-search
+- inputText: 'Alex'
+- pressKey: Enter
+# The search has run once the "first 25" footer is gone (Alex is also in the unfiltered list, and
+# a tap while the list re-renders can be lost).
+- extendedWaitUntil:
+    notVisible: 'Showing the first.*'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: view-as-user-00000000-0000-4000-8000-000000000003
+    timeout: 10000
+- takeScreenshot: view-as-sheet
+- tapOn:
+    id: view-as-user-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: view-as-banner
+    timeout: 15000
+- assertVisible: '.*Viewing as Alex Chen.*Tutor.*'
+- assertVisible: "Alex Chen's dashboard"
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 15000
+# Alex holds one role here: no role selector. His tutor view has Student Reflections.
+- assertNotVisible:
+    id: dashboard-role-admin
+- assertNotVisible:
+    id: stat-parents
+- assertNotVisible:
+    id: session-money
+- takeScreenshot: view-as-alex
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-student-reflections
+    direction: DOWN
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: view-as-back
+    direction: UP
+    timeout: 30000
+- tapOn:
+    id: view-as-back
+- extendedWaitUntil:
+    notVisible:
+      id: view-as-banner
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: stat-parents
+    timeout: 15000
+- assertVisible:
+    id: dashboard-role-admin
+# From Finance: a tutor's payment card opens their Finance tab.
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-admin
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: tutor-payment-00000000-0000-4000-8000-000000000003
+    direction: DOWN
+    centerElement: true
+    timeout: 30000
+- tapOn:
+    id: tutor-payment-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: view-as-banner
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-tutor
+    timeout: 15000
+- assertVisible:
+    id: stat-earned
+- assertNotVisible: '.*Owed by families.*'
+- takeScreenshot: view-as-tutor-finance
+- tapOn:
+    id: view-as-back
+- extendedWaitUntil:
+    notVisible:
+      id: view-as-banner
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 15000

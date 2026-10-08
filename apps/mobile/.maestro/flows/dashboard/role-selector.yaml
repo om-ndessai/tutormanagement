@@ -1,0 +1,55 @@
+# Someone with two roles (Maria: tutor and Sofia's parent) lands on her tutor dashboard, as on the
+# web, and switches to her parent dashboard and back. Not an admin: no "view as".
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- assertVisible:
+    id: dashboard-role-tutor
+- assertVisible:
+    id: dashboard-role-parent
+- assertNotVisible:
+    id: dashboard-view-as
+- assertNotVisible:
+    id: view-as-banner
+- takeScreenshot: role-tutor
+- tapOn:
+    id: dashboard-role-parent
+- extendedWaitUntil:
+    visible:
+      id: dashboard-parent
+    timeout: 15000
+- assertNotVisible:
+    id: tabs-finance
+- assertVisible: 'Your children'
+- assertNotVisible: 'Your pay'
+- takeScreenshot: role-parent
+- scrollUntilVisible:
+    element:
+      id: progress-card-00000000-0000-4000-8000-000000000008
+    direction: DOWN
+    timeout: 30000
+- assertVisible: "Sofia Okafor's progress"
+- scrollUntilVisible:
+    element:
+      id: dashboard-role-tutor
+    direction: UP
+    timeout: 30000
+- tapOn:
+    id: dashboard-role-tutor
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 15000
+- assertNotVisible:
+    id: dashboard-parent

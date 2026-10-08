@@ -1,6 +1,7 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 -- the Finance halves
-// of AdminView and TutorView, with SsnPanel, PaymentList and BalanceRow. Rows that link to a
-// person's dashboard on the web (view-as) or to their record are plain until features 16 and 25.
+// of AdminView and TutorView, with SsnPanel, PaymentList and BalanceRow. A family row opens that
+// student's dashboard (view-as), as on the web; names that link to a person's record are plain
+// until feature 25.
 import {
   PAYMENT_FORM_LABELS,
   formatCents,
@@ -12,7 +13,7 @@ import {
   type TutorDashboard,
 } from '@tmi/shared';
 import { usePreventScreenCapture } from 'expo-screen-capture';
-import { Platform, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
 import { EmptyNote, Panel } from '@/components/section';
@@ -24,6 +25,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useMonthlyFinance } from './api';
+import { viewAs } from './view-as';
 import { formatMoneyValue, formatPaidOn, orgToday, orgYear } from './finance-format';
 import { walletMinusIcon, walletPlusIcon } from './money-icon';
 import { MonthlyFinance } from './monthly-finance';
@@ -80,14 +82,26 @@ export function PaymentList({ payments }: { payments: Payment[] }) {
   );
 }
 
-/** A balance, emphasised only when there is something outstanding. */
+/**
+ * A balance, emphasised only when there is something outstanding. Opens the student's own
+ * dashboard (the admin's view-as), as the web's row links to it.
+ */
 function BalanceRow({ student }: { student: StudentBalance }) {
   const theme = useAppTheme();
   const owing = student.balance_cents > 0;
   return (
-    <View
+    <Pressable
       testID={`family-balance-${student.student_user_id}`}
-      style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10 }}
+      accessibilityRole="link"
+      accessibilityLabel={`${student.student_name}: ${formatCents(student.balance_cents)}. View their dashboard`}
+      onPress={() => viewAs(student.student_user_id, 'student')}
+      style={({ pressed }) => ({
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: space.md,
+        paddingVertical: 10,
+        opacity: pressed ? 0.7 : 1,
+      })}
     >
       <View style={{ flex: 1, minWidth: 0 }}>
         <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
@@ -107,7 +121,7 @@ function BalanceRow({ student }: { student: StudentBalance }) {
       >
         {formatCents(student.balance_cents)}
       </Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -248,14 +262,17 @@ export function advanceHint(advance: TutorDashboard['earnings']): string {
   return needsTopup(advance) ? `Below your ${level} level — a top-up is due` : `Topped up below ${level}`;
 }
 
-/** A tutor's own Finance tab: their earnings, from their side, and nothing of the organization's. */
-export function TutorFinance({ data }: { data: TutorDashboard }) {
+/**
+ * A tutor's own Finance tab: their earnings, from their side, and nothing of the organization's.
+ * `subjectId` is the tutor an admin is viewing as, so the month-by-month is read for them.
+ */
+export function TutorFinance({ data, subjectId }: { data: TutorDashboard; subjectId?: string }) {
   const brand = useBrand();
   const theme = useAppTheme();
   // Only shown to a tutor the organization actually pays in advance.
   const advance = data.earnings.topup_amount_cents == null ? null : data.earnings;
   const year = orgYear(useOrgTimeZone());
-  const monthly = useMonthlyFinance(year);
+  const monthly = useMonthlyFinance(year, subjectId);
 
   const cards = [
     <StatCard

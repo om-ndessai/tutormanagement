@@ -24,12 +24,12 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 
 | Web source | What | Mobile | Flow | Status |
 | --- | --- | --- | --- | --- |
-| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance tab tested (14); parent and student views tested (15); view-as todo |
+| `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance tab tested (14); parent and student views tested (15); role selector and view-as tested (16) |
 | `dashboard/sessions-carousel.tsx` | past 5, now, upcoming | `src/features/dashboard/sessions-carousel.tsx` | `dashboard/tutoring` | tested |
 | `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student`, `dashboard/reflection` | recent reflections tested (13); prompts tested (15) |
 | `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/{finance-views,tutor-payments,monthly-finance,money-icon,finance-format}` | `dashboard/finance-*` | tested |
 | `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/form-1099-html.ts`; list in `year-end-finance.tsx` | `year-end/*` | year-end list and SSN receipts tested (14); 1099 todo |
-| `dashboard/user-picker.tsx` | admin view-as | `src/features/dashboard/user-picker.tsx` | `dashboard/view-as` | todo |
+| `dashboard/user-picker.tsx` | admin view-as | `app/(org)/view-as.tsx`, `src/features/dashboard/{user-picker,view-as,view-as-banner,role-selector}` | `dashboard/view-as`, `dashboard/role-selector` | tested |
 | `teaching/sessions-page.tsx` | sessions list, tabs, filters, focus, CSV | `app/(org)/(tabs)/sessions/*` | `sessions/*` | todo |
 | `teaching/session-form-dialog.tsx` | record / edit / draft, autosave | `app/(org)/record-session.tsx`, `src/features/teaching/session-form/*` | `sessions/record`, `sessions/autosave` | todo |
 | `teaching/drafts-panel.tsx` | own drafts | `src/features/teaching/drafts-panel.tsx` | `sessions/drafts` | todo |

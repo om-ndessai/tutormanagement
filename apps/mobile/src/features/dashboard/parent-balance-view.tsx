@@ -7,6 +7,7 @@ import { Divider, Text } from 'react-native-paper';
 import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { StudentProgressCard } from '@/features/progress/progress-card';
+import { ROLE_ICONS } from '@/features/users/role-icon';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { formatMoneyValue } from './finance-format';
@@ -14,7 +15,6 @@ import { PaymentList } from './finance-views';
 import { walletMinusIcon } from './money-icon';
 import { ReflectionPrompts } from './reflections';
 import { SessionList } from './session-list';
-import { ROLE_ICONS } from './tutoring-views';
 
 /** One child's balance: emphasised only when there is something outstanding. */
 function ChildBalanceRow({ child }: { child: StudentBalance }) {

@@ -1,7 +1,7 @@
 # A student answers a reflection prompt (Sofia). The seed's lessons are older than the 21-day
 # prompt window, so a lesson yesterday is recorded for her first through the local Worker. She
 # answers two questions (one centred, which takes the primary colour) and a note, saves, and the
-# prompt leaves her dashboard. Changes data: reset the database afterwards (npm run e2e:mobile does).
+# prompt leaves her dashboard. The lesson is deleted at the end, so other flows see the seed.
 appId: ${APP_ID}
 tags:
   - feature
@@ -70,3 +70,11 @@ tags:
       id: reflect-${output.sessionId}
     timeout: 10000
 - takeScreenshot: reflection-saved
+# Remove the lesson this flow recorded, so the other flows see the seed.
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: DELETE
+      API_PATH: /sessions/${output.sessionId}
+      AS: priya.raghavan@gmail.com
+      ORG: chmi

@@ -32,6 +32,15 @@ export default function OrgLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="view-as"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.75, 1],
+          sheetGrabberVisible: true,
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

@@ -7,17 +7,10 @@ import { DashboardSection, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { ProgressSpotlight } from '@/features/progress/progress-spotlight';
+import { ROLE_ICONS } from '@/features/users/role-icon';
 import { space } from '@/theme/tokens';
 import { RecentReflections } from './reflections';
 import { SessionsCarousel } from './sessions-carousel';
-
-/** One glyph per role (the web's ROLE_ICONS), as Material Community names. */
-export const ROLE_ICONS = {
-  admin: 'shield-account-outline',
-  tutor: 'account-tie-outline',
-  student: 'school-outline',
-  parent: 'account-cog-outline',
-} as const;
 
 /** The admin's Tutoring tab: four sections, most important first. No money at all. */
 export function AdminTutoring({ data }: { data: AdminDashboard }) {

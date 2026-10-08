@@ -12,7 +12,7 @@ import {
   type TutorPaymentUrgency,
 } from '@tmi/shared';
 import type { ReactNode } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { EmptyNote, Panel } from '@/components/section';
@@ -21,6 +21,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
 import { radius, space } from '@/theme/tokens';
+import { viewAs } from './view-as';
 import { daysAway, formatLessonDay, formatPaidOn, orgToday } from './finance-format';
 
 export const URGENCY_LABELS: Record<TutorPaymentUrgency, string> = {
@@ -142,11 +143,14 @@ function TutorCard({
   const tint = urgencyColor(theme, tutor.urgency);
   const fromTopup = fromTopupText(tutor);
   return (
-    <View
+    // The tutor's own Finance tab, as they see it (the web's tutorLink).
+    <Pressable
       testID={`tutor-payment-${tutor.user_id}`}
-      accessible
-      accessibilityLabel={`${tutor.full_name}. ${URGENCY_LABELS[tutor.urgency]}.`}
-      style={{
+      accessibilityRole="link"
+      accessibilityLabel={`${tutor.full_name}. ${URGENCY_LABELS[tutor.urgency]}. View their Finance tab`}
+      onPress={() => viewAs(tutor.user_id, 'tutor', 'finance')}
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.8 : 1,
         borderWidth: 1,
         borderColor: theme.colors.outlineVariant,
         borderRadius: radius.md,
@@ -154,7 +158,7 @@ function TutorCard({
         paddingVertical: 10,
         backgroundColor: withAlpha(tint, ROW_ALPHA[tutor.urgency]),
         gap: space.sm,
-      }}
+      })}
     >
       <View
         style={{
@@ -202,7 +206,7 @@ function TutorCard({
           </Row>
         ) : null}
       </View>
-    </View>
+    </Pressable>
   );
 }
 

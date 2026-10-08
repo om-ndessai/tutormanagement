@@ -7,11 +7,11 @@ import { Divider, Icon, Text } from 'react-native-paper';
 import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { StudentProgressCard } from '@/features/progress/progress-card';
+import { ROLE_ICONS } from '@/features/users/role-icon';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { ReflectionPrompts } from './reflections';
 import { SessionList } from './session-list';
-import { ROLE_ICONS } from './tutoring-views';
 
 /** The year's ambition, on the brand colour, until a learning plan's goal replaces it. */
 function GoalBanner({ goal, course }: { goal: string; course: string | null }) {
