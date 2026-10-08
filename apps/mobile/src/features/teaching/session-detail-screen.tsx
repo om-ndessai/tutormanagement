@@ -4,20 +4,23 @@
 import { SESSION_MODE_LABELS, formatDuration, type TutoringSession } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
 import { ErrorState, LoadingState } from '@/components/state-views';
+import { useToast } from '@/components/toast';
+import { ApiRequestError } from '@/lib/api-client';
+import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { useSession } from './api';
+import { useDeleteSession, useSession } from './api';
 import { ReflectionView } from './reflection-chips';
 import { firstName, likelyReflectorRole, mayChangeReflection } from './reflection-logic';
 import { AUTO_STOPPED_NOTE, Tag } from './session-card';
 import { formatSessionDay, formatSessionTimes } from './session-format';
-import { SessionMoney } from './session-money';
+import { SessionMoney, describeSessionMoney } from './session-money';
 import { AssessmentsView, PartHeading, SessionNotesView, hasWrittenNotes } from './session-notes';
 import { organizationToday } from './session-ranges';
 
@@ -55,7 +58,40 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
   const theme = useAppTheme();
   const today = organizationToday(useOrgTimeZone());
   const muted = theme.tokens.mutedForeground;
+  const toast = useToast();
+  const remove = useDeleteSession();
   const canReflect = mayChangeReflection(session, user);
+  // What the API allows: the office, or the lesson's own tutor.
+  const canEdit = Boolean(user && (user.roles.includes('admin') || session.tutor_user_id === user.id));
+
+  function confirmDelete() {
+    haptics.warning();
+    Alert.alert(
+      'Delete this session?',
+      `The ${session.occurred_on} session with ${session.student_name}, and ${
+        showMoney ? describeSessionMoney(session) : 'its record'
+      }, will be removed. This cannot be undone.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            remove.mutate(session.id, {
+              onSuccess: () => {
+                toast.success('Session deleted.');
+                if (router.canGoBack()) router.back();
+              },
+              onError: (error) =>
+                toast.error(
+                  error instanceof ApiRequestError ? error.message : 'Could not delete the session.',
+                ),
+            });
+          },
+        },
+      ],
+    );
+  }
   const forStudent = user ? likelyReflectorRole(session, user) === 'student' : false;
 
   return (
@@ -125,6 +161,35 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
               ? 'Reflect'
               : `Add ${firstName(session.student_name)}’s reflection`}
         </Button>
+      ) : null}
+
+      {canEdit ? (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+          <Button
+            testID="session-edit"
+            mode="contained-tonal"
+            icon="pencil-outline"
+            onPress={() =>
+              router.push({
+                pathname: '/record-session',
+                params: { id: session.id, tab: showMoney ? 'finance' : 'tutoring' },
+              })
+            }
+          >
+            Edit session
+          </Button>
+          <Button
+            testID="session-delete"
+            mode="outlined"
+            icon="trash-can-outline"
+            textColor={theme.colors.error}
+            onPress={confirmDelete}
+            loading={remove.isPending}
+            disabled={remove.isPending}
+          >
+            Delete session
+          </Button>
+        </View>
       ) : null}
 
       {/* Comments on the lesson (#29) go here. */}

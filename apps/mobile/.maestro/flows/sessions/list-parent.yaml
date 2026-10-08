@@ -35,6 +35,12 @@ tags:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'
 - runFlow: ../../subflows/go-back.yaml
+# A back tap during the push transition can be lost: once more if still on the lesson.
+- runFlow:
+    when:
+      visible:
+        id: screen-session
+    file: ../../subflows/go-back.yaml
 - extendedWaitUntil:
     visible:
       id: tabs-finance

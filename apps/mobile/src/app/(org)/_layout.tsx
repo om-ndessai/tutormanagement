@@ -33,6 +33,15 @@ export default function OrgLayout() {
         }}
       />
       <Stack.Screen
+        name="record-session"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.9, 1],
+          sheetGrabberVisible: true,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="view-as"
         options={{
           presentation: 'formSheet',

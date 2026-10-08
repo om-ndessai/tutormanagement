@@ -1,0 +1,179 @@
+# A tutor records a lesson from the Tutoring tab (Alex, tutor in chmi): the sheet shows the length
+# and never a figure. Recording with no student says so under the field. He records a lesson with
+# Ben (an hour and a half, notes, homework done, a goal rating and his own assessment); it is in
+# the list; he edits its notes, then deletes it, which also puts the data back for other flows.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- assertVisible:
+    id: sessions-record-button
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing
+    timeout: 15000
+- assertVisible: 'Record a session'
+- assertVisible:
+    id: record-preview
+- assertNotVisible:
+    id: record-money
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: record-tutoring-sheet
+# No student chosen: the sheet says so.
+- scrollUntilVisible:
+    element:
+      id: record-submit
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: record-submit
+- extendedWaitUntil:
+    visible:
+      id: record-error
+      text: 'Choose which student this session was with.'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    direction: UP
+    timeout: 30000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- assertVisible: '.*Ben Whitfield.*'
+- assertNotVisible:
+    id: record-pairing-a0000000-0000-4000-8000-000000000001
+- tapOn:
+    id: record-length-90
+- assertVisible: '1 hr 30 min'
+- assertNotVisible:
+    id: record-money
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: record-homework-done
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: record-homework-done
+- scrollUntilVisible:
+    element:
+      id: record-notes
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: record-notes
+- inputText: 'Recorded from the phone: long division'
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: record-goal-3
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: record-goal-3
+- scrollUntilVisible:
+    element:
+      id: record-assessment-4
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: record-assessment-4
+- assertVisible: 'Went well'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: record-filled
+- scrollUntilVisible:
+    element:
+      id: record-submit
+    direction: DOWN
+- tapOn:
+    id: record-submit
+- extendedWaitUntil:
+    visible: 'Session recorded.'
+    timeout: 15000
+# It leads the list (today is the newest day), with its notes.
+- extendedWaitUntil:
+    visible: 'Recorded from the phone: long division'
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: record-in-list
+- tapOn: 'Recorded from the phone: long division'
+- extendedWaitUntil:
+    visible:
+      id: session-edit
+    timeout: 15000
+- assertVisible: 'Homework: done'
+# Edit: the sheet starts from the lesson; the homework set is added.
+- tapOn:
+    id: session-edit
+- extendedWaitUntil:
+    visible: 'Edit session'
+    timeout: 15000
+- assertNotVisible:
+    id: record-pairing
+- assertNotVisible: '.*\$[0-9].*'
+# A part left empty when it was recorded (typing into an empty field: the cursor is at its end).
+- scrollUntilVisible:
+    element:
+      id: record-homework-set
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: record-homework-set
+- inputText: 'Edited from the phone: five problems'
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: record-submit
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Save changes'
+- tapOn:
+    id: record-submit
+- extendedWaitUntil:
+    visible: 'Session updated.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'Edited from the phone: five problems'
+    timeout: 15000
+- takeScreenshot: record-edited
+# Delete, from the detail, with a confirmation.
+- scrollUntilVisible:
+    element:
+      id: session-delete
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: session-delete
+- extendedWaitUntil:
+    visible: 'Delete this session?'
+    timeout: 10000
+- assertVisible: '.*will be removed\. This cannot be undone\.'
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Session deleted.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
+- assertNotVisible: 'Recorded from the phone.*'

@@ -7,10 +7,10 @@
 // amounts on the lessons, no export, none in the screens it opens.
 import { formatDuration, type TutoringSession } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, IconButton, Text } from 'react-native-paper';
 
 import { FocusNotice } from '@/components/focus-notice';
 import { Skeleton } from '@/components/skeleton';
@@ -24,6 +24,7 @@ import { haptics } from '@/lib/haptics';
 import { toQueryString } from '@/lib/query-string';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
+import { AccountButton } from '@/features/shell/account-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useSession } from './api';
@@ -80,6 +81,10 @@ export function SessionsScreen() {
     [tab],
   );
 
+  // Recording is for tutors and the office. The sheet shows money only when opened from Finance.
+  const mayRecord = isTutor || isAdmin;
+  const openRecord = () => router.push({ pathname: '/record-session', params: { tab } });
+
   async function onRefresh() {
     setRefreshing(true);
     try {
@@ -113,9 +118,39 @@ export function SessionsScreen() {
 
   const header = (
     <View style={{ gap: space.lg, paddingBottom: space.md }}>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              {mayRecord ? (
+                <IconButton
+                  testID="sessions-record"
+                  icon="plus"
+                  size={24}
+                  accessibilityLabel="Record a session"
+                  style={{ margin: 0 }}
+                  onPress={openRecord}
+                />
+              ) : null}
+              <AccountButton />
+            </View>
+          ),
+        }}
+      />
       <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
         {description}
       </Text>
+      {mayRecord ? (
+        <Button
+          testID="sessions-record-button"
+          mode="contained"
+          icon="plus"
+          onPress={openRecord}
+          style={{ alignSelf: 'flex-start' }}
+        >
+          Record a session
+        </Button>
+      ) : null}
       <TutoringFinanceSwitch />
       {/* The running totals lead. Only Finance adds the money tiles. */}
       <StatGrid>

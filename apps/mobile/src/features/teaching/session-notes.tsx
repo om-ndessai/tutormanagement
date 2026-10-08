@@ -1,20 +1,27 @@
-// Ported from apps/web/src/features/teaching/session-notes.tsx @ 1132322 (the view parts: Part,
-// SessionNotesView, HomeworkStatusBadge, AssessmentChips, AssessmentsView, hasWrittenNotes).
+// Ported from apps/web/src/features/teaching/session-notes.tsx @ 1132322: the view parts (Part,
+// SessionNotesView, HomeworkStatusBadge, AssessmentChips, AssessmentsView, hasWrittenNotes) and the
+// form parts (NoteField, HomeworkStatusPicker, AssessmentFields, likelyAssessorRole).
 // Nothing in this file shows money: all of it is read on the Tutoring tab, beside the student.
 import {
+  HOMEWORK_STATUSES,
   HOMEWORK_STATUS_LABELS,
+  SESSION_ASSESSMENT_PROMPTS,
   SESSION_ASSESSOR_LABELS,
   SESSION_RATING_LABELS,
   SESSION_WRITE_UP_PARTS,
   type HomeworkStatus,
+  type Rating,
   type SessionAssessment,
+  type SessionAssessorRole,
   type TutoringSession,
+  type User,
 } from '@tmi/shared';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
-import { Divider, Icon, Text } from 'react-native-paper';
+import { Chip, Divider, HelperText, Icon, Text, TextInput } from 'react-native-paper';
 
-import { RatingChip } from '@/features/progress/rating';
+import { RatingChip, RatingPicker } from '@/features/progress/rating';
+import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
@@ -185,6 +192,160 @@ export function AssessmentsView({ assessments }: { assessments: SessionAssessmen
           </View>
         </View>
       ))}
+    </View>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// The form parts: the write-up as it is typed, and the reader's own assessment.
+// ---------------------------------------------------------------------------
+
+/** A labelled free-text part of the write-up, with its error under it. */
+export function NoteField({
+  testID,
+  label,
+  value,
+  onChange,
+  placeholder,
+  error,
+  long = false,
+}: {
+  testID?: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  error?: string;
+  /** The main notes: taller, and Return makes a new line instead of closing the keyboard. */
+  long?: boolean;
+}) {
+  return (
+    <View>
+      <TextInput
+        testID={testID}
+        mode="outlined"
+        label={label}
+        value={value}
+        onChangeText={onChange}
+        placeholder={placeholder}
+        multiline
+        error={Boolean(error)}
+        style={{ minHeight: long ? 120 : 64 }}
+        {...(long ? {} : { returnKeyType: 'done' as const, submitBehavior: 'blurAndSubmit' as const })}
+      />
+      {error ? (
+        <HelperText type="error" padding="none">
+          {error}
+        </HelperText>
+      ) : null}
+    </View>
+  );
+}
+
+/** Four choices in a row; pressing the chosen one again clears it. */
+export function HomeworkStatusPicker({
+  value,
+  onChange,
+  testID = 'homework',
+}: {
+  value: HomeworkStatus | null;
+  onChange: (value: HomeworkStatus | null) => void;
+  /** Each choice is `<testID>-<status>`. */
+  testID?: string;
+}) {
+  return (
+    <View
+      accessibilityRole="radiogroup"
+      accessibilityLabel="How the homework went"
+      style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
+    >
+      {HOMEWORK_STATUSES.map((status) => {
+        const selected = value === status;
+        return (
+          <Chip
+            key={status}
+            testID={`${testID}-${status}`}
+            icon={HOMEWORK_ICONS[status]}
+            selected={selected}
+            showSelectedCheck={false}
+            mode={selected ? 'flat' : 'outlined'}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: selected }}
+            onPress={() => {
+              haptics.selection();
+              onChange(selected ? null : status);
+            }}
+          >
+            {HOMEWORK_STATUS_LABELS[status]}
+          </Chip>
+        );
+      })}
+    </View>
+  );
+}
+
+/**
+ * The capacity the reader would assess in, for wording the question. The API decides the real
+ * one; this mirrors it from what the row already says -- `money_view` is 'family' exactly when it
+ * is the reader's own or their child's lesson.
+ */
+export function likelyAssessorRole(
+  session: Pick<TutoringSession, 'tutor_user_id' | 'student_user_id' | 'money_view'>,
+  user: Pick<User, 'id' | 'roles'>,
+): SessionAssessorRole {
+  if (session.tutor_user_id === user.id) return 'tutor';
+  if (session.student_user_id === user.id) return 'student';
+  if (session.money_view === 'family') return 'parent';
+  return user.roles.includes('admin') ? 'admin' : 'parent';
+}
+
+/** The rating and a few words: the reader's own assessment fields. */
+export function AssessmentFields({
+  testID = 'assessment',
+  role,
+  rating,
+  onRating,
+  body,
+  onBody,
+  errors,
+}: {
+  testID?: string;
+  role: SessionAssessorRole;
+  rating: Rating | null;
+  onRating: (value: Rating | null) => void;
+  body: string;
+  onBody: (value: string) => void;
+  errors: { rating?: string; body?: string };
+}) {
+  const theme = useAppTheme();
+  return (
+    <View style={{ gap: space.sm }}>
+      <Text variant="bodyMedium">{SESSION_ASSESSMENT_PROMPTS[role]}</Text>
+      <RatingPicker
+        testID={testID}
+        name={SESSION_ASSESSMENT_PROMPTS[role]}
+        value={rating}
+        onChange={onRating}
+        labels={SESSION_RATING_LABELS}
+      />
+      {rating ? (
+        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+          {SESSION_RATING_LABELS[rating]}
+        </Text>
+      ) : null}
+      {errors.rating ? (
+        <HelperText type="error" padding="none">
+          {errors.rating}
+        </HelperText>
+      ) : null}
+      <NoteField
+        testID={`${testID}-body`}
+        label="In a few words"
+        value={body}
+        onChange={onBody}
+        placeholder="Optional"
+        error={errors.body}
+      />
     </View>
   );
 }

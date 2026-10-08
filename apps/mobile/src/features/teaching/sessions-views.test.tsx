@@ -8,6 +8,7 @@ import { SessionsScreen } from './sessions-screen';
 const mockParams = jest.fn();
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), setParams: jest.fn() },
+  Stack: { Screen: () => null },
   useLocalSearchParams: () => mockParams(),
 }));
 jest.mock('react-native-reanimated', () => ({
@@ -77,6 +78,8 @@ describe('sessions list', () => {
     expect(screen.queryByTestId('session-money')).toBeNull();
     expect(screen.queryByTestId('sessions-export')).toBeNull();
     expect(screen.queryByText(/\$/)).toBeNull();
+    // Recording is offered to the office and tutors.
+    expect(screen.getByTestId('sessions-record-button')).toBeTruthy();
   });
 
   it("labels the office's Finance: Charged, paid to tutors, the cut", async () => {
@@ -112,5 +115,7 @@ describe('sessions list', () => {
     expect(screen.queryByTestId('stat-earned')).toBeNull();
     expect(screen.getByText('You pay')).toBeTruthy();
     expect(screen.queryByText('Your pay')).toBeNull();
+    // A parent records nothing.
+    expect(screen.queryByTestId('sessions-record-button')).toBeNull();
   });
 });

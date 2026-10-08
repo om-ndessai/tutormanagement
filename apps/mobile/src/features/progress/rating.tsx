@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/progress/rating.tsx @ 1132322 (the pieces the dashboard and
-// the reflection sheet use)
+// the reflection sheet and the session form use)
 import { PROGRESS_STATUS_LABELS, TOPIC_RATING_LABELS, type ProgressStatus, type Rating } from '@tmi/shared';
-import { Pressable, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
 import { haptics } from '@/lib/haptics';
@@ -237,5 +237,33 @@ export function RatingPicker({
         );
       })}
     </View>
+  );
+}
+
+/** A topic as its code and name: "BA3.10 Long division", with the unit when it has one. */
+export function TopicName({
+  id,
+  name,
+  unit,
+}: {
+  id: string;
+  name: string | undefined;
+  unit?: string | null;
+}) {
+  const theme = useAppTheme();
+  return (
+    <Text variant="bodyMedium" style={{ flexShrink: 1 }}>
+      <Text
+        style={{
+          fontSize: 11,
+          fontFamily: Platform.select({ ios: 'Menlo', default: 'monospace' }),
+          color: theme.tokens.mutedForeground,
+        }}
+      >
+        {id}{' '}
+      </Text>
+      {name ?? 'Unknown topic'}
+      {unit ? <Text style={{ fontSize: 12, color: theme.tokens.mutedForeground }}> ({unit})</Text> : null}
+    </Text>
   );
 }
