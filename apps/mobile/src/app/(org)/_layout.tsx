@@ -143,6 +143,15 @@ export default function OrgLayout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="form-1099"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.9, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
       </Stack>
     </LiveSessionHost>
   );

@@ -1,10 +1,11 @@
-// Ported from apps/web/src/features/dashboard/year-end-panel.tsx @ 1132322 -- the list only. The
-// 1099-NEC is printed on the device in feature 28, so there is no print button here yet. Named
+// Ported from apps/web/src/features/dashboard/year-end-panel.tsx @ 1132322. Each row opens that
+// tutor's 1099-NEC sheet (`(org)/form-1099`), which builds and prints the form on the device. Named
 // *finance* so the money-file rule lets it format amounts.
 import { formatCents, isMailingAddressComplete } from '@tmi/shared';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Divider, SegmentedButtons, Text } from 'react-native-paper';
+import { Button, Divider, SegmentedButtons, Text } from 'react-native-paper';
 
 import { EmptyNote, Panel } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
@@ -91,15 +92,33 @@ export function YearEndFinance() {
                       {!isMailingAddressComplete(tutor.address) ? ' · No full address' : ''}
                     </Text>
                   </View>
-                  {!tutor.ssn_received_on ? (
-                    <SsnReceiptButton
-                      testID={`year-end-ssn-${tutor.user_id}`}
-                      userId={tutor.user_id}
-                      fullName={tutor.full_name}
-                      received={false}
-                      mode="text"
-                    />
-                  ) : null}
+                  <View style={{ alignItems: 'flex-end', gap: 2 }}>
+                    {/* Offered whether or not the office has ticked the SSN off: the number is
+                        typed when the form is printed. */}
+                    <Button
+                      testID={`year-end-1099-${tutor.user_id}`}
+                      mode="outlined"
+                      compact
+                      accessibilityLabel={`${year} 1099-NEC for ${tutor.full_name}`}
+                      onPress={() =>
+                        router.push({
+                          pathname: '/form-1099',
+                          params: { tutor: tutor.user_id, year: String(year) },
+                        })
+                      }
+                    >
+                      1099-NEC
+                    </Button>
+                    {!tutor.ssn_received_on ? (
+                      <SsnReceiptButton
+                        testID={`year-end-ssn-${tutor.user_id}`}
+                        userId={tutor.user_id}
+                        fullName={tutor.full_name}
+                        received={false}
+                        mode="text"
+                      />
+                    ) : null}
+                  </View>
                 </View>
               </View>
             ))}

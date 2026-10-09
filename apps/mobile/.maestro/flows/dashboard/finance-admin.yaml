@@ -53,12 +53,11 @@ tags:
     timeout: 30000
 - assertVisible: '.* month by month'
 - takeScreenshot: finance-admin-monthly
+# The panel is taller than the screen since every row has its 1099-NEC button (28): find its title.
 - scrollUntilVisible:
-    element:
-      id: year-end
+    element: 'Year-end documents'
     direction: DOWN
-    visibilityPercentage: 30
-- assertVisible: 'Year-end documents'
+    timeout: 30000
 - scrollUntilVisible:
     element:
       text: 'SSN not on file · .*'

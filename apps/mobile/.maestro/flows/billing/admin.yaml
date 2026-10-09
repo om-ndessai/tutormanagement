@@ -91,7 +91,9 @@ tags:
     id: payment-party-00000000-0000-4000-8000-000000000007
 # Her only child is chosen for her.
 - extendedWaitUntil:
-    visible: 'Sanjay Patel'
+    visible:
+      id: payment-student
+      text: 'For which student: Sanjay Patel.*'
     timeout: 10000
 - tapOn:
     id: payment-amount
