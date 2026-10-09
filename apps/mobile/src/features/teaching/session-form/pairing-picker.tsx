@@ -3,7 +3,7 @@
 // there are more pairings than fit at a glance (an admin sees every pairing in the organization).
 import type { Assignment } from '@tmi/shared';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Keyboard, Pressable, View } from 'react-native';
 import { Divider, HelperText, Icon, Searchbar, Text } from 'react-native-paper';
 
 import { haptics } from '@/lib/haptics';
@@ -19,6 +19,7 @@ export function PairingPicker({
   onChange,
   showTutor,
   error,
+  testID = 'record-pairing',
 }: {
   assignments: Assignment[];
   value: string;
@@ -26,6 +27,8 @@ export function PairingPicker({
   /** An admin picks among every tutor's pairings, so each names its tutor. */
   showTutor: boolean;
   error?: string;
+  /** The field's testID; each option is `<testID>-<assignment id>`. */
+  testID?: string;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -43,7 +46,7 @@ export function PairingPicker({
   return (
     <View style={{ gap: space.sm }}>
       <Pressable
-        testID="record-pairing"
+        testID={testID}
         accessibilityRole="button"
         accessibilityLabel={chosen ? `Student: ${chosen.student_name}. Change` : 'Choose a student'}
         onPress={() => setOpen((was) => !was)}
@@ -89,7 +92,7 @@ export function PairingPicker({
           ) : null}
           {assignments.length >= SEARCH_FROM ? (
             <Searchbar
-              testID="record-pairing-search"
+              testID={`${testID}-search`}
               placeholder="Search students or tutors"
               value={search}
               onChangeText={setSearch}
@@ -107,11 +110,13 @@ export function PairingPicker({
                 <View key={option.id}>
                   {index > 0 ? <Divider /> : null}
                   <Pressable
-                    testID={`record-pairing-${option.id}`}
+                    testID={`${testID}-${option.id}`}
                     accessibilityRole="radio"
                     accessibilityState={{ checked: selected }}
                     onPress={() => {
                       haptics.selection();
+                      // The search field goes with the list; on Android its keyboard would stay.
+                      Keyboard.dismiss();
                       onChange(option.id);
                       setOpen(false);
                       setSearch('');

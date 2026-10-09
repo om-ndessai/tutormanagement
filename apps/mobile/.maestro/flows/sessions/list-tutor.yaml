@@ -78,7 +78,11 @@ tags:
     id: stat-charged
 - assertVisible:
     id: sessions-export
-- assertVisible: 'Your pay'
+# The first card's money line can sit under the floating tab bar.
+- scrollUntilVisible:
+    element: 'Your pay'
+    direction: DOWN
+    timeout: 15000
 - assertNotVisible: 'You pay'
 - takeScreenshot: sessions-tutor-finance
 # The detail from Finance shows his pay.

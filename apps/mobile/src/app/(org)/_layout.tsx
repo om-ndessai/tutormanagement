@@ -81,6 +81,24 @@ export default function OrgLayout() {
           }}
         />
         <Stack.Screen
+          name="schedule-form"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.9, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="cancel-lesson"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.75, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="stop-lesson"
           options={{
             presentation: 'formSheet',

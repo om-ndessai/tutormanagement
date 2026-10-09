@@ -26,6 +26,7 @@ import { haptics } from '@/lib/haptics';
 import { toQueryString } from '@/lib/query-string';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
+import { CancelledLessonsPanel } from '@/features/schedules/cancelled-lessons-panel';
 import { AccountButton } from '@/features/shell/account-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -208,9 +209,9 @@ export function SessionsScreen() {
         onClear={clearFocus}
       />
 
-      {/* TODO(#23): the cancelled lessons panel (Phase 24) belongs here, Tutoring only and not
-          while one session is in focus: why a week has no entry below. It lands with the
-          Schedule tab, which ports the cancellations API and the restore dialog. */}
+      {/* Lessons called off from the schedule (Phase 24): why a week has no entry below.
+          Tutoring only, and not while one session is in focus. */}
+      {!money && !focusId ? <CancelledLessonsPanel /> : null}
 
       {focusId ? null : (
         <SessionFilters

@@ -24,7 +24,10 @@ tags:
       id: pairings-add-button
     timeout: 20000
 - assertVisible: 'Which tutor teaches which student, and what the tutor is paid for it.'
-- assertVisible: 'Tutor pay, in person:'
+# The button renders before the list arrives.
+- extendedWaitUntil:
+    visible: 'Tutor pay, in person:'
+    timeout: 20000
 - tapOn:
     id: pairings-add-button
 - extendedWaitUntil:

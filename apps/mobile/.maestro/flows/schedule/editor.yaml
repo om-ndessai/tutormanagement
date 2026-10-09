@@ -1,0 +1,73 @@
+# The office schedules a standing lesson and removes it. Priya picks the pairing of Sanjay with
+# herself, Mondays, the default time and length, saves; the week strip's Monday finds it; she
+# removes it. Changes data: reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: schedule-add-button
+    timeout: 20000
+- tapOn:
+    id: schedule-add-button
+- extendedWaitUntil:
+    visible:
+      id: schedule-pairing-search
+    timeout: 15000
+- tapOn:
+    id: schedule-pairing-search
+- inputText: 'Sanjay'
+# Wait for the list to narrow before tapping, or the tap lands where a row used to be.
+- extendedWaitUntil:
+    notVisible: 'Showing 8 of .*'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: schedule-pairing-a0000000-0000-4000-8000-000000000004
+    timeout: 10000
+- tapOn:
+    id: schedule-pairing-a0000000-0000-4000-8000-000000000004
+- assertVisible: 'Student: Sanjay Patel\. Change'
+- tapOn:
+    id: schedule-form-day-1
+- takeScreenshot: schedule-editor-form
+- scrollUntilVisible:
+    element:
+      id: schedule-form-save
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: schedule-form-save
+- extendedWaitUntil:
+    visible: 'Session scheduled\.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: schedule-day-1
+    timeout: 10000
+- tapOn:
+    id: schedule-day-1
+- extendedWaitUntil:
+    visible: "Remove Sanjay Patel's Mondays 4:00.*"
+    timeout: 10000
+- takeScreenshot: schedule-editor-created
+- tapOn: "Remove Sanjay Patel's Mondays 4:00.*"
+- extendedWaitUntil:
+    visible: 'Remove this recurring session\?'
+    timeout: 10000
+- tapOn: 'Remove'
+- extendedWaitUntil:
+    visible: 'Schedule removed\.'
+    timeout: 15000
+- assertNotVisible: "Remove Sanjay Patel's Mondays 4:00.*"

@@ -1,10 +1,6 @@
-import { EmptyState } from '@/components/state-views';
-import { Screen } from '@/components/screen';
+import { SchedulesScreen } from '@/features/schedules/schedules-screen';
 
-export default function ScheduleScreen() {
-  return (
-    <Screen testID="screen-schedule">
-      <EmptyState icon="calendar-month-outline" title="Schedule" body="Coming next on this branch." />
-    </Screen>
-  );
+/** Standing weekly lessons (`?focus=<schedule>&on=<date>` singles one out). */
+export default function ScheduleRoute() {
+  return <SchedulesScreen />;
 }

@@ -2,7 +2,7 @@
 // options below it. A search field appears once there are more options than fit at a glance. The
 // record sheet's PairingPicker is the same shape, specialised to pairings.
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Keyboard, Pressable, View } from 'react-native';
 import { Divider, HelperText, Icon, Searchbar, Text } from 'react-native-paper';
 
 import { haptics } from '@/lib/haptics';
@@ -129,6 +129,8 @@ export function OptionPicker({
                       accessibilityState={{ checked: selected }}
                       onPress={() => {
                         haptics.selection();
+                        // The search field goes with the list; on Android its keyboard would stay.
+                        Keyboard.dismiss();
                         onChange(option.id);
                         setOpen(false);
                         setSearch('');
