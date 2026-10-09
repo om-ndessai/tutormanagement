@@ -1,0 +1,49 @@
+# A parent's Billing (Anita, parent of Sanjay): her family's balance and the payments made for
+# Sanjay, from her side ("Paid by you"), and the CSV. Never the office's totals, a tutor's pay, the
+# tax summary or anything to record, correct or delete.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-family-00000000-0000-4000-8000-000000000006
+    timeout: 20000
+- assertVisible: "Your family's balance"
+- assertVisible: 'Sanjay Patel'
+- assertVisible:
+    id: billing-export
+- assertNotVisible:
+    id: billing-record
+- assertNotVisible:
+    id: billing-add
+- assertNotVisible:
+    id: billing-tax-summary
+- assertNotVisible:
+    id: stat-owed-to-tutors
+- assertNotVisible: 'Owed by families'
+- assertNotVisible: 'Top-ups due'
+- assertNotVisible: 'Tutors'
+- assertNotVisible: 'Your pay'
+- scrollUntilVisible:
+    element: '.*Paid by you · for Sanjay Patel.*'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible: '.*Paid out.*'
+- assertNotVisible: '.*Paid to you.*'
+- assertNotVisible: 'Delete the payment.*'
+- assertNotVisible: 'Edit the payment.*'
+- takeScreenshot: billing-parent

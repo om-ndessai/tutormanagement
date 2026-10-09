@@ -134,6 +134,15 @@ export default function OrgLayout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="payment-form"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.9, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
       </Stack>
     </LiveSessionHost>
   );

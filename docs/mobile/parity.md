@@ -41,7 +41,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `schedules/*` | weekly schedules, dates, cancel / restore, calendar files, cancelled panel | `app/(org)/(tabs)/schedule/*`, `src/features/schedules/*` | `schedule/*` | tested |
 | `progress/*` | list, student page, chart, spotlight, card, assessment / plan dialogs, ratings | `app/(org)/(tabs)/progress/*`, `src/features/progress/*` | `progress/*` | tested (#24: list, student page, full chart with tap/scrub, assessment and plan sheets, topic pickers; compact chart, spotlight, card, RatingPicker in #13/#15) |
 | `users/*` | directory, table / cards, detail, form (all sections), availability, guardians, payment handles, badges, SSN receipt | `app/(org)/people/*`, `app/(org)/person-form.tsx`, `src/features/users/*` | `people/*` | tested (14, 25, 26) |
-| `payments/*` | billing, balances, log, payment dialog, CSV | `app/(org)/billing.tsx`, `app/(org)/payment-form.tsx` | `billing/*` | todo |
+| `payments/*` | billing, balances, log, payment dialog (record and correct), CSV, tax summary | `app/(org)/billing.tsx`, `app/(org)/payment-form.tsx`, `src/features/payments/*` | `billing/*` | tested (27) |
 | `comments/*` | threads, counts, feed, delete own | `app/(org)/comments.tsx`, `src/features/comments/*` | `comments/*` | todo |
 | `audit/*` | activity feed and page | `app/(org)/activity.tsx`, `src/features/audit/*` | `activity/*` | todo |
 | `organizations/organization-settings-page.tsx`, `notifications-switch.tsx` | TIN, payer address, notifications and log | `app/(org)/organization.tsx` | `organization/*` | todo |

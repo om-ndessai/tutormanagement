@@ -1,0 +1,50 @@
+# A tutor's Billing (Alex): his own pay -- earned, paid, the advance he holds against his top-up
+# level -- and the payments made to him ("Paid to you"), and the CSV. Never a family's balance, the
+# office's totals, the tax summary or anything to record, correct or delete.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-tutor-00000000-0000-4000-8000-000000000003
+    timeout: 20000
+- assertVisible: 'Your pay'
+- assertVisible: '.*holds \$[0-9.,]+ of \$[0-9.,]+.*'
+- assertVisible:
+    id: billing-export
+- assertNotVisible:
+    id: billing-record
+- assertNotVisible:
+    id: billing-add
+- assertNotVisible:
+    id: billing-tax-summary
+- assertNotVisible:
+    id: stat-owed-to-tutors
+- assertNotVisible: 'Owed by families'
+- assertNotVisible: 'Top-ups due'
+- assertNotVisible: 'Families'
+- assertNotVisible: "Your family's balance"
+- assertNotVisible: 'Tutors'
+- scrollUntilVisible:
+    element: '.*Paid to you.*'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible: '.*Received.*'
+- assertNotVisible: '.*Paid by.*'
+- assertNotVisible: 'Delete the payment.*'
+- assertNotVisible: 'Edit the payment.*'
+- takeScreenshot: billing-tutor

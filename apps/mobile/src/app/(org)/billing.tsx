@@ -1,13 +1,6 @@
-import { Stack } from 'expo-router';
+import { BillingScreen } from '@/features/payments/billing-screen';
 
-import { EmptyState } from '@/components/state-views';
-import { Screen } from '@/components/screen';
-
-export default function BillingScreen() {
-  return (
-    <Screen testID="screen-billing">
-      <Stack.Screen options={{ title: 'Billing' }} />
-      <EmptyState icon="wallet-outline" title="Billing" body="Coming next on this branch." />
-    </Screen>
-  );
+/** Balances, the payment log and the CSV exports; the office also records payments here. */
+export default function BillingRoute() {
+  return <BillingScreen />;
 }

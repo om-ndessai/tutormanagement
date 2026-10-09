@@ -36,7 +36,7 @@ the `[~]` item, then carry on down the list.
 - [x] 24. Mobile: Progress — list, chart, assessments, plans
 - [x] 25. Mobile: People — directory, detail, delete/restore, profile (the person's comment thread lands with #29) (60621e2)
 - [x] 26. Mobile: People — person form
-- [ ] 27. Mobile: Billing — balances, payments, CSV and tax summary
+- [x] 27. Mobile: Billing — balances, payments, CSV and tax summary
 - [ ] 28. Mobile: Year-end — 1099 printed on device, SSN receipts
 - [ ] 29. Mobile: Comments — feed and threads
 - [ ] 30. Mobile: Activity — audit log

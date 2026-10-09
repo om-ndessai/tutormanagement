@@ -12,14 +12,13 @@ import {
   type StudentBalance,
   type TutorDashboard,
 } from '@tmi/shared';
-import { usePreventScreenCapture } from 'expo-screen-capture';
-import { Platform, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
 import { EmptyNote, Panel } from '@/components/section';
+import { SecureMoney } from '@/components/secure-money';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { SsnReceiptButton } from '@/features/users/ssn-receipt-button';
-import { APP_VARIANT } from '@/lib/variant';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -31,16 +30,6 @@ import { walletMinusIcon, walletPlusIcon } from './money-icon';
 import { MonthlyFinance } from './monthly-finance';
 import { TutorPayments } from './tutor-payments';
 import { YearEndFinance } from './year-end-finance';
-
-/**
- * Android's FLAG_SECURE while money is on screen: blank in recents, no screenshots. Production
- * only -- the development and e2e builds must stay screenshottable for the flows.
- */
-function SecureWhileMounted() {
-  usePreventScreenCapture('finance');
-  return null;
-}
-const SECURE_FINANCE = Platform.OS === 'android' && APP_VARIANT === 'production';
 
 // ---------------------------------------------------------------------------
 // Shared pieces
@@ -177,7 +166,7 @@ export function AdminFinance({ data }: { data: AdminDashboard }) {
 
   return (
     <View testID="dashboard-finance-admin" style={{ gap: space.lg }}>
-      {SECURE_FINANCE ? <SecureWhileMounted /> : null}
+      <SecureMoney />
       <StatGrid>
         {[
           <StatCard
@@ -325,7 +314,7 @@ export function TutorFinance({ data, subjectId }: { data: TutorDashboard; subjec
 
   return (
     <View testID="dashboard-finance-tutor" style={{ gap: space.lg }}>
-      {SECURE_FINANCE ? <SecureWhileMounted /> : null}
+      <SecureMoney />
       {/* The tax notice leads, because it is the one thing here the tutor has to act on. */}
       {!data.ssn_received_on ? (
         <Panel testID="tutor-ssn-notice" title="Action needed: your SSN">
