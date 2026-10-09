@@ -26,8 +26,13 @@ tags:
 - assertVisible:
     id: stat-time-taught
 - assertVisible: 'Sofia Okafor with Alex Chen'
-- assertVisible:
-    id: session-preview-50000000-0000-4000-8000-000000000002
+# Scrolled to, not assumed on screen: a flow that ran before this one may have left a newer lesson.
+- scrollUntilVisible:
+    element:
+      id: session-preview-50000000-0000-4000-8000-000000000002
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
 # No money anywhere on Tutoring.
 - assertNotVisible:
     id: session-money

@@ -95,3 +95,6 @@ tags:
 - assertVisible: 'Commented on the 2026-09-15 session with Sofia Okafor'
 - assertNotVisible: "Confirmed .* has Maria Okafor's SSN on file"
 - takeScreenshot: activity-admin-person
+# Put back what the setup made, so the flows after this one see the seed.
+- runScript:
+    file: ../../scripts/unseed-activity.js

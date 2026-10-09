@@ -77,3 +77,12 @@ tags:
     timeout: 10000
 - takeScreenshot: organization-ssn-refused
 - assertNotVisible: 'Organization settings saved.'
+# Put the payer address back, so the other flows (the 1099 sheet) see the seed.
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: PATCH
+      API_PATH: /organization/settings
+      AS: priya.raghavan@gmail.com
+      ORG: chmi
+      BODY: '{"payer_address_line1":"100 Franklin Street"}'

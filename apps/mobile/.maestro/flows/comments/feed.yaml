@@ -71,4 +71,5 @@ tags:
     element:
       id: session-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000

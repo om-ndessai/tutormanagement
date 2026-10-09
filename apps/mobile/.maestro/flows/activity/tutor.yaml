@@ -45,3 +45,6 @@ tags:
 - extendedWaitUntil:
     notVisible: 'Filter activity'
     timeout: 10000
+# Put back what the setup made, so the flows after this one see the seed.
+- runScript:
+    file: ../../scripts/unseed-activity.js

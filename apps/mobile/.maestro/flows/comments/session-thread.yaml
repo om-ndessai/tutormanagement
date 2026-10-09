@@ -31,6 +31,7 @@ env:
     element:
       id: session-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - assertVisible: '2 comments'
 - tapOn:
@@ -82,6 +83,7 @@ env:
     element:
       id: session-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - assertVisible: '3 comments'
 - tapOn:
@@ -138,6 +140,7 @@ env:
     element:
       id: session-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - tapOn:
     id: session-comments

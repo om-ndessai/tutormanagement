@@ -31,6 +31,7 @@ env:
     element:
       id: person-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - assertVisible: 'No comments yet'
 - tapOn:
@@ -86,6 +87,7 @@ env:
     element:
       id: person-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - assertVisible: '1 comment'
 - tapOn:
@@ -117,6 +119,7 @@ env:
     element:
       id: person-comments
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - assertVisible: 'No comments yet'
 - tapOn:
@@ -126,3 +129,19 @@ env:
     timeout: 15000
 - assertNotVisible: ${NOTE}
 - takeScreenshot: comments-person-alex
+# Withdraw Priya's note, so the flows after this one see the seed.
+- runScript:
+    file: ../../scripts/find-comment.js
+    env:
+      AS: priya.raghavan@gmail.com
+      ORG: chmi
+      TARGET_TYPE: user
+      TARGET_ID: ${SOFIA}
+      BODY_TEXT: ${NOTE}
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: DELETE
+      API_PATH: /comments/${output.commentId}
+      AS: priya.raghavan@gmail.com
+      ORG: chmi
