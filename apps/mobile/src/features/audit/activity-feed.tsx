@@ -91,53 +91,60 @@ export function ActivityFeed({
 
   return (
     <View>
-      {events.map((event, index) => {
-        const tone = actionTone(theme, event.action);
-        const last = index === events.length - 1;
-        return (
-          <View
-            key={event.id}
-            testID={`activity-${event.id}`}
-            style={{ flexDirection: 'row', gap: space.md }}
-          >
-            {/* The timeline: a dot per event, joined by a hairline. */}
-            <View style={{ alignItems: 'center' }}>
-              <View
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-                style={{
-                  marginTop: space.sm,
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: tone.background,
-                }}
-              >
-                <Icon source={ACTION_ICONS[event.action] ?? 'pulse'} size={16} color={tone.color} />
-              </View>
-              {!last ? (
-                <View style={{ flex: 1, width: 1, backgroundColor: theme.colors.outlineVariant }} />
-              ) : null}
-            </View>
-            <View style={{ flex: 1, minWidth: 0, paddingVertical: space.sm + 2 }}>
-              <Text variant="bodyMedium">{event.description}</Text>
-              <Text variant="bodySmall" style={{ marginTop: 2, color: theme.tokens.mutedForeground }}>
-                {showActor ? (
-                  <Text style={{ fontWeight: '500', color: theme.tokens.mutedForeground }}>
-                    {event.actor_name}
-                  </Text>
-                ) : null}
-                {showActor ? ' · ' : ''}
-                {AUDIT_ACTION_LABELS[event.action as never] ?? event.action}
-                {' · '}
-                {formatRelativeTime(event.created_at)}
-              </Text>
-            </View>
-          </View>
-        );
-      })}
+      {events.map((event, index) => (
+        <ActivityRow key={event.id} event={event} last={index === events.length - 1} showActor={showActor} />
+      ))}
+    </View>
+  );
+}
+
+/**
+ * One event on the timeline: a dot per event, joined by a hairline to the next. Exported so the
+ * Activity screen can virtualise a long log; `last` drops the hairline below the final row.
+ */
+export function ActivityRow({
+  event,
+  last,
+  showActor = true,
+}: {
+  event: AuditEvent;
+  last: boolean;
+  showActor?: boolean;
+}) {
+  const theme = useAppTheme();
+  const tone = actionTone(theme, event.action);
+  return (
+    <View testID={`activity-${event.id}`} style={{ flexDirection: 'row', gap: space.md }}>
+      <View style={{ alignItems: 'center' }}>
+        <View
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={{
+            marginTop: space.sm,
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: tone.background,
+          }}
+        >
+          <Icon source={ACTION_ICONS[event.action] ?? 'pulse'} size={16} color={tone.color} />
+        </View>
+        {!last ? <View style={{ flex: 1, width: 1, backgroundColor: theme.colors.outlineVariant }} /> : null}
+      </View>
+      <View style={{ flex: 1, minWidth: 0, paddingVertical: space.sm + 2 }}>
+        <Text variant="bodyMedium">{event.description}</Text>
+        <Text variant="bodySmall" style={{ marginTop: 2, color: theme.tokens.mutedForeground }}>
+          {showActor ? (
+            <Text style={{ fontWeight: '500', color: theme.tokens.mutedForeground }}>{event.actor_name}</Text>
+          ) : null}
+          {showActor ? ' · ' : ''}
+          {AUDIT_ACTION_LABELS[event.action as never] ?? event.action}
+          {' · '}
+          {formatRelativeTime(event.created_at)}
+        </Text>
+      </View>
     </View>
   );
 }

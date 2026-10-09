@@ -43,7 +43,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `users/*` | directory, table / cards, detail, form (all sections), availability, guardians, payment handles, badges, SSN receipt | `app/(org)/people/*`, `app/(org)/person-form.tsx`, `src/features/users/*` | `people/*` | tested (14, 25, 26) |
 | `payments/*` | billing, balances, log, payment dialog (record and correct), CSV, tax summary | `app/(org)/billing.tsx`, `app/(org)/payment-form.tsx`, `src/features/payments/*` | `billing/*` | tested (27) |
 | `comments/*` | threads, counts, feed, delete own | `app/(org)/comments.tsx`, `app/(org)/comments-thread.tsx`, `src/features/comments/*` | `comments/*` | tested |
-| `audit/*` | activity feed and page | `app/(org)/activity.tsx`, `src/features/audit/*` | `activity/*` | todo |
+| `audit/*` | activity feed and page | `app/(org)/activity.tsx`, `src/features/audit/*` | `activity/*` | tested |
 | `organizations/organization-settings-page.tsx`, `notifications-switch.tsx` | TIN, payer address, notifications and log | `app/(org)/organization.tsx` | `organization/*` | todo |
 | `pages/profile-page.tsx` | own detail | `app/(org)/profile.tsx` | `people/profile` | tested (25) |
 | `onboarding/*` | wizard, student / tutor flows, confirm details, tour | `app/(org)/onboarding/*`, `src/features/onboarding/*` | `onboarding/*` | todo |

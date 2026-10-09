@@ -1,0 +1,97 @@
+# The activity log as an admin reads it (Priya): the organization's, narrowed in the filter sheet by
+# action and by person. Three events are made first through the local API (the seed has none).
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runScript:
+    file: ../../scripts/seed-activity.js
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://activity
+- extendedWaitUntil:
+    visible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+    timeout: 20000
+- assertVisible: 'Everything that has happened in the portal, newest first.'
+- assertVisible: "Confirmed .* has Maria Okafor's SSN on file"
+- assertVisible: 'Commented on Sanjay Patel'
+- assertVisible: 'Today'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: activity-admin
+# By action.
+- tapOn:
+    id: activity-filters-open
+- extendedWaitUntil:
+    visible: 'Filter activity'
+    timeout: 10000
+- assertVisible:
+    id: activity-filter-person
+- tapOn:
+    id: activity-filter-action
+- extendedWaitUntil:
+    visible:
+      id: activity-filter-action-tutor.ssn_confirmed
+    timeout: 10000
+- tapOn:
+    id: activity-filter-action-tutor.ssn_confirmed
+- takeScreenshot: activity-filter-sheet
+- tapOn:
+    id: activity-filters-done
+- extendedWaitUntil:
+    visible:
+      id: activity-chip-action
+    timeout: 10000
+- assertVisible: 'Action: SSN confirmed received'
+- extendedWaitUntil:
+    notVisible: 'Commented on Sanjay Patel'
+    timeout: 10000
+- assertVisible: "Confirmed .* has Maria Okafor's SSN on file"
+- assertNotVisible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+- tapOn:
+    id: activity-clear
+- extendedWaitUntil:
+    visible: 'Commented on Sanjay Patel'
+    timeout: 10000
+# By person: what Alex did, and what was done to him.
+- tapOn:
+    id: activity-filters-open
+- extendedWaitUntil:
+    visible:
+      id: activity-filter-person
+    timeout: 10000
+- tapOn:
+    id: activity-filter-person
+- extendedWaitUntil:
+    visible:
+      id: activity-filter-person-search
+    timeout: 10000
+- tapOn:
+    id: activity-filter-person-search
+- inputText: 'Alex'
+- extendedWaitUntil:
+    visible:
+      id: activity-filter-person-00000000-0000-4000-8000-000000000003
+    timeout: 10000
+- tapOn:
+    id: activity-filter-person-00000000-0000-4000-8000-000000000003
+- tapOn:
+    id: activity-filters-done
+- extendedWaitUntil:
+    visible: 'Person: Alex Chen'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible: 'Commented on Sanjay Patel'
+    timeout: 10000
+- assertVisible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+- assertNotVisible: "Confirmed .* has Maria Okafor's SSN on file"
+- takeScreenshot: activity-admin-person

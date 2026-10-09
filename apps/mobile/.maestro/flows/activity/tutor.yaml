@@ -1,0 +1,47 @@
+# The activity log as a tutor reads it (Alex): only his own -- what he did and what was done to him.
+# Priya's SSN line about Maria and her note on Sanjay are not his to see, and there is no person
+# filter. Three events are made first through the local API (the seed has none).
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runScript:
+    file: ../../scripts/seed-activity.js
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://activity
+- extendedWaitUntil:
+    visible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+    timeout: 20000
+- assertVisible: 'Your activity in the portal, newest first.'
+- assertNotVisible: "Confirmed .* has Maria Okafor's SSN on file"
+- assertNotVisible: 'Commented on Sanjay Patel'
+- assertNotVisible: 'Priya Raghavan'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: activity-tutor
+- tapOn:
+    id: activity-filters-open
+- extendedWaitUntil:
+    visible: 'Filter activity'
+    timeout: 10000
+- assertVisible:
+    id: activity-filter-action
+- assertNotVisible:
+    id: activity-filter-person
+- takeScreenshot: activity-tutor-filters
+- tapOn:
+    id: activity-filters-done
+- extendedWaitUntil:
+    notVisible: 'Filter activity'
+    timeout: 10000
