@@ -1,0 +1,79 @@
+# The organization's payer box (Priya, admin): she changes the payer address and saves it, and it is
+# there when the page is opened again. An SSN-shaped TIN -- a sole proprietor's own number -- is
+# refused with the shared sentence, on the device. Changes data: the runner resets the database.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- assertVisible: '47-2019388'
+- assertVisible: '100 Franklin Street'
+- takeScreenshot: organization-settings
+- tapOn:
+    id: org-payer_address_line1
+- eraseText: 30
+- inputText: '200 Rosemary Street'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-save
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: org-save
+- extendedWaitUntil:
+    visible: 'Organization settings saved.'
+    timeout: 10000
+# Pulled to refresh, the page reads it back from the server.
+- scrollUntilVisible:
+    element:
+      id: org-tin
+    direction: UP
+- swipe:
+    start: 50%, 35%
+    end: 50%, 85%
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- assertVisible: '200 Rosemary Street'
+# A TIN shaped like a Social Security number is refused before any request.
+- scrollUntilVisible:
+    element:
+      id: org-tin
+    direction: UP
+- tapOn:
+    id: org-tin
+- eraseText: 20
+- inputText: '123-45-6789'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-save
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: org-save
+- scrollUntilVisible:
+    element: 'This looks like a Social Security number.*'
+    direction: UP
+    timeout: 10000
+- takeScreenshot: organization-ssn-refused
+- assertNotVisible: 'Organization settings saved.'

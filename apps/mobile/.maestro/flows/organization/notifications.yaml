@@ -1,0 +1,69 @@
+# The organization's email notifications (Priya, admin): the switch saves at once, off and on; with
+# them on, a recorded lesson is logged for the people it concerns -- names and outcomes only (the
+# local Worker simulates the mail binding, so it reads "Sent"). Changes data: the runner resets the
+# database.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-notifications-switch
+    direction: DOWN
+    centerElement: true
+- assertVisible: 'Nothing sent yet.'
+- tapOn:
+    id: org-notifications-switch
+- extendedWaitUntil:
+    visible: 'Email notifications are off.'
+    timeout: 10000
+- tapOn:
+    id: org-notifications-switch
+- extendedWaitUntil:
+    visible: 'Email notifications are on.'
+    timeout: 10000
+# A lesson recorded with notifications on: Sofia and her parent are told.
+- runScript:
+    file: ../../scripts/record-recent-lesson.js
+    env:
+      TUTOR_EMAIL: alex.chen.math@gmail.com
+      TUTOR_ID: 00000000-0000-4000-8000-000000000003
+      STUDENT_ID: 00000000-0000-4000-8000-000000000008
+      ORG: chmi
+# Pulled to refresh, the page reads it back from the server.
+- scrollUntilVisible:
+    element:
+      id: org-tin
+    direction: UP
+- swipe:
+    start: 50%, 35%
+    end: 50%, 85%
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element: 'Session recorded.*'
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Maria Okafor'
+- assertVisible: '(Sent|Not delivered|Not sent here)'
+- assertNotVisible: '.*@.*'
+- takeScreenshot: organization-notifications

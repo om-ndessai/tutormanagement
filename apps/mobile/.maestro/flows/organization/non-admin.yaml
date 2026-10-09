@@ -1,0 +1,35 @@
+# The Organization page is its admins' (Alex, a tutor): More offers no Organization item, and a deep
+# link shows only the web's stub sentence.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: more-nav-activity
+    timeout: 15000
+- assertNotVisible:
+    id: more-nav-organization
+- assertNotVisible: 'Organization'
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://organization
+- extendedWaitUntil:
+    visible:
+      id: organization-stub
+    timeout: 20000
+- assertVisible: 'Only an administrator can see the organization’s settings.'
+- assertNotVisible:
+    id: org-tin
+- assertNotVisible: '47-2019388'
