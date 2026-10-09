@@ -5,6 +5,7 @@ import { SESSION_MODE_LABELS, describeSchedule, type VisibleSchedule } from '@tm
 import { View } from 'react-native';
 import { Button, Card, IconButton, Text } from 'react-native-paper';
 
+import { CommentsButton } from '@/features/comments/comments-button';
 import { Tag } from '@/features/teaching/session-card';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -75,7 +76,12 @@ export function ScheduleCard({
             Dates
           </Button>
           <View style={{ flex: 1 }} />
-          {/* The schedule's comments (#29) go here. */}
+          <CommentsButton
+            testID={`schedule-comments-${schedule.id}`}
+            target={{ target_type: 'scheduled_session', target_id: schedule.id }}
+            title={`${schedule.student_name}’s recurring session`}
+            description={`${described}, with ${schedule.tutor_name}.`}
+          />
           <IconButton
             testID={`schedule-calendar-${schedule.id}`}
             icon="calendar-export"

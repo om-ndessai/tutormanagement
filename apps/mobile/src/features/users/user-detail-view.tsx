@@ -22,6 +22,7 @@ import { Linking, Pressable, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
 import { ActivityFeed } from '@/features/audit/activity-feed';
+import { CommentsRow } from '@/features/comments/comments-button';
 import { useAuditEvents } from '@/features/audit/api';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -244,7 +245,17 @@ export function UserDetailView({
       ) : null}
 
       {/* Above the activity on purpose: what people have SAID about someone matters more on their
-          record than what the system logged. The person's comment thread (#29) goes here. */}
+          record than what the system logged. The audience is narrower than a lesson's: admins, the
+          author, the person and their parents -- the server's to decide. */}
+      {!compact ? (
+        <Section title="Comments" icon="message-outline" testID="person-section-comments">
+          <CommentsRow
+            testID="person-comments"
+            target={{ target_type: 'user', target_id: user.id }}
+            title={user.full_name}
+          />
+        </Section>
+      ) : null}
       {!compact ? <RecentActivity userId={user.id} /> : null}
     </View>
   );

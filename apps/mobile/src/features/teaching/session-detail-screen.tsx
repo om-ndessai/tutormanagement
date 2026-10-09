@@ -10,6 +10,7 @@ import { Button, Card, Text } from 'react-native-paper';
 import { Screen } from '@/components/screen';
 import { ErrorState, LoadingState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
+import { CommentsRow } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
@@ -179,7 +180,13 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
         </View>
       ) : null}
 
-      {/* Comments on the lesson (#29) go here. */}
+      {/* What has been said about the lesson: its audience, never money (Tutoring and Finance alike). */}
+      <CommentsRow
+        testID="session-comments"
+        target={{ target_type: 'session', target_id: session.id }}
+        title={`the ${session.occurred_on} session with ${session.student_name}`}
+        description={`${session.student_name} with ${session.tutor_name}, ${formatSessionTimes(session.started_at, session.ended_at)}.`}
+      />
     </>
   );
 }

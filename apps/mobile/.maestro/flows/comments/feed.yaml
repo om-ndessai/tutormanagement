@@ -1,0 +1,74 @@
+# The comments feed (Priya): everything she may read, newest first, narrowed by what it is about.
+# People shows only remarks on people; Schedule's row opens the schedule narrowed to that slot;
+# Sessions' row opens the lesson.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://comments
+- extendedWaitUntil:
+    visible: 'Alex Chen on the Tuesday 4:00 PM slot with Sofia Okafor.*'
+    timeout: 20000
+- assertVisible: 'Everything that has been said about the people and lessons you work with, newest first.'
+- assertVisible: 'Alex Chen on the Tuesday 4:00 PM slot with Sofia Okafor.*'
+- takeScreenshot: comments-feed
+# People only.
+- tapOn:
+    id: comments-filter-user
+- extendedWaitUntil:
+    visible: 'Anita Patel on Sanjay Patel.*'
+    timeout: 10000
+- assertNotVisible: '.* on the Tuesday 4:00 PM slot with Sofia Okafor.*'
+- assertNotVisible: '.* on the 20..-..-.. session with .*'
+# A recurring slot opens the schedule narrowed to it.
+- tapOn:
+    id: comments-filter-scheduled_session
+- extendedWaitUntil:
+    visible: 'Alex Chen on the Tuesday 4:00 PM slot with Sofia Okafor.*'
+    timeout: 10000
+- assertNotVisible: 'Anita Patel on Sanjay Patel.*'
+- tapOn: 'Alex Chen on the Tuesday 4:00 PM slot with Sofia Okafor.*'
+- extendedWaitUntil:
+    visible:
+      id: focus-notice
+    timeout: 15000
+- assertVisible: 'Showing one scheduled session, linked from a comment.'
+- assertVisible:
+    id: schedule-comments-70000000-0000-4000-8000-000000000001
+- takeScreenshot: comments-feed-schedule
+# Back to the feed, then a lesson.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://comments
+- extendedWaitUntil:
+    visible:
+      id: comments-filter-session
+    timeout: 15000
+- tapOn:
+    id: comments-filter-session
+- extendedWaitUntil:
+    visible: 'Alex Chen on .*session with Sofia Okafor.*'
+    timeout: 10000
+- tapOn: 'Alex Chen on .*session with Sofia Okafor.*'
+- extendedWaitUntil:
+    visible:
+      id: screen-session
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: session-comments
+    direction: DOWN
+    timeout: 20000

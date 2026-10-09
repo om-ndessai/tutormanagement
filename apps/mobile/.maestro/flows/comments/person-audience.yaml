@@ -1,0 +1,128 @@
+# A comment on a PERSON has a narrower audience than one on a lesson: admins, the author, the person
+# and their parents. Priya (admin) notes something on Sofia's record -- an SSN-shaped note is refused
+# first, with the shared sentence and no request. Maria, Sofia's parent, reads the note on Sofia's
+# record. Alex teaches Sofia, but the note is not his to read: her record shows him nothing.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+env:
+  SOFIA: 00000000-0000-4000-8000-000000000008
+  NOTE: Flow note from Priya about Sofia's schedule.
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${SOFIA}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-comments
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'No comments yet'
+- tapOn:
+    id: person-comments
+- extendedWaitUntil:
+    visible:
+      id: comments-composer
+    timeout: 15000
+- assertVisible: 'Visible to admins, Sofia Okafor, and their parents. Comments cannot be edited.'
+- assertVisible: 'Nothing has been noted here yet.'
+# The SSN guard is the shared schema's, on the device.
+- tapOn:
+    id: comments-composer
+- inputText: 'Her number is 123-45-6789'
+- tapOn:
+    id: comments-post
+- extendedWaitUntil:
+    visible:
+      id: comments-body-error
+    timeout: 5000
+- assertVisible: 'This looks like a Social Security number.*'
+- takeScreenshot: comments-ssn-refused
+- assertVisible: 'Nothing has been noted here yet.'
+- eraseText: 40
+- inputText: ${NOTE}
+- tapOn:
+    id: comments-post
+- extendedWaitUntil:
+    visible: ${NOTE}
+    timeout: 10000
+- assertNotVisible:
+    id: comments-body-error
+- takeScreenshot: comments-person-priya
+# Maria, Sofia's parent, reads it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${SOFIA}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-comments
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '1 comment'
+- tapOn:
+    id: person-comments
+- extendedWaitUntil:
+    visible: ${NOTE}
+    timeout: 15000
+- assertNotVisible:
+    id: 'comment-delete-.*'
+# Alex teaches Sofia; a note about her as a person is still not his to read.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${SOFIA}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-comments
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'No comments yet'
+- tapOn:
+    id: person-comments
+- extendedWaitUntil:
+    visible: 'Nothing has been noted here yet.'
+    timeout: 15000
+- assertNotVisible: ${NOTE}
+- takeScreenshot: comments-person-alex

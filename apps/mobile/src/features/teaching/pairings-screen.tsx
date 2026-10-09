@@ -12,6 +12,7 @@ import { Alert, View } from 'react-native';
 import { Button, Card, IconButton, Text } from 'react-native-paper';
 
 import { FocusNotice } from '@/components/focus-notice';
+import { CommentsButton } from '@/features/comments/comments-button';
 import { Screen } from '@/components/screen';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -188,7 +189,12 @@ function PairingCard({
               with {assignment.tutor_name}
             </Text>
           </View>
-          {/* The pairing's comments (#29) go here, beside the admin's actions. */}
+          <CommentsButton
+            testID={`pairing-comments-${assignment.id}`}
+            target={{ target_type: 'assignment', target_id: assignment.id }}
+            title={`${assignment.student_name}’s pairing`}
+            description={`${assignment.student_name} is taught by ${assignment.tutor_name}.`}
+          />
           {isAdmin ? (
             <>
               <IconButton

@@ -38,7 +38,7 @@ the `[~]` item, then carry on down the list.
 - [x] 26. Mobile: People — person form
 - [x] 27. Mobile: Billing — balances, payments, CSV and tax summary (d5d7fad)
 - [x] 28. Mobile: Year-end — 1099 printed on device, SSN receipts
-- [ ] 29. Mobile: Comments — feed and threads
+- [x] 29. Mobile: Comments — feed and threads
 - [ ] 30. Mobile: Activity — audit log
 - [ ] 31. Mobile: Organization — TIN, payer address, notifications
 - [ ] 32. Mobile: Profile and appearance

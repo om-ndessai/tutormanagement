@@ -1,0 +1,158 @@
+# A comment on a lesson reaches the lesson's audience. Alex comments on his 2026-09-15 lesson with
+# Sofia from its Comments row; Maria, Sofia's parent, reads it there and is offered no delete for
+# it; Anita, whose child is not in that lesson, is told the lesson is not found. Alex deletes it
+# (after a confirm), and it is gone.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+env:
+  SESSION_ID: 50000000-0000-4000-8000-000000000002
+  NOTE: Flow note from Alex about the word problems.
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions/${SESSION_ID}
+- extendedWaitUntil:
+    visible:
+      id: screen-session
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: session-comments
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '2 comments'
+- tapOn:
+    id: session-comments
+- extendedWaitUntil:
+    visible:
+      id: comments-composer
+    timeout: 15000
+- assertVisible: 'Worth repeating the sentence-to-operation drill.*'
+- assertVisible: 'Visible to admins, the tutor, the student, and the student’s parents. Comments cannot be edited.'
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: comments-composer
+- inputText: ${NOTE}
+- assertVisible: '44 of 2000 characters'
+- tapOn:
+    id: comments-post
+- extendedWaitUntil:
+    visible: ${NOTE}
+    timeout: 10000
+- takeScreenshot: comments-thread-alex
+- runScript:
+    file: ../../scripts/find-comment.js
+    env:
+      AS: alex.chen.math@gmail.com
+      ORG: chmi
+      TARGET_TYPE: session
+      TARGET_ID: ${SESSION_ID}
+      BODY_TEXT: ${NOTE}
+# Maria, Sofia's parent: she reads it, and it is not hers to delete.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions/${SESSION_ID}
+- extendedWaitUntil:
+    visible:
+      id: screen-session
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: session-comments
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '3 comments'
+- tapOn:
+    id: session-comments
+- extendedWaitUntil:
+    visible:
+      id: comment-${output.commentId}
+    timeout: 15000
+- assertVisible: ${NOTE}
+- assertNotVisible:
+    id: comment-delete-${output.commentId}
+- takeScreenshot: comments-thread-maria
+# Anita: the lesson is not hers to see, so it does not exist.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions/${SESSION_ID}
+- extendedWaitUntil:
+    visible:
+      id: state-error
+    timeout: 20000
+- assertVisible: 'Not found.*'
+- assertNotVisible:
+    id: session-comments
+- assertNotVisible: ${NOTE}
+# Alex withdraws it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions/${SESSION_ID}
+- extendedWaitUntil:
+    visible:
+      id: screen-session
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: session-comments
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: session-comments
+- extendedWaitUntil:
+    visible:
+      id: comment-delete-${output.commentId}
+    timeout: 15000
+- tapOn:
+    id: comment-delete-${output.commentId}
+- extendedWaitUntil:
+    visible: 'Delete this comment?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    notVisible:
+      id: comment-${output.commentId}
+    timeout: 10000
+- assertNotVisible: ${NOTE}
