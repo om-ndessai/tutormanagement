@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { useAuth } from '@/providers/auth-provider';
+import { SearchButton } from './search-button';
 import { useAppTheme } from '@/providers/theme-provider';
 
 export function initials(name: string): string {
@@ -39,5 +40,15 @@ export function AccountButton() {
         {initials(user.full_name)}
       </Text>
     </Pressable>
+  );
+}
+
+/** A tab root's header actions: search, then the account button. */
+export function HeaderButtons() {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+      <SearchButton />
+      <AccountButton />
+    </View>
   );
 }

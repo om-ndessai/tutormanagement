@@ -17,7 +17,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `features/organizations/require-org.tsx`, `select-organization-page.tsx`, `org-switcher.tsx`, `org-avatar.tsx` | picker, invitations, default ★, switch | `app/select-organization.tsx`, `src/features/organizations/*` | `organizations/*` | todo |
 | `components/layout/app-shell.tsx` (`NAV_ITEMS`), `user-menu.tsx`, `page-header.tsx`, `focus-notice.tsx` | shell, nav, user menu | `app/(org)/(tabs)/_layout.tsx`, `app/(org)/(tabs)/more.tsx`, `src/components/*` | `shell/*` | todo |
 | `components/layout/tutoring-finance-tabs.tsx` | `?tab=` Tutoring / Finance | `src/components/tutoring-finance-tabs.tsx` | `exposure/*` | todo |
-| `components/layout/command-palette.tsx` | ⌘K | `app/(org)/search.tsx` | `search/*` | todo |
+| `components/layout/command-palette.tsx` | ⌘K | `app/(org)/search.tsx` | `search/*` | tested (33) |
 | `components/layout/theme-toggle.tsx`, `theme-transition.ts` | theme switch | `app/(org)/profile.tsx` appearance | `profile/*` | tested (32) |
 
 ## Features

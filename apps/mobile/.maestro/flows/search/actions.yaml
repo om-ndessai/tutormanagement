@@ -1,0 +1,86 @@
+# Search's actions (Priya): switch organization ("riverside" → Riverside Tutoring, where she
+# tutors), then the theme ("dark"), checked on My profile, also found through search; back to System.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: header-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- tapOn:
+    id: search-input
+- inputText: riverside
+- extendedWaitUntil:
+    visible:
+      id: search-action-org-riverside
+    timeout: 10000
+- assertVisible: 'Switch to Riverside Tutoring'
+- tapOn:
+    id: search-action-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# Home's heading names the organization she is now in.
+- assertVisible: 'Riverside Tutoring'
+- tapOn:
+    id: header-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- tapOn:
+    id: search-input
+- inputText: dark
+- extendedWaitUntil:
+    visible:
+      id: search-action-theme-dark
+    timeout: 10000
+- tapOn:
+    id: search-action-theme-dark
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- takeScreenshot: search-actions-dark
+- tapOn:
+    id: header-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- tapOn:
+    id: search-input
+- inputText: profile
+- extendedWaitUntil:
+    visible:
+      id: search-goto-nav-profile
+    timeout: 10000
+- tapOn:
+    id: search-goto-nav-profile
+- extendedWaitUntil:
+    visible:
+      id: screen-profile
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: appearance-current
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'Always dark, whatever this device is set to.'
+- tapOn:
+    id: appearance-system
+- assertVisible: 'Matches this device, which is light now.'

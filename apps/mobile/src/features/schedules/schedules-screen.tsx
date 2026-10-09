@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
 import { AccountButton } from '@/features/shell/account-button';
+import { SearchButton } from '@/features/shell/search-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { downloadAndShare } from '@/lib/download';
 import { haptics } from '@/lib/haptics';
@@ -126,6 +127,7 @@ export function SchedulesScreen() {
                   onPress={() => openForm()}
                 />
               ) : null}
+              <SearchButton />
               <AccountButton />
             </View>
           ),

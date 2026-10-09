@@ -11,6 +11,7 @@ import { Screen } from '@/components/screen';
 import { ErrorState, LoadingState } from '@/components/state-views';
 import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
 import { AccountButton } from '@/features/shell/account-button';
+import { SearchButton } from '@/features/shell/search-button';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -43,6 +44,7 @@ function HeaderActions({ isAdmin, viewingId }: { isAdmin: boolean; viewingId: st
           }
         />
       ) : null}
+      <SearchButton />
       <AccountButton />
     </View>
   );

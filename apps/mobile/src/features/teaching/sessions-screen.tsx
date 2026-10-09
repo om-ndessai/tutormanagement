@@ -28,6 +28,7 @@ import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { CancelledLessonsPanel } from '@/features/schedules/cancelled-lessons-panel';
 import { AccountButton } from '@/features/shell/account-button';
+import { SearchButton } from '@/features/shell/search-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useSession } from './api';
@@ -145,6 +146,7 @@ export function SessionsScreen() {
                   onPress={openRecord}
                 />
               ) : null}
+              <SearchButton />
               <AccountButton />
             </View>
           ),

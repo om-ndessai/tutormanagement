@@ -42,7 +42,7 @@ the `[~]` item, then carry on down the list.
 - [x] 30. Mobile: Activity — audit log (2040a85)
 - [x] 31. Mobile: Organization — TIN, payer address, notifications (add087e)
 - [x] 32. Mobile: Profile and appearance
-- [ ] 33. Mobile: Search — pages, people and actions
+- [x] 33. Mobile: Search — pages, people and actions
 - [ ] 34. Mobile: Welcome wizard, guided setup and tour
 - [ ] 35. Mobile: Platform console
 - [ ] 36. Mobile tests: exposure across personas
