@@ -1,0 +1,116 @@
+# The directory as a tutor reads it (Alex): only the people he works with, no retired people and no
+# actions. Maria's record (another tutor) carries no pay, mailing address, SSN or advance; his own
+# record carries all of them.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-row-00000000-0000-4000-8000-000000000004
+    timeout: 20000
+- assertVisible:
+    id: people-row-00000000-0000-4000-8000-000000000009
+- scrollUntilVisible:
+    element:
+      id: people-row-00000000-0000-4000-8000-000000000008
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible: 'Jade Xu'
+- assertNotVisible: 'Priya Raghavan'
+- assertNotVisible:
+    id: people-include-deleted
+- assertNotVisible:
+    id: people-row-menu-00000000-0000-4000-8000-000000000004
+- takeScreenshot: people-list-tutor
+# Another tutor: none of her pay or paperwork.
+- tapOn:
+    id: people-row-00000000-0000-4000-8000-000000000004
+- extendedWaitUntil:
+    visible:
+      id: person-section-tutor
+    timeout: 15000
+- assertNotVisible:
+    id: person-menu
+- scrollUntilVisible:
+    element: 'Longest session'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible:
+    id: person-pay-in-person
+- assertNotVisible:
+    id: person-pay-virtual
+- assertNotVisible:
+    id: person-mailing-address
+- assertNotVisible:
+    id: person-ssn
+- assertNotVisible:
+    id: person-topup
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: people-detail-other-tutor
+- runFlow: ../../subflows/go-back.yaml
+# A student he teaches: the family's price is not his to know (R4).
+- extendedWaitUntil:
+    visible:
+      id: people-row-00000000-0000-4000-8000-000000000004
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: people-row-00000000-0000-4000-8000-000000000008
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: people-row-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: person-section-student
+    timeout: 15000
+- scrollUntilVisible:
+    element: 'Longest session'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible:
+    id: person-price-in-person
+- assertNotVisible: '.*\$[0-9].*'
+- runFlow: ../../subflows/go-back.yaml
+# His own record: all of it.
+- scrollUntilVisible:
+    element:
+      id: people-row-00000000-0000-4000-8000-000000000003
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: people-row-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: person-section-tutor
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: person-pay-in-person
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: person-mailing-address
+- assertVisible: '88 Kildaire Farm Road.*'
+- scrollUntilVisible:
+    element:
+      id: person-ssn
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Not received'
+- assertNotVisible: 'Mark SSN received'

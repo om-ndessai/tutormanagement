@@ -2,15 +2,16 @@
 import { USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { View } from 'react-native';
-import { Divider, IconButton, List, SegmentedButtons, Text } from 'react-native-paper';
+import { Divider, IconButton, List, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';
 import { useSetDefaultOrganization } from '@/features/organizations/api';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
+import { AppearanceControl } from '@/features/shell/appearance-control';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
-import { useAppTheme, useThemeMode, type ThemeMode } from '@/providers/theme-provider';
+import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 
 export default function AccountSheet() {
@@ -25,7 +26,6 @@ export default function AccountSheet() {
     signOut,
   } = useAuth();
   const theme = useAppTheme();
-  const { mode, setMode } = useThemeMode();
   const toast = useToast();
   const setDefault = useSetDefaultOrganization();
   if (!user) return null;
@@ -118,21 +118,7 @@ export default function AccountSheet() {
       ) : null}
 
       <Divider />
-      <View style={{ gap: space.sm }}>
-        <Text variant="labelLarge">Appearance</Text>
-        <SegmentedButtons
-          value={mode}
-          onValueChange={(value) => {
-            haptics.selection();
-            setMode(value as ThemeMode);
-          }}
-          buttons={[
-            { value: 'light', label: 'Light', icon: 'white-balance-sunny', testID: 'appearance-light' },
-            { value: 'dark', label: 'Dark', icon: 'weather-night', testID: 'appearance-dark' },
-            { value: 'system', label: 'System', icon: 'theme-light-dark', testID: 'appearance-system' },
-          ]}
-        />
-      </View>
+      <AppearanceControl />
       <Divider />
 
       <View>

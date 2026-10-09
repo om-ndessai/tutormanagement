@@ -22,8 +22,12 @@ export function useStackOptions({ large = true }: { large?: boolean } = {}): Scr
     headerShadowVisible: false,
     headerTintColor: theme.colors.primary,
     // iOS draws the bar (and its large title) itself; only Android gets painted colours.
+    // A small iOS bar is painted from the navigation theme, which is the light default (the app
+    // has no navigation ThemeProvider), so in dark mode it stayed white: give it the background.
     ...(Platform.OS === 'ios'
-      ? {}
+      ? large
+        ? {}
+        : { headerStyle: { backgroundColor: theme.colors.background } }
       : {
           headerTitleStyle: { color: theme.colors.onBackground },
           headerStyle: { backgroundColor: theme.colors.background },

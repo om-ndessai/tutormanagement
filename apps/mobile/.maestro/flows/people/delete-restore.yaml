@@ -1,0 +1,99 @@
+# The office retires a person and brings them back (Priya, Jade Xu -- a bulk parent): Deactivate
+# from the row's menu, then she is gone from the list; "Show deactivated" brings her back dimmed and
+# badged; Restore. A permanent delete asks for her name before it will go, and is cancelled here.
+# Changes data: reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-search
+    timeout: 20000
+- tapOn:
+    id: people-search
+- inputText: 'Jade Xu'
+- extendedWaitUntil:
+    visible:
+      id: people-row-menu-22222222-0000-4000-8000-000000000011
+    timeout: 15000
+- hideKeyboard
+- tapOn:
+    id: people-row-menu-22222222-0000-4000-8000-000000000011
+- tapOn:
+    id: people-action-deactivate
+- extendedWaitUntil:
+    visible: 'Deactivate Jade Xu\?'
+    timeout: 10000
+- tapOn: 'Deactivate'
+- extendedWaitUntil:
+    visible: 'Jade Xu deactivated.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: people-row-22222222-0000-4000-8000-000000000011
+    timeout: 15000
+- assertVisible:
+    id: people-empty
+# Retired, but on file.
+- tapOn:
+    id: people-include-deleted
+- extendedWaitUntil:
+    visible: 'Jade Xu, .*, Deactivated, open their record'
+    timeout: 15000
+- takeScreenshot: people-deactivated
+- tapOn:
+    id: people-row-menu-22222222-0000-4000-8000-000000000011
+- tapOn:
+    id: people-action-restore
+- extendedWaitUntil:
+    visible: 'Jade Xu restored.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible: 'Jade Xu, .*, Deactivated, open their record'
+    timeout: 15000
+# A permanent delete waits for her name.
+- tapOn:
+    id: people-row-22222222-0000-4000-8000-000000000011
+- extendedWaitUntil:
+    visible:
+      id: person-menu
+    timeout: 15000
+- tapOn:
+    id: person-menu
+- tapOn:
+    id: person-delete
+- extendedWaitUntil:
+    visible: 'Delete Jade Xu\?'
+    timeout: 10000
+- assertVisible:
+    id: person-delete-confirm
+    enabled: false
+- tapOn:
+    id: person-delete-input
+- inputText: 'Jade Xu'
+- assertVisible:
+    id: person-delete-confirm
+    enabled: true
+- takeScreenshot: people-hard-delete
+- tapOn:
+    id: person-delete-cancel
+- extendedWaitUntil:
+    notVisible: 'Delete Jade Xu\?'
+    timeout: 10000
+- assertVisible:
+    id: person-name
+- assertVisible: 'Jade Xu'

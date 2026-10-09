@@ -1,0 +1,109 @@
+# The directory as the office reads it (Priya): reached from More; a search narrows it; the Student
+# chip keeps the students and drops the tutors; Ben's record lists his parents, and a parent's record
+# lists Ben under "Responsible for"; the status menu finds the suspended tutor.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: more-nav-users
+    timeout: 10000
+- tapOn:
+    id: more-nav-users
+- extendedWaitUntil:
+    visible:
+      id: people-row-00000000-0000-4000-8000-000000000003
+    timeout: 20000
+- assertVisible:
+    id: people-description
+- assertVisible:
+    id: people-include-deleted
+- takeScreenshot: people-list-admin
+# Search, debounced on the server.
+- tapOn:
+    id: people-search
+- inputText: 'Sofia'
+- extendedWaitUntil:
+    notVisible:
+      id: people-row-00000000-0000-4000-8000-000000000003
+    timeout: 15000
+- assertVisible:
+    id: people-row-00000000-0000-4000-8000-000000000008
+- tapOn:
+    id: people-search
+- eraseText: 10
+- hideKeyboard
+# Students only: Ben in, Alex (a tutor) out.
+- tapOn:
+    id: people-role-student
+- extendedWaitUntil:
+    notVisible:
+      id: people-row-00000000-0000-4000-8000-000000000003
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: people-row-00000000-0000-4000-8000-000000000009
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: people-row-00000000-0000-4000-8000-000000000009
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 15000
+- assertVisible: 'Ben Whitfield'
+- assertVisible:
+    id: person-section-student
+- scrollUntilVisible:
+    element:
+      id: person-guardian-00000000-0000-4000-8000-000000000002
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Parents & guardians'
+- assertVisible:
+    id: person-guardian-00000000-0000-4000-8000-000000000010
+- assertVisible: 'Dana Whitfield, Mother, Primary contact.*'
+- takeScreenshot: people-detail-student
+- tapOn:
+    id: person-guardian-00000000-0000-4000-8000-000000000002
+- extendedWaitUntil:
+    visible:
+      text: 'Dana Whitfield'
+      id: person-name
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: person-dependent-00000000-0000-4000-8000-000000000009
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Responsible for'
+- runFlow: ../../subflows/go-back.yaml
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: people-status-menu
+    timeout: 15000
+# The suspended tutor, through the status menu (all roles again first).
+- tapOn:
+    id: people-role-all
+- tapOn:
+    id: people-status-menu
+- tapOn:
+    id: people-status-suspended
+- extendedWaitUntil:
+    visible:
+      id: people-row-00000000-0000-4000-8000-000000000005
+    timeout: 15000
+- assertNotVisible:
+    id: people-row-00000000-0000-4000-8000-000000000003

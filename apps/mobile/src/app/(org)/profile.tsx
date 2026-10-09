@@ -1,13 +1,6 @@
-import { Stack } from 'expo-router';
+import { ProfileScreen } from '@/features/users/profile-screen';
 
-import { EmptyState } from '@/components/state-views';
-import { Screen } from '@/components/screen';
-
-export default function ProfileScreen() {
-  return (
-    <Screen testID="screen-profile">
-      <Stack.Screen options={{ title: 'My profile' }} />
-      <EmptyState icon="account-outline" title="My profile" body="Coming next on this branch." />
-    </Screen>
-  );
+/** The reader's own record, read-only, and the appearance control. */
+export default function ProfileRoute() {
+  return <ProfileScreen />;
 }
