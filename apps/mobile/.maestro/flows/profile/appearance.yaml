@@ -1,0 +1,96 @@
+# Profile and appearance (Priya): My profile says the app is on the developer sign-in; Dark
+# repaints the app (screenshots), survives a relaunch, and Light puts it back. Ends on System,
+# the default, so the device's setting decides again.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+# Priya's sheet lists two organizations, so My profile sits below the sheet's first detent.
+- scrollUntilVisible:
+    element:
+      id: account-profile
+    direction: DOWN
+    centerElement: true
+    timeout: 10000
+- tapOn:
+    id: account-profile
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 20000
+- assertVisible:
+    id: profile-dev-notice
+- assertVisible: '.*acting as Priya Raghavan.*'
+- takeScreenshot: appearance-light-before
+- scrollUntilVisible:
+    element:
+      id: appearance-current
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'Matches this device, which is light now.'
+- tapOn:
+    id: appearance-dark
+- assertVisible: 'Always dark, whatever this device is set to.'
+- takeScreenshot: appearance-dark
+# Relaunch without clearing the app's storage: the session and the choice both come back.
+- stopApp
+- launchApp:
+    clearState: false
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: ../../subflows/dev-client-load.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- takeScreenshot: appearance-dark-relaunched
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+# Priya's sheet lists two organizations, so My profile sits below the sheet's first detent.
+- scrollUntilVisible:
+    element:
+      id: account-profile
+    direction: DOWN
+    centerElement: true
+    timeout: 10000
+- tapOn:
+    id: account-profile
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: appearance-current
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'Always dark, whatever this device is set to.'
+- tapOn:
+    id: appearance-light
+- assertVisible: 'Always light, whatever this device is set to.'
+- takeScreenshot: appearance-light-after
+- tapOn:
+    id: appearance-system
+- assertVisible: 'Matches this device, which is light now.'

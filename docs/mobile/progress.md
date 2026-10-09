@@ -41,7 +41,7 @@ the `[~]` item, then carry on down the list.
 - [x] 29. Mobile: Comments — feed and threads (b2c2615)
 - [x] 30. Mobile: Activity — audit log (2040a85)
 - [x] 31. Mobile: Organization — TIN, payer address, notifications (add087e)
-- [ ] 32. Mobile: Profile and appearance
+- [x] 32. Mobile: Profile and appearance
 - [ ] 33. Mobile: Search — pages, people and actions
 - [ ] 34. Mobile: Welcome wizard, guided setup and tour
 - [ ] 35. Mobile: Platform console

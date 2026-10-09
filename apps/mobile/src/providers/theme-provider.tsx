@@ -1,10 +1,11 @@
 import { createContext, use, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, View } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 
 import { readPref, STORAGE_KEYS, writePref } from '@/lib/storage';
 import { buildTheme, type AppTheme } from '@/theme/paper-theme';
 import { useBrand } from './brand-provider';
+import { ThemeFade } from './theme-fade';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
@@ -43,7 +44,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext value={value}>
-      <PaperProvider theme={theme}>{children}</PaperProvider>
+      <PaperProvider theme={theme}>
+        <View style={{ flex: 1 }}>
+          {children}
+          <ThemeFade scheme={scheme} background={theme.colors.background} />
+        </View>
+      </PaperProvider>
     </ThemeContext>
   );
 }

@@ -13,6 +13,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useUserDetail } from './api';
+import { DevSignInNotice } from './dev-sign-in-notice';
 import { UserDetailView } from './user-detail-view';
 
 export function ProfileScreen() {
@@ -38,6 +39,7 @@ export function ProfileScreen() {
       <Text variant="bodyMedium" style={{ color: muted }}>
         {`How ${brand.name} has you on file.`}
       </Text>
+      <DevSignInNotice />
       <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
         {isPending ? <LoadingState label="Loading your record…" /> : null}
         {error ? <ErrorState error={error} onRetry={() => void refetch()} /> : null}
@@ -47,7 +49,7 @@ export function ProfileScreen() {
         Something wrong here? Ask an administrator to update your record.
       </Text>
       <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
-        <AppearanceControl testID="profile-appearance" />
+        <AppearanceControl testID="profile-appearance" describe />
       </Card>
     </Screen>
   );
