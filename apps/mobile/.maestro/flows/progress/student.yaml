@@ -1,0 +1,61 @@
+# Progress as a student reads it (Sofia): only herself, and her page with no writes and no money.
+# Her dashboard's progress card opens the same page from Home, with the Progress list under it.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 30000
+# From her dashboard's progress card: her page, then Back to the Progress list.
+- scrollUntilVisible:
+    element:
+      id: progress-card-00000000-0000-4000-8000-000000000008-action
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: progress-card-00000000-0000-4000-8000-000000000008-action
+- extendedWaitUntil:
+    visible:
+      id: progress-goal
+    timeout: 15000
+- assertVisible: 'Ready for AoPS Prealgebra by the start of next school year'
+- assertNotVisible:
+    id: progress-assess
+- assertNotVisible:
+    id: progress-plan-edit
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-student-self
+- scrollUntilVisible:
+    element:
+      id: progress-lessons
+    direction: DOWN
+    timeout: 30000
+- assertNotVisible:
+    id: progress-delete-plan
+- assertNotVisible:
+    id: progress-assessment-edit
+- assertNotVisible: '.*\$[0-9].*'
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-progress
+    timeout: 10000
+# The list holds her alone.
+- extendedWaitUntil:
+    visible:
+      id: progress-row-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- assertNotVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000009
+- assertNotVisible: 'Ben Whitfield'
+- assertNotVisible:
+    id: progress-tutor-filter
+- takeScreenshot: progress-list-student

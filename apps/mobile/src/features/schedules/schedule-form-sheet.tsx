@@ -16,10 +16,11 @@ import {
 } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, HelperText, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 
 import { DateTimeField } from '@/components/date-time-field';
+import { Choice, Field } from '@/components/form-choice';
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
@@ -31,7 +32,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { space } from '@/theme/tokens';
 import { useCreateSchedule, useSchedules, useUpdateSchedule } from './api';
 import { organizationToday, shiftDay } from './lesson-cancellation';
 
@@ -365,76 +366,5 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
         </Button>
       </View>
     </View>
-  );
-}
-
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
-  const theme = useAppTheme();
-  return (
-    <View style={{ gap: space.xs }}>
-      <Text variant="bodyMedium" style={{ color: error ? theme.colors.error : theme.tokens.mutedForeground }}>
-        {label}
-      </Text>
-      {children}
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
-    </View>
-  );
-}
-
-/** One choice of a small set: a weekday, a length. */
-function Choice({
-  testID,
-  label,
-  accessibilityLabel,
-  selected,
-  onPress,
-  wide = false,
-}: {
-  testID: string;
-  label: string;
-  accessibilityLabel?: string;
-  selected: boolean;
-  onPress: () => void;
-  wide?: boolean;
-}) {
-  const theme = useAppTheme();
-  return (
-    <Pressable
-      testID={testID}
-      accessibilityRole="radio"
-      accessibilityLabel={accessibilityLabel ?? label}
-      accessibilityState={{ checked: selected }}
-      onPress={() => {
-        haptics.selection();
-        onPress();
-      }}
-      style={({ pressed }) => ({
-        flex: wide ? undefined : 1,
-        minWidth: wide ? 72 : undefined,
-        minHeight: MIN_TARGET,
-        paddingHorizontal: wide ? space.md : 0,
-        borderRadius: radius.md,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: selected ? theme.colors.primary : theme.colors.outline,
-        backgroundColor: selected
-          ? theme.colors.primary
-          : pressed
-            ? theme.colors.primaryContainer
-            : 'transparent',
-      })}
-    >
-      <Text
-        variant="labelMedium"
-        style={{ color: selected ? theme.colors.onPrimary : theme.colors.onSurface }}
-      >
-        {label}
-      </Text>
-    </Pressable>
   );
 }

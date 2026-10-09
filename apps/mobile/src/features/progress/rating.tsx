@@ -8,7 +8,7 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
-import { MIN_TARGET, radius } from '@/theme/tokens';
+import { MIN_TARGET, radius, space } from '@/theme/tokens';
 
 const RATINGS: readonly Rating[] = [1, 2, 3, 4, 5];
 
@@ -265,5 +265,25 @@ export function TopicName({
       {name ?? 'Unknown topic'}
       {unit ? <Text style={{ fontSize: 12, color: theme.tokens.mutedForeground }}> ({unit})</Text> : null}
     </Text>
+  );
+}
+
+/** The 1-5 scale's key: each step's chip with its label. */
+export function RatingLegend({ labels = TOPIC_RATING_LABELS }: { labels?: Record<Rating, string> }) {
+  const theme = useAppTheme();
+  return (
+    <View
+      testID="rating-legend"
+      style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: space.md, rowGap: 4 }}
+    >
+      {RATINGS.map((rating) => (
+        <View key={rating} style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+          <RatingChip rating={rating} labels={labels} size={20} />
+          <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+            {labels[rating]}
+          </Text>
+        </View>
+      ))}
+    </View>
   );
 }

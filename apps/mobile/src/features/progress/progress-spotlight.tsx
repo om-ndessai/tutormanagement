@@ -12,7 +12,7 @@ import { ProgressStatusBadge } from './rating';
 
 /**
  * The dashboard's Progress section (Phase 21): a handful of students, each a small card with the
- * compressed goal timeline. A card opens the Progress tab, where the full chart will be (24).
+ * compressed goal timeline. A card opens the student's progress page, with the full chart.
  */
 export function ProgressSpotlight({ students, empty }: { students: StudentProgress[]; empty: string }) {
   if (students.length === 0) return <EmptyNote testID="progress-spotlight-empty">{empty}</EmptyNote>;
@@ -35,7 +35,13 @@ function ProgressSpotlightCard({ progress }: { progress: StudentProgress }) {
       testID="progress-spotlight-card"
       accessibilityRole="link"
       accessibilityLabel={`${student.full_name}'s progress`}
-      onPress={() => router.navigate('/progress')}
+      // `withAnchor`: the Progress stack opens with its list under the student, so Back lands there.
+      onPress={() =>
+        router.navigate(
+          { pathname: '/progress/[studentId]', params: { studentId: student.user_id } },
+          { withAnchor: true },
+        )
+      }
       style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
     >
       <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>

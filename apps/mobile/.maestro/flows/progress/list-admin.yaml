@@ -1,0 +1,162 @@
+# Progress as the office sees it (Priya): every student, trouble first, narrowed by status, by a
+# search and by a tutor (`?tutor=`); one student's page with the full chart, whose tap shows the
+# lesson under the finger; the plan's topics, the assessment and the lessons, a cancelled one with
+# its note. No money anywhere. The dashboard's spotlight opens a student's page, with the list
+# under it.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# Let the dashboard settle first: on Android its first render keeps the JS thread busy, and a link
+# followed mid-render sat on its skeletons past the wait.
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://progress
+- extendedWaitUntil:
+    visible:
+      id: progress-row-00000000-0000-4000-8000-000000000009
+    timeout: 20000
+- assertVisible: 'Every student against their learning plan.*'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-list-admin
+# Behind narrows: Ben (behind) stays, Daniela Rossi (ahead) goes.
+- tapOn:
+    id: progress-filter-behind
+- assertVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000009
+- assertNotVisible:
+    id: progress-row-33333333-0000-4000-8000-000000000041
+- tapOn:
+    id: progress-filter-all
+# One tutor's students, by link.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://progress?tutor=00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: progress-tutor-filter
+    timeout: 15000
+- assertVisible: 'Alex Chen’s students'
+- assertVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000009
+- assertVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000008
+- assertNotVisible:
+    id: progress-row-33333333-0000-4000-8000-000000000042
+- tapOn:
+    id: progress-tutor-filter
+- tapOn:
+    id: progress-tutor-all
+- extendedWaitUntil:
+    visible:
+      id: progress-row-33333333-0000-4000-8000-000000000042
+    timeout: 10000
+- assertVisible: 'All tutors'
+# Search, then open Sofia.
+- tapOn:
+    id: progress-search
+- inputText: 'Sofia'
+- extendedWaitUntil:
+    visible:
+      id: progress-row-00000000-0000-4000-8000-000000000008
+    timeout: 10000
+- assertNotVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000009
+- hideKeyboard
+- tapOn:
+    id: progress-row-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: screen-progress-student
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: progress-goal
+    timeout: 15000
+- assertVisible: 'Ready for AoPS Prealgebra by the start of next school year'
+- assertVisible:
+    id: progress-assess
+- assertVisible:
+    id: progress-plan-edit
+- assertVisible:
+    id: stat-topics-mastered
+- assertVisible:
+    id: stat-sessions-held
+- takeScreenshot: progress-student-top
+- scrollUntilVisible:
+    element:
+      id: progress-chart-legend
+    direction: DOWN
+# A tap near the start of the plot: the nearest lesson's details.
+- tapOn:
+    id: progress-chart
+    point: '14%,60%'
+- extendedWaitUntil:
+    visible:
+      id: progress-chart-tooltip
+    timeout: 5000
+- assertVisible: '.*mastered'
+- takeScreenshot: progress-chart-tooltip
+- scrollUntilVisible:
+    element:
+      id: progress-topic-BA4.05
+    direction: DOWN
+- assertVisible: 'Mastered'
+- scrollUntilVisible:
+    element:
+      id: progress-assessment-summary
+    direction: DOWN
+- assertVisible: 'Latest assessment'
+- scrollUntilVisible:
+    element:
+      id: progress-cancelled-note-70000000-0000-4000-8000-000000000001-2026-11-24
+    direction: DOWN
+- assertVisible: 'Thanksgiving week — we are travelling.'
+- assertVisible:
+    id: progress-lesson-50000000-0000-4000-8000-000000000002
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-student-lessons
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-progress
+    timeout: 10000
+# The dashboard's spotlight opens a student's page; Back lands on the list.
+- tapOn: 'Home'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: progress-spotlight-card
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: progress-spotlight-card
+    index: 0
+- extendedWaitUntil:
+    visible:
+      id: screen-progress-student
+    timeout: 15000
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-progress
+    timeout: 10000

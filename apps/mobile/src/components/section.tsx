@@ -11,6 +11,8 @@ import { MIN_TARGET, radius, space } from '@/theme/tokens';
 export interface SectionAction {
   label: string;
   to: Href;
+  /** Open a screen deep in another tab with that tab's root under it, so Back lands there. */
+  withAnchor?: boolean;
 }
 
 /** "All sessions →": a section's link to the full view, at a full-size touch target. */
@@ -22,7 +24,7 @@ function ActionLink({ action, testID }: { action: SectionAction; testID: string 
       accessibilityRole="link"
       accessibilityLabel={action.label}
       hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
-      onPress={() => router.navigate(action.to)}
+      onPress={() => router.navigate(action.to, action.withAnchor ? { withAnchor: true } : undefined)}
       style={{ minHeight: MIN_TARGET / 2, justifyContent: 'center' }}
     >
       {({ pressed }) => (

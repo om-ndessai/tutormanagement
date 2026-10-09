@@ -33,7 +33,7 @@ the `[~]` item, then carry on down the list.
 - [x] 21. Mobile: Sessions — notes, assessments and student reflections (a29e31a)
 - [x] 22. Mobile: Pairings — assignments and rate overrides (5278c65)
 - [x] 23. Mobile: Schedule — weekly view, editor, cancel/restore, calendar files
-- [ ] 24. Mobile: Progress — list, chart, assessments, plans
+- [x] 24. Mobile: Progress — list, chart, assessments, plans
 - [ ] 25. Mobile: People — directory, detail, comments, delete/restore
 - [ ] 26. Mobile: People — person form
 - [ ] 27. Mobile: Billing — balances, payments, CSV and tax summary
@@ -76,5 +76,6 @@ the `[~]` item, then carry on down the list.
 - ~~Android launch stall~~ — fixed (2026-10-08): Hermes on Android builds and runs Intl formatters 30–45x slower than iOS, and screens re-rendering each second kept the JS thread saturated. `src/polyfills/intl-cache.ts` reuses one formatter per (locale, options) and memoizes results; 9/9 repeat runs green where 3/9 failed.
   Seen again in #21's final run, eight dashboard/session flows at once on a long-running emulator; it happens with the live lesson banner's host removed too, so it predates #20.
   Seen again in #23's final run on an emulator up 21 hours (memory full, 500 MB in swap): six dashboard/session flows timed out on "Loading your dashboard…" and the Pairings list sat on its skeletons for over 45 s. After `adb reboot` every one of them passed. A long-running emulator is the likeliest cause; rebooting it before a full run is worth making a habit.
+  Found in #24 (2026-10-09): the AVD is configured with **one CPU core** (`hw.cpu.ncore=1` in `~/.android/avd/Medium_Phone.avd/config.ini`). Freshly rebooted, it took 90 s+ to show Priya's dashboard with or without new code. Restarted with `emulator -avd Medium_Phone_API_37.0 -no-snapshot-save -no-boot-anim -cores 4 -memory 4096`, every flow ran green. Setting `hw.cpu.ncore=4` in the AVD config (the owner's call) would make it stick.
 - For the owner (#19, #21): the web's drafts panel reads the drafts cache, which `useAutosaveDraft` refreshes only when a draft first appears, so "Edit" can open a stale copy of an autosaved draft and posting it writes the stale text back. The app keeps its cache in step (`withDraft`); the web may want the same. Its `useRecordSession` also leaves a consumed draft in the panel until the next refetch.
 - For the owner: the SSN chase list (`/dashboard` `tutors_missing_ssn`) and the year-end list (`/payments/tax-status`) disagree for a tutor with no activity (Johan). Each screen shows what its endpoint sends; it's a web/API question, not a mobile one.

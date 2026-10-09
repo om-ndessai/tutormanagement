@@ -1,0 +1,77 @@
+# Progress as a tutor reads it (Alex): his two students and nobody else's; Sofia's page with no
+# writes (assessments and plans are the office's), and the note on the lesson called off from his
+# own schedule. A student he does not teach is "not found", not forbidden. No money.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://progress
+- extendedWaitUntil:
+    visible:
+      id: progress-row-00000000-0000-4000-8000-000000000008
+    timeout: 20000
+- assertVisible: 'Where each student stands against the plan agreed for them.'
+- assertVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000009
+- assertNotVisible:
+    id: progress-row-33333333-0000-4000-8000-000000000041
+- assertNotVisible:
+    id: progress-row-33333333-0000-4000-8000-000000000042
+- assertNotVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000006
+- assertNotVisible: 'Daniela Rossi'
+# One tutor's pairings: no tutor filter to offer.
+- assertNotVisible:
+    id: progress-tutor-filter
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-list-tutor
+- tapOn:
+    id: progress-row-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: progress-goal
+    timeout: 15000
+- assertNotVisible:
+    id: progress-assess
+- assertNotVisible:
+    id: progress-plan-edit
+- assertVisible:
+    id: progress-chart
+- scrollUntilVisible:
+    element:
+      id: progress-cancelled-note-70000000-0000-4000-8000-000000000001-2026-11-24
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'Thanksgiving week — we are travelling.'
+- assertNotVisible:
+    id: progress-delete-plan
+- assertNotVisible:
+    id: progress-assessment-edit
+- assertNotVisible:
+    id: progress-assessment-delete
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-student-tutor
+# Sanjay is not his student.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://progress/00000000-0000-4000-8000-000000000006
+- extendedWaitUntil:
+    visible:
+      id: state-error
+    timeout: 15000
+- assertVisible: 'Not found.*'
+- assertNotVisible: 'Sanjay Patel'

@@ -34,8 +34,7 @@ export function progressSummaryLine(summary: StudentProgress['summary']): string
 
 /**
  * One student's goal and timeline, for a dashboard. What a family opens the app to see: is the
- * tutoring working, and will it get there in time. "Details" opens the Progress tab until the
- * student's own progress page exists (24).
+ * tutoring working, and will it get there in time. "Details" opens the student's progress page.
  */
 export function StudentProgressCard({
   progress,
@@ -50,7 +49,11 @@ export function StudentProgressCard({
   const theme = useAppTheme();
   const { plan, summary } = progress;
   const testID = `progress-card-${progress.student.user_id}`;
-  const action = { label: 'Details', to: '/progress' as const };
+  const action = {
+    label: 'Details',
+    to: { pathname: '/progress/[studentId]' as const, params: { studentId: progress.student.user_id } },
+    withAnchor: true,
+  };
 
   if (!plan) {
     return (

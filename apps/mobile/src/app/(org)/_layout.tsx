@@ -107,6 +107,24 @@ export default function OrgLayout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="assessment-form"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.9, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="plan-form"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.9, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
       </Stack>
     </LiveSessionHost>
   );

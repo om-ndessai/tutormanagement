@@ -1,10 +1,6 @@
-import { EmptyState } from '@/components/state-views';
-import { Screen } from '@/components/screen';
+import { ProgressScreen } from '@/features/progress/progress-screen';
 
-export default function ProgressScreen() {
-  return (
-    <Screen testID="screen-progress">
-      <EmptyState icon="trending-up" title="Progress" body="Coming next on this branch." />
-    </Screen>
-  );
+/** Every student the reader may follow (`?student=`, `?tutor=` narrow it). */
+export default function ProgressRoute() {
+  return <ProgressScreen />;
 }

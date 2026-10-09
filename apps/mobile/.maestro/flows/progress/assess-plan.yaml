@@ -1,0 +1,163 @@
+# The office assesses a student and sets a plan (Priya, Amara Lindgren -- never assessed): a
+# write-up, a recommended level and two topic scores; then a plan, which starts with the topic
+# scored 2 already chosen and the one scored 4 left out, and the goal already on her record. Both
+# appear on her page; then the plan and the assessment are deleted, each after a confirmation.
+# Changes data: reset the database after (the runner does).
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# Let the dashboard settle first: on Android its first render keeps the JS thread busy, and a link
+# followed mid-render sat on its skeletons past the wait.
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://progress/33333333-0000-4000-8000-000000000075
+- extendedWaitUntil:
+    visible:
+      id: progress-no-plan
+    timeout: 20000
+- assertVisible: 'Not assessed yet.*'
+- assertVisible: 'No assessment recorded yet.'
+- tapOn:
+    id: progress-assess
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-form
+    timeout: 15000
+- assertVisible: 'Assess Amara Lindgren'
+# The write-up first, while the sheet is at its top; a tap on the title puts the keyboard away (a
+# tap on any blank part of the form does; iOS will not hide it for a multiline field).
+- tapOn:
+    id: assessment-summary
+- inputText: 'Confident with arithmetic; fractions need work.'
+- tapOn: 'Assess Amara Lindgren'
+- assertVisible: 'Confident with arithmetic; fractions need work.'
+- tapOn:
+    id: assessment-level
+- tapOn:
+    id: assessment-level-BA3
+- assertVisible: '.*Beast Academy Level 3.*'
+- scrollUntilVisible:
+    element:
+      id: assessment-level-tab-BA3
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: assessment-level-tab-BA3
+- scrollUntilVisible:
+    element:
+      id: assessment-topic-BA3.04-4
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: assessment-topic-BA3.02-2
+- tapOn:
+    id: assessment-topic-BA3.04-4
+- assertVisible: '2 rated'
+- takeScreenshot: progress-assessment-form
+- scrollUntilVisible:
+    element:
+      id: assessment-save
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: assessment-save
+- extendedWaitUntil:
+    visible: 'Assessment recorded.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: progress-assessment-summary
+    timeout: 10000
+- assertVisible: 'Confident with arithmetic; fractions need work.'
+- assertVisible: 'Assessed, but no plan has been set yet.'
+
+# The plan answers that assessment.
+- scrollUntilVisible:
+    element:
+      id: progress-plan-create
+    direction: UP
+    centerElement: false
+- tapOn:
+    id: progress-plan-create
+- extendedWaitUntil:
+    visible:
+      id: screen-plan-form
+    timeout: 15000
+- assertVisible: 'Learning plan for Amara Lindgren'
+- assertVisible: 'Keep up with the accelerated class.'
+- tapOn:
+    id: plan-per-week-2
+- scrollUntilVisible:
+    element:
+      id: plan-chosen
+    direction: DOWN
+    centerElement: false
+- assertVisible:
+    id: plan-chosen-BA3.02
+- assertNotVisible:
+    id: plan-chosen-BA3.04
+- assertVisible: '1 topic, in teaching order'
+- takeScreenshot: progress-plan-form
+- scrollUntilVisible:
+    element:
+      id: plan-save
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: plan-save
+- extendedWaitUntil:
+    visible: 'Plan created.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: progress-goal
+    timeout: 10000
+- assertVisible: 'Keep up with the accelerated class.'
+- assertVisible: '.*Twice a week, 1 hr.*'
+- takeScreenshot: progress-plan-created
+
+# Delete the plan, then the assessment, each after asking.
+- scrollUntilVisible:
+    element:
+      id: progress-delete-plan
+    direction: DOWN
+- tapOn:
+    id: progress-delete-plan
+- extendedWaitUntil:
+    visible: 'Delete this learning plan?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Plan deleted.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: progress-no-plan
+    timeout: 10000
+- tapOn:
+    id: progress-assessment-delete
+- extendedWaitUntil:
+    visible: 'Delete this assessment?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Assessment deleted.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'No assessment recorded yet.'
+    timeout: 10000
