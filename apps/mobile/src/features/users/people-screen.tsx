@@ -9,7 +9,7 @@ import { FlashList } from '@shopify/flash-list';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Button, IconButton, Text } from 'react-native-paper';
 
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
@@ -19,7 +19,6 @@ import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { canActOn } from './people-model';
 import { PeopleFilters, type PeopleFilterState } from './people-filters';
 import { useUserActions } from './use-user-actions';
 import { useUserPages } from './use-user-pages';
@@ -85,6 +84,7 @@ export function PeopleScreen() {
   const { deactivate, restore, hardDelete, dialog } = useUserActions();
   const actions: RowActions = {
     onView: (user: User) => router.push({ pathname: '/people/[id]', params: { id: user.id } }),
+    onEdit: (user: User) => router.push({ pathname: '/person-form', params: { id: user.id } }),
     onDeactivate: deactivate,
     onRestore: restore,
     onDelete: hardDelete,
@@ -92,7 +92,7 @@ export function PeopleScreen() {
 
   const renderItem = ({ item }: { item: User }) => (
     <View style={{ paddingBottom: space.md }}>
-      <UserCard user={item} actions={actions} canAct={canActOn(viewer, item)} />
+      <UserCard user={item} actions={actions} canAct={isAdmin} isSelf={item.id === viewer?.id} />
     </View>
   );
 
@@ -105,11 +105,24 @@ export function PeopleScreen() {
     }
   }
 
+  const addUser = () => router.push('/person-form');
+
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
       <Text testID="people-description" variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
         {`Everyone at ${brand.name}. A person can hold more than one role.`}
       </Text>
+      {isAdmin ? (
+        <Button
+          testID="people-add-button"
+          mode="contained"
+          icon="plus"
+          onPress={addUser}
+          style={{ alignSelf: 'flex-start' }}
+        >
+          Add user
+        </Button>
+      ) : null}
       <PeopleFilters
         value={filters}
         onChange={(next) => setFilters((current) => ({ ...current, ...next }))}
@@ -148,7 +161,23 @@ export function PeopleScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Users' }} />
+      <Stack.Screen
+        options={{
+          title: 'Users',
+          headerRight: isAdmin
+            ? () => (
+                <IconButton
+                  testID="people-add"
+                  icon="plus"
+                  size={24}
+                  accessibilityLabel="Add user"
+                  style={{ margin: 0 }}
+                  onPress={addUser}
+                />
+              )
+            : undefined,
+        }}
+      />
       <FlashList
         testID="screen-people"
         data={users}

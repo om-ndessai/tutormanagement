@@ -1,0 +1,163 @@
+# The office adds a tutor (Priya): Tutor, name and email (required now), background, the mailing
+# address for their 1099 (only in the financials block), pay rates, a two-hour limit, and three
+# hours of availability on two days. The new record shows the pay, the address and the hours
+# collapsed into ranges. Changes data: reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-add
+    timeout: 20000
+- tapOn:
+    id: people-add
+- extendedWaitUntil:
+    visible:
+      id: person-form-name
+    timeout: 15000
+- tapOn:
+    id: person-role-tutor
+- assertVisible: 'They sign in with this Google address.'
+- tapOn:
+    id: person-form-name
+- inputText: 'Ravi Shah'
+- pressKey: Enter
+- tapOn:
+    id: person-form-email
+- inputText: 'ravi.shah@example.com'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-tutor-education
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-tutor-education
+- inputText: 'BS, Mathematics'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-tutor-address1
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-tutor-address1
+- inputText: '12 Oak Street'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-tutor-city
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-tutor-city
+- inputText: 'Durham'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-tutor-zip
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-tutor-state
+- inputText: 'nc'
+- pressKey: Enter
+- tapOn:
+    id: person-tutor-zip
+- inputText: '27701'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-tutor-rate-virtual
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-tutor-rate-in-person
+- inputText: '70'
+- pressKey: Enter
+- tapOn:
+    id: person-tutor-rate-virtual
+- inputText: '60'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-tutor-limit-120
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-tutor-limit-120
+- scrollUntilVisible:
+    element:
+      id: availability-hour-1-17
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: availability-day-2
+- tapOn:
+    id: availability-hour-2-16
+- tapOn:
+    id: availability-hour-2-17
+- tapOn:
+    id: availability-day-4
+- tapOn:
+    id: availability-hour-4-16
+- assertVisible: '3 hours selected'
+- scrollUntilVisible:
+    element: 'Tuesday: 4:00–6:00 PM'
+    direction: DOWN
+    timeout: 20000
+- takeScreenshot: person-form-availability
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 15000
+- tapOn:
+    id: people-search
+- inputText: 'Ravi'
+- extendedWaitUntil:
+    visible: 'Ravi Shah, ravi.shah@example.com, Tutor, Active, open their record'
+    timeout: 15000
+- tapOn: 'Ravi Shah, ravi.shah@example.com, Tutor, Active, open their record'
+- extendedWaitUntil:
+    visible:
+      id: person-section-tutor
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: person-pay-in-person
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '\$70\.00 / hr'
+- assertVisible: '12 Oak Street.*Durham, NC 27701'
+- scrollUntilVisible:
+    element: '2 hr'
+    direction: DOWN
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-section-availability
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '4:00–6:00 PM'
+- assertVisible: 'Thursday'

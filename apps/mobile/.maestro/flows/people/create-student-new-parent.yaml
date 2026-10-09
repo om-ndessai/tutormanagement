@@ -1,0 +1,95 @@
+# A child whose parent is not on file yet (Priya): Student and a name, then "New parent…" opens the
+# same person form over the first, preset to the parent role; saving it (one request) brings the
+# parent back into the student's list, and saving the student (one more request, naming them) gives
+# a record that lists the new parent. Changes data: reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-add-button
+    timeout: 20000
+- tapOn:
+    id: people-add-button
+- extendedWaitUntil:
+    visible:
+      id: person-form-name
+    timeout: 15000
+- tapOn:
+    id: person-role-student
+- tapOn:
+    id: person-form-name
+- inputText: 'Zuri Marsh'
+- tapOn:
+    id: person-form-title
+- scrollUntilVisible:
+    element:
+      id: guardian-new
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: guardian-new
+# The parent's own form, over the student's.
+- extendedWaitUntil:
+    visible: 'Add a parent'
+    timeout: 15000
+- assertVisible: 'They sign in with this Google address.'
+- assertNotVisible:
+    id: person-role-student
+- takeScreenshot: person-form-nested-parent
+- tapOn:
+    id: person-form-name
+- inputText: 'Hannah Marsh'
+- tapOn:
+    id: person-form-email
+- inputText: 'hannah.marsh@example.com'
+- tapOn: 'Add a parent'
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+# Back in the student's form, with her chosen.
+- extendedWaitUntil:
+    visible: 'Hannah Marsh'
+    timeout: 15000
+- takeScreenshot: person-form-new-parent-chosen
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 15000
+- tapOn:
+    id: people-search
+- inputText: 'Zuri'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: 'Zuri Marsh, No email, Student, Active, open their record'
+    timeout: 15000
+- tapOn: 'Zuri Marsh, No email, Student, Active, open their record'
+- scrollUntilVisible:
+    element: 'Hannah Marsh, Guardian, Primary contact.*'
+    direction: DOWN
+    timeout: 20000

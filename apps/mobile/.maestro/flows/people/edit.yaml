@@ -1,0 +1,124 @@
+# The office edits a record (Priya). Maria's phone changes and the record shows it. Clearing a
+# tutor's email is refused -- everybody but a student-only person signs in with one -- and the rule
+# is said under the field; nothing is saved. Alex also belongs to another organization, so his
+# name, email and phone are the platform's: the form says so and holds them still. Changes data:
+# reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people?view=00000000-0000-4000-8000-000000000004
+- extendedWaitUntil:
+    visible:
+      id: person-edit
+    timeout: 20000
+- assertVisible: 'Maria Okafor'
+- tapOn:
+    id: person-edit
+- extendedWaitUntil:
+    visible: 'Edit user'
+    timeout: 15000
+- assertNotVisible:
+    id: person-form-locked
+- tapOn:
+    id: person-form-phone
+- eraseText: 20
+- tapOn:
+    id: person-form-phone
+- eraseText: 20
+- inputText: '(919) 555-0199'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible: '\(919\) 555-0199'
+    timeout: 15000
+- assertVisible:
+    id: screen-person
+# Taking the email off a tutor.
+- tapOn:
+    id: person-edit
+- extendedWaitUntil:
+    visible: 'Edit user'
+    timeout: 15000
+- tapOn:
+    id: person-form-email
+- eraseText: 40
+# Android puts the cursor where the tap lands, so a second pass clears what sat after it.
+- tapOn:
+    id: person-form-email
+- eraseText: 40
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible: 'Please correct the highlighted fields.'
+    timeout: 15000
+# Said beside the button as well as under the field, which is off-screen up the form.
+- assertVisible: 'An email address is required for anyone who signs in.*'
+- takeScreenshot: person-form-email-required
+- scrollUntilVisible:
+    element:
+      id: person-form-cancel
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: person-form-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 15000
+- assertVisible: 'Email maria\.okafor@gmail\.com'
+# A person shared with another organization.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people?view=00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      text: 'Alex Chen'
+      id: person-name
+    timeout: 20000
+- tapOn:
+    id: person-edit
+- extendedWaitUntil:
+    visible:
+      id: person-form-locked
+    timeout: 15000
+- assertVisible:
+    id: person-form-name
+    enabled: false
+- takeScreenshot: person-form-locked
+- scrollUntilVisible:
+    element:
+      id: person-form-cancel
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: person-form-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 15000

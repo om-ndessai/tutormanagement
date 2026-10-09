@@ -2,6 +2,7 @@
 // pushed screen, with the directory's row actions in its header for an admin.
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
+import { View } from 'react-native';
 import { Divider, IconButton, Menu } from 'react-native-paper';
 
 import { LoadingState, ErrorState } from '@/components/state-views';
@@ -27,6 +28,7 @@ export function UserDetailScreen() {
   const person = data?.data;
   const canAct = person ? canActOn(viewer, person) : false;
   const isDeleted = Boolean(person?.deleted_at);
+  const isAdmin = viewer?.roles.includes('admin') ?? false;
   const run = (action: () => void) => () => {
     setMenuOpen(false);
     action();
@@ -47,46 +49,61 @@ export function UserDetailScreen() {
         options={{
           title: person?.full_name ?? 'User',
           headerRight:
-            person && canAct
+            person && isAdmin
               ? () => (
-                  <Menu
-                    visible={menuOpen}
-                    onDismiss={() => setMenuOpen(false)}
-                    anchor={
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {/* Admins only, as the API: the person themselves asks the office. */}
+                    {!isDeleted ? (
                       <IconButton
-                        testID="person-menu"
-                        icon="dots-horizontal-circle-outline"
+                        testID="person-edit"
+                        icon="pencil-outline"
                         size={24}
-                        accessibilityLabel={`Actions for ${person.full_name}`}
+                        accessibilityLabel={`Edit ${person.full_name}`}
                         style={{ margin: 0 }}
-                        onPress={() => setMenuOpen(true)}
+                        onPress={() => router.push({ pathname: '/person-form', params: { id: person.id } })}
                       />
-                    }
-                  >
-                    {isDeleted ? (
-                      <Menu.Item
-                        testID="person-restore"
-                        leadingIcon="restore"
-                        title="Restore"
-                        onPress={run(() => restore(person))}
-                      />
-                    ) : (
-                      <Menu.Item
-                        testID="person-deactivate"
-                        leadingIcon="account-minus-outline"
-                        title="Deactivate"
-                        onPress={run(() => deactivate(person))}
-                      />
-                    )}
-                    <Divider />
-                    <Menu.Item
-                      testID="person-delete"
-                      leadingIcon="trash-can-outline"
-                      title="Delete permanently"
-                      titleStyle={{ color: theme.colors.error }}
-                      onPress={run(() => hardDelete(person))}
-                    />
-                  </Menu>
+                    ) : null}
+                    {canAct ? (
+                      <Menu
+                        visible={menuOpen}
+                        onDismiss={() => setMenuOpen(false)}
+                        anchor={
+                          <IconButton
+                            testID="person-menu"
+                            icon="dots-horizontal-circle-outline"
+                            size={24}
+                            accessibilityLabel={`Actions for ${person.full_name}`}
+                            style={{ margin: 0 }}
+                            onPress={() => setMenuOpen(true)}
+                          />
+                        }
+                      >
+                        {isDeleted ? (
+                          <Menu.Item
+                            testID="person-restore"
+                            leadingIcon="restore"
+                            title="Restore"
+                            onPress={run(() => restore(person))}
+                          />
+                        ) : (
+                          <Menu.Item
+                            testID="person-deactivate"
+                            leadingIcon="account-minus-outline"
+                            title="Deactivate"
+                            onPress={run(() => deactivate(person))}
+                          />
+                        )}
+                        <Divider />
+                        <Menu.Item
+                          testID="person-delete"
+                          leadingIcon="trash-can-outline"
+                          title="Delete permanently"
+                          titleStyle={{ color: theme.colors.error }}
+                          onPress={run(() => hardDelete(person))}
+                        />
+                      </Menu>
+                    ) : null}
+                  </View>
                 )
               : undefined,
         }}

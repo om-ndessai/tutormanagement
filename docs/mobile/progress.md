@@ -34,8 +34,8 @@ the `[~]` item, then carry on down the list.
 - [x] 22. Mobile: Pairings — assignments and rate overrides (5278c65)
 - [x] 23. Mobile: Schedule — weekly view, editor, cancel/restore, calendar files
 - [x] 24. Mobile: Progress — list, chart, assessments, plans
-- [x] 25. Mobile: People — directory, detail, delete/restore, profile (the person's comment thread lands with #29)
-- [ ] 26. Mobile: People — person form
+- [x] 25. Mobile: People — directory, detail, delete/restore, profile (the person's comment thread lands with #29) (60621e2)
+- [x] 26. Mobile: People — person form
 - [ ] 27. Mobile: Billing — balances, payments, CSV and tax summary
 - [ ] 28. Mobile: Year-end — 1099 printed on device, SSN receipts
 - [ ] 29. Mobile: Comments — feed and threads

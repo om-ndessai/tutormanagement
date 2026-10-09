@@ -1,0 +1,107 @@
+# The office adds a child (Priya): Student, a name and no email -- the email is optional only
+# because the roles are student-only. Saving without a parent is refused by the API's guardian rule;
+# with Anita Patel named (as mother) the student and the link are created in ONE request, and the
+# new record lists her. Changes data: reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-add-button
+    timeout: 20000
+- tapOn:
+    id: people-add-button
+- extendedWaitUntil:
+    visible:
+      id: person-form-name
+    timeout: 15000
+- tapOn:
+    id: person-role-student
+- assertVisible: 'Leave blank if this child has no address of their own.'
+- tapOn:
+    id: person-form-name
+- inputText: 'Mila Novak'
+- tapOn:
+    id: person-form-title
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible: 'A student must have at least one parent or guardian.'
+    timeout: 15000
+- takeScreenshot: person-form-no-guardian
+- scrollUntilVisible:
+    element:
+      id: guardian-search
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: guardian-search
+- inputText: 'Anita'
+# The Search key puts the keyboard away, uncovering the matches.
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: guardian-option-00000000-0000-4000-8000-000000000007
+    timeout: 15000
+- tapOn:
+    id: guardian-option-00000000-0000-4000-8000-000000000007
+- extendedWaitUntil:
+    visible:
+      id: guardian-00000000-0000-4000-8000-000000000007
+    timeout: 10000
+- tapOn:
+    id: guardian-00000000-0000-4000-8000-000000000007-rel-mother
+- takeScreenshot: person-form-guardian
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'Mila Novak added.'
+    timeout: 10000
+- tapOn:
+    id: people-search
+- inputText: 'Mila'
+- extendedWaitUntil:
+    visible: 'Mila Novak, No email, Student, Active, open their record'
+    timeout: 15000
+- tapOn: 'Mila Novak, No email, Student, Active, open their record'
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 15000
+- assertVisible: 'No email'
+- assertNotVisible:
+    id: person-email-action
+- scrollUntilVisible:
+    element:
+      id: person-guardian-00000000-0000-4000-8000-000000000007
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'Anita Patel, Mother, Primary contact.*'

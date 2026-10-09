@@ -62,7 +62,15 @@ tags:
     id: person-topup
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: people-detail-other-tutor
-- runFlow: ../../subflows/go-back.yaml
+# A Back pressed while the header was still settling after the scroll can be lost; press it again.
+- retry:
+    maxRetries: 1
+    commands:
+      - runFlow: ../../subflows/go-back.yaml
+      - extendedWaitUntil:
+          visible:
+            id: screen-people
+          timeout: 10000
 # A student he teaches: the family's price is not his to know (R4).
 - extendedWaitUntil:
     visible:

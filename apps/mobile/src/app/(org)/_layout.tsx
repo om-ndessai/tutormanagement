@@ -117,6 +117,15 @@ export default function OrgLayout() {
           }}
         />
         <Stack.Screen
+          name="person-form"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.9, 1],
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="plan-form"
           options={{
             presentation: 'formSheet',

@@ -22,11 +22,14 @@ export const UserCard = memo(function UserCard({
   user,
   actions,
   canAct,
+  isSelf = false,
 }: {
   user: User;
   actions: RowActions;
-  /** An admin, on somebody else's row: the server refuses everyone else. */
+  /** An admin: the server refuses everyone else. */
   canAct: boolean;
+  /** The reader's own row: an admin may edit it, never deactivate or delete it. */
+  isSelf?: boolean;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -77,7 +80,7 @@ export const UserCard = memo(function UserCard({
         </Pressable>
         {canAct ? (
           <View style={{ paddingTop: space.sm, paddingRight: space.xs }}>
-            <ActionsMenu user={user} actions={actions} />
+            <ActionsMenu user={user} actions={actions} isSelf={isSelf} />
           </View>
         ) : null}
       </View>
@@ -96,7 +99,7 @@ function describe(user: User): string {
   ].join(', ');
 }
 
-function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
+function ActionsMenu({ user, actions, isSelf }: { user: User; actions: RowActions; isSelf: boolean }) {
   const theme = useAppTheme();
   const [open, setOpen] = useState(false);
   const isDeleted = user.deleted_at !== null;
@@ -133,7 +136,7 @@ function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
           onPress={run(actions.onEdit)}
         />
       ) : null}
-      {!isDeleted ? (
+      {isSelf ? null : !isDeleted ? (
         <Menu.Item
           testID="people-action-deactivate"
           leadingIcon="account-minus-outline"
@@ -148,14 +151,18 @@ function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
           onPress={run(actions.onRestore)}
         />
       )}
-      <Divider />
-      <Menu.Item
-        testID="people-action-delete"
-        leadingIcon="trash-can-outline"
-        title="Delete permanently"
-        titleStyle={{ color: theme.colors.error }}
-        onPress={run(actions.onDelete)}
-      />
+      {isSelf ? null : (
+        <>
+          <Divider />
+          <Menu.Item
+            testID="people-action-delete"
+            leadingIcon="trash-can-outline"
+            title="Delete permanently"
+            titleStyle={{ color: theme.colors.error }}
+            onPress={run(actions.onDelete)}
+          />
+        </>
+      )}
     </Menu>
   );
 }
