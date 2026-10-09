@@ -33,7 +33,8 @@ you are, so the next agent can resume.
   - iOS simulator "iPhone 17", UDID `328F7D61-436F-476E-8380-3B69E6F9F5A1` (iOS 27).
   - Android emulator `emulator-5554` (AVD `Medium_Phone_API_37.0`). If `adb devices` doesn't
     list it, boot it in the background:
-    `nohup emulator -avd Medium_Phone_API_37.0 -no-snapshot-save -no-boot-anim &`, then wait
+    `nohup emulator -avd Medium_Phone_API_37.0 -cores 4 -memory 4096 -no-snapshot-save -no-boot-anim &`
+    (the AVD's own config has one core, which makes the app crawl), then wait
     for `sys.boot_completed` to be 1. After any boot, run
     `adb reverse tcp:8787 tcp:8787; adb reverse tcp:8081 tcp:8081`.
 - **Local Worker** on `http://localhost:8787`, with sign-in off and the local seeded D1.

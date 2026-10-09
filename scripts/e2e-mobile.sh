@@ -68,7 +68,7 @@ boot_ios() {
 boot_android() {
   if ! adb devices | grep -q "emulator-.*device$"; then
     echo "› booting the Android emulator ($AVD)" >&2
-    (nohup emulator -avd "$AVD" -no-snapshot-save -no-boot-anim >"$LOGS/emulator.log" 2>&1 &)
+    (nohup emulator -avd "$AVD" -cores 4 -memory 4096 -no-snapshot-save -no-boot-anim >"$LOGS/emulator.log" 2>&1 &)
     adb wait-for-device
     until [[ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do sleep 3; done
   fi
