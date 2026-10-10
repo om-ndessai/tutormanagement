@@ -22,14 +22,18 @@ export function HardDeleteDialog({
   onConfirm: () => void;
 }) {
   const theme = useAppTheme();
-  const [typed, setTyped] = useState('');
-  const matches = confirmsName(typed, fullName);
+  // Uncontrolled (ux-audit F-7): a controlled field re-rendered the dialog on every key while it
+  // moved with the keyboard, and the simulator's keyboard dropped keys ("jae x"). Only whether the
+  // name matches is state, so the dialog re-renders when that flips, not per key. The dialog's
+  // content unmounts when it closes, so it reopens empty.
+  const [matches, setMatches] = useState(false);
+  const onChangeText = (text: string) => setMatches(confirmsName(text, fullName));
   // A Paper dialog sits in the middle of the whole screen, so the keyboard covered its buttons on
   // iOS: Delete permanently could not be reached without putting the keyboard away first. A bottom
   // margin as tall as the keyboard centres it in the part left visible.
   const keyboard = useKeyboardHeight();
   const dismiss = () => {
-    setTyped('');
+    setMatches(false);
     onDismiss();
   };
 
@@ -54,11 +58,14 @@ export function HardDeleteDialog({
             testID="person-delete-input"
             mode="outlined"
             dense
-            value={typed}
-            onChangeText={setTyped}
+            defaultValue=""
+            onChangeText={onChangeText}
             placeholder={fullName}
-            autoCapitalize="words"
+            // The check ignores case: nothing to capitalise, correct or complete.
+            autoCapitalize="none"
             autoCorrect={false}
+            spellCheck={false}
+            autoComplete="off"
             returnKeyType="done"
             accessibilityLabel={`Type ${fullName} to confirm`}
           />
@@ -74,7 +81,7 @@ export function HardDeleteDialog({
             disabled={!matches || busy}
             loading={busy}
             onPress={() => {
-              setTyped('');
+              setMatches(false);
               onConfirm();
             }}
           >

@@ -4,6 +4,9 @@
 // (`requireAdmin`): the person themselves asks the office to change their record.
 import type { UserDetail } from '@tmi/shared';
 import { router } from 'expo-router';
+import { useCallback, useRef } from 'react';
+import type { ScrollView } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
@@ -35,6 +38,14 @@ export function PersonFormSheet({
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const detail = useUserDetail(isAdmin && id ? id : null);
+  // A failed save lists its messages beside the buttons at the foot of the form: bring them into
+  // view, since the field at fault is usually far up a long form (ux-audit F-7, F-22).
+  const scrollRef = useRef<ScrollView>(null);
+  const reduceMotion = useReducedMotion();
+  const showErrors = useCallback(
+    () => scrollRef.current?.scrollToEnd({ animated: !reduceMotion }),
+    [reduceMotion],
+  );
 
   function saved(person: UserDetail) {
     // A parent added from a student's form goes back to that form, chosen.
@@ -82,12 +93,18 @@ export function PersonFormSheet({
         }
         onSaved={saved}
         onCancel={close}
+        onFailedSave={showErrors}
       />
     );
   }
 
   return (
-    <Screen testID="screen-person-form" edges={['bottom']} contentStyle={{ paddingTop: space.xl }}>
+    <Screen
+      testID="screen-person-form"
+      edges={['bottom']}
+      contentStyle={{ paddingTop: space.xl }}
+      scrollRef={scrollRef}
+    >
       {body}
     </Screen>
   );

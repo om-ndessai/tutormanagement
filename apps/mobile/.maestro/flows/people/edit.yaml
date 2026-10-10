@@ -82,8 +82,12 @@ tags:
 - extendedWaitUntil:
     visible: 'Please correct the highlighted fields.'
     timeout: 15000
-# Said beside the button as well as under the field, which is off-screen up the form.
-- assertVisible: 'An email address is required for anyone who signs in.*'
+# Said beside the button as well as under the field, which is off-screen up the form. The form
+# scrolls its error block into view; on a short screen the second line can still sit below it.
+- scrollUntilVisible:
+    element: 'An email address is required for anyone who signs in.*'
+    direction: DOWN
+    timeout: 15000
 - takeScreenshot: person-form-email-required
 - scrollUntilVisible:
     element:

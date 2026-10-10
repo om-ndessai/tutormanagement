@@ -13,7 +13,7 @@ import {
   type UserDetail,
   type UserRole,
 } from '@tmi/shared';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import { Button, Divider, Icon, Text } from 'react-native-paper';
 
@@ -57,6 +57,7 @@ export function PersonForm({
   description,
   onSaved,
   onCancel,
+  onFailedSave,
 }: {
   /** The record being edited; absent to add someone. */
   detail?: UserDetail;
@@ -69,6 +70,8 @@ export function PersonForm({
   /** Called with the saved record. */
   onSaved: (user: UserDetail) => void;
   onCancel: () => void;
+  /** Called once a failed save's messages are on screen, so the host can bring them into view. */
+  onFailedSave?: () => void;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -88,6 +91,11 @@ export function PersonForm({
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
+  // Counts failed saves; each one asks the host to scroll the messages into view (ux-audit F-7).
+  const [failures, setFailures] = useState(0);
+  useEffect(() => {
+    if (failures > 0) onFailedSave?.();
+  }, [failures, onFailedSave]);
 
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
@@ -119,6 +127,7 @@ export function PersonForm({
     const parsed = schema.safeParse(request);
     if (!parsed.success) {
       setErrors(issuesToErrors(parsed.error.issues));
+      setFailures((n) => n + 1);
       haptics.error();
       return;
     }
@@ -131,6 +140,7 @@ export function PersonForm({
       onSaved(saved.data);
     } catch (error) {
       haptics.error();
+      setFailures((n) => n + 1);
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
         setFormError(error.message);

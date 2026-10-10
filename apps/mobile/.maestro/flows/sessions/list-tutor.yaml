@@ -119,10 +119,19 @@ tags:
         id: screen-session
     file: ../../subflows/go-back.yaml
 # A range: last month holds the seed's September lessons, this month none of them.
+# The list is still scrolled down from "Your pay", which leaves the chip row under the
+# transparent iOS bar: a tap there lands on the status bar (scroll to top) instead of the chip.
+# Centred first, so the tap reaches it.
 - extendedWaitUntil:
     visible:
-      id: sessions-range-this-month
+      id: screen-sessions
     timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: sessions-range-this-month
+    direction: UP
+    centerElement: true
+    timeout: 20000
 - tapOn:
     id: sessions-range-this-month
 - extendedWaitUntil:
