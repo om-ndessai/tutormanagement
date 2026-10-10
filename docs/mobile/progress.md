@@ -48,6 +48,8 @@ the `[~]` item, then carry on down the list.
 - [x] 35. Mobile: Platform console — organizations, branding, logo upload, admins, people, activity (d71b763)
 - [x] 36. Mobile tests: exposure across personas
 
+**Phase 1 gate (2026-10-10):** full suite, 74 flows, fresh DB and a rebooted 4-core emulator. iOS 72/74, Android 73/74. The three failures (`sessions/list-tutor` and `people/delete-restore` on iOS, `people/edit` on Android) passed when re-run alone: intermittent, listed for the Phase 2 stability pass. The web app, API and shared package are untouched (`git diff main -- apps/web apps/api packages/shared` is empty).
+
 ## Phase 2 — UX audit and immersive design
 
 - [ ] 37. Docs: mobile UX audit
