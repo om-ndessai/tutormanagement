@@ -4,6 +4,7 @@ import { ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
 import { emit } from './events';
 import { getActiveOrg } from './organization';
 import { androidFallbackOrigin, devUser, serverOrigin } from './server';
+import { reportReachable } from './reachability';
 
 /** Honoured by the API only while its sign-in is switched off (local dev, the demo). */
 export const DEV_USER_HEADER = 'X-Dev-User';
@@ -83,15 +84,19 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   } catch {
     const fallback = androidFallbackOrigin();
     if (!fallback || useAndroidFallback) {
+      reportReachable(false);
       throw new ApiRequestError(0, 'internal_error', 'Could not reach the server. Are you online?');
     }
     try {
       response = await send(fallback, path, init);
       useAndroidFallback = true;
     } catch {
+      reportReachable(false);
       throw new ApiRequestError(0, 'internal_error', 'Could not reach the server. Are you online?');
     }
   }
+  // Any answer at all, even a refusal, means the server is there (the offline banner, F-16).
+  reportReachable(true);
 
   if (response.status === 204) return undefined as T;
 

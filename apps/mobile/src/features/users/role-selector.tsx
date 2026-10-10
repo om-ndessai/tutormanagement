@@ -4,8 +4,9 @@
 // teaches younger children. Checkable cards rather than a single choice make that obvious.
 import { USER_ROLES, USER_ROLE_DESCRIPTIONS, USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
 import { Pressable, View } from 'react-native';
-import { HelperText, Icon, Text } from 'react-native-paper';
+import { Icon, Text } from 'react-native-paper';
 
+import { FieldError } from '@/components/field-error';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
@@ -73,11 +74,7 @@ export function RoleSelector({
           </Pressable>
         );
       })}
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );
 }

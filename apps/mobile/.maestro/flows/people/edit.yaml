@@ -96,6 +96,12 @@ tags:
     timeout: 30000
 - tapOn:
     id: person-form-cancel
+# The cleared email is an unsaved change, so Cancel asks first (B5, F-3); discarding it leaves the
+# record as it was.
+- extendedWaitUntil:
+    visible: 'Discard changes\?'
+    timeout: 10000
+- tapOn: 'Discard'
 - extendedWaitUntil:
     visible:
       id: screen-person

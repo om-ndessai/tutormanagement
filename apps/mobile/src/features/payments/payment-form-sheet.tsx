@@ -25,6 +25,9 @@ import { useState } from 'react';
 import { Platform, View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { Choice, Field } from '@/components/form-choice';
 import { OptionPicker } from '@/components/option-picker';
@@ -101,6 +104,10 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
   const [reference, setReference] = useState(existing?.reference ?? '');
   const [notes, setNotes] = useState(existing?.notes ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
+  const dirty = useDirty({ direction, partyId, studentId, amount, method, day, clock, reference, notes });
+  const { leave } = useUnsavedChangesGuard(dirty);
+  const offline = useOffline();
 
   const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
   const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
@@ -185,7 +192,7 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
         await record.mutateAsync(parsed.data);
         toast.success('Payment recorded.');
       }
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
@@ -255,9 +262,7 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
             />
           ) : null}
           {direction === 'from_parent' && !partyId && errors.student_user_id ? (
-            <HelperText type="error" padding="none">
-              {errors.student_user_id}
-            </HelperText>
+            <FieldError>{errors.student_user_id}</FieldError>
           ) : null}
         </>
       ) : null}
@@ -277,11 +282,7 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
           left={<TextInput.Affix text="$" />}
           error={Boolean(errors.amount_cents)}
         />
-        {errors.amount_cents ? (
-          <HelperText type="error" padding="none">
-            {errors.amount_cents}
-          </HelperText>
-        ) : null}
+        {errors.amount_cents ? <FieldError>{errors.amount_cents}</FieldError> : null}
       </View>
 
       <Field label="Paid by" error={errors.method}>
@@ -309,11 +310,7 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
           error={Boolean(errors.paid_at)}
         />
         <DateTimeField testID="payment-time" mode="time" label="Time" value={clock} onChange={setClock} />
-        {errors.paid_at ? (
-          <HelperText type="error" padding="none">
-            {errors.paid_at}
-          </HelperText>
-        ) : null}
+        {errors.paid_at ? <FieldError>{errors.paid_at}</FieldError> : null}
       </View>
 
       <View>
@@ -345,11 +342,7 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
         placeholder="September, first half"
         error={errors.notes}
       />
-      {errors.form ? (
-        <HelperText type="error" padding="none">
-          {errors.form}
-        </HelperText>
-      ) : null}
+      {errors.form ? <FieldError>{errors.form}</FieldError> : null}
 
       <View style={{ gap: space.sm }}>
         <Button
@@ -357,10 +350,11 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving}
+          disabled={saving || offline}
         >
           {isEdit ? 'Save changes' : 'Record payment'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         <Button testID="payment-cancel" mode="outlined" onPress={close} disabled={saving}>
           Cancel
         </Button>

@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
@@ -111,6 +112,7 @@ export function PeopleScreen() {
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
+      <ConnectivityBanner />
       <PageIntro testID="people-description">
         {`Everyone at ${brand.name}. A person can hold more than one role.`}
       </PageIntro>

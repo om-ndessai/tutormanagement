@@ -26,6 +26,9 @@ export function AutosaveStatus({ state }: { state: AutosaveState }) {
   } else if (state.kind === 'saved') {
     icon = <Icon source="check" size={14} color={theme.tokens.success} />;
     text = `Draft autosaved ${formatInstantClock(state.at, timeZone)}`;
+  } else if (state.kind === 'offline') {
+    icon = <Icon source="wifi-off" size={14} color={theme.colors.error} />;
+    text = 'Not saved — offline';
   } else if (state.kind === 'failed') {
     icon = <Icon source="cloud-off-outline" size={14} color={theme.colors.error} />;
     text = 'Not autosaved yet';

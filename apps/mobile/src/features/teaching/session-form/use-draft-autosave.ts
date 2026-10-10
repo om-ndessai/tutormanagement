@@ -19,10 +19,16 @@ import {
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 
+import { ApiRequestError } from '@/lib/api-client';
 import { issuesToErrors } from './use-session-form';
 
 export type AutosaveState =
-  { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; at: Date } | { kind: 'failed' };
+  | { kind: 'idle' }
+  | { kind: 'saving' }
+  | { kind: 'saved'; at: Date }
+  | { kind: 'failed' }
+  /** The server could not be reached: tried again on the next tick (ux-audit F-16). */
+  | { kind: 'offline' };
 
 export interface DraftAutosaveOptions {
   /** False while editing a lesson on the record: that one is posted, and is never a draft. */
@@ -91,7 +97,16 @@ export function useDraftAutosave(options: DraftAutosaveOptions) {
         lastSavedRef.current = json;
         report({ kind: 'saved', at: new Date() });
       })
-      .catch(() => report({ kind: 'failed' }))
+      .catch((error: unknown) => {
+        // Unreachable is not a refusal: the same body is tried again on the next tick, rather
+        // than waiting for the writer to change something.
+        if (error instanceof ApiRequestError && error.status === 0) {
+          lastTriedRef.current = null;
+          report({ kind: 'offline' });
+        } else {
+          report({ kind: 'failed' });
+        }
+      })
       .finally(() => {
         inFlightRef.current = null;
       });

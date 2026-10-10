@@ -20,6 +20,9 @@ import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { Button, HelperText, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Choice, Field } from '@/components/form-choice';
@@ -109,6 +112,21 @@ export function PlanForm({
   const [status, setStatus] = useState<PlanStatus>(existing?.status ?? 'active');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
+  const dirty = useDirty({
+    goal,
+    targetLevel,
+    startsOn,
+    targetOn,
+    perWeek,
+    minutes,
+    recommendation,
+    topics,
+    status,
+  });
+  const { leave } = useUnsavedChangesGuard(dirty);
+  const offline = useOffline();
+
   const create = useCreatePlan();
   const update = useUpdatePlan();
   const saving = create.isPending || update.isPending;
@@ -160,7 +178,7 @@ export function PlanForm({
         toast.success('Plan created.');
         announceFormSaved({ form: 'plan', id: created.data.id });
       }
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) {
         setErrors({ ...error.fieldErrors, form: error.message });
@@ -237,9 +255,7 @@ export function PlanForm({
           error={Boolean(errors.target_on)}
         />
         {errors.starts_on || errors.target_on ? (
-          <HelperText type="error" padding="none">
-            {errors.starts_on ?? errors.target_on}
-          </HelperText>
+          <FieldError>{errors.starts_on ?? errors.target_on}</FieldError>
         ) : null}
       </View>
 
@@ -321,10 +337,11 @@ export function PlanForm({
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving}
+          disabled={saving || offline}
         >
           {existing ? 'Save changes' : 'Create plan'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         <Button testID="plan-cancel" mode="outlined" onPress={close} disabled={saving}>
           Cancel
         </Button>

@@ -4,10 +4,11 @@
 // (`requireAdmin`): the person themselves asks the office to change their record.
 import type { UserDetail } from '@tmi/shared';
 import { router } from 'expo-router';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { ScrollView } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 
+import { useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
@@ -48,6 +49,10 @@ export function PersonFormSheet({
     [reduceMotion],
   );
 
+  // A half-filled record is not lost to a swipe or Back (ux-audit F-3).
+  const [dirty, setDirty] = useState(false);
+  const { leave } = useUnsavedChangesGuard(dirty);
+
   function saved(person: UserDetail) {
     // A parent added from a student's form goes back to that form, chosen.
     if (forGuardian) {
@@ -55,7 +60,7 @@ export function PersonFormSheet({
     }
     // The welcome wizard, when it opened this sheet, carries on from the saved record.
     announceFormSaved({ form: 'person', id: person.id, name: person.full_name });
-    close();
+    leave(close);
   }
 
   let body;
@@ -95,6 +100,7 @@ export function PersonFormSheet({
         onSaved={saved}
         onCancel={close}
         onFailedSave={showErrors}
+        onDirtyChange={setDirty}
       />
     );
   }
@@ -105,6 +111,8 @@ export function PersonFormSheet({
       edges={['bottom']}
       contentStyle={{ paddingTop: space.xl }}
       scrollRef={scrollRef}
+      // This form brings its foot, where the messages are listed, into view itself (B2).
+      scrollToErrors={false}
     >
       {body}
     </Screen>

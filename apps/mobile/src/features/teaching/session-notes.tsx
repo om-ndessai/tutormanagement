@@ -18,8 +18,9 @@ import {
 } from '@tmi/shared';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
-import { Chip, Divider, HelperText, Icon, Text, TextInput } from 'react-native-paper';
+import { Chip, Divider, Icon, Text, TextInput } from 'react-native-paper';
 
+import { FieldError } from '@/components/field-error';
 import { RatingChip, RatingPicker } from '@/features/progress/rating';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -233,11 +234,7 @@ export function NoteField({
         style={{ minHeight: long ? 120 : 64 }}
         {...(long ? {} : { returnKeyType: 'done' as const, submitBehavior: 'blurAndSubmit' as const })}
       />
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );
 }
@@ -334,11 +331,7 @@ export function AssessmentFields({
           {SESSION_RATING_LABELS[rating]}
         </Text>
       ) : null}
-      {errors.rating ? (
-        <HelperText type="error" padding="none">
-          {errors.rating}
-        </HelperText>
-      ) : null}
+      {errors.rating ? <FieldError>{errors.rating}</FieldError> : null}
       <NoteField
         testID={`${testID}-body`}
         label="In a few words"

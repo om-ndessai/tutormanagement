@@ -13,8 +13,11 @@ import {
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, HelperText, Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Screen } from '@/components/screen';
@@ -100,6 +103,11 @@ export function AssessmentForm({
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
+  const dirty = useDirty({ assessedOn, course, level, summary, ratings: [...ratings] });
+  const { leave } = useUnsavedChangesGuard(dirty);
+  const offline = useOffline();
+
   const create = useCreateAssessment();
   const update = useUpdateAssessment();
   const saving = create.isPending || update.isPending;
@@ -133,7 +141,7 @@ export function AssessmentForm({
         toast.success('Assessment recorded.');
         announceFormSaved({ form: 'assessment', id: created.data.id });
       }
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) {
         setErrors({ ...error.fieldErrors, form: error.message });
@@ -166,11 +174,7 @@ export function AssessmentForm({
           onChange={setAssessedOn}
           error={Boolean(errors.assessed_on)}
         />
-        {errors.assessed_on ? (
-          <HelperText type="error" padding="none">
-            {errors.assessed_on}
-          </HelperText>
-        ) : null}
+        {errors.assessed_on ? <FieldError>{errors.assessed_on}</FieldError> : null}
       </View>
 
       <View>
@@ -184,11 +188,7 @@ export function AssessmentForm({
           returnKeyType="done"
           error={Boolean(errors.school_course)}
         />
-        {errors.school_course ? (
-          <HelperText type="error" padding="none">
-            {errors.school_course}
-          </HelperText>
-        ) : null}
+        {errors.school_course ? <FieldError>{errors.school_course}</FieldError> : null}
       </View>
 
       <LevelPicker
@@ -229,11 +229,7 @@ export function AssessmentForm({
         ) : (
           <ListSkeleton label="Loading the curriculum…" count={4} height={56} />
         )}
-        {errors.ratings ? (
-          <HelperText type="error" padding="none">
-            {errors.ratings}
-          </HelperText>
-        ) : null}
+        {errors.ratings ? <FieldError>{errors.ratings}</FieldError> : null}
       </View>
 
       {/* A form sheet covers the app's toasts, so a failed save is said here too. */}
@@ -249,10 +245,11 @@ export function AssessmentForm({
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving}
+          disabled={saving || offline}
         >
           {existing ? 'Save changes' : 'Record assessment'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         <Button testID="assessment-cancel" mode="outlined" onPress={close} disabled={saving}>
           Cancel
         </Button>

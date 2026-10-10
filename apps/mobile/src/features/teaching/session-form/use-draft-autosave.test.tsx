@@ -2,6 +2,7 @@ import { act, renderHook } from '@testing-library/react-native';
 import type { SessionDraftInput } from '@tmi/shared';
 import { AppState } from 'react-native';
 
+import { ApiRequestError } from '@/lib/api-client';
 import { useDraftAutosave, withDraft, type DraftAutosaveOptions } from './use-draft-autosave';
 
 const TUTOR = '00000000-0000-4000-8000-000000000003';
@@ -34,6 +35,7 @@ function deferredSave() {
     body: SessionDraftInput;
     resolve: () => void;
     reject: () => void;
+    unreachable: () => void;
   }[] = [];
   const save = jest.fn(
     (id: string | undefined, input: SessionDraftInput) =>
@@ -43,6 +45,8 @@ function deferredSave() {
           body: input,
           resolve: () => resolve({ data: { id: id ?? 'draft-1' } }),
           reject: () => reject(new Error('offline')),
+          unreachable: () =>
+            reject(new ApiRequestError(0, 'internal_error', 'Could not reach the server. Are you online?')),
         });
       }),
   );
@@ -168,6 +172,20 @@ describe('the 3-second autosave', () => {
     state.current = body('Fractions, again');
     await tick();
     expect(save).toHaveBeenCalledTimes(2);
+  });
+
+  it('says "offline" when the server cannot be reached, and tries the same body again (F-16)', async () => {
+    const { save, calls, hook } = await setup();
+    await tick();
+    await act(async () => {
+      calls[0]!.unreachable();
+      await Promise.resolve();
+    });
+    expect(hook.result.current.state.kind).toBe('offline');
+    await tick();
+    expect(save).toHaveBeenCalledTimes(2);
+    await settle(calls[1]!);
+    expect(hook.result.current.state.kind).toBe('saved');
   });
 
   it('is off while editing a lesson on the record', async () => {

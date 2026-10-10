@@ -10,8 +10,10 @@ import {
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, HelperText, Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
@@ -100,6 +102,10 @@ function ReflectionForm({ session }: { session: TutoringSession }) {
   const [comment, setComment] = useState(current?.comment ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // What was typed is not lost to a swipe or Back (ux-audit F-3).
+  const dirty = useDirty({ answers, homeworkNotes, comment });
+  const { leave } = useUnsavedChangesGuard(dirty);
+
   const forStudent = user ? likelyReflectorRole(session, user) === 'student' : false;
   const name = firstName(session.student_name);
   const busy = save.isPending || withdraw.isPending;
@@ -125,7 +131,7 @@ function ReflectionForm({ session }: { session: TutoringSession }) {
     try {
       await save.mutateAsync({ sessionId: session.id, input });
       toast.success(forStudent ? 'Thanks — your reflection is saved.' : 'Reflection saved.');
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
       toast.error(error instanceof ApiRequestError ? error.message : 'Could not save the reflection.');
@@ -136,7 +142,7 @@ function ReflectionForm({ session }: { session: TutoringSession }) {
     try {
       await withdraw.mutateAsync(session.id);
       toast.success('Reflection withdrawn.');
-      close();
+      leave(close);
     } catch (error) {
       toast.error(error instanceof ApiRequestError ? error.message : 'Could not withdraw the reflection.');
     }
@@ -175,11 +181,7 @@ function ReflectionForm({ session }: { session: TutoringSession }) {
             <Text variant="bodySmall" style={{ color: muted }}>
               {value ? question.labels[value] : `${question.labels[1]} … ${question.labels[5]}`}
             </Text>
-            {errors[question.key] ? (
-              <HelperText type="error" padding="none">
-                {errors[question.key]}
-              </HelperText>
-            ) : null}
+            {errors[question.key] ? <FieldError>{errors[question.key]}</FieldError> : null}
           </View>
         );
       })}
@@ -202,7 +204,7 @@ function ReflectionForm({ session }: { session: TutoringSession }) {
           }
           error={Boolean(errors.homework_notes)}
         />
-        {errors.homework_notes ? <HelperText type="error">{errors.homework_notes}</HelperText> : null}
+        {errors.homework_notes ? <FieldError padding="normal">{errors.homework_notes}</FieldError> : null}
       </View>
       <View>
         <TextInput
@@ -217,7 +219,7 @@ function ReflectionForm({ session }: { session: TutoringSession }) {
           placeholder="Optional"
           error={Boolean(errors.comment)}
         />
-        {errors.comment ? <HelperText type="error">{errors.comment}</HelperText> : null}
+        {errors.comment ? <FieldError padding="normal">{errors.comment}</FieldError> : null}
       </View>
 
       <View style={{ gap: space.sm }}>

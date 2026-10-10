@@ -3,8 +3,9 @@
 // record sheet's PairingPicker is the same shape, specialised to pairings.
 import { useState } from 'react';
 import { Keyboard, Pressable, View } from 'react-native';
-import { Divider, HelperText, Icon, Searchbar, Text } from 'react-native-paper';
+import { Divider, Icon, Searchbar, Text } from 'react-native-paper';
 
+import { FieldError } from '@/components/field-error';
 import { ICON_TARGET } from '@/components/icon-button';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -91,11 +92,7 @@ export function OptionPicker({
         </View>
         <Icon source={open ? 'chevron-up' : 'chevron-down'} size={20} color={muted} />
       </Pressable>
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
 
       {open ? (
         <View style={{ gap: space.sm }}>

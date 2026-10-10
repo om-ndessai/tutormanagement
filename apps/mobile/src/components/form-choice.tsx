@@ -2,8 +2,9 @@
 // small set (a weekday, a length, sessions a week) as a radio button at a full touch target.
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import { HelperText, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
+import { FieldError } from '@/components/field-error';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
@@ -16,11 +17,7 @@ export function Field({ label, error, children }: { label: string; error?: strin
         {label}
       </Text>
       {children}
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );
 }

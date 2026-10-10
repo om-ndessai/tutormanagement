@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { AppState, View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
+import { useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -101,6 +102,14 @@ export function Form1099Body({ tutor, year }: { tutor: TutorTaxStatus; year: num
   }
 
   const formatted = normaliseSsn(ssn);
+  // A number typed, or a field changed from what was filled in, is not lost to a swipe (F-3). Only
+  // WHETHER a number was typed is compared: the number itself is never copied anywhere.
+  const dirty =
+    ssn.length > 0 ||
+    address !== recipientAddress ||
+    payerTin !== settingsTin ||
+    payerAddress !== settingsAddress;
+  const { leave } = useUnsavedChangesGuard(dirty);
 
   // The number goes the moment the app is not the one in front: the app switcher, Control
   // Center, a call, Android's print activity. A typed payer TIN goes too: a sole proprietor's TIN
@@ -119,9 +128,11 @@ export function Form1099Body({ tutor, year }: { tutor: TutorTaxStatus; year: num
     };
   }, [settingsTin]);
 
+  // Cancel is the decision itself: the number goes at once and the sheet closes without asking.
+  // A swipe or Back still asks first ("Discard changes?").
   function cancel() {
     setSsn('');
-    close();
+    leave(close);
   }
 
   async function print() {
@@ -149,7 +160,7 @@ export function Form1099Body({ tutor, year }: { tutor: TutorTaxStatus; year: num
       if (!/did not complete|cancel/i.test(message)) toast.error('Could not open the print dialog.');
     } finally {
       setPrinting(false);
-      close();
+      leave(close);
     }
   }
 

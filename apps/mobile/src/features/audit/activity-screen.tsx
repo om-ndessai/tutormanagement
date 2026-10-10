@@ -8,6 +8,7 @@ import { useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Badge, Button, Chip, Text } from 'react-native-paper';
 
+import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
@@ -73,6 +74,7 @@ export function ActivityScreen() {
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
+      <ConnectivityBanner />
       <PageIntro testID="activity-description">
         {isAdmin
           ? 'Everything that has happened in the portal, newest first.'

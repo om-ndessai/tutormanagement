@@ -9,8 +9,9 @@ import { RELATIONSHIPS, RELATIONSHIP_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, HelperText, Icon, Searchbar, Text } from 'react-native-paper';
+import { Button, Card, Icon, Searchbar, Text } from 'react-native-paper';
 
+import { FieldError } from '@/components/field-error';
 import { IconButton } from '@/components/icon-button';
 import { Choice } from '@/components/form-choice';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -209,11 +210,7 @@ export function GuardianPicker({
         New parent…
       </Button>
 
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );
 }

@@ -4,8 +4,10 @@ import { sessionAssessmentInputSchema, type Rating, type TutoringSession } from 
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, HelperText, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
@@ -63,6 +65,10 @@ export function AssessForm({ session }: { session: TutoringSession }) {
   const [rating, setRating] = useState<Rating | null>(mine?.rating ?? null);
   const [body, setBody] = useState(mine?.body ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // What was typed is not lost to a swipe or Back (ux-audit F-3).
+  const dirty = useDirty({ rating, body });
+  const { leave } = useUnsavedChangesGuard(dirty);
   const busy = save.isPending || withdraw.isPending;
   const muted = theme.tokens.mutedForeground;
 
@@ -78,7 +84,7 @@ export function AssessForm({ session }: { session: TutoringSession }) {
     try {
       await save.mutateAsync({ sessionId: session.id, input });
       toast.success(mine ? 'Assessment updated.' : 'Assessment saved.');
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
       toast.error(error instanceof ApiRequestError ? error.message : 'Could not save the assessment.');
@@ -90,7 +96,7 @@ export function AssessForm({ session }: { session: TutoringSession }) {
     try {
       await withdraw.mutateAsync(session.id);
       toast.success('Assessment withdrawn.');
-      close();
+      leave(close);
     } catch (error) {
       toast.error(error instanceof ApiRequestError ? error.message : 'Could not withdraw the assessment.');
     }
@@ -123,11 +129,7 @@ export function AssessForm({ session }: { session: TutoringSession }) {
           errors={{ rating: errors.rating, body: errors.body }}
         />
       )}
-      {errors.form ? (
-        <HelperText type="error" padding="none">
-          {errors.form}
-        </HelperText>
-      ) : null}
+      {errors.form ? <FieldError>{errors.form}</FieldError> : null}
 
       <View style={{ gap: space.sm }}>
         {!isStudent ? (

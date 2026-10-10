@@ -1,0 +1,52 @@
+# A failed save brings its first message into view (ux-audit F-22, B5). Priya opens the payment
+# form, goes straight to the bottom and presses Record payment with nothing filled in: the form
+# scrolls back up to "Choose a person." beside the empty field, without her scrolling. Then she
+# leaves; nothing was entered, so nothing asks.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+    timeout: 20000
+- tapOn:
+    id: billing-record
+- extendedWaitUntil:
+    visible:
+      id: payment-amount
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: payment-save
+    centerElement: true
+- assertNotVisible: 'Choose a person\.'
+- tapOn:
+    id: payment-save
+# No scrolling here: the form brought the message into view itself.
+- extendedWaitUntil:
+    visible: 'Choose a person\.'
+    timeout: 5000
+- takeScreenshot: errors-in-view
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-payment-form
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+    timeout: 10000
+- assertNotVisible: 'Discard changes\?'

@@ -13,6 +13,7 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
@@ -147,6 +148,7 @@ export function SessionsScreen() {
 
   const header = (
     <View style={{ gap: space.lg, paddingBottom: space.md }}>
+      <ConnectivityBanner />
       <Stack.Screen
         options={{
           headerRight: () => (

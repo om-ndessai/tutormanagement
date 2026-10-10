@@ -13,6 +13,7 @@ import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import { Chip, Icon, Text } from 'react-native-paper';
 
+import { ConnectivityBanner } from '@/components/connectivity';
 import { readableDates } from '@/features/teaching/session-format';
 import { PageIntro } from '@/components/page-intro';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
@@ -63,6 +64,7 @@ export function CommentsScreen() {
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
+      <ConnectivityBanner />
       <PageIntro>
         Everything that has been said about the people and lessons you work with, newest first.
       </PageIntro>

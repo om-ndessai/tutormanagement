@@ -17,6 +17,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import { Button, Divider, Icon, Text } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { useDirty } from '@/hooks/use-unsaved-changes';
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Choice } from '@/components/form-choice';
 import { useToast } from '@/components/toast';
@@ -58,6 +60,7 @@ export function PersonForm({
   onSaved,
   onCancel,
   onFailedSave,
+  onDirtyChange,
 }: {
   /** The record being edited; absent to add someone. */
   detail?: UserDetail;
@@ -72,6 +75,8 @@ export function PersonForm({
   onCancel: () => void;
   /** Called once a failed save's messages are on screen, so the host can bring them into view. */
   onFailedSave?: () => void;
+  /** Whether the record differs from how it opened, for the sheet's unsaved-changes guard (F-3). */
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -89,6 +94,11 @@ export function PersonForm({
       ? fromDetail(detail)
       : { ...EMPTY, roles: preset?.roles ?? [], guardians: preset?.guardians ?? [] },
   );
+  const dirty = useDirty(form);
+  useEffect(() => {
+    onDirtyChange?.(dirty);
+  }, [dirty, onDirtyChange]);
+  const offline = useOffline();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   // Counts failed saves; each one asks the host to scroll the messages into view (ux-audit F-7).
@@ -502,10 +512,11 @@ export function PersonForm({
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving}
+          disabled={saving || offline}
         >
           {isEdit ? 'Save changes' : 'Add user'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         <Button testID="person-form-cancel" mode="outlined" onPress={onCancel} disabled={saving}>
           Cancel
         </Button>

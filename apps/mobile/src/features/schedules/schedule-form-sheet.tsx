@@ -17,8 +17,11 @@ import {
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, HelperText, SegmentedButtons, Text, TextInput } from 'react-native-paper';
+import { Button, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { Choice, Field } from '@/components/form-choice';
 import { Screen } from '@/components/screen';
@@ -111,6 +114,22 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
     if (assignments.length === 1) setAssignmentId(assignments[0]!.id);
   }
 
+  // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
+  const dirty = useDirty({
+    // The one pairing chosen for them as the sheet opened is not an edit.
+    assignmentId: assignments.length === 1 && assignmentId === assignments[0]!.id ? '' : assignmentId,
+    dayOfWeek,
+    startTime,
+    duration,
+    mode,
+    startsOn,
+    endsOn,
+    location,
+    notes,
+  });
+  const { leave } = useUnsavedChangesGuard(dirty);
+  const offline = useOffline();
+
   const create = useCreateSchedule();
   const update = useUpdateSchedule();
   const saving = create.isPending || update.isPending;
@@ -160,7 +179,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
         await create.mutateAsync(parsed.data);
         toast.success('Session scheduled.');
       }
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
@@ -221,11 +240,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
           onChange={setStartTime}
           error={Boolean(errors.start_time)}
         />
-        {errors.start_time ? (
-          <HelperText type="error" padding="none">
-            {errors.start_time}
-          </HelperText>
-        ) : null}
+        {errors.start_time ? <FieldError>{errors.start_time}</FieldError> : null}
       </View>
 
       <Field label="For" error={errors.duration_minutes}>
@@ -273,11 +288,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
           }}
           error={Boolean(errors.starts_on)}
         />
-        {errors.starts_on ? (
-          <HelperText type="error" padding="none">
-            {errors.starts_on}
-          </HelperText>
-        ) : null}
+        {errors.starts_on ? <FieldError>{errors.starts_on}</FieldError> : null}
         {endsOn ? (
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
             <View style={{ flex: 1 }}>
@@ -311,11 +322,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
             </Button>
           </View>
         )}
-        {errors.ends_on ? (
-          <HelperText type="error" padding="none">
-            {errors.ends_on}
-          </HelperText>
-        ) : null}
+        {errors.ends_on ? <FieldError>{errors.ends_on}</FieldError> : null}
       </View>
 
       <View>
@@ -331,11 +338,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
           returnKeyType="done"
           error={Boolean(errors.location)}
         />
-        {errors.location ? (
-          <HelperText type="error" padding="none">
-            {errors.location}
-          </HelperText>
-        ) : null}
+        {errors.location ? <FieldError>{errors.location}</FieldError> : null}
       </View>
 
       <NoteField
@@ -346,11 +349,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
         placeholder="Exam prep, weekly slot…"
         error={errors.notes}
       />
-      {errors.form ? (
-        <HelperText type="error" padding="none">
-          {errors.form}
-        </HelperText>
-      ) : null}
+      {errors.form ? <FieldError>{errors.form}</FieldError> : null}
 
       <View style={{ gap: space.sm }}>
         <Button
@@ -358,10 +357,11 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving}
+          disabled={saving || offline}
         >
           {isEdit ? 'Save changes' : 'Schedule'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         <Button testID="schedule-form-cancel" mode="outlined" onPress={close} disabled={saving}>
           Cancel
         </Button>

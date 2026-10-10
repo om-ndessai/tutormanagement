@@ -1,8 +1,10 @@
-import type { ReactNode, Ref } from 'react';
+import { useCallback, useRef, type ReactNode, type RefObject } from 'react';
 import { RefreshControl, ScrollView, View, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets, type Edge } from 'react-native-safe-area-context';
 
 import { useAppTheme } from '@/providers/theme-provider';
+import { ConnectivityBanner } from './connectivity';
+import { FieldErrorProvider, useFieldErrorAnchors } from './field-error';
 import { useLiveBannerInset } from './live-banner-inset';
 import { space } from '@/theme/tokens';
 
@@ -13,6 +15,9 @@ import { space } from '@/theme/tokens';
  * (`contentInsetAdjustmentBehavior`). `edges` pads the sides with no system bar over them --
  * a screen without a header passes 'top'. Every screen root carries a `testID`
  * (`screen-<route>`), which the Maestro flows wait on.
+ *
+ * It also leads with the offline / unreachable banner when there is one (ux-audit F-16), and
+ * brings a field error that appears in it into view (F-22) unless `scrollToErrors` is false.
  */
 export function Screen({
   testID,
@@ -23,6 +28,7 @@ export function Screen({
   onRefresh,
   contentStyle,
   scrollRef,
+  scrollToErrors = true,
 }: {
   testID: string;
   children: ReactNode;
@@ -32,11 +38,25 @@ export function Screen({
   onRefresh?: () => void;
   contentStyle?: ViewStyle;
   /** The scroll view itself, for a screen that scrolls a child into view (the feature tour). */
-  scrollRef?: Ref<ScrollView>;
+  scrollRef?: RefObject<ScrollView | null> | ((view: ScrollView | null) => void | (() => void));
+  /** False for a form that places its own errors in view (the person form scrolls to its foot). */
+  scrollToErrors?: boolean;
 }) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
   const bannerInset = useLiveBannerInset();
+  // The scroll view, for bringing errors into view: the caller's own ref object when it passes
+  // one; with a callback ref (the tour's), ours, handing the view on and its cleanup back.
+  const own = useRef<ScrollView | null>(null);
+  const scroller = scrollRef && typeof scrollRef === 'object' ? scrollRef : own;
+  const errors = useFieldErrorAnchors(scroller, scroll && scrollToErrors);
+  const forward = useCallback(
+    (node: ScrollView | null) => {
+      own.current = node;
+      return typeof scrollRef === 'function' ? scrollRef(node) : undefined;
+    },
+    [scrollRef],
+  );
   const padded: ViewStyle = {
     padding: space.lg,
     gap: space.lg,
@@ -47,13 +67,14 @@ export function Screen({
   if (!scroll) {
     return (
       <View testID={testID} style={[{ flex: 1, backgroundColor: theme.colors.background }, padded]}>
+        <ConnectivityBanner />
         {children}
       </View>
     );
   }
   return (
     <ScrollView
-      ref={scrollRef}
+      ref={typeof scrollRef === 'function' ? forward : scroller}
       testID={testID}
       style={{ flex: 1, backgroundColor: theme.colors.background }}
       contentContainerStyle={padded}
@@ -65,13 +86,16 @@ export function Screen({
       nestedScrollEnabled
       contentInsetAdjustmentBehavior="automatic"
       automaticallyAdjustKeyboardInsets
+      onScroll={(event) => errors.onScroll(event.nativeEvent.contentOffset.y)}
+      scrollEventThrottle={64}
       refreshControl={
         onRefresh ? (
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
         ) : undefined
       }
     >
-      {children}
+      <ConnectivityBanner />
+      <FieldErrorProvider value={errors.anchors}>{children}</FieldErrorProvider>
     </ScrollView>
   );
 }

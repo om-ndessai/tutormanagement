@@ -1,8 +1,9 @@
 // Ported from apps/web/src/features/teaching/session-form-dialog.tsx @ 1132322 (ProgressSection).
 import { GOAL_RATING_LABELS, type Rating } from '@tmi/shared';
 import { View } from 'react-native';
-import { Divider, HelperText, Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 
+import { FieldError } from '@/components/field-error';
 import { useStudentProgress, useTopicIndex } from '@/features/progress/api';
 import { RatingPicker, TopicName } from '@/features/progress/rating';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -119,11 +120,7 @@ export function ProgressSection({
         </View>
       ) : null}
 
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </FormSection>
   );
 }

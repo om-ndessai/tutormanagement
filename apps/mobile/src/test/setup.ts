@@ -22,3 +22,15 @@ import 'react-native-gesture-handler/jestSetup';
   const screen = Dimensions.get('screen');
   Dimensions.set({ window: { ...window, fontScale: 1 }, screen: { ...screen, fontScale: 1 } });
 }
+
+// The phone is online in tests unless one says otherwise (the offline banner, F-16).
+jest.mock('expo-network', () => ({
+  useNetworkState: () => ({ isConnected: true, isInternetReachable: true }),
+}));
+
+// No navigator under Jest: a form's unsaved-changes guard has nothing to hold (F-3). Its own test
+// replaces these.
+jest.mock('expo-router/react-navigation', () => ({
+  useNavigation: () => ({ dispatch: jest.fn() }),
+  usePreventRemove: jest.fn(),
+}));

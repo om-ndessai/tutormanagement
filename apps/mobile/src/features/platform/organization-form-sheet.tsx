@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { Keyboard, Pressable, View } from 'react-native';
 import { Button, Checkbox, Switch, Text } from 'react-native-paper';
 
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { Field } from '@/components/form-choice';
 import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
@@ -72,6 +73,10 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   const [form, setForm] = useState<OrgFormState>(() => formFromOrganization(existing));
   const [slugTouched, setSlugTouched] = useState(Boolean(existing));
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // What was typed is not lost to a swipe or Back (ux-audit F-3).
+  const dirty = useDirty(form);
+  const { leave } = useUnsavedChangesGuard(dirty);
   const pending = create.isPending || update.isPending;
 
   function set<K extends keyof OrgFormState>(key: K, value: OrgFormState[K]) {
@@ -96,7 +101,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         await create.mutateAsync(verdict.input);
         toast.success(`${form.name} created. Add its first admin next.`);
       }
-      close();
+      leave(close);
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.status === 409 ? { slug: caught.message } : caught.fieldErrors);

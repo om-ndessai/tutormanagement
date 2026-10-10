@@ -16,8 +16,11 @@ import {
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
-import { Button, HelperText, Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -108,6 +111,11 @@ export function AssignmentForm({
   // Which tutor's defaults have already been written into the fields: once per choice, and never
   // over the admin's typing. An existing pairing already carries its own rates.
   const [prefilledFor, setPrefilledFor] = useState<string | null>(existing ? existing.tutor_user_id : null);
+
+  // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
+  const dirty = useDirty({ tutorId, studentId, inPerson, virtual, notes });
+  const { leave } = useUnsavedChangesGuard(dirty);
+  const offline = useOffline();
 
   const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
   const students = useUsers({ role: 'student', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
@@ -214,7 +222,7 @@ export function AssignmentForm({
         toast.success('Student assigned.');
         announceFormSaved({ form: 'assignment', id: created.data.id });
       }
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
@@ -298,11 +306,7 @@ export function AssignmentForm({
         placeholder="Weekly, building towards the accelerated track"
         error={errors.notes}
       />
-      {errors.form ? (
-        <HelperText type="error" padding="none">
-          {errors.form}
-        </HelperText>
-      ) : null}
+      {errors.form ? <FieldError>{errors.form}</FieldError> : null}
 
       <View style={{ gap: space.sm }}>
         <Button
@@ -310,10 +314,11 @@ export function AssignmentForm({
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving}
+          disabled={saving || offline}
         >
           {isEdit ? 'Save changes' : 'Assign'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         <Button testID="assignment-cancel" mode="outlined" onPress={close} disabled={saving}>
           Cancel
         </Button>
@@ -353,11 +358,7 @@ function RateField({
         left={<TextInput.Affix text="$" />}
         error={Boolean(error)}
       />
-      {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
-      ) : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );
 }

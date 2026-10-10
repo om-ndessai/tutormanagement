@@ -9,8 +9,10 @@ import { describeSchedule, scheduleCancellationInputSchema, type VisibleSchedule
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, HelperText, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
+import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
+import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -96,6 +98,10 @@ export function CancelLessonForm({
   const [note, setNote] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // What was typed is not lost to a swipe or Back (ux-audit F-3).
+  const dirty = useDirty({ date, note });
+  const { leave } = useUnsavedChangesGuard(dirty);
+
   async function handleSubmit() {
     setErrors({});
     const input = { occurs_on: date, note: note.trim() || null };
@@ -113,7 +119,7 @@ export function CancelLessonForm({
         label: 'Undo',
         onPress: () => void restoreNow(target),
       });
-      close();
+      leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
       toast.error(error instanceof ApiRequestError ? error.message : 'Could not cancel the lesson.');
@@ -149,11 +155,7 @@ export function CancelLessonForm({
           </Text>
         </View>
       ) : null}
-      {errors.occurs_on ? (
-        <HelperText type="error" padding="none">
-          {errors.occurs_on}
-        </HelperText>
-      ) : null}
+      {errors.occurs_on ? <FieldError>{errors.occurs_on}</FieldError> : null}
 
       <View style={{ gap: space.xs }}>
         <NoteField

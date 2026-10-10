@@ -19,8 +19,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Chip, HelperText, SegmentedButtons, Text } from 'react-native-paper';
+import { Button, Chip, SegmentedButtons, Text } from 'react-native-paper';
 
+import { OfflineSaveNote, useOffline } from '@/components/connectivity';
+import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
@@ -166,6 +168,7 @@ function SessionForm({
   const saveDraft = useSaveDraft();
   const postDraft = usePostDraft();
   const autosaveDraft = useAutosaveDraft();
+  const offline = useOffline();
   const saving = record.isPending || update.isPending || saveDraft.isPending || postDraft.isPending;
 
   const assignment = assignments.find((a) => a.id === values.assignmentId);
@@ -333,12 +336,7 @@ function SessionForm({
   }
 
   const muted = theme.tokens.mutedForeground;
-  const errorText = (key: string) =>
-    errors[key] ? (
-      <HelperText type="error" padding="none">
-        {errors[key]}
-      </HelperText>
-    ) : null;
+  const errorText = (key: string) => (errors[key] ? <FieldError>{errors[key]}</FieldError> : null);
 
   return (
     <View style={{ gap: space.lg }}>
@@ -540,20 +538,18 @@ function SessionForm({
 
       <View style={{ gap: space.sm }}>
         {!isEdit ? <AutosaveStatus state={autosave.state} /> : null}
-        {failure ? (
-          <HelperText testID="record-error" type="error" padding="none">
-            {failure}
-          </HelperText>
-        ) : null}
+        {failure ? <FieldError testID="record-error">{failure}</FieldError> : null}
         <Button
           testID="record-submit"
           mode="contained"
           onPress={() => void handleSubmit()}
           loading={saving}
-          disabled={saving}
+          // Saving a lesson offline would only fail; the draft keeps it meanwhile (F-16).
+          disabled={saving || offline}
         >
           {isEdit ? 'Save changes' : isDraft ? 'Post session' : 'Record session'}
         </Button>
+        <OfflineSaveNote offline={offline} />
         {/* Offered while writing up a lesson, and while picking a draft back up. Not while
             editing a session already on the record: that one has been posted. */}
         {!isEdit ? (

@@ -3,6 +3,7 @@
 import type { ComponentProps } from 'react';
 import { View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
+import { FieldError } from '@/components/field-error';
 
 type InputProps = Omit<ComponentProps<typeof TextInput>, 'label' | 'error' | 'mode'>;
 
@@ -23,9 +24,7 @@ export function FormTextField({
         {...input}
       />
       {error ? (
-        <HelperText type="error" padding="none">
-          {error}
-        </HelperText>
+        <FieldError>{error}</FieldError>
       ) : hint ? (
         <HelperText type="info" padding="none">
           {hint}
