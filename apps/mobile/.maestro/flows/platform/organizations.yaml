@@ -1,0 +1,157 @@
+# The platform console's organizations: Nav (a platform admin in no organization) lands on the
+# console, creates an organization with a palette, edits it, adds and removes one of its admins,
+# then archives and restores it -- each behind a confirm. clean-platform.js moves the test
+# organization out of the way before and after (the API has no delete).
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- assertVisible: 'Organizations'
+- assertVisible:
+    id: platform-org-riverside
+- takeScreenshot: platform-organizations
+# Create one. The address name follows the name until it is touched.
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- tapOn:
+    id: org-form-name
+- inputText: 'Mobile Console Academy'
+- tapOn:
+    id: org-form-short
+- inputText: 'MCA'
+- assertVisible: 'mobile-console-academy'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-form-palette-teal
+- assertNotVisible:
+    id: org-form-palette-plum
+- tapOn:
+    id: org-form-palette-teal
+- takeScreenshot: platform-org-form
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy created. Add its first admin next.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: platform-org-mobile-console-academy
+    timeout: 10000
+# Open it and edit its tagline.
+- tapOn:
+    id: platform-org-mobile-console-academy
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- assertVisible: 'Teal'
+- tapOn:
+    id: platform-org-edit
+- extendedWaitUntil:
+    visible:
+      id: org-form-tagline
+    timeout: 10000
+- tapOn:
+    id: org-form-tagline
+- inputText: 'Numbers, one step at a time'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy saved.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible: 'Numbers, one step at a time'
+    timeout: 10000
+# Add an admin by email, then remove them (confirm).
+- scrollUntilVisible:
+    element:
+      id: platform-org-admin-email
+    centerElement: true
+- tapOn:
+    id: platform-org-admin-email
+- inputText: 'mobile.org.admin@example.com'
+- tapOn:
+    id: platform-org-admin-name
+- inputText: 'Console Org Admin'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: platform-org-admin-add
+    centerElement: true
+- tapOn:
+    id: platform-org-admin-add
+- extendedWaitUntil:
+    visible: 'Console Org Admin added as an admin of Mobile Console Academy.'
+    timeout: 10000
+- scrollUntilVisible:
+    element: 'mobile.org.admin@example.com'
+    direction: UP
+- tapOn: 'Remove Console Org Admin as an admin'
+- extendedWaitUntil:
+    visible: 'Remove Console Org Admin as an admin\?'
+    timeout: 5000
+- tapOn: 'Remove'
+- extendedWaitUntil:
+    visible: 'Console Org Admin is no longer an admin of Mobile Console Academy.'
+    timeout: 10000
+# Archive, then restore, each confirmed.
+- scrollUntilVisible:
+    element:
+      id: platform-org-archive
+    centerElement: true
+- tapOn:
+    id: platform-org-archive
+- extendedWaitUntil:
+    visible: 'Archive Mobile Console Academy\?'
+    timeout: 5000
+- tapOn: 'Archive'
+- extendedWaitUntil:
+    visible:
+      id: platform-org-restore
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-archived
+    direction: UP
+- takeScreenshot: platform-org-archived
+- scrollUntilVisible:
+    element:
+      id: platform-org-restore
+    centerElement: true
+- tapOn:
+    id: platform-org-restore
+- extendedWaitUntil:
+    visible: 'Restore Mobile Console Academy\?'
+    timeout: 5000
+- tapOn: 'Restore'
+- extendedWaitUntil:
+    visible:
+      id: platform-org-archive
+    timeout: 10000
+- assertNotVisible:
+    id: platform-org-archived

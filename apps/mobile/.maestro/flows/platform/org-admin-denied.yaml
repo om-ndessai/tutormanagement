@@ -1,0 +1,38 @@
+# R14: an organization's admin is nobody in the console. Priya (admin of chmi): a deep link to
+# /platform lands her back in her organization, and the account sheet offers no way in.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://platform'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: screen-platform
+- assertNotVisible: 'New organization'
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-sign-out
+- assertNotVisible:
+    id: account-platform
+- assertNotVisible: 'Platform console'

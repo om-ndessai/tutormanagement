@@ -64,6 +64,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-secure-store',
     'expo-sharing',
     'expo-localization',
+    // The console's logo upload (#35) uses the system photo picker. Neutral copy: the app is nobody's.
+    [
+      'expo-image-picker',
+      { photosPermission: 'Allow $(PRODUCT_NAME) to choose a picture from your photo library.' },
+    ],
     // iOS 27 requires the scene life cycle; see the plugin.
     './plugins/with-scene-lifecycle.js',
     ...(variant === 'development' ? ['./plugins/with-quiet-dev-menu.js'] : []),

@@ -47,7 +47,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `organizations/organization-settings-page.tsx`, `notifications-switch.tsx` | TIN, payer address, notifications and log | `app/(org)/organization.tsx`, `src/features/organizations/*` | `organization/*` | tested |
 | `pages/profile-page.tsx` | own detail | `app/(org)/profile.tsx` | `people/profile` | tested (25) |
 | `onboarding/*` | wizard, student / tutor flows, confirm details, tour | `app/(org)/onboarding/*`, `src/features/onboarding/*` | `onboarding/*` | tested |
-| `platform/*` | console: organizations, branding, logos, admins, people, activity | `app/(platform)/*`, `src/features/platform/*` | `platform/*` | todo |
+| `platform/*` | console: organizations, branding, logos, admins, people, activity | `app/(platform)/*`, `src/features/platform/*` | `platform/*` | tested |
 | `pages/not-found-page.tsx` | unknown route | `app/+not-found.tsx` | — | todo |
 
 ## Web-only behaviour and its mobile replacement
