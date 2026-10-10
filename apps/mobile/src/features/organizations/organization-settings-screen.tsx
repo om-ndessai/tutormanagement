@@ -11,6 +11,7 @@ import { Button, Text } from 'react-native-paper';
 
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
+import { SecureMoney } from '@/components/secure-money';
 import { Panel } from '@/components/section';
 import { ErrorState, LoadingState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
@@ -57,6 +58,8 @@ export function OrganizationSettingsScreen() {
   return (
     <Screen testID="screen-organization" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ title: 'Organization' }} />
+      {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). */}
+      <SecureMoney tag="organization" />
       <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
         {`What ${organization.name} files its 1099s under, and how the portal presents it.`}
       </Text>

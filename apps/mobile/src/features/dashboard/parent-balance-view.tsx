@@ -4,6 +4,7 @@ import { formatCents, type ParentDashboard, type StudentBalance } from '@tmi/sha
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
+import { SecureMoney } from '@/components/secure-money';
 import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { StudentProgressCard } from '@/features/progress/progress-card';
@@ -55,6 +56,8 @@ function ChildBalanceRow({ child }: { child: StudentBalance }) {
 export function ParentView({ data }: { data: ParentDashboard }) {
   return (
     <View testID="dashboard-parent" style={{ gap: space.lg }}>
+      {/* The family's balances, with no Tutoring/Finance split to keep them off screen (ux-audit F-1). */}
+      <SecureMoney tag="parent-dashboard" />
       <StatGrid>
         {[
           <StatCard key="children" label="Children" value={data.children.length} icon={ROLE_ICONS.student} />,

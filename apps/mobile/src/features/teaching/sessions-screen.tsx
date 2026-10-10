@@ -15,6 +15,7 @@ import { Button, IconButton, Text } from 'react-native-paper';
 
 import { FocusNotice } from '@/components/focus-notice';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { SecureMoney } from '@/components/secure-money';
 import { Skeleton } from '@/components/skeleton';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -173,6 +174,7 @@ export function SessionsScreen() {
         </View>
       ) : null}
       <TutoringFinanceSwitch />
+      {money ? <SecureMoney tag="sessions-finance" /> : null}
       {/* A draft is the author's alone (R10), so it sits above the list rather than in it -- the
           totals do not count it and never should. Tutoring only: a draft is a write-up. */}
       {!money && !focusId ? (

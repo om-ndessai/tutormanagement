@@ -1,0 +1,6 @@
+{
+  "name": "privacy-cover",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The app-switcher cover: a window in the brand's colours over everything while the app is not active (iOS)."
+}

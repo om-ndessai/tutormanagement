@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { useAppSwitcherProtection } from '@/components/privacy-cover';
 import { ToastProvider } from '@/components/toast';
 import { BootScreen } from '@/features/auth/boot-screen';
 import { AuthProvider, useAuth } from '@/providers/auth-provider';
@@ -32,9 +33,11 @@ function RootNavigator() {
     if (status !== 'loading') void SplashScreen.hideAsync();
   }, [status]);
 
+  const signedIn = status === 'authenticated';
+  useAppSwitcherProtection(signedIn);
+
   if (status === 'loading' || status === 'error') return <BootScreen />;
 
-  const signedIn = status === 'authenticated';
   return (
     <>
       <StatusBar style={theme.dark ? 'light' : 'dark'} />

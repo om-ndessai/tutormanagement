@@ -53,7 +53,7 @@ the `[~]` item, then carry on down the list.
 ## Phase 2 — UX audit and immersive design
 
 - [x] 37. Docs: mobile UX audit (findings and batches in [ux-audit.md](ux-audit.md))
-- [ ] 38. Mobile UX: privacy cover and secure screens (B1, S)
+- [x] 38. Mobile UX: privacy cover and secure screens (B1, S)
 - [ ] 39. Mobile tests: the three intermittent flows (B2, S)
 - [ ] 40. Mobile UX: toasts above the tab bar, contrast and target sizes (B3, M)
 - [ ] 41. Mobile UX: large text, skeletons, pull-to-refresh and empty states (B4, M-L)
