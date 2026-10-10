@@ -2,8 +2,9 @@
 import { SESSION_MODE_LABELS, type SessionDraft } from '@tmi/shared';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, Card, Divider, IconButton, Text } from 'react-native-paper';
+import { Button, Card, Divider, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';

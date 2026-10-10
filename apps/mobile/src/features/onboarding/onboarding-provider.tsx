@@ -12,9 +12,10 @@ import type { TourOutcome, UserRole } from '@tmi/shared';
 import { router } from 'expo-router';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, IconButton, Surface, Text } from 'react-native-paper';
+import { Button, Icon, Surface, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { IconButton } from '@/components/icon-button';
 import { readPref, STORAGE_KEYS, writePref } from '@/lib/storage';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -252,12 +253,8 @@ function TourOffer({
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-          <IconButton
-            icon="compass-outline"
-            size={18}
-            iconColor={theme.colors.primary}
-            style={{ margin: 0 }}
-          />
+          {/* Decorative: an icon, not an unlabelled button (ux-audit F-20). */}
+          <Icon source="compass-outline" size={18} color={theme.colors.primary} />
           <Text testID="tour-offer-title" variant="titleSmall" style={{ flex: 1 }}>
             {title}
           </Text>

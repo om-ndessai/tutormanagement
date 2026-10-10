@@ -30,7 +30,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import {
   useAssignments,
   useAutosaveDraft,
@@ -218,7 +218,6 @@ function SessionForm({
   function fail(message: string, fieldErrors: Record<string, string>) {
     setErrors(fieldErrors);
     setFailure(message);
-    haptics.error();
     toast.error(message);
   }
 
@@ -411,6 +410,7 @@ function SessionForm({
             const active = preview?.billed === minutes;
             return (
               <Chip
+                hitSlop={CHIP_HIT_SLOP}
                 key={minutes}
                 testID={`record-length-${minutes}`}
                 selected={active}

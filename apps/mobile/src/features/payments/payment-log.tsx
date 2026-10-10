@@ -5,8 +5,9 @@
 import { PAYMENT_FORM_LABELS, formatCents, type Payment } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Alert, Pressable, View } from 'react-native';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { EmptyNote, Panel } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
 import { useToast } from '@/components/toast';
@@ -40,11 +41,9 @@ function useConfirmDeletePayment() {
           onPress: () =>
             remove.mutate(payment.id, {
               onSuccess: () => {
-                haptics.success();
                 toast.success('Payment deleted.');
               },
               onError: (error) => {
-                haptics.error();
                 toast.error(
                   error instanceof ApiRequestError ? error.message : 'Could not delete the payment.',
                 );

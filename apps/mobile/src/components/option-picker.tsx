@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Keyboard, Pressable, View } from 'react-native';
 import { Divider, HelperText, Icon, Searchbar, Text } from 'react-native-paper';
 
+import { ICON_TARGET } from '@/components/icon-button';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
@@ -136,7 +137,7 @@ export function OptionPicker({
                         setSearch('');
                       }}
                       style={({ pressed }) => ({
-                        minHeight: MIN_TARGET,
+                        minHeight: ICON_TARGET, // 44pt iOS, 48dp Android (ux-audit F-5)
                         paddingHorizontal: space.md,
                         paddingVertical: space.sm,
                         flexDirection: 'row',

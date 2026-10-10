@@ -8,8 +8,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { SecureMoney } from '@/components/secure-money';
 import { Skeleton } from '@/components/skeleton';

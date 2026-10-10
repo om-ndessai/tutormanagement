@@ -132,10 +132,8 @@ export function AssessmentForm({
         toast.success('Assessment recorded.');
         announceFormSaved({ form: 'assessment', id: created.data.id });
       }
-      haptics.success();
       close();
     } catch (error) {
-      haptics.error();
       if (error instanceof ApiRequestError) {
         setErrors({ ...error.fieldErrors, form: error.message });
         toast.error(error.message);

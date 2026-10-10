@@ -4,8 +4,9 @@
 import { addOrganizationAdminSchema, type OrganizationListItem } from '@tmi/shared';
 import { useState } from 'react';
 import { Alert, Keyboard, View } from 'react-native';
-import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { Button, Chip, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Panel } from '@/components/section';
 import { useToast } from '@/components/toast';
 import { FormTextField } from '@/features/users/form-text-field';
@@ -38,12 +39,10 @@ export function AdminsSection({ organization }: { organization: OrganizationList
     }
     try {
       await add.mutateAsync({ email, full_name: name });
-      haptics.success();
       toast.success(`${name || email} added as an admin of ${organization.name}.`);
       setEmail('');
       setName('');
     } catch (caught) {
-      haptics.error();
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
         toast.error(caught.message);
@@ -63,11 +62,9 @@ export function AdminsSection({ organization }: { organization: OrganizationList
         onPress: () =>
           remove.mutate(userId, {
             onSuccess: () => {
-              haptics.success();
               toast.success(`${fullName} is no longer an admin of ${organization.name}.`);
             },
             onError: (error) => {
-              haptics.error();
               toast.error(error instanceof ApiRequestError ? error.message : 'Could not remove that admin.');
             },
           }),

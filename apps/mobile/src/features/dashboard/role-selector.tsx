@@ -7,6 +7,7 @@ import { Chip } from 'react-native-paper';
 
 import { ROLE_ICONS } from '@/features/users/role-icon';
 import { haptics } from '@/lib/haptics';
+import { CHIP_HIT_SLOP } from '@/theme/tokens';
 
 /**
  * The subject's roles as chips, the shown one selected. Renders nothing for someone with one
@@ -25,6 +26,7 @@ export function RoleSelector({ roles, current }: { roles: UserRole[]; current: U
         const selected = role === current;
         return (
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             key={role}
             testID={`dashboard-role-${role}`}
             icon={ROLE_ICONS[role]}

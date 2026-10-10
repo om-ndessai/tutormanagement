@@ -44,7 +44,8 @@ export function WeekStrip({
           <Pressable
             key={day.value}
             testID={`schedule-day-${day.value}`}
-            accessibilityRole="button"
+            // A tab of the week's tab list, "selected" when the list is narrowed to it (F-20).
+            accessibilityRole="tab"
             accessibilityLabel={`${day.label}: ${count === 0 ? 'no lessons' : count === 1 ? '1 lesson' : `${count} lessons`}${isToday ? ', today' : ''}`}
             accessibilityState={{ disabled: !enabled, selected: chosen }}
             disabled={!enabled}

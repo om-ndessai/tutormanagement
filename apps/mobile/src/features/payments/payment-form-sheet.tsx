@@ -168,7 +168,6 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
           return;
         }
         await update.mutateAsync({ id: existing.id, input: parsed.data });
-        haptics.success();
         toast.success('Payment updated.');
       } else {
         const parsed = paymentInputSchema.safeParse({
@@ -183,12 +182,10 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
           return;
         }
         await record.mutateAsync(parsed.data);
-        haptics.success();
         toast.success('Payment recorded.');
       }
       close();
     } catch (error) {
-      haptics.error();
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
         toast.error(error.message);

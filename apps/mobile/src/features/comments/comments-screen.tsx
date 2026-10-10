@@ -20,7 +20,7 @@ import { haptics } from '@/lib/haptics';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
-import { radius, space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
 import { CommentDeleteButton } from './comment-delete-button';
 import { FILTER_LABELS, TARGET_ICONS, commentTargetHref } from './comment-targets';
 import { useCommentFeedPages } from './use-comment-feed-pages';
@@ -65,6 +65,7 @@ export function CommentsScreen() {
       </Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }} accessibilityLabel="About">
         <Chip
+          hitSlop={CHIP_HIT_SLOP}
           testID="comments-filter-all"
           selected={targetType === undefined}
           showSelectedCheck={false}
@@ -75,6 +76,7 @@ export function CommentsScreen() {
         </Chip>
         {COMMENT_TARGET_TYPES.map((type) => (
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             key={type}
             testID={`comments-filter-${type}`}
             selected={targetType === type}

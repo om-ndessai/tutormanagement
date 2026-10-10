@@ -9,8 +9,9 @@ import type { Assignment, UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, Card, IconButton, Text } from 'react-native-paper';
+import { Button, Card, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { Screen } from '@/components/screen';

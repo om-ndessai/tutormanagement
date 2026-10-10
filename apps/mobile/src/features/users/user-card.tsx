@@ -3,8 +3,9 @@
 import { USER_ROLES, USER_ROLE_LABELS, USER_STATUS_LABELS, type User } from '@tmi/shared';
 import { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Card, Divider, IconButton, Menu, Text } from 'react-native-paper';
+import { Card, Divider, Menu, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { PersonAvatar } from './person-avatar';

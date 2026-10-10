@@ -78,11 +78,9 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
               { id: org.id, archived: !archived },
               {
                 onSuccess: () => {
-                  haptics.success();
                   toast.success(archived ? `${name} restored.` : `${name} archived: nobody can enter it.`);
                 },
                 onError: (error) => {
-                  haptics.error();
                   toast.error(
                     error instanceof ApiRequestError ? error.message : 'That did not work. Try again.',
                   );

@@ -48,12 +48,10 @@ export function PlatformAdminsScreen() {
     }
     try {
       await add.mutateAsync({ email, full_name: name });
-      haptics.success();
       toast.success(`${name} is now a platform admin.`);
       setEmail('');
       setName('');
     } catch (caught) {
-      haptics.error();
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
         toast.error(caught.message);

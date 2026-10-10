@@ -5,8 +5,9 @@ import { LOGO_KINDS, type LogoKind, type OrganizationListItem } from '@tmi/share
 import { Image } from 'expo-image';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Icon, IconButton, Text } from 'react-native-paper';
+import { Button, Icon, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Panel } from '@/components/section';
 import { useToast } from '@/components/toast';
 import { ApiRequestError, apiOrigin } from '@/lib/api-client';
@@ -35,10 +36,8 @@ export function LogoSection({ organization }: { organization: OrganizationListIt
       const logo = await pickLogo(kind);
       if (!logo) return;
       await upload.mutateAsync({ id: organization.id, kind, ...logo });
-      haptics.success();
       toast.success('Logo updated.');
     } catch (caught) {
-      haptics.error();
       toast.error(
         caught instanceof ApiRequestError
           ? (caught.fieldErrors.logo ?? caught.message)
@@ -57,7 +56,6 @@ export function LogoSection({ organization }: { organization: OrganizationListIt
       await remove.mutateAsync({ id: organization.id, kind });
       toast.success('Logo removed.');
     } catch (caught) {
-      haptics.error();
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not remove the logo.');
     }
   }

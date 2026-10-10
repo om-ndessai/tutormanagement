@@ -126,10 +126,8 @@ function PayerForm({ initial }: { initial: SettingsForm }) {
     }
     try {
       await update.mutateAsync(verdict.payload);
-      haptics.success();
       toast.success('Organization settings saved.');
     } catch (caught) {
-      haptics.error();
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
         toast.error(caught.message);

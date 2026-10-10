@@ -1,6 +1,6 @@
 # Profile and appearance (Priya): My profile says the app is on the developer sign-in; Dark
 # repaints the app (screenshots), survives a relaunch, and Light puts it back. Ends on System,
-# the default, so the device's setting decides again.
+# the default, so the device's setting decides again; then the Haptics switch turns off and back on.
 appId: ${APP_ID}
 tags:
   - feature
@@ -92,3 +92,23 @@ tags:
 - tapOn:
     id: appearance-system
 - assertVisible: 'Matches this device, which is light now.'
+# The Haptics switch (on by default) turns off and stays off on this device.
+- scrollUntilVisible:
+    element:
+      id: haptics-switch
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: haptics-switch
+    checked: true
+- tapOn:
+    id: haptics-switch
+- assertVisible:
+    id: haptics-switch
+    checked: false
+- takeScreenshot: haptics-off
+- tapOn:
+    id: haptics-switch
+- assertVisible:
+    id: haptics-switch
+    checked: true

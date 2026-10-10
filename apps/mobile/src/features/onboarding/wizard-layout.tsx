@@ -2,8 +2,8 @@
 // then a guided setup, confirm details or done), so the app's own form sheets can open over it.
 import { router, Stack, useNavigation, type Href } from 'expo-router';
 import { createContext, use, useEffect, useMemo, type ReactNode } from 'react';
-import { IconButton } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { useStackOptions } from '@/features/shell/stack-options';
 import { useOnboarding } from './onboarding-provider';
 

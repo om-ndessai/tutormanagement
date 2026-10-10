@@ -6,7 +6,7 @@ import { GlassView, isGlassEffectAPIAvailable } from 'expo-glass-effect';
 import { router, useSegments } from 'expo-router';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Alert, Platform, View } from 'react-native';
-import { Button, IconButton, Surface, Text } from 'react-native-paper';
+import { Button, Surface, Text } from 'react-native-paper';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -16,8 +16,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { IconButton } from '@/components/icon-button';
 import { LiveBannerInsetContext } from '@/components/live-banner-inset';
-import { useToast } from '@/components/toast';
+import { useReportToastPlacement, useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useOrgTimeZone } from '@/providers/auth-provider';
@@ -25,10 +26,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useCancelActiveSession } from './api';
-import { BANNER_GAP, bannerBottom, liveTimes } from './live-session';
-
-/** The banner's height: two lines and a 44pt button row. */
-export const BANNER_HEIGHT = 64;
+import { BANNER_GAP, BANNER_HEIGHT, bannerBottom, liveTimes } from './live-session';
 
 /** The `(org)` routes presented as sheets: the banner steps aside while one is up. */
 const SHEET_ROUTES = new Set([
@@ -61,6 +59,7 @@ function usePlacement(active: ActiveSession | null) {
   const onTab = route === '(tabs)';
   return {
     visible,
+    onTab,
     bottom: bannerBottom(Platform.OS === 'ios' ? 'ios' : 'android', insets.bottom, onTab),
   };
 }
@@ -73,7 +72,10 @@ function usePlacement(active: ActiveSession | null) {
 export function LiveSessionHost({ children }: { children: ReactNode }) {
   const { data, refetch } = useActiveSession();
   const active = data?.data.mine ?? null;
-  const { visible, bottom } = usePlacement(active);
+  const { visible, onTab, bottom } = usePlacement(active);
+  const bannerInset = visible ? BANNER_HEIGHT + BANNER_GAP : 0;
+  // A toast clears the tab bar and this banner (ux-audit F-2).
+  useReportToastPlacement({ onTab, bannerInset });
 
   // The server closes a lesson at its limit on the next read; read at that instant so an
   // auto-stopped lesson leaves the screen when it stops, not at the next 30 s poll.
@@ -87,7 +89,7 @@ export function LiveSessionHost({ children }: { children: ReactNode }) {
   }, [autoStopAt, refetch]);
 
   return (
-    <LiveBannerInsetContext value={visible ? BANNER_HEIGHT + BANNER_GAP : 0}>
+    <LiveBannerInsetContext value={bannerInset}>
       <View style={{ flex: 1 }}>
         {children}
         {visible && active ? (

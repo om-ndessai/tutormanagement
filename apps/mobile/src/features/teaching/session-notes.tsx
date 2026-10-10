@@ -25,7 +25,7 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
-import { radius, space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
 
 export const HOMEWORK_ICONS: Record<HomeworkStatus, string> = {
   done: 'check-circle-outline',
@@ -263,6 +263,7 @@ export function HomeworkStatusPicker({
         const selected = value === status;
         return (
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             key={status}
             testID={`${testID}-${status}`}
             icon={HOMEWORK_ICONS[status]}

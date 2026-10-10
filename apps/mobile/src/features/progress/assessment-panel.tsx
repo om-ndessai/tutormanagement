@@ -2,12 +2,13 @@
 import type { Assessment } from '@tmi/shared';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Chip, Divider, IconButton, Text } from 'react-native-paper';
+import { Chip, Divider, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { EmptyNote, Panel } from '@/components/section';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
-import { radius, space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
 import { longDate } from './progress-model';
 import { RatingChip, TopicName } from './rating';
 
@@ -132,13 +133,16 @@ export function AssessmentPanel({
           </Text>
           <ScrollView
             horizontal
+            // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
+            style={{ marginVertical: -CHIP_HIT_SLOP.top }}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: space.sm }}
+            contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
           >
             {assessments.map((row) => {
               const selected = row.id === current.id;
               return (
                 <Chip
+                  hitSlop={CHIP_HIT_SLOP}
                   key={row.id}
                   testID={`progress-assessment-pick-${row.id}`}
                   selected={selected}

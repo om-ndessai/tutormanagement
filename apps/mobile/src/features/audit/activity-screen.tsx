@@ -15,7 +15,7 @@ import { organizationToday } from '@/features/teaching/session-ranges';
 import { useUsers } from '@/features/users/api';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import { ActivityRow } from './activity-feed';
 import { ActivityFiltersSheet } from './activity-filters-sheet';
 import {
@@ -119,6 +119,7 @@ export function ActivityScreen() {
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {chips.map((chip) => (
             <Chip
+              hitSlop={CHIP_HIT_SLOP}
               key={chip.key}
               testID={`activity-chip-${chipId(chip.key)}`}
               onPress={() => sheet.current?.present()}

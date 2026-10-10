@@ -2,16 +2,18 @@ import '@/polyfills/intl';
 import '@/polyfills/intl-cache';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Stack } from 'expo-router';
+import { Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAppSwitcherProtection } from '@/components/privacy-cover';
 import { ToastProvider } from '@/components/toast';
 import { BootScreen } from '@/features/auth/boot-screen';
+import { navigationTheme } from '@/features/shell/navigation-theme';
+import { loadHapticsPreference } from '@/lib/haptics';
 import { AuthProvider, useAuth } from '@/providers/auth-provider';
 import { BrandProvider } from '@/providers/brand-provider';
 import { QueryProvider } from '@/providers/query-provider';
@@ -33,13 +35,18 @@ function RootNavigator() {
     if (status !== 'loading') void SplashScreen.hideAsync();
   }, [status]);
 
+  useEffect(() => {
+    void loadHapticsPreference();
+  }, []);
+
   const signedIn = status === 'authenticated';
   useAppSwitcherProtection(signedIn);
+  const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
   if (status === 'loading' || status === 'error') return <BootScreen />;
 
   return (
-    <>
+    <NavigationThemeProvider value={navTheme}>
       <StatusBar style={theme.dark ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
@@ -67,7 +74,7 @@ function RootNavigator() {
           options={{ presentation: 'formSheet', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }}
         />
       </Stack>
-    </>
+    </NavigationThemeProvider>
   );
 }
 

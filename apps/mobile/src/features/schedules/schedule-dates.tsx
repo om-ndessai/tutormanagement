@@ -14,8 +14,9 @@ import {
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import { Button, Divider, IconButton, Text } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Skeleton } from '@/components/skeleton';
 import { Tag } from '@/features/teaching/session-card';
 import { useOrgTimeZone } from '@/providers/auth-provider';

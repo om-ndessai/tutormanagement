@@ -1,12 +1,14 @@
 // Ported from apps/web/src/components/layout/tutoring-finance-tabs.tsx @ 1132322
 import { router, useLocalSearchParams } from 'expo-router';
 import type { ReactNode } from 'react';
-import { View } from 'react-native';
-import { SegmentedButtons } from 'react-native-paper';
+import { Pressable, View } from 'react-native';
+import { Icon, Text } from 'react-native-paper';
 
+import { ICON_TARGET } from '@/components/icon-button';
 import { useTourTarget } from '@/features/onboarding/tour-targets';
 import { haptics } from '@/lib/haptics';
-import { space } from '@/theme/tokens';
+import { useAppTheme } from '@/providers/theme-provider';
+import { radius, space } from '@/theme/tokens';
 
 export type TutoringFinanceTab = 'tutoring' | 'finance';
 
@@ -22,24 +24,73 @@ export function useTutoringFinanceTab(): [TutoringFinanceTab, (tab: TutoringFina
   return [tab, setTab];
 }
 
-/** The Tutoring / Finance segmented control alone, for a screen that renders its halves itself. */
+const TABS = [
+  { value: 'tutoring', label: 'Tutoring', icon: 'school-outline', testID: 'tabs-tutoring' },
+  { value: 'finance', label: 'Finance', icon: 'wallet-outline', testID: 'tabs-finance' },
+] as const;
+
+/**
+ * The Tutoring / Finance switch alone, for a screen that renders its halves itself. It looks like
+ * a segmented control but is a tab list to a screen reader -- "Finance, tab, 2 of 2, selected" --
+ * which Paper's SegmentedButtons (buttons that are "checked") could not say (ux-audit F-20).
+ */
 export function TutoringFinanceSwitch() {
   const [tab, setTab] = useTutoringFinanceTab();
   const tourRef = useTourTarget('tabs');
+  const theme = useAppTheme();
   return (
-    <View ref={tourRef} nativeID="tabs" collapsable={false}>
-      <SegmentedButtons
-        value={tab}
-        onValueChange={(value) => {
-          if (value === tab) return;
-          haptics.selection();
-          setTab(value as TutoringFinanceTab);
-        }}
-        buttons={[
-          { value: 'tutoring', label: 'Tutoring', icon: 'school-outline', testID: 'tabs-tutoring' },
-          { value: 'finance', label: 'Finance', icon: 'wallet-outline', testID: 'tabs-finance' },
-        ]}
-      />
+    <View
+      ref={tourRef}
+      nativeID="tabs"
+      collapsable={false}
+      accessibilityRole="tablist"
+      style={{
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: theme.colors.outline,
+        borderRadius: radius.pill,
+        overflow: 'hidden',
+      }}
+    >
+      {TABS.map((item, index) => {
+        const selected = item.value === tab;
+        const ink = selected ? theme.colors.onSecondaryContainer : theme.colors.onSurface;
+        return (
+          <Pressable
+            key={item.value}
+            testID={item.testID}
+            accessibilityRole="tab"
+            accessibilityLabel={item.label}
+            accessibilityState={{ selected }}
+            onPress={() => {
+              if (selected) return;
+              haptics.selection();
+              setTab(item.value);
+            }}
+            style={({ pressed }) => ({
+              flex: 1,
+              minHeight: ICON_TARGET,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: space.sm,
+              paddingHorizontal: space.md,
+              borderLeftWidth: index > 0 ? 1 : 0,
+              borderColor: theme.colors.outline,
+              backgroundColor: selected
+                ? theme.colors.secondaryContainer
+                : pressed
+                  ? theme.colors.surfaceVariant
+                  : 'transparent',
+            })}
+          >
+            <Icon source={item.icon} size={18} color={ink} />
+            <Text variant="labelLarge" style={{ color: ink }}>
+              {item.label}
+            </Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }

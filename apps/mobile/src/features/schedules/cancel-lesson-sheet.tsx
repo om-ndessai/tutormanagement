@@ -104,7 +104,6 @@ export function CancelLessonForm({
       haptics.error();
       return;
     }
-    haptics.warning();
     try {
       await cancel.mutateAsync({ scheduleId: schedule.id, input });
       const target = { scheduleId: schedule.id, occursOn: date, studentName: schedule.student_name };

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 /**
  * Preferences kept on the device. Nothing sensitive: the server chosen, the theme, the last
  * organization (which only picks where a person lands -- the API checks membership on every
- * request), whether the tour was seen here, and the developer sign-in persona. Never a lesson,
+ * request), whether the tour was seen here, whether haptics are off, and the developer sign-in persona. Never a lesson,
  * a note, an amount or an SSN; and never the query cache.
  */
 export const STORAGE_KEYS = {
@@ -13,6 +13,7 @@ export const STORAGE_KEYS = {
   lastOrg: 'tmi.lastOrg',
   tourSeen: 'tmi.tourSeen',
   devUser: 'tmi.devUser',
+  haptics: 'tmi.haptics',
 } as const;
 
 type Key = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

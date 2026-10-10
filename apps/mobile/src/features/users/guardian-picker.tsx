@@ -9,8 +9,9 @@ import { RELATIONSHIPS, RELATIONSHIP_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, HelperText, Icon, IconButton, Searchbar, Text } from 'react-native-paper';
+import { Button, Card, HelperText, Icon, Searchbar, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Choice } from '@/components/form-choice';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { haptics } from '@/lib/haptics';

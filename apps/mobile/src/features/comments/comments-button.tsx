@@ -3,8 +3,9 @@
 import type { CommentTarget } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
-import { Icon, IconButton, Text } from 'react-native-paper';
+import { Icon, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';

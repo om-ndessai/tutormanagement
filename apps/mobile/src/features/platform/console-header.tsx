@@ -2,8 +2,8 @@
 // back to My organizations for a platform admin who belongs to any, and Sign out.
 import { router } from 'expo-router';
 import { View } from 'react-native';
-import { IconButton } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';

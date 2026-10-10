@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+import { ICON_TARGET } from '@/components/icon-button';
 import { useTourTarget } from '@/features/onboarding/tour-targets';
 import { useAuth } from '@/providers/auth-provider';
 import { SearchButton } from './search-button';
@@ -29,20 +30,24 @@ export function AccountButton() {
       testID="account-button"
       accessibilityRole="button"
       accessibilityLabel="Account menu"
-      hitSlop={8}
       onPress={() => router.push('/account')}
-      style={{
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: theme.colors.primaryContainer,
-      }}
+      // The frame is the target (44pt / 48dp, ux-audit F-5); the initials sit in a smaller disc.
+      style={{ width: ICON_TARGET, height: ICON_TARGET, alignItems: 'center', justifyContent: 'center' }}
     >
-      <Text variant="labelMedium" style={{ color: theme.colors.onPrimaryContainer }}>
-        {initials(user.full_name)}
-      </Text>
+      <View
+        style={{
+          width: 34,
+          height: 34,
+          borderRadius: 17,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: theme.colors.primaryContainer,
+        }}
+      >
+        <Text variant="labelMedium" style={{ color: theme.colors.onPrimaryContainer }}>
+          {initials(user.full_name)}
+        </Text>
+      </View>
     </Pressable>
   );
 }
@@ -50,7 +55,7 @@ export function AccountButton() {
 /** A tab root's header actions: search, then the account button. */
 export function HeaderButtons() {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <SearchButton />
       <AccountButton />
     </View>

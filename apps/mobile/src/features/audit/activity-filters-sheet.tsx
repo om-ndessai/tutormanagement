@@ -10,10 +10,11 @@ import {
 import { auditEntity } from '@tmi/shared';
 import { useCallback, useEffect, useMemo, useState, type RefObject } from 'react';
 import { BackHandler, View } from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { IconButton } from '@/components/icon-button';
 import { DateTimeField } from '@/components/date-time-field';
 import { OptionPicker, type PickerOption } from '@/components/option-picker';
 import { useUsers } from '@/features/users/api';

@@ -16,7 +16,7 @@ import { Button, Chip, Menu, Searchbar, Switch, Text } from 'react-native-paper'
 
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
-import { space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import { SORT_OPTIONS, sortLabel } from './people-model';
 
 export interface PeopleFilterState {
@@ -60,6 +60,7 @@ export function PeopleFilters({
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }} accessibilityLabel="Role">
         <Chip
+          hitSlop={CHIP_HIT_SLOP}
           testID="people-role-all"
           selected={value.role === null}
           showSelectedCheck={false}
@@ -70,6 +71,7 @@ export function PeopleFilters({
         </Chip>
         {USER_ROLES.map((role) => (
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             key={role}
             testID={`people-role-${role}`}
             selected={value.role === role}

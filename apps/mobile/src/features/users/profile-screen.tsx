@@ -3,11 +3,13 @@
 // header.
 import { Stack } from 'expo-router';
 import { useState } from 'react';
-import { Card, Text } from 'react-native-paper';
+import { View } from 'react-native';
+import { Card, Divider, Text } from 'react-native-paper';
 
 import { ErrorState, LoadingState } from '@/components/state-views';
 import { Screen } from '@/components/screen';
 import { AppearanceControl } from '@/features/shell/appearance-control';
+import { HapticsControl } from '@/features/shell/haptics-control';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -49,7 +51,11 @@ export function ProfileScreen() {
         Something wrong here? Ask an administrator to update your record.
       </Text>
       <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
-        <AppearanceControl testID="profile-appearance" describe />
+        <View style={{ gap: space.lg }}>
+          <AppearanceControl testID="profile-appearance" describe />
+          <Divider />
+          <HapticsControl testID="profile-haptics" />
+        </View>
       </Card>
     </Screen>
   );

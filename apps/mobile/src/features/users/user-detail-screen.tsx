@@ -3,8 +3,9 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Divider, IconButton, Menu } from 'react-native-paper';
+import { Divider, Menu } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { LoadingState, ErrorState } from '@/components/state-views';
 import { Screen } from '@/components/screen';
 import { useAuth } from '@/providers/auth-provider';

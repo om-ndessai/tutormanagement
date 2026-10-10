@@ -5,7 +5,7 @@ import { Chip } from 'react-native-paper';
 
 import { DateTimeField } from '@/components/date-time-field';
 import { haptics } from '@/lib/haptics';
-import { space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import {
   SESSION_RANGES,
   SESSION_RANGE_LABELS,
@@ -45,13 +45,16 @@ export function SessionFilters({
     <View style={{ gap: space.sm }}>
       <ScrollView
         horizontal
+        // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
+        style={{ marginVertical: -CHIP_HIT_SLOP.top }}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: space.sm }}
+        contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
         accessibilityRole="radiogroup"
         accessibilityLabel="Which lessons"
       >
         {SESSION_RANGES.map((option) => (
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             key={option}
             testID={`sessions-range-${option}`}
             selected={range === option}

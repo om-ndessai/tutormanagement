@@ -139,7 +139,6 @@ export function PersonForm({
       toast.success(`${form.full_name.trim()} ${isEdit ? 'updated' : 'added'}.`);
       onSaved(saved.data);
     } catch (error) {
-      haptics.error();
       setFailures((n) => n + 1);
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);

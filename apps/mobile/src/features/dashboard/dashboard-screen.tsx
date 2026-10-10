@@ -5,8 +5,9 @@ import { USER_ROLES, type UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { IconButton, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { ErrorState, LoadingState } from '@/components/state-views';
 import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
@@ -32,13 +33,15 @@ function asRole(value: string | undefined): UserRole | undefined {
 
 /** The header's actions: the admin's "view as" beside the account button. */
 function HeaderActions({ isAdmin, viewingId }: { isAdmin: boolean; viewingId: string | undefined }) {
+  const theme = useAppTheme();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       {isAdmin ? (
         <IconButton
           testID="dashboard-view-as"
           icon="eye-outline"
           size={22}
+          iconColor={theme.colors.onSurface}
           accessibilityLabel="View dashboard as"
           style={{ margin: 0 }}
           onPress={() =>

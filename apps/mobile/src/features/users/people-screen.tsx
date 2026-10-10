@@ -9,8 +9,9 @@ import { FlashList } from '@shopify/flash-list';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';

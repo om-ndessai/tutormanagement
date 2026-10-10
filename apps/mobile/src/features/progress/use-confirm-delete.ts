@@ -19,11 +19,9 @@ export function useConfirmDelete(onDeleted?: (pending: Pending) => void) {
     try {
       if (pending.kind === 'assessment') await removeAssessment.mutateAsync(pending.row.id);
       else await removePlan.mutateAsync(pending.row.id);
-      haptics.success();
       toast.success(pending.kind === 'assessment' ? 'Assessment deleted.' : 'Plan deleted.');
       onDeleted?.(pending);
     } catch (error) {
-      haptics.error();
       toast.error(error instanceof ApiRequestError ? error.message : 'Could not delete it.');
     }
   }

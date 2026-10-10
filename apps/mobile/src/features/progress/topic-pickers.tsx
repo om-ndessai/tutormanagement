@@ -4,13 +4,14 @@
 import type { CurriculumLevel, Rating } from '@tmi/shared';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
-import { Chip, Divider, Icon, IconButton, Text } from 'react-native-paper';
+import { Chip, Divider, Icon, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { OptionPicker } from '@/components/option-picker';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
-import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, MIN_TARGET, radius, space } from '@/theme/tokens';
 import { levelOf, moveTopic, toggleTopic } from './progress-model';
 import { RatingChip, RatingPicker, TopicName } from './rating';
 
@@ -70,8 +71,10 @@ export function LevelTabs({
   return (
     <ScrollView
       horizontal
+      // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
+      style={{ marginVertical: -CHIP_HIT_SLOP.top }}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ gap: space.sm }}
+      contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
       accessibilityRole="tablist"
     >
       {levels.map((level) => {
@@ -79,6 +82,7 @@ export function LevelTabs({
         const count = counts.get(level.id) ?? 0;
         return (
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             key={level.id}
             testID={`${testID}-${level.id}`}
             selected={selected}

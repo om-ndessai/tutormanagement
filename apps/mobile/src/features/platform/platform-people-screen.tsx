@@ -46,7 +46,6 @@ export function PlatformPeopleScreen() {
       setForm({ full_name: found.full_name, email: found.email ?? '', phone: found.phone ?? '' });
       setErrors({});
     } catch (caught) {
-      haptics.error();
       setPerson(null);
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Lookup failed.');
     }
@@ -64,11 +63,9 @@ export function PlatformPeopleScreen() {
     }
     try {
       const updated = (await update.mutateAsync({ id: person.id, input: form })).data;
-      haptics.success();
       setPerson(updated);
       toast.success('Shared details saved, in every organization.');
     } catch (caught) {
-      haptics.error();
       if (caught instanceof ApiRequestError) {
         // "Another person already has that email address" is a 409 with no field: it is the email's.
         setErrors(caught.status === 409 ? { email: caught.message } : caught.fieldErrors);
@@ -92,12 +89,10 @@ export function PlatformPeopleScreen() {
           onPress: () =>
             unpin.mutate(person.id, {
               onSuccess: () => {
-                haptics.success();
                 setPerson({ ...person, google_sub_pinned: false });
                 toast.success('Unpinned: the next Google sign-in with this address is accepted.');
               },
               onError: (error) => {
-                haptics.error();
                 toast.error(error instanceof ApiRequestError ? error.message : 'Could not unpin.');
               },
             }),

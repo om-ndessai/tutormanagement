@@ -43,7 +43,6 @@ export function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
       await update.mutateAsync({ email_notifications: next });
       toast.success(next ? 'Email notifications are on.' : 'Email notifications are off.');
     } catch (caught) {
-      haptics.error();
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not change notifications.');
     } finally {
       setWanted(null);

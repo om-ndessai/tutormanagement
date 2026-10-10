@@ -15,8 +15,9 @@ import {
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Card, Divider, Icon, IconButton, Text } from 'react-native-paper';
+import { Button, Card, Divider, Icon, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { EmptyNote, Panel } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';

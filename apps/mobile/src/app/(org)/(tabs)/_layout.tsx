@@ -14,6 +14,8 @@ export default function TabsLayout() {
       tintColor={theme.colors.primary}
       iconColor={{ default: theme.colors.onSurfaceVariant, selected: theme.colors.primary }}
       indicatorColor={theme.colors.primaryContainer}
+      // Android labels every destination, as Material 3 asks with five (ux-audit F-14).
+      labelVisibilityMode="labeled"
       backgroundColor={theme.colors.surface}
       labelStyle={{
         default: { color: theme.colors.onSurfaceVariant },

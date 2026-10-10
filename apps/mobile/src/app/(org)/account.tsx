@@ -2,8 +2,9 @@
 import { USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { View } from 'react-native';
-import { Divider, IconButton, List, Text } from 'react-native-paper';
+import { Divider, List, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';
 import { useSetDefaultOrganization } from '@/features/organizations/api';

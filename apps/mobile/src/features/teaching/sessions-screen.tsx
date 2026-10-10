@@ -11,8 +11,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { SecureMoney } from '@/components/secure-money';

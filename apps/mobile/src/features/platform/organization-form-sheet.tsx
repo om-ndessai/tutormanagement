@@ -90,16 +90,13 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
     try {
       if (existing) {
         await update.mutateAsync({ id: existing.id, input: verdict.input });
-        haptics.success();
         toast.success(`${form.name} saved.`);
       } else {
         await create.mutateAsync(verdict.input);
-        haptics.success();
         toast.success(`${form.name} created. Add its first admin next.`);
       }
       close();
     } catch (caught) {
-      haptics.error();
       if (caught instanceof ApiRequestError) {
         setErrors(caught.status === 409 ? { slug: caught.message } : caught.fieldErrors);
         toast.error(caught.message);

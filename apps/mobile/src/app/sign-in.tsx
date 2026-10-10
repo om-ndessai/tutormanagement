@@ -11,7 +11,7 @@ import { DEV_TOOLS } from '@/lib/variant';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { radius, space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
 
 /**
  * Sign-in. Until Phase 4 adds Google, the only way in is the developer sign-in: on a server
@@ -43,7 +43,13 @@ export default function SignInScreen() {
         <Text variant="bodyLarge" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>
           {brand.tagline}
         </Text>
-        <Chip icon="server" compact onPress={() => router.push('/server')} testID="sign-in-server">
+        <Chip
+          hitSlop={CHIP_HIT_SLOP}
+          icon="server"
+          compact
+          onPress={() => router.push('/server')}
+          testID="sign-in-server"
+        >
           {serverOrigin().replace(/^https?:\/\//, '')}
         </Chip>
       </View>

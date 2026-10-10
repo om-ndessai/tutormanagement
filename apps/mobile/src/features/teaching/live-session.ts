@@ -41,6 +41,9 @@ export const TAB_BAR_ABOVE_INSET = { ios: 48, android: 80 } as const;
 /** The gap between the banner and whatever it floats above. */
 export const BANNER_GAP = 8;
 
+/** The banner's height: two lines and a 44pt button row. */
+export const BANNER_HEIGHT = 64;
+
 /** How far the banner sits above the bottom edge: clear of the tab bar on a tab, else of the inset. */
 export function bannerBottom(platform: 'ios' | 'android', insetBottom: number, onTab: boolean): number {
   return insetBottom + (onTab ? TAB_BAR_ABOVE_INSET[platform] : 0) + BANNER_GAP;

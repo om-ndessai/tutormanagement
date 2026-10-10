@@ -159,10 +159,8 @@ export function PlanForm({
         toast.success('Plan created.');
         announceFormSaved({ form: 'plan', id: created.data.id });
       }
-      haptics.success();
       close();
     } catch (error) {
-      haptics.error();
       if (error instanceof ApiRequestError) {
         setErrors({ ...error.fieldErrors, form: error.message });
         toast.error(error.message);

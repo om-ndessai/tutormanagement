@@ -16,7 +16,7 @@ import { useAssignments } from '@/features/teaching/api';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { CHIP_HIT_SLOP, MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useProgressOverview } from './api';
 import { ProgressMeter } from './progress-meter';
 import {
@@ -117,6 +117,7 @@ export function ProgressScreen() {
                 onDismiss={() => setTutorMenu(false)}
                 anchor={
                   <Chip
+                    hitSlop={CHIP_HIT_SLOP}
                     testID="progress-tutor-filter"
                     icon="account-school-outline"
                     selected={tutor !== null}
@@ -157,12 +158,15 @@ export function ProgressScreen() {
 
         <ScrollView
           horizontal
+          // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
+          style={{ marginVertical: -CHIP_HIT_SLOP.top }}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: space.sm }}
+          contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
           accessibilityRole="radiogroup"
           accessibilityLabel="Where they stand"
         >
           <Chip
+            hitSlop={CHIP_HIT_SLOP}
             testID="progress-filter-all"
             selected={status === 'all'}
             showSelectedCheck={false}
@@ -175,6 +179,7 @@ export function ProgressScreen() {
           </Chip>
           {STATUS_ORDER.filter((value) => counts.has(value)).map((value) => (
             <Chip
+              hitSlop={CHIP_HIT_SLOP}
               key={value}
               testID={`progress-filter-${value}`}
               selected={status === value}

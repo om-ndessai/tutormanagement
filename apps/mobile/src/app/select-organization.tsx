@@ -3,8 +3,9 @@ import { USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Chip, IconButton, List, Surface, Text, TouchableRipple } from 'react-native-paper';
+import { Button, Chip, List, Surface, Text, TouchableRipple } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';

@@ -9,8 +9,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { Screen } from '@/components/screen';
 import { Skeleton } from '@/components/skeleton';

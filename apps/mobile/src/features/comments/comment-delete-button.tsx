@@ -2,8 +2,8 @@
 // becomes the platform's own confirm.
 import type { Comment, CommentTarget } from '@tmi/shared';
 import { AccessibilityInfo, Alert } from 'react-native';
-import { IconButton } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -39,7 +39,6 @@ export function CommentDeleteButton({ comment, target }: { comment: Comment; tar
                 // is the confirmation there, said aloud for a screen reader; a failure is an alert,
                 // which shows above any sheet.
                 onSuccess: () => {
-                  haptics.success();
                   AccessibilityInfo.announceForAccessibility('Comment deleted.');
                   toast.success('Comment deleted.');
                 },
