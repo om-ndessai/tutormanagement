@@ -3,6 +3,9 @@
 # local Worker simulates the mail binding, so it reads "Sent"). Changes data: the runner resets the
 # database.
 appId: ${APP_ID}
+# The lesson this flow records is removed after it, even when it fails part-way.
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
 ---
@@ -67,11 +70,3 @@ tags:
 - assertVisible: '(Sent|Not delivered|Not sent here)'
 - assertNotVisible: '.*@.*'
 - takeScreenshot: organization-notifications
-# Remove the lesson this flow recorded, so the other flows see the seed.
-- runScript:
-    file: ../../scripts/local-api.js
-    env:
-      METHOD: DELETE
-      API_PATH: /sessions/${output.sessionId}
-      AS: priya.raghavan@gmail.com
-      ORG: chmi

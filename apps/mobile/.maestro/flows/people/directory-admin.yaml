@@ -43,7 +43,8 @@ tags:
 - tapOn:
     id: people-search
 - eraseText: 10
-- hideKeyboard
+# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
+- pressKey: Enter
 # Students only: Ben in, Alex (a tutor) out.
 - tapOn:
     id: people-role-student

@@ -2,6 +2,12 @@
 # from the office's side -- the tutor's pay, the family's charge and what the organization keeps.
 # Nothing is recorded. From Tutoring the same sheet shows no money.
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure
@@ -39,7 +45,8 @@ tags:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000004
     timeout: 10000
-- hideKeyboard
+# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
+- pressKey: Enter
 - tapOn:
     id: record-pairing-a0000000-0000-4000-8000-000000000004
 - extendedWaitUntil:
@@ -85,7 +92,8 @@ tags:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000004
     timeout: 10000
-- hideKeyboard
+# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
+- pressKey: Enter
 - tapOn:
     id: record-pairing-a0000000-0000-4000-8000-000000000004
 - extendedWaitUntil:

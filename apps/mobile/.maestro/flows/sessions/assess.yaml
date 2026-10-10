@@ -5,6 +5,12 @@
 # both; Withdraw is offered for her own only and takes only hers. Sofia, the student, has no
 # Assess: she reflects instead. The lesson is deleted at the end.
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure

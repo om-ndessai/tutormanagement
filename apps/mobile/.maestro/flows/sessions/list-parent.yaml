@@ -1,6 +1,12 @@
 # A parent's sessions (Anita, parent of Sanjay in chmi): her child's lesson, its write-up on
 # Tutoring with no money, and on Finance the family's side only: "You pay", never "Your pay".
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure

@@ -30,7 +30,8 @@ tags:
     visible:
       id: people-row-menu-22222222-0000-4000-8000-000000000011
     timeout: 15000
-- hideKeyboard
+# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
+- pressKey: Enter
 - tapOn:
     id: people-row-menu-22222222-0000-4000-8000-000000000011
 - tapOn:
@@ -86,6 +87,17 @@ tags:
     id: person-delete-input
 # Lower case, as the check ignores case: the simulator's keyboard now and then drops a shifted key.
 - inputText: 'jade xu'
+# The simulator's keyboard sometimes drops keys while it is still coming up ("jdexu"): retype
+# until the name matches, at most twice more.
+- repeat:
+    while:
+      notVisible:
+        id: person-delete-confirm
+        enabled: true
+    times: 2
+    commands:
+      - eraseText: 20
+      - inputText: 'jade xu'
 - assertVisible:
     id: person-delete-confirm
     enabled: true

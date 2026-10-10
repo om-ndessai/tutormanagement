@@ -2,6 +2,16 @@
 # there when the page is opened again. An SSN-shaped TIN -- a sole proprietor's own number -- is
 # refused with the shared sentence, on the device. Changes data: the runner resets the database.
 appId: ${APP_ID}
+# The payer address is put back after the flow (the 1099 sheet reads it), even when it fails.
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/local-api.js
+      env:
+        METHOD: PATCH
+        API_PATH: /organization/settings
+        AS: priya.raghavan@gmail.com
+        ORG: chmi
+        BODY: '{"payer_address_line1":"100 Franklin Street"}'
 tags:
   - feature
   - exposure
@@ -77,12 +87,3 @@ tags:
     timeout: 10000
 - takeScreenshot: organization-ssn-refused
 - assertNotVisible: 'Organization settings saved.'
-# Put the payer address back, so the other flows (the 1099 sheet) see the seed.
-- runScript:
-    file: ../../scripts/local-api.js
-    env:
-      METHOD: PATCH
-      API_PATH: /organization/settings
-      AS: priya.raghavan@gmail.com
-      ORG: chmi
-      BODY: '{"payer_address_line1":"100 Franklin Street"}'

@@ -55,6 +55,10 @@ export function Screen({
       contentContainerStyle={padded}
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="interactive"
+      // Android: a form sheet is a BottomSheetBehavior, which only lets a NESTED-scrolling child
+      // scroll before it drags the sheet. Without this, dragging down in a scrolled sheet moved the
+      // sheet instead of the content, so the top of a long form could not be reached again.
+      nestedScrollEnabled
       contentInsetAdjustmentBehavior="automatic"
       automaticallyAdjustKeyboardInsets
       refreshControl={

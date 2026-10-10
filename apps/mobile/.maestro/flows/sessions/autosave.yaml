@@ -4,6 +4,12 @@
 # says where it went, the Drafts panel holds it (no money), and continuing and posting it makes it
 # a lesson and the draft goes. The lesson is deleted at the end, so other flows see the seed.
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure
@@ -46,6 +52,7 @@ tags:
     element:
       id: record-pairing-a0000000-0000-4000-8000-000000000002
     direction: UP
+    centerElement: true
     timeout: 20000
 - tapOn:
     id: record-pairing-a0000000-0000-4000-8000-000000000002

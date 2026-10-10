@@ -4,6 +4,12 @@
 # times and the LENGTH, never the pay, and the lesson is in the list. A second one is discarded
 # with a confirmation. The recorded lesson is deleted at the end, so other flows see the seed.
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure

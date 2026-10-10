@@ -78,7 +78,6 @@ tags:
     element:
       id: appearance-current
     direction: DOWN
-    centerElement: true
     timeout: 20000
 - assertVisible: 'Always dark, whatever this device is set to.'
 - tapOn:

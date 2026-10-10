@@ -2,6 +2,10 @@
 # Priya's SSN line about Maria and her note on Sanjay are not his to see, and there is no person
 # filter. Three events are made first through the local API (the seed has none).
 appId: ${APP_ID}
+# What the setup makes is put back after the flow, even when it fails part-way.
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/unseed-activity.js
 tags:
   - feature
   - exposure
@@ -45,6 +49,3 @@ tags:
 - extendedWaitUntil:
     notVisible: 'Filter activity'
     timeout: 10000
-# Put back what the setup made, so the flows after this one see the seed.
-- runScript:
-    file: ../../scripts/unseed-activity.js

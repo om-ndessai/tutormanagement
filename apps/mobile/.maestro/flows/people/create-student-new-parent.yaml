@@ -1,8 +1,14 @@
 # A child whose parent is not on file yet (Priya): Student and a name, then "New parent…" opens the
 # same person form over the first, preset to the parent role; saving it (one request) brings the
 # parent back into the student's list, and saving the student (one more request, naming them) gives
-# a record that lists the new parent. Changes data: reset the database afterwards.
+# a record that lists the new parent. Cleans up after itself.
 appId: ${APP_ID}
+# Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
+# and whatever this flow creates or changes is put back after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
 tags:
   - feature
 ---

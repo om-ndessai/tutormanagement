@@ -3,6 +3,12 @@
 # Finance shows his side only ("Earned", "Your pay"), never the family's. A range chip narrows the
 # list; the dashboard's past lesson opens the list on that one lesson, with the way back.
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure
@@ -67,8 +73,14 @@ tags:
     file: ../../subflows/go-back.yaml
 - extendedWaitUntil:
     visible:
-      id: tabs-finance
+      id: screen-sessions
     timeout: 10000
+# The list is still scrolled down to the lesson: back up to the tabs.
+- scrollUntilVisible:
+    element:
+      id: tabs-finance
+    direction: UP
+    timeout: 20000
 # Finance: his side of the money only.
 - tapOn:
     id: tabs-finance

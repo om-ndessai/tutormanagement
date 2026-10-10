@@ -1,6 +1,10 @@
 # The activity log as an admin reads it (Priya): the organization's, narrowed in the filter sheet by
 # action and by person. Three events are made first through the local API (the seed has none).
 appId: ${APP_ID}
+# What the setup makes is put back after the flow, even when it fails part-way.
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/unseed-activity.js
 tags:
   - feature
 ---
@@ -38,6 +42,11 @@ tags:
     id: activity-filter-person
 - tapOn:
     id: activity-filter-action
+# Narrowed first: the list shows the first few actions, and which come first depends on what
+# earlier flows logged.
+- tapOn:
+    id: activity-filter-action-search
+- inputText: SSN
 - extendedWaitUntil:
     visible:
       id: activity-filter-action-tutor.ssn_confirmed
@@ -95,6 +104,3 @@ tags:
 - assertVisible: 'Commented on the 2026-09-15 session with Sofia Okafor'
 - assertNotVisible: "Confirmed .* has Maria Okafor's SSN on file"
 - takeScreenshot: activity-admin-person
-# Put back what the setup made, so the flows after this one see the seed.
-- runScript:
-    file: ../../scripts/unseed-activity.js

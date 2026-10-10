@@ -3,6 +3,12 @@
 # Ben (an hour and a half, notes, homework done, a goal rating and his own assessment); it is in
 # the list; he edits its notes, then deletes it, which also puts the data back for other flows.
 appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
 tags:
   - feature
   - exposure
@@ -54,6 +60,7 @@ tags:
     element:
       id: record-pairing-a0000000-0000-4000-8000-000000000002
     direction: UP
+    centerElement: true
     timeout: 30000
 - tapOn:
     id: record-pairing-a0000000-0000-4000-8000-000000000002
@@ -141,7 +148,8 @@ tags:
 - tapOn:
     id: record-homework-set
 - inputText: 'Edited from the phone: five problems'
-- hideKeyboard
+# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
+- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: record-submit

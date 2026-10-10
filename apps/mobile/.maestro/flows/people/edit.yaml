@@ -1,9 +1,15 @@
 # The office edits a record (Priya). Maria's phone changes and the record shows it. Clearing a
 # tutor's email is refused -- everybody but a student-only person signs in with one -- and the rule
 # is said under the field; nothing is saved. Alex also belongs to another organization, so his
-# name, email and phone are the platform's: the form says so and holds them still. Changes data:
-# reset the database afterwards.
+# name, email and phone are the platform's: the form says so and holds them still. Cleans up after
+# itself.
 appId: ${APP_ID}
+# Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
+# and whatever this flow creates or changes is put back after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
 tags:
   - feature
 ---

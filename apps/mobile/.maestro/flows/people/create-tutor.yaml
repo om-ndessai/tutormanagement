@@ -1,8 +1,14 @@
 # The office adds a tutor (Priya): Tutor, name and email (required now), background, the mailing
 # address for their 1099 (only in the financials block), pay rates, a two-hour limit, and three
 # hours of availability on two days. The new record shows the pay, the address and the hours
-# collapsed into ranges. Changes data: reset the database afterwards.
+# collapsed into ranges. Cleans up after itself.
 appId: ${APP_ID}
+# Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
+# and whatever this flow creates or changes is put back after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
 tags:
   - feature
 ---

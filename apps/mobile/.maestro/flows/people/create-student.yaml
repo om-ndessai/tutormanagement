@@ -1,8 +1,14 @@
 # The office adds a child (Priya): Student, a name and no email -- the email is optional only
 # because the roles are student-only. Saving without a parent is refused by the API's guardian rule;
 # with Anita Patel named (as mother) the student and the link are created in ONE request, and the
-# new record lists her. Changes data: reset the database afterwards.
+# new record lists her. Cleans up after itself.
 appId: ${APP_ID}
+# Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
+# and whatever this flow creates or changes is put back after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
 tags:
   - feature
 ---

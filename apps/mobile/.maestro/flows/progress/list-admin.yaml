@@ -78,7 +78,8 @@ tags:
     timeout: 10000
 - assertNotVisible:
     id: progress-row-00000000-0000-4000-8000-000000000009
-- hideKeyboard
+# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
+- pressKey: Enter
 - tapOn:
     id: progress-row-00000000-0000-4000-8000-000000000008
 - extendedWaitUntil:
