@@ -45,7 +45,7 @@ the `[~]` item, then carry on down the list.
 - [x] 33. Mobile: Search — pages, people and actions (f83ae35)
 - [x] 33b. Mobile tests: self-cleaning, stable Sessions flows (094670c)
 - [x] 34. Mobile: Welcome wizard, guided setup and tour (f4e828a)
-- [x] 35. Mobile: Platform console — organizations, branding, logo upload, admins, people, activity
+- [x] 35. Mobile: Platform console — organizations, branding, logo upload, admins, people, activity (d71b763)
 - [ ] 36. Mobile tests: exposure across personas
 
 ## Phase 2 — UX audit and immersive design
