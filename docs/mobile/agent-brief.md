@@ -153,6 +153,16 @@ Hermes on Android formats with Intl 30–45x slower than iOS. `src/polyfills/int
 caches formatters and their results, but don't format dates or money in a render that ticks
 every second. Keep a ticking clock in its own small component.
 
+## How much to test (keeps an item to about an hour)
+
+- **Per item:** run only your feature's flows plus `smoke/*`, on both platforms, one platform
+  at a time (two devices against one local DB delete each other's data). Re-run a failure once
+  to tell a flake from a real fault, then fix the cause.
+- **Don't run the full 60-flow suite.** It belongs to the phase gate and takes about 3 hours.
+  The orchestrator runs it at the end of each phase.
+- Every flow that changes data cleans up after itself, before and after it runs, even when it
+  fails part-way (see `.maestro/scripts/clean-*.js`).
+
 ## Checks before committing (in apps/mobile)
 
 ```sh
