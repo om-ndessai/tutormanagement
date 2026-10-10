@@ -43,7 +43,7 @@ the `[~]` item, then carry on down the list.
 - [x] 31. Mobile: Organization — TIN, payer address, notifications (add087e)
 - [x] 32. Mobile: Profile and appearance (0973394)
 - [x] 33. Mobile: Search — pages, people and actions (f83ae35)
-- [x] 33b. Mobile tests: self-cleaning, stable Sessions flows
+- [x] 33b. Mobile tests: self-cleaning, stable Sessions flows (094670c)
 - [ ] 34. Mobile: Welcome wizard, guided setup and tour
 - [ ] 35. Mobile: Platform console
 - [ ] 36. Mobile tests: exposure across personas
