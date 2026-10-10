@@ -7,7 +7,7 @@ import { View } from 'react-native';
 import { Button, HelperText, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { LoadingState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -31,7 +31,7 @@ export function StopLessonSheet() {
   const mine = held ?? current;
 
   let body;
-  if (active.isPending) body = <LoadingState label="Loading the lesson…" />;
+  if (active.isPending) body = <FormSkeleton label="Loading the lesson…" fields={2} />;
   else if (!mine) {
     // Stopped elsewhere (another device, or the limit) since the banner was pressed.
     body = (

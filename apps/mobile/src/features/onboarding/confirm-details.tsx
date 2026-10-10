@@ -11,7 +11,8 @@ import { View } from 'react-native';
 import { Button, Surface, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { useAddComment } from '@/features/comments/api';
 import { NoteField } from '@/features/teaching/session-notes';
@@ -96,7 +97,7 @@ export function ConfirmDetailsScreen() {
         }}
       >
         {detail.isPending ? (
-          <LoadingState label="Loading your record…" />
+          <FormSkeleton label="Loading your record…" />
         ) : detail.data ? (
           <UserDetailView user={detail.data.data} compact />
         ) : (

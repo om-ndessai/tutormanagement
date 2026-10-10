@@ -7,9 +7,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+import { useLargeText } from '@/hooks/use-large-text';
 import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { DashboardSkeleton } from '@/components/skeletons';
 import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useTourScroller } from '@/features/onboarding/tour-targets';
@@ -68,6 +70,7 @@ export function DashboardScreen() {
   const theme = useAppTheme();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
+  const large = useLargeText();
   const params = useLocalSearchParams<{ as?: string; role?: string }>();
   const navigation = useNavigation();
 
@@ -133,9 +136,13 @@ export function DashboardScreen() {
         <Text testID={viewingOther ? 'dashboard-heading' : 'home-user'} variant="titleMedium">
           {viewingOther && subject ? `${subject.full_name}'s dashboard` : user?.full_name}
         </Text>
-        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          {viewingOther ? 'You are seeing the portal exactly as they see it.' : brand.name}
-        </Text>
+        {/* The organization's name is the account sheet's too; under large text it gives its
+            lines to the dashboard (ux-audit F-12, F-15). */}
+        {viewingOther || !large ? (
+          <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+            {viewingOther ? 'You are seeing the portal exactly as they see it.' : brand.name}
+          </Text>
+        ) : null}
       </View>
       {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
       {subject && response ? <RoleSelector roles={subject.roles} current={response.role} /> : null}
@@ -155,7 +162,7 @@ function RoleDashboard({
   const { data, isPending, isError, error, refetch } = query;
   const response = data?.data;
 
-  if (isPending) return <LoadingState label="Loading your dashboard…" testID="dashboard-loading" />;
+  if (isPending) return <DashboardSkeleton />;
   if (isError || !response) return <ErrorState error={error} onRetry={() => void refetch()} />;
 
   const view = response.data;

@@ -24,7 +24,8 @@ import { DateTimeField } from '@/components/date-time-field';
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Choice, Field } from '@/components/form-choice';
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { organizationToday } from '@/features/teaching/session-ranges';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
@@ -56,7 +57,7 @@ export function PlanFormSheet({ studentId, planId }: { studentId: string; planId
   if (!isAdmin) {
     body = <EmptyState icon="lock-outline" title="Only an admin can set a learning plan." />;
   } else if (progress.isPending || curriculum.isPending) {
-    body = <LoadingState label="Loading the student…" />;
+    body = <FormSkeleton label="Loading the student…" />;
   } else if (progress.isError) {
     body = <ErrorState error={progress.error} onRetry={() => void progress.refetch()} />;
   } else {

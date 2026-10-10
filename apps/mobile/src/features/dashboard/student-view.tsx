@@ -4,6 +4,7 @@ import { formatDuration, type StudentDashboard } from '@tmi/shared';
 import { View } from 'react-native';
 import { Divider, Icon, Text } from 'react-native-paper';
 
+import { countOf } from '@/lib/plural';
 import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { StudentProgressCard } from '@/features/progress/progress-card';
@@ -119,7 +120,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
                     backgroundColor: theme.tokens.muted,
                   }}
                 >
-                  <Text style={{ fontSize: 12 }}>{tutor.session_count} sessions</Text>
+                  <Text style={{ fontSize: 12 }}>{countOf(tutor.session_count, 'session')}</Text>
                 </View>
               </View>
             </View>

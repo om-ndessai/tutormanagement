@@ -7,9 +7,11 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Card, Chip, Icon, Text, TouchableRipple } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
 import { EmptyNote } from '@/components/section';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { ListSkeleton } from '@/components/skeletons';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
@@ -46,9 +48,9 @@ export function OrganizationsScreen() {
 
   return (
     <Screen testID="screen-platform" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro>
         Each one has its own people, records and look. Create one, then add its first admin.
-      </Text>
+      </PageIntro>
       <Button
         testID="platform-org-new"
         mode="contained"
@@ -63,7 +65,7 @@ export function OrganizationsScreen() {
       </Button>
 
       {organizations.isPending ? (
-        <LoadingState label="Loading organizations…" />
+        <ListSkeleton label="Loading organizations…" count={3} height={72} />
       ) : organizations.isError ? (
         <ErrorState error={organizations.error} onRetry={() => void organizations.refetch()} />
       ) : rows.length === 0 ? (

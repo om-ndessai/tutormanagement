@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
@@ -110,20 +111,11 @@ export function PeopleScreen() {
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
-      <Text testID="people-description" variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro testID="people-description">
         {`Everyone at ${brand.name}. A person can hold more than one role.`}
-      </Text>
-      {isAdmin ? (
-        <Button
-          testID="people-add-button"
-          mode="contained"
-          icon="plus"
-          onPress={addUser}
-          style={{ alignSelf: 'flex-start' }}
-        >
-          Add user
-        </Button>
-      ) : null}
+      </PageIntro>
+      {/* Adding is the header's +; the in-page button is the empty directory's next step only
+          (ux-audit F-15). */}
       <PeopleFilters
         value={filters}
         onChange={(next) => setFilters((current) => ({ ...current, ...next }))}
@@ -193,6 +185,13 @@ export function PeopleScreen() {
               testID="people-empty"
               icon="account-search-outline"
               title="No users match these filters."
+              action={
+                isAdmin ? (
+                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={addUser}>
+                    Add user
+                  </Button>
+                ) : undefined
+              }
             />
           )
         }

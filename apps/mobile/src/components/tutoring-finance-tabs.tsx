@@ -6,6 +6,7 @@ import { Icon, Text } from 'react-native-paper';
 
 import { ICON_TARGET } from '@/components/icon-button';
 import { useTourTarget } from '@/features/onboarding/tour-targets';
+import { useIconSize, useLargeText } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -38,6 +39,10 @@ export function TutoringFinanceSwitch() {
   const [tab, setTab] = useTutoringFinanceTab();
   const tourRef = useTourTarget('tabs');
   const theme = useAppTheme();
+  // At the largest text sizes two side-by-side halves read "Tutor… / Fina…", so they stack, each
+  // a full-width row (ux-audit F-12).
+  const stacked = useLargeText();
+  const iconSize = useIconSize(18);
   return (
     <View
       ref={tourRef}
@@ -45,10 +50,10 @@ export function TutoringFinanceSwitch() {
       collapsable={false}
       accessibilityRole="tablist"
       style={{
-        flexDirection: 'row',
+        flexDirection: stacked ? 'column' : 'row',
         borderWidth: 1,
         borderColor: theme.colors.outline,
-        borderRadius: radius.pill,
+        borderRadius: stacked ? radius.lg : radius.pill,
         overflow: 'hidden',
       }}
     >
@@ -68,14 +73,16 @@ export function TutoringFinanceSwitch() {
               setTab(item.value);
             }}
             style={({ pressed }) => ({
-              flex: 1,
+              flex: stacked ? undefined : 1,
               minHeight: ICON_TARGET,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
               gap: space.sm,
               paddingHorizontal: space.md,
-              borderLeftWidth: index > 0 ? 1 : 0,
+              paddingVertical: stacked ? space.sm : 0,
+              borderLeftWidth: index > 0 && !stacked ? 1 : 0,
+              borderTopWidth: index > 0 && stacked ? 1 : 0,
               borderColor: theme.colors.outline,
               backgroundColor: selected
                 ? theme.colors.secondaryContainer
@@ -84,8 +91,8 @@ export function TutoringFinanceSwitch() {
                   : 'transparent',
             })}
           >
-            <Icon source={item.icon} size={18} color={ink} />
-            <Text variant="labelLarge" style={{ color: ink }}>
+            <Icon source={item.icon} size={iconSize} color={ink} />
+            <Text variant="labelLarge" style={{ flexShrink: 1, color: ink }}>
               {item.label}
             </Text>
           </Pressable>

@@ -13,3 +13,12 @@ jest.mock('react-native-reanimated', () => ({
 
 // Gesture handler's own Jest setup: its native module and the detectors as plain views.
 import 'react-native-gesture-handler/jestSetup';
+
+// React Native's Jest environment reports a font scale of 2, past the 1.35 from which the layouts
+// adapt (`use-large-text`). Tests run at the usual text size unless they set their own.
+{
+  const { Dimensions } = require('react-native') as typeof import('react-native');
+  const window = Dimensions.get('window');
+  const screen = Dimensions.get('screen');
+  Dimensions.set({ window: { ...window, fontScale: 1 }, screen: { ...screen, fontScale: 1 } });
+}

@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 import { List, Surface, Text } from 'react-native-paper';
 
+import { ListItem } from '@/components/list-item';
 import { Screen } from '@/components/screen';
 import { useNavItems } from '@/features/shell/nav-items';
 import { useBrand } from '@/providers/brand-provider';
@@ -17,7 +18,7 @@ export default function MoreScreen() {
     <Screen testID="screen-more">
       <Surface elevation={1} style={{ borderRadius: radius.lg }}>
         <View style={{ borderRadius: radius.lg, overflow: 'hidden' }}>
-          <List.Item
+          <ListItem
             testID="more-search"
             title="Search"
             description="Pages, people and actions"
@@ -30,7 +31,7 @@ export default function MoreScreen() {
       <Surface elevation={1} style={{ borderRadius: radius.lg }}>
         <View style={{ borderRadius: radius.lg, overflow: 'hidden' }}>
           {items.map((item) => (
-            <List.Item
+            <ListItem
               key={item.tourId}
               testID={`more-${item.tourId}`}
               title={item.label}

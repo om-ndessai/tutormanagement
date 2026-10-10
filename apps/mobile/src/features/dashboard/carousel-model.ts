@@ -56,6 +56,33 @@ export const NOW_WIDTH = 36;
 export const MORE_WIDTH = 120;
 export const GAP = 12;
 
+/**
+ * Card widths for the reader's text size (ux-audit F-12): at the largest sizes a 224pt card held
+ * two words to a line, so widths grow with the font scale, but never past the screen less its
+ * gutters, where a card would hide its neighbours entirely.
+ */
+export interface CarouselWidths {
+  card: number;
+  next: number;
+  note: number;
+  now: number;
+  more: number;
+}
+
+export function carouselWidths(fontScale = 1, maxWidth = Infinity): CarouselWidths {
+  const scale = Math.min(Math.max(fontScale, 1), 1.6);
+  const fit = (width: number) => Math.round(Math.min(width * scale, maxWidth));
+  return {
+    card: fit(CARD_WIDTH),
+    next: fit(NEXT_WIDTH),
+    note: fit(NOTE_WIDTH),
+    now: Math.round(NOW_WIDTH * scale),
+    more: fit(MORE_WIDTH),
+  };
+}
+
+const DEFAULT_WIDTHS = carouselWidths();
+
 export type CarouselItem =
   | { kind: 'past'; key: string; width: number; session: TutoringSession }
   | { kind: 'past-empty'; key: string; width: number }
@@ -83,6 +110,7 @@ export function buildCarousel({
   pending,
   hasMore,
   fetchingMore,
+  widths = DEFAULT_WIDTHS,
 }: {
   /** Newest first, as the API returns them. */
   past: TutoringSession[];
@@ -90,20 +118,21 @@ export function buildCarousel({
   pending: boolean;
   hasMore: boolean;
   fetchingMore: boolean;
+  widths?: CarouselWidths;
 }): { items: CarouselItem[]; anchorIndex: number; empty: boolean } {
   const items: CarouselItem[] = [];
 
   for (const session of [...past].reverse()) {
-    items.push({ kind: 'past', key: `past-${session.id}`, width: CARD_WIDTH, session });
+    items.push({ kind: 'past', key: `past-${session.id}`, width: widths.card, session });
   }
-  if (past.length === 0) items.push({ kind: 'past-empty', key: 'past-empty', width: NOTE_WIDTH });
+  if (past.length === 0) items.push({ kind: 'past-empty', key: 'past-empty', width: widths.note });
 
   const nowIndex = items.length;
-  items.push({ kind: 'now', key: 'now', width: NOW_WIDTH });
+  items.push({ kind: 'now', key: 'now', width: widths.now });
 
   if (pending) {
     for (let index = 0; index < 3; index += 1) {
-      items.push({ kind: 'skeleton', key: `skeleton-${index}`, width: CARD_WIDTH });
+      items.push({ kind: 'skeleton', key: `skeleton-${index}`, width: widths.card });
     }
   }
 
@@ -112,20 +141,20 @@ export function buildCarousel({
   upcoming.forEach((occurrence, index) => {
     const key = occurrenceKey(occurrence);
     if (occurrence.cancellation) {
-      items.push({ kind: 'cancelled', key: `cancelled-${key}`, width: CARD_WIDTH, occurrence });
+      items.push({ kind: 'cancelled', key: `cancelled-${key}`, width: widths.card, occurrence });
     } else if (index === firstLive) {
       nextIndex = items.length;
-      items.push({ kind: 'next', key: `next-${key}`, width: NEXT_WIDTH, occurrence });
+      items.push({ kind: 'next', key: `next-${key}`, width: widths.next, occurrence });
     } else {
-      items.push({ kind: 'upcoming', key: `upcoming-${key}`, width: CARD_WIDTH, occurrence });
+      items.push({ kind: 'upcoming', key: `upcoming-${key}`, width: widths.card, occurrence });
     }
   });
 
   if (!pending && upcoming.length === 0) {
-    items.push({ kind: 'none-scheduled', key: 'none-scheduled', width: NOTE_WIDTH });
+    items.push({ kind: 'none-scheduled', key: 'none-scheduled', width: widths.note });
   }
-  if (fetchingMore) items.push({ kind: 'skeleton', key: 'skeleton-more', width: CARD_WIDTH });
-  else if (hasMore) items.push({ kind: 'load-more', key: 'load-more', width: MORE_WIDTH });
+  if (fetchingMore) items.push({ kind: 'skeleton', key: 'skeleton-more', width: widths.card });
+  else if (hasMore) items.push({ kind: 'load-more', key: 'load-more', width: widths.more });
 
   return {
     items,
@@ -142,8 +171,9 @@ export function buildCarousel({
 export function carouselOffsets(
   items: Pick<CarouselItem, 'width'>[],
   viewport: number,
+  nextWidth: number = NEXT_WIDTH,
 ): { padding: number; offsets: number[]; contentWidth: number } {
-  const padding = Math.max(0, (viewport - NEXT_WIDTH) / 2);
+  const padding = Math.max(0, (viewport - nextWidth) / 2);
   const widths = items.map((item) => item.width);
   const contentWidth =
     padding * 2 + widths.reduce((sum, width) => sum + width, 0) + GAP * Math.max(0, items.length - 1);

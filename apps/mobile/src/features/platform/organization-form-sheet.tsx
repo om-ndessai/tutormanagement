@@ -19,7 +19,8 @@ import { Button, Checkbox, Switch, Text } from 'react-native-paper';
 import { Field } from '@/components/form-choice';
 import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
 import { FormTextField } from '@/features/users/form-text-field';
@@ -45,7 +46,7 @@ export function OrganizationFormSheet({ id }: { id?: string }) {
   const existing = id ? (organizations.data?.data.find((row) => row.id === id) ?? null) : null;
 
   let body;
-  if (id && organizations.isPending) body = <LoadingState />;
+  if (id && organizations.isPending) body = <FormSkeleton label="Loading the organization…" fields={5} />;
   else if (id && (organizations.isError || !existing))
     body = (
       <ErrorState

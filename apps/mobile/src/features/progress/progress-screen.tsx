@@ -9,6 +9,9 @@ import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Card, Chip, Divider, Menu, Searchbar, Text } from 'react-native-paper';
 
+import { AdaptiveRow } from '@/components/adaptive-row';
+import { useLargeText } from '@/hooks/use-large-text';
+import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
 import { Skeleton } from '@/components/skeleton';
 import { ErrorState } from '@/components/state-views';
@@ -81,120 +84,124 @@ export function ProgressScreen() {
 
   return (
     <Screen testID="screen-progress" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <Text variant="bodyMedium" style={{ color: muted }}>
+      <PageIntro>
         {isAdmin
           ? 'Every student against their learning plan. Open one to assess them or set a plan.'
           : 'Where each student stands against the plan agreed for them.'}
-      </Text>
+      </PageIntro>
 
-      <View style={{ gap: space.sm }}>
-        <Searchbar
-          testID="progress-search"
-          placeholder="Find a student"
-          accessibilityLabel="Find a student"
-          value={search}
-          onChangeText={setSearch}
-          autoCorrect={false}
-          returnKeyType="search"
-        />
+      {/* Search and the status chips are for choosing among students: a parent of one child or a
+          student reading their own progress has nothing to choose (ux-audit F-15). */}
+      {all.length >= 2 || filtered ? (
+        <View style={{ gap: space.sm }}>
+          <Searchbar
+            testID="progress-search"
+            placeholder="Find a student"
+            accessibilityLabel="Find a student"
+            value={search}
+            onChangeText={setSearch}
+            autoCorrect={false}
+            returnKeyType="search"
+          />
 
-        {/* The narrowing a link or a menu made, each with its own way out. */}
-        {studentFilter !== 'all' || tutors.length > 1 ? (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-            {studentFilter !== 'all' ? (
-              <Chip
-                testID="progress-student-chip"
-                icon="account"
-                onClose={() => router.setParams({ student: undefined })}
-                closeIconAccessibilityLabel="Show every student"
-              >
-                {studentName ?? 'One student'}
-              </Chip>
-            ) : null}
-            {tutors.length > 1 ? (
-              <Menu
-                visible={tutorMenu}
-                onDismiss={() => setTutorMenu(false)}
-                anchor={
-                  <Chip
-                    hitSlop={CHIP_HIT_SLOP}
-                    testID="progress-tutor-filter"
-                    icon="account-school-outline"
-                    selected={tutor !== null}
-                    showSelectedCheck={false}
-                    mode={tutor ? 'flat' : 'outlined'}
-                    onPress={() => setTutorMenu(true)}
-                    accessibilityHint="Choose whose students to show"
-                  >
-                    {tutor ? `${tutor.name}’s students` : 'All tutors'}
-                  </Chip>
-                }
-              >
-                <Menu.Item
-                  testID="progress-tutor-all"
-                  title="All tutors"
-                  onPress={() => {
-                    haptics.selection();
-                    setTutorMenu(false);
-                    router.setParams({ tutor: undefined });
-                  }}
-                />
-                {tutors.map((candidate) => (
+          {/* The narrowing a link or a menu made, each with its own way out. */}
+          {studentFilter !== 'all' || tutors.length > 1 ? (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+              {studentFilter !== 'all' ? (
+                <Chip
+                  testID="progress-student-chip"
+                  icon="account"
+                  onClose={() => router.setParams({ student: undefined })}
+                  closeIconAccessibilityLabel="Show every student"
+                >
+                  {studentName ?? 'One student'}
+                </Chip>
+              ) : null}
+              {tutors.length > 1 ? (
+                <Menu
+                  visible={tutorMenu}
+                  onDismiss={() => setTutorMenu(false)}
+                  anchor={
+                    <Chip
+                      hitSlop={CHIP_HIT_SLOP}
+                      testID="progress-tutor-filter"
+                      icon="account-school-outline"
+                      selected={tutor !== null}
+                      showSelectedCheck={false}
+                      mode={tutor ? 'flat' : 'outlined'}
+                      onPress={() => setTutorMenu(true)}
+                      accessibilityHint="Choose whose students to show"
+                    >
+                      {tutor ? `${tutor.name}’s students` : 'All tutors'}
+                    </Chip>
+                  }
+                >
                   <Menu.Item
-                    key={candidate.id}
-                    testID={`progress-tutor-${candidate.id}`}
-                    title={`${candidate.name}’s students`}
+                    testID="progress-tutor-all"
+                    title="All tutors"
                     onPress={() => {
                       haptics.selection();
                       setTutorMenu(false);
-                      router.setParams({ tutor: candidate.id });
+                      router.setParams({ tutor: undefined });
                     }}
                   />
-                ))}
-              </Menu>
-            ) : null}
-          </View>
-        ) : null}
+                  {tutors.map((candidate) => (
+                    <Menu.Item
+                      key={candidate.id}
+                      testID={`progress-tutor-${candidate.id}`}
+                      title={`${candidate.name}’s students`}
+                      onPress={() => {
+                        haptics.selection();
+                        setTutorMenu(false);
+                        router.setParams({ tutor: candidate.id });
+                      }}
+                    />
+                  ))}
+                </Menu>
+              ) : null}
+            </View>
+          ) : null}
 
-        <ScrollView
-          horizontal
-          // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
-          style={{ marginVertical: -CHIP_HIT_SLOP.top }}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
-          accessibilityRole="radiogroup"
-          accessibilityLabel="Where they stand"
-        >
-          <Chip
-            hitSlop={CHIP_HIT_SLOP}
-            testID="progress-filter-all"
-            selected={status === 'all'}
-            showSelectedCheck={false}
-            mode={status === 'all' ? 'flat' : 'outlined'}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: status === 'all' }}
-            onPress={() => chooseStatus('all')}
+          <ScrollView
+            horizontal
+            // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
+            style={{ marginVertical: -CHIP_HIT_SLOP.top }}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
+            accessibilityRole="radiogroup"
+            accessibilityLabel="Where they stand"
           >
-            All
-          </Chip>
-          {STATUS_ORDER.filter((value) => counts.has(value)).map((value) => (
             <Chip
               hitSlop={CHIP_HIT_SLOP}
-              key={value}
-              testID={`progress-filter-${value}`}
-              selected={status === value}
+              testID="progress-filter-all"
+              selected={status === 'all'}
               showSelectedCheck={false}
-              mode={status === value ? 'flat' : 'outlined'}
+              mode={status === 'all' ? 'flat' : 'outlined'}
               accessibilityRole="radio"
-              accessibilityState={{ checked: status === value }}
-              accessibilityLabel={`${PROGRESS_STATUS_LABELS[value]}, ${counts.get(value)}`}
-              onPress={() => chooseStatus(value)}
+              accessibilityState={{ checked: status === 'all' }}
+              onPress={() => chooseStatus('all')}
             >
-              {`${PROGRESS_STATUS_LABELS[value]} · ${counts.get(value)}`}
+              All
             </Chip>
-          ))}
-        </ScrollView>
-      </View>
+            {STATUS_ORDER.filter((value) => counts.has(value)).map((value) => (
+              <Chip
+                hitSlop={CHIP_HIT_SLOP}
+                key={value}
+                testID={`progress-filter-${value}`}
+                selected={status === value}
+                showSelectedCheck={false}
+                mode={status === value ? 'flat' : 'outlined'}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: status === value }}
+                accessibilityLabel={`${PROGRESS_STATUS_LABELS[value]}, ${counts.get(value)}`}
+                onPress={() => chooseStatus(value)}
+              >
+                {`${PROGRESS_STATUS_LABELS[value]} · ${counts.get(value)}`}
+              </Chip>
+            ))}
+          </ScrollView>
+        </View>
+      ) : null}
 
       {error ? <ErrorState error={error} onRetry={() => void refetch()} /> : null}
       {isPending ? (
@@ -236,6 +243,7 @@ export function ProgressScreen() {
 /** One line per student: goal, status, and how far along. Opens their page. */
 export function ProgressRow({ row }: { row: ProgressOverview }) {
   const theme = useAppTheme();
+  const large = useLargeText();
   const { summary } = row;
   return (
     <Pressable
@@ -257,17 +265,21 @@ export function ProgressRow({ row }: { row: ProgressOverview }) {
         backgroundColor: pressed ? theme.tokens.muted : 'transparent',
       })}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}>
-        <View style={{ flex: 1, minWidth: 0 }}>
-          <Text variant="bodyLarge" numberOfLines={1} style={{ fontWeight: '500' }}>
+      <AdaptiveRow>
+        <View style={{ flex: large ? undefined : 1, minWidth: 0 }}>
+          <Text variant="bodyLarge" numberOfLines={large ? undefined : 1} style={{ fontWeight: '500' }}>
             {row.student_name}
           </Text>
-          <Text variant="bodySmall" numberOfLines={2} style={{ color: theme.tokens.mutedForeground }}>
+          <Text
+            variant="bodySmall"
+            numberOfLines={large ? undefined : 2}
+            style={{ color: theme.tokens.mutedForeground }}
+          >
             {overviewLine(row)}
           </Text>
         </View>
         <ProgressStatusBadge status={summary.status} />
-      </View>
+      </AdaptiveRow>
       {summary.topic_count > 0 ? (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
           <View style={{ flex: 1 }}>
@@ -279,7 +291,7 @@ export function ProgressRow({ row }: { row: ProgressOverview }) {
           </View>
           <Text
             variant="labelMedium"
-            style={{ width: 40, textAlign: 'right', fontVariant: ['tabular-nums'] }}
+            style={{ minWidth: 40, textAlign: 'right', fontVariant: ['tabular-nums'] }}
           >
             {summary.percent}%
           </Text>

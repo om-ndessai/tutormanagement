@@ -8,9 +8,11 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
 import { EmptyNote, Panel } from '@/components/section';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { ListSkeleton } from '@/components/skeletons';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { usePlatformAudit } from './api';
@@ -40,11 +42,9 @@ export function PlatformActivityScreen() {
 
   return (
     <Screen testID="screen-platform-activity" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-        What the platform did. Each line is also in the affected organization’s own log.
-      </Text>
+      <PageIntro>What the platform did. Each line is also in the affected organization’s own log.</PageIntro>
       {audit.isPending ? (
-        <LoadingState />
+        <ListSkeleton label="Loading the activity…" count={5} height={56} />
       ) : audit.isError ? (
         <ErrorState error={audit.error} onRetry={() => void audit.refetch()} />
       ) : rows.length === 0 ? (

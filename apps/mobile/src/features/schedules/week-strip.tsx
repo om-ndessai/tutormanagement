@@ -5,6 +5,7 @@ import { DAYS_OF_WEEK } from '@tmi/shared';
 import { Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+import { useLargeText } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
@@ -23,6 +24,10 @@ export function WeekStrip({
   onSelect: (day: number | null) => void;
 }) {
   const theme = useAppTheme();
+  // Seven columns share the width, so a day's name never wraps inside itself ("S u", "Mo / n"):
+  // one line that shrinks to fit, and only its initial under large text (ux-audit F-12). The
+  // full name is in each day's accessibility label.
+  const large = useLargeText();
 
   return (
     <View
@@ -73,6 +78,9 @@ export function WeekStrip({
           >
             <Text
               variant="labelMedium"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.6}
               style={{
                 color: chosen
                   ? theme.colors.onPrimary
@@ -81,10 +89,12 @@ export function WeekStrip({
                     : theme.colors.onSurface,
               }}
             >
-              {day.short}
+              {large ? day.short.slice(0, 1) : day.short}
             </Text>
             <Text
               variant="labelSmall"
+              numberOfLines={1}
+              adjustsFontSizeToFit
               style={{
                 color: chosen ? theme.colors.onPrimary : theme.tokens.mutedForeground,
                 fontVariant: ['tabular-nums'],

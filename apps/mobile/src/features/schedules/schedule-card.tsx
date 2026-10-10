@@ -1,10 +1,12 @@
 // Ported from apps/web/src/features/schedules/schedules-page.tsx @ 1132322 (one slot's card).
 // Everyone who can see a schedule can download it; only its tutor (or an admin) can change it.
 // Expanding the card lists its coming dates. No money: a schedule carries none.
-import { SESSION_MODE_LABELS, describeSchedule, type VisibleSchedule } from '@tmi/shared';
+import { SESSION_MODE_LABELS, describeSchedule, zonedClockParts, type VisibleSchedule } from '@tmi/shared';
 import { View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 
+import { formatPlainDay } from '@/features/teaching/session-format';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { IconButton } from '@/components/icon-button';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { Tag } from '@/features/teaching/session-card';
@@ -36,6 +38,8 @@ export function ScheduleCard({
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const described = describeSchedule(schedule);
+  const timeZone = useOrgTimeZone();
+  const today = zonedClockParts(new Date().toISOString(), timeZone).day;
 
   return (
     <Card testID={`schedule-card-${schedule.id}`} mode="outlined" style={{ borderRadius: radius.lg }}>
@@ -55,8 +59,8 @@ export function ScheduleCard({
             <Tag label={SESSION_MODE_LABELS[schedule.mode]} />
           </View>
           <Text variant="bodySmall" style={{ color: muted }}>
-            from {schedule.starts_on}
-            {schedule.ends_on ? ` to ${schedule.ends_on}` : ', ongoing'}
+            from {formatPlainDay(schedule.starts_on, today)}
+            {schedule.ends_on ? ` to ${formatPlainDay(schedule.ends_on, today)}` : ', ongoing'}
           </Text>
           {schedule.location ? (
             <Text variant="bodySmall" style={{ color: muted }} numberOfLines={1}>

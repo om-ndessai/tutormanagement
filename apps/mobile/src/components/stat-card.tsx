@@ -5,6 +5,7 @@ import { Pressable, View } from 'react-native';
 import { Card, Icon, Text } from 'react-native-paper';
 
 import { useCountUp } from '@/hooks/use-count-up';
+import { useIconSize, useLargeText } from '@/hooks/use-large-text';
 import { useAppTheme } from '@/providers/theme-provider';
 import type { AppTheme } from '@/theme/paper-theme';
 import { radius, space } from '@/theme/tokens';
@@ -80,6 +81,8 @@ export function StatCard({
   const final = value === undefined ? 'not available' : format(value);
   const color = toneColor(theme, tone);
   const id = `stat-${slug(label)}`;
+  const large = useLargeText();
+  const iconSize = useIconSize(16);
 
   const body: ReactNode = (
     <View
@@ -91,8 +94,10 @@ export function StatCard({
       <View
         style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm }}
       >
+        {/* Two lines at the usual sizes ("EXPECTED BY TODAY" no longer cuts to "TOD…"), as many as
+            it needs under large text, where one line left "SESS…" (ux-audit F-12). */}
         <Text
-          numberOfLines={1}
+          numberOfLines={large ? undefined : 2}
           style={{
             flexShrink: 1,
             fontSize: 11,
@@ -104,10 +109,14 @@ export function StatCard({
         >
           {label}
         </Text>
-        <Icon source={icon} size={16} color={color ?? theme.tokens.mutedForeground} />
+        <Icon source={icon} size={iconSize} color={color ?? theme.tokens.mutedForeground} />
       </View>
+      {/* A figure never breaks inside itself ("2 / hr / 30 / min"): one line, shrinking to fit. */}
       <Text
         testID={`${id}-value`}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.5}
         style={{
           marginTop: compact ? 2 : 4,
           fontSize: compact ? 20 : 24,
@@ -156,12 +165,14 @@ export function StatCard({
 
 /**
  * Cards two to a row (the web's `grid-cols-2 items-stretch`). Children are StatCards; an odd one
- * out keeps its half width.
+ * out keeps its half width. Under large text one to a row: the one-height rule yields to
+ * legibility (immersive-design §12, ux-audit F-12).
  */
 export function StatGrid({ children }: { children: ReactNode[] }) {
+  const perRow = useLargeText() ? 1 : 2;
   const rows: ReactNode[][] = [];
   children.forEach((child, index) => {
-    if (index % 2 === 0) rows.push([child]);
+    if (index % perRow === 0) rows.push([child]);
     else rows[rows.length - 1]!.push(child);
   });
   return (
@@ -169,7 +180,7 @@ export function StatGrid({ children }: { children: ReactNode[] }) {
       {rows.map((row, index) => (
         <View key={index} style={{ flexDirection: 'row', gap: space.md }}>
           {row}
-          {row.length === 1 ? <View style={{ flex: 1 }} /> : null}
+          {row.length < perRow ? <View style={{ flex: 1 }} /> : null}
         </View>
       ))}
     </View>

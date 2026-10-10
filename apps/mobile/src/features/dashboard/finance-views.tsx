@@ -15,6 +15,7 @@ import {
 import { Pressable, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
+import { countOf } from '@/lib/plural';
 import { EmptyNote, Panel } from '@/components/section';
 import { SecureMoney } from '@/components/secure-money';
 import { StatCard, StatGrid } from '@/components/stat-card';
@@ -196,7 +197,7 @@ export function AdminFinance({ data }: { data: AdminDashboard }) {
             formatValue={formatMoneyValue}
             animate={false}
             icon="book-open-variant"
-            hint={`${data.totals.session_count} sessions`}
+            hint={countOf(data.totals.session_count, 'session')}
             to="/sessions?tab=finance"
           />,
           <StatCard

@@ -4,6 +4,8 @@ import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 
+import { AdaptiveRow } from '@/components/adaptive-row';
+import { useLines } from '@/hooks/use-large-text';
 import { EmptyNote } from '@/components/section';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -28,6 +30,7 @@ export function ProgressSpotlight({ students, empty }: { students: StudentProgre
 
 function ProgressSpotlightCard({ progress }: { progress: StudentProgress }) {
   const theme = useAppTheme();
+  const lines = useLines(1);
   const { plan, summary, student } = progress;
 
   return (
@@ -46,21 +49,14 @@ function ProgressSpotlightCard({ progress }: { progress: StudentProgress }) {
     >
       <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
         <View style={{ paddingHorizontal: 14, paddingVertical: space.md }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              gap: space.sm,
-            }}
-          >
-            <Text numberOfLines={1} variant="bodyMedium" style={{ flexShrink: 1, fontWeight: '500' }}>
+          <AdaptiveRow justify="space-between">
+            <Text numberOfLines={lines} variant="bodyMedium" style={{ flexShrink: 1, fontWeight: '500' }}>
               {student.full_name}
             </Text>
             <ProgressStatusBadge status={summary.status} />
-          </View>
+          </AdaptiveRow>
           <Text
-            numberOfLines={1}
+            numberOfLines={lines}
             variant="bodySmall"
             style={{ marginTop: 2, color: theme.tokens.mutedForeground }}
           >

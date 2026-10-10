@@ -13,7 +13,8 @@ import { Button, HelperText, Text } from 'react-native-paper';
 
 import { DateTimeField } from '@/components/date-time-field';
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { NoteField } from '@/features/teaching/session-notes';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
@@ -45,7 +46,7 @@ export function CancelLessonSheet({
   const list = useSchedules();
 
   let body;
-  if (list.isPending) body = <LoadingState label="Loading the schedule…" />;
+  if (list.isPending) body = <FormSkeleton label="Loading the schedule…" fields={2} />;
   else if (list.isError) body = <ErrorState error={list.error} onRetry={() => void list.refetch()} />;
   else {
     const schedule = list.data.data.find((row) => row.id === scheduleId);

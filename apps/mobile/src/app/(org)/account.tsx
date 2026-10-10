@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 import { Divider, List, Text } from 'react-native-paper';
 
+import { ListItem } from '@/components/list-item';
 import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';
@@ -80,7 +81,7 @@ export default function AccountSheet() {
             if (!m) return null;
             const current = slug === organization.slug;
             return (
-              <List.Item
+              <ListItem
                 key={slug}
                 testID={`account-org-${slug}`}
                 title={m.name}
@@ -105,7 +106,7 @@ export default function AccountSheet() {
             );
           })}
           {invitations.length > 0 || others.length > 0 ? (
-            <List.Item
+            <ListItem
               testID="account-all-organizations"
               title="All organizations…"
               left={(props) => <List.Icon {...props} icon="swap-horizontal" />}
@@ -125,7 +126,7 @@ export default function AccountSheet() {
       <Divider />
 
       <View>
-        <List.Item
+        <ListItem
           testID="account-profile"
           title="My profile"
           left={(props) => <List.Icon {...props} icon="account-outline" />}
@@ -135,7 +136,7 @@ export default function AccountSheet() {
           }}
           style={{ paddingHorizontal: 0 }}
         />
-        <List.Item
+        <ListItem
           testID="account-tour"
           title="Take the tour"
           left={(props) => <List.Icon {...props} icon="compass-outline" />}
@@ -147,7 +148,7 @@ export default function AccountSheet() {
           style={{ paddingHorizontal: 0 }}
         />
         {platformAdmin ? (
-          <List.Item
+          <ListItem
             testID="account-platform"
             title="Platform console"
             left={(props) => <List.Icon {...props} icon="shield-check-outline" />}
@@ -158,7 +159,7 @@ export default function AccountSheet() {
             style={{ paddingHorizontal: 0 }}
           />
         ) : null}
-        <List.Item
+        <ListItem
           testID="account-sign-out"
           title="Sign out"
           left={(props) => <List.Icon {...props} icon="logout" />}

@@ -6,7 +6,8 @@ import { View } from 'react-native';
 import { Divider, Menu } from 'react-native-paper';
 
 import { IconButton } from '@/components/icon-button';
-import { LoadingState, ErrorState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { DetailSkeleton } from '@/components/skeletons';
 import { Screen } from '@/components/screen';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -109,7 +110,7 @@ export function UserDetailScreen() {
               : undefined,
         }}
       />
-      {isPending ? <LoadingState label="Loading…" /> : null}
+      {isPending ? <DetailSkeleton label="Loading…" avatar /> : null}
       {error ? <ErrorState error={error} onRetry={() => void refetch()} /> : null}
       {person ? <UserDetailView user={person} /> : null}
       {dialog}

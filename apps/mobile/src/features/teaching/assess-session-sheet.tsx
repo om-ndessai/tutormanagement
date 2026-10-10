@@ -7,7 +7,8 @@ import { View } from 'react-native';
 import { Button, HelperText, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -32,7 +33,7 @@ export function AssessSessionSheet({ sessionId }: { sessionId: string | undefine
 
   let body;
   if (!sessionId) body = <ErrorState error={new ApiRequestError(404, 'not_found', 'No lesson given.')} />;
-  else if (lesson.isPending) body = <LoadingState label="Loading the lesson…" />;
+  else if (lesson.isPending) body = <FormSkeleton label="Loading the lesson…" fields={3} />;
   else if (lesson.isError || !lesson.data) {
     body = <ErrorState error={lesson.error} onRetry={() => void lesson.refetch()} />;
   } else {

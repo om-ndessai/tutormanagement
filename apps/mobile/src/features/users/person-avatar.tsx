@@ -24,7 +24,14 @@ export function PersonAvatar({ name, size = 36 }: { name: string; size?: number 
         flexShrink: 0,
       }}
     >
-      <Text style={{ fontSize: size * 0.36, fontWeight: '600', color: dark ? t.brand200 : t.brand800 }}>
+      {/* A fixed disc, decorative (hidden from screen readers): its initials stop growing rather
+          than spill out of it (ux-audit F-12). */}
+      <Text
+        maxFontSizeMultiplier={1.2}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={{ fontSize: size * 0.36, fontWeight: '600', color: dark ? t.brand200 : t.brand800 }}
+      >
         {initials(name)}
       </Text>
     </View>

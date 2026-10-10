@@ -44,7 +44,16 @@ export function AccountButton() {
           backgroundColor: theme.colors.primaryContainer,
         }}
       >
-        <Text variant="labelMedium" style={{ color: theme.colors.onPrimaryContainer }}>
+        {/* The disc is fixed chrome inside a fixed 44/48 header target, so its initials are the one
+            text allowed to stop growing: at AX5 they outgrew the disc and were clipped to a
+            fragment (ux-audit F-12). The account sheet itself scales fully. */}
+        <Text
+          variant="labelMedium"
+          maxFontSizeMultiplier={1.2}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{ color: theme.colors.onPrimaryContainer }}
+        >
           {initials(user.full_name)}
         </Text>
       </View>

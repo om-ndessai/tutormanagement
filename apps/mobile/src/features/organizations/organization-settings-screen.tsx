@@ -9,11 +9,13 @@ import { useState, type ComponentProps } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
 import { SecureMoney } from '@/components/secure-money';
 import { Panel } from '@/components/section';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { DetailSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { FormTextField } from '@/features/users/form-text-field';
 import { ApiRequestError } from '@/lib/api-client';
@@ -60,12 +62,12 @@ export function OrganizationSettingsScreen() {
       <Stack.Screen options={{ title: 'Organization' }} />
       {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). */}
       <SecureMoney tag="organization" />
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro>
         {`What ${organization.name} files its 1099s under, and how the portal presents it.`}
-      </Text>
+      </PageIntro>
 
       {settings.isPending ? (
-        <LoadingState label="Loading the settings…" />
+        <DetailSkeleton label="Loading the settings…" rows={5} />
       ) : settings.isError || !settings.data ? (
         <ErrorState error={settings.error} onRetry={() => void settings.refetch()} />
       ) : (

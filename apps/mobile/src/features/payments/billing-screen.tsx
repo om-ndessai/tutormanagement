@@ -8,12 +8,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { SecureMoney } from '@/components/secure-money';
-import { Skeleton } from '@/components/skeleton';
+import { ListSkeleton } from '@/components/skeletons';
 import { ErrorState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
 import { orgYear } from '@/features/dashboard/finance-format';
@@ -21,8 +22,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { downloadAndShare } from '@/lib/download';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
-import { useAppTheme } from '@/providers/theme-provider';
-import { radius, space } from '@/theme/tokens';
+import { space } from '@/theme/tokens';
 import { useBalances, usePayments } from './api';
 import { BillingHeadlineTiles, FamilyLedger, TutorLedger } from './billing-ledgers';
 import { PaymentLog } from './payment-log';
@@ -33,13 +33,14 @@ function openRecord() {
 
 export function BillingScreen() {
   const { user } = useAuth();
-  const theme = useAppTheme();
   const toast = useToast();
   const queryClient = useQueryClient();
   const year = orgYear(useOrgTimeZone());
   const roles = user?.roles ?? [];
   const isAdmin = roles.includes('admin');
   const isParent = roles.includes('parent');
+  const isTutor = roles.includes('tutor');
+  const isStudent = roles.includes('student');
 
   const balances = useBalances();
   const payments = usePayments({ limit: 50 });
@@ -98,9 +99,9 @@ export function BillingScreen() {
             : undefined,
         }}
       />
-      <Text testID="billing-description" variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro testID="billing-description">
         No money moves through the portal. This tracks what is owed and what has been paid.
-      </Text>
+      </PageIntro>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         {isAdmin ? (
@@ -144,16 +145,16 @@ export function BillingScreen() {
 
       {isAdmin ? <BillingHeadlineTiles totals={data?.totals} /> : null}
 
-      {balances.isPending ? (
-        <View accessibilityLabel="Loading balances" accessibilityState={{ busy: true }}>
-          <Skeleton width="100%" height={120} style={{ borderRadius: radius.lg }} />
-        </View>
+      {balances.isPending ? <ListSkeleton label="Loading balances" count={2} height={120} /> : null}
+
+      {/* Each ledger shows for the roles it is about, and says so when it is empty (ux-audit F-28),
+          rather than vanishing and leaving the reader to wonder. */}
+      {data && (isAdmin || isTutor || data.tutors.length > 0) ? (
+        <TutorLedger tutors={data.tutors} isAdmin={isAdmin} />
       ) : null}
 
-      {(data?.tutors.length ?? 0) > 0 ? <TutorLedger tutors={data?.tutors ?? []} isAdmin={isAdmin} /> : null}
-
-      {(data?.students.length ?? 0) > 0 ? (
-        <FamilyLedger students={data?.students ?? []} isAdmin={isAdmin} isParent={isParent} />
+      {data && (isAdmin || isParent || isStudent || data.students.length > 0) ? (
+        <FamilyLedger students={data.students} isAdmin={isAdmin} isParent={isParent} />
       ) : null}
 
       <PaymentLog

@@ -31,7 +31,7 @@ tags:
     visible: 'Anita Patel on Sanjay Patel.*'
     timeout: 10000
 - assertNotVisible: '.* on the Tuesday 4:00 PM slot with Sofia Okafor.*'
-- assertNotVisible: '.* on the 20..-..-.. session with .*'
+- assertNotVisible: '.* on the .* session with .*'
 # A recurring slot opens the schedule narrowed to it.
 - tapOn:
     id: comments-filter-scheduled_session

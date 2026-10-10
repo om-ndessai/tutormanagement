@@ -20,7 +20,8 @@ import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
 import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { useUserDetail, useUsers } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -62,7 +63,7 @@ export function AssignmentFormSheet({
   } else if (!assignmentId) {
     body = <AssignmentForm existing={null} preset={preset} />;
   } else if (list.isPending) {
-    body = <LoadingState label="Loading the pairing…" />;
+    body = <FormSkeleton label="Loading the pairing…" fields={4} />;
   } else if (list.isError) {
     body = <ErrorState error={list.error} onRetry={() => void list.refetch()} />;
   } else {

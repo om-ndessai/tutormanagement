@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Card, Divider, Text } from 'react-native-paper';
 
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { DetailSkeleton } from '@/components/skeletons';
 import { Screen } from '@/components/screen';
 import { AppearanceControl } from '@/features/shell/appearance-control';
 import { HapticsControl } from '@/features/shell/haptics-control';
@@ -43,7 +44,7 @@ export function ProfileScreen() {
       </Text>
       <DevSignInNotice />
       <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
-        {isPending ? <LoadingState label="Loading your record…" /> : null}
+        {isPending ? <DetailSkeleton label="Loading your record…" avatar /> : null}
         {error ? <ErrorState error={error} onRetry={() => void refetch()} /> : null}
         {data ? <UserDetailView user={data.data} /> : null}
       </Card>

@@ -9,7 +9,8 @@ import type { ScrollView } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { announceFormSaved } from '@/lib/form-bridge';
 import { useAuth } from '@/providers/auth-provider';
 import { space } from '@/theme/tokens';
@@ -67,7 +68,7 @@ export function PersonFormSheet({
       />
     );
   } else if (id && detail.isPending) {
-    body = <LoadingState label="Loading record…" />;
+    body = <FormSkeleton label="Loading record…" fields={5} />;
   } else if (id && detail.isError) {
     body = <ErrorState error={detail.error} onRetry={() => void detail.refetch()} />;
   } else {

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Chip, HelperText, List, Surface, Text, TextInput } from 'react-native-paper';
 
+import { ListItem } from '@/components/list-item';
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
 import { PERSONAS } from '@/dev/personas';
@@ -68,7 +69,7 @@ export default function SignInScreen() {
             This server has sign-in switched off. Choose a seeded person to act as.
           </Text>
           {PERSONAS.map((person) => (
-            <List.Item
+            <ListItem
               key={person.email}
               testID={`sign-in-persona-${person.email}`}
               title={person.name}

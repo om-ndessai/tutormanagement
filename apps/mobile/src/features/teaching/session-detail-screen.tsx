@@ -8,7 +8,8 @@ import { Alert, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { DetailSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { CommentsRow } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
@@ -39,7 +40,7 @@ export function SessionDetailScreen({ id, showMoney = false }: { id: string; sho
   }
 
   let body;
-  if (query.isPending) body = <LoadingState label="Loading the lesson…" />;
+  if (query.isPending) body = <DetailSkeleton label="Loading the lesson…" rows={5} />;
   else if (query.isError || !query.data) {
     body = <ErrorState error={query.error} onRetry={() => void query.refetch()} />;
   } else {

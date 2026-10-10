@@ -18,7 +18,8 @@ import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import { DateTimeField } from '@/components/date-time-field';
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton, ListSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { organizationToday } from '@/features/teaching/session-ranges';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
@@ -54,7 +55,7 @@ export function AssessmentFormSheet({
   if (!isAdmin) {
     body = <EmptyState icon="lock-outline" title="Only an admin can assess a student." />;
   } else if (progress.isPending) {
-    body = <LoadingState label="Loading the student…" />;
+    body = <FormSkeleton label="Loading the student…" />;
   } else if (progress.isError) {
     body = <ErrorState error={progress.error} onRetry={() => void progress.refetch()} />;
   } else {
@@ -226,7 +227,7 @@ export function AssessmentForm({
             initialLevel={level || (existing?.ratings[0] ? levelOf(existing.ratings[0].topic_id) : undefined)}
           />
         ) : (
-          <LoadingState label="Loading the curriculum…" />
+          <ListSkeleton label="Loading the curriculum…" count={4} height={56} />
         )}
         {errors.ratings ? (
           <HelperText type="error" padding="none">

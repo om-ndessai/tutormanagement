@@ -20,6 +20,7 @@ import { IconButton } from '@/components/icon-button';
 import { LiveBannerInsetContext } from '@/components/live-banner-inset';
 import { useReportToastPlacement, useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
+import { useLargeText } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -73,7 +74,10 @@ export function LiveSessionHost({ children }: { children: ReactNode }) {
   const { data, refetch } = useActiveSession();
   const active = data?.data.mine ?? null;
   const { visible, onTab, bottom } = usePlacement(active);
-  const bannerInset = visible ? BANNER_HEIGHT + BANNER_GAP : 0;
+  // The banner grows with the text (two lines can become four at AX5), so the room screens leave
+  // for it is its measured height, not the 64pt it has at the usual sizes (ux-audit F-12).
+  const [measured, setMeasured] = useState(BANNER_HEIGHT);
+  const bannerInset = visible ? Math.max(measured, BANNER_HEIGHT) + BANNER_GAP : 0;
   // A toast clears the tab bar and this banner (ux-audit F-2).
   useReportToastPlacement({ onTab, bannerInset });
 
@@ -96,6 +100,10 @@ export function LiveSessionHost({ children }: { children: ReactNode }) {
           <View
             pointerEvents="box-none"
             style={{ position: 'absolute', left: space.lg, right: space.lg, bottom }}
+            onLayout={(event) => {
+              const height = Math.round(event.nativeEvent.layout.height);
+              setMeasured((current) => (current === height ? current : height));
+            }}
           >
             <LiveSessionBanner active={active} />
           </View>
@@ -131,6 +139,7 @@ export function LiveSessionBanner({ active }: { active: ActiveSession }) {
   const cancel = useCancelActiveSession();
   const { from, endsBy } = liveTimes(active, timeZone);
   const muted = theme.tokens.mutedForeground;
+  const large = useLargeText();
 
   function confirmCancel() {
     haptics.warning();
@@ -170,24 +179,34 @@ export function LiveSessionBanner({ active }: { active: ActiveSession }) {
       <Pulse />
       {/* Not one accessible element: a screen reader (and a flow) reads each line. */}
       <View style={{ flex: 1, minWidth: 0 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: space.sm }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
           <Stopwatch startedAt={active.started_at} />
           <Text
             testID="live-student"
             variant="bodyMedium"
-            numberOfLines={1}
+            numberOfLines={large ? 2 : 1}
             style={{ flexShrink: 1, fontWeight: '600' }}
           >
             {active.student_name}
             <Text style={{ color: muted, fontWeight: '400' }}> · {SESSION_MODE_LABELS[active.mode]}</Text>
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', gap: 4 }}>
-          <Text testID="live-from" variant="bodySmall" style={{ color: muted }} numberOfLines={1}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: 4 }}>
+          <Text
+            testID="live-from"
+            variant="bodySmall"
+            style={{ color: muted }}
+            numberOfLines={large ? undefined : 1}
+          >
             from {from} ·
           </Text>
           {/* The limit is the tutor's safety net, so it should not be a surprise when it fires. */}
-          <Text testID="live-ends-by" variant="bodySmall" style={{ color: muted }} numberOfLines={1}>
+          <Text
+            testID="live-ends-by"
+            variant="bodySmall"
+            style={{ color: muted }}
+            numberOfLines={large ? undefined : 1}
+          >
             ends by {endsBy}
           </Text>
         </View>

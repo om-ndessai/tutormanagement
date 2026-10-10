@@ -21,7 +21,8 @@ import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
 import { DismissKeyboard } from '@/components/dismiss-keyboard';
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { useOrganizationSettings } from '@/features/organizations/api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -50,7 +51,7 @@ export function Form1099Sheet({ tutorId, year }: { tutorId: string | undefined; 
   } else if (!tutorId || !valid) {
     body = <ErrorState error={new ApiRequestError(404, 'not_found', 'That tutor does not exist.')} />;
   } else if (status.isPending) {
-    body = <LoadingState label="Loading the year's figures…" />;
+    body = <FormSkeleton label="Loading the year's figures…" fields={5} />;
   } else if (status.isError) {
     body = <ErrorState error={status.error} onRetry={() => void status.refetch()} />;
   } else {

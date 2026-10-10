@@ -22,7 +22,8 @@ import { Button, HelperText, SegmentedButtons, Text, TextInput } from 'react-nat
 import { DateTimeField } from '@/components/date-time-field';
 import { Choice, Field } from '@/components/form-choice';
 import { Screen } from '@/components/screen';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { useAssignments } from '@/features/teaching/api';
 import { PairingPicker } from '@/features/teaching/session-form/pairing-picker';
@@ -58,7 +59,7 @@ export function ScheduleFormSheet({ scheduleId }: { scheduleId: string | undefin
         <EmptyState icon="lock-outline" title="Only a tutor or an admin can schedule a session." />
       );
   } else if (list.isPending) {
-    body = <LoadingState label="Loading the schedule…" />;
+    body = <FormSkeleton label="Loading the schedule…" fields={6} />;
   } else if (list.isError) {
     body = <ErrorState error={list.error} onRetry={() => void list.refetch()} />;
   } else {

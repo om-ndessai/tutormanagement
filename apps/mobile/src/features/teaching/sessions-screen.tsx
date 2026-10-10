@@ -13,6 +13,7 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
@@ -33,7 +34,7 @@ import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { useActiveSession, useSession } from './api';
+import { useActiveSession, useAssignments, useSession } from './api';
 import { DraftsPanel } from './drafts-panel';
 import { SessionCard } from './session-card';
 import { SessionFilters } from './session-filters';
@@ -94,7 +95,11 @@ export function SessionsScreen() {
   const openRecord = () => router.push({ pathname: '/record-session', params: { tab } });
   // A live lesson is a tutor's, one at a time: hidden while one is running (the banner has it).
   const active = useActiveSession();
-  const mayStart = isTutor && active.isSuccess && !active.data.data.mine;
+  // The Start sheet's own query: a tutor with no student of their own (a tutor who only parents
+  // here) is offered no Start, rather than an empty sheet (ux-audit F-25).
+  const ownPairings = useAssignments({ tutor_user_id: isTutor ? user?.id : undefined });
+  const teaches = isTutor && (ownPairings.data?.data.length ?? 0) > 0;
+  const mayStart = teaches && active.isSuccess && !active.data.data.mine;
   const bannerInset = useLiveBannerInset();
 
   async function onRefresh() {
@@ -126,11 +131,19 @@ export function SessionsScreen() {
     }
   }
 
-  const description = isAdmin
-    ? 'Every lesson taught, and what it earned.'
-    : isTutor
-      ? 'Lessons you have taught, and what you have earned.'
-      : 'Lessons taught, and what they cost.';
+  // Tutoring names the teaching only; the money words belong to Finance (ux-audit F-25). A tutor
+  // who teaches nobody here reads the lessons they follow, not "lessons you have taught".
+  const description = money
+    ? isAdmin
+      ? 'Every lesson taught, and what it earned.'
+      : isTutor
+        ? 'Lessons you have taught, and what you have earned.'
+        : 'Lessons taught, and what they cost.'
+    : isAdmin
+      ? 'Every lesson taught, and how it went.'
+      : teaches
+        ? 'Lessons you have taught, and how they went.'
+        : 'Lessons taught, and how they went.';
 
   const header = (
     <View style={{ gap: space.lg, paddingBottom: space.md }}>
@@ -154,9 +167,7 @@ export function SessionsScreen() {
           ),
         }}
       />
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-        {description}
-      </Text>
+      <PageIntro>{description}</PageIntro>
       {mayRecord ? (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {mayStart ? (

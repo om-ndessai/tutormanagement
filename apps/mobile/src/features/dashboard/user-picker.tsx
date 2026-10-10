@@ -3,8 +3,10 @@
 import { USER_ROLE_LABELS } from '@tmi/shared';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { Divider, Icon, List, Searchbar, Text } from 'react-native-paper';
+import { Divider, Icon, Searchbar, Text } from 'react-native-paper';
 
+import { useRefresh } from '@/hooks/use-refresh';
+import { ListItem } from '@/components/list-item';
 import { Screen } from '@/components/screen';
 import { useUsers } from '@/features/users/api';
 import { RoleIcons } from '@/features/users/role-icon';
@@ -27,7 +29,7 @@ export function UserPickerSheet({ current }: { current: string | null }) {
   const debounced = useDebouncedValue(query.trim(), 250);
   const isAdmin = user?.roles.includes('admin') ?? false;
 
-  const { data, isFetching } = useUsers(
+  const { data, isFetching, refetch } = useUsers(
     { ...(debounced ? { search: debounced } : {}), limit: 25, sort: 'full_name' },
     { enabled: isAdmin },
   );
@@ -35,6 +37,8 @@ export function UserPickerSheet({ current }: { current: string | null }) {
     () => (data?.data ?? []).filter((candidate) => candidate.id !== user?.id),
     [data, user?.id],
   );
+
+  const { refreshing, onRefresh } = useRefresh(() => refetch());
 
   function choose(userId: string | null) {
     haptics.selection();
@@ -52,7 +56,13 @@ export function UserPickerSheet({ current }: { current: string | null }) {
     );
 
   return (
-    <Screen testID="screen-view-as" edges={['bottom']} contentStyle={{ paddingTop: space.xl, gap: space.md }}>
+    <Screen
+      testID="screen-view-as"
+      edges={['bottom']}
+      contentStyle={{ paddingTop: space.xl, gap: space.md }}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    >
       <Text variant="titleLarge" accessibilityRole="header">
         View dashboard as
       </Text>
@@ -66,7 +76,7 @@ export function UserPickerSheet({ current }: { current: string | null }) {
         loading={isFetching}
       />
       <View>
-        <List.Item
+        <ListItem
           testID="view-as-self"
           title="My own dashboard"
           left={() => (
@@ -77,7 +87,7 @@ export function UserPickerSheet({ current }: { current: string | null }) {
         {users.map((candidate) => (
           <View key={candidate.id}>
             <Divider />
-            <List.Item
+            <ListItem
               testID={`view-as-user-${candidate.id}`}
               title={candidate.full_name}
               description={candidate.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') || 'No role'}

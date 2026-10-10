@@ -7,7 +7,9 @@ import { formatCents, type BalancesResponse, type StudentBalance, type TutorBala
 import { View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
-import { Panel } from '@/components/section';
+import { AdaptiveRow } from '@/components/adaptive-row';
+import { useLargeText } from '@/hooks/use-large-text';
+import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { formatMoneyValue } from '@/features/dashboard/finance-format';
 import { walletMinusIcon, walletPlusIcon } from '@/features/dashboard/money-icon';
@@ -69,13 +71,11 @@ function LedgerRow({
   balanceTestID: string;
 }) {
   const theme = useAppTheme();
+  const large = useLargeText();
   return (
-    <View
-      testID={testID}
-      style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10 }}
-    >
-      <View style={{ flex: 1, minWidth: 0 }}>
-        <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
+    <AdaptiveRow testID={testID} align="center" gap={space.md} style={{ paddingVertical: 10 }}>
+      <View style={{ flex: large ? undefined : 1, minWidth: 0 }}>
+        <Text variant="bodyMedium" numberOfLines={large ? undefined : 1} style={{ fontWeight: '500' }}>
           {name}
         </Text>
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
@@ -93,7 +93,7 @@ function LedgerRow({
       >
         {formatCents(balance)}
       </Text>
-    </View>
+    </AdaptiveRow>
   );
 }
 
@@ -104,11 +104,14 @@ function Ledger({
   testID,
   title,
   caption,
+  empty,
   children,
 }: {
   testID: string;
   title: string;
   caption: string;
+  /** What an empty ledger says, rather than a caption over nothing (ux-audit F-28). */
+  empty: string;
   children: ReactNode[];
 }) {
   const theme = useAppTheme();
@@ -119,6 +122,7 @@ function Ledger({
       <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground, marginBottom: space.xs }}>
         {caption}
       </Text>
+      {children.length === 0 ? <EmptyNote testID={`${testID}-empty`}>{empty}</EmptyNote> : null}
       {shown.map((child, index) => (
         <View key={index}>
           {index > 0 ? <Divider /> : null}
@@ -150,6 +154,7 @@ export function TutorLedger({ tutors, isAdmin }: { tutors: TutorBalance[]; isAdm
           ? 'What each tutor has earned, and what they have been paid.'
           : 'What you have earned, and what you have been paid. On the right, what is still owed to you; below zero, you were paid ahead.'
       }
+      empty={isAdmin ? 'No tutors have taught or been paid yet.' : 'Nothing earned or paid yet.'}
     >
       {tutors.map((tutor) => (
         <LedgerRow
@@ -183,6 +188,7 @@ export function FamilyLedger({
           ? 'Charges follow the student; any of their guardians may pay.'
           : 'What lessons have been charged, and what has been paid. The amount on the right is outstanding.'
       }
+      empty={isAdmin ? 'No family has been charged or has paid yet.' : 'Nothing charged or paid yet.'}
     >
       {students.map((student) => (
         <LedgerRow

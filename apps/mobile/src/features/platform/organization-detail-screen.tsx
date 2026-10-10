@@ -9,7 +9,8 @@ import { Alert, View } from 'react-native';
 import { Button, Card, Chip, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { DetailSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
 import { ApiRequestError } from '@/lib/api-client';
@@ -41,7 +42,7 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
     return (
       <Screen testID="screen-platform-organization">
         <Stack.Screen options={{ title: 'Organization' }} />
-        <LoadingState />
+        <DetailSkeleton label="Loading the organization…" />
       </Screen>
     );
   }

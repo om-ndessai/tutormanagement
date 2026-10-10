@@ -5,9 +5,11 @@ import { useState } from 'react';
 import { Keyboard, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
-import { Panel } from '@/components/section';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyNote, Panel } from '@/components/section';
+import { ErrorState } from '@/components/state-views';
+import { ListSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { FormTextField } from '@/features/users/form-text-field';
 import { ApiRequestError } from '@/lib/api-client';
@@ -63,16 +65,18 @@ export function PlatformAdminsScreen() {
 
   return (
     <Screen testID="screen-platform-admins" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro>
         They create organizations and their admins. They see nothing inside an organization unless it makes
         them a member.
-      </Text>
+      </PageIntro>
 
       <Panel testID="platform-admins-list">
         {admins.isPending ? (
-          <LoadingState />
+          <ListSkeleton label="Loading platform admins…" count={2} height={44} />
         ) : admins.isError ? (
           <ErrorState error={admins.error} onRetry={() => void admins.refetch()} />
+        ) : rows.length === 0 ? (
+          <EmptyNote testID="platform-admins-empty">No platform admins yet.</EmptyNote>
         ) : (
           <View accessibilityLabel="Platform admins">
             {rows.map((admin, index) => (

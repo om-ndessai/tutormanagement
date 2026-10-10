@@ -11,11 +11,11 @@ import {
   type UserStatus,
 } from '@tmi/shared';
 import { useState } from 'react';
-import { View } from 'react-native';
-import { Button, Chip, Menu, Searchbar, Switch, Text } from 'react-native-paper';
+import { ScrollView, View } from 'react-native';
+import { Button, Chip, Menu, Searchbar } from 'react-native-paper';
 
+import { useLargeText } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
-import { useAppTheme } from '@/providers/theme-provider';
 import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import { SORT_OPTIONS, sortLabel } from './people-model';
 
@@ -37,7 +37,7 @@ export function PeopleFilters({
   onChange: (next: Partial<PeopleFilterState>) => void;
   isAdmin: boolean;
 }) {
-  const theme = useAppTheme();
+  const large = useLargeText();
   const [statusOpen, setStatusOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
 
@@ -50,7 +50,8 @@ export function PeopleFilters({
     <View style={{ gap: space.md }}>
       <Searchbar
         testID="people-search"
-        placeholder="Search by name or email"
+        // A placeholder cannot wrap; under large text the long one ran off the field (F-12).
+        placeholder={large ? 'Search' : 'Search by name or email'}
         value={value.search}
         onChangeText={(search) => onChange({ search })}
         autoCapitalize="none"
@@ -58,7 +59,15 @@ export function PeopleFilters({
         accessibilityLabel="Search users"
       />
 
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }} accessibilityLabel="Role">
+      {/* One scrolling row, not two wrapped ones: the list starts higher (ux-audit F-15). */}
+      <ScrollView
+        horizontal
+        // The row is as tall as the chips' slop, so Android does not clip the touch (F-5).
+        style={{ marginVertical: -CHIP_HIT_SLOP.top }}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: space.sm, paddingVertical: CHIP_HIT_SLOP.top }}
+        accessibilityLabel="Role"
+      >
         <Chip
           hitSlop={CHIP_HIT_SLOP}
           testID="people-role-all"
@@ -82,9 +91,9 @@ export function PeopleFilters({
             {USER_ROLE_LABELS[role]}
           </Chip>
         ))}
-      </View>
+      </ScrollView>
 
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}>
         <Menu
           visible={statusOpen}
           onDismiss={() => setStatusOpen(false)}
@@ -158,32 +167,30 @@ export function PeopleFilters({
             );
           })}
         </Menu>
-      </View>
 
-      {/* Retired people are an admin's concern: the server ignores the flag for anyone else. */}
-      {isAdmin ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: space.md,
-          }}
-        >
-          <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-            Show deactivated
-          </Text>
-          <Switch
+        {/* Retired people are an admin's concern: the server ignores the flag for anyone else. A
+            toggle chip beside the menus rather than a row of its own (ux-audit F-15). */}
+        {isAdmin ? (
+          <Chip
+            hitSlop={CHIP_HIT_SLOP}
             testID="people-include-deleted"
-            value={value.includeDeleted}
+            icon={value.includeDeleted ? 'check' : 'archive-outline'}
+            selected={value.includeDeleted}
+            showSelectedCheck={false}
+            mode={value.includeDeleted ? 'flat' : 'outlined'}
+            accessibilityRole="switch"
+            accessibilityState={{ checked: value.includeDeleted }}
             accessibilityLabel="Show deactivated"
-            onValueChange={(includeDeleted) => {
+            onPress={() => {
               haptics.selection();
-              onChange({ includeDeleted });
+              onChange({ includeDeleted: !value.includeDeleted });
             }}
-          />
-        </View>
-      ) : null}
+          >
+            {/* A chip keeps to one line; the short label fits at the largest sizes. */}
+            {large ? 'Deactivated' : 'Show deactivated'}
+          </Chip>
+        ) : null}
+      </View>
     </View>
   );
 }

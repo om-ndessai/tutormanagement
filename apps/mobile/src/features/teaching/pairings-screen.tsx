@@ -11,6 +11,9 @@ import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 
+import { AdaptiveRow } from '@/components/adaptive-row';
+import { useLargeText } from '@/hooks/use-large-text';
+import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { CommentsButton } from '@/features/comments/comments-button';
@@ -28,9 +31,7 @@ import { PairingRates, seesPairingPay } from './pairing-rates';
 
 export function PairingsScreen() {
   const { user } = useAuth();
-  const theme = useAppTheme();
   const toast = useToast();
-  const muted = theme.tokens.mutedForeground;
   const isAdmin = user?.roles.includes('admin') ?? false;
   const { description, empty } = copyFor(user?.roles ?? []);
   const viewer = user ? { id: user.id, isAdmin } : null;
@@ -106,9 +107,7 @@ export function PairingsScreen() {
             : undefined,
         }}
       />
-      <Text testID="pairings-description" variant="bodyMedium" style={{ color: muted }}>
-        {description}
-      </Text>
+      <PageIntro testID="pairings-description">{description}</PageIntro>
       {isAdmin ? (
         <Button
           testID="pairings-add-button"
@@ -179,42 +178,46 @@ function PairingCard({
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
+  const large = useLargeText();
 
   return (
     <Card testID={`pairing-card-${assignment.id}`} mode="outlined" style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.md, paddingLeft: space.lg, gap: space.sm }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-          <View style={{ flex: 1 }}>
+        <AdaptiveRow align="center">
+          <View style={{ flex: large ? undefined : 1 }}>
             <Text variant="titleMedium">{assignment.student_name}</Text>
             <Text variant="bodySmall" style={{ color: muted }}>
               with {assignment.tutor_name}
             </Text>
           </View>
-          <CommentsButton
-            testID={`pairing-comments-${assignment.id}`}
-            target={{ target_type: 'assignment', target_id: assignment.id }}
-            title={`${assignment.student_name}’s pairing`}
-            description={`${assignment.student_name} is taught by ${assignment.tutor_name}.`}
-          />
-          {isAdmin ? (
-            <>
-              <IconButton
-                testID={`pairing-edit-${assignment.id}`}
-                icon="pencil-outline"
-                accessibilityLabel={`Edit ${assignment.student_name}'s assignment`}
-                onPress={onEdit}
-                style={{ margin: 0 }}
-              />
-              <IconButton
-                testID={`pairing-remove-${assignment.id}`}
-                icon="trash-can-outline"
-                accessibilityLabel={`Remove ${assignment.student_name} from ${assignment.tutor_name}`}
-                onPress={onRemove}
-                style={{ margin: 0 }}
-              />
-            </>
-          ) : null}
-        </View>
+          {/* Under large text the actions sit in a row of their own, under the names. */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+            <CommentsButton
+              testID={`pairing-comments-${assignment.id}`}
+              target={{ target_type: 'assignment', target_id: assignment.id }}
+              title={`${assignment.student_name}’s pairing`}
+              description={`${assignment.student_name} is taught by ${assignment.tutor_name}.`}
+            />
+            {isAdmin ? (
+              <>
+                <IconButton
+                  testID={`pairing-edit-${assignment.id}`}
+                  icon="pencil-outline"
+                  accessibilityLabel={`Edit ${assignment.student_name}'s assignment`}
+                  onPress={onEdit}
+                  style={{ margin: 0 }}
+                />
+                <IconButton
+                  testID={`pairing-remove-${assignment.id}`}
+                  icon="trash-can-outline"
+                  accessibilityLabel={`Remove ${assignment.student_name} from ${assignment.tutor_name}`}
+                  onPress={onRemove}
+                  style={{ margin: 0 }}
+                />
+              </>
+            ) : null}
+          </View>
+        </AdaptiveRow>
         {seesPay ? <PairingRates assignment={assignment} isAdmin={isAdmin} /> : null}
         {assignment.notes ? (
           <Text testID={`pairing-notes-${assignment.id}`} variant="bodySmall" style={{ color: muted }}>

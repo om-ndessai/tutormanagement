@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { Screen } from '@/components/screen';
@@ -134,9 +135,7 @@ export function SchedulesScreen() {
           ),
         }}
       />
-      <Text variant="bodyMedium" style={{ color: muted }}>
-        Standing weekly lessons. Add them to your calendar in one tap.
-      </Text>
+      <PageIntro>Standing weekly lessons. Add them to your calendar in one tap.</PageIntro>
       {mayCreate || all.length > 0 ? (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {mayCreate ? (

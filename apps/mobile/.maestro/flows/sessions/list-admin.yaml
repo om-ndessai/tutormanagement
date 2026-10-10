@@ -27,7 +27,7 @@ tags:
     visible:
       id: stat-sessions
     timeout: 20000
-- assertVisible: 'Every lesson taught, and what it earned.'
+- assertVisible: 'Every lesson taught, and how it went.'
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'

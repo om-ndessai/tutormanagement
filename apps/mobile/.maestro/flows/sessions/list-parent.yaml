@@ -25,7 +25,7 @@ tags:
     visible:
       id: session-card-50000000-0000-4000-8000-000000000005
     timeout: 20000
-- assertVisible: 'Lessons taught, and what they cost.'
+- assertVisible: 'Lessons taught, and how they went.'
 - assertVisible: 'Sanjay Patel with Priya Raghavan'
 - assertNotVisible:
     id: session-money

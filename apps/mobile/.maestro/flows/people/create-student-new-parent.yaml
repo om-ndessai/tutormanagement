@@ -27,10 +27,10 @@ tags:
       LINK: tutorportal://people
 - extendedWaitUntil:
     visible:
-      id: people-add-button
+      id: people-add
     timeout: 20000
 - tapOn:
-    id: people-add-button
+    id: people-add
 - extendedWaitUntil:
     visible:
       id: person-form-name

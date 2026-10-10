@@ -13,7 +13,8 @@ import { View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { RatingPicker } from '@/features/progress/rating';
 import { ApiRequestError } from '@/lib/api-client';
@@ -43,7 +44,7 @@ export function ReflectionSheet({ sessionId }: { sessionId: string | undefined }
 
   let body;
   if (!sessionId) body = <ErrorState error={new Error('No lesson given.')} />;
-  else if (lesson.isPending) body = <LoadingState label="Loading the lesson…" />;
+  else if (lesson.isPending) body = <FormSkeleton label="Loading the lesson…" fields={4} />;
   else if (lesson.isError || !lesson.data) {
     body = <ErrorState error={lesson.error} onRetry={() => void lesson.refetch()} />;
   } else if (!mayChangeReflection(lesson.data.data, user)) {

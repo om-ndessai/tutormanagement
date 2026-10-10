@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Alert, Keyboard, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
 import { Panel } from '@/components/section';
 import { useToast } from '@/components/toast';
@@ -115,9 +116,9 @@ export function PlatformPeopleScreen() {
 
   return (
     <Screen testID="screen-platform-people">
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro>
         Correct someone’s shared name, email or phone, or let a recreated Google account sign in again.
-      </Text>
+      </PageIntro>
       <View style={{ gap: space.sm }}>
         <FormTextField
           testID="platform-people-query"

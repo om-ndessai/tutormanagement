@@ -3,7 +3,9 @@ import { formatCadence, type StudentProgress } from '@tmi/shared';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+import { AdaptiveRow } from '@/components/adaptive-row';
 import { EmptyNote, Panel } from '@/components/section';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { ProgressChart } from './progress-chart';
@@ -47,6 +49,7 @@ export function StudentProgressCard({
   tourId?: string;
 }) {
   const theme = useAppTheme();
+  const large = useLargeText();
   const { plan, summary } = progress;
   const testID = `progress-card-${progress.student.user_id}`;
   const action = {
@@ -69,16 +72,8 @@ export function StudentProgressCard({
 
   return (
     <Panel testID={testID} tourId={tourId} title={title} action={action}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          gap: space.sm,
-          marginBottom: space.md,
-        }}
-      >
-        <View style={{ flex: 1, minWidth: 0 }}>
+      <AdaptiveRow justify="space-between" style={{ marginBottom: space.md }}>
+        <View style={{ flex: large ? undefined : 1, minWidth: 0 }}>
           <Text variant="bodyLarge" style={{ fontWeight: '600' }}>
             {plan.goal}
           </Text>
@@ -88,7 +83,7 @@ export function StudentProgressCard({
           </Text>
         </View>
         <ProgressStatusBadge status={summary.status} />
-      </View>
+      </AdaptiveRow>
       <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground, marginBottom: space.sm }}>
         {progressSummaryLine(summary)}
       </Text>

@@ -7,7 +7,8 @@ import { Pressable, View } from 'react-native';
 import { Button, Divider, HelperText, Icon, SegmentedButtons, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { ListSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -64,7 +65,7 @@ export function StartLessonSheet() {
   }
 
   let body;
-  if (assignments.isPending) body = <LoadingState label="Loading your students…" />;
+  if (assignments.isPending) body = <ListSkeleton label="Loading your students…" count={3} height={48} />;
   else if (assignments.isError) {
     body = <ErrorState error={assignments.error} onRetry={() => void assignments.refetch()} />;
   } else if (running) {

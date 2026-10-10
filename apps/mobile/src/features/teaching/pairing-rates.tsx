@@ -54,7 +54,7 @@ export function PairingRates({ assignment, isAdmin }: { assignment: Assignment; 
         <View
           key={line.key}
           testID={`pairing-rate-${line.key}-${assignment.id}`}
-          style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+          style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6, maxWidth: '100%' }}
         >
           <Text variant="bodySmall" style={{ color: muted }}>
             {line.label}:

@@ -21,6 +21,8 @@ import { router } from 'expo-router';
 import { Linking, Pressable, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
+import { AdaptiveRow } from '@/components/adaptive-row';
+import { useLargeText } from '@/hooks/use-large-text';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { CommentsRow } from '@/features/comments/comments-button';
 import { useAuditEvents } from '@/features/audit/api';
@@ -56,6 +58,7 @@ export function UserDetailView({
   const availabilityByDay = groupSlotsByDay(user.availability);
   const tel = telUrl(user.phone);
   const address = tutor ? formatMailingAddress(tutor) : null;
+  const large = useLargeText();
   const longest = (minutes: number | null) =>
     minutes != null ? (
       formatDuration(minutes)
@@ -65,10 +68,10 @@ export function UserDetailView({
 
   return (
     <View style={{ gap: space.xl }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.lg }}>
+      <AdaptiveRow align="center" gap={space.lg}>
         <PersonAvatar name={user.full_name} size={64} />
-        <View style={{ flex: 1, minWidth: 0, gap: space.sm }}>
-          <Text testID="person-name" variant="titleLarge" numberOfLines={2}>
+        <View style={{ flex: large ? undefined : 1, minWidth: 0, gap: space.sm }}>
+          <Text testID="person-name" variant="titleLarge" numberOfLines={large ? undefined : 2}>
             {user.full_name}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
@@ -77,7 +80,7 @@ export function UserDetailView({
             {user.deleted_at ? <DeletedBadge testID="person-deleted-badge" /> : null}
           </View>
         </View>
-      </View>
+      </AdaptiveRow>
 
       {/* Contact: only what exists. No address is never a mailto:, no number never a tel:. */}
       {user.email || tel ? (

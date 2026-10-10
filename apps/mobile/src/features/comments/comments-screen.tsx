@@ -5,6 +5,7 @@ import {
   COMMENT_TARGET_TYPES,
   type CommentFeedEntry,
   type CommentTargetType,
+  zonedClockParts,
 } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
 import { router, Stack } from 'expo-router';
@@ -12,6 +13,8 @@ import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import { Chip, Icon, Text } from 'react-native-paper';
 
+import { readableDates } from '@/features/teaching/session-format';
+import { PageIntro } from '@/components/page-intro';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -60,9 +63,9 @@ export function CommentsScreen() {
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
-      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+      <PageIntro>
         Everything that has been said about the people and lessons you work with, newest first.
-      </Text>
+      </PageIntro>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }} accessibilityLabel="About">
         <Chip
           hitSlop={CHIP_HIT_SLOP}
@@ -159,6 +162,7 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
   const muted = theme.tokens.mutedForeground;
+  const target = readableDates(entry.target_label, zonedClockParts(new Date().toISOString(), timeZone).day);
 
   return (
     <View
@@ -175,7 +179,7 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
       <Pressable
         testID={`comments-feed-row-${entry.id}`}
         accessibilityRole="link"
-        accessibilityLabel={`${entry.author_name} on ${entry.target_label}: ${entry.body}`}
+        accessibilityLabel={`${entry.author_name} on ${target}: ${entry.body}`}
         onPress={() => router.push(commentTargetHref(entry))}
         style={({ pressed }) => ({
           flex: 1,
@@ -204,7 +208,7 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
           <Text variant="bodyMedium">
             <Text style={{ fontWeight: '700' }}>{entry.author_name}</Text>
             <Text style={{ color: muted }}> on </Text>
-            <Text style={{ color: theme.colors.primary }}>{entry.target_label}</Text>
+            <Text style={{ color: theme.colors.primary }}>{target}</Text>
           </Text>
           <Text variant="bodySmall" style={{ color: muted }}>
             {formatInstant(entry.created_at, timeZone, '')}

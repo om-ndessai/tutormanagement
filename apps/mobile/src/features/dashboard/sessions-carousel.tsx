@@ -11,12 +11,13 @@ import {
 } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { FlatList, Pressable, View } from 'react-native';
+import { FlatList, Pressable, View, useWindowDimensions } from 'react-native';
 import { ActivityIndicator, Icon, Text } from 'react-native-paper';
 
 import { EmptyNote } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
 import { useUpcomingSessions } from '@/features/schedules/api';
+import { useLines } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -26,6 +27,7 @@ import {
   GAP,
   buildCarousel,
   carouselOffsets,
+  carouselWidths,
   countdown,
   nearestIndex,
   occurrenceKey,
@@ -72,6 +74,13 @@ export function SessionsCarousel({
   const placed = useRef(false);
   const settled = useRef(-1);
   const [viewport, setViewport] = useState(0);
+  const { fontScale } = useWindowDimensions();
+  const widths = useMemo(
+    () => carouselWidths(fontScale, viewport > 0 ? viewport : Infinity),
+    [fontScale, viewport],
+  );
+  // Cards keep their height floor, and grow from it with the text.
+  const cardHeight = Math.round(CARD_HEIGHT * Math.min(Math.max(fontScale, 1), 2));
 
   const next = useMemo(() => upcoming.data?.pages.flatMap((page) => page.data) ?? [], [upcoming.data]);
   const { items, anchorIndex, empty } = buildCarousel({
@@ -80,10 +89,11 @@ export function SessionsCarousel({
     pending: upcoming.isPending,
     hasMore: Boolean(upcoming.hasNextPage),
     fetchingMore: upcoming.isFetchingNextPage,
+    widths,
   });
   // The strip bleeds to the screen's edges, past the page's padding.
   const listWidth = viewport + space.lg * 2;
-  const { padding, offsets } = carouselOffsets(items, listWidth);
+  const { padding, offsets } = carouselOffsets(items, listWidth, widths.next);
 
   // Centre the next lesson (or "Now") once the first page is in, and never yank the strip after.
   const anchorOffset = offsets[anchorIndex] ?? 0;
@@ -102,13 +112,21 @@ export function SessionsCarousel({
   function renderItem({ item }: { item: CarouselItem }) {
     switch (item.kind) {
       case 'past':
-        return <PastCard session={item.session} today={clock.day} showTutor={showTutor} />;
+        return (
+          <PastCard
+            session={item.session}
+            today={clock.day}
+            showTutor={showTutor}
+            width={item.width}
+            height={cardHeight}
+          />
+        );
       case 'past-empty':
-        return <NoteCard width={item.width} text="No sessions recorded yet" />;
+        return <NoteCard width={item.width} height={cardHeight} text="No sessions recorded yet" />;
       case 'now':
-        return <NowMarker />;
+        return <NowMarker width={item.width} />;
       case 'skeleton':
-        return <Skeleton width={item.width} height={CARD_HEIGHT} style={{ borderRadius: radius.lg }} />;
+        return <Skeleton width={item.width} height={cardHeight} style={{ borderRadius: radius.lg }} />;
       case 'next':
         return (
           <NextCard
@@ -116,16 +134,35 @@ export function SessionsCarousel({
             today={clock.day}
             nowMinutes={clock.minutesOfDay}
             showTutor={showTutor}
+            width={item.width}
+            height={cardHeight}
           />
         );
       case 'upcoming':
-        return <UpcomingCard occurrence={item.occurrence} today={clock.day} showTutor={showTutor} />;
+        return (
+          <UpcomingCard
+            occurrence={item.occurrence}
+            today={clock.day}
+            showTutor={showTutor}
+            width={item.width}
+            height={cardHeight}
+          />
+        );
       case 'cancelled':
-        return <CancelledCard occurrence={item.occurrence} today={clock.day} showTutor={showTutor} />;
+        return (
+          <CancelledCard
+            occurrence={item.occurrence}
+            today={clock.day}
+            showTutor={showTutor}
+            width={item.width}
+            height={cardHeight}
+          />
+        );
       case 'none-scheduled':
         return (
           <NoteCard
             width={item.width}
+            height={cardHeight}
             text="Nothing scheduled. Set up a schedule →"
             onPress={() => router.navigate('/schedule')}
             testID="carousel-none-scheduled"
@@ -140,7 +177,7 @@ export function SessionsCarousel({
             onPress={() => void upcoming.fetchNextPage()}
             style={({ pressed }) => ({
               width: item.width,
-              height: CARD_HEIGHT,
+              minHeight: cardHeight,
               borderRadius: radius.lg,
               borderWidth: 1,
               borderStyle: 'dashed',
@@ -190,23 +227,29 @@ export function SessionsCarousel({
           }}
         />
       ) : (
-        <View style={{ height: CARD_HEIGHT }} />
+        <View style={{ height: cardHeight }} />
       )}
     </View>
   );
 }
 
 /** The marker between what was taught and what is coming. */
-function NowMarker() {
+function NowMarker({ width }: { width: number }) {
   const theme = useAppTheme();
   return (
     <View
       testID="carousel-now"
       accessible
       accessibilityLabel="Now"
-      style={{ width: 36, alignItems: 'center', gap: space.xs, alignSelf: 'stretch' }}
+      style={{ width, alignItems: 'center', gap: space.xs, alignSelf: 'stretch' }}
     >
-      <Text style={{ fontSize: 10, fontWeight: '600', letterSpacing: 0.6, color: theme.colors.primary }}>
+      {/* One word in a narrow column: it shrinks to fit rather than break ("NO / W"). */}
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.5}
+        style={{ fontSize: 10, fontWeight: '600', letterSpacing: 0.6, color: theme.colors.primary }}
+      >
         NOW
       </Text>
       <View style={{ flex: 1, width: 1, backgroundColor: withAlpha(theme.colors.primary, 0.5) }} />
@@ -216,11 +259,13 @@ function NowMarker() {
 
 function NoteCard({
   width,
+  height,
   text,
   onPress,
   testID,
 }: {
   width: number;
+  height: number;
   text: string;
   onPress?: () => void;
   testID?: string;
@@ -234,7 +279,7 @@ function NoteCard({
       onPress={onPress}
       style={{
         width,
-        height: CARD_HEIGHT,
+        minHeight: height,
         borderRadius: radius.lg,
         borderWidth: 1,
         borderStyle: 'dashed',
@@ -254,6 +299,7 @@ function NoteCard({
 /** The frame every lesson card shares. */
 function CardFrame({
   width,
+  height,
   testID,
   label,
   onPress,
@@ -261,6 +307,7 @@ function CardFrame({
   children,
 }: {
   width: number;
+  height: number;
   testID: string;
   label: string;
   onPress: () => void;
@@ -282,7 +329,7 @@ function CardFrame({
       onPress={onPress}
       style={({ pressed }) => ({
         width,
-        minHeight: CARD_HEIGHT,
+        minHeight: height,
         borderRadius: radius.lg,
         borderWidth: 1,
         borderStyle: variant === 'cancelled' ? 'dashed' : 'solid',
@@ -308,9 +355,10 @@ function CardFrame({
 
 function Overline({ children, color }: { children: string; color?: string }) {
   const theme = useAppTheme();
+  const lines = useLines(1);
   return (
     <Text
-      numberOfLines={1}
+      numberOfLines={lines}
       style={{
         fontSize: 11,
         fontWeight: '500',
@@ -338,8 +386,9 @@ function Who({
   const theme = useAppTheme();
   const main = inverse ? theme.colors.onPrimary : theme.colors.onSurface;
   const muted = inverse ? withAlpha(theme.colors.onPrimary, 0.8) : theme.tokens.mutedForeground;
+  const lines = useLines(1);
   return (
-    <Text numberOfLines={1} style={{ marginTop: 4, fontSize: 14, fontWeight: '500', color: main }}>
+    <Text numberOfLines={lines} style={{ marginTop: 4, fontSize: 14, fontWeight: '500', color: main }}>
       {student}
       {showTutor ? <Text style={{ fontWeight: '400', color: muted }}> with {tutor}</Text> : null}
     </Text>
@@ -382,16 +431,21 @@ function PastCard({
   session,
   today,
   showTutor,
+  width,
+  height,
 }: {
   session: TutoringSession;
   today: string;
   showTutor: boolean;
+  width: number;
+  height: number;
 }) {
   const theme = useAppTheme();
   const day = relativeDay(session.occurred_on, today);
   return (
     <CardFrame
-      width={224}
+      width={width}
+      height={height}
       variant="past"
       testID={`carousel-past-${session.id}`}
       label={`Past session: ${session.student_name}, ${day}`}
@@ -438,17 +492,22 @@ function UpcomingCard({
   occurrence,
   today,
   showTutor,
+  width,
+  height,
 }: {
   occurrence: UpcomingSession;
   today: string;
   showTutor: boolean;
+  width: number;
+  height: number;
 }) {
   const theme = useAppTheme();
   const start = parseClockTime(occurrence.start_time) ?? 0;
   const day = relativeDay(occurrence.occurs_on, today);
   return (
     <CardFrame
-      width={224}
+      width={width}
+      height={height}
       variant="upcoming"
       testID={`carousel-upcoming-${occurrenceKey(occurrence)}`}
       label={`Upcoming session: ${occurrence.student_name}, ${day}`}
@@ -472,17 +531,22 @@ function CancelledCard({
   occurrence,
   today,
   showTutor,
+  width,
+  height,
 }: {
   occurrence: UpcomingSession;
   today: string;
   showTutor: boolean;
+  width: number;
+  height: number;
 }) {
   const theme = useAppTheme();
   const start = parseClockTime(occurrence.start_time) ?? 0;
   const day = relativeDay(occurrence.occurs_on, today);
   return (
     <CardFrame
-      width={224}
+      width={width}
+      height={height}
       variant="cancelled"
       testID={`carousel-cancelled-${occurrenceKey(occurrence)}`}
       label={`Cancelled session: ${occurrence.student_name}, ${day}`}
@@ -520,11 +584,15 @@ function NextCard({
   today,
   nowMinutes,
   showTutor,
+  width,
+  height,
 }: {
   occurrence: UpcomingSession;
   today: string;
   nowMinutes: number;
   showTutor: boolean;
+  width: number;
+  height: number;
 }) {
   const theme = useAppTheme();
   const start = parseClockTime(occurrence.start_time) ?? 0;
@@ -532,7 +600,8 @@ function NextCard({
   const soft = withAlpha(theme.colors.onPrimary, 0.85);
   return (
     <CardFrame
-      width={272}
+      width={width}
+      height={height}
       variant="next"
       testID="carousel-next"
       label={`Next session: ${occurrence.student_name}, ${left}`}

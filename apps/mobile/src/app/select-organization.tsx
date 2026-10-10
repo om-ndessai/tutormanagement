@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Chip, List, Surface, Text, TouchableRipple } from 'react-native-paper';
 
+import { useRefresh } from '@/hooks/use-refresh';
+import { ListItem } from '@/components/list-item';
 import { IconButton } from '@/components/icon-button';
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
@@ -29,6 +31,9 @@ export default function SelectOrganizationScreen() {
   const answer = useAnswerInvitation();
   const setDefault = useSetDefaultOrganization();
   const [entering, setEntering] = useState<string | null>(null);
+
+  // Memberships and invitations come with the session: a pull re-reads it.
+  const { refreshing, onRefresh } = useRefresh(() => refreshSession());
 
   const active = memberships.filter((m) => m.status === 'active');
   const suspended = memberships.filter((m) => m.status === 'suspended');
@@ -72,7 +77,12 @@ export default function SelectOrganizationScreen() {
   }
 
   return (
-    <Screen testID="screen-select-organization" edges={['top', 'bottom']}>
+    <Screen
+      testID="screen-select-organization"
+      edges={['top', 'bottom']}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
         <LogoMark size={36} />
         <View style={{ flex: 1 }}>
@@ -222,7 +232,7 @@ export default function SelectOrganizationScreen() {
 
         {platformAdmin ? (
           <Surface elevation={1} style={{ borderRadius: radius.lg, overflow: 'hidden' }}>
-            <List.Item
+            <ListItem
               testID="select-platform-console"
               title="Platform console"
               description="Organizations and their admins"

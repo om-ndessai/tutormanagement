@@ -4,6 +4,7 @@ import { formatCents, type ParentDashboard, type StudentBalance } from '@tmi/sha
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
+import { countOf } from '@/lib/plural';
 import { SecureMoney } from '@/components/secure-money';
 import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
@@ -30,7 +31,7 @@ function ChildBalanceRow({ child }: { child: StudentBalance }) {
           {child.student_name}
         </Text>
         <Text variant="bodySmall" numberOfLines={1} style={{ color: theme.tokens.mutedForeground }}>
-          {child.session_count} sessions · {formatCents(child.charged_cents)} charged
+          {countOf(child.session_count, 'session')} · {formatCents(child.charged_cents)} charged
         </Text>
       </View>
       <Text

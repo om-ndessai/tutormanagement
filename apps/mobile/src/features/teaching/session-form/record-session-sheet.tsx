@@ -23,7 +23,8 @@ import { Button, Chip, HelperText, SegmentedButtons, Text } from 'react-native-p
 
 import { DateTimeField } from '@/components/date-time-field';
 import { Screen } from '@/components/screen';
-import { ErrorState, LoadingState } from '@/components/state-views';
+import { ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { useUserDetail } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -95,7 +96,7 @@ export function RecordSessionSheet({
 
   let body;
   if (assignments.isPending || (sessionId && existing.isPending) || (draftId && drafts.isPending)) {
-    body = <LoadingState label="Loading…" />;
+    body = <FormSkeleton label="Loading…" fields={5} />;
   } else if (assignments.isError) {
     body = <ErrorState error={assignments.error} onRetry={() => void assignments.refetch()} />;
   } else if (sessionId && (existing.isError || !existing.data)) {

@@ -30,7 +30,8 @@ import { Choice, Field } from '@/components/form-choice';
 import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
 import { SecureMoney } from '@/components/secure-money';
-import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { EmptyState, ErrorState } from '@/components/state-views';
+import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { NoteField } from '@/features/teaching/session-notes';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
@@ -60,7 +61,7 @@ export function PaymentFormSheet({ paymentId }: { paymentId: string | undefined 
   } else if (!paymentId) {
     body = <PaymentFormBody existing={null} />;
   } else if (list.isPending) {
-    body = <LoadingState label="Loading the payment…" />;
+    body = <FormSkeleton label="Loading the payment…" fields={5} />;
   } else if (list.isError) {
     body = <ErrorState error={list.error} onRetry={() => void list.refetch()} />;
   } else {

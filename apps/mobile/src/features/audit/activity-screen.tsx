@@ -8,6 +8,7 @@ import { useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Badge, Button, Chip, Text } from 'react-native-paper';
 
+import { PageIntro } from '@/components/page-intro';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -72,15 +73,11 @@ export function ActivityScreen() {
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
-      <Text
-        testID="activity-description"
-        variant="bodyMedium"
-        style={{ color: theme.tokens.mutedForeground }}
-      >
+      <PageIntro testID="activity-description">
         {isAdmin
           ? 'Everything that has happened in the portal, newest first.'
           : 'Your activity in the portal, newest first.'}
-      </Text>
+      </PageIntro>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}>
         <View>
           <Button

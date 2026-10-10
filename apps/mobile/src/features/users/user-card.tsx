@@ -5,6 +5,8 @@ import { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Card, Divider, Menu, Text } from 'react-native-paper';
 
+import { AdaptiveRow } from '@/components/adaptive-row';
+import { useLargeText, useLines } from '@/hooks/use-large-text';
 import { IconButton } from '@/components/icon-button';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -35,6 +37,8 @@ export const UserCard = memo(function UserCard({
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const isDeleted = user.deleted_at !== null;
+  const large = useLargeText();
+  const lines = useLines(1);
 
   return (
     <Card
@@ -51,28 +55,34 @@ export const UserCard = memo(function UserCard({
           onPress={() => actions.onView(user)}
           style={{ flex: 1, minWidth: 0, padding: space.md, gap: space.sm }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
+          <AdaptiveRow gap={space.md}>
             <PersonAvatar name={user.full_name} />
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <Text variant="titleSmall" numberOfLines={1}>
+            <View style={{ flex: large ? undefined : 1, minWidth: 0 }}>
+              <Text variant="titleSmall" numberOfLines={lines}>
                 {user.full_name}
               </Text>
               {/* Not a link here: a tap on the card opens the record, and the record offers Email. */}
               <EmailOrNone
                 email={user.email}
                 link={false}
-                numberOfLines={1}
+                numberOfLines={lines}
                 style={{ fontSize: 12, color: muted }}
               />
               {user.phone ? (
-                <Text style={{ fontSize: 12, color: muted }} numberOfLines={1}>
+                <Text style={{ fontSize: 12, color: muted }} numberOfLines={lines}>
                   {user.phone}
                 </Text>
               ) : null}
             </View>
-          </View>
+          </AdaptiveRow>
           <View
-            style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6, paddingLeft: 48 }}
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: 6,
+              paddingLeft: large ? 0 : 48,
+            }}
           >
             <RoleBadges roles={user.roles} />
             <StatusBadge status={user.status} />

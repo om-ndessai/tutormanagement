@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ActivityIndicator, List, Searchbar, Surface, Text } from 'react-native-paper';
 
+import { useRefresh } from '@/hooks/use-refresh';
+import { ListItem } from '@/components/list-item';
 import { Screen } from '@/components/screen';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useUsers } from '@/features/users/api';
@@ -66,6 +68,9 @@ export function SearchScreen() {
   const found = searching ? (people.data?.data ?? []) : [];
   const peopleLoading =
     query.trim().length >= PEOPLE_MIN_CHARS && (search !== query.trim() || people.isFetching);
+
+  // Pages and actions are the app's own; a pull re-asks the server for the people found.
+  const { refreshing, onRefresh } = useRefresh(() => (searching ? people.refetch() : undefined));
 
   /** Leaves search, as the palette closes, then does what was asked. */
   function leaveThen(action: () => void) {
@@ -162,7 +167,7 @@ export function SearchScreen() {
   const nothing = pages.length === 0 && shownActions.length === 0 && found.length === 0 && !peopleLoading;
 
   return (
-    <Screen testID="screen-search">
+    <Screen testID="screen-search" refreshing={refreshing} onRefresh={onRefresh}>
       <Stack.Screen options={{ title: 'Search' }} />
       <Searchbar
         testID="search-input"
@@ -189,7 +194,7 @@ export function SearchScreen() {
       {pages.length > 0 ? (
         <Section testID="search-section-goto" title="Go to">
           {pages.map(({ item }) => (
-            <List.Item
+            <ListItem
               key={item.tourId}
               testID={`search-goto-${item.tourId}`}
               title={item.label}
@@ -203,7 +208,7 @@ export function SearchScreen() {
       {found.length > 0 || peopleLoading ? (
         <Section testID="search-section-people" title="People">
           {found.map((person) => (
-            <List.Item
+            <ListItem
               key={person.id}
               testID={`search-person-${person.id}`}
               title={person.full_name}
@@ -224,7 +229,7 @@ export function SearchScreen() {
       {shownActions.length > 0 ? (
         <Section testID="search-section-actions" title="Actions">
           {shownActions.map((action) => (
-            <List.Item
+            <ListItem
               key={action.key}
               testID={action.testID}
               title={action.label}

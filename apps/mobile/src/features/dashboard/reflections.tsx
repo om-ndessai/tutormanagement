@@ -1,11 +1,13 @@
 // Ported from apps/web/src/features/dashboard/reflections.tsx @ 1132322
-import { formatClockTime, type ReflectionDigest, type ReflectionPrompt } from '@tmi/shared';
+import { formatClockTime, zonedClockParts, type ReflectionDigest, type ReflectionPrompt } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
 import { EmptyNote, Panel } from '@/components/section';
 import { firstName } from '@/features/teaching/reflection-logic';
+import { formatPlainDay } from '@/features/teaching/session-format';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { ReflectionChips, ReflectionFlags } from '@/features/teaching/reflection-chips';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
@@ -17,6 +19,7 @@ import { space } from '@/theme/tokens';
  */
 export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) {
   const theme = useAppTheme();
+  const today = zonedClockParts(new Date().toISOString(), useOrgTimeZone()).day;
   if (digests.length === 0) {
     return (
       <EmptyNote testID="reflections-empty">
@@ -33,7 +36,7 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
           <Pressable
             testID={`reflection-${session_id}`}
             accessibilityRole="link"
-            accessibilityLabel={`${student_name}'s reflection on the ${occurred_on} lesson`}
+            accessibilityLabel={`${student_name}'s reflection on the ${formatPlainDay(occurred_on, today)} lesson`}
             onPress={() => router.navigate(`/sessions?focus=${session_id}`)}
             style={({ pressed }) => ({ paddingVertical: space.md, gap: 6, opacity: pressed ? 0.7 : 1 })}
           >
@@ -50,7 +53,7 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
                 {student_name}
               </Text>
               <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                {occurred_on}
+                {formatPlainDay(occurred_on, today)}
               </Text>
               <ReflectionFlags reflection={reflection} />
             </View>
@@ -80,6 +83,7 @@ export function ReflectionPrompts({
   forChildren?: boolean;
 }) {
   const theme = useAppTheme();
+  const today = zonedClockParts(new Date().toISOString(), useOrgTimeZone()).day;
   if (prompts.length === 0) return null;
 
   return (
@@ -114,7 +118,7 @@ export function ReflectionPrompts({
                   </Text>
                 </Text>
                 <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                  {prompt.occurred_on} · {time}
+                  {formatPlainDay(prompt.occurred_on, today)} · {time}
                 </Text>
               </View>
               <Button
