@@ -8,6 +8,7 @@ import { EmptyNote, Panel } from '@/components/section';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { StudentProgressCard } from '@/features/progress/progress-card';
 import { ROLE_ICONS } from '@/features/users/role-icon';
+import { TourTarget } from '@/features/onboarding/tour-targets';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { ReflectionPrompts } from './reflections';
@@ -62,7 +63,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         <GoalBanner goal={data.goal} course={data.current_math_course} />
       ) : null}
 
-      <View nativeID="dash-my-stats">
+      <TourTarget id="dash-my-stats">
         <StatGrid>
           {[
             <StatCard
@@ -82,7 +83,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
             <StatCard key="tutors" label="Tutors" value={data.tutors.length} icon={ROLE_ICONS.tutor} />,
           ]}
         </StatGrid>
-      </View>
+      </TourTarget>
 
       {/* Phase 25: the lessons still waiting for their reflection, near the top, because it is the
           one thing here they are asked to do. */}

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { RefreshControl, ScrollView, View, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets, type Edge } from 'react-native-safe-area-context';
 
@@ -22,6 +22,7 @@ export function Screen({
   refreshing = false,
   onRefresh,
   contentStyle,
+  scrollRef,
 }: {
   testID: string;
   children: ReactNode;
@@ -30,6 +31,8 @@ export function Screen({
   refreshing?: boolean;
   onRefresh?: () => void;
   contentStyle?: ViewStyle;
+  /** The scroll view itself, for a screen that scrolls a child into view (the feature tour). */
+  scrollRef?: Ref<ScrollView>;
 }) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -50,6 +53,7 @@ export function Screen({
   }
   return (
     <ScrollView
+      ref={scrollRef}
       testID={testID}
       style={{ flex: 1, backgroundColor: theme.colors.background }}
       contentContainerStyle={padded}

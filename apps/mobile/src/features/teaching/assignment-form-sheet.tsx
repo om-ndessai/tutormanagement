@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/teaching/assignment-dialog.tsx @ 1132322.
-// The dialog becomes a form sheet, `(org)/assignment-form` (`?id=<assignment>` to edit).
+// The dialog becomes a form sheet, `(org)/assignment-form` (`?id=<assignment>` to edit; `?student=` or
+// `?tutor=` preset one side of a new pairing, as the welcome wizard's `preset` does).
 //
 // "Admin, when assigning a student to the tutor can specify the hourly rate." Choosing a tutor
 // fills both rate fields with that tutor's current defaults, so the admin adjusts from a real
@@ -23,6 +24,7 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
 import { useUserDetail, useUsers } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
+import { announceFormSaved } from '@/lib/form-bridge';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -36,7 +38,19 @@ function close() {
   if (router.canGoBack()) router.back();
 }
 
-export function AssignmentFormSheet({ assignmentId }: { assignmentId: string | undefined }) {
+/** One side of a new pairing, already chosen. */
+export interface AssignmentPreset {
+  student_user_id?: string;
+  tutor_user_id?: string;
+}
+
+export function AssignmentFormSheet({
+  assignmentId,
+  preset,
+}: {
+  assignmentId: string | undefined;
+  preset?: AssignmentPreset;
+}) {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const list = useAssignments();
@@ -46,7 +60,7 @@ export function AssignmentFormSheet({ assignmentId }: { assignmentId: string | u
     // The API refuses anyone else; the sheet says so rather than offering a form that cannot save.
     body = <EmptyState icon="lock-outline" title="Only an admin can change pairings." />;
   } else if (!assignmentId) {
-    body = <AssignmentForm existing={null} />;
+    body = <AssignmentForm existing={null} preset={preset} />;
   } else if (list.isPending) {
     body = <LoadingState label="Loading the pairing…" />;
   } else if (list.isError) {
@@ -72,14 +86,20 @@ function badRate(text: string): boolean {
   return text.trim() !== '' && parseCentsInput(text) == null;
 }
 
-export function AssignmentForm({ existing }: { existing: Assignment | null }) {
+export function AssignmentForm({
+  existing,
+  preset,
+}: {
+  existing: Assignment | null;
+  preset?: AssignmentPreset;
+}) {
   const theme = useAppTheme();
   const toast = useToast();
   const muted = theme.tokens.mutedForeground;
   const isEdit = existing !== null;
 
-  const [tutorId, setTutorId] = useState(existing?.tutor_user_id ?? '');
-  const [studentId, setStudentId] = useState(existing?.student_user_id ?? '');
+  const [tutorId, setTutorId] = useState(existing?.tutor_user_id ?? preset?.tutor_user_id ?? '');
+  const [studentId, setStudentId] = useState(existing?.student_user_id ?? preset?.student_user_id ?? '');
   const [inPerson, setInPerson] = useState(centsToInput(existing?.rate_in_person_cents));
   const [virtual, setVirtual] = useState(centsToInput(existing?.rate_virtual_cents));
   const [notes, setNotes] = useState(existing?.notes ?? '');
@@ -94,7 +114,27 @@ export function AssignmentForm({ existing }: { existing: Assignment | null }) {
   const update = useUpdateAssignment();
   const saving = create.isPending || update.isPending;
 
-  const selectedTutor = tutors.data?.data.find((candidate) => candidate.id === tutorId);
+  // A preset person the first hundred names leave out -- the wizard's new student sorts anywhere --
+  // is fetched on their own, so the picker shows them chosen rather than a blank.
+  const presetStudentId = preset?.student_user_id;
+  const presetTutorId = preset?.tutor_user_id;
+  const presetStudent = useUserDetail(
+    presetStudentId && students.data && !students.data.data.some((row) => row.id === presetStudentId)
+      ? presetStudentId
+      : null,
+  );
+  const presetTutor = useUserDetail(
+    presetTutorId && tutors.data && !tutors.data.data.some((row) => row.id === presetTutorId)
+      ? presetTutorId
+      : null,
+  );
+  const tutorRows = [...(presetTutor.data ? [presetTutor.data.data] : []), ...(tutors.data?.data ?? [])];
+  const studentRows = [
+    ...(presetStudent.data ? [presetStudent.data.data] : []),
+    ...(students.data?.data ?? []),
+  ];
+
+  const selectedTutor = tutorRows.find((candidate) => candidate.id === tutorId);
   // The list rows carry no rates, so the chosen tutor's profile is fetched for them. Skipped while
   // editing, where the pairing's own rates win.
   const tutorDetail = useUserDetail(!isEdit && tutorId ? tutorId : null);
@@ -169,8 +209,9 @@ export function AssignmentForm({ existing }: { existing: Assignment | null }) {
           haptics.error();
           return;
         }
-        await create.mutateAsync(parsed.data);
+        const created = await create.mutateAsync(parsed.data);
         toast.success('Student assigned.');
+        announceFormSaved({ form: 'assignment', id: created.data.id });
       }
       close();
     } catch (error) {
@@ -203,7 +244,7 @@ export function AssignmentForm({ existing }: { existing: Assignment | null }) {
             label="Tutor"
             placeholder="Choose a tutor"
             searchPlaceholder="Search tutors"
-            options={(tutors.data?.data ?? []).map((candidate) => ({
+            options={tutorRows.map((candidate) => ({
               id: candidate.id,
               label: candidate.full_name,
             }))}
@@ -216,7 +257,7 @@ export function AssignmentForm({ existing }: { existing: Assignment | null }) {
             label="Student"
             placeholder="Choose a student"
             searchPlaceholder="Search students"
-            options={(students.data?.data ?? [])
+            options={studentRows
               .filter((candidate) => candidate.id !== tutorId)
               .map((candidate) => ({ id: candidate.id, label: candidate.full_name }))}
             value={studentId}

@@ -10,6 +10,8 @@ import { IconButton, Text } from 'react-native-paper';
 import { Screen } from '@/components/screen';
 import { ErrorState, LoadingState } from '@/components/state-views';
 import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
+import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
+import { useTourScroller } from '@/features/onboarding/tour-targets';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
 import { useAuth } from '@/providers/auth-provider';
@@ -88,6 +90,16 @@ export function DashboardScreen() {
   const subject = response?.subject;
   const viewingOther = Boolean(viewingId && subject?.viewing_as_other);
 
+  // The welcome wizard waits for this: never while viewing somebody else, and a tour that matches
+  // the dashboard on screen (#34).
+  const onboarding = useOptionalOnboarding();
+  const reportDashboard = onboarding?.reportDashboard;
+  const shownRole = response?.role ?? null;
+  useEffect(() => {
+    reportDashboard?.({ role: viewingId ? null : shownRole, viewingAs: Boolean(viewingId) });
+  }, [reportDashboard, shownRole, viewingId]);
+  const tourScroller = useTourScroller();
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -107,6 +119,7 @@ export function DashboardScreen() {
       // A new subject starts at the top, not wherever the last one was scrolled to.
       key={viewingId ?? 'me'}
       testID="screen-home"
+      scrollRef={tourScroller}
       refreshing={refreshing}
       onRefresh={() => void onRefresh()}
     >

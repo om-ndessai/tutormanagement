@@ -30,6 +30,7 @@ import { organizationToday } from '@/features/teaching/session-ranges';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { NoteField } from '@/features/teaching/session-notes';
 import { ApiRequestError } from '@/lib/api-client';
+import { announceFormSaved } from '@/lib/form-bridge';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -150,12 +151,13 @@ export function PlanForm({
         await update.mutateAsync({ id: existing.id, input: { ...body, status } });
         toast.success('Plan updated.');
       } else {
-        await create.mutateAsync({
+        const created = await create.mutateAsync({
           student_user_id: student.user_id,
           assessment_id: assessment?.id ?? null,
           ...body,
         });
         toast.success('Plan created.');
+        announceFormSaved({ form: 'plan', id: created.data.id });
       }
       haptics.success();
       close();

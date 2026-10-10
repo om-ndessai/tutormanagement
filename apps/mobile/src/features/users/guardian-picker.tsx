@@ -16,7 +16,7 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
-import { useUsers } from './api';
+import { useUserDetail, useUsers } from './api';
 import { onGuardianCreated } from './guardian-bridge';
 import { addGuardian, removeGuardian, updateGuardian, type GuardianValue } from './person-form-model';
 
@@ -63,6 +63,14 @@ export function GuardianPicker({
           candidate.id !== excludeUserId && !value.some((link) => link.guardian_user_id === candidate.id),
       )
     : [];
+  // A guardian linked before this form knew their name -- the welcome wizard's preset (`?guardian=`)
+  // -- is looked up on their own, one at a time, and remembered.
+  const unnamed = value.find((link) => !names[link.guardian_user_id] && !knownNames?.[link.guardian_user_id]);
+  const unnamedDetail = useUserDetail(unnamed?.guardian_user_id ?? null);
+  const found = unnamedDetail.data?.data;
+  if (found && unnamed && found.id === unnamed.guardian_user_id && !names[found.id]) {
+    setNames((current) => ({ ...current, [found.id]: found.full_name }));
+  }
   const nameFor = (id: string) => names[id] ?? knownNames?.[id] ?? 'Unknown';
 
   function add(id: string, fullName: string) {

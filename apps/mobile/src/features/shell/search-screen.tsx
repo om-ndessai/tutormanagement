@@ -8,6 +8,7 @@ import { View } from 'react-native';
 import { ActivityIndicator, List, Searchbar, Surface, Text } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
+import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useUsers } from '@/features/users/api';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { haptics } from '@/lib/haptics';
@@ -42,6 +43,7 @@ export function SearchScreen() {
   const { user, memberships, organization, platformAdmin, chooseOrganization, signOut } = useAuth();
   const { setMode } = useThemeMode();
   const destinations = useNavItems();
+  const onboarding = useOptionalOnboarding();
   const isAdmin = Boolean(user?.roles.includes('admin'));
   const [query, setQuery] = useState('');
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -81,7 +83,19 @@ export function SearchScreen() {
   );
 
   const actions: ActionRow[] = [
-    // "Take the tour" joins here with the welcome wizard (#34).
+    // The web palette's "Take the tour": the welcome wizard, which offers the tour (#34).
+    ...(onboarding
+      ? [
+          {
+            key: 'tour',
+            testID: 'search-action-tour',
+            label: 'Take the tour',
+            value: 'take the tour help guide welcome',
+            icon: 'compass-outline',
+            run: () => leaveThen(() => onboarding.openWizard()),
+          },
+        ]
+      : []),
     ...THEME_ACTIONS.map((action) => ({
       key: `theme-${action.mode}`,
       testID: `search-action-theme-${action.mode}`,

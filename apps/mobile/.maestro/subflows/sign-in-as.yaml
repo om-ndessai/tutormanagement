@@ -1,5 +1,7 @@
 # Sign in as a seeded person (PERSONA, an email) and enter an organization (ORG, a slug; may be
-# empty) through the developer deep link. Starts the app fresh.
+# empty) through the developer deep link. Starts the app fresh. The device is marked as having
+# shown the welcome tour (`tour=seen`, the web fixture's tmi_tour_seen cookie), so its offer never
+# covers a flow; FRESH=1 leaves it off, for the onboarding flows (the web's `as(who, { fresh: true })`).
 appId: ${APP_ID}
 ---
 - runFlow: launch.yaml
@@ -10,4 +12,4 @@ appId: ${APP_ID}
 - runFlow:
     file: open-link.yaml
     env:
-      LINK: tutorportal://dev/link?as=${PERSONA}&org=${ORG}
+      LINK: "tutorportal://dev/link?as=${PERSONA}&org=${ORG}${typeof FRESH === 'undefined' || !FRESH ? '&tour=seen' : ''}"

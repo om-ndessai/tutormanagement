@@ -15,6 +15,7 @@ jest.mock('./api', () => ({
   useCreateUser: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useUpdateUser: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useUsers: () => ({ data: undefined, isFetching: false }),
+  useUserDetail: () => ({ data: undefined }),
 }));
 
 const alex: UserDetail = {

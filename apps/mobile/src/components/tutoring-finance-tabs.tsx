@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
 
+import { useTourTarget } from '@/features/onboarding/tour-targets';
 import { haptics } from '@/lib/haptics';
 import { space } from '@/theme/tokens';
 
@@ -24,8 +25,9 @@ export function useTutoringFinanceTab(): [TutoringFinanceTab, (tab: TutoringFina
 /** The Tutoring / Finance segmented control alone, for a screen that renders its halves itself. */
 export function TutoringFinanceSwitch() {
   const [tab, setTab] = useTutoringFinanceTab();
+  const tourRef = useTourTarget('tabs');
   return (
-    <View nativeID="tabs">
+    <View ref={tourRef} nativeID="tabs" collapsable={false}>
       <SegmentedButtons
         value={tab}
         onValueChange={(value) => {

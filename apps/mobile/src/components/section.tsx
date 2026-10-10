@@ -5,6 +5,7 @@ import { Pressable, View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 
 import { slug } from '@/components/stat-card';
+import { useTourTarget } from '@/features/onboarding/tour-targets';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 
@@ -57,8 +58,9 @@ export function DashboardSection({
   tourId?: string;
 }) {
   const id = `dashboard-section-${slug(title)}`;
+  const tourRef = useTourTarget(tourId);
   return (
-    <View testID={id} nativeID={tourId} style={{ minWidth: 0 }}>
+    <View ref={tourRef} testID={id} nativeID={tourId} collapsable={false} style={{ minWidth: 0 }}>
       <View
         style={{
           flexDirection: 'row',
@@ -92,7 +94,8 @@ export function Panel({
   tourId?: string;
   testID?: string;
 }) {
-  return (
+  const tourRef = useTourTarget(tourId);
+  const card = (
     <Card
       mode="outlined"
       testID={testID}
@@ -120,6 +123,14 @@ export function Panel({
         {children}
       </View>
     </Card>
+  );
+  // The tour measures a plain view: only a panel it points at gets one around its card.
+  return tourId ? (
+    <View ref={tourRef} collapsable={false}>
+      {card}
+    </View>
+  ) : (
+    card
   );
 }
 

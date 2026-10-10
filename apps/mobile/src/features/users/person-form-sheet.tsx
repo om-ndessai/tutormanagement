@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState, LoadingState } from '@/components/state-views';
+import { announceFormSaved } from '@/lib/form-bridge';
 import { useAuth } from '@/providers/auth-provider';
 import { space } from '@/theme/tokens';
 import { useUserDetail } from './api';
@@ -40,6 +41,8 @@ export function PersonFormSheet({
     if (forGuardian) {
       announceGuardianCreated({ id: person.id, full_name: person.full_name, email: person.email });
     }
+    // The welcome wizard, when it opened this sheet, carries on from the saved record.
+    announceFormSaved({ form: 'person', id: person.id, name: person.full_name });
     close();
   }
 
