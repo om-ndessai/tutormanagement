@@ -44,7 +44,7 @@ the `[~]` item, then carry on down the list.
 - [x] 32. Mobile: Profile and appearance (0973394)
 - [x] 33. Mobile: Search — pages, people and actions (f83ae35)
 - [x] 33b. Mobile tests: self-cleaning, stable Sessions flows (094670c)
-- [x] 34. Mobile: Welcome wizard, guided setup and tour
+- [x] 34. Mobile: Welcome wizard, guided setup and tour (f4e828a)
 - [ ] 35. Mobile: Platform console
 - [ ] 36. Mobile tests: exposure across personas
 
