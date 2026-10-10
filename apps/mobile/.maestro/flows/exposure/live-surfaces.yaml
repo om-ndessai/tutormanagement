@@ -1,0 +1,131 @@
+# What the running-lesson surfaces say (apps/mobile/CLAUDE.md "System surfaces"). The app has no
+# notification, Live Activity or widget yet, so the floating banner is the only place a running
+# lesson shows outside its own screen: it names the student and the mode, the times and the
+# stopwatch -- no money and no notes -- on every tab, including Sessions' Finance half. The stop
+# sheet shows no money, and the toast after stopping gives the times and the LENGTH, never the pay.
+# Alex starts a lesson with Sofia; the clean-up hooks discard or delete whatever it leaves.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions
+- extendedWaitUntil:
+    visible:
+      id: sessions-start
+    timeout: 20000
+- tapOn:
+    id: sessions-start
+- extendedWaitUntil:
+    visible:
+      id: start-student-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- runFlow: ../../subflows/exposure/no-money.yaml
+- tapOn:
+    id: start-student-00000000-0000-4000-8000-000000000008
+- tapOn:
+    id: start-mode-virtual
+- tapOn:
+    id: start-submit
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 15000
+# The banner's whole content: who, how, when, and the stopwatch.
+- assertVisible:
+    id: live-student
+    text: 'Sofia Okafor.*Virtual'
+- assertVisible:
+    id: live-from
+    text: 'from [0-9]{1,2}:[0-9]{2} (AM|PM).*'
+- assertVisible:
+    id: live-ends-by
+    text: 'ends by [0-9]{1,2}:[0-9]{2} (AM|PM)'
+- runFlow: ../../subflows/exposure/no-money.yaml
+- takeScreenshot: exposure-live-sessions
+# Sessions' Finance half: the list has money, the banner still none.
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: stat-earned
+    timeout: 10000
+- assertVisible:
+    id: live-banner
+- assertNotVisible:
+    id: live-student
+    text: '.*\$.*'
+- assertNotVisible:
+    id: live-from
+    text: '.*\$.*'
+- assertNotVisible:
+    id: live-ends-by
+    text: '.*\$.*'
+- tapOn:
+    id: tabs-tutoring
+# Every tab: the banner, and no money with it.
+- tapOn: 'Home'
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 10000
+- runFlow: ../../subflows/exposure/no-money.yaml
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 10000
+- assertVisible:
+    id: live-banner
+- runFlow: ../../subflows/exposure/no-money.yaml
+- tapOn: 'Progress'
+- extendedWaitUntil:
+    visible:
+      id: screen-progress
+    timeout: 10000
+- assertVisible:
+    id: live-banner
+- runFlow: ../../subflows/exposure/no-money.yaml
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: more-nav-activity
+    timeout: 10000
+- assertVisible:
+    id: live-banner
+- runFlow: ../../subflows/exposure/no-money.yaml
+- takeScreenshot: exposure-live-more
+# Stop: the sheet has no money; the toast gives the length.
+- tapOn:
+    id: live-stop
+- extendedWaitUntil:
+    visible:
+      id: stop-submit
+    timeout: 15000
+- runFlow: ../../subflows/exposure/no-money.yaml
+- tapOn:
+    id: stop-submit
+- extendedWaitUntil:
+    visible: 'Session recorded: .*, [0-9]+ (min|hr).*\.'
+    timeout: 15000
+- runFlow: ../../subflows/exposure/no-money.yaml
+- takeScreenshot: exposure-live-stopped
+- extendedWaitUntil:
+    notVisible:
+      id: live-banner
+    timeout: 10000

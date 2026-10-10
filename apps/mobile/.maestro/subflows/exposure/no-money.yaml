@@ -1,0 +1,7 @@
+# What a Tutoring surface must never show, wherever it is scrolled to: no SessionMoney and no
+# amount at all. Asserted on the screen as it stands; the caller scrolls.
+appId: ${APP_ID}
+---
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'

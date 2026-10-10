@@ -16,7 +16,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `features/auth/*` | sign-in page (Google → Phase 4), RequireAuth | `app/sign-in.tsx`, `app/_layout.tsx` guards | `smoke/sign-in` | todo |
 | `features/organizations/require-org.tsx`, `select-organization-page.tsx`, `org-switcher.tsx`, `org-avatar.tsx` | picker, invitations, default ★, switch | `app/select-organization.tsx`, `src/features/organizations/*` | `organizations/*` | todo |
 | `components/layout/app-shell.tsx` (`NAV_ITEMS`), `user-menu.tsx`, `page-header.tsx`, `focus-notice.tsx` | shell, nav, user menu | `app/(org)/(tabs)/_layout.tsx`, `app/(org)/(tabs)/more.tsx`, `src/components/*` | `shell/*` | todo |
-| `components/layout/tutoring-finance-tabs.tsx` | `?tab=` Tutoring / Finance | `src/components/tutoring-finance-tabs.tsx` | `exposure/*` | todo |
+| `components/layout/tutoring-finance-tabs.tsx` | `?tab=` Tutoring / Finance | `src/components/tutoring-finance-tabs.tsx` | `exposure/*` | tested (36: every Tutoring surface, five readers) |
 | `components/layout/command-palette.tsx` | ⌘K | `app/(org)/search.tsx` | `search/*` | tested (33) |
 | `components/layout/theme-toggle.tsx`, `theme-transition.ts` | theme switch | `app/(org)/profile.tsx` appearance | `profile/*` | tested (32) |
 
@@ -36,7 +36,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `teaching/live-session-bar.tsx`, `start-session-button.tsx` | live timer | `app/(org)/{start-lesson,stop-lesson}.tsx`, `src/features/teaching/{live-session-banner,live-session,start-lesson-sheet,stop-lesson-sheet}.tsx` | `sessions/live` | tested |
 | `teaching/session-notes.tsx` | write-up, assessments | `app/(org)/assess-session.tsx`, `src/features/teaching/{session-notes,assess-session-sheet,session-actions}.tsx` | `sessions/assess`, `sessions/list-*` | view parts tested (17); assess sheet, own-only withdraw tested (21) |
 | `teaching/session-reflection.tsx` | student reflection | `app/(org)/reflection.tsx`, `src/features/teaching/{reflection-form.tsx,reflection-logic.ts}` | `sessions/reflection-detail`, `dashboard/reflection` | dialog and `mayChangeReflection` tested from the dashboard (15) and from the lesson detail and cards (21) |
-| `teaching/session-money.tsx` | money from the reader's side | `src/features/teaching/session-money.tsx` | `exposure/money`, `dashboard/parent` | compact form tested on the parent dashboard (15); rest todo |
+| `teaching/session-money.tsx` | money from the reader's side | `src/features/teaching/session-money.tsx` | `exposure/money-*`, `dashboard/parent` | tested (compact form on the parent dashboard, 15; full form by side for five readers, 36) |
 | `teaching/assignments-page.tsx`, `assignment-dialog.tsx` | pairings | `app/(org)/pairings.tsx`, `app/(org)/assignment-form.tsx` | `pairings/*` | tested |
 | `schedules/*` | weekly schedules, dates, cancel / restore, calendar files, cancelled panel | `app/(org)/(tabs)/schedule/*`, `src/features/schedules/*` | `schedule/*` | tested |
 | `progress/*` | list, student page, chart, spotlight, card, assessment / plan dialogs, ratings | `app/(org)/(tabs)/progress/*`, `src/features/progress/*` | `progress/*` | tested (#24: list, student page, full chart with tap/scrub, assessment and plan sheets, topic pickers; compact chart, spotlight, card, RatingPicker in #13/#15) |

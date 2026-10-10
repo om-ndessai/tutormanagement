@@ -1,0 +1,115 @@
+# The platform console's boundary (R14). Nav, a platform admin in no organization: the console's
+# tabs are organizations, admins, people (look-up by email) and its own activity -- no Sessions,
+# Schedule, Progress or Billing. Its organization list and an organization's page show the
+# organization and its admins (Priya), never its students, tutors, lessons or money; a link into an
+# organization's lessons or a person's record leaves him on the console. Priya, an organization's
+# admin, is offered no way into the console, not even from Search.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: platform-org-chmi
+    timeout: 30000
+- assertNotVisible: 'Sessions'
+- assertNotVisible: 'Schedule'
+- assertNotVisible: 'Progress'
+- assertNotVisible: 'Billing'
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- takeScreenshot: exposure-console-list
+# An organization's page: its admins, and nothing of its people's work.
+- tapOn:
+    id: platform-org-chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 15000
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- scrollUntilVisible:
+    element:
+      id: platform-org-admin-00000000-0000-4000-8000-000000000001
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '.*Priya Raghavan.*'
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- repeat:
+    times: 2
+    commands:
+      - scroll
+      - runFlow: ../../subflows/exposure/no-org-records.yaml
+- takeScreenshot: exposure-console-org
+# Links into an organization's data: no organization, so none of it.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=50000000-0000-4000-8000-000000000002
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform.*'
+    timeout: 20000
+- assertNotVisible:
+    id: screen-sessions
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform.*'
+    timeout: 20000
+- assertNotVisible:
+    id: screen-person
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- takeScreenshot: exposure-console-links
+# The console's own log: no money.
+- tapOn: 'Activity'
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-activity
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+# Priya, an organization's admin: a link to the console leaves her on Home, and Search offers none.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://platform
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: 'screen-platform.*'
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 15000
+- tapOn:
+    id: search-input
+- inputText: platform
+- extendedWaitUntil:
+    visible:
+      id: search-empty
+    timeout: 15000
+- assertNotVisible:
+    id: search-action-platform
+- assertNotVisible: 'Platform console'

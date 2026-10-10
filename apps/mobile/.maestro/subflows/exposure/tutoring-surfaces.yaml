@@ -1,0 +1,126 @@
+# Every Tutoring surface one person reaches, with no money on any of them (Phase 19; R1-R3): the
+# Home Tutoring tab (or a student's dashboard, which has no money at all), the Sessions Tutoring tab,
+# a lesson's detail opened from it, and -- for whoever may record -- the record sheet opened from it.
+# A parent's Home is the family's own money and no Tutoring surface, so it is left to
+# finance-side.yaml.
+#
+# env: PERSONA (email), NAME (for screenshots), LESSON (a lesson id they can see), RECORD ('yes' if they may record).
+appId: ${APP_ID}
+---
+- runFlow:
+    file: ../sign-in-as.yaml
+    env:
+      PERSONA: ${PERSONA}
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: 'dashboard-(section-analytics|student|parent)'
+    timeout: 30000
+# Home, Tutoring (the default for a tutor or admin), and a student's dashboard.
+- runFlow:
+    when:
+      notVisible:
+        id: dashboard-parent
+    commands:
+      - assertNotVisible:
+          id: 'dashboard-finance-.*'
+      - runFlow: no-money-scrolling.yaml
+- takeScreenshot: exposure-home-${NAME}
+# Sessions, Tutoring: no totals, no export, no money on a card however far down.
+# By its link: a tap on "Sessions" can land on Home's Sessions tile instead of the tab.
+- runFlow:
+    file: ../open-link.yaml
+    env:
+      LINK: tutorportal://sessions
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: 'session-card-.*'
+      index: 0
+    timeout: 20000
+- assertNotVisible:
+    id: sessions-export
+- assertNotVisible:
+    id: 'stat-(earned|charged)'
+- runFlow: no-money-scrolling.yaml
+- takeScreenshot: exposure-sessions-${NAME}
+# Recording is a tutor's or the office's; nobody else is offered it.
+- runFlow:
+    when:
+      true: ${RECORD != 'yes'}
+    commands:
+      - assertNotVisible:
+          id: sessions-record
+      - assertNotVisible:
+          id: sessions-record-button
+      - assertNotVisible:
+          id: sessions-start
+# One lesson's detail, opened from Tutoring: write-up and assessments, no money.
+- runFlow:
+    file: ../open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${LESSON}&tab=tutoring
+- extendedWaitUntil:
+    visible:
+      id: session-preview-${LESSON}
+    timeout: 20000
+- runFlow: no-money.yaml
+- tapOn:
+    id: session-preview-${LESSON}
+- extendedWaitUntil:
+    visible:
+      id: session-notes
+    timeout: 15000
+- assertVisible:
+    id: screen-session
+- runFlow: no-money-scrolling.yaml
+- takeScreenshot: exposure-lesson-${NAME}
+- retry:
+    maxRetries: 1
+    commands:
+      - runFlow: ../go-back.yaml
+      - extendedWaitUntil:
+          visible:
+            id: screen-sessions
+          timeout: 10000
+# The record sheet from Tutoring: the length, never a figure, from its top to its buttons.
+- runFlow:
+    when:
+      true: ${RECORD == 'yes'}
+    commands:
+      - tapOn:
+          id: sessions-record
+      - extendedWaitUntil:
+          visible:
+            id: record-pairing
+          timeout: 15000
+      - runFlow: no-money.yaml
+      # The office's pairing list is long: the length preview sits below it.
+      - scrollUntilVisible:
+          element:
+            id: record-preview
+          direction: DOWN
+          centerElement: true
+          timeout: 20000
+      - assertNotVisible:
+          id: record-money
+      - runFlow: no-money-scrolling.yaml
+      - takeScreenshot: exposure-record-${NAME}
+      - scrollUntilVisible:
+          element:
+            id: record-cancel
+          direction: DOWN
+          centerElement: true
+          timeout: 30000
+      - assertNotVisible:
+          id: record-money
+      - runFlow: no-money.yaml
+      - tapOn:
+          id: record-cancel
+      - extendedWaitUntil:
+          visible:
+            id: screen-sessions
+          timeout: 15000

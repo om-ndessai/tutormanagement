@@ -1,0 +1,140 @@
+# Narrow audiences, as one tutor reads another's (R5, R6, comments' person scope). Sanjay tutors Ben,
+# as Alex does, and is himself taught by Priya. Alex's seeded note on Ben-the-person is for the
+# office, Alex, Ben and Ben's parents: Sanjay reads none of it -- not in the feed, not on Ben's
+# record -- though he reads the note on his own pairing with Ben. His pairings show his own rate on
+# the pairing he teaches and no rate on the one where Priya teaches him; Priya's record shows him
+# none of her pay or paperwork. Alex, the note's author, then reads it where Sanjay saw nothing, so
+# the absence is the audience and not an empty thread.
+appId: ${APP_ID}
+tags:
+  - exposure
+env:
+  BEN: 00000000-0000-4000-8000-000000000009
+  PRIYA: 00000000-0000-4000-8000-000000000001
+  NOTE: '.*Ben asked to switch to Saturday mornings.*'
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sanjay.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# The comments feed: his pairing's note, never Alex's note on Ben.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://comments
+- extendedWaitUntil:
+    visible: '.*Agreed with both families that Sanjay teaches Ben.*'
+    timeout: 20000
+- assertNotVisible: ${NOTE}
+- takeScreenshot: exposure-sanjay-feed
+# Pairings: his own rate where he teaches; none where he is taught (Priya's pay is hers).
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-a0000000-0000-4000-8000-000000000003
+    timeout: 20000
+- assertVisible:
+    id: pairing-rates-a0000000-0000-4000-8000-000000000003
+- assertVisible: 'Your rate, in person:'
+- scrollUntilVisible:
+    element:
+      id: pairing-card-a0000000-0000-4000-8000-000000000004
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- assertVisible: 'with Priya Raghavan'
+- assertNotVisible:
+    id: pairing-rates-a0000000-0000-4000-8000-000000000004
+- assertNotVisible: 'Tutor pay.*'
+- assertNotVisible: 'No rate set'
+- assertNotVisible:
+    id: 'pairing-(edit|remove)-.*'
+- takeScreenshot: exposure-sanjay-pairings
+# Priya's record: another tutor's pay, advance, address and SSN are not his.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${PRIYA}
+- extendedWaitUntil:
+    visible:
+      id: person-section-tutor
+    timeout: 20000
+- assertNotVisible:
+    id: person-menu
+- scrollUntilVisible:
+    element: 'Longest session'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible:
+    id: person-pay-in-person
+- assertNotVisible:
+    id: person-pay-virtual
+- assertNotVisible:
+    id: person-topup
+- assertNotVisible:
+    id: person-mailing-address
+- assertNotVisible:
+    id: person-ssn
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: exposure-sanjay-priya
+# Ben's record: no comments for him to read.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${BEN}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-comments
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'No comments yet'
+- tapOn:
+    id: person-comments
+- extendedWaitUntil:
+    visible: 'Nothing has been noted here yet.'
+    timeout: 15000
+- assertNotVisible: ${NOTE}
+- takeScreenshot: exposure-sanjay-ben-comments
+# Alex wrote it, and reads it there.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${BEN}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-comments
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: '1 comment'
+- tapOn:
+    id: person-comments
+- extendedWaitUntil:
+    visible: ${NOTE}
+    timeout: 15000

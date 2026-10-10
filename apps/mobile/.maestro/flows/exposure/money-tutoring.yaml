@@ -1,0 +1,51 @@
+# Money by side, Tutoring half (Phase 19; R1-R3): no money on any Tutoring surface, for every kind
+# of reader -- a tutor (Alex), a parent (Anita), a student (Sofia), a tutor who parents (Maria) and
+# the office (Priya, admin + tutor). Each walks Home's Tutoring tab (a student's dashboard; a
+# parent's Home is the family's own money, checked in money-finance), Sessions' Tutoring tab
+# scrolled through, one lesson's detail opened from it, and the record sheet for whoever may
+# record. Those who may not record are offered no way to. Data-driven: one subflow, five readers.
+appId: ${APP_ID}
+# The record sheet autosaves a draft only when something changed, and nothing is typed here; the
+# hooks make sure a leftover draft from another flow cannot put a figure on screen either way.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/exposure/tutoring-surfaces.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      NAME: alex
+      LESSON: 50000000-0000-4000-8000-000000000002
+      RECORD: 'yes'
+- runFlow:
+    file: ../../subflows/exposure/tutoring-surfaces.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      NAME: anita
+      LESSON: 50000000-0000-4000-8000-000000000005
+      RECORD: 'no'
+- runFlow:
+    file: ../../subflows/exposure/tutoring-surfaces.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      NAME: sofia
+      LESSON: 50000000-0000-4000-8000-000000000002
+      RECORD: 'no'
+- runFlow:
+    file: ../../subflows/exposure/tutoring-surfaces.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      NAME: maria
+      LESSON: 50000000-0000-4000-8000-000000000002
+      RECORD: 'yes'
+- runFlow:
+    file: ../../subflows/exposure/tutoring-surfaces.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      NAME: priya
+      LESSON: 50000000-0000-4000-8000-000000000005
+      RECORD: 'yes'

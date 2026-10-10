@@ -1,0 +1,154 @@
+# A student is offered nothing to change (Sofia). Sessions: no record, start, edit or delete -- on
+# the list or on her lesson. Schedule: no new schedule, edit, remove or cancel. People: no add, no
+# row actions, no retired people, and her tutor's record offers no edit and shows no pay. Pairings:
+# no add, edit or remove. More: no Organization, and its link shows only the stub sentence.
+appId: ${APP_ID}
+tags:
+  - exposure
+env:
+  LESSON: 50000000-0000-4000-8000-000000000002
+  SCHEDULE: 70000000-0000-4000-8000-000000000001
+  ALEX: 00000000-0000-4000-8000-000000000003
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 30000
+# Sessions.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions
+- extendedWaitUntil:
+    visible:
+      id: session-preview-${LESSON}
+    timeout: 20000
+- assertNotVisible:
+    id: sessions-record
+- assertNotVisible:
+    id: sessions-record-button
+- assertNotVisible:
+    id: sessions-start
+- tapOn:
+    id: session-preview-${LESSON}
+- extendedWaitUntil:
+    visible:
+      id: session-notes
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: session-comments
+    direction: DOWN
+    timeout: 15000
+- assertNotVisible:
+    id: session-edit
+- assertNotVisible:
+    id: session-delete
+- takeScreenshot: exposure-student-lesson
+# Schedule.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://schedule
+- extendedWaitUntil:
+    visible:
+      id: schedule-dates-toggle-${SCHEDULE}
+    timeout: 20000
+- assertNotVisible:
+    id: schedule-add-button
+- assertNotVisible:
+    id: schedule-edit-${SCHEDULE}
+- assertNotVisible:
+    id: schedule-remove-${SCHEDULE}
+- tapOn:
+    id: schedule-dates-toggle-${SCHEDULE}
+- extendedWaitUntil:
+    visible:
+      id: 'schedule-date-${SCHEDULE}-.*'
+      index: 0
+    timeout: 15000
+- assertNotVisible:
+    id: 'schedule-cancel-${SCHEDULE}-.*'
+- assertNotVisible:
+    id: schedule-cancel-other-${SCHEDULE}
+- takeScreenshot: exposure-student-schedule
+# People.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-row-${ALEX}
+    timeout: 20000
+- assertNotVisible:
+    id: people-add-button
+- assertNotVisible:
+    id: people-add
+- assertNotVisible:
+    id: people-include-deleted
+- assertNotVisible:
+    id: 'people-row-menu-.*'
+- tapOn:
+    id: people-row-${ALEX}
+- extendedWaitUntil:
+    visible:
+      id: person-section-tutor
+    timeout: 15000
+- assertNotVisible:
+    id: person-edit
+- assertNotVisible:
+    id: person-menu
+- scrollUntilVisible:
+    element: 'Longest session'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible:
+    id: person-pay-in-person
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: exposure-student-tutor-record
+# Pairings.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-a0000000-0000-4000-8000-000000000001
+    timeout: 20000
+- assertNotVisible:
+    id: pairings-add-button
+- assertNotVisible:
+    id: pairings-add
+- assertNotVisible:
+    id: 'pairing-(edit|remove)-.*'
+- assertNotVisible:
+    id: 'pairing-rates-.*'
+# More: no Organization.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://more
+- extendedWaitUntil:
+    visible:
+      id: more-nav-activity
+    timeout: 15000
+- assertNotVisible:
+    id: more-nav-organization
+- assertNotVisible: 'Organization'
+- takeScreenshot: exposure-student-more
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://organization
+- extendedWaitUntil:
+    visible:
+      id: organization-stub
+    timeout: 20000
+- assertNotVisible:
+    id: org-tin

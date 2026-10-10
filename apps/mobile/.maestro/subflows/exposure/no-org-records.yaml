@@ -1,0 +1,8 @@
+# None of an organization's people (other than its admins), lessons or money on the screen in front
+# (R14): the console reaches organizations and their admins only.
+appId: ${APP_ID}
+---
+- assertNotVisible: '.*(Sofia Okafor|Ben Whitfield|Sanjay Patel|Alex Chen|Lily Chen|Arjun Patel).*'
+- assertNotVisible: '.*\$[0-9].*'
+- assertNotVisible:
+    id: session-money
