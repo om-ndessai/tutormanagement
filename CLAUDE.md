@@ -99,6 +99,9 @@ holds the app's rules and commands.
   TypeScript. Run `npm run mobile:install` after cloning.
 - **Local only.** Its tests run only against the local Worker and seed, through
   `npm run e2e:mobile`.
+- **Sign-in.** The app signs in through the same `POST /api/auth/google` (native Google
+  Sign-In with the web client ID as audience, so `verifyGoogleIdToken` is unchanged) and carries
+  the same `tmi_session` cookie, identity only; `X-Organization` still travels on every request.
 
 ## Layout
 

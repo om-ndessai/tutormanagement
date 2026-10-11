@@ -8,12 +8,12 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 
 | Web source | What | Mobile | Flow | Status |
 | --- | --- | --- | --- | --- |
-| `lib/api-client.ts` | envelope, `ApiRequestError`, `X-Organization`, 401 / org-required events | `src/lib/api-client.ts`, `src/lib/events.ts` | jest | todo |
+| `lib/api-client.ts` | envelope, `ApiRequestError`, `X-Organization`, 401 / org-required events, session cookie (`credentials: 'include'`), one silent renewal on 401 | `src/lib/api-client.ts`, `src/lib/events.ts` | jest | tested (G1: jest) |
 | `lib/organization.ts` | active org per tab, `withOrg` for downloads | `src/lib/organization.ts`, `src/lib/download.ts` | jest | todo |
-| `providers/auth-provider.tsx` | boot, landing org, enter, sign out, `useOrgTimeZone` | `src/providers/auth-provider.tsx`, `src/features/auth/landing.ts` | `smoke/sign-in` | todo |
+| `providers/auth-provider.tsx` | boot, landing org, enter, sign out, `signInWithGoogle`, `useOrgTimeZone` | `src/providers/auth-provider.tsx`, `src/features/auth/landing.ts`, `src/lib/google-sign-in.ts` | `smoke/sign-in`, jest | tested (G1: jest with Google mocked; real account pending G2) |
 | `providers/brand-provider.tsx` | brand from org / platform | `src/providers/brand-provider.tsx` | `smoke/brand` | todo |
 | `providers/theme-provider.tsx`, `index.css` palettes | light / dark / system, palettes | `src/providers/theme-provider.tsx`, `src/theme/*` | jest | todo |
-| `features/auth/*` | sign-in page (Google → Phase 4), RequireAuth | `app/sign-in.tsx`, `app/_layout.tsx` guards | `smoke/sign-in` | todo |
+| `features/auth/*` | sign-in page (Google button, error copy per `AUTH_ERROR_CODES`), RequireAuth | `app/sign-in.tsx`, `src/features/auth/sign-in-error.tsx`, `app/_layout.tsx` guards | `smoke/sign-in` | tested (G1: developer path on both platforms; Google path by hand, real account pending G2) |
 | `features/organizations/require-org.tsx`, `select-organization-page.tsx`, `org-switcher.tsx`, `org-avatar.tsx` | picker, invitations, default ★, switch | `app/select-organization.tsx`, `src/features/organizations/*` | `organizations/*` | todo |
 | `components/layout/app-shell.tsx` (`NAV_ITEMS`), `user-menu.tsx`, `page-header.tsx`, `focus-notice.tsx` | shell, nav, user menu | `app/(org)/(tabs)/_layout.tsx`, `app/(org)/(tabs)/more.tsx`, `src/components/*` | `shell/*` | todo |
 | `components/layout/tutoring-finance-tabs.tsx` | `?tab=` Tutoring / Finance | `src/components/tutoring-finance-tabs.tsx` | `exposure/*` | tested (36: every Tutoring surface, five readers) |
@@ -61,4 +61,4 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | CSS palettes | generated palette tokens → Paper MD3 theme |
 | ⌘K | Search screen |
 | `data-tour` coach marks | spotlight overlay over registered refs |
-| Google Identity Services | Phase 4: native Google Sign-In → Bearer session |
+| Google Identity Services | native Google Sign-In (web client as audience) → the same `POST /auth/google` and `tmi_session` cookie (G1) |

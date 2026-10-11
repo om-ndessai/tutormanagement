@@ -31,7 +31,8 @@ export async function downloadAndShare(path: string, fallbackName: string): Prom
   let response: Response;
   try {
     response = await fetch(`${apiOrigin()}/api${withOrg(path)}`, {
-      credentials: 'omit',
+      // The session cookie goes along, as it does with a link on the web.
+      credentials: 'include',
       headers: requestHeaders({ Accept: '*/*' }),
     });
   } catch {

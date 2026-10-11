@@ -51,7 +51,8 @@ export function apiOrigin(): string {
 
 /**
  * The headers every request carries: the organization (the API re-checks membership each
- * time) and, while the server has sign-in off, who to act as. Downloads use these too.
+ * time) and, on the developer sign-in path only (a server with sign-in off), who to act as.
+ * Downloads use these too.
  */
 export function requestHeaders(extra?: Record<string, string>): Record<string, string> {
   const org = getActiveOrg();
@@ -67,9 +68,10 @@ export function requestHeaders(extra?: Record<string, string>): Record<string, s
 async function send(origin: string, path: string, init: RequestInit): Promise<Response> {
   return fetch(`${origin}/api${path}`, {
     ...init,
-    // No cookies: the app never relies on the platform's cookie jar. Identity is the dev
-    // header now and a Bearer token from Phase 4.
-    credentials: 'omit',
+    // The session is the server's tmi_session cookie (POST /auth/google sets it), kept and sent
+    // by the platform: URLSession's cookie store on iOS, OkHttp's cookie jar on Android. It is
+    // identity only; the organization still travels on every request.
+    credentials: 'include',
     headers: requestHeaders({
       ...(init.body ? { 'Content-Type': 'application/json' } : {}),
       ...(init.headers as Record<string, string> | undefined),
@@ -77,7 +79,34 @@ async function send(origin: string, path: string, init: RequestInit): Promise<Re
   });
 }
 
-async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+/**
+ * When a session ends mid-use (the cookie's 12 hours are up), the auth provider can renew it
+ * once without asking: a silent Google sign-in exchanged at POST /auth/google. Answers whether
+ * a new session now exists.
+ */
+type Reauthenticator = () => Promise<boolean>;
+let reauthenticator: Reauthenticator | null = null;
+let reauthenticating: Promise<boolean> | null = null;
+
+export function setReauthenticator(fn: Reauthenticator | null): void {
+  reauthenticator = fn;
+}
+
+/** The sign-in routes themselves never trigger a renewal. */
+const NO_REAUTH_PATHS = new Set(['/auth/google', '/auth/logout']);
+
+/** One renewal at a time: every request that hit the same 401 waits on the same attempt. */
+function reauthenticate(): Promise<boolean> {
+  if (!reauthenticator) return Promise.resolve(false);
+  reauthenticating ??= reauthenticator()
+    .catch(() => false)
+    .finally(() => {
+      reauthenticating = null;
+    });
+  return reauthenticating;
+}
+
+async function request<T>(path: string, init: RequestInit = {}, retried = false): Promise<T> {
   let response: Response;
   try {
     response = await send(apiOrigin(), path, init);
@@ -103,7 +132,13 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const payload: unknown = await response.json().catch(() => null);
 
   if (!response.ok) {
-    if (response.status === 401) emit('unauthenticated');
+    if (response.status === 401) {
+      // One silent renewal, then the request once more; otherwise signed out.
+      if (!retried && !NO_REAUTH_PATHS.has(path) && (await reauthenticate())) {
+        return request<T>(path, init, true);
+      }
+      emit('unauthenticated');
+    }
     if (isApiErrorBody(payload) && payload.error.code === 'organization_required') {
       emit('organization-required');
     }

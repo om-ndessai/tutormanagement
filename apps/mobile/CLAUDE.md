@@ -39,7 +39,13 @@ https://docs.expo.dev/llms.txt. Add dependencies with `npx expo install <pkg>`, 
 
 - **Talking to the server.**
   - Every request goes through `src/lib/api-client.ts`. It adds `X-Organization`, and while
-    the server has sign-in off it adds `X-Dev-User`.
+    the server has sign-in off (the developer sign-in path only) it adds `X-Dev-User`.
+  - **Sign-in.** On a server with sign-in on, Google (`src/lib/google-sign-in.ts`): its ID token
+    goes to the existing `POST /auth/google`, and the session is the server's `tmi_session`
+    cookie, sent with `credentials: 'include'` and kept by the platform's cookie store, never
+    by the app. A 401 is renewed once by a silent Google sign-in, then signed out. The iOS client
+    IDs come from the environment (`.env.example`); without one the Google button is hidden on
+    iOS and the build still succeeds. No token, cookie or email is ever logged or stored.
   - The query cache is never persisted, and it is cleared on an organization switch and on
     sign-out.
 - **Money.**
@@ -80,4 +86,6 @@ https://docs.expo.dev/llms.txt. Add dependencies with `npx expo install <pkg>`, 
   - Android reaches it through `adb reverse tcp:8787 tcp:8787`, which the scripts run.
 - **Developer sign-in.** Pick a seeded person. It works only while the server reports
   `auth_enabled: false`, and never in the production variant.
+- **Google sign-in.** Against a server with sign-in on (see `docs/google-oauth-setup.md`,
+  "The mobile app"). The e2e runner refuses such a server; check it by hand.
 - **Never run tests against production or the demo Worker.**

@@ -15,8 +15,8 @@ export { APP_VARIANT };
  * - demo: the open feature demo (`tutoring-test`, TEST account). For browsing by hand only:
  *   tests never use it.
  * - custom: any URL, e.g. this Mac's LAN address for a real device (Phase 5).
- * - production: the `tutoring` Worker, never `tmi-portal` (which lands everyone in the
- *   institute). Only in the production variant, once Google sign-in exists (Phase 4).
+ * - production: the `tutoring` Worker (EXPO_PUBLIC_PRODUCTION_API_URL), never `tmi-portal`
+ *   (which lands everyone in one organization). The production variant's only server.
  */
 export type ServerKind = 'local' | 'demo' | 'custom' | 'production';
 
@@ -66,9 +66,22 @@ export function androidFallbackOrigin(): string | null {
   return Platform.OS === 'android' && state.kind === 'local' ? ANDROID_HOST_URL : null;
 }
 
-/** The email the API acts as while sign-in is switched off there (X-Dev-User). */
+/**
+ * Whether the chosen server has sign-in switched on (its /auth/config, read at boot). On such a
+ * server identity is the session cookie only, and the developer persona is never sent.
+ */
+let serverAuthEnabled = false;
+
+export function setServerAuthEnabled(enabled: boolean): void {
+  serverAuthEnabled = enabled;
+}
+
+/**
+ * The email the API acts as while sign-in is switched off there (X-Dev-User): the developer
+ * sign-in path only. Never in production, never to a server with sign-in on.
+ */
 export function devUser(): string | null {
-  return APP_VARIANT === 'production' ? null : state.devUser;
+  return APP_VARIANT === 'production' || serverAuthEnabled ? null : state.devUser;
 }
 
 export async function loadServerPrefs(): Promise<void> {

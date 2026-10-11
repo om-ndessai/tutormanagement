@@ -1,8 +1,8 @@
-import { ApiRequestError, apiClient, requestHeaders } from './api-client';
+import { ApiRequestError, apiClient, requestHeaders, setReauthenticator } from './api-client';
 import { on } from './events';
 import { clearActiveOrg, setActiveOrg, withOrg } from './organization';
 import { toQueryString } from './query-string';
-import { setDevUser, setServer } from './server';
+import { setDevUser, setServer, setServerAuthEnabled } from './server';
 
 function respond(status: number, body: unknown) {
   return Promise.resolve({
@@ -18,6 +18,8 @@ describe('api client', () => {
     fetchMock.mockReset();
     globalThis.fetch = fetchMock as unknown as typeof fetch;
     clearActiveOrg();
+    setServerAuthEnabled(false);
+    setReauthenticator(null);
     await setDevUser(null);
     await setServer('local');
   });
@@ -31,9 +33,44 @@ describe('api client', () => {
 
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe('http://localhost:8787/api/dashboard');
-    expect(init.credentials).toBe('omit');
+    expect(init.credentials).toBe('include');
     expect(init.headers['X-Organization']).toBe('chmi');
     expect(init.headers['X-Dev-User']).toBe('alex.chen.math@gmail.com');
+  });
+
+  it('carries the session cookie, and never the developer persona to a server with sign-in on', async () => {
+    await setDevUser('alex.chen.math@gmail.com');
+    setServerAuthEnabled(true);
+    fetchMock.mockReturnValue(respond(200, { data: { ok: true } }));
+
+    await apiClient.get('/auth/session');
+
+    const [, init] = fetchMock.mock.calls[0];
+    expect(init.credentials).toBe('include');
+    expect(init.headers['X-Dev-User']).toBeUndefined();
+  });
+
+  it('renews a lost session once and retries; the sign-in routes never renew', async () => {
+    const renew = jest.fn(async () => true);
+    setReauthenticator(renew);
+    fetchMock
+      .mockReturnValueOnce(respond(401, { error: { code: 'unauthenticated', message: 'Sign in.' } }))
+      .mockReturnValueOnce(respond(200, { data: { ok: true } }));
+    await expect(apiClient.get('/dashboard')).resolves.toEqual({ data: { ok: true } });
+    expect(renew).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+
+    // A retried request that is refused again does not renew a second time.
+    renew.mockClear();
+    fetchMock.mockReset();
+    fetchMock.mockReturnValue(respond(401, { error: { code: 'unauthenticated', message: 'Sign in.' } }));
+    await expect(apiClient.get('/dashboard')).rejects.toBeInstanceOf(ApiRequestError);
+    expect(renew).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+
+    renew.mockClear();
+    await apiClient.post('/auth/google', { credential: 'x' }).catch(() => undefined);
+    expect(renew).not.toHaveBeenCalled();
   });
 
   it('sends no organization before one is chosen', () => {

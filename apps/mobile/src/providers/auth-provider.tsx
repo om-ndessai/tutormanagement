@@ -13,10 +13,19 @@ import {
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { decideLanding } from '@/features/auth/landing';
-import { ApiRequestError, apiClient } from '@/lib/api-client';
+import { ApiRequestError, apiClient, setReauthenticator } from '@/lib/api-client';
 import { on } from '@/lib/events';
+import {
+  configureGoogle,
+  FALLBACK_WEB_CLIENT_ID,
+  googleIdToken,
+  googleSignInAvailable,
+  GoogleSignInError,
+  googleSignOut,
+  silentIdToken,
+} from '@/lib/google-sign-in';
 import { clearActiveOrg, getActiveOrg, lastOrg, setActiveOrg } from '@/lib/organization';
-import { APP_VARIANT, devUser, loadServerPrefs, setDevUser } from '@/lib/server';
+import { APP_VARIANT, devUser, loadServerPrefs, setDevUser, setServerAuthEnabled } from '@/lib/server';
 
 /** The organization the app is in, with its payer details for its admins. */
 export type ActiveOrganization = NonNullable<SessionResponse['organization']>;
@@ -44,8 +53,16 @@ interface AuthContextValue {
   impersonated: boolean;
   onboarding: OnboardingState | null;
   setOnboarding: (state: OnboardingState) => void;
+  /** Why the last sign-in attempt failed: the server's refusal (its code and words) or Google's. */
   error: ApiRequestError | null;
   statusMessage: string | null;
+  /** Whether this build and this server offer Google sign-in. */
+  googleAvailable: boolean;
+  /**
+   * Google sign-in (the web's signInWithGoogle): choose an account, exchange its ID token at
+   * POST /auth/google for the session cookie, then read the session. Cancelling says nothing.
+   */
+  signInWithGoogle: () => Promise<void>;
   /** Developer sign-in: act as a seeded person on a server with sign-in off. */
   /** `org`: a linked organization, entered ahead of the person's default (as a web link does). */
   signInAsDevUser: (email: string, org?: string | null) => Promise<void>;
@@ -57,13 +74,39 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+/** A failed sign-in as the screen shows it: the server's refusal as sent, or Google's words. */
+function toError(caught: unknown): ApiRequestError {
+  if (caught instanceof ApiRequestError) return caught;
+  return new ApiRequestError(
+    0,
+    'internal_error',
+    caught instanceof GoogleSignInError ? caught.message : 'Sign-in failed. Please try again.',
+  );
+}
+
+/**
+ * Renews a session that ended (the cookie's 12 hours are up) once, without asking: a silent
+ * Google sign-in for the account last chosen here, exchanged for a new cookie. An explicit
+ * sign-out forgets that account, so this never re-enters on its own after one.
+ */
+async function renewWithGoogle(): Promise<boolean> {
+  const credential = await silentIdToken();
+  if (!credential) return false;
+  await apiClient.post('/auth/google', { credential });
+  return true;
+}
+
 /**
  * The whole authentication lifecycle: loads the server's public config, restores who the app
  * is signed in as, and decides which organization it is in.
  *
- * Until Phase 4 the only way in is the developer sign-in, against a server whose sign-in is
- * switched off: the API then acts as the `X-Dev-User` the client sends. "Signed out" is
- * decided here, by having no such person: such a server would otherwise act as its first admin.
+ * Two ways in, decided by the server's `auth_enabled`:
+ * - **Sign-in on:** Google. The session is the server's HttpOnly `tmi_session` cookie, which the
+ *   platform keeps; on boot `GET /auth/session` with it decides signed in or out. When it ends
+ *   mid-use, one silent Google sign-in renews it (the api client retries the request once).
+ * - **Sign-in off (development and e2e builds only):** the developer sign-in. The API acts as
+ *   the `X-Dev-User` the client sends. "Signed out" is decided here, by having no such person:
+ *   such a server would otherwise act as its first admin.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
@@ -151,12 +194,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    if (loaded.auth_enabled || !devUser()) {
-      // Google sign-in arrives in Phase 4; until then a server with sign-in on cannot be entered.
+    setServerAuthEnabled(loaded.auth_enabled);
+    const webClientId = loaded.google_client_id ?? FALLBACK_WEB_CLIENT_ID;
+    const google = loaded.auth_enabled && Boolean(webClientId) && googleSignInAvailable();
+    // Google: configured for the server's own web client, which is the audience it verifies.
+    if (google && webClientId) configureGoogle(webClientId);
+    // Registered before the session is read, so a cookie that ended overnight renews here too.
+    setReauthenticator(google ? renewWithGoogle : null);
+    if (!loaded.auth_enabled && !devUser()) {
+      // Sign-in off and nobody chosen: signed out (the server would act as its first admin).
       resetSignedOut();
       return;
     }
 
+    // Sign-in on: the stored cookie decides (a 401 is the normal signed-out case, after the one
+    // silent renewal the api client tries). Sign-in off: the developer persona does.
     try {
       await loadSession();
       setStatus('authenticated');
@@ -166,7 +218,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setStatus('error');
         return;
       }
-      await setDevUser(null);
+      if (!loaded.auth_enabled) await setDevUser(null);
       resetSignedOut();
     }
   }, [loadSession, resetSignedOut]);
@@ -211,8 +263,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [leaveOrganization],
   );
 
-  // Any 401 from anywhere drops the app back to signed out.
+  // Any 401 from anywhere drops the app back to signed out (after the one silent renewal).
   useEffect(() => on('unauthenticated', () => resetSignedOut()), [resetSignedOut]);
+
+  const googleAvailable =
+    config?.auth_enabled === true &&
+    Boolean(config.google_client_id ?? FALLBACK_WEB_CLIENT_ID) &&
+    googleSignInAvailable();
 
   const chooseOrganization = useCallback(
     async (slug: string) => {
@@ -229,6 +286,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshSession = useCallback(async () => {
     await loadSession();
   }, [loadSession]);
+
+  const signInWithGoogle = useCallback(async () => {
+    setError(null);
+    try {
+      const result = await googleIdToken();
+      // The person closed Google's sheet: nothing happened, so nothing is said.
+      if (result.kind === 'cancelled') return;
+      await apiClient.post<ApiOk<SessionResponse>>('/auth/google', { credential: result.idToken });
+      // Arriving: the person's default organization decides where they land, as on the web.
+      queryClient.clear();
+      arrivingRef.current = true;
+      await loadSession();
+      setStatus('authenticated');
+    } catch (caught) {
+      // The server's refusal (no account, unverified, suspended) in its own words, or Google's.
+      await googleSignOut();
+      resetSignedOut();
+      setError(toError(caught));
+    }
+  }, [loadSession, queryClient, resetSignedOut]);
 
   const signInAsDevUser = useCallback(
     async (email: string, org?: string | null) => {
@@ -248,11 +325,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (caught) {
         await setDevUser(null);
         resetSignedOut();
-        setError(
-          caught instanceof ApiRequestError
-            ? caught
-            : new ApiRequestError(0, 'internal_error', 'Sign-in failed. Please try again.'),
-        );
+        setError(toError(caught));
       }
     },
     [loadSession, queryClient, resetSignedOut],
@@ -260,10 +333,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     try {
+      // Clears the session cookie (the server answers with an expired one).
       if (config?.auth_enabled) await apiClient.post('/auth/logout');
     } catch {
       // Signing out locally is what matters.
     } finally {
+      // Forget the Google account too, so the next sign-in asks and nothing renews silently.
+      if (config?.auth_enabled) await googleSignOut();
       await setDevUser(null);
       setError(null);
       resetSignedOut();
@@ -290,6 +366,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setOnboarding,
       error,
       statusMessage,
+      googleAvailable,
+      signInWithGoogle,
       signInAsDevUser,
       signOut,
       reboot,
@@ -311,6 +389,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       onboarding,
       error,
       statusMessage,
+      googleAvailable,
+      signInWithGoogle,
       signInAsDevUser,
       signOut,
       reboot,
