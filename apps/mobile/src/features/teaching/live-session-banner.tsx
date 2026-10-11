@@ -28,6 +28,7 @@ import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useCancelActiveSession } from './api';
 import { BANNER_GAP, BANNER_HEIGHT, bannerBottom, liveTimes } from './live-session';
+import { useLiveSurface } from './live-surface';
 
 /** The `(org)` routes presented as sheets: the banner steps aside while one is up. */
 const SHEET_ROUTES = new Set([
@@ -74,6 +75,9 @@ export function LiveSessionHost({ children }: { children: ReactNode }) {
   const { data, refetch } = useActiveSession();
   const active = data?.data.mine ?? null;
   const { visible, onTab, bottom } = usePlacement(active);
+  // The same lesson on the Lock Screen / in the notifications (#45): one query drives both, so
+  // they never disagree; it ends when this host goes (organization switch, sign-out).
+  useLiveSurface(active);
   // The banner grows with the text (two lines can become four at AX5), so the room screens leave
   // for it is its measured height, not the 64pt it has at the usual sizes (ux-audit F-12).
   const [measured, setMeasured] = useState(BANNER_HEIGHT);

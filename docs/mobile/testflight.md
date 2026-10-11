@@ -186,6 +186,13 @@ T2 is deferred until there is a paid Apple account.
    hides the Google button.
 6. Optional before external testing: A7 (privacy policy and support URLs) and A9 (the reviewer's
    demo organization).
+7. **The Live Activity's extension (#45)** needs the team too. `expo-widgets` adds a second target,
+   `ExpoWidgetsTarget` (bundle ID `com.tutorportal.app.ExpoWidgetsTarget`), and an App Group
+   `group.com.tutorportal.app` shared by both; on a device both bundle IDs need provisioning
+   profiles with that App Group, and the plugin always writes `aps-environment` (so the App ID needs
+   Push Notifications enabled, though the app sends no pushes). EAS creates the profiles from the
+   plugin's `extra.eas` entry once the team is known. The simulator needs none of this: it runs the
+   activity unsigned, which is how #45 was checked.
 
 ### B3. Ship
 

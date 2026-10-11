@@ -34,3 +34,13 @@ jest.mock('expo-router/react-navigation', () => ({
   useNavigation: () => ({ dispatch: jest.fn() }),
   usePreventRemove: jest.fn(),
 }));
+
+// The live lesson's system surface (#45): no ActivityKit or notification manager under Jest. The
+// facade's own test drives it through a fake driver.
+jest.mock('@/features/teaching/live-surface-driver', () => ({
+  liveSurfaceDriver: {
+    show: jest.fn(async () => undefined),
+    end: jest.fn(async () => undefined),
+    isShowing: jest.fn(async () => false),
+  },
+}));

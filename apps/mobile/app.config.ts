@@ -191,6 +191,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         remindersPermission: 'Allow $(PRODUCT_NAME) to add lessons to your reminders.',
       },
     ],
+    // The live lesson on the Lock Screen and in the Dynamic Island (#45): a Live Activity from
+    // src/features/teaching/live-lesson-activity.tsx, in the ExpoWidgetsTarget extension, sharing an
+    // App Group with the app. No push updates (the system ticks the timer; the app ends it). A
+    // simulator build needs no Apple team; a device build needs one for the App Group (and the
+    // plugin always writes aps-environment) -- see docs/mobile/testflight.md.
+    [
+      'expo-widgets',
+      {
+        bundleIdentifier: `${BASE_ID + SUFFIX[variant]}.ExpoWidgetsTarget`,
+        groupIdentifier: `group.${BASE_ID + SUFFIX[variant]}`,
+        enablePushNotifications: false,
+      },
+    ],
     // iOS 27 requires the scene life cycle; see the plugin.
     './plugins/with-scene-lifecycle.js',
     ...(variant === 'development' ? ['./plugins/with-quiet-dev-menu.js'] : []),

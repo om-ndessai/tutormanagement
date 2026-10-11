@@ -3,7 +3,10 @@
 // .maestro/flows/smoke/diagnostics.yaml. Not reachable in the production variant.
 import { containsSsn, formatCents, formatRelativeTime, ORG_TIME_ZONES, zonedClockParts } from '@tmi/shared';
 import { Redirect } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
+
+import { liveSurface } from '@/features/teaching/live-surface';
 
 import { DEV_TOOLS } from '@/lib/variant';
 
@@ -29,10 +32,35 @@ function Row({ id, label, value }: { id: string; label: string; value: string })
   );
 }
 
+/**
+ * Whether the live lesson's system surface exists (#45), read from the system itself: ActivityKit's
+ * running activities on iOS, the active notifications on Android. The flows read it, since neither
+ * the Lock Screen nor the Dynamic Island is in the app's view hierarchy.
+ */
+function useLiveSurfaceStatus(): string {
+  const [status, setStatus] = useState('…');
+  useEffect(() => {
+    let alive = true;
+    const read = () =>
+      void liveSurface.isShowing().then((showing) => {
+        if (alive) setStatus(showing ? 'showing' : 'none');
+      });
+    read();
+    const timer = setInterval(read, 1000);
+    return () => {
+      alive = false;
+      clearInterval(timer);
+    };
+  }, []);
+  return status;
+}
+
 export default function Diagnostics() {
+  const liveSurfaceStatus = useLiveSurfaceStatus();
   if (!DEV_TOOLS) return <Redirect href="/" />;
   return (
     <ScrollView testID="screen-dev-diagnostics" contentContainerStyle={{ padding: 24, paddingTop: 72 }}>
+      <Row id="diag-live-surface" label="Live lesson surface (system)" value={liveSurfaceStatus} />
       <Row id="diag-cents" label="formatCents(1234567)" value={formatCents(1234567)} />
       <Row
         id="diag-relative"

@@ -1,8 +1,10 @@
-# What the running-lesson surfaces say (apps/mobile/CLAUDE.md "System surfaces"). The app has no
-# notification, Live Activity or widget yet, so the floating banner is the only place a running
-# lesson shows outside its own screen: it names the student and the mode, the times and the
-# stopwatch -- no money and no notes -- on every tab, including Sessions' Finance half. The stop
-# sheet shows no money, and the toast after stopping gives the times and the LENGTH, never the pay.
+# What the running-lesson surfaces say (apps/mobile/CLAUDE.md "System surfaces"). In the app, the
+# floating banner names the student and the mode, the times and the stopwatch -- no money and no
+# notes -- on every tab, including Sessions' Finance half. Outside it (#45), the system surface (an
+# iOS Live Activity, an Android ongoing notification) says exactly "Lesson in progress" and the
+# time: on Android the shade is read for the words and for the absence of any name, mode or amount;
+# on both the system's own state is read back, and it is gone after the stop. The stop sheet shows
+# no money, and the toast after stopping gives the times and the LENGTH, never the pay.
 # Alex starts a lesson with Sofia; the clean-up hooks discard or delete whatever it leaves.
 appId: ${APP_ID}
 onFlowStart:
@@ -58,6 +60,19 @@ tags:
     text: 'ends by [0-9]{1,2}:[0-9]{2} (AM|PM)'
 - runFlow: ../../subflows/exposure/no-money.yaml
 - takeScreenshot: exposure-live-sessions
+# The system surface carries the words and the time only.
+- runFlow:
+    file: ../../subflows/live-surface-shade.yaml
+    env:
+      SHOT: exposure-live-shade
+- runFlow:
+    file: ../../subflows/live-surface-state.yaml
+    env:
+      STATE: showing
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 10000
 # Sessions' Finance half: the list has money, the banner still none.
 - tapOn:
     id: tabs-finance
@@ -129,3 +144,8 @@ tags:
     notVisible:
       id: live-banner
     timeout: 10000
+# The system surface ends with the lesson.
+- runFlow:
+    file: ../../subflows/live-surface-state.yaml
+    env:
+      STATE: none

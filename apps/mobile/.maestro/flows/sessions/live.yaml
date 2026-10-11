@@ -1,4 +1,4 @@
-# A live lesson (Alex, tutor in chmi). He starts one with Sofia from the Sessions tab; the banner
+# A live lesson (Alex, tutor in chmi), in the app and on the system's surface (#45). He starts one with Sofia from the Sessions tab; the banner
 # floats above the tab bar with the stopwatch ticking from the server's start, "from" and "ends
 # by", and no money. It follows him to Home and Schedule. Stop with a note: the toast says the
 # times and the LENGTH, never the pay, and the lesson is in the list. A second one is discarded
@@ -70,6 +70,19 @@ tags:
     id: sessions-start
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: live-banner-sessions
+# The system surface: the notification on Android (its words, and no name), the readout on both.
+- runFlow:
+    file: ../../subflows/live-surface-shade.yaml
+    env:
+      SHOT: live-surface-shade
+- runFlow:
+    file: ../../subflows/live-surface-state.yaml
+    env:
+      STATE: showing
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 10000
 # It follows him around the app.
 - tapOn: 'Home'
 - extendedWaitUntil:
@@ -117,6 +130,11 @@ tags:
 - extendedWaitUntil:
     visible: 'Stopped from the phone'
     timeout: 15000
+# Stopped: the system surface is gone too.
+- runFlow:
+    file: ../../subflows/live-surface-state.yaml
+    env:
+      STATE: none
 # Start again, and discard it.
 - extendedWaitUntil:
     visible:
@@ -155,6 +173,14 @@ tags:
     timeout: 10000
 - assertVisible:
     id: sessions-start
+# Discarded: no system surface either.
+- runFlow:
+    file: ../../subflows/live-surface-state.yaml
+    env:
+      STATE: none
+- extendedWaitUntil:
+    visible: 'Stopped from the phone'
+    timeout: 15000
 # Put the data back: delete the recorded lesson from its detail.
 - tapOn: 'Stopped from the phone'
 - scrollUntilVisible:

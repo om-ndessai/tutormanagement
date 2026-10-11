@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAppSwitcherProtection } from '@/components/privacy-cover';
 import { clearQuickActions } from '@/features/shell/quick-actions';
+import { endLiveSurface } from '@/features/teaching/live-surface';
 import { ToastProvider } from '@/components/toast';
 import { BootScreen } from '@/features/auth/boot-screen';
 import { navigationTheme } from '@/features/shell/navigation-theme';
@@ -47,6 +48,12 @@ function RootNavigator() {
   useEffect(() => {
     if (status === 'unauthenticated') clearQuickActions();
   }, [status]);
+  // Outside an organization no lesson may show on the Lock Screen or in the notifications (#45):
+  // signed out, on the picker, or a relaunch that inherited a surface from a killed run.
+  const inOrganization = signedIn && organization !== null;
+  useEffect(() => {
+    if (status !== 'loading' && !inOrganization) void endLiveSurface();
+  }, [status, inOrganization]);
   const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
   if (status === 'loading' || status === 'error') return <BootScreen />;

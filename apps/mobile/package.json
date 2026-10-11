@@ -17,6 +17,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@expo/ui": "~57.0.22",
     "@expo/vector-icons": "^15.0.2",
     "@formatjs/intl-getcanonicallocales": "^3.2.12",
     "@formatjs/intl-locale": "^5.3.12",
@@ -53,6 +54,7 @@
     "expo-status-bar": "~57.0.1",
     "expo-symbols": "~57.0.3",
     "expo-system-ui": "~57.0.4",
+    "expo-widgets": "~57.0.23",
     "react": "19.2.3",
     "react-dom": "^19.2.3",
     "react-native": "0.86.3",
@@ -76,5 +78,14 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.9.9",
     "typescript": "~6.0.3"
+  },
+  "expo": {
+    "autolinking": {
+      "android": {
+        "exclude": [
+          "expo-widgets"
+        ]
+      }
+    }
   }
 }

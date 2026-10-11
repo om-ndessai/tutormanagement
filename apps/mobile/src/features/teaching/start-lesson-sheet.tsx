@@ -16,6 +16,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments, useStartSession } from './api';
+import { askForLiveSurfacePermission } from './live-surface';
 
 function close() {
   if (router.canGoBack()) router.back();
@@ -65,6 +66,8 @@ export function StartLessonSheet({
       haptics.impact();
       toast.info('Session started.');
       close();
+      // The moment to ask for Android's notification permission (#45): never at launch.
+      void askForLiveSurfacePermission();
     } catch (failure) {
       const message =
         failure instanceof ApiRequestError

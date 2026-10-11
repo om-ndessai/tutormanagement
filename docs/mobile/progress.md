@@ -69,7 +69,13 @@ the `[~]` item, then carry on down the list.
   > both platforms now); the once-per-device swipe peek; F-9's optimistic cancel/restore/star/comment
   > (Undo already exists on cancel and deactivate); F-27's FlashList for the payment log, ledgers and
   > Progress (each screen needs a list root); dark and large-text re-shots of the swipe and menu.
-- [ ] 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
+- [x] 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
+  > Deferred from B8: an iOS Stop button inside the Live Activity (needs App Intents in the extension; the
+  > tap opens the app, whose banner has Stop); ending the iOS activity in the background after an auto-stop
+  > or a stop on another device (needs push updates and a paid Apple team; the clock stops at the limit);
+  > not reposting an ongoing notification the user swiped away on Android 14+; Android dark and
+  > large-text shots; a device build (the extension's bundle ID, App Group and `aps-environment` need the
+  > team — testflight.md T2).
 
 **Phase 2 gate (2026-10-10), after B1–B5:** full suite, 76 flows, fresh DB, rebooted 4-core
 emulator. iOS 75/76, Android 73/76.

@@ -596,3 +596,84 @@ The three gate flows that failed once and passed alone, fixed at the cause the a
 - **Swipe and Undo:** `people/row-swipe-undo` swipes the row with Maestro's `swipe` on both platforms (reliable here), taps the revealed Deactivate, then Undo on the toast restores the person. **Long-press menu:** `sessions/row-menu` on both platforms: Assess, Add Sofia's reflection, Edit, Delete for Alex's own lesson; no `$` in the card's label, the menu or the Tutoring delete sentence; Delete asks, then the card leaves the focused list.
 - **Screenshots reviewed (light):** the swipe's Edit (secondary container) and Deactivate (error) buttons on iOS and Android; the menu on Android at the left gutter, and on iOS before the gutter fix (clipped off the left edge — the reason for the fix). Dark mode and large text not re-shot (colours are theme tokens).
 - **Jest** 314 passed (new: `swipe-row.test.tsx` 3, `session-row-actions.test.ts` 4). Typecheck (rules ok), lint 0 errors.
+
+## 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, ux-audit F-10) — design (2026-10-11)
+**Scope:** the reader's own running lesson (`GET /sessions/active` → `mine`) leaves the app as one system surface per platform, saying exactly "Lesson in progress" and a time the SYSTEM ticks from the server's `started_at` (immersive-design.md §0.4, §10). iOS: a Live Activity (Lock Screen banner; Dynamic Island compact, expanded and minimal). Android: one ongoing notification with a system chronometer, requested as a promoted Live Update (status-bar chip) on API 36+, an ordinary ongoing notification below. Tap → `tutorportal://sessions?tab=tutoring` (the Sessions tab with the live banner); the Android Stop action → `tutorportal://stop-lesson` (the stop sheet: it never stops silently). Started when a lesson starts or is found running (the poll, a launch); ended on stop, discard, auto-stop, sign-out and organization switch. Left out: the "ends by" time (§10's contract lists "max-length countdown" under Never — the limit is used only to stop the clock, below); push updates (no server change; no paid Apple team); an iOS Stop button inside the activity (needs App Intents in the extension — tap opens the app, whose banner has Stop); the admin's view of others' live lessons (`all`, never shown).
+**Web sources:** none (the web has no system surface). Reuses #20's `useActiveSession` and `LiveSessionHost`.
+**Endpoints:** none new. `GET /sessions/active` — `useActiveSession` (`['active-session']`, 30 s poll, on focus, and at `auto_stop_at`) — any member; the surface reads only `mine.started_at` and `mine.auto_stop_at`.
+**Screens & routes:** no new routes. Deep links into existing ones (`/sessions?tab=tutoring`, `/stop-lesson`). Debug readout on `dev/diagnostics` (dev/e2e only): `diag-live-surface` → `showing` / `none`, read from the system (ActivityKit's instances; Android's active notifications).
+**Components:**
+- `src/features/teaching/live-surface.ts` — the one facade both platforms implement. Pure: `LIVE_SURFACE_TITLE = 'Lesson in progress'`; `liveSurfaceContent(mine)` → `{ key, title, startedAtMs, endsAtMs }` or null (`key` is `started_at`: a running lesson has no id) (the type has no field that could carry a name, mode, note or amount); `planLiveSurface(prev, next)` → `start | update | end | none` (new key → start; same key, other times → update; null → end). `createLiveSurface(driver)` → `{ sync(content), end(), status() }`, serialised so a fast start/stop cannot leave an orphan; the module singleton uses the platform driver. Hooks: `useLiveSurface(mine)` (in `LiveSessionHost`, keyed per organization: syncs on every change of the query, ends on unmount — sign-out and org switch unmount it); `endLiveSurface()` from the root navigator whenever nobody is inside an organization (covers a stale surface after a relaunch signed out); `askForLiveSurfacePermission()` (Android only, from the Start sheet after a successful start: if `POST_NOTIFICATIONS` is not granted and the device has not been asked, a plain Alert — "Show the timer in your notifications?" / "While a lesson runs, your notifications and lock screen show "Lesson in progress" and the time. Nothing else: no names." — then the system prompt; asked once per device (`tmi.live-surface-asked`), never at launch; on grant the surface is re-synced).
+- Drivers (`live-surface-driver.ts` noop; `.ios.ts`; `.android.ts`): `show(content)`, `end()`, `isShowing()`.
+  - iOS: `live-lesson-activity.tsx` — `createLiveActivity('LiveLesson', …)` from `expo-widgets` 57 with `@expo/ui/swift-ui`; props `{ title, startedAtMs, endsAtMs }`; the time is `Text timerInterval={{lower: start, upper: endsAt}} countsDown={false}` (falls back to `date … dateStyle="timer"` with no limit) — the system ticks it and it stops at the server's limit while the app is in the background; a `timer` SF Symbol; tint `.secondary`-style neutral (no organization colour or name: the activity is rendered outside the app's theme). On sync: `getInstances()` first — reuse (update) the one for this lesson, end any other — so a relaunch never doubles it. End: `end('immediate')`.
+  - Android: local Expo module `modules/live-lesson-notification` (Kotlin, `NotificationCompat` from androidx.core 1.17): channel `live-lesson` ("Live lesson", default importance, no sound or vibration); `setOngoing(true)`, `setOnlyAlertOnce(true)`, `setUsesChronometer(true)`, `setWhen(startedAt)`, `setShowWhen(true)`, `setTimeoutAfter(endsAt − now)` (the notification goes at the server's limit even while the app sleeps), `setRequestPromotedOngoing(true)`, `setCategory(CATEGORY_STOPWATCH)`, `VISIBILITY_PUBLIC` with a public version of the same content, a monochrome timer vector icon, content intent and Stop action as deep links to this package. `POST_NOTIFICATIONS` and `POST_PROMOTED_NOTIFICATIONS` in the module's manifest.
+- Config: `expo-widgets` plugin (iOS: `NSSupportsLiveActivities`, the `ExpoWidgetsTarget` extension, App Group `group.<bundle id>`); `expo-widgets` and `@expo/ui` excluded from Android autolinking (Glance/Compose not needed there).
+**Interaction & motion:** no new motion. Haptics stay the sheets' (impact on start, success on stop). The system renders and announces the timer (VoiceOver/TalkBack); the Stop action is labelled "Stop".
+**Exposure checks:** System surfaces: the facade's content type holds only a title and instants; the title is the constant "Lesson in progress"; no student, tutor, organization, mode, note, rate or amount reaches the driver (Jest asserts the exact payload even when the session row carries names and both rates). No organization colour or logo (neutral system tint, platform glyph). Nothing crosses organizations: the host is keyed on the organization, so a switch unmounts it and ends the surface; sign-out and "no organization" end it too (§0.7). Only `mine` — the reader's own lesson. No money anywhere (Tutoring rules unchanged; the toast stays the length). No SSN path touched; nothing stored but the "asked" flag.
+**testIDs:** `diag-live-surface` (new); existing `live-banner`, `live-stop`, `live-cancel`, `stop-submit`, `start-submit`.
+**Tests:**
+- Jest `live-surface.test.ts`: content from a row with names and rates is exactly `{key, title:'Lesson in progress', startedAtMs, endsAtMs}`; plan start/update/end/none; controller starts once, updates on a time change, ends on null, on `end()` and after an org-switch unmount; a driver failure does not throw; Android permission asked once, not when granted.
+- Maestro `sessions/live.yaml` extended: after start, `dev/diagnostics` says `showing`; Android also opens the shade and asserts "Lesson in progress" with no "Sofia"/`$`; after stop and after discard → `none`. `exposure/live-surfaces.yaml`: the system surface carries "Lesson in progress" only (shade on Android; readout on iOS). By hand: iOS Lock Screen and Dynamic Island screenshots; Android `adb shell dumpsys notification --noredact` for the channel, the title and no student name, and the shade screenshot.
+- Affected re-runs: `smoke/*`, `sessions/record`, `dashboard/tutoring-tutor`, both platforms, one at a time.
+**Risks / open questions:** App Groups without a paid Apple team: the simulator honours ad-hoc signed entitlements, so the simulator path should work; a device build needs a team (and the plugin always writes `aps-environment`) — documented, deferred with T2. Android 14+ lets a user swipe away even an ongoing notification; the app does not repost it until the next start or launch. The status-bar chip shows only when the system grants promotion (`canPostPromotedNotifications`), which the user can turn off per app.
+**Built (2026-10-11):** as designed, with these changes.
+- **A running lesson has no id**, so the surface is keyed on its `started_at` (a new lesson, a new start).
+- **The first answer of a run is applied even when it is "nothing"**: a surface inherited from a killed
+  run, or a lesson stopped on another device, is ended on launch (`reconciled` in `createLiveSurface`);
+  the root navigator also ends it whenever nobody is inside an organization.
+- **`@expo/ui` stays autolinked on Android** (only `expo-widgets` is excluded): expo-router 57 imports it
+  on Android once it is installed (its toolbar), and the app crashed with "Cannot find native module
+  'ExpoUI'" when it was excluded.
+- **Metro had to be restarted with `--clear`** after installing expo-widgets: babel-preset-expo adds the
+  `'widget'` transform only when it finds the package, and the cached transform passed the layout as a
+  function ("The 2nd argument cannot be cast to type String").
+- The layout's timer uses `timerInterval` (lower: the server's start, upper: its auto-stop instant,
+  `countsDown={false}`), so it counts up and stops at the limit; the Android notification carries
+  `setTimeoutAfter` to the same instant.
+- iOS asks once, on the Lock Screen, "Allow Live Activities from Tutor Portal (dev)?" — the system's
+  own prompt, not the app's; Android asks for `POST_NOTIFICATIONS` from the Start sheet with the
+  rationale (Maestro's `launchApp` grants it, so the flows never see the prompt).
+- New flow `sessions/live-surface-ends.yaml`: a lesson started by the API is found running on arrival
+  (banner and surface), gone in riverside, back in chmi, gone after sign-out.
+- `docs/mobile/testflight.md` (T2) notes that a device build needs the team for the extension's
+  bundle ID, the App Group and `aps-environment`; the simulator needs none of it.
+
+**Verified (2026-10-11):**
+- **iOS 27 (iPhone 17), through `npm run e2e:mobile` (DB reset before and after):** `sessions/live`,
+  `sessions/live-surface-ends` (new), `exposure/live-surfaces`, `sessions/record`,
+  `dashboard/tutoring-tutor`, `smoke/diagnostics`, `smoke/sign-in`: 7/7 green.
+- **Android 37 (Medium Phone), the same seven:** 7/7 green (26 min on a long-running emulator). The
+  first runs failed on the flow, not the app: a swipe from 1% of the height landed in the app, not on
+  the status bar; the shade is now opened from the top edge, retried up to three times.
+- **iOS, by hand (screenshots):** the Lock Screen banner reads "⏱ Lesson in progress 2:18" and nothing
+  else (Notification Center over the Lock Screen; system light and dark), with iOS's own one-time
+  "Allow Live Activities from Tutor Portal (dev)?" on first sight; the compact Dynamic Island shows
+  the timer glyph and "0:53", ticking with the app in the background; the expanded island shows the
+  glyph, "Lesson in progress" (wrapped onto two lines in the centre region) and the time; a tap on the
+  banner opens the app on Sessions with the live banner. Built and run unsigned on the simulator (no
+  Apple team): the App Group and the extension work there.
+- **Android, by hand:** `adb shell dumpsys notification --noredact` — channel `live-lesson`, importance 3,
+  flags `ONGOING_EVENT|ONLY_ALERT_ONCE|PROMOTED_ONGOING|SILENT`, category `stopwatch`, `vis=PUBLIC` with a
+  public version, `android.title=Lesson in progress`, `android.text=null`, `android.showChronometer=true`,
+  `android.requestPromotedOngoing=true`, `when` = the server's start, `timeout` = the time left to the
+  auto-stop; no "Sofia", "Okafor" or "Virtual" anywhere in the dump. The shade shows "Lesson in progress
+  · 02:58" with a Stop button (the platform's π icon); the status bar carries the Live Update chip
+  "⏱ 00:34" on the home screen. Stop opens the stop sheet ("End the session with Sofia Okafor?"),
+  which stops nothing until "End and record". A lesson discarded through the API (as on another device)
+  took its notification with it at the next poll (~18 s).
+- **Jest** 326 passed (new `live-surface.test.ts`, 12: the exact payload with names, notes and both
+  rates on the row; start/update/end/none; inherited surface ended on the first answer; end() and a
+  fresh start; ordered calls; refresh after the permission; driver failures swallowed; the Android
+  rationale once, never when granted, no system prompt when declined). Typecheck (rules ok), lint
+  0 errors, `mobile:export` bundles both platforms; `expo-doctor` 20/21 (CocoaPods version check only).
+- **Exposure:** System surfaces — "Lesson in progress" and a system-ticked time only, on the Lock Screen,
+  the Dynamic Island, the Android shade, the lock-screen public version and the status chip; no student,
+  tutor or organization name, mode, note or amount (dumpsys, the shade asserts in `sessions/live`,
+  `exposure/live-surfaces` and `sessions/live-surface-ends`, Jest). Ended on stop and discard (flows),
+  organization switch and sign-out (`sessions/live-surface-ends`), a stop elsewhere (by hand), and the
+  auto-stop (the next read, plus `setTimeoutAfter` on Android and the clock stopping at the limit on iOS).
+- **Not done / deferred:** an iOS Stop button inside the activity (App Intents in the extension); ending
+  the iOS activity while the app stays in the background after an auto-stop or a stop on another device
+  (needs push updates and a paid team — the clock stops at the limit meanwhile); not reposting a
+  notification the user swiped away (Android 14+ allows it) until the next lesson or launch;
+  Android dark-theme and large-text shots of the shade; a device build (T2, needs the team).
