@@ -7,20 +7,33 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
  * - e2e: a Release bundle the Maestro flows drive; developer sign-in and the sign-in deep
  *   link stay, LogBox is off, motion is reduced.
  * - production: no developer sign-in and no (dev) screens; Google sign-in only.
+ * - personal: production, signed by a free Apple ID ("Personal Team") for the owner's own iPhones
+ *   (docs/mobile/real-devices.md). The app runs as production; the build has its own bundle id,
+ *   so the free team never claims the real one, and leaves out the Live Activity extension, whose
+ *   App Group and push entitlement a free team cannot sign.
  *
  * Each variant has its own bundle id, so all three can sit on one device. The name is the
  * platform's ("Tutor Portal"): the app is not any one organization's, and wears an
  * organization's brand only once one is chosen.
  */
-type Variant = 'development' | 'e2e' | 'production';
+type Variant = 'development' | 'e2e' | 'production' | 'personal';
 
 const variant = (process.env.APP_VARIANT ?? 'development') as Variant;
 const BASE_ID = 'com.tutorportal.app';
-const SUFFIX: Record<Variant, string> = { development: '.dev', e2e: '.e2e', production: '' };
+const SUFFIX: Record<Variant, string> = {
+  development: '.dev',
+  e2e: '.e2e',
+  production: '',
+  personal: '.personal',
+};
+/** What the app itself sees: the personal build is production in every way that matters at runtime. */
+const RUNTIME_VARIANT = variant === 'personal' ? 'production' : variant;
+const productionLike = RUNTIME_VARIANT === 'production';
 const NAME: Record<Variant, string> = {
   development: 'Tutor Portal (dev)',
   e2e: 'Tutor Portal (e2e)',
   production: 'Tutor Portal',
+  personal: 'Tutor Portal',
 };
 // The platform palette's primary (ORG_PALETTE_HEX.platform): the icon and the splash are shown
 // before any organization is known, so they wear the platform's colour. The art in assets/ carries
@@ -42,6 +55,7 @@ const GOOGLE_IOS_CLIENT_ID: Record<Variant, string | undefined> = {
   development: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_DEV,
   e2e: undefined,
   production: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+  personal: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_PERSONAL,
 };
 const googleIosClientId = GOOGLE_IOS_CLIENT_ID[variant]?.trim() || null;
 const GOOGLE_WEB_CLIENT_ID =
@@ -64,7 +78,10 @@ const PRODUCTION_API_URL =
  * carries no exception.
  */
 const LOCAL_HTTP = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/;
-const allowsLocalNetworking = variant !== 'production' || LOCAL_HTTP.test(PRODUCTION_API_URL);
+const allowsLocalNetworking = !productionLike || LOCAL_HTTP.test(PRODUCTION_API_URL);
+
+/** The Apple team that signs device builds (the owner's Personal Team for the personal build). */
+const APPLE_TEAM_ID = process.env.APPLE_TEAM_ID?.trim() || undefined;
 
 /**
  * iOS privacy manifest (PrivacyInfo.xcprivacy). No tracking, no tracking domains.
@@ -131,6 +148,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: BASE_ID + SUFFIX[variant],
+    ...(APPLE_TEAM_ID ? { appleTeamId: APPLE_TEAM_ID } : {}),
     supportsTablet: true,
     // Icon Composer (iOS 26+: Liquid Glass, with the system's dark, clear and tinted looks);
     // Xcode renders the flat icon for older iOS from it. Source: assets/source/pi-mark.svg.
@@ -211,14 +229,21 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // App Group with the app. No push updates (the system ticks the timer; the app ends it). A
     // simulator build needs no Apple team; a device build needs one for the App Group (and the
     // plugin always writes aps-environment) -- see docs/mobile/testflight.md.
-    [
-      'expo-widgets',
-      {
-        bundleIdentifier: `${BASE_ID + SUFFIX[variant]}.ExpoWidgetsTarget`,
-        groupIdentifier: `group.${BASE_ID + SUFFIX[variant]}`,
-        enablePushNotifications: false,
-      },
-    ],
+    // Left out of the personal build: a free Apple ID cannot sign the App Group or the push
+    // entitlement. The module stays linked, so starting an activity there simply fails, quietly
+    // (live-surface.ts swallows driver errors); the in-app banner is unaffected.
+    ...(variant === 'personal'
+      ? []
+      : [
+          [
+            'expo-widgets',
+            {
+              bundleIdentifier: `${BASE_ID + SUFFIX[variant]}.ExpoWidgetsTarget`,
+              groupIdentifier: `group.${BASE_ID + SUFFIX[variant]}`,
+              enablePushNotifications: false,
+            },
+          ] as [string, Record<string, unknown>],
+        ]),
     // iOS 27 requires the scene life cycle; see the plugin.
     './plugins/with-scene-lifecycle.js',
     ...(variant === 'development' ? ['./plugins/with-quiet-dev-menu.js'] : []),
@@ -233,7 +258,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   experiments: { typedRoutes: true, reactCompiler: true },
   extra: {
-    variant,
+    variant: RUNTIME_VARIANT,
+    buildVariant: variant,
     productionApiUrl: PRODUCTION_API_URL,
     // Left out when absent: a null here reaches the app's manifest as {}.
     ...(googleIosClientId ? { googleIosClientId } : {}),

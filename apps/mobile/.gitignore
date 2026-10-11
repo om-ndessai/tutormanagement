@@ -42,3 +42,6 @@ example
 /ios
 /android
 .maestro/out/
+
+# Device builds of the personal variant (docs/mobile/real-devices.md)
+/build-personal
