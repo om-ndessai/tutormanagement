@@ -154,8 +154,12 @@ native rebuild of both dev builds, so build only while the devices are free.
     airplane mode.
   - The store privacy answers for T2/Phase 5.
   - Real devices at Phase 5.
-- [ ] P3d. *(optional, unscheduled — owner's call)* Dictation in comments, the lesson-assessment
+- [ ] P3d. *(deferred — owner, 2026-10-11)* *(optional, unscheduled — owner's call)* Dictation in comments, the lesson-assessment
   sheet and reflections
+
+> **Owner decisions (2026-10-11):**
+> - No organization-level switch for network speech recognition, so no API change. On-device is the default, and network recognition runs only with the person's own consent.
+> - Dictation goes in the record-a-lesson sheet only. P3d (comments, reflections, the assessment sheet) is deferred.
 
 ## Phase 4 — Google sign-in
 
