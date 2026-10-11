@@ -77,19 +77,18 @@ emulator. iOS 75/76, Android 73/76.
 > are deferred until after it. Do not start them, or Phase 3 onwards, until the owner says to
 > continue.
 
-## Next priority — TestFlight (owner, 2026-10-10)
+## Next priority — Google sign-in, then TestFlight (owner, 2026-10-10)
 
-Ahead of Phase 2 B6–B8 and Phase 3. It pulls forward Phase 4 (iOS) and Phase 5 (iOS). The full
-checklist is in [testflight.md](testflight.md).
+Ahead of Phase 2 B6–B8 and Phase 3. The checklists are in [google-sign-in.md](google-sign-in.md)
+(first) and [testflight.md](testflight.md) (after it).
 
-- [ ] T1. API: bearer sessions for the mobile app (additive; released to production only with
-  the owner's approval)
-- [ ] T2. Mobile sign-in: Google, as on the portal (iOS; placeholders until the owner's iOS
-  client ID)
-- [ ] T3. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, a Release build
+- [ ] G1. Mobile sign-in: Google, through the existing `/auth/google` and its session cookie (no
+  API change); placeholders until the owner's iOS client IDs arrive
+- [ ] G2. Hand check with a real Google account on the iOS simulator and the Android emulator
+  (local Worker with sign-in on); then against production with the owner's approval
+- [ ] T1. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, a Release build
   check
-- [ ] T4. Ship: API release, the first TestFlight build to internal testers, a smoke test on a
-  real iPhone
+- [ ] T2. Ship: the first TestFlight build to internal testers, a smoke test on a real iPhone
 
 ## Phase 3 — dictation
 

@@ -7,6 +7,11 @@ This checklist pulls forward what TestFlight needs: the iOS half of Phase 4 (Goo
 the iOS half of Phase 5 (signing, store records, builds). Android follows the same path later
 (see the end).
 
+> **Update (2026-10-10):** Google sign-in comes first. See [google-sign-in.md](google-sign-in.md).
+> The app signs in through the existing `/auth/google` route and its session cookie, so **no API
+> change and no production release are needed**. Items 2–3 below, A10, and B1's API part fall
+> away.
+
 ## The one dependency that shapes everything
 
 **A TestFlight user can't sign in to today's app.** Its only way in is the developer sign-in,
