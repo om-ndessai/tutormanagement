@@ -58,9 +58,9 @@ the `[~]` item, then carry on down the list.
 - [x] 40. Mobile UX: toasts above the tab bar, contrast and target sizes (B3, M) (a32d1a6)
 - [x] 41. Mobile UX: large text, skeletons, pull-to-refresh and empty states (B4, M-L) (1eb2a88)
 - [x] 42. Mobile UX: forms that keep your work — unsaved-changes guard, errors in view, offline (B5, M) (ab20a32)
-- [ ] 43. *(deferred until after the owner's review)* Mobile UX: start from Home — Next-up Start, quick actions and native calendar (B6, M-L, native rebuild)
-- [ ] 44. *(deferred until after the owner's review)* Mobile UX: swipe actions, context menus and undo (B7, L)
-- [ ] 45. *(deferred until after the owner's review)* Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
+- [ ] 43. Mobile UX: start from Home — Next-up Start, quick actions and native calendar (B6, M-L, native rebuild)
+- [ ] 44. Mobile UX: swipe actions, context menus and undo (B7, L)
+- [ ] 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
 
 **Phase 2 gate (2026-10-10), after B1–B5:** full suite, 76 flows, fresh DB, rebooted 4-core
 emulator. iOS 75/76, Android 73/76.
@@ -73,9 +73,10 @@ emulator. iOS 75/76, Android 73/76.
     fresh DB has a handful of actions. The search step is now conditional.
 - Both fixed flows green on iOS and Android.
 
-> **⏸ PAUSED (2026-10-10) for the owner's review of the plan.** Phase 2 B6–B8 (items 43–45)
-> are deferred until after it. Do not start them, or Phase 3 onwards, until the owner says to
-> continue.
+> **Order from the owner (2026-10-10, after review).** The pause is over. Next come Phase 2
+> B6–B8 (items 43–45), then Phase 3. **Deferred:** TestFlight (T2: no paid Apple account yet)
+> and Phase 5 (real devices). Google sign-in (Phase 4's core) is done on iOS; Android sign-in
+> waits on the owner's Android OAuth client check.
 
 ## Next priority — Google sign-in, then TestFlight (owner, 2026-10-10)
 
