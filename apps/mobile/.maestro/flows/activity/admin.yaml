@@ -42,11 +42,16 @@ tags:
     id: activity-filter-person
 - tapOn:
     id: activity-filter-action
-# Narrowed first: the list shows the first few actions, and which come first depends on what
-# earlier flows logged.
-- tapOn:
-    id: activity-filter-action-search
-- inputText: SSN
+# The list offers a search field only when it is long (it grows with what earlier flows logged;
+# a fresh database has a handful of actions). Narrow it when the field is there.
+- runFlow:
+    when:
+      visible:
+        id: activity-filter-action-search
+    commands:
+      - tapOn:
+          id: activity-filter-action-search
+      - inputText: SSN
 - extendedWaitUntil:
     visible:
       id: activity-filter-action-tutor.ssn_confirmed

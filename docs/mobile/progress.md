@@ -57,10 +57,25 @@ the `[~]` item, then carry on down the list.
 - [x] 39. Mobile tests: the three intermittent flows (B2, S) (2b48448)
 - [x] 40. Mobile UX: toasts above the tab bar, contrast and target sizes (B3, M) (a32d1a6)
 - [x] 41. Mobile UX: large text, skeletons, pull-to-refresh and empty states (B4, M-L) (1eb2a88)
-- [x] 42. Mobile UX: forms that keep your work — unsaved-changes guard, errors in view, offline (B5, M)
-- [ ] 43. Mobile UX: start from Home — Next-up Start, quick actions and native calendar (B6, M-L, native rebuild)
-- [ ] 44. Mobile UX: swipe actions, context menus and undo (B7, L)
-- [ ] 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
+- [x] 42. Mobile UX: forms that keep your work — unsaved-changes guard, errors in view, offline (B5, M) (ab20a32)
+- [ ] 43. *(deferred until after the owner's review)* Mobile UX: start from Home — Next-up Start, quick actions and native calendar (B6, M-L, native rebuild)
+- [ ] 44. *(deferred until after the owner's review)* Mobile UX: swipe actions, context menus and undo (B7, L)
+- [ ] 45. *(deferred until after the owner's review)* Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
+
+**Phase 2 gate (2026-10-10), after B1–B5:** full suite, 76 flows, fresh DB, rebooted 4-core
+emulator. iOS 75/76, Android 73/76.
+- `exposure/live-surfaces` and `progress/list-admin` (Android) passed when re-run alone:
+  intermittent.
+- Two flow faults, fixed:
+  - `progress/assess-plan` (iOS): the Delete-plan button, merely "visible" under the floating
+    tab bar, gave its tap to the tab bar. The flow now centres it.
+  - `activity/admin` (Android): the action list shows its search field only when long, and a
+    fresh DB has a handful of actions. The search step is now conditional.
+- Both fixed flows green on iOS and Android.
+
+> **⏸ PAUSED (2026-10-10) for the owner's review of the plan.** Phase 2 B6–B8 (items 43–45)
+> are deferred until after it. Do not start them, or Phase 3 onwards, until the owner says to
+> continue.
 
 ## Phase 3 — dictation
 

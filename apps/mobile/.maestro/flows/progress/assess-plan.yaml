@@ -132,10 +132,13 @@ tags:
 - takeScreenshot: progress-plan-created
 
 # Delete the plan, then the assessment, each after asking.
+# Centred: on iOS the floating tab bar covers the bottom of the page, and a button merely
+# "visible" under it takes the tap meant for it.
 - scrollUntilVisible:
     element:
       id: progress-delete-plan
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: progress-delete-plan
 - extendedWaitUntil:
@@ -149,6 +152,11 @@ tags:
     visible:
       id: progress-no-plan
     timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: progress-assessment-delete
+    direction: DOWN
+    centerElement: true
 - tapOn:
     id: progress-assessment-delete
 - extendedWaitUntil:
