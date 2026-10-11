@@ -77,6 +77,20 @@ emulator. iOS 75/76, Android 73/76.
 > are deferred until after it. Do not start them, or Phase 3 onwards, until the owner says to
 > continue.
 
+## Next priority — TestFlight (owner, 2026-10-10)
+
+Ahead of Phase 2 B6–B8 and Phase 3. It pulls forward Phase 4 (iOS) and Phase 5 (iOS). The full
+checklist is in [testflight.md](testflight.md).
+
+- [ ] T1. API: bearer sessions for the mobile app (additive; released to production only with
+  the owner's approval)
+- [ ] T2. Mobile sign-in: Google, as on the portal (iOS; placeholders until the owner's iOS
+  client ID)
+- [ ] T3. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, a Release build
+  check
+- [ ] T4. Ship: API release, the first TestFlight build to internal testers, a smoke test on a
+  real iPhone
+
 ## Phase 3 — dictation
 
 - [ ] Mobile dictation: speak a lesson's write-up
