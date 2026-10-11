@@ -56,6 +56,11 @@ https://docs.expo.dev/llms.txt. Add dependencies with `npx expo install <pkg>`, 
   - It is typed only in the 1099 sheet and lives in component state.
   - Print with `Print.printAsync({ html })`. **`printToFileAsync` is banned**: it writes a PDF
     containing the SSN to disk.
+- **Dictation (P3).** Only `src/lib/speech.ts` touches `expo-speech-recognition`. On this phone by
+  default (it refuses rather than fall back online); the online service only with the person's
+  consent on this device. No audio is kept, no transcript is logged, and only final text reaches a
+  field. Never in a finance, tax or person form. `scripts/check-mobile-rules.mjs` enforces the
+  textual part; the Android `Log.d` transcript patch must be re-checked on every library bump.
 - **Downloads.** CSV and ICS files go to the cache, then the share sheet, and are then deleted.
 - **Colours.** Only from `useAppTheme()`. No hex outside `src/theme/`. The palettes are
   generated from `apps/web/src/index.css` by `scripts/generate-palettes.mjs`. Never edit

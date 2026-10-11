@@ -9,6 +9,7 @@ import { Card, Divider, Text } from 'react-native-paper';
 import { ErrorState } from '@/components/state-views';
 import { DetailSkeleton } from '@/components/skeletons';
 import { Screen } from '@/components/screen';
+import { DictationControl } from '@/features/dictation/dictation-control';
 import { AppearanceControl } from '@/features/shell/appearance-control';
 import { HapticsControl } from '@/features/shell/haptics-control';
 import { useAuth } from '@/providers/auth-provider';
@@ -26,6 +27,8 @@ export function ProfileScreen() {
   const { data, isPending, error, refetch } = useUserDetail(user?.id ?? null);
   const [refreshing, setRefreshing] = useState(false);
   const muted = theme.tokens.mutedForeground;
+  // Dictation is for writing a lesson up, which only tutors and admins do (P3).
+  const writesLessons = Boolean(user?.roles.some((role) => role === 'tutor' || role === 'admin'));
 
   async function onRefresh() {
     setRefreshing(true);
@@ -56,6 +59,12 @@ export function ProfileScreen() {
           <AppearanceControl testID="profile-appearance" describe />
           <Divider />
           <HapticsControl testID="profile-haptics" />
+          {writesLessons ? (
+            <>
+              <Divider />
+              <DictationControl testID="profile-dictation" />
+            </>
+          ) : null}
         </View>
       </Card>
     </Screen>

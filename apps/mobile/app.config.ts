@@ -114,6 +114,11 @@ const PRIVACY_MANIFEST = {
   })),
 };
 
+/** Dictation's permission copy (P3): neutral, and true on every path (the audio is never kept). */
+const MICROPHONE_COPY =
+  'Used only while you dictate lesson notes. What you say is turned into text and the audio is never kept.';
+const SPEECH_COPY = 'Turns what you say into text when you dictate lesson notes.';
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: NAME[variant],
@@ -169,15 +174,25 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-sharing',
     'expo-localization',
     // The console's logo upload (#35) uses the system photo picker. Neutral copy: the app is nobody's.
-    // No camera or microphone until dictation: false drops their usage strings (and, on Android,
-    // blocks CAMERA and RECORD_AUDIO).
+    // No camera: false drops its usage string (and, on Android, blocks CAMERA). The microphone is
+    // dictation's (P3): `false` here would delete its plist string and block RECORD_AUDIO
+    // (`tools:node="remove"`) under expo-speech-recognition's feet, so this plugin writes the same
+    // text, whichever of the two runs last.
     [
       'expo-image-picker',
       {
         photosPermission: 'Allow $(PRODUCT_NAME) to choose a picture from your photo library.',
         cameraPermission: false,
-        microphonePermission: false,
+        microphonePermission: MICROPHONE_COPY,
       },
+    ],
+    // Dictating a lesson's write-up (P3, docs/mobile/build-log.md "P3. Dictation"). On this phone by
+    // default; the speech string is required because the Speech framework is linked, and is asked
+    // for only with the person's consent to the phone's online service. No $(PRODUCT_NAME): the
+    // system alert already names the app, and the build setting expands to "TutorPortaldev".
+    [
+      'expo-speech-recognition',
+      { microphonePermission: MICROPHONE_COPY, speechRecognitionPermission: SPEECH_COPY },
     ],
     // "Add to calendar" (#43) presents the system event editor, which on iOS 17+ needs no permission
     // and never shows these. They are kept because App Store Connect flags a binary that links

@@ -131,7 +131,7 @@ Ahead of Phase 2 B6–B8 and Phase 3. The checklists are in [google-sign-in.md](
 Design: [build-log.md](build-log.md), "P3. Dictation — design" (2026-10-11). Each item needs a
 native rebuild of both dev builds, so build only while the devices are free.
 
-- [ ] P3a. Mobile dictation: engine, permissions and on-device policy
+- [x] P3a. Mobile dictation: engine, permissions and on-device policy
   - `expo-speech-recognition` 57.1.x, with its config plugin and neutral microphone/speech copy.
   - `expo-image-picker` no longer blocks `RECORD_AUDIO`; only the two plist strings and
     `RECORD_AUDIO` are re-added.
@@ -148,6 +148,9 @@ native rebuild of both dev builds, so build only while the devices are free.
     finance/tax/person forms.
   - Rebuild both dev builds.
   - First verify by hand whether iOS on-device needs the speech authorization.
+  > Done 2026-10-11: both dev builds rebuilt; smoke green on both. iOS 27 simulator: an on-device start
+  > reached audio capture with the microphone permission alone (no speech prompt, no `not-allowed`);
+  > words need a microphone (P3c). Dialogs became native alerts (see the build log).
 - [ ] P3b. Mobile dictation: speak a lesson's write-up
   - DictationField (interim overlay; final-only commits; append spacing; SSN and length refusal;
     one session app-wide; stop on post, close, background and navigate; haptics; reduce motion;

@@ -10,6 +10,8 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    // Dictation's native module, as an emitter-backed mock that tests drive (P3).
+    '^expo-speech-recognition$': '<rootDir>/src/test/mocks/expo-speech-recognition.ts',
     '^zod$': path.join(__dirname, 'node_modules/zod'),
     '^@babel/runtime/(.*)$': path.join(__dirname, 'node_modules/@babel/runtime/$1'),
     // packages/shared imports siblings as './x.js'; the sources are .ts.

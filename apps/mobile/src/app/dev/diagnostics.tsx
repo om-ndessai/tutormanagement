@@ -4,10 +4,11 @@
 import { containsSsn, formatCents, formatRelativeTime, ORG_TIME_ZONES, zonedClockParts } from '@tmi/shared';
 import { Redirect } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 
 import { liveSurface } from '@/features/teaching/live-surface';
 
+import * as speech from '@/lib/speech';
 import { DEV_TOOLS } from '@/lib/variant';
 
 // A fixed instant: 16:30 UTC on 1 July 2026.
@@ -55,12 +56,70 @@ function useLiveSurfaceStatus(): string {
   return status;
 }
 
+/**
+ * Dictation's engine on this device (P3, and the P3c hand checks): what it reports, and a probe that
+ * starts on-device recognition for four seconds and lists the event TYPES it sent -- never the words.
+ */
+function useSpeechProbe() {
+  const [report, setReport] = useState('…');
+  const [probe, setProbe] = useState('not run');
+  useEffect(() => {
+    let alive = true;
+    void (async () => {
+      const engine = speech.speechEngine();
+      if (!engine) return alive && setReport('no native module');
+      const caps = await engine.capabilities();
+      const mic = await engine.permission('on-device');
+      if (alive) {
+        setReport(
+          `available ${caps.available}, onDevice ${caps.onDevice}, model ${caps.modelInstalled}, ` +
+            `service ${caps.service}, lang ${caps.lang}, mic ${mic}`,
+        );
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
+  async function run() {
+    const seen: string[] = [];
+    setProbe('asking for the microphone…');
+    const mic = await speech.requestPermission('on-device');
+    if (mic !== 'granted') return setProbe(`microphone ${mic}`);
+    const unsubscribe = speech.subscribe((event) => {
+      seen.push(event.type === 'error' ? `error:${event.code}` : event.type);
+      setProbe(seen.join(' '));
+      if (event.type === 'end') unsubscribe();
+    });
+    try {
+      await speech.start('on-device');
+      setTimeout(() => speech.stop(), 4000);
+    } catch (error) {
+      unsubscribe();
+      setProbe(`refused: ${error instanceof Error ? error.message : 'unknown'}`);
+    }
+  }
+  return { report, probe, run };
+}
+
 export default function Diagnostics() {
   const liveSurfaceStatus = useLiveSurfaceStatus();
+  const speechProbe = useSpeechProbe();
   if (!DEV_TOOLS) return <Redirect href="/" />;
   return (
     <ScrollView testID="screen-dev-diagnostics" contentContainerStyle={{ padding: 24, paddingTop: 72 }}>
       <Row id="diag-live-surface" label="Live lesson surface (system)" value={liveSurfaceStatus} />
+      <Row id="diag-speech" label="Dictation engine" value={speechProbe.report} />
+      <Pressable
+        testID="diag-speech-probe"
+        onPress={() => void speechProbe.run()}
+        style={{ paddingVertical: 6 }}
+      >
+        <Text style={{ fontSize: 12, opacity: 0.6 }}>Probe on-device dictation (tap; event types only)</Text>
+        <Text testID="diag-speech-probe-result" style={{ fontSize: 16 }}>
+          {speechProbe.probe}
+        </Text>
+      </Pressable>
       <Row id="diag-cents" label="formatCents(1234567)" value={formatCents(1234567)} />
       <Row
         id="diag-relative"
