@@ -1,0 +1,7 @@
+<!-- Tutor Portal app icon: the platform's π mark (src/components/logo.tsx) on the platform
+     palette's primary (#30577D, ORG_PALETTE_HEX.platform). Full bleed and opaque: iOS and
+     Android apply their own corner mask. Rendered by scripts/render-icons.sh. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 48 48">
+  <rect width="48" height="48" fill="#30577D"/>
+  <path d="M13 18h22M20 18v14M29 18v10c0 2.6 1.4 4 3.6 4" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

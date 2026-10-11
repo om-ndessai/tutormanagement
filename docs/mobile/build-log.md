@@ -478,3 +478,41 @@ The three gate flows that failed once and passed alone, fixed at the cause the a
 - Real sign-in unverified until the owner's §A clients exist (G2).
 - On Android the button shows before the owner's Android client exists; a tap then fails with Google's DEVELOPER_ERROR, shown as "Google sign-in failed". Expected until A2.
 - The Android emulator's local fallback to 10.0.2.2 keeps cookies per host: a session made on one host is not sent to the other. Only matters for a local auth-on hand check.
+
+## T1. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, release build check — 2026-10-10
+
+**Built:**
+- **Art:** the platform's π mark on the platform primary, from `assets/source/*.svg` (rendered by
+  `scripts/render-icons.sh`):
+  - the Icon Composer bundle `assets/TutorPortal.icon` replaces `expo.icon`;
+  - an opaque 1024 `icon.png`;
+  - the Android adaptive foreground, background and monochrome icons;
+  - the splash, at `imageWidth` 112.
+  - `favicon.png` was unused and is removed.
+- **`app.config.ts`:**
+  - `CFBundleName` follows the variant;
+  - `usesNonExemptEncryption: false`;
+  - ATS local networking in dev/e2e, or in production only with a localhost API URL (the whole
+    template dictionary is replaced);
+  - the image picker's camera and microphone and SecureStore's Face ID set to `false`;
+  - `privacyManifests`.
+- **`eas.json`:** remote app versions, four profiles, and a submit block with empty IDs.
+- **Finding:** Google's prompt takes the app's name from `CFBundleName`. Expo left it at
+  `$(PRODUCT_NAME)`, which is "TutorPortaldev".
+- **Finding:** the `(dev)` routes, `X-Dev-User` and the persona list ship in the production
+  bundle, gated at runtime only (strings found in the Hermes bundle). They are unreachable, and the
+  server ignores the header with sign-in on.
+
+**Verified (2026-10-10):**
+- **Production Release build** on iOS 27 (iPhone 17), pointed at the local Worker with sign-in on:
+  - it launches without Metro;
+  - the home screen shows "Tutor Portal" with the π icon;
+  - the sign-in screen shows Google only, with localhost as the only server;
+  - Google's prompt reads "“Tutor Portal” Wants to Use “accounts.google.com” to Sign In", and was
+    cancelled.
+  - Built Info.plist: `CFBundleName` "Tutor Portal", `ITSAppUsesNonExemptEncryption` false, no
+    `NSLocalNetworkUsageDescription`.
+- **Development apps** rebuilt on iOS and Android. `smoke/*` passed 2/2 on iOS 27 (iPhone 17) and
+  2/2 on Android 37 (Medium Phone). The Android adaptive icon was checked on the launcher.
+- **Checks:** typecheck and lint (0 errors) clean; Jest 290 passed.
+- **Skipped** (the owner asked to wrap up): `mobile:export`.

@@ -118,36 +118,74 @@ Start A1 today; it has the longest lead time.
 
 ### B2. A production build that's fit to ship
 
-- [ ] **App icon and splash.** The app still carries Expo's template icon.
-  - Needed: a 1024×1024 icon without transparency, plus a splash. Supply art, or I draw a
-    brand-neutral one from the platform's π mark in the platform palette, which never wears any
-    organization's look.
-- [ ] **Info.plist:**
-  - `ITSAppUsesNonExemptEncryption = false` (HTTPS only), so there is no export-compliance
-    prompt for each build.
-  - `NSAllowsLocalNetworking` in the development and e2e variants only.
-  - Permission strings only for features the build actually uses: the photo library for logo
-    upload in the console. No camera or microphone until dictation.
-- [ ] **Privacy manifest** (`PrivacyInfo.xcprivacy`, through `ios.privacyManifests`):
-  - declare the required-reason APIs the app and its libraries use (UserDefaults through
-    AsyncStorage, file timestamps, system boot time);
-  - no tracking, no tracking domains.
-- [ ] **Versioning.** `version` 0.1.0 for the beta, and the build number auto-incremented per
-  upload (EAS remote versioning).
-- [ ] **Production-only checks:**
-  - No dev sign-in, `(dev)` screens or `X-Dev-User` header in the production bundle. The
-    server ignores `X-Dev-User` with sign-in on anyway.
-  - The privacy cover is armed. Money screens are covered in the switcher.
-- [ ] **`eas.json`.** Profiles: `development`, `e2e`, `preview` (internal), and `production`
-  (store, auto-increment).
-- [ ] **Release build check on the simulator:** the production variant launches. Its sign-in
-  screen offers Google only, and Google sign-in completes against the local Worker with sign-in
-  switched on.
+Done in T1 (2026-10-10) except where marked.
+
+- [x] **App icon and splash.** A brand-neutral mark: the platform's π on the platform primary.
+  - Sources in `apps/mobile/assets/source/*.svg`; `apps/mobile/scripts/render-icons.sh`
+    (needs `brew install librsvg`) renders the PNGs.
+  - iOS: an Icon Composer bundle, `assets/TutorPortal.icon` (Liquid Glass on iOS 26+, the
+    system's dark/clear/tinted looks; Xcode renders the flat icon for older iOS).
+  - `assets/images/icon.png`: 1024×1024, RGB, no alpha.
+  - Android: adaptive foreground (inside the 66dp safe zone), a solid background and a
+    monochrome icon.
+  - The splash shows the π on the platform primary.
+- [x] **Names.** `CFBundleName` and `CFBundleDisplayName` both follow the variant: "Tutor Portal",
+  "Tutor Portal (dev)", "Tutor Portal (e2e)". Google's prompt reads "“Tutor Portal” Wants to Use
+  “accounts.google.com” to Sign In". It used to read "TutorPortaldev", which was the product name.
+- [x] **Info.plist:**
+  - `ITSAppUsesNonExemptEncryption = false` (`ios.config.usesNonExemptEncryption`).
+  - ATS: `NSAllowsLocalNetworking` in development and e2e only, and in a production build only
+    when `EXPO_PUBLIC_PRODUCTION_API_URL` is `http://localhost…`, for the local check. Otherwise
+    it is `NSAllowsArbitraryLoads = false` and nothing else.
+  - Only the photo-library string (the console's logo upload). The camera, microphone and Face ID
+    strings are gone, and Android blocks CAMERA and RECORD_AUDIO.
+  - Dev-launcher leftovers in production: its local-network string is stripped in Release by its
+    own build phase. `NSBonjourServices` (`_expo._tcp`) and the `exp+tutor-portal` scheme stay.
+    Both are harmless.
+- [x] **Privacy manifest** (`ios.privacyManifests` in `app.config.ts`):
+  - No tracking and no tracking domains.
+  - Collected, linked and for app functionality only: name, email, phone, physical address,
+    user ID, other user content, other financial info, photos.
+  - Required reasons: UserDefaults CA92.1, FileTimestamp C617.1, SystemBootTime 35F9.1,
+    DiskSpace E174.1. These are checked against the pods' own PrivacyInfo files.
+  - The App Privacy answers in App Store Connect must match.
+- [x] **Versioning.** `version` 0.1.0. The build number belongs to EAS (`appVersionSource: remote`,
+  `autoIncrement` on `production`).
+- [~] **Production-only checks:**
+  - No server picker, no developer sign-in, Google only (screenshot checked).
+  - The `(dev)` routes, the `X-Dev-User` header name and the persona list are still **in** the
+    production bundle. They are gated at runtime (`DEV_TOOLS`, and `devUser()` returns null in
+    production), not compiled out. The server ignores `X-Dev-User` with sign-in on anyway.
+  - Compiling them out is an optional hardening for later.
+- [x] **`eas.json`.** Profiles `development`, `e2e` (simulator), `preview` (internal, production
+  variant) and `production` (store, auto-increment). `submit.production.ios` holds empty
+  `appleTeamId` and `ascAppId`.
+- [x] **Release build check on the simulator.** The production variant was built in Release, with
+  `EXPO_PUBLIC_PRODUCTION_API_URL=http://localhost:8787` and local sign-in on. It launches without
+  Metro, the home-screen icon and name are right, and the sign-in screen shows Google only. A tap
+  opens Google's prompt, which was cancelled. A full sign-in was already done in G2.
 - [ ] **Crash reports.** TestFlight's own crash logs and screenshot feedback for the beta.
   Sentry can be added later if needed.
-- [ ] **Optional: over-the-air updates** (EAS Update, on a `beta` channel). JavaScript fixes
-  reach testers without a new build or review. Decide before the first build, because it needs
-  `expo-updates` inside the build.
+- [ ] **Optional: over-the-air updates** (EAS Update, on a `beta` channel). Not decided. It needs
+  `expo-updates` inside the build, so decide before the first build.
+
+### What T2 needs from the owner
+
+T2 is deferred until there is a paid Apple account.
+
+1. **Apple Team ID** (A1): 10 characters. It goes in `eas.json` → `submit.production.ios.appleTeamId`.
+2. **App Store Connect app record** (A3) for bundle ID `com.tutorportal.app`. Its numeric Apple
+   ID is the **`ascAppId`** in `eas.json`.
+3. **Expo login** (A5) for `npx eas-cli build`, or an `EXPO_TOKEN`. After logging in, run
+   `npx eas-cli init` once to link the project (it adds `extra.eas.projectId`), and run
+   `npx eas-cli build:version:set` if a build number already exists.
+4. **App Store Connect API key** (A6): Key ID, Issuer ID and the `.p8` file. Or sign in once
+   interactively during `eas-cli submit`.
+5. **EAS environment variable** `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` for the `preview` and
+   `production` environments. `.env.local` is not uploaded, and without the variable the build
+   hides the Google button.
+6. Optional before external testing: A7 (privacy policy and support URLs) and A9 (the reviewer's
+   demo organization).
 
 ### B3. Ship
 

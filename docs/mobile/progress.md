@@ -96,9 +96,9 @@ Ahead of Phase 2 B6–B8 and Phase 3. The checklists are in [google-sign-in.md](
   >   against the local Worker with sign-in on (`POST /api/auth/google` reached the Worker, then
   >   a session), end to end.
   > - Android: still to do, after the Android OAuth client is checked.
-- [ ] T1. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, a Release build
-  check
-- [ ] T2. Ship: the first TestFlight build to internal testers, a smoke test on a real iPhone
+- [x] T1. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, a Release build
+  check (`mobile:export` and the Maestro run beyond `smoke/*` skipped when the owner asked to wrap up)
+- [ ] T2. *(deferred — owner has no paid Apple account yet)* Ship: the first TestFlight build to internal testers, a smoke test on a real iPhone
 
 ## Phase 3 — dictation
 

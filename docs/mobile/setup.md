@@ -48,3 +48,32 @@ npm run e2e:mobile -- ios       # or android, or both
   the e2e variant of the app, and runs the Maestro flows in `apps/mobile/.maestro/`.
 - It refuses any server that is not local, and any server with sign-in switched on.
 - It spends no Cloudflare quota.
+
+## Building the production variant locally (Release check)
+
+This checks the store build on the simulator against the **local** Worker. It never touches
+production.
+
+```sh
+# 1. Local sign-in on: AUTH_ENABLED=true in apps/api/.dev.vars (uncommitted), then restart:
+npm run dev:api
+# 2. Production variant, Release, pointed at the local Worker (the same env on both commands:
+#    the build re-reads app.config.ts). EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID comes from .env.local.
+cd apps/mobile
+APP_VARIANT=production EXPO_PUBLIC_PRODUCTION_API_URL=http://localhost:8787 npx expo prebuild --platform ios --clean
+APP_VARIANT=production EXPO_PUBLIC_PRODUCTION_API_URL=http://localhost:8787 npx expo run:ios --configuration Release --device "iPhone 17" --no-bundler
+```
+
+- The app installs as `com.tutorportal.app` ("Tutor Portal"), beside the development app. Its
+  sign-in screen offers Google only.
+- The localhost URL is the only reason this build allows plain http (`NSAllowsLocalNetworking`).
+  A real production build is HTTPS only.
+- **Afterwards, restore:**
+  - set `AUTH_ENABLED=false` and restart the Worker;
+  - run `npx expo prebuild --platform ios --clean` (no `APP_VARIANT`);
+  - run `npx expo run:ios --device "iPhone 17" --no-bundler`, so the development app and the
+    flows keep working.
+- **Icon or splash changed?** Edit `assets/source/*.svg`, then run `scripts/render-icons.sh`
+  (`brew install librsvg`). Look at every PNG before committing.
+- **Store builds** go through EAS (`apps/mobile/eas.json`; see testflight.md, "What T2 needs from
+  the owner").
