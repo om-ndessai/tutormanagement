@@ -118,7 +118,44 @@ Ahead of Phase 2 B6–B8 and Phase 3. The checklists are in [google-sign-in.md](
 
 ## Phase 3 — dictation
 
-- [ ] Mobile dictation: speak a lesson's write-up
+Design: [build-log.md](build-log.md), "P3. Dictation — design" (2026-10-11). Each item needs a
+native rebuild of both dev builds, so build only while the devices are free.
+
+- [ ] P3a. Mobile dictation: engine, permissions and on-device policy
+  - `expo-speech-recognition` 57.1.x, with its config plugin and neutral microphone/speech copy.
+  - `expo-image-picker` no longer blocks `RECORD_AUDIO`; only the two plist strings and
+    `RECORD_AUDIO` are re-added.
+  - `src/lib/speech.ts`:
+    - on-device only by default, refusing to start without on-device support (the library fails
+      open to the network on iOS);
+    - asks for the microphone only on the on-device path;
+    - offers the Android model download.
+  - Network consent dialog, plus the Profile Dictation control (device-local, off by default).
+  - Permission dialogs: rationale, Open Settings, restricted.
+  - A `patch-package` patch removing transcripts from the Android `Log.d` lines.
+  - Fake engine with `tutorportal://dev/dictate`.
+  - Lint rules: the only importer, no `persist`/`recordingOptions`, no DictationField in
+    finance/tax/person forms.
+  - Rebuild both dev builds.
+  - First verify by hand whether iOS on-device needs the speech authorization.
+- [ ] P3b. Mobile dictation: speak a lesson's write-up
+  - DictationField (interim overlay; final-only commits; append spacing; SSN and length refusal;
+    one session app-wide; stop on post, close, background and navigate; haptics; reduce motion;
+    screen-reader labels and announcements) on the five write-up fields and the own assessment.
+  - Record/Post/Save draft flush the last words first.
+  - Maths vocabulary and spoken topic codes.
+  - Jest: speech, append, topic codes, field, autosave and record integration, Profile control.
+  - Maestro `dictation/{dictate-notes,dictate-ssn,dictate-permission}` plus a re-run of
+    `sessions/{record,autosave,drafts}` and `smoke/*` on both platforms.
+- [ ] P3c. Dictation hand checks with a real recognizer
+  - The Mac mini has no microphone: use a headset or a loopback input.
+  - iOS simulator, if its recognizer works on iOS 27.
+  - Android emulator with `-allow-host-audio`: on-device, the model download, logcat clean,
+    airplane mode.
+  - The store privacy answers for T2/Phase 5.
+  - Real devices at Phase 5.
+- [ ] P3d. *(optional, unscheduled — owner's call)* Dictation in comments, the lesson-assessment
+  sheet and reflections
 
 ## Phase 4 — Google sign-in
 

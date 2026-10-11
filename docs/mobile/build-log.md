@@ -677,3 +677,270 @@ The three gate flows that failed once and passed alone, fixed at the cause the a
   (needs push updates and a paid team — the clock stops at the limit meanwhile); not reposting a
   notification the user swiped away (Android 14+ allows it) until the next lesson or launch;
   Android dark-theme and large-text shots of the shade; a device build (T2, needs the team).
+
+## P3. Dictation — design (2026-10-11)
+**Scope:** Phase 3 of [plan.md](plan.md): in the record sheet (`(org)/record-session`), a tutor or admin can speak the write-up instead of typing it. The text the recognizer settles on (its *final* result) is appended to the field and is then saved by the existing 3-second draft autosave (#19). Interim text is only shown on screen. It is never placed in form state, so no autosave can post half a sentence.
+- **Fields with a mic:** the four write-up parts (What was planned, Previous session review, Homework review, Homework set), Session notes, and the recorder's own assessment ("In a few words"). This covers new lessons, drafts picked back up and edits of a lesson already on the record.
+- **Left out:**
+  - Date, times and the pairing: they are pickers.
+  - The standalone lesson-assessment sheet, comments and the student's reflection: P3d, optional and unscheduled. A reflection is often a child's, which deserves its own decision.
+  - Every finance, tax and person form: never. The 1099 sheet in particular never gets dictation (immersive-design.md §13).
+- **No web counterpart and no API change:** the transcript reaches the server only as text in the fields it already takes (`notes`, `write_up.*`, `assessment.body`), through the same shared schemas.
+
+**Web sources:** none, since the web has no dictation. The record sheet itself: `apps/mobile/src/features/teaching/session-form/{record-session-sheet.tsx,use-draft-autosave.ts,use-session-form.ts}`, `session-notes.tsx` (NoteField, AssessmentFields). Shared: `packages/shared/src/tax.ts` (`containsSsn`, `SSN_REJECTED_MESSAGE`), `session-notes.ts` (`part(2000)`), `teaching.ts` (`notes: optionalText(… .max(4000))`, `sessionDraftInputSchema`).
+
+**Endpoints:** none new. The dictated text travels in the record sheet's existing calls:
+- `POST|PATCH /sessions/drafts[?autosave=true]` — `useAutosaveDraft` / `useSaveDraft`
+- `POST /sessions` (`from_draft_id`) — `useRecordSession`
+- `PATCH /sessions/:id` — `useUpdateSession`
+- `POST /sessions/drafts/:id/post` — `usePostDraft`
+- `GET /curriculum` — `useTopicIndex`, already cached by the progress section. It is used only to normalise spoken topic codes (below), never sent to the recognizer.
+
+### Research (2026-10-11)
+- **Choice: `expo-speech-recognition` (jamsch), `57.1.x`.** From SDK 56 its major version follows Expo's: 57.0.0 shipped 2026-08-30, 57.1.0 on 2026-09-16 and 57.1.1 on 2026-10-08 (`npm view expo-speech-recognition time`, dist-tag `latest` = 57.1.1, peer `expo: *`). It is an Expo Module (the New Architecture, which this app runs) with a config plugin. It wraps `SFSpeechRecognizer` on iOS and `android.speech.SpeechRecognizer` on Android, and covers everything the design needs: interim/final results, continuous mode, `requiresOnDeviceRecognition`, `supportsOnDeviceRecognition()`, `contextualStrings`, `addsPunctuation`, `iosTaskHint: 'dictation'`, split microphone/recognizer permissions, `getSupportedLocales()` and `androidTriggerOfflineModelDownload()`. README @57.1.1, github.com/jamsch/expo-speech-recognition, read 2026-10-11.
+- **Rejected alternatives:**
+  - `@react-native-voice/voice` is archived and on the old bridge.
+  - `whisper.rn` (whisper.cpp) is fully on-device on both platforms, but it ships a 40–150 MB model, needs native inference set-up, and builds its own audio pipeline. Worth revisiting only if the platform recognizers prove poor at maths vocabulary.
+  - Apple's iOS 26 `SpeechAnalyzer`/`SpeechTranscriber` (via `@react-native-ai/apple`, Callstack, 2025-08-06) is iOS-only and file transcription only. It needs a 16-core Neural Engine and is unavailable on the simulator (developer.apple.com/forums/thread/802969, /807739).
+- **Source facts the design relies on** (read in the package's own source, `npm pack expo-speech-recognition@57.1.1`):
+  - **iOS fails open to the network.** `ExpoSpeechRecognizer.swift` applies `request.requiresOnDeviceRecognition` *only if* `recognizer.supportsOnDeviceRecognition`. On a device without on-device support, `requiresOnDeviceRecognition: true` therefore silently sends audio to Apple. **The app must check `supportsOnDeviceRecognition()` itself and refuse to start**, rather than trust the flag.
+  - **The iOS on-device path skips the speech authorization.** `ExpoSpeechRecognitionModule.swift` calls `SFSpeechRecognizer.requestAuthorization` only when `!requiresOnDeviceRecognition`, and the README says the microphone permission alone suffices on-device. Apple's system speech alert always adds "Speech data from this app will be sent to Apple to process your requests…" (developer.apple.com/forums/thread/801759, 2025-09), which would contradict the on-device promise. So the on-device path asks for the microphone only. Some guides say Speech authorization is still needed on-device; P3a verifies this by hand (see Risks).
+  - **Android on-device path:** with `requiresOnDeviceRecognition: true` on Android 13+ (API 33), it uses `SpeechRecognizer.createOnDeviceSpeechRecognizer` plus `EXTRA_PREFER_OFFLINE`. `supportsOnDeviceRecognition()` is `SpeechRecognizer.isOnDeviceRecognitionAvailable` (API 31+). The language model must be installed: `getSupportedLocales().installedLocales`, else `androidTriggerOfflineModelDownload` (a dialog on 13; a download or a scheduled download on 14+). Android 12 and below has no continuous mode and no on-device path in the library.
+  - **Android logs transcripts.** `ExpoSpeechService.kt` calls `Log.d` with `onResults(), results: …`, `onPartialResults(), results: …`, `onSegmentResults(), transcriptions: …` and `biasing strings: …`. Logcat would hold what was said, against "never in a log". P3a strips those four from the logs with a `patch-package` patch (the app already runs `patch-package` on postinstall), keeping the event names, and files the issue upstream.
+  - **Results:** on Android, continuous mode is segmented (each segment ends with its own final result). On iOS the interim results are cumulative and one final arrives at `stop()`. `stop()` emits final/nomatch/`no-speech`, then `audioend`, then `end`. `abort()` emits `error: aborted`, then `end`, with no final. `end` is always last.
+  - **Audio storage is opt-in:** `recordingOptions.persist` defaults to `false`. The app never passes `recordingOptions` or `audioSource`.
+  - **Config plugin:** sets `NSMicrophoneUsageDescription` and `NSSpeechRecognitionUsageDescription` (its options `microphonePermission`, `speechRecognitionPermission`), adds `android.permission.RECORD_AUDIO`, and adds a `<queries>` entry for `com.google.android.googlequicksearchbox` (`androidSpeechServicePackages`). **Conflict:** `app.config.ts` passes `microphonePermission: false` to `expo-image-picker`, which removes the plist string and calls `withBlockedPermissions(['android.permission.RECORD_AUDIO'])` (`tools:node="remove"`), so the speech plugin's permission would be stripped from the manifest (read in `node_modules/expo-image-picker/plugin/build/withImagePicker.js`).
+- **`contextualStrings`:** Apple advises one or two words per phrase and "no more than 100" phrases (SFSpeechRecognitionRequest.contextualStrings docs, read 2026-10-11). Android honours them as `EXTRA_BIASING_STRINGS` on 13+, and the README says they "seem to work better on iOS". Because Android logs them (until the patch), they are a fixed vocabulary list and never people's names.
+- **Simulator and emulator:**
+  - **iOS simulator:** `SFSpeechRecognizer` is broken on the 26.4/26.5 simulators (`kLSRErrorDomain 300`, "Failed to initialize recognizer"; developer.apple.com/forums/thread/840302, 2026-08, unanswered). Whether this persists on our iOS 27 simulator is unknown. `SpeechTranscriber` is never available there. The simulator takes the Mac's default input device.
+  - **Android emulator:** host audio is squelched by default; the microphone hears silence (Android emulator 28.0.23 notes, 2019-01). The toggle is Extended Controls → Microphone → "Virtual microphone uses host audio input" (reset on restart), or the `-allow-host-audio` flag ("Allows sending of audio from audio input devices. Otherwise, zeroes out audio." — read from this machine's emulator binary). The README notes on-device recognition on an emulator may just end with `no-speech`.
+  - **This Mac mini has no built-in microphone.** A real-mic check needs a USB or Bluetooth headset, or a loopback input (e.g. BlackHole) playing a WAV into the simulator or emulator.
+  - **Not used for e2e:** the library's `audioSource.uri` (file transcription, Android 13+ and iOS) runs the real engine without a microphone, but it depends on the simulator recognizer above. E2E uses a scripted fake instead (Tests).
+
+### Design
+**On-device first (student data).**
+- **Default policy:** `requiresOnDeviceRecognition: true` always. `src/lib/speech.ts` refuses to start unless the device supports on-device recognition: iOS `supportsOnDeviceRecognition()`; Android 13+ `supportsOnDeviceRecognition()` *and* the language in `getSupportedLocales().installedLocales`.
+- **Android capable, model missing:** a dialog "Download the speech model to dictate on this phone" (Download / Not now) calls `androidTriggerOfflineModelDownload({ locale })`.
+  - `download_success`: dictation proceeds.
+  - `download_scheduled`: "It will finish in the background, on Wi-Fi."
+  - `opened_dialog`: the system takes over.
+- **No on-device recognition at all** (older iPhones and locales, Android 12-, devices without the on-device service): the mic explains this once and offers **one consent**. The dialog says "This phone can't turn speech into text by itself. Dictating would send your voice to Apple (iOS) / your phone's speech service (Android: "Google" when the default service is a `com.google.*` package) to be turned into text. The app never keeps or sends the audio itself." Buttons: Allow on this phone / Not now.
+  - The choice is device-local: `STORAGE_KEYS.dictationNetwork = 'on'`, the same pattern as the Haptics switch.
+  - Profile gets a **Dictation** row (`DictationControl`, beside `HapticsControl`). It shows "On this phone only" when on-device works; otherwise a switch "Use the phone's online speech service", off by default.
+  - With consent, iOS also asks the speech-recognition permission (`requestSpeechRecognizerPermissionsAsync`), whose system text then tells the truth.
+- **Never:** `recordingOptions`, `audioSource` (outside the dev fake), uploading audio, logging a transcript, or names in `contextualStrings`.
+- **Lint:** `scripts/check-mobile-rules.mjs` gains three rules:
+  - only `src/lib/speech*.ts` may import `expo-speech-recognition`;
+  - `persist: true` and `recordingOptions` are banned;
+  - `DictationField` is banned in files matching the money/tax/person-form patterns.
+- **Fixed start options:** `{ lang, interimResults: true, continuous: true, requiresOnDeviceRecognition, addsPunctuation: true, iosTaskHint: 'dictation', maxAlternatives: 1, contextualStrings: MATH_VOCABULARY }`.
+  - `lang`: the device's first English locale when installed or supported, else `en-US`.
+  - `MATH_VOCABULARY`: at most 100 one- or two-word terms (quadratic, polynomial, coefficient, numerator, denominator, Pythagorean, hypotenuse, parabola, factorise/factorize, simultaneous, inequality, pre-algebra, …). It is curated by hand from the curriculum catalogue at the end of `schema.sql` and held in `src/features/dictation/math-vocabulary.ts`.
+- **Spoken topic codes:** a pure `normaliseTopicCodes(text, topicIds)` turns "B A three point ten", "BA 3.10" or "pre 2 point 4" into the canonical `BA3.10` / `PRE.02`. It does so **only when that id exists** in `useTopicIndex()`; anything else is left as heard.
+
+**The engine and the session (one at a time, app-wide).**
+- **`src/lib/speech.ts`** is the only file that touches the module. It exposes:
+  - `capabilities()` → `{ available, onDevice, modelInstalled, service }`
+  - `permission(mode)` → `granted | undetermined | denied | blocked | restricted`
+  - `requestPermission(mode)`
+  - `start(mode)`, `stop()`, `abort()`
+  - `subscribe(listener)`, which normalises the events to `{type:'start'|'interim'|'final'|'error'|'end', text?, code?}`
+- **The fake engine:** when the dev fake is armed (DEV_TOOLS builds only), `speech.ts` returns `src/lib/speech-fake.ts` instead.
+- **`src/features/dictation/dictation-provider.tsx`** (mounted inside the organization layout) owns the single session: `{ ownerKey, phase: 'idle'|'preparing'|'listening'|'finishing', interim }`. Results are routed to the owner captured at `start`. Tapping a second field's mic first stops the first one and lets its final land in the first field. The provider aborts on unmount, which covers an organization switch and sign-out.
+- **Safety stops:** after 20 s with no result, it stops by itself; after 5 minutes it stops regardless. iOS server-based tasks are limited to about a minute anyway, and the field returns to idle on `end`.
+- `useDictation(ownerKey)` gives a field `{ phase, interim, error, toggle(), stopAndFlush() }`.
+
+**DictationField** (`src/features/dictation/dictation-field.tsx`): NoteField plus a 48dp mic `IconButton` to the field's right, top-aligned, with an overlay line under the field.
+- **Interim text as an overlay, never the value.** While listening:
+  - The TextInput is `editable={false}`, so no cursor fights the recognizer. Tapping the field stops dictation, then focuses the field.
+  - Under the field, a muted line: "Listening… tap the mic to stop", then the interim words in italics (`dictation-interim-<id>`).
+  - If `containsSsn(interim)` is true, the line shows the SSN sentence instead of the words: an early warning before anything is committed.
+- **Commit final only.** On `final`:
+  1. `next = appendTranscript(value, normaliseTopicCodes(text))`.
+  2. `containsSsn(next) && !containsSsn(value)` refuses it. This catches a number dictated across two utterances, or half typed and half spoken.
+  3. A `next` longer than the field's maximum (2,000 for a part or the assessment, 4,000 for notes) is refused with "That would make this part longer than 2,000 characters."
+  4. Otherwise `onChange(next)` is called once. Form state therefore only ever holds settled text, and the autosave's existing `safeParse(sessionDraftInputSchema)` (#19) still checks the whole body before every 3-second save.
+- **`appendTranscript` (pure):**
+  - The transcript is trimmed; an empty one changes nothing.
+  - The separator is nothing when the field is empty or ends in whitespace or a newline, and one space otherwise.
+  - The first letter is capitalised when the field is empty or ends with `.`, `!`, `?` or a newline.
+  - No full stop is ever invented; the recognizer's own punctuation (`addsPunctuation`) is kept.
+- **SSN refusal:**
+  - The session is aborted, and nothing reaches state, the draft or any log.
+  - `SSN_REJECTED_MESSAGE` shows as the field's `FieldError` (`dictation-error-<id>`), and `Screen`'s errors-in-view (#42) scrolls to it and announces it.
+  - `haptics.error()` fires after `end`.
+  - The message clears on the next mic tap or edit.
+- **Stops:**
+  - **Record / Post / Save draft:** pressed while listening, the handler first awaits `stopAndFlush()`, which resolves on `end` or after 1.5 s. The last words are then in the body that is validated and sent; a refused final means the save goes ahead without it.
+  - **Close** (Cancel, swipe, Back) and **unmount:** `abort()`. The utterance in flight is dropped (the field's state is gone by then), and the autosave's final save keeps everything already committed. This is a documented trade-off.
+  - **Background** (AppState not active): `stop()`. The final usually lands on return, and the next autosave tick picks it up. iOS ends the audio session in the background anyway, and the app adds no background-audio mode.
+  - **Navigate away** (blur): `useFocusEffect` cleanup → `stop()`.
+- **Haptics** (iOS silences haptics while the mic is live, immersive-design.md §7):
+  - `haptics.impact()` on the tap, *before* `start()`;
+  - nothing during listening or on a commit;
+  - `haptics.selection()` after `end` on a user stop;
+  - `haptics.error()` after `end` on a refusal or error.
+  - The Haptics switch still governs all of them.
+- **Reduce motion:** while listening, the mic button fills with `primary`, and a soft pulse ring is drawn by Reanimated. Under `useReducedMotion()` the ring is static. The state is always also said in words. No volume metering: `volumeChangeEventOptions` stays off.
+- **Accessibility:**
+  - `accessibilityLabel` reads "Dictate <field label>", or "Stop dictating <field label>" while listening, with `accessibilityState={{ selected: listening, busy: preparing }}`.
+  - Announcements: "Listening" on start, "Added to <field label>" on a commit, the SSN sentence on a refusal, the error copy on an error. With a screen reader on, `start()` waits for the "Listening" announcement to finish (iOS `announcementFinished`, a 1 s cap), so VoiceOver/TalkBack speech is not transcribed.
+  - 48dp target (`MIN_TARGET`); colours from tokens only.
+- **Wiring:**
+  - The record sheet swaps its five `NoteField`s for `DictationField` with the same testIDs.
+  - `AssessmentFields` gains `dictate?: boolean`, passed as true by the record sheet only.
+  - `NoteField` itself is unchanged, so the other sheets keep plain fields.
+
+**Permission flow** (first mic tap; `permission(mode)` decides):
+- `undetermined` → our rationale dialog (`dictation-rationale`): "Dictate with the microphone. What you say becomes text in this field, recognised on this phone; the audio is never kept or sent." (The network wording when consented.) Continue / Not now. Continue → the system prompt → start on grant.
+- `denied` with `canAskAgain` (Android) → the rationale again, then the system prompt.
+- `blocked` (iOS denied, or Android "don't ask again") → "Microphone access is off for this app." with **Open Settings** (`Linking.openSettings()`, `dictation-settings`) / Not now.
+- `restricted` (iOS: Screen Time or device management) → "Dictation is turned off on this phone by Screen Time or device management." No Settings button, since the user cannot change it there.
+- **Recognizer unavailable** (`service-not-allowed`, `language-not-supported`, or iOS "Siri and Dictation are disabled") → "Dictation isn't available on this phone. On iPhone, turn on Siri & Dictation in Settings; on Android, check the speech service is installed and on." The mic is still shown (discoverable). It explains on tap.
+- **Error codes → inline copy** (never toasts, which a form sheet covers):
+  - `no-speech` / `speech-timeout` → "Didn't catch that. Tap the mic and try again."
+  - `audio-capture` / `interrupted` → "The microphone stopped (a call or another app?). Tap to try again."
+  - `network` → "Dictation needs a connection on this phone." (Network mode only.)
+  - `busy` / `client` / `unknown` → "Dictation stopped. Tap to try again."
+  - `aborted` → silent.
+
+**Copy and native config (`app.config.ts`).**
+- **Neutral copy, and no `$(PRODUCT_NAME)`:** the system alert already names the app, and `$(PRODUCT_NAME)` expands to "TutorPortaldev" (T1's finding).
+  - `MICROPHONE_COPY = 'Used only while you dictate lesson notes. What you say is turned into text and the audio is never kept.'`
+  - `SPEECH_COPY = 'Turns what you say into text when you dictate lesson notes.'`
+- **Plugin wiring:** `['expo-speech-recognition', { microphonePermission: MICROPHONE_COPY, speechRecognitionPermission: SPEECH_COPY }]`. The default `androidSpeechServicePackages` is kept, since the on-device recognizer needs no `<queries>` entry.
+- **The image-picker conflict:** `expo-image-picker`'s `microphonePermission` changes from `false` to `MICROPHONE_COPY`, so it neither deletes the string nor blocks `RECORD_AUDIO`, and both plugins write the same text whichever runs last. `cameraPermission` stays `false` (CAMERA stays blocked). The comment there is updated.
+- **Re-added, exactly:** `NSMicrophoneUsageDescription`, `NSSpeechRecognitionUsageDescription` (required in the plist because the Speech framework is linked, even though only the consent path asks for it) and `android.permission.RECORD_AUDIO`. Nothing else.
+- **Privacy manifest:** no new collected type. Audio is processed on the device, or, with consent, by the platform's own speech service, and the app never receives or transmits it. Transcripts are lesson notes, already declared as `OtherUserContent`. Note for T2/Phase 5: Play's Data safety form and Apple's privacy label should describe the optional network speech service.
+
+**Offline.**
+- On-device dictation works offline; the iOS on-device model is a system asset.
+- Committed text sits in form state. The autosave shows "Not saved — offline" and retries (#42), and Save stays disabled with `OfflineSaveNote` as today.
+- In network mode, `useOffline()` disables the mic, with "Dictation needs a connection on this phone. Type instead, or try again online." A `network` error mid-session says the same.
+
+**Screens & routes:**
+- No new user routes. Profile gains `DictationControl`.
+- `src/app/dev/dictate.tsx` (DEV_TOOLS only, redirects to `/` otherwise) arms the fake engine from its query string, then redirects to `/`, like `dev/link`. Nothing is opened over the form sheet.
+  - `text` (repeatable, URL-encoded): one recognizer segment per value, in order, then it keeps "listening" until stopped. Each segment emits `start`, then `interim` (the first half of its words), then `final` 400 ms later.
+  - `permission`: `undetermined | granted | denied | blocked | restricted`.
+  - `ondevice=0|1`; `model=installed|missing` (Android path).
+  - `error=<code>`: emits that error instead of results.
+  - `reset=1` disarms it.
+- The fake lives in memory only: never stored, gone on relaunch.
+
+**Components:**
+- New in `src/features/dictation/`:
+  - `dictation-provider.tsx`
+  - `use-dictation.ts`
+  - `dictation-field.tsx`
+  - `dictation-dialogs.tsx` (rationale, consent, model download, settings, restricted)
+  - `dictation-control.tsx` (Profile)
+  - `append-transcript.ts`
+  - `topic-codes.ts`
+  - `math-vocabulary.ts`
+  - `dictation-copy.ts` (error → message)
+- New in `src/lib/`: `speech.ts`, `speech-fake.ts`.
+- New mock: `src/test/mocks/expo-speech-recognition.ts`, an emitter-backed mock of the module.
+- `STORAGE_KEYS.dictationNetwork`.
+- Reused: `NoteField`, `FieldError`, `IconButton`, `haptics`, `useOffline`, `Screen` (errors-in-view), Paper `Dialog`/`Portal`, `useTopicIndex`.
+
+**Interaction & motion:** immersive-design.md's record-a-lesson row (a "dictation mic button per text field", P2), §7 haptics (silent while the mic is live), §13 speech privacy (on-device preferred, never stored, none in the 1099 sheet). No system surface: no notification or Live Activity for dictation; the iOS orange microphone dot and Android's privacy indicator are the system's own.
+
+**Exposure checks:**
+- **Money:** none. The sheet's `showMoney` logic is untouched, and nothing in dictation renders or speaks a figure.
+- **SSN:**
+  - `containsSsn` runs on every final transcript and on the combined value, before state.
+  - The interim overlay masks SSN-shaped speech.
+  - The autosave and submit `safeParse` stay as they are.
+  - No transcript reaches a log (the Android `Log.d` patch, and no `console.*` in dictation code), storage (only the consent flag is stored), a param or a file.
+  - No dictation in the 1099 sheet or any tax, finance or person form (lint).
+- **Organization:** the provider is inside the organization layout and aborts on a switch. The vocabulary is generic, and the topic normaliser reads only the reader's own `['curriculum']` cache, which is cleared on a switch with everything else.
+- **Names:** no organization name in copy or code; no people's names in `contextualStrings`.
+- **Visibility:** the mic is only inside the record sheet, which only tutors and admins can open (#18). Every write still goes through the server's existing checks. Drafts stay the writer's own (R10).
+- **System surfaces:** none added.
+
+**testIDs:**
+- Mic buttons: `dictate-record-planned`, `dictate-record-previous-review`, `dictate-record-homework-review`, `dictate-record-notes`, `dictate-record-homework-set`, `dictate-record-assessment-body` (`dictate-<field testID>`).
+- Per field: `dictation-interim-<field testID>`, `dictation-error-<field testID>`.
+- Dialogs: `dictation-rationale`, `dictation-rationale-continue`, `dictation-rationale-cancel`, `dictation-consent`, `dictation-consent-allow`, `dictation-consent-cancel`, `dictation-model`, `dictation-model-download`, `dictation-settings`, `dictation-restricted`.
+- Profile: `profile-dictation`, `dictation-network-switch`.
+- Dev route: `screen-dev-dictate`.
+
+**Tests:**
+- **Jest:**
+  - `src/lib/speech.test.ts`:
+    - the exact `start` options: on-device true, no `recordingOptions` or `audioSource`, `contextualStrings` equal to the vocabulary, `iosTaskHint: 'dictation'`;
+    - it refuses to start (`needs-consent`) when on-device is unsupported and there is no consent, which is the guard against the iOS fail-open;
+    - `needs-model` when the Android model is missing;
+    - with consent, `requiresOnDeviceRecognition: false`, and iOS also requests the recognizer permission;
+    - the microphone-only request on the on-device path;
+    - the event normalisation.
+  - `append-transcript.test.ts`: spacing, capitalisation after `.`/`?`/a newline, no invented punctuation, empty transcripts.
+  - `topic-codes.test.ts`: "B A three point ten" becomes `BA3.10` only when it exists; unknown codes are untouched.
+  - `dictation-field.test.tsx` (mocked module):
+    - interim text shows in the overlay and never reaches `onChange`;
+    - a final calls `onChange` once with the appended text;
+    - an SSN final → no `onChange`, `SSN_REJECTED_MESSAGE` shown, `abort` called;
+    - the split SSN across two finals is refused;
+    - the length cap;
+    - a second field's mic stops the first, and its final lands in the first;
+    - unmount → `abort`; background → `stop`;
+    - each permission state shows its dialog, and `blocked` offers Open Settings;
+    - the error codes' copy;
+    - the accessibility label and state flip.
+  - `use-draft-autosave` / record sheet (fake timers): a 3 s tick during interim text sends a body without it, and the next tick after the final sends it; Record pressed while listening awaits `stopAndFlush`, and the final words are in `POST /sessions`.
+  - `dictation-control.test.tsx`: the switch shows only without on-device support, and it persists.
+- **Maestro, `.maestro/flows/dictation/`, both platforms (dev build, local Worker):**
+  - **`dictate-notes.yaml` (Alex, `feature`):**
+    1. Sign in, then open `tutorportal://dev/dictate?permission=undetermined&text=Factorised%20quadratics%20by%20grouping`.
+    2. Sessions → Record → Ben.
+    3. Tap `dictate-record-planned` → `dictation-rationale` → Continue.
+    4. `dictation-interim-record-planned` is visible.
+    5. Tap the mic to stop → `record-autosave-status` reads "Draft autosaved".
+    6. Record session → open the new lesson → its detail shows "Factorised quadratics by grouping". Android cannot match a multi-line field's text (#19), so the posted lesson is the proof; iOS also asserts the field.
+    7. Delete the lesson (clean-up).
+  - **`dictate-ssn.yaml` (Alex):**
+    1. Open `…?permission=granted&text=her%20number%20is%20123-45-6789`.
+    2. Record → Ben → dictate into notes.
+    3. `dictation-error-record-notes` shows "This looks like a Social Security number…".
+    4. The status never says "Draft autosaved".
+    5. Cancel → no "kept as a draft" toast, and the Sessions list has no `drafts-panel`.
+  - **`dictate-permission.yaml` (Alex):**
+    - `permission=blocked` → `dictation-settings` with Open Settings (not tapped) → Not now;
+    - `ondevice=0` → `dictation-consent` → Not now → nothing listens;
+    - Profile shows `dictation-network-switch`, off;
+    - `reset=1`.
+  - Re-run `sessions/record`, `sessions/autosave`, `sessions/drafts` and `smoke/*` (the NoteField swap).
+  - No new exposure flow, since there is no new read endpoint. `exposure/*` stays green.
+- **By hand, with a real recognizer** (P3c; needs a USB/Bluetooth headset or a loopback input on this Mac mini):
+  - **iOS simulator, if the iOS 27 simulator's recognizer works:**
+    - on-device dictation of a maths sentence;
+    - `supportsOnDeviceRecognition()` and whether the mic permission alone suffices (see Risks);
+    - the system prompts' copy, screenshotted;
+    - airplane mode.
+  - **Android emulator** started with `-allow-host-audio`:
+    - the model-download path;
+    - on-device dictation;
+    - `adb logcat | grep ExpoSpeechService` shows no transcript after the patch;
+    - Settings → Apps → permissions after "don't allow".
+  - **Real devices:** wait for Phase 5.
+
+**Native rebuild (when the devices are free; not now, the suite is running):**
+1. `npx expo install expo-speech-recognition` (57.1.x).
+2. The `app.config.ts` changes above, plus `patches/expo-speech-recognition+57.1.x.patch`.
+3. `npx expo prebuild --no-install`, then `CI=1 npx expo run:ios --device "iPhone 17" --no-bundler` and `CI=1 scripts/android-env.sh npx expo run:android --no-bundler` (dev builds), then `npm run doctor`.
+4. Check the built `Info.plist` for exactly the two new strings and `AndroidManifest.xml` for `RECORD_AUDIO` without `tools:node="remove"` and still no `CAMERA`.
+- The JS-only parts (fake, field, provider) need no rebuild after that. A dev client built before P3a must hide the mic: `speech.ts` `require`s the native module defensively, as `google-sign-in.ts` does.
+
+**Risks / open questions:**
+- **iOS on-device authorization (verify first in P3a).** If iOS 27 refuses on-device recognition without `SFSpeechRecognizer` authorization, the on-device path must also request it. Its system alert then claims speech "will be sent to Apple", so the rationale must say first that this phone recognises on-device. That is acceptable but worse; record the outcome here.
+- **Fail-open:** the library's iOS fallback to the network is real (above). The `speech.ts` capability check is the only guard, and Jest pins it. Raise it upstream as a request for a strict mode.
+- **No real-engine e2e:** the iOS 26.4/26.5 simulator recognizer is broken (thread 840302); iOS 27 is unknown. The emulator needs host audio, and this Mac has no microphone. Real recognition is a hand check only until Phase 5's devices.
+- **Keyboard dictation already exists.** The iOS keyboard mic and Gboard voice typing insert text straight into any field, including interim text. They obey the user's system settings and may be server-based, and the app cannot switch them off per field. The 3 s autosave's `safeParse` still blocks an SSN, but a keyboard-dictated partial can be autosaved; that is the same as typing. Our mic adds on-device enforcement, final-only commits, the SSN guard before state, and maths vocabulary.
+- **Dropped utterance:** swiping the sheet closed mid-utterance drops that utterance. It could be kept by committing on `end` through refs into the autosave's last body, but that is not worth the complexity now.
+- **Android:**
+  - The on-device model may be missing, and its download may be deferred to Wi-Fi.
+  - On Android 12 and below the device counts as "no on-device", so dictation is consent-only there.
+  - Samsung devices may default to a non-Google service: `getDefaultRecognitionService` decides the consent wording.
+- **For the owner:** should an organization be able to forbid network speech recognition for its tutors? That would be an organization setting, which means an API change; today it is the tutor's per-device choice, off by default. And should dictation later reach comments, reflections and the assessment sheet (P3d)?
+- **Upstream patch:** the `patch-package` patch for the Android `Log.d` transcripts must be re-checked on every library bump. An upstream fix (a debug-only logger) would retire it.
