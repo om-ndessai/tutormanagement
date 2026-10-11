@@ -22,6 +22,8 @@ export interface FakeScript {
   modelInstalled: boolean;
   /** Emitted instead of any result. */
   error: string | null;
+  /** How long each segment's interim words show before its final (`hold=` in the link). */
+  interimMs: number;
 }
 
 /** How long a segment's interim words show before its final result. */
@@ -61,7 +63,7 @@ function playNext(delay: number) {
   later(delay, () => {
     if (!running) return;
     emit({ type: 'interim', text: half(next) });
-    later(FAKE_INTERIM_MS, () => {
+    later(script?.interimMs ?? FAKE_INTERIM_MS, () => {
       if (!running) return;
       pending.shift();
       emit({ type: 'final', text: next });
@@ -180,6 +182,7 @@ export function scriptFromParams(params: {
   ondevice?: string;
   model?: string;
   error?: string;
+  hold?: string;
 }): FakeScript {
   const texts = params.text === undefined ? [] : Array.isArray(params.text) ? params.text : [params.text];
   const permission = PERMISSIONS.find((p) => p === params.permission) ?? 'granted';
@@ -189,5 +192,6 @@ export function scriptFromParams(params: {
     onDevice: params.ondevice !== '0',
     modelInstalled: params.model !== 'missing',
     error: params.error?.trim() || null,
+    interimMs: Math.min(Math.max(Number(params.hold) || FAKE_INTERIM_MS, 100), 60_000),
   };
 }

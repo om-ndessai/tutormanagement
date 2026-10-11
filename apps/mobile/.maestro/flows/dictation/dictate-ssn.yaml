@@ -1,0 +1,98 @@
+# A dictated Social Security number never reaches the write-up (P3). Alex dictates a phrase holding
+# an SSN into the notes: the words being heard are masked by the warning, the settled phrase is
+# refused with the shared sentence under the field, dictation stops, nothing autosaves, and closing
+# leaves no draft.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?permission=granted&hold=10000&text=her%20number%20is%20123-45-6789'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: dictate-record-notes
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: dictate-record-notes
+- extendedWaitUntil:
+    visible:
+      id: dictation-interim-record-notes
+    timeout: 10000
+# The words being heard hold an SSN: the warning shows instead of them.
+- extendedWaitUntil:
+    visible: '.*looks like a Social Security number.*'
+    timeout: 10000
+- assertNotVisible: '.*123-45-6789.*'
+- takeScreenshot: dictation-ssn-interim
+# The settled phrase is refused, under the field, and dictation stops.
+- extendedWaitUntil:
+    visible:
+      id: dictation-error-record-notes
+      text: '.*looks like a Social Security number.*'
+    timeout: 25000
+- extendedWaitUntil:
+    notVisible:
+      id: dictation-interim-record-notes
+    timeout: 10000
+- assertNotVisible: '.*123-45-6789.*'
+- takeScreenshot: dictation-refused
+- scrollUntilVisible:
+    element:
+      id: record-autosave-status
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible:
+    id: record-autosave-status
+    text: 'Draft autosaved .*'
+- scrollUntilVisible:
+    element:
+      id: record-cancel
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: record-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
+- assertNotVisible: '.*kept as a draft.*'
+- assertNotVisible:
+    id: drafts-panel
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?reset=1'

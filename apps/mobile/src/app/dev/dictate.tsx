@@ -1,6 +1,6 @@
 // Developer-only deep link that scripts dictation (P3), as the Maestro flows cannot speak:
 //   tutorportal://dev/dictate?text=<segment>&text=…&permission=undetermined|granted|denied|blocked|restricted
-//     &ondevice=0|1&model=installed|missing&error=<code>   -- or ?reset=1 to disarm it.
+//     &ondevice=0|1&model=installed|missing&error=<code>&hold=<ms of interim words>  -- or ?reset=1.
 // Arms the in-memory fake recognizer (src/lib/speech-fake.ts), then goes home, like dev/link.
 // Absent from production: the variant check here and in speech.ts.
 import { Redirect, useLocalSearchParams } from 'expo-router';
@@ -17,6 +17,7 @@ export default function DevDictate() {
     ondevice?: string;
     model?: string;
     error?: string;
+    hold?: string;
     reset?: string;
   }>();
   const [done, setDone] = useState(false);

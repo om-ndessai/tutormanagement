@@ -56,15 +56,17 @@ tags:
     timeout: 20000
 - tapOn:
     id: record-pairing-a0000000-0000-4000-8000-000000000002
-- scrollUntilVisible:
-    element:
-      id: record-planned
-    direction: DOWN
-    centerElement: true
-# Within one autosave tick the field says why, and nothing was sent.
+# Within one autosave tick the field says why, and nothing was sent. Waited for before any scroll:
+# the sheet brings the error into view itself (F-22), and a scroll racing that overshot past the
+# field (P3b). Where it stays out of view (Android), it is scrolled to once it exists.
 - extendedWaitUntil:
     visible: '.*looks like a Social Security number.*'
     timeout: 15000
+    optional: true
+- scrollUntilVisible:
+    element: '.*looks like a Social Security number.*'
+    direction: DOWN
+    timeout: 20000
 - takeScreenshot: autosave-ssn-refused
 - scrollUntilVisible:
     element:

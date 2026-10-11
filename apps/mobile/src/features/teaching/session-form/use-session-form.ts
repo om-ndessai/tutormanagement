@@ -12,7 +12,7 @@ import type {
   TutoringSession,
 } from '@tmi/shared';
 import { parseClockTime } from '@tmi/shared';
-import { useCallback, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 /** Common lesson lengths, offered as one tap rather than clock arithmetic. */
 export const QUICK_LENGTHS = [45, 60, 75, 90, 120] as const;
@@ -274,10 +274,21 @@ export function issuesToErrors(issues: { path: PropertyKey[]; message: string }[
 /** The form's state: one object, one setter per field. */
 export function useSessionForm(initial: () => SessionFormValues) {
   const [values, setValues] = useState(initial);
-  const set = useCallback(
-    <K extends keyof SessionFormValues>(key: K, value: SessionFormValues[K]) =>
-      setValues((before) => ({ ...before, [key]: value })),
-    [],
-  );
-  return { values, set, setValues };
+  // The form as of the last `set`, synchronously: a dictated final lands through `set` just before
+  // a Record/Post/Save draft that waited for it reads the body (P3), before React has re-rendered.
+  const latest = useRef<SessionFormValues | null>(null);
+  useLayoutEffect(() => {
+    latest.current = values;
+  }, [values]);
+  const set = useCallback(<K extends keyof SessionFormValues>(key: K, value: SessionFormValues[K]) => {
+    if (latest.current) {
+      latest.current = { ...latest.current, [key]: value };
+      setValues(latest.current);
+    } else {
+      setValues((before) => ({ ...before, [key]: value }));
+    }
+  }, []);
+  /** The values including every `set` so far, even one React has not rendered yet. */
+  const current = useCallback(() => latest.current ?? values, [values]);
+  return { values, set, current };
 }

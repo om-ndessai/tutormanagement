@@ -24,7 +24,7 @@ import { fakeEngine } from './speech-fake';
 jest.mock('expo-localization', () => ({ getLocales: () => [{ languageTag: 'en-US' }] }));
 
 const mock = speechMock;
-const native = m as unknown as Record<string, jest.Mock>;
+const native = m as unknown as Record<keyof typeof m, jest.Mock>;
 
 function onPlatform(os: 'ios' | 'android', version: number | string = 35) {
   jest.replaceProperty(Platform, 'OS', os);
@@ -203,6 +203,7 @@ describe('the fake recognizer (dev builds)', () => {
       onDevice: true,
       modelInstalled: true,
       error: null,
+      interimMs: 400,
     });
     await start('on-device');
     expect(native.start).not.toHaveBeenCalled();
@@ -217,6 +218,7 @@ describe('the fake recognizer (dev builds)', () => {
       onDevice: false,
       modelInstalled: true,
       error: null,
+      interimMs: 400,
     });
     await expect(start('on-device')).rejects.toBeInstanceOf(DictationRefused);
     fakeEngine.disarm();

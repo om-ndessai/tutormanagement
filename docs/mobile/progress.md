@@ -151,7 +151,7 @@ native rebuild of both dev builds, so build only while the devices are free.
   > Done 2026-10-11: both dev builds rebuilt; smoke green on both. iOS 27 simulator: an on-device start
   > reached audio capture with the microphone permission alone (no speech prompt, no `not-allowed`);
   > words need a microphone (P3c). Dialogs became native alerts (see the build log).
-- [ ] P3b. Mobile dictation: speak a lesson's write-up
+- [x] P3b. Mobile dictation: speak a lesson's write-up
   - DictationField (interim overlay; final-only commits; append spacing; SSN and length refusal;
     one session app-wide; stop on post, close, background and navigate; haptics; reduce motion;
     screen-reader labels and announcements) on the five write-up fields and the own assessment.
@@ -161,6 +161,11 @@ native rebuild of both dev builds, so build only while the devices are free.
   - Maestro `dictation/{dictate-notes,dictate-ssn,dictate-permission}` plus a re-run of
     `sessions/{record,autosave,drafts}` and `smoke/*` on both platforms.
 - [ ] P3c. Dictation hand checks with a real recognizer
+  > Open (owner, 2026-10-11): by hand later. Needs a USB/Bluetooth headset on the Mac mini (or a
+  > loopback input such as BlackHole playing a WAV), and the Android emulator started with
+  > `-allow-host-audio` (or Extended Controls → Microphone → "Virtual microphone uses host audio
+  > input"). Use Diagnostics' "Probe on-device dictation" first, then the record sheet. The emulator
+  > has no en-US on-device model installed: the mic offers the download.
   - The Mac mini has no microphone: use a headset or a loopback input.
   - iOS simulator, if its recognizer works on iOS 27.
   - Android emulator with `-allow-host-audio`: on-device, the model download, logcat clean,

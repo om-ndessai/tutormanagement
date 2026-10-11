@@ -21,12 +21,16 @@ import { View } from 'react-native';
 import { Chip, Divider, Icon, Text, TextInput } from 'react-native-paper';
 
 import { FieldError } from '@/components/field-error';
+import { DictationField } from '@/features/dictation/dictation-field';
 import { RatingChip, RatingPicker } from '@/features/progress/rating';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
 import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
+
+/** The shared schema's limit on an assessment's few words (`part(2000)`). */
+const ASSESSMENT_BODY_MAX = 2000;
 
 export const HOMEWORK_ICONS: Record<HomeworkStatus, string> = {
   done: 'check-circle-outline',
@@ -306,6 +310,8 @@ export function AssessmentFields({
   body,
   onBody,
   errors,
+  dictate = false,
+  normalise,
 }: {
   testID?: string;
   role: SessionAssessorRole;
@@ -314,6 +320,9 @@ export function AssessmentFields({
   body: string;
   onBody: (value: string) => void;
   errors: { rating?: string; body?: string };
+  /** A mic on "In a few words" (P3): the record sheet's own assessment only. */
+  dictate?: boolean;
+  normalise?: (text: string) => string;
 }) {
   const theme = useAppTheme();
   return (
@@ -332,14 +341,27 @@ export function AssessmentFields({
         </Text>
       ) : null}
       {errors.rating ? <FieldError>{errors.rating}</FieldError> : null}
-      <NoteField
-        testID={`${testID}-body`}
-        label="In a few words"
-        value={body}
-        onChange={onBody}
-        placeholder="Optional"
-        error={errors.body}
-      />
+      {dictate ? (
+        <DictationField
+          testID={`${testID}-body`}
+          label="In a few words"
+          value={body}
+          onChange={onBody}
+          placeholder="Optional"
+          error={errors.body}
+          maxLength={ASSESSMENT_BODY_MAX}
+          normalise={normalise}
+        />
+      ) : (
+        <NoteField
+          testID={`${testID}-body`}
+          label="In a few words"
+          value={body}
+          onChange={onBody}
+          placeholder="Optional"
+          error={errors.body}
+        />
+      )}
     </View>
   );
 }

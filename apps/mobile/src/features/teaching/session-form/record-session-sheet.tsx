@@ -28,6 +28,10 @@ import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
+import { DictationField } from '@/features/dictation/dictation-field';
+import { useDictationSession } from '@/features/dictation/dictation-provider';
+import { normaliseTopicCodes } from '@/features/dictation/topic-codes';
+import { useTopicIndex } from '@/features/progress/api';
 import { useUserDetail } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -46,7 +50,7 @@ import {
   useUpdateSession,
 } from '../api';
 import { organizationToday } from '../session-ranges';
-import { AssessmentFields, HomeworkStatusPicker, NoteField, likelyAssessorRole } from '../session-notes';
+import { AssessmentFields, HomeworkStatusPicker, likelyAssessorRole } from '../session-notes';
 import { FormSection } from './form-section';
 import { PairingPicker } from './pairing-picker';
 import { PreviousLesson } from './previous-lesson';
@@ -72,6 +76,10 @@ import {
 function close() {
   if (router.canGoBack()) router.back();
 }
+
+/** The shared schema's limits: each part of the write-up, and the notes (P3's length refusal). */
+const PART_MAX = 2000;
+const NOTES_MAX = 4000;
 
 /**
  * The sheet: waits for the pairings (and, editing, the lesson), then starts the form from them
@@ -158,7 +166,7 @@ function SessionForm({
   const isEdit = existing !== null;
   const isDraft = draft !== null;
 
-  const { values, set } = useSessionForm(() =>
+  const { values, set, current } = useSessionForm(() =>
     existing
       ? formFromSession(existing, assignments, user?.id)
       : draft
@@ -179,6 +187,10 @@ function SessionForm({
   const postDraft = usePostDraft();
   const autosaveDraft = useAutosaveDraft();
   const offline = useOffline();
+  const dictation = useDictationSession();
+  // Spoken curriculum codes become the catalogue's, but only codes that exist (P3).
+  const { topics } = useTopicIndex();
+  const normalise = (text: string) => normaliseTopicCodes(text, new Set(topics.keys()));
   const saving = record.isPending || update.isPending || saveDraft.isPending || postDraft.isPending;
 
   const assignment = assignments.find((a) => a.id === values.assignmentId);
@@ -192,8 +204,11 @@ function SessionForm({
   const autosave = useDraftAutosave({
     enabled: !isEdit,
     initialDraftId: draft?.id ?? null,
-    getBody: () =>
-      pair && (isDraft || hasContent(values)) ? (formBody(values, pair) as SessionDraftInput) : null,
+    getBody: () => {
+      // Only what is settled: interim dictation never reaches form state (P3).
+      const now = current();
+      return pair && (isDraft || hasContent(now)) ? (formBody(now, pair) as SessionDraftInput) : null;
+    },
     save: async (id, input) => {
       const result = await autosaveDraft.mutateAsync({ id, input });
       // Keeps the cached list in step with every quiet save, so "Continue" opens what was kept.
@@ -242,6 +257,9 @@ function SessionForm({
   async function handleSaveDraft() {
     setErrors({});
     setFailure(null);
+    // The last words of a dictation land first, so they are in what is kept (P3).
+    await dictation.stopAndFlush();
+    const values = current();
     if (!pair) {
       fail('Choose which student this session was with.', {
         assignment: 'Choose which student this session was with.',
@@ -269,6 +287,7 @@ function SessionForm({
   /** Saves any edits, then posts: one button, because the writer pressed post. */
   async function handlePostDraft() {
     if (!draft || !pair) return;
+    const values = current();
     const input = formBody(values, pair) as SessionDraftInput;
     const parsed = sessionDraftInputSchema.safeParse(input);
     if (!parsed.success) {
@@ -293,6 +312,9 @@ function SessionForm({
   async function handleSubmit() {
     setErrors({});
     setFailure(null);
+    // The last words of a dictation land first, so they are in what is recorded (P3).
+    await dictation.stopAndFlush();
+    const values = current();
 
     if (isDraft) {
       await handlePostDraft();
@@ -462,29 +484,35 @@ function SessionForm({
           what a summary is built from. */}
       <FormSection title="Looking back" description="What this lesson was for, and how last time held up.">
         {previous ? <PreviousLesson session={previous} showTutor={isAdmin} /> : null}
-        <NoteField
+        <DictationField
           testID="record-planned"
           label="What was planned"
           value={values.planned}
           onChange={(text) => set('planned', text)}
           placeholder="What this lesson set out to cover"
           error={errors['write_up.planned']}
+          maxLength={PART_MAX}
+          normalise={normalise}
         />
-        <NoteField
+        <DictationField
           testID="record-previous-review"
           label="Previous session review"
           value={values.previousReview}
           onChange={(text) => set('previousReview', text)}
           placeholder="How much of last time had stuck"
           error={errors['write_up.previous_review']}
+          maxLength={PART_MAX}
+          normalise={normalise}
         />
-        <NoteField
+        <DictationField
           testID="record-homework-review"
           label="Homework review"
           value={values.homeworkReview}
           onChange={(text) => set('homeworkReview', text)}
           placeholder="How the homework from last time went"
           error={errors['write_up.homework_review']}
+          maxLength={PART_MAX}
+          normalise={normalise}
         />
         <HomeworkStatusPicker
           testID="record-homework"
@@ -494,7 +522,7 @@ function SessionForm({
       </FormSection>
 
       <FormSection title="This lesson">
-        <NoteField
+        <DictationField
           testID="record-notes"
           label="Session notes"
           value={values.notes}
@@ -502,14 +530,18 @@ function SessionForm({
           placeholder="What was covered, and how it went"
           error={errors.notes}
           long
+          maxLength={NOTES_MAX}
+          normalise={normalise}
         />
-        <NoteField
+        <DictationField
           testID="record-homework-set"
           label="Homework set"
           value={values.homeworkAssigned}
           onChange={(text) => set('homeworkAssigned', text)}
           placeholder="What they are to do before next time"
           error={errors['write_up.homework_assigned']}
+          maxLength={PART_MAX}
+          normalise={normalise}
         />
       </FormSection>
 
@@ -543,6 +575,8 @@ function SessionForm({
             rating: errors['assessment.rating'] ?? errors.assessment,
             body: errors['assessment.body'],
           }}
+          dictate
+          normalise={normalise}
         />
       </FormSection>
 
@@ -573,7 +607,16 @@ function SessionForm({
             Save draft
           </Button>
         ) : null}
-        <Button testID="record-cancel" mode="outlined" onPress={close} disabled={saving}>
+        <Button
+          testID="record-cancel"
+          mode="outlined"
+          onPress={() => {
+            // Closing drops the phrase in flight; what was already said is in the draft (P3).
+            dictation.abort();
+            close();
+          }}
+          disabled={saving}
+        >
           Cancel
         </Button>
       </View>
