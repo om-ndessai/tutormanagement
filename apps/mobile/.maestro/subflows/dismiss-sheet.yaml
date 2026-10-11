@@ -1,5 +1,6 @@
 # Dismiss the form sheet in front (env SHEET, its screen testID) the way a person would: the system
-# Back on Android; on iOS a swipe down from the top of the sheet, repeated while the sheet is still
+# Back on Android; on iOS a swipe down from the sheet's grabber (its top edge -- a drag that
+# starts on scrollable content scrolls the content instead), repeated while the sheet is still
 # up and has not asked anything -- a sheet grown to full height first settles back to its 0.9
 # detent, and only the next swipe tries to close it. A guarded sheet answers with "Discard changes?".
 appId: ${APP_ID}
@@ -21,7 +22,7 @@ appId: ${APP_ID}
             notVisible: 'Discard changes\?'
           commands:
             - swipe:
-                start: 50%, 21%
+                start: 50%, 8%
                 end: 50%, 95%
                 duration: 400
             - waitForAnimationToEnd:

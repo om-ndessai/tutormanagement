@@ -88,6 +88,16 @@ emulator. iOS 75/76, Android 73/76.
     fresh DB has a handful of actions. The search step is now conditional.
 - Both fixed flows green on iOS and Android.
 
+**Phase 2 final gate (2026-10-11, after B1–B8):** full suite, 83 flows, fresh DB, rebooted
+4-core emulator. iOS 82/83, Android 80/83.
+- The three Android failures (`year-end/form-1099`, `activity/admin`, `sessions/drafts`) passed
+  when re-run alone: intermittent.
+- `forms/unsaved-guard` (iOS) was a flow fault, now fixed. Its swipe began on the sheet's
+  content, which B6's expanded picker made scrollable, so it scrolled instead of pulling the
+  sheet. `subflows/dismiss-sheet.yaml` now swipes from the grabber. It and `forms/errors-in-view`
+  (which uses the same subflow) are green on iOS.
+- **Phase 2 is complete.**
+
 > **Order from the owner (2026-10-10, after review).** The pause is over. Next come Phase 2
 > B6–B8 (items 43–45), then Phase 3. **Deferred:** TestFlight (T2: no paid Apple account yet)
 > and Phase 5 (real devices). Google sign-in (Phase 4's core) is done on iOS; Android sign-in
