@@ -84,7 +84,7 @@ Ahead of Phase 2 B6–B8 and Phase 3. The checklists are in [google-sign-in.md](
 
 - [x] G1. Mobile sign-in: Google, through the existing `/auth/google` and its session cookie (no
   API change); placeholders until the owner's iOS client IDs arrive
-- [~] G2. *(open — see note)* Hand check with a real Google account on the iOS simulator and the Android emulator
+- [~] G2. *(iOS done; Android open — see note)* Hand check with a real Google account on the iOS simulator and the Android emulator
   (local Worker with sign-in on); then against production with the owner's approval
   > **G2 note (2026-10-10):**
   > - The owner reached Google's sign-in on the device, but no `POST /api/auth/google` ever
@@ -92,8 +92,10 @@ Ahead of Phase 2 B6–B8 and Phase 3. The checklists are in [google-sign-in.md](
   >   `DEVELOPER_ERROR`: no Android OAuth client matches `com.tutorportal.app.dev` and the debug
   >   SHA-1 `5E:8F:16:06:…:F6:25` in the web client's project 866980945062.
   > - Development builds now show Google's code in the error, to confirm it.
-  > - iOS: the Google button and Google's page open with the real client ID (checked by hand).
-  >   A completed sign-in is still to do.
+  > - **iOS: done (2026-10-10).** The owner signed in with Google on the iPhone 17 simulator
+  >   against the local Worker with sign-in on (`POST /api/auth/google` reached the Worker, then
+  >   a session), end to end.
+  > - Android: still to do, after the Android OAuth client is checked.
 - [ ] T1. Mobile release: icon, splash, Info.plist, privacy manifest, eas.json, a Release build
   check
 - [ ] T2. Ship: the first TestFlight build to internal testers, a smoke test on a real iPhone
