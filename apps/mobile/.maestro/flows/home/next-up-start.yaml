@@ -1,0 +1,82 @@
+# Start the lesson at hand from Home (#43, ux-audit F-6: 4 taps → 2). Alex has a lesson under way
+# (seeded for today on the organization's clock); the Next up card offers Start, which opens the
+# Start sheet with that student and the schedule's mode already chosen, so Start now is the second
+# and last tap. No money on the card or the sheet. The live lesson is discarded at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript: ../../scripts/seed-next-up.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: carousel-next-start
+    timeout: 30000
+- assertVisible:
+    id: carousel-next
+    text: '.*${output.studentName}.*'
+- assertVisible:
+    id: carousel-next-record
+- assertVisible:
+    id: carousel-next-cancel
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: next-up-actions
+# Tap 1.
+- tapOn:
+    id: carousel-next-start
+- extendedWaitUntil:
+    visible:
+      id: start-submit
+    timeout: 15000
+- assertVisible: 'Start a session'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: next-up-start-sheet
+# Tap 2: nothing to choose, the student is already picked.
+- tapOn:
+    id: start-submit
+- extendedWaitUntil:
+    visible: 'Session started.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: live-banner
+    timeout: 10000
+- assertVisible:
+    id: live-student
+    text: '${output.studentName}.*Virtual'
+- assertNotVisible: '.*\$[0-9].*'
+# While it runs, the card no longer offers Start or Record (the banner's Stop records it).
+- assertNotVisible:
+    id: carousel-next-start
+- assertNotVisible:
+    id: carousel-next-record
+- takeScreenshot: next-up-started
+# Put it back: discard the live lesson.
+- tapOn:
+    id: live-cancel
+- extendedWaitUntil:
+    visible: 'Discard this session?'
+    timeout: 10000
+- tapOn: 'Discard'
+- extendedWaitUntil:
+    visible: 'Session discarded.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: carousel-next-start
+    timeout: 15000

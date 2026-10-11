@@ -25,7 +25,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | Web source | What | Mobile | Flow | Status |
 | --- | --- | --- | --- | --- |
 | `pages/dashboard-page.tsx`, `dashboard/role-dashboards.tsx`, `stat-card.tsx`, `hooks/use-count-up.ts` | four role dashboards, role selector, view-as | `app/(org)/(tabs)/index.tsx`, `src/features/dashboard/*` | `dashboard/*` | tutoring tab tested (13); finance tab tested (14); parent and student views tested (15); role selector and view-as tested (16) |
-| `dashboard/sessions-carousel.tsx` | past 5, now, upcoming | `src/features/dashboard/sessions-carousel.tsx` | `dashboard/tutoring` | tested |
+| `dashboard/sessions-carousel.tsx` | past 5, now, upcoming; app only: Start, Record and Cancel on the Next up card (#43) | `src/features/dashboard/{sessions-carousel,next-up-actions}.ts(x)` | `dashboard/tutoring`, `home/next-up-*` | tested |
 | `dashboard/reflections.tsx` | prompts, recent reflections | `src/features/dashboard/reflections.tsx` | `dashboard/student`, `dashboard/reflection` | recent reflections tested (13); prompts tested (15) |
 | `dashboard/monthly-finance.tsx`, `tutor-payments.tsx`, `money-icon.tsx` | finance tab | `src/features/dashboard/{finance-views,tutor-payments,monthly-finance,money-icon,finance-format}` | `dashboard/finance-*` | tested |
 | `dashboard/year-end-panel.tsx`, `form-1099-dialog.tsx` | 1099 printed on device | `app/(org)/form-1099.tsx`, `src/features/dashboard/{form-1099-sheet.tsx, form-1099-html.ts}`; list in `year-end-finance.tsx` | `year-end/*`, `dashboard/finance-*` | tested (14, 28) |
@@ -62,3 +62,5 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | ⌘K | Search screen |
 | `data-tour` coach marks | spotlight overlay over registered refs |
 | Google Identity Services | native Google Sign-In (web client as audience) → the same `POST /auth/google` and `tmi_session` cookie (G1) |
+| one schedule's `.ics` link | the calendar app's own editor, filled in ("Lesson", weekly, no permission; `expo-calendar/legacy`), the `.ics` share as the fallback and for "Add all" (#43, `schedule/calendar`) |
+| — (no web equivalent) | home-screen quick actions "Start a lesson" / "Record a lesson" for a tutor, set per organization, cleared on sign-out (#43, checked by hand) |

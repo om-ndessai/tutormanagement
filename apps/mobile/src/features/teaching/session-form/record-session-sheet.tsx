@@ -63,7 +63,9 @@ import {
   formFromSession,
   hasContent,
   issuesToErrors,
+  prefilledForm,
   toUpdatePayload,
+  type RecordPrefill,
   useSessionForm,
 } from './use-session-form';
 
@@ -79,6 +81,7 @@ export function RecordSessionSheet({
   sessionId,
   draftId,
   showMoney = false,
+  prefill,
 }: {
   /** Editing this lesson; a new one when absent. */
   sessionId?: string;
@@ -86,6 +89,8 @@ export function RecordSessionSheet({
   draftId?: string;
   /** True only when opened from Finance. */
   showMoney?: boolean;
+  /** A new lesson, filled in from Home's Next up card (#43). */
+  prefill?: RecordPrefill;
 }) {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
@@ -118,6 +123,7 @@ export function RecordSessionSheet({
         existing={existing.data?.data ?? null}
         draft={draft}
         showMoney={showMoney}
+        prefill={sessionId || draftId ? undefined : prefill}
       />
     );
   }
@@ -134,12 +140,14 @@ function SessionForm({
   existing,
   draft,
   showMoney,
+  prefill,
 }: {
   assignments: Assignment[];
   existing: TutoringSession | null;
   /** An unposted write-up being picked back up; never together with `existing`. */
   draft: SessionDraft | null;
   showMoney: boolean;
+  prefill?: RecordPrefill;
 }) {
   const { user } = useAuth();
   const theme = useAppTheme();
@@ -155,7 +163,9 @@ function SessionForm({
       ? formFromSession(existing, assignments, user?.id)
       : draft
         ? formFromDraft(draft, assignments)
-        : emptyForm(today, assignments),
+        : prefill
+          ? prefilledForm(today, assignments, prefill)
+          : emptyForm(today, assignments),
   );
   const [submitErrors, setErrors] = useState<Record<string, string>>({});
   // What the draft schema said about the last body the autosave looked at; answered by an edit.

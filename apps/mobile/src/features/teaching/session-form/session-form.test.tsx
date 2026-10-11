@@ -10,6 +10,7 @@ import {
   formBody,
   formFromSession,
   issuesToErrors,
+  prefilledForm,
   toUpdatePayload,
 } from './use-session-form';
 
@@ -128,6 +129,45 @@ describe('session form state', () => {
       write_up: {},
     });
     expect(issuesToErrors(bad.error!.issues).ended_at).toBe('The end time must be after the start time.');
+  });
+});
+
+describe("a lesson filled in from Home's Next up card (#43)", () => {
+  const other = { ...assignment, id: 'a2', student_user_id: 'student-2', student_name: 'Sofia Okafor' };
+
+  it("takes the scheduled lesson's pairing, date, times and mode", () => {
+    const values = prefilledForm('2026-10-10', [other, assignment], {
+      student: STUDENT,
+      tutor: TUTOR,
+      date: '2026-10-10',
+      start: '10:00',
+      end: '11:15',
+      mode: 'virtual',
+    });
+    expect(values).toMatchObject({
+      assignmentId: 'a1',
+      occurredOn: '2026-10-10',
+      startedAt: '10:00',
+      endedAt: '11:15',
+      mode: 'virtual',
+      notes: '',
+    });
+  });
+
+  it('never dates it after today, and leaves what does not fit at the defaults', () => {
+    const values = prefilledForm('2026-10-10', [other, assignment], {
+      student: 'nobody',
+      date: '2026-10-17',
+      start: '25:00',
+      end: '09:00',
+    });
+    expect(values).toMatchObject({
+      assignmentId: '',
+      occurredOn: '2026-10-10',
+      startedAt: '16:00',
+      endedAt: '17:00',
+      mode: 'in_person',
+    });
   });
 });
 

@@ -58,7 +58,12 @@ the `[~]` item, then carry on down the list.
 - [x] 40. Mobile UX: toasts above the tab bar, contrast and target sizes (B3, M) (a32d1a6)
 - [x] 41. Mobile UX: large text, skeletons, pull-to-refresh and empty states (B4, M-L) (1eb2a88)
 - [x] 42. Mobile UX: forms that keep your work — unsaved-changes guard, errors in view, offline (B5, M) (ab20a32)
-- [ ] 43. Mobile UX: start from Home — Next-up Start, quick actions and native calendar (B6, M-L, native rebuild)
+- [x] 43. Mobile UX: start from Home — Next-up Start, quick actions and native calendar (B6, M-L, native rebuild)
+  > Deferred from B6: F-23's chip row and "default to the last unrecorded lesson" (no tap saved; the
+  > latter needs an API read of past unrecorded dates); the audit's "Schedule" quick action (owner:
+  > teaching roles only); Android `schedule/calendar` (by hand, see build-log); dark and large-text
+  > re-shots of the Next up card. `expo-quick-actions` carries a patch-package patch for iOS cold
+  > starts under the scene life cycle.
 - [ ] 44. Mobile UX: swipe actions, context menus and undo (B7, L)
 - [ ] 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
 

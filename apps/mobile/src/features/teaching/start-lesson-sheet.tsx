@@ -25,20 +25,31 @@ function close() {
  * "When the session is to start, the tutor could click the start session button and select
  * student." The tutor's own pairings only: an admin who is not teaching has nothing to start.
  */
-export function StartLessonSheet() {
+export function StartLessonSheet({
+  initialStudent,
+  initialMode,
+}: {
+  /** Chosen already, from Home's Next up card (#43); ignored unless it is one of the tutor's own. */
+  initialStudent?: string;
+  initialMode?: SessionMode;
+} = {}) {
   const { user } = useAuth();
   const theme = useAppTheme();
   const toast = useToast();
   const muted = theme.tokens.mutedForeground;
 
-  const [studentId, setStudentId] = useState('');
-  const [mode, setMode] = useState<SessionMode>('in_person');
+  const [picked, setStudentId] = useState('');
+  const [mode, setMode] = useState<SessionMode>(initialMode ?? 'in_person');
   const [error, setError] = useState<string | null>(null);
 
   const active = useActiveSession();
   const assignments = useAssignments({ tutor_user_id: user?.id });
   const start = useStartSession();
   const students = assignments.data?.data ?? [];
+  // A tap wins; until then, the student the sheet was opened for, once the pairings show it is theirs.
+  const studentId =
+    picked ||
+    (initialStudent && students.some((a) => a.student_user_id === initialStudent) ? initialStudent : '');
   const running = Boolean(active.data?.data.mine);
 
   async function handleStart() {

@@ -10,6 +10,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAppSwitcherProtection } from '@/components/privacy-cover';
+import { clearQuickActions } from '@/features/shell/quick-actions';
 import { ToastProvider } from '@/components/toast';
 import { BootScreen } from '@/features/auth/boot-screen';
 import { navigationTheme } from '@/features/shell/navigation-theme';
@@ -41,6 +42,11 @@ function RootNavigator() {
 
   const signedIn = status === 'authenticated';
   useAppSwitcherProtection(signedIn);
+  // Signed out: the home-screen quick actions go with the person (#43). Entering an organization
+  // sets them again, from the roles held there.
+  useEffect(() => {
+    if (status === 'unauthenticated') clearQuickActions();
+  }, [status]);
   const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
   if (status === 'loading' || status === 'error') return <BootScreen />;

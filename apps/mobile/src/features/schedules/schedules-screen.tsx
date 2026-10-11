@@ -28,6 +28,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { calendarHref, useDeleteSchedule, useSchedules } from './api';
 import { organizationToday } from './lesson-cancellation';
+import { addScheduleToCalendar } from './native-calendar';
 import { ScheduleCard } from './schedule-card';
 import { WeekStrip } from './week-strip';
 
@@ -39,7 +40,8 @@ export function SchedulesScreen() {
   const muted = theme.tokens.mutedForeground;
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isTutor = user?.roles.includes('tutor') ?? false;
-  const today = organizationToday(useOrgTimeZone());
+  const timeZone = useOrgTimeZone();
+  const today = organizationToday(timeZone);
 
   const { data, isPending, error, refetch } = useSchedules();
   const remove = useDeleteSchedule();
@@ -76,6 +78,26 @@ export function SchedulesScreen() {
       await downloadAndShare(path, fallback);
     } catch (failure) {
       toast.error(failure instanceof ApiRequestError ? failure.message : 'Could not download the file.');
+    } finally {
+      setDownloading(null);
+    }
+  }
+
+  /**
+   * One series into the person's own calendar app: its editor, filled in ("Lesson", weekly, at the
+   * organization's hour), or the .ics through the share sheet where there is no editor (#43).
+   */
+  async function addToCalendar(schedule: VisibleSchedule) {
+    setDownloading(schedule.id);
+    try {
+      haptics.impact();
+      await addScheduleToCalendar(schedule, today, timeZone, () =>
+        downloadAndShare(calendarHref.one(schedule.id), 'lesson.ics'),
+      );
+    } catch (failure) {
+      toast.error(
+        failure instanceof ApiRequestError ? failure.message : 'Could not add it to your calendar.',
+      );
     } finally {
       setDownloading(null);
     }
@@ -228,7 +250,7 @@ export function SchedulesScreen() {
                     return next;
                   });
                 }}
-                onCalendar={() => void download(schedule.id, calendarHref.one(schedule.id), 'lesson.ics')}
+                onCalendar={() => void addToCalendar(schedule)}
                 onEdit={() => openForm(schedule)}
                 onRemove={() => confirmRemove(schedule)}
               />

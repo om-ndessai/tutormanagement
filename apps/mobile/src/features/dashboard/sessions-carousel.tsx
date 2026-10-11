@@ -12,17 +12,20 @@ import {
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { FlatList, Pressable, View, useWindowDimensions } from 'react-native';
-import { ActivityIndicator, Icon, Text } from 'react-native-paper';
+import { ActivityIndicator, Button, Icon, Text } from 'react-native-paper';
 
+import { IconButton } from '@/components/icon-button';
 import { EmptyNote } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
 import { useUpcomingSessions } from '@/features/schedules/api';
+import { formatLessonDay } from '@/features/schedules/lesson-cancellation';
+import { useActiveSession } from '@/features/teaching/api';
 import { useLines } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
-import { useOrgTimeZone } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
-import { radius, space } from '@/theme/tokens';
+import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import {
   GAP,
   buildCarousel,
@@ -34,6 +37,7 @@ import {
   relativeDay,
   type CarouselItem,
 } from './carousel-model';
+import { cancelHref, nextUpActions, recordHref, startHref, type NextUpActions } from './next-up-actions';
 
 /** The organization's clock, re-read every half minute so the countdown stays true. */
 function useOrgClock() {
@@ -202,7 +206,10 @@ export function SessionsCarousel({
   }
 
   return (
-    <View onLayout={(event) => setViewport(Math.round(event.nativeEvent.layout.width))}>
+    <View
+      testID="sessions-carousel"
+      onLayout={(event) => setViewport(Math.round(event.nativeEvent.layout.width))}
+    >
       {viewport > 0 ? (
         <FlatList
           ref={list}
@@ -304,6 +311,7 @@ function CardFrame({
   label,
   onPress,
   variant,
+  footer,
   children,
 }: {
   width: number;
@@ -312,6 +320,11 @@ function CardFrame({
   label: string;
   onPress: () => void;
   variant: 'past' | 'upcoming' | 'cancelled' | 'next';
+  /**
+   * Buttons under the card's content (the Next up card's Start, Record and Cancel). They sit beside
+   * the link, not inside it: an accessible Pressable hides its children from VoiceOver.
+   */
+  footer?: ReactNode;
   children: ReactNode;
 }) {
   const theme = useAppTheme();
@@ -321,32 +334,54 @@ function CardFrame({
       : variant === 'upcoming'
         ? theme.colors.surface
         : withAlpha(theme.tokens.muted, 0.6);
+  const frame = {
+    width,
+    minHeight: height,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderStyle: variant === 'cancelled' ? ('dashed' as const) : ('solid' as const),
+    borderColor: variant === 'next' ? theme.colors.primary : theme.colors.outlineVariant,
+    backgroundColor: background,
+    ...(variant === 'next'
+      ? {
+          shadowColor: theme.colors.shadow,
+          shadowOpacity: 0.18,
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 3 },
+          elevation: 3,
+        }
+      : null),
+  };
+
+  if (footer) {
+    return (
+      <View style={frame}>
+        <Pressable
+          testID={testID}
+          accessibilityRole="link"
+          accessibilityLabel={label}
+          onPress={onPress}
+          style={({ pressed }) => ({
+            flexGrow: 1,
+            padding: 14,
+            paddingBottom: space.sm,
+            opacity: pressed ? 0.85 : 1,
+          })}
+        >
+          {children}
+        </Pressable>
+        <View style={{ paddingHorizontal: 14, paddingBottom: 12 }}>{footer}</View>
+      </View>
+    );
+  }
+
   return (
     <Pressable
       testID={testID}
       accessibilityRole="link"
       accessibilityLabel={label}
       onPress={onPress}
-      style={({ pressed }) => ({
-        width,
-        minHeight: height,
-        borderRadius: radius.lg,
-        borderWidth: 1,
-        borderStyle: variant === 'cancelled' ? 'dashed' : 'solid',
-        borderColor: variant === 'next' ? theme.colors.primary : theme.colors.outlineVariant,
-        backgroundColor: background,
-        padding: 14,
-        opacity: pressed ? 0.85 : 1,
-        ...(variant === 'next'
-          ? {
-              shadowColor: theme.colors.shadow,
-              shadowOpacity: 0.18,
-              shadowRadius: 8,
-              shadowOffset: { width: 0, height: 3 },
-              elevation: 3,
-            }
-          : null),
-      })}
+      style={({ pressed }) => ({ ...frame, padding: 14, opacity: pressed ? 0.85 : 1 })}
     >
       {children}
     </Pressable>
@@ -595,9 +630,20 @@ function NextCard({
   height: number;
 }) {
   const theme = useAppTheme();
+  const { user } = useAuth();
+  const active = useActiveSession();
   const start = parseClockTime(occurrence.start_time) ?? 0;
   const left = countdown(occurrence, today, nowMinutes);
   const soft = withAlpha(theme.colors.onPrimary, 0.85);
+  const actions = nextUpActions({
+    occurrence,
+    userId: user?.id,
+    isAdmin: user?.roles.includes('admin') ?? false,
+    running: Boolean(active.data?.data.mine),
+    today,
+    nowMinutes,
+  });
+  const any = actions.start || actions.record || actions.cancel;
   return (
     <CardFrame
       width={width}
@@ -606,6 +652,7 @@ function NextCard({
       testID="carousel-next"
       label={`Next session: ${occurrence.student_name}, ${left}`}
       onPress={() => router.navigate(`/schedule?focus=${occurrence.schedule_id}`)}
+      footer={any ? <NextUpButtons occurrence={occurrence} actions={actions} /> : undefined}
     >
       <View
         style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm }}
@@ -648,5 +695,72 @@ function NextCard({
       <Who student={occurrence.student_name} tutor={occurrence.tutor_name} showTutor={showTutor} inverse />
       <Place occurrence={occurrence} inverse />
     </CardFrame>
+  );
+}
+
+/**
+ * Start, Record and Cancel on the Next up card (#43): two taps to start the lesson at hand, two (and
+ * a scroll) to write it up, two to call the date off. No money: each opens a Tutoring sheet.
+ */
+function NextUpButtons({ occurrence, actions }: { occurrence: UpcomingSession; actions: NextUpActions }) {
+  const theme = useAppTheme();
+  const day = formatLessonDay(occurrence.occurs_on);
+  return (
+    <View
+      testID="carousel-next-actions"
+      style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}
+    >
+      {actions.start ? (
+        <Button
+          testID="carousel-next-start"
+          mode="contained"
+          compact
+          icon="play"
+          buttonColor={theme.colors.onPrimary}
+          textColor={theme.colors.primary}
+          contentStyle={{ minHeight: MIN_TARGET }}
+          accessibilityLabel={`Start the lesson with ${occurrence.student_name} now`}
+          onPress={() => {
+            haptics.selection();
+            router.navigate(startHref(occurrence));
+          }}
+        >
+          Start
+        </Button>
+      ) : null}
+      {actions.record ? (
+        <Button
+          testID="carousel-next-record"
+          mode="outlined"
+          compact
+          icon="pencil-outline"
+          textColor={theme.colors.onPrimary}
+          style={{ borderColor: withAlpha(theme.colors.onPrimary, 0.6) }}
+          contentStyle={{ minHeight: MIN_TARGET }}
+          accessibilityLabel={`Record the lesson with ${occurrence.student_name}`}
+          onPress={() => {
+            haptics.selection();
+            router.navigate(recordHref(occurrence));
+          }}
+        >
+          Record
+        </Button>
+      ) : null}
+      {actions.cancel ? (
+        <>
+          <View style={{ flexGrow: 1 }} />
+          <IconButton
+            testID="carousel-next-cancel"
+            icon="calendar-remove"
+            iconColor={theme.colors.onPrimary}
+            accessibilityLabel={`Cancel the lesson on ${day}`}
+            onPress={() => {
+              haptics.selection();
+              router.navigate(cancelHref(occurrence));
+            }}
+          />
+        </>
+      ) : null}
+    </View>
   );
 }

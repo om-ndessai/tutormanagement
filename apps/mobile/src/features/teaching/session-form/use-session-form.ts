@@ -61,6 +61,48 @@ export function emptyForm(today: string, assignments: Pick<Assignment, 'id'>[]):
   };
 }
 
+/** A new lesson as Home's Next up card opens it (#43): the scheduled lesson's pairing and times. */
+export interface RecordPrefill {
+  student: string;
+  /** Narrows the match for an admin, who sees every tutor's pairings. */
+  tutor?: string;
+  date?: string;
+  start?: string;
+  end?: string;
+  mode?: SessionMode;
+}
+
+const CLOCK = /^([01]\d|2[0-3]):[0-5]\d$/;
+const DAY = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * The empty form with the scheduled lesson filled in: the pairing that matches (none when the
+ * reader has no such pairing; the server would refuse it anyway), the date (never after today, the
+ * form's own limit), the times and the mode. Anything malformed is left at the default.
+ */
+export function prefilledForm(
+  today: string,
+  assignments: Pick<Assignment, 'id' | 'tutor_user_id' | 'student_user_id'>[],
+  prefill: RecordPrefill,
+): SessionFormValues {
+  const base = emptyForm(today, assignments);
+  const match = assignments.find(
+    (a) => a.student_user_id === prefill.student && (!prefill.tutor || a.tutor_user_id === prefill.tutor),
+  );
+  const startedAt = prefill.start && CLOCK.test(prefill.start) ? prefill.start : base.startedAt;
+  const endedAt =
+    prefill.end && CLOCK.test(prefill.end) && prefill.end > startedAt ? prefill.end : base.endedAt;
+  const day = prefill.date && DAY.test(prefill.date) ? prefill.date : today;
+  return {
+    ...base,
+    assignmentId: match?.id ?? base.assignmentId,
+    occurredOn: day > today ? today : day,
+    startedAt,
+    endedAt,
+    mode: prefill.mode ?? base.mode,
+  };
+}
+
 /** An existing lesson, as the form holds it. */
 export function formFromSession(
   existing: TutoringSession,

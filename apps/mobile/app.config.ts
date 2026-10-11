@@ -154,6 +154,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     // Off: react-native-screens has no predictive-back support yet (docs/mobile/immersive-design.md).
     predictiveBackGestureEnabled: false,
+    // "Add to calendar" opens the calendar app's own editor (an ACTION_INSERT intent), which needs
+    // no permission; expo-calendar's plugin would ask for both.
+    blockedPermissions: ['android.permission.READ_CALENDAR', 'android.permission.WRITE_CALENDAR'],
   },
   plugins: [
     'expo-router',
@@ -174,6 +177,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         photosPermission: 'Allow $(PRODUCT_NAME) to choose a picture from your photo library.',
         cameraPermission: false,
         microphonePermission: false,
+      },
+    ],
+    // "Add to calendar" (#43) presents the system event editor, which on iOS 17+ needs no permission
+    // and never shows these. They are kept because App Store Connect flags a binary that links
+    // EventKit (calendars and reminders) without them; write-only, so no full-access string. Neutral copy: the app is nobody's.
+    [
+      'expo-calendar',
+      {
+        writeOnlyAccess: true,
+        calendarPermission: 'Allow $(PRODUCT_NAME) to add lessons to your calendar.',
+        writeOnlyCalendarPermission: 'Allow $(PRODUCT_NAME) to add lessons to your calendar.',
+        remindersPermission: 'Allow $(PRODUCT_NAME) to add lessons to your reminders.',
       },
     ],
     // iOS 27 requires the scene life cycle; see the plugin.

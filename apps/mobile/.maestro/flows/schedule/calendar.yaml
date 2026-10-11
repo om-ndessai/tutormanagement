@@ -1,0 +1,54 @@
+# "Add to calendar" on a schedule card (#43, ux-audit F-18): the calendar app's own editor opens,
+# filled in with the generic title "Lesson" (no student name, no notes, no money), repeating
+# weekly until the series ends, with no permission asked. The editor is closed without saving.
+#
+# iOS only. On Android the editor is the calendar app's (Google Calendar), which on the shared
+# emulator is signed in to a real account: its screens, and any failure screenshot Maestro takes,
+# would carry somebody's own calendar. The Android path is checked by hand from the UI tree's text
+# (build-log #43).
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          file: ../../subflows/sign-in-as.yaml
+          env:
+            PERSONA: alex.chen.math@gmail.com
+            ORG: chmi
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 30000
+      - tapOn: 'Schedule'
+      - extendedWaitUntil:
+          visible:
+            id: schedule-calendar-70000000-0000-4000-8000-000000000001
+          timeout: 20000
+      - tapOn:
+          id: schedule-calendar-70000000-0000-4000-8000-000000000001
+      # The system editor, not the share sheet.
+      - extendedWaitUntil:
+          visible: 'New Event'
+          timeout: 20000
+      - assertVisible: 'Lesson'
+      - assertVisible: '.*Every Week.*'
+      - assertNotVisible: '.*Sofia.*'
+      - assertNotVisible: '.*\$[0-9].*'
+      - takeScreenshot: calendar-editor
+      # Leave without saving: nothing is written to the device's calendar.
+      - tapOn:
+          point: '9%, 11%'
+      - runFlow:
+          when:
+            visible: 'Discard Changes'
+          commands:
+            - tapOn: 'Discard Changes'
+      - extendedWaitUntil:
+          visible:
+            id: screen-schedule
+          timeout: 20000

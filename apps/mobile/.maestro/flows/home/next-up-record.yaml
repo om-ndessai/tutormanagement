@@ -1,0 +1,66 @@
+# Record the lesson at hand from Home (#43, ux-audit F-6/F-23: 5 taps → 3). The Next up card's
+# Record opens the record sheet with the pairing, today, the schedule's times and its mode filled
+# in, so Record session is the second tap, after a scroll. No money: the sheet shows the length.
+# Recorded, the lesson leaves the upcoming strip. clean-sessions.js deletes it afterwards.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript: ../../scripts/seed-next-up.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: carousel-next-record
+    timeout: 30000
+# Tap 1.
+- tapOn:
+    id: carousel-next-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing
+    timeout: 15000
+- assertVisible: 'Record a session'
+# The pairing is chosen (the list stays folded), and the start is the schedule's.
+- assertVisible:
+    id: record-pairing
+    text: '.*${output.studentName}.*'
+- assertVisible: 'Started: ${output.startPattern}.*'
+- assertVisible:
+    id: record-preview
+- assertNotVisible:
+    id: record-money
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: next-up-record-sheet
+- scrollUntilVisible:
+    element:
+      id: record-submit
+    direction: DOWN
+    timeout: 30000
+- assertNotVisible: '.*\$[0-9].*'
+# Tap 2.
+- tapOn:
+    id: record-submit
+- extendedWaitUntil:
+    visible: 'Session recorded.'
+    timeout: 15000
+- takeScreenshot: next-up-recorded
+# Recorded, it is no longer coming up: the card no longer offers to record it.
+- extendedWaitUntil:
+    notVisible:
+      id: carousel-next-record
+    timeout: 15000

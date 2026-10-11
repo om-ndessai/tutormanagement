@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 
 import { OnboardingProvider } from '@/features/onboarding/onboarding-provider';
+import { useQuickActionHandler, useQuickActionItems } from '@/features/shell/quick-actions';
 import { useStackOptions } from '@/features/shell/stack-options';
 import { LiveSessionHost } from '@/features/teaching/live-session-banner';
 import { useAuth } from '@/providers/auth-provider';
@@ -13,8 +14,11 @@ import { useAuth } from '@/providers/auth-provider';
  * wizard as a full-screen modal route, so the form sheets it opens present over it.
  */
 export default function OrgLayout() {
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
   const options = useStackOptions({ large: false });
+  // Home-screen quick actions follow the roles held in THIS organization (#43).
+  useQuickActionItems(user?.roles);
+  useQuickActionHandler(user?.roles);
   return (
     <LiveSessionHost key={organization?.slug ?? 'none'}>
       <OnboardingProvider>
