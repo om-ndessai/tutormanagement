@@ -18,6 +18,7 @@ import { Button, Divider, Text } from 'react-native-paper';
 
 import { IconButton } from '@/components/icon-button';
 import { Skeleton } from '@/components/skeleton';
+import { SwipeRow, type RowAction } from '@/components/swipe-row';
 import { Tag } from '@/features/teaching/session-card';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -93,13 +94,27 @@ export function ScheduleDates({
       {dates.map((date, index) => (
         <View key={date.occurs_on}>
           {index > 0 ? <Divider /> : null}
-          <DateRow
-            scheduleId={schedule.id}
-            date={date}
-            highlighted={date.occurs_on === highlight}
-            onCancel={mayCancel ? () => openCancel(date.occurs_on) : undefined}
-            onRestore={date.cancellation?.can_restore ? () => restore(date.occurs_on) : undefined}
-          />
+          <SwipeRow
+            testID={`schedule-date-${schedule.id}-${date.occurs_on}`}
+            background={theme.colors.surface}
+            actions={dateActions(
+              date.cancellation
+                ? date.cancellation.can_restore
+                  ? { restore: () => restore(date.occurs_on) }
+                  : {}
+                : mayCancel
+                  ? { cancel: () => openCancel(date.occurs_on) }
+                  : {},
+            )}
+          >
+            <DateRow
+              scheduleId={schedule.id}
+              date={date}
+              highlighted={date.occurs_on === highlight}
+              onCancel={mayCancel ? () => openCancel(date.occurs_on) : undefined}
+              onRestore={date.cancellation?.can_restore ? () => restore(date.occurs_on) : undefined}
+            />
+          </SwipeRow>
         </View>
       ))}
 
@@ -144,18 +159,45 @@ export function ScheduleDates({
           {earlier.map((row, index) => (
             <View key={row.occurs_on}>
               {index > 0 ? <Divider /> : null}
-              <PastCancellationRow
-                scheduleId={schedule.id}
-                row={row}
-                highlighted={row.occurs_on === highlight}
-                onRestore={row.can_restore ? () => restore(row.occurs_on) : undefined}
-              />
+              <SwipeRow
+                testID={`schedule-earlier-${schedule.id}-${row.occurs_on}`}
+                background={theme.colors.surface}
+                actions={dateActions(row.can_restore ? { restore: () => restore(row.occurs_on) } : {})}
+              >
+                <PastCancellationRow
+                  scheduleId={schedule.id}
+                  row={row}
+                  highlighted={row.occurs_on === highlight}
+                  onRestore={row.can_restore ? () => restore(row.occurs_on) : undefined}
+                />
+              </SwipeRow>
             </View>
           ))}
         </>
       ) : null}
     </View>
   );
+}
+
+/**
+ * A date's verbs for the swipe and the menu: Cancel (which opens the cancel sheet, because the
+ * note matters) on a coming date the reader may cancel, Restore on a cancelled one the server
+ * marked `can_restore`. Each mirrors the row's own button, which stays.
+ */
+export function dateActions({ cancel, restore }: { cancel?: () => void; restore?: () => void }): RowAction[] {
+  if (restore) return [{ key: 'restore', label: 'Restore', icon: 'undo', onPress: restore }];
+  if (cancel) {
+    return [
+      {
+        key: 'cancel',
+        label: 'Cancel lesson',
+        icon: 'calendar-remove-outline',
+        destructive: true,
+        onPress: cancel,
+      },
+    ];
+  }
+  return [];
 }
 
 function DateRow({

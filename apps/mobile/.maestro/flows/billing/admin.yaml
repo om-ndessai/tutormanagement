@@ -156,10 +156,13 @@ tags:
 - extendedWaitUntil:
     visible: 'Payment updated.'
     timeout: 15000
+# Centred: at the very foot of the screen the delete button is only half on it, and the tap
+# landed on nothing.
 - scrollUntilVisible:
     element: '\$120\.00'
     direction: DOWN
     timeout: 30000
+    centerElement: true
 - tapOn:
     text: 'Delete the payment involving Anita Patel'
     index: 0

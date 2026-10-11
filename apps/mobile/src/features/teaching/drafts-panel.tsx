@@ -5,6 +5,7 @@ import { Alert, View } from 'react-native';
 import { Button, Card, Divider, Text } from 'react-native-paper';
 
 import { IconButton } from '@/components/icon-button';
+import { SwipeRow } from '@/components/swipe-row';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -97,51 +98,76 @@ export function DraftsList({
         {drafts.map((draft, index) => (
           <View key={draft.id} testID={`draft-${draft.id}`}>
             {index > 0 ? <Divider /> : null}
-            <View style={{ paddingVertical: space.sm, gap: space.sm }}>
-              <View style={{ gap: 2 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-                  <Text variant="bodyLarge" style={{ fontWeight: '600', flexShrink: 1 }} numberOfLines={1}>
-                    {draft.student_name}
+            <SwipeRow
+              testID={`draft-${draft.id}`}
+              background={theme.colors.surface}
+              actions={[
+                {
+                  key: 'continue',
+                  label: 'Continue',
+                  icon: 'file-edit-outline',
+                  onPress: () => onEdit(draft),
+                },
+                ...(posting === null
+                  ? [{ key: 'post', label: 'Post', icon: 'send', onPress: () => void publish(draft) }]
+                  : []),
+                {
+                  key: 'discard',
+                  label: 'Discard',
+                  icon: 'trash-can-outline',
+                  destructive: true,
+                  onPress: () => confirmDiscard(draft),
+                },
+              ]}
+            >
+              <View
+                style={{ paddingVertical: space.sm, gap: space.sm, backgroundColor: theme.colors.surface }}
+              >
+                <View style={{ gap: 2 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+                    <Text variant="bodyLarge" style={{ fontWeight: '600', flexShrink: 1 }} numberOfLines={1}>
+                      {draft.student_name}
+                    </Text>
+                    <Tag label="Draft" />
+                  </View>
+                  <Text variant="bodySmall" style={{ color: muted }}>
+                    {formatSessionDay(draft.occurred_on, today)} ·{' '}
+                    {formatSessionTimes(draft.started_at, draft.ended_at)} · {SESSION_MODE_LABELS[draft.mode]}
+                    {draft.notes || draft.write_up ? '' : ' · no notes yet'}
                   </Text>
-                  <Tag label="Draft" />
                 </View>
-                <Text variant="bodySmall" style={{ color: muted }}>
-                  {formatSessionDay(draft.occurred_on, today)} ·{' '}
-                  {formatSessionTimes(draft.started_at, draft.ended_at)} · {SESSION_MODE_LABELS[draft.mode]}
-                  {draft.notes || draft.write_up ? '' : ' · no notes yet'}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+                  <Button
+                    testID={`draft-continue-${draft.id}`}
+                    mode="outlined"
+                    icon="file-edit-outline"
+                    compact
+                    onPress={() => onEdit(draft)}
+                  >
+                    Continue
+                  </Button>
+                  <Button
+                    testID={`draft-post-${draft.id}`}
+                    mode="contained"
+                    icon="send"
+                    compact
+                    loading={posting === draft.id}
+                    disabled={posting !== null}
+                    onPress={() => void publish(draft)}
+                  >
+                    Post
+                  </Button>
+                  <View style={{ flex: 1 }} />
+                  <IconButton
+                    testID={`draft-discard-${draft.id}`}
+                    icon="trash-can-outline"
+                    accessibilityLabel={`Discard the draft with ${draft.student_name}`}
+                    onPress={() => confirmDiscard(draft)}
+                    style={{ margin: 0 }}
+                  />
+                </View>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-                <Button
-                  testID={`draft-continue-${draft.id}`}
-                  mode="outlined"
-                  icon="file-edit-outline"
-                  compact
-                  onPress={() => onEdit(draft)}
-                >
-                  Continue
-                </Button>
-                <Button
-                  testID={`draft-post-${draft.id}`}
-                  mode="contained"
-                  icon="send"
-                  compact
-                  loading={posting === draft.id}
-                  disabled={posting !== null}
-                  onPress={() => void publish(draft)}
-                >
-                  Post
-                </Button>
-                <View style={{ flex: 1 }} />
-                <IconButton
-                  testID={`draft-discard-${draft.id}`}
-                  icon="trash-can-outline"
-                  accessibilityLabel={`Discard the draft with ${draft.student_name}`}
-                  onPress={() => confirmDiscard(draft)}
-                  style={{ margin: 0 }}
-                />
-              </View>
-            </View>
+            </SwipeRow>
           </View>
         ))}
       </View>

@@ -10,18 +10,14 @@ import { haptics } from '@/lib/haptics';
 import { useDeleteComment } from './api';
 
 /**
- * Withdrawing a comment, wherever it is being read.
- *
- * Renders nothing unless the API said this viewer may do it -- which is the author and nobody
- * else, not even an admin. The decision is never taken here.
+ * Asks, then withdraws a comment: comments are deleted outright, with no way back, so it is a
+ * confirm rather than an Undo. The caller offers it only where the API said `can_delete`.
  */
-export function CommentDeleteButton({ comment, target }: { comment: Comment; target: CommentTarget }) {
-  const toast = useToast();
+export function useConfirmDeleteComment(target: CommentTarget) {
   const remove = useDeleteComment();
+  const toast = useToast();
 
-  if (!comment.can_delete) return null;
-
-  function confirm() {
+  function confirm(comment: Comment) {
     haptics.warning();
     Alert.alert(
       'Delete this comment?',
@@ -35,9 +31,8 @@ export function CommentDeleteButton({ comment, target }: { comment: Comment; tar
             remove.mutate(
               { id: comment.id, target },
               {
-                // The thread is a sheet, which covers the app's toasts: the comment leaving the list
-                // is the confirmation there, said aloud for a screen reader; a failure is an alert,
-                // which shows above any sheet.
+                // The thread is a sheet: the comment leaving the list is the confirmation there,
+                // said aloud for a screen reader; a failure is an alert, which shows above any sheet.
                 onSuccess: () => {
                   AccessibilityInfo.announceForAccessibility('Comment deleted.');
                   toast.success('Comment deleted.');
@@ -56,13 +51,27 @@ export function CommentDeleteButton({ comment, target }: { comment: Comment; tar
     );
   }
 
+  return { confirm, isPending: remove.isPending };
+}
+
+/**
+ * Withdrawing a comment, wherever it is being read.
+ *
+ * Renders nothing unless the API said this viewer may do it -- which is the author and nobody
+ * else, not even an admin. The decision is never taken here.
+ */
+export function CommentDeleteButton({ comment, target }: { comment: Comment; target: CommentTarget }) {
+  const remove = useConfirmDeleteComment(target);
+
+  if (!comment.can_delete) return null;
+
   return (
     <IconButton
       testID={`comment-delete-${comment.id}`}
       icon="trash-can-outline"
       size={20}
       accessibilityLabel="Delete this comment"
-      onPress={confirm}
+      onPress={() => remove.confirm(comment)}
       disabled={remove.isPending}
       style={{ margin: 0 }}
     />

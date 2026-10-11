@@ -4,7 +4,8 @@
 // office, their own row for a tutor, their children's for a parent.
 import { useState, type ReactNode } from 'react';
 import { formatCents, type BalancesResponse, type StudentBalance, type TutorBalance } from '@tmi/shared';
-import { View } from 'react-native';
+import { router } from 'expo-router';
+import { Pressable, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
 import { AdaptiveRow } from '@/components/adaptive-row';
@@ -63,16 +64,19 @@ function LedgerRow({
   summary,
   balance,
   balanceTestID,
+  onPress,
 }: {
   testID: string;
   name: string;
   summary: string;
   balance: number;
   balanceTestID: string;
+  /** The office's shortcut to a payment for this party (ux-audit F-21). */
+  onPress?: () => void;
 }) {
   const theme = useAppTheme();
   const large = useLargeText();
-  return (
+  const content = (
     <AdaptiveRow testID={testID} align="center" gap={space.md} style={{ paddingVertical: 10 }}>
       <View style={{ flex: large ? undefined : 1, minWidth: 0 }}>
         <Text variant="bodyMedium" numberOfLines={large ? undefined : 1} style={{ fontWeight: '500' }}>
@@ -94,6 +98,19 @@ function LedgerRow({
         {formatCents(balance)}
       </Text>
     </AdaptiveRow>
+  );
+  if (!onPress) return content;
+  // Not one accessible element, so its lines are still read (and found by the flows); Record a
+  // payment above is the labelled way to the same sheet.
+  return (
+    <Pressable
+      testID={`${testID}-pay`}
+      accessible={false}
+      onPress={onPress}
+      style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
+    >
+      {content}
+    </Pressable>
   );
 }
 
@@ -164,10 +181,33 @@ export function TutorLedger({ tutors, isAdmin }: { tutors: TutorBalance[]; isAdm
           name={tutor.full_name}
           summary={tutorLedgerSummary(tutor)}
           balance={tutor.balance_cents}
+          onPress={
+            isAdmin
+              ? () =>
+                  router.push({
+                    pathname: '/payment-form',
+                    params: { direction: 'to_tutor', party: tutor.user_id },
+                  })
+              : undefined
+          }
         />
       ))}
     </Ledger>
   );
+}
+
+/** A family's payment: from the primary guardian (or the only one) for this student. */
+export function familyPaymentParams(student: StudentBalance): Record<string, string> {
+  const payer =
+    student.guardians.find((guardian) => guardian.is_primary) ??
+    (student.guardians.length === 1 ? student.guardians[0] : undefined);
+  return payer
+    ? { direction: 'from_parent', party: payer.user_id, student: student.student_user_id }
+    : { direction: 'from_parent' };
+}
+
+function openFamilyPayment(student: StudentBalance) {
+  router.push({ pathname: '/payment-form', params: familyPaymentParams(student) });
 }
 
 export function FamilyLedger({
@@ -198,6 +238,7 @@ export function FamilyLedger({
           name={student.student_name}
           summary={familyLedgerSummary(student)}
           balance={student.balance_cents}
+          onPress={isAdmin ? () => openFamilyPayment(student) : undefined}
         />
       ))}
     </Ledger>

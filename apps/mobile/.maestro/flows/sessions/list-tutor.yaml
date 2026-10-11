@@ -31,7 +31,8 @@ tags:
     id: stat-sessions
 - assertVisible:
     id: stat-time-taught
-- assertVisible: 'Sofia Okafor with Alex Chen'
+# The card is one labelled element (F-20): its names are read through its label.
+- assertVisible: 'Lesson with Sofia Okafor, with Alex Chen.*'
 # Scrolled to, not assumed on screen: a flow that ran before this one may have left a newer lesson.
 - scrollUntilVisible:
     element:

@@ -1,0 +1,74 @@
+# Deactivate from a swipe, and take it back with Undo (B7, ux-audit F-8, F-9). Priya swipes Jade
+# Xu's row (a bulk parent): the trailing actions are Edit and Deactivate. Deactivate is soft, so a
+# swipe runs it at once and the toast offers Undo, which restores her; the row comes back without
+# the Deactivated badge. (The ⋯ menu's Deactivate still asks first; people/delete-restore covers it.)
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/restore-person.js
+      env:
+        PERSON_ID: 22222222-0000-4000-8000-000000000011
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/restore-person.js
+      env:
+        PERSON_ID: 22222222-0000-4000-8000-000000000011
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-search
+    timeout: 20000
+- tapOn:
+    id: people-search
+- inputText: 'Jade Xu'
+- extendedWaitUntil:
+    visible:
+      id: people-row-22222222-0000-4000-8000-000000000011
+    timeout: 15000
+- pressKey: Enter
+# The swipe reveals the verbs; nothing happens on release alone.
+- swipe:
+    from:
+      id: people-row-22222222-0000-4000-8000-000000000011
+    direction: LEFT
+- extendedWaitUntil:
+    visible:
+      id: row-swipe-deactivate
+    timeout: 10000
+- assertVisible:
+    id: row-swipe-edit
+- takeScreenshot: people-row-swipe
+- tapOn:
+    id: row-swipe-deactivate
+- extendedWaitUntil:
+    visible: 'Jade Xu deactivated.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: people-row-22222222-0000-4000-8000-000000000011
+    timeout: 15000
+- tapOn: 'Undo'
+- extendedWaitUntil:
+    visible: 'Jade Xu restored.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: people-row-22222222-0000-4000-8000-000000000011
+    timeout: 15000
+- assertNotVisible:
+    id: people-deleted-22222222-0000-4000-8000-000000000011

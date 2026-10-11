@@ -51,7 +51,36 @@ function close() {
   if (router.canGoBack()) router.back();
 }
 
-export function PaymentFormSheet({ paymentId }: { paymentId: string | undefined }) {
+/** A new payment opened from a ledger row (ux-audit F-21): who it is to or from, and for whom. */
+export interface PaymentPrefill {
+  direction?: PaymentDirection;
+  party?: string;
+  student?: string;
+}
+
+/** Reads the route's params into a prefill; anything unrecognised is dropped. */
+export function paymentPrefill(params: {
+  direction?: string;
+  party?: string;
+  student?: string;
+}): PaymentPrefill {
+  const direction = (PAYMENT_DIRECTIONS as readonly string[]).includes(params.direction ?? '')
+    ? (params.direction as PaymentDirection)
+    : undefined;
+  return {
+    direction,
+    party: direction && params.party ? params.party : undefined,
+    student: direction === 'from_parent' && params.party && params.student ? params.student : undefined,
+  };
+}
+
+export function PaymentFormSheet({
+  paymentId,
+  prefill = {},
+}: {
+  paymentId: string | undefined;
+  prefill?: PaymentPrefill;
+}) {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   // The list the payment was opened from: the edit sheet is reached only from it.
@@ -62,7 +91,7 @@ export function PaymentFormSheet({ paymentId }: { paymentId: string | undefined 
     // The API refuses anyone else; the sheet says so rather than offering a form that cannot save.
     body = <EmptyState icon="lock-outline" title="Only an admin can record payments." />;
   } else if (!paymentId) {
-    body = <PaymentFormBody existing={null} />;
+    body = <PaymentFormBody existing={null} prefill={prefill} />;
   } else if (list.isPending) {
     body = <FormSkeleton label="Loading the payment…" fields={5} />;
   } else if (list.isError) {
@@ -84,7 +113,13 @@ export function PaymentFormSheet({ paymentId }: { paymentId: string | undefined 
   );
 }
 
-export function PaymentFormBody({ existing }: { existing: Payment | null }) {
+export function PaymentFormBody({
+  existing,
+  prefill = {},
+}: {
+  existing: Payment | null;
+  prefill?: PaymentPrefill;
+}) {
   const theme = useAppTheme();
   const toast = useToast();
   const timeZone = useOrgTimeZone();
@@ -94,9 +129,11 @@ export function PaymentFormBody({ existing }: { existing: Payment | null }) {
   const [initialWhen] = useState(() =>
     existing ? instantToOrgClock(existing.paid_at, timeZone) : orgNow(timeZone),
   );
-  const [direction, setDirection] = useState<PaymentDirection>(existing?.direction ?? 'from_parent');
-  const [partyId, setPartyId] = useState(existing?.party_user_id ?? '');
-  const [studentId, setStudentId] = useState(existing?.student_user_id ?? '');
+  const [direction, setDirection] = useState<PaymentDirection>(
+    existing?.direction ?? prefill.direction ?? 'from_parent',
+  );
+  const [partyId, setPartyId] = useState(existing?.party_user_id ?? prefill.party ?? '');
+  const [studentId, setStudentId] = useState(existing?.student_user_id ?? prefill.student ?? '');
   const [amount, setAmount] = useState(centsToInput(existing?.amount_cents));
   const [method, setMethod] = useState<PaymentForm>(existing?.method ?? 'zelle');
   const [day, setDay] = useState(initialWhen.day);

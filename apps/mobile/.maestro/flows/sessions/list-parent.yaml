@@ -26,7 +26,8 @@ tags:
       id: session-card-50000000-0000-4000-8000-000000000005
     timeout: 20000
 - assertVisible: 'Lessons taught, and how they went.'
-- assertVisible: 'Sanjay Patel with Priya Raghavan'
+# The card is one labelled element (F-20): its names are read through its label.
+- assertVisible: 'Lesson with Sanjay Patel, with Priya Raghavan.*'
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'

@@ -14,6 +14,7 @@ import { View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
 import { Skeleton } from '@/components/skeleton';
+import { SwipeRow, type RowAction } from '@/components/swipe-row';
 import { ErrorState } from '@/components/state-views';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -22,7 +23,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { formatInstant } from '@/features/users/people-model';
 import { useAddComment, useComments } from './api';
-import { CommentDeleteButton } from './comment-delete-button';
+import { CommentDeleteButton, useConfirmDeleteComment } from './comment-delete-button';
 
 /**
  * The reverse-chronological view of everything said about one thing, with the box to add to it.
@@ -168,28 +169,44 @@ function Composer({
 function CommentRow({ comment, target, first }: { comment: Comment; target: CommentTarget; first: boolean }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
+  const remove = useConfirmDeleteComment(target);
+  // Delete is the author's only (`can_delete`); anybody else's comment has no swipe and no menu.
+  const actions: RowAction[] = comment.can_delete
+    ? [
+        {
+          key: 'delete',
+          label: 'Delete',
+          icon: 'trash-can-outline',
+          destructive: true,
+          onPress: () => remove.confirm(comment),
+        },
+      ]
+    : [];
   return (
-    <View
-      testID={`comment-${comment.id}`}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: space.sm,
-        paddingVertical: space.md,
-        borderTopWidth: first ? 0 : 1,
-        borderTopColor: theme.colors.outlineVariant,
-      }}
-    >
-      <View style={{ flex: 1, minWidth: 0, gap: space.xs }}>
-        <Text variant="bodyMedium">
-          <Text style={{ fontWeight: '700' }}>{comment.author_name}</Text>
-          <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-            {` · ${formatInstant(comment.created_at, timeZone, '')}`}
+    <SwipeRow actions={actions} testID={`comment-${comment.id}`} background={theme.colors.background}>
+      <View
+        testID={`comment-${comment.id}`}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          gap: space.sm,
+          paddingVertical: space.md,
+          backgroundColor: theme.colors.background,
+          borderTopWidth: first ? 0 : 1,
+          borderTopColor: theme.colors.outlineVariant,
+        }}
+      >
+        <View style={{ flex: 1, minWidth: 0, gap: space.xs }}>
+          <Text variant="bodyMedium">
+            <Text style={{ fontWeight: '700' }}>{comment.author_name}</Text>
+            <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+              {` · ${formatInstant(comment.created_at, timeZone, '')}`}
+            </Text>
           </Text>
-        </Text>
-        <Text variant="bodyMedium">{comment.body}</Text>
+          <Text variant="bodyMedium">{comment.body}</Text>
+        </View>
+        <CommentDeleteButton comment={comment} target={target} />
       </View>
-      <CommentDeleteButton comment={comment} target={target} />
-    </View>
+    </SwipeRow>
   );
 }

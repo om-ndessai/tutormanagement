@@ -19,6 +19,7 @@ import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { SecureMoney } from '@/components/secure-money';
+import { SwipeRow } from '@/components/swipe-row';
 import { Skeleton } from '@/components/skeleton';
 import { StatCard, StatGrid } from '@/components/stat-card';
 import { EmptyState, ErrorState } from '@/components/state-views';
@@ -38,6 +39,7 @@ import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments, useSession } from './api';
 import { DraftsPanel } from './drafts-panel';
 import { SessionCard } from './session-card';
+import { sessionRowActions, useConfirmDeleteSession } from './session-row-actions';
 import { SessionFilters } from './session-filters';
 import { SessionMoney } from './session-money';
 import { organizationToday, type DateBounds, type SessionRange } from './session-ranges';
@@ -56,6 +58,7 @@ export function SessionsScreen() {
 
   const [tab] = useTutoringFinanceTab();
   const money = tab === 'finance';
+  const confirmDeleteSession = useConfirmDeleteSession(money);
 
   const [range, setRange] = useState<SessionRange>('all');
   const [bounds, setBounds] = useState<DateBounds>({ from: '', to: '' });
@@ -75,7 +78,10 @@ export function SessionsScreen() {
   const clearFocus = () => router.setParams({ focus: undefined });
 
   const listSessions = pages.data?.pages.flatMap((page) => page.data) ?? [];
-  const sessions = focusId ? (focused.data ? [focused.data.data] : []) : listSessions;
+  // A focused lesson deleted (from its card's menu) answers 404 on the refetch, while the query
+  // keeps its last data: it is gone, so the card goes too.
+  const focusGone = focused.isError && isNotFound(focused.error);
+  const sessions = focusId ? (focused.data && !focusGone ? [focused.data.data] : []) : listSessions;
   const isPending = focusId ? focused.isPending : pages.isPending;
   const error = focusId
     ? focused.isError && !isNotFound(focused.error)
@@ -303,17 +309,29 @@ export function SessionsScreen() {
       testID="screen-sessions"
       data={sessions}
       keyExtractor={(session) => session.id}
-      renderItem={({ item }) => (
-        <View style={{ paddingBottom: space.md }}>
-          <SessionCard
-            session={item}
-            today={today}
-            onPress={openSession}
-            money={money ? <SessionMoney session={item} /> : undefined}
-          />
-        </View>
-      )}
-      extraData={money}
+      renderItem={({ item }) => {
+        const actions = sessionRowActions(item, user, {
+          showMoney: money,
+          onDelete: confirmDeleteSession.confirm,
+        });
+        return (
+          <View style={{ paddingBottom: space.md }}>
+            <SwipeRow actions={actions} testID={`session-card-${item.id}`}>
+              {({ openMenu }) => (
+                <SessionCard
+                  session={item}
+                  today={today}
+                  onPress={openSession}
+                  money={money ? <SessionMoney session={item} /> : undefined}
+                  actions={actions}
+                  onLongPress={openMenu}
+                />
+              )}
+            </SwipeRow>
+          </View>
+        );
+      }}
+      extraData={`${money}-${user?.id ?? ''}`}
       ListHeaderComponent={header}
       ListFooterComponent={footer}
       ListEmptyComponent={

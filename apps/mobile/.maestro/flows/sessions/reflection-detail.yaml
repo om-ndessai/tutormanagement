@@ -38,7 +38,9 @@ tags:
     visible:
       id: session-reflect-${output.sessionId}
     timeout: 20000
-- tapOn: 'Open the lesson: .*'
+# The card's content is one labelled button that opens the lesson (F-20).
+- tapOn:
+    id: session-card-${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-reflect
@@ -95,11 +97,15 @@ tags:
     visible:
       id: session-assess-${output.sessionId}
     timeout: 20000
+# The tag is inside the card's one accessible element, so it is read through the card's label.
 - assertVisible:
-    id: session-reflected-${output.sessionId}
+    id: session-card-${output.sessionId}
+    text: '.*Student reflected.*'
 - assertNotVisible:
     id: session-reflect-${output.sessionId}
-- tapOn: 'Open the lesson: .*'
+# The card's content is one labelled button that opens the lesson (F-20).
+- tapOn:
+    id: session-card-${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-reflection

@@ -64,7 +64,11 @@ the `[~]` item, then carry on down the list.
   > teaching roles only); Android `schedule/calendar` (by hand, see build-log); dark and large-text
   > re-shots of the Next up card. `expo-quick-actions` carries a patch-package patch for iOS cold
   > starts under the scene life cycle.
-- [ ] 44. Mobile UX: swipe actions, context menus and undo (B7, L)
+- [x] 44. Mobile UX: swipe actions, context menus and undo (B7, L)
+  > Deferred from B7: iOS `Link.Menu`/`Link.Preview`/`Link.AppleZoom` (F-29; one Paper menu serves
+  > both platforms now); the once-per-device swipe peek; F-9's optimistic cancel/restore/star/comment
+  > (Undo already exists on cancel and deactivate); F-27's FlashList for the payment log, ledgers and
+  > Progress (each screen needs a list root); dark and large-text re-shots of the swipe and menu.
 - [ ] 45. Mobile UX: live lesson on the lock screen — Live Activity and Android ongoing notification (B8, L, native rebuild)
 
 **Phase 2 gate (2026-10-10), after B1–B5:** full suite, 76 flows, fresh DB, rebooted 4-core

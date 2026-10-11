@@ -40,7 +40,9 @@ tags:
     visible:
       id: session-assess-${output.sessionId}
     timeout: 20000
-- tapOn: 'Open the lesson: .*'
+# The card's content is one labelled button that opens the lesson (F-20).
+- tapOn:
+    id: session-card-${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-assess
@@ -96,7 +98,9 @@ tags:
     visible:
       id: session-assess-${output.sessionId}
     timeout: 20000
-- tapOn: 'Open the lesson: .*'
+# The card's content is one labelled button that opens the lesson (F-20).
+- tapOn:
+    id: session-card-${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-assessment-00000000-0000-4000-8000-000000000003
@@ -165,7 +169,9 @@ tags:
     timeout: 20000
 - assertNotVisible:
     id: session-assess-${output.sessionId}
-- tapOn: 'Open the lesson: .*'
+# The card's content is one labelled button that opens the lesson (F-20).
+- tapOn:
+    id: session-card-${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-reflect

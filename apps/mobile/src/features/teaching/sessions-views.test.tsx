@@ -31,6 +31,7 @@ jest.mock('./api', () => ({
   useMyDrafts: () => ({ data: undefined }),
   usePostDraft: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useDiscardDraft: () => ({ mutate: jest.fn(), isPending: false }),
+  useDeleteSession: () => ({ mutate: jest.fn(), isPending: false }),
 }));
 const mockPages = jest.fn();
 jest.mock('./use-session-pages', () => ({

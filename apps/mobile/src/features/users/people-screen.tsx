@@ -84,11 +84,12 @@ export function PeopleScreen() {
   const users = useMemo(() => data?.pages.flatMap((page) => page.data) ?? [], [data]);
   const total = data?.pages[0]?.meta.total ?? 0;
 
-  const { deactivate, restore, hardDelete, dialog } = useUserActions();
+  const { deactivate, deactivateNow, restore, hardDelete, dialog } = useUserActions();
   const actions: RowActions = {
     onView: (user: User) => router.push({ pathname: '/people/[id]', params: { id: user.id } }),
     onEdit: (user: User) => router.push({ pathname: '/person-form', params: { id: user.id } }),
     onDeactivate: deactivate,
+    onDeactivateNow: deactivateNow,
     onRestore: restore,
     onDelete: hardDelete,
   };

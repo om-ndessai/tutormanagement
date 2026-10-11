@@ -10,6 +10,7 @@ import { Divider, Text } from 'react-native-paper';
 import { IconButton } from '@/components/icon-button';
 import { EmptyNote, Panel } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
+import { SwipeRow } from '@/components/swipe-row';
 import { useToast } from '@/components/toast';
 import { formatPaidOn, orgToday } from '@/features/dashboard/finance-format';
 import { ApiRequestError } from '@/lib/api-client';
@@ -117,34 +118,54 @@ export function PaymentLog({
           <View key={payment.id}>
             {index > 0 ? <Divider /> : null}
             {isAdmin ? (
-              <View
+              <SwipeRow
                 testID={`billing-payment-${payment.id}`}
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                background={theme.colors.surface}
+                actions={[
+                  { key: 'edit', label: 'Edit', icon: 'pencil-outline', onPress: () => openEdit(payment) },
+                  // A payment is deleted outright (no restore route), so it still asks first.
+                  {
+                    key: 'delete',
+                    label: 'Delete',
+                    icon: 'trash-can-outline',
+                    destructive: true,
+                    onPress: () => confirmDelete(payment),
+                  },
+                ]}
               >
-                {/* Not one accessible element: that would hide its lines from VoiceOver (and the
+                {({ openMenu }) => (
+                  <View
+                    testID={`billing-payment-${payment.id}`}
+                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                  >
+                    {/* Not one accessible element: that would hide its lines from VoiceOver (and the
                     flows). The pencil is the labelled way in; the row is a bigger target for it. */}
-                <Pressable
-                  accessible={false}
-                  onPress={() => openEdit(payment)}
-                  style={({ pressed }) => ({ flex: 1, opacity: pressed ? 0.7 : 1 })}
-                >
-                  {row}
-                </Pressable>
-                <IconButton
-                  testID={`billing-payment-edit-${payment.id}`}
-                  icon="pencil-outline"
-                  accessibilityLabel={`Edit the payment involving ${payment.party_name}`}
-                  onPress={() => openEdit(payment)}
-                  style={{ margin: 0 }}
-                />
-                <IconButton
-                  testID={`billing-payment-delete-${payment.id}`}
-                  icon="trash-can-outline"
-                  accessibilityLabel={`Delete the payment involving ${payment.party_name}`}
-                  onPress={() => confirmDelete(payment)}
-                  style={{ margin: 0 }}
-                />
-              </View>
+                    <Pressable
+                      accessible={false}
+                      onPress={() => openEdit(payment)}
+                      onLongPress={openMenu}
+                      delayLongPress={400}
+                      style={({ pressed }) => ({ flex: 1, opacity: pressed ? 0.7 : 1 })}
+                    >
+                      {row}
+                    </Pressable>
+                    <IconButton
+                      testID={`billing-payment-edit-${payment.id}`}
+                      icon="pencil-outline"
+                      accessibilityLabel={`Edit the payment involving ${payment.party_name}`}
+                      onPress={() => openEdit(payment)}
+                      style={{ margin: 0 }}
+                    />
+                    <IconButton
+                      testID={`billing-payment-delete-${payment.id}`}
+                      icon="trash-can-outline"
+                      accessibilityLabel={`Delete the payment involving ${payment.party_name}`}
+                      onPress={() => confirmDelete(payment)}
+                      style={{ margin: 0 }}
+                    />
+                  </View>
+                )}
+              </SwipeRow>
             ) : (
               <View testID={`billing-payment-${payment.id}`}>{row}</View>
             )}

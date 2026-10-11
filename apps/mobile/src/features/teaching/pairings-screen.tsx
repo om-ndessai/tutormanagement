@@ -15,6 +15,7 @@ import { AdaptiveRow } from '@/components/adaptive-row';
 import { useLargeText } from '@/hooks/use-large-text';
 import { PageIntro } from '@/components/page-intro';
 import { IconButton } from '@/components/icon-button';
+import { SwipeRow } from '@/components/swipe-row';
 import { FocusNotice } from '@/components/focus-notice';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { Screen } from '@/components/screen';
@@ -150,14 +151,34 @@ export function PairingsScreen() {
       ) : null}
 
       {assignments.map((assignment) => (
-        <PairingCard
+        // The office's verbs on a swipe and a long press too (ux-audit F-8); Remove still asks,
+        // as a pairing removed is gone. Nobody else gets either.
+        <SwipeRow
           key={assignment.id}
-          assignment={assignment}
-          isAdmin={isAdmin}
-          seesPay={seesPairingPay(assignment, viewer)}
-          onEdit={() => openForm(assignment)}
-          onRemove={() => confirmRemove(assignment)}
-        />
+          testID={`pairing-card-${assignment.id}`}
+          actions={
+            isAdmin
+              ? [
+                  { key: 'edit', label: 'Edit', icon: 'pencil-outline', onPress: () => openForm(assignment) },
+                  {
+                    key: 'remove',
+                    label: 'Remove',
+                    icon: 'trash-can-outline',
+                    destructive: true,
+                    onPress: () => confirmRemove(assignment),
+                  },
+                ]
+              : []
+          }
+        >
+          <PairingCard
+            assignment={assignment}
+            isAdmin={isAdmin}
+            seesPay={seesPairingPay(assignment, viewer)}
+            onEdit={() => openForm(assignment)}
+            onRemove={() => confirmRemove(assignment)}
+          />
+        </SwipeRow>
       ))}
     </Screen>
   );

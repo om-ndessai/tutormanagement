@@ -82,5 +82,15 @@ export function useUserActions({ onDeleted }: { onDeleted?: (person: Person) => 
     />
   );
 
-  return { deactivate, restore: (person: Person) => void restore(person), hardDelete, dialog };
+  return {
+    deactivate,
+    /** Without asking, for a swipe: soft, and the toast's Undo restores at once (ux-audit F-8). */
+    deactivateNow: (person: Person) => {
+      haptics.warning();
+      void deactivateNow(person);
+    },
+    restore: (person: Person) => void restore(person),
+    hardDelete,
+    dialog,
+  };
 }
