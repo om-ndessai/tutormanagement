@@ -1,0 +1,84 @@
+# One reader's money, from their own side only (R1-R4): Sessions' Finance tab (its total tile, a
+# lesson's SessionMoney), the same lesson's detail opened from Finance, and Billing. Each is
+# asserted to carry the reader's own labels and never the other side's.
+#
+# env: PERSONA (email), NAME (for screenshots), LESSON (a lesson id they can see),
+#      STAT (the total tile they get) and NOSTAT (the one they must not),
+#      SEE (a regex for their own SessionMoney label) and NEVER (a regex for every other side's),
+#      BILL (the Billing element that is theirs), BILL_SEE and BILL_NEVER (Billing's headings),
+#      OFFICE ('yes' for an admin; anyone else must have none of the office's Billing).
+appId: ${APP_ID}
+---
+- runFlow:
+    file: ../sign-in-as.yaml
+    env:
+      PERSONA: ${PERSONA}
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: 'dashboard-(section-analytics|student|parent)'
+    timeout: 30000
+# Sessions, Finance: the reader's own total, and lessons labelled from their side.
+- runFlow:
+    file: ../open-link.yaml
+    env:
+      LINK: tutorportal://sessions?tab=finance
+- extendedWaitUntil:
+    visible:
+      id: ${STAT}
+    timeout: 20000
+- assertNotVisible:
+    id: ${NOSTAT}
+- assertVisible:
+    id: sessions-export
+- scrollUntilVisible:
+    element:
+      id: session-money
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ${SEE}
+- assertNotVisible: ${NEVER}
+- takeScreenshot: exposure-finance-${NAME}
+# The lesson's detail from Finance: the same side, and only it.
+- runFlow:
+    file: ../open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${LESSON}&tab=finance
+- extendedWaitUntil:
+    visible:
+      id: session-preview-${LESSON}
+    timeout: 20000
+- tapOn:
+    id: session-preview-${LESSON}
+- extendedWaitUntil:
+    visible:
+      id: session-money
+    timeout: 15000
+- assertVisible: ${SEE}
+- assertNotVisible: ${NEVER}
+- takeScreenshot: exposure-finance-lesson-${NAME}
+# Billing: their own ledger, never the other side's or (for anyone but the office) the office's.
+- runFlow:
+    file: ../open-link.yaml
+    env:
+      LINK: tutorportal://billing
+- extendedWaitUntil:
+    visible:
+      id: ${BILL}
+    timeout: 20000
+- assertVisible: ${BILL_SEE}
+- assertNotVisible: ${BILL_NEVER}
+- runFlow:
+    when:
+      true: ${OFFICE != 'yes'}
+    commands:
+      - assertNotVisible:
+          id: billing-record
+      - assertNotVisible:
+          id: billing-tax-summary
+      - assertNotVisible:
+          id: stat-owed-to-tutors
+      - assertNotVisible: 'Owed by families'
+      - assertNotVisible: 'Top-ups due'
+- takeScreenshot: exposure-billing-${NAME}

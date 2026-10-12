@@ -1,0 +1,135 @@
+# The 1099-NEC printed on the device (Priya). From the Finance tab's year-end list she opens Alex
+# Chen's form: the amount paid in the year, the payer's TIN and address from the organization
+# settings, and Alex's mailing address are filled in. She types a test SSN (the field is secure;
+# the reveal shows it formatted), prints, and the system print UI opens; she cancels it and the app
+# is still there. Reopening the sheet, the SSN field is empty. Screen capture is prevented while
+# the sheet is open, so its screenshots are blank by design: everything is asserted through the
+# view hierarchy. Changes no data.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-admin
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: year-end-1099-00000000-0000-4000-8000-000000000003
+    direction: DOWN
+    timeout: 30000
+    # Centred, so the button is clear of the floating tab bar before the tap.
+    centerElement: true
+- takeScreenshot: year-end-list
+- tapOn:
+    id: year-end-1099-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: form-1099-ssn
+    timeout: 15000
+- assertVisible:
+    id: form-1099-title
+    text: '20[0-9]{2} 1099-NEC for Alex Chen'
+- assertVisible:
+    id: form-1099-amount
+    text: '\$[0-9,.]+ was paid to Alex Chen in 20[0-9]{2}\..*'
+# Prefilled: the payer from the organization settings, the recipient from Alex's record.
+- assertVisible:
+    id: form-1099-payer-tin
+    text: '47-2019388'
+- assertVisible:
+    id: form-1099-payer-address
+    text: '(?s)100 Franklin Street.*'
+- assertVisible:
+    id: form-1099-address
+    text: '(?s)88 Kildaire Farm Road.*Cary, NC 27513'
+- tapOn:
+    id: form-1099-ssn
+- inputText: '123456789'
+- tapOn:
+    id: form-1099-ssn-reveal
+- assertVisible:
+    id: form-1099-ssn-shown
+    text: '123-45-6789'
+# The number pad has no return key: a tap on the heading puts it away (a swipe over the keyboard
+# would type a digit).
+- tapOn:
+    id: form-1099-title
+- scrollUntilVisible:
+    element:
+      id: form-1099-print
+    direction: DOWN
+    timeout: 10000
+# Nine digits: the button says what it will do.
+- assertVisible: 'Print 1099-NEC'
+- tapOn:
+    id: form-1099-print
+# The system print UI: iOS's print panel, Android's print spooler.
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible: 'Options'
+          timeout: 20000
+      - assertVisible: 'Printer'
+      - takeScreenshot: form-1099-print-ui
+      - tapOn: 'Cancel'
+      # A tap while the panel is still sliding in is lost: tap again if it is still there.
+      - runFlow:
+          when:
+            visible: 'Options'
+          commands:
+            - tapOn: 'Cancel'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'com.android.printspooler:id/.*'
+          timeout: 30000
+      - takeScreenshot: form-1099-print-ui
+      - back
+# The sheet closed with the print UI, and the app is alive behind it.
+- extendedWaitUntil:
+    visible:
+      id: year-end-1099-00000000-0000-4000-8000-000000000003
+    timeout: 20000
+- assertNotVisible:
+    id: screen-form-1099
+# Reopened: nothing of the number survives.
+- tapOn:
+    id: year-end-1099-00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: form-1099-ssn
+    timeout: 15000
+- assertNotVisible:
+    id: form-1099-ssn-shown
+- assertNotVisible: '.*123.?45.?6789.*'
+- tapOn:
+    id: form-1099-title
+- scrollUntilVisible:
+    element:
+      id: form-1099-cancel
+    direction: DOWN
+    timeout: 10000
+- assertVisible: 'Enter nine digits'
+- tapOn:
+    id: form-1099-cancel
+- extendedWaitUntil:
+    notVisible:
+      id: screen-form-1099
+    timeout: 10000

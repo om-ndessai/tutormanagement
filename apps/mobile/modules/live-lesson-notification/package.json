@@ -1,0 +1,6 @@
+{
+  "name": "live-lesson-notification",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The live lesson's ongoing notification: a system chronometer, promoted to a Live Update on Android 16+ (Android)."
+}

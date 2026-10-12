@@ -1,0 +1,5 @@
+<!-- The π strokes alone, white on transparent, on the app icon's 48-unit canvas.
+     The Icon Composer layer (assets/tutor-portal.icon) and, cropped, the splash image. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 48 48">
+  <path d="M13 18h22M20 18v14M29 18v10c0 2.6 1.4 4 3.6 4" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

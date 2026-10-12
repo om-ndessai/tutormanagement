@@ -1,0 +1,91 @@
+# A tutor takes the tour from the account menu (Alex): the wizard, Take the tour, then the
+# dashboard dimmed with one part lit and a card ("1 of N"); Back and Next move between steps, and
+# Finish brings the wizard back on confirming his details (a non-admin's last step). Closing it
+# changes nothing: he had been through it already.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- assertNotVisible:
+    id: tour-offer
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-tour
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: account-tour
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+- assertNotVisible:
+    id: onboarding-choice-student
+- assertVisible:
+    id: onboarding-confirm-mine
+- tapOn:
+    id: onboarding-choice-tour
+- extendedWaitUntil:
+    visible:
+      id: tour-card
+    timeout: 15000
+- assertVisible: '1 of .*'
+- assertVisible: 'Your teaching at a glance'
+- takeScreenshot: tour-step-1
+- tapOn:
+    id: tour-next
+- extendedWaitUntil:
+    visible: 'Your lessons'
+    timeout: 5000
+- assertVisible: '2 of .*'
+- tapOn:
+    id: tour-back
+- extendedWaitUntil:
+    visible: 'Your teaching at a glance'
+    timeout: 5000
+- tapOn:
+    id: tour-next
+- tapOn:
+    id: tour-next
+- takeScreenshot: tour-step-3
+# On through the menu to the end.
+- repeat:
+    while:
+      visible:
+        id: tour-next
+    commands:
+      - tapOn:
+          id: tour-next
+- assertVisible: 'Your profile'
+- assertVisible: '.*You will find it under More.'
+- takeScreenshot: tour-last-step
+- tapOn:
+    id: tour-finish
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-confirm
+    timeout: 15000
+- assertVisible: 'Confirm your details'
+- tapOn:
+    id: onboarding-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: tour

@@ -1,0 +1,205 @@
+# Organizations apart (R13), on the phone. Priya is admin + tutor in chmi and a tutor in riverside.
+# In chmi she opens Sofia's record (chmi only). She switches to riverside from the account sheet:
+# the record she just read is "not found" there (the cache went with the switch, and the server
+# scopes it), and no chmi-only person, pairing note or name appears on Home, Sessions (nor a chmi
+# lesson by link), Progress, Pairings, People search or Search -- while riverside's own rows do.
+# Back in chmi, riverside's pairing is gone again, and Alex's record (shared by both) carries none
+# of riverside's notes about him.
+appId: ${APP_ID}
+tags:
+  - exposure
+env:
+  SOFIA: 00000000-0000-4000-8000-000000000008
+  ALEX: 00000000-0000-4000-8000-000000000003
+  SANJAY: 00000000-0000-4000-8000-000000000006
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+# Shown in chmi.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${SOFIA}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- extendedWaitUntil:
+    visible: 'Sofia Okafor'
+    timeout: 15000
+# Switch to riverside, from Home's account button.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 15000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: account-org-riverside
+    timeout: 10000
+- tapOn:
+    id: account-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- assertVisible: 'Riverside Tutoring'
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+- repeat:
+    times: 3
+    commands:
+      - scroll
+      - runFlow: ../../subflows/exposure/no-chmi.yaml
+- takeScreenshot: exposure-riverside-home
+# The chmi record she read a moment ago: not found here, never served from a cache.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${SOFIA}
+- extendedWaitUntil:
+    visible: 'Not found\..*'
+    timeout: 20000
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+- takeScreenshot: exposure-riverside-chmi-record
+# Sessions: her riverside lesson; a chmi lesson by link is not there.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions
+- extendedWaitUntil:
+    visible:
+      id: session-card-0b300000-0000-4000-8000-000000000004
+    timeout: 20000
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=50000000-0000-4000-8000-000000000002
+- extendedWaitUntil:
+    visible:
+      id: focus-notice
+    timeout: 15000
+- assertNotVisible:
+    id: session-card-50000000-0000-4000-8000-000000000002
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+# Progress: Sanjay, whom she teaches here; no chmi student.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://progress
+- extendedWaitUntil:
+    visible:
+      id: progress-row-${SANJAY}
+    timeout: 20000
+- assertNotVisible:
+    id: progress-row-${SOFIA}
+- assertNotVisible:
+    id: progress-row-00000000-0000-4000-8000-000000000009
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+- takeScreenshot: exposure-riverside-progress
+# Pairings: riverside's own, with its own note.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-0b200000-0000-4000-8000-000000000003
+    timeout: 20000
+- assertVisible: 'Riverside: Sanjay, weekend review.'
+- assertNotVisible:
+    id: pairing-card-a0000000-0000-4000-8000-000000000004
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+# People, searched by a chmi family's name: nobody.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people
+- extendedWaitUntil:
+    visible:
+      id: people-search
+    timeout: 20000
+- tapOn:
+    id: people-search
+- inputText: Okafor
+- extendedWaitUntil:
+    visible:
+      id: people-empty
+    timeout: 15000
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+- takeScreenshot: exposure-riverside-people
+# Search, likewise.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 15000
+- tapOn:
+    id: search-input
+- inputText: Whitfield
+- extendedWaitUntil:
+    visible:
+      id: search-empty
+    timeout: 15000
+- assertNotVisible:
+    id: 'search-person-.*'
+- runFlow: ../../subflows/exposure/no-chmi.yaml
+- takeScreenshot: exposure-riverside-search
+# Back to chmi, by a fresh entry: riverside's pairing is gone, chmi's is back.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-analytics
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://pairings?focus=a0000000-0000-4000-8000-000000000004
+- extendedWaitUntil:
+    visible:
+      id: pairing-card-a0000000-0000-4000-8000-000000000004
+    timeout: 20000
+- assertNotVisible: '.*Riverside: Sanjay, weekend review.*'
+# Alex is in both; riverside's note about him belongs to riverside alone.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://people/${ALEX}
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-comments
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: person-comments
+- extendedWaitUntil:
+    visible:
+      id: comments-composer
+    timeout: 15000
+- assertVisible: 'Nothing has been noted here yet.'
+- assertNotVisible: '.*Riverside note.*'
+- takeScreenshot: exposure-chmi-alex-comments

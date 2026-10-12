@@ -1,0 +1,122 @@
+# A half-filled form is never lost to a swipe or Back (ux-audit F-3, B5). Priya opens the payment
+# form from Billing: untouched, a swipe down (iOS) or Back (Android) closes it without a word. With
+# a direction chosen and an amount typed, the same gesture asks "Discard changes?": Keep editing
+# leaves her in the form with both still there; Discard closes it, and nothing was recorded.
+# Cancel asks the same.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+    timeout: 20000
+
+# Untouched: leaving asks nothing.
+- tapOn:
+    id: billing-record
+- extendedWaitUntil:
+    visible:
+      id: payment-amount
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-payment-form
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+    timeout: 10000
+- assertNotVisible: 'Discard changes\?'
+
+# Typed into: the gesture asks first, and Keep editing keeps what was typed.
+- tapOn:
+    id: billing-record
+- extendedWaitUntil:
+    visible:
+      id: payment-amount
+    timeout: 15000
+- tapOn:
+    id: payment-direction-to_tutor
+- extendedWaitUntil:
+    visible: 'Choose a tutor'
+    timeout: 5000
+- scrollUntilVisible:
+    element:
+      id: payment-amount
+    centerElement: true
+- tapOn:
+    id: payment-amount
+- inputText: '12.34'
+# Put the keyboard away by tapping a plain label, then back to the top of the sheet, so the
+# swipe moves the sheet rather than the form inside it.
+- tapOn: 'Paid by'
+- scrollUntilVisible:
+    element: 'Direction'
+    direction: UP
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-payment-form
+- extendedWaitUntil:
+    visible: 'Discard changes\?'
+    timeout: 10000
+- takeScreenshot: unsaved-guard-confirm
+- tapOn: 'Keep editing'
+- extendedWaitUntil:
+    visible:
+      id: payment-amount
+    timeout: 10000
+- assertVisible: 'Choose a tutor'
+- scrollUntilVisible:
+    element:
+      text: '.*12\.34.*'
+    centerElement: true
+- assertNotVisible: 'Discard changes\?'
+
+# The form's own Cancel asks the same; Discard closes it.
+- scrollUntilVisible:
+    element:
+      id: payment-cancel
+    centerElement: true
+- tapOn:
+    id: payment-cancel
+- extendedWaitUntil:
+    visible: 'Discard changes\?'
+    timeout: 10000
+- tapOn: 'Keep editing'
+- assertVisible:
+    id: payment-cancel
+
+# Swipe or Back again, and Discard: the sheet goes, and no payment was recorded.
+- scrollUntilVisible:
+    element: 'Direction'
+    direction: UP
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-payment-form
+- extendedWaitUntil:
+    visible: 'Discard changes\?'
+    timeout: 10000
+- tapOn: 'Discard'
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+    timeout: 10000
+- assertNotVisible:
+    id: payment-amount
+- assertNotVisible: 'Payment recorded.'

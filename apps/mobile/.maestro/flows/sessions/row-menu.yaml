@@ -1,0 +1,72 @@
+# A lesson's verbs on a long press (B7, ux-audit F-8). Alex holds his own lesson's card on the
+# Tutoring tab: the menu offers Edit and Delete (his own lesson, as the API allows) and no money;
+# Delete still asks, because a lesson is a billing record with no way back; the card goes.
+# Swipes are flaky under Maestro, so the menu is the path the flows take (the same verbs).
+appId: ${APP_ID}
+# Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
+# one) are removed before this flow, and whatever this flow leaves is removed after it.
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - feature
+  - exposure
+---
+- runScript:
+    file: ../../scripts/record-recent-lesson.js
+    env:
+      TUTOR_EMAIL: alex.chen.math@gmail.com
+      TUTOR_ID: 00000000-0000-4000-8000-000000000003
+      STUDENT_ID: 00000000-0000-4000-8000-000000000008
+      ORG: chmi
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://sessions?focus=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: session-card-${output.sessionId}
+    timeout: 20000
+# The card is one labelled element (F-20) naming the lesson, with no money in what it says.
+- assertVisible:
+    id: session-card-${output.sessionId}
+    text: 'Lesson with Sofia Okafor, with Alex Chen.*'
+- longPressOn:
+    id: session-card-${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: row-action-delete
+    timeout: 10000
+- assertVisible:
+    id: row-action-edit
+- assertVisible:
+    id: row-action-assess
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: session-row-menu
+- tapOn:
+    id: row-action-delete
+- extendedWaitUntil:
+    visible: 'Delete this session\?'
+    timeout: 10000
+# Tutoring's sentence names the record, never the amount.
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Session deleted.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: session-card-${output.sessionId}
+    timeout: 15000

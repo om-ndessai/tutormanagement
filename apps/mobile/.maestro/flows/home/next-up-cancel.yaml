@@ -1,0 +1,54 @@
+# Cancel the next date from Home (#43, ux-audit: 4 taps → 2). The Next up card's ✕ opens the
+# cancel sheet with that schedule and date already chosen; Cancel lesson is the second tap. The
+# date stays on the strip, flagged Cancelled. clean-schedules.js removes the seeded series (and its
+# cancellation) afterwards.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript: ../../scripts/seed-next-up.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: carousel-next-cancel
+    timeout: 30000
+# Tap 1.
+- tapOn:
+    id: carousel-next-cancel
+- extendedWaitUntil:
+    visible:
+      id: cancel-submit
+    timeout: 15000
+- assertVisible:
+    id: screen-cancel-lesson
+- assertVisible: '.*${output.studentName}.*'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: next-up-cancel-sheet
+# Tap 2.
+- tapOn:
+    id: cancel-submit
+- extendedWaitUntil:
+    visible: '.*lesson is cancelled.*'
+    timeout: 15000
+- takeScreenshot: next-up-cancelled
+# The date stays on the strip, flagged; the card no longer offers Start for it.
+- extendedWaitUntil:
+    visible:
+      id: carousel-cancelled-${output.scheduleId}-.*
+    timeout: 15000
+- assertNotVisible:
+    id: carousel-next-start

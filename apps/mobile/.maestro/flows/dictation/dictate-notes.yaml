@@ -1,0 +1,138 @@
+# Dictating a lesson's write-up (P3), with the scripted recognizer (tutorportal://dev/dictate):
+# Alex, tutor in chmi, records a lesson with Ben. The first mic tap explains the microphone before the
+# system asks; then the words being heard show under the field, never in it, and only the settled
+# phrase is appended -- which the 3-second autosave keeps and recording posts. The lesson is deleted
+# at the end, so other flows see the seed.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# One segment, its interim words held for 10 s so they can be seen (Maestro waits for the mic's
+# pulse to settle after a tap, which takes a few seconds on Android).
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?permission=undetermined&hold=10000&text=Factorised%20quadratics%20by%20grouping'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: dictate-record-planned
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: dictation-idle
+# The first tap: our rationale, then (granted by the script) the system's answer.
+- tapOn:
+    id: dictate-record-planned
+- extendedWaitUntil:
+    visible: 'Dictate with the microphone'
+    timeout: 10000
+- assertVisible: '.*recognised on this phone; the audio is never kept or sent.*'
+- tapOn: 'Continue'
+- extendedWaitUntil:
+    visible:
+      id: dictation-interim-record-planned
+    timeout: 10000
+- assertVisible: 'Listening… tap the mic to stop'
+- takeScreenshot: dictation-listening
+# The words being heard, under the field and not yet in it.
+- extendedWaitUntil:
+    visible: 'Factorised quadratics'
+    timeout: 10000
+- takeScreenshot: dictation-interim
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertNotVisible:
+          id: record-planned
+          text: '.*Factorised.*'
+# The settled phrase lands in the field; the mic stops it listening.
+- extendedWaitUntil:
+    notVisible: 'Factorised quadratics'
+    timeout: 20000
+- tapOn:
+    id: dictate-record-planned
+- extendedWaitUntil:
+    notVisible:
+      id: dictation-interim-record-planned
+    timeout: 10000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: record-planned
+          text: 'Factorised quadratics by grouping'
+- scrollUntilVisible:
+    element:
+      id: record-autosave-status
+    direction: DOWN
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: record-autosave-status
+      text: 'Draft autosaved .*'
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: record-submit
+    direction: DOWN
+- tapOn:
+    id: record-submit
+- extendedWaitUntil:
+    visible: 'Session recorded.'
+    timeout: 15000
+# The posted lesson carries the dictated words (Android cannot read a multi-line field's text).
+- extendedWaitUntil:
+    visible: 'Factorised quadratics by grouping'
+    timeout: 15000
+- tapOn: 'Factorised quadratics by grouping'
+- scrollUntilVisible:
+    element:
+      id: session-delete
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: session-delete
+- extendedWaitUntil:
+    visible: 'Delete this session?'
+    timeout: 10000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Session deleted.'
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?reset=1'

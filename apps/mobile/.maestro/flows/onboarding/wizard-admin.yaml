@@ -1,0 +1,198 @@
+# A new admin meets the welcome wizard (Wren, added by the office, never signed in; a fresh device):
+# it opens by itself; Add a student walks the family, the student, the assessment, the plan and the
+# pairing, each in the app's own sheet; done says the student is set up. Closed, it is through: a
+# fresh device after that only offers the tour. Self-cleaning.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+  - runScript: ../../scripts/seed-onboarding.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: wren.calloway@example.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 30000
+- assertVisible: 'Welcome to .*, Wren'
+- assertVisible:
+    id: onboarding-choice-student
+- takeScreenshot: onboarding-welcome-admin
+- tapOn:
+    id: onboarding-choice-student
+- extendedWaitUntil:
+    visible:
+      id: student-flow-family
+    timeout: 10000
+
+# The family: the person form, preset to a parent.
+- tapOn:
+    id: student-flow-create-parent
+- extendedWaitUntil:
+    visible:
+      id: person-form-name
+    timeout: 15000
+- assertNotVisible:
+    id: person-role-student
+- tapOn:
+    id: person-form-name
+- inputText: 'Hollis Brandt'
+- tapOn:
+    id: person-form-email
+- inputText: 'hollis.brandt@example.com'
+- tapOn:
+    id: person-form-title
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+
+# The student, linked to that family.
+- extendedWaitUntil:
+    visible:
+      id: student-flow-student
+    timeout: 15000
+- assertVisible: 'Linked to Hollis Brandt.*'
+- takeScreenshot: onboarding-student-step
+- tapOn:
+    id: student-flow-add-student
+- extendedWaitUntil:
+    visible:
+      id: person-form-name
+    timeout: 15000
+- tapOn:
+    id: person-form-name
+- inputText: 'Juniper Brandt'
+- tapOn:
+    id: person-form-title
+- scrollUntilVisible:
+    element:
+      id: person-student-goal
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-student-goal
+- inputText: 'Ready for pre-algebra.'
+- pressKey: Enter
+- scrollUntilVisible:
+    element: 'Hollis Brandt.*'
+    direction: DOWN
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+
+# Where she stands.
+- extendedWaitUntil:
+    visible:
+      id: student-flow-assessment
+    timeout: 15000
+- assertVisible: 'Where Juniper Brandt stands'
+- tapOn:
+    id: student-flow-assess
+- extendedWaitUntil:
+    visible:
+      id: assessment-summary
+    timeout: 15000
+- tapOn:
+    id: assessment-summary
+- inputText: 'Solid arithmetic; ready to move on.'
+- tapOn: 'Assess Juniper Brandt'
+- scrollUntilVisible:
+    element:
+      id: assessment-save
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: assessment-save
+
+# Her plan, from her goal.
+- extendedWaitUntil:
+    visible:
+      id: student-flow-plan-step
+    timeout: 15000
+- assertVisible:
+    id: flow-step-assessment
+- tapOn:
+    id: student-flow-plan
+- extendedWaitUntil:
+    visible:
+      id: screen-plan-form
+    timeout: 15000
+- assertVisible: 'Ready for pre-algebra.'
+- scrollUntilVisible:
+    element:
+      id: plan-save
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: plan-save
+
+# A tutor: the pairing sheet, with her already chosen.
+- extendedWaitUntil:
+    visible:
+      id: student-flow-pairing
+    timeout: 15000
+- tapOn:
+    id: student-flow-pair
+- extendedWaitUntil:
+    visible:
+      id: assignment-tutor
+    timeout: 15000
+- assertVisible: '.*Juniper Brandt.*'
+- tapOn:
+    id: assignment-tutor-00000000-0000-4000-8000-000000000003
+- scrollUntilVisible:
+    element:
+      id: assignment-save
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: assignment-save
+
+- extendedWaitUntil:
+    visible:
+      id: student-flow-done
+    timeout: 15000
+- assertVisible: 'Juniper Brandt is set up'
+- takeScreenshot: onboarding-student-done
+- tapOn:
+    id: onboarding-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: screen-onboarding
+
+# Through it now: another fresh device only offers the tour.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: wren.calloway@example.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 30000
+- assertNotVisible:
+    id: screen-onboarding
+- tapOn:
+    id: tour-offer-dismiss
+- assertNotVisible:
+    id: tour-offer

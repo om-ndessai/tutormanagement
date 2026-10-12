@@ -1,0 +1,56 @@
+# The app shell: the same tabs for everyone, More reaching every other page, the account sheet
+# with appearance and the organization switcher (whose switch rebrands the app).
+appId: ${APP_ID}
+tags:
+  - smoke
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- takeScreenshot: shell-home
+- tapOn: 'Sessions'
+- assertVisible:
+    id: screen-sessions
+- tapOn: 'Schedule'
+- assertVisible:
+    id: screen-schedule
+- tapOn: 'Progress'
+- assertVisible:
+    id: screen-progress
+- tapOn: 'More'
+- assertVisible:
+    id: screen-more
+- assertVisible: 'Organization'
+- takeScreenshot: shell-more
+- tapOn:
+    id: more-nav-billing
+- assertVisible:
+    id: screen-billing
+- runFlow: ../../subflows/go-back.yaml
+- assertVisible:
+    id: screen-more
+- tapOn: 'Home'
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-org-riverside
+- takeScreenshot: shell-account
+- tapOn:
+    id: account-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- assertVisible: 'Tutor at Riverside'

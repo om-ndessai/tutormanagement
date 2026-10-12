@@ -1,0 +1,91 @@
+# Search as an admin (Priya): from the header's search icon; every destination including
+# Organization; "sof" finds Sofia Okafor, who opens her record; "bill" narrows Go to to Billing;
+# a query that matches nothing says so.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: header-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- takeScreenshot: search-admin-empty
+# The Organization page is offered to an admin (its own words find it).
+- tapOn:
+    id: search-input
+- inputText: payer
+- extendedWaitUntil:
+    visible:
+      id: search-goto-nav-organization
+    timeout: 10000
+- eraseText: 10
+- inputText: sof
+- extendedWaitUntil:
+    visible:
+      id: search-person-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- assertVisible: '.*Sofia Okafor.*Student.*'
+- takeScreenshot: search-admin-people
+- tapOn:
+    id: search-person-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 20000
+- assertVisible:
+    id: person-name
+- assertVisible: 'Sofia Okafor'
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- tapOn:
+    id: header-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- tapOn:
+    id: search-input
+- inputText: bill
+- extendedWaitUntil:
+    visible:
+      id: search-goto-nav-billing
+    timeout: 10000
+- assertNotVisible:
+    id: search-goto-nav-sessions
+- assertNotVisible:
+    id: search-goto-nav-organization
+- tapOn:
+    id: search-goto-nav-billing
+- extendedWaitUntil:
+    visible:
+      id: screen-billing
+    timeout: 20000
+- runFlow: ../../subflows/go-back.yaml
+- tapOn:
+    id: header-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- tapOn:
+    id: search-input
+- inputText: zzqx
+- extendedWaitUntil:
+    visible:
+      id: search-empty
+    timeout: 15000
+- assertVisible: 'Nothing matches “zzqx”.'

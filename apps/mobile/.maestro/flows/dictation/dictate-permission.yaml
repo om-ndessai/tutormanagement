@@ -1,0 +1,152 @@
+# What a mic tap asks before listening (P3), with the scripted recognizer. Microphone access turned
+# off offers Settings; a phone that cannot recognise speech by itself asks for consent to its online
+# service, and "Not now" leaves the field alone; Profile then shows the online-service switch, off.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# 1. Microphone access is off: Open Settings is offered (not tapped).
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?permission=blocked&text=never%20heard'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: dictate-record-planned
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: dictate-record-planned
+- extendedWaitUntil:
+    visible: 'Microphone access is off'
+    timeout: 10000
+- assertVisible: 'Open Settings'
+- takeScreenshot: dictation-blocked
+- tapOn: 'Not now'
+- assertNotVisible:
+    id: dictation-interim-record-planned
+- scrollUntilVisible:
+    element:
+      id: record-cancel
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: record-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
+# 2. No recognition on this phone: consent is asked, and "Not now" listens to nothing.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?permission=granted&ondevice=0&text=never%20heard'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-record
+    timeout: 20000
+- tapOn:
+    id: sessions-record
+- extendedWaitUntil:
+    visible:
+      id: record-pairing-a0000000-0000-4000-8000-000000000002
+    timeout: 15000
+- tapOn:
+    id: record-pairing-a0000000-0000-4000-8000-000000000002
+- scrollUntilVisible:
+    element:
+      id: dictate-record-planned
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: dictate-record-planned
+- extendedWaitUntil:
+    visible: 'Dictate online?'
+    timeout: 10000
+- assertVisible: ".*This phone can't turn speech into text by itself.*"
+- assertVisible: 'Allow on this phone'
+- takeScreenshot: dictation-consent
+- tapOn: 'Not now'
+- assertNotVisible:
+    id: dictation-interim-record-planned
+- assertNotVisible: 'Listening… tap the mic to stop'
+- scrollUntilVisible:
+    element:
+      id: record-cancel
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: record-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
+# 3. Profile: the online-service switch, off by default on this phone.
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-profile
+    direction: DOWN
+    centerElement: true
+    timeout: 10000
+- tapOn:
+    id: account-profile
+- extendedWaitUntil:
+    visible:
+      id: screen-profile
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: dictation-network-switch
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: profile-dictation
+- assertVisible:
+    id: dictation-network-switch
+    checked: false
+- takeScreenshot: dictation-profile
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'tutorportal://dev/dictate?reset=1'

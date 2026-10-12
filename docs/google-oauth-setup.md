@@ -274,3 +274,51 @@ https://tutoring-test.om-ndessai.workers.dev
 
 `tutoring-test` reads `tutoring-test-db`, seeded with two fictional organizations and
 `ndessai@gmail.com` as platform admin (`db/platform-admin.sql`).
+
+## The mobile app
+
+The iOS and Android app (`apps/mobile`, branch `mobile-app`) signs in through the **same**
+`POST /api/auth/google` and gets the **same** `tmi_session` cookie as the browser. Nothing on the
+Worker changes: the app runs native Google Sign-In configured with this project's **web** client
+ID, so Google issues the ID token for the web client -- exactly the audience
+`verifyGoogleIdToken` already checks. Full plan: [mobile/google-sign-in.md](mobile/google-sign-in.md).
+
+What the owner does, in the same Google Cloud project as the web client
+(`866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com`), under
+APIs & Services → Credentials:
+
+1. **iOS OAuth clients** (Create credentials → OAuth client ID → iOS), one per bundle ID:
+
+   | Build | Bundle ID | Put its client ID in |
+   | --- | --- | --- |
+   | development | `com.tutorportal.app.dev` | `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_DEV` |
+   | production | `com.tutorportal.app` | `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` |
+
+   The e2e build (`com.tutorportal.app.e2e`) needs none: its tests use the developer sign-in.
+   The values go in `apps/mobile/.env.local` (gitignored; see `apps/mobile/.env.example`) or
+   the build's environment. The app derives the URL scheme Google returns to (the reversed ID,
+   `com.googleusercontent.apps.…`) itself. After setting one, run a native rebuild
+   (`npx expo prebuild --no-install`, then `npx expo run:ios`). Without one the build still
+   succeeds and the sign-in screen says "Google sign-in not configured for this build".
+2. **Android OAuth clients** (Create credentials → OAuth client ID → Android), one per package
+   and signing key:
+
+   | Build | Package | SHA-1 |
+   | --- | --- | --- |
+   | development (the debug key on the build Mac) | `com.tutorportal.app.dev` | `5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25` |
+   | production | `com.tutorportal.app` | the Play app-signing key's SHA-1, from Play Console |
+
+   Android needs no client ID inside the app; the client only has to exist for Google to issue
+   a token for the web client. Until it does, a tap on the button fails with "Google sign-in
+   failed" (Google's `DEVELOPER_ERROR`).
+3. **Consent screen.** The app asks only for `openid`, `email` and `profile`. If the screen is in
+   **Testing**, every Google account that should sign in must be a test user; otherwise publish it.
+4. **People.** As on the web, a Google account gets in only if a live person in the portal has
+   that email; anyone else sees "You are not authorized to access this portal".
+
+No JavaScript origin or redirect URI is needed for the app. The production build talks to
+`EXPO_PUBLIC_PRODUCTION_API_URL` (default `https://tutoring.om-ndessai.workers.dev`, never
+`tmi-portal`). To try it locally, set `AUTH_ENABLED=true` in the uncommitted
+`apps/api/.dev.vars`, restart `npm run dev:api`, sign in on the simulator or emulator, then put
+`.dev.vars` back (the mobile e2e runner refuses a Worker with sign-in on).
+

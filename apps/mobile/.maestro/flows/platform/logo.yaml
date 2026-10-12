@@ -1,0 +1,82 @@
+# A logo upload, end to end: Nav picks a picture from the photo library for riverside's mark; the
+# phone shrinks it, re-encodes it as PNG or WebP under 256 KB and sends the bytes; the served logo
+# then shows. Removing it puts the empty slot back. clean-platform.js removes riverside's logos
+# before and after.
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- addMedia:
+    - '../../assets/test-logo.png'
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- tapOn:
+    id: platform-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-logo-upload-mark
+    centerElement: true
+- assertVisible:
+    id: platform-logo-empty-mark
+- tapOn:
+    id: platform-logo-upload-mark
+# The system photo picker (out of process). iOS: the newest photo (this year's carry no year in their
+# label). Android: the photo picker's first image (then Done, when it asks).
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible: 'Photo, [A-Za-z]+ [0-9]+, [0-9]+:[0-9]+.[AP]M'
+          timeout: 15000
+      - tapOn:
+          text: 'Photo, [A-Za-z]+ [0-9]+, [0-9]+:[0-9]+.[AP]M'
+          index: 0
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible: 'Photo taken on.*'
+          timeout: 15000
+      - tapOn:
+          text: 'Photo taken on.*'
+          index: 0
+      # The photo picker can stay open with the choice ticked, waiting for Done.
+      - runFlow:
+          when:
+            visible: 'Done'
+          commands:
+            - tapOn: 'Done'
+- extendedWaitUntil:
+    visible: 'Logo updated.'
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: platform-logo-preview-mark
+    timeout: 10000
+- takeScreenshot: platform-logo-uploaded
+- tapOn:
+    id: platform-logo-remove-mark
+- extendedWaitUntil:
+    visible: 'Logo removed.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: platform-logo-empty-mark
+    timeout: 10000

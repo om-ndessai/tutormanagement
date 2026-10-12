@@ -1,0 +1,100 @@
+# Alex calls off the next lesson of Sofia's series with a note: the date stays in the list, struck
+# through "by Alex Chen (the tutor)" with the note. The Sessions tab's Tutoring half lists it under
+# Cancelled lessons; its row opens the schedule on that date, where Alex restores it. Changes data:
+# reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: schedule-dates-toggle-70000000-0000-4000-8000-000000000001
+    timeout: 20000
+- tapOn:
+    id: schedule-dates-toggle-70000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: 'schedule-cancel-70000000-0000-4000-8000-000000000001-.*'
+      index: 0
+    timeout: 15000
+- tapOn:
+    id: 'schedule-cancel-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- extendedWaitUntil:
+    visible:
+      id: cancel-submit
+    timeout: 15000
+- assertVisible: 'Cancel the lesson on .*\?'
+- assertNotVisible:
+    id: cancel-date
+- tapOn:
+    id: cancel-note
+- inputText: 'Away at a maths competition'
+- pressKey: Enter
+- tapOn:
+    id: cancel-submit
+- extendedWaitUntil:
+    visible: 'The .* lesson is cancelled\.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'Away at a maths competition'
+    timeout: 10000
+- assertVisible: 'by Alex Chen \(the tutor\)'
+- assertVisible:
+    id: 'schedule-cancelled-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- takeScreenshot: schedule-cancelled-date
+# The Sessions tab says why that week will have no entry (once the toast has left the tab bar).
+- extendedWaitUntil:
+    notVisible: 'The .* lesson is cancelled\.'
+    timeout: 15000
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: cancelled-lessons-panel
+    timeout: 20000
+- tapOn:
+    id: cancelled-lessons-toggle
+# The row is one link, read as its lines together, so the note is matched within it.
+- scrollUntilVisible:
+    element: '.*Away at a maths competition.*'
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: sessions-cancelled-panel
+- tapOn:
+    id: 'cancelled-row-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- extendedWaitUntil:
+    visible:
+      id: focus-notice
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'schedule-restore-70000000-0000-4000-8000-000000000001-.*'
+      index: 0
+    timeout: 15000
+- tapOn:
+    id: 'schedule-restore-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Restore the lesson on .*\?'
+    timeout: 10000
+- tapOn: 'Restore lesson'
+- extendedWaitUntil:
+    visible: 'The .* lesson is back on\.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible: 'Away at a maths competition'
+    timeout: 10000

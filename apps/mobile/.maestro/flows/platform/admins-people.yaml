@@ -1,0 +1,99 @@
+# The console's people: Nav adds a platform admin by email (they are listed), then looks a person
+# up by email and corrects their shared phone -- Alex, who belongs to two organizations, which is
+# exactly whose shared details only the platform may change. clean-platform.js puts Alex's phone
+# back before and after; the added platform admin stays until the database is reset (no API removes
+# one).
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+# Admins.
+- tapOn: 'Admins'
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-admins
+    timeout: 10000
+- assertVisible: 'Nav Dessai'
+- tapOn:
+    id: platform-admin-email
+- inputText: 'mobile.console@example.com'
+- tapOn:
+    id: platform-admin-name
+- inputText: 'Console Tester'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: platform-admin-add
+    centerElement: true
+- tapOn:
+    id: platform-admin-add
+- extendedWaitUntil:
+    visible: 'Console Tester is now a platform admin.'
+    timeout: 10000
+- scrollUntilVisible:
+    element: 'Console Tester'
+    direction: UP
+- takeScreenshot: platform-admins
+# People: look Alex up and correct the phone. (The toast sits over the tab bar until it goes.)
+- extendedWaitUntil:
+    notVisible: 'Console Tester is now a platform admin.'
+    timeout: 10000
+- tapOn: 'People'
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-people
+    timeout: 10000
+- tapOn:
+    id: platform-people-query
+- inputText: 'alex.chen.math@gmail.com'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: platform-person-card
+    timeout: 10000
+- assertVisible: 'Belongs to 2 organizations.'
+- scrollUntilVisible:
+    element:
+      id: platform-person-phone
+    centerElement: true
+- tapOn:
+    id: platform-person-phone
+- eraseText: 20
+- inputText: '(984) 555-0199'
+- scrollUntilVisible:
+    element:
+      id: platform-person-save
+    centerElement: true
+- tapOn:
+    id: platform-person-save
+- extendedWaitUntil:
+    visible: 'Shared details saved, in every organization.'
+    timeout: 10000
+- assertVisible: '\(984\) 555-0199'
+- takeScreenshot: platform-people
+# What the platform did is in its log.
+- extendedWaitUntil:
+    notVisible: 'Shared details saved, in every organization.'
+    timeout: 10000
+- tapOn: 'Activity'
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-activity
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Corrected Alex Chen's shared details"
+    timeout: 10000
+- assertVisible: 'Made Console Tester a platform admin'

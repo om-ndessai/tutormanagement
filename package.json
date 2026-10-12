@@ -8,7 +8,8 @@
     "node": ">=20.19"
   },
   "workspaces": [
-    "apps/*",
+    "apps/api",
+    "apps/web",
     "packages/*",
     "e2e"
   ],
@@ -17,7 +18,7 @@
     "dev:api": "npm run dev --workspace @tmi/api",
     "dev:web": "npm run dev --workspace @tmi/web",
     "build": "npm run build --workspace @tmi/web",
-    "typecheck": "node scripts/check-org-scope.mjs && npm run typecheck --workspaces --if-present",
+    "typecheck": "node scripts/check-org-scope.mjs && npm run typecheck --workspaces --if-present && node scripts/typecheck-mobile.mjs",
     "db:create": "npm run db:create --workspace @tmi/api",
     "db:seed": "npm run db:seed --workspace @tmi/api",
     "db:reset": "npm run db:reset --workspace @tmi/api",
@@ -28,7 +29,16 @@
     "e2e:report": "npm run report --workspace @tmi/e2e",
     "deploy:test": "npm run build && npm run deploy:test --workspace @tmi/api",
     "migrate:tmi:stage": "node scripts/migrate-tmi/build-stage.mjs",
-    "db:reset:test": "npm run db:rebuild:test --workspace @tmi/api && npm run db:seed:test --workspace @tmi/api && npm run db:platform-admin:test --workspace @tmi/api"
+    "db:reset:test": "npm run db:rebuild:test --workspace @tmi/api && npm run db:seed:test --workspace @tmi/api && npm run db:platform-admin:test --workspace @tmi/api",
+    "mobile:install": "npm ci --prefix apps/mobile || npm install --prefix apps/mobile",
+    "mobile:start": "npm --prefix apps/mobile run start",
+    "mobile:ios": "npm --prefix apps/mobile run ios",
+    "mobile:android": "npm --prefix apps/mobile run android",
+    "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
+    "mobile:lint": "npm --prefix apps/mobile run lint",
+    "mobile:test": "npm --prefix apps/mobile run test",
+    "mobile:export": "npm --prefix apps/mobile run export",
+    "e2e:mobile": "bash scripts/e2e-mobile.sh"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

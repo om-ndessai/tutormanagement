@@ -1,0 +1,55 @@
+# My profile (Sofia, a student): reached from the account sheet; her own record with the Student
+# section and no tutor's; her own price per hour, which R4 gives a student; the footer; and the
+# appearance control, switched to dark and back.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: account-profile
+    timeout: 10000
+- tapOn:
+    id: account-profile
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 20000
+- assertVisible: 'Sofia Okafor'
+- assertVisible: 'How .* has you on file.'
+- assertVisible:
+    id: person-section-student
+- assertNotVisible:
+    id: person-section-tutor
+- assertNotVisible:
+    id: person-menu
+- takeScreenshot: profile-student
+- scrollUntilVisible:
+    element:
+      id: person-price-in-person
+    direction: DOWN
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: appearance-dark
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: profile-footer
+- tapOn:
+    id: appearance-dark
+- takeScreenshot: profile-student-dark
+- tapOn:
+    id: appearance-light

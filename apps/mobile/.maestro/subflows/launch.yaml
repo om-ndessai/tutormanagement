@@ -1,0 +1,10 @@
+# Start the app fresh. A development build (APP_ID ending .dev) loads its bundle from Metro on
+# :8081 first; the e2e build carries its bundle. Dismisses the dev client's menu if it shows.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: dev-client-load.yaml

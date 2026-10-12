@@ -1,0 +1,10 @@
+# no-money.yaml at the top of the screen in front, then after each of four scrolls down: a whole
+# Tutoring surface, not just its first screenful. Scrolling past the end is harmless.
+appId: ${APP_ID}
+---
+- runFlow: no-money.yaml
+- repeat:
+    times: 4
+    commands:
+      - scroll
+      - runFlow: no-money.yaml

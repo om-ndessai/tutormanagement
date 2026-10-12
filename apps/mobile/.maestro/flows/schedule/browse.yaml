@@ -1,0 +1,105 @@
+# Alex's week: his two standing lessons grouped by weekday (Tuesday with Sofia, Saturday with
+# Ben); the week strip narrows to one day and back; Sofia's slot expands to its coming dates, each
+# with a time and Cancel; a link naming the seeded Nov 24 cancellation pages to it, highlighted,
+# struck through "by Maria Okafor (the family)" with her note and Restore (Alex is the tutor).
+# Calendar files are offered per slot and for all. No money anywhere.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: schedule-card-70000000-0000-4000-8000-000000000001
+    timeout: 20000
+- assertVisible:
+    id: schedule-group-2
+- assertVisible:
+    id: schedule-group-6
+- assertVisible:
+    id: schedule-card-70000000-0000-4000-8000-000000000002
+- assertVisible: 'Tuesdays 4:00.*'
+- assertVisible:
+    id: schedule-calendar-all
+- assertVisible:
+    id: schedule-calendar-70000000-0000-4000-8000-000000000001
+- assertVisible:
+    id: schedule-edit-70000000-0000-4000-8000-000000000001
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: schedule-tutor-week
+# The strip: Saturday alone, then the whole week again.
+- tapOn:
+    id: schedule-day-6
+- extendedWaitUntil:
+    notVisible:
+      id: schedule-card-70000000-0000-4000-8000-000000000001
+    timeout: 5000
+- assertVisible:
+    id: schedule-card-70000000-0000-4000-8000-000000000002
+- tapOn:
+    id: schedule-day-6
+- extendedWaitUntil:
+    visible:
+      id: schedule-card-70000000-0000-4000-8000-000000000001
+    timeout: 5000
+# Sofia's dates.
+- tapOn:
+    id: schedule-dates-toggle-70000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: 'schedule-date-70000000-0000-4000-8000-000000000001-.*'
+      index: 0
+    timeout: 15000
+- assertVisible:
+    id: 'schedule-cancel-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- assertVisible: '4:00.*–5:00.*'
+- takeScreenshot: schedule-tutor-dates
+# A link naming a date several pages on: it pages there and picks it out.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: tutorportal://schedule?focus=70000000-0000-4000-8000-000000000001&on=2026-11-24
+- extendedWaitUntil:
+    visible:
+      id: focus-notice
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: schedule-cancelled-70000000-0000-4000-8000-000000000001-2026-11-24
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'by Maria Okafor \(the family\)'
+- assertVisible: 'Thanksgiving week — we are travelling\.'
+- assertVisible:
+    id: schedule-restore-70000000-0000-4000-8000-000000000001-2026-11-24
+- assertNotVisible:
+    id: schedule-card-70000000-0000-4000-8000-000000000002
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: schedule-tutor-focus
+- scrollUntilVisible:
+    element:
+      id: focus-show-all
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: focus-show-all
+- extendedWaitUntil:
+    notVisible:
+      id: focus-notice
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: schedule-card-70000000-0000-4000-8000-000000000002
+    direction: DOWN
+    timeout: 20000

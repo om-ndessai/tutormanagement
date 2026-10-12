@@ -1,0 +1,8 @@
+# Nothing that belongs only to chmi on the screen in front (R13): the people who are in chmi alone
+# (Sofia Okafor, Ben Whitfield, Maria Okafor -- Priya, Alex, Anita and Sanjay are shared with
+# riverside, and so may show in both), chmi's own pairing notes, and its name.
+appId: ${APP_ID}
+---
+- assertNotVisible: '.*(Sofia Okafor|Ben Whitfield|Maria Okafor).*'
+- assertNotVisible: '.*AP Calculus BC exam prep.*'
+- assertNotVisible: '.*Chapel Hill Math Institute.*'

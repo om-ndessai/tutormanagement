@@ -1,0 +1,48 @@
+# A student's dashboard (Sofia): her progress, her tutors and her lessons -- and no money at all,
+# though the server prices a student's own lessons from the family's side.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 30000
+- assertNotVisible:
+    id: tabs-finance
+- assertVisible:
+    id: stat-sessions
+- assertVisible:
+    id: stat-time-tutored
+- assertVisible:
+    id: stat-tutors
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: student-top
+- scrollUntilVisible:
+    element:
+      id: progress-card-00000000-0000-4000-8000-000000000008
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'Your progress'
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: student-tutors
+    direction: DOWN
+- assertVisible: 'Alex Chen'
+- scrollUntilVisible:
+    element:
+      id: student-sessions-action
+    direction: DOWN
+- assertVisible: 'Your sessions'
+- assertNotVisible:
+    id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+- assertNotVisible: 'You pay'
+- takeScreenshot: student-bottom

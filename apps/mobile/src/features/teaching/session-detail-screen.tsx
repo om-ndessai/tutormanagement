@@ -1,0 +1,165 @@
+// Ported from apps/web/src/features/teaching/sessions-page.tsx @ 1132322 (a card's expanded notes,
+// reflection and assessments). The web opens a card in place; on the phone the card opens this.
+// Money only when it was opened from Finance (`showMoney`, false unless the route says finance).
+import { SESSION_MODE_LABELS, formatDuration, type TutoringSession } from '@tmi/shared';
+import { router, Stack } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { View } from 'react-native';
+import { Button, Card, Text } from 'react-native-paper';
+
+import { Screen } from '@/components/screen';
+import { ErrorState } from '@/components/state-views';
+import { DetailSkeleton } from '@/components/skeletons';
+import { CommentsRow } from '@/features/comments/comments-button';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
+import { useAppTheme } from '@/providers/theme-provider';
+import { radius, space } from '@/theme/tokens';
+import { useSession } from './api';
+import { ReflectionView } from './reflection-chips';
+import { AssessButton, ReflectButton } from './session-actions';
+import { AUTO_STOPPED_NOTE, Tag } from './session-card';
+import { formatSessionDay, formatSessionTimes } from './session-format';
+import { SessionMoney } from './session-money';
+import { mayEditSession, useConfirmDeleteSession } from './session-row-actions';
+import { AssessmentsView, PartHeading, SessionNotesView, hasWrittenNotes } from './session-notes';
+import { organizationToday } from './session-ranges';
+
+export function SessionDetailScreen({ id, showMoney = false }: { id: string; showMoney?: boolean }) {
+  const query = useSession(id);
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function onRefresh() {
+    setRefreshing(true);
+    try {
+      await query.refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
+  let body;
+  if (query.isPending) body = <DetailSkeleton label="Loading the lesson…" rows={5} />;
+  else if (query.isError || !query.data) {
+    body = <ErrorState error={query.error} onRetry={() => void query.refetch()} />;
+  } else {
+    body = <SessionDetail session={query.data.data} showMoney={showMoney} />;
+  }
+
+  return (
+    <Screen testID="screen-session" refreshing={refreshing} onRefresh={() => void onRefresh()}>
+      <Stack.Screen options={{ title: 'Session' }} />
+      {body}
+    </Screen>
+  );
+}
+
+function SessionDetail({ session, showMoney }: { session: TutoringSession; showMoney: boolean }) {
+  const { user } = useAuth();
+  const theme = useAppTheme();
+  const today = organizationToday(useOrgTimeZone());
+  const muted = theme.tokens.mutedForeground;
+  const goBack = useCallback(() => {
+    if (router.canGoBack()) router.back();
+  }, []);
+  const remove = useConfirmDeleteSession(showMoney, goBack);
+  // What the API allows: the office, or the lesson's own tutor.
+  const canEdit = mayEditSession(session, user);
+  const confirmDelete = () => remove.confirm(session);
+
+  return (
+    <>
+      <View testID="session-detail-header" style={{ gap: 6 }}>
+        <Text variant="titleLarge" accessibilityRole="header">
+          {session.student_name}
+          <Text style={{ color: muted }}> with {session.tutor_name}</Text>
+        </Text>
+        <Text variant="bodyMedium" style={{ color: muted }}>
+          {formatSessionDay(session.occurred_on, today)} ·{' '}
+          {formatSessionTimes(session.started_at, session.ended_at)} ·{' '}
+          {formatDuration(session.duration_minutes)}
+        </Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+          <Tag label={SESSION_MODE_LABELS[session.mode]} />
+          {session.auto_stopped ? <Tag label="Auto-stopped" tone="warning" /> : null}
+        </View>
+        {session.auto_stopped ? (
+          <Text variant="bodySmall" style={{ color: muted }}>
+            {AUTO_STOPPED_NOTE}
+          </Text>
+        ) : null}
+      </View>
+
+      {/* Finance only: the lesson's money from the reader's side. */}
+      {showMoney && session.money_view !== 'none' ? (
+        <Card mode="outlined" style={{ borderRadius: radius.lg }}>
+          <View style={{ padding: space.lg, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <PartHeading>Money</PartHeading>
+            <SessionMoney session={session} />
+          </View>
+        </Card>
+      ) : null}
+
+      {/* The write-up, the student's reflection and the assessments (Phases 23 and 25). No money
+          here on either tab: this is what a tutor reads with the student beside them. */}
+      <Card mode="outlined" style={{ borderRadius: radius.lg }}>
+        <View style={{ padding: space.lg, gap: space.lg }}>
+          {hasWrittenNotes(session) ? (
+            <SessionNotesView session={session} />
+          ) : (
+            <Text variant="bodyMedium" style={{ color: muted }}>
+              No notes were written for this lesson.
+            </Text>
+          )}
+          {session.reflection ? (
+            <ReflectionView reflection={session.reflection} studentName={session.student_name} />
+          ) : null}
+          <AssessmentsView assessments={session.assessments} />
+        </View>
+      </Card>
+
+      {/* What the reader thought: their own assessment (never the student's -- they reflect), and
+          the student's reflection for whoever may enter it. */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        <AssessButton session={session} testID="session-assess" />
+        <ReflectButton session={session} testID="session-reflect" />
+      </View>
+
+      {canEdit ? (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+          <Button
+            testID="session-edit"
+            mode="contained-tonal"
+            icon="pencil-outline"
+            onPress={() =>
+              router.push({
+                pathname: '/record-session',
+                params: { id: session.id, tab: showMoney ? 'finance' : 'tutoring' },
+              })
+            }
+          >
+            Edit session
+          </Button>
+          <Button
+            testID="session-delete"
+            mode="outlined"
+            icon="trash-can-outline"
+            textColor={theme.colors.error}
+            onPress={confirmDelete}
+            loading={remove.isPending}
+            disabled={remove.isPending}
+          >
+            Delete session
+          </Button>
+        </View>
+      ) : null}
+
+      {/* What has been said about the lesson: its audience, never money (Tutoring and Finance alike). */}
+      <CommentsRow
+        testID="session-comments"
+        target={{ target_type: 'session', target_id: session.id }}
+        title={`the ${session.occurred_on} session with ${session.student_name}`}
+        description={`${session.student_name} with ${session.tutor_name}, ${formatSessionTimes(session.started_at, session.ended_at)}.`}
+      />
+    </>
+  );
+}

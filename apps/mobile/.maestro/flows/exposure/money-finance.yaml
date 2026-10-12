@@ -1,0 +1,81 @@
+# Money by side, Finance half (R1-R4): each reader sees only their own side's money, labelled from
+# it. Alex (tutor): "Earned" and "Your pay", never the family's "You pay" or the office's split.
+# Anita (parent) and Sofia (student): "Charged" and "You pay", never "Your pay". Maria (tutor and
+# parent, who has taught none of the lessons she can see): her child's lessons as "You pay", and on
+# Billing her own pay beside her family's balance -- each hers. Priya (the office): the "Charged"
+# tile and each lesson's split ("Tutor $… · …"), never a personal "Your pay"/"You pay". Nobody but
+# the office gets the office's Billing. Data-driven: one subflow, five readers.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/exposure/finance-side.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      NAME: alex
+      LESSON: 50000000-0000-4000-8000-000000000002
+      STAT: stat-earned
+      NOSTAT: stat-charged
+      SEE: 'Your pay'
+      NEVER: 'You pay|Tutor \$[0-9].*'
+      BILL: billing-tutor-00000000-0000-4000-8000-000000000003
+      BILL_SEE: 'Your pay'
+      BILL_NEVER: "Your family's balance|Your balance|Families|Tutors"
+      OFFICE: 'no'
+- runFlow:
+    file: ../../subflows/exposure/finance-side.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      NAME: anita
+      LESSON: 50000000-0000-4000-8000-000000000005
+      STAT: stat-charged
+      NOSTAT: stat-earned
+      SEE: 'You pay'
+      NEVER: 'Your pay|Tutor \$[0-9].*'
+      BILL: billing-family-00000000-0000-4000-8000-000000000006
+      BILL_SEE: "Your family's balance"
+      BILL_NEVER: 'Your pay|Families|Tutors'
+      OFFICE: 'no'
+- runFlow:
+    file: ../../subflows/exposure/finance-side.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      NAME: sofia
+      LESSON: 50000000-0000-4000-8000-000000000002
+      STAT: stat-charged
+      NOSTAT: stat-earned
+      SEE: 'You pay'
+      NEVER: 'Your pay|Tutor \$[0-9].*'
+      BILL: billing-family-00000000-0000-4000-8000-000000000008
+      BILL_SEE: 'Your balance'
+      BILL_NEVER: "Your pay|Your family's balance|Families|Tutors"
+      OFFICE: 'no'
+- runFlow:
+    file: ../../subflows/exposure/finance-side.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      NAME: maria
+      LESSON: 50000000-0000-4000-8000-000000000002
+      STAT: stat-charged
+      NOSTAT: stat-earned
+      SEE: 'You pay'
+      NEVER: 'Your pay|Tutor \$[0-9].*'
+      BILL: billing-tutor-00000000-0000-4000-8000-000000000004
+      BILL_SEE: 'Your pay'
+      BILL_NEVER: 'Your balance|Families|Tutors'
+      OFFICE: 'no'
+- runFlow:
+    file: ../../subflows/exposure/finance-side.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      NAME: priya
+      LESSON: 50000000-0000-4000-8000-000000000005
+      STAT: stat-charged
+      NOSTAT: stat-earned
+      SEE: 'Tutor \$[0-9,]+\.[0-9]{2} · .*'
+      NEVER: 'Your pay|You pay'
+      BILL: billing-record
+      BILL_SEE: 'Owed by families'
+      BILL_NEVER: "Your pay|Your balance|Your family's balance"
+      OFFICE: 'yes'

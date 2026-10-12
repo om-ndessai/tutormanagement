@@ -1,0 +1,93 @@
+# Maria, Sofia's parent (and a tutor of nobody here), cancels the next lesson of Sofia's series as
+# the family: it shows "by Maria Okafor (the family)" and she may restore her own. Picking another
+# date is from today on only -- a parent may not mark a past lesson (the picker's minimum; the
+# server refuses it too). No editor controls. Changes data: reset the database afterwards.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: schedule-dates-toggle-70000000-0000-4000-8000-000000000001
+    timeout: 20000
+- assertNotVisible:
+    id: schedule-edit-70000000-0000-4000-8000-000000000001
+- assertNotVisible:
+    id: schedule-remove-70000000-0000-4000-8000-000000000001
+- tapOn:
+    id: schedule-dates-toggle-70000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: 'schedule-cancel-70000000-0000-4000-8000-000000000001-.*'
+      index: 0
+    timeout: 15000
+- tapOn:
+    id: 'schedule-cancel-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- extendedWaitUntil:
+    visible:
+      id: cancel-submit
+    timeout: 15000
+- tapOn:
+    id: cancel-note
+- inputText: 'Family wedding'
+- pressKey: Enter
+- tapOn:
+    id: cancel-submit
+- extendedWaitUntil:
+    visible: 'The .* lesson is cancelled\.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'Family wedding'
+    timeout: 10000
+- assertVisible: 'by Maria Okafor \(the family\)'
+- takeScreenshot: schedule-parent-cancelled
+# Her own: she may put it back.
+- tapOn:
+    id: 'schedule-restore-70000000-0000-4000-8000-000000000001-.*'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Restore the lesson on .*\?'
+    timeout: 10000
+- tapOn: 'Restore lesson'
+- extendedWaitUntil:
+    visible: 'The .* lesson is back on\.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible: 'Family wedding'
+    timeout: 10000
+# Another date: from today on only.
+- scrollUntilVisible:
+    element:
+      id: schedule-cancel-other-70000000-0000-4000-8000-000000000001
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: schedule-cancel-other-70000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: cancel-date-hint
+    timeout: 15000
+- assertVisible: 'Cancel a lesson'
+- assertVisible: 'Tuesdays only, from today on\.'
+- assertVisible:
+    id: cancel-date
+- takeScreenshot: schedule-parent-another-date
+- tapOn:
+    id: cancel-keep
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 10000

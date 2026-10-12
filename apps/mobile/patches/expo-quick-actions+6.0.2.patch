@@ -1,0 +1,755 @@
+diff --git a/node_modules/expo-quick-actions/android/build/.transforms/2c245363a465cb60a9cb62f57d125071/results.bin b/node_modules/expo-quick-actions/android/build/.transforms/2c245363a465cb60a9cb62f57d125071/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/.transforms/2c245363a465cb60a9cb62f57d125071/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/expo-quick-actions/android/build/.transforms/2c245363a465cb60a9cb62f57d125071/transformed/classes/classes_dex/classes.dex b/node_modules/expo-quick-actions/android/build/.transforms/2c245363a465cb60a9cb62f57d125071/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..13ce0e3
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/.transforms/2c245363a465cb60a9cb62f57d125071/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/expo-quick-actions/android/build/generated/source/buildConfig/debug/expo/modules/quickactions/BuildConfig.java b/node_modules/expo-quick-actions/android/build/generated/source/buildConfig/debug/expo/modules/quickactions/BuildConfig.java
+new file mode 100644
+index 0000000..f1920c9
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/generated/source/buildConfig/debug/expo/modules/quickactions/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package expo.modules.quickactions;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "expo.modules.quickactions";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/expo-quick-actions/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..e653453
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="expo.modules.quickactions" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/expo-quick-actions/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..3376c57
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "expo.modules.quickactions",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/expo-quick-actions/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/expo-quick-actions/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/expo-quick-actions/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
+new file mode 100644
+index 0000000..27f77ab
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/expo-quick-actions/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..1490509
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/expo-quick-actions/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/expo-quick-actions/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..363f35a
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Sat Oct 10 22:45:55 EDT 2026
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/expo-quick-actions/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..2d01bd7
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugAssets/merger.xml b/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+new file mode 100644
+index 0000000..99689ed
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..56ab5e8
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..8c02400
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/expo-quick-actions_debug.kotlin_module b/node_modules/expo-quick-actions/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/expo-quick-actions_debug.kotlin_module
+new file mode 100644
+index 0000000..163c04b
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/expo-quick-actions_debug.kotlin_module differ
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/expo/modules/quickactions/BuildConfig.class b/node_modules/expo-quick-actions/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/expo/modules/quickactions/BuildConfig.class
+new file mode 100644
+index 0000000..99fc75a
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/expo/modules/quickactions/BuildConfig.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/expo-quick-actions/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/expo-quick-actions/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..811f1ac
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="expo.modules.quickactions" >
++4
++5    <uses-sdk android:minSdkVersion="24" />
++6
++7</manifest>
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/expo-quick-actions/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..e653453
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="expo.modules.quickactions" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/expo-quick-actions/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/expo-quick-actions/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/expo-quick-actions/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
+new file mode 100644
+index 0000000..a278628
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
+diff --git a/node_modules/expo-quick-actions/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/expo-quick-actions/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..5531784
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1 @@
++expo.modules.quickactions
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab
+new file mode 100644
+index 0000000..edff427
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream
+new file mode 100644
+index 0000000..3048cc4
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len
+new file mode 100644
+index 0000000..5148a33
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at
+new file mode 100644
+index 0000000..8b4f7e7
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i
+new file mode 100644
+index 0000000..fd0c49d
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab
+new file mode 100644
+index 0000000..03c099a
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream
+new file mode 100644
+index 0000000..0da61a0
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len
+new file mode 100644
+index 0000000..81b6ae7
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len
+new file mode 100644
+index 0000000..6f677df
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at
+new file mode 100644
+index 0000000..319930a
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i
+new file mode 100644
+index 0000000..6184671
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab
+new file mode 100644
+index 0000000..97e8e8c
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..0da61a0
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..81b6ae7
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len
+new file mode 100644
+index 0000000..6f677df
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..7950cbe
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i
+new file mode 100644
+index 0000000..6184671
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab
+new file mode 100644
+index 0000000..af9bb87
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..fdfbc8b
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..bf7a100
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len
+new file mode 100644
+index 0000000..42df8b9
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..ac52914
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i
+new file mode 100644
+index 0000000..fbe4a36
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab
+new file mode 100644
+index 0000000..bdf584a
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream
+new file mode 100644
+index 0000000..40094b2
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len
+new file mode 100644
+index 0000000..bcd95fb
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.values.at
+new file mode 100644
+index 0000000..46d6744
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i
+new file mode 100644
+index 0000000..952ca99
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/package-parts.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab
+new file mode 100644
+index 0000000..0542d27
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream
+new file mode 100644
+index 0000000..9135d5e
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len
+new file mode 100644
+index 0000000..a49acfa
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len
+new file mode 100644
+index 0000000..cf8a30a
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at
+new file mode 100644
+index 0000000..d70d633
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i
+new file mode 100644
+index 0000000..8fb1d25
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab
+new file mode 100644
+index 0000000..e65fa72
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream
+new file mode 100644
+index 0000000..3048cc4
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len
+new file mode 100644
+index 0000000..5148a33
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at
+new file mode 100644
+index 0000000..ce4e653
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i
+new file mode 100644
+index 0000000..fd0c49d
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab
+new file mode 100644
+index 0000000..7414f05
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream
+new file mode 100644
+index 0000000..954d6b4
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len
+new file mode 100644
+index 0000000..c6582fd
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len
+new file mode 100644
+index 0000000..ec8f944
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at
+new file mode 100644
+index 0000000..dc867cd
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i
+new file mode 100644
+index 0000000..4f94ab9
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab
+new file mode 100644
+index 0000000..05d4dbd
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream
+new file mode 100644
+index 0000000..f30cad5
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len
+new file mode 100644
+index 0000000..59ae8af
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len
+new file mode 100644
+index 0000000..fa606b6
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at
+new file mode 100644
+index 0000000..79a10d8
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i
+new file mode 100644
+index 0000000..f8d84a1
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+new file mode 100644
+index 0000000..3d952e7
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+@@ -0,0 +1,2 @@
++7
++0
+\ No newline at end of file
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab
+new file mode 100644
+index 0000000..9c74b06
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream
+new file mode 100644
+index 0000000..3048cc4
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len
+new file mode 100644
+index 0000000..5148a33
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at
+new file mode 100644
+index 0000000..25454f3
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i
+new file mode 100644
+index 0000000..fd0c49d
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab
+new file mode 100644
+index 0000000..f544aa6
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream
+new file mode 100644
+index 0000000..2459ed6
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len
+new file mode 100644
+index 0000000..379d85c
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at
+new file mode 100644
+index 0000000..0549964
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i
+new file mode 100644
+index 0000000..0667ccd
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab
+new file mode 100644
+index 0000000..abf7253
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream
+new file mode 100644
+index 0000000..97aa7b5
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len
+new file mode 100644
+index 0000000..f24a3d5
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len
+new file mode 100644
+index 0000000..11603c3
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at
+new file mode 100644
+index 0000000..c2c87ee
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i
+new file mode 100644
+index 0000000..8fe814f
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin
+new file mode 100644
+index 0000000..3fc7d9d
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+new file mode 100644
+index 0000000..1237481
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin differ
+diff --git a/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+new file mode 100644
+index 0000000..31cb348
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin differ
+diff --git a/node_modules/expo-quick-actions/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/expo-quick-actions/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..e390f5d
+--- /dev/null
++++ b/node_modules/expo-quick-actions/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,14 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml:1:1-2:12
++INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml:1:1-2:12
++	package
++		INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml
++uses-sdk
++INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml
++INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/ndessai/projects/tutormanagement/apps/mobile/node_modules/expo-quick-actions/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/expo-quick-actions/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..8c11a05
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/META-INF/expo-quick-actions_debug.kotlin_module b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/META-INF/expo-quick-actions_debug.kotlin_module
+new file mode 100644
+index 0000000..163c04b
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/META-INF/expo-quick-actions_debug.kotlin_module differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ActionObject$Companion.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ActionObject$Companion.class
+new file mode 100644
+index 0000000..14dc2eb
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ActionObject$Companion.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ActionObject.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ActionObject.class
+new file mode 100644
+index 0000000..1a74aa9
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ActionObject.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/AppIconPackage.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/AppIconPackage.class
+new file mode 100644
+index 0000000..c2925f5
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/AppIconPackage.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$Companion.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$Companion.class
+new file mode 100644
+index 0000000..ded5275
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$Companion.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$AsyncFunctionWithoutArgs$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$AsyncFunctionWithoutArgs$1.class
+new file mode 100644
+index 0000000..238d6a8
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$AsyncFunctionWithoutArgs$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$Function$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$Function$1.class
+new file mode 100644
+index 0000000..5338ca9
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$Function$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$Function$2.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$Function$2.class
+new file mode 100644
+index 0000000..39775f9
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule$definition$lambda$2$$inlined$Function$2.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule.class
+new file mode 100644
+index 0000000..6e13706
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconModule.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconReactActivityLifecycleListener$Companion.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconReactActivityLifecycleListener$Companion.class
+new file mode 100644
+index 0000000..7da8c18
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconReactActivityLifecycleListener$Companion.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconReactActivityLifecycleListener.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconReactActivityLifecycleListener.class
+new file mode 100644
+index 0000000..c9c4438
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoAppIconReactActivityLifecycleListener.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$Companion.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$Companion.class
+new file mode 100644
+index 0000000..9c6a12d
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$Companion.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$1$2.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$1$2.class
+new file mode 100644
+index 0000000..b650e01
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$1$2.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$1.class
+new file mode 100644
+index 0000000..b9bc214
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$2.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$2.class
+new file mode 100644
+index 0000000..e66418e
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$2.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$3.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$3.class
+new file mode 100644
+index 0000000..11a9c0c
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunction$3.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunctionWithoutArgs$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunctionWithoutArgs$1.class
+new file mode 100644
+index 0000000..64af057
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$AsyncFunctionWithoutArgs$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnCreate$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnCreate$1.class
+new file mode 100644
+index 0000000..2dcb690
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnCreate$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnDestroy$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnDestroy$1.class
+new file mode 100644
+index 0000000..6f5fc4c
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnDestroy$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnNewIntent$1.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnNewIntent$1.class
+new file mode 100644
+index 0000000..be2ced2
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule$definition$lambda$5$$inlined$OnNewIntent$1.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule.class
+new file mode 100644
+index 0000000..8d2ef1e
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModule.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModuleKt.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModuleKt.class
+new file mode 100644
+index 0000000..5231683
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/ExpoQuickActionsModuleKt.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsPackage.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsPackage.class
+new file mode 100644
+index 0000000..dfa40f3
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsPackage.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsReactActivityLifecycleListener.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsReactActivityLifecycleListener.class
+new file mode 100644
+index 0000000..945eae1
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsReactActivityLifecycleListener.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsSingleton.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsSingleton.class
+new file mode 100644
+index 0000000..8482488
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/QuickActionsSingleton.class differ
+diff --git a/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/SharedObject.class b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/SharedObject.class
+new file mode 100644
+index 0000000..1e60ab6
+Binary files /dev/null and b/node_modules/expo-quick-actions/android/build/tmp/kotlin-classes/debug/expo/modules/quickactions/SharedObject.class differ
+diff --git a/node_modules/expo-quick-actions/ios/AppDelegate.swift b/node_modules/expo-quick-actions/ios/AppDelegate.swift
+index 37558e0..fb9d212 100644
+--- a/node_modules/expo-quick-actions/ios/AppDelegate.swift
++++ b/node_modules/expo-quick-actions/ios/AppDelegate.swift
+@@ -17,6 +17,12 @@ public class ExpoQuickActionsAppDelegate: ExpoAppDelegateSubscriber {
+   }
+ 
+   public func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
++    // Under the UIScene life cycle (iOS 27) a quick action that cold-starts the app is not in the
++    // launch options: Expo's scene delegate forwards it here, before JavaScript listens. Keep it for
++    // `getInitial()` then, so it is not lost.
++    if !quickActionsObserving {
++      initialAction = shortcutItem
++    }
+     NotificationCenter.default.post(name: Notification.Name(onQuickAction), object: shortcutItem)
+     completionHandler(true)
+   }
+diff --git a/node_modules/expo-quick-actions/ios/ExpoQuickActionsModule.swift b/node_modules/expo-quick-actions/ios/ExpoQuickActionsModule.swift
+index 252da49..e5b15bb 100644
+--- a/node_modules/expo-quick-actions/ios/ExpoQuickActionsModule.swift
++++ b/node_modules/expo-quick-actions/ios/ExpoQuickActionsModule.swift
+@@ -72,6 +72,7 @@ func toActionObject(item: UIApplicationShortcutItem?) -> ActionObject? {
+ }
+ 
+ var initialAction: UIApplicationShortcutItem?
++var quickActionsObserving = false
+ 
+ public class ExpoQuickActionsModule: Module {
+     
+@@ -96,6 +97,14 @@ public class ExpoQuickActionsModule: Module {
+             }
+         }.runOnQueue(.main)
+         
++        // The action that started the app, read once: unlike the `initial` constant it also holds
++        // one that arrived (scene life cycle) after the module was set up.
++        Function("getInitial") { () -> [String: Any]? in
++            let action = toActionObject(item: initialAction)?.toDictionary()
++            initialAction = nil
++            return action
++        }
++
+         AsyncFunction("isSupported") { () -> Bool in
+             return true
+         }
+@@ -103,6 +112,7 @@ public class ExpoQuickActionsModule: Module {
+         Events(onQuickAction)
+         
+         OnStartObserving {
++            quickActionsObserving = true
+             NotificationCenter.default.addObserver(
+                 self,
+                 selector: #selector(self.quickActionListener),
+@@ -112,6 +122,7 @@ public class ExpoQuickActionsModule: Module {
+         }
+         
+         OnStopObserving {
++            quickActionsObserving = false
+             NotificationCenter.default.removeObserver(
+                 self,
+                 name: Notification.Name(onQuickAction),

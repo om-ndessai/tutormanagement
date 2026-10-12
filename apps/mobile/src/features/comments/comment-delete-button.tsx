@@ -1,0 +1,79 @@
+// Ported from apps/web/src/features/comments/comment-delete-button.tsx @ 1132322. The alert dialog
+// becomes the platform's own confirm.
+import type { Comment, CommentTarget } from '@tmi/shared';
+import { AccessibilityInfo, Alert } from 'react-native';
+
+import { IconButton } from '@/components/icon-button';
+import { useToast } from '@/components/toast';
+import { ApiRequestError } from '@/lib/api-client';
+import { haptics } from '@/lib/haptics';
+import { useDeleteComment } from './api';
+
+/**
+ * Asks, then withdraws a comment: comments are deleted outright, with no way back, so it is a
+ * confirm rather than an Undo. The caller offers it only where the API said `can_delete`.
+ */
+export function useConfirmDeleteComment(target: CommentTarget) {
+  const remove = useDeleteComment();
+  const toast = useToast();
+
+  function confirm(comment: Comment) {
+    haptics.warning();
+    Alert.alert(
+      'Delete this comment?',
+      'It stops being visible to everybody it was shared with. Comments cannot be edited, so this cannot be undone by rewriting it.',
+      [
+        { text: 'Keep it', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () =>
+            remove.mutate(
+              { id: comment.id, target },
+              {
+                // The thread is a sheet: the comment leaving the list is the confirmation there,
+                // said aloud for a screen reader; a failure is an alert, which shows above any sheet.
+                onSuccess: () => {
+                  AccessibilityInfo.announceForAccessibility('Comment deleted.');
+                  toast.success('Comment deleted.');
+                },
+                onError: (error) => {
+                  haptics.error();
+                  Alert.alert(
+                    'Could not delete that comment',
+                    error instanceof ApiRequestError ? error.message : 'Try again in a moment.',
+                  );
+                },
+              },
+            ),
+        },
+      ],
+    );
+  }
+
+  return { confirm, isPending: remove.isPending };
+}
+
+/**
+ * Withdrawing a comment, wherever it is being read.
+ *
+ * Renders nothing unless the API said this viewer may do it -- which is the author and nobody
+ * else, not even an admin. The decision is never taken here.
+ */
+export function CommentDeleteButton({ comment, target }: { comment: Comment; target: CommentTarget }) {
+  const remove = useConfirmDeleteComment(target);
+
+  if (!comment.can_delete) return null;
+
+  return (
+    <IconButton
+      testID={`comment-delete-${comment.id}`}
+      icon="trash-can-outline"
+      size={20}
+      accessibilityLabel="Delete this comment"
+      onPress={() => remove.confirm(comment)}
+      disabled={remove.isPending}
+      style={{ margin: 0 }}
+    />
+  );
+}

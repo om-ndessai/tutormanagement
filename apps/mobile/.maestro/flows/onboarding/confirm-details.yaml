@@ -1,0 +1,79 @@
+# A parent the office has just added meets the wizard (Odessa, a fresh device): it opens by itself,
+# with no setup choices; Confirm my details shows the office's record of her (her email) and "Yes,
+# that's all right" confirms it -> done -> her dashboard. Then a person who has been through it
+# (Anita) on a fresh device is only offered the tour, and No thanks puts it away. Self-cleaning.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+  - runScript: ../../scripts/seed-onboarding.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: odessa.fairbanks@example.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 30000
+- assertVisible: 'Welcome to .*, Odessa'
+- assertNotVisible:
+    id: onboarding-choice-student
+- takeScreenshot: onboarding-welcome-parent
+- tapOn:
+    id: onboarding-confirm-mine
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-confirm
+    timeout: 10000
+- extendedWaitUntil:
+    visible: '.*odessa.fairbanks@example.com.*'
+    timeout: 15000
+- assertNotVisible:
+    id: person-form-name
+- takeScreenshot: onboarding-confirm
+- scrollUntilVisible:
+    element:
+      id: confirm-details-yes
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: confirm-details-yes
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-done
+    timeout: 15000
+- assertVisible: 'You’re all set'
+- tapOn:
+    id: onboarding-done-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: screen-onboarding
+
+# Somebody who has been through it, on a device that has not shown it: an offer, not the wizard.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 30000
+- assertVisible: 'New here on this device?'
+- assertNotVisible:
+    id: screen-onboarding
+- takeScreenshot: onboarding-offer
+- tapOn:
+    id: tour-offer-dismiss
+- assertNotVisible:
+    id: tour-offer

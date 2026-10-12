@@ -1,0 +1,28 @@
+# Android: the notification shade holds the running lesson's ongoing notification (#45), and it
+# says "Lesson in progress" and the system's ticking time -- no student, no tutor, no mode, no
+# amount. Env SHOT: the screenshot's name. Closes the shade again. A no-op on iOS (the Lock Screen
+# is checked by the readout and by hand).
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      # From the very top edge; a swipe that lands in the app instead is tried again.
+      - retry:
+          maxRetries: 3
+          commands:
+            - swipe:
+                start: 50%, 0%
+                end: 50%, 80%
+                duration: 400
+            - extendedWaitUntil:
+                visible: 'Lesson in progress'
+                timeout: 4000
+      - assertNotVisible: '.*Sofia.*'
+      - assertNotVisible: '.*Okafor.*'
+      - assertNotVisible: '.*Alex Chen.*'
+      - assertNotVisible: '.*Virtual.*'
+      - assertNotVisible: '.*\$[0-9].*'
+      - takeScreenshot: ${SHOT}
+      - back

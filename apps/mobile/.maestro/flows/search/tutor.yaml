@@ -1,0 +1,58 @@
+# Search as a tutor (Alex), from More: never the Organization page, not even by its own words;
+# a student he teaches opens her progress, not a person record.
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: more-search
+    timeout: 10000
+- tapOn:
+    id: more-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- assertVisible:
+    id: search-goto-nav-billing
+- assertNotVisible:
+    id: search-goto-nav-organization
+- tapOn:
+    id: search-input
+- inputText: payer
+- extendedWaitUntil:
+    visible:
+      id: search-empty
+    timeout: 15000
+- assertNotVisible:
+    id: search-goto-nav-organization
+- tapOn:
+    id: search-input
+- eraseText: 10
+- inputText: sof
+- extendedWaitUntil:
+    visible:
+      id: search-person-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- takeScreenshot: search-tutor-people
+- tapOn:
+    id: search-person-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: screen-progress-student
+    timeout: 20000
+- assertVisible: '.*Sofia Okafor.*'
+- assertNotVisible:
+    id: screen-person
