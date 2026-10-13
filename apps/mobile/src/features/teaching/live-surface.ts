@@ -22,9 +22,9 @@ import { liveSurfaceDriver } from './live-surface-driver';
 /** The only words a running lesson may show outside the app. */
 export const LIVE_SURFACE_TITLE = 'Lesson in progress';
 /** Where a tap on the surface lands: the Sessions tab, where the live banner has Stop. */
-export const LIVE_SURFACE_URL = 'tutorportal://sessions?tab=tutoring';
+export const LIVE_SURFACE_URL = 'aimtrue://sessions?tab=tutoring';
 /** Android's Stop action opens the stop sheet; it never stops the lesson by itself. */
-export const LIVE_SURFACE_STOP_URL = 'tutorportal://stop-lesson';
+export const LIVE_SURFACE_STOP_URL = 'aimtrue://stop-lesson';
 
 export type LiveSurfaceContent = {
   /** Which lesson: its start instant (a running lesson has no id). A new one starts a new surface. */

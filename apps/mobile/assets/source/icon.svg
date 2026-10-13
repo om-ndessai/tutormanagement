@@ -1,7 +1,13 @@
-<!-- Tutor Portal app icon: the platform's π mark (src/components/logo.tsx) on the platform
-     palette's primary (#30577D, ORG_PALETTE_HEX.platform). Full bleed and opaque: iOS and
-     Android apply their own corner mask. Rendered by scripts/render-icons.sh. -->
+<!-- Aimtrue app icon: the platform's mark, a lowercase a whose bowl is a bullseye
+     (src/components/logo.tsx), on the platform palette's primary (#30577D,
+     ORG_PALETTE_HEX.platform). The centre is amber here and in the splash; inside the app the
+     mark is one colour, so it sits on any organization's palette. Full bleed and opaque: iOS
+     and Android apply their own corner mask. Rendered by scripts/render-icons.sh. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 48 48">
   <rect width="48" height="48" fill="#30577D"/>
-  <path d="M13 18h22M20 18v14M29 18v10c0 2.6 1.4 4 3.6 4" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" transform="translate(24 24) scale(1.12) translate(-23.65 -24.15)">
+    <circle cx="22.5" cy="24.4" r="9.4"/>
+    <path d="M34.2 13.9v20.5"/>
+    <circle cx="22.5" cy="24.4" r="3.4" fill="#F6B740" stroke="none"/>
+  </g>
 </svg>

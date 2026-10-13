@@ -7,10 +7,16 @@ each. Researched on 12 and 13 October 2026. The figures are a snapshot of those 
 ## Decision (owner, 2026-10-13)
 
 - **Name: Aimtrue.** Tagline: "Set the goal. Aim true."
-- **Logo: the board's sketch**, an arrow flying level into a ring, its tip at the centre
-  ([logos/aimtrue.svg](logos/aimtrue.svg)). It replaces the pi mark as the app icon, the favicon and the
-  default mark an organization wears until it uploads its own. In the product it is drawn in one
-  colour on the palette's primary, so it works on every organization's palette.
+- **Logo: the "bullseye a"**, a lowercase a whose bowl is a target with the centre hit. It
+  replaces the pi mark as the app icon, the favicon and the default mark an organization wears
+  until it uploads its own. Inside the product it is drawn in one colour on the palette's
+  primary, so it works on every organization's palette; the app icon and splash give the centre
+  an amber dot.
+  - The board's own sketch for Aimtrue, an arrow flying level into a ring
+    ([logos/aimtrue.svg](logos/aimtrue.svg)), was applied first and rejected by the owner the same
+    day: an arrow entering a circle reads as "sign in", and its thin lines faded at small sizes.
+  - The bullseye a was then chosen from eight alternatives ([icon-options.html](icon-options.html)).
+    It is the closest to the owner's first idea, the pin landing in the P of Pinpoint.
 - **Identifiers renamed too.** The app's bundle id is `com.aimtrue.app` (with `.dev`, `.e2e` and
   `.personal`) and its link scheme is `aimtrue://`. The Cloudflare Workers, their addresses and the
   databases keep their names.
@@ -554,6 +560,7 @@ no federal registration, so the register missed it.
 | --- | --- |
 | [name-board.html](name-board.html) | The board as it was presented: both batches, with logos. Open it in a browser. |
 | [logos/](logos/) | One SVG per name, 32 in all: ink plus one accent, on a 64-unit canvas. |
+| [icon-options.html](icon-options.html) | The eight app icons drawn for Aimtrue after the first was rejected; option 7 was chosen. |
 | [data/trademarks.csv](data/trademarks.csv) | Every live US mark read: batch, name, word mark, status, classes, owner, serial number. |
 | [data/domains.csv](data/domains.csv) | Every domain looked up in full: batch, name, domain, status, year registered. |
 

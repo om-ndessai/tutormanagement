@@ -25,7 +25,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people?view=00000000-0000-4000-8000-000000000004
+      LINK: aimtrue://people?view=00000000-0000-4000-8000-000000000004
 - extendedWaitUntil:
     visible:
       id: person-edit
@@ -111,7 +111,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people?view=00000000-0000-4000-8000-000000000003
+      LINK: aimtrue://people?view=00000000-0000-4000-8000-000000000003
 - extendedWaitUntil:
     visible:
       text: 'Alex Chen'

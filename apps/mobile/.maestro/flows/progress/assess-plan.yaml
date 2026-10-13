@@ -25,7 +25,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://progress/33333333-0000-4000-8000-000000000075
+      LINK: aimtrue://progress/33333333-0000-4000-8000-000000000075
 - extendedWaitUntil:
     visible:
       id: progress-no-plan

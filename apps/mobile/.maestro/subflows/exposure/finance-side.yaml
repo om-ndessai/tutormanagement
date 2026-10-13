@@ -22,7 +22,7 @@ appId: ${APP_ID}
 - runFlow:
     file: ../open-link.yaml
     env:
-      LINK: tutorportal://sessions?tab=finance
+      LINK: aimtrue://sessions?tab=finance
 - extendedWaitUntil:
     visible:
       id: ${STAT}
@@ -44,7 +44,7 @@ appId: ${APP_ID}
 - runFlow:
     file: ../open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=${LESSON}&tab=finance
+      LINK: aimtrue://sessions?focus=${LESSON}&tab=finance
 - extendedWaitUntil:
     visible:
       id: session-preview-${LESSON}
@@ -62,7 +62,7 @@ appId: ${APP_ID}
 - runFlow:
     file: ../open-link.yaml
     env:
-      LINK: tutorportal://billing
+      LINK: aimtrue://billing
 - extendedWaitUntil:
     visible:
       id: ${BILL}

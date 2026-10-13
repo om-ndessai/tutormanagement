@@ -26,7 +26,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${SOFIA}
+      LINK: aimtrue://people/${SOFIA}
 - extendedWaitUntil:
     visible:
       id: screen-person
@@ -38,7 +38,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://dashboard
+      LINK: aimtrue://dashboard
 - extendedWaitUntil:
     visible:
       id: account-button
@@ -67,7 +67,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${SOFIA}
+      LINK: aimtrue://people/${SOFIA}
 - extendedWaitUntil:
     visible: 'Not found\..*'
     timeout: 20000
@@ -77,7 +77,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions
+      LINK: aimtrue://sessions
 - extendedWaitUntil:
     visible:
       id: session-card-0b300000-0000-4000-8000-000000000004
@@ -86,7 +86,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=50000000-0000-4000-8000-000000000002
+      LINK: aimtrue://sessions?focus=50000000-0000-4000-8000-000000000002
 - extendedWaitUntil:
     visible:
       id: focus-notice
@@ -98,7 +98,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://progress
+      LINK: aimtrue://progress
 - extendedWaitUntil:
     visible:
       id: progress-row-${SANJAY}
@@ -113,7 +113,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://pairings
+      LINK: aimtrue://pairings
 - extendedWaitUntil:
     visible:
       id: pairing-card-0b200000-0000-4000-8000-000000000003
@@ -126,7 +126,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people
+      LINK: aimtrue://people
 - extendedWaitUntil:
     visible:
       id: people-search
@@ -144,7 +144,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://search
+      LINK: aimtrue://search
 - extendedWaitUntil:
     visible:
       id: search-input
@@ -173,7 +173,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://pairings?focus=a0000000-0000-4000-8000-000000000004
+      LINK: aimtrue://pairings?focus=a0000000-0000-4000-8000-000000000004
 - extendedWaitUntil:
     visible:
       id: pairing-card-a0000000-0000-4000-8000-000000000004
@@ -183,7 +183,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${ALEX}
+      LINK: aimtrue://people/${ALEX}
 - extendedWaitUntil:
     visible:
       id: screen-person

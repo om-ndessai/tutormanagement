@@ -18,7 +18,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://pairings
+      LINK: aimtrue://pairings
 - extendedWaitUntil:
     visible:
       id: pairings-add-button

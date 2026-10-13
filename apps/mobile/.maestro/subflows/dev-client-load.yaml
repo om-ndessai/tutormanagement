@@ -2,6 +2,18 @@
 # launcher may not be ready for the first link, so it is retried while the launcher shows.
 appId: ${APP_ID}
 ---
+# A link opened before this flow began leaves iOS's "Open in …?" confirmation up (a fresh install
+# gets one from the build itself, which opens the dev-client link), and while it is up the
+# launcher underneath is invisible to the flow. Answer it first.
+- extendedWaitUntil:
+    visible: 'Open'
+    timeout: 3000
+    optional: true
+- runFlow:
+    when:
+      visible: 'Open'
+    commands:
+      - tapOn: 'Open'
 - extendedWaitUntil:
     visible: 'Development Build|DEVELOPMENT SERVERS|Development servers'
     timeout: 15000
@@ -14,7 +26,7 @@ appId: ${APP_ID}
       - runFlow:
           file: open-link.yaml
           env:
-            LINK: exp+tutor-portal://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081
+            LINK: exp+aimtrue://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081
       - extendedWaitUntil:
           notVisible: 'Development Build|DEVELOPMENT SERVERS|Development servers'
           timeout: 20000

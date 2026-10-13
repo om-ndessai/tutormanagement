@@ -18,7 +18,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://billing
+      LINK: aimtrue://billing
 - extendedWaitUntil:
     visible:
       id: billing-record
@@ -72,7 +72,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://payment-form
+      LINK: aimtrue://payment-form
 - extendedWaitUntil:
     visible:
       id: payment-party-search

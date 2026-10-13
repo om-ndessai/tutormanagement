@@ -26,7 +26,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://progress
+      LINK: aimtrue://progress
 - extendedWaitUntil:
     visible:
       id: progress-row-00000000-0000-4000-8000-000000000009
@@ -47,7 +47,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://progress?tutor=00000000-0000-4000-8000-000000000003
+      LINK: aimtrue://progress?tutor=00000000-0000-4000-8000-000000000003
 - extendedWaitUntil:
     visible:
       id: progress-tutor-filter

@@ -7,7 +7,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://dev/diagnostics
+      LINK: aimtrue://dev/diagnostics
 - extendedWaitUntil:
     visible:
       id: screen-dev-diagnostics

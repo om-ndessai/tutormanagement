@@ -157,7 +157,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=50000000-0000-4000-8000-000000000003
+      LINK: aimtrue://sessions?focus=50000000-0000-4000-8000-000000000003
 - extendedWaitUntil:
     visible:
       id: focus-notice

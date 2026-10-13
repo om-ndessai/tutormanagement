@@ -66,7 +66,7 @@ const SLUG_TAKEN = 'Another organization already uses that address name.';
  * address the platform is served from.
  */
 function calendarDomainFor(slug: string, requestUrl: string): string {
-  const host = new URL(requestUrl).hostname || 'tutor-portal.invalid';
+  const host = new URL(requestUrl).hostname || 'aimtrue.invalid';
   return `${slug}.${host}`;
 }
 

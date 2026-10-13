@@ -48,7 +48,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=50000000-0000-4000-8000-000000000002
+      LINK: aimtrue://sessions?focus=50000000-0000-4000-8000-000000000002
 - extendedWaitUntil:
     visible:
       id: 'screen-platform.*'
@@ -59,7 +59,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/00000000-0000-4000-8000-000000000008
+      LINK: aimtrue://people/00000000-0000-4000-8000-000000000008
 - extendedWaitUntil:
     visible:
       id: 'screen-platform.*'
@@ -88,7 +88,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://platform
+      LINK: aimtrue://platform
 - extendedWaitUntil:
     visible:
       id: screen-home
@@ -98,7 +98,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://search
+      LINK: aimtrue://search
 - extendedWaitUntil:
     visible:
       id: search-input

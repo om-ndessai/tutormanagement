@@ -22,7 +22,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions/${SESSION_ID}
+      LINK: aimtrue://sessions/${SESSION_ID}
 - extendedWaitUntil:
     visible:
       id: screen-session
@@ -74,7 +74,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions/${SESSION_ID}
+      LINK: aimtrue://sessions/${SESSION_ID}
 - extendedWaitUntil:
     visible:
       id: screen-session
@@ -109,7 +109,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions/${SESSION_ID}
+      LINK: aimtrue://sessions/${SESSION_ID}
 - extendedWaitUntil:
     visible:
       id: state-error
@@ -131,7 +131,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions/${SESSION_ID}
+      LINK: aimtrue://sessions/${SESSION_ID}
 - extendedWaitUntil:
     visible:
       id: screen-session

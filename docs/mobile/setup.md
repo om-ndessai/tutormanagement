@@ -67,7 +67,7 @@ APP_VARIANT=production EXPO_PUBLIC_PRODUCTION_API_URL=http://localhost:8787 npx 
 APP_VARIANT=production EXPO_PUBLIC_PRODUCTION_API_URL=http://localhost:8787 npx expo run:ios --configuration Release --device "iPhone 17" --no-bundler
 ```
 
-- The app installs as `com.tutorportal.app` ("Tutor Portal"), beside the development app. Its
+- The app installs as `com.aimtrue.app` ("Aimtrue"), beside the development app. Its
   sign-in screen offers Google only.
 - The localhost URL is the only reason this build allows plain http (`NSAllowsLocalNetworking`).
   A real production build is HTTPS only.

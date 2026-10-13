@@ -27,14 +27,17 @@ export interface Brand {
   logo_full_url: string | null;
 }
 
-/** The tutoring platform's own identity: neutral, the frame every organization sits in. */
+/**
+ * The platform's own identity: neutral, the frame every organization sits in. It was
+ * "Tutor Portal" until 2026-10-13 (docs/naming/README.md).
+ */
 export const PLATFORM_BRAND: Brand = {
   slug: null,
-  name: 'Tutor Portal',
-  short: 'Tutor Portal',
-  tagline: 'Every lesson, in one place',
+  name: 'Aimtrue',
+  short: 'Aimtrue',
+  tagline: 'Set the goal. Aim true.',
   blurb:
-    'Sessions, schedules, progress and payments for tutoring organizations — each ' +
+    'Plans, lessons, progress and payments for organizations that teach — each ' +
     'with its own people, its own records and its own look.',
   palette: 'platform',
   builtin_logo: null,

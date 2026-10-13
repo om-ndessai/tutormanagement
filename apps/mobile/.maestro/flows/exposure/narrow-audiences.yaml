@@ -26,7 +26,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://comments
+      LINK: aimtrue://comments
 - extendedWaitUntil:
     visible: '.*Agreed with both families that Sanjay teaches Ben.*'
     timeout: 20000
@@ -36,7 +36,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://pairings
+      LINK: aimtrue://pairings
 - extendedWaitUntil:
     visible:
       id: pairing-card-a0000000-0000-4000-8000-000000000003
@@ -62,7 +62,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${PRIYA}
+      LINK: aimtrue://people/${PRIYA}
 - extendedWaitUntil:
     visible:
       id: person-section-tutor
@@ -89,7 +89,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${BEN}
+      LINK: aimtrue://people/${BEN}
 - extendedWaitUntil:
     visible:
       id: screen-person
@@ -121,7 +121,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${BEN}
+      LINK: aimtrue://people/${BEN}
 - extendedWaitUntil:
     visible:
       id: screen-person

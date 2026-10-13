@@ -23,7 +23,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions
+      LINK: aimtrue://sessions
 - extendedWaitUntil:
     visible:
       id: session-card-${LESSON}
@@ -54,7 +54,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://schedule
+      LINK: aimtrue://schedule
 - extendedWaitUntil:
     visible:
       id: schedule-dates-toggle-${SCHEDULE}
@@ -81,7 +81,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people
+      LINK: aimtrue://people
 - extendedWaitUntil:
     visible:
       id: people-row-${ALEX}
@@ -116,7 +116,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://pairings
+      LINK: aimtrue://pairings
 - extendedWaitUntil:
     visible:
       id: pairing-card-a0000000-0000-4000-8000-000000000001
@@ -133,7 +133,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://more
+      LINK: aimtrue://more
 - extendedWaitUntil:
     visible:
       id: more-nav-activity
@@ -145,7 +145,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://organization
+      LINK: aimtrue://organization
 - extendedWaitUntil:
     visible:
       id: organization-stub

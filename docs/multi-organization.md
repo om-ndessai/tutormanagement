@@ -39,7 +39,7 @@ built on a **new pipeline**:
 | `tutoring` | on | `tutoring-db` | `npm run deploy` (with `tmi-portal`) |
 | `tutoring-test` | off | `tutoring-test-db` (TEST account since 2026-10-07) | `npm run deploy:test`, or `npm run e2e` |
 
-Both deployments wear the neutral `platform` brand ("Tutor Portal"). Both databases were created
+Both deployments wear the neutral `platform` brand ("Aimtrue"; "Tutor Portal" until 2026-10-13). Both databases were created
 empty, because their first schema is the one with organization support.
 
 **What this changes in the plan below:**
@@ -470,7 +470,7 @@ A request that names no organization, or one the person is not an active member 
   favicon and `theme-color`. `useBrand()` keeps its shape, so its seven callers do not change. The
   `BRAND` var, `BrandId` and `resolveBrand` retire.
 - **The sign-in page** is branded by `/api/auth/config` with the organization the address is for
-  (`DEFAULT_ORGANIZATION`), otherwise the neutral `PLATFORM_BRAND` ("Tutor Portal"). (Until
+  (`DEFAULT_ORGANIZATION`), otherwise the neutral `PLATFORM_BRAND` ("Aimtrue"; "Tutor Portal" until 2026-10-13). (Until
   2026-10-06 it read `tmi_last_org`, which put the last organization's look on the shared
   `tutoring` sign-in page; an organization's look now appears only after entering it.)
 - **Branding is set by platform admins.** An organization's own admins get an **Organization

@@ -1,4 +1,4 @@
-// Developer-only deep link: tutorportal://dev/link?as=<email>&org=<slug>&server=local|demo&tour=seen
+// Developer-only deep link: aimtrue://dev/link?as=<email>&org=<slug>&server=local|demo&tour=seen
 // Signs in as a seeded person (and enters an organization) in one step -- how the Maestro
 // flows begin. `tour=seen` marks this device as having shown the welcome tour, so its offer does
 // not cover a flow (the web e2e fixture's tmi_tour_seen cookie); a flow that tests it leaves it off. Absent from production: the variant check, and the API ignoring X-Dev-User

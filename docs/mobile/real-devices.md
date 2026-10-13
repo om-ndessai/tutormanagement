@@ -24,6 +24,11 @@ dictation (on-device), and the native calendar.
 
 **Status (2026-10-11):** installed on the owner's iPhone 15 Pro (iOS 26.6.1) from the Mac mini.
 
+**Renamed (2026-10-13):** the app is now **Aimtrue**, and the personal build's bundle ID is
+`com.aimtrue.app.personal` (it was `com.tutorportal.app.personal`). To iOS that is a different
+app: it installs beside the old one, which can be deleted, and Google sign-in needs a new iOS
+client (A4 below).
+
 ## A. Your side, once
 
 - [x] **A1. Connect and trust.** Plug the iPhone in, unlock it, and tap **Trust This Computer**.
@@ -33,21 +38,22 @@ dictation (on-device), and the native calendar.
 - [x] **A3. Developer Mode on the iPhone.** Settings → Privacy & Security → **Developer Mode** →
   on, then restart and confirm. The switch appears only after the phone has been connected to
   Xcode once, so open Xcode → Window → **Devices and Simulators** with the phone plugged in.
-- [x] **A4. A Google iOS OAuth client for the device build.** In the same Google Cloud project
-  as the others, create an iOS client with bundle ID **`com.tutorportal.app.personal`**. Put its ID
+- [ ] **A4. A Google iOS OAuth client for the device build** (to redo for the renamed bundle ID). In the same Google Cloud project
+  as the others, create an iOS client with bundle ID **`com.aimtrue.app.personal`**. Put its ID
   in `apps/mobile/.env.local`:
   ```sh
   EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_PERSONAL=…apps.googleusercontent.com
   ```
-  A separate bundle ID keeps the free account from claiming `com.tutorportal.app`, which the paid
-  account will need later.
+  A separate bundle ID keeps the free account from claiming `com.aimtrue.app`, which the paid
+  account will need later. The client made on 2026-10-11 was for the old bundle ID and cannot
+  be edited to the new one: create a new one.
 - [ ] **A5. Your Google account** must be a person in the production portal (it already is if
   you sign in to the web portal).
 
 ## B. My side
 
 - [x] **B1. A `personal` build variant** (`APP_VARIANT=personal`):
-  - Bundle ID `com.tutorportal.app.personal`, named "Tutor Portal".
+  - Bundle ID `com.aimtrue.app.personal`, named "Aimtrue".
   - Production server, Google sign-in only, no developer sign-in or developer screens.
   - Without the Live Activity extension and its App Group or push entitlements, which a free
     team can't sign.
@@ -69,7 +75,7 @@ dictation (on-device), and the native calendar.
 
 1. iOS refuses an app from an untrusted developer the first time. Go to Settings → General →
    **VPN & Device Management** → your Apple ID → **Trust**.
-2. Open **Tutor Portal**, tap **Sign in with Google**, and choose your account. You land in your
+2. Open **Aimtrue**, tap **Sign in with Google**, and choose your account. You land in your
    organization, using **real data**.
 
 ## D. Cable-free afterwards, and weekly
@@ -79,4 +85,9 @@ dictation (on-device), and the native calendar.
 - **Every 7 days** the install expires and the app won't open. Re-run `scripts/install-personal.sh`
   (over Wi-Fi once "Connect via network" is ticked). Your data
   is on the server, so nothing is lost.
-- **More phones:** up to 3 on a free account, each needing A1 and A3 once.
+- **More phones:** up to 3 on a free account, each needing A1 and A3 once. To install on several
+  in a row, add `KEEP_PERSONAL=1` so the script leaves the iOS project as the personal variant
+  between runs instead of restoring the development one each time:
+  ```sh
+  cd apps/mobile && KEEP_PERSONAL=1 APPLE_TEAM_ID=<Personal Team ID> scripts/install-personal.sh <device UDID>
+  ```

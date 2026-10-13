@@ -12,4 +12,4 @@ appId: ${APP_ID}
 - runFlow:
     file: open-link.yaml
     env:
-      LINK: "tutorportal://dev/link?as=${PERSONA}&org=${ORG}${typeof FRESH === 'undefined' || !FRESH ? '&tour=seen' : ''}"
+      LINK: "aimtrue://dev/link?as=${PERSONA}&org=${ORG}${typeof FRESH === 'undefined' || !FRESH ? '&tour=seen' : ''}"

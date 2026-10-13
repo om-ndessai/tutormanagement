@@ -22,7 +22,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${SOFIA}
+      LINK: aimtrue://people/${SOFIA}
 - extendedWaitUntil:
     visible:
       id: screen-person
@@ -78,7 +78,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${SOFIA}
+      LINK: aimtrue://people/${SOFIA}
 - extendedWaitUntil:
     visible:
       id: screen-person
@@ -110,7 +110,7 @@ env:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://people/${SOFIA}
+      LINK: aimtrue://people/${SOFIA}
 - extendedWaitUntil:
     visible:
       id: screen-person

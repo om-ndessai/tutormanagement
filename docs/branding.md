@@ -16,6 +16,21 @@ every token the light one sets. Before an organization is known the page is the 
 `platform` palette (set in `index.html`), so no organization's colour flashes. The sections
 below describe the institute's own palette, which is `plum`.
 
+## The platform's own identity
+
+The platform is **Aimtrue** (tagline "Set the goal. Aim true."), renamed from "Tutor Portal" on
+2026-10-13; `docs/naming/README.md` records how the name and mark were chosen. Its name, tagline
+and blurb are `PLATFORM_BRAND` in `packages/shared/src/brand.ts`, and it wears the `platform`
+(slate) palette.
+
+Its mark is the "bullseye a": a lowercase a whose bowl is a target with the centre hit. It is
+drawn, not shipped as a file: `BullseyeMark` in `apps/web/src/components/brand/logo.tsx`, the
+same shapes in `apps/mobile/src/components/logo.tsx`, the favicon in `brand-provider.tsx`, and
+the app icon art in `apps/mobile/assets/source/`. Inside the portal and the app it is one colour
+on the palette's primary, so it works on every organization's palette: an organization with no
+logo of its own wears the same mark in its own colours. Only the app icon and the splash screen,
+which are always the platform's, give the centre its amber (`#F6B740`).
+
 ## Logo
 
 `apps/web/public/` holds three assets, all derived from the institute's logo with the white

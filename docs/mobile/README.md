@@ -4,6 +4,11 @@ A native iOS and Android app for the tutoring portal, built with Expo and React 
 answers `docs/mobileapp.md`, the owner's five-phase brief. It was built on the branch
 `mobile-app`, which the owner merged into `main` on 2026-10-12; it is worked on `main` now.
 
+**Renamed on 2026-10-13:** the platform and the app are now **Aimtrue**; the bundle IDs are
+`com.aimtrue.app(.dev|.e2e|.personal)` and the link scheme is `aimtrue://`
+(`docs/naming/README.md`). The plan, the progress checklist and the build log are records of
+the work as it was done and still say "Tutor Portal" and `tutorportal://`.
+
 | Document | What it holds |
 | --- | --- |
 | [plan.md](plan.md) | The approved execution plan for Phases 1–5 |

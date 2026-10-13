@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aimtrue Icon Options</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;700&display=swap">
+<style>
+/* Layout: a contact sheet. One card per icon, each shown the way it will really be met: large, at home-screen sizes, recoloured, and as the plain mark inside the app. */
+:root {
+  --paper: #f2f5f7; --surface: #ffffff; --ink: #14232e; --muted: #586a76; --rule: #d4dde3; --note: #8a4b08; --note-bg: #fbf0d8;
+  --slate: #30577D; --amber: #F6B740; --deep: #15252d;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --text: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f171d; --surface: #17222a; --ink: #e8eef2; --muted: #93a3ad; --rule: #2a3842; --note: #f0c467; --note-bg: #392d10; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f171d; --surface: #17222a; --ink: #e8eef2; --muted: #93a3ad; --rule: #2a3842; --note: #f0c467; --note-bg: #392d10; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 400 15px/1.55 var(--text); }
+.wrap { max-width: 1180px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 40px 72px; display: grid; gap: 44px; }
+h1, h2 { font-family: var(--display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; max-width: 16ch; }
+h2 { font-size: 23px; line-height: 1.1; font-weight: 800; letter-spacing: -0.01em; }
+p { margin: 0; }
+.eyebrow, .num, .lab { font: 700 11.5px/1.3 var(--text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* the marks: main, goal, secondary (60%), dim-in-mono, knock-out */
+.sw { stroke: var(--w); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.sg { stroke: var(--g); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ss { stroke: var(--w); fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: .58; }
+.fw { fill: var(--w); } .fg { fill: var(--g); } .fs { fill: var(--w); opacity: .58; } .fk { fill: var(--k); }
+.fd { fill: var(--w); opacity: var(--dim, 1); }
+.swj { stroke: var(--w); stroke-width: 1.8; stroke-linejoin: round; }
+.sgj { stroke: var(--g); stroke-width: 1.8; stroke-linejoin: round; }
+.sdj { stroke: var(--w); stroke-width: 1.8; stroke-linejoin: round; }
+.app { width: var(--s); height: var(--s); flex: none; display: inline-grid; place-items: center; border-radius: 22.4%; background: var(--k); box-shadow: 0 1px 2px rgb(0 0 0 / .18), 0 6px 16px rgb(10 30 50 / .14); }
+.app svg { width: 100%; height: 100%; }
+.c-slate { --k: var(--slate); --w: #ffffff; --g: var(--amber); }
+.c-ink   { --k: var(--deep); --w: #ffffff; --g: var(--amber); }
+.c-amber { --k: var(--amber); --w: var(--deep); --g: #ffffff; }
+.c-paper { --k: #ffffff; --w: var(--slate); --g: #e28a1c; }
+.m-plum    { --k: #773C7D; --w: #ffffff; --g: #ffffff; --dim: .58; }
+.m-teal    { --k: #0B5F68; --w: #ffffff; --g: #ffffff; --dim: .58; }
+.m-crimson { --k: #9B2335; --w: #ffffff; --g: #ffffff; --dim: .58; }
+.m-slate   { --k: var(--slate); --w: #ffffff; --g: #ffffff; --dim: .58; }
+
+header.top { display: grid; gap: 16px; }
+.lead { font-size: 18px; line-height: 1.5; max-width: 60ch; }
+.now { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; padding: 18px 20px; background: var(--note-bg); border-radius: 8px; max-width: 760px; }
+.now p { color: var(--ink); font-size: 14.5px; }
+.now b { color: var(--note); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 20px; }
+.opt { display: grid; gap: 16px; align-content: start; padding: 22px 20px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; min-width: 0; scroll-margin-top: 16px; }
+.stage { display: grid; place-items: center; padding-block: 10px 6px; }
+.meta { display: grid; gap: 4px; }
+.line { font: 600 16px/1.3 var(--display); color: var(--ink); }
+.rows { display: grid; gap: 12px; padding-block: 14px; border-block: 1px solid var(--rule); }
+.row { display: grid; gap: 8px; }
+.set { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.why { font-size: 14px; color: var(--ink); }
+.weak { font-size: 13.5px; color: var(--muted); }
+.weak b { color: var(--ink); font-weight: 700; }
+.plain { display: grid; gap: 12px; max-width: 68ch; }
+.plain p, .plain li { color: var(--muted); }
+.plain strong { color: var(--ink); }
+.plain ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+</style>
+</head>
+<body>
+
+
+<svg class="sprite" aria-hidden="true"><defs><symbol id="i-tick" viewBox="0 0 48 48"><path class="sw" d="M11.5 38.5 24 11l12.5 27.5" stroke-width="4.2"/>
+     <path class="sg" d="M18.6 27l4.2 4.4 7.8-9.6" stroke-width="3.8"/></symbol><symbol id="i-summit" viewBox="0 0 48 48"><path class="sw" d="M10 39.5 24 16l14 23.5" stroke-width="4.2"/>
+     <path class="ss" d="M17.8 30.2h12.4" stroke-width="3.4"/>
+     <path class="sw" d="M24 16V7" stroke-width="2.6"/>
+     <path class="fg sgj" d="M24.6 6.6l8.4 3.3-8.4 3.3z"/></symbol><symbol id="i-needle" viewBox="0 0 48 48"><g transform="rotate(38 24 24)">
+       <path class="fg sgj" d="M24 6.5 30.4 24H17.6z"/>
+       <path class="fd sdj" d="M24 41.5 30.4 24H17.6z"/>
+       <circle class="fk" cx="24" cy="24" r="2.7"/>
+     </g></symbol><symbol id="i-road" viewBox="0 0 48 48"><path class="sw" d="M11 39.5 21 15.5M37 39.5 27 15.5" stroke-width="4.2"/>
+     <path class="ss" d="M24 39.5V34" stroke-width="3.2"/>
+     <path class="ss" d="M24 28.6v-4" stroke-width="2.6"/>
+     <circle class="fg" cx="24" cy="9.6" r="3.6"/></symbol><symbol id="i-steps" viewBox="0 0 48 48"><path class="sw" d="M9 38.5h9.2V30h9.2v-8.5h9.2" stroke-width="4.2"/>
+     <circle class="fg" cx="36.6" cy="11.4" r="3.8"/></symbol><symbol id="i-rise" viewBox="0 0 48 48"><path class="ss" d="M12.5 39 24 29l11.5 10" stroke-width="4.2"/>
+     <path class="sw" d="M12.5 29.5 24 19.5l11.5 10" stroke-width="4.2"/>
+     <circle class="fg" cx="24" cy="10" r="3.6"/></symbol><symbol id="i-bullseye" viewBox="0 0 48 48"><circle class="sw" cx="22.5" cy="27" r="9.4" stroke-width="4.2"/>
+     <path class="sw" d="M34.2 16.5V37" stroke-width="4.2"/>
+     <circle class="fg" cx="22.5" cy="27" r="3.4"/></symbol><symbol id="i-pencil" viewBox="0 0 48 48"><g transform="rotate(45 24 24)">
+       <rect class="fs" x="19.3" y="4" width="9.4" height="6.4" rx="2.2"/>
+       <rect class="fw" x="19.3" y="11.4" width="9.4" height="15.6"/>
+       <path class="fw swj" d="M19.9 28h8.2L24 36z"/>
+     </g>
+     <circle class="fg" cx="11.6" cy="36.4" r="3"/></symbol><symbol id="i-current" viewBox="0 0 48 48"><circle class="ss" cx="31" cy="24" r="7.6" stroke-width="3"/>
+     <path class="sw" d="M9.5 24H30M25.8 19.2 31 24l-5.2 4.8" stroke-width="3"/>
+     <path class="sw" d="M12.8 24l-3.4-4M12.8 24l-3.4 4M16.8 24l-3.4-4M16.8 24l-3.4 4" stroke-width="2.2"/></symbol></defs></svg>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Aimtrue · app icon · 13 October 2026</p>
+    <h1>Eight other icons for Aimtrue</h1>
+    <p class="lead">You were right about the arrow and ring. Below are eight replacements, each drawn the way you will really meet it: on the home screen, at small sizes, in other colours, and as the plain mark the app shows on an organization's own colour.</p>
+    <div class="now">
+      <span class="app m-slate" style="--s:64px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-current"/></svg></span>
+      <p><b>What was wrong with the current one.</b> An arrow going into a circle is the standard symbol for “sign in”, and it is close to the symbol for “male”. The lines are thin and the faded ring disappears at small sizes. The new ones are bolder, each has one idea, and each adds a warm accent for the goal.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+  <article class="opt" id="tick">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 1</p>
+      <h2>Tick A</h2>
+      <p class="line">A for aim, ticked true.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-tick"/></svg></span></span></div>
+    </div>
+    <p class="why">A capital A whose crossbar is a tick. It reads as a letter first, so it is unmistakably yours, and the tick says “true” and “done”. An A is also the top mark in school.</p>
+    <p class="weak"><b>Weakness.</b> The tick has to stay bold enough to read at the smallest size.</p>
+  </article>
+  <article class="opt" id="summit">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 2</p>
+      <h2>Summit</h2>
+      <p class="line">Set the goal, then climb to it.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-summit"/></svg></span></span></div>
+    </div>
+    <p class="why">The A becomes a peak with a flag planted on top: the goal you set. It keeps the letter and tells the product's story in one picture.</p>
+    <p class="weak"><b>Weakness.</b> Mountains with flags are a familiar idea, so it is friendly but less distinctive.</p>
+  </article>
+  <article class="opt" id="needle">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 3</p>
+      <h2>True north</h2>
+      <p class="line">The needle that always points true.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-needle"/></svg></span></span></div>
+    </div>
+    <p class="why">A compass needle and nothing else. It is the plainest picture of “true”, it has a strong silhouette, and it needs no letter to work.</p>
+    <p class="weak"><b>Weakness.</b> Compasses are common in navigation and travel apps, so it says “direction” more than “learning”.</p>
+  </article>
+  <article class="opt" id="road">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 4</p>
+      <h2>Open road</h2>
+      <p class="line">A straight road to the goal.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-road"/></svg></span></span></div>
+    </div>
+    <p class="why">An A drawn as a road running straight to a point on the horizon. It keeps your letter, and a straight line to the goal is exactly what “aim true” means.</p>
+    <p class="weak"><b>Weakness.</b> The road takes a second look. At first glance it is simply an A with a dot.</p>
+  </article>
+  <article class="opt" id="steps">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 5</p>
+      <h2>Steps</h2>
+      <p class="line">A plan is steps, and a goal at the top.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-steps"/></svg></span></span></div>
+    </div>
+    <p class="why">Three steps rising to a point. It shows the plan and the progress, which the name alone does not.</p>
+    <p class="weak"><b>Weakness.</b> Stair and chart icons are everywhere, so it is the easiest to read and the hardest to own.</p>
+  </article>
+  <article class="opt" id="rise">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 6</p>
+      <h2>Rise</h2>
+      <p class="line">Up, and up again, to the goal.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rise"/></svg></span></span></div>
+    </div>
+    <p class="why">Two chevrons and a point: progress in the simplest marks there are. It is bold, symmetrical and reads at any size.</p>
+    <p class="weak"><b>Weakness.</b> It looks a little like a rank badge, and says nothing about “true”.</p>
+  </article>
+  <article class="opt" id="bullseye">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 7</p>
+      <h2>Bullseye a</h2>
+      <p class="line">The target lives inside the letter.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-bullseye"/></svg></span></span></div>
+    </div>
+    <p class="why">A lowercase a whose bowl is a target with the centre hit. It is the closest to your first idea, the pin landing in the P, moved to the new name.</p>
+    <p class="weak"><b>Weakness.</b> It is still a circle with a dot, so if the ring was what you disliked, skip this one.</p>
+  </article>
+  <article class="opt" id="pencil">
+    <div class="stage"><span class="app c-slate" style="--s:132px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span></div>
+    <div class="meta">
+      <p class="num">Option 8</p>
+      <h2>Pencil point</h2>
+      <p class="line">Learning, aimed at one point.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="lab">At real sizes</span><span class="set"><span class="app c-slate" style="--s:60px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="app c-slate" style="--s:40px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="app c-slate" style="--s:29px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span></span></div>
+      <div class="row"><span class="lab">Other colours</span><span class="set"><span class="app c-ink" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="app c-amber" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="app c-paper" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span></span></div>
+      <div class="row"><span class="lab">Inside the app, on an organization's colour</span><span class="set"><span class="app m-plum" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="app m-teal" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="app m-crimson" style="--s:44px"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-pencil"/></svg></span></span></div>
+    </div>
+    <p class="why">A pencil with its tip on a mark. It is the only option that says “learning” at a glance, and the mark it makes is the goal.</p>
+    <p class="weak"><b>Weakness.</b> Pencils are common in note and drawing apps.</p>
+  </article>
+  </div>
+
+  <section class="plain">
+    <h2>How to choose</h2>
+    <ul>
+      <li><strong>Look at the smallest tile first.</strong> That is the size in Settings and in notifications. If you cannot tell what it is there, the large version does not matter.</li>
+      <li><strong>The amber is new.</strong> Until now the icon was one colour. Every option works without it, as the bottom row of each card shows, because an organization's default mark has to sit on its own colour.</li>
+      <li><strong>Tell me a number, or mix.</strong> For example “option 1 on the dark background”, or “the tick from 1 with the flag from 2”. I will then apply it to the app icon, the splash screen, the browser tab icon and the default mark in the portal and the app.</li>
+    </ul>
+  </section>
+</div>
+
+</body>
+</html>

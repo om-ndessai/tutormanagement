@@ -17,7 +17,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://comments
+      LINK: aimtrue://comments
 - extendedWaitUntil:
     visible: 'Alex Chen on the Tuesday 4:00 PM slot with Sofia Okafor.*'
     timeout: 20000
@@ -52,7 +52,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://comments
+      LINK: aimtrue://comments
 - extendedWaitUntil:
     visible:
       id: comments-filter-session

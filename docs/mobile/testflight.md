@@ -42,11 +42,11 @@ Start A1 today; it has the longest lead time.
   Decide which name testers (and later the App Store) should see. When it's done, tell me the
   **Team ID** (10 characters, under Membership).
 - [ ] **A2. Bundle ID and app name.** These are permanent once the app record exists.
-  - The plan uses `com.tutorportal.app` and the name "Tutor Portal", the platform's own name,
+  - The plan uses `com.aimtrue.app` and the name "Aimtrue", the platform's own name,
     because the app serves every organization.
-  - Store names must be unique, so "Tutor Portal" may be taken. A suffix such as
-    "Tutor Portal — Lessons" is fine.
-  - Alternatively, use a reverse domain you own, e.g. `com.trianglemathinstitute.tutorportal`.
+  - Store names must be unique, so "Aimtrue" may be taken. A suffix such as
+    "Aimtrue — Lessons" is fine.
+  - Alternatively, use a reverse domain you own, e.g. `com.trianglemathinstitute.aimtrue`.
 - [ ] **A3. App Store Connect app record**, at https://appstoreconnect.apple.com → Apps → +:
   name, bundle ID (from A2, registered under Identifiers), SKU (any string), primary language.
 - [ ] **A4. Google Cloud: an iOS OAuth client**, in the same project as the web client
@@ -75,7 +75,7 @@ Start A1 today; it has the longest lead time.
   reviewer needs a Google account that belongs to an organization.
   - Recommended: a **"Demo" organization in production**, created from the platform console,
     holding fictional people and lessons only.
-  - Add a dedicated Google account (e.g. `tutorportal.review@gmail.com`) as its admin, and put
+  - Add a dedicated Google account (e.g. `aimtrue.review@gmail.com`) as its admin, and put
     those credentials in Beta App Review information.
   - Never give the reviewer access to a real organization.
 - [ ] **A10. Approve the production release of the Phase 4 API change**, and choose how it
@@ -123,15 +123,15 @@ Done in T1 (2026-10-10) except where marked.
 - [x] **App icon and splash.** A brand-neutral mark: the platform's π on the platform primary.
   - Sources in `apps/mobile/assets/source/*.svg`; `apps/mobile/scripts/render-icons.sh`
     (needs `brew install librsvg`) renders the PNGs.
-  - iOS: an Icon Composer bundle, `assets/TutorPortal.icon` (Liquid Glass on iOS 26+, the
+  - iOS: an Icon Composer bundle, `assets/Aimtrue.icon` (Liquid Glass on iOS 26+, the
     system's dark/clear/tinted looks; Xcode renders the flat icon for older iOS).
   - `assets/images/icon.png`: 1024×1024, RGB, no alpha.
   - Android: adaptive foreground (inside the 66dp safe zone), a solid background and a
     monochrome icon.
   - The splash shows the π on the platform primary.
-- [x] **Names.** `CFBundleName` and `CFBundleDisplayName` both follow the variant: "Tutor Portal",
-  "Tutor Portal (dev)", "Tutor Portal (e2e)". Google's prompt reads "“Tutor Portal” Wants to Use
-  “accounts.google.com” to Sign In". It used to read "TutorPortaldev", which was the product name.
+- [x] **Names.** `CFBundleName` and `CFBundleDisplayName` both follow the variant: "Aimtrue",
+  "Aimtrue (dev)", "Aimtrue (e2e)". Google's prompt reads "“Aimtrue” Wants to Use
+  “accounts.google.com” to Sign In". It used to read "Aimtruedev", which was the product name.
 - [x] **Info.plist:**
   - `ITSAppUsesNonExemptEncryption = false` (`ios.config.usesNonExemptEncryption`).
   - ATS: `NSAllowsLocalNetworking` in development and e2e only, and in a production build only
@@ -174,7 +174,7 @@ Done in T1 (2026-10-10) except where marked.
 T2 is deferred until there is a paid Apple account.
 
 1. **Apple Team ID** (A1): 10 characters. It goes in `eas.json` → `submit.production.ios.appleTeamId`.
-2. **App Store Connect app record** (A3) for bundle ID `com.tutorportal.app`. Its numeric Apple
+2. **App Store Connect app record** (A3) for bundle ID `com.aimtrue.app`. Its numeric Apple
    ID is the **`ascAppId`** in `eas.json`.
 3. **Expo login** (A5) for `npx eas-cli build`, or an `EXPO_TOKEN`. After logging in, run
    `npx eas-cli init` once to link the project (it adds `extra.eas.projectId`), and run
@@ -187,8 +187,8 @@ T2 is deferred until there is a paid Apple account.
 6. Optional before external testing: A7 (privacy policy and support URLs) and A9 (the reviewer's
    demo organization).
 7. **The Live Activity's extension (#45)** needs the team too. `expo-widgets` adds a second target,
-   `ExpoWidgetsTarget` (bundle ID `com.tutorportal.app.ExpoWidgetsTarget`), and an App Group
-   `group.com.tutorportal.app` shared by both; on a device both bundle IDs need provisioning
+   `ExpoWidgetsTarget` (bundle ID `com.aimtrue.app.ExpoWidgetsTarget`), and an App Group
+   `group.com.aimtrue.app` shared by both; on a device both bundle IDs need provisioning
    profiles with that App Group, and the plugin always writes `aps-environment` (so the App ID needs
    Push Notifications enabled, though the app sends no pushes). EAS creates the profiles from the
    plugin's `extra.eas` entry once the team is known. The simulator needs none of this: it runs the

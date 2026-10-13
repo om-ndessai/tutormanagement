@@ -22,7 +22,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: 'tutorportal://dev/dictate?permission=blocked&text=never%20heard'
+      LINK: 'aimtrue://dev/dictate?permission=blocked&text=never%20heard'
 - extendedWaitUntil:
     visible:
       id: screen-home
@@ -70,7 +70,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: 'tutorportal://dev/dictate?permission=granted&ondevice=0&text=never%20heard'
+      LINK: 'aimtrue://dev/dictate?permission=granted&ondevice=0&text=never%20heard'
 - extendedWaitUntil:
     visible:
       id: screen-home
@@ -149,4 +149,4 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: 'tutorportal://dev/dictate?reset=1'
+      LINK: 'aimtrue://dev/dictate?reset=1'

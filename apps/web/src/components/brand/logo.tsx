@@ -10,13 +10,25 @@ const LOGO_FULL_SRC = '/logo-full.png';
 
 /**
  * The drawn mark, for an organization with no logo of its own and for the
- * platform itself: pi over a rule, inside a tile that takes its colour from
- * the palette rather than from literals, so it follows dark mode for free.
+ * platform itself: a lowercase a whose bowl is a bullseye, the centre hit
+ * (docs/naming/README.md), inside a tile that takes its colour from the
+ * palette rather than from literals, so it follows dark mode for free.
  */
-function MathMark({ className, bare = false }: { className?: string; bare?: boolean }) {
+function BullseyeMark({ className, bare = false }: { className?: string; bare?: boolean }) {
   // On a coloured panel the tile has nothing to sit against, so the glyph goes
   // on alone in white -- the institute's raster mark gets knocked out to white
   // for the same reason, and neither is achievable with the other's technique.
+  const ink = bare ? 'currentColor' : 'var(--primary-foreground)';
+  const glyph = (
+    <g fill="none" stroke={ink} strokeWidth="4.2" strokeLinecap="round">
+      {/* The bowl of the a is the target, and its stem stands beside it. */}
+      <circle cx="22.5" cy="24.4" r="9.4" />
+      <path d="M34.2 13.9v20.5" />
+      {/* The centre, hit. */}
+      <circle cx="22.5" cy="24.4" r="3.4" fill={ink} stroke="none" />
+    </g>
+  );
+
   if (bare) {
     return (
       <svg
@@ -25,11 +37,7 @@ function MathMark({ className, bare = false }: { className?: string; bare?: bool
         aria-hidden
         className={cn('size-9 select-none', className)}
       >
-        <g fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round">
-          <path d="M11 17h26" />
-          <path d="M19 17v17" />
-          <path d="M30 17v12c0 3 1.6 5 4 5" />
-        </g>
+        {glyph}
       </svg>
     );
   }
@@ -50,19 +58,7 @@ function MathMark({ className, bare = false }: { className?: string; bare?: bool
 
       <rect x="1" y="1" width="46" height="46" rx="13" fill="url(#chmi-tile)" />
 
-      {/* pi: a bar over two legs, the right one kicked out like the glyph. */}
-      <g
-        fill="none"
-        stroke="var(--primary-foreground)"
-        strokeWidth="3.4"
-        strokeLinecap="round"
-      >
-        <path d="M13 18h22" />
-        <path d="M20 18v14" />
-        <path d="M29 18v10c0 2.6 1.4 4 3.6 4" />
-        {/* The rule underneath: a ratio has a line in it. */}
-        <path d="M15 39h18" opacity="0.55" />
-      </g>
+      {glyph}
     </svg>
   );
 }
@@ -99,7 +95,7 @@ export function LogoMark({
 
   const src = brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? LOGO_MARK_SRC : null);
   if (!src) {
-    return <MathMark className={className} bare={onDark} />;
+    return <BullseyeMark className={className} bare={onDark} />;
   }
 
   // On a coloured panel the institute's transparent artwork is knocked out to

@@ -17,7 +17,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://billing
+      LINK: aimtrue://billing
 - extendedWaitUntil:
     visible:
       id: billing-tutor-00000000-0000-4000-8000-000000000003

@@ -9,7 +9,7 @@ tags:
     visible:
       id: screen-sign-in
     timeout: 30000
-- assertVisible: 'Tutor Portal'
+- assertVisible: 'Aimtrue'
 - assertVisible: 'Developer sign-in'
 # Someone the server does not know is refused, in its words.
 - scrollUntilVisible:

@@ -1,5 +1,5 @@
 -- ===========================================================================
---  Tutor Portal - complete database schema (organization support)
+--  Aimtrue - complete database schema (organization support)
 -- ===========================================================================
 --
 --  This project is greenfield: there are no migrations. This file is the

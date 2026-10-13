@@ -27,7 +27,7 @@ https://docs.expo.dev/llms.txt. Add dependencies with `npx expo install <pkg>`, 
   (Continuous Native Generation) and gitignored. Never edit them by hand: configure
   `app.config.ts` and config plugins instead.
 - **Variants.** `app.config.ts` builds `APP_VARIANT=development|e2e|production`. The bundle
-  ids are `com.tutorportal.app(.dev|.e2e)`.
+  ids are `com.aimtrue.app(.dev|.e2e)`.
 - **Directories:**
   - `src/app/`: expo-router routes only, kept thin. `(org)` needs an organization, `(org)/(tabs)`
     holds the role tabs, `(platform)` is the console, `(dev)` holds developer-only screens.

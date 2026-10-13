@@ -58,18 +58,18 @@ export function BrandProvider({ children }: { children: ReactNode }) {
     // mark tinted to the palette. The head cannot read CSS variables, hence
     // the one hex per palette.
     const tile = ORG_PALETTE_HEX[brand.palette];
-    const piMark = `data:image/svg+xml,${encodeURIComponent(
+    const drawnMark = `data:image/svg+xml,${encodeURIComponent(
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">` +
         `<rect width="48" height="48" rx="13" fill="${tile}"/>` +
-        `<g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">` +
-        `<path d="M13 18h22"/><path d="M20 18v14"/>` +
-        `<path d="M29 18v10c0 2.6 1.4 4 3.6 4"/></g></svg>`,
+        `<g fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round">` +
+        `<circle cx="22.5" cy="24.4" r="9.4"/><path d="M34.2 13.9v20.5"/>` +
+        `<circle cx="22.5" cy="24.4" r="3.4" fill="#fff" stroke="none"/></g></svg>`,
     )}`;
 
     const icon =
-      brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? '/favicon.png' : piMark);
+      brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? '/favicon.png' : drawnMark);
     const touch =
-      brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? '/logo-mark.png' : piMark);
+      brand.logo_mark_url ?? (brand.builtin_logo === 'institute' ? '/logo-mark.png' : drawnMark);
 
     document.querySelector('link[rel="icon"]')?.setAttribute('href', icon);
     document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute('href', touch);

@@ -4,7 +4,7 @@ import { containsSsn, formatCents, PLATFORM_BRAND, zonedClockParts } from '@tmi/
 
 describe('@tmi/shared in the mobile toolchain', () => {
   it('loads the platform brand', () => {
-    expect(PLATFORM_BRAND.name).toBe('Tutor Portal');
+    expect(PLATFORM_BRAND.name).toBe('Aimtrue');
   });
 
   it('formats cents', () => {

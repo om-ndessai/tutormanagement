@@ -1,6 +1,6 @@
 // The scripted recognizer for development and e2e builds (P3): the Maestro flows cannot speak to a
 // simulator, and this Mac has no microphone. Armed by the developer deep link
-//   tutorportal://dev/dictate?text=…&text=…&permission=…&ondevice=0|1&model=installed|missing&error=…
+//   aimtrue://dev/dictate?text=…&text=…&permission=…&ondevice=0|1&model=installed|missing&error=…
 // (src/app/dev/dictate.tsx), disarmed by `reset=1` or a relaunch. It lives in memory only: never
 // stored. `speech.ts` uses it instead of the native module only while DEV_TOOLS is true.
 import type {

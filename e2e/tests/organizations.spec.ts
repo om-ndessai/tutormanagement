@@ -35,7 +35,7 @@ test.describe('people in several organizations', () => {
     // colours appear only once someone signs in and enters it.
     const priya = await as('admin', { org: ORGS.b.slug });
     const config = await unwrap<any>(await priya.request.get('/api/auth/config'), 'config');
-    expect(config.brand.name).toBe('Tutor Portal');
+    expect(config.brand.name).toBe('Aimtrue');
     expect(config.brand.palette).toBe('platform');
 
     // Signed in but not yet in one: still the platform's look.

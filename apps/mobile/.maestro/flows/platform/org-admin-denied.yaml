@@ -16,7 +16,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: 'tutorportal://platform'
+      LINK: 'aimtrue://platform'
 - extendedWaitUntil:
     visible:
       id: screen-home

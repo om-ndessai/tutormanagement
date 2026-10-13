@@ -46,7 +46,7 @@ you are, so the next agent can resume.
   - **Never** run anything with `--remote`, `npm run deploy*`, `npm run e2e` (that's the web
     suite's remote cycle) or `deploy:test`.
 - **Metro** on `:8081`, watch mode, serving the development build
-  (`com.tutorportal.app.dev`, installed on both devices). JS changes need no rebuild.
+  (`com.aimtrue.app.dev`, installed on both devices). JS changes need no rebuild.
   - Check it with `curl -s localhost:8081/status`.
   - If it's down, start it in the background:
     `cd apps/mobile && npx expo start --dev-client --port 8081`.
@@ -62,7 +62,7 @@ you are, so the next agent can resume.
 ## Running flows
 
 - **One flow:**
-  `source ~/.zprofile; cd apps/mobile && maestro --device <UDID|emulator-5554> test -e APP_ID=com.tutorportal.app.dev --test-output-dir <scratch>/shots <flow.yaml>`
+  `source ~/.zprofile; cd apps/mobile && maestro --device <UDID|emulator-5554> test -e APP_ID=com.aimtrue.app.dev --test-output-dir <scratch>/shots <flow.yaml>`
 - **Everything** (resets the DB before and after):
   `npm run e2e:mobile -- ios|android|both [flow…]`
 - **Subflows** in `.maestro/subflows/`:

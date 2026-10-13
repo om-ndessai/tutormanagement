@@ -2,13 +2,13 @@
 # diagnostics screen (`diag-live-surface`: ActivityKit's running activities on iOS, the active
 # notifications on Android) -- neither the Lock Screen nor the Dynamic Island is in the app's view
 # hierarchy. Env STATE: `showing` or `none`. Comes back through the surface's own tap target, the
-# Sessions tab (`tutorportal://sessions?tab=tutoring`), which the caller waits for.
+# Sessions tab (`aimtrue://sessions?tab=tutoring`), which the caller waits for.
 appId: ${APP_ID}
 ---
 - runFlow:
     file: open-link.yaml
     env:
-      LINK: tutorportal://dev/diagnostics
+      LINK: aimtrue://dev/diagnostics
 - extendedWaitUntil:
     visible:
       id: diag-live-surface
@@ -17,7 +17,7 @@ appId: ${APP_ID}
 - runFlow:
     file: open-link.yaml
     env:
-      LINK: tutorportal://sessions?tab=tutoring
+      LINK: aimtrue://sessions?tab=tutoring
 - extendedWaitUntil:
     visible:
       id: screen-sessions

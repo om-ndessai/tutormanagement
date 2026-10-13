@@ -99,10 +99,13 @@ build_android() { # $1 variant, $2 variant flag
     && APP_VARIANT=$1 CI=1 scripts/android-env.sh npx expo run:android $2 --no-bundler >"$LOGS/build-android.log" 2>&1) || true
 }
 
-if [[ $RELEASE -eq 1 ]]; then VARIANT=e2e; APP_ID=com.tutorportal.app.e2e; else VARIANT=development; APP_ID=com.tutorportal.app.dev; fi
+if [[ $RELEASE -eq 1 ]]; then VARIANT=e2e; APP_ID=com.aimtrue.app.e2e; else VARIANT=development; APP_ID=com.aimtrue.app.dev; fi
 
 run_platform() { # $1 ios|android
   local device
+  # Metro first: with nothing on :8081, `expo run` starts a bundler of its own after a first build
+  # and never returns.
+  [[ $RELEASE -eq 0 ]] && ensure_metro
   if [[ $1 == ios ]]; then
     device=$(boot_ios)
     if [[ $RELEASE -eq 1 ]]; then echo "› building the iOS e2e variant (Release)"; build_ios e2e Release

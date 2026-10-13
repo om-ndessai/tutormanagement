@@ -13,13 +13,13 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
  *   App Group and push entitlement a free team cannot sign.
  *
  * Each variant has its own bundle id, so all three can sit on one device. The name is the
- * platform's ("Tutor Portal"): the app is not any one organization's, and wears an
+ * platform's ("Aimtrue"): the app is not any one organization's, and wears an
  * organization's brand only once one is chosen.
  */
 type Variant = 'development' | 'e2e' | 'production' | 'personal';
 
 const variant = (process.env.APP_VARIANT ?? 'development') as Variant;
-const BASE_ID = 'com.tutorportal.app';
+const BASE_ID = 'com.aimtrue.app';
 const SUFFIX: Record<Variant, string> = {
   development: '.dev',
   e2e: '.e2e',
@@ -30,10 +30,10 @@ const SUFFIX: Record<Variant, string> = {
 const RUNTIME_VARIANT = variant === 'personal' ? 'production' : variant;
 const productionLike = RUNTIME_VARIANT === 'production';
 const NAME: Record<Variant, string> = {
-  development: 'Tutor Portal (dev)',
-  e2e: 'Tutor Portal (e2e)',
-  production: 'Tutor Portal',
-  personal: 'Tutor Portal',
+  development: 'Aimtrue (dev)',
+  e2e: 'Aimtrue (e2e)',
+  production: 'Aimtrue',
+  personal: 'Aimtrue',
 };
 // The platform palette's primary (ORG_PALETTE_HEX.platform): the icon and the splash are shown
 // before any organization is known, so they wear the platform's colour. The art in assets/ carries
@@ -139,26 +139,26 @@ const SPEECH_COPY = 'Turns what you say into text when you dictate lesson notes.
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: NAME[variant],
-  slug: 'tutor-portal',
+  slug: 'aimtrue',
   // The version testers and the store see; the build number is EAS's (eas.json, remote).
   version: '0.1.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
-  scheme: 'tutorportal',
+  scheme: 'aimtrue',
   userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: BASE_ID + SUFFIX[variant],
     ...(APPLE_TEAM_ID ? { appleTeamId: APPLE_TEAM_ID } : {}),
     supportsTablet: true,
     // Icon Composer (iOS 26+: Liquid Glass, with the system's dark, clear and tinted looks);
-    // Xcode renders the flat icon for older iOS from it. Source: assets/source/pi-mark.svg.
-    icon: './assets/TutorPortal.icon',
+    // Xcode renders the flat icon for older iOS from it. Source: assets/source/aimtrue-mark.svg.
+    icon: './assets/Aimtrue.icon',
     // HTTPS only: ITSAppUsesNonExemptEncryption = false, so no export-compliance question per build.
     config: { usesNonExemptEncryption: false },
     privacyManifests: PRIVACY_MANIFEST,
     infoPlist: {
       // The short name iOS uses where the display name is not, e.g. Google's "… Wants to Use
-      // google.com to Sign In" prompt; left alone it is the sanitised product name ("TutorPortaldev").
+      // google.com to Sign In" prompt; left alone it is the sanitised product name ("Aimtruedev").
       CFBundleName: NAME[variant],
       // Replaces the template's whole ATS dictionary (which allows local networking everywhere).
       NSAppTransportSecurity: {
@@ -207,7 +207,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // Dictating a lesson's write-up (P3, docs/mobile/build-log.md "P3. Dictation"). On this phone by
     // default; the speech string is required because the Speech framework is linked, and is asked
     // for only with the person's consent to the phone's online service. No $(PRODUCT_NAME): the
-    // system alert already names the app, and the build setting expands to "TutorPortaldev".
+    // system alert already names the app, and the build setting expands to "Aimtruedev".
     [
       'expo-speech-recognition',
       { microphonePermission: MICROPHONE_COPY, speechRecognitionPermission: SPEECH_COPY },

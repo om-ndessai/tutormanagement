@@ -1,4 +1,4 @@
-# Dictating a lesson's write-up (P3), with the scripted recognizer (tutorportal://dev/dictate):
+# Dictating a lesson's write-up (P3), with the scripted recognizer (aimtrue://dev/dictate):
 # Alex, tutor in chmi, records a lesson with Ben. The first mic tap explains the microphone before the
 # system asks; then the words being heard show under the field, never in it, and only the settled
 # phrase is appended -- which the 3-second autosave keeps and recording posts. The lesson is deleted
@@ -25,7 +25,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: 'tutorportal://dev/dictate?permission=undetermined&hold=10000&text=Factorised%20quadratics%20by%20grouping'
+      LINK: 'aimtrue://dev/dictate?permission=undetermined&hold=10000&text=Factorised%20quadratics%20by%20grouping'
 - extendedWaitUntil:
     visible:
       id: screen-home
@@ -135,4 +135,4 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: 'tutorportal://dev/dictate?reset=1'
+      LINK: 'aimtrue://dev/dictate?reset=1'

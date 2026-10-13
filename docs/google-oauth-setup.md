@@ -287,14 +287,20 @@ What the owner does, in the same Google Cloud project as the web client
 (`866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com`), under
 APIs & Services → Credentials:
 
+> **Renamed on 2026-10-13.** The app's bundle IDs changed from `com.tutorportal.app…` to
+> `com.aimtrue.app…` when the platform became Aimtrue. An OAuth client is tied to the bundle ID
+> (iOS) or package name (Android) it was created with, so clients made before that date no
+> longer match: create new ones for the IDs below and replace the values in
+> `apps/mobile/.env.local`. The web client is unchanged.
+
 1. **iOS OAuth clients** (Create credentials → OAuth client ID → iOS), one per bundle ID:
 
    | Build | Bundle ID | Put its client ID in |
    | --- | --- | --- |
-   | development | `com.tutorportal.app.dev` | `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_DEV` |
-   | production | `com.tutorportal.app` | `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` |
+   | development | `com.aimtrue.app.dev` | `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_DEV` |
+   | production | `com.aimtrue.app` | `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` |
 
-   The e2e build (`com.tutorportal.app.e2e`) needs none: its tests use the developer sign-in.
+   The e2e build (`com.aimtrue.app.e2e`) needs none: its tests use the developer sign-in.
    The values go in `apps/mobile/.env.local` (gitignored; see `apps/mobile/.env.example`) or
    the build's environment. The app derives the URL scheme Google returns to (the reversed ID,
    `com.googleusercontent.apps.…`) itself. After setting one, run a native rebuild
@@ -305,8 +311,8 @@ APIs & Services → Credentials:
 
    | Build | Package | SHA-1 |
    | --- | --- | --- |
-   | development (the debug key on the build Mac) | `com.tutorportal.app.dev` | `5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25` |
-   | production | `com.tutorportal.app` | the Play app-signing key's SHA-1, from Play Console |
+   | development (the debug key on the build Mac) | `com.aimtrue.app.dev` | `5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25` |
+   | production | `com.aimtrue.app` | the Play app-signing key's SHA-1, from Play Console |
 
    Android needs no client ID inside the app; the client only has to exist for Google to issue
    a token for the web client. Until it does, a tap on the button fails with "Google sign-in

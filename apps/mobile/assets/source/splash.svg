@@ -1,5 +1,9 @@
-<!-- Splash image: the π strokes, white on transparent, cropped square around the mark
-     (centre 24,25). Shown on the platform primary by expo-splash-screen. -->
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="9 10 30 30">
-  <path d="M13 18h22M20 18v14M29 18v10c0 2.6 1.4 4 3.6 4" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<!-- Splash image: the mark on transparent, cropped square around it (centre 23.65,24.15).
+     Shown on the platform primary by expo-splash-screen. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="7.65 8.15 32 32">
+  <g fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round">
+    <circle cx="22.5" cy="24.4" r="9.4"/>
+    <path d="M34.2 13.9v20.5"/>
+    <circle cx="22.5" cy="24.4" r="3.4" fill="#F6B740" stroke="none"/>
+  </g>
 </svg>

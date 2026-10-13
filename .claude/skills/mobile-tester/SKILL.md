@@ -37,7 +37,7 @@ Specs never assert exact row counts: the seed is bulk data.
 - Flows live in `apps/mobile/.maestro/flows/<feature>/*.yaml`. Shared steps live in
   `.maestro/subflows/`.
 - Sign in with `runFlow: ../../subflows/sign-in-as.yaml` and `env: { PERSONA: <email>, ORG: chmi }`.
-  This deep-links `tutorportal://dev/link?as=…&org=…`, which exists only in dev/e2e builds.
+  This deep-links `aimtrue://dev/link?as=…&org=…`, which exists only in dev/e2e builds.
 - Wait with `extendedWaitUntil`, never `sleep`. Select by `id:` (testID) first and text second.
 - Tag every flow: `smoke` (fast path), `feature`, `exposure`.
 - Run one flow:

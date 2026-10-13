@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary        = 'The app-switcher cover'
   s.description    = 'A window in the brand colours over everything while the app is not active.'
   s.license        = 'UNLICENSED'
-  s.author         = 'Tutor Portal'
+  s.author         = 'Aimtrue'
   s.homepage       = 'https://example.invalid'
   s.platforms      = { :ios => '16.4' }
   s.swift_version  = '5.9'

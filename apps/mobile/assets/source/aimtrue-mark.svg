@@ -1,0 +1,9 @@
+<!-- The mark alone, on transparent, on the app icon's 48-unit canvas.
+     The Icon Composer layer (assets/Aimtrue.icon). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 48 48">
+  <g fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" transform="translate(24 24) scale(1.12) translate(-23.65 -24.15)">
+    <circle cx="22.5" cy="24.4" r="9.4"/>
+    <path d="M34.2 13.9v20.5"/>
+    <circle cx="22.5" cy="24.4" r="3.4" fill="#F6B740" stroke="none"/>
+  </g>
+</svg>

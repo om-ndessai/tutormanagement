@@ -10,6 +10,14 @@ both a JSON API and the built React SPA, backed by one D1 (SQLite) database.
 
 `docs/plan.md` is the authoritative roadmap.
 
+**The platform is called Aimtrue (since 2026-10-13; it was "Tutor Portal").** The name, tagline
+and blurb are one constant, `PLATFORM_BRAND` in `packages/shared/src/brand.ts`; the mark is the
+drawn "bullseye a" (a lowercase a with a target in its bowl) in each client's `logo.tsx`, which is
+also what an organization wears until it uploads its own. The mobile app is `com.aimtrue.app` with the link scheme `aimtrue://`.
+What did NOT change, and must not be "tidied": the Cloudflare Workers and their addresses
+(`tmi-portal`, `tutoring`, `tutoring-test`), the databases, the `tmi_session` cookie and the
+`@tmi/*` packages. `docs/naming/README.md` is the record of how the name was chosen.
+
 **Phases 1 to 19, and 21 to 32, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
@@ -442,8 +450,8 @@ an error response by hand.
 **The portal's identity is each organization's data, chosen at RUNTIME.** `BrandProvider` builds
 the brand from the session's organization (`brandFromOrganization`) -- or, before one is chosen
 and on the sign-in page, from `/api/auth/config`: the organization the ADDRESS is for
-(`DEFAULT_ORGANIZATION`, so `tmi-portal` wears the institute), else `PLATFORM_BRAND`, "Tutor
-Portal". Never the browser's last organization (`tmi_last_org`): a shared address like `tutoring`
+(`DEFAULT_ORGANIZATION`, so `tmi-portal` wears the institute), else `PLATFORM_BRAND`,
+"Aimtrue". Never the browser's last organization (`tmi_last_org`): a shared address like `tutoring`
 must not show one organization's logo and colours to everybody who once used it; the console always wears the platform's (`usePlatformBrand`).
 It sets `<html data-palette>`, the title, the favicon and the theme colour, and `useBrand()`
 supplies every name and mark. Palettes are `ORG_PALETTES` (shared) and one `:root[data-palette]`

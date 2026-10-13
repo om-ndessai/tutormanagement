@@ -26,7 +26,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions
+      LINK: aimtrue://sessions
 - extendedWaitUntil:
     visible:
       id: sessions-start

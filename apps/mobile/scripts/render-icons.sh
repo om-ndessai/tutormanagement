@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 
 SRC=assets/source
 OUT=assets/images
-ICON=assets/TutorPortal.icon/Assets
+ICON=assets/Aimtrue.icon/Assets
 
 command -v rsvg-convert >/dev/null || { echo "rsvg-convert not found: brew install librsvg" >&2; exit 1; }
 
@@ -20,10 +20,10 @@ render icon.svg "$OUT/icon.png" 1024
 render android-foreground.svg "$OUT/android-icon-foreground.png" 1024
 render android-background.svg "$OUT/android-icon-background.png" 1024
 render android-foreground.svg "$OUT/android-icon-monochrome.png" 1024
-# The splash: the π alone, shown on the platform primary.
+# The splash: the mark alone, shown on the platform primary.
 render splash.svg "$OUT/splash-icon.png" 1024
 # The Icon Composer layer (iOS 26+; Xcode renders the older sizes from it).
-cp "$SRC/pi-mark.svg" "$ICON/pi-mark.svg"
+cp "$SRC/aimtrue-mark.svg" "$ICON/aimtrue-mark.svg"
 
 if file "$OUT/icon.png" | grep -q RGBA; then
   echo "icon.png has an alpha channel; the App Store refuses it" >&2

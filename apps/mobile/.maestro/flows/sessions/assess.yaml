@@ -35,7 +35,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=${output.sessionId}
+      LINK: aimtrue://sessions?focus=${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-assess-${output.sessionId}
@@ -93,7 +93,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=${output.sessionId}
+      LINK: aimtrue://sessions?focus=${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-assess-${output.sessionId}
@@ -162,7 +162,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=${output.sessionId}
+      LINK: aimtrue://sessions?focus=${output.sessionId}
 - extendedWaitUntil:
     visible:
       id: session-reflect-${output.sessionId}

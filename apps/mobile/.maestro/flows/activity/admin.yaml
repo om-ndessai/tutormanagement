@@ -22,7 +22,7 @@ tags:
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
-      LINK: tutorportal://activity
+      LINK: aimtrue://activity
 - extendedWaitUntil:
     visible: 'Commented on the 2026-09-15 session with Sofia Okafor'
     timeout: 20000

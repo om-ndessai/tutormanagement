@@ -31,7 +31,7 @@ appId: ${APP_ID}
 - runFlow:
     file: ../open-link.yaml
     env:
-      LINK: tutorportal://sessions
+      LINK: aimtrue://sessions
 - extendedWaitUntil:
     visible:
       id: tabs-tutoring
@@ -62,7 +62,7 @@ appId: ${APP_ID}
 - runFlow:
     file: ../open-link.yaml
     env:
-      LINK: tutorportal://sessions?focus=${LESSON}&tab=tutoring
+      LINK: aimtrue://sessions?focus=${LESSON}&tab=tutoring
 - extendedWaitUntil:
     visible:
       id: session-preview-${LESSON}
