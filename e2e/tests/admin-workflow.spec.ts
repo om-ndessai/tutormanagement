@@ -12,7 +12,7 @@ import { idOf, unwrap } from '../support/api.js';
  * Runs as a single test because each step depends on the last; splitting it
  * would need the steps to share state through the database anyway.
  */
-test('a family can be onboarded, taught, billed and settled', async ({ as }) => {
+test('a family can be onboarded, taught, billed and settled', { tag: '@smoke' }, async ({ as }) => {
   const admin = await as('admin');
   const stamp = Date.now();
   const parentEmail = `e2e.parent.${stamp}@gmail.com`;

@@ -42,7 +42,21 @@ Specs never assert exact row counts: the seed is bulk data.
 - Tag every flow: `smoke` (fast path), `feature`, `exposure`.
 - Run one flow:
   `maestro test --device <id> -e APP_ID=… apps/mobile/.maestro/flows/<feature>/x.yaml`
-- Run everything: `npm run e2e:mobile -- ios|android|both [--include-tags=…]`.
+- Run everything: `npm run e2e:mobile -- ios|android|both [--tags=smoke,feature] [flow-or-folder…]`.
+
+## Smoke, after any change to the API, the shared contract or the schema
+
+The app is one of two clients of the Worker, so a change under `apps/api/src`, `apps/api/db` or
+`packages/shared` is checked on both, whoever it was made for (`/CLAUDE.md`, "The Worker has two
+clients"):
+
+- `npm run smoke` runs the web tests tagged `@smoke` (Playwright), then the flows tagged `smoke`
+  on the iOS simulator and the Android emulator. `npm run smoke -- mobile|ios|android|web` runs
+  one side.
+- Then the changed feature's own flows on both platforms:
+  `npm run e2e:mobile -- both apps/mobile/.maestro/flows/<feature>`.
+- Report each platform's result. A red flow after an API change usually means the change was
+  not carried into `src/features/<feature>/api.ts`: fix the app, never the tag.
 
 ## Exposure assertions to add for any screen showing lessons, people or money
 

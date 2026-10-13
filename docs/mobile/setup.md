@@ -45,7 +45,10 @@ npm run e2e:mobile -- ios       # or android, or both
 ```
 
 - This resets the local database, starts the Worker if it isn't running, builds and installs
-  the e2e variant of the app, and runs the Maestro flows in `apps/mobile/.maestro/`.
+  the app if it is missing, and runs the Maestro flows in `apps/mobile/.maestro/`
+  (`--release` builds the e2e variant; `--tags=smoke` or a flow folder narrows the run).
+- `npm run smoke` is the short check after any change to the API, the shared contract or the
+  schema: the web app's `@smoke` tests, then the `smoke` flows on both platforms.
 - It refuses any server that is not local, and any server with sign-in switched on.
 - It spends no Cloudflare quota.
 

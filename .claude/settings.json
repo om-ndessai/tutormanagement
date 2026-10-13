@@ -56,6 +56,7 @@
       "Bash(sleep *)",
       "Bash(npm run mobile:*)",
       "Bash(npm run e2e:mobile*)",
+      "Bash(npm run smoke*)",
       "Bash(npm --prefix apps/mobile *)",
       "Bash(npx expo *)",
       "Bash(npx jest*)",

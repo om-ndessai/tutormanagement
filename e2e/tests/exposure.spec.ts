@@ -141,7 +141,7 @@ function check(reader: Reader, source: string, value: unknown, problems: string[
 
 test.describe('what each non-admin can see', () => {
   for (const who of PERSONAS) {
-    test(`${who}: every read endpoint obeys the visibility rules`, async ({ as }) => {
+    test(`${who}: every read endpoint obeys the visibility rules`, { tag: '@smoke' }, async ({ as }) => {
       // Several hundred requests in a row -- every lesson and payment fetched by
       // id -- and each now also re-checks the organization: against a remote
       // database that outlasts the default timeout without anything being wrong.

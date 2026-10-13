@@ -68,6 +68,11 @@ https://docs.expo.dev/llms.txt. Add dependencies with `npx expo install <pkg>`, 
 - **Names.** No organization's name in code. Use `useBrand().short`.
 - **System surfaces.** Notifications, Live Activities, widgets and the app-switcher snapshot
   carry no money, notes or student names.
+- **The API has two clients.** The web app calls the same routes. After any change to
+  `apps/api/src`, `apps/api/db` or `packages/shared` -- including one made for this app -- run
+  `npm run smoke` and get it green on the web app, the iOS simulator and the Android emulator
+  (`/CLAUDE.md`, "The Worker has two clients"). A change to the web's `features/<feature>/api.ts`
+  is carried into the copy here in the same piece of work.
 - **testIDs.** `screen-<route>` on each screen root; `<feature>-<element>[-<id>]` elsewhere.
   Icon-only controls get an `accessibilityLabel`.
 
@@ -81,7 +86,8 @@ https://docs.expo.dev/llms.txt. Add dependencies with `npx expo install <pkg>`, 
 | `npm run mobile:typecheck` | tsc, the palette staleness check and the rules script |
 | `npm run mobile:lint` / `mobile:test` | ESLint / Jest |
 | `npm run mobile:export` | bundle both platforms (catches Metro errors without a native build) |
-| `npm run e2e:mobile -- ios\|android\|both` | reset the local DB, then run the Maestro flows (local Worker only) |
+| `npm run e2e:mobile -- ios\|android\|both` | reset the local DB, then run the Maestro flows (local Worker only); `--tags=smoke` or a flow folder narrows it |
+| `npm run smoke` | the smoke test on both clients: the web tests tagged `@smoke`, then the flows tagged `smoke` on both platforms (`-- mobile` for this app alone) |
 
 ## Running against a server
 

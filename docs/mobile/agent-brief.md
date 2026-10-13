@@ -19,7 +19,7 @@ It's the same instructions.
    append the "Verified" line under your entry.
 4. **Wrap up.** Tick the item in progress.md (`[x]`, plus the commit's short SHA in a follow-up
    edit, or leave the SHA off), set the parity rows to `tested`, then make **one commit** on
-   branch `mobile-app` (see "Commit" below).
+   `main` (see "Commit" below).
 
 If you stop part-way, mark the item `[~]` in progress.md with a one-line note saying where
 you are, so the next agent can resume.
@@ -158,6 +158,9 @@ every second. Keep a ticking clock in its own small component.
 - **Per item:** run only your feature's flows plus `smoke/*`, on both platforms, one platform
   at a time (two devices against one local DB delete each other's data). Re-run a failure once
   to tell a flake from a real fault, then fix the cause.
+- **After touching the API, the shared contract or the schema** (`apps/api/src`, `apps/api/db`,
+  `packages/shared`): `npm run smoke`, which also runs the web app's smoke tests. The web app is
+  the API's other client, and a change made for this app must not break it.
 - **Don't run the full 60-flow suite.** It belongs to the phase gate and takes about 3 hours.
   The orchestrator runs it at the end of each phase.
 - Every flow that changes data cleans up after itself, before and after it runs, even when it
@@ -174,7 +177,8 @@ both devices.
 
 ## Commit
 
-Run `git add` on your files only (apps/mobile and docs/mobile), then commit on `mobile-app`:
+Run `git add` on your files only (apps/mobile and docs/mobile), then commit on `main` (the app
+was merged there on 2026-10-12):
 
 ```
 Mobile: <Feature> — <what it does>
@@ -186,6 +190,6 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01TC46Rj4kfDwRwniJMBAA5i
 ```
 
-Never commit to `main`, push, merge, rebase or amend someone else's commit. Your final
+Never push, merge, rebase or amend someone else's commit. Your final
 reply: the commit SHA, the flows and their results per platform, anything you could not do,
 and any API gap you found.

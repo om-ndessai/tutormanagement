@@ -81,7 +81,9 @@ boot_android() {
 ensure_metro() {
   if ! curl -s localhost:8081/status | grep -q running; then
     echo "› starting Metro"
-    (cd "$MOBILE" && nohup npx expo start --dev-client --port 8081 >"$LOGS/metro.log" 2>&1 &)
+    # The outer redirect keeps the waiting subshell off this script's stdout: without it a
+    # caller piping the run (`npm run smoke | tail`) never sees the pipe close while Metro lives.
+    (cd "$MOBILE" && nohup npx expo start --dev-client --port 8081 >"$LOGS/metro.log" 2>&1 &) >/dev/null 2>&1
     for _ in $(seq 1 60); do curl -s localhost:8081/status | grep -q running && break; sleep 2; done
   fi
 }

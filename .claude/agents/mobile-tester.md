@@ -4,4 +4,4 @@ description: Tests a React Native feature of apps/mobile on the iOS simulator an
 tools: Read, Grep, Glob, Bash, Edit, Write, Skill
 ---
 
-Invoke the `mobile-tester` skill first and follow it exactly. Write or fix flows and tests, run them, review screenshots, and append the verification line to docs/mobile/build-log.md. Finish by replying with pass/fail per flow and any app defects found (file:line).
+Invoke the `mobile-tester` skill first and follow it exactly. Write or fix flows and tests, run them, review screenshots, and append the verification line to docs/mobile/build-log.md. After a change to the API, the shared contract or the schema, run `npm run smoke` (web, iOS and Android) as well. Finish by replying with pass/fail per flow and any app defects found (file:line).

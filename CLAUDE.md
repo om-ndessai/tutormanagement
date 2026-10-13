@@ -84,15 +84,18 @@ checks, which spends no quota at all.
 it (`npm run db:rebuild:remote` refuses); carry schema changes by hand and additively
 (`docs/database.md`).
 
-## Mobile app (branch `mobile-app`)
+## Mobile app
 
 The native iOS/Android app (`apps/mobile`, Expo + React Native Paper) answers
-`docs/mobileapp.md`. It is built on the branch **`mobile-app`**, the one exception to "work on
-`main`". Never merge it: the owner reviews and merges it. The owner asked for its phases to
-run straight through, so they are not paused between phases. `docs/mobile/` holds the plan,
+`docs/mobileapp.md`. It was built on the branch `mobile-app`, which the owner merged into `main`
+on 2026-10-12: it is worked on `main` now, like everything else. The owner asked for its phases
+to run straight through, so they are not paused between phases. `docs/mobile/` holds the plan,
 the resumable `progress.md`, the parity tracker and the build log; `apps/mobile/CLAUDE.md`
 holds the app's rules and commands.
 
+- **A second client of the same API.** A change to the Worker, the shared contract or the schema
+  is smoke-tested on the web app AND the mobile app before it is done: `npm run smoke` (see
+  "The Worker has two clients" under Rules).
 - **Skills.** Use `mobile-architect`, `mobile-developer` and `mobile-tester`
   (`.claude/skills/`) for every feature.
 - **Separate install.** `apps/mobile` is not an npm workspace: Expo pins its own React and
@@ -108,6 +111,7 @@ holds the app's rules and commands.
 ```
 apps/api/          Cloudflare Worker: Hono routes, auth, D1 access, db/schema.sql
 apps/web/          Vite + React 19 + TypeScript + Tailwind v4 + shadcn/ui
+apps/mobile/       Expo + React Native Paper: the iOS/Android app (its own install and CLAUDE.md)
 packages/shared/   Zod schemas and types imported by BOTH sides
 docs/              plan.md (roadmap), architecture, database, branding, Google setup
 docs/roadmap/      candidate features and their plans (unscheduled; see its README)
@@ -128,6 +132,7 @@ Run from the repo root.
 | `npm run db:reset` | Rebuild, then seed |
 | `npm run db:studio` | Dump the users table from local D1 |
 | `npm run typecheck` | Typecheck all three packages — run this before declaring work done |
+| `npm run smoke` | The smoke test on BOTH clients, locally: the web tests tagged `@smoke`, then the mobile flows tagged `smoke` on the iOS simulator and the Android emulator. `-- web\|mobile\|ios\|android` runs one side. **Run it after any change to the API, the shared contract or the schema** |
 | `npm run build` | Build the SPA into `apps/web/dist` |
 | `npm run deploy` | Build the SPA, then `wrangler deploy` |
 
@@ -139,7 +144,9 @@ approved: **approving a phase's plan is that approval**, for the whole release, 
 asking —
 1. the full **local** suite green (`npm run db:reset`, `npm run dev`, then
    `E2E_BASE_URL=http://localhost:5173 npm run e2e:test`) -- since 2026-10-07 the local suite is
-   the gate: it spends no Cloudflare quota;
+   the gate: it spends no Cloudflare quota; and, when the release changes the API, the shared
+   contract or the schema, `npm run smoke -- mobile` green on both platforms (the full web suite
+   already holds the web half);
 2. commit and push to `main`;
 3. refresh the demo: `npm run deploy:test`, and `npm run db:reset:test` when the schema changed.
    `tutoring-test` is an open **feature demo** now, not a test target: `npm run e2e` (which wipes
@@ -241,6 +248,31 @@ other than `student` needs one — `requiresEmail` in `packages/shared/src/users
 applied by `refineEmailForRoles` on the create schemas and `assertEmailPresentIfNeeded` on
 update. Never invent a placeholder address to satisfy a form, and never render an absent one as
 a `mailto:` — use `EmailOrNone`.
+
+**The Worker has two clients, and a change to it is smoke-tested on both.** The web app and the
+mobile app call the same routes, but they are built apart: `apps/mobile` is its own install, and
+each feature's `api.ts` there is a COPY of the web's. `npm run typecheck` covers both and catches
+a changed shared type; it does not catch a renamed route, a field dropped from a response, a
+changed error code or a seed the other client's screens depend on. So whenever a change touches
+`apps/api/src` (routes, repositories, auth, the envelope), `apps/api/db` (the schema, the seed
+generator) or `packages/shared`, run **`npm run smoke`** before calling the work done, and before
+committing it -- whichever client the change was made for:
+- **Web:** the Playwright tests tagged `@smoke` (each role's portal, every read endpoint as every
+  non-admin, the onboard-teach-bill-settle path, a live lesson).
+- **Mobile:** the Maestro flows tagged `smoke` (developer sign-in, the shell's tabs and pages, the
+  shared formatting on Hermes), on the iOS simulator AND the Android emulator.
+- **Local only**, as every test here is: the local Worker and the local seeded D1, never
+  production or the demo. It resets the local database.
+- **Then the feature's own tests on both sides**, when the change is to one feature's routes or
+  tables: its spec (`E2E_BASE_URL=http://localhost:5173 npx playwright test <spec>` from `e2e/`)
+  and its flows (`npm run e2e:mobile -- both apps/mobile/.maestro/flows/<feature>`).
+- **A red smoke is a failed step.** Fix the change, or carry it to the other client (the mobile
+  `src/features/<feature>/api.ts`, and its row in `docs/mobile/parity.md`); never untag or loosen
+  a test to get to green. Say in the report which platforms ran and what they returned; if a
+  simulator or the emulator cannot run on this machine, say that rather than "smoke passed".
+- **Keep it a smoke test:** a few minutes, the main path. A new screen or route on that path
+  joins it by tag (`{ tag: '@smoke' }` on the test, `tags: [smoke]` on the flow); everything else
+  stays in the full suites.
 
 **Validation lives in `packages/shared`.** Do not write ad-hoc validation in a route handler
 or a form. Add or change the Zod schema, then use it on both sides. Note the split between
@@ -523,7 +555,7 @@ make the header ambiguous.
 
 ## Verifying a change
 
-There is no test suite yet, so verify by running things:
+Verify by running things:
 
 1. `npm run typecheck` — must be clean.
 2. For API work: `npm run dev:api`, then curl the endpoint, including the failure paths
@@ -534,6 +566,9 @@ There is no test suite yet, so verify by running things:
    check authorization paths, and flip `AUTH_ENABLED` to `"true"` to test sign-in.
 4. After a schema change, run the audit query in `docs/data-model.md` ("students missing a
    parent") — it catches invariant breaks the database cannot.
+5. After any change to the Worker's API, the shared contract or the schema: `npm run smoke`,
+   green on the web app and on the mobile app (iOS and Android). See "The Worker has two
+   clients" under Rules.
 
 ## Gotchas
 

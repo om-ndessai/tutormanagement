@@ -1,8 +1,8 @@
 # The mobile app
 
-A native iOS and Android app for the tutoring portal, built with Expo and React Native on the
-branch `mobile-app`. It answers `docs/mobileapp.md`, the owner's five-phase brief. The owner
-reviews the branch and merges it; nobody else does.
+A native iOS and Android app for the tutoring portal, built with Expo and React Native. It
+answers `docs/mobileapp.md`, the owner's five-phase brief. It was built on the branch
+`mobile-app`, which the owner merged into `main` on 2026-10-12; it is worked on `main` now.
 
 | Document | What it holds |
 | --- | --- |

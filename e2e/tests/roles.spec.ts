@@ -7,7 +7,7 @@ import { visible } from '../support/ui.js';
  * Each role should see a portal shaped to what they do, and should NOT see
  * other families' money or other tutors' rates.
  */
-test.describe('each kind of user sees their own portal', () => {
+test.describe('each kind of user sees their own portal', { tag: '@smoke' }, () => {
   test('an admin sees the whole institute', async ({ as }) => {
     const page = await as('admin');
     await page.goto('/users');

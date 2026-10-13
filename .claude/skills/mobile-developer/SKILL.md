@@ -77,6 +77,7 @@ npm run mobile:lint
 npm run mobile:test               # jest
 npm run mobile:ios / mobile:android
 npm run mobile:export             # bundle both platforms (catches Metro errors)
+npm run smoke                     # web + iOS + Android smoke, after an API/contract/schema change
 ```
 
 ## Definition of done
@@ -87,4 +88,6 @@ npm run mobile:export             # bundle both platforms (catches Metro errors)
 3. The `parity.md` row and the `progress.md` line are updated.
 4. One commit: `Mobile: <Feature> — <what>`. The body lists the web sources ported, the
    endpoints, the exposure rules kept and the flows. It ends with the session trailers.
-   Never commit to `main`.
+   The app lives on `main` since 2026-10-12; commit there, and never push.
+5. If the work touched `apps/api/src`, `apps/api/db` or `packages/shared`, `npm run smoke` is
+   green on the web app and on both mobile platforms: the web app is the API's other client.

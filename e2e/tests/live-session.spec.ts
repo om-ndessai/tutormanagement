@@ -15,7 +15,7 @@ test.describe('a tutor can run a live session', () => {
     await tutor.request.delete('/api/sessions/active');
   });
 
-  test('start, annotate and stop writes a priced session', async ({ as }) => {
+  test('start, annotate and stop writes a priced session', { tag: '@smoke' }, async ({ as }) => {
     const tutor = await as('tutor');
     const sofiaId = await idOf(tutor, PEOPLE.student.email);
 
