@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Markstone logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2a5fc4;fill:none}.f-a{fill:#2a5fc4}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <circle class="s-i" cx="32" cy="32" r="24" stroke-width="5.5"/>
+  <path class="s-a" d="M32 17 L46 41 L18 41 Z" stroke-width="4.2" stroke-linejoin="round"/>
+  <circle class="f-i" cx="32" cy="33" r="3.2"/>
+</svg>

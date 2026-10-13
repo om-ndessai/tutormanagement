@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Pinwell logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <ellipse class="s-i" cx="32" cy="50" rx="21" ry="7.5" stroke-width="4.6"/>
+  <path class="f-a" d="M32 51 C32 51 20 38 20 28 A12 12 0 1 1 44 28 C44 38 32 51 32 51 Z"/>
+  <circle class="f-p" cx="32" cy="28" r="4.4"/>
+</svg>

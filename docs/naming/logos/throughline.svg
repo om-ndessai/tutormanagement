@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Throughline logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2a5fc4;fill:none}.f-a{fill:#2a5fc4}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <line class="s-i" x1="5" y1="55" x2="59" y2="9" stroke-width="3.6" stroke-linecap="round"/>
+  <circle class="f-i" cx="12" cy="49" r="3.6"/>
+  <circle class="f-i" cx="26" cy="37.1" r="5.6"/>
+  <circle class="f-a" cx="43" cy="22.6" r="8"/>
+</svg>

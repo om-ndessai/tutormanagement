@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Stepwell logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2c7a4c;fill:none}.f-a{fill:#2c7a4c}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <path class="fs-i" d="M5 12 H15 V24 H24 V36 H40 V24 H49 V12 H59 V56 H5 Z" stroke-width="3" stroke-linejoin="round"/>
+  <rect class="f-a" x="25.5" y="27" width="13" height="7.5" rx="1.5"/>
+</svg>

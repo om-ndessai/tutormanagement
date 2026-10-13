@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Trigpoint logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <path class="s-i" d="M32 12 L10 52 L54 52 Z" stroke-width="4.5" stroke-linejoin="round"/>
+  <circle class="f-i" cx="32" cy="12" r="5.5"/><circle class="f-i" cx="10" cy="52" r="5.5"/><circle class="f-i" cx="54" cy="52" r="5.5"/>
+  <circle class="f-a" cx="32" cy="39" r="4.4"/>
+  <circle class="s-a" cx="32" cy="39" r="7.6" stroke-width="1.8"/>
+</svg>

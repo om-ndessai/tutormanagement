@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Rung logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2c7a4c;fill:none}.f-a{fill:#2c7a4c}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <g class="s-i" stroke-width="6" stroke-linecap="round">
+    <line x1="20" y1="6" x2="20" y2="58"/><line x1="44" y1="6" x2="44" y2="58"/>
+    <line x1="20" y1="48" x2="44" y2="48"/><line x1="20" y1="36" x2="44" y2="36"/>
+    <line x1="20" y1="12" x2="44" y2="12" opacity=".28"/>
+  </g>
+  <line class="s-a" x1="20" y1="24" x2="44" y2="24" stroke-width="6" stroke-linecap="round"/>
+</svg>

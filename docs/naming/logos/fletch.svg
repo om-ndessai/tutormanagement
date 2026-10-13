@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Fletch logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <g class="s-a" stroke-width="4.2" stroke-linecap="round">
+    <line x1="15" y1="49" x2="5" y2="49"/><line x1="15" y1="49" x2="15" y2="59"/>
+    <line x1="22" y1="42" x2="11" y2="42"/><line x1="22" y1="42" x2="22" y2="53"/>
+    <line x1="29" y1="35" x2="18" y2="35"/><line x1="29" y1="35" x2="29" y2="46"/>
+  </g>
+  <line class="s-i" x1="15" y1="49" x2="51" y2="13" stroke-width="5" stroke-linecap="round"/>
+  <polyline class="s-i" points="36,11 53,11 53,28" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

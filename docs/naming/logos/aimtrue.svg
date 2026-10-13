@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Aimtrue logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <circle class="s-a" cx="44" cy="32" r="14" stroke-width="5"/>
+  <line class="s-i" x1="6" y1="32" x2="42" y2="32" stroke-width="5" stroke-linecap="round"/>
+  <polyline class="s-i" points="35,23.5 44,32 35,40.5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g class="s-i" stroke-width="3.6" stroke-linecap="round"><line x1="12" y1="32" x2="6" y2="25"/><line x1="12" y1="32" x2="6" y2="39"/><line x1="19" y1="32" x2="13" y2="25"/><line x1="19" y1="32" x2="13" y2="39"/></g>
+</svg>

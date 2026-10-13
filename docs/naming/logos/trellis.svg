@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Trellis logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2c7a4c;fill:none}.f-a{fill:#2c7a4c}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <g class="s-i" stroke-width="4" stroke-linecap="round">
+    <line x1="8" y1="32" x2="32" y2="8"/><line x1="8" y1="56" x2="56" y2="8"/><line x1="32" y1="56" x2="56" y2="32"/>
+    <line x1="8" y1="32" x2="32" y2="56"/><line x1="8" y1="8" x2="56" y2="56"/><line x1="32" y1="8" x2="56" y2="32"/>
+  </g>
+  <path class="f-a" d="M44 20 C44 10 51 5 60 4 C60 13 55 20 44 20 Z"/>
+  <path class="f-a" d="M20 44 C20 35 26 31 33 30 C33 38 29 44 20 44 Z"/>
+</svg>

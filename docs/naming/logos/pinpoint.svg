@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Pinpoint logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <rect class="f-i" x="11" y="8" width="9" height="50" rx="4.5"/>
+  <circle class="s-i" cx="35" cy="25" r="15" stroke-width="8"/>
+  <circle class="f-a" cx="35" cy="25" r="4.6"/>
+  <line class="s-a" x1="56" y1="5" x2="38" y2="22" stroke-width="3.6" stroke-linecap="round"/>
+  <circle class="f-a" cx="57" cy="5" r="4"/>
+</svg>

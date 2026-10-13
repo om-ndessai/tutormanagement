@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutor Portal Name Board</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Caveat:wght@700&family=Fraunces:opsz,wght@9..144,600&family=Hanken+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@600;700&display=swap">
+<style>
+/* Layout: a specimen sheet. One row per name: the logo plate on the left, the case for it on the right; rows grouped by the idea behind them, each idea with its own accent. */
+:root {
+  --paper: #f1f4f3; --surface: #fbfcfc; --ink: #15252d; --muted: #56676e; --rule: #d3dbd9;
+  --aim: #d6412a; --climb: #2c7a4c; --line: #2a5fc4; --count: #b97a06;
+  --name-fg: #1f5f78; --name-bg: #dcedf3; --ok-fg: #1c6e43; --ok-bg: #dff1e6; --near-fg: #7d5200; --near-bg: #f8ecd0; --clash-fg: #a8241c; --clash-bg: #fbe3e0;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --text: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f171b; --surface: #162127; --ink: #e7eded; --muted: #94a4a9; --rule: #2a383f;
+  --aim: #ff7058; --climb: #5cc486; --line: #76a2ff; --count: #f0b440;
+  --name-fg: #8fcde3; --name-bg: #143540; --ok-fg: #7fd8a6; --ok-bg: #16352a; --near-fg: #f0c467; --near-bg: #392d10; --clash-fg: #ff9c91; --clash-bg: #43201c;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f171b; --surface: #162127; --ink: #e7eded; --muted: #94a4a9; --rule: #2a383f;
+  --aim: #ff7058; --climb: #5cc486; --line: #76a2ff; --count: #f0b440;
+  --name-fg: #8fcde3; --name-bg: #143540; --ok-fg: #7fd8a6; --ok-bg: #16352a; --near-fg: #f0c467; --near-bg: #392d10; --clash-fg: #ff9c91; --clash-bg: #43201c;
+  color-scheme: dark }
+
+body { background: var(--paper); color: var(--ink); font: 400 15px/1.55 var(--text); }
+.wrap { max-width: 1120px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 40px 72px; display: grid; gap: 56px; }
+a { color: inherit; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--line); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(30px, 5.2vw, 48px); line-height: 1.04; font-weight: 800; letter-spacing: -0.02em; max-width: 18ch; }
+h2 { font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 21px; line-height: 1.1; font-weight: 700; }
+p { margin: 0; }
+.eyebrow, dt, .rank, .vcap, th { font: 700 11.5px/1.3 var(--text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* marks: every logo is ink plus one accent, so it recolours to any organization palette */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.s-i { stroke: var(--mi); fill: none; } .f-i { fill: var(--mi); } .fs-i { fill: var(--mi); stroke: var(--mi); }
+.s-a { stroke: var(--ma); fill: none; } .f-a { fill: var(--ma); }
+.s-p { stroke: var(--mp); fill: none; } .f-p { fill: var(--mp); }
+.dir-aim { --accent: var(--aim); } .dir-climb { --accent: var(--climb); } .dir-line { --accent: var(--line); } .dir-count { --accent: var(--count); }
+.lockup, .variant { --mi: var(--ink); --ma: var(--accent); --mp: var(--surface); }
+.icon { --mi: var(--paper); --ma: var(--accent); --mp: var(--ink); }
+.lockup { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mark { width: 52px; height: 52px; flex: none; }
+.wm { font-size: 31px; line-height: 1; letter-spacing: -0.02em; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.f-outfit { font-family: "Outfit", "Avenir Next", sans-serif; font-weight: 700; }
+.f-brico { font-family: "Bricolage Grotesque", "Avenir Next", sans-serif; font-weight: 800; }
+.f-fraunces { font-family: "Fraunces", Georgia, serif; font-weight: 600; letter-spacing: -0.01em; }
+.f-instr { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 37px; letter-spacing: 0; }
+.f-caveat { font-family: "Caveat", "Bradley Hand", cursive; font-weight: 700; font-size: 40px; letter-spacing: 0; }
+
+header.top { display: grid; gap: 18px; }
+.lead { font-size: 18px; line-height: 1.5; max-width: 62ch; color: var(--ink); }
+.lead + .lead { color: var(--muted); font-size: 15.5px; }
+
+.brief { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 24px 32px; border-top: 2px solid var(--ink); padding-top: 20px; }
+.brief h3 { font-size: 16px; margin-bottom: 6px; }
+.brief p { color: var(--muted); font-size: 14px; }
+.beside { margin-top: 10px; display: grid; gap: 4px; font-size: 13.5px; }
+.beside span { display: block; padding: 6px 10px; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; color: var(--ink); }
+.beside em { font-style: normal; color: var(--muted); }
+
+.picks { display: grid; gap: 18px; }
+.picks > p { color: var(--muted); max-width: 65ch; }
+.pickgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 235px), 1fr)); gap: 14px; }
+.pick { display: grid; gap: 12px; align-content: start; padding: 18px; background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--accent); border-radius: 4px; text-decoration: none; }
+.pick p { font-size: 14px; color: var(--muted); }
+.pick .mark { width: 40px; height: 40px; } .pick .wm { font-size: 25px; } .pick .f-fraunces { font-size: 26px; }
+
+.dir { display: grid; gap: 0; }
+.dirhead { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; row-gap: 4px; align-items: center; padding-bottom: 16px; border-bottom: 2px solid var(--ink); }
+.swatch { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); }
+.dirhead p { grid-column: 1 / -1; color: var(--muted); max-width: 70ch; }
+.name { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; padding-block: 26px; border-bottom: 1px solid var(--rule); scroll-margin-top: 16px; }
+.plate { display: grid; gap: 18px; align-content: center; padding: 24px 22px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; min-width: 0; }
+.icon { width: 56px; height: 56px; flex: none; border-radius: 13px; background: var(--ink); display: grid; place-items: center; }
+.icon .mark { width: 38px; height: 38px; }
+.iconrow { display: flex; align-items: center; gap: 12px; }
+.plate > .lockup .mark { width: 58px; height: 58px; }
+.variant { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px dashed var(--rule); }
+.dots { white-space: nowrap; overflow-wrap: normal; font-size: 27px; }
+.variant { flex-wrap: wrap; }
+.dots .i { position: relative; display: inline-block; }
+.dots .dot { position: absolute; left: 50%; bottom: .79em; width: .23em; height: .23em; margin-left: -.115em; border-radius: 50%; box-sizing: border-box; }
+.dots .pin { background: var(--accent); }
+.dots .tgt { width: .31em; height: .31em; margin-left: -.155em; bottom: .75em; border: .07em solid var(--accent); background: radial-gradient(circle, var(--accent) 0 38%, transparent 42%); }
+.body { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.body header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.tag { font-family: var(--display); font-weight: 500; font-size: 17px; line-height: 1.3; color: var(--ink); }
+dl { margin: 6px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px 24px; }
+dl > div { min-width: 0; }
+dt { margin-bottom: 4px; }
+dd { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
+dl > div:first-child dd { color: var(--ink); }
+.avail { margin-top: 4px; padding-top: 14px; border-top: 1px dashed var(--rule); grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.matrix { min-width: 880px; }
+.matrix td.num { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink); }
+.matrix tbody th a { text-decoration: none; }
+.matrix td:nth-child(4) { min-width: 230px; } .matrix td:nth-child(6) { min-width: 210px; }
+.chip { font: 700 11.5px/1 var(--text); letter-spacing: .04em; padding: 5px 9px; border-radius: 999px; white-space: nowrap; }
+.chip-ok { color: var(--ok-fg); background: var(--ok-bg); } .chip-near { color: var(--near-fg); background: var(--near-bg); } .chip-clash { color: var(--clash-fg); background: var(--clash-bg); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13.5px; color: var(--muted); max-width: none; }
+.legend span { display: inline-flex; gap: 8px; align-items: center; }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+tbody th { font: 700 15px/1.3 var(--display); letter-spacing: 0; text-transform: none; color: var(--ink); white-space: nowrap; }
+td { color: var(--muted); } td.src { white-space: nowrap; font-size: 12.5px; }
+.plain { display: grid; gap: 14px; }
+.plain > p, .plain li { max-width: 68ch; color: var(--muted); }
+.plain ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.plain strong { color: var(--ink); }
+code { font: 500 13px/1 ui-monospace, "SF Mono", Menlo, monospace; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; color: var(--ink); }
+@media (max-width: 760px) {
+  .name { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .wrap { gap: 44px; }
+}
+
+.chip-name { color: var(--name-fg); background: var(--name-bg); }
+.decision { padding: 12px 16px; background: var(--ok-bg); color: var(--ok-fg); border-radius: 6px; max-width: 62ch; font-size: 15.5px; }
+.decision b { font-weight: 700; }
+.batch { display: grid; gap: 40px; }
+.batchhead { display: grid; gap: 12px; padding-top: 28px; border-top: 6px solid var(--ink); }
+.batchhead p { color: var(--muted); max-width: 68ch; }
+.batchhead .legend { margin-top: 4px; }
+h3.dirname { font-size: 22px; }
+.finals { min-width: 760px; }
+.finals td:nth-child(4) { min-width: 240px; } .finals td:nth-child(5) { min-width: 220px; }
+.pickgrid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+</style>
+</head>
+<body>
+
+
+<svg class="sprite" aria-hidden="true"><defs>
+<symbol id="m-pinpoint" viewBox="0 0 64 64">
+  <rect class="f-i" x="11" y="8" width="9" height="50" rx="4.5"/>
+  <circle class="s-i" cx="35" cy="25" r="15" stroke-width="8"/>
+  <circle class="f-a" cx="35" cy="25" r="4.6"/>
+  <line class="s-a" x1="56" y1="5" x2="38" y2="22" stroke-width="3.6" stroke-linecap="round"/>
+  <circle class="f-a" cx="57" cy="5" r="4"/>
+</symbol>
+<symbol id="m-aimwell" viewBox="0 0 64 64">
+  <path class="s-i" d="M12 55 L32 10 L52 55" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle class="s-a" cx="32" cy="46" r="5" stroke-width="3.5"/>
+  <circle class="f-a" cx="32" cy="46" r="1.5"/>
+</symbol>
+<symbol id="m-fletch" viewBox="0 0 64 64">
+  <g class="s-a" stroke-width="4.2" stroke-linecap="round">
+    <line x1="15" y1="49" x2="5" y2="49"/><line x1="15" y1="49" x2="15" y2="59"/>
+    <line x1="22" y1="42" x2="11" y2="42"/><line x1="22" y1="42" x2="22" y2="53"/>
+    <line x1="29" y1="35" x2="18" y2="35"/><line x1="29" y1="35" x2="29" y2="46"/>
+  </g>
+  <line class="s-i" x1="15" y1="49" x2="51" y2="13" stroke-width="5" stroke-linecap="round"/>
+  <polyline class="s-i" points="36,11 53,11 53,28" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="m-trigpoint" viewBox="0 0 64 64">
+  <path class="s-i" d="M32 12 L10 52 L54 52 Z" stroke-width="4.5" stroke-linejoin="round"/>
+  <circle class="f-i" cx="32" cy="12" r="5.5"/><circle class="f-i" cx="10" cy="52" r="5.5"/><circle class="f-i" cx="54" cy="52" r="5.5"/>
+  <circle class="f-a" cx="32" cy="39" r="4.4"/>
+  <circle class="s-a" cx="32" cy="39" r="7.6" stroke-width="1.8"/>
+</symbol>
+<symbol id="m-foothold" viewBox="0 0 64 64">
+  <path class="fs-i" d="M8 57 V46 H24 V33 H40 V20 H56 V57 Z" stroke-width="3" stroke-linejoin="round"/>
+  <rect class="f-a" x="23" y="31" width="18" height="5.5" rx="2.75"/>
+  <circle class="f-a" cx="32" cy="22.5" r="5"/>
+</symbol>
+<symbol id="m-rung" viewBox="0 0 64 64">
+  <g class="s-i" stroke-width="6" stroke-linecap="round">
+    <line x1="20" y1="6" x2="20" y2="58"/><line x1="44" y1="6" x2="44" y2="58"/>
+    <line x1="20" y1="48" x2="44" y2="48"/><line x1="20" y1="36" x2="44" y2="36"/>
+    <line x1="20" y1="12" x2="44" y2="12" opacity=".28"/>
+  </g>
+  <line class="s-a" x1="20" y1="24" x2="44" y2="24" stroke-width="6" stroke-linecap="round"/>
+</symbol>
+<symbol id="m-cairn" viewBox="0 0 64 64">
+  <ellipse class="f-i" cx="32" cy="50" rx="21" ry="8"/>
+  <ellipse class="f-i" cx="29" cy="33" rx="15" ry="7" transform="rotate(-4 29 33)"/>
+  <ellipse class="f-i" cx="34" cy="19" rx="10" ry="5.5" transform="rotate(5 34 19)"/>
+  <ellipse class="f-a" cx="31" cy="8.5" rx="5.5" ry="4"/>
+</symbol>
+<symbol id="m-stepwell" viewBox="0 0 64 64">
+  <path class="fs-i" d="M5 12 H15 V24 H24 V36 H40 V24 H49 V12 H59 V56 H5 Z" stroke-width="3" stroke-linejoin="round"/>
+  <rect class="f-a" x="25.5" y="27" width="13" height="7.5" rx="1.5"/>
+</symbol>
+<symbol id="m-trellis" viewBox="0 0 64 64">
+  <g class="s-i" stroke-width="4" stroke-linecap="round">
+    <line x1="8" y1="32" x2="32" y2="8"/><line x1="8" y1="56" x2="56" y2="8"/><line x1="32" y1="56" x2="56" y2="32"/>
+    <line x1="8" y1="32" x2="32" y2="56"/><line x1="8" y1="8" x2="56" y2="56"/><line x1="32" y1="8" x2="56" y2="32"/>
+  </g>
+  <path class="f-a" d="M44 20 C44 10 51 5 60 4 C60 13 55 20 44 20 Z"/>
+  <path class="f-a" d="M20 44 C20 35 26 31 33 30 C33 38 29 44 20 44 Z"/>
+</symbol>
+<symbol id="m-throughline" viewBox="0 0 64 64">
+  <line class="s-i" x1="5" y1="55" x2="59" y2="9" stroke-width="3.6" stroke-linecap="round"/>
+  <circle class="f-i" cx="12" cy="49" r="3.6"/>
+  <circle class="f-i" cx="26" cy="37.1" r="5.6"/>
+  <circle class="f-a" cx="43" cy="22.6" r="8"/>
+</symbol>
+<symbol id="m-chalkline" viewBox="0 0 64 64">
+  <rect class="f-i" x="6" y="6" width="52" height="52" rx="13"/>
+  <line class="s-p" x1="17" y1="46" x2="47" y2="18" stroke-width="4" stroke-linecap="round"/>
+  <g class="f-p" opacity=".6"><circle cx="27" cy="45" r="1.2"/><circle cx="35" cy="38" r="1"/><circle cx="41" cy="33" r="1.2"/><circle cx="31" cy="48" r=".9"/></g>
+  <circle class="f-a" cx="17" cy="46" r="4"/><circle class="f-a" cx="47" cy="18" r="4"/>
+</symbol>
+<symbol id="m-plotpoint" viewBox="0 0 64 64">
+  <path class="s-i" d="M12 8 V52 H56" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="s-i" d="M40 46 V32 M18 24 H32" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1.5 4.5" opacity=".6"/>
+  <circle class="f-a" cx="40" cy="24" r="7"/>
+</symbol>
+<symbol id="m-uptick" viewBox="0 0 64 64">
+  <polyline class="s-i" points="8,37 22,51 52,17" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline class="s-a" points="37,14 55,14 55,32" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="m-notch" viewBox="0 0 64 64">
+  <g class="s-i" stroke-width="5.5" stroke-linecap="round">
+    <line x1="14" y1="12" x2="14" y2="52"/><line x1="25" y1="12" x2="25" y2="52"/><line x1="36" y1="12" x2="36" y2="52"/><line x1="47" y1="12" x2="47" y2="52"/>
+  </g>
+  <line class="s-a" x1="6" y1="45" x2="57" y2="19" stroke-width="5.5" stroke-linecap="round"/>
+</symbol>
+<symbol id="m-tessera" viewBox="0 0 64 64">
+  <g transform="rotate(45 32 32) translate(32 32) scale(.8) translate(-32 -32)">
+    <rect class="f-i" x="6" y="6" width="15" height="15" rx="3"/>
+    <rect class="f-i" x="24.5" y="6" width="15" height="15" rx="3" opacity=".22"/>
+    <rect class="f-i" x="43" y="6" width="15" height="15" rx="3" opacity=".22"/>
+    <rect class="f-i" x="6" y="24.5" width="15" height="15" rx="3"/>
+    <rect class="f-i" x="24.5" y="24.5" width="15" height="15" rx="3"/>
+    <rect class="f-a" x="43" y="24.5" width="15" height="15" rx="3"/>
+    <rect class="f-i" x="6" y="43" width="15" height="15" rx="3"/>
+    <rect class="f-i" x="24.5" y="43" width="15" height="15" rx="3"/>
+    <rect class="f-i" x="43" y="43" width="15" height="15" rx="3"/>
+  </g>
+</symbol>
+<symbol id="m-crescendo" viewBox="0 0 64 64">
+  <path class="s-i" d="M57 11 L8 32 L57 53" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="f-a" cx="28" cy="32" r="2.3"/><circle class="f-a" cx="39" cy="32" r="3.7"/><circle class="f-a" cx="52" cy="32" r="5.3"/>
+</symbol>
+
+<symbol id="m-aimtrue" viewBox="0 0 64 64">
+  <circle class="s-a" cx="44" cy="32" r="14" stroke-width="5"/>
+  <line class="s-i" x1="6" y1="32" x2="42" y2="32" stroke-width="5" stroke-linecap="round"/>
+  <polyline class="s-i" points="35,23.5 44,32 35,40.5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g class="s-i" stroke-width="3.6" stroke-linecap="round"><line x1="12" y1="32" x2="6" y2="25"/><line x1="12" y1="32" x2="6" y2="39"/><line x1="19" y1="32" x2="13" y2="25"/><line x1="19" y1="32" x2="13" y2="39"/></g>
+</symbol>
+<symbol id="m-pinpath" viewBox="0 0 64 64">
+  <path class="s-i" d="M8 56 C22 56 20 44 30 43 S40 40 44 37" stroke-width="4.6" stroke-linecap="round" stroke-dasharray="0.1 8.7"/>
+  <path class="f-a" d="M45 39 C45 39 33 27 33 18 A12 12 0 1 1 57 18 C57 27 45 39 45 39 Z"/>
+  <circle class="f-p" cx="45" cy="18" r="4.4"/>
+</symbol>
+<symbol id="m-waypin" viewBox="0 0 64 64">
+  <path class="f-i" d="M32 61 C32 61 13 42 13 26 A19 19 0 1 1 51 26 C51 42 32 61 32 61 Z"/>
+  <polyline class="s-a" points="23,31 32,21 41,31" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="m-pinwell" viewBox="0 0 64 64">
+  <ellipse class="s-i" cx="32" cy="50" rx="21" ry="7.5" stroke-width="4.6"/>
+  <path class="f-a" d="M32 51 C32 51 20 38 20 28 A12 12 0 1 1 44 28 C44 38 32 51 32 51 Z"/>
+  <circle class="f-p" cx="32" cy="28" r="4.4"/>
+</symbol>
+<symbol id="m-goalpin" viewBox="0 0 64 64">
+  <ellipse class="f-i" cx="26" cy="54" rx="17" ry="5.5"/>
+  <line class="s-i" x1="26" y1="54" x2="26" y2="8" stroke-width="4.2" stroke-linecap="round"/>
+  <path class="f-a" d="M28 8 L52 17 L28 27 Z"/>
+</symbol>
+<symbol id="m-pushpin" viewBox="0 0 64 64">
+  <g transform="rotate(35 32 32)">
+    <line class="s-a" x1="32" y1="34" x2="32" y2="59" stroke-width="4" stroke-linecap="round"/>
+    <rect class="f-i" x="21" y="4" width="22" height="8" rx="4"/>
+    <rect class="f-i" x="26.5" y="11" width="11" height="15"/>
+    <rect class="f-i" x="16" y="25" width="32" height="9" rx="4.5"/>
+  </g>
+</symbol>
+<symbol id="m-pointwell" viewBox="0 0 64 64">
+  <circle class="s-i" cx="28" cy="36" r="19" stroke-width="5.5"/>
+  <polyline class="s-a" points="19,35 28,44 55,10" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="m-toehold" viewBox="0 0 64 64">
+  <rect class="f-i" x="12" y="5" width="40" height="54" rx="9"/>
+  <ellipse class="f-p" cx="37" cy="15" rx="5" ry="3.4" transform="rotate(-12 37 15)"/>
+  <ellipse class="f-p" cx="25" cy="26" rx="5.5" ry="3.6" transform="rotate(14 25 26)"/>
+  <ellipse class="f-p" cx="39" cy="37" rx="5.5" ry="3.6" transform="rotate(-16 39 37)"/>
+  <ellipse class="f-a" cx="26" cy="48" rx="7" ry="4.4" transform="rotate(12 26 48)"/>
+</symbol>
+<symbol id="m-stonestep" viewBox="0 0 64 64">
+  <rect class="f-i" x="5" y="43" width="22" height="11" rx="5.5"/>
+  <rect class="f-i" x="21" y="27" width="22" height="11" rx="5.5"/>
+  <rect class="f-a" x="37" y="11" width="22" height="11" rx="5.5"/>
+</symbol>
+<symbol id="m-steprise" viewBox="0 0 64 64">
+  <g class="s-a" stroke-width="6" stroke-linecap="round"><line x1="24" y1="54" x2="24" y2="38"/><line x1="40" y1="38" x2="40" y2="22"/></g>
+  <g class="s-i" stroke-width="6" stroke-linecap="round"><line x1="8" y1="54" x2="24" y2="54"/><line x1="24" y1="38" x2="40" y2="38"/><line x1="40" y1="22" x2="56" y2="22"/></g>
+</symbol>
+<symbol id="m-levelwise" viewBox="0 0 64 64">
+  <rect class="f-i" x="8" y="42" width="48" height="11" rx="5.5"/>
+  <rect class="f-i" x="8" y="26.5" width="48" height="11" rx="5.5"/>
+  <rect class="f-i" x="8" y="11" width="48" height="11" rx="5.5" opacity=".22"/>
+  <rect class="f-a" x="8" y="11" width="27" height="11" rx="5.5"/>
+</symbol>
+<symbol id="m-sopan" viewBox="0 0 64 64">
+  <rect class="f-i" x="21" y="8" width="22" height="9" rx="2"/>
+  <rect class="f-i" x="14" y="20" width="36" height="9" rx="2"/>
+  <rect class="f-i" x="7" y="32" width="50" height="9" rx="2"/>
+  <path class="s-a" d="M6 52 q6.5 -6 13 0 t13 0 t13 0 t13 0" stroke-width="4.5" stroke-linecap="round"/>
+</symbol>
+<symbol id="m-plotwell" viewBox="0 0 64 64">
+  <path class="s-i" d="M10 8 V54 H58" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline class="s-a" points="21,33 31,43 53,15" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="m-lessonmark" viewBox="0 0 64 64">
+  <rect class="f-i" x="11" y="7" width="42" height="52" rx="7"/>
+  <g class="s-p" stroke-width="4" stroke-linecap="round"><line x1="20" y1="31" x2="33" y2="31"/><line x1="20" y1="41" x2="44" y2="41"/><line x1="20" y1="51" x2="38" y2="51"/></g>
+  <path class="f-a" d="M36 3 H47 V27 L41.5 21.5 L36 27 Z"/>
+</symbol>
+<symbol id="m-tallymark" viewBox="0 0 64 64">
+  <g class="s-i" stroke-width="5.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="27" y1="12" x2="27" y2="52"/><line x1="38" y1="12" x2="38" y2="52"/><line x1="49" y1="12" x2="49" y2="52"/></g>
+  <polyline class="s-a" points="5,36 13,45 59,17" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="m-markstone" viewBox="0 0 64 64">
+  <circle class="s-i" cx="32" cy="32" r="24" stroke-width="5.5"/>
+  <path class="s-a" d="M32 17 L46 41 L18 41 Z" stroke-width="4.2" stroke-linejoin="round"/>
+  <circle class="f-i" cx="32" cy="33" r="3.2"/>
+</symbol>
+</defs></svg>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Naming the platform · 13 October 2026</p>
+    <h1>Thirty-two names to replace “Tutor Portal”</h1>
+    <p class="lead">Two batches of sixteen, each with a logo sketch and a check of the US trademark register, the domain registries and, for the second batch, the App Store. The first batch were mostly real words, and nine of them turned out to be taken. The second batch was built the other way round: 123 candidates were screened first, and only the ones that came through are shown.</p>
+    <p class="decision"><b>Decision, 13 October 2026:</b> the platform is <a href="#aimtrue">Aimtrue</a>. The app's identifiers are renamed with it, and its logo sketch becomes the icon.</p>
+    <p class="lead">Four of the new names are clear everywhere I looked, and seven more have only a small namesake in another field. The logos are sketches to choose a direction from, and the checks are a screening, not legal advice.</p>
+  </header>
+
+  <section class="brief" aria-label="What the name has to do">
+    <div><h3>Say plan and progress</h3><p>For any subject and any age. A name that only says tutoring, or only says maths, is too small for where this is going.</p></div>
+    <div><h3>Sit beside another name</h3><p>Every organization keeps its own name and logo, and the platform's appears next to it. A school-sounding name competes with them.</p>
+      <div class="beside"><span>Riverside Tutoring <em>on</em> Pinpoint Academy</span><span>Riverside Tutoring <em>on</em> Pinpath</span></div></div>
+    <div><h3>Work as an icon</h3><p>The mark has to read at 60 pixels in one colour, on a phone's home screen, next to every other app.</p></div>
+    <div><h3>Be free to use</h3><p>No live trademark in software or education, nobody already trading under it in learning, and a domain you can register.</p></div>
+  </section>
+
+  <section class="picks">
+    <h2>The six I would choose between</h2>
+    <p>Five from the new batch and Aimwell from the first. If you want to keep your pin, Pinpath is the one: it says plan and progress and nobody has registered it. If you want the least risk, Aimtrue has nothing against it anywhere I looked.</p>
+    <div class="pickgrid"><a class="pick dir-aim" href="#pinpath">
+      <span class="rank">Closest to your idea</span>
+      <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinpath"/></svg><span class="wm f-outfit">pinpath</span></div>
+      <p>Keeps the pin, adds the plan. No trademark on it. A travel app shares the name.</p></a><a class="pick dir-aim" href="#aimtrue">
+      <span class="rank">Least risk</span>
+      <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-aimtrue"/></svg><span class="wm f-outfit">aimtrue</span></div>
+      <p>Nothing on the register, nothing in the App Store, and aimtrue.app is unregistered.</p></a><a class="pick dir-aim" href="#aimwell">
+      <span class="rank">Batch one's survivor</span>
+      <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-aimwell"/></svg><span class="wm f-outfit">aimwell</span></div>
+      <p>Still clear after a second look. aimwell.io is unregistered.</p></a><a class="pick dir-climb" href="#toehold">
+      <span class="rank">Most memorable</span>
+      <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-toehold"/></svg><span class="wm f-brico">toehold</span></div>
+      <p>A real word with no trademark at all. Says how learning starts.</p></a><a class="pick dir-climb" href="#stonestep">
+      <span class="rank">Emptiest field</span>
+      <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-stonestep"/></svg><span class="wm f-fraunces">stonestep</span></div>
+      <p>Only the .com is taken. Quiet, and it needs the logo to carry it.</p></a><a class="pick dir-aim" href="#goalpin">
+      <span class="rank">Most direct</span>
+      <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-goalpin"/></svg><span class="wm f-outfit">goalpin</span></div>
+      <p>The pin you aim at. Clear everywhere, though someone holds the .com.</p></a></div>
+    <div class="tablewrap"><table class="matrix finals">
+      <thead><tr><th scope="col">Name</th><th scope="col">Verdict</th><th scope="col">US marks</th><th scope="col">Who else uses the name</th><th scope="col">Best domains not registered today</th></tr></thead>
+      <tbody><tr><th scope="row"><a href="#pinpath">Pinpath</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">0 / 0 / 0</td><td>PinPath, a travel app. Shares four letters with PINPOINT.</td><td>pinpath.ai, pinpath.org, pinpathapp.com, getpinpath.com</td></tr><tr><th scope="row"><a href="#aimtrue">Aimtrue</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found.</td><td>aimtrue.app, aimtrue.ai, aimtrueapp.com, getaimtrue.com</td></tr><tr><th scope="row"><a href="#aimwell">Aimwell</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">2 / 1 / 1</td><td>A wellness app and a staffing firm. AIMSWEB, Pearson's progress software, is a look-alike.</td><td>aimwell.io, aimwellapp.com, tryaimwell.com</td></tr><tr><th scope="row"><a href="#toehold">Toehold</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">0 / 0 / 0</td><td>A getting-started web tool and a sudoku game.</td><td>toehold.io, toehold.co, toeholdapp.com</td></tr><tr><th scope="row"><a href="#stonestep">Stonestep</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found.</td><td>stonestep.app, .io, .co, .ai, stonestepapp.com</td></tr><tr><th scope="row"><a href="#goalpin">Goalpin</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found; goalpin.com was registered this year.</td><td>goalpin.app, .io, .co, .ai, goalpinapp.com</td></tr></tbody></table></div>
+    <p>“US marks” gives three figures: live marks that contain the word, live marks that are exactly the word, and exact marks in the three classes that matter here: 9 (downloadable software), 41 (education and training) and 42 (online software).</p>
+  </section>
+
+  <div class="batch">
+    <div class="batchhead">
+      <p class="eyebrow">Batch two · screened first</p>
+      <h2>Sixteen new names that came through the checks</h2>
+      <p>Invented compounds clear far more easily than dictionary words, so this batch leans on them, and on your pin. Of 123 candidates, 82 were verified against the register and 33 went on to the full domain, website and App Store check. “Education endings” means .education, .academy, .school and .study.</p>
+      <div class="legend" aria-label="What the labels mean">
+      <span><b class="chip chip-ok">Clear</b> nothing found on the register, in the App Store or on the web</span>
+      <span><b class="chip chip-name">Small namesake</b> no mark in software or education, but a small app or firm in another field uses the name</span>
+      <span><b class="chip chip-near">Caution</b> a neighbour in or near learning, or one a lawyer should look at</span>
+      <span><b class="chip chip-clash">Avoid</b> taken in education, or blocked for software</span>
+    </div>
+    </div>
+    <div class="tablewrap"><table class="matrix">
+      <thead><tr><th scope="col">Name</th><th scope="col">Verdict</th><th scope="col">US marks</th><th scope="col">Closest conflict or namesake</th><th scope="col">The exact .com</th><th scope="col">Not registered today</th></tr></thead>
+      <tbody><tr><th scope="row"><a href="#aimtrue">Aimtrue</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found.</td><td>Registered 2001, placeholder</td><td>aimtrue.app, aimtrue.ai, the education endings, all eleven .com variants</td></tr><tr><th scope="row"><a href="#stonestep">Stonestep</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found.</td><td>Registered 2001, bare page</td><td>stonestep.app, .io, .co, .ai, .net, the education endings, all eleven variants</td></tr><tr><th scope="row"><a href="#lessonmark">Lessonmark</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found.</td><td>Registered 2014, blank</td><td>Every other ending and variant checked</td></tr><tr><th scope="row"><a href="#goalpin">Goalpin</a></th><td><span class="chip chip-ok">Clear</span></td><td class="num">0 / 0 / 0</td><td>Nobody found, though goalpin.com was registered this year.</td><td>Registered 2026, blank</td><td>Every other ending and variant checked</td></tr><tr><th scope="row"><a href="#pinpath">Pinpath</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">0 / 0 / 0</td><td>PinPath, a travel app. PINPOINT is a distant look-alike.</td><td>Registered 2005, blank</td><td>pinpath.ai, pinpath.org, the education endings, ten variants</td></tr><tr><th scope="row"><a href="#toehold">Toehold</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">0 / 0 / 0</td><td>A getting-started web tool and a sudoku game.</td><td>Registered 2010, no site</td><td>toehold.io, toehold.co, three education endings, ten variants</td></tr><tr><th scope="row"><a href="#pinwell">Pinwell</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">0 / 0 / 0</td><td>Pinwell, a dose-tracking app.</td><td>Registered 2007, no site</td><td>pinwell.ai, pinwell.org, the education endings, all eleven variants</td></tr><tr><th scope="row"><a href="#waypin">Waypin</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">1 / 0 / 0</td><td>WayPin, a place-notes app, and a travel journal.</td><td>Registered 2023, blank</td><td>waypin.io, .co, .ai, the education endings, ten variants</td></tr><tr><th scope="row"><a href="#pointwell">Pointwell</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">4 / 0 / 0</td><td>Pointwell firms in investments, consulting and health care.</td><td>An investment firm</td><td>pointwell.app, pointwell.org, the education endings, all eleven variants</td></tr><tr><th scope="row"><a href="#pushpin">Pushpin</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">1 / 0 / 0</td><td>Pushpin for Pinboard, a bookmarking app.</td><td>Registered 1997, no site</td><td>The education endings, eight variants</td></tr><tr><th scope="row"><a href="#steprise">Steprise</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">0 / 0 / 0</td><td>Two step-counting apps.</td><td>For sale</td><td>steprise.co, steprise.ai, the education endings, ten variants</td></tr><tr><th scope="row"><a href="#plotwell">Plotwell</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">0 / 0 / 0</td><td>Plotwell, paid screenwriting software.</td><td>Registered 2009, blank</td><td>plotwell.io, .ai, .org, .net, the education endings, ten variants</td></tr><tr><th scope="row"><a href="#levelwise">Levelwise</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">0 / 0 / 0</td><td>Levelwise, a learning-workflow tool begun in 2026.</td><td>For sale</td><td>levelwise.co, levelwise.ai, the education endings, nine variants</td></tr><tr><th scope="row"><a href="#tallymark">Tallymark</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">0 / 0 / 0</td><td>Tallymark, student-organization software in beta.</td><td>Registered 2009</td><td>The education endings, ten variants</td></tr><tr><th scope="row"><a href="#sopan">Sopan</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">2 / 1 / 0</td><td>A cancelled mark, SOPAN EDUCATION SERVICES.</td><td>For sale</td><td>sopan.app, sopan.io, sopan.ai, the education endings, seven variants</td></tr><tr><th scope="row"><a href="#markstone">Markstone</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">2 / 1 / 0</td><td>Markstone, a Markdown notes app.</td><td>Registered 1997, no site</td><td>The education endings, ten variants</td></tr></tbody></table></div>
+    
+<section class="dir dir-aim">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">Precision, with your pin kept</h3><p>Seven relatives of Pinpoint and Aimwell. Five keep the pin or the point; all seven are clear of software and education marks.</p></div>
+  
+<article class="name" id="aimtrue">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-aimtrue"/></svg><span class="wm f-outfit">aimtrue</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-aimtrue"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Aimtrue</h3><span class="chip chip-ok">Clear</span></header>
+    <p class="tag">Set the goal. Aim true.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Two plain words that say the whole method: choose a goal and keep your aim honest. It carries Pinpoint's precision and Aimwell's warmth, and “true” is a carpenter's word for straight and level.</dd></div>
+      <div><dt>The mark</dt><dd>An arrow flying level into a ring, its tip stopping exactly at the centre.</dd></div>
+      <div><dt>Watch out</dt><dd>It reads a little like a motto. Said aloud it is two words, so some people will type a space.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains AIMTRUE or AIM TRUE in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>No app of this name in the App Store, and no education use found on the web. aimtrue.com (2001) shows a placeholder; .io, .co, .org and .net are held. Not registered: aimtrue.app, aimtrue.ai, the education endings, and all eleven .com variants, including aimtrueapp.com and getaimtrue.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="pinpath">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinpath"/></svg><span class="wm f-outfit">pinpath</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinpath"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Pinpath</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Pin the goal. Walk the path.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The closest relative of your Pinpoint that is still free. A plan is a path with pins along it: where you start, each milestone, the goal. It says plan and progress in two syllables.</dd></div>
+      <div><dt>The mark</dt><dd>A dotted path that ends at a map pin. Your pin survives, and the path is the plan.</dd></div>
+      <div><dt>Watch out</dt><dd>It shares its first four letters with PINPOINT, which has 35 exact marks in these classes, one of them for training software. A lawyer should say whether that is close enough to matter.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains PINPATH or PIN PATH in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>A travel app, PinPath, uses the name for saved places and audio tours (pinpath.app, and in the App Store under Travel). pinpath.com (2005) is blank; .io, .co and .net are held. Not registered: pinpath.ai, pinpath.org, the education endings, and ten .com variants, including pinpathapp.com and getpinpath.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="waypin">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-waypin"/></svg><span class="wm f-outfit">waypin</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-waypin"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Waypin</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">A pin for every step of the way.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Waypoint and Pinpoint folded into one word. A waypin marks a place on the route: the last lesson, the next one, the goal.</dd></div>
+      <div><dt>The mark</dt><dd>A map pin with an upward chevron inside it: here, and onward.</dd></div>
+      <div><dt>Watch out</dt><dd>It is an invented word, so it has to be taught once, and some will hear “weigh pin”.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>One live US mark contains the word: <a href="https://tsdr.uspto.gov/#caseNumber=90631122&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">WAYPIN SION</a>, for kitchenware. Nothing in software or education.</dd></div>
+      <div><dt>Domains and use</dt><dd>Two small apps use the name: WayPin, which pins notes to places, and a travel journal. waypin.com (2023) is blank; .app, .org and .net are held. Not registered: waypin.io, waypin.co, waypin.ai, the education endings, and ten .com variants, including waypinapp.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="pinwell">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinwell"/></svg><span class="wm f-outfit">pinwell</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinwell"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Pinwell</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Pin the goal. Do it well.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Your Pinpoint crossed with Aimwell, the one clear name from the first batch. Friendly, short and easy to spell.</dd></div>
+      <div><dt>The mark</dt><dd>A pin landing in the centre of a ring.</dd></div>
+      <div><dt>Watch out</dt><dd>It says less about planning than Pinpath does. It is also a surname.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains PINWELL or PIN WELL in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>A new app, Pinwell, tracks medication doses (pinwell.app, registered in 2026, and in the App Store). pinwell.com (2007) shows no site; .io, .co and .net are held. Not registered: pinwell.ai, pinwell.org, the education endings, and all eleven .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="goalpin">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-goalpin"/></svg><span class="wm f-outfit">goalpin</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-goalpin"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Goalpin</h3><span class="chip chip-ok">Clear</span></header>
+    <p class="tag">Every plan needs a pin to aim at.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>In golf, the flag you aim at is called the pin. Goalpin names the thing a plan points toward, and it keeps your pin.</dd></div>
+      <div><dt>The mark</dt><dd>A golf pin: a flag standing in its hole.</dd></div>
+      <div><dt>Watch out</dt><dd>It names the goal more than the journey, and the l and p meet awkwardly when you say it fast.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains GOALPIN or GOAL PIN in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>No app of this name and no use found on the web. goalpin.com was registered in 2026 and shows a blank page, so someone else has had the idea. Not registered: goalpin.app, .io, .co, .ai, .org, .net, the education endings, and all eleven .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="pushpin">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pushpin"/></svg><span class="wm f-brico">pushpin</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pushpin"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Pushpin</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Pin the plan where everyone can see it.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The friendliest pin there is. A pushpin holds a plan on the wall where the tutor, the student and the parent can all see it.</dd></div>
+      <div><dt>The mark</dt><dd>A pushpin at an angle, its needle in the accent colour.</dd></div>
+      <div><dt>Watch out</dt><dd>It is an everyday word, which makes it warm but hard to own, and it says nothing about progress.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>One live US mark contains the word: <a href="https://tsdr.uspto.gov/#caseNumber=90578254&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">PUSHPIN PAINTING</a>, in the paper-goods class. Nothing in software or education.</dd></div>
+      <div><dt>Domains and use</dt><dd>An established bookmarking app, Pushpin for Pinboard, uses the name. Every main ending is taken, and pushpin.co and pushpin.ai are for sale. Not registered: the education endings and eight .com variants, including usepushpin.com and pushpinhq.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="pointwell">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pointwell"/></svg><span class="wm f-fraunces">pointwell</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pointwell"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Pointwell</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Know the point. Make it well.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Pinpoint's “point” with Aimwell's “well”. It sounds established, like a place name, which suits a platform that sits behind other organizations.</dd></div>
+      <div><dt>The mark</dt><dd>A ring with a tick striking through it.</dd></div>
+      <div><dt>Watch out</dt><dd>It could be a bank or a consultancy, and several are. That is the cost of sounding established.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>Four live US marks contain the words, none in software or education: <a href="https://tsdr.uspto.gov/#caseNumber=87853245&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">POINTWELL CONSULTING</a> (twice), POINT WELL TAKEN and POINT WELL MADE.</dd></div>
+      <div><dt>Domains and use</dt><dd>Other Pointwells trade in investments (pointwell.com), consulting, and health care (pointwell.co). pointwell.io and .ai were registered in 2026 and are parked. Not registered: pointwell.app, pointwell.org, the education endings, and all eleven .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+<section class="dir dir-climb">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">The climb</h3><p>The same idea as Foothold and Cairn from the first batch, in words nobody has claimed.</p></div>
+  
+<article class="name" id="toehold">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-toehold"/></svg><span class="wm f-brico">toehold</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-toehold"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Toehold</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Every hard thing starts with a toehold.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A toehold is the first small grip that lets you start a climb. It is honest about how learning begins: with one secure place to stand. It is a real word with no trademark on it at all.</dd></div>
+      <div><dt>The mark</dt><dd>A climbing wall with four holds, the lowest in the accent colour: the first grip.</dd></div>
+      <div><dt>Watch out</dt><dd>It speaks to starting more than to planning, “toe” makes some people smile, and it is also a wrestling hold.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains TOEHOLD or TOE HOLD in any class. For a dictionary word that is rare.</dd></div>
+      <div><dt>Domains and use</dt><dd>Small namesakes: a web tool for getting started on a task (toehold.app, 2026) and a sudoku-teaching game in the App Store. toehold.academy was registered in 2026 and shows a blank page. toehold.com (2010) shows no site. Not registered: toehold.io, toehold.co, toehold.education, .school and .study, and ten .com variants, including toeholdapp.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="stonestep">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-stonestep"/></svg><span class="wm f-fraunces">stonestep</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-stonestep"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Stonestep</h3><span class="chip chip-ok">Clear</span></header>
+    <p class="tag">One stone, then the next.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Stepping stones across a stream: you reach the next one only from the one you are standing on. It keeps the calm of Cairn, which was taken.</dd></div>
+      <div><dt>The mark</dt><dd>Three stones rising left to right, the top one in the accent colour.</dd></div>
+      <div><dt>Watch out</dt><dd>It is pleasant but quiet, and could be a landscaping firm. The logo and tagline have to make it about learning.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains STONESTEP or STONE STEP in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>No app of this name and no education use found. stonestep.com (2001) carries a bare page and stonestep.org is held. Not registered: stonestep.app, .io, .co, .ai, .net, the education endings, and all eleven .com variants. This is the emptiest field of all thirty-two names.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="steprise">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-steprise"/></svg><span class="wm f-brico">steprise</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-steprise"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Steprise</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Each step has a rise.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Stair builders measure every step by its rise. The name puts progress into the unit of the plan: step, rise, step, rise.</dd></div>
+      <div><dt>The mark</dt><dd>A stair in profile with the risers in the accent colour.</dd></div>
+      <div><dt>Watch out</dt><dd>Two step-counting apps already use it, and it sounds like one.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains STEPRISE or STEP RISE in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>Two small apps, StepRise and StepRise Fitness, are in the App Store. steprise.com is for sale and steprise.io is in use. Not registered: steprise.co, steprise.ai, the education endings, and ten .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="levelwise">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-levelwise"/></svg><span class="wm f-outfit">levelwise</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-levelwise"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Levelwise</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Level by level.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The app already measures progress in levels, and “-wise” means both “in the manner of” and “sensible”. It describes how the product works more exactly than any other name here.</dd></div>
+      <div><dt>The mark</dt><dd>Three stacked bars: two levels complete and the third part-filled in the accent colour.</dd></div>
+      <div><dt>Watch out</dt><dd>It is the natural successor to Stepwise, which is taken, and shares its ending.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains LEVELWISE or LEVEL WISE in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>Two start-ups took the name in 2026. levelwise.app describes tools for “clearer learning and research workflows”, which is close to home, and levelwise.io is a stock-chart product. levelwise.com is for sale. Not registered: levelwise.co, levelwise.ai, the education endings, and nine .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="sopan">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-sopan"/></svg><span class="wm f-fraunces">sopan</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-sopan"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Sopan</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">A flight of steps.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Sopan is the Sanskrit and Marathi word for a staircase: the broad steps that lead up to a temple or down to the water. Five letters, easy to say, almost unclaimed.</dd></div>
+      <div><dt>The mark</dt><dd>Broad steps narrowing as they rise, with water at their foot.</dd></div>
+      <div><dt>Watch out</dt><dd>It means nothing to most English speakers until it is explained, and it is also a given name.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>Two live US marks contain the word, for shirts and for phone accessories. A registration for <a href="https://tsdr.uspto.gov/#caseNumber=77532163&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">SOPAN EDUCATION SERVICES</a>, covering academic monitoring for children, was cancelled. Check whether that business still trades.</dd></div>
+      <div><dt>Domains and use</dt><dd>No app of note. sopan.com is for sale; .co, .org and .net are held. Not registered: sopan.app, sopan.io, sopan.ai, the education endings, and seven .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+<section class="dir dir-line">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">Plan and progress</h3><p>Names for the plan you draw and the marks you leave along it.</p></div>
+  
+<article class="name" id="plotwell">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-plotwell"/></svg><span class="wm f-outfit">plotwell</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-plotwell"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Plotwell</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Plot the course well.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The cleaner cousin of Plotpoint: plot a course, plot the points, and do it well.</dd></div>
+      <div><dt>The mark</dt><dd>A pair of axes with a tick drawn where the line would be.</dd></div>
+      <div><dt>Watch out</dt><dd>“Plot” also means a story and a patch of ground, and both meanings have been claimed.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains PLOTWELL or PLOT WELL in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>Plotwell is a paid screenwriting product (plotwell.co), and an allotment-management app of the same name is announced at plotwell.app. plotwell.com (2009) is blank. Not registered: plotwell.io, plotwell.ai, .org, .net, the education endings, and ten .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="lessonmark">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-lessonmark"/></svg><span class="wm f-fraunces">lessonmark</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-lessonmark"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Lessonmark</h3><span class="chip chip-ok">Clear</span></header>
+    <p class="tag">Mark every lesson.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>It says what the product does: each lesson leaves a mark, and the marks add up to progress. Nobody will need it explained.</dd></div>
+      <div><dt>The mark</dt><dd>A page of notes with a bookmark ribbon.</dd></div>
+      <div><dt>Watch out</dt><dd>Plain names are easier to use and harder to defend: a lawyer may call it descriptive. It also ties the brand to lessons.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains LESSONMARK or LESSON MARK in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>No app of this name and no use found. Only lessonmark.com (2014, blank) is registered. Not registered: lessonmark.app, .io, .co, .ai, .org, .net, the education endings, and all eleven .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="tallymark">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-tallymark"/></svg><span class="wm f-brico">tallymark</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-tallymark"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Tallymark</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Count what you have learned.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The oldest record of progress there is, and it suits the app's 1 to 5 scale. It keeps Notch's idea without Notch's 179 trademarks.</dd></div>
+      <div><dt>The mark</dt><dd>A tally of five whose cross-stroke is a tick.</dd></div>
+      <div><dt>Watch out</dt><dd>It counts lessons done, which is progress, and says nothing of the plan.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live US mark contains TALLYMARK or TALLY MARK in any class.</dd></div>
+      <div><dt>Domains and use</dt><dd>Tallymark is also a student-organization management product in beta (tallymark.io), which is close to education, and a chemical-reporting tool (tallymark.co). Every main ending is taken. Not registered: the education endings and ten .com variants, including tallymarkapp.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="markstone">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-markstone"/></svg><span class="wm f-fraunces">markstone</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-markstone"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Markstone</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Set a stone at every mark.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A milestone turned around. Surveyors set a marked stone or disc at each fixed point and measure everything else from it.</dd></div>
+      <div><dt>The mark</dt><dd>A survey marker: a disc with a triangle and a centre point.</dd></div>
+      <div><dt>Watch out</dt><dd>It sounds like a law firm or a person's name.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>Two live US marks, neither in software or education: <a href="https://tsdr.uspto.gov/#caseNumber=90893757&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">MARKSTONE</a> for wine, and MARC STONE, pending, for clothing.</dd></div>
+      <div><dt>Domains and use</dt><dd>Markstone is a Markdown notes app for Mac and iPhone (markstone.app) and a merchandise company (markstone.co). Every main ending is taken. Not registered: the education endings and ten .com variants.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+    <section class="plain">
+      <h3 class="dirname">Good names the screen removed</h3>
+      <p>Twelve that I would have liked to show. The rest of the 123 either failed in the same ways or were weaker names.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th scope="col">Name</th><th scope="col">The appeal</th><th scope="col">What ruled it out</th></tr></thead>
+        <tbody><tr><th scope="row">Planwell</th><td>Plan well.</td><td>PLANWELL is registered for document software and was filed again in October 2026 for benefits-plan software.</td></tr><tr><th scope="row">Planwise</th><td>Plan wisely.</td><td>ETS owns PLANWISE for a lesson-planning app for teachers.</td></tr><tr><th scope="row">Planrise</th><td>Plan, then rise.</td><td>No US mark, but PlanRise is an exam-preparation planner for school pupils in Turkey, listed in the App Store under Education.</td></tr><tr><th scope="row">Waymark</th><td>A marker on the trail.</td><td>Eleven exact marks, six in these classes, one for a children's education programme.</td></tr><tr><th scope="row">Tern</th><td>A set of three, and a bird that crosses the world.</td><td>Eight exact marks, four in these classes.</td></tr><tr><th scope="row">Lemma</th><td>In mathematics, a stepping-stone result.</td><td>Registered three times in these classes, once for software-design training.</td></tr><tr><th scope="row">Belay</th><td>The rope a partner holds while you climb.</td><td>Registered for children's mental-health education, among at least 17 exact marks.</td></tr><tr><th scope="row">Daymark</th><td>A beacon you steer by in daylight.</td><td>At least four exact marks in these classes, including care-management software.</td></tr><tr><th scope="row">Coursewell</th><td>Stay the course, well.</td><td>Registered for educational assessment services.</td></tr><tr><th scope="row">Handrail</th><td>Something steady to hold on the stairs.</td><td>A pending application covers training and education for veterans.</td></tr><tr><th scope="row">Nockpoint</th><td>The spot on a bowstring where the arrow always sits.</td><td>No mark, but a data-platform company trades as Nockpoint.</td></tr><tr><th scope="row">Gradus</th><td>Latin for step, as in the old teaching title Gradus ad Parnassum.</td><td>No software marks, but education apps already use it and every main domain is gone.</td></tr></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <div class="batch">
+    <div class="batchhead">
+      <p class="eyebrow">Batch one · checked afterwards</p>
+      <h2>The first sixteen</h2>
+      <p>One correction since the last version: Stepwell moves from Caution to Avoid. It is the name of a special-education product sold to school districts, which has no federal registration and so did not show on the register. Aimwell is the only name here that still stands, and it is relabelled to match the scale above: its one exact mark is for breath-training devices, and a wellness app shares the name.</p>
+    </div>
+    <div class="tablewrap"><table class="matrix">
+      <thead><tr><th scope="col">Name</th><th scope="col">Verdict</th><th scope="col">US marks</th><th scope="col">Closest conflict or namesake</th><th scope="col">The exact .com</th><th scope="col">Not registered today</th></tr></thead>
+      <tbody><tr><th scope="row"><a href="#aimwell">Aimwell</a></th><td><span class="chip chip-name">Small namesake</span></td><td class="num">2 / 1 / 1</td><td>AIMSWEB, Pearson's student-progress software (a look-alike). The one exact mark is breath-training hardware.</td><td>Textile wholesaler (registered 1999)</td><td>aimwell.io, the four education endings, and eight .com variants such as aimwellapp.com and tryaimwell.com</td></tr><tr><th scope="row"><a href="#plotpoint">Plotpoint</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">1 / 1 / 0</td><td>PlotPoint, a literature app for grades 6 to 12, in use but not registered.</td><td>Registered 1997, no site</td><td>The education endings, and eight .com variants such as plotpointapp.com and useplotpoint.com</td></tr><tr><th scope="row"><a href="#foothold">Foothold</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">15 / 5 / 0</td><td>MYFOOTHOLD, pending since June 2026 for an exam-prep and course-delivery app.</td><td>Registered 1996, no site</td><td>The education endings, and footholdlearn.com</td></tr><tr><th scope="row"><a href="#uptick">Uptick</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">13 / 6 / 5</td><td>Five UPTICK software marks, all outside education.</td><td>E-commerce company</td><td>The education endings, and joinuptick.com, upticklearn.com, uptickacademy.com</td></tr><tr><th scope="row"><a href="#chalkline">Chalkline</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">5 / 5 / 2</td><td>CHALKLINE, registered for sports-betting app software.</td><td>That betting-software company</td><td>The education endings, and chalklinelearning.com, chalklinelearn.com, chalklineacademy.com</td></tr><tr><th scope="row"><a href="#fletch">Fletch</a></th><td><span class="chip chip-near">Caution</span></td><td class="num">21 / 5 / 1</td><td>FLETCH, F5's cloud-monitoring software.</td><td>Redirects to a broadcast company</td><td>fletch.education, .school, .study, and six .com variants such as usefletch.com</td></tr><tr><th scope="row"><a href="#stepwell">Stepwell</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">3 / 2 / 0</td><td>Stepwell, a special-education compliance platform for school districts, partnered with PowerSchool. Unregistered, so the register missed it.</td><td>Registered 2002, no site</td><td>The education endings and seven .com variants, which no longer matters</td></tr><tr><th scope="row"><a href="#pinpoint">Pinpoint</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">151 / 65 / 35</td><td>PINPOINT for software that trains and tests office-software users (Kelly). Also Google and LinkedIn.</td><td>Redirects to a personal profile</td><td>pinpoint.school, pinpoint.study, pinpointlearn.com</td></tr><tr><th scope="row"><a href="#trigpoint">Trigpoint</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">1 / 1 / 0</td><td>Trigpoint, AI tutoring for UK schools, with a UK mark in all three classes.</td><td>Registered 2011, no site</td><td>The education endings and the .com variants, which no longer matters</td></tr><tr><th scope="row"><a href="#rung">Rung</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">18 / 2 / 1</td><td>RUNG FOR WOMEN, registered for training. Rung Learning is in use.</td><td>Held by a domain investor</td><td>rung.school, runglearn.com</td></tr><tr><th scope="row"><a href="#cairn">Cairn</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">59 / 17 / 6</td><td>CAIRN UNIVERSITY, and CAIRNLARK, pending for learning software.</td><td>In use</td><td>cairn.study only</td></tr><tr><th scope="row"><a href="#throughline">Throughline</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">22 / 5 / 4</td><td>THROUGHLINE for online courses, and for progress-tracker software.</td><td>In use</td><td>The education endings, and throughlinelearn.com, throughlineacademy.com</td></tr><tr><th scope="row"><a href="#notch">Notch</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">179 / 18 / 5</td><td>Five NOTCH software marks. TOP NOTCH TUTORING.</td><td>Mechanical contractor</td><td>The education endings, and notchlearning.com, notchlearn.com</td></tr><tr><th scope="row"><a href="#trellis">Trellis</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">70 / 23 / 9</td><td>TRELLIS, a learning management system.</td><td>In use (Trellis Partners)</td><td>Nothing</td></tr><tr><th scope="row"><a href="#tessera">Tessera</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">38 / 23 / 14</td><td>TESSERA, ACT's educational assessment.</td><td>Redirects to a licensing company</td><td>Nothing</td></tr><tr><th scope="row"><a href="#crescendo">Crescendo</a></th><td><span class="chip chip-clash">Avoid</span></td><td class="num">68 / 28 / 9</td><td>CRESCENDO for “computer programs”. CRESCENDO EDUCATION GROUP.</td><td>Documentation-software company</td><td>crescendo.school, crescendohq.com, crescendolearn.com</td></tr></tbody></table></div>
+    
+<section class="dir dir-aim">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">Precision</h3><p>Your Pinpoint idea and its relatives. These say: know exactly where the learner is, then aim.</p></div>
+  
+<article class="name" id="pinpoint">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinpoint"/></svg><span class="wm f-outfit">pinpoint</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-pinpoint"/></svg></div><span class="vcap">As an app icon</span></div>
+    <div class="variant"><span class="wm f-outfit dots">p<span class="i">ı<b class="dot pin"></b></span>npo<span class="i">ı<b class="dot tgt"></b></span>nt</span><span class="vcap">wordmark version</span></div>
+  </div>
+  <div class="body">
+    <header><h3>Pinpoint</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Know exactly where you are. Aim at where you are going.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>It covers both halves of the product: an assessment pins down where a learner stands, and a plan aims at the goal. Everyone knows the word and can spell it.</dd></div>
+      <div><dt>The mark</dt><dd>Your idea, drawn: the bowl of the P is a target and a pin lands in the centre. Keep the pin short so it survives at icon size. The second version puts the pin and the target on the two i dots.</dd></div>
+      <div><dt>Watch out</dt><dd>Drop “Academy”: beside an organization's own name it reads as a second school. The word itself is busy in education: <a href="https://podcast.mrbartonmaths.com/?p=2380" target="_blank" rel="noopener">Pinpoint Learning</a> (UK maths), <a href="https://pearson.com/international-schools/british-curriculum/primary-curriculum/pinpoint-family.html" target="_blank" rel="noopener">Pearson Pinpoint</a>, an older <a href="https://thejournal.com/Articles/2011/07/05/Houghton-Mifflin-Targets-District-Administration-with-Pinpoint-Suite.aspx" target="_blank" rel="noopener">Houghton Mifflin Pinpoint</a> suite and a Canadian <a href="https://www.trustpilot.com/review/pinpointsolutions.ca" target="_blank" rel="noopener">tutoring service</a>. It is also a recruiting product and an Amazon service (from memory).</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>151 live US marks contain the word. 65 are exactly PINPOINT and 35 of those are in the software and education classes. Owners include <a href="https://tsdr.uspto.gov/#caseNumber=90572678&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">Google</a> (journalism software), <a href="https://tsdr.uspto.gov/#caseNumber=98476725&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">LinkedIn</a> (games), Bose, Stryker and Cognex. The closest is <a href="https://tsdr.uspto.gov/#caseNumber=74573403&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">Kelly's PINPOINT</a>, filed in 1994 and still renewed, for software that trains and tests users of office software. Adding “Academy” is unlikely to help, because a descriptive word carries little weight when marks are compared. No live mark is PINPOINT ACADEMY or PINPOINT LEARNING. Abroad there are 60 more exact marks in these classes.</dd></div>
+      <div><dt>Domains and use</dt><dd>pinpoint.com, .app, .io, .co, .ai, .org, .net, .education and .academy are all registered. So are pinpointacademy.com (2009) and pinpointlearning.com (an advisory firm). Only pinpoint.school, pinpoint.study and pinpointlearn.com are not.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="aimwell">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-aimwell"/></svg><span class="wm f-outfit">aimwell</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-aimwell"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Aimwell</h3><span class="chip chip-name">Small namesake</span></header>
+    <p class="tag">Set the aim. Mark the progress.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A warmer cousin of Pinpoint. “Aim” is the plan and “well” is the encouragement, and it works for a seven-year-old and an adult alike.</dd></div>
+      <div><dt>The mark</dt><dd>A capital A drawn as an arrowhead pointing up, with a small target sitting where the crossbar would be.</dd></div>
+      <div><dt>Watch out</dt><dd>A yoga and mindfulness app already ships as <a href="https://apps.apple.com/us/app/aimwell/id6756882886" target="_blank" rel="noopener">Aimwell</a>, and the “-well” ending sounds like a wellness brand. Nothing in education turned up.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>Two live US marks contain the word and neither is software or education: <a href="https://tsdr.uspto.gov/#caseNumber=79230097&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">AIMWELL</a> for breath-training masks and devices (an Australian company, also registered in the UK and at WIPO) and AIMWELL FINANCIAL. The one to ask a lawyer about is Pearson's AIMSWEB, registered for software that tracks student achievement. It is a different word in the same field with the same first syllable.</dd></div>
+      <div><dt>Domains and use</dt><dd>aimwell.com, registered in 1999, is a textile wholesaler; .app is parked and .co and .ai are held. Not registered: aimwell.io, aimwell.education, .academy, .school and .study, and tryaimwell.com, useaimwell.com, joinaimwell.com, aimwellapp.com and aimwelllearning.com. A staffing firm, Aimwell AI, registered getaimwell.com and aimwellhq.com on 9 October 2026.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="fletch">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-fletch"/></svg><span class="wm f-brico">fletch</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-fletch"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Fletch</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">The part of the arrow that keeps it true.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The fletching is the feathers at the back of an arrow: it does not supply the force, it keeps the flight straight. That is a fair description of a tutor and a plan.</dd></div>
+      <div><dt>The mark</dt><dd>An arrow in flight with three accent vanes at the tail. The vanes are the logo; the arrow is the learner.</dd></div>
+      <div><dt>Watch out</dt><dd>A small company called <a href="https://app.dealroom.co/companies/fletch" target="_blank" rel="noopener">Fletch</a> sells tutoring and <a href="https://www.biz417.com/advice/strategy/fletch-app-student-attendance/" target="_blank" rel="noopener">attendance</a> software to colleges, which is close to home. The word needs explaining, and many people think of the film first.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>F5, a large networking company, owns <a href="https://tsdr.uspto.gov/#caseNumber=90045845&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">FLETCH</a> for cloud-monitoring software as a service. Other exact marks cover marketing and finance. None covers education.</dd></div>
+      <div><dt>Domains and use</dt><dd>fletch.ai redirects to F5, fletch.co is a fintech, fletch.com redirects to a broadcast company and fletch.io is held by a brand-protection registrar. Not registered: fletch.education, .school and .study, and usefletch.com, joinfletch.com, fletchhq.com, fletchlearning.com and fletchacademy.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="trigpoint">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-trigpoint"/></svg><span class="wm f-brico">trigpoint</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-trigpoint"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Trigpoint</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Fix your position, then climb.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A trig point is the surveyor's pillar on a hilltop, used to fix a position by triangulation. It joins the pinpoint idea to the triangle in the first organization's name.</dd></div>
+      <div><dt>The mark</dt><dd>A triangle with a station at each corner and one accent point fixed inside it.</dd></div>
+      <div><dt>Watch out</dt><dd>It sounds like trigonometry, which narrows it to maths when the product is for any subject.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>The US register has only <a href="https://tsdr.uspto.gov/#caseNumber=85245409&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">TRIG POINT</a> for wine. But a UK company, Trigpoint OS Ltd, registered Trigpoint in classes 9, 41 and 42 in March 2026.</dd></div>
+      <div><dt>Domains and use</dt><dd>trigpoint.ai is “AI tutoring with safeguarding for UK schools”: the name belongs to a direct competitor. trigpoint.io, .org and .ai were registered within two days of each other in March 2026. The .com variants are free, which no longer matters.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+<section class="dir dir-climb">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">The climb</h3><p>The plan is a route up, and every lesson is a step on it. These suit the curriculum ladder the app already has.</p></div>
+  
+<article class="name" id="foothold">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-foothold"/></svg><span class="wm f-brico">foothold</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-foothold"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Foothold</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Every lesson, a place to stand.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Whatever you have mastered is where you stand to reach the next thing. It works for algebra, Spanish or guitar, it is modest, and people already say “get a foothold in” a subject.</dd></div>
+      <div><dt>The mark</dt><dd>A flight of steps cut into solid ground, with the learner on the middle one: part of the way up and still climbing.</dd></div>
+      <div><dt>Watch out</dt><dd>It says progress more loudly than plan, so the tagline has to carry the plan.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>No live mark is FOOTHOLD alone in software or education, in the US or abroad. Three neighbours matter. <a href="https://tsdr.uspto.gov/#caseNumber=99883222&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">MYFOOTHOLD</a>: two applications filed on 13 June 2026 for an app covering licensure exam preparation and continuing-education course delivery for health professionals. They are pending and have the earlier filing date. <a href="https://tsdr.uspto.gov/#caseNumber=76167014&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">FOOTHOLD TECHNOLOGY</a>: registered for database software for non-profits. <a href="https://tsdr.uspto.gov/#caseNumber=97179931&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">FIND YOUR FOOTHOLD.</a>: registered for IT training.</dd></div>
+      <div><dt>Domains and use</dt><dd>Every main ending is taken: foothold.com (1996, no site), .app, .io and .co; foothold.ai, .net and .org are parked or for sale. Start-ups took the variants in 2025 and 2026: a personal-finance app at usefoothold.com, a strategy workspace at footholdapp.com, and footholdlearning.com was registered in June 2026. Not registered: foothold.education, .academy, .school and .study, and footholdlearn.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="rung">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-rung"/></svg><span class="wm f-brico">rung</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-rung"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Rung</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">One rung at a time.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The app already measures progress on a curriculum ladder of levels and topics. This names the unit of that ladder, in four letters.</dd></div>
+      <div><dt>The mark</dt><dd>A ladder whose lower rungs are solid, the next rung is in the accent colour and the one above is faint. The logo is a progress indicator.</dd></div>
+      <div><dt>Watch out</dt><dd>It is blunt to say aloud, it sounds like the past tense of ring, and “bottom rung” is not a compliment.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd><a href="https://tsdr.uspto.gov/#caseNumber=88056086&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">RUNG</a> and <a href="https://tsdr.uspto.gov/#caseNumber=97347418&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">RUNG FOR WOMEN</a> are registered to the Rung Foundation for career counselling, training and coaching. RUNG for education would sit directly beside that training mark. RUNGS is pending for online games.</dd></div>
+      <div><dt>Domains and use</dt><dd>Rung Learning (runglearning.com) sells live AI lessons with the line “one rung at a time”. rung.education is in use, and rung.academy and rung.study were both registered on 13 October 2026. Only rung.school and runglearn.com are not registered.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="cairn">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-cairn"/></svg><span class="wm f-fraunces">cairn</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-cairn"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Cairn</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Stone by stone, the way gets marked.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A cairn is the pile of stones that marks a trail. Someone who walked it before you built it, each traveller adds a stone, and it tells you that you are still on the route. Plan, guide and progress in one image.</dd></div>
+      <div><dt>The mark</dt><dd>Three stacked stones with a small accent pebble on top. It is the simplest mark on this page and the best at 60 pixels.</dd></div>
+      <div><dt>Watch out</dt><dd>Some people will not know the word or how to say it.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>59 live US marks contain the word and 17 are exact. <a href="https://tsdr.uspto.gov/#caseNumber=98052182&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">CAIRN UNIVERSITY</a> is registered for college courses. <a href="https://tsdr.uspto.gov/#caseNumber=50131908&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">CAIRNLARK</a> was filed in September 2026 for learning-simulation and assessment software. CAIRN alone is registered for a <a href="https://tsdr.uspto.gov/#caseNumber=86312021&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">wilderness-safety app</a> and a video game, and three more software applications for CAIRN were filed between July and October 2026. Abroad, 20 exact marks sit in these classes.</dd></div>
+      <div><dt>Domains and use</dt><dd>Everything is taken, including cairn.education, .academy and .school and every .com variant checked. Only cairn.study is not registered.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="stepwell">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-stepwell"/></svg><span class="wm f-fraunces">stepwell</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-stepwell"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Stepwell</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Step by step, down to the source.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A stepwell is the stone well of western India where flights of steps lead down to the water. It turns the climb upside down: you go deeper, towards the source. “Step” and “well” are both friendly words on their own.</dd></div>
+      <div><dt>The mark</dt><dd>The well in cross-section: steps descending from both sides to a pool in the accent colour.</dd></div>
+      <div><dt>Watch out</dt><dd>Most people outside India will need the image explained once. It is one letter pattern away from Stepwise, which is taken (below).</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>Three live US marks, none in software or education: STEPWELL for floor matting and for a medical device, and <a href="https://tsdr.uspto.gov/#caseNumber=98891797&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">TREND BY STEPWELL</a> for digital signage. The register looked clean because the education product below has no federal registration.</dd></div>
+      <div><dt>Domains and use</dt><dd>Stepwell is a special-education compliance platform sold to school districts by Red Cedar Solutions Group, <a href="https://www.businesswire.com/news/home/20230608005712/en" target="_blank" rel="noopener">in partnership with PowerSchool since June 2023</a>. I missed it in the first pass. stepwell.app is also a family memorisation app, and gostepwell.com offers training. The domains that are free no longer matter.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="trellis">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-trellis"/></svg><span class="wm f-fraunces">trellis</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-trellis"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Trellis</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Structure that things grow on.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The best metaphor for tutoring on this page. A trellis does none of the growing; it gives the plant a shape to grow along, and then disappears behind it.</dd></div>
+      <div><dt>The mark</dt><dd>A diamond lattice with two accent leaves climbing one diagonal.</dd></div>
+      <div><dt>Watch out</dt><dd>Others got there first: <a href="https://elearningindustry.com/directory/elearning-software/trellis-lms" target="_blank" rel="noopener">Trellis LMS</a> for professional education, a Scottish schools startup at trellis.scot, and a higher-education firm, Trellis Strategies. Usable only with a second word.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>TRELLIS is registered for a <a href="https://tsdr.uspto.gov/#caseNumber=97269546&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">learning management system</a> (Crescere Frameworks, North Carolina) and for <a href="https://tsdr.uspto.gov/#caseNumber=86708361&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">special-education courses</a> (Learn-It Systems). Nine exact marks sit in these classes in the US and 18 abroad.</dd></div>
+      <div><dt>Domains and use</dt><dd>Nothing checked is free: all eleven endings and all eleven .com variants are registered.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+<section class="dir dir-line">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">The line</h3><p>The plan is a line you draw first and follow afterwards. These lean hardest on planning.</p></div>
+  
+<article class="name" id="throughline">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-throughline"/></svg><span class="wm f-instr">throughline</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-throughline"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Throughline</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">From the first lesson to the goal, one line.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A throughline is the thread that holds a story together. Here it is the plan: the one line that connects this week's lesson to the goal set months ago.</dd></div>
+      <div><dt>The mark</dt><dd>A single rising line with points that grow as they go, the latest one in the accent colour. It doubles as a progress chart.</dd></div>
+      <div><dt>Watch out</dt><dd>Eleven letters is long for an app icon label. <a href="https://www.throughlinecare.com/who-we-serve/trust-safety-teams" target="_blank" rel="noopener">ThroughLine</a> is a crisis-helpline technology company, a serious neighbour to share a name with, and there is a well-known history podcast (from memory).</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>THROUGHLINE is registered for <a href="https://tsdr.uspto.gov/#caseNumber=88166853&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">online courses and training</a> (Throughline Group) and for podcasts (NPR). A third, allowed in 2026, covers <a href="https://tsdr.uspto.gov/#caseNumber=99665384&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">software for therapy plans, schedules and progress trackers</a>, and a fourth is pending for project-management software.</dd></div>
+      <div><dt>Domains and use</dt><dd>throughline.com is in use, and throughline.ai redirects to Lexsee, an AI reading tool for learners. Not registered: throughline.education, .academy, .school and .study, and throughlinelearn.com and throughlineacademy.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="chalkline">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-chalkline"/></svg><span class="wm f-caveat">chalkline</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-chalkline"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Chalkline</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Mark the line, then follow it.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A chalk line is the builder's string that snaps a straight mark before any cutting starts. That is planning. And chalk still means teaching to everyone.</dd></div>
+      <div><dt>The mark</dt><dd>A slate tile with one chalk stroke snapped between two pins.</dd></div>
+      <div><dt>Watch out</dt><dd>A UK tutoring provider trades as <a href="https://coventry.gov.uk/directory-record/65440/www.chalklinesupport.co.uk" target="_blank" rel="noopener">Chalkline Education &amp; Support</a>. Chalk.com, a planning tool for teachers, sits close by. Chalk may feel dated to a teenager.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd><a href="https://tsdr.uspto.gov/#caseNumber=87027215&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">CHALKLINE</a> is registered for mobile-app software for sports-betting analysis, and CHALK LINE for graphic design. An identical mark for mobile apps in another field is a real chance of an objection. Nothing abroad.</dd></div>
+      <div><dt>Domains and use</dt><dd>chalkline.com belongs to that betting-software company and chalkline.app is an invoicing app for contractors. A web-design business registered getchalkline.com and four more variants on 2 August 2026. Not registered: chalkline.education, .academy, .school and .study, and chalklinelearning.com, chalklinelearn.com and chalklineacademy.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="plotpoint">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-plotpoint"/></svg><span class="wm f-outfit">plotpoint</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-plotpoint"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Plotpoint</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Plot the course. Plot the points.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Two meanings that are both true of the app: you plot a course, and each assessment is a point plotted on a chart. It keeps the rhythm of Pinpoint.</dd></div>
+      <div><dt>The mark</dt><dd>Two axes and one plotted point, with dashed guides down to each axis.</dd></div>
+      <div><dt>Watch out</dt><dd>A literature app for grades 6 to 12 is already called <a href="https://mguhlin.org/tags/teaching-and-learning/" target="_blank" rel="noopener">PlotPoint</a>, and to most people a plot point is a moment in a film.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>The US register is nearly empty: one live mark, <a href="https://tsdr.uspto.gov/#caseNumber=88768167&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">PLOT + POINT</a>, for wine. Nothing in software or education, here or abroad.</dd></div>
+      <div><dt>Domains and use</dt><dd>The register misses use without registration. PlotPoint is a literature app for grades 6 to 12, and plotpoint.io is a location-based storytelling app. plotpoint.com (1997), .app and .ai are registered with no site. Not registered: plotpoint.education, .academy, .school and .study, and tryplotpoint.com, useplotpoint.com, joinplotpoint.com, plotpointapp.com and plotpointlearning.com.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+<section class="dir dir-count">
+  <div class="dirhead"><span class="swatch"></span><h3 class="dirname">Progress you can see</h3><p>These name the moment a learner looks back and sees how far they have come.</p></div>
+  
+<article class="name" id="uptick">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-uptick"/></svg><span class="wm f-outfit">uptick</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-uptick"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Uptick</h3><span class="chip chip-near">Caution</span></header>
+    <p class="tag">Small ticks, steady climb.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A tick is a thing done; an uptick is a small rise. Put together it is the product's promise in six letters, and it is cheerful without being childish.</dd></div>
+      <div><dt>The mark</dt><dd>A tick whose long stroke keeps going and turns into a rising arrow. One gesture, readable at any size.</dd></div>
+      <div><dt>Watch out</dt><dd>It is stock-market vocabulary, and several finance products use it. In education only a tiny clock app called <a href="https://apps.apple.com/mx/app/uptick-upt/id6446417413" target="_blank" rel="noopener">Uptick (UPT)</a> turned up. It says nothing about planning.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>Six live US marks are exactly UPTICK and five sit in the software classes, all in other fields: an <a href="https://tsdr.uspto.gov/#caseNumber=97341018&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">investing app</a> (pending), ticket repricing, <a href="https://tsdr.uspto.gov/#caseNumber=79319725&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">building-maintenance software</a> (also registered in Canada and at WIPO) and crypto articles. None covers education. Each is a possible objection.</dd></div>
+      <div><dt>Domains and use</dt><dd>uptick.com is an e-commerce company; uptick.app is for sale, uptick.io is parked and uptick.ai is a finance product. Not registered: uptick.education, .academy, .school and .study, and joinuptick.com, upticklearn.com and uptickacademy.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="notch">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-notch"/></svg><span class="wm f-brico">notch</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-notch"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Notch</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Take it up a notch.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>Notches on a stick are the oldest progress tracker there is, and the phrase everyone knows is about getting better. The app's 1 to 5 scale fits a five-mark tally exactly.</dd></div>
+      <div><dt>The mark</dt><dd>A tally of five: four strokes and the accent stroke across them.</dd></div>
+      <div><dt>Watch out</dt><dd>It is a common word in tech, and gamers know it as a person's nickname, so search results will be noisy.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>179 live US marks contain the word. NOTCH alone is registered five times in these classes, including <a href="https://tsdr.uspto.gov/#caseNumber=97389938&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">real-time graphics software</a> and a restaurant-supply app. In education: <a href="https://tsdr.uspto.gov/#caseNumber=97028303&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">TOP NOTCH TUTORING</a> for maths and science tutoring, <a href="https://tsdr.uspto.gov/#caseNumber=90817767&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">UPNOTCH</a> for mentoring through an app, and Pearson's TOP NOTCH.</dd></div>
+      <div><dt>Domains and use</dt><dd>notch.com is a mechanical contractor; .app, .io, .co and .ai are taken. Not registered: notch.education, .academy, .school and .study, and notchlearning.com and notchlearn.com.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="tessera">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-tessera"/></svg><span class="wm f-fraunces">tessera</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-tessera"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Tessera</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Each lesson, a piece of the picture.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>A tessera is one tile of a mosaic. No single tile means much; the picture appears as they accumulate. That suits a record built from many short lessons.</dd></div>
+      <div><dt>The mark</dt><dd>A diamond of nine tiles, most laid, one in the accent colour, two still empty.</dd></div>
+      <div><dt>Watch out</dt><dd>People will misspell it, and few know the word.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd>ACT owns <a href="https://tsdr.uspto.gov/#caseNumber=98590314&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">TESSERA</a> and <a href="https://tsdr.uspto.gov/#caseNumber=87501125&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">ACT TESSERA</a>, registered for educational assessment of social and emotional skills. Fourteen exact marks sit in these classes, and Microsoft filed for TESSERA on 12 October 2026.</dd></div>
+      <div><dt>Domains and use</dt><dd>Nothing checked is free: all eleven endings and all eleven .com variants are registered.</dd></div>
+    </dl>
+  </div>
+</article>
+<article class="name" id="crescendo">
+  <div class="plate">
+    <div class="lockup "><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-crescendo"/></svg><span class="wm f-instr">crescendo</span></div>
+    <div class="iconrow"><div class="icon"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#m-crescendo"/></svg></div><span class="vcap">As an app icon</span></div>
+    
+  </div>
+  <div class="body">
+    <header><h3>Crescendo</h3><span class="chip chip-clash">Avoid</span></header>
+    <p class="tag">Learning that builds.</p>
+    <dl>
+      <div><dt>Why it fits</dt><dd>The musical term for growing gradually louder. It describes steady improvement and it carries some joy, which the practical names do not.</dd></div>
+      <div><dt>The mark</dt><dd>The crescendo hairpin from sheet music, opening to the right, with three points growing inside it.</dd></div>
+      <div><dt>Watch out</dt><dd>Two products share it: <a href="https://www.cbinsights.com/company/crescendo" target="_blank" rel="noopener">Crescendo</a> for workplace microlearning and a <a href="https://hypepotamus.com/companies/crescendo/" target="_blank" rel="noopener">music-practice app</a> for school bands. It is also the longest word here to fit under an icon.</dd></div>
+    </dl>
+    <dl class="avail">
+      <div><dt>Trademark register</dt><dd><a href="https://tsdr.uspto.gov/#caseNumber=73507151&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">CRESCENDO</a> was filed in 1984 for “computer programs” with no limit on field and is still renewed, which stands in the way of any software of that name. <a href="https://tsdr.uspto.gov/#caseNumber=98318676&amp;caseType=SERIAL_NO&amp;searchType=statusSearch" target="_blank" rel="noopener">CRESCENDO EDUCATION GROUP</a> is registered for online training about student grading and achievement. 27 exact marks abroad sit in these classes.</dd></div>
+      <div><dt>Domains and use</dt><dd>crescendo.com is a documentation-software company and crescendo.app is for sale. Only crescendo.school, crescendohq.com and crescendolearn.com are not registered.</dd></div>
+    </dl>
+  </div>
+</article>
+</section>
+    <section class="plain">
+      <h3 class="dirname">Names dropped before the first batch</h3>
+      <p>Four were checked in a web search; the rest I know from general knowledge and did not re-check.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th scope="col">Name</th><th scope="col">The appeal</th><th scope="col">The problem</th><th scope="col">Basis</th></tr></thead>
+        <tbody><tr><th scope="row">Stepwise</th><td>The obvious name for plans made of steps.</td><td><a href="https://craft.co/querium" target="_blank" rel="noopener">Querium's StepWise</a> is an AI maths tutor, and STEPWISE is registered for tutoring software.</td><td class="src">searched</td></tr><tr><th scope="row">Waypoint</th><td>Marks along a planned route.</td><td><a href="https://mathspace.co/au/get-started" target="_blank" rel="noopener">Mathspace Waypoints</a> is a maths assessment tool, and there is a <a href="https://apps.apple.com/us/app/id6504808348" target="_blank" rel="noopener">Waypoint School</a> app.</td><td class="src">searched</td></tr><tr><th scope="row">Lodestar</th><td>The star you steer by.</td><td><a href="https://apps.apple.com/py/app/lodestar-lms/id6450936980" target="_blank" rel="noopener">Lodestar LMS</a> exists, and <a href="https://www.startuphub.ai/startups/l0destar" target="_blank" rel="noopener">L0destar</a> sells learning paths with progress tracking.</td><td class="src">searched</td></tr><tr><th scope="row">Stride</th><td>Hitting your stride.</td><td>Stride, Inc. is one of the largest online-schooling companies in the US.</td><td class="src">from memory</td></tr><tr><th scope="row">Summit</th><td>The top of the climb.</td><td>Summit Learning is an established school platform.</td><td class="src">from memory</td></tr><tr><th scope="row">Headway</th><td>Making headway.</td><td>Headway is a large daily-learning app.</td><td class="src">from memory</td></tr><tr><th scope="row">Upswing</th><td>Things getting better.</td><td>Upswing provides online tutoring to colleges.</td><td class="src">from memory</td></tr><tr><th scope="row">Tandem</th><td>Tutor and learner pedalling together.</td><td>Tandem is a well-known language-exchange app.</td><td class="src">from memory</td></tr><tr><th scope="row">Delta</th><td>The symbol for change, and a triangle.</td><td>DeltaMath is widely used in schools.</td><td class="src">from memory</td></tr><tr><th scope="row">Two Sigma</th><td>Bloom's finding that one-to-one tutoring lifts a student two standard deviations. The best story in tutoring research.</td><td>It is the name of a large investment firm.</td><td class="src">from memory</td></tr></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <section class="plain">
+    <h2>How this was checked, and what it does not cover</h2>
+    <ul>
+      <li><strong>US trademarks.</strong> The USPTO's own search, live marks only (registered or pending), for each name and its spaced spelling. Every name shown was also searched in the pseudo-mark field, which catches sound-alikes. 900 live marks were read across both batches.</li>
+      <li><strong>A rate limit, handled.</strong> The USPTO limits automated lookups, and part-way through batch two it began refusing them, which made some names look falsely clean. I slowed down to stay inside the limit and re-ran every name. No result on this page rests on a failed lookup.</li>
+      <li><strong>Abroad.</strong> Batch one was checked at the EU, UK, Canadian, Australian and Indian offices and at WIPO through TMview. TMview stopped answering automated lookups during batch two, so batch two has no overseas check.</li>
+      <li><strong>Domains.</strong> 1,078 lookups at the registries themselves: each name on eleven endings and in eleven common .com patterns such as get-, try-, -app and -learning. “Not registered” says nothing about price: registries charge premium prices for some names.</li>
+      <li><strong>Use without registration.</strong> Each registered exact domain was opened to see who is there, batch two was also searched in the App Store, and each shown name was searched on the web. Stepwell shows that this still misses things.</li>
+      <li><strong>Not covered.</strong> State trademark registers, logo marks, Google Play, and a lawyer's judgment of how close is too close. A trademark attorney should clear the final one or two names before anything is filed, printed or submitted to a store.</li>
+    </ul>
+  </section>
+
+  <section class="plain">
+    <h2>Before you settle on one</h2>
+    <ul>
+      <li><strong>Hold the domains.</strong> For whichever two or three you like, the unregistered .app, .io or .ai and one .com variant cost little to register now and can be dropped later. Names in this batch were being registered by other people within the last few days.</li>
+      <li><strong>Say it aloud.</strong> Tell three parents the name over the phone and ask them to type it. Waypin, Aimtrue and Sopan are the ones to test.</li>
+      <li><strong>Decide before the app is released.</strong> The platform's name and tagline are one constant, <code>PLATFORM_BRAND</code>, and cheap to change. The mobile app's identifier <code>com.tutorportal.app</code> and its <code>tutorportal://</code> link scheme are fixed once the app is in a store, so the name should be chosen before the pre-production build goes out to people.</li>
+    </ul>
+  </section>
+</div>
+
+</body>
+</html>

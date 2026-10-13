@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Lessonmark logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2a5fc4;fill:none}.f-a{fill:#2a5fc4}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <rect class="f-i" x="11" y="7" width="42" height="52" rx="7"/>
+  <g class="s-p" stroke-width="4" stroke-linecap="round"><line x1="20" y1="31" x2="33" y2="31"/><line x1="20" y1="41" x2="44" y2="41"/><line x1="20" y1="51" x2="38" y2="51"/></g>
+  <path class="f-a" d="M36 3 H47 V27 L41.5 21.5 L36 27 Z"/>
+</svg>

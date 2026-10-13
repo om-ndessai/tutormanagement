@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Goalpin logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <ellipse class="f-i" cx="26" cy="54" rx="17" ry="5.5"/>
+  <line class="s-i" x1="26" y1="54" x2="26" y2="8" stroke-width="4.2" stroke-linecap="round"/>
+  <path class="f-a" d="M28 8 L52 17 L28 27 Z"/>
+</svg>

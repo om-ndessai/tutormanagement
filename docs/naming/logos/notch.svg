@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Notch logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#b97a06;fill:none}.f-a{fill:#b97a06}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <g class="s-i" stroke-width="5.5" stroke-linecap="round">
+    <line x1="14" y1="12" x2="14" y2="52"/><line x1="25" y1="12" x2="25" y2="52"/><line x1="36" y1="12" x2="36" y2="52"/><line x1="47" y1="12" x2="47" y2="52"/>
+  </g>
+  <line class="s-a" x1="6" y1="45" x2="57" y2="19" stroke-width="5.5" stroke-linecap="round"/>
+</svg>

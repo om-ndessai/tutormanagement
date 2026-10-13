@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Uptick logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#b97a06;fill:none}.f-a{fill:#b97a06}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <polyline class="s-i" points="8,37 22,51 52,17" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline class="s-a" points="37,14 55,14 55,32" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

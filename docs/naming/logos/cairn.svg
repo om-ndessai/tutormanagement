@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Cairn logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2c7a4c;fill:none}.f-a{fill:#2c7a4c}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <ellipse class="f-i" cx="32" cy="50" rx="21" ry="8"/>
+  <ellipse class="f-i" cx="29" cy="33" rx="15" ry="7" transform="rotate(-4 29 33)"/>
+  <ellipse class="f-i" cx="34" cy="19" rx="10" ry="5.5" transform="rotate(5 34 19)"/>
+  <ellipse class="f-a" cx="31" cy="8.5" rx="5.5" ry="4"/>
+</svg>

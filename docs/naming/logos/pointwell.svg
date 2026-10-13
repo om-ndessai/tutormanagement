@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Pointwell logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#d6412a;fill:none}.f-a{fill:#d6412a}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <circle class="s-i" cx="28" cy="36" r="19" stroke-width="5.5"/>
+  <polyline class="s-a" points="19,35 28,44 55,10" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

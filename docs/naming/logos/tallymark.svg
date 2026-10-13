@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Tallymark logo sketch">
+<style>.s-i{stroke:#15252d;fill:none}.f-i{fill:#15252d}.fs-i{fill:#15252d;stroke:#15252d}.s-a{stroke:#2a5fc4;fill:none}.f-a{fill:#2a5fc4}.s-p{stroke:#fbfcfc;fill:none}.f-p{fill:#fbfcfc}</style>
+  <g class="s-i" stroke-width="5.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="27" y1="12" x2="27" y2="52"/><line x1="38" y1="12" x2="38" y2="52"/><line x1="49" y1="12" x2="49" y2="52"/></g>
+  <polyline class="s-a" points="5,36 13,45 59,17" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
