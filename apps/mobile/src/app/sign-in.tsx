@@ -62,15 +62,18 @@ export default function SignInScreen() {
         <Text variant="bodyLarge" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>
           {brand.tagline}
         </Text>
-        <Chip
-          hitSlop={CHIP_HIT_SLOP}
-          icon="server"
-          compact
-          onPress={() => router.push('/server')}
-          testID="sign-in-server"
-        >
-          {serverOrigin().replace(/^https?:\/\//, '')}
-        </Chip>
+        {/* Which server, and the way to another: a developer's tool, so not in the production app. */}
+        {DEV_TOOLS ? (
+          <Chip
+            hitSlop={CHIP_HIT_SLOP}
+            icon="server"
+            compact
+            onPress={() => router.push('/server')}
+            testID="sign-in-server"
+          >
+            {serverOrigin().replace(/^https?:\/\//, '')}
+          </Chip>
+        ) : null}
       </View>
 
       {devSignIn ? (
