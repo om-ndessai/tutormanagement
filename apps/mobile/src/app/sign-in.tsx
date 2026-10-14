@@ -62,7 +62,8 @@ export default function SignInScreen() {
         <Text variant="bodyLarge" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>
           {brand.tagline}
         </Text>
-        {/* Which server, and the way to another: a developer's tool, so not in the production app. */}
+        {/* Which server, and the way to another: a developer's tool. The production app says what the
+            platform is instead, in the words the portal's sign-in page uses. */}
         {DEV_TOOLS ? (
           <Chip
             hitSlop={CHIP_HIT_SLOP}
@@ -73,7 +74,15 @@ export default function SignInScreen() {
           >
             {serverOrigin().replace(/^https?:\/\//, '')}
           </Chip>
-        ) : null}
+        ) : (
+          <Text
+            variant="bodyMedium"
+            style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}
+            testID="sign-in-blurb"
+          >
+            {brand.blurb}
+          </Text>
+        )}
       </View>
 
       {devSignIn ? (
