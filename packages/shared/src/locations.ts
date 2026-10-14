@@ -63,8 +63,8 @@ export const locationUpdateSchema = z
 export type LocationUpdatePayload = z.output<typeof locationUpdateSchema>;
 
 export const listLocationsQuerySchema = z.object({
-  /** One person's own locations. */
-  user_id: z.uuid(),
+  /** One person's own locations. Left out, an admin gets every location in the organization. */
+  user_id: z.uuid().optional(),
 });
 
 /** The whole set of a pairing's allowed locations, replaced at once. */

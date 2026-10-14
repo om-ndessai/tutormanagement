@@ -8,6 +8,7 @@ import { CommentsPage } from '@/features/comments/comments-page';
 import { AssignmentsPage } from '@/features/teaching/assignments-page';
 import { SessionsPage } from '@/features/teaching/sessions-page';
 import { SchedulesPage } from '@/features/schedules/schedules-page';
+import { LocationsPage } from '@/features/locations/locations-page';
 import { BillingPage } from '@/features/payments/billing-page';
 import { UsersPage } from '@/features/users/users-page';
 import { ProgressPage } from '@/features/progress/progress-page';
@@ -54,6 +55,7 @@ export function App() {
           <Route path="progress" element={<ProgressPage />} />
           <Route path="progress/:studentId" element={<StudentProgressPage />} />
           <Route path="schedule" element={<SchedulesPage />} />
+          <Route path="locations" element={<LocationsPage />} />
           <Route path="billing" element={<BillingPage />} />
           <Route path="comments" element={<CommentsPage />} />
           <Route path="activity" element={<ActivityPage />} />

@@ -20,6 +20,8 @@ tags:
     timeout: 15000
 - assertNotVisible:
     id: more-nav-organization
+- assertNotVisible:
+    id: more-nav-locations
 - assertNotVisible: 'Organization'
 - runFlow:
     file: ../../subflows/open-link.yaml

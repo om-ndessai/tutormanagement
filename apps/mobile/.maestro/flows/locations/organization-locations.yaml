@@ -1,0 +1,81 @@
+# The admins' Locations page (Phase 33): Priya opens it from More, sees every person's places
+# gathered by owner, adds one for Sofia through the person picker, and removes it again. Cleans up
+# after itself.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-locations.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-locations.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: more-nav-locations
+    timeout: 15000
+- tapOn:
+    id: more-nav-locations
+- extendedWaitUntil:
+    visible: 'Alex Chen'
+    timeout: 20000
+- assertVisible:
+    id: screen-locations
+- assertVisible: 'Alex Chen'
+- assertVisible: 'Online room.*Online'
+- takeScreenshot: locations-organization
+# Add one for Sofia: the sheet asks whose place it is first.
+- tapOn:
+    id: org-locations-add
+- extendedWaitUntil:
+    visible:
+      id: location-owner-picker
+    timeout: 15000
+- tapOn:
+    id: location-owner-search
+- inputText: 'Sofia'
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: location-owner-00000000-0000-4000-8000-000000000008
+    timeout: 10000
+- tapOn:
+    id: location-owner-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible: 'Where Sofia Okafor likes to have lessons.'
+    timeout: 15000
+- tapOn:
+    id: location-form-name
+- inputText: 'Town library'
+- hideKeyboard
+- tapOn:
+    id: location-form-save
+- extendedWaitUntil:
+    visible: 'Location added\.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-locations
+    timeout: 10000
+- tapOn:
+    id: org-locations-search
+- inputText: 'Town'
+- hideKeyboard
+- extendedWaitUntil:
+    visible: 'Remove Town library'
+    timeout: 10000
+- assertVisible: 'Sofia Okafor'
+- takeScreenshot: locations-organization-added
+- tapOn: 'Remove Town library'
+- extendedWaitUntil:
+    visible: 'Removed Town library\.'
+    timeout: 15000

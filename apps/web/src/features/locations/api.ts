@@ -9,6 +9,7 @@ import { auditKeys } from '@/features/audit/api';
 export const locationKeys = {
   all: ['locations'] as const,
   owner: (userId: string) => ['locations', userId] as const,
+  organization: ['locations', 'organization'] as const,
 };
 
 /** Locations show up inside pairings and schedules too, so a change refreshes all three. */
@@ -20,6 +21,14 @@ function useLocationInvalidation() {
     void queryClient.invalidateQueries({ queryKey: ['schedules'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
+}
+
+/** Every tutor's and student's locations in the organization: the admins' Locations page. */
+export function useOrganizationLocations() {
+  return useQuery({
+    queryKey: locationKeys.organization,
+    queryFn: () => apiClient.get<ApiList<Location>>('/locations'),
+  });
 }
 
 export function useLocations(userId: string | null) {

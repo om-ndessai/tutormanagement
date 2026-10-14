@@ -21,6 +21,7 @@ import {
   createLocation,
   deleteLocation,
   getLocation,
+  listOrganizationLocations,
   listOwnLocations,
   schedulesUsingLocation,
   updateLocation,
@@ -48,10 +49,16 @@ export const locationsRoutes = new Hono<AppEnv>()
   .get('/', zValidator('query', listLocationsQuerySchema), async (c) => {
     const org = c.get('org').id;
     const { user_id } = c.req.valid('query');
-    // Somebody else's list reads as empty, never as forbidden: it says nothing about them.
-    const data = (await managesLocationsOf(c.env.DB, org, c.get('user'), user_id))
-      ? await listOwnLocations(c.env.DB, org, user_id)
-      : [];
+    const viewer = c.get('user');
+    // Somebody else's list reads as empty, never as forbidden: it says nothing about them. The
+    // whole organization's is the admins' alone.
+    const data = !user_id
+      ? isAdmin(viewer)
+        ? await listOrganizationLocations(c.env.DB, org)
+        : []
+      : (await managesLocationsOf(c.env.DB, org, viewer, user_id))
+        ? await listOwnLocations(c.env.DB, org, user_id)
+        : [];
     const body: ApiList<Location> = { data, meta: { total: data.length, limit: data.length, offset: 0 } };
     return c.json(body);
   })

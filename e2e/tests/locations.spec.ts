@@ -252,4 +252,39 @@ test.describe('tutoring locations', () => {
       await admin.request.delete(`/api/users/${parent.id}`);
     }
   });
+
+  test('the admins’ Locations page lists every person’s places, and adds one for anybody', async ({ as }) => {
+    const admin = await as('admin');
+    const sofiaId = await idOf(admin, PEOPLE.student.email);
+
+    await admin.goto('/');
+    await admin.getByRole('navigation', { name: 'Main' }).first().getByRole('link', { name: 'Locations' }).click();
+    await expect(admin.getByRole('heading', { name: 'Locations', level: 1 })).toBeVisible();
+    await expect(admin.getByTestId('organization-locations')).toContainText(PEOPLE.tutor.name);
+    await expect(admin.getByTestId('organization-locations')).toContainText('Online room');
+
+    await admin.getByRole('button', { name: 'Add a location' }).click();
+    await admin.getByRole('button', { name: 'Add location' }).click();
+    await expect(admin.getByText('Choose whose location this is.')).toBeVisible();
+    await admin.getByRole('combobox', { name: 'Person' }).click();
+    await admin.getByRole('option', { name: PEOPLE.student.name }).click();
+    await admin.getByLabel('Name', { exact: true }).fill('Town library');
+    await admin.getByRole('button', { name: 'Add location' }).click();
+    await expect(admin.getByTestId('organization-locations')).toContainText('Town library');
+    // The search narrows the page to matching people and places.
+    await admin.getByLabel('Search by person or place').fill('Town lib');
+    await expect(admin.getByTestId('organization-locations')).toContainText(PEOPLE.student.name);
+    await expect(admin.getByTestId('organization-locations')).not.toContainText(PEOPLE.tutor.name);
+
+    const sofias = await unwrap<any[]>(await admin.request.get(`/api/locations?user_id=${sofiaId}`), 'Sofia\'s');
+    const library = sofias.find((l) => l.name === 'Town library');
+    expect(library).toBeTruthy();
+    expect((await admin.request.delete(`/api/locations/${library.id}`)).status()).toBe(204);
+
+    // Not a non-admin's: no menu item, and the list reads empty.
+    const tutor = await as('tutor');
+    await tutor.goto('/');
+    await expect(tutor.getByRole('link', { name: 'Locations' })).toHaveCount(0);
+    expect(await unwrap<any[]>(await tutor.request.get('/api/locations'), 'a tutor reading all')).toEqual([]);
+  });
 });

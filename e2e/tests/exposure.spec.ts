@@ -205,6 +205,8 @@ test.describe('what each non-admin can see', () => {
           problems.push(`R16: read the locations of ${person.id}`);
         }
       }
+      // The whole organization's list is the admins' page alone.
+      if (((await get(page, '/api/locations')) as any[]).length > 0) problems.push('R16: read every location');
 
       const drafts = (await get(page, '/api/sessions/drafts')) as any[];
       check(reader, '/api/sessions/drafts', drafts, problems);

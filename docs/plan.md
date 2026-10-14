@@ -222,3 +222,9 @@ Design:
   to move first, so no schedule is ever left with none.
 - Existing schedules (which have none) stay valid until edited; creating a schedule, or changing a
   schedule's locations, must meet the rule.
+
+**Added 2026-10-14: an organization-wide Locations page.** At the owner's request, admins get a
+Locations menu item (portal sidebar, app's More) listing every tutor's and student's places grouped
+by person, with add (choosing the person first), edit and remove. Still one owner per location:
+`GET /api/locations` without `user_id` returns the organization's list to admins and an empty list
+to anybody else (R16). No schema change.

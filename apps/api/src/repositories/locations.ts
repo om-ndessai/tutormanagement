@@ -21,6 +21,15 @@ export async function listOwnLocations(db: D1Database, org: OrgId, ownerId: stri
   return result.results ?? [];
 }
 
+/** Every tutor's and student's locations in this organization, by owner (the admins' page). */
+export async function listOrganizationLocations(db: D1Database, org: OrgId): Promise<Location[]> {
+  const result = await db
+    .prepare(`${SELECT_LOCATION} WHERE l.organization_id = ? ORDER BY owner_name, l.kind, l.name`)
+    .bind(org)
+    .all<Location>();
+  return result.results ?? [];
+}
+
 export async function getLocation(db: D1Database, org: OrgId, id: string): Promise<Location | null> {
   return db
     .prepare(`${SELECT_LOCATION} WHERE l.organization_id = ? AND l.id = ?`)

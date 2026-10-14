@@ -239,7 +239,8 @@ only verified destination addresses receive mail -- the rest are logged `failed`
 **A lesson's place is a location, chosen from the pairing's, and a schedule always has one**
 (Phase 33, R16). `locations` are a tutor's or a student's own (name, physical/virtual, address or
 link, `reminder_minutes`), written by an admin, the person or their parent (`managesLocationsOf`);
-a pairing allows some of its two people's (`assignment_locations`, admins only); a schedule picks
+admins also see every one on the Locations page (`/locations`, menu item admin-only); a pairing
+allows some of its two people's (`assignment_locations`, admins only); a schedule picks
 from those (`schedule_locations`): at least one, never two of one kind -- `scheduleLocationProblem`
 in shared, the `UNIQUE (schedule_id, kind)` and triggers in the database. A location a schedule
 uses cannot be deleted, re-kinded or dropped from its pairing. `reminder_minutes` > 0 raises the

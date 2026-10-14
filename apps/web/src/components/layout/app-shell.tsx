@@ -14,6 +14,7 @@ import {
   UserIcon,
   UsersIcon,
   XIcon,
+  MapPinIcon,
 } from 'lucide-react';
 
 import { DeveloperCredit } from '@/components/layout/developer-credit';
@@ -40,6 +41,8 @@ const NAV_ITEMS: (PaletteDestination & { end: boolean; admin?: boolean })[] = [
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, keywords: ['lessons', 'record', 'notes', 'drafts'] },
   { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, keywords: ['plans', 'assessments', 'goals'] },
   { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, keywords: ['calendar', 'cancel', 'weekly'] },
+  // Every tutor's and student's places (Phase 33): admins only.
+  { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },
   { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
   { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, keywords: ['notes', 'messages'] },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },

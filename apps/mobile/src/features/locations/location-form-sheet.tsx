@@ -14,7 +14,7 @@ import {
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
-import { Button, SegmentedButtons, Text, TextInput } from 'react-native-paper';
+import { Button, List, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 
 import { OfflineSaveNote, useOffline } from '@/components/connectivity';
 import { FieldError } from '@/components/field-error';
@@ -24,7 +24,7 @@ import { ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
-import { useUserDetail } from '@/features/users/api';
+import { useUserDetail, useUsers } from '@/features/users/api';
 import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
@@ -37,18 +37,23 @@ function close() {
 }
 
 export function LocationFormSheet({
-  ownerId,
+  ownerId: givenOwnerId,
   locationId,
 }: {
   ownerId: string;
   locationId: string | undefined;
 }) {
+  // From the admins' Locations page no owner comes along: the sheet asks first.
+  const [chosenOwnerId, setChosenOwnerId] = useState('');
+  const ownerId = givenOwnerId || chosenOwnerId;
   const list = useLocations(ownerId || null);
   const owner = useUserDetail(ownerId || null);
   const ownerName = owner.data?.data.full_name ?? null;
 
   let body;
-  if (!ownerId) {
+  if (!ownerId && !locationId) {
+    body = <OwnerPicker onChoose={setChosenOwnerId} />;
+  } else if (!ownerId) {
     body = <ErrorState error={new ApiRequestError(404, 'not_found', 'That person does not exist.')} />;
   } else if (!locationId) {
     body = <LocationForm ownerId={ownerId} ownerName={ownerName} existing={null} />;
@@ -69,6 +74,65 @@ export function LocationFormSheet({
     <Screen testID="screen-location-form" edges={['bottom']} contentStyle={{ paddingTop: space.xl }}>
       {body}
     </Screen>
+  );
+}
+
+/** Whose location: the organization's tutors and students, by name. */
+function OwnerPicker({ onChoose }: { onChoose: (id: string) => void }) {
+  const theme = useAppTheme();
+  const [search, setSearch] = useState('');
+  const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' });
+  const students = useUsers({ role: 'student', limit: 100, sort: 'full_name' });
+  if (tutors.isPending || students.isPending) return <FormSkeleton label="Loading people…" fields={4} />;
+  if (tutors.isError) return <ErrorState error={tutors.error} onRetry={() => void tutors.refetch()} />;
+  if (students.isError) return <ErrorState error={students.error} onRetry={() => void students.refetch()} />;
+
+  const seen = new Map<string, { id: string; name: string; roles: string[] }>();
+  for (const [person, role] of [
+    ...tutors.data.data.map((p) => [p, 'Tutor'] as const),
+    ...students.data.data.map((p) => [p, 'Student'] as const),
+  ]) {
+    const entry = seen.get(person.id) ?? { id: person.id, name: person.full_name, roles: [] };
+    entry.roles.push(role);
+    seen.set(person.id, entry);
+  }
+  const needle = search.trim().toLowerCase();
+  const people = [...seen.values()]
+    .filter((person) => !needle || person.name.toLowerCase().includes(needle))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return (
+    <View style={{ gap: space.sm }} testID="location-owner-picker">
+      <Text variant="titleLarge">Add a location</Text>
+      <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+        Whose place is it? Choose a tutor or a student.
+      </Text>
+      <TextInput
+        testID="location-owner-search"
+        mode="outlined"
+        label="Search people"
+        value={search}
+        onChangeText={setSearch}
+        autoCorrect={false}
+        left={<TextInput.Icon icon="magnify" />}
+      />
+      {people.length === 0 ? (
+        <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+          Nobody by that name.
+        </Text>
+      ) : null}
+      {people.map((person) => (
+        <List.Item
+          key={person.id}
+          testID={`location-owner-${person.id}`}
+          title={person.name}
+          description={person.roles.join(' · ')}
+          left={(props) => <List.Icon {...props} icon="account-outline" />}
+          onPress={() => onChoose(person.id)}
+          accessibilityRole="button"
+        />
+      ))}
+    </View>
   );
 }
 

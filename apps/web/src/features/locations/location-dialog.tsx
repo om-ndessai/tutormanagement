@@ -31,13 +31,18 @@ export function LocationDialog({
   ownerId,
   ownerName,
   existing,
+  owners,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Whose location; empty with `owners`, where the dialog asks. */
   ownerId: string;
   ownerName: string;
   existing: Location | null;
+  /** The organization's Locations page: a new location's owner is chosen here. */
+  owners?: { id: string; name: string }[];
 }) {
+  const [chosenOwner, setChosenOwner] = useState('');
   const [name, setName] = useState('');
   const [kind, setKind] = useState<LocationKind>('physical');
   const [address, setAddress] = useState('');
@@ -50,6 +55,7 @@ export function LocationDialog({
   useEffect(() => {
     if (!open) return;
     setErrors({});
+    setChosenOwner(ownerId);
     setName(existing?.name ?? '');
     setKind(existing?.kind ?? 'physical');
     setAddress(existing?.address ?? '');
@@ -63,10 +69,15 @@ export function LocationDialog({
       setErrors({ reminder_minutes: 'Use whole minutes, from 0 (no reminder) up to a day.' });
       return;
     }
+    const owner = owners ? chosenOwner : ownerId;
+    if (!existing && !owner) {
+      setErrors({ owner_user_id: 'Choose whose location this is.' });
+      return;
+    }
     const fields = { name: name.trim(), kind, address: address.trim() || null, reminder_minutes: minutes };
     try {
       if (existing) await update.mutateAsync({ id: existing.id, input: fields });
-      else await create.mutateAsync({ owner_user_id: ownerId, ...fields });
+      else await create.mutateAsync({ owner_user_id: owner, ...fields });
       toast.success(existing ? 'Location updated.' : 'Location added.');
       onOpenChange(false);
     } catch (error) {
@@ -85,9 +96,27 @@ export function LocationDialog({
         <form onSubmit={submit} noValidate>
           <DialogHeader>
             <DialogTitle>{existing ? 'Edit location' : 'Add a location'}</DialogTitle>
-            <DialogDescription>Where {ownerName} likes to have lessons.</DialogDescription>
+            <DialogDescription>
+              {owners && !existing ? 'A tutor’s or a student’s place for lessons.' : `Where ${ownerName} likes to have lessons.`}
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
+            {owners && !existing && (
+              <Row id="loc-owner" label="Person" error={errors.owner_user_id}>
+                <Select value={chosenOwner} onValueChange={setChosenOwner}>
+                  <SelectTrigger id="loc-owner" className="w-full">
+                    <SelectValue placeholder="Choose a tutor or student" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {owners.map((person) => (
+                      <SelectItem key={person.id} value={person.id}>
+                        {person.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Row>
+            )}
             <Row id="loc-name" label="Name" error={errors.name}>
               <Input id="loc-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Main library, room 2" />
             </Row>

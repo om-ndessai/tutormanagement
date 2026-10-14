@@ -7,7 +7,7 @@ import { useAuth } from '@/providers/auth-provider';
  * Every page of the portal, as the web sidebar lists them. On the phone the first four are
  * tabs (the same four for everyone, so the tab bar never reshapes under someone); the rest
  * are reached from More and the search screen. The server decides what each page shows the
- * reader -- the menu only leaves out what their roles cannot open at all (Organization).
+ * reader -- the menu only leaves out what their roles cannot open at all (Locations, Organization).
  */
 export interface NavItem {
   href: Href;
@@ -68,6 +68,15 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'link-variant',
     keywords: ['assignments', 'tutor', 'student'],
     tourId: 'nav-assignments',
+  },
+  {
+    // Every tutor's and student's places (Phase 33): admins only.
+    href: '/locations',
+    label: 'Locations',
+    icon: 'map-marker-outline',
+    keywords: ['places', 'rooms', 'address', 'online', 'reminder'],
+    admin: true,
+    tourId: 'nav-locations',
   },
   {
     href: '/billing',

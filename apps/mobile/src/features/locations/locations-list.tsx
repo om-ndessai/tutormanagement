@@ -16,19 +16,8 @@ import { useDeleteLocation, useLocations } from './api';
 export function LocationsList({ ownerId }: { ownerId: string }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
-  const toast = useToast();
   const { data, isPending } = useLocations(ownerId);
-  const remove = useDeleteLocation();
   const locations = data?.data ?? [];
-
-  async function removeLocation(location: Location) {
-    try {
-      await remove.mutateAsync(location.id);
-      toast.success(`Removed ${location.name}.`);
-    } catch (error) {
-      toast.error(error instanceof ApiRequestError ? error.message : 'Could not remove the location.');
-    }
-  }
 
   return (
     <View testID="locations-list" style={{ gap: space.sm }}>
@@ -37,60 +26,7 @@ export function LocationsList({ ownerId }: { ownerId: string }) {
           No locations yet.
         </Text>
       ) : (
-        locations.map((location) => (
-          <View
-            key={location.id}
-            testID={`location-${location.id}`}
-            style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}
-          >
-            <View style={{ paddingTop: 12 }}>
-              <Icon
-                source={location.kind === 'virtual' ? 'web' : 'map-marker-outline'}
-                size={16}
-                color={muted}
-              />
-            </View>
-            <View style={{ flex: 1, minWidth: 0, gap: 2, paddingTop: 10 }}>
-              <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
-                {location.name}
-                <Text variant="bodySmall" style={{ color: muted, fontWeight: 'normal' }}>
-                  {'  '}
-                  {LOCATION_KIND_LABELS[location.kind]}
-                </Text>
-              </Text>
-              {location.address ? (
-                <Text variant="bodySmall" style={{ color: muted }}>
-                  {location.address}
-                </Text>
-              ) : null}
-              {location.reminder_minutes > 0 ? (
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                  <Icon source="bell-outline" size={12} color={muted} />
-                  <Text variant="bodySmall" style={{ color: muted }}>
-                    Reminder {location.reminder_minutes} min before
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-            <IconButton
-              testID={`location-edit-${location.id}`}
-              icon="pencil-outline"
-              accessibilityLabel={`Edit ${location.name}`}
-              style={{ margin: 0 }}
-              onPress={() =>
-                router.push({ pathname: '/location-form', params: { owner: ownerId, id: location.id } })
-              }
-            />
-            <IconButton
-              testID={`location-remove-${location.id}`}
-              icon="trash-can-outline"
-              accessibilityLabel={`Remove ${location.name}`}
-              disabled={remove.isPending}
-              style={{ margin: 0 }}
-              onPress={() => void removeLocation(location)}
-            />
-          </View>
-        ))
+        locations.map((location) => <LocationRow key={location.id} location={location} />)
       )}
       <View style={{ flexDirection: 'row' }}>
         <Button
@@ -103,6 +39,76 @@ export function LocationsList({ ownerId }: { ownerId: string }) {
           Add a location
         </Button>
       </View>
+    </View>
+  );
+}
+
+/** One location, with edit and remove: a person's record and the admins' Locations page. */
+export function LocationRow({ location }: { location: Location }) {
+  const theme = useAppTheme();
+  const muted = theme.tokens.mutedForeground;
+  const toast = useToast();
+  const remove = useDeleteLocation();
+
+  async function removeLocation() {
+    try {
+      await remove.mutateAsync(location.id);
+      toast.success(`Removed ${location.name}.`);
+    } catch (error) {
+      toast.error(error instanceof ApiRequestError ? error.message : 'Could not remove the location.');
+    }
+  }
+
+  return (
+    <View
+      testID={`location-${location.id}`}
+      style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}
+    >
+      <View style={{ paddingTop: 12 }}>
+        <Icon source={location.kind === 'virtual' ? 'web' : 'map-marker-outline'} size={16} color={muted} />
+      </View>
+      <View style={{ flex: 1, minWidth: 0, gap: 2, paddingTop: 10 }}>
+        <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
+          {location.name}
+          <Text variant="bodySmall" style={{ color: muted, fontWeight: 'normal' }}>
+            {'  '}
+            {LOCATION_KIND_LABELS[location.kind]}
+          </Text>
+        </Text>
+        {location.address ? (
+          <Text variant="bodySmall" style={{ color: muted }}>
+            {location.address}
+          </Text>
+        ) : null}
+        {location.reminder_minutes > 0 ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <Icon source="bell-outline" size={12} color={muted} />
+            <Text variant="bodySmall" style={{ color: muted }}>
+              Reminder {location.reminder_minutes} min before
+            </Text>
+          </View>
+        ) : null}
+      </View>
+      <IconButton
+        testID={`location-edit-${location.id}`}
+        icon="pencil-outline"
+        accessibilityLabel={`Edit ${location.name}`}
+        style={{ margin: 0 }}
+        onPress={() =>
+          router.push({
+            pathname: '/location-form',
+            params: { owner: location.owner_user_id, id: location.id },
+          })
+        }
+      />
+      <IconButton
+        testID={`location-remove-${location.id}`}
+        icon="trash-can-outline"
+        accessibilityLabel={`Remove ${location.name}`}
+        disabled={remove.isPending}
+        style={{ margin: 0 }}
+        onPress={() => void removeLocation()}
+      />
     </View>
   );
 }
