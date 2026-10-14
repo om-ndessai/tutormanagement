@@ -4,7 +4,7 @@ import Svg, { Circle, Defs, G, Path, RadialGradient, Rect, Stop } from 'react-na
 
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { AIM_AMBER, AIM_AMBER_TEXT, GOOGLE_G } from '@/theme/brand-art';
+import { AIM_AMBER, AIM_AMBER_INK, AIM_AMBER_TEXT, GOOGLE_G } from '@/theme/brand-art';
 import { radius, space } from '@/theme/tokens';
 
 /** Where "Contact us" writes to: the developer's address, by the owner's choice (2026-10-13). */
@@ -124,12 +124,13 @@ export function Welcome({ busy, onSignIn }: { busy: boolean; onSignIn: () => voi
             minHeight: 48,
             paddingHorizontal: space.lg,
             borderRadius: radius.pill,
-            backgroundColor: theme.tokens.primary,
+            // Amber, so the button does not repeat the slate tile above it.
+            backgroundColor: AIM_AMBER,
             opacity: pressed || busy ? 0.7 : 1,
           })}
         >
-          {busy ? <ActivityIndicator size={20} color={theme.tokens.primaryForeground} /> : <GoogleG />}
-          <Text variant="titleMedium" style={{ color: theme.tokens.primaryForeground, fontWeight: '600' }}>
+          {busy ? <ActivityIndicator size={20} color={AIM_AMBER_INK} /> : <GoogleG />}
+          <Text variant="titleMedium" style={{ color: AIM_AMBER_INK, fontWeight: '600' }}>
             Sign in with Google
           </Text>
         </Pressable>

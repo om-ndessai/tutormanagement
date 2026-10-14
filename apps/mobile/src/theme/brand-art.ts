@@ -7,6 +7,9 @@ export const AIM_AMBER = '#F6B740';
 /** The same amber, deepened to stay readable as text on a light background. */
 export const AIM_AMBER_TEXT = '#D98E0E';
 
+/** Text and spinners on the amber: dark in both themes, since the amber does not change. */
+export const AIM_AMBER_INK = '#15252D';
+
 export const GOOGLE_G = {
   red: '#EA4335',
   blue: '#4285F4',
