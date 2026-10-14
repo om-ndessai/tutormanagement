@@ -8,6 +8,7 @@ import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
 import { PERSONAS } from '@/dev/personas';
 import { SignInError } from '@/features/auth/sign-in-error';
+import { Welcome } from '@/features/auth/welcome';
 import { GoogleButton } from '@/lib/google-sign-in';
 import { haptics } from '@/lib/haptics';
 import { serverOrigin } from '@/lib/server';
@@ -50,6 +51,16 @@ export default function SignInScreen() {
     clearError();
     await signInAsDevUser(address);
     setBusy(null);
+  }
+
+  // The production app, signing in with Google: the welcome screen, and nothing a developer needs.
+  if (!DEV_TOOLS && googleAvailable) {
+    return (
+      <Screen testID="screen-sign-in" edges={['top', 'bottom']} scroll={false}>
+        <Welcome busy={busy === 'google'} onSignIn={() => void signInGoogle()} />
+        {error ? <SignInError code={error.code} message={error.message} /> : null}
+      </Screen>
+    );
   }
 
   return (
