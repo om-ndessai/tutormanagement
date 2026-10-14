@@ -26,6 +26,7 @@ import { useLargeText } from '@/hooks/use-large-text';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { CommentsRow } from '@/features/comments/comments-button';
 import { useAuditEvents } from '@/features/audit/api';
+import { LocationsList } from '@/features/locations/locations-list';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
@@ -232,6 +233,18 @@ export function UserDetailView({
               {handle.handle}
             </Detail>
           ))}
+        </Section>
+      ) : null}
+
+      {/* Phase 33: where they like to have lessons -- for the office, the person, and a student's
+          parents (R16; the server answers anyone else with an empty list). */}
+      {!compact &&
+      (user.roles.includes('tutor') || user.roles.includes('student')) &&
+      (isAdmin ||
+        viewer?.id === user.id ||
+        user.guardians.some((guardian) => guardian.user_id === viewer?.id)) ? (
+        <Section title="Locations" icon="map-marker-outline" testID="person-section-locations">
+          <LocationsList ownerId={user.id} />
         </Section>
       ) : null}
 

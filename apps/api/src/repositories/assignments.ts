@@ -7,6 +7,7 @@ import type {
 } from '@tmi/shared';
 
 import type { OrgId } from '../lib/org.js';
+import { locationsForAssignments } from './locations.js';
 import { teachingScopeSql } from '../lib/scope.js';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
@@ -54,7 +55,16 @@ interface AssignmentRow {
 }
 
 function toAssignment(row: AssignmentRow): Assignment {
-  return { ...row, is_active: row.is_active === 1 };
+  return { ...row, is_active: row.is_active === 1, locations: [] };
+}
+
+/** Phase 33: each pairing with its allowed locations. */
+async function withLocations(db: D1Database, org: OrgId, list: Assignment[]): Promise<Assignment[]> {
+  const byId = await locationsForAssignments(db, org, list.map((a) => a.id));
+  return list.map((a) => ({ ...a, locations: byId.get(a.id) ?? [] }));
+}
+async function oneWithLocations(db: D1Database, org: OrgId, a: Assignment | null): Promise<Assignment | null> {
+  return a ? ((await withLocations(db, org, [a]))[0] ?? null) : null;
 }
 
 export async function listAssignments(
@@ -89,7 +99,7 @@ export async function listAssignments(
     .bind(...values)
     .all<AssignmentRow>();
 
-  return (result.results ?? []).map(toAssignment);
+  return withLocations(db, org, (result.results ?? []).map(toAssignment));
 }
 
 /** A pairing of this organization. One from elsewhere is null, exactly like a missing one. */
@@ -102,7 +112,7 @@ export async function getAssignment(
     .prepare(`${SELECT_ASSIGNMENT} WHERE a.organization_id = ? AND a.id = ?`)
     .bind(org, id)
     .first<AssignmentRow>();
-  return row ? toAssignment(row) : null;
+  return oneWithLocations(db, org, row ? toAssignment(row) : null);
 }
 
 /**
@@ -124,7 +134,7 @@ export async function getActiveAssignmentFor(
     .bind(org, tutorUserId, studentUserId)
     .first<AssignmentRow>();
 
-  return row ? toAssignment(row) : null;
+  return oneWithLocations(db, org, row ? toAssignment(row) : null);
 }
 
 /**
@@ -174,7 +184,7 @@ export async function upsertAssignment(
     .first<AssignmentRow>();
 
   if (!assignment) throw new Error('Assignment upsert returned no row.');
-  return toAssignment(assignment);
+  return (await oneWithLocations(db, org, toAssignment(assignment)))!;
 }
 
 export async function updateAssignment(

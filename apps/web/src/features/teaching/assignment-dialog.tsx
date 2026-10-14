@@ -5,6 +5,7 @@ import {
   centsToInput,
   formatCents,
   parseCentsInput,
+  LOCATION_KIND_LABELS,
   type Assignment,
 } from '@tmi/shared';
 
@@ -29,6 +30,7 @@ import {
 import { useUserDetail, useUsers } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
 import { useCreateAssignment, useUpdateAssignment } from './api';
+import { useLocations, useSetPairingLocations } from '@/features/locations/api';
 
 /**
  * "Admin, when assigning a student to the tutor can specify the hourly rate."
@@ -64,6 +66,8 @@ export function AssignmentDialog({
   const [inPerson, setInPerson] = useState('');
   const [virtual, setVirtual] = useState('');
   const [notes, setNotes] = useState('');
+  // Phase 33: where this pair may have lessons, from the tutor's and the student's own places.
+  const [locationIds, setLocationIds] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Which tutor's defaults have already been written into the fields. Guards
@@ -75,7 +79,17 @@ export function AssignmentDialog({
 
   const create = useCreateAssignment();
   const update = useUpdateAssignment();
-  const saving = create.isPending || update.isPending;
+  const setLocations = useSetPairingLocations();
+  const saving = create.isPending || update.isPending || setLocations.isPending;
+  const tutorLocationsQuery = useLocations(tutorId || null);
+  const studentLocationsQuery = useLocations(studentId || null);
+  const tutorLocations = tutorLocationsQuery.data?.data ?? [];
+  const studentLocations = studentLocationsQuery.data?.data ?? [];
+  // Saving before both lists arrive would send an empty set and wipe the pairing's locations.
+  const locationsLoading = Boolean(
+    (tutorId && tutorLocationsQuery.isPending) || (studentId && studentLocationsQuery.isPending),
+  );
+  const offered = [...tutorLocations, ...studentLocations];
 
   useEffect(() => {
     if (!open) return;
@@ -85,6 +99,7 @@ export function AssignmentDialog({
     setInPerson(centsToInput(existing?.rate_in_person_cents));
     setVirtual(centsToInput(existing?.rate_virtual_cents));
     setNotes(existing?.notes ?? '');
+    setLocationIds(existing?.locations.map((location) => location.id) ?? []);
     // An existing assignment already carries its own rates; only a new pairing
     // takes them from the tutor.
     setPrefilledFor(existing ? existing.tutor_user_id : null);
@@ -143,16 +158,25 @@ export function AssignmentDialog({
     };
 
     try {
+      // Only places still offered: one of a person no longer chosen falls away.
+      const chosenLocations = locationIds.filter((id) => offered.some((location) => location.id === id));
       if (isEdit) {
         await update.mutateAsync({ id: existing.id, input: rates as never });
+        const before = existing.locations.map((location) => location.id).sort().join();
+        if (before !== [...chosenLocations].sort().join()) {
+          await setLocations.mutateAsync({ assignmentId: existing.id, locationIds: chosenLocations });
+        }
         toast.success('Pairing updated.');
       } else {
-        await create.mutateAsync({
+        const created = await create.mutateAsync({
           tutor_user_id: tutorId,
           student_user_id: studentId,
           is_active: true,
           ...rates,
         } as never);
+        if (chosenLocations.length > 0) {
+          await setLocations.mutateAsync({ assignmentId: created.data.id, locationIds: chosenLocations });
+        }
         toast.success('Student assigned.');
       }
       onSaved?.();
@@ -259,6 +283,45 @@ export function AssignmentDialog({
               </Field>
             </div>
 
+            <fieldset className="grid gap-2" data-testid="pairing-locations">
+              <legend className={`mb-1 text-sm font-medium ${errors.location_ids ? 'text-destructive' : ''}`}>
+                Locations <span className="text-muted-foreground font-normal">(where this pair may meet)</span>
+              </legend>
+              {!tutorId || !studentId ? (
+                <p className="text-muted-foreground text-xs">Choose the tutor and the student first.</p>
+              ) : offered.length === 0 ? (
+                <p className="text-muted-foreground text-xs">
+                  Neither has a location yet. Add them on each person&apos;s record.
+                </p>
+              ) : (
+                offered.map((location) => (
+                  <label key={location.id} className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      className="accent-primary size-4"
+                      checked={locationIds.includes(location.id)}
+                      onChange={(event) =>
+                        setLocationIds((current) =>
+                          event.target.checked
+                            ? [...current, location.id]
+                            : current.filter((id) => id !== location.id),
+                        )
+                      }
+                    />
+                    <span>{location.name}</span>
+                    <span className="text-muted-foreground text-xs">
+                      {LOCATION_KIND_LABELS[location.kind]} · {location.owner_name}
+                    </span>
+                  </label>
+                ))
+              )}
+              {errors.location_ids && (
+                <p role="alert" className="text-destructive text-xs">
+                  {errors.location_ids}
+                </p>
+              )}
+            </fieldset>
+
             <Field id="notes" label="Notes" error={errors.notes} optional>
               <Input
                 id="notes"
@@ -273,7 +336,7 @@ export function AssignmentDialog({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button type="submit" disabled={saving || locationsLoading}>
               {saving && <Loader2Icon className="animate-spin" />}
               {isEdit ? 'Save changes' : 'Assign'}
             </Button>

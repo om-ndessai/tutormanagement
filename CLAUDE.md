@@ -18,7 +18,7 @@ What did NOT change, and must not be "tidied": the Cloudflare Workers and their 
 (`tmi-portal`, `tutoring`, `tutoring-test`), the databases, the `tmi_session` cookie and the
 `@tmi/*` packages. `docs/naming/README.md` is the record of how the name was chosen.
 
-**Phases 1 to 19, and 21 to 32, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 33, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -31,7 +31,7 @@ as Analytics, a sessions carousel, a progress spotlight and recent activity (21)
 one lesson of a standing schedule cancelled and restored, without touching the series (24), the
 student's own reflection on each lesson (25), and a welcome wizard with a feature tour and guided
 setup of a new student or tutor (26), multiple organizations (27-31), and per-organization email
-notifications (32).
+notifications (32), and tutoring locations with an in-app reminder (33).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -236,6 +236,17 @@ organization's admins on its Organization page. Only the production pair has the
 binding and `EMAIL_FROM`; anywhere else an attempt is logged `skipped`. On Cloudflare's free plan
 only verified destination addresses receive mail -- the rest are logged `failed`.
 
+**A lesson's place is a location, chosen from the pairing's, and a schedule always has one**
+(Phase 33, R16). `locations` are a tutor's or a student's own (name, physical/virtual, address or
+link, `reminder_minutes`), written by an admin, the person or their parent (`managesLocationsOf`);
+a pairing allows some of its two people's (`assignment_locations`, admins only); a schedule picks
+from those (`schedule_locations`): at least one, never two of one kind -- `scheduleLocationProblem`
+in shared, the `UNIQUE (schedule_id, kind)` and triggers in the database. A location a schedule
+uses cannot be deleted, re-kinded or dropped from its pairing. `reminder_minutes` > 0 raises the
+in-app reminder sheet (`dueReminder` in shared; `LessonReminderSheet` on the web, the Home sheet
+in the app); push is later (`docs/roadmap/push-notifications.md`). The log names a location, never
+its address.
+
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
 adds their admins by email; it never reads an organization's people, lessons or money. Its
@@ -431,7 +442,7 @@ the other side, and the UI renders money only through `SessionMoney`, never a ba
 them, and never put an amount in an audit description (tutors read their own log).
 
 **What a non-admin sees is written down, and crawled.** `docs/data-exposure.md` lists the
-rules (R1-R14; R13 is "nothing crosses organizations", crawled by `exposure-organizations.spec.ts`) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
+rules (R1-R16; R13 is "nothing crosses organizations", crawled by `exposure-organizations.spec.ts`) and who sees what on each screen; `e2e/tests/exposure.spec.ts` signs in as every
 kind of non-admin, calls every read endpoint and checks every object returned against them. A
 lookup by id goes through the list's own WHERE (`getVisibleSession`, `getVisiblePayment`) --
 never "can they see anything related" -- and answers 404, not 403, for a row they cannot list.

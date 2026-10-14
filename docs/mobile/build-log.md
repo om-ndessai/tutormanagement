@@ -968,3 +968,56 @@ The three gate flows that failed once and passed alone, fixed at the cause the a
 - **Flow fix, `sessions/autosave`:** after choosing the pairing it now waits for the SSN sentence before any scroll. The sheet brings the error into view itself (F-22), and a `scrollUntilVisible` racing that scroll overshot past the field once on iOS; where the error stays out of view (Android) it is scrolled to once it exists.
 
 **Verified (2026-10-11):** flows `dictation/{dictate-notes,dictate-ssn,dictate-permission}`, `sessions/{record,autosave}` and `smoke/*` green on iOS 27 (iPhone 17) and Android 37 (Medium Phone), plus `sessions/drafts` on iOS, all with the scripted recognizer; jest 370 passed (dictation: speech 17, field and permissions 14, autosave and Record flush 3, Profile control 2, append 5, topic codes 3); screenshots reviewed: mic idle, listening, interim, SSN-masked interim and refused, light and dark on iOS, interim on Android; exposure: no money on the sheet (`.*\$[0-9].*` absent), no SSN text on screen or in any draft, no draft left after a refusal. Real-microphone checks are P3c (by hand).
+
+## 46. Phase 33: tutoring locations — design (2026-10-14)
+**Scope:** ports Phase 33 (docs/plan.md) from the web: a tutor's or student's own locations (list, add, edit, remove), a pairing's allowed locations (admin), a schedule's in-person and online location, the locations shown on schedules and upcoming lessons, and the in-app reminder sheet on Home. Left out: push notifications (plan: "later"; `docs/roadmap/push-notifications.md`). The schedule's free-text `location` stays, relabelled "Room or note" / "Meeting link note" as on the web.
+**Web sources:** `features/locations/{api.ts,location-dialog.tsx,locations-list.tsx,lesson-reminder.tsx}`, `features/users/user-detail-view.tsx` (Locations section), `features/teaching/assignment-dialog.tsx`, `features/schedules/{schedule-dialog,schedules-page}.tsx`, `features/dashboard/sessions-carousel.tsx` (`Place`), `pages/dashboard-page.tsx`.
+**Endpoints:**
+- `GET /api/locations?user_id=` — `useLocations` — admin (anyone), tutor/student (own), parent (child's); anyone else an empty list.
+- `POST /api/locations`, `PATCH /api/locations/:id`, `DELETE /api/locations/:id` (409 `conflict` while a schedule uses it) — `useCreateLocation`, `useUpdateLocation`, `useDeleteLocation` — same people.
+- `PUT /api/assignments/:id/locations` {location_ids} (422 when dropping one a schedule uses) — `useSetPairingLocations` — admin.
+- `POST/PATCH /api/schedules` with `location_ids` — existing hooks; `GET /api/schedules/upcoming` — `useUpcomingSessions()` for the reminder.
+- Query keys and invalidation copied: `['locations', userId]`; a change invalidates `locations`, `assignments`, `schedules`, audit.
+**Screens & routes:**
+- `(org)/location-form` — form sheet (0.9, 1): `?owner=<userId>` to add, `&id=<location>` to edit.
+- No new tab or stack screen. The Locations section sits in `UserDetailView` (People detail and Profile; not the wizard's compact view).
+**Components:** new `src/features/locations/{api.ts, locations-list.tsx, location-form-sheet.tsx, lesson-reminder.tsx, reminder-model.ts}`; reused `Section`, `OptionPicker` (schedule pickers, with a "None" option), Paper `Checkbox.Item` (pairing), `FieldError`, `useDirty`/`useUnsavedChangesGuard`, `useToast`, `IconButton`.
+**Interaction & motion:**
+- The reminder is a non-blocking bottom sheet drawn through Paper's `Portal` on Home only while Home is focused and not viewing someone else; it sits above the tab bar and the live lesson banner, slides up (Reanimated `FadeInDown`, stilled by reduce motion), one `haptics.impact()` when it first appears. Dismiss (X, 44pt) remembers `reminderKey` in device storage (`tmi.remindersDismissed`, last 50 keys). Re-evaluated every 30 s. A virtual location's https address is a tappable link (`Linking.openURL`).
+- Remove a location: immediate, as on the web; a 409 shows the server's message in a toast.
+**Exposure checks:**
+- No money anywhere in the feature (locations, the pairing's checklist sits outside the rate fields' meaning, the reminder carries time, names and places only).
+- R16: visibility of the Locations section mirrors the web (admin, the person themself, their guardian; only for a tutor or student). The server decides; the app only hides.
+- The reminder is in-app UI, not a system surface; an admin is reminded only of lessons they teach or take (as the web). Never shown while viewing as someone else.
+- No organization name; theme tokens only; storage holds ids of dismissed dates, never a name, address or note.
+**testIDs:**
+- `person-section-locations`, `locations-list`, `locations-add`, `location-<id>`, `location-edit-<id>`, `location-remove-<id>`
+- `screen-location-form`, `location-form-name`, `location-form-kind-physical|virtual`, `location-form-address`, `location-form-reminder`, `location-form-save`, `location-form-cancel`
+- `assignment-locations`, `assignment-location-<id>`
+- `schedule-location-physical`, `schedule-location-virtual` (options `…-<id>`, `…-none`), `schedule-locations-hint`
+- `schedule-locations-<scheduleId>` (card line), carousel `Place` text
+- `lesson-reminder`, `lesson-reminder-dismiss`, `lesson-reminder-link-<locationId>`
+**Tests:**
+- Jest: `reminder-model.test.ts` (admin filter, dismissed skip, cancelled skip, due window on the org clock, dismissal list capped); `lesson-reminder.test.tsx` (renders when due, no money, dismiss hides it and stores the key; nothing while not due); `schedule-locations.test.ts(x)` (a new schedule defaults to the tutor's physical location; else first physical; else first virtual; edit keeps the schedule's).
+- Maestro (for the tester), `.maestro/flows/locations/`:
+  - `person-locations.yaml` (Priya): Alex's record → `person-section-locations` lists "Institute, room 2" and "Online room" → add "Library" (In person, reminder 0) → edit its name → remove it; removing "Institute, room 2" answers the 409 toast.
+  - `parent-child-locations.yaml` (Anita): her child's record shows the section; adds and removes one.
+  - `pairing-locations.yaml` (Priya): edit a pairing → `assignment-locations` lists the tutor's two and the student's home, checked; untick the student's home, save; reopen, still unticked; re-tick (clean-up).
+  - `schedule-locations.yaml` (Priya): the existing `schedule/editor` path, asserting `schedule-location-physical` reads the tutor's in-person place by default; choose None in both → save shows "Choose at least one location." under the pickers.
+  - `reminder.yaml` (Alex): set his "Institute, room 2" reminder to 1440 via the location sheet → Home shows `lesson-reminder` (his next lesson is within a day in the seed? if not, add one via schedule-form for today) → `lesson-reminder-dismiss` → gone, and stays gone after pull-to-refresh; reset the reminder to 0.
+  - Re-run `schedule/*`, `pairings/*`, `people/*`, `home/*`, `smoke/*` (the schedule sheet gained required pickers; the seed gives every pairing locations so the default fills them).
+**Risks / open questions:**
+- A schedule created before Phase 33 has no locations; editing it now requires choosing one (as on the web). The default fills only a NEW schedule.
+- Paper's `Portal` draws under a native form sheet on iOS; the reminder hides whenever Home is not focused, so it never competes with one.
+
+**Design changes in the build (2026-10-14):**
+- The schedule pickers are `OptionPicker`s with a "None" option (`schedule-location-<kind>-none`), so they start closed; a new schedule's default is set while rendering when its pairing is chosen (as the auto-picked pairing is), and does not count as an unsaved change. Editing a schedule sends `location_ids` too, as the web does, so a pre-Phase-33 schedule needs a place chosen before it saves.
+- The pairing's checklist disables Save until both people's locations have loaded: "still offered" cannot be judged before, and saving then would have sent an empty set.
+- The reminder is a Paper `Surface` in a `Portal`, entering with `FadeInDown` (none under reduce motion), one `haptics.impact()` as it rises; the dismiss gives `haptics.selection()`. The storage key is `tmi.remindersDismissed`.
+- The location sheet takes the owner's name from `useUserDetail(owner)` rather than a route param.
+- Jest: `locations/reminder-model.test.ts` (10), `locations/lesson-reminder.test.tsx` (4), `schedules/schedule-locations.test.ts` (4), `schedules/schedule-form.test.tsx` (2: the default is sent; no place is refused under the pickers), `teaching/pairings.test.tsx` (+1: the checklist and `PUT …/locations`).
+
+**Verified (2026-10-14):** flows `locations/{person-locations,parent-child-locations,pairing-locations,schedule-locations,reminder}` green on iOS 27 (iPhone 17) and Android 37 (Medium Phone); `schedule/*`, `pairings/*`, `people/*`, `home/*` re-run on both (green after the flow fixes below, each failure re-run green on its platform); `npm run smoke -- mobile` green on both (3/3 each); jest 391 passed (75 suites); screenshots reviewed light (person list and 409 toast, pairing checklist, schedule pickers and "Choose at least one location.", reminder sheet above the tab bar); exposure checks: no money on the reminder sheet, parent manages her child's places and has no Locations section of her own.
+- Flow-side fixes, not app defects: `scripts/seed-next-up.js` now sends `location_ids` (a schedule needs one since Phase 33, so `home/*` could not seed); `pairings/admin` scrolls to Save (the checklist pushed it off-screen; on iOS the tap fell on the sheet and raised "Discard changes?"); `schedule/browse` centres "Show all" (the taller cards left it under the large-title header, where the tap hit Search). New: `subflows/assert-checkbox.yaml` (iOS reports a Paper checkbox's state only as the value "checkbox, checked/unchecked"), `scripts/clean-locations.js`, `scripts/seed-reminder.js`.
+- The reminder flow seeds its lesson TOMORROW, a little under a day ahead, in a new "Reminder room" (reminder set to 1440 in the app): `expandUpcoming` leaves out a date on which the pair already has a recorded lesson (`upcomingTakenKey`), and the seed records lessons for Alex's pairs today. Consequence for the design (shared, web and app alike): a second lesson the same day for a pair that has already recorded one that day never reminds.
+- Seen once, not reproduced: `people/row-swipe-undo` on Android stopped at launch (`screen-sign-in` not visible), green on re-run; `locations/reminder` once missed My profile from the account sheet on iOS, now opened by link (`aimtrue://profile`).

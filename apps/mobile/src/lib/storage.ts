@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 /**
  * Preferences kept on the device. Nothing sensitive: the server chosen, the theme, the last
  * organization (which only picks where a person lands -- the API checks membership on every
- * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, and the developer sign-in persona. Never a lesson,
+ * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), and the developer sign-in persona. Never a lesson,
  * a note, an amount or an SSN; and never the query cache.
  */
 export const STORAGE_KEYS = {
@@ -17,6 +17,8 @@ export const STORAGE_KEYS = {
   liveSurfaceAsked: 'tmi.liveSurfaceAsked',
   /** 'on' once the person agreed, on this phone, to dictate through its online speech service (P3). */
   dictationNetwork: 'tmi.dictationNetwork',
+  /** The lesson reminders dismissed on this phone (Phase 33): `<schedule id>:<date>` keys, the last 50. */
+  remindersDismissed: 'tmi.remindersDismissed',
 } as const;
 
 type Key = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

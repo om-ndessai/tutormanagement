@@ -45,6 +45,7 @@ export function upcoming(overrides: Partial<UpcomingSession> = {}): UpcomingSess
     duration_minutes: 60,
     mode: 'in_person',
     location: 'Room 2',
+    locations: [],
     tutor_user_id: 'tutor-1',
     tutor_name: 'Alex Chen',
     student_user_id: 'student-1',

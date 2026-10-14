@@ -1,3 +1,4 @@
+import type { Location } from './locations.js';
 import { z } from 'zod';
 import { sessionProgressInputSchema, type SessionProgress } from './progress.js';
 import {
@@ -324,6 +325,8 @@ export interface Assignment {
   effective_rate_virtual_cents: number | null;
   is_active: boolean;
   notes: string | null;
+  /** Phase 33: where this pair may have lessons, chosen from the tutor's and the student's own. */
+  locations: Location[];
   created_at: string;
   updated_at: string;
 }

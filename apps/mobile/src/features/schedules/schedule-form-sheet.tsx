@@ -6,11 +6,14 @@
 // admin or the schedule's own tutor -- what the API allows.
 import {
   DAYS_OF_WEEK,
+  LOCATION_KIND_LABELS,
   SESSION_MODES,
   SESSION_MODE_LABELS,
   formatDuration,
   scheduleInputSchema,
+  scheduleLocationProblem,
   scheduleUpdateSchema,
+  type Location,
   type SessionMode,
   type VisibleSchedule,
 } from '@tmi/shared';
@@ -24,6 +27,7 @@ import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
 import { Choice, Field } from '@/components/form-choice';
+import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
@@ -39,6 +43,12 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useCreateSchedule, useSchedules, useUpdateSchedule } from './api';
 import { organizationToday, shiftDay } from './lesson-cancellation';
+import {
+  chosenScheduleLocations,
+  defaultScheduleLocations,
+  existingScheduleLocations,
+  type ScheduleLocationChoice,
+} from './schedule-locations';
 
 /** Lesson lengths worth offering; anything else is an edge case. */
 const DURATIONS = [30, 45, 60, 75, 90, 120];
@@ -105,6 +115,12 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
   const [endsOn, setEndsOn] = useState(existing?.ends_on ?? '');
   const [location, setLocation] = useState(existing?.location ?? '');
   const [notes, setNotes] = useState(existing?.notes ?? '');
+  // Phase 33: one in-person place and one online room, each optional, at least one in all.
+  const [places, setPlaces] = useState<ScheduleLocationChoice>(() =>
+    existing ? existingScheduleLocations(existing.locations) : { physicalId: '', virtualId: '' },
+  );
+  // Whether the places are the person's choice, rather than the pairing's default.
+  const [placesTouched, setPlacesTouched] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // With one pairing to choose from, it is chosen (once the list arrives).
@@ -113,6 +129,29 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
     setAutoPicked(true);
     if (assignments.length === 1) setAssignmentId(assignments[0]!.id);
   }
+
+  // The pairing whose locations this schedule may use: the chosen one, or the one being edited.
+  const pairing = existing
+    ? assignments.find(
+        (candidate) =>
+          candidate.tutor_user_id === existing.tutor_user_id &&
+          candidate.student_user_id === existing.student_user_id,
+      )
+    : assignments.find((candidate) => candidate.id === assignmentId);
+  const pairingLocations: Location[] = pairing?.locations ?? existing?.locations ?? [];
+
+  // A new schedule takes the pairing's default places when a pairing is chosen (adjusting state
+  // while rendering, as the auto-picked pairing above does), and again whenever it changes.
+  const [defaultedFor, setDefaultedFor] = useState<string | null>(null);
+  if (!isEdit && pairing && defaultedFor !== pairing.id) {
+    setDefaultedFor(pairing.id);
+    setPlaces(defaultScheduleLocations(pairing));
+    setPlacesTouched(false);
+  }
+  const choosePlace = (next: Partial<ScheduleLocationChoice>) => {
+    setPlaces((current) => ({ ...current, ...next }));
+    setPlacesTouched(true);
+  };
 
   // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
   const dirty = useDirty({
@@ -126,6 +165,8 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
     endsOn,
     location,
     notes,
+    // The default places that came with the pairing are not an edit.
+    places: placesTouched ? places : null,
   });
   const { leave } = useUnsavedChangesGuard(dirty);
   const offline = useOffline();
@@ -144,7 +185,16 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
       return;
     }
 
+    const chosen = chosenScheduleLocations(pairingLocations, places);
+    const problem = scheduleLocationProblem(chosen);
+    if (problem) {
+      setErrors({ location_ids: problem });
+      haptics.error();
+      return;
+    }
+
     const shared = {
+      location_ids: chosen.map((place) => place.id),
       day_of_week: dayOfWeek,
       start_time: startTime,
       duration_minutes: duration,
@@ -325,11 +375,35 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
         {errors.ends_on ? <FieldError>{errors.ends_on}</FieldError> : null}
       </View>
 
+      <View style={{ gap: space.sm }}>
+        <PlacePicker
+          kind="physical"
+          offered={pairingLocations}
+          value={places.physicalId}
+          onChange={(id) => choosePlace({ physicalId: id })}
+        />
+        <PlacePicker
+          kind="virtual"
+          offered={pairingLocations}
+          value={places.virtualId}
+          onChange={(id) => choosePlace({ virtualId: id })}
+        />
+        {errors.location_ids ? (
+          <FieldError>{errors.location_ids}</FieldError>
+        ) : (
+          <Text testID="schedule-locations-hint" variant="bodySmall" style={{ color: muted }}>
+            {pairing && pairingLocations.length === 0
+              ? 'This pairing has no locations yet. An admin adds them on the Pairings page.'
+              : 'At least one, and at most one of each.'}
+          </Text>
+        )}
+      </View>
+
       <View>
         <TextInput
           testID="schedule-form-location"
           mode="outlined"
-          label={mode === 'virtual' ? 'Meeting link (optional)' : 'Location (optional)'}
+          label={mode === 'virtual' ? 'Meeting link note (optional)' : 'Room or note (optional)'}
           value={location}
           onChangeText={setLocation}
           placeholder={mode === 'virtual' ? 'https://meet.example.com/…' : 'Room 2'}
@@ -367,5 +441,35 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
         </Button>
       </View>
     </View>
+  );
+}
+
+const NONE = 'none';
+
+/** One kind of place for a schedule: none, or one of the pairing's. */
+function PlacePicker({
+  kind,
+  offered,
+  value,
+  onChange,
+}: {
+  kind: Location['kind'];
+  offered: Location[];
+  value: string;
+  onChange: (id: string) => void;
+}) {
+  const options = offered.filter((place) => place.kind === kind);
+  return (
+    <OptionPicker
+      testID={`schedule-location-${kind}`}
+      label={LOCATION_KIND_LABELS[kind]}
+      placeholder="None"
+      options={[
+        { id: NONE, label: 'None' },
+        ...options.map((place) => ({ id: place.id, label: place.name, detail: place.owner_name })),
+      ]}
+      value={value || NONE}
+      onChange={(id) => onChange(id === NONE ? '' : id)}
+    />
   );
 }

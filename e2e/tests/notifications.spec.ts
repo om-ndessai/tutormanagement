@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 import { expect, ORGS, PEOPLE, test } from '../support/fixtures.js';
-import { idOf, unwrap } from '../support/api.js';
+import { scheduleLocationIds, idOf, unwrap } from '../support/api.js';
 
 /**
  * Phase 32: email notifications.
@@ -200,6 +200,7 @@ test.describe('email notifications', () => {
             duration_minutes: 60,
             mode: 'virtual',
             starts_on: '2026-10-10',
+            location_ids: await scheduleLocationIds(tutor, tutorId, sofiaId, 'virtual'),
           },
         }),
         'a schedule',

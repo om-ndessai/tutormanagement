@@ -450,7 +450,11 @@ function Place({ occurrence, inverse }: { occurrence: UpcomingSession; inverse?:
       <MapPinIcon className="size-3 shrink-0" />
       <span className="truncate">
         {SESSION_MODE_LABELS[occurrence.mode]}
-        {occurrence.location ? ` · ${occurrence.location}` : ''}
+        {occurrence.locations.length > 0
+          ? ` · ${occurrence.locations.map((location) => location.name).join(' / ')}`
+          : occurrence.location
+            ? ` · ${occurrence.location}`
+            : ''}
       </span>
     </p>
   );

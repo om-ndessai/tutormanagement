@@ -27,6 +27,7 @@ const ORG_TABLES = [
   'payments', 'comments', 'assessments', 'learning_plans', 'audit_events',
   'user_roles', 'tutor_profiles', 'student_profiles', 'payment_handles',
   'availability_slots', 'guardianships', 'org_members', 'notification_log',
+  'locations', 'assignment_locations', 'schedule_locations',
 ];
 
 const TABLE_RE = new RegExp(
@@ -35,7 +36,7 @@ const TABLE_RE = new RegExp(
 );
 /** The SELECT_* fragments that read organization tables without a WHERE of their own. */
 const FRAGMENT_RE =
-  /\$\{\s*SELECT_(?:SESSION|ASSIGNMENT|PAYMENT|SCHEDULE|CANCELLATION|DRAFT|ASSESSMENT|PLAN|PROGRESS_SESSIONS|ACTIVE|USER|COMMENT|EVENT)\b/;
+  /\$\{\s*SELECT_(?:SESSION|ASSIGNMENT|PAYMENT|SCHEDULE|CANCELLATION|DRAFT|ASSESSMENT|PLAN|PROGRESS_SESSIONS|ACTIVE|USER|COMMENT|EVENT|LOCATION)\b/;
 const SCOPED_RE =
   /organization_id|scope\.sql|filter\.sql|whereSql|where\.join|narrow|children_sql|MEMBERS_WITH_ROLE|org-scope:/;
 

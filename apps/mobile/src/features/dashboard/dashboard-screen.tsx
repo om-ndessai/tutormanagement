@@ -13,6 +13,7 @@ import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { DashboardSkeleton } from '@/components/skeletons';
 import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
+import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useTourScroller } from '@/features/onboarding/tour-targets';
 import { AccountButton } from '@/features/shell/account-button';
@@ -147,6 +148,9 @@ export function DashboardScreen() {
       {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
       {subject && response ? <RoleSelector roles={subject.roles} current={response.role} /> : null}
       <RoleDashboard query={query} subjectId={viewingOther ? subject?.user_id : undefined} />
+      {/* Phase 33: a lesson about to start, where its locations ask for a reminder. Never while
+          viewing someone else. */}
+      {!viewingId ? <LessonReminderSheet /> : null}
     </Screen>
   );
 }

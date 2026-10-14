@@ -18,6 +18,7 @@ import { useDashboard } from '@/features/dashboard/api';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { UserPicker } from '@/features/dashboard/user-picker';
 import { RoleIcons } from '@/features/users/role-icon';
+import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import {
   AdminView,
   ParentView,
@@ -71,6 +72,8 @@ export function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-6xl">
+      {/* Phase 33: a lesson about to start, where its locations ask for a reminder. Never while viewing someone else. */}
+      {!viewingId && <LessonReminderSheet />}
       <PageHeader
         title={subject?.viewing_as_other ? `${subject.full_name}'s dashboard` : 'Dashboard'}
         description={

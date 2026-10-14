@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import {
   assignmentInputSchema,
+  assignmentLocationsSchema,
   assignmentUpdateSchema,
   listAssignmentsQuerySchema,
   type ApiOk,
@@ -23,6 +24,7 @@ import {
 } from '../repositories/assignments.js';
 import type { OrgId } from '../lib/org.js';
 import { getLiveUserById } from '../repositories/users.js';
+import { getLocations, pairingLocationsInUse, setAssignmentLocations } from '../repositories/locations.js';
 
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid assignment id.' }) });
 
@@ -134,6 +136,53 @@ export const assignmentsRoutes = new Hono<AppEnv>()
       await recordAudit(c.env.DB, c.get('user'), org, {
         action: 'assignment.updated',
         description: `Updated the assignment of ${updated.student_name} to ${updated.tutor_name}`,
+        subject: { id: updated.student_user_id, full_name: updated.student_name },
+        entity_type: 'assignment',
+        entity_id: updated.id,
+      });
+
+      const body: ApiOk<Assignment> = { data: updated };
+      return c.json(body);
+    },
+  )
+
+  /**
+   * Phase 33: the pairing's allowed locations, replaced as a whole. Each is the tutor's or the
+   * student's own; one a schedule of this pair uses cannot be taken away.
+   */
+  .put(
+    '/:id/locations',
+    requireAdmin,
+    zValidator('param', idParamSchema),
+    zValidator('json', assignmentLocationsSchema),
+    async (c) => {
+      const org = c.get('org').id;
+      const assignment = await getAssignment(c.env.DB, org, c.req.valid('param').id);
+      if (!assignment) throw ApiError.notFound('That assignment does not exist.');
+
+      const ids = [...new Set(c.req.valid('json').location_ids)];
+      const found = await getLocations(c.env.DB, org, ids);
+      const owners = new Set([assignment.tutor_user_id, assignment.student_user_id]);
+      if (found.length !== ids.length || found.some((l) => !owners.has(l.owner_user_id))) {
+        throw ApiError.validation('Please correct the highlighted fields.', {
+          location_ids: [`Choose from ${assignment.tutor_name}'s and ${assignment.student_name}'s own locations.`],
+        });
+      }
+      const inUse = await pairingLocationsInUse(c.env.DB, org, assignment.id);
+      const dropped = [...inUse].filter((id) => !ids.includes(id));
+      if (dropped.length > 0) {
+        throw ApiError.validation('Please correct the highlighted fields.', {
+          location_ids: ['A schedule of this pair uses a location you removed. Change the schedule first.'],
+        });
+      }
+
+      await setAssignmentLocations(c.env.DB, org, assignment.id, ids);
+      const updated = await getAssignment(c.env.DB, org, assignment.id);
+      if (!updated) throw ApiError.notFound('That assignment does not exist.');
+
+      await recordAudit(c.env.DB, c.get('user'), org, {
+        action: 'assignment.locations_set',
+        description: `Set ${ids.length} ${ids.length === 1 ? 'location' : 'locations'} for ${updated.student_name} with ${updated.tutor_name}`,
         subject: { id: updated.student_user_id, full_name: updated.student_name },
         entity_type: 'assignment',
         entity_id: updated.id,

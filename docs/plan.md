@@ -196,3 +196,29 @@ and by the organization's own admins on its Organization page), `lib/email.ts` a
 own action; an email carries no money, notes or scores (R15). Sent through Cloudflare's
 `send_email` binding on the production pair -- on the free plan, verified destination addresses
 only.
+Phase 33.
+Record preferred tutoring locations for tutors and students. A location has a friendly name, an
+address and a physical/virtual type, and a reminder time: more than 0 means the app and the portal
+remind about a lesson there that many minutes ahead (in-app now, a push notification later). Each
+pairing can have one or many locations, chosen from the tutor's and the student's own. Each
+schedule has locations from its pairing: at least one, and no more than one of each type.
+
+Decided with the owner (2026-10-14):
+- A schedule must have at least one location, and at most one physical and one virtual.
+- Admins manage anyone's locations, a tutor their own, a parent their child's. A pairing's
+  locations are set by admins (who manage pairings); a schedule's by admins and its tutor.
+- The in-app reminder is a bottom sheet, on the portal's dashboard and the app's Home.
+- Build and test locally, commit and push; no production deploy until the owner approves it.
+
+Design:
+- `locations` (owned by one person in one organization), `assignment_locations` (a pairing's
+  allowed set) and `schedule_locations` (a schedule's, with `kind` copied so the database itself
+  refuses two of one type: UNIQUE (schedule_id, kind)). The existing free-text
+  `scheduled_sessions.location` stays as a note.
+- A location is read by its owner, the owner's guardians, the organization's admins, and the
+  audience of a pairing or schedule it is attached to (R16 in docs/data-exposure.md). Its address
+  never goes into an audit description or a notification.
+- A location in use by a schedule cannot be deleted or removed from its pairing; the schedule has
+  to move first, so no schedule is ever left with none.
+- Existing schedules (which have none) stay valid until edited; creating a schedule, or changing a
+  schedule's locations, must meet the rule.

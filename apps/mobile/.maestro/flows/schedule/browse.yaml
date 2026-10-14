@@ -87,10 +87,13 @@ tags:
     id: schedule-card-70000000-0000-4000-8000-000000000002
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: schedule-tutor-focus
+# Centred: scrolled up only until it shows, it stops under the large-title header on iOS, where a
+# tap lands on the header's Search button instead (the cards grew a places line in Phase 33).
 - scrollUntilVisible:
     element:
       id: focus-show-all
     direction: UP
+    centerElement: true
     timeout: 20000
 - tapOn:
     id: focus-show-all

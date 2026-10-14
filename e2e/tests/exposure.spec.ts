@@ -197,6 +197,15 @@ test.describe('what each non-admin can see', () => {
       await read('/api/progress');
       await read('/api/sessions/active');
 
+      // R16 (Phase 33): a person's own list of locations is read only by them and their parents
+      // (and the office). Anybody else's reads as empty.
+      for (const person of people) {
+        const own = (await get(page, `/api/locations?user_id=${person.id}`)) as any[];
+        if (own.length > 0 && !reader.family.has(person.id)) {
+          problems.push(`R16: read the locations of ${person.id}`);
+        }
+      }
+
       const drafts = (await get(page, '/api/sessions/drafts')) as any[];
       check(reader, '/api/sessions/drafts', drafts, problems);
       for (const draft of drafts) {

@@ -53,6 +53,12 @@ tags:
 - eraseText: 10
 - inputText: '80'
 - pressKey: Enter
+# Phase 33's locations checklist sits between the rates and Save: bring Save into view first.
+- scrollUntilVisible:
+    element:
+      id: assignment-save
+    direction: DOWN
+    timeout: 10000
 - tapOn:
     id: assignment-save
 - extendedWaitUntil:
@@ -80,6 +86,12 @@ tags:
 - eraseText: 10
 - inputText: '85'
 - pressKey: Enter
+# Phase 33's locations checklist sits between the rates and Save: bring Save into view first.
+- scrollUntilVisible:
+    element:
+      id: assignment-save
+    direction: DOWN
+    timeout: 10000
 - tapOn:
     id: assignment-save
 - extendedWaitUntil:

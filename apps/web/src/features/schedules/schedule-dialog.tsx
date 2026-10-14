@@ -5,7 +5,10 @@ import {
   DAYS_OF_WEEK,
   SESSION_MODES,
   SESSION_MODE_LABELS,
+  LOCATION_KIND_LABELS,
   formatDuration,
+  scheduleLocationProblem,
+  type Location,
   type ScheduledSession,
   type SessionMode,
 } from '@tmi/shared';
@@ -64,11 +67,38 @@ export function ScheduleDialog({
   const [endsOn, setEndsOn] = useState('');
   const [location, setLocation] = useState('');
   const [notes, setNotes] = useState('');
+  // Phase 33: one in-person place and one online room, each optional, at least one in all.
+  const [physicalId, setPhysicalId] = useState('');
+  const [virtualId, setVirtualId] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // An admin may schedule for anyone; a tutor only for their own students.
   const { data: assignmentsData } = useAssignments(isAdmin ? {} : { tutor_user_id: user?.id });
   const assignments = assignmentsData?.data ?? [];
+
+  // The pairing whose locations this schedule may use: the chosen one, or the one being edited.
+  const pairing = existing
+    ? assignments.find(
+        (candidate) =>
+          candidate.tutor_user_id === existing.tutor_user_id && candidate.student_user_id === existing.student_user_id,
+      )
+    : assignments.find((candidate) => candidate.id === assignmentId);
+  const pairingLocations: Location[] = pairing?.locations ?? existing?.locations ?? [];
+  const physical = pairingLocations.filter((location) => location.kind === 'physical');
+  const virtual = pairingLocations.filter((location) => location.kind === 'virtual');
+
+  // A new schedule starts at the tutor's own in-person place (else the first offered), so the
+  // common case needs no choice at all.
+  useEffect(() => {
+    if (!open || existing || !pairing) return;
+    const first =
+      pairing.locations.find((l) => l.kind === 'physical' && l.owner_user_id === pairing.tutor_user_id) ??
+      pairing.locations.find((l) => l.kind === 'physical') ??
+      null;
+    setPhysicalId(first?.id ?? '');
+    setVirtualId(first ? '' : (pairing.locations.find((l) => l.kind === 'virtual')?.id ?? ''));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, existing, pairing?.id]);
 
   const create = useCreateSchedule();
   const update = useUpdateSchedule();
@@ -87,6 +117,8 @@ export function ScheduleDialog({
       setEndsOn(existing.ends_on ?? '');
       setLocation(existing.location ?? '');
       setNotes(existing.notes ?? '');
+      setPhysicalId(existing.locations.find((l) => l.kind === 'physical')?.id ?? '');
+      setVirtualId(existing.locations.find((l) => l.kind === 'virtual')?.id ?? '');
     } else {
       setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
       setDayOfWeek('2');
@@ -113,7 +145,15 @@ export function ScheduleDialog({
       return;
     }
 
+    const chosen = pairingLocations.filter((l) => l.id === physicalId || l.id === virtualId);
+    const problem = scheduleLocationProblem(chosen);
+    if (problem) {
+      setErrors({ location_ids: problem });
+      return;
+    }
+
     const shared = {
+      location_ids: chosen.map((l) => l.id),
       day_of_week: Number(dayOfWeek),
       start_time: startTime,
       duration_minutes: Number(duration),
@@ -272,9 +312,39 @@ export function ScheduleDialog({
               </Field>
             </div>
 
+            <div className="grid gap-4 sm:grid-cols-2">
+              <LocationSelect
+                id="loc-physical"
+                label={LOCATION_KIND_LABELS.physical}
+                options={physical}
+                value={physicalId}
+                onChange={setPhysicalId}
+              />
+              <LocationSelect
+                id="loc-virtual"
+                label={LOCATION_KIND_LABELS.virtual}
+                options={virtual}
+                value={virtualId}
+                onChange={setVirtualId}
+              />
+            </div>
+            {errors.location_ids ? (
+              <p role="alert" className="text-destructive -mt-2 text-xs">
+                {errors.location_ids}
+              </p>
+            ) : pairing && pairingLocations.length === 0 ? (
+              <p className="text-muted-foreground -mt-2 text-xs">
+                This pairing has no locations yet. An admin adds them on the Pairings page.
+              </p>
+            ) : (
+              <p className="text-muted-foreground -mt-2 text-xs">
+                At least one, and at most one of each.
+              </p>
+            )}
+
             <Field
               id="where"
-              label={mode === 'virtual' ? 'Meeting link' : 'Location'}
+              label={mode === 'virtual' ? 'Meeting link note' : 'Room or note'}
               optional
               error={errors.location}
             >
@@ -345,5 +415,41 @@ function Field({
         </p>
       )}
     </div>
+  );
+}
+
+const NONE = '__none__';
+
+/** One kind of place for a schedule: none, or one of the pairing's. */
+function LocationSelect({
+  id,
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  options: Location[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <Field id={id} label={label}>
+      <Select value={value || NONE} onValueChange={(next) => onChange(next === NONE ? '' : next)}>
+        <SelectTrigger id={id} className="w-full" data-testid={id}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={NONE}>None</SelectItem>
+          {options.map((location) => (
+            <SelectItem key={location.id} value={location.id}>
+              {location.name}
+              <span className="text-muted-foreground ml-2 text-xs">{location.owner_name}</span>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </Field>
   );
 }

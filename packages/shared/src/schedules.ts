@@ -10,6 +10,7 @@ import {
   type SessionMode,
 } from './teaching.js';
 import { optionalText } from './users.js';
+import { isReminderDue, reminderLeadMinutes, scheduleLocationIds, type Location } from './locations.js';
 
 /**
  * A standing weekly lesson. Distinct from a `session`, which records one that
@@ -28,9 +29,12 @@ export interface ScheduledSession {
   mode: SessionMode;
   starts_on: string;
   ends_on: string | null;
+  /** A free-text note on where (a room, a link); the places themselves are `locations`. */
   location: string | null;
   notes: string | null;
   is_active: boolean;
+  /** Phase 33: the schedule's places, from its pairing's -- at least one, at most one of each kind. */
+  locations: Location[];
   created_at: string;
   updated_at: string;
 }
@@ -61,6 +65,8 @@ export const scheduleInputSchema = z
     ends_on: z.union([isoDate, z.literal('')]).nullish().transform((v) => (v ? v : null)),
     location: optionalText(z.string().trim().max(300)),
     notes: optionalText(z.string().trim().max(1000)),
+    /** Phase 33: from the pairing's locations; the kinds are checked by the API. */
+    location_ids: scheduleLocationIds,
   })
   .refine((value) => !value.ends_on || value.ends_on >= value.starts_on, {
     message: 'The end date cannot be before the start date.',
@@ -92,6 +98,7 @@ export const scheduleUpdateSchema = z
       .optional(),
     location: optionalText(z.string().trim().max(300)).optional(),
     notes: optionalText(z.string().trim().max(1000)).optional(),
+    location_ids: scheduleLocationIds.optional(),
     is_active: z.boolean().optional(),
   })
   .refine((value) => Object.keys(value).length > 0, {
@@ -180,6 +187,8 @@ export interface UpcomingSession {
   duration_minutes: number;
   mode: SessionMode;
   location: string | null;
+  /** The schedule's places (Phase 33), for showing where and for the reminder. */
+  locations: Location[];
   tutor_user_id: string;
   tutor_name: string;
   student_user_id: string;
@@ -291,6 +300,7 @@ export function expandUpcoming(
         duration_minutes: schedule.duration_minutes,
         mode: schedule.mode,
         location: schedule.location,
+        locations: schedule.locations ?? [],
         tutor_user_id: schedule.tutor_user_id,
         tutor_name: schedule.tutor_name,
         student_user_id: schedule.student_user_id,
@@ -431,3 +441,39 @@ export const listScheduleCancellationsQuerySchema = z.object({
 });
 
 export type ListScheduleCancellationsParams = z.output<typeof listScheduleCancellationsQuerySchema>;
+
+// ---------------------------------------------------------------------------
+// Reminders (Phase 33)
+// ---------------------------------------------------------------------------
+
+/** Minutes from now until an upcoming lesson starts, on the organization's clock (negative once begun). */
+export function minutesUntilStart(lesson: Pick<UpcomingSession, 'occurs_on' | 'start_time'>, nowIso: string, timeZone?: string): number {
+  const { day: today, minutesOfDay } = zonedClockParts(nowIso, timeZone);
+  const start = parseClockTime(lesson.start_time) ?? 0;
+  const realDays = Math.round(
+    (new Date(`${lesson.occurs_on}T00:00:00Z`).getTime() - new Date(`${today}T00:00:00Z`).getTime()) / 86_400_000,
+  );
+  return realDays * 24 * 60 + start - minutesOfDay;
+}
+
+/**
+ * The first lesson whose reminder is due now -- not cancelled, inside the longest reminder its
+ * locations ask for, not yet started -- or null. Both clients show it in a bottom sheet.
+ */
+export function dueReminder(
+  lessons: readonly UpcomingSession[],
+  nowIso: string,
+  timeZone?: string,
+): { lesson: UpcomingSession; minutes: number } | null {
+  for (const lesson of lessons) {
+    if (lesson.cancellation) continue;
+    const minutes = minutesUntilStart(lesson, nowIso, timeZone);
+    if (isReminderDue(reminderLeadMinutes(lesson.locations ?? []), minutes)) return { lesson, minutes };
+  }
+  return null;
+}
+
+/** Remembering a dismissed reminder: one key per occurrence, so next week's lesson reminds again. */
+export function reminderKey(lesson: Pick<UpcomingSession, 'schedule_id' | 'occurs_on'>): string {
+  return `${lesson.schedule_id}:${lesson.occurs_on}`;
+}

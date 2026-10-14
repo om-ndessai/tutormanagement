@@ -279,6 +279,99 @@ BEGIN
 END;
 ```
 
+Phase 33 (tutoring locations, 2026-10-14) is three new tables, their indexes and five triggers.
+Nothing existing changes: a schedule made before it has no locations and stays valid until it is
+next edited, when the API asks for one.
+
+```sql
+CREATE TABLE locations (
+  id                TEXT PRIMARY KEY,
+  organization_id   TEXT NOT NULL REFERENCES organizations (id),
+  owner_user_id     TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  name              TEXT NOT NULL,
+  kind              TEXT NOT NULL CHECK (kind IN ('physical', 'virtual')),
+  address           TEXT,
+  reminder_minutes  INTEGER NOT NULL DEFAULT 0 CHECK (reminder_minutes BETWEEN 0 AND 1440),
+
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX locations_owner_idx ON locations (organization_id, owner_user_id);
+
+CREATE TABLE assignment_locations (
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  assignment_id    TEXT NOT NULL REFERENCES assignments (id) ON DELETE CASCADE,
+  location_id      TEXT NOT NULL REFERENCES locations (id) ON DELETE CASCADE,
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (assignment_id, location_id)
+);
+
+CREATE INDEX assignment_locations_location_idx ON assignment_locations (location_id);
+
+CREATE TABLE schedule_locations (
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  schedule_id      TEXT NOT NULL REFERENCES scheduled_sessions (id) ON DELETE CASCADE,
+  location_id      TEXT NOT NULL REFERENCES locations (id),
+  kind             TEXT NOT NULL CHECK (kind IN ('physical', 'virtual')),
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (schedule_id, location_id),
+  UNIQUE (schedule_id, kind)
+);
+
+CREATE INDEX schedule_locations_location_idx ON schedule_locations (location_id);
+
+CREATE TRIGGER locations_same_organization
+BEFORE INSERT ON locations
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.owner_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER locations_organization_fixed
+BEFORE UPDATE OF organization_id ON locations
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER locations_set_updated_at
+AFTER UPDATE ON locations
+FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE locations SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER assignment_locations_owner
+BEFORE INSERT ON assignment_locations
+WHEN NOT EXISTS (
+  SELECT 1 FROM assignments a JOIN locations l ON l.id = NEW.location_id
+  WHERE a.id = NEW.assignment_id
+    AND a.organization_id = NEW.organization_id
+    AND l.organization_id = NEW.organization_id
+    AND l.owner_user_id IN (a.tutor_user_id, a.student_user_id)
+)
+BEGIN
+  SELECT RAISE(ABORT, 'location_not_in_pairing');
+END;
+
+CREATE TRIGGER schedule_locations_in_pairing
+BEFORE INSERT ON schedule_locations
+WHEN NOT EXISTS (
+  SELECT 1 FROM scheduled_sessions ss
+  JOIN assignments a ON a.organization_id = ss.organization_id
+                    AND a.tutor_user_id = ss.tutor_user_id
+                    AND a.student_user_id = ss.student_user_id
+  JOIN assignment_locations al ON al.assignment_id = a.id AND al.location_id = NEW.location_id
+  JOIN locations l ON l.id = NEW.location_id AND l.kind = NEW.kind
+  WHERE ss.id = NEW.schedule_id AND ss.organization_id = NEW.organization_id
+)
+BEGIN
+  SELECT RAISE(ABORT, 'location_not_in_pairing');
+END;
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

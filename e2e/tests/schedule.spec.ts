@@ -1,5 +1,5 @@
 import { expect, test } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { scheduleLocationIds, unwrap } from '../support/api.js';
 import { PEOPLE } from '../support/people.js';
 
 /** Phase 9: standing weekly lessons, downloadable as a calendar invite. */
@@ -44,6 +44,7 @@ test.describe('recurring schedules', () => {
           start_time: '15:30',
           duration_minutes: 45,
           mode: 'virtual',
+          location_ids: await scheduleLocationIds(tutor, target.tutor_user_id, target.student_user_id, 'virtual'),
           starts_on: '2026-10-07',
           ends_on: '2026-12-16',
           location: 'https://meet.example.com/e2e',
@@ -84,6 +85,7 @@ test.describe('recurring schedules', () => {
         duration_minutes: 60,
         mode: 'in_person',
         starts_on: '2026-10-05',
+        location_ids: mine[0]!.locations.map((l: any) => l.id).slice(0, 1),
       },
     });
 

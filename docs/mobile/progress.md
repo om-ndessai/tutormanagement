@@ -179,6 +179,15 @@ native rebuild of both dev builds, so build only while the devices are free.
 > - No organization-level switch for network speech recognition, so no API change. On-device is the default, and network recognition runs only with the person's own consent.
 > - Dictation goes in the record-a-lesson sheet only. P3d (comments, reflections, the assessment sheet) is deferred.
 
+## Portal Phase 33 — tutoring locations
+
+- [x] 46. Mobile: Tutoring locations — a person's locations, a pairing's, a schedule's places, and the
+  reminder sheet on Home *(built 2026-10-14: typecheck, lint, jest, export green; tested 2026-10-14:
+  `locations/*` (person-locations, parent-child-locations, pairing-locations, schedule-locations,
+  reminder) green on iOS and Android; `schedule/*`, `pairings/*`, `people/*`, `home/*` re-run on both
+  (flow fixes: pairings/admin scrolls to Save, schedule/browse centres "Show all", seed-next-up.js sends
+  `location_ids`); `npm run smoke -- mobile` green on both)*
+
 ## Phase 4 — Google sign-in
 
 - [ ] API: bearer sessions for the mobile app

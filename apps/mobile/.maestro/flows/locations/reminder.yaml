@@ -1,0 +1,118 @@
+# The in-app lesson reminder (Phase 33). Alex has a lesson with Ben in a new online "Reminder room"
+# starting a little under a day from now (seed-reminder.js). On his own record he sets that room's
+# reminder to a day (1440 minutes); Home then raises the reminder sheet: when, who, the place and
+# its meeting link -- no money. He dismisses it; it stays gone, including after the app is
+# relaunched (the dismissal is kept on the phone). The room and the lesson are removed afterwards.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript: ../../scripts/clean-locations.js
+  - runScript: ../../scripts/seed-reminder.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript: ../../scripts/clean-locations.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# Reminders are 0 in the seed: no sheet yet.
+- extendedWaitUntil:
+    visible:
+      id: carousel-next
+    timeout: 30000
+- assertNotVisible:
+    id: lesson-reminder
+# His own record: the room's reminder to a day.
+# Straight to My profile: a tap on the account sheet's row while the sheet still rises can land on
+# its backdrop and close it instead (seen once on iOS).
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://profile
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 20000
+- scrollUntilVisible:
+    element: 'Edit ${output.locationName}'
+    direction: DOWN
+    timeout: 30000
+- tapOn: 'Edit ${output.locationName}'
+- extendedWaitUntil:
+    visible:
+      id: location-form-reminder
+    timeout: 15000
+- tapOn:
+    id: location-form-reminder
+- eraseText: 5
+- inputText: '1440'
+- hideKeyboard
+- tapOn:
+    id: location-form-save
+- extendedWaitUntil:
+    visible: 'Location updated\.'
+    timeout: 15000
+- scrollUntilVisible:
+    element: 'Reminder 1440 min before'
+    direction: DOWN
+    timeout: 20000
+# The sheet shows on Home only, not on his record.
+- assertNotVisible:
+    id: lesson-reminder
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: lesson-reminder
+    timeout: 30000
+- assertVisible: 'Your lesson starts in [0-9]+ minutes'
+- assertVisible: '.*Alex Chen with ${output.studentName}.*'
+- assertVisible: '${output.locationName}.*Online'
+# The meeting link, a tappable link (its label names the room; not opened here).
+- assertVisible:
+    id: 'lesson-reminder-link-.*'
+    text: 'Open ${output.locationName}'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: locations-reminder
+# Dismissed, it stays gone.
+- tapOn:
+    id: lesson-reminder-dismiss
+- extendedWaitUntil:
+    notVisible:
+      id: lesson-reminder
+    timeout: 5000
+- tapOn: 'Schedule'
+- tapOn: 'Home'
+- extendedWaitUntil:
+    visible:
+      id: carousel-next
+    timeout: 20000
+- assertNotVisible:
+    id: lesson-reminder
+# Relaunch without clearing the app's storage: the dismissal is remembered on the phone.
+- stopApp
+- launchApp:
+    clearState: false
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: ../../subflows/dev-client-load.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: carousel-next
+    timeout: 30000
+- assertNotVisible:
+    id: lesson-reminder
+- takeScreenshot: locations-reminder-dismissed

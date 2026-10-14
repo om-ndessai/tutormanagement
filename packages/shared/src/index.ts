@@ -7,6 +7,7 @@ export * from './teaching.js';
 export * from './session-notes.js';
 export * from './progress.js';
 export * from './schedules.js';
+export * from './locations.js';
 export * from './payments.js';
 export * from './dashboard.js';
 export * from './organizations.js';

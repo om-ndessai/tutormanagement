@@ -9,6 +9,8 @@ import type {
 import type { OrgId } from '../lib/org.js';
 import { teachingScopeSql } from '../lib/scope.js';
 import { clearCancellationsStatement } from './schedule-cancellations.js';
+import { locationsForSchedules, scheduleLocationStatements } from './locations.js';
+import type { Location } from '@tmi/shared';
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
@@ -23,14 +25,21 @@ const SELECT_SCHEDULE = `
   JOIN users st ON st.id = ss.student_user_id
 `;
 
-interface ScheduleRow extends Omit<ScheduledSession, 'is_active'> {
+interface ScheduleRow extends Omit<ScheduledSession, 'is_active' | 'locations'> {
   is_active: number;
 }
 
 const toSchedule = (row: ScheduleRow): ScheduledSession => ({
   ...row,
   is_active: row.is_active === 1,
+  locations: [],
 });
+
+/** Phase 33: each schedule with its locations. */
+async function withLocations(db: D1Database, org: OrgId, list: ScheduledSession[]): Promise<ScheduledSession[]> {
+  const byId = await locationsForSchedules(db, org, list.map((s) => s.id));
+  return list.map((s) => ({ ...s, locations: byId.get(s.id) ?? [] }));
+}
 
 export async function listSchedules(
   db: D1Database,
@@ -66,7 +75,7 @@ export async function listSchedules(
     .bind(...values)
     .all<ScheduleRow>();
 
-  return (result.results ?? []).map(toSchedule);
+  return withLocations(db, org, (result.results ?? []).map(toSchedule));
 }
 
 /** A schedule of this organization. One from elsewhere is null. */
@@ -79,17 +88,20 @@ export async function getSchedule(
     .prepare(`${SELECT_SCHEDULE} WHERE ss.organization_id = ? AND ss.id = ?`)
     .bind(org, id)
     .first<ScheduleRow>();
-  return row ? toSchedule(row) : null;
+  return row ? ((await withLocations(db, org, [toSchedule(row)]))[0] ?? null) : null;
 }
 
 export async function createSchedule(
   db: D1Database,
   org: OrgId,
   input: SchedulePayload,
+  locations: readonly Pick<Location, 'id' | 'kind'>[],
 ): Promise<ScheduledSession> {
   const id = crypto.randomUUID();
 
-  await db
+  // The schedule and its locations in one batch: no schedule exists, even for a moment, without them.
+  await db.batch([
+    db
     .prepare(
       `INSERT INTO scheduled_sessions
          (id, organization_id, tutor_user_id, student_user_id, day_of_week, start_time,
@@ -109,8 +121,9 @@ export async function createSchedule(
       input.ends_on,
       input.location,
       input.notes,
-    )
-    .run();
+    ),
+    ...scheduleLocationStatements(db, org, id, locations),
+  ]);
 
   const created = await getSchedule(db, org, id);
   if (!created) throw new Error('Insert into scheduled_sessions returned no row.');
@@ -129,7 +142,11 @@ export async function updateSchedule(
   org: OrgId,
   id: string,
   input: ScheduleUpdatePayload,
-  options: { clearCancellations?: readonly string[] } = {},
+  options: {
+    clearCancellations?: readonly string[];
+    /** Phase 33: replaces the schedule's locations, in the same batch as the edit. */
+    locations?: readonly Pick<Location, 'id' | 'kind'>[];
+  } = {},
 ): Promise<ScheduledSession | null> {
   const assignments: string[] = [];
   const values: unknown[] = [];
@@ -155,7 +172,7 @@ export async function updateSchedule(
     values.push(input.is_active ? 1 : 0);
   }
 
-  if (assignments.length === 0) return getSchedule(db, org, id);
+  if (assignments.length === 0 && !options.locations) return getSchedule(db, org, id);
 
   assignments.push(`updated_at = ${NOW}`);
 
@@ -170,6 +187,7 @@ export async function updateSchedule(
   if (options.clearCancellations?.length) {
     statements.push(clearCancellationsStatement(db, id, options.clearCancellations));
   }
+  if (options.locations) statements.push(...scheduleLocationStatements(db, org, id, options.locations));
 
   const [result] = await db.batch(statements);
   if (!result?.meta.changes) return null;

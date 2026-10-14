@@ -6,6 +6,7 @@
 var ORG = 'chmi';
 var ALEX = 'alex.chen.math@gmail.com';
 var ALEX_ID = '00000000-0000-4000-8000-000000000003';
+var ALEX_ONLINE_ROOM = '0c100000-0000-4000-8000-000000000002';
 var SOFIA = { id: '00000000-0000-4000-8000-000000000008', name: 'Sofia Okafor', day: 2 };
 var BEN = { id: '00000000-0000-4000-8000-000000000009', name: 'Ben Whitfield', day: 6 };
 
@@ -44,6 +45,9 @@ var response = http.post('http://localhost:8787/api/schedules', {
     duration_minutes: duration,
     mode: 'virtual',
     starts_on: today,
+    // Phase 33: a schedule has at least one location from its pairing -- Alex's online room,
+    // which the seed allows on both his pairings.
+    location_ids: [ALEX_ONLINE_ROOM],
   }),
 });
 if (response.status !== 201 && response.status !== 200) {

@@ -42,6 +42,7 @@ import { useAuditEvents } from '@/features/audit/api';
 import { SsnReceiptButton } from './ssn-receipt-button';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { CommentThread } from '@/features/comments/comment-thread';
+import { LocationsList } from '@/features/locations/locations-list';
 import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 
 function initials(name: string) {
@@ -266,6 +267,16 @@ export function UserDetailView({
           </dl>
         </Section>
       )}
+
+      {/* Phase 33: where they like to have lessons -- for the office, the person, and a student's parents. */}
+      {(user.roles.includes('tutor') || user.roles.includes('student')) &&
+        ((viewer?.roles.includes('admin') ?? false) ||
+          viewer?.id === user.id ||
+          user.guardians.some((guardian) => guardian.user_id === viewer?.id)) && (
+          <Section title="Locations" icon={<MapPinIcon className="size-4" />}>
+            <LocationsList ownerId={user.id} ownerName={user.full_name} />
+          </Section>
+        )}
 
       {user.guardians.length > 0 && (
         <Section title="Parents & guardians" icon={<HeartHandshakeIcon className="size-4" />}>

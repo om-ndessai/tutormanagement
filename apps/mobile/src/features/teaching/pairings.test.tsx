@@ -24,6 +24,12 @@ jest.mock('./api', () => ({
   useCreateAssignment: () => ({ mutateAsync: mockCreate, isPending: false }),
   useUpdateAssignment: () => ({ mutateAsync: mockUpdate, isPending: false }),
 }));
+const mockLocations = jest.fn();
+const mockSetLocations = jest.fn();
+jest.mock('@/features/locations/api', () => ({
+  useLocations: (userId: string | null) => mockLocations(userId),
+  useSetPairingLocations: () => ({ mutateAsync: mockSetLocations, isPending: false }),
+}));
 jest.mock('@/features/users/api', () => ({
   useUsers: () => ({ data: { data: [] } }),
   useUserDetail: () => ({ data: undefined }),
@@ -44,6 +50,7 @@ function pairing(overrides: Partial<Assignment> = {}): Assignment {
     effective_rate_virtual_cents: 6500,
     is_active: true,
     notes: 'Weekly',
+    locations: [],
     created_at: '2026-09-01T00:00:00Z',
     updated_at: '2026-09-01T00:00:00Z',
     ...overrides,
@@ -57,6 +64,10 @@ const blanked = (row: Assignment): Assignment => ({
   rate_virtual_cents: null,
   effective_rate_in_person_cents: null,
   effective_rate_virtual_cents: null,
+});
+
+beforeEach(() => {
+  mockLocations.mockReturnValue({ isPending: false, data: { data: [] } });
 });
 
 describe('pairings', () => {
@@ -139,6 +150,39 @@ describe('pairings', () => {
         id: 'a1',
         input: { rate_in_person_cents: 8250, rate_virtual_cents: null, notes: 'Weekly' },
       }),
+    );
+  });
+
+  it('offers the tutor’s and the student’s places, and saves the pairing’s set when it changes', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'admin-1', roles: ['admin'] } });
+    mockUpdate.mockResolvedValue({});
+    mockSetLocations.mockResolvedValue({});
+    const place = (id: string, owner: string, kind: 'physical' | 'virtual') => ({
+      id,
+      owner_user_id: owner,
+      owner_name: owner === TUTOR_ID ? 'Alex Chen' : 'Sofia Okafor',
+      name: id,
+      kind,
+      address: null,
+      reminder_minutes: 0,
+      created_at: '2026-10-01T00:00:00Z',
+      updated_at: '2026-10-01T00:00:00Z',
+    });
+    const room = place('room', TUTOR_ID, 'physical');
+    const online = place('online', TUTOR_ID, 'virtual');
+    const home = place('home', 'student', 'physical');
+    mockLocations.mockImplementation((userId: string | null) => ({
+      isPending: false,
+      data: { data: userId === TUTOR_ID ? [room, online] : [home] },
+    }));
+    await renderWithProviders(<AssignmentForm existing={pairing({ locations: [room, online, home] })} />);
+    expect(screen.getByTestId('assignment-location-home')).toBeOnTheScreen();
+    expect(screen.getByLabelText('room · In person · Alex Chen')).toBeOnTheScreen();
+
+    await fireEvent.press(screen.getByTestId('assignment-location-home'));
+    await fireEvent.press(screen.getByTestId('assignment-save'));
+    await waitFor(() =>
+      expect(mockSetLocations).toHaveBeenCalledWith({ assignmentId: 'a1', locationIds: ['room', 'online'] }),
     );
   });
 

@@ -49,6 +49,9 @@ DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS session_reflections;
 DROP TABLE IF EXISTS session_assessments;
 DROP TABLE IF EXISTS session_write_ups;
+DROP TABLE IF EXISTS schedule_locations;
+DROP TABLE IF EXISTS assignment_locations;
+DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS schedule_cancellations;
 DROP TABLE IF EXISTS scheduled_sessions;
 DROP TABLE IF EXISTS session_drafts;
@@ -618,6 +621,69 @@ CREATE TABLE schedule_cancellations (
 
 CREATE INDEX schedule_cancellations_on_idx ON schedule_cancellations (occurs_on);
 -- END PHASE 24 TABLES
+
+-- BEGIN PHASE 33 TABLES
+-- ---------------------------------------------------------------------------
+-- locations - where a person likes to have lessons
+-- ---------------------------------------------------------------------------
+-- A tutor's or a student's own places: "Main library, room 2", "Home",
+-- "Zoom". Owned by ONE person in ONE organization (two organizations can
+-- sensibly disagree about where someone teaches). `address` is a street
+-- address for a physical place, or a meeting link or joining instructions for
+-- a virtual one.
+--
+-- `reminder_minutes` > 0: the portal and the app remind people about a lesson
+-- there that many minutes before it starts (a bottom sheet today; a push
+-- notification later). 0 means no reminder.
+--
+-- The API decides who may write one: admins anyone's, a tutor their own, a
+-- parent their child's; the owner holds the tutor or student role. Who may
+-- read one is R16 in docs/data-exposure.md.
+CREATE TABLE locations (
+  id                TEXT PRIMARY KEY,
+  organization_id   TEXT NOT NULL REFERENCES organizations (id),
+  owner_user_id     TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+
+  name              TEXT NOT NULL,
+  kind              TEXT NOT NULL CHECK (kind IN ('physical', 'virtual')),
+  address           TEXT,
+  reminder_minutes  INTEGER NOT NULL DEFAULT 0 CHECK (reminder_minutes BETWEEN 0 AND 1440),
+
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX locations_owner_idx ON locations (organization_id, owner_user_id);
+
+-- A pairing's allowed places: some of its tutor's and its student's own
+-- locations (the API checks the owner; the database cannot see the pairing's
+-- two people from here without a trigger per insert, which is below).
+CREATE TABLE assignment_locations (
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  assignment_id    TEXT NOT NULL REFERENCES assignments (id) ON DELETE CASCADE,
+  location_id      TEXT NOT NULL REFERENCES locations (id) ON DELETE CASCADE,
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (assignment_id, location_id)
+);
+
+CREATE INDEX assignment_locations_location_idx ON assignment_locations (location_id);
+
+-- A schedule's places, from its pairing's: at least one (the API), and never
+-- two of one kind (the UNIQUE). `kind` is the location's, copied at insert and
+-- checked by a trigger, so the database itself holds the "one physical, one
+-- virtual" rule.
+CREATE TABLE schedule_locations (
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  schedule_id      TEXT NOT NULL REFERENCES scheduled_sessions (id) ON DELETE CASCADE,
+  location_id      TEXT NOT NULL REFERENCES locations (id),
+  kind             TEXT NOT NULL CHECK (kind IN ('physical', 'virtual')),
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (schedule_id, location_id),
+  UNIQUE (schedule_id, kind)
+);
+
+CREATE INDEX schedule_locations_location_idx ON schedule_locations (location_id);
+-- END PHASE 33 TABLES
 
 
 -- ---------------------------------------------------------------------------
@@ -1409,6 +1475,57 @@ BEFORE UPDATE OF organization_id ON sessions
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER locations_same_organization
+BEFORE INSERT ON locations
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.owner_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER locations_organization_fixed
+BEFORE UPDATE OF organization_id ON locations
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER locations_set_updated_at
+AFTER UPDATE ON locations
+FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE locations SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+-- A pairing's location belongs to one of the pairing's two people, in its organization.
+CREATE TRIGGER assignment_locations_owner
+BEFORE INSERT ON assignment_locations
+WHEN NOT EXISTS (
+  SELECT 1 FROM assignments a JOIN locations l ON l.id = NEW.location_id
+  WHERE a.id = NEW.assignment_id
+    AND a.organization_id = NEW.organization_id
+    AND l.organization_id = NEW.organization_id
+    AND l.owner_user_id IN (a.tutor_user_id, a.student_user_id)
+)
+BEGIN
+  SELECT RAISE(ABORT, 'location_not_in_pairing');
+END;
+
+-- A schedule's location is one of its pairing's, and `kind` is the location's own.
+CREATE TRIGGER schedule_locations_in_pairing
+BEFORE INSERT ON schedule_locations
+WHEN NOT EXISTS (
+  SELECT 1 FROM scheduled_sessions ss
+  JOIN assignments a ON a.organization_id = ss.organization_id
+                    AND a.tutor_user_id = ss.tutor_user_id
+                    AND a.student_user_id = ss.student_user_id
+  JOIN assignment_locations al ON al.assignment_id = a.id AND al.location_id = NEW.location_id
+  JOIN locations l ON l.id = NEW.location_id AND l.kind = NEW.kind
+  WHERE ss.id = NEW.schedule_id AND ss.organization_id = NEW.organization_id
+)
+BEGIN
+  SELECT RAISE(ABORT, 'location_not_in_pairing');
 END;
 
 CREATE TRIGGER scheduled_sessions_same_organization

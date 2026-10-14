@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 import { expect, test } from '../support/fixtures.js';
-import { idOf, unwrap } from '../support/api.js';
+import { scheduleLocationIds, idOf, unwrap } from '../support/api.js';
 import { PEOPLE } from '../support/people.js';
 
 /**
@@ -19,11 +19,14 @@ import { PEOPLE } from '../support/people.js';
  */
 
 async function makeSlot(admin: Page, extra: Record<string, unknown> = {}) {
+  const tutorId = await idOf(admin, PEOPLE.tutor.email);
+  const studentId = await idOf(admin, PEOPLE.student.email);
   return unwrap<any>(
     await admin.request.post('/api/schedules', {
       data: {
-        tutor_user_id: await idOf(admin, PEOPLE.tutor.email),
-        student_user_id: await idOf(admin, PEOPLE.student.email),
+        tutor_user_id: tutorId,
+        student_user_id: studentId,
+        location_ids: await scheduleLocationIds(admin, tutorId, studentId),
         day_of_week: 3,
         start_time: '15:00',
         duration_minutes: 60,

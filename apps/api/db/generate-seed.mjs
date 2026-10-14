@@ -1004,6 +1004,47 @@ const plansB = [
   [B, q(id('0b800000', 1)), q(B_CAST.lily), q(id('0b700000', 1)), q('Fractions with confidence.'), q('BA5'), q(isoDay(35)), q(isoDay(-120)), 1, 60, q('Riverside: weekly, fractions first.'), q('active'), q(B_CAST.rosa)],
 ];
 
+// --- locations (Phase 33) ----------------------------------------------------
+// Every tutor has an in-person place and an online room; every student a home. Each pairing
+// allows its tutor's two and its student's home; each schedule uses its tutor's place of the
+// schedule's kind. Reminders are 0 in the seed, so no test meets a reminder sheet it did not ask for.
+const unq = (v) => (v === 'NULL' ? null : v.slice(1, -1));
+const locations = [];
+const locationKey = new Map();
+let locSeq = 0;
+function locationFor(org, owner, kind, name, address) {
+  const key = `${org}|${owner}|${kind}`;
+  if (!locationKey.has(key)) {
+    locSeq += 1;
+    const lid = id('0c100000', locSeq);
+    locationKey.set(key, lid);
+    locations.push([org, q(lid), q(owner), q(name), q(kind), address ? q(address) : 'NULL', 0]);
+  }
+  return locationKey.get(key);
+}
+const pairingLocations = [];
+const pairingsByPair = new Map();
+function allowLocations(org, assignmentId, tutor, student, studio) {
+  const ids = [
+    locationFor(org, tutor, 'physical', studio, studio),
+    locationFor(org, tutor, 'virtual', 'Online room', 'https://meet.example.com/lessons'),
+    locationFor(org, student, 'physical', 'Home', null),
+  ];
+  for (const lid of ids) pairingLocations.push([org, q(assignmentId), q(lid)]);
+  pairingsByPair.set(`${org}|${tutor}|${student}`, true);
+}
+for (const a of assignments) allowLocations(A, a.id, a.tutor, a.student, 'Institute, room 2');
+for (const row of assignmentsB) allowLocations(row[0], unq(row[1]), unq(row[2]), unq(row[3]), 'Riverside library');
+const scheduleLocations = [];
+for (const [org, row] of [...schedules.map((r) => [A, r]), ...schedulesB.map((r) => [r[0], r.slice(1)])]) {
+  const tutor = unq(row[1]);
+  const student = unq(row[2]);
+  if (!pairingsByPair.has(`${org}|${tutor}|${student}`)) throw new Error(`Seed schedule ${row[0]} has no pairing.`);
+  const kind = unq(row[6]) === 'virtual' ? 'virtual' : 'physical';
+  const lid = locationKey.get(`${org}|${tutor}|${kind}`);
+  scheduleLocations.push([org, row[0], q(lid), q(kind)]);
+}
+
 const sql = `-- ===========================================================================
 --  Test and development seed  --  GENERATED FILE, DO NOT EDIT BY HAND
 -- ===========================================================================
@@ -1026,6 +1067,9 @@ const sql = `-- ================================================================
 
 DELETE FROM notification_log;
 DELETE FROM session_reflections;
+DELETE FROM schedule_locations;
+DELETE FROM assignment_locations;
+DELETE FROM locations;
 DELETE FROM schedule_cancellations;
 DELETE FROM session_assessments;
 DELETE FROM session_write_ups;
@@ -1101,6 +1145,11 @@ ${insert('payments', ['organization_id', 'id', 'direction', 'party_user_id', 'st
 
 -- --- standing weekly lessons -----------------------------------------------
 ${insert('scheduled_sessions', ['organization_id', 'id', 'tutor_user_id', 'student_user_id', 'day_of_week', 'start_time', 'duration_minutes', 'mode', 'starts_on', 'ends_on', 'location', 'notes'], [...inOrg(A, schedules), ...schedulesB])}
+
+-- --- where people like to have lessons (Phase 33) -------------------------
+${insert('locations', ['organization_id', 'id', 'owner_user_id', 'name', 'kind', 'address', 'reminder_minutes'], locations)}
+${insert('assignment_locations', ['organization_id', 'assignment_id', 'location_id'], pairingLocations)}
+${insert('schedule_locations', ['organization_id', 'schedule_id', 'location_id', 'kind'], scheduleLocations)}
 
 -- --- single lessons of those called off (Phase 24) -------------------------
 ${insert('schedule_cancellations', ['schedule_id', 'occurs_on', 'note', 'cancelled_by_user_id', 'cancelled_as', 'created_at'], scheduleCancellations)}

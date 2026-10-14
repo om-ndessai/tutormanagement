@@ -1,7 +1,13 @@
 // Ported from apps/web/src/features/schedules/schedules-page.tsx @ 1132322 (one slot's card).
 // Everyone who can see a schedule can download it; only its tutor (or an admin) can change it.
 // Expanding the card lists its coming dates. No money: a schedule carries none.
-import { SESSION_MODE_LABELS, describeSchedule, zonedClockParts, type VisibleSchedule } from '@tmi/shared';
+import {
+  SESSION_MODE_LABELS,
+  describeLocation,
+  describeSchedule,
+  zonedClockParts,
+  type VisibleSchedule,
+} from '@tmi/shared';
 import { View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 
@@ -62,6 +68,11 @@ export function ScheduleCard({
             from {formatPlainDay(schedule.starts_on, today)}
             {schedule.ends_on ? ` to ${formatPlainDay(schedule.ends_on, today)}` : ', ongoing'}
           </Text>
+          {schedule.locations.length > 0 ? (
+            <Text testID={`schedule-locations-${schedule.id}`} variant="bodySmall" style={{ color: muted }}>
+              {schedule.locations.map((place) => describeLocation(place)).join(' · ')}
+            </Text>
+          ) : null}
           {schedule.location ? (
             <Text variant="bodySmall" style={{ color: muted }} numberOfLines={1}>
               {schedule.location}

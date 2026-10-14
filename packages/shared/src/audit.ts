@@ -25,6 +25,11 @@ export const AUDIT_ACTIONS = [
   'assignment.created',
   'assignment.updated',
   'assignment.removed',
+  'assignment.locations_set',
+
+  'location.created',
+  'location.updated',
+  'location.removed',
 
   'tutor.ssn_confirmed',
   'tutor.ssn_cleared',
@@ -104,6 +109,10 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'assignment.created': 'Student assigned',
   'assignment.updated': 'Assignment updated',
   'assignment.removed': 'Assignment removed',
+  'assignment.locations_set': 'Pairing locations changed',
+  'location.created': 'Location added',
+  'location.updated': 'Location updated',
+  'location.removed': 'Location removed',
 
   'tutor.ssn_confirmed': 'SSN confirmed received',
   'tutor.ssn_cleared': 'SSN receipt withdrawn',

@@ -41,3 +41,39 @@ export async function idOf(page: Page, email: string): Promise<string> {
   expect(users.length, `expected to find ${email}`).toBeGreaterThan(0);
   return users[0]!.id;
 }
+
+/**
+ * Phase 33: ids of a pairing's location of one kind, to schedule with. A schedule needs at least
+ * one. Seeded pairings have their tutor's in-person place and online room; a pairing a test
+ * made itself has none, so with an admin's page one is added for the tutor and allowed.
+ */
+export async function scheduleLocationIds(
+  page: Page,
+  tutorId: string,
+  studentId: string,
+  kind: 'physical' | 'virtual' = 'physical',
+): Promise<string[]> {
+  const pairings = await unwrap<any[]>(
+    await page.request.get(`/api/assignments?tutor_user_id=${tutorId}&student_user_id=${studentId}`),
+    'reading the pairing',
+  );
+  const pairing = pairings[0];
+  if (!pairing) throw new Error('scheduleLocationIds: no pairing for that tutor and student');
+  const existing = (pairing.locations as any[]).find((l) => l.kind === kind && l.owner_user_id === tutorId)
+    ?? (pairing.locations as any[]).find((l) => l.kind === kind);
+  if (existing) return [existing.id];
+
+  const created = await unwrap<any>(
+    await page.request.post('/api/locations', {
+      data: { owner_user_id: tutorId, name: kind === 'virtual' ? 'Test room' : 'Test studio', kind, reminder_minutes: 0 },
+    }),
+    'adding a location for the tutor',
+  );
+  await unwrap<any>(
+    await page.request.put(`/api/assignments/${pairing.id}/locations`, {
+      data: { location_ids: [...(pairing.locations as any[]).map((l) => l.id), created.id] },
+    }),
+    'allowing it for the pairing',
+  );
+  return [created.id];
+}

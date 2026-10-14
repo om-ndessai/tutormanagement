@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  describeLocation,
   DAYS_OF_WEEK,
   SESSION_MODE_LABELS,
   describeSchedule,
@@ -195,6 +196,11 @@ export function SchedulesPage() {
                               {schedule.ends_on ? ` to ${schedule.ends_on}` : ', ongoing'}
                             </span>
                           </p>
+                          {schedule.locations.length > 0 && (
+                            <p className="text-muted-foreground mt-1 truncate text-xs" data-testid="schedule-locations">
+                              {schedule.locations.map((location) => describeLocation(location)).join(' · ')}
+                            </p>
+                          )}
                           {schedule.location && (
                             <p className="text-muted-foreground mt-1 truncate text-xs">
                               {schedule.location}

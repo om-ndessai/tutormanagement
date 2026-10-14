@@ -517,7 +517,11 @@ function Place({ occurrence, inverse }: { occurrence: UpcomingSession; inverse?:
       <Icon source="map-marker-outline" size={12} color={color} />
       <Text numberOfLines={1} style={{ flexShrink: 1, fontSize: 12, color }}>
         {SESSION_MODE_LABELS[occurrence.mode]}
-        {occurrence.location ? ` · ${occurrence.location}` : ''}
+        {occurrence.locations.length > 0
+          ? ` · ${occurrence.locations.map((place) => place.name).join(' / ')}`
+          : occurrence.location
+            ? ` · ${occurrence.location}`
+            : ''}
       </Text>
     </View>
   );

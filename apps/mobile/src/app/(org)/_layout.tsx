@@ -95,6 +95,15 @@ export default function OrgLayout() {
               }}
             />
             <Stack.Screen
+              name="location-form"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: [0.9, 1],
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
               name="schedule-form"
               options={{
                 presentation: 'formSheet',

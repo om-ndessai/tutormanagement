@@ -1,0 +1,37 @@
+# Assert a Paper checkbox (env ID, its testID) is ticked or not (env CHECKED, "true"|"false").
+# Android reports the state in the element's `checked`; iOS only in its accessibility value,
+# "checkbox, checked" / "checkbox, unchecked", which Maestro reads as the element's text.
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      platform: Android
+      true: ${CHECKED == 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          checked: true
+- runFlow:
+    when:
+      platform: Android
+      true: ${CHECKED != 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          checked: false
+- runFlow:
+    when:
+      platform: iOS
+      true: ${CHECKED == 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          text: 'checkbox, checked'
+- runFlow:
+    when:
+      platform: iOS
+      true: ${CHECKED != 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          text: 'checkbox, unchecked'

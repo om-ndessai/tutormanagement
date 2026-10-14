@@ -1,0 +1,125 @@
+# A pairing's places (Phase 33). Priya edits the pairing of Alex and Sofia: the checklist offers
+# Alex's "Institute, room 2" and "Online room" and Sofia's "Home", all ticked as the seed has them.
+# She unticks Sofia's Home and saves; reopened, it is still unticked and the others still ticked.
+# She ticks it again (the flow's own clean-up; clean-locations.js puts it back if it fails part-way).
+# The pairing's rate fields are the office's (admin only); the checklist itself carries no money.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-locations.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-locations.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assignment-form?id=a0000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: assignment-location-0c100000-0000-4000-8000-000000000003
+    timeout: 20000
+- assertVisible: 'Edit pairing'
+- assertVisible:
+    id: assignment-locations
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000001
+      CHECKED: 'true'
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000002
+      CHECKED: 'true'
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000003
+      CHECKED: 'true'
+- assertVisible: 'Home · In person · Sofia Okafor'
+- assertVisible: 'Institute, room 2 · In person · Alex Chen'
+- assertVisible: 'Online room · Online · Alex Chen'
+- takeScreenshot: locations-pairing-checklist
+# Untick Sofia's Home and save.
+- tapOn:
+    id: assignment-location-0c100000-0000-4000-8000-000000000003
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000003
+      CHECKED: 'false'
+- scrollUntilVisible:
+    element:
+      id: assignment-save
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: assignment-save
+- extendedWaitUntil:
+    visible: 'Pairing updated\.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: assignment-locations
+    timeout: 10000
+# Reopened, the choice held.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assignment-form?id=a0000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: assignment-location-0c100000-0000-4000-8000-000000000003
+    timeout: 20000
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000003
+      CHECKED: 'false'
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000001
+      CHECKED: 'true'
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000002
+      CHECKED: 'true'
+- takeScreenshot: locations-pairing-unticked
+# Tick it again.
+- tapOn:
+    id: assignment-location-0c100000-0000-4000-8000-000000000003
+- scrollUntilVisible:
+    element:
+      id: assignment-save
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: assignment-save
+- extendedWaitUntil:
+    visible: 'Pairing updated\.'
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assignment-form?id=a0000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: assignment-location-0c100000-0000-4000-8000-000000000003
+    timeout: 20000
+- runFlow:
+    file: ../../subflows/assert-checkbox.yaml
+    env:
+      ID: assignment-location-0c100000-0000-4000-8000-000000000003
+      CHECKED: 'true'

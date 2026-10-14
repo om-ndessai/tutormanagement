@@ -1,0 +1,118 @@
+# A tutor's own locations, kept by the office (Phase 33). Priya opens Alex's record: the Locations
+# section lists his "Institute, room 2" (in person) and "Online room" (online). She adds "Library",
+# renames it, removes it; removing "Institute, room 2", which his schedules use, is refused with
+# the server's 409 message and the place stays. Cleans up after itself.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-locations.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-locations.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people/00000000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 20000
+- assertVisible: 'Alex Chen'
+- scrollUntilVisible:
+    element:
+      id: locations-add
+    direction: DOWN
+    timeout: 30000
+- assertVisible:
+    id: person-section-locations
+- assertVisible:
+    id: location-0c100000-0000-4000-8000-000000000001
+- assertVisible: 'Institute, room 2.*In person'
+- assertVisible:
+    id: location-0c100000-0000-4000-8000-000000000002
+- assertVisible: 'Online room.*Online'
+- assertVisible: 'https://meet.example.com/lessons'
+- takeScreenshot: locations-person-list
+# Add one.
+- tapOn:
+    id: locations-add
+- extendedWaitUntil:
+    visible:
+      id: location-form-name
+    timeout: 15000
+- assertVisible: 'Add a location'
+- assertVisible: "Where Alex Chen likes to have lessons."
+- tapOn:
+    id: location-form-name
+- inputText: 'Library'
+- tapOn:
+    id: location-form-address
+- inputText: '310 Library Rd'
+- hideKeyboard
+- takeScreenshot: locations-person-add
+- tapOn:
+    id: location-form-save
+- extendedWaitUntil:
+    visible: 'Location added\.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 10000
+- scrollUntilVisible:
+    element: 'Edit Library'
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '310 Library Rd'
+# Rename it.
+- tapOn: 'Edit Library'
+- extendedWaitUntil:
+    visible: 'Edit location'
+    timeout: 15000
+- tapOn:
+    id: location-form-name
+- eraseText: 20
+- inputText: 'Library, room 4'
+- hideKeyboard
+- tapOn:
+    id: location-form-save
+- extendedWaitUntil:
+    visible: 'Location updated\.'
+    timeout: 15000
+- scrollUntilVisible:
+    element: 'Remove Library, room 4'
+    direction: DOWN
+    timeout: 20000
+- takeScreenshot: locations-person-renamed
+# Remove it.
+- tapOn: 'Remove Library, room 4'
+- extendedWaitUntil:
+    visible: 'Removed Library, room 4\.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible: 'Remove Library, room 4'
+    timeout: 10000
+# A place a schedule uses cannot go.
+- scrollUntilVisible:
+    element:
+      id: location-remove-0c100000-0000-4000-8000-000000000001
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: location-remove-0c100000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible: '.*schedules? uses? this location\. Choose another location for (it|them) first\.'
+    timeout: 15000
+- takeScreenshot: locations-person-in-use
+- assertVisible:
+    id: location-0c100000-0000-4000-8000-000000000001

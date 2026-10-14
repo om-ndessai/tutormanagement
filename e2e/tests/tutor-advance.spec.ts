@@ -1,5 +1,5 @@
 import { expect, test } from '../support/fixtures.js';
-import { idOf, unwrap } from '../support/api.js';
+import { scheduleLocationIds, idOf, unwrap } from '../support/api.js';
 import { PEOPLE } from '../support/people.js';
 
 /**
@@ -181,6 +181,7 @@ test.describe('tutor advances', () => {
             duration_minutes: 60,
             mode: 'in_person',
             starts_on: tomorrow,
+            location_ids: await scheduleLocationIds(admin, tutor.id, student.id),
           },
         }),
         'scheduling an hour a week',

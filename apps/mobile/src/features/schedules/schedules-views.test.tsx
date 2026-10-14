@@ -35,6 +35,7 @@ function schedule(overrides: Partial<VisibleSchedule> = {}): VisibleSchedule {
     starts_on: '2026-09-01',
     ends_on: '2099-12-18',
     location: null,
+    locations: [],
     notes: null,
     is_active: true,
     created_at: '2026-09-01T00:00:00Z',

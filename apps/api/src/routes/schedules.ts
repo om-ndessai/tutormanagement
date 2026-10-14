@@ -16,7 +16,10 @@ import {
   zonedClockParts,
   scheduleInputSchema,
   scheduleUpdateSchema,
+  scheduleLocationProblem,
   type ApiOk,
+  type Assignment,
+  type Location,
   type ScheduleCancellation,
   type ScheduledSession,
   type UpcomingCancellation,
@@ -54,6 +57,28 @@ import {
 } from '../repositories/schedules.js';
 
 const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid schedule id.' }) });
+
+/**
+ * Phase 33: a schedule's locations come from its pairing's, at least one and no more than one of
+ * each kind. Returns the chosen locations, or refuses with a field error.
+ */
+function chooseScheduleLocations(assignment: Assignment, ids: readonly string[]): Location[] {
+  const allowed = new Map(assignment.locations.map((location) => [location.id, location]));
+  const chosen = [...new Set(ids)].map((id) => allowed.get(id));
+  if (chosen.some((location) => !location)) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      location_ids: [
+        assignment.locations.length === 0
+          ? `${assignment.student_name} and ${assignment.tutor_name} have no locations yet. An admin adds them to the pairing.`
+          : 'Choose from this pairing\'s locations.',
+      ],
+    });
+  }
+  const locations = chosen as Location[];
+  const problem = scheduleLocationProblem(locations);
+  if (problem) throw ApiError.validation('Please correct the highlighted fields.', { location_ids: [problem] });
+  return locations;
+}
 
 const occurrenceParamSchema = z.object({
   id: z.uuid({ message: 'Not a valid schedule id.' }),
@@ -397,7 +422,8 @@ export const schedulesRoutes = new Hono<AppEnv>()
       });
     }
 
-    const schedule = await createSchedule(c.env.DB, c.get('org').id, input);
+    const locations = chooseScheduleLocations(assignment, input.location_ids);
+    const schedule = await createSchedule(c.env.DB, c.get('org').id, input, locations);
 
     await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'schedule.created',
@@ -460,7 +486,21 @@ export const schedulesRoutes = new Hono<AppEnv>()
         );
       }
 
-      const updated = await updateSchedule(c.env.DB, c.get('org').id, id, input, { clearCancellations: orphaned });
+      let locations: Location[] | undefined;
+      if (input.location_ids) {
+        const assignment = await getActiveAssignmentFor(c.env.DB, c.get('org').id, existing.tutor_user_id, existing.student_user_id);
+        if (!assignment) {
+          throw ApiError.validation('Please correct the highlighted fields.', {
+            location_ids: ['This pair is no longer assigned, so its locations cannot change.'],
+          });
+        }
+        locations = chooseScheduleLocations(assignment, input.location_ids);
+      }
+
+      const updated = await updateSchedule(c.env.DB, c.get('org').id, id, input, {
+        clearCancellations: orphaned,
+        ...(locations ? { locations } : {}),
+      });
       if (!updated) throw ApiError.notFound('That schedule does not exist.');
 
       await recordAudit(c.env.DB, viewer, c.get('org').id, {

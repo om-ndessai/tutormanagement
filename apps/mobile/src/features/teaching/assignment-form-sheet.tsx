@@ -11,12 +11,14 @@ import {
   assignmentUpdateSchema,
   centsToInput,
   parseCentsInput,
+  LOCATION_KIND_LABELS,
   type Assignment,
+  type Location,
 } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, Checkbox, Text, TextInput } from 'react-native-paper';
 
 import { OfflineSaveNote, useOffline } from '@/components/connectivity';
 import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
@@ -26,6 +28,7 @@ import { Screen } from '@/components/screen';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
+import { useLocations, useSetPairingLocations } from '@/features/locations/api';
 import { useUserDetail, useUsers } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
 import { announceFormSaved } from '@/lib/form-bridge';
@@ -107,13 +110,17 @@ export function AssignmentForm({
   const [inPerson, setInPerson] = useState(centsToInput(existing?.rate_in_person_cents));
   const [virtual, setVirtual] = useState(centsToInput(existing?.rate_virtual_cents));
   const [notes, setNotes] = useState(existing?.notes ?? '');
+  // Phase 33: where this pair may have lessons, from the tutor's and the student's own places.
+  const [locationIds, setLocationIds] = useState<string[]>(
+    existing?.locations.map((location) => location.id) ?? [],
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
   // Which tutor's defaults have already been written into the fields: once per choice, and never
   // over the admin's typing. An existing pairing already carries its own rates.
   const [prefilledFor, setPrefilledFor] = useState<string | null>(existing ? existing.tutor_user_id : null);
 
   // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
-  const dirty = useDirty({ tutorId, studentId, inPerson, virtual, notes });
+  const dirty = useDirty({ tutorId, studentId, inPerson, virtual, notes, locationIds });
   const { leave } = useUnsavedChangesGuard(dirty);
   const offline = useOffline();
 
@@ -121,7 +128,15 @@ export function AssignmentForm({
   const students = useUsers({ role: 'student', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
   const create = useCreateAssignment();
   const update = useUpdateAssignment();
-  const saving = create.isPending || update.isPending;
+  const setLocations = useSetPairingLocations();
+  const saving = create.isPending || update.isPending || setLocations.isPending;
+  const tutorLocationsQuery = useLocations(tutorId || null);
+  const studentLocationsQuery = useLocations(studentId || null);
+  const offered = [...(tutorLocationsQuery.data?.data ?? []), ...(studentLocationsQuery.data?.data ?? [])];
+  // Until both lists arrive, "still offered" cannot be judged: saving then would drop every place.
+  const locationsLoading =
+    (Boolean(tutorId) && tutorLocationsQuery.isPending) ||
+    (Boolean(studentId) && studentLocationsQuery.isPending);
 
   // A preset person the first hundred names leave out -- the wizard's new student sorts anywhere --
   // is fetched on their own, so the picker shows them chosen rather than a blank.
@@ -195,6 +210,8 @@ export function AssignmentForm({
     };
 
     try {
+      // Only places still offered: one of a person no longer chosen falls away.
+      const chosenLocations = locationIds.filter((id) => offered.some((location) => location.id === id));
       if (isEdit) {
         const parsed = assignmentUpdateSchema.safeParse(rates);
         if (!parsed.success) {
@@ -205,6 +222,13 @@ export function AssignmentForm({
         // The fields as typed, not `parsed.data`: the schema's `is_active` default survives
         // `.partial()`, and would send a pause-undoing `is_active: true` with every edit.
         await update.mutateAsync({ id: existing.id, input: rates });
+        const before = existing.locations
+          .map((location) => location.id)
+          .sort()
+          .join();
+        if (before !== [...chosenLocations].sort().join()) {
+          await setLocations.mutateAsync({ assignmentId: existing.id, locationIds: chosenLocations });
+        }
         toast.success('Pairing updated.');
       } else {
         const parsed = assignmentInputSchema.safeParse({
@@ -219,6 +243,9 @@ export function AssignmentForm({
           return;
         }
         const created = await create.mutateAsync(parsed.data);
+        if (chosenLocations.length > 0) {
+          await setLocations.mutateAsync({ assignmentId: created.data.id, locationIds: chosenLocations });
+        }
         toast.success('Student assigned.');
         announceFormSaved({ form: 'assignment', id: created.data.id });
       }
@@ -298,6 +325,14 @@ export function AssignmentForm({
         </Text>
       </View>
 
+      <PairingLocations
+        ready={Boolean(tutorId && studentId)}
+        offered={offered}
+        value={locationIds}
+        onChange={setLocationIds}
+        error={errors.location_ids}
+      />
+
       <NoteField
         testID="assignment-notes"
         label="Notes (optional)"
@@ -314,7 +349,7 @@ export function AssignmentForm({
           mode="contained"
           onPress={() => void handleSave()}
           loading={saving}
-          disabled={saving || offline}
+          disabled={saving || offline || locationsLoading}
         >
           {isEdit ? 'Save changes' : 'Assign'}
         </Button>
@@ -358,6 +393,61 @@ function RateField({
         left={<TextInput.Affix text="$" />}
         error={Boolean(error)}
       />
+      {error ? <FieldError>{error}</FieldError> : null}
+    </View>
+  );
+}
+
+/** Where this pair may meet: each of the tutor's and the student's own places, ticked or not. */
+function PairingLocations({
+  ready,
+  offered,
+  value,
+  onChange,
+  error,
+}: {
+  ready: boolean;
+  offered: Location[];
+  value: string[];
+  onChange: (ids: string[]) => void;
+  error?: string;
+}) {
+  const theme = useAppTheme();
+  const muted = theme.tokens.mutedForeground;
+  return (
+    <View testID="assignment-locations" style={{ gap: space.xs }}>
+      <Text variant="bodyMedium" style={{ color: error ? theme.colors.error : muted }}>
+        Locations (where this pair may meet)
+      </Text>
+      {!ready ? (
+        <Text variant="bodySmall" style={{ color: muted }}>
+          Choose the tutor and the student first.
+        </Text>
+      ) : offered.length === 0 ? (
+        <Text variant="bodySmall" style={{ color: muted }}>
+          Neither has a location yet. Add them on each person’s record.
+        </Text>
+      ) : (
+        offered.map((location) => {
+          const checked = value.includes(location.id);
+          return (
+            <Checkbox.Item
+              key={location.id}
+              testID={`assignment-location-${location.id}`}
+              label={`${location.name} · ${LOCATION_KIND_LABELS[location.kind]} · ${location.owner_name}`}
+              status={checked ? 'checked' : 'unchecked'}
+              onPress={() => {
+                haptics.selection();
+                onChange(checked ? value.filter((id) => id !== location.id) : [...value, location.id]);
+              }}
+              position="leading"
+              mode="android"
+              labelStyle={{ textAlign: 'left' }}
+              style={{ paddingHorizontal: 0 }}
+            />
+          );
+        })
+      )}
       {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );

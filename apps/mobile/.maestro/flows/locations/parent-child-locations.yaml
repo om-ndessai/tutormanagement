@@ -1,0 +1,78 @@
+# A parent keeps her child's locations (Phase 33, R16). Anita opens Sanjay's record: the Locations
+# section shows his places; she adds "Grandma's house" (in person), sees it listed, and removes it.
+# Her own record (a parent only) has no Locations section. Cleans up after itself.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-locations.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-locations.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-parent
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people/00000000-0000-4000-8000-000000000006
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 20000
+- assertVisible: 'Sanjay Patel'
+- scrollUntilVisible:
+    element:
+      id: locations-add
+    direction: DOWN
+    timeout: 30000
+- assertVisible:
+    id: person-section-locations
+- assertVisible:
+    id: location-0c100000-0000-4000-8000-000000000005
+- takeScreenshot: locations-parent-child
+- tapOn:
+    id: locations-add
+- extendedWaitUntil:
+    visible:
+      id: location-form-name
+    timeout: 15000
+- assertVisible: "Where Sanjay Patel likes to have lessons."
+- tapOn:
+    id: location-form-name
+- inputText: "Grandma's house"
+- hideKeyboard
+- tapOn:
+    id: location-form-save
+- extendedWaitUntil:
+    visible: 'Location added\.'
+    timeout: 15000
+- scrollUntilVisible:
+    element: "Remove Grandma's house"
+    direction: DOWN
+    timeout: 20000
+- assertVisible: "Grandma's house.*In person"
+- tapOn: "Remove Grandma's house"
+- extendedWaitUntil:
+    visible: "Removed Grandma's house\\."
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible: "Remove Grandma's house"
+    timeout: 10000
+# Her own record: a parent has no places of her own.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people/00000000-0000-4000-8000-000000000007
+- extendedWaitUntil:
+    visible: 'Anita Patel'
+    timeout: 20000
+- assertNotVisible:
+    id: person-section-locations
