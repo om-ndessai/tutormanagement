@@ -98,7 +98,11 @@ export function SessionsScreen() {
 
   // Recording is for tutors and the office. The sheet shows money only when opened from Finance.
   const mayRecord = isTutor || isAdmin;
-  const openRecord = () => router.push({ pathname: '/record-session', params: { tab } });
+  // Tutoring records through the step flow (UI upgrades U4); Finance keeps the sheet and its money.
+  const openRecord = () =>
+    tab === 'finance'
+      ? router.push({ pathname: '/record-session', params: { tab } })
+      : router.push('/record-lesson');
   // A live lesson is a tutor's, one at a time: hidden while one is running (the banner has it).
   const active = useActiveSession();
   // The Start sheet's own query: a tutor with no student of their own (a tutor who only parents
@@ -190,7 +194,7 @@ export function SessionsScreen() {
         <DraftsPanel
           today={today}
           onEdit={(draft) =>
-            router.push({ pathname: '/record-session', params: { draft: draft.id, tab: 'tutoring' } })
+            router.push({ pathname: '/record-lesson', params: { draft: draft.id } })
           }
         />
       ) : null}

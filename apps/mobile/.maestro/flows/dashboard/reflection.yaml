@@ -1,7 +1,7 @@
 # A student answers a reflection prompt (Sofia). The seed's lessons are older than the 21-day
 # prompt window, so a lesson yesterday is recorded for her first through the local Worker. She
-# answers two questions (one centred, which takes the primary colour) and a note, saves, and the
-# prompt leaves her dashboard. The lesson is deleted at the end, so other flows see the seed.
+# answers two questions as faces (one centred, About right in the middle), skips two, writes a note,
+# saves, is thanked, and the prompt leaves her dashboard. The lesson is deleted at the end, so other flows see the seed.
 appId: ${APP_ID}
 tags:
   - feature
@@ -39,17 +39,56 @@ tags:
 - assertVisible: 'How did this lesson go for you?'
 - assertVisible: 'Did you learn anything new?'
 - assertNotVisible: '.*\$[0-9].*'
+# One question per card, answered with faces and words (UI upgrades U4); dots say where she is.
+- assertVisible:
+    id: reflection-dots
 - tapOn:
     id: reflection-learned_new-4
-- assertVisible: 'Quite a lot'
+- assertVisible:
+    id: reflection-word-learned_new
+    text: 'A lot'
+- assertVisible:
+    id: reflection-next
+    text: 'Next'
+- takeScreenshot: reflection-card-1
+- tapOn:
+    id: reflection-next
+# Difficulty is centred: About right is the middle face.
+- extendedWaitUntil:
+    visible: 'How difficult was the topic?'
+    timeout: 5000
+- assertVisible:
+    id: reflection-difficulty-1
+    text: 'Much too easy'
+- assertVisible:
+    id: reflection-difficulty-5
+    text: 'Much too hard'
 - tapOn:
     id: reflection-difficulty-3
-- assertVisible: 'About right'
+- assertVisible:
+    id: reflection-word-difficulty
+    text: 'About right'
 - takeScreenshot: reflection-sheet
-- scrollUntilVisible:
-    element:
+- tapOn:
+    id: reflection-next
+# Understanding and pace are skipped: every answer is optional.
+- extendedWaitUntil:
+    visible:
+      id: reflection-next
+      text: 'Skip'
+    timeout: 5000
+- tapOn:
+    id: reflection-next
+- extendedWaitUntil:
+    visible: 'How was the pace?'
+    timeout: 5000
+- tapOn:
+    id: reflection-next
+# The homework note, then save.
+- extendedWaitUntil:
+    visible:
       id: reflection-homework
-    direction: DOWN
+    timeout: 5000
 - tapOn:
     id: reflection-homework
 - inputText: 'All done'
@@ -62,9 +101,13 @@ tags:
     centerElement: true
 - tapOn:
     id: reflection-save
+# A thank-you, in the sheet.
 - extendedWaitUntil:
     visible: 'Thanks — your reflection is saved.'
     timeout: 10000
+- takeScreenshot: reflection-thanks
+- tapOn:
+    id: reflection-done
 - extendedWaitUntil:
     notVisible:
       id: reflect-${output.sessionId}

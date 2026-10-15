@@ -35,6 +35,9 @@ const SHEET_ROUTES = new Set([
   'account',
   'reflection',
   'record-session',
+  'record-as-planned',
+  // The record step flow's footer sits where the banner would (UI upgrades U4).
+  'record-lesson',
   'view-as',
   'start-lesson',
   'stop-lesson',

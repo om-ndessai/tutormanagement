@@ -1,7 +1,7 @@
-# Record the lesson at hand from Home (#43, ux-audit F-6/F-23: 5 taps → 3). The Next up card's
-# Record opens the record sheet with the pairing, today, the schedule's times and its mode filled
-# in, so Record session is the second tap, after a scroll. No money: the sheet shows the length.
-# Recorded, the lesson leaves the upcoming strip. clean-sessions.js deletes it afterwards.
+# Record the lesson at hand from Home (#43; UI upgrades U4): the Next up card's Record opens a quick
+# sheet filled with the student, today, the schedule's times and its place, so "It ran as planned"
+# is the second tap. Recorded, the sheet offers the write-up, whose cards save onto the new lesson.
+# No money anywhere. The lesson leaves the upcoming strip; clean-sessions.js deletes it afterwards.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-sessions.js
@@ -30,35 +30,88 @@ tags:
 # Tap 1.
 - tapOn:
     id: carousel-next-record
+# A quick sheet already filled in from the schedule (UI upgrades U4): the student, today, the times,
+# the place. No money: the length only.
 - extendedWaitUntil:
     visible:
-      id: record-pairing
+      id: record-quick-save
     timeout: 15000
-- assertVisible: 'Record a session'
-# The pairing is chosen (the list stays folded), and the start is the schedule's.
+- assertVisible: 'Record this lesson'
 - assertVisible:
-    id: record-pairing
-    text: '.*${output.studentName}.*'
-- assertVisible: 'Started: ${output.startPattern}.*'
+    id: record-quick-student
+    text: '${output.studentName}'
 - assertVisible:
-    id: record-preview
-- assertNotVisible:
-    id: record-money
+    id: record-quick-day
+    text: 'Today'
+- assertVisible:
+    id: record-quick-times
+    text: '${output.startClock}.*2 hr'
+- assertVisible:
+    id: record-quick-place
+- assertVisible:
+    id: record-quick-different
+- assertVisible:
+    id: record-quick-save
+    text: 'It ran as planned'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: next-up-record-sheet
-- scrollUntilVisible:
-    element:
-      id: record-submit
-    direction: DOWN
-    timeout: 30000
-- assertNotVisible: '.*\$[0-9].*'
-# Tap 2.
+# The fitted sheet settles before its action is tapped (U2).
+- waitForAnimationToEnd:
+    timeout: 3000
+# Tap 2: it ran as planned.
 - tapOn:
-    id: record-submit
+    id: record-quick-save
+# Recorded: the sheet says so, and offers the write-up for the new lesson.
 - extendedWaitUntil:
     visible: 'Session recorded.'
     timeout: 15000
+- assertVisible:
+    id: record-quick-done-save
+    text: 'Write up the lesson'
+- assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: next-up-recorded
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: record-quick-done-save
+# The write-up cards for that lesson: no student or time steps, the lesson is on the record.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was planned\?.*'
+    timeout: 15000
+- assertVisible: 'Write up the lesson'
+- assertVisible: 'Step 1 of 4'
+- assertNotVisible:
+    id: record-save-draft
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was covered\?.*'
+    timeout: 10000
+- tapOn:
+    id: record-notes
+- inputText: 'Written up after Next up'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-next
+      text: 'Save write-up'
+    timeout: 10000
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'Write-up saved.'
+    timeout: 15000
 # Recorded, it is no longer coming up: the card no longer offers to record it.
 - extendedWaitUntil:
     notVisible:

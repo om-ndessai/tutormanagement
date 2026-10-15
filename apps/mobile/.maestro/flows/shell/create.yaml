@@ -100,7 +100,7 @@ tags:
     visible:
       id: screen-home
     timeout: 10000
-# Record a lesson, from a tab other than Home: the sheet is Tutoring's, so no money on it.
+# Record a lesson, from a tab other than Home: the flow is Tutoring's, so no money on it.
 - tapOn: 'Schedule'
 - extendedWaitUntil:
     visible:
@@ -114,17 +114,19 @@ tags:
     timeout: 10000
 - tapOn:
     id: create-action-record-session
+# The record step flow (UI upgrades U4).
 - extendedWaitUntil:
     visible:
-      id: screen-record-session
+      id: step-flow-title
+      text: '.*Who was the lesson with\?.*'
     timeout: 15000
 - assertNotVisible:
     id: record-money
 - assertNotVisible: '.*\$[0-9].*'
-- runFlow:
-    file: ../../subflows/dismiss-sheet.yaml
-    env:
-      SHEET: screen-record-session
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
 - extendedWaitUntil:
     visible:
       id: screen-schedule

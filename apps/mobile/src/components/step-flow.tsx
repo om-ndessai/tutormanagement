@@ -103,6 +103,12 @@ export interface StepFlowProps<D> {
   onClose?: () => void;
   /** Told whenever the step changes. */
   onStepChange?: (key: string) => void;
+  /** The step to open on (a draft picked back up opens on its write-up). Default: the first. */
+  initialStep?: string;
+  /** One quiet action at the right of the top bar ("Save draft"). */
+  headerAction?: ReactNode;
+  /** A line above the footer's buttons on every step (an autosave status). */
+  footerNote?: ReactNode;
   ref?: Ref<StepFlowHandle>;
 }
 
@@ -142,6 +148,9 @@ export function StepFlow<D>({
   dirty,
   onClose,
   onStepChange,
+  initialStep,
+  headerAction,
+  footerNote,
   ref,
 }: StepFlowProps<D>) {
   const theme = useAppTheme();
@@ -152,7 +161,9 @@ export function StepFlow<D>({
 
   const hasReview = review !== false && steps.some((step) => step.summary);
   const count = steps.length + (hasReview ? 1 : 0);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() =>
+    Math.max(0, initialStep ? steps.findIndex((candidate) => candidate.key === initialStep) : 0),
+  );
   // Steps where Next was refused: their validation shows, live, until it passes.
   const [attempted, setAttempted] = useState<ReadonlySet<string>>(new Set());
   // Opened from the Review step's Edit: the primary goes straight back there.
@@ -174,10 +185,7 @@ export function StepFlow<D>({
     [attempted, draft, server],
   );
 
-  const go = useCallback(
-    (next: number) => setIndex(Math.max(0, Math.min(count - 1, next))),
-    [count],
-  );
+  const go = useCallback((next: number) => setIndex(Math.max(0, Math.min(count - 1, next))), [count]);
 
   // The server refused a field: open the step that owns it (its message is already in `errors`).
   // Adjusted while rendering, once per new refusal, rather than in an effect.
@@ -301,9 +309,7 @@ export function StepFlow<D>({
   const titleRef = useRef<View>(null);
   const scrollRef = useRef<ScrollView>(null);
   const first = useRef(true);
-  const heading = onReview
-    ? (review && review.title) || 'Review'
-    : (step?.title ?? '');
+  const heading = onReview ? (review && review.title) || 'Review' : (step?.title ?? '');
   useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
     if (first.current) {
@@ -348,12 +354,7 @@ export function StepFlow<D>({
       }}
     >
       <View style={styles.topBar}>
-        <IconButton
-          testID="step-flow-close"
-          icon="close"
-          accessibilityLabel="Close"
-          onPress={close}
-        />
+        <IconButton testID="step-flow-close" icon="close" accessibilityLabel="Close" onPress={close} />
         <Text
           variant="titleMedium"
           numberOfLines={1}
@@ -362,7 +363,7 @@ export function StepFlow<D>({
           {title}
         </Text>
         {/* Balances the close button, so the name sits in the middle. */}
-        <View style={styles.balance} />
+        {headerAction ?? <View style={styles.balance} />}
       </View>
 
       <View style={{ paddingHorizontal: space.lg, paddingBottom: space.md, gap: space.sm }}>
@@ -372,7 +373,9 @@ export function StepFlow<D>({
           testID="step-flow-title"
           accessible
           accessibilityRole="header"
-          accessibilityLabel={[`Step ${index + 1} of ${count}`, heading, description].filter(Boolean).join('. ')}
+          accessibilityLabel={[`Step ${index + 1} of ${count}`, heading, description]
+            .filter(Boolean)
+            .join('. ')}
           style={{ gap: space.xs, paddingTop: space.xs }}
         >
           <Text variant="headlineSmall">{heading}</Text>
@@ -417,6 +420,7 @@ export function StepFlow<D>({
           gap: space.sm,
         }}
       >
+        {footerNote}
         {formError ? (
           <HelperText type="error" padding="none" testID="step-flow-error">
             {formError}

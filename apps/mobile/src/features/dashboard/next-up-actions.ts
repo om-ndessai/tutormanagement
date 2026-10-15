@@ -16,7 +16,8 @@ type Occurrence = Pick<
   | 'tutor_user_id'
   | 'student_user_id'
   | 'cancellation'
->;
+> &
+  Partial<Pick<UpcomingSession, 'locations' | 'location'>>;
 
 /**
  * True while the lesson is "at hand": today on the organization's clock, from an hour before its
@@ -78,10 +79,26 @@ export function startHref(occurrence: Occurrence) {
   };
 }
 
-/** The record sheet with the pairing, the date, the times and the mode filled in. */
+/**
+ * Where the lesson is held, by name: the schedule's place of the lesson's kind (in person at the
+ * physical one, online at the virtual one), else its first place, else the old free-text location.
+ * A name only, never an address or a link (the log and the system surfaces never carry one either).
+ */
+export function placeFor(occurrence: Pick<Occurrence, 'mode' | 'locations' | 'location'>): string | null {
+  const places = occurrence.locations ?? [];
+  const kind = occurrence.mode === 'virtual' ? 'virtual' : 'physical';
+  const place = places.find((candidate) => candidate.kind === kind) ?? places[0];
+  return place?.name ?? occurrence.location ?? null;
+}
+
+/**
+ * The quick sheet that records the lesson as planned (UI upgrades U4): the pairing, the date, the
+ * times, the mode and the place filled in.
+ */
 export function recordHref(occurrence: Occurrence) {
+  const place = placeFor(occurrence);
   return {
-    pathname: '/record-session' as const,
+    pathname: '/record-as-planned' as const,
     params: {
       student: occurrence.student_user_id,
       tutor: occurrence.tutor_user_id,
@@ -89,6 +106,7 @@ export function recordHref(occurrence: Occurrence) {
       start: occurrence.start_time,
       end: occurrence.end_time,
       mode: occurrence.mode,
+      ...(place ? { place } : {}),
     },
   };
 }

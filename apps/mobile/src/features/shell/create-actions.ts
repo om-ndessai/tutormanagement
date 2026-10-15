@@ -30,8 +30,9 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
     title: 'Record a lesson',
     description: 'Write up a lesson that has happened.',
     icon: 'book-plus-outline',
-    // Tutoring: the record sheet shows the length, never money, wherever the + was tapped.
-    href: { pathname: '/record-session', params: { tab: 'tutoring' } },
+    // The record step flow (UI upgrades U4): Tutoring, the length and never money, wherever the + was
+    // tapped.
+    href: '/record-lesson',
   },
   'start-lesson': {
     id: 'start-lesson',

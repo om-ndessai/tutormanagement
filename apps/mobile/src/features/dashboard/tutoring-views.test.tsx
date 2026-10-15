@@ -149,7 +149,8 @@ describe("Home's Next up card (#43)", () => {
     });
     fireEvent.press(screen.getByTestId('carousel-next-record'));
     expect(router.navigate).toHaveBeenCalledWith({
-      pathname: '/record-session',
+      // The quick sheet that records it as planned (UI upgrades U4), with the place by name.
+      pathname: '/record-as-planned',
       params: {
         student: 'student-1',
         tutor: 'tutor-1',
@@ -157,6 +158,7 @@ describe("Home's Next up card (#43)", () => {
         start: '16:00',
         end: '17:00',
         mode: 'in_person',
+        place: 'Room 2',
       },
     });
     fireEvent.press(screen.getByTestId('carousel-next-cancel'));

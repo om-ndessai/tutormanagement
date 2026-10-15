@@ -32,22 +32,11 @@ tags:
     visible:
       id: screen-sessions
     timeout: 20000
-# Recording is the tab bar's create button (UI upgrades U2).
-- tapOn:
-    id: create-button
-- tapOn:
-    id: create-action-record-session
-- extendedWaitUntil:
-    visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000002
-    timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
-- scrollUntilVisible:
-    element:
-      id: dictate-record-planned
-    direction: DOWN
-    centerElement: true
+# Record a lesson is a step flow (UI upgrades U4): Ben, the times as they are, then Planned.
+- runFlow:
+    file: ../../subflows/record-lesson-start.yaml
+    env:
+      PAIRING: a0000000-0000-4000-8000-000000000002
 - tapOn:
     id: dictate-record-planned
 - extendedWaitUntil:
@@ -58,13 +47,8 @@ tags:
 - tapOn: 'Not now'
 - assertNotVisible:
     id: dictation-interim-record-planned
-- scrollUntilVisible:
-    element:
-      id: record-cancel
-    direction: DOWN
-    timeout: 20000
 - tapOn:
-    id: record-cancel
+    id: step-flow-close
 - extendedWaitUntil:
     visible:
       id: screen-sessions
@@ -83,22 +67,11 @@ tags:
     visible:
       id: screen-sessions
     timeout: 20000
-# Recording is the tab bar's create button (UI upgrades U2).
-- tapOn:
-    id: create-button
-- tapOn:
-    id: create-action-record-session
-- extendedWaitUntil:
-    visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000002
-    timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
-- scrollUntilVisible:
-    element:
-      id: dictate-record-planned
-    direction: DOWN
-    centerElement: true
+# Record a lesson is a step flow (UI upgrades U4): Ben, the times as they are, then Planned.
+- runFlow:
+    file: ../../subflows/record-lesson-start.yaml
+    env:
+      PAIRING: a0000000-0000-4000-8000-000000000002
 - tapOn:
     id: dictate-record-planned
 - extendedWaitUntil:
@@ -111,13 +84,8 @@ tags:
 - assertNotVisible:
     id: dictation-interim-record-planned
 - assertNotVisible: 'Listening… tap the mic to stop'
-- scrollUntilVisible:
-    element:
-      id: record-cancel
-    direction: DOWN
-    timeout: 20000
 - tapOn:
-    id: record-cancel
+    id: step-flow-close
 - extendedWaitUntil:
     visible:
       id: screen-sessions

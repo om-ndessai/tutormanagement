@@ -87,7 +87,7 @@ appId: ${APP_ID}
           visible:
             id: screen-sessions
           timeout: 10000
-# The record sheet from Tutoring: the length, never a figure, from its top to its buttons.
+# Recording from Tutoring: the length, never a figure, on the student and the When steps.
 - runFlow:
     when:
       true: ${RECORD == 'yes'}
@@ -97,33 +97,43 @@ appId: ${APP_ID}
           id: create-button
       - tapOn:
           id: create-action-record-session
+      # The record step flow (UI upgrades U4): its first two steps, where the pairings and the
+      # length are -- the write-up cards carry no figures at all.
       - extendedWaitUntil:
           visible:
-            id: record-pairing
+            id: step-flow-title
+            text: '.*Who was the lesson with\?.*'
           timeout: 15000
       - runFlow: no-money.yaml
-      # The office's pairing list is long: the length preview sits below it.
-      - scrollUntilVisible:
-          element:
-            id: record-preview
-          direction: DOWN
-          centerElement: true
-          timeout: 20000
-      - assertNotVisible:
-          id: record-money
-      - runFlow: no-money-scrolling.yaml
+      - waitForAnimationToEnd:
+          timeout: 3000
+      # The first row on screen: anyone's pairing will do. A tutor with no student of their own here
+      # (Maria teaches nobody in chmi) is told so on the first step, which has no figure either.
+      - runFlow:
+          when:
+            visible:
+              id: 'record-student-row-.*'
+          commands:
+            - tapOn:
+                id: 'record-student-row-.*'
+                index: 0
+            - tapOn:
+                id: step-flow-next
+            - extendedWaitUntil:
+                visible:
+                  id: record-preview
+                timeout: 15000
+            - runFlow: no-money-scrolling.yaml
+            - assertNotVisible:
+                id: record-money
+      - runFlow:
+          when:
+            visible: 'No students to record yet'
+          commands:
+            - runFlow: no-money-scrolling.yaml
       - takeScreenshot: exposure-record-${NAME}
-      - scrollUntilVisible:
-          element:
-            id: record-cancel
-          direction: DOWN
-          centerElement: true
-          timeout: 30000
-      - assertNotVisible:
-          id: record-money
-      - runFlow: no-money.yaml
       - tapOn:
-          id: record-cancel
+          id: step-flow-close
       - extendedWaitUntil:
           visible:
             id: screen-sessions

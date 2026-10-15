@@ -1,8 +1,9 @@
-# The record sheet keeps a new write-up as a draft every 3 seconds (Alex, tutor in chmi). An
-# SSN-shaped note is refused before it leaves the phone: the sentence shows under the field, the
-# status says it was not autosaved, and closing leaves no draft. Then a note autosaves, closing
-# says where it went, the Drafts panel holds it (no money), and continuing and posting it makes it
-# a lesson and the draft goes. The lesson is deleted at the end, so other flows see the seed.
+# A new write-up is kept as a draft every 3 seconds (Alex, tutor in chmi). An SSN-shaped note is
+# refused before it leaves the phone: the sentence shows under the field, the status says it was not
+# autosaved, and closing leaves no draft. Then, in the record step flow (UI upgrades U4), a note
+# autosaves, closing says where it went, the Drafts panel holds it (no money), and continuing it
+# opens the flow on its write-up; posting makes it a lesson and the draft goes. The lesson is
+# deleted at the end, so other flows see the seed.
 appId: ${APP_ID}
 # Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
 # one) are removed before this flow, and whatever this flow leaves is removed after it.
@@ -30,13 +31,14 @@ tags:
     timeout: 20000
 - assertNotVisible:
     id: drafts-panel
-# 1. An SSN-shaped note never autosaves. It is typed before the student is chosen (nothing
-# autosaves without a pairing), so no tick can catch it half-typed.
-# Recording is the tab bar's create button (UI upgrades U2).
+# 1. An SSN-shaped note never autosaves. It must be typed before a student is chosen (nothing
+# autosaves without a pairing), so no tick can catch it half-typed and keep a prefix. The step flow
+# asks for the student first, so this part runs on the record sheet Finance keeps, which writes up
+# through the same autosave (`useSessionWriteUp`).
 - tapOn:
-    id: create-button
+    id: tabs-finance
 - tapOn:
-    id: create-action-record-session
+    id: sessions-record-button
 - extendedWaitUntil:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000002
@@ -91,35 +93,30 @@ tags:
       id: screen-sessions
     timeout: 10000
 - assertNotVisible: '.*kept as a draft.*'
+- scrollUntilVisible:
+    element:
+      id: tabs-tutoring
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: tabs-tutoring
+- extendedWaitUntil:
+    visible:
+      id: sessions-record-button
+    timeout: 10000
 - assertNotVisible:
     id: drafts-panel
 # 2. A note autosaves, and closing keeps it as a draft.
-# Recording is the tab bar's create button (UI upgrades U2).
-- tapOn:
-    id: create-button
-- tapOn:
-    id: create-action-record-session
-- extendedWaitUntil:
-    visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000002
-    timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
-- scrollUntilVisible:
-    element:
-      id: record-planned
-    direction: DOWN
-    centerElement: true
+- runFlow:
+    file: ../../subflows/record-lesson-start.yaml
+    env:
+      PAIRING: a0000000-0000-4000-8000-000000000002
 - tapOn:
     id: record-planned
 - inputText: 'Autosaved from the phone'
 # Return closes the keyboard on the short parts of the write-up.
 - pressKey: Enter
-- scrollUntilVisible:
-    element:
-      id: record-autosave-status
-    direction: DOWN
-    timeout: 20000
+# The status sits in the flow's footer, on every card.
 - extendedWaitUntil:
     visible:
       id: record-autosave-status
@@ -127,12 +124,9 @@ tags:
     timeout: 15000
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: autosave-saved
-- scrollUntilVisible:
-    element:
-      id: record-cancel
-    direction: DOWN
+# Leaving a new write-up never asks: it is kept.
 - tapOn:
-    id: record-cancel
+    id: step-flow-close
 - extendedWaitUntil:
     visible: 'Your write-up is kept as a draft. Pick it up from Drafts.'
     timeout: 15000
@@ -145,23 +139,38 @@ tags:
     id: 'draft-continue-.*'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: autosave-drafts-panel
-# 3. Continue it, then post it.
+# 3. Continue it, then post it. The flow opens on the write-up, the words as they were kept.
 - tapOn:
     id: 'draft-continue-.*'
 - extendedWaitUntil:
-    visible: 'Finish this draft'
+    visible:
+      id: step-flow-title
+      text: '.*What was planned\?.*'
     timeout: 15000
+- assertVisible: 'Finish this draft'
+- assertVisible: 'Step 3 of 6'
 - assertNotVisible:
     id: record-money
-# The write-up comes back as it was kept: the posted lesson below carries its words.
-- scrollUntilVisible:
-    element:
-      id: record-submit
-    direction: DOWN
-    timeout: 20000
-- assertVisible: 'Post session'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: record-planned
+          text: 'Autosaved from the phone'
 - tapOn:
-    id: record-submit
+    id: step-flow-next
+- tapOn:
+    id: step-flow-next
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-next
+      text: 'Post session'
+    timeout: 10000
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
     visible: 'Session recorded. Everyone concerned can see it now.'
     timeout: 15000

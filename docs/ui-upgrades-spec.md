@@ -140,7 +140,8 @@ section of the person form). Changes from the plan, all in `docs/mobile/build-lo
 
 **Open before U7:** on iOS, `people/tutor-view` (red since 2026-10-14, before U3) and
 `shell/surface-kit` (red on the U2 commit too, though green when U2 was built) fail; both are
-green on Android.
+green on Android. *Closed in U4: Maestro's reports were written inside Metro's watched folder
+(`docs/mobile/build-log.md` #49); both green on iOS.*
 
 **Done when:** new Maestro flows (student with an existing parent, student with a new parent,
 tutor) pass on both platforms; the people flows pass; a web spec covers parent-first ordering and
@@ -160,6 +161,16 @@ a new parent added in the dialog; `exposure.spec.ts` is untouched and green.
 
 **Done when:** the record, autosave, next-up and reflection flows are updated and green on both
 platforms; jest covers the face-to-value mapping.
+
+**Status: done 2026-10-15 (app).** Next up's Record is a fitted quick sheet ("It ran as planned",
+"Different times", then "Write up the lesson"); the create button, Sessions' Tutoring button, the
+quick action and a draft's Continue open the step flow Student → When → Planned → Covered → Homework
+→ Progress. The previous-session review sits on Planned, last time's homework status and review on
+Homework, and the writer's own assessment on Progress. Finance and editing a lesson keep the record
+sheet. The reflection's words are now the shared labels (`REFLECTION_QUESTIONS`), so the app's
+faces, the lesson's detail and the web say the same thing: "Not really" … "Loads!" for learning
+and understanding, "Much too easy" … "About right" … "Much too hard", and "Much too slow" …
+"About right" … "Much too fast". Details in `docs/mobile/build-log.md` #49.
 
 ## Phase U5: schedule, payment, assessment, section editing
 

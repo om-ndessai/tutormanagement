@@ -46,6 +46,18 @@ export default function OrgLayout() {
                 stand in for the swipe, which is off. */}
             <Stack.Screen name="add-student" options={STEP_FLOW_OPTIONS} />
             <Stack.Screen name="add-tutor" options={STEP_FLOW_OPTIONS} />
+            {/* Recording a lesson and writing it up are a step flow too (UI upgrades U4). */}
+            <Stack.Screen name="record-lesson" options={STEP_FLOW_OPTIONS} />
+            {/* Recording the lesson at hand from Next up: one decision, a fitted quick sheet (U4). */}
+            <Stack.Screen
+              name="record-as-planned"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: 'fitToContents',
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
             <Stack.Screen
               name="new-parent"
               options={{

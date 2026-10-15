@@ -35,22 +35,11 @@ tags:
     visible:
       id: screen-sessions
     timeout: 20000
-# Recording is the tab bar's create button (UI upgrades U2).
-- tapOn:
-    id: create-button
-- tapOn:
-    id: create-action-record-session
-- extendedWaitUntil:
-    visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000002
-    timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
-- scrollUntilVisible:
-    element:
-      id: dictate-record-planned
-    direction: DOWN
-    centerElement: true
+# Record a lesson is a step flow (UI upgrades U4): Ben, the times as they are, then Planned.
+- runFlow:
+    file: ../../subflows/record-lesson-start.yaml
+    env:
+      PAIRING: a0000000-0000-4000-8000-000000000002
 - takeScreenshot: dictation-idle
 # The first tap: our rationale, then (granted by the script) the system's answer.
 - tapOn:
@@ -95,23 +84,27 @@ tags:
       - assertVisible:
           id: record-planned
           text: 'Factorised quadratics by grouping'
-- scrollUntilVisible:
-    element:
-      id: record-autosave-status
-    direction: DOWN
-    timeout: 20000
+# The autosave status is in the flow's footer, on every card.
 - extendedWaitUntil:
     visible:
       id: record-autosave-status
       text: 'Draft autosaved .*'
     timeout: 15000
 - assertNotVisible: '.*\$[0-9].*'
-- scrollUntilVisible:
-    element:
-      id: record-submit
-    direction: DOWN
+# The other cards are optional: on to Progress, whose action records the lesson.
 - tapOn:
-    id: record-submit
+    id: step-flow-next
+- tapOn:
+    id: step-flow-next
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-next
+      text: 'Record lesson'
+    timeout: 10000
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
     visible: 'Session recorded.'
     timeout: 15000

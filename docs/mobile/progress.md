@@ -213,6 +213,18 @@ native rebuild of both dev builds, so build only while the devices are free.
   `people/*`, `onboarding/*`, `shell/*` green on Android (15/15) and on iOS but for `people/tutor-view`
   and `shell/surface-kit`, which fail on iOS on the committed code too; `npm run smoke -- mobile` green
   on both. Design entry #48)*
+- [x] U4. Mobile: Record a lesson and the student's reflection — from Next up, a quick sheet filled
+  with the student, today, the times and the place ("It ran as planned", or "Different times"), then
+  "Write up the lesson"; from the create button (and Sessions' Tutoring button, the quick action, a
+  draft's Continue) a step flow: Student, When, then the write-up as four optional cards (Planned,
+  Covered, Homework, Progress) with a large Dictate button, autosaved as a draft as before; Finance
+  and editing a lesson keep the record sheet; the reflection as one question per card with five
+  faces and words, progress dots, the homework note and a thank-you; and the two iOS reds U3 left
+  (Maestro's reports inside Metro's watched folder) *(built and tested 2026-10-15: typecheck, lint,
+  jest (84 suites, 449 tests), export green; `sessions/*`, `home/*`, `dictation/*`, `shell/*`,
+  `dashboard/reflection`, `exposure/money-tutoring` green on iOS and Android (Android
+  `dictate-permission` once intermittent at its Profile step, green on re-run); `people/tutor-view`
+  and `shell/surface-kit` green on iOS; `npm run smoke -- mobile` green on both. Design entry #49)*
 
 ## Phase 4 — Google sign-in
 

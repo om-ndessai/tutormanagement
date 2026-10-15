@@ -55,13 +55,14 @@ test('a parent, a student, or nobody: no actions, so no create button', () => {
   expect(hasCreateActions(['admin'])).toBe(true);
 });
 
-test('Record opens the Tutoring sheet, never the money; each action routes to a sheet that exists', () => {
+test('Record opens the Tutoring step flow, never the money; each action routes to a screen that exists', () => {
   const all = createActions(['admin', 'tutor'], { teaches: true });
   const record = all.find((action) => action.id === 'record-session');
-  expect(record?.href).toEqual({ pathname: '/record-session', params: { tab: 'tutoring' } });
+  // The record step flow (UI upgrades U4) has no money preview at all; Finance keeps the sheet.
+  expect(record?.href).toBe('/record-lesson');
   const paths = all.map((action) => (typeof action.href === 'string' ? action.href : action.href.pathname));
   expect(paths).toEqual([
-    '/record-session',
+    '/record-lesson',
     '/start-lesson',
     '/schedule-form',
     '/add-student',
