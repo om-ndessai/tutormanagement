@@ -26,14 +26,17 @@ tags:
 - tapOn: 'Sessions'
 - extendedWaitUntil:
     visible:
-      id: sessions-record
+      id: screen-sessions
     timeout: 20000
 - assertNotVisible:
     id: drafts-panel
 # 1. An SSN-shaped note never autosaves. It is typed before the student is chosen (nothing
 # autosaves without a pairing), so no tick can catch it half-typed.
+# Recording is the tab bar's create button (UI upgrades U2).
 - tapOn:
-    id: sessions-record
+    id: create-button
+- tapOn:
+    id: create-action-record-session
 - extendedWaitUntil:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000002
@@ -91,8 +94,11 @@ tags:
 - assertNotVisible:
     id: drafts-panel
 # 2. A note autosaves, and closing keeps it as a draft.
+# Recording is the tab bar's create button (UI upgrades U2).
 - tapOn:
-    id: sessions-record
+    id: create-button
+- tapOn:
+    id: create-action-record-session
 - extendedWaitUntil:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000002

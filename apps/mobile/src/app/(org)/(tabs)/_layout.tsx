@@ -1,47 +1,27 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
+import { Tabs } from 'expo-router/js-tabs';
 
+import { AppTabBar } from '@/features/shell/app-tab-bar';
 import { useAppTheme } from '@/providers/theme-provider';
 
 /**
  * The tab bar: the same four destinations and More for everyone, so it never reshapes under
- * someone (and native tabs remount when their set changes). The system draws the bar --
- * Liquid Glass on iOS, Material 3 on Android -- tinted with the organization's primary.
+ * someone, and the create button in the middle for anyone with something to create (UI upgrades
+ * U2). The app draws it (`AppTabBar`): the system's bar holds five items at most, and this one
+ * holds six. Each tab keeps its own stack; back from a tab returns to Home, as before.
  */
 export default function TabsLayout() {
   const theme = useAppTheme();
   return (
-    <NativeTabs
-      tintColor={theme.colors.primary}
-      iconColor={{ default: theme.colors.onSurfaceVariant, selected: theme.colors.primary }}
-      indicatorColor={theme.colors.primaryContainer}
-      // Android labels every destination, as Material 3 asks with five (ux-audit F-14).
-      labelVisibilityMode="labeled"
-      backgroundColor={theme.colors.surface}
-      labelStyle={{
-        default: { color: theme.colors.onSurfaceVariant },
-        selected: { color: theme.colors.primary },
-      }}
+    <Tabs
+      backBehavior="initialRoute"
+      tabBar={(props) => <AppTabBar {...props} />}
+      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: theme.colors.background } }}
     >
-      <NativeTabs.Trigger name="dashboard">
-        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="sessions">
-        <NativeTabs.Trigger.Label>Sessions</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf={{ default: 'book', selected: 'book.fill' }} md="menu_book" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="schedule">
-        <NativeTabs.Trigger.Label>Schedule</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="calendar" md="calendar_month" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="progress">
-        <NativeTabs.Trigger.Label>Progress</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="chart.line.uptrend.xyaxis" md="trending_up" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="more">
-        <NativeTabs.Trigger.Label>More</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="ellipsis.circle" md="more_horiz" />
-      </NativeTabs.Trigger>
-    </NativeTabs>
+      <Tabs.Screen name="dashboard" options={{ title: 'Home' }} />
+      <Tabs.Screen name="sessions" options={{ title: 'Sessions' }} />
+      <Tabs.Screen name="schedule" options={{ title: 'Schedule' }} />
+      <Tabs.Screen name="progress" options={{ title: 'Progress' }} />
+      <Tabs.Screen name="more" options={{ title: 'More' }} />
+    </Tabs>
   );
 }

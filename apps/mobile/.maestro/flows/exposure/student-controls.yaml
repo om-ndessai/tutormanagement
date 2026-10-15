@@ -28,8 +28,9 @@ env:
     visible:
       id: session-card-${LESSON}
     timeout: 20000
+# A student creates nothing: no create button (UI upgrades U2).
 - assertNotVisible:
-    id: sessions-record
+    id: create-button
 - assertNotVisible:
     id: sessions-record-button
 - assertNotVisible:
@@ -88,8 +89,6 @@ env:
     timeout: 20000
 - assertNotVisible:
     id: people-add-button
-- assertNotVisible:
-    id: people-add
 - assertNotVisible:
     id: people-include-deleted
 - assertNotVisible:

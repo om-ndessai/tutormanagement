@@ -32,8 +32,10 @@ tags:
     visible:
       id: stat-charged
     timeout: 10000
+# The page's own Record button: it carries the tab, so Finance's sheet shows the money (the
+# create button always opens the Tutoring sheet).
 - tapOn:
-    id: sessions-record
+    id: sessions-record-button
 - extendedWaitUntil:
     visible:
       id: record-pairing-search
@@ -80,7 +82,7 @@ tags:
 - tapOn:
     id: tabs-tutoring
 - tapOn:
-    id: sessions-record
+    id: sessions-record-button
 - extendedWaitUntil:
     visible:
       id: record-pairing-search

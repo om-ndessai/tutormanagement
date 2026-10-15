@@ -15,7 +15,7 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `providers/theme-provider.tsx`, `index.css` palettes | light / dark / system, palettes | `src/providers/theme-provider.tsx`, `src/theme/*` | jest | todo |
 | `features/auth/*` | sign-in page (Google button, error copy per `AUTH_ERROR_CODES`), RequireAuth | `app/sign-in.tsx`, `src/features/auth/sign-in-error.tsx`, `app/_layout.tsx` guards | `smoke/sign-in` | tested (G1: developer path on both platforms; Google path by hand, real account pending G2) |
 | `features/organizations/require-org.tsx`, `select-organization-page.tsx`, `org-switcher.tsx`, `org-avatar.tsx` | picker, invitations, default ★, switch | `app/select-organization.tsx`, `src/features/organizations/*` | `organizations/*` | todo |
-| `components/layout/app-shell.tsx` (`NAV_ITEMS`), `user-menu.tsx`, `page-header.tsx`, `focus-notice.tsx` | shell, nav, user menu | `app/(org)/(tabs)/_layout.tsx`, `app/(org)/(tabs)/more.tsx`, `src/components/*` | `shell/*` | todo |
+| `components/layout/app-shell.tsx` (`NAV_ITEMS`), `user-menu.tsx`, `page-header.tsx`, `focus-notice.tsx` | shell, nav, user menu; app only (U2): the app-drawn tab bar with the create button and its sheet | `app/(org)/(tabs)/_layout.tsx`, `app/(org)/(tabs)/more.tsx`, `src/features/shell/{app-tab-bar,create-sheet,create-actions}.ts(x)`, `src/components/*` | `shell/*` (navigation, create) | tested (U2: tab bar and create sheet on both platforms) |
 | `components/layout/tutoring-finance-tabs.tsx` | `?tab=` Tutoring / Finance | `src/components/tutoring-finance-tabs.tsx` | `exposure/*` | tested (36: every Tutoring surface, five readers) |
 | `components/layout/command-palette.tsx` | ⌘K | `app/(org)/search.tsx` | `search/*` | tested (33) |
 | `components/layout/theme-toggle.tsx`, `theme-transition.ts` | theme switch | `app/(org)/profile.tsx` appearance | `profile/*` | tested (32) |
@@ -65,4 +65,6 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 | `data-tour` coach marks | spotlight overlay over registered refs |
 | Google Identity Services | native Google Sign-In (web client as audience) → the same `POST /auth/google` and `tmi_session` cookie (G1) |
 | one schedule's `.ics` link | the calendar app's own editor, filled in ("Lesson", weekly, no permission; `expo-calendar/legacy`), the `.ics` share as the fallback and for "Add all" (#43, `schedule/calendar`) |
+| the page headers' Add / Record / Schedule buttons | one create button in the middle of the tab bar, listing the reader's own actions (U2, `shell/create`); each page keeps its inline button |
+| multi-field dialogs | the surface kit (U2): `StepFlow` (full-screen steps with a Review), `QuickSheet` (a fitted form sheet), `SearchPicker`; previewed at `aimtrue://dev/kit` and `dev/kit-sheet` (`shell/surface-kit`); U3–U5 move the flows onto it |
 | — (no web equivalent) | home-screen quick actions "Start a lesson" / "Record a lesson" for a tutor, set per organization, cleared on sign-out (#43, checked by hand) |

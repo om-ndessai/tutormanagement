@@ -21,22 +21,19 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- runFlow:
-    file: ../../subflows/open-link.yaml
-    env:
-      LINK: aimtrue://people
+# Adding is the tab bar's create button (UI upgrades U2), already set to the role.
+- tapOn:
+    id: create-button
 - extendedWaitUntil:
     visible:
-      id: people-add
-    timeout: 20000
+      id: create-action-add-tutor
+    timeout: 10000
 - tapOn:
-    id: people-add
+    id: create-action-add-tutor
 - extendedWaitUntil:
     visible:
       id: person-form-name
     timeout: 15000
-- tapOn:
-    id: person-role-tutor
 - assertVisible: 'They sign in with this Google address.'
 - tapOn:
     id: person-form-name
@@ -134,10 +131,19 @@ tags:
     timeout: 20000
 - tapOn:
     id: person-form-save
+# Saved: the sheet closes onto Home, where the + was; the directory has them.
 - extendedWaitUntil:
     visible:
-      id: screen-people
+      id: screen-home
     timeout: 15000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: people-search
+    timeout: 20000
 - tapOn:
     id: people-search
 - inputText: 'Ravi'

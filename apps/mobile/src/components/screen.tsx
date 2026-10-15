@@ -11,8 +11,8 @@ import { space } from '@/theme/tokens';
 /**
  * A screen's frame: the theme's background and (by default) a scroll view with pull-to-refresh
  * when `onRefresh` is given. The scroll view is the root, so an iOS large title collapses into
- * the bar as it scrolls and the system insets content under the header and tab bar
- * (`contentInsetAdjustmentBehavior`). `edges` pads the sides with no system bar over them --
+ * the bar as it scrolls and the system insets content under the header
+ * (`contentInsetAdjustmentBehavior`); the app's tab bar sits below the screen, not over it. `edges` pads the sides with no system bar over them --
  * a screen without a header passes 'top'. Every screen root carries a `testID`
  * (`screen-<route>`), which the Maestro flows wait on.
  *

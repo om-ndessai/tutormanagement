@@ -1,5 +1,7 @@
-# The app shell: the same tabs for everyone, More reaching every other page, the account sheet
-# with appearance and the organization switcher (whose switch rebrands the app).
+# The app shell: the same tabs for everyone, the create button in the middle of the bar for anyone
+# with something to create (UI upgrades U2; its sheet is shell/create), More reaching every other
+# page, the account sheet with appearance and the organization switcher (whose switch rebrands the
+# app).
 appId: ${APP_ID}
 tags:
   - smoke
@@ -13,6 +15,8 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
+- assertVisible:
+    id: create-button
 - takeScreenshot: shell-home
 - tapOn: 'Sessions'
 - assertVisible:

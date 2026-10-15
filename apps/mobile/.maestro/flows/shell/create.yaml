@@ -1,0 +1,161 @@
+# The create button (UI upgrades U2): the "+" in the middle of the tab bar opens the reader's own
+# actions, each into the sheet that already does the work. The office (Priya, who also tutors)
+# gets all seven; a tutor records, starts and schedules; a parent has nothing to create and no "+".
+appId: ${APP_ID}
+tags:
+  - shell
+---
+# The office.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible:
+    id: create-button
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-sheet
+    timeout: 10000
+- assertVisible:
+    id: create-action-record-session
+- assertVisible:
+    id: create-action-schedule-lesson
+- assertVisible:
+    id: create-action-add-student
+- assertVisible:
+    id: create-action-add-tutor
+- assertVisible:
+    id: create-action-add-person
+- assertVisible:
+    id: create-action-record-payment
+# Priya tutors too, with students of her own: she may start a lesson.
+- assertVisible:
+    id: create-action-start-lesson
+- takeScreenshot: create-sheet-admin
+# Add a student: the person sheet, preset to a student.
+- tapOn:
+    id: create-action-add-student
+- extendedWaitUntil:
+    visible:
+      id: screen-person-form
+    timeout: 15000
+- takeScreenshot: create-add-student
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-person-form
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# Record a payment.
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-record-payment
+    timeout: 10000
+- tapOn:
+    id: create-action-record-payment
+- extendedWaitUntil:
+    visible:
+      id: screen-payment-form
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-payment-form
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# Record a lesson, from a tab other than Home: the sheet is Tutoring's, so no money on it.
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 15000
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-record-session
+    timeout: 10000
+- tapOn:
+    id: create-action-record-session
+- extendedWaitUntil:
+    visible:
+      id: screen-record-session
+    timeout: 15000
+- assertNotVisible:
+    id: record-money
+- assertNotVisible: '.*\$[0-9].*'
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-record-session
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 10000
+
+# A tutor: record, start and schedule; nobody to add, nothing to pay.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-start-lesson
+    timeout: 15000
+- assertVisible:
+    id: create-action-record-session
+- assertVisible:
+    id: create-action-schedule-lesson
+- assertNotVisible:
+    id: create-action-add-student
+- assertNotVisible:
+    id: create-action-add-person
+- assertNotVisible:
+    id: create-action-record-payment
+- takeScreenshot: create-sheet-tutor
+- tapOn:
+    id: create-action-schedule-lesson
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule-form
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-schedule-form
+
+# A parent: the four tabs and More, and no "+".
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible: 'Sessions'
+- assertVisible: 'More'
+- assertNotVisible:
+    id: create-button
+- takeScreenshot: create-none-parent

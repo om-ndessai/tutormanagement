@@ -31,10 +31,13 @@ tags:
 - tapOn: 'Sessions'
 - extendedWaitUntil:
     visible:
-      id: sessions-record
+      id: screen-sessions
     timeout: 20000
+# Recording is the tab bar's create button (UI upgrades U2).
 - tapOn:
-    id: sessions-record
+    id: create-button
+- tapOn:
+    id: create-action-record-session
 - extendedWaitUntil:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000002

@@ -91,6 +91,17 @@ function RootNavigator() {
           name="server"
           options={{ presentation: 'formSheet', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }}
         />
+        {/* Developer-only previews of the surface kit (UI upgrades U2); they redirect home in
+            production. A step flow is a full-screen modal, a quick sheet a form sheet fitted to its content. */}
+        <Stack.Screen name="dev/kit" options={{ presentation: 'fullScreenModal' }} />
+        <Stack.Screen
+          name="dev/kit-sheet"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: 'fitToContents',
+            sheetGrabberVisible: true,
+          }}
+        />
       </Stack>
     </NavigationThemeProvider>
   );

@@ -188,6 +188,20 @@ native rebuild of both dev builds, so build only while the devices are free.
   (flow fixes: pairings/admin scrolls to Save, schedule/browse centres "Show all", seed-next-up.js sends
   `location_ids`); `npm run smoke -- mobile` green on both)*
 
+## UI upgrades — warmth and short tasks (docs/ui-upgrades-spec.md)
+
+- [x] U2. Mobile: the surface kit and the create button — `StepFlow`, `QuickSheet`, `SearchPicker`
+  (`src/components/`), the app-drawn tab bar with a "+" between Schedule and Progress and its sheet of
+  the reader's own actions; the top-right "+" on Sessions, Users, Billing and Schedule removed *(built
+  2026-10-14: typecheck, lint, jest (79 suites, 416 tests), export green; tested 2026-10-14/15:
+  `shell/*` (navigation, new `create` and `surface-kit`) and every flow that tapped a removed "+"
+  (`people/create-student`, `create-student-new-parent`, `create-tutor`, `sessions/record`, `drafts`,
+  `autosave`, `record-finance`, `dictation/*`, `exposure/student-controls`, `exposure/money-tutoring`,
+  `billing/parent`, `billing/tutor`) green on iOS and Android; `sessions/live`, `onboarding/tour`,
+  `locations/reminder` (the bar's new height and the tour's tab targets) green on iOS, tour and reminder
+  on Android, live on Android green up to the notification shade, where another app's "$" notification
+  trips the money check; `npm run smoke -- mobile` green on both. Design entry #47)*
+
 ## Phase 4 — Google sign-in
 
 - [ ] API: bearer sessions for the mobile app

@@ -12,7 +12,6 @@ import { Alert, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { PageIntro } from '@/components/page-intro';
-import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { Screen } from '@/components/screen';
 import { Skeleton } from '@/components/skeleton';
@@ -141,16 +140,6 @@ export function SchedulesScreen() {
         options={{
           headerRight: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {mayCreate ? (
-                <IconButton
-                  testID="schedule-add"
-                  icon="calendar-plus"
-                  size={24}
-                  accessibilityLabel="Schedule a session"
-                  style={{ margin: 0 }}
-                  onPress={() => openForm()}
-                />
-              ) : null}
               <SearchButton />
               <AccountButton />
             </View>

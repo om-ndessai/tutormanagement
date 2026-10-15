@@ -52,8 +52,9 @@ appId: ${APP_ID}
     when:
       true: ${RECORD != 'yes'}
     commands:
+      # The create button (UI upgrades U2) is the reader's own actions: none here, so none at all.
       - assertNotVisible:
-          id: sessions-record
+          id: create-button
       - assertNotVisible:
           id: sessions-record-button
       - assertNotVisible:
@@ -91,8 +92,11 @@ appId: ${APP_ID}
     when:
       true: ${RECORD == 'yes'}
     commands:
+      # Recording is the tab bar's create button (UI upgrades U2).
       - tapOn:
-          id: sessions-record
+          id: create-button
+      - tapOn:
+          id: create-action-record-session
       - extendedWaitUntil:
           visible:
             id: record-pairing

@@ -86,6 +86,15 @@ part of the app's typecheck). Paper's `outline` is the 3:1 control edge; cards u
 **Done when:** the shell flows (navigation, search) and every flow that tapped a top-right "+" are
 updated and green on iOS and Android.
 
+**Status: done 2026-10-15.** The system tab bar holds five items at most (Android throws past five,
+iOS folds a sixth into its own More), so the app now draws its bar (`AppTabBar` over
+`expo-router/js-tabs`): Home, Sessions, Schedule, **+**, Progress, More. That costs iOS 26's Liquid
+Glass bar and its scroll-to-top on a second tap. The sheet also offers **Add someone else** (a
+parent, an admin, several roles) to admins, since the People header "+" was the only general add.
+A QuickSheet is a root ScrollView in a `fitToContents` form sheet (the only layout
+react-native-screens resizes). Dev previews: `aimtrue://dev/kit`, `aimtrue://dev/kit-sheet`.
+Details in `docs/mobile/build-log.md` #47.
+
 ## Phase U3: add a student (parent first) and add a tutor
 
 **Student, app.** A step flow, opened from the create button and from People:

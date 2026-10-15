@@ -15,7 +15,6 @@ import { Button, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
-import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { SecureMoney } from '@/components/secure-money';
@@ -159,16 +158,6 @@ export function SessionsScreen() {
         options={{
           headerRight: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {mayRecord ? (
-                <IconButton
-                  testID="sessions-record"
-                  icon="plus"
-                  size={24}
-                  accessibilityLabel="Record a session"
-                  style={{ margin: 0 }}
-                  onPress={openRecord}
-                />
-              ) : null}
               <SearchButton />
               <AccountButton />
             </View>
