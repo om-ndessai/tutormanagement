@@ -90,7 +90,7 @@ export function AvailabilityPicker({
               >
                 {option.short}
               </Text>
-              <Text style={{ fontSize: 10, color: chosen ? theme.colors.onPrimary : muted }}>
+              <Text style={{ fontSize: 12, color: chosen ? theme.colors.onPrimary : muted }}>
                 {count > 0 ? count : '·'}
               </Text>
             </Pressable>

@@ -166,7 +166,7 @@ export default function SelectOrganizationScreen() {
                         {org.name}
                       </Text>
                       {org.is_default ? (
-                        <Chip compact textStyle={{ fontSize: 11, marginVertical: 0 }} style={{ height: 24 }}>
+                        <Chip compact textStyle={{ fontSize: 12, marginVertical: 0 }} style={{ height: 24 }}>
                           Default
                         </Chip>
                       ) : null}

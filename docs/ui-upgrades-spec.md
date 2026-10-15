@@ -64,6 +64,10 @@ sentence case.
 and the `smoke` flows pass; screenshots of Home in light and dark on both clients look right; the
 contrast figures above are met (checked by a small script against the generated hex values).
 
+**Status: done 2026-10-14.** Every palette passes `apps/mobile/scripts/check-contrast.mjs` (now
+part of the app's typecheck). Paper's `outline` is the 3:1 control edge; cards use the new
+`OutlinedCard` with the soft divider.
+
 ## Phase U2: the app's surface kit and create button
 
 - **`StepFlow`** (`src/components/step-flow.tsx`): a full-screen modal route with "Step n of N", a

@@ -185,7 +185,7 @@ export function SessionsCarousel({
               borderRadius: radius.lg,
               borderWidth: 1,
               borderStyle: 'dashed',
-              borderColor: theme.colors.outline,
+              borderColor: theme.colors.outlineVariant,
               alignItems: 'center',
               justifyContent: 'center',
               gap: space.xs,
@@ -255,9 +255,9 @@ function NowMarker({ width }: { width: number }) {
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.5}
-        style={{ fontSize: 10, fontWeight: '600', letterSpacing: 0.6, color: theme.colors.primary }}
+        style={{ fontSize: 12, fontWeight: '700', color: theme.colors.primary }}
       >
-        NOW
+        Now
       </Text>
       <View style={{ flex: 1, width: 1, backgroundColor: withAlpha(theme.colors.primary, 0.5) }} />
     </View>
@@ -290,7 +290,7 @@ function NoteCard({
         borderRadius: radius.lg,
         borderWidth: 1,
         borderStyle: 'dashed',
-        borderColor: theme.colors.outline,
+        borderColor: theme.colors.outlineVariant,
         alignItems: 'center',
         justifyContent: 'center',
         padding: space.lg,
@@ -395,10 +395,8 @@ function Overline({ children, color }: { children: string; color?: string }) {
     <Text
       numberOfLines={lines}
       style={{
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: '500',
-        letterSpacing: 0.6,
-        textTransform: 'uppercase',
         color: color ?? theme.tokens.mutedForeground,
       }}
     >
@@ -446,7 +444,7 @@ function Badge({ children, tone = 'muted' }: { children: string; tone?: 'muted' 
     >
       <Text
         style={{
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: '500',
           color:
             tone === 'warning'
@@ -669,11 +667,7 @@ function NextCard({
             backgroundColor: withAlpha(theme.colors.onPrimary, 0.15),
           }}
         >
-          <Text
-            style={{ fontSize: 10, fontWeight: '600', letterSpacing: 0.6, color: theme.colors.onPrimary }}
-          >
-            NEXT UP
-          </Text>
+          <Text style={{ fontSize: 12, fontWeight: '700', color: theme.colors.onPrimary }}>Next up</Text>
         </View>
         <Text
           testID="carousel-countdown"

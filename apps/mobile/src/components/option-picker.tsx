@@ -79,7 +79,7 @@ export function OptionPicker({
         })}
       >
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 11, color: error ? theme.colors.error : muted }}>{label}</Text>
+          <Text style={{ fontSize: 12, color: error ? theme.colors.error : muted }}>{label}</Text>
           <Text variant="bodyLarge" style={{ color: chosen ? theme.colors.onSurface : muted }}>
             {chosen ? chosen.label : placeholder}
             {chosen?.detail ? (

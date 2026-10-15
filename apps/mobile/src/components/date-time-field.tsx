@@ -135,7 +135,7 @@ export function DateTimeField({
         backgroundColor: pressed ? theme.tokens.muted : 'transparent',
       })}
     >
-      <Text style={{ fontSize: 11, color: labelColor }}>{label}</Text>
+      <Text style={{ fontSize: 12, color: labelColor }}>{label}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
         <Icon source={mode === 'date' ? 'calendar' : 'clock-outline'} size={16} color={labelColor} />
         <Text variant="bodyLarge">{display(mode, value)}</Text>

@@ -9,7 +9,8 @@ import { RELATIONSHIPS, RELATIONSHIP_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, Icon, Searchbar, Text } from 'react-native-paper';
+import { Button, Icon, Searchbar, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { FieldError } from '@/components/field-error';
 import { IconButton } from '@/components/icon-button';
@@ -97,10 +98,9 @@ export function GuardianPicker({
       {value.map((link) => {
         const name = nameFor(link.guardian_user_id);
         return (
-          <Card
+          <OutlinedCard
             key={link.guardian_user_id}
             testID={`guardian-${link.guardian_user_id}`}
-            mode="outlined"
             style={{ borderRadius: radius.md }}
           >
             <View style={{ padding: space.md, gap: space.sm }}>
@@ -151,7 +151,7 @@ export function GuardianPicker({
                 </Text>
               </Pressable>
             </View>
-          </Card>
+          </OutlinedCard>
         );
       })}
 
@@ -166,7 +166,7 @@ export function GuardianPicker({
         accessibilityLabel="Search parents to add"
       />
       {search && candidates.length > 0 ? (
-        <Card mode="outlined" style={{ borderRadius: radius.md }}>
+        <OutlinedCard style={{ borderRadius: radius.md }}>
           {candidates.slice(0, 8).map((candidate) => (
             <Pressable
               key={candidate.id}
@@ -190,7 +190,7 @@ export function GuardianPicker({
               ) : null}
             </Pressable>
           ))}
-        </Card>
+        </OutlinedCard>
       ) : null}
       {search && !isFetching && candidates.length === 0 ? (
         <Text variant="bodySmall" style={{ color: muted }}>

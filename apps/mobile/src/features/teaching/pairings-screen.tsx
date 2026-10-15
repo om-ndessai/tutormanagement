@@ -9,7 +9,8 @@ import type { Assignment, UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { AdaptiveRow } from '@/components/adaptive-row';
 import { useLargeText } from '@/hooks/use-large-text';
@@ -202,7 +203,7 @@ function PairingCard({
   const large = useLargeText();
 
   return (
-    <Card testID={`pairing-card-${assignment.id}`} mode="outlined" style={{ borderRadius: radius.lg }}>
+    <OutlinedCard testID={`pairing-card-${assignment.id}`} style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.md, paddingLeft: space.lg, gap: space.sm }}>
         <AdaptiveRow align="center">
           <View style={{ flex: large ? undefined : 1 }}>
@@ -246,7 +247,7 @@ function PairingCard({
           </Text>
         ) : null}
       </View>
-    </Card>
+    </OutlinedCard>
   );
 }
 

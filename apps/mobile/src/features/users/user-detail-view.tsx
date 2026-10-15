@@ -357,7 +357,7 @@ function Tag({ label, filled }: { label: string; filled?: boolean }) {
     >
       <Text
         style={{
-          fontSize: 11,
+          fontSize: 12,
           color: filled ? theme.colors.onSecondaryContainer : theme.tokens.mutedForeground,
         }}
       >

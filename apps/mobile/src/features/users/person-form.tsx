@@ -536,8 +536,6 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
           style={{
             fontSize: 12,
             fontWeight: '600',
-            letterSpacing: 0.6,
-            textTransform: 'uppercase',
             color: theme.tokens.mutedForeground,
           }}
         >

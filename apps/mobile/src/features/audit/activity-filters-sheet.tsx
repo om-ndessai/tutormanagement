@@ -103,7 +103,7 @@ export function ActivityFiltersSheet({
       backdropComponent={renderBackdrop}
       onChange={(index) => setOpen(index >= 0)}
       backgroundStyle={{ backgroundColor: theme.colors.elevation.level1 }}
-      handleIndicatorStyle={{ backgroundColor: theme.colors.outline }}
+      handleIndicatorStyle={{ backgroundColor: theme.colors.outlineVariant }}
       keyboardBehavior="interactive"
       keyboardBlurBehavior="restore"
       accessibilityLabel="Filter activity"

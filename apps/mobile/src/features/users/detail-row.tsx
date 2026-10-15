@@ -25,10 +25,8 @@ export function Detail({
         <Icon source={icon} size={14} color={theme.tokens.mutedForeground} />
         <Text
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: '600',
-            letterSpacing: 0.6,
-            textTransform: 'uppercase',
             color: theme.tokens.mutedForeground,
           }}
         >

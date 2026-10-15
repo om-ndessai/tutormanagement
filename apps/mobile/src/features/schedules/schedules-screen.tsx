@@ -223,11 +223,7 @@ export function SchedulesScreen() {
 
       {byDay.map(({ day: weekday, items }) => (
         <View key={weekday.value} testID={`schedule-group-${weekday.value}`} style={{ gap: space.sm }}>
-          <Text
-            variant="labelMedium"
-            accessibilityRole="header"
-            style={{ color: muted, textTransform: 'uppercase', letterSpacing: 0.6 }}
-          >
+          <Text variant="labelMedium" accessibilityRole="header" style={{ color: muted }}>
             {weekday.label}
           </Text>
           {items.map((schedule) => {

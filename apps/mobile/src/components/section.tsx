@@ -2,7 +2,8 @@
 import { router, type Href } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import { Card, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { slug } from '@/components/stat-card';
 import { useTourTarget } from '@/features/onboarding/tour-targets';
@@ -96,8 +97,7 @@ export function Panel({
 }) {
   const tourRef = useTourTarget(tourId);
   const card = (
-    <Card
-      mode="outlined"
+    <OutlinedCard
       testID={testID}
       nativeID={tourId}
       style={{ borderRadius: radius.lg }}
@@ -122,7 +122,7 @@ export function Panel({
         ) : null}
         {children}
       </View>
-    </Card>
+    </OutlinedCard>
   );
   // The tour measures a plain view: only a panel it points at gets one around its card.
   return tourId ? (

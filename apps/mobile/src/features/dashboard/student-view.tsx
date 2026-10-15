@@ -33,10 +33,8 @@ function GoalBanner({ goal, course }: { goal: string; course: string | null }) {
         <Icon source="target" size={16} color={ink} />
         <Text
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: '500',
-            letterSpacing: 0.6,
-            textTransform: 'uppercase',
             color: ink,
           }}
         >

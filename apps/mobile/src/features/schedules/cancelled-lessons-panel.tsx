@@ -13,7 +13,8 @@ import { formatClockTime, type ScheduleCancellation } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, Divider, Icon, Text } from 'react-native-paper';
+import { Button, Divider, Icon, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { Tag } from '@/features/teaching/session-card';
 import { useOrgTimeZone } from '@/providers/auth-provider';
@@ -50,11 +51,7 @@ export function CancelledLessonsPanel() {
   const shown = expanded ? ordered : ordered.slice(0, SHOWN);
 
   return (
-    <Card
-      testID="cancelled-lessons-panel"
-      mode="outlined"
-      style={{ borderRadius: radius.lg, borderStyle: 'dashed' }}
-    >
+    <OutlinedCard testID="cancelled-lessons-panel" style={{ borderRadius: radius.lg, borderStyle: 'dashed' }}>
       <View style={{ paddingHorizontal: space.lg, paddingVertical: space.sm, gap: space.sm }}>
         <Pressable
           testID="cancelled-lessons-toggle"
@@ -123,7 +120,7 @@ export function CancelledLessonsPanel() {
           </Button>
         ) : null}
       </View>
-    </Card>
+    </OutlinedCard>
   );
 }
 

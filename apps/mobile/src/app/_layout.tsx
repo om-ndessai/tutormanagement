@@ -3,6 +3,7 @@ import '@/polyfills/intl-cache';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
+import { Nunito_700Bold, Nunito_800ExtraBold, useFonts } from '@expo-google-fonts/nunito';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo } from 'react';
@@ -32,10 +33,14 @@ void SplashScreen.preventAutoHideAsync();
 function RootNavigator() {
   const { status, organization, platformAdmin } = useAuth();
   const theme = useAppTheme();
+  // The heading face (UI upgrades U1). A failure to load falls back to the system font rather than
+  // holding the splash.
+  const [fontsLoaded, fontError] = useFonts({ Nunito_700Bold, Nunito_800ExtraBold });
+  const fontsReady = fontsLoaded || fontError !== null;
 
   useEffect(() => {
-    if (status !== 'loading') void SplashScreen.hideAsync();
-  }, [status]);
+    if (status !== 'loading' && fontsReady) void SplashScreen.hideAsync();
+  }, [status, fontsReady]);
 
   useEffect(() => {
     void loadHapticsPreference();
@@ -56,7 +61,7 @@ function RootNavigator() {
   }, [status, inOrganization]);
   const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
-  if (status === 'loading' || status === 'error') return <BootScreen />;
+  if (status === 'loading' || status === 'error' || !fontsReady) return <BootScreen />;
 
   return (
     <NavigationThemeProvider value={navTheme}>

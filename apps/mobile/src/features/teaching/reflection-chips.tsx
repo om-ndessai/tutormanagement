@@ -47,7 +47,7 @@ export function ReflectionFlags({ reflection }: { reflection: SessionReflection 
             paddingVertical: 1,
           }}
         >
-          <Text style={{ fontSize: 10, fontWeight: '500', color: ink }}>{flag}</Text>
+          <Text style={{ fontSize: 12, fontWeight: '500', color: ink }}>{flag}</Text>
         </View>
       ))}
     </>
@@ -62,7 +62,7 @@ export function ReflectionChips({ reflection }: { reflection: SessionReflection 
       {REFLECTION_QUESTIONS.map((question) => (
         <View key={question.key} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
           <AnswerChip questionKey={question.key} value={reflection[question.key]} />
-          <Text style={{ fontSize: 11, color: theme.tokens.mutedForeground }}>{question.short}</Text>
+          <Text style={{ fontSize: 12, color: theme.tokens.mutedForeground }}>{question.short}</Text>
         </View>
       ))}
     </View>

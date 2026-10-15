@@ -124,10 +124,8 @@ export function SessionMoneyPreview({
             <View testID="record-money" style={{ alignItems: 'flex-end' }}>
               <Text
                 style={{
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: '500',
-                  letterSpacing: 0.6,
-                  textTransform: 'uppercase',
                   color: muted,
                 }}
               >

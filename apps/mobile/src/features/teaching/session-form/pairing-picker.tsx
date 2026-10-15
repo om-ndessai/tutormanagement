@@ -65,7 +65,7 @@ export function PairingPicker({
         })}
       >
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 11, color: error ? theme.colors.error : muted }}>Student</Text>
+          <Text style={{ fontSize: 12, color: error ? theme.colors.error : muted }}>Student</Text>
           <Text variant="bodyLarge" style={{ color: chosen ? theme.colors.onSurface : muted }}>
             {chosen ? chosen.student_name : 'Choose a student'}
             {chosen && showTutor ? (

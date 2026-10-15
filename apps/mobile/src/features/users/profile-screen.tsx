@@ -4,7 +4,8 @@
 import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Card, Divider, Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { ErrorState } from '@/components/state-views';
 import { DetailSkeleton } from '@/components/skeletons';
@@ -46,15 +47,15 @@ export function ProfileScreen() {
         {`How ${brand.name} has you on file.`}
       </Text>
       <DevSignInNotice />
-      <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
+      <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
         {isPending ? <DetailSkeleton label="Loading your record…" avatar /> : null}
         {error ? <ErrorState error={error} onRetry={() => void refetch()} /> : null}
         {data ? <UserDetailView user={data.data} /> : null}
-      </Card>
+      </OutlinedCard>
       <Text testID="profile-footer" variant="bodySmall" style={{ color: muted, textAlign: 'center' }}>
         Something wrong here? Ask an administrator to update your record.
       </Text>
-      <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
+      <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
         <View style={{ gap: space.lg }}>
           <AppearanceControl testID="profile-appearance" describe />
           <Divider />
@@ -66,7 +67,7 @@ export function ProfileScreen() {
             </>
           ) : null}
         </View>
-      </Card>
+      </OutlinedCard>
     </Screen>
   );
 }

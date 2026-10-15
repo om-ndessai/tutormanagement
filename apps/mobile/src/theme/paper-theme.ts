@@ -1,5 +1,5 @@
 import type { OrgPalette } from '@tmi/shared';
-import { MD3DarkTheme, MD3LightTheme, type MD3Theme } from 'react-native-paper';
+import { MD3DarkTheme, MD3LightTheme, configureFonts, type MD3Theme } from 'react-native-paper';
 
 import { PALETTE_TOKENS } from './palettes.generated';
 
@@ -17,6 +17,28 @@ export type Tokens = { [K in keyof Generated]: string } & {
 };
 
 export type AppTheme = MD3Theme & { tokens: Tokens; palette: OrgPalette; scheme: ColorScheme };
+
+/**
+ * Headings in Nunito (UI upgrades U1): rounded and friendly, where the body stays the system font
+ * for reading. Loaded in the root layout before the splash hides (`HEADING_FONTS`). A face per
+ * weight, with fontWeight left normal: Android fakes a bold over a named face otherwise.
+ */
+export const HEADING_FONT = { heavy: 'Nunito_800ExtraBold', bold: 'Nunito_700Bold' } as const;
+const heading = (fontFamily: string) => ({ fontFamily, fontWeight: 'normal' as const });
+const FONTS = configureFonts({
+  config: {
+    displayLarge: heading(HEADING_FONT.heavy),
+    displayMedium: heading(HEADING_FONT.heavy),
+    displaySmall: heading(HEADING_FONT.heavy),
+    headlineLarge: heading(HEADING_FONT.heavy),
+    headlineMedium: heading(HEADING_FONT.heavy),
+    headlineSmall: heading(HEADING_FONT.heavy),
+    titleLarge: heading(HEADING_FONT.heavy),
+    titleMedium: heading(HEADING_FONT.bold),
+    // Nothing under 12pt (UI upgrades U1): Material's smallest label is 11.
+    labelSmall: { fontSize: 12, lineHeight: 16 },
+  },
+});
 
 /** Mix a hex colour toward another (for elevation tints); `amount` 0..1. */
 function mix(base: string, over: string, amount: number): string {
@@ -55,14 +77,18 @@ export function buildTheme(palette: OrgPalette, scheme: ColorScheme): AppTheme {
   const t = PALETTE_TOKENS[palette][scheme] as Tokens;
   const dark = scheme === 'dark';
   const base = dark ? MD3DarkTheme : MD3LightTheme;
-  // Borders in dark mode are translucent white (#FFFFFF1F); Paper wants opaque outlines.
-  const outline = t.border.length > 7 ? mix(t.card, '#FFFFFF', 0.14) : t.border;
+  // Borders in dark mode are translucent white (#FFFFFF1F); Paper wants opaque outlines. A control's
+  // edge (Paper's `outline`: inputs, outlined buttons and chips) takes the stronger --input, at
+  // least 3:1 on the page; dividers and card edges (`outlineVariant`) stay soft on --border.
+  const outline = t.input.length > 7 ? mix(t.card, '#FFFFFF', 0.3) : t.input;
+  const divider = t.border.length > 7 ? mix(t.card, '#FFFFFF', 0.14) : t.border;
   const surfaceTint = t.primary;
 
   return {
     ...base,
     dark,
     roundness: 3,
+    fonts: FONTS,
     palette,
     scheme,
     tokens: t,
@@ -87,7 +113,7 @@ export function buildTheme(palette: OrgPalette, scheme: ColorScheme): AppTheme {
       surfaceVariant: t.muted,
       onSurfaceVariant: t.mutedForeground,
       outline,
-      outlineVariant: outline,
+      outlineVariant: divider,
       error: t.destructive,
       onError: t.destructiveForeground,
       errorContainer: mix(t.card, t.destructive, dark ? 0.25 : 0.12),

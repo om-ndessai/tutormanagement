@@ -161,7 +161,7 @@ export function ProgressStatusBadge({ status }: { status: ProgressStatus }) {
       }}
     >
       <Icon source={STATUS_ICONS[status]} size={12} color={color} />
-      <Text style={{ fontSize: 11, fontWeight: '500', color }}>{PROGRESS_STATUS_LABELS[status]}</Text>
+      <Text style={{ fontSize: 12, fontWeight: '500', color }}>{PROGRESS_STATUS_LABELS[status]}</Text>
     </View>
   );
 }
@@ -255,7 +255,7 @@ export function TopicName({
     <Text variant="bodyMedium" style={{ flexShrink: 1 }}>
       <Text
         style={{
-          fontSize: 11,
+          fontSize: 12,
           fontFamily: Platform.select({ ios: 'Menlo', default: 'monospace' }),
           color: theme.tokens.mutedForeground,
         }}
