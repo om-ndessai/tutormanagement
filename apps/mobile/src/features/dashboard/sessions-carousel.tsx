@@ -73,6 +73,9 @@ export function SessionsCarousel({
 }) {
   const theme = useAppTheme();
   const clock = useOrgClock();
+  const { user } = useAuth();
+  // Who may schedule goes straight to Schedule a lesson (UI upgrades U5); anyone else to the page.
+  const mayScheduleHere = user?.roles.some((role) => role === 'admin' || role === 'tutor') ?? false;
   const upcoming = useUpcomingSessions(tutorUserId);
   const list = useRef<FlatList<CarouselItem>>(null);
   const placed = useRef(false);
@@ -168,7 +171,7 @@ export function SessionsCarousel({
             width={item.width}
             height={cardHeight}
             text="Nothing scheduled. Set up a schedule →"
-            onPress={() => router.navigate('/schedule')}
+            onPress={() => (mayScheduleHere ? router.push('/schedule-lesson') : router.navigate('/schedule'))}
             testID="carousel-none-scheduled"
           />
         );

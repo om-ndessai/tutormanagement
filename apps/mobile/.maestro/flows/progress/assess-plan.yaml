@@ -51,23 +51,50 @@ tags:
 - tapOn:
     id: assessment-level-BA3
 - assertVisible: '.*Beast Academy Level 3.*'
+# No plan yet, so every level waits closed (UI upgrades U5); BA3 opens.
 - scrollUntilVisible:
     element:
-      id: assessment-level-tab-BA3
+      id: assessment-group-BA3
     direction: DOWN
-    centerElement: false
+    centerElement: true
+- assertVisible:
+    id: assessment-no-plan
+- assertNotVisible:
+    id: assessment-topic-BA3.02-2
 - tapOn:
-    id: assessment-level-tab-BA3
+    id: assessment-group-BA3
+- scrollUntilVisible:
+    element:
+      id: assessment-topic-BA3.02-2
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: assessment-topic-BA3.02-2
+# The chosen step says its word.
+- extendedWaitUntil:
+    visible:
+      id: assessment-topic-BA3.02-word
+      text: 'Developing'
+    timeout: 5000
 - scrollUntilVisible:
     element:
       id: assessment-topic-BA3.04-4
     direction: DOWN
-    centerElement: false
-- tapOn:
-    id: assessment-topic-BA3.02-2
+    centerElement: true
 - tapOn:
     id: assessment-topic-BA3.04-4
-- assertVisible: '2 rated'
+- assertVisible:
+    id: assessment-topic-BA3.04-word
+    text: 'Confident'
+# The level counts its scores (the form's own count sits at the top of the list, scrolled away).
+- scrollUntilVisible:
+    element:
+      id: assessment-group-BA3
+    direction: UP
+    centerElement: true
+- assertVisible:
+    id: assessment-group-BA3
+    text: '.*2 rated.*'
 - takeScreenshot: progress-assessment-form
 - scrollUntilVisible:
     element:
@@ -130,6 +157,42 @@ tags:
 - assertVisible: 'Keep up with the accelerated class.'
 - assertVisible: '.*Twice a week, 1 hr.*'
 - takeScreenshot: progress-plan-created
+
+# Now she has a plan, the assessment opens on its topics (UI upgrades U5): BA3.02 first, scored 2.
+- scrollUntilVisible:
+    element:
+      id: progress-assessment-edit
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: progress-assessment-edit
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-form
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-planned
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: assessment-topic-BA3.02-word
+    text: 'Developing'
+- assertVisible:
+    id: assessment-group-BA3
+    text: '.*1 rated.*'
+- takeScreenshot: progress-assessment-planned
+- scrollUntilVisible:
+    element:
+      id: assessment-cancel
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: assessment-cancel
+- extendedWaitUntil:
+    notVisible:
+      id: screen-assessment-form
+    timeout: 10000
 
 # Delete the plan, then the assessment, each after asking.
 # Centred: on iOS the floating tab bar covers the bottom of the page, and a button merely

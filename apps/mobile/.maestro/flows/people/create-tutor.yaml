@@ -198,27 +198,37 @@ tags:
     id: person-form-save
 - extendedWaitUntil:
     visible:
-      id: person-section-tutor
+      id: person-section-background
     timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: tax-setup-card
     timeout: 10000
+# The record in sections (UI upgrades U5): Availability, Teaching, then Pay and tax.
 - scrollUntilVisible:
     element:
-      id: person-pay-in-person
+      id: person-section-availability
     direction: DOWN
     timeout: 20000
-- assertVisible: '\$70\.00 / hr'
-- assertVisible: '12 Oak Street.*Durham, NC 27701'
+- scrollUntilVisible:
+    element: 'Thursday'
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: '3:00–6:00 PM'
 - scrollUntilVisible:
     element: '2 hr'
     direction: DOWN
     timeout: 20000
 - scrollUntilVisible:
     element:
-      id: person-section-availability
+      id: person-pay-in-person
     direction: DOWN
     timeout: 20000
-- assertVisible: '3:00–6:00 PM'
-- assertVisible: 'Thursday'
+- assertVisible: '\$70\.00 / hr'
+# The address sits under the rates and the top-up in Pay and tax.
+- scrollUntilVisible:
+    element: '12 Oak Street.*Durham, NC 27701'
+    direction: DOWN
+    centerElement: true
+    timeout: 20000

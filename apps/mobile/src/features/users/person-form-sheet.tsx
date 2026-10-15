@@ -19,6 +19,7 @@ import { useUserDetail } from './api';
 import { announceGuardianCreated } from './guardian-bridge';
 import { PersonForm } from './person-form';
 import { parsePreset, parseSections } from './person-form-model';
+import { recordSection } from './record-sections';
 
 function close() {
   if (router.canGoBack()) router.back();
@@ -29,12 +30,15 @@ export function PersonFormSheet({
   preset,
   guardian,
   sections,
+  section,
   forGuardian,
 }: {
   id?: string;
   preset?: string;
   guardian?: string;
   sections?: string;
+  /** One section of the person's record (U5): its blocks, under its title. */
+  section?: string;
   forGuardian: boolean;
 }) {
   const { user } = useAuth();
@@ -78,7 +82,11 @@ export function PersonFormSheet({
     body = <ErrorState error={detail.error} onRetry={() => void detail.refetch()} />;
   } else {
     const record = id ? detail.data?.data : undefined;
-    const shown = forGuardian ? (parseSections(sections) ?? ['identity', 'payment-handles']) : parseSections(sections);
+    // A section of the record (U5) names its own blocks and title.
+    const fromRecord = record ? recordSection(section) : undefined;
+    const shown = forGuardian
+      ? (parseSections(sections) ?? ['identity', 'payment-handles'])
+      : (fromRecord?.form ?? parseSections(sections));
     // The tutor record's Finish tax setup card (UI upgrades U3) opens just the tax fields.
     const taxSetup = Boolean(shown?.includes('tutor-tax'));
     body = (
@@ -92,13 +100,23 @@ export function PersonFormSheet({
             : [],
         }}
         sections={shown}
-        title={forGuardian ? 'Add a parent' : taxSetup ? 'Finish tax setup' : undefined}
+        title={
+          forGuardian
+            ? 'Add a parent'
+            : fromRecord
+              ? `${fromRecord.title}: ${record?.full_name ?? ''}`
+              : taxSetup
+                ? 'Finish tax setup'
+                : undefined
+        }
         description={
           forGuardian
             ? 'The parent or guardian: they sign in with this Google address, and are billed for the lessons.'
-            : taxSetup
-              ? 'For their 1099: where to send it, and whether the office holds their SSN — a tick, never the number.'
-              : undefined
+            : fromRecord
+              ? fromRecord.editDescription
+              : taxSetup
+                ? 'For their 1099: where to send it, and whether the office holds their SSN — a tick, never the number.'
+                : undefined
         }
         onSaved={saved}
         onCancel={close}

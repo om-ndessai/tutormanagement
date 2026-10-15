@@ -86,8 +86,11 @@ export interface StepFlowProps<D> {
   title: string;
   steps: readonly StepDef<D>[];
   draft: D;
-  /** Close with a Review step: a card per step that has a `summary`, each with Edit. */
-  review?: { title?: string; description?: string } | false;
+  /**
+   * Close with a Review step: a card per step that has a `summary`, each with Edit. `lead` goes
+   * above the cards (Schedule a lesson's sentence, U5).
+   */
+  review?: { title?: string; description?: string; lead?: (draft: D) => ReactNode } | false;
   /** The finishing action's label ("Add", "Schedule"). */
   submitLabel?: string;
   /** Runs on the last step's action, once every step validates. Close with `leave(close)` on success. */
@@ -330,7 +333,10 @@ export function StepFlow<D>({
     : step?.description;
 
   const body = onReview ? (
-    <ReviewCards steps={steps} draft={draft} onEdit={edit} />
+    <>
+      {review && review.lead ? review.lead(draft) : null}
+      <ReviewCards steps={steps} draft={draft} onEdit={edit} />
+    </>
   ) : step ? (
     step.render({ draft, errors, goTo })
   ) : null;

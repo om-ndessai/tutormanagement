@@ -48,6 +48,8 @@ export default function OrgLayout() {
             <Stack.Screen name="add-tutor" options={STEP_FLOW_OPTIONS} />
             {/* Recording a lesson and writing it up are a step flow too (UI upgrades U4). */}
             <Stack.Screen name="record-lesson" options={STEP_FLOW_OPTIONS} />
+            {/* So is scheduling one (U5); editing a schedule keeps the sheet below. */}
+            <Stack.Screen name="schedule-lesson" options={STEP_FLOW_OPTIONS} />
             {/* Recording the lesson at hand from Next up: one decision, a fitted quick sheet (U4). */}
             <Stack.Screen
               name="record-as-planned"
@@ -193,11 +195,12 @@ export default function OrgLayout() {
                 headerShown: false,
               }}
             />
+            {/* Recording a payment is a quick sheet (UI upgrades U5): as tall as what it holds. */}
             <Stack.Screen
               name="payment-form"
               options={{
                 presentation: 'formSheet',
-                sheetAllowedDetents: [0.9, 1],
+                sheetAllowedDetents: 'fitToContents',
                 sheetGrabberVisible: true,
                 headerShown: false,
               }}

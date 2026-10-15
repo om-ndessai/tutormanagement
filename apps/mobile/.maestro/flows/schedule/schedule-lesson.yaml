@@ -1,0 +1,143 @@
+# Schedule a lesson, the step flow (UI upgrades U5), as a tutor from the create button. Alex cannot
+# leave Who without a student; he picks Ben, Wednesdays, 1 hr 30; adds an end date; at Where his
+# own room comes chosen, Ben's Home replaces it (one in-person place at most), and the online room
+# joins it, which asks which is usual: online. The Review says it as one sentence. Edit on When
+# goes back there, 45 min, and "Back to review" returns with the sentence redone. Schedule: the
+# flow goes, "Session scheduled.", and Wednesday's card is his. Cleans up after itself.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-schedules.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-schedule-lesson
+    timeout: 15000
+- tapOn:
+    id: create-action-schedule-lesson
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the lesson with\?.*'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+# Nobody chosen: Next is refused under the list.
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: schedule-pairing-error
+      text: 'Choose which student this is for\.'
+    timeout: 5000
+- tapOn:
+    id: schedule-pairing-row-a0000000-0000-4000-8000-000000000002
+- assertNotVisible:
+    id: schedule-pairing-error
+- takeScreenshot: schedule-lesson-who
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When is it\?.*'
+    timeout: 10000
+- tapOn:
+    id: schedule-form-day-3
+- tapOn:
+    id: schedule-form-length-90
+- assertVisible:
+    id: schedule-when-line
+    text: 'Wednesdays, 4:00–5:30 PM'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*From when\?.*'
+    timeout: 10000
+- tapOn:
+    id: schedule-form-ends-add
+- extendedWaitUntil:
+    visible:
+      id: schedule-form-ends
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Where is it\?.*'
+    timeout: 10000
+# Ben's Home replaces the room (one in person), and the online room joins it.
+- tapOn:
+    id: schedule-place-0c100000-0000-4000-8000-000000000004
+- tapOn:
+    id: schedule-place-0c100000-0000-4000-8000-000000000002
+- extendedWaitUntil:
+    visible:
+      id: schedule-usual-virtual
+    timeout: 5000
+- tapOn:
+    id: schedule-usual-virtual
+- takeScreenshot: schedule-lesson-where
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: schedule-review-sentence
+      text: 'Every Wednesday, 4:00–5:30 PM, online in Online room, or at Home, starting .*, until .*\.'
+    timeout: 10000
+- assertVisible: 'Usually online'
+- takeScreenshot: schedule-lesson-review
+# Edit from the Review, and back to it.
+- tapOn:
+    id: step-flow-edit-when
+- extendedWaitUntil:
+    visible:
+      id: schedule-form-length-45
+    timeout: 10000
+- tapOn:
+    id: schedule-form-length-45
+- assertVisible:
+    id: step-flow-next
+    text: 'Back to review'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: schedule-review-sentence
+      text: 'Every Wednesday, 4:00–4:45 PM, online in Online room, or at Home, .*'
+    timeout: 10000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'Session scheduled\.'
+    timeout: 15000
+- assertNotVisible:
+    id: step-flow
+- tapOn: 'Schedule'
+- extendedWaitUntil:
+    visible:
+      id: schedule-day-3
+    timeout: 15000
+- tapOn:
+    id: schedule-day-3
+- extendedWaitUntil:
+    visible: "Remove Ben Whitfield's Wednesdays 4:00–4:45.*"
+    timeout: 10000
+- takeScreenshot: schedule-lesson-created

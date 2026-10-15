@@ -24,6 +24,8 @@ import { FieldErrorProvider, useFieldErrorAnchors } from './field-error';
 export interface QuickSheetProps {
   /** The root's testID; the action is `<testID>-save`, Cancel `<testID>-cancel`. */
   testID?: string;
+  /** The buttons' prefix when it differs from the root's (`payment` -> `payment-save`). */
+  actionTestID?: string;
   title: string;
   /** One line under the title. */
   description?: string;
@@ -48,6 +50,7 @@ export interface QuickSheetProps {
 
 export function QuickSheet({
   testID = 'quick-sheet',
+  actionTestID,
   title,
   description,
   children,
@@ -64,6 +67,7 @@ export function QuickSheet({
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
   const { leave } = useUnsavedChangesGuard(dirty);
+  const actions = actionTestID ?? testID;
   const scrollRef = useRef<ScrollView>(null);
   const anchors = useFieldErrorAnchors(scrollRef, true);
 
@@ -110,13 +114,13 @@ export function QuickSheet({
         }}
       >
         {error ? (
-          <HelperText type="error" padding="none" testID={`${testID}-error`}>
+          <HelperText type="error" padding="none" testID={`${actions}-error`}>
             {error}
           </HelperText>
         ) : null}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}>
           <Button
-            testID={`${testID}-cancel`}
+            testID={`${actions}-cancel`}
             mode="text"
             onPress={cancel}
             disabled={loading}
@@ -125,7 +129,7 @@ export function QuickSheet({
             {cancelLabel}
           </Button>
           <Button
-            testID={`${testID}-save`}
+            testID={`${actions}-save`}
             mode="contained"
             icon={primaryIcon}
             onPress={() => void onPrimary({ leave: (close) => leave(close ?? back) })}

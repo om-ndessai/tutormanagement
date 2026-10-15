@@ -189,6 +189,7 @@ describe('the payment sheet', () => {
       id ? { data: { data: { dependents: [] } }, isPending: false, isSuccess: true } : { data: undefined },
     );
     await renderWithProviders(<PaymentFormBody existing={null} />);
+    await fireEvent.press(screen.getByTestId('payment-party'));
     await fireEvent.press(screen.getByTestId(`payment-party-${PARENT}`));
     await fireEvent.changeText(screen.getByTestId('payment-amount'), '75');
     await fireEvent.press(screen.getByTestId('payment-save'));
@@ -209,6 +210,7 @@ describe('the payment sheet', () => {
     );
     mockRecord.mockResolvedValue({ data: paid });
     await renderWithProviders(<PaymentFormBody existing={null} />);
+    await fireEvent.press(screen.getByTestId('payment-party'));
     await fireEvent.press(screen.getByTestId(`payment-party-${PARENT}`));
     await fireEvent.changeText(screen.getByTestId('payment-amount'), '$1,234.56');
     await fireEvent.press(screen.getByTestId('payment-method-cash'));
@@ -246,5 +248,40 @@ describe('the payment sheet', () => {
         notes: null,
       },
     });
+  });
+
+  it('arrives filled from a record or a ledger row: who as a line, with Change to choose again', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+    mockDetail.mockImplementation((id: string | null) =>
+      id
+        ? {
+            data: { data: { full_name: 'Anita Patel', dependents: [{ user_id: STUDENT, full_name: 'Sanjay Patel' }] } },
+            isPending: false,
+            isSuccess: true,
+          }
+        : { data: undefined },
+    );
+    mockRecord.mockResolvedValue({ data: paid });
+    await renderWithProviders(
+      <PaymentFormBody existing={null} prefill={{ direction: 'from_parent', party: PARENT, student: STUDENT }} />,
+    );
+    expect(screen.getByTestId('payment-who')).toHaveTextContent('From Anita Patel, for Sanjay Patel');
+    expect(screen.queryByTestId('payment-party')).toBeNull();
+    // The date and reference wait under More details.
+    expect(screen.queryByTestId('payment-reference')).toBeNull();
+    await fireEvent.press(screen.getByTestId('payment-more'));
+    expect(screen.getByTestId('payment-reference')).toBeTruthy();
+    await fireEvent.changeText(screen.getByTestId('payment-amount'), '40');
+    await fireEvent.press(screen.getByTestId('payment-save'));
+    await waitFor(() => expect(mockRecord).toHaveBeenCalled());
+    expect(mockRecord.mock.calls[0][0]).toMatchObject({ party_user_id: PARENT, student_user_id: STUDENT, amount_cents: 4000 });
+  });
+
+  it('opens the pickers on Change', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+    await renderWithProviders(<PaymentFormBody existing={null} prefill={{ direction: 'to_tutor', party: TUTOR }} />);
+    await fireEvent.press(screen.getByTestId('payment-who-change'));
+    expect(screen.getByTestId('payment-direction-to_tutor')).toBeTruthy();
+    expect(screen.getByTestId('payment-party')).toBeTruthy();
   });
 });

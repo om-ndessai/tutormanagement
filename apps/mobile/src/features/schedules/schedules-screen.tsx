@@ -68,7 +68,8 @@ export function SchedulesScreen() {
 
   const mayCreate = isTutor || isAdmin;
   const openForm = (schedule?: VisibleSchedule) =>
-    router.push(schedule ? { pathname: '/schedule-form', params: { id: schedule.id } } : '/schedule-form');
+    // A new one is the step flow (UI upgrades U5); a correction stays the sheet.
+    router.push(schedule ? { pathname: '/schedule-form', params: { id: schedule.id } } : '/schedule-lesson');
 
   async function download(key: string, path: string, fallback: string) {
     setDownloading(key);

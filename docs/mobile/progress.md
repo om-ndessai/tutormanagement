@@ -225,6 +225,19 @@ native rebuild of both dev builds, so build only while the devices are free.
   `dashboard/reflection`, `exposure/money-tutoring` green on iOS and Android (Android
   `dictate-permission` once intermittent at its Profile step, green on re-run); `people/tutor-view`
   and `shell/surface-kit` green on iOS; `npm run smoke -- mobile` green on both. Design entry #49)*
+- [x] U5. Mobile: Schedule a lesson, Record a payment, Assessment and Section editing — scheduling as a
+  step flow (Who, When, From when, Where as place cards with one of each kind at most, a Review said as
+  a sentence) from the create button, Schedule's button and the carousel's "Nothing scheduled",
+  editing kept on the sheet; the payment as a fitted quick sheet (the amount large, who filled from a
+  Billing row or the person's record with Change, method chips, More details); the assessment's
+  topics planned-first with a five-step pill that shows its word, the levels closed until opened; a
+  person's record in sections (Contact, Background or School and goal, Availability, Teaching or
+  Lessons and price, Pay and tax or Payment, Family), each with its own Edit opening only that section,
+  the whole form in the record's menu *(built and tested 2026-10-15: typecheck, lint, jest (88
+  suites, 474 tests), export green; `schedule/*`, `locations/schedule-locations`, `people/*`,
+  `billing/*`, `progress/*`, `forms/*`, `shell/create`, `exposure/student-controls`,
+  `exposure/narrow-audiences` green on iOS and Android (30 each, after the flow fixes in #50);
+  `npm run smoke -- mobile` green on both. Design entry #50)*
 
 ## Phase 4 — Google sign-in
 

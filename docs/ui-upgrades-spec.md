@@ -184,6 +184,23 @@ and understanding, "Much too easy" … "About right" … "Much too hard", and "M
   Lessons and price, Pay and tax, Family); Edit on one opens only that section (the form's existing
   `sections` support).
 
+**Status: done 2026-10-15 (app).** Schedule a lesson is a step flow (`/schedule-lesson`) from the
+create button, Schedule's button and the carousel's "Nothing scheduled"; its Review reads "Every
+Monday, 4:00–5:00 PM, at Institute, room 2, starting Oct 19." (`scheduleSentence`, with jest
+tests). Editing a schedule stays the sheet. Record a payment is a fitted quick sheet: the amount
+large, who filled from a Billing row or a person's record (its menu) with Change, method chips, and
+the date, time, reference and notes under More details. The assessment lists the plan's topics
+first, then every level closed until opened, each topic with a five-step pill that shows its word
+(`TOPIC_RATING_LABELS`). A person's record is in sections, each with its own Edit opening only that
+section of the person form; "Edit everything" moved into the record's menu; Finish tax setup stays.
+Changes from the plan, all in `docs/mobile/build-log.md` #50:
+- A fifth step, **From when?** (start, an end, a note), keeps about three inputs per step.
+- The lesson's mode follows its place; "Usually" is asked only when one of each is chosen. The
+  free-text room note is no longer asked when scheduling (the edit sheet keeps it).
+- The payment sheet's person list starts closed, so the sheet fits and its action stays in reach.
+- A tutor's sections are **Background** and **Teaching** where a student's are School and goal and
+  Lessons and price; a parent's ids are **Payment**.
+
 ## Phase U6: the homes
 
 - Every role: a greeting ("Good afternoon, Priya") and **Today** first, then a compact row of

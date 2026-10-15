@@ -64,7 +64,7 @@ test('Record opens the Tutoring step flow, never the money; each action routes t
   expect(paths).toEqual([
     '/record-lesson',
     '/start-lesson',
-    '/schedule-form',
+    '/schedule-lesson',
     '/add-student',
     '/add-tutor',
     '/person-form',

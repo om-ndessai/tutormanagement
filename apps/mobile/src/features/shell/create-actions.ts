@@ -46,7 +46,8 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
     title: 'Schedule a lesson',
     description: 'A standing weekly lesson.',
     icon: 'calendar-plus',
-    href: '/schedule-form',
+    // The schedule step flow (UI upgrades U5); editing one stays the sheet.
+    href: '/schedule-lesson',
   },
   'add-student': {
     id: 'add-student',

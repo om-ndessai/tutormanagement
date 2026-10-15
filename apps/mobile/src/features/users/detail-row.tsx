@@ -2,10 +2,10 @@
 // (Detail, Section, Muted) @ 1132322.
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
-import { Divider, Icon, Text } from 'react-native-paper';
+import { Button, Divider, Icon, Text } from 'react-native-paper';
 
 import { useAppTheme } from '@/providers/theme-provider';
-import { space } from '@/theme/tokens';
+import { MIN_TARGET, space } from '@/theme/tokens';
 
 export function Detail({
   icon,
@@ -52,20 +52,39 @@ export function Section({
   icon,
   children,
   testID,
+  onEdit,
+  editTestID,
 }: {
   title: string;
   icon: string;
   children: ReactNode;
   testID?: string;
+  /** The section's own Edit (UI upgrades U5): only that part of the record. */
+  onEdit?: () => void;
+  editTestID?: string;
 }) {
   return (
     <View testID={testID} style={{ gap: space.lg }}>
       <Divider />
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: onEdit ? MIN_TARGET : undefined }}>
         <Icon source={icon} size={16} />
-        <Text variant="titleSmall" accessibilityRole="header">
+        <Text variant="titleSmall" accessibilityRole="header" style={{ flex: 1 }}>
           {title}
         </Text>
+        {onEdit ? (
+          <Button
+            testID={editTestID}
+            mode="text"
+            compact
+            icon="pencil-outline"
+            onPress={onEdit}
+            accessibilityLabel={`Edit ${title}`}
+            contentStyle={{ minHeight: MIN_TARGET }}
+            style={{ marginVertical: -space.sm }}
+          >
+            Edit
+          </Button>
+        ) : null}
       </View>
       {children}
     </View>

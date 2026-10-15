@@ -34,9 +34,8 @@ import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useCreateAssessment, useCurriculum, useStudentProgress, useUpdateAssessment } from './api';
-import { levelOf } from './progress-model';
 import { RatingLegend } from './rating';
-import { LevelPicker, TopicRatingsEditor } from './topic-pickers';
+import { AssessmentTopicsEditor, LevelPicker } from './topic-pickers';
 
 function close() {
   if (router.canGoBack()) router.back();
@@ -220,11 +219,12 @@ export function AssessmentForm({
         </View>
         <RatingLegend />
         {levels.length > 0 ? (
-          <TopicRatingsEditor
+          // The plan's topics first, then each level, closed until opened (UI upgrades U5).
+          <AssessmentTopicsEditor
             levels={levels}
             ratings={ratings}
             onChange={setRatings}
-            initialLevel={level || (existing?.ratings[0] ? levelOf(existing.ratings[0].topic_id) : undefined)}
+            plannedIds={progress.plan?.topic_ids ?? []}
           />
         ) : (
           <ListSkeleton label="Loading the curriculum…" count={4} height={56} />

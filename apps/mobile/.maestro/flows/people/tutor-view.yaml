@@ -42,7 +42,7 @@ tags:
     id: people-row-00000000-0000-4000-8000-000000000004
 - extendedWaitUntil:
     visible:
-      id: person-section-tutor
+      id: person-section-background
     timeout: 15000
 - assertNotVisible:
     id: person-menu
@@ -85,7 +85,7 @@ tags:
     id: people-row-00000000-0000-4000-8000-000000000008
 - extendedWaitUntil:
     visible:
-      id: person-section-student
+      id: person-section-school
     timeout: 15000
 - scrollUntilVisible:
     element: 'Longest session'
@@ -105,15 +105,19 @@ tags:
     id: people-row-00000000-0000-4000-8000-000000000003
 - extendedWaitUntil:
     visible:
-      id: person-section-tutor
+      id: person-section-background
     timeout: 15000
 - scrollUntilVisible:
     element:
       id: person-pay-in-person
     direction: DOWN
     timeout: 20000
-- assertVisible:
-    id: person-mailing-address
+# Pay and tax (UI upgrades U5): the rates, then the address under them.
+- scrollUntilVisible:
+    element:
+      id: person-mailing-address
+    direction: DOWN
+    timeout: 20000
 - assertVisible: '88 Kildaire Farm Road.*'
 - scrollUntilVisible:
     element:

@@ -240,6 +240,90 @@ export function RatingPicker({
   );
 }
 
+/**
+ * The 1-5 scale as one pill of five steps (UI upgrades U5): the chosen step takes the rating ramp
+ * and its word shows beside the pill ("Developing"), so the number never stands alone. Tapping the
+ * chosen step again clears it -- an unrated topic is not a 1.
+ */
+export function RatingPill({
+  value,
+  onChange,
+  labels = TOPIC_RATING_LABELS,
+  name,
+  testID,
+}: {
+  value: Rating | null;
+  onChange: (value: Rating | null) => void;
+  labels?: Record<Rating, string>;
+  /** Accessible name of the group: the topic being rated. */
+  name: string;
+  /** Each step is `<testID>-<n>`, the word `<testID>-word`. */
+  testID?: string;
+}) {
+  const theme = useAppTheme();
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
+      <View
+        accessibilityRole="radiogroup"
+        accessibilityLabel={name}
+        style={{
+          flexDirection: 'row',
+          borderWidth: 1,
+          borderColor: theme.colors.outline,
+          borderRadius: radius.pill,
+          overflow: 'hidden',
+        }}
+      >
+        {RATINGS.map((rating, index) => {
+          const selected = value === rating;
+          const fill = selected ? ratingStyle(theme, rating) : null;
+          return (
+            <Pressable
+              key={rating}
+              testID={testID ? `${testID}-${rating}` : undefined}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: selected }}
+              accessibilityLabel={`${rating} – ${labels[rating]}`}
+              onPress={() => {
+                haptics.selection();
+                onChange(selected ? null : rating);
+              }}
+              style={({ pressed }) => ({
+                width: MIN_TARGET,
+                height: MIN_TARGET,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderLeftWidth: index === 0 ? 0 : 1,
+                borderLeftColor: theme.colors.outlineVariant,
+                backgroundColor: fill?.backgroundColor ?? (pressed ? theme.tokens.muted : 'transparent'),
+              })}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: '600',
+                  fontVariant: ['tabular-nums'],
+                  color: fill?.color ?? theme.tokens.mutedForeground,
+                }}
+              >
+                {rating}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      {value !== null ? (
+        <Text
+          testID={testID ? `${testID}-word` : undefined}
+          variant="labelLarge"
+        >
+          {labels[value]}
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
 /** A topic as its code and name: "BA3.10 Long division", with the unit when it has one. */
 export function TopicName({
   id,

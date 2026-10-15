@@ -97,10 +97,12 @@ env:
     id: people-row-${ALEX}
 - extendedWaitUntil:
     visible:
-      id: person-section-tutor
+      id: person-section-background
     timeout: 15000
 - assertNotVisible:
     id: person-edit
+- assertNotVisible:
+    id: person-edit-contact
 - assertNotVisible:
     id: person-menu
 - scrollUntilVisible:

@@ -31,6 +31,7 @@ export function OptionPicker({
   error,
   emptyText,
   searchPlaceholder = 'Search',
+  defaultOpen,
 }: {
   /** The field's testID; each option is `<testID>-<id>`, the search field `<testID>-search`. */
   testID: string;
@@ -42,11 +43,13 @@ export function OptionPicker({
   error?: string;
   emptyText?: string;
   searchPlaceholder?: string;
+  /** Whether the list starts open (default: while nothing is chosen). A fitted quick sheet starts it closed. */
+  defaultOpen?: boolean;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const chosen = options.find((option) => option.id === value);
-  const [open, setOpen] = useState(!value);
+  const [open, setOpen] = useState(defaultOpen ?? !value);
   const [search, setSearch] = useState('');
 
   const needle = search.trim().toLowerCase();

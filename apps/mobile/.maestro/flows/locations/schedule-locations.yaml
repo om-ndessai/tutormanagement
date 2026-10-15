@@ -1,8 +1,8 @@
-# A schedule's places (Phase 33). Priya schedules Sanjay with herself: choosing the pairing fills
-# the in-person place with her own "Institute, room 2" and leaves online at None. Choosing None for
-# both and saving is refused under the pickers ("Choose at least one location."), nothing saved.
-# She picks her online room alone, saves, and the week strip's Monday card names it; she removes
-# the schedule. Cleans up after itself.
+# A schedule's places (Phase 33), in Schedule a lesson's Where step (UI upgrades U5). Priya schedules
+# Sanjay with herself: choosing the pairing chooses her own "Institute, room 2". Taking it off leaves
+# no place, and Next is refused ("Choose at least one location."). She picks her online room alone:
+# the Review says "online in Online room", she schedules, and the week strip's Monday card names it;
+# she removes the schedule. Cleans up after itself.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-schedules.js
@@ -29,87 +29,77 @@ tags:
     id: schedule-add-button
 - extendedWaitUntil:
     visible:
-      id: schedule-pairing-search
+      id: step-flow-title
+      text: '.*Who is the lesson with\?.*'
     timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
-    id: schedule-pairing-search
+    id: schedule-pairing-input
 - inputText: 'Sanjay'
-# Wait for the list to narrow before tapping, or the tap lands where a row used to be.
-- extendedWaitUntil:
-    notVisible: 'Showing 8 of .*'
-    timeout: 10000
 - extendedWaitUntil:
     visible:
-      id: schedule-pairing-a0000000-0000-4000-8000-000000000004
+      id: schedule-pairing-row-a0000000-0000-4000-8000-000000000004
     timeout: 10000
 - tapOn:
-    id: schedule-pairing-a0000000-0000-4000-8000-000000000004
-- assertVisible: 'Student: Sanjay Patel\. Change'
+    id: schedule-pairing-row-a0000000-0000-4000-8000-000000000004
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: schedule-form-day-1
+    timeout: 10000
 - tapOn:
     id: schedule-form-day-1
-# The default: the tutor's own in-person place, no online room.
-- scrollUntilVisible:
-    element:
-      id: schedule-location-virtual
-    direction: DOWN
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*From when\?.*'
     timeout: 10000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Where is it\?.*'
+    timeout: 10000
+# The default: the tutor's own in-person place; her online room offered beside it.
 - assertVisible:
-    id: schedule-location-physical
-    text: 'In person: Institute, room 2\. Change'
+    id: schedule-place-0c100000-0000-4000-8000-000000000007
 - assertVisible:
-    id: schedule-location-virtual
-    text: 'Online: None\. Change'
+    id: schedule-place-0c100000-0000-4000-8000-000000000008
 - assertVisible:
     id: schedule-locations-hint
 - takeScreenshot: locations-schedule-default
-# None for both is refused.
+# Taken off, there is no place, and Next is refused.
 - tapOn:
-    id: schedule-location-physical
+    id: schedule-place-0c100000-0000-4000-8000-000000000007
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
-    visible:
-      id: schedule-location-physical-none
+    visible: 'Choose at least one location\.'
     timeout: 5000
-- assertVisible:
-    id: schedule-location-physical-0c100000-0000-4000-8000-000000000007
-- tapOn:
-    id: schedule-location-physical-none
-- assertVisible:
-    id: schedule-location-physical
-    text: 'In person: None\. Change'
-- scrollUntilVisible:
-    element:
-      id: schedule-form-save
-    direction: DOWN
-    timeout: 10000
-- tapOn:
-    id: schedule-form-save
-- scrollUntilVisible:
-    element: 'Choose at least one location\.'
-    direction: UP
-    timeout: 10000
 - assertNotVisible:
     id: schedule-locations-hint
-- assertNotVisible: 'Session scheduled\.'
+- assertVisible:
+    id: step-flow-title
+    text: '.*Where is it\?.*'
 - takeScreenshot: locations-schedule-none
 # Online alone will do.
 - tapOn:
-    id: schedule-location-virtual
+    id: schedule-place-0c100000-0000-4000-8000-000000000008
+- assertNotVisible: 'Choose at least one location\.'
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
     visible:
-      id: schedule-location-virtual-0c100000-0000-4000-8000-000000000008
-    timeout: 5000
-- tapOn:
-    id: schedule-location-virtual-0c100000-0000-4000-8000-000000000008
-- assertVisible:
-    id: schedule-location-virtual
-    text: 'Online: Online room\. Change'
-- scrollUntilVisible:
-    element:
-      id: schedule-form-save
-    direction: DOWN
+      id: schedule-review-sentence
+      text: 'Every Monday, 4:00–5:00 PM, online in Online room, starting .*'
     timeout: 10000
 - tapOn:
-    id: schedule-form-save
+    id: step-flow-next
 - extendedWaitUntil:
     visible: 'Session scheduled\.'
     timeout: 15000

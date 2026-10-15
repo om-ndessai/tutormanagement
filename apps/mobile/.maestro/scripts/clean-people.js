@@ -2,7 +2,8 @@
 // (their onFlowStart / onFlowComplete hooks), so a flow that fails part-way leaves nothing behind:
 // - everyone the seed did not make (seed ids are all "xxxxxxxx-0000-4000-8000-…"; the API's are
 //   random) is deleted for good (?hard=true), deactivated or not;
-// - Maria's phone, which people/edit changes, is put back.
+// - Maria's phone, which people/edit changes, is put back;
+// - Ben's school, which people/section-edit changes, is put back (the rest of his profile as it is).
 // Errors are tolerated. Never anything but localhost. One device at a time (see clean-sessions.js).
 var ORG = 'chmi';
 var ADMIN = 'priya.raghavan@gmail.com';
@@ -38,4 +39,11 @@ var removed = 0;
   });
 });
 call('PATCH', '/users/00000000-0000-4000-8000-000000000004', { phone: '(919) 555-0155' });
+var BEN = '00000000-0000-4000-8000-000000000009';
+var ben = call('GET', '/users/' + BEN);
+var profile = ben.body && ben.body.data && ben.body.data.student_profile;
+if (profile && profile.school !== 'Ephesus Elementary') {
+  profile.school = 'Ephesus Elementary';
+  call('PATCH', '/users/' + BEN, { student_profile: profile });
+}
 output.cleanedPeople = removed;
