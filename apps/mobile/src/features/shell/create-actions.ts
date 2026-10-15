@@ -1,5 +1,5 @@
 // The create button's actions (UI upgrades U2): the reader's own, each routing to what exists
-// today. Who may take each is the gating of the screen it used to live on (Sessions, Schedule,
+// today (U3: adding a student or a tutor is a step flow). Who may take each is the gating of the screen it used to live on (Sessions, Schedule,
 // Users, Billing), not a new rule: the route checks the role again on arrival, and the server
 // after that. A reader with none (a parent, a student) gets no create button at all.
 import type { UserRole as Role } from '@tmi/shared';
@@ -52,14 +52,15 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
     title: 'Add a student',
     description: 'With their parent or guardian.',
     icon: 'account-school-outline',
-    href: { pathname: '/person-form', params: { preset: 'student' } },
+    // Family first (UI upgrades U3): the parent is chosen, or added, before the student.
+    href: '/add-student',
   },
   'add-tutor': {
     id: 'add-tutor',
     title: 'Add a tutor',
     description: 'Someone who teaches here.',
     icon: 'human-male-board',
-    href: { pathname: '/person-form', params: { preset: 'tutor' } },
+    href: '/add-tutor',
   },
   'add-person': {
     id: 'add-person',

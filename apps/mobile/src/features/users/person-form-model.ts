@@ -30,6 +30,8 @@ export const USER_FORM_SECTIONS = [
   'admin',
   'tutor-background',
   'tutor-financials',
+  // The mailing address and the SSN tick alone: the tutor record's Finish tax setup (U3).
+  'tutor-tax',
   'tutor-availability',
   'student',
   'availability',

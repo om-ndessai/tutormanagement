@@ -123,7 +123,7 @@ test('the create button opens the sheet, and an action routes to its sheet', asy
   expect(screen.queryByTestId('create-action-start-lesson')).toBeNull();
   await fireEvent.press(screen.getByTestId('create-action-add-student'));
   expect(mockDismiss).toHaveBeenCalled();
-  expect(mockPush).toHaveBeenCalledWith({ pathname: '/person-form', params: { preset: 'student' } });
+  expect(mockPush).toHaveBeenCalledWith('/add-student');
 });
 
 test("a tutor's sheet: record, start and schedule; Start only with students of their own", async () => {

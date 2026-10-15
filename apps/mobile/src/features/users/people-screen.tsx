@@ -108,7 +108,14 @@ export function PeopleScreen() {
     }
   }
 
-  const addUser = () => router.push('/person-form');
+  // Filtered to students or tutors, the empty directory's next step is that role's own step flow
+  // (UI upgrades U3); anyone else is the full person form.
+  const add =
+    filters.role === 'student'
+      ? { label: 'Add a student', go: () => router.push('/add-student') }
+      : filters.role === 'tutor'
+        ? { label: 'Add a tutor', go: () => router.push('/add-tutor') }
+        : { label: 'Add user', go: () => router.push('/person-form') };
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
@@ -177,8 +184,8 @@ export function PeopleScreen() {
               title="No users match these filters."
               action={
                 isAdmin ? (
-                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={addUser}>
-                    Add user
+                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={add.go}>
+                    {add.label}
                   </Button>
                 ) : undefined
               }

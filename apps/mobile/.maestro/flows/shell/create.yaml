@@ -39,18 +39,42 @@ tags:
 - assertVisible:
     id: create-action-start-lesson
 - takeScreenshot: create-sheet-admin
-# Add a student: the person sheet, preset to a student.
+# Add a student: the step flow, family first (U3); nothing typed, so it closes without asking.
 - tapOn:
     id: create-action-add-student
 - extendedWaitUntil:
     visible:
-      id: screen-person-form
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
     timeout: 15000
 - takeScreenshot: create-add-student
-- runFlow:
-    file: ../../subflows/dismiss-sheet.yaml
-    env:
-      SHEET: screen-person-form
+# A tap while the flow is still rising is not delivered.
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# Add a tutor: its own step flow.
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-add-tutor
+    timeout: 10000
+- tapOn:
+    id: create-action-add-tutor
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the tutor\?.*'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
 - extendedWaitUntil:
     visible:
       id: screen-home

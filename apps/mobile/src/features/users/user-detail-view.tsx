@@ -35,6 +35,7 @@ import { Detail, Muted, Section } from './detail-row';
 import { formatInstant, seesTutorPay, telUrl } from './people-model';
 import { PersonAvatar } from './person-avatar';
 import { SsnReceiptButton } from './ssn-receipt-button';
+import { TaxSetupCard, needsTaxSetup } from './tax-setup-card';
 import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 import { StudentPrices, TutorPayRates, TutorTopup } from './user-rates';
 
@@ -127,6 +128,12 @@ export function UserDetailView({
           {formatInstant(user.created_at, timeZone, '—')}
         </Detail>
       </View>
+
+      {/* Adding a tutor leaves the tax details for later (UI upgrades U3): the office is reminded
+          here until the 1099's address and the SSN fact are both on file. */}
+      {tutor && isAdmin && !compact && !user.deleted_at && needsTaxSetup(tutor) ? (
+        <TaxSetupCard userId={user.id} tutor={tutor} />
+      ) : null}
 
       {tutor ? (
         <Section title="Tutor" icon="school-outline" testID="person-section-tutor">

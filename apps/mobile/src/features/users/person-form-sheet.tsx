@@ -78,6 +78,9 @@ export function PersonFormSheet({
     body = <ErrorState error={detail.error} onRetry={() => void detail.refetch()} />;
   } else {
     const record = id ? detail.data?.data : undefined;
+    const shown = forGuardian ? (parseSections(sections) ?? ['identity', 'payment-handles']) : parseSections(sections);
+    // The tutor record's Finish tax setup card (UI upgrades U3) opens just the tax fields.
+    const taxSetup = Boolean(shown?.includes('tutor-tax'));
     body = (
       <PersonForm
         key={record?.id ?? 'new'}
@@ -88,14 +91,14 @@ export function PersonFormSheet({
             ? [{ guardian_user_id: guardian, relationship: 'guardian', is_primary: true }]
             : [],
         }}
-        sections={
-          forGuardian ? (parseSections(sections) ?? ['identity', 'payment-handles']) : parseSections(sections)
-        }
-        title={forGuardian ? 'Add a parent' : undefined}
+        sections={shown}
+        title={forGuardian ? 'Add a parent' : taxSetup ? 'Finish tax setup' : undefined}
         description={
           forGuardian
             ? 'The parent or guardian: they sign in with this Google address, and are billed for the lessons.'
-            : undefined
+            : taxSetup
+              ? 'For their 1099: where to send it, and whether the office holds their SSN — a tick, never the number.'
+              : undefined
         }
         onSaved={saved}
         onCancel={close}

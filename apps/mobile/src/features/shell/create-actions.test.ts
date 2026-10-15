@@ -64,17 +64,13 @@ test('Record opens the Tutoring sheet, never the money; each action routes to a 
     '/record-session',
     '/start-lesson',
     '/schedule-form',
-    '/person-form',
-    '/person-form',
+    '/add-student',
+    '/add-tutor',
     '/person-form',
     '/payment-form',
   ]);
-  expect(all.find((action) => action.id === 'add-student')?.href).toEqual({
-    pathname: '/person-form',
-    params: { preset: 'student' },
-  });
-  expect(all.find((action) => action.id === 'add-tutor')?.href).toEqual({
-    pathname: '/person-form',
-    params: { preset: 'tutor' },
-  });
+  // Adding a student or a tutor is a step flow (U3); anyone else is the full person form.
+  expect(all.find((action) => action.id === 'add-student')?.href).toBe('/add-student');
+  expect(all.find((action) => action.id === 'add-tutor')?.href).toBe('/add-tutor');
+  expect(all.find((action) => action.id === 'add-person')?.href).toBe('/person-form');
 });

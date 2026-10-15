@@ -101,3 +101,16 @@ it('toggles hours and counts them per day', async () => {
     { day_of_week: 2, hour: 17 },
   ]);
 });
+
+it("scoped to the tax setup, shows the 1099's address and the SSN tick, and nothing about pay", async () => {
+  await renderWithProviders(
+    <PersonForm detail={{ ...alex, shared_fields_locked: false }} sections={['tutor-tax']} onSaved={noop} onCancel={noop} />,
+  );
+  expect(screen.getByTestId('person-tutor-address1')).toBeTruthy();
+  expect(screen.getByTestId('person-tutor-zip')).toBeTruthy();
+  expect(screen.getByTestId('person-tutor-ssn')).toBeTruthy();
+  expect(screen.queryByTestId('person-tutor-rate-in-person')).toBeNull();
+  expect(screen.queryByTestId('person-tutor-topup')).toBeNull();
+  expect(screen.queryByTestId('person-form-name')).toBeNull();
+  expect(screen.queryByTestId('availability-count')).toBeNull();
+});

@@ -1,7 +1,10 @@
-# The office adds a child (Priya): Student, a name and no email -- the email is optional only
-# because the roles are student-only. Saving without a parent is refused by the API's guardian rule;
-# with Anita Patel named (as mother) the student and the link are created in ONE request, and the
-# new record lists her. Cleans up after itself.
+# The office adds a child whose parent is on file (Priya), family first (UI upgrades U3): the Add a
+# student flow opens on the family; Next is refused until a guardian is chosen (the API's guardian
+# rule, said before the server does); Anita Patel is found by search, her row naming her children,
+# and chosen as Mother. Then the student -- a name, no email, since a child who never signs in needs
+# none -- the two optional steps skipped, the lessons and the price left as they are, the Review, and Add:
+# the student and the link are created in ONE request. What next offers the assessment, the plan
+# and a tutor; Open their record shows her as the primary contact. Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -21,7 +24,6 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# Adding is the tab bar's create button (UI upgrades U2), already set to the role.
 - tapOn:
     id: create-button
 - extendedWaitUntil:
@@ -30,84 +32,127 @@ tags:
     timeout: 10000
 - tapOn:
     id: create-action-add-student
+# The family comes first.
 - extendedWaitUntil:
     visible:
-      id: person-form-name
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
     timeout: 15000
-- assertVisible: 'Leave blank if this child has no address of their own.'
+- assertVisible: 'Step 1 of 7'
+- assertVisible:
+    id: add-student-new-parent
 - tapOn:
-    id: person-form-name
-- inputText: 'Mila Novak'
-- tapOn:
-    id: person-form-title
-- scrollUntilVisible:
-    element:
-      id: person-form-save
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: person-form-save
+    id: step-flow-next
 - extendedWaitUntil:
     visible: 'A student must have at least one parent or guardian.'
-    timeout: 15000
-- takeScreenshot: person-form-no-guardian
-- scrollUntilVisible:
-    element:
-      id: guardian-search
-    direction: UP
-    timeout: 20000
+    timeout: 5000
+- assertVisible: 'Step 1 of 7'
+- takeScreenshot: add-student-family-refused
 - tapOn:
-    id: guardian-search
+    id: add-student-parents-input
 - inputText: 'Anita'
-# The Search key puts the keyboard away, uncovering the matches.
-- pressKey: Enter
 - extendedWaitUntil:
     visible:
-      id: guardian-option-00000000-0000-4000-8000-000000000007
+      id: add-student-parents-row-00000000-0000-4000-8000-000000000007
     timeout: 15000
+# Her row says whose parent she is (or her email, for a parent with no child yet).
+- assertVisible: 'Anita Patel, Parent of .*'
 - tapOn:
-    id: guardian-option-00000000-0000-4000-8000-000000000007
+    id: add-student-parents-row-00000000-0000-4000-8000-000000000007
 - extendedWaitUntil:
     visible:
       id: guardian-00000000-0000-4000-8000-000000000007
     timeout: 10000
+- assertNotVisible: 'A student must have at least one parent or guardian.'
+# The only guardian is the primary contact: nothing to choose.
+- assertNotVisible:
+    id: guardian-00000000-0000-4000-8000-000000000007-primary
 - tapOn:
     id: guardian-00000000-0000-4000-8000-000000000007-rel-mother
-- takeScreenshot: person-form-guardian
-- scrollUntilVisible:
-    element:
-      id: person-form-save
-    direction: DOWN
-    timeout: 20000
+- takeScreenshot: add-student-family
+- hideKeyboard
 - tapOn:
-    id: person-form-save
-# Saved: the sheet closes onto Home, where the + was; the directory has them.
+    id: step-flow-next
+# The student.
 - extendedWaitUntil:
     visible:
-      id: screen-home
-    timeout: 15000
+      id: step-flow-title
+      text: '.*Who is the student\?.*'
+    timeout: 5000
+- assertVisible: 'Only if they will sign in themselves.*'
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
-    visible: 'Mila Novak added.'
-    timeout: 10000
-- runFlow:
-    file: ../../subflows/open-link.yaml
-    env:
-      LINK: aimtrue://people
+    visible: 'Name is required.'
+    timeout: 5000
+- tapOn:
+    id: add-student-name
+- inputText: 'Mila Novak'
+- assertNotVisible: 'Name is required.'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# Both optional steps, skipped.
 - extendedWaitUntil:
     visible:
-      id: people-search
-    timeout: 20000
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
 - tapOn:
-    id: people-search
-- inputText: 'Mila'
+    id: step-flow-skip
 - extendedWaitUntil:
-    visible: 'Mila Novak, No email, Student, Active, open their record'
+    visible:
+      id: step-flow-title
+      text: '.*When can they learn\?.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-skip
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their lessons.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*The price.*'
+    timeout: 5000
+- assertVisible:
+    id: person-student-price-in-person
+- tapOn:
+    id: step-flow-next
+# The Review, then Add.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- assertVisible: 'Anita Patel — Mother'
+- assertVisible: 'Mila Novak'
+- assertVisible: 'No email'
+- takeScreenshot: add-student-review
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: add-person-done
     timeout: 15000
-- tapOn: 'Mila Novak, No email, Student, Active, open their record'
+- assertVisible: 'Mila Novak is added'
+- assertVisible:
+    id: add-person-done-assess
+- assertVisible:
+    id: add-person-done-plan
+- assertVisible:
+    id: add-person-done-pair
+- takeScreenshot: add-student-done
+- tapOn:
+    id: add-person-done-record
 - extendedWaitUntil:
     visible:
       id: person-name
     timeout: 15000
+- assertVisible: 'Mila Novak'
 - assertVisible: 'No email'
 - assertNotVisible:
     id: person-email-action

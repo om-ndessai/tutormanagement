@@ -381,6 +381,25 @@ export function UserFormDialog({
     }
   }
 
+  // Adding someone starts with what they are; adding a STUDENT then starts with their family
+  // (UI upgrades U3): a child cannot be saved without a parent, so the parent -- found, or added
+  // with "New parent…" -- comes before anything about the child, not after the whole form.
+  const rolesFirst = !isEdit && show('roles');
+  const familyFirst = !isEdit && isStudent && show('guardians');
+
+  const rolesBlock = (
+    <RoleSelector value={form.roles} onChange={(roles) => set('roles', roles)} error={errors.roles} />
+  );
+  const guardiansBlock = (
+    <GuardianPicker
+      value={form.guardians}
+      onChange={(links) => set('guardians', links)}
+      excludeUserId={userId ?? undefined}
+      error={errors.guardians}
+      required={isStudent}
+    />
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92dvh] gap-0 overflow-y-auto sm:max-w-2xl">
@@ -400,6 +419,23 @@ export function UserFormDialog({
             </p>
           ) : (
             <div className="grid gap-5 py-4">
+              {rolesFirst && (
+                <>
+                  {rolesBlock}
+                  <Separator />
+                </>
+              )}
+
+              {familyFirst && (
+                <div className="grid gap-2" data-testid="family-first">
+                  <p className="text-muted-foreground text-sm">
+                    Start with the family: choose the parent or guardian, or add a new one.
+                  </p>
+                  {guardiansBlock}
+                  <Separator />
+                </div>
+              )}
+
               {show('identity') && (
               <>
               {/* Someone who belongs to another organization too shares their
@@ -481,15 +517,10 @@ export function UserFormDialog({
               </>
               )}
 
-              {show('roles') && (
+              {show('roles') && !rolesFirst && (
                 <>
                   <Separator />
-
-                  <RoleSelector
-                    value={form.roles}
-                    onChange={(roles) => set('roles', roles)}
-                    error={errors.roles}
-                  />
+                  {rolesBlock}
                 </>
               )}
 
@@ -855,16 +886,10 @@ export function UserFormDialog({
                 </>
               )}
 
-              {(isStudent || isTutor) && show('guardians') && (
+              {(isStudent || isTutor) && show('guardians') && !familyFirst && (
                 <>
                   <Separator />
-                  <GuardianPicker
-                    value={form.guardians}
-                    onChange={(links) => set('guardians', links)}
-                    excludeUserId={userId ?? undefined}
-                    error={errors.guardians}
-                    required={isStudent}
-                  />
+                  {guardiansBlock}
                 </>
               )}
 

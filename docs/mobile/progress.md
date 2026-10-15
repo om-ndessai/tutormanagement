@@ -201,6 +201,18 @@ native rebuild of both dev builds, so build only while the devices are free.
   `locations/reminder` (the bar's new height and the tour's tab targets) green on iOS, tour and reminder
   on Android, live on Android green up to the notification shade, where another app's "$" notification
   trips the money check; `npm run smoke -- mobile` green on both. Design entry #47)*
+- [x] U3. Mobile: Add a student, family first, and Add a tutor as step flows — the Family step leads,
+  with a parent search (rows name their children) and "New parent" as a quick sheet inside the flow;
+  then the student, school and goal, a week of Morning / After school / Evening bands with the exact
+  grid behind "Fine-tune hours", their lessons, the price, Review and Add (one request with the
+  guardians); a tutor's Basics, Background, Teaching, Availability, Pay; what next after adding; a
+  "Finish tax setup" card on a tutor's record (admins, until the 1099 address and the SSN fact are
+  set); the create button, People's empty state and the welcome wizard open the flows; the flows and
+  the wizard rise as pushed screens (a sheet over a full-screen modal is invisible to VoiceOver on iOS)
+  *(built and tested 2026-10-15: typecheck, lint, jest (82 suites, 432 tests), export green;
+  `people/*`, `onboarding/*`, `shell/*` green on Android (15/15) and on iOS but for `people/tutor-view`
+  and `shell/surface-kit`, which fail on iOS on the committed code too; `npm run smoke -- mobile` green
+  on both. Design entry #48)*
 
 ## Phase 4 — Google sign-in
 

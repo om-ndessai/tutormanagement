@@ -126,6 +126,22 @@ setup"** card on the tutor's record, for admins, until both are set.
 
 **Editing** a person stays the full form for now (U5 brings section editing).
 
+**Status: done 2026-10-15.** Web: a new student's dialog opens with roles, then the family, with
+"New parent…" creating the parent in place (`user-form.spec.ts`). App: `/add-student` and
+`/add-tutor` step flows, a `/new-parent` quick sheet, the Finish tax setup card (a `tutor-tax`
+section of the person form). Changes from the plan, all in `docs/mobile/build-log.md` #48:
+- Steps were split to keep about three inputs each: the student's price is its own step (7 with
+  Review), and the tutor gains a Background step (6).
+- The flows rise as pushed cards (`STEP_FLOW_OPTIONS`), not `fullScreenModal`: on the iOS 27
+  simulator a form sheet over a full-screen modal is missing from the accessibility tree. The
+  welcome wizard now presents the same way.
+- "In person" is assumed (the data has no flag for it); only "online too" is asked.
+- A parent row's children come from the balances list (the parent rows carry none).
+
+**Open before U7:** on iOS, `people/tutor-view` (red since 2026-10-14, before U3) and
+`shell/surface-kit` (red on the U2 commit too, though green when U2 was built) fail; both are
+green on Android.
+
 **Done when:** new Maestro flows (student with an existing parent, student with a new parent,
 tutor) pass on both platforms; the people flows pass; a web spec covers parent-first ordering and
 a new parent added in the dialog; `exposure.spec.ts` is untouched and green.

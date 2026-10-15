@@ -112,7 +112,11 @@ export function PersonForm({
   const saving = createUser.isPending || updateUser.isPending;
 
   const show = (section: UserFormSection) => !sections || sections.includes(section);
-  const anyTutorBlock = show('tutor-background') || show('tutor-financials') || show('tutor-availability');
+  // The mailing address and the SSN tick are the tax half of the financials: `tutor-tax` shows only
+  // them, for the record's Finish tax setup card (UI upgrades U3).
+  const showTax = show('tutor-financials') || show('tutor-tax');
+  const anyTutorBlock =
+    show('tutor-background') || show('tutor-financials') || show('tutor-tax') || show('tutor-availability');
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
   const isParent = form.roles.includes('parent');
@@ -308,7 +312,7 @@ export function PersonForm({
           ) : null}
 
           {/* The recipient's address on their 1099-NEC. Only the office and the tutor read it. */}
-          {show('tutor-financials') ? (
+          {showTax ? (
             <>
               <FormTextField
                 testID="person-tutor-address1"
@@ -383,8 +387,10 @@ export function PersonForm({
           ) : null}
 
           {show('tutor-financials') ? (
+            <TutorPayRateFields tutor={form.tutor} onChange={setTutor} errors={errors} />
+          ) : null}
+          {showTax ? (
             <>
-              <TutorPayRateFields tutor={form.tutor} onChange={setTutor} errors={errors} />
               {/* The fact, never the number: ticking this records today, and the number itself
                   is collected outside the portal and has nowhere to go in it. */}
               <CheckRow
@@ -547,7 +553,8 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function CheckRow({
+/** A labelled tick at a full touch target; also the step flows' (U3). */
+export function CheckRow({
   testID,
   label,
   checked,

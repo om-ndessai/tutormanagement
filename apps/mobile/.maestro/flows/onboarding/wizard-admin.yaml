@@ -1,6 +1,6 @@
 # A new admin meets the welcome wizard (Wren, added by the office, never signed in; a fresh device):
-# it opens by itself; Add a student walks the family, the student, the assessment, the plan and the
-# pairing, each in the app's own sheet; done says the student is set up. Closed, it is through: a
+# it opens by itself; Add a student walks the family and the student (the Add a student flow, a new
+# parent added inside it), the assessment, the plan and the pairing, each in the app's own sheet; done says the student is set up. Closed, it is through: a
 # fresh device after that only offers the tour. Self-cleaning.
 appId: ${APP_ID}
 onFlowStart:
@@ -29,72 +29,98 @@ tags:
     id: onboarding-choice-student
 - extendedWaitUntil:
     visible:
-      id: student-flow-family
-    timeout: 10000
-
-# The family: the person form, preset to a parent.
-- tapOn:
-    id: student-flow-create-parent
-- extendedWaitUntil:
-    visible:
-      id: person-form-name
-    timeout: 15000
-- assertNotVisible:
-    id: person-role-student
-- tapOn:
-    id: person-form-name
-- inputText: 'Hollis Brandt'
-- tapOn:
-    id: person-form-email
-- inputText: 'hollis.brandt@example.com'
-- tapOn:
-    id: person-form-title
-- scrollUntilVisible:
-    element:
-      id: person-form-save
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: person-form-save
-
-# The student, linked to that family.
-- extendedWaitUntil:
-    visible:
       id: student-flow-student
-    timeout: 15000
-- assertVisible: 'Linked to Hollis Brandt.*'
+    timeout: 10000
 - takeScreenshot: onboarding-student-step
+
+# The family and the student: the Add a student flow (U3), a new parent added inside it.
 - tapOn:
     id: student-flow-add-student
 - extendedWaitUntil:
     visible:
-      id: person-form-name
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
     timeout: 15000
 - tapOn:
-    id: person-form-name
+    id: add-student-new-parent
+- extendedWaitUntil:
+    visible:
+      id: new-parent
+    timeout: 15000
+- tapOn:
+    id: new-parent-name
+- inputText: 'Hollis Brandt'
+- tapOn:
+    id: new-parent-email
+- inputText: 'hollis.brandt@example.com'
+# The title puts the keyboard away (never hideKeyboard in an iOS form sheet), and the fitted sheet
+# settles before its action is tapped.
+- tapOn: 'They sign in with this Google address.*'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: new-parent-save
+- extendedWaitUntil:
+    notVisible:
+      id: new-parent
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'Remove Hollis Brandt'
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the student\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-name
 - inputText: 'Juniper Brandt'
+- hideKeyboard
 - tapOn:
-    id: person-form-title
-- scrollUntilVisible:
-    element:
-      id: person-student-goal
-    direction: DOWN
-    timeout: 20000
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
 - tapOn:
-    id: person-student-goal
+    id: add-student-goal
 - inputText: 'Ready for pre-algebra.'
-- pressKey: Enter
-- scrollUntilVisible:
-    element: 'Hollis Brandt.*'
-    direction: DOWN
-    timeout: 20000
-- scrollUntilVisible:
-    element:
-      id: person-form-save
-    direction: DOWN
-    timeout: 20000
+- hideKeyboard
 - tapOn:
-    id: person-form-save
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When can they learn\?.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-skip
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their lessons.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*The price.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- assertVisible: 'Hollis Brandt — Guardian'
+- tapOn:
+    id: step-flow-next
 
 # Where she stands.
 - extendedWaitUntil:
@@ -170,12 +196,19 @@ tags:
     timeout: 15000
 - assertVisible: 'Juniper Brandt is set up'
 - takeScreenshot: onboarding-student-done
-- tapOn:
-    id: onboarding-close
-- extendedWaitUntil:
-    visible:
-      id: screen-home
-    timeout: 15000
+# The pairing sheet has only just gone: a tap on Close while the header is still settling can be
+# lost (as a Back can, in people/tutor-view); press it again.
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
 - assertNotVisible:
     id: screen-onboarding
 
