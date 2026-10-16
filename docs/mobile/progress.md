@@ -249,7 +249,7 @@ native rebuild of both dev builds, so build only while the devices are free.
   `home/*`, `dashboard/*`, `exposure/*`, `onboarding/{tour,wizard-admin}` and the other flows that read
   Home's header (29) green on iOS and Android; `npm run smoke -- mobile` green on both. Design entry
   #51)*
-- [ ] U2 revised. Mobile: the tab bar, option B (owner, 2026-10-15) — Home, Sessions · **+** ·
+- [x] U2 revised. Mobile: the tab bar, option B (owner, 2026-10-15) — Home, Sessions · **+** ·
   Progress, More: the "+" an amber disc in a hump that rises from the bar's centre (react-native-svg,
   computed from the bar's width), a flat bar of four for parents and students; Schedule leaves the
   bar and lives inside Sessions behind a Lessons | Schedule switch heading both screens (its route,
@@ -258,23 +258,38 @@ native rebuild of both dev builds, so build only while the devices are free.
   typecheck, lint, jest (93 suites, 523 tests), export green; flows updated (`shell/{navigation,create}`,
   `schedule/*`, `locations/{reminder,schedule-locations}`, `sessions/live`, `exposure/live-surfaces`,
   `onboarding/tour`, new `subflows/open-schedule`) but **unrun: device testing paused by the owner,
-  still owed**, with the screenshots. Design entry #52)*
+  still owed**, with the screenshots. Design entry #52)* *(device-tested 2026-10-16 in b812f93:
+  the 13 flows the hump broke fixed, full Maestro suite and `npm run smoke -- mobile` green on iOS and
+  Android; released with Phase 35)*
 
 ## Portal Phase 35 — North Carolina Math, and choosing curricula
 
-- [ ] 53. Mobile: the Curricula card on the Organization screen, and the pickers' curriculum switch,
+- [x] 53. Mobile: the Curricula card on the Organization screen, and the pickers' curriculum switch,
   unit groups, descriptions and retired-level rule *(built 2026-10-16 with the web, on branch
   `phase35-code`: typecheck, lint, jest green; flow `organization/curricula` written. Still owed:
   `mobile:export`, the flow and `progress/*` on iOS and Android, and `npm run smoke -- mobile`. Merged onto the UI upgrades 2026-10-16: the switch, unit groups and
-  descriptions now sit inside U5's planned-first, collapsed-level assessment editor)*
+  descriptions now sit inside U5's planned-first, collapsed-level assessment editor)* *(ab40973,
+  2026-10-16: `mobile:export`, `organization/curricula`, `progress/*` and `npm run smoke -- mobile`
+  green on iOS and Android; released to production with Phase 35)*
 
 ## Phase 4 — Google sign-in
+
+> Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`
+> and its cookie, so no bearer sessions were needed; the app signs in with Google on real iPhones
+> against production. Left: the Android OAuth client (G2). The items below are kept as the
+> original plan and are not owed unless the owner asks for bearer sessions.
+
 
 - [ ] API: bearer sessions for the mobile app
 - [ ] Mobile sign-in: Google, as on the portal
 - [ ] Docs: Google OAuth clients for iOS and Android
 
 ## Phase 5 — real devices
+
+> Status (2026-10-16): iOS on the owner's family phones is done with the free Personal Team
+> (`real-devices.md`: Nav, Shradha and Om, reinstalled every 7 days). Android devices, EAS profiles
+> and the store builds wait on the paid Apple account and Play Console (T2).
+
 
 - [ ] Mobile devices: LAN server, signing and EAS profiles
 - [ ] Docs: running on real devices and what the stores need
