@@ -991,13 +991,13 @@ function ProgressSection({
               return (
                 <li key={id} className="flex flex-col gap-1 py-1.5 sm:flex-row sm:items-center sm:justify-between">
                   <span className="text-sm">
-                    <TopicName id={id} name={topic?.name} />
+                    <TopicName code={topic?.code ?? id} name={topic?.name} />
                     {before != null && (
                       <span className="text-muted-foreground ml-1.5 text-xs">latest {before}</span>
                     )}
                   </span>
                   <RatingPicker
-                    name={`${id} ${topic?.name ?? ''}`}
+                    name={`${topic?.code ?? id} ${topic?.name ?? ''}`}
                     value={topicRatings.get(id) ?? null}
                     onChange={(value) => set(id, value)}
                   />

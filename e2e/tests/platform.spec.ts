@@ -70,13 +70,24 @@ test.describe('the platform console', () => {
     const session = await unwrap<any>(await lena.request.get('/api/auth/session'), 'Lena');
     expect(session.invitations.map((invite: any) => invite.slug)).toContain('lakeside-learning');
 
+    // Phase 34: a new organization starts on Beast Academy, its default
+    // curriculum, so its first admin reads the eight levels.
+    expect((await lena.request.post('/api/auth/invitations/lakeside-learning/accept')).ok()).toBe(true);
+    const curriculum = await unwrap<any[]>(
+      await lena.request.get('/api/curriculum', { headers: { 'X-Organization': 'lakeside-learning' } }),
+      'Lakeside curriculum',
+    );
+    expect(curriculum.map((level) => level.id)).toEqual([
+      'BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO',
+    ]);
+
     // Archiving shuts it: nobody enters an archived organization.
     await unwrap(
       await platform.request.post(`/api/platform/organizations/${lakeside.id}/archive`),
       'archiving',
     );
-    // An archived organization's invitation cannot be accepted, and it cannot
-    // be entered.
+    // An archived organization's invitations cannot be answered, and it cannot
+    // be entered -- not even by its admin.
     expect((await lena.request.post('/api/auth/invitations/lakeside-learning/accept')).status()).toBe(404);
     expect(
       (await lena.request.get('/api/dashboard', { headers: { 'X-Organization': 'lakeside-learning' } })).status(),

@@ -228,3 +228,23 @@ Locations menu item (portal sidebar, app's More) listing every tutor's and stude
 by person, with add (choosing the person first), edit and remove. Still one owner per location:
 `GET /api/locations` without `user_id` returns the organization's list to admins and an empty list
 to anybody else (R16). No schema change.
+Phase 34.
+Curricula, with Beast Academy alone: Phase A of the multi-curriculum plan
+(`~/.claude/plans/the-tutoring-portal-is-curious-muffin.md`, approved by the owner). The catalog
+can hold more than one curriculum, and each organization reads and writes only the ones on its own
+list. Additive, and no visible change: every organization offers Beast Academy alone, as its default.
+
+Built 2026-10-16:
+- `curricula` and `organization_curricula` (one default per organization; a trigger keeps another
+  organization's own curriculum off a list); `curriculum_id` and `code` on `curriculum_levels`,
+  `code` on `curriculum_topics`. `program` stays, unread, until a second curriculum arrives.
+- The catalog read and the id checks join the organization's list (`/api/curriculum` answers
+  `code` and `curriculum_id`, no longer `program` or `stage`). Creating an organization inserts its
+  default in the same batch. Posting a draft checks its topics before the lesson is created.
+- The shared id shape widens to `/^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$/`, inside the SSN guard.
+- The web app and the mobile app print `code`, take a topic's level from its row, and sort by the
+  catalog's position (`indexCurriculum` in shared).
+- No new route, mutation or audit action. Production SQL: `docs/database.md`, Phase 34.
+
+Next, when the owner schedules it: Phase B (North Carolina Math, both editions, and an
+organization choosing its curricula).

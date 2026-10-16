@@ -39,16 +39,43 @@ function organizationToday(timeZone: string): string {
 // The curriculum catalog
 // ---------------------------------------------------------------------------
 
-export async function listCurriculum(db: D1Database): Promise<CurriculumLevel[]> {
+// An organization sees the curricula on its own list (organization_curricula),
+// and of those only the platform's or its own. The trigger on that table holds
+// the same line; it is repeated in every statement here because production's
+// triggers are carried over by hand. Retired curricula stay readable: history
+// written against them keeps its names.
+
+/**
+ * The catalog as this organization sees it, level by level in teaching
+ * order: retired curricula last, the default first, then display order and
+ * the ladder.
+ */
+export async function listCurriculum(db: D1Database, org: OrgId): Promise<CurriculumLevel[]> {
   const [levels, topics] = await db.batch<Record<string, unknown>>([
-    db.prepare(
-      'SELECT id, program, name, stage, grade_band, description FROM curriculum_levels ORDER BY stage',
-    ),
-    db.prepare(
-      `SELECT t.id, t.level_id, t.number, t.unit, t.name
-       FROM curriculum_topics t JOIN curriculum_levels l ON l.id = t.level_id
-       ORDER BY l.stage, t.number`,
-    ),
+    db
+      .prepare(
+        `SELECT l.id, COALESCE(l.code, l.id) AS code, l.curriculum_id, l.name, l.grade_band,
+                l.description
+         FROM curriculum_levels l
+         JOIN organization_curricula oc ON oc.curriculum_id = l.curriculum_id
+                                       AND oc.organization_id = ?
+         JOIN curricula c ON c.id = oc.curriculum_id
+                         AND (c.organization_id IS NULL OR c.organization_id = oc.organization_id)
+         ORDER BY oc.retired_at IS NOT NULL, oc.is_default DESC, c.sort, l.stage`,
+      )
+      .bind(org),
+    db
+      .prepare(
+        `SELECT t.id, COALESCE(t.code, t.id) AS code, t.level_id, t.number, t.unit, t.name
+         FROM curriculum_topics t
+         JOIN curriculum_levels l ON l.id = t.level_id
+         JOIN organization_curricula oc ON oc.curriculum_id = l.curriculum_id
+                                       AND oc.organization_id = ?
+         JOIN curricula c ON c.id = oc.curriculum_id
+                         AND (c.organization_id IS NULL OR c.organization_id = oc.organization_id)
+         ORDER BY l.stage, t.number`,
+      )
+      .bind(org),
   ]);
 
   const byLevel = new Map<string, CurriculumTopic[]>();
@@ -65,25 +92,50 @@ export async function listCurriculum(db: D1Database): Promise<CurriculumLevel[]>
 }
 
 /**
- * Which of these ids are not in the catalog. Checked up front so a bad id is
- * a field-level message rather than a foreign-key failure halfway through a
- * batch. One JSON parameter rather than one per id: D1 caps bound parameters.
+ * Which of these ids this organization may not write: not in the catalog, or
+ * in a curriculum not on its list. One answer for both, so another
+ * organization's rows cannot be told from invented ones. A retired curriculum
+ * still counts -- every edit resends its whole set of ids, and refusing one
+ * would fail every save of an old plan.
+ *
+ * Checked up front so a bad id is a field-level message rather than a
+ * foreign-key failure halfway through a batch. One JSON parameter rather than
+ * one per id: D1 caps bound parameters. Two fixed statements, never a table
+ * name spliced into SQL.
  */
 export async function findUnknownCurriculumIds(
   db: D1Database,
-  table: 'curriculum_levels' | 'curriculum_topics',
+  org: OrgId,
+  kind: 'level' | 'topic',
   ids: string[],
 ): Promise<string[]> {
   if (ids.length === 0) return [];
 
-  const result = await db
-    .prepare(
-      `SELECT j.value AS id FROM json_each(?) j
-       WHERE NOT EXISTS (SELECT 1 FROM ${table} c WHERE c.id = j.value)`,
-    )
-    .bind(JSON.stringify(ids))
-    .all<{ id: string }>();
+  const statement =
+    kind === 'level'
+      ? db.prepare(
+          `SELECT j.value AS id FROM json_each(?) j
+           WHERE NOT EXISTS (
+             SELECT 1 FROM curriculum_levels l
+             JOIN organization_curricula oc ON oc.curriculum_id = l.curriculum_id
+                                           AND oc.organization_id = ?
+             JOIN curricula c ON c.id = oc.curriculum_id
+                             AND (c.organization_id IS NULL OR c.organization_id = oc.organization_id)
+             WHERE l.id = j.value)`,
+        )
+      : db.prepare(
+          `SELECT j.value AS id FROM json_each(?) j
+           WHERE NOT EXISTS (
+             SELECT 1 FROM curriculum_topics t
+             JOIN curriculum_levels l ON l.id = t.level_id
+             JOIN organization_curricula oc ON oc.curriculum_id = l.curriculum_id
+                                           AND oc.organization_id = ?
+             JOIN curricula c ON c.id = oc.curriculum_id
+                             AND (c.organization_id IS NULL OR c.organization_id = oc.organization_id)
+             WHERE t.id = j.value)`,
+        );
 
+  const result = await statement.bind(JSON.stringify(ids), org).all<{ id: string }>();
   return (result.results ?? []).map((row) => row.id);
 }
 

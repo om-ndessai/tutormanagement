@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { CheckIcon, XIcon } from 'lucide-react';
-import type { CurriculumLevel, Rating } from '@tmi/shared';
+import { indexCurriculum, type CurriculumLevel, type Rating } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -38,7 +38,7 @@ export function LevelSelect({
         {allowNone && <SelectItem value="none">None</SelectItem>}
         {levels.map((level) => (
           <SelectItem key={level.id} value={level.id}>
-            <span className="font-mono text-xs">{level.id}</span>
+            <span className="font-mono text-xs">{level.code}</span>
             <span className="ml-1.5">{level.name}</span>
           </SelectItem>
         ))}
@@ -66,14 +66,16 @@ export function TopicRatingsEditor({
   const [levelId, setLevelId] = useState(initialLevel || levels[0]?.id || '');
   const level = levels.find((candidate) => candidate.id === levelId);
 
+  const catalog = useMemo(() => indexCurriculum(levels), [levels]);
+
   const perLevel = useMemo(() => {
     const counts = new Map<string, number>();
     for (const topicId of ratings.keys()) {
-      const code = topicId.split('.')[0]!;
-      counts.set(code, (counts.get(code) ?? 0) + 1);
+      const levelOf = catalog.get(topicId)?.level_id;
+      if (levelOf) counts.set(levelOf, (counts.get(levelOf) ?? 0) + 1);
     }
     return counts;
-  }, [ratings]);
+  }, [ratings, catalog]);
 
   function set(topicId: string, value: Rating | null) {
     const next = new Map(ratings);
@@ -96,7 +98,7 @@ export function TopicRatingsEditor({
               className="h-7 px-2 font-mono text-xs"
               onClick={() => setLevelId(candidate.id)}
             >
-              {candidate.id}
+              {candidate.code}
               {count > 0 && (
                 <span className="bg-background/25 rounded px-1 font-sans text-[10px]">{count}</span>
               )}
@@ -119,9 +121,9 @@ export function TopicRatingsEditor({
                 key={topic.id}
                 className="flex flex-col gap-1.5 px-3 py-2 sm:flex-row sm:items-center sm:justify-between"
               >
-                <TopicName id={topic.id} name={topic.name} unit={topic.unit} className="text-sm" />
+                <TopicName code={topic.code} name={topic.name} unit={topic.unit} className="text-sm" />
                 <RatingPicker
-                  name={`${topic.id} ${topic.name}`}
+                  name={`${topic.code} ${topic.name}`}
                   value={ratings.get(topic.id) ?? null}
                   onChange={(value) => set(topic.id, value)}
                 />
@@ -151,15 +153,14 @@ export function PlanTopicsEditor({
   /** Scores from the assessment, shown beside each topic to guide the choice. */
   baseline: Map<string, Rating>;
 }) {
-  const [levelId, setLevelId] = useState(value[0]?.split('.')[0] ?? levels[0]?.id ?? '');
+  const catalog = useMemo(() => indexCurriculum(levels), [levels]);
+  const [levelId, setLevelId] = useState(
+    (value[0] && catalog.get(value[0])?.level_id) || levels[0]?.id || '',
+  );
   const level = levels.find((candidate) => candidate.id === levelId);
   const chosen = new Set(value);
-
-  const names = useMemo(() => {
-    const map = new Map<string, { name: string; unit: string | null }>();
-    for (const l of levels) for (const t of l.topics) map.set(t.id, t);
-    return map;
-  }, [levels]);
+  /** A topic's code, or its id if the catalog no longer lists it. */
+  const codeOf = (topicId: string) => catalog.get(topicId)?.code ?? topicId;
 
   function toggle(topicId: string) {
     onChange(chosen.has(topicId) ? value.filter((id) => id !== topicId) : [...value, topicId]);
@@ -200,7 +201,7 @@ export function PlanTopicsEditor({
                     >
                       {selected && <CheckIcon className="size-3" />}
                     </span>
-                    <TopicName id={topic.id} name={topic.name} className="flex-1" />
+                    <TopicName code={topic.code} name={topic.name} className="flex-1" />
                     {baseline.has(topic.id) && <RatingChip rating={baseline.get(topic.id)!} className="size-5 text-[10px]" />}
                   </button>
                 </li>
@@ -223,13 +224,13 @@ export function PlanTopicsEditor({
                 <span className="text-muted-foreground w-5 text-right text-xs tabular-nums">
                   {index + 1}
                 </span>
-                <TopicName id={topicId} name={names.get(topicId)?.name} className="flex-1 truncate" />
+                <TopicName code={codeOf(topicId)} name={catalog.get(topicId)?.name} className="flex-1 truncate" />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
                   className="size-6"
-                  aria-label={`Move ${topicId} earlier`}
+                  aria-label={`Move ${codeOf(topicId)} earlier`}
                   disabled={index === 0}
                   onClick={() => move(index, -1)}
                 >
@@ -240,7 +241,7 @@ export function PlanTopicsEditor({
                   variant="ghost"
                   size="icon"
                   className="size-6"
-                  aria-label={`Move ${topicId} later`}
+                  aria-label={`Move ${codeOf(topicId)} later`}
                   disabled={index === value.length - 1}
                   onClick={() => move(index, 1)}
                 >
@@ -251,7 +252,7 @@ export function PlanTopicsEditor({
                   variant="ghost"
                   size="icon"
                   className="size-6"
-                  aria-label={`Remove ${topicId}`}
+                  aria-label={`Remove ${codeOf(topicId)}`}
                   onClick={() => toggle(topicId)}
                 >
                   <XIcon className="size-3.5" />

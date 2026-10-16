@@ -331,7 +331,7 @@ export function StudentProgressPage() {
                         return (
                           <li key={row.topic_id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2">
                             <TopicName
-                              id={row.topic_id}
+                              code={topic?.code ?? row.topic_id}
                               name={topic?.name}
                               unit={topic?.unit}
                               className="flex-1 text-sm"
@@ -526,7 +526,7 @@ function AssessmentPanel({
   assessments: Assessment[];
   isAdmin: boolean;
   levelName: (id: string | null) => string | null;
-  topicName: (id: string) => { name: string; unit: string | null } | undefined;
+  topicName: (id: string) => { code: string; name: string; unit: string | null } | undefined;
   onEdit: (row: Assessment) => void;
   onDelete: (row: Assessment) => void;
 }) {
@@ -582,7 +582,11 @@ function AssessmentPanel({
                 .sort((a, b) => a.rating - b.rating || a.topic_id.localeCompare(b.topic_id))
                 .map((row) => (
                   <li key={row.topic_id} className="flex items-center gap-2 px-3 py-1.5">
-                    <TopicName id={row.topic_id} name={topicName(row.topic_id)?.name} className="flex-1 truncate text-sm" />
+                    <TopicName
+                      code={topicName(row.topic_id)?.code ?? row.topic_id}
+                      name={topicName(row.topic_id)?.name}
+                      className="flex-1 truncate text-sm"
+                    />
                     <RatingChip rating={row.rating} />
                   </li>
                 ))}

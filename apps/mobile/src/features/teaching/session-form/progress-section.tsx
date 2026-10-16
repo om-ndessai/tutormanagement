@@ -100,7 +100,7 @@ export function ProgressSection({
                 {index > 0 ? <Divider /> : null}
                 <View style={{ gap: 6, paddingVertical: space.sm }}>
                   <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
-                    <TopicName id={id} name={topic?.name} />
+                    <TopicName code={topic?.code ?? id} name={topic?.name} />
                     {before != null ? (
                       <Text variant="bodySmall" style={{ color: muted }}>
                         latest {before}
@@ -109,7 +109,7 @@ export function ProgressSection({
                   </View>
                   <RatingPicker
                     testID={`record-topic-${id}`}
-                    name={`${id} ${topic?.name ?? ''}`}
+                    name={`${topic?.code ?? id} ${topic?.name ?? ''}`}
                     value={topicRatings[id] ?? null}
                     onChange={(value) => set(id, value)}
                   />

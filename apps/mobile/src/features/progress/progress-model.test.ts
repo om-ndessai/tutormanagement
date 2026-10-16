@@ -86,21 +86,21 @@ it('words the line under a name', () => {
 });
 
 describe('a new plan', () => {
+  // As the API sends it: levels, and topics within them, in teaching order. That order is the
+  // catalog position the tie-break uses, never a number read off the id.
   const levels = [
     {
-      id: 'BA4',
-      stage: 4,
+      id: 'BA3',
       topics: [
-        { id: 'BA4.05', number: 5 },
-        { id: 'BA4.08', number: 8 },
+        { id: 'BA3.02', level_id: 'BA3', number: 2 },
+        { id: 'BA3.10', level_id: 'BA3', number: 10 },
       ],
     },
     {
-      id: 'BA3',
-      stage: 3,
+      id: 'BA4',
       topics: [
-        { id: 'BA3.10', number: 10 },
-        { id: 'BA3.02', number: 2 },
+        { id: 'BA4.05', level_id: 'BA4', number: 5 },
+        { id: 'BA4.08', level_id: 'BA4', number: 8 },
       ],
     },
   ] as unknown as CurriculumLevel[];

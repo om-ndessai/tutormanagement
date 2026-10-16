@@ -436,6 +436,25 @@ lists were taken from beastacademy.com and the AoPS tables of contents (current 
 catalog is reference data, inserted by an idempotent upsert block at the end of `schema.sql`;
 topics are never deleted, because every rating references one without a cascade.
 
+**Curricula (Phase 34).** That ladder is one curriculum, Beast Academy (`ba`, in `curricula`),
+which keeps the three AoPS books as its upper levels; every level names its `curriculum_id`. An
+organization reads and writes only the curricula on its own list, `organization_curricula`
+(`is_default`, `retired_at`), which every catalog read and id check joins
+(`listCurriculum`, `findUnknownCurriculumIds`): an id outside it is "Not in the curriculum",
+the same answer as an invented one. Today every organization offers Beast Academy alone, as its
+default. A `curricula` row with `organization_id` set would be that organization's own; the
+`organization_curricula_same_organization` trigger keeps it off anybody else's list, and the
+SQL repeats the test.
+
+- **Ids are keys; codes are what people read.** `code` on levels and topics is NULL where the id
+  already is the code, as for every Beast Academy row, and the API answers `COALESCE(code, id)`.
+  Screens print `code`.
+- **A topic's level comes from its row** (`level_id`), never from the id's text; teaching order
+  is the catalog's own (`indexCurriculum` in shared gives each topic its position). `stage` is
+  the database's ladder order and is not sent.
+- **The shared id shape only ever widens**, and is wrapped in the SSN guard.
+- `program` is still in the table, unread; it goes with the second curriculum.
+
 **One rating scale, 1-5, everywhere.** 1 means the student performs poorly or needs help, 5 that
 they have it cold (`TOPIC_RATING_LABELS`). The assessment, each lesson's topic scores and the
 lesson's step towards the goal (`GOAL_RATING_LABELS`, 1 = no progress … 5 = a big step) all use
@@ -780,8 +799,11 @@ The schema carries every rule it is capable of carrying:
 | One assessment per person per lesson | `PRIMARY KEY (session_id, author_user_id)` on `session_assessments` |
 | An assessment says something | `CHECK (rating IS NOT NULL OR length(trim(body)) > 0)` |
 | A homework status is one of four | `CHECK` on `session_write_ups.homework_status` |
+| At most one default curriculum per organization | partial `UNIQUE INDEX` `organization_curricula_one_default` |
+| A retired curriculum is not the default | `CHECK (is_default = 0 OR retired_at IS NULL)` |
+| An organization's list names the platform's curricula or its own, never another's | trigger `organization_curricula_same_organization` (and `_organization_fixed`) |
 
-Eight rules **cannot** be constraints, and live in the API instead. They are called out here
+Nine rules **cannot** be constraints, and live in the API instead. They are called out here
 because "the database guarantees it" would be wrong:
 
 1. **"A student must have at least one parent relationship."** A cross-row invariant: the
@@ -829,6 +851,13 @@ because "the database guarantees it" would be wrong:
    the lesson, and "no adult overwrites the student's own" depends on who entered it last.
    `sessionReflectorRole` and the route in `routes/sessions.ts` decide it.
 
+9. **Every organization has exactly one default curriculum.** The partial unique index allows at
+   most one; "at least one" is a cross-row fact no constraint can state, because a new
+   organization's row must exist before its list can reference it. `createOrganization` inserts
+   the organization and its default (`DEFAULT_CURRICULUM_ID`, Beast Academy) in one batch, and
+   it is the only path that creates an organization. Audited by the query under "Reading the
+   model".
+
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
 a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's
 parent link is optional.
@@ -860,7 +889,15 @@ JOIN user_roles r ON r.user_id = u.id AND r.role = 'student'
 WHERE NOT EXISTS (SELECT 1 FROM guardianships g WHERE g.dependent_user_id = u.id);
 ```
 
-That last query is worth running after any bulk change — it is the audit for rule 1 above.
+```sql
+-- Organizations without a default curriculum: the audit for rule 9
+SELECT o.slug FROM organizations o
+WHERE NOT EXISTS (SELECT 1 FROM organization_curricula oc
+                  WHERE oc.organization_id = o.id AND oc.is_default = 1);
+```
+
+The last two are worth running after any bulk or schema change — they are the audits for rules 1
+and 9 above.
 
 ---
 

@@ -24,7 +24,7 @@ export function AssessmentPanel({
   assessments: Assessment[];
   isAdmin: boolean;
   levelName: (id: string | null) => string | null;
-  topicName: (id: string) => string | undefined;
+  topicName: (id: string) => { code: string; name: string } | undefined;
   onEdit: (row: Assessment) => void;
   onDelete: (row: Assessment) => void;
 }) {
@@ -116,7 +116,7 @@ export function AssessmentPanel({
                     }}
                   >
                     <View style={{ flex: 1 }}>
-                      <TopicName id={row.topic_id} name={topicName(row.topic_id)} />
+                      <TopicName code={topicName(row.topic_id)?.code ?? row.topic_id} name={topicName(row.topic_id)?.name} />
                     </View>
                     <RatingChip rating={row.rating} />
                   </View>

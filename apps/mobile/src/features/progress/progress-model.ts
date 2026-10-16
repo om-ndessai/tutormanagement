@@ -1,13 +1,15 @@
 // Ported from apps/web/src/features/progress/{progress-page.tsx, progress-list.tsx,
 // student-progress-page.tsx, plan-dialog.tsx, topic-pickers.tsx} @ 1132322 -- the parts that are
 // rules rather than layout, pure so they are tested.
-import type {
-  Assessment,
-  CurriculumLevel,
-  ProgressCancellation,
-  ProgressOverview,
-  ProgressPoint,
-  ProgressStatus,
+import {
+  indexCurriculum,
+  type Assessment,
+  type CurriculumLevel,
+  type IndexedTopic,
+  type ProgressCancellation,
+  type ProgressOverview,
+  type ProgressPoint,
+  type ProgressStatus,
 } from '@tmi/shared';
 
 /** The order a busy office wants to read them in: trouble first. */
@@ -124,13 +126,11 @@ export function weakestTopics(
   assessment: Pick<Assessment, 'ratings'> | null,
   levels: CurriculumLevel[],
 ): string[] {
-  const order = new Map<string, number>();
-  levels.forEach((level) =>
-    level.topics.forEach((topic) => order.set(topic.id, level.stage * 100 + topic.number)),
-  );
+  const catalog = indexCurriculum(levels);
+  const position = (topicId: string) => catalog.get(topicId)?.position ?? 0;
   return (assessment?.ratings ?? [])
     .filter((row) => row.rating <= 3)
-    .sort((a, b) => a.rating - b.rating || (order.get(a.topic_id) ?? 0) - (order.get(b.topic_id) ?? 0))
+    .sort((a, b) => a.rating - b.rating || position(a.topic_id) - position(b.topic_id))
     .map((row) => row.topic_id);
 }
 
@@ -155,7 +155,15 @@ export function toggleTopic(list: string[], topicId: string): string[] {
   return list.includes(topicId) ? list.filter((id) => id !== topicId) : [...list, topicId];
 }
 
-/** The level a topic id belongs to: "BA3.10" -> "BA3". */
-export function levelOf(topicId: string): string {
-  return topicId.split('.')[0]!;
+/**
+ * How many of these topics each level holds, by the catalog's own row -- never the id's text,
+ * which need not name its level. A topic the catalog does not list counts nowhere.
+ */
+export function countByLevel(ids: Iterable<string>, catalog: Map<string, IndexedTopic>): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const id of ids) {
+    const levelId = catalog.get(id)?.level_id;
+    if (levelId) counts.set(levelId, (counts.get(levelId) ?? 0) + 1);
+  }
+  return counts;
 }

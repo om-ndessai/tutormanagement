@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CURRICULUM_ID,
   USER_ROLES,
   type CreateOrganizationPayload,
   type Invitation,
@@ -367,28 +368,38 @@ export async function createOrganization(
   calendarDomain: string,
 ): Promise<Organization> {
   const id = crypto.randomUUID();
-  await db
-    .prepare(
-      `INSERT INTO organizations
-         (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone,
-          email_notifications, calendar_domain)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    )
-    .bind(
-      id,
-      input.slug,
-      input.name,
-      input.short_name,
-      input.tagline,
-      input.blurb,
-      input.place,
-      input.palette,
-      input.builtin_logo,
-      input.time_zone,
-      input.email_notifications ? 1 : 0,
-      calendarDomain,
-    )
-    .run();
+  // One batch: an organization never exists without its default curriculum,
+  // which every catalog read goes through (Phase 34). This is the only path
+  // that creates one -- the console and the sign-in-off fallback both use it.
+  await db.batch([
+    db
+      .prepare(
+        `INSERT INTO organizations
+           (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone,
+            email_notifications, calendar_domain)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(
+        id,
+        input.slug,
+        input.name,
+        input.short_name,
+        input.tagline,
+        input.blurb,
+        input.place,
+        input.palette,
+        input.builtin_logo,
+        input.time_zone,
+        input.email_notifications ? 1 : 0,
+        calendarDomain,
+      ),
+    db
+      .prepare(
+        `INSERT INTO organization_curricula (organization_id, curriculum_id, is_default)
+         VALUES (?, ?, 1)`,
+      )
+      .bind(id, DEFAULT_CURRICULUM_ID),
+  ]);
   const org = await getOrganizationById(db, id);
   if (!org) throw new Error('Insert into organizations returned no row.');
   return org;

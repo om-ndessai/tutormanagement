@@ -58,6 +58,8 @@ const READS = [
   '/api/comments/counts?target_type=user',
   '/api/comments/counts?target_type=session',
   '/api/progress',
+  // Phase 34: the catalog, through the organization's own list of curricula.
+  '/api/curriculum',
   // Phase 32: the organization's notification log (admins; refused to others).
   '/api/organization/notifications',
 ];

@@ -123,13 +123,18 @@ async function assertMyDraft(db: D1Database, org: OrgId, viewer: User, id: strin
   return draft;
 }
 
-/** A lesson can only be scored against topics that exist in the curriculum. */
-async function assertProgressTopics(db: D1Database, progress: SessionProgressPayload | undefined) {
+/** A lesson can only be scored against topics of a curriculum this organization offers. */
+async function assertProgressTopics(
+  db: D1Database,
+  org: OrgId,
+  progress: SessionProgressPayload | undefined,
+) {
   if (!progress) return;
 
   const unknown = await findUnknownCurriculumIds(
     db,
-    'curriculum_topics',
+    org,
+    'topic',
     progress.topic_ratings.map((row) => row.topic_id),
   );
 
@@ -315,7 +320,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       input.ended_at,
     );
 
-    await assertProgressTopics(c.env.DB, input.progress);
+    await assertProgressTopics(c.env.DB, c.get('org').id, input.progress);
 
     let session = await createSession(c.env.DB, c.get('org').id, {
       tutor_user_id: input.tutor_user_id,
@@ -393,7 +398,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     await assertMayWriteFor(c.env.DB, c.get('org').id, viewer, input.tutor_user_id, input.student_user_id);
-    await assertProgressTopics(c.env.DB, input.progress);
+    await assertProgressTopics(c.env.DB, c.get('org').id, input.progress);
 
     const draft = await createDraft(c.env.DB, c.get('org').id, viewer.id, input);
 
@@ -426,7 +431,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
       await assertMyDraft(c.env.DB, c.get('org').id, viewer, id);
       await assertMayWriteFor(c.env.DB, c.get('org').id, viewer, input.tutor_user_id, input.student_user_id);
-      await assertProgressTopics(c.env.DB, input.progress);
+      await assertProgressTopics(c.env.DB, c.get('org').id, input.progress);
 
       const draft = await updateDraft(c.env.DB, c.get('org').id, id, input);
       if (!draft) throw ApiError.notFound('That draft does not exist.');
@@ -488,6 +493,11 @@ export const sessionsRoutes = new Hono<AppEnv>()
       draft.ended_at,
     );
 
+    // Checked BEFORE the session exists: a refusal after the insert would
+    // leave a billed lesson beside its draft, and a retry would bill it twice.
+    const progress = draft.progress ? sessionProgressInputSchema.parse(draft.progress) : null;
+    if (progress) await assertProgressTopics(c.env.DB, c.get('org').id, progress);
+
     let session = await createSession(c.env.DB, c.get('org').id, {
       tutor_user_id: draft.tutor_user_id,
       student_user_id: draft.student_user_id,
@@ -506,9 +516,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       recorded_by_user_id: viewer.id,
     });
 
-    if (draft.progress) {
-      const progress = sessionProgressInputSchema.parse(draft.progress);
-      await assertProgressTopics(c.env.DB, progress);
+    if (progress) {
       await saveSessionProgress(c.env.DB, c.get('org').id, session.id, session.student_user_id, progress);
     }
     // The write-up and the author's assessment were private with the draft;
@@ -798,7 +806,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
         throw new ApiError(403, 'forbidden', 'You can only edit your own sessions.');
       }
 
-      await assertProgressTopics(c.env.DB, input.progress);
+      await assertProgressTopics(c.env.DB, c.get('org').id, input.progress);
 
       const startedAt = input.started_at ?? existing.started_at;
       const endedAt = input.ended_at ?? existing.ended_at;

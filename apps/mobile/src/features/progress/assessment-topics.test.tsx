@@ -11,12 +11,19 @@ import { AssessmentTopicsEditor } from './topic-pickers';
 function level(id: string, name: string, topics: [string, string][]): CurriculumLevel {
   return {
     id,
-    program: 'beast_academy' as CurriculumLevel['program'],
+    code: id,
+    curriculum_id: 'ba',
     name,
-    stage: 1,
     grade_band: null,
     description: null,
-    topics: topics.map(([topicId, topicName]) => ({ id: topicId, name: topicName }) as CurriculumLevel['topics'][number]),
+    topics: topics.map(([topicId, topicName], index) => ({
+      id: topicId,
+      code: topicId,
+      level_id: id,
+      number: index + 1,
+      unit: null,
+      name: topicName,
+    })),
   };
 }
 

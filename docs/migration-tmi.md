@@ -62,7 +62,7 @@ landing in the same state.
 | `build-stage.mjs` | Turns a production data export into `stage.sql`. Refuses an unknown table or column, so nothing is left behind silently. | a local file only |
 | `stage.sql` (generated, in `out/`, never committed) | Production's rows, verbatim, into `mig_*` staging tables. | `mig_*` in tutoring-db |
 | `preflight.sql` | Read-only checks. **Every row it returns is a reason to stop.** | `mig_preflight` only |
-| `migrate.sql` | The migration itself: steps 1-3 above, in plain SQL. | tutoring-db: the `tmi` organization |
+| `migrate.sql` | The migration itself: steps 1-3 above, in plain SQL. It predates Phase 34's curricula, so it inserts no `organization_curricula` row; anything reusing it must add the organization's default (`'ba'`, `is_default = 1`), as the Phase 34 block in `docs/database.md` did for every organization. | tutoring-db: the `tmi` organization |
 | `verify.sql` | 32 comparisons of production's rows with the organization's. `ok` must be 1 on every line. | `mig_verify` only |
 | `cleanup.sql` | Drops the staging tables, which hold a copy of production's rows. | drops `mig_*` |
 
