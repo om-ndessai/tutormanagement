@@ -12,7 +12,6 @@ import { Alert, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { PageIntro } from '@/components/page-intro';
-import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
 import { Screen } from '@/components/screen';
 import { Skeleton } from '@/components/skeleton';
@@ -20,6 +19,7 @@ import { EmptyState, ErrorState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
+import { SessionsSwitch } from '@/features/shell/sessions-switch';
 import { ApiRequestError } from '@/lib/api-client';
 import { downloadAndShare } from '@/lib/download';
 import { haptics } from '@/lib/haptics';
@@ -69,7 +69,8 @@ export function SchedulesScreen() {
 
   const mayCreate = isTutor || isAdmin;
   const openForm = (schedule?: VisibleSchedule) =>
-    router.push(schedule ? { pathname: '/schedule-form', params: { id: schedule.id } } : '/schedule-form');
+    // A new one is the step flow (UI upgrades U5); a correction stays the sheet.
+    router.push(schedule ? { pathname: '/schedule-form', params: { id: schedule.id } } : '/schedule-lesson');
 
   async function download(key: string, path: string, fallback: string) {
     setDownloading(key);
@@ -141,22 +142,14 @@ export function SchedulesScreen() {
         options={{
           headerRight: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {mayCreate ? (
-                <IconButton
-                  testID="schedule-add"
-                  icon="calendar-plus"
-                  size={24}
-                  accessibilityLabel="Schedule a session"
-                  style={{ margin: 0 }}
-                  onPress={() => openForm()}
-                />
-              ) : null}
               <SearchButton />
               <AccountButton />
             </View>
           ),
         }}
       />
+      {/* Schedule lives inside Sessions (the tab bar, revised 2026-10-15). */}
+      <SessionsSwitch current="schedule" />
       <PageIntro>Standing weekly lessons. Add them to your calendar in one tap.</PageIntro>
       {mayCreate || all.length > 0 ? (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
@@ -223,11 +216,7 @@ export function SchedulesScreen() {
 
       {byDay.map(({ day: weekday, items }) => (
         <View key={weekday.value} testID={`schedule-group-${weekday.value}`} style={{ gap: space.sm }}>
-          <Text
-            variant="labelMedium"
-            accessibilityRole="header"
-            style={{ color: muted, textTransform: 'uppercase', letterSpacing: 0.6 }}
-          >
+          <Text variant="labelMedium" accessibilityRole="header" style={{ color: muted }}>
             {weekday.label}
           </Text>
           {items.map((schedule) => {

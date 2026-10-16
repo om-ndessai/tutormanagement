@@ -13,7 +13,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 30000
 - assertNotVisible:
     id: view-as-banner
@@ -50,15 +50,20 @@ tags:
 - assertVisible: "Alex Chen's dashboard"
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 15000
-# Alex holds one role here: no role selector. His tutor view has Student Reflections.
+# Alex holds one role here: no role chips under the banner. His tutor view has Student Reflections,
+# and no Finish write-up: a draft is its author's alone.
 - assertNotVisible:
     id: dashboard-role-admin
 - assertNotVisible:
     id: stat-parents
 - assertNotVisible:
     id: session-money
+- assertNotVisible:
+    id: home-finish-write-up
+- assertNotVisible:
+    id: home-greeting
 - takeScreenshot: view-as-alex
 - scrollUntilVisible:
     element:
@@ -80,8 +85,25 @@ tags:
     visible:
       id: stat-parents
     timeout: 15000
-- assertVisible:
+# Her own roles are chosen in the account sheet (UI upgrades U6), and only once she is back.
+- assertNotVisible:
     id: dashboard-role-admin
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: dashboard-role-admin
+    timeout: 10000
+- assertVisible:
+    id: dashboard-role-tutor
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+- extendedWaitUntil:
+    notVisible:
+      id: screen-account
+    timeout: 10000
 # From Finance: a tutor's payment card opens their Finance tab.
 - tapOn:
     id: tabs-finance
@@ -117,5 +139,5 @@ tags:
     timeout: 10000
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 15000

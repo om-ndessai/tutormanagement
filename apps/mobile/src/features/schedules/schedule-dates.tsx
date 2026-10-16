@@ -78,7 +78,7 @@ export function ScheduleDates({
   return (
     <View testID={`schedule-dates-${schedule.id}`} style={{ gap: space.xs }}>
       <Divider />
-      <Text variant="labelSmall" style={{ color: muted, textTransform: 'uppercase', marginTop: space.sm }}>
+      <Text variant="labelSmall" style={{ color: muted, marginTop: space.sm }}>
         Coming dates
       </Text>
 
@@ -150,10 +150,7 @@ export function ScheduleDates({
 
       {earlier.length > 0 ? (
         <>
-          <Text
-            variant="labelSmall"
-            style={{ color: muted, textTransform: 'uppercase', marginTop: space.sm }}
-          >
+          <Text variant="labelSmall" style={{ color: muted, marginTop: space.sm }}>
             Earlier cancelled dates
           </Text>
           {earlier.map((row, index) => (

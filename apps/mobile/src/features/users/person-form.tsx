@@ -112,7 +112,19 @@ export function PersonForm({
   const saving = createUser.isPending || updateUser.isPending;
 
   const show = (section: UserFormSection) => !sections || sections.includes(section);
-  const anyTutorBlock = show('tutor-background') || show('tutor-financials') || show('tutor-availability');
+  // The mailing address and the SSN tick are the tax half of the financials: `tutor-tax` shows only
+  // them, for the record's Finish tax setup card (UI upgrades U3).
+  const showTax = show('tutor-financials') || show('tutor-tax');
+  // The record's sections (U5) open finer blocks: Contact is the identity without the status; a
+  // tutor's Teaching is online and the longest lesson; a student's block splits into School and
+  // goal, and Lessons and price; Availability carries a tutor's notes with the hours.
+  const showContact = show('identity') || show('contact');
+  const showTutorLessons = show('tutor-availability') || show('tutor-lessons');
+  const showTutorNotes = show('tutor-availability') || show('availability');
+  const showStudentSchool = show('student') || show('student-school');
+  const showStudentLessons = show('student') || show('student-lessons');
+  const anyTutorBlock =
+    show('tutor-background') || show('tutor-financials') || show('tutor-tax') || showTutorLessons || showTutorNotes;
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
   const isParent = form.roles.includes('parent');
@@ -179,7 +191,7 @@ export function PersonForm({
         </Text>
       </View>
 
-      {show('identity') ? (
+      {showContact ? (
         <View style={{ gap: space.md }}>
           {/* Someone who belongs to another organization too shares their name, email and phone
               with it; only the platform changes those. */}
@@ -237,22 +249,24 @@ export function PersonForm({
             keyboardType="phone-pad"
             error={errors.phone}
           />
-          <View style={{ gap: space.xs }}>
-            <Text variant="bodyMedium" style={{ color: muted }}>
-              Status
-            </Text>
-            <View style={{ flexDirection: 'row', gap: space.sm }}>
-              {USER_STATUSES.map((status) => (
-                <Choice
-                  key={status}
-                  testID={`person-status-${status}`}
-                  label={USER_STATUS_LABELS[status]}
-                  selected={form.status === status}
-                  onPress={() => set('status', status)}
-                />
-              ))}
+          {show('identity') ? (
+            <View style={{ gap: space.xs }}>
+              <Text variant="bodyMedium" style={{ color: muted }}>
+                Status
+              </Text>
+              <View style={{ flexDirection: 'row', gap: space.sm }}>
+                {USER_STATUSES.map((status) => (
+                  <Choice
+                    key={status}
+                    testID={`person-status-${status}`}
+                    label={USER_STATUS_LABELS[status]}
+                    selected={form.status === status}
+                    onPress={() => set('status', status)}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
+          ) : null}
         </View>
       ) : null}
 
@@ -295,7 +309,7 @@ export function PersonForm({
               />
             </>
           ) : null}
-          {show('tutor-availability') ? (
+          {showTutorNotes ? (
             <FormTextField
               testID="person-tutor-notes"
               label="Availability notes"
@@ -308,7 +322,7 @@ export function PersonForm({
           ) : null}
 
           {/* The recipient's address on their 1099-NEC. Only the office and the tutor read it. */}
-          {show('tutor-financials') ? (
+          {showTax ? (
             <>
               <FormTextField
                 testID="person-tutor-address1"
@@ -373,7 +387,7 @@ export function PersonForm({
             </>
           ) : null}
 
-          {show('tutor-availability') ? (
+          {showTutorLessons ? (
             <CheckRow
               testID="person-tutor-virtual"
               label="Available for virtual tutoring"
@@ -383,8 +397,10 @@ export function PersonForm({
           ) : null}
 
           {show('tutor-financials') ? (
+            <TutorPayRateFields tutor={form.tutor} onChange={setTutor} errors={errors} />
+          ) : null}
+          {showTax ? (
             <>
-              <TutorPayRateFields tutor={form.tutor} onChange={setTutor} errors={errors} />
               {/* The fact, never the number: ticking this records today, and the number itself
                   is collected outside the portal and has nowhere to go in it. */}
               <CheckRow
@@ -401,7 +417,7 @@ export function PersonForm({
             </>
           ) : null}
 
-          {show('tutor-availability') ? (
+          {showTutorLessons ? (
             <SessionLimitField
               testID="person-tutor-limit"
               value={form.tutor.max_minutes}
@@ -415,50 +431,58 @@ export function PersonForm({
         </Block>
       ) : null}
 
-      {isStudent && show('student') ? (
+      {isStudent && (showStudentSchool || showStudentLessons) ? (
         <Block title="Student details">
-          <FormTextField
-            testID="person-student-school"
-            label="School"
-            value={form.student.school}
-            onChangeText={(value) => setStudent({ ...form.student, school: value })}
-            placeholder="Culbreth Middle"
-            error={errors['student_profile.school']}
-          />
-          <FormTextField
-            testID="person-student-course"
-            label="Current math course / grade"
-            value={form.student.current_math_course}
-            onChangeText={(value) => setStudent({ ...form.student, current_math_course: value })}
-            placeholder="Grade 7 Mathematics"
-            error={errors['student_profile.current_math_course']}
-          />
-          <FormTextField
-            testID="person-student-goal"
-            label="Goal for this academic year"
-            hint={
-              activePlan
-                ? 'This is also the goal of their learning plan — changing it here changes the plan.'
-                : 'Becomes the goal of their learning plan when one is set.'
-            }
-            value={form.student.academic_year_goal}
-            onChangeText={(value) => setStudent({ ...form.student, academic_year_goal: value })}
-            placeholder="Move up to the accelerated track"
-            error={errors['student_profile.academic_year_goal']}
-          />
-          <CheckRow
-            testID="person-student-virtual"
-            label="Available for virtual tutoring"
-            checked={form.student.virtual_available}
-            onChange={(checked) => setStudent({ ...form.student, virtual_available: checked })}
-          />
-          <StudentPriceFields student={form.student} onChange={setStudent} errors={errors} />
-          <SessionLimitField
-            testID="person-student-limit"
-            value={form.student.max_minutes}
-            onChange={(value) => setStudent({ ...form.student, max_minutes: value })}
-            hint="The shorter of this and the tutor's limit is the one that applies."
-          />
+          {showStudentSchool ? (
+            <>
+              <FormTextField
+                testID="person-student-school"
+                label="School"
+                value={form.student.school}
+                onChangeText={(value) => setStudent({ ...form.student, school: value })}
+                placeholder="Culbreth Middle"
+                error={errors['student_profile.school']}
+              />
+              <FormTextField
+                testID="person-student-course"
+                label="Current math course / grade"
+                value={form.student.current_math_course}
+                onChangeText={(value) => setStudent({ ...form.student, current_math_course: value })}
+                placeholder="Grade 7 Mathematics"
+                error={errors['student_profile.current_math_course']}
+              />
+              <FormTextField
+                testID="person-student-goal"
+                label="Goal for this academic year"
+                hint={
+                  activePlan
+                    ? 'This is also the goal of their learning plan — changing it here changes the plan.'
+                    : 'Becomes the goal of their learning plan when one is set.'
+                }
+                value={form.student.academic_year_goal}
+                onChangeText={(value) => setStudent({ ...form.student, academic_year_goal: value })}
+                placeholder="Move up to the accelerated track"
+                error={errors['student_profile.academic_year_goal']}
+              />
+            </>
+          ) : null}
+          {showStudentLessons ? (
+            <>
+              <CheckRow
+                testID="person-student-virtual"
+                label="Available for virtual tutoring"
+                checked={form.student.virtual_available}
+                onChange={(checked) => setStudent({ ...form.student, virtual_available: checked })}
+              />
+              <StudentPriceFields student={form.student} onChange={setStudent} errors={errors} />
+              <SessionLimitField
+                testID="person-student-limit"
+                value={form.student.max_minutes}
+                onChange={(value) => setStudent({ ...form.student, max_minutes: value })}
+                hint="The shorter of this and the tutor's limit is the one that applies."
+              />
+            </>
+          ) : null}
         </Block>
       ) : null}
 
@@ -536,8 +560,6 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
           style={{
             fontSize: 12,
             fontWeight: '600',
-            letterSpacing: 0.6,
-            textTransform: 'uppercase',
             color: theme.tokens.mutedForeground,
           }}
         >
@@ -549,7 +571,8 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function CheckRow({
+/** A labelled tick at a full touch target; also the step flows' (U3). */
+export function CheckRow({
   testID,
   label,
   checked,

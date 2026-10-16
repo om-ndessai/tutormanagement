@@ -9,7 +9,8 @@ import {
 } from '@tmi/shared';
 import { memo, type ReactNode } from 'react';
 import { Pressable, View, type GestureResponderEvent } from 'react-native';
-import { Card, Divider, Icon, Text } from 'react-native-paper';
+import { Divider, Icon, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { rowActionsA11y, type RowAction } from '@/components/swipe-row';
 import { useAuth } from '@/providers/auth-provider';
@@ -36,7 +37,7 @@ export function Tag({ label, tone, testID }: { label: string; tone?: 'warning'; 
         backgroundColor: tone ? 'transparent' : theme.tokens.muted,
       }}
     >
-      <Text style={{ fontSize: 10, fontWeight: '500', color: tone ? warningInk : theme.colors.onSurface }}>
+      <Text style={{ fontSize: 12, fontWeight: '500', color: tone ? warningInk : theme.colors.onSurface }}>
         {label}
       </Text>
     </View>
@@ -109,7 +110,7 @@ export const SessionCard = memo(function SessionCard({
   const a11y = rowActionsA11y(actions, () => onPress(session));
 
   return (
-    <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
+    <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
       {/* The lesson itself is one labelled button that opens it (F-20); its verbs are accessibility
           actions. The Assess/Reflect row and the money sit beside it, as their own elements. */}
       <Pressable
@@ -195,6 +196,6 @@ export const SessionCard = memo(function SessionCard({
           </View>
         </View>
       ) : null}
-    </Card>
+    </OutlinedCard>
   );
 });

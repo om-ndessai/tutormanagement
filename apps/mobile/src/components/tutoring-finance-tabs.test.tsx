@@ -25,6 +25,6 @@ test('two tabs in a tab list, Finance selected; Tutoring switches back', async (
   while (node && node.props.accessibilityRole !== 'tablist') node = node.parent as typeof node;
   expect(node?.props.accessibilityRole).toBe('tablist');
 
-  fireEvent.press(screen.getByTestId('tabs-tutoring'));
+  await fireEvent.press(screen.getByTestId('tabs-tutoring'));
   expect(mockSetParams).toHaveBeenCalledWith({ tab: 'tutoring' });
 });

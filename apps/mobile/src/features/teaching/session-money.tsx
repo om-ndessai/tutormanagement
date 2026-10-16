@@ -48,7 +48,7 @@ export function SessionMoney({
         <Text variant="bodyMedium" style={{ fontWeight: '500', fontVariant: ['tabular-nums'] }}>
           {formatCents(amount)}
         </Text>
-        <Text style={{ fontSize: 11, lineHeight: 13, color: muted }}>
+        <Text style={{ fontSize: 12, lineHeight: 16, color: muted }}>
           {admin ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
         </Text>
       </View>
@@ -59,10 +59,8 @@ export function SessionMoney({
     <View testID="session-money" style={[{ alignItems: 'flex-end' }, style]}>
       <Text
         style={{
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: '500',
-          letterSpacing: 0.6,
-          textTransform: 'uppercase',
           color: muted,
         }}
       >
@@ -71,11 +69,11 @@ export function SessionMoney({
       <Text variant="titleMedium" style={{ fontWeight: '600', fontVariant: ['tabular-nums'] }}>
         {formatCents(amount)}
       </Text>
-      <Text style={{ fontSize: 11, color: muted }}>{formatCents(rate)}/hr</Text>
+      <Text style={{ fontSize: 12, color: muted }}>{formatCents(rate)}/hr</Text>
       {admin ? (
-        <Text style={{ fontSize: 11, color: muted, fontVariant: ['tabular-nums'] }}>
+        <Text style={{ fontSize: 12, color: muted, fontVariant: ['tabular-nums'] }}>
           Tutor {formatCents(session.tutor_amount_cents)} · {brand.short}{' '}
-          <Text style={{ fontSize: 11, fontWeight: '500', color: theme.colors.onSurface }}>
+          <Text style={{ fontSize: 12, fontWeight: '500', color: theme.colors.onSurface }}>
             {formatCents(marginCents(session))}
           </Text>
         </Text>

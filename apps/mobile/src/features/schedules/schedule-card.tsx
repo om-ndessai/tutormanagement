@@ -9,7 +9,8 @@ import {
   type VisibleSchedule,
 } from '@tmi/shared';
 import { View } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { formatPlainDay } from '@/features/teaching/session-format';
 import { useOrgTimeZone } from '@/providers/auth-provider';
@@ -48,7 +49,7 @@ export function ScheduleCard({
   const today = zonedClockParts(new Date().toISOString(), timeZone).day;
 
   return (
-    <Card testID={`schedule-card-${schedule.id}`} mode="outlined" style={{ borderRadius: radius.lg }}>
+    <OutlinedCard testID={`schedule-card-${schedule.id}`} style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.md, paddingLeft: space.lg, gap: space.sm }}>
         <View style={{ gap: 2 }}>
           <Text variant="titleMedium">
@@ -128,6 +129,6 @@ export function ScheduleCard({
 
         {datesOpen ? <ScheduleDates schedule={schedule} highlight={highlight} /> : null}
       </View>
-    </Card>
+    </OutlinedCard>
   );
 }

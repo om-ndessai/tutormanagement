@@ -65,7 +65,7 @@ tags:
     timeout: 15000
 - assertVisible: 'Ben Whitfield'
 - assertVisible:
-    id: person-section-student
+    id: person-section-school
 - scrollUntilVisible:
     element:
       id: person-guardian-00000000-0000-4000-8000-000000000002

@@ -11,7 +11,6 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { PageIntro } from '@/components/page-intro';
-import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { SecureMoney } from '@/components/secure-money';
 import { ListSkeleton } from '@/components/skeletons';
@@ -85,18 +84,6 @@ export function BillingScreen() {
       <Stack.Screen
         options={{
           title: 'Billing',
-          headerRight: isAdmin
-            ? () => (
-                <IconButton
-                  testID="billing-add"
-                  icon="plus"
-                  size={24}
-                  accessibilityLabel="Record a payment"
-                  style={{ margin: 0 }}
-                  onPress={openRecord}
-                />
-              )
-            : undefined,
         }}
       />
       <PageIntro testID="billing-description">

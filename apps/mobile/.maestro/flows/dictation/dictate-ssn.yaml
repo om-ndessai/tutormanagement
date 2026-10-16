@@ -31,31 +31,33 @@ tags:
 - tapOn: 'Sessions'
 - extendedWaitUntil:
     visible:
-      id: sessions-record
+      id: screen-sessions
     timeout: 20000
+# Record a lesson is a step flow (UI upgrades U4): Ben, the times as they are, then Planned.
+- runFlow:
+    file: ../../subflows/record-lesson-start.yaml
+    env:
+      PAIRING: a0000000-0000-4000-8000-000000000002
+# The notes are the Covered card's.
 - tapOn:
-    id: sessions-record
+    id: step-flow-next
 - extendedWaitUntil:
     visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000002
-    timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
-- scrollUntilVisible:
-    element:
-      id: dictate-record-notes
-    direction: DOWN
-    centerElement: true
+      id: step-flow-title
+      text: '.*What was covered\?.*'
+    timeout: 10000
 - tapOn:
     id: dictate-record-notes
 - extendedWaitUntil:
     visible:
       id: dictation-interim-record-notes
     timeout: 10000
-# The words being heard hold an SSN: the warning shows instead of them.
+# The words being heard hold an SSN: the warning shows instead of them. The scripted recognizer
+# holds its first half ("her number") for 10 s before the phrase; the mic icon's pulse used to delay
+# this wait by a few seconds, the large Dictate button (UI upgrades U4) does not, so it allows 20.
 - extendedWaitUntil:
     visible: '.*looks like a Social Security number.*'
-    timeout: 10000
+    timeout: 20000
 - assertNotVisible: '.*123-45-6789.*'
 - takeScreenshot: dictation-ssn-interim
 # The settled phrase is refused, under the field, and dictation stops.
@@ -70,21 +72,12 @@ tags:
     timeout: 10000
 - assertNotVisible: '.*123-45-6789.*'
 - takeScreenshot: dictation-refused
-- scrollUntilVisible:
-    element:
-      id: record-autosave-status
-    direction: DOWN
-    timeout: 20000
+# The autosave status is in the flow's footer, on every card.
 - assertNotVisible:
     id: record-autosave-status
     text: 'Draft autosaved .*'
-- scrollUntilVisible:
-    element:
-      id: record-cancel
-    direction: DOWN
-    timeout: 20000
 - tapOn:
-    id: record-cancel
+    id: step-flow-close
 - extendedWaitUntil:
     visible:
       id: screen-sessions

@@ -10,7 +10,7 @@ import { Badge, Button, Chip, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
-import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { useBottomOverlap } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { organizationToday } from '@/features/teaching/session-ranges';
@@ -40,7 +40,7 @@ export function ActivityScreen() {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
   const today = organizationToday(timeZone);
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const sheet = useRef<BottomSheetModal>(null);
   const [filter, setFilter] = useState<ActivityFilter>({});
@@ -210,7 +210,7 @@ export function ActivityScreen() {
         onRefresh={() => void onRefresh()}
         contentInsetAdjustmentBehavior="automatic"
         style={{ flex: 1, backgroundColor: theme.colors.background }}
-        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
+        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bottomOverlap }}
       />
       <ActivityFiltersSheet
         sheetRef={sheet}

@@ -17,13 +17,15 @@ import { Text } from 'react-native-paper';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { PICKER_FIRST_HOUR, PICKER_LAST_HOUR } from './availability-bands';
 
 /**
  * Tutoring happens after school and at weekends, so the picker covers 07:00 to 21:00 rather than
- * all 24 hours. The table stores any hour 0-23; this is only what the picker offers.
+ * all 24 hours. The table stores any hour 0-23; this is only what the picker offers. The bands of
+ * the step flows' week (availability-bands) are clipped to the same range.
  */
-export const FIRST_HOUR = 7;
-export const LAST_HOUR = 21;
+export const FIRST_HOUR = PICKER_FIRST_HOUR;
+export const LAST_HOUR = PICKER_LAST_HOUR;
 const HOURS = Array.from({ length: LAST_HOUR - FIRST_HOUR + 1 }, (_, i) => FIRST_HOUR + i);
 
 export function toggleSlot(value: AvailabilitySlot[], day_of_week: number, hour: number): AvailabilitySlot[] {
@@ -90,7 +92,7 @@ export function AvailabilityPicker({
               >
                 {option.short}
               </Text>
-              <Text style={{ fontSize: 10, color: chosen ? theme.colors.onPrimary : muted }}>
+              <Text style={{ fontSize: 12, color: chosen ? theme.colors.onPrimary : muted }}>
                 {count > 0 ? count : '·'}
               </Text>
             </Pressable>

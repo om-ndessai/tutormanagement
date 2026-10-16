@@ -22,6 +22,21 @@ tags:
     id: stat-time-tutored
 - assertVisible:
     id: stat-tutors
+# UI upgrades U6: the greeting and Today first, then her own card: the next lesson and this month.
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Sofia'
+- assertVisible:
+    id: home-today
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008
+# The card is one link for a screen reader: its label says whose it is.
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008-open
+    text: 'Your progress\..*'
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008-next
+    text: '(Next: .*|Under way now) with Alex Chen'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: student-top
 - scrollUntilVisible:
@@ -31,10 +46,13 @@ tags:
     timeout: 30000
 - assertVisible: 'Your progress'
 - assertNotVisible: '.*\$[0-9].*'
+# Centred: the card above it is taller since U6, and on Android the panel's top edge alone came into
+# view with its rows still below the fold.
 - scrollUntilVisible:
     element:
       id: student-tutors
     direction: DOWN
+    centerElement: true
 - assertVisible: 'Alex Chen'
 - scrollUntilVisible:
     element:

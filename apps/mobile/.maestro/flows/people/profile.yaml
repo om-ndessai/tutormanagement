@@ -30,9 +30,9 @@ tags:
 - assertVisible: 'Sofia Okafor'
 - assertVisible: 'How .* has you on file.'
 - assertVisible:
-    id: person-section-student
+    id: person-section-school
 - assertNotVisible:
-    id: person-section-tutor
+    id: person-section-background
 - assertNotVisible:
     id: person-menu
 - takeScreenshot: profile-student

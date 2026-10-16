@@ -33,8 +33,10 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# Home's heading names the organization she is now in.
-- assertVisible: 'Riverside Tutoring'
+# Home names the organization she is now in, by its short name under the greeting (UI upgrades U6).
+- assertVisible:
+    id: home-org
+    text: 'Riverside'
 - tapOn:
     id: header-search
 - extendedWaitUntil:

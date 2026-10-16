@@ -1,12 +1,26 @@
-import { PlusIcon, XIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Loader2Icon, PlusIcon, UserPlusIcon, XIcon } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   RELATIONSHIPS,
   RELATIONSHIP_LABELS,
+  createUserRequestSchema,
   type GuardianshipInput,
   type Relationship,
 } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ApiRequestError } from '@/lib/api-client';
 import {
   Select,
   SelectContent,
@@ -15,7 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { useUsers } from './api';
+import { useCreateUser, useUsers } from './api';
 
 type GuardianValue = Required<GuardianshipInput>;
 
@@ -42,6 +56,9 @@ export function GuardianPicker({
   required?: boolean;
 }) {
   const { data, isPending } = useUsers({ role: 'parent', limit: 100, sort: 'full_name' });
+  const [creating, setCreating] = useState(false);
+  // A parent added here is not in the list until it refetches; keep their name meanwhile.
+  const [added, setAdded] = useState<Record<string, string>>({});
 
   const candidates = (data?.data ?? []).filter(
     (candidate) =>
@@ -49,7 +66,7 @@ export function GuardianPicker({
   );
 
   const nameFor = (id: string) =>
-    data?.data.find((candidate) => candidate.id === id)?.full_name ?? 'Unknown';
+    data?.data.find((candidate) => candidate.id === id)?.full_name ?? added[id] ?? 'Unknown';
 
   function add(guardianUserId: string) {
     onChange([
@@ -94,7 +111,7 @@ export function GuardianPicker({
         {required && <span className="text-destructive"> *</span>}
       </span>
       <p className="text-muted-foreground -mt-1 text-xs">
-        Only people who already have the Parent role can be selected.
+        Choose a parent already in the portal, or add a new one here.
       </p>
 
       {value.length > 0 && (
@@ -151,9 +168,10 @@ export function GuardianPicker({
         </ul>
       )}
 
+      <div className="flex flex-wrap items-start gap-2">
       {candidates.length > 0 ? (
         <Select value="" onValueChange={add}>
-          <SelectTrigger className="w-full" aria-label="Add a parent or guardian">
+          <SelectTrigger className="min-w-0 flex-1" aria-label="Add a parent or guardian">
             <span className="text-muted-foreground flex items-center gap-2 text-sm">
               <PlusIcon className="size-4" />
               Add a parent or guardian
@@ -179,9 +197,22 @@ export function GuardianPicker({
             ? 'Loading…'
             : value.length > 0
               ? 'No other parents available.'
-              : 'No users have the Parent role yet. Create the parent first.'}
+              : 'No parents in the portal yet. Add one with New parent.'}
         </p>
       )}
+        <Button type="button" variant="outline" size="sm" onClick={() => setCreating(true)}>
+          <UserPlusIcon className="size-4" /> New parent…
+        </Button>
+      </div>
+
+      <NewParentDialog
+        open={creating}
+        onOpenChange={setCreating}
+        onCreated={(id, name) => {
+          setAdded((current) => ({ ...current, [id]: name }));
+          add(id);
+        }}
+      />
 
       {error && (
         <p role="alert" className="text-destructive text-xs">
@@ -189,5 +220,119 @@ export function GuardianPicker({
         </p>
       )}
     </div>
+  );
+}
+
+/**
+ * Adds a parent without leaving the student's form (UI upgrades U3). The parent is created on its
+ * own (`POST /users`, role parent), then chosen in the picker; the student and their guardians are
+ * still sent in one request when the outer form is saved, so the guardian rule is unchanged.
+ */
+function NewParentDialog({
+  open,
+  onOpenChange,
+  onCreated,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onCreated: (id: string, name: string) => void;
+}) {
+  const createUser = useCreateUser();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  function reset(next: boolean) {
+    if (!next) {
+      setName('');
+      setEmail('');
+      setPhone('');
+      setErrors({});
+    }
+    onOpenChange(next);
+  }
+
+  async function save(event: React.FormEvent) {
+    // The parent's dialog sits inside the student's form: never submit that one.
+    event.preventDefault();
+    event.stopPropagation();
+    const parsed = createUserRequestSchema.safeParse({
+      full_name: name,
+      email,
+      phone: phone || null,
+      roles: ['parent'],
+    });
+    if (!parsed.success) {
+      const found: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const key = String(issue.path[0] ?? '_');
+        found[key] ??= issue.message;
+      }
+      setErrors(found);
+      return;
+    }
+    try {
+      const saved = await createUser.mutateAsync(parsed.data as never);
+      toast.success(`${saved.data.full_name} added as a parent.`);
+      onCreated(saved.data.id, saved.data.full_name);
+      reset(false);
+    } catch (error) {
+      if (error instanceof ApiRequestError) {
+        setErrors(error.fieldErrors);
+        toast.error(error.message);
+        return;
+      }
+      toast.error('Could not add the parent.');
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={reset}>
+      <DialogContent className="sm:max-w-md">
+        <form onSubmit={save} noValidate data-testid="new-parent-form">
+          <DialogHeader>
+            <DialogTitle>New parent</DialogTitle>
+            <DialogDescription>They sign in with this Google address and are billed for the lessons.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            {(
+              [
+                ['new-parent-name', 'Full name', name, setName, 'full_name', 'text'],
+                ['new-parent-email', 'Email', email, setEmail, 'email', 'email'],
+                ['new-parent-phone', 'Phone (optional)', phone, setPhone, 'phone', 'tel'],
+              ] as const
+            ).map(([id, label, value, setValue, key, type]) => (
+              <div key={id} className="grid gap-2">
+                <Label htmlFor={id} className={errors[key] ? 'text-destructive' : undefined}>
+                  {label}
+                </Label>
+                <Input
+                  id={id}
+                  type={type}
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  aria-invalid={Boolean(errors[key])}
+                />
+                {errors[key] && (
+                  <p role="alert" className="text-destructive text-xs">
+                    {errors[key]}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => reset(false)} disabled={createUser.isPending}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={createUser.isPending}>
+              {createUser.isPending && <Loader2Icon className="animate-spin" />}
+              Add parent
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

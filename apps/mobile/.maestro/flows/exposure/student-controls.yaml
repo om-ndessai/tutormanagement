@@ -28,8 +28,9 @@ env:
     visible:
       id: session-card-${LESSON}
     timeout: 20000
+# A student creates nothing: no create button (UI upgrades U2).
 - assertNotVisible:
-    id: sessions-record
+    id: create-button
 - assertNotVisible:
     id: sessions-record-button
 - assertNotVisible:
@@ -89,8 +90,6 @@ env:
 - assertNotVisible:
     id: people-add-button
 - assertNotVisible:
-    id: people-add
-- assertNotVisible:
     id: people-include-deleted
 - assertNotVisible:
     id: 'people-row-menu-.*'
@@ -98,10 +97,12 @@ env:
     id: people-row-${ALEX}
 - extendedWaitUntil:
     visible:
-      id: person-section-tutor
+      id: person-section-background
     timeout: 15000
 - assertNotVisible:
     id: person-edit
+- assertNotVisible:
+    id: person-edit-contact
 - assertNotVisible:
     id: person-menu
 - scrollUntilVisible:

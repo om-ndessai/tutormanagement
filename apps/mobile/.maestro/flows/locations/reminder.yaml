@@ -89,7 +89,7 @@ tags:
     notVisible:
       id: lesson-reminder
     timeout: 5000
-- tapOn: 'Schedule'
+- runFlow: ../../subflows/open-schedule.yaml
 - tapOn: 'Home'
 - extendedWaitUntil:
     visible:

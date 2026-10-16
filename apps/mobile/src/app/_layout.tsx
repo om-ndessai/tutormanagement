@@ -3,6 +3,12 @@ import '@/polyfills/intl-cache';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
+import {
+  Nunito_600SemiBold_Italic,
+  Nunito_700Bold,
+  Nunito_800ExtraBold,
+  useFonts,
+} from '@expo-google-fonts/nunito';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo } from 'react';
@@ -32,10 +38,18 @@ void SplashScreen.preventAutoHideAsync();
 function RootNavigator() {
   const { status, organization, platformAdmin } = useAuth();
   const theme = useAppTheme();
+  // The heading face (UI upgrades U1). A failure to load falls back to the system font rather than
+  // holding the splash.
+  const [fontsLoaded, fontError] = useFonts({
+    Nunito_600SemiBold_Italic,
+    Nunito_700Bold,
+    Nunito_800ExtraBold,
+  });
+  const fontsReady = fontsLoaded || fontError !== null;
 
   useEffect(() => {
-    if (status !== 'loading') void SplashScreen.hideAsync();
-  }, [status]);
+    if (status !== 'loading' && fontsReady) void SplashScreen.hideAsync();
+  }, [status, fontsReady]);
 
   useEffect(() => {
     void loadHapticsPreference();
@@ -56,7 +70,7 @@ function RootNavigator() {
   }, [status, inOrganization]);
   const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
-  if (status === 'loading' || status === 'error') return <BootScreen />;
+  if (status === 'loading' || status === 'error' || !fontsReady) return <BootScreen />;
 
   return (
     <NavigationThemeProvider value={navTheme}>
@@ -85,6 +99,19 @@ function RootNavigator() {
         <Stack.Screen
           name="server"
           options={{ presentation: 'formSheet', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }}
+        />
+        {/* Developer-only previews of the surface kit (UI upgrades U2); they redirect home in
+            production. A step flow is a full-screen modal, a quick sheet a form sheet fitted to its content. */}
+        <Stack.Screen name="dev/kit" options={{ presentation: 'fullScreenModal' }} />
+        {/* The production welcome screen, which a development build never reaches. */}
+        <Stack.Screen name="dev/welcome" options={{ presentation: 'fullScreenModal' }} />
+        <Stack.Screen
+          name="dev/kit-sheet"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: 'fitToContents',
+            sheetGrabberVisible: true,
+          }}
         />
       </Stack>
     </NavigationThemeProvider>

@@ -1,6 +1,6 @@
 # The office records from Finance (Priya, admin in chmi): the sheet's preview carries the money,
 # from the office's side -- the tutor's pay, the family's charge and what the organization keeps.
-# Nothing is recorded. From Tutoring the same sheet shows no money.
+# Nothing is recorded. From Tutoring the record step flow (U4) shows no money.
 appId: ${APP_ID}
 # Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
 # one) are removed before this flow, and whatever this flow leaves is removed after it.
@@ -32,8 +32,10 @@ tags:
     visible:
       id: stat-charged
     timeout: 10000
+# The page's own Record button: it carries the tab, so Finance's sheet shows the money (the
+# create button always opens the Tutoring sheet).
 - tapOn:
-    id: sessions-record
+    id: sessions-record-button
 - extendedWaitUntil:
     visible:
       id: record-pairing-search
@@ -71,7 +73,8 @@ tags:
     visible:
       id: screen-sessions
     timeout: 10000
-# From Tutoring, the same sheet has no money.
+# From Tutoring, recording is the step flow (UI upgrades U4), with no money: not on the student
+# step, not with the length.
 - scrollUntilVisible:
     element:
       id: tabs-tutoring
@@ -80,33 +83,40 @@ tags:
 - tapOn:
     id: tabs-tutoring
 - tapOn:
-    id: sessions-record
+    id: sessions-record-button
 - extendedWaitUntil:
     visible:
-      id: record-pairing-search
+      id: record-student-input
     timeout: 15000
+# Taps during the rise are not delivered (iOS, U3).
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
-    id: record-pairing-search
+    id: record-student-input
 - inputText: 'Sanjay'
 - extendedWaitUntil:
     visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000004
+      id: record-student-row-a0000000-0000-4000-8000-000000000004
     timeout: 10000
-# Return puts the keyboard away (Maestro's hideKeyboard fails on iOS in a form sheet).
-- pressKey: Enter
+- hideKeyboard
 - tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000004
+    id: record-student-row-a0000000-0000-4000-8000-000000000004
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
-    visible: '1 hr'
+    visible:
+      id: record-preview
     timeout: 10000
+- assertVisible: '1 hr'
 - assertNotVisible:
     id: record-money
 - assertNotVisible: '.*\$[0-9].*'
 - assertNotVisible: '(?i).*family charged.*'
-- scrollUntilVisible:
-    element:
-      id: record-cancel
-    direction: DOWN
-    timeout: 30000
+- takeScreenshot: record-finance-tutoring-flow
 - tapOn:
-    id: record-cancel
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000

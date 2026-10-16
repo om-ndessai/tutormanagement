@@ -2,7 +2,8 @@
 import { router, type Href } from 'expo-router';
 import type { ComponentProps, ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import { Card, Icon, Text } from 'react-native-paper';
+import { Icon, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { useCountUp } from '@/hooks/use-count-up';
 import { useIconSize, useLargeText } from '@/hooks/use-large-text';
@@ -100,10 +101,8 @@ export function StatCard({
           numberOfLines={large ? undefined : 2}
           style={{
             flexShrink: 1,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: '500',
-            letterSpacing: 0.6,
-            textTransform: 'uppercase',
             color: theme.tokens.mutedForeground,
           }}
         >
@@ -135,9 +134,9 @@ export function StatCard({
   );
 
   const card = (
-    <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
+    <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
       {body}
-    </Card>
+    </OutlinedCard>
   );
 
   // The figure is announced at its final value, never mid-count.

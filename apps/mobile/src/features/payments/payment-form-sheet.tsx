@@ -1,11 +1,15 @@
-// Ported from apps/web/src/features/payments/payment-dialog.tsx @ 1132322.
-// The dialog becomes a form sheet, `(org)/payment-form`; `?id=<payment>` corrects one (the web has
-// the PATCH hook but no screen for it). Records money that moved outside the portal.
+// Ported from apps/web/src/features/payments/payment-dialog.tsx @ 1132322; reshaped as a quick sheet
+// in UI upgrades U5 (docs/ui-upgrades-spec.md). `(org)/payment-form`; `?id=<payment>` corrects one
+// (the web has the PATCH hook but no screen for it). Records money that moved outside the portal.
 //
-// The direction drives the whole form: money from a family must name a student, because charges
+// The sheet leads with the amount, large; then who, already filled when it was opened from a Billing
+// row or a person's record (`?direction=&party=&student=`), with Change to choose someone else; then
+// how it was paid. The date, time, reference and notes wait under "More details" (now, by default).
+//
+// The direction drives who may be chosen: money from a family must name a student, because charges
 // attach to students and that is what the balance is computed against. Money to a tutor does not.
 // Once recorded, who and which way are fixed (`paymentUpdateSchema`): a correction changes the
-// amount, the form, when and the notes.
+// amount, the form, when and the notes. Finance only: an admin's, as the API.
 import {
   PAYMENT_DIRECTIONS,
   PAYMENT_DIRECTION_LABELS,
@@ -21,21 +25,22 @@ import {
   type PaymentForm,
 } from '@tmi/shared';
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { Platform, View } from 'react-native';
-import { Button, HelperText, Text, TextInput } from 'react-native-paper';
+import { useState, type ReactNode } from 'react';
+import { Platform, Pressable, ScrollView, View } from 'react-native';
+import { Button, HelperText, Icon, Text, TextInput } from 'react-native-paper';
 
 import { OfflineSaveNote, useOffline } from '@/components/connectivity';
-import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
-import { FieldError } from '@/components/field-error';
 import { DateTimeField } from '@/components/date-time-field';
+import { FieldError } from '@/components/field-error';
 import { Choice, Field } from '@/components/form-choice';
 import { OptionPicker } from '@/components/option-picker';
-import { Screen } from '@/components/screen';
+import { OutlinedCard } from '@/components/outlined-card';
+import { QuickSheet } from '@/components/quick-sheet';
 import { SecureMoney } from '@/components/secure-money';
-import { EmptyState, ErrorState } from '@/components/state-views';
 import { FormSkeleton } from '@/components/skeletons';
+import { EmptyState, ErrorState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
+import { useDirty } from '@/hooks/use-unsaved-changes';
 import { NoteField } from '@/features/teaching/session-notes';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { useUserDetail, useUsers } from '@/features/users/api';
@@ -43,7 +48,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { space } from '@/theme/tokens';
+import { MIN_TARGET, space } from '@/theme/tokens';
 import { usePayments, useRecordPayment, useUpdatePayment } from './api';
 import { instantToOrgClock, orgClockToInstant, orgNow } from './payment-time';
 
@@ -51,7 +56,10 @@ function close() {
   if (router.canGoBack()) router.back();
 }
 
-/** A new payment opened from a ledger row (ux-audit F-21): who it is to or from, and for whom. */
+/** The fields under "More details": a refusal on one of them opens it. */
+const DETAIL_FIELDS = ['paid_at', 'reference', 'notes'] as const;
+
+/** A new payment opened from a ledger row or a person's record (ux-audit F-21; U5): who, and for whom. */
 export interface PaymentPrefill {
   direction?: PaymentDirection;
   party?: string;
@@ -74,6 +82,26 @@ export function paymentPrefill(params: {
   };
 }
 
+/** "From Anita Patel, for Sanjay Patel" / "To Alex Chen". */
+export function paymentWhoText(direction: PaymentDirection, party: string, student?: string | null): string {
+  if (direction === 'to_tutor') return `To ${party}`;
+  return student ? `From ${party}, for ${student}` : `From ${party}`;
+}
+
+/** The states before the form: a fitted sheet's root is a ScrollView too. */
+function SheetState({ children }: { children: ReactNode }) {
+  const theme = useAppTheme();
+  return (
+    <ScrollView
+      testID="screen-payment-form"
+      style={{ backgroundColor: theme.colors.background }}
+      contentContainerStyle={{ padding: space.lg, paddingTop: space.xl }}
+    >
+      {children}
+    </ScrollView>
+  );
+}
+
 export function PaymentFormSheet({
   paymentId,
   prefill = {},
@@ -86,30 +114,36 @@ export function PaymentFormSheet({
   // The list the payment was opened from: the edit sheet is reached only from it.
   const list = usePayments({ limit: 50 });
 
-  let body;
   if (!isAdmin) {
     // The API refuses anyone else; the sheet says so rather than offering a form that cannot save.
-    body = <EmptyState icon="lock-outline" title="Only an admin can record payments." />;
-  } else if (!paymentId) {
-    body = <PaymentFormBody existing={null} prefill={prefill} />;
-  } else if (list.isPending) {
-    body = <FormSkeleton label="Loading the payment…" fields={5} />;
-  } else if (list.isError) {
-    body = <ErrorState error={list.error} onRetry={() => void list.refetch()} />;
-  } else {
-    const existing = list.data.data.find((row) => row.id === paymentId);
-    body = existing ? (
-      <PaymentFormBody key={existing.id} existing={existing} />
-    ) : (
-      <ErrorState error={new ApiRequestError(404, 'not_found', 'That payment does not exist.')} />
+    return (
+      <SheetState>
+        <EmptyState icon="lock-outline" title="Only an admin can record payments." />
+      </SheetState>
     );
   }
-
-  return (
-    <Screen testID="screen-payment-form" edges={['bottom']} contentStyle={{ paddingTop: space.xl }}>
-      <SecureMoney tag="payment-form" />
-      {body}
-    </Screen>
+  if (!paymentId) return <PaymentFormBody existing={null} prefill={prefill} />;
+  if (list.isPending) {
+    return (
+      <SheetState>
+        <FormSkeleton label="Loading the payment…" fields={3} />
+      </SheetState>
+    );
+  }
+  if (list.isError) {
+    return (
+      <SheetState>
+        <ErrorState error={list.error} onRetry={() => void list.refetch()} />
+      </SheetState>
+    );
+  }
+  const existing = list.data.data.find((row) => row.id === paymentId);
+  return existing ? (
+    <PaymentFormBody key={existing.id} existing={existing} />
+  ) : (
+    <SheetState>
+      <ErrorState error={new ApiRequestError(404, 'not_found', 'That payment does not exist.')} />
+    </SheetState>
   );
 }
 
@@ -141,16 +175,21 @@ export function PaymentFormBody({
   const [reference, setReference] = useState(existing?.reference ?? '');
   const [notes, setNotes] = useState(existing?.notes ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [failure, setFailure] = useState<string | null>(null);
+  // Who came with the sheet: shown as a line with Change, until Change opens the pickers.
+  const [choosing, setChoosing] = useState(!isEdit && !prefill.party);
+  // The details open themselves when they hold something (an edit with a reference) or a refusal.
+  const [moreOpen, setMoreOpen] = useState(Boolean(existing?.reference || existing?.notes));
   // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
   const dirty = useDirty({ direction, partyId, studentId, amount, method, day, clock, reference, notes });
-  const { leave } = useUnsavedChangesGuard(dirty);
   const offline = useOffline();
 
   const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
   const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
-  // A parent's own children are the only students their payment can be for.
-  const payer = useUserDetail(!isEdit && direction === 'from_parent' && partyId ? partyId : null);
-  const children = payer.data?.data.dependents ?? [];
+  // A parent's own children are the only students their payment can be for; a prefilled person's
+  // record also gives their name.
+  const party = useUserDetail(!isEdit && partyId ? partyId : null);
+  const children = direction === 'from_parent' ? (party.data?.data.dependents ?? []) : [];
 
   // With exactly one child there is nothing to choose. Adjusted while rendering, in the same pass.
   const onlyChild = children.length === 1 ? children[0]!.user_id : null;
@@ -161,6 +200,14 @@ export function PaymentFormBody({
   const saving = record.isPending || update.isPending;
   const parties = direction === 'from_parent' ? parents : tutors;
   const today = orgNow(timeZone).day;
+
+  const partyName =
+    existing?.party_name ??
+    party.data?.data.full_name ??
+    (parties.data?.data ?? []).find((person) => person.id === partyId)?.full_name ??
+    '';
+  const studentName =
+    existing?.student_name ?? children.find((child) => child.user_id === studentId)?.full_name ?? null;
 
   function chooseDirection(value: PaymentDirection) {
     setDirection(value);
@@ -179,8 +226,17 @@ export function PaymentFormBody({
     return orgClockToInstant(day, clock, timeZone);
   }
 
-  async function handleSave() {
+  function refuse(found: Record<string, string>) {
+    setErrors(found);
+    if (DETAIL_FIELDS.some((field) => found[field])) setMoreOpen(true);
+    // A refusal about who opens the pickers, so the field at fault is on screen.
+    if (found.party_user_id || found.student_user_id) setChoosing(true);
+    haptics.error();
+  }
+
+  async function handleSave({ leave }: { leave: (close?: () => void) => void }) {
     setErrors({});
+    setFailure(null);
     const cents = parseCentsInput(amount);
 
     const local: Record<string, string> = {};
@@ -190,8 +246,7 @@ export function PaymentFormBody({
       local.student_user_id = 'Choose which student this is for.';
     }
     if (Object.keys(local).length > 0) {
-      setErrors(local);
-      haptics.error();
+      refuse(local);
       return;
     }
 
@@ -208,8 +263,7 @@ export function PaymentFormBody({
       if (isEdit) {
         const parsed = paymentUpdateSchema.safeParse(common);
         if (!parsed.success) {
-          setErrors(issuesToErrors(parsed.error.issues));
-          haptics.error();
+          refuse(issuesToErrors(parsed.error.issues));
           return;
         }
         await update.mutateAsync({ id: existing.id, input: parsed.data });
@@ -222,40 +276,68 @@ export function PaymentFormBody({
           ...common,
         });
         if (!parsed.success) {
-          setErrors(issuesToErrors(parsed.error.issues));
-          haptics.error();
+          refuse(issuesToErrors(parsed.error.issues));
           return;
         }
         await record.mutateAsync(parsed.data);
         toast.success('Payment recorded.');
       }
+      haptics.success();
       leave(close);
     } catch (error) {
       if (error instanceof ApiRequestError) {
-        setErrors(error.fieldErrors);
-        toast.error(error.message);
+        refuse(error.fieldErrors);
+        // A form sheet covers the app's toasts: the refusal is said above the action.
+        setFailure(error.message);
         return;
       }
-      toast.error(isEdit ? 'Could not update the payment.' : 'Could not record the payment.');
+      haptics.error();
+      setFailure(isEdit ? 'Could not update the payment.' : 'Could not record the payment.');
     }
   }
 
   return (
-    <View style={{ gap: space.lg }}>
-      <View style={{ gap: space.xs }}>
-        <Text variant="titleLarge" accessibilityRole="header">
-          {isEdit ? 'Edit payment' : 'Record a payment'}
-        </Text>
-        <Text variant="bodyMedium" style={{ color: muted }}>
-          {isEdit
-            ? `${PAYMENT_DIRECTION_LABELS[existing.direction]}: ${existing.party_name}${
-                existing.student_name ? `, for ${existing.student_name}` : ''
-              }. Recorded as ${formatCents(existing.amount_cents)}.`
-            : 'No money moves through the portal. This is a record of a payment made elsewhere.'}
-        </Text>
+    <QuickSheet
+      testID="screen-payment-form"
+      actionTestID="payment"
+      title={isEdit ? 'Edit payment' : 'Record a payment'}
+      description={
+        isEdit
+          ? `${paymentWhoText(existing.direction, existing.party_name, existing.student_name)}. Recorded as ${formatCents(existing.amount_cents)}.`
+          : 'A record of money that moved outside the portal.'
+      }
+      primaryLabel={isEdit ? 'Save changes' : 'Record payment'}
+      primaryIcon={isEdit ? undefined : 'cash-check'}
+      onPrimary={handleSave}
+      primaryDisabled={offline}
+      loading={saving}
+      error={failure ?? errors.form ?? null}
+      dirty={dirty}
+    >
+      <SecureMoney tag="payment-form" />
+
+      {/* The amount, large: the one thing every payment has. */}
+      <View>
+        <TextInput
+          testID="payment-amount"
+          mode="outlined"
+          label="Amount"
+          value={amount}
+          onChangeText={setAmount}
+          placeholder="75.00"
+          // iOS's decimal pad has no return key, so it could never be put away: this one has.
+          keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'decimal-pad'}
+          returnKeyType="done"
+          submitBehavior="blurAndSubmit"
+          left={<TextInput.Affix text="$" textStyle={{ fontSize: 28 }} />}
+          style={{ fontSize: 28 }}
+          contentStyle={{ fontVariant: ['tabular-nums'] }}
+          error={Boolean(errors.amount_cents)}
+        />
+        {errors.amount_cents ? <FieldError>{errors.amount_cents}</FieldError> : null}
       </View>
 
-      {!isEdit ? (
+      {isEdit ? null : choosing ? (
         <>
           <Field label="Direction">
             <View style={{ flexDirection: 'row', gap: space.sm }}>
@@ -270,7 +352,6 @@ export function PaymentFormBody({
               ))}
             </View>
           </Field>
-
           <OptionPicker
             key={direction}
             testID="payment-party"
@@ -281,49 +362,41 @@ export function PaymentFormBody({
             value={partyId}
             onChange={chooseParty}
             error={errors.party_user_id}
+            // Closed until tapped, so the sheet fits and its action stays in reach (U5).
+            defaultOpen={false}
           />
-
-          {direction === 'from_parent' && partyId ? (
-            <OptionPicker
-              // Remounted once the children arrive, so an only child, chosen for the reader, shows
-              // closed like any made choice.
-              key={`${partyId}-${payer.isSuccess}`}
-              testID="payment-student"
-              label="For which student"
-              placeholder="Choose a student"
-              options={children.map((child) => ({ id: child.user_id, label: child.full_name }))}
-              value={studentId}
-              onChange={setStudentId}
-              error={errors.student_user_id}
-              emptyText={payer.isPending ? 'Loading…' : 'This parent has no students assigned to them.'}
-            />
-          ) : null}
-          {direction === 'from_parent' && !partyId && errors.student_user_id ? (
-            <FieldError>{errors.student_user_id}</FieldError>
-          ) : null}
         </>
+      ) : (
+        <WhoCard
+          text={partyName ? paymentWhoText(direction, partyName, studentName) : 'Loading…'}
+          onChange={() => {
+            haptics.selection();
+            setChoosing(true);
+          }}
+        />
+      )}
+
+      {!isEdit && direction === 'from_parent' && partyId && (choosing || !studentId) ? (
+        <OptionPicker
+          // Remounted once the children arrive, so an only child, chosen for the reader, shows
+          // closed like any made choice.
+          key={`${partyId}-${party.isSuccess}`}
+          testID="payment-student"
+          label="For which student"
+          placeholder="Choose a student"
+          options={children.map((child) => ({ id: child.user_id, label: child.full_name }))}
+          value={studentId}
+          onChange={setStudentId}
+          error={errors.student_user_id}
+          emptyText={party.isPending ? 'Loading…' : 'This parent has no students assigned to them.'}
+        />
+      ) : null}
+      {!isEdit && direction === 'from_parent' && !partyId && errors.student_user_id ? (
+        <FieldError>{errors.student_user_id}</FieldError>
       ) : null}
 
-      <View>
-        <TextInput
-          testID="payment-amount"
-          mode="outlined"
-          label="Amount"
-          value={amount}
-          onChangeText={setAmount}
-          placeholder="75.00"
-          // iOS's decimal pad has no return key, so it could never be put away: this one has.
-          keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'decimal-pad'}
-          returnKeyType="done"
-          submitBehavior="blurAndSubmit"
-          left={<TextInput.Affix text="$" />}
-          error={Boolean(errors.amount_cents)}
-        />
-        {errors.amount_cents ? <FieldError>{errors.amount_cents}</FieldError> : null}
-      </View>
-
       <Field label="Paid by" error={errors.method}>
-        <View style={{ flexDirection: 'row', gap: space.sm }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {PAYMENT_FORMS.map((form) => (
             <Choice
               key={form}
@@ -336,66 +409,103 @@ export function PaymentFormBody({
         </View>
       </Field>
 
-      <View style={{ gap: space.sm }}>
-        <DateTimeField
-          testID="payment-date"
-          mode="date"
-          label="Date"
-          value={day}
-          onChange={setDay}
-          maximumDate={today > day ? today : day}
-          error={Boolean(errors.paid_at)}
-        />
-        <DateTimeField testID="payment-time" mode="time" label="Time" value={clock} onChange={setClock} />
-        {errors.paid_at ? <FieldError>{errors.paid_at}</FieldError> : null}
-      </View>
-
-      <View>
-        <TextInput
-          testID="payment-reference"
-          mode="outlined"
-          label="Reference (optional)"
-          value={reference}
-          onChangeText={setReference}
-          placeholder={method === 'check' ? '1042' : 'Confirmation'}
-          returnKeyType="done"
-          autoCorrect={false}
-          error={Boolean(errors.reference)}
-        />
-        <HelperText
-          type={errors.reference ? 'error' : 'info'}
-          padding="none"
-          visible={Boolean(errors.reference) || method === 'check'}
+      <View style={{ gap: space.md }}>
+        <Pressable
+          testID="payment-more"
+          accessibilityRole="button"
+          accessibilityState={{ expanded: moreOpen }}
+          accessibilityLabel={moreOpen ? 'Fewer details' : 'More details: date, reference and notes'}
+          onPress={() => {
+            haptics.selection();
+            setMoreOpen((was) => !was);
+          }}
+          style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: MIN_TARGET }}
         >
-          {errors.reference ?? 'Check number.'}
-        </HelperText>
+          <Icon source={moreOpen ? 'chevron-up' : 'chevron-down'} size={22} color={theme.colors.primary} />
+          <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
+            More details
+          </Text>
+          {!moreOpen ? (
+            <Text variant="bodyMedium" numberOfLines={1} style={{ flex: 1, color: muted }}>
+              {day === today ? 'Today' : day}
+              {reference.trim() ? ` · ${reference.trim()}` : ''}
+            </Text>
+          ) : null}
+        </Pressable>
+        {moreOpen ? (
+          <>
+            <View style={{ gap: space.sm }}>
+              <DateTimeField
+                testID="payment-date"
+                mode="date"
+                label="Date"
+                value={day}
+                onChange={setDay}
+                maximumDate={today > day ? today : day}
+                error={Boolean(errors.paid_at)}
+              />
+              <DateTimeField testID="payment-time" mode="time" label="Time" value={clock} onChange={setClock} />
+              {errors.paid_at ? <FieldError>{errors.paid_at}</FieldError> : null}
+            </View>
+            <View>
+              <TextInput
+                testID="payment-reference"
+                mode="outlined"
+                label="Reference (optional)"
+                value={reference}
+                onChangeText={setReference}
+                placeholder={method === 'check' ? '1042' : 'Confirmation'}
+                returnKeyType="done"
+                autoCorrect={false}
+                error={Boolean(errors.reference)}
+              />
+              <HelperText
+                type={errors.reference ? 'error' : 'info'}
+                padding="none"
+                visible={Boolean(errors.reference) || method === 'check'}
+              >
+                {errors.reference ?? 'Check number.'}
+              </HelperText>
+            </View>
+            <NoteField
+              testID="payment-notes"
+              label="Notes (optional)"
+              value={notes}
+              onChange={setNotes}
+              placeholder="September, first half"
+              error={errors.notes}
+            />
+          </>
+        ) : null}
       </View>
+      <OfflineSaveNote offline={offline} />
+    </QuickSheet>
+  );
+}
 
-      <NoteField
-        testID="payment-notes"
-        label="Notes (optional)"
-        value={notes}
-        onChange={setNotes}
-        placeholder="September, first half"
-        error={errors.notes}
-      />
-      {errors.form ? <FieldError>{errors.form}</FieldError> : null}
-
-      <View style={{ gap: space.sm }}>
+/** Who the payment is to or from, filled from where the sheet was opened, with Change. */
+function WhoCard({ text, onChange }: { text: string; onChange: () => void }) {
+  const theme = useAppTheme();
+  return (
+    <OutlinedCard>
+      <View
+        style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingLeft: space.lg, paddingVertical: space.sm }}
+      >
+        <Icon source="account-cash-outline" size={24} color={theme.tokens.mutedForeground} />
+        <Text testID="payment-who" variant="bodyLarge" style={{ flex: 1 }}>
+          {text}
+        </Text>
         <Button
-          testID="payment-save"
-          mode="contained"
-          onPress={() => void handleSave()}
-          loading={saving}
-          disabled={saving || offline}
+          testID="payment-who-change"
+          mode="text"
+          compact
+          onPress={onChange}
+          accessibilityLabel={`${text}. Change`}
+          contentStyle={{ minHeight: MIN_TARGET }}
         >
-          {isEdit ? 'Save changes' : 'Record payment'}
-        </Button>
-        <OfflineSaveNote offline={offline} />
-        <Button testID="payment-cancel" mode="outlined" onPress={close} disabled={saving}>
-          Cancel
+          Change
         </Button>
       </View>
-    </View>
+    </OutlinedCard>
   );
 }

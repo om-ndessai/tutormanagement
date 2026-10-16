@@ -87,7 +87,7 @@ it('never makes an absent email a link', async () => {
   const open = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   await renderWithProviders(<EmailOrNone email={null} testID="email" />);
   expect(screen.getByText('No email')).toBeTruthy();
-  fireEvent.press(screen.getByTestId('email'));
+  await fireEvent.press(screen.getByTestId('email'));
   expect(open).not.toHaveBeenCalled();
 });
 
@@ -96,7 +96,7 @@ it('shows another tutor none of their pay or paperwork', async () => {
   await renderWithProviders(<UserDetailView user={mariaForAlex} />);
   for (const id of PRIVATE_ROWS) expect(screen.queryByTestId(id)).toBeNull();
   expect(screen.queryByText(/\$\d/)).toBeNull();
-  expect(screen.getByTestId('person-section-tutor')).toBeTruthy();
+  expect(screen.getByTestId('person-section-background')).toBeTruthy();
   // A child with no email is said so, and their row still opens their record.
   expect(screen.getByTestId('person-dependent-sofia')).toBeTruthy();
 });
@@ -132,6 +132,41 @@ it('offers no call or email for a child with neither', async () => {
   expect(screen.getByText('No email')).toBeTruthy();
 });
 
+describe('the record in sections (UI upgrades U5)', () => {
+  it('gives the office an Edit on each section, opening only that section', async () => {
+    const { router } = jest.requireMock('expo-router') as { router: { push: jest.Mock } };
+    router.push.mockClear();
+    mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+    await renderWithProviders(<UserDetailView user={maria} />);
+    for (const key of ['contact', 'background', 'availability', 'teaching', 'pay', 'family']) {
+      expect(screen.getByTestId(`person-section-${key}`)).toBeTruthy();
+    }
+    // A tutor who is also a parent: the payment ids sit with the pay, and the child is read here.
+    expect(screen.queryByTestId('person-section-payment')).toBeNull();
+    expect(screen.getByTestId('person-edit-family')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('person-edit-pay'));
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: '/person-form',
+      params: { id: 'maria', section: 'pay' },
+    });
+  });
+
+  it('gives anyone else no Edit, and another tutor no Pay and tax', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'alex', roles: ['tutor'] } });
+    await renderWithProviders(<UserDetailView user={mariaForAlex} />);
+    expect(screen.getByTestId('person-section-teaching')).toBeTruthy();
+    expect(screen.queryByTestId('person-section-pay')).toBeNull();
+    expect(screen.queryByText('Edit')).toBeNull();
+  });
+
+  it('shows the person their own pay, and still no Edit', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'maria', roles: ['tutor', 'parent'] } });
+    await renderWithProviders(<UserDetailView user={maria} />);
+    expect(screen.getByTestId('person-section-pay')).toBeTruthy();
+    expect(screen.queryByTestId('person-edit-pay')).toBeNull();
+  });
+});
+
 it('gives the office a row menu, and nobody else one', async () => {
   const actions: RowActions = {
     onView: jest.fn(),
@@ -141,12 +176,21 @@ it('gives the office a row menu, and nobody else one', async () => {
   };
   const office = await renderWithProviders(<UserCard user={maria} actions={actions} canAct />);
   expect(screen.getByTestId('people-row-menu-maria')).toBeTruthy();
-  fireEvent.press(screen.getByLabelText(/^Maria Okafor, .*open their record$/));
+  await fireEvent.press(screen.getByLabelText(/^Maria Okafor, .*open their record$/));
   expect(actions.onView).toHaveBeenCalledWith(maria);
-  office.unmount();
+  await office.unmount();
   await renderWithProviders(
     <UserCard user={{ ...maria, deleted_at: '2026-10-09T05:00:00Z' }} actions={actions} canAct={false} />,
   );
   expect(screen.queryByTestId('people-row-menu-maria')).toBeNull();
   expect(screen.getByLabelText(/Deactivated, open their record$/)).toBeTruthy();
+});
+
+// RNTL 14's `fireEvent.press` and `unmount` are async: un-awaited, the press's act() overlapped the
+// next render's, and every later render in this file came out null (the row-menu test above did).
+it('renders normally after the row-menu test', async () => {
+  mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+  await renderWithProviders(<EmailOrNone email="maria.okafor@gmail.com" testID="email" />);
+  expect(screen.toJSON()).not.toBeNull();
+  expect(screen.getByText('maria.okafor@gmail.com')).toBeTruthy();
 });

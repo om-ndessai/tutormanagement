@@ -92,7 +92,7 @@ tags:
 - assertVisible:
     id: live-banner
 - takeScreenshot: live-banner-home
-- tapOn: 'Schedule'
+- runFlow: ../../subflows/open-schedule.yaml
 - extendedWaitUntil:
     visible:
       id: live-banner

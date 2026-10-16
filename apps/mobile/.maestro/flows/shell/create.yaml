@@ -1,0 +1,200 @@
+# The create button (UI upgrades U2): the "+" in the middle of the tab bar opens the reader's own
+# actions, each into the sheet that already does the work. The office (Priya, who also tutors)
+# gets all seven; a tutor records, starts and schedules; a parent has nothing to create and no "+".
+appId: ${APP_ID}
+tags:
+  - shell
+---
+# The office.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible:
+    id: create-button
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-sheet
+    timeout: 10000
+- assertVisible:
+    id: create-action-record-session
+- assertVisible:
+    id: create-action-schedule-lesson
+- assertVisible:
+    id: create-action-add-student
+- assertVisible:
+    id: create-action-add-tutor
+- assertVisible:
+    id: create-action-add-person
+- assertVisible:
+    id: create-action-record-payment
+# Priya tutors too, with students of her own: she may start a lesson.
+- assertVisible:
+    id: create-action-start-lesson
+- takeScreenshot: create-sheet-admin
+# Add a student: the step flow, family first (U3); nothing typed, so it closes without asking.
+- tapOn:
+    id: create-action-add-student
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
+    timeout: 15000
+- takeScreenshot: create-add-student
+# A tap while the flow is still rising is not delivered.
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# Add a tutor: its own step flow.
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-add-tutor
+    timeout: 10000
+- tapOn:
+    id: create-action-add-tutor
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the tutor\?.*'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# Record a payment.
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-record-payment
+    timeout: 10000
+- tapOn:
+    id: create-action-record-payment
+# A quick sheet (U5): the amount first; Cancel closes it untouched.
+- extendedWaitUntil:
+    visible:
+      id: payment-amount
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: payment-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# Record a lesson, from a tab other than Home: the flow is Tutoring's, so no money on it.
+- runFlow: ../../subflows/open-schedule.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 15000
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-record-session
+    timeout: 10000
+- tapOn:
+    id: create-action-record-session
+# The record step flow (UI upgrades U4).
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who was the lesson with\?.*'
+    timeout: 15000
+- assertNotVisible:
+    id: record-money
+- assertNotVisible: '.*\$[0-9].*'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 10000
+
+# A tutor: record, start and schedule; nobody to add, nothing to pay.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-action-start-lesson
+    timeout: 15000
+- assertVisible:
+    id: create-action-record-session
+- assertVisible:
+    id: create-action-schedule-lesson
+- assertNotVisible:
+    id: create-action-add-student
+- assertNotVisible:
+    id: create-action-add-person
+- assertNotVisible:
+    id: create-action-record-payment
+- takeScreenshot: create-sheet-tutor
+- tapOn:
+    id: create-action-schedule-lesson
+# Schedule a lesson is a step flow (UI upgrades U5); nothing chosen, so it closes without asking.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the lesson with\?.*'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+
+# A parent: Home, Sessions, Progress and More on a flat bar, and no "+" (no hump either).
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible:
+    id: tab-dashboard
+- assertVisible:
+    id: tab-sessions
+- assertVisible:
+    id: tab-progress
+- assertVisible:
+    id: tab-more
+- assertNotVisible:
+    id: create-button
+- takeScreenshot: create-none-parent

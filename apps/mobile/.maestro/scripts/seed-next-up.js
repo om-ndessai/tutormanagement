@@ -2,7 +2,7 @@
 // today's weekday, begun an hour ago on the organization's clock and running two hours, so it is
 // under way, starts before any other lesson of his still running today, and is his "Next up".
 // Through the LOCAL Worker only (sign-in off, X-Dev-User). clean-schedules.js removes it.
-// Sets output.studentId, output.studentName, output.scheduleId, output.startPattern.
+// Sets output.studentId, output.studentName, output.scheduleId, output.startPattern, output.startClock.
 var ORG = 'chmi';
 var ALEX = 'alex.chen.math@gmail.com';
 var ALEX_ID = '00000000-0000-4000-8000-000000000003';
@@ -60,3 +60,5 @@ var hour12 = Math.floor(start / 60) % 12 === 0 ? 12 : Math.floor(start / 60) % 1
 // A pattern, not text: the time pickers put a narrow no-break space before AM/PM.
 output.startPattern =
   hour12 + ':' + (start % 60 < 10 ? '0' : '') + (start % 60) + '.' + (start < 720 ? 'AM' : 'PM');
+// The start without its AM/PM ("9:45"): a range names the half of the day once, at its end.
+output.startClock = hour12 + ':' + (start % 60 < 10 ? '0' : '') + (start % 60);

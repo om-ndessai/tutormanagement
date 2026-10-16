@@ -95,7 +95,7 @@ describe('SearchScreen', () => {
     expect(screen.queryByTestId('search-action-org-chmi')).toBeNull();
     expect(screen.queryByTestId('search-action-platform')).toBeNull();
     expect(screen.getByTestId('search-action-theme-dark')).toBeTruthy();
-    unmount();
+    await unmount();
     mockAuth.mockReturnValue(auth(['tutor'], { platformAdmin: true }));
     await renderWithProviders(<SearchScreen />);
     expect(screen.getByTestId('search-action-platform')).toBeTruthy();

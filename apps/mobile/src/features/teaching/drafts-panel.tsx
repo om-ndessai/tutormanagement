@@ -2,7 +2,8 @@
 import { SESSION_MODE_LABELS, type SessionDraft } from '@tmi/shared';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, Card, Divider, Text } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { IconButton } from '@/components/icon-button';
 import { SwipeRow } from '@/components/swipe-row';
@@ -82,9 +83,8 @@ export function DraftsList({
   }
 
   return (
-    <Card
+    <OutlinedCard
       testID="drafts-panel"
-      mode="outlined"
       style={{ borderRadius: radius.lg, borderStyle: 'dashed' }}
       contentStyle={{ padding: 0 }}
     >
@@ -171,6 +171,6 @@ export function DraftsList({
           </View>
         ))}
       </View>
-    </Card>
+    </OutlinedCard>
   );
 }

@@ -10,10 +10,20 @@ import { haptics } from '@/lib/haptics';
 import { CHIP_HIT_SLOP } from '@/theme/tokens';
 
 /**
- * The subject's roles as chips, the shown one selected. Renders nothing for someone with one
- * role. Choosing sets `?role=`; the server answers with that role's dashboard.
+ * The roles as chips, the shown one selected. Renders nothing for someone with one role. Choosing
+ * sets Home's `?role=` (by default from Home itself; the account sheet passes `onChoose`), and the
+ * server answers with that role's dashboard. Since UI upgrades U6 the reader's own roles are chosen
+ * in the account sheet; Home keeps the chips only while an admin views somebody else's.
  */
-export function RoleSelector({ roles, current }: { roles: UserRole[]; current: UserRole }) {
+export function RoleSelector({
+  roles,
+  current,
+  onChoose = (role) => router.setParams({ role }),
+}: {
+  roles: UserRole[];
+  current: UserRole;
+  onChoose?: (role: UserRole) => void;
+}) {
   const ordered = USER_ROLES.filter((role) => roles.includes(role));
   if (ordered.length < 2) return null;
   return (
@@ -38,7 +48,7 @@ export function RoleSelector({ roles, current }: { roles: UserRole[]; current: U
             onPress={() => {
               if (selected) return;
               haptics.selection();
-              router.setParams({ role });
+              onChoose(role);
             }}
           >
             {DASHBOARD_ROLE_LABELS[role]}

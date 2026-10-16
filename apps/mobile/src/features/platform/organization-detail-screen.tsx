@@ -6,7 +6,8 @@ import { ORG_PALETTE_LABELS, ORG_TIME_ZONE_LABELS } from '@tmi/shared';
 import { Stack, router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, Card, Chip, Text } from 'react-native-paper';
+import { Button, Chip, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
@@ -96,7 +97,7 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
   return (
     <Screen testID="screen-platform-organization" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ title: org.short_name }} />
-      <Card mode="outlined" style={{ borderRadius: radius.lg }}>
+      <OutlinedCard style={{ borderRadius: radius.lg }}>
         <View style={{ padding: space.lg, gap: space.md }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
             <OrgAvatar org={org} size={56} />
@@ -139,7 +140,7 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
             Edit details
           </Button>
         </View>
-      </Card>
+      </OutlinedCard>
 
       <LogoSection organization={org} />
       <AdminsSection organization={org} />

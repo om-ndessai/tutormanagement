@@ -156,10 +156,8 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
                   <Icon source="flag-outline" size={16} color={theme.colors.onPrimary} />
                   <Text
                     style={{
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: '600',
-                      letterSpacing: 0.6,
-                      textTransform: 'uppercase',
                       color: theme.colors.onPrimary,
                       opacity: 0.85,
                     }}

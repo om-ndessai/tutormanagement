@@ -15,6 +15,7 @@ import {
   formatTimeRange,
   groupSlotsByDay,
   type GuardianLink,
+  type PaymentHandle,
   type UserDetail,
 } from '@tmi/shared';
 import { router } from 'expo-router';
@@ -32,9 +33,11 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { Detail, Muted, Section } from './detail-row';
-import { formatInstant, seesTutorPay, telUrl } from './people-model';
+import { formatInstant, telUrl } from './people-model';
 import { PersonAvatar } from './person-avatar';
+import { RECORD_SECTIONS, recordSections, type RecordSectionKey } from './record-sections';
 import { SsnReceiptButton } from './ssn-receipt-button';
+import { TaxSetupCard, needsTaxSetup } from './tax-setup-card';
 import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 import { StudentPrices, TutorPayRates, TutorTopup } from './user-rates';
 
@@ -54,7 +57,6 @@ export function UserDetailView({
   const { user: viewer } = useAuth();
   const tutor = user.tutor_profile;
   const student = user.student_profile;
-  const seesPay = seesTutorPay(viewer, user.id);
   const isAdmin = viewer?.roles.includes('admin') ?? false;
   const availabilityByDay = groupSlotsByDay(user.availability);
   const tel = telUrl(user.phone);
@@ -66,6 +68,164 @@ export function UserDetailView({
     ) : (
       <Muted>{`${formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)`}</Muted>
     );
+
+  const sections = recordSections(user, viewer, { compact });
+  const editSection = (key: RecordSectionKey) =>
+    router.push({ pathname: '/person-form', params: { id: user.id, section: key } });
+
+  function renderSection(key: RecordSectionKey) {
+    switch (key) {
+      case 'contact':
+        return (
+          <>
+            <Detail icon="email-outline" label="Email">
+              <EmailOrNone testID="person-email" email={user.email} style={{ fontSize: 14 }} />
+            </Detail>
+            <Detail icon="phone-outline" label="Phone" testID="person-phone">
+              {user.phone ?? <Muted>Not recorded</Muted>}
+            </Detail>
+            <Detail icon="calendar-clock-outline" label="Last sign-in">
+              {formatInstant(user.last_login_at, timeZone, 'Has not signed in yet')}
+            </Detail>
+            <Detail icon="calendar-clock-outline" label="Added to the portal">
+              {formatInstant(user.created_at, timeZone, '—')}
+            </Detail>
+          </>
+        );
+      case 'background':
+        return tutor ? (
+          <>
+            <Detail icon="school-outline" label="Education">
+              {tutor.highest_education ?? <Muted>Not recorded</Muted>}
+            </Detail>
+            <Detail icon="domain" label="School">
+              {tutor.school ?? <Muted>Not recorded</Muted>}
+            </Detail>
+            <Detail icon="map-marker-outline" label="Area">
+              {tutor.area ?? <Muted>Not recorded</Muted>}
+            </Detail>
+          </>
+        ) : null;
+      case 'school':
+        return student ? (
+          <>
+            <Detail icon="domain" label="School">
+              {student.school ?? <Muted>Not recorded</Muted>}
+            </Detail>
+            <Detail icon="school-outline" label="Current course">
+              {student.current_math_course ?? <Muted>Not recorded</Muted>}
+            </Detail>
+            <Detail icon="target" label="Goal this year">
+              {student.academic_year_goal ?? <Muted>Not recorded</Muted>}
+            </Detail>
+          </>
+        ) : null;
+      case 'availability':
+        return (
+          <View style={{ gap: space.sm }}>
+            {availabilityByDay.length === 0 ? <Muted>No hours set yet.</Muted> : null}
+            {availabilityByDay.map(({ day_of_week, ranges }) => (
+              <View
+                key={day_of_week}
+                style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}
+              >
+                <Text variant="bodySmall" style={{ width: 84, color: theme.tokens.mutedForeground }}>
+                  {DAYS_OF_WEEK[day_of_week]?.label}
+                </Text>
+                {/* Consecutive hours are collapsed, so 16, 17, 18 reads as one block. */}
+                {ranges.map((range) => (
+                  <View
+                    key={range.start}
+                    style={{
+                      backgroundColor: theme.colors.secondaryContainer,
+                      borderRadius: radius.sm,
+                      paddingHorizontal: 6,
+                      paddingVertical: 2,
+                    }}
+                  >
+                    <Text style={{ fontSize: 12, color: theme.colors.onSecondaryContainer }}>
+                      {formatTimeRange(range.start * 60, range.end * 60)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+            {tutor?.availability_notes ? (
+              <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+                {tutor.availability_notes}
+              </Text>
+            ) : null}
+          </View>
+        );
+      case 'teaching':
+        return tutor ? (
+          <>
+            <Detail icon="video-outline" label="Virtual tutoring">
+              {tutor.virtual_available ? 'Available' : 'In person only'}
+            </Detail>
+            <Detail icon="timer-outline" label="Longest session">
+              {longest(tutor.max_session_minutes)}
+            </Detail>
+          </>
+        ) : null;
+      case 'lessons':
+        return student ? (
+          <>
+            <Detail icon="video-outline" label="Virtual sessions">
+              {student.virtual_available ? 'Available' : 'In person only'}
+            </Detail>
+            <StudentPrices student={student} />
+            <Detail icon="timer-outline" label="Longest session">
+              {longest(student.max_session_minutes)}
+            </Detail>
+          </>
+        ) : null;
+      case 'pay':
+        // Only the tutor and the office reach this section (`recordSections`); the server blanks it
+        // for anyone else anyway.
+        return tutor ? (
+          <>
+            <TutorPayRates tutor={tutor} />
+            <TutorTopup tutor={tutor} />
+            <Detail testID="person-mailing-address" icon="email-outline" label="Mailing address">
+              {address ?? <Muted>Not recorded</Muted>}
+            </Detail>
+            {/* Between the tutor and the office: "Not received" would be a false alarm to a family. */}
+            <Detail testID="person-ssn" icon="shield-check-outline" label="SSN on file">
+              <SsnStatus
+                userId={user.id}
+                fullName={user.full_name}
+                receivedOn={tutor.ssn_received_on}
+                isAdmin={isAdmin}
+              />
+            </Detail>
+            <PaymentHandles handles={user.payment_handles} />
+          </>
+        ) : null;
+      case 'payment':
+        return <PaymentHandles handles={user.payment_handles} empty="None recorded" />;
+      case 'family':
+        return (
+          <>
+            {user.guardians.length > 0 ? (
+              <View testID="person-section-guardians" style={{ gap: space.sm }}>
+                <Muted>{'Parents & guardians'}</Muted>
+                <PeopleList people={user.guardians} kind="guardian" />
+              </View>
+            ) : null}
+            {user.dependents.length > 0 ? (
+              <View testID="person-section-dependents" style={{ gap: space.sm }}>
+                <Muted>Responsible for</Muted>
+                <PeopleList people={user.dependents} kind="dependent" />
+              </View>
+            ) : null}
+            {user.guardians.length === 0 && user.dependents.length === 0 ? (
+              <Muted>No parent or guardian linked yet.</Muted>
+            ) : null}
+          </>
+        );
+    }
+  }
 
   return (
     <View style={{ gap: space.xl }}>
@@ -113,128 +273,28 @@ export function UserDetailView({
         </View>
       ) : null}
 
-      <View style={{ gap: space.lg }}>
-        <Detail icon="email-outline" label="Email">
-          <EmailOrNone testID="person-email" email={user.email} style={{ fontSize: 14 }} />
-        </Detail>
-        <Detail icon="phone-outline" label="Phone" testID="person-phone">
-          {user.phone ?? <Muted>Not recorded</Muted>}
-        </Detail>
-        <Detail icon="calendar-clock-outline" label="Last sign-in">
-          {formatInstant(user.last_login_at, timeZone, 'Has not signed in yet')}
-        </Detail>
-        <Detail icon="calendar-clock-outline" label="Added to the portal">
-          {formatInstant(user.created_at, timeZone, '—')}
-        </Detail>
-      </View>
-
-      {tutor ? (
-        <Section title="Tutor" icon="school-outline" testID="person-section-tutor">
-          <Detail icon="school-outline" label="Education">
-            {tutor.highest_education ?? <Muted>Not recorded</Muted>}
-          </Detail>
-          <Detail icon="domain" label="School">
-            {tutor.school ?? <Muted>Not recorded</Muted>}
-          </Detail>
-          <Detail icon="map-marker-outline" label="Area">
-            {tutor.area ?? <Muted>Not recorded</Muted>}
-          </Detail>
-          {/* For their 1099; the API blanks it for anyone else anyway. */}
-          {seesPay ? (
-            <Detail testID="person-mailing-address" icon="email-outline" label="Mailing address">
-              {address ?? <Muted>Not recorded</Muted>}
-            </Detail>
-          ) : null}
-          <Detail icon="video-outline" label="Virtual tutoring">
-            {tutor.virtual_available ? 'Available' : 'In person only'}
-          </Detail>
-          {seesPay ? <TutorPayRates tutor={tutor} /> : null}
-          <Detail icon="timer-outline" label="Longest session">
-            {longest(tutor.max_session_minutes)}
-          </Detail>
-          {/* Between the tutor and the office: "Not received" would be a false alarm to a family. */}
-          {seesPay ? (
-            <Detail testID="person-ssn" icon="shield-check-outline" label="SSN on file">
-              <SsnStatus
-                userId={user.id}
-                fullName={user.full_name}
-                receivedOn={tutor.ssn_received_on}
-                isAdmin={isAdmin}
-              />
-            </Detail>
-          ) : null}
-          <TutorTopup tutor={tutor} />
-          {tutor.availability_notes ? (
-            <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-              {tutor.availability_notes}
-            </Text>
-          ) : null}
-        </Section>
+      {/* Adding a tutor leaves the tax details for later (UI upgrades U3): the office is reminded
+          here until the 1099's address and the SSN fact are both on file. */}
+      {tutor && isAdmin && !compact && !user.deleted_at && needsTaxSetup(tutor) ? (
+        <TaxSetupCard userId={user.id} tutor={tutor} />
       ) : null}
 
-      {student ? (
-        <Section title="Student" icon="book-open-page-variant-outline" testID="person-section-student">
-          <Detail icon="domain" label="School">
-            {student.school ?? <Muted>Not recorded</Muted>}
-          </Detail>
-          <Detail icon="school-outline" label="Current course">
-            {student.current_math_course ?? <Muted>Not recorded</Muted>}
-          </Detail>
-          <Detail icon="target" label="Goal this year">
-            {student.academic_year_goal ?? <Muted>Not recorded</Muted>}
-          </Detail>
-          <Detail icon="video-outline" label="Virtual sessions">
-            {student.virtual_available ? 'Available' : 'In person only'}
-          </Detail>
-          <StudentPrices student={student} />
-          <Detail icon="timer-outline" label="Longest session">
-            {longest(student.max_session_minutes)}
-          </Detail>
-        </Section>
-      ) : null}
-
-      {user.availability.length > 0 ? (
-        <Section title="Availability" icon="calendar-clock-outline" testID="person-section-availability">
-          <View style={{ gap: space.sm }}>
-            {availabilityByDay.map(({ day_of_week, ranges }) => (
-              <View
-                key={day_of_week}
-                style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}
-              >
-                <Text variant="bodySmall" style={{ width: 84, color: theme.tokens.mutedForeground }}>
-                  {DAYS_OF_WEEK[day_of_week]?.label}
-                </Text>
-                {/* Consecutive hours are collapsed, so 16, 17, 18 reads as one block. */}
-                {ranges.map((range) => (
-                  <View
-                    key={range.start}
-                    style={{
-                      backgroundColor: theme.colors.secondaryContainer,
-                      borderRadius: radius.sm,
-                      paddingHorizontal: 6,
-                      paddingVertical: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 12, color: theme.colors.onSecondaryContainer }}>
-                      {formatTimeRange(range.start * 60, range.end * 60)}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            ))}
-          </View>
-        </Section>
-      ) : null}
-
-      {user.payment_handles.length > 0 ? (
-        <Section title="Payment" icon="wallet-outline" testID="person-section-payment">
-          {user.payment_handles.map((handle) => (
-            <Detail key={handle.method} icon="wallet-outline" label={PAYMENT_METHOD_LABELS[handle.method]}>
-              {handle.handle}
-            </Detail>
-          ))}
-        </Section>
-      ) : null}
+      {/* The record in sections, each with its own Edit for the office (UI upgrades U5). */}
+      {sections.map(({ key, editable }) => {
+        const def = RECORD_SECTIONS[key];
+        return (
+          <Section
+            key={key}
+            title={def.title}
+            icon={def.icon}
+            testID={`person-section-${key}`}
+            editTestID={`person-edit-${key}`}
+            onEdit={editable ? () => editSection(key) : undefined}
+          >
+            {renderSection(key)}
+          </Section>
+        );
+      })}
 
       {/* Phase 33: where they like to have lessons -- for the office, the person, and a student's
           parents (R16; the server answers anyone else with an empty list). */}
@@ -245,18 +305,6 @@ export function UserDetailView({
         user.guardians.some((guardian) => guardian.user_id === viewer?.id)) ? (
         <Section title="Locations" icon="map-marker-outline" testID="person-section-locations">
           <LocationsList ownerId={user.id} />
-        </Section>
-      ) : null}
-
-      {user.guardians.length > 0 ? (
-        <Section title="Parents & guardians" icon="account-heart-outline" testID="person-section-guardians">
-          <PeopleList people={user.guardians} kind="guardian" />
-        </Section>
-      ) : null}
-
-      {user.dependents.length > 0 ? (
-        <Section title="Responsible for" icon="account-group-outline" testID="person-section-dependents">
-          <PeopleList people={user.dependents} kind="dependent" />
         </Section>
       ) : null}
 
@@ -357,7 +405,7 @@ function Tag({ label, filled }: { label: string; filled?: boolean }) {
     >
       <Text
         style={{
-          fontSize: 11,
+          fontSize: 12,
           color: filled ? theme.colors.onSecondaryContainer : theme.tokens.mutedForeground,
         }}
       >
@@ -408,5 +456,19 @@ function SsnStatus({
         <SsnReceiptButton userId={userId} fullName={fullName} received={Boolean(receivedOn)} />
       ) : null}
     </View>
+  );
+}
+
+/** How someone pays or is paid: one row per method, or a line saying there are none. */
+function PaymentHandles({ handles, empty }: { handles: PaymentHandle[]; empty?: string }) {
+  if (handles.length === 0) return empty ? <Muted>{empty}</Muted> : null;
+  return (
+    <>
+      {handles.map((handle) => (
+        <Detail key={handle.method} icon="wallet-outline" label={PAYMENT_METHOD_LABELS[handle.method]}>
+          {handle.handle}
+        </Detail>
+      ))}
+    </>
   );
 }

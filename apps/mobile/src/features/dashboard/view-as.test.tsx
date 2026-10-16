@@ -4,12 +4,19 @@ import { fireEvent, screen } from '@testing-library/react-native';
 import { renderWithProviders } from '@/test/render';
 import { RoleSelector } from './role-selector';
 import { UserPickerSheet } from './user-picker';
+import { chooseHomeRole, onHomeRoleChosen, publishHomeRole, useHomeRole } from './home-role';
 import { onSubjectChosen } from './view-as';
 
 const mockSetParams = jest.fn();
 const mockBack = jest.fn();
+const mockNavigate = jest.fn();
 jest.mock('expo-router', () => ({
-  router: { setParams: (p: unknown) => mockSetParams(p), back: () => mockBack(), canGoBack: () => true },
+  router: {
+    setParams: (p: unknown) => mockSetParams(p),
+    back: () => mockBack(),
+    canGoBack: () => true,
+    navigate: (to: unknown) => mockNavigate(to),
+  },
 }));
 const mockAuth = jest.fn();
 jest.mock('@/providers/auth-provider', () => ({ useAuth: () => mockAuth() }));
@@ -37,8 +44,38 @@ describe('role selector', () => {
 
   it('switches role through the params', async () => {
     await renderWithProviders(<RoleSelector roles={['parent', 'tutor']} current="tutor" />);
-    fireEvent.press(screen.getByTestId('dashboard-role-parent'));
+    await fireEvent.press(screen.getByTestId('dashboard-role-parent'));
     expect(mockSetParams).toHaveBeenCalledWith({ role: 'parent' });
+  });
+});
+
+describe('role chips in the account sheet (UI upgrades U6)', () => {
+  function Sheet() {
+    const home = useHomeRole();
+    return home ? <RoleSelector roles={home.roles} current={home.current} onChoose={chooseHomeRole} /> : null;
+  }
+
+  it("shows the roles Home publishes, and a choice closes the sheet and reaches Home's params", async () => {
+    publishHomeRole({ roles: ['tutor', 'parent'], current: 'tutor' });
+    const chosen = jest.fn();
+    const unsubscribe = onHomeRoleChosen(chosen);
+    await renderWithProviders(<Sheet />);
+    expect(screen.getByTestId('dashboard-role-tutor').props.accessibilityState).toMatchObject({
+      selected: true,
+    });
+    await fireEvent.press(screen.getByTestId('dashboard-role-parent'));
+    expect(mockBack).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith({ pathname: '/dashboard', params: { role: 'parent' } });
+    expect(chosen).toHaveBeenCalledWith('parent');
+    expect(mockSetParams).not.toHaveBeenCalled();
+    unsubscribe();
+    publishHomeRole(null);
+  });
+
+  it('shows nothing while Home shows somebody else', async () => {
+    publishHomeRole(null);
+    await renderWithProviders(<Sheet />);
+    expect(screen.queryByTestId('dashboard-role-tutor')).toBeNull();
   });
 });
 
@@ -49,7 +86,7 @@ describe('view-as people sheet', () => {
     const unsubscribe = onSubjectChosen(chosen);
     await renderWithProviders(<UserPickerSheet current={null} />);
     expect(screen.queryByTestId('view-as-user-priya')).toBeNull();
-    fireEvent.press(screen.getByTestId('view-as-user-alex'));
+    await fireEvent.press(screen.getByTestId('view-as-user-alex'));
     expect(mockBack).toHaveBeenCalled();
     expect(chosen).toHaveBeenCalledWith('alex');
     unsubscribe();

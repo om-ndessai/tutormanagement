@@ -1,7 +1,7 @@
 // The directory's and the record's pure rules, kept apart from the screens so they can be tested.
 // `initials` and the sort fields from apps/web/src/features/users/{users-table,user-detail-view}.tsx
 // @ 1132322.
-import type { User, UserRole, UserSortField } from '@tmi/shared';
+import type { User, UserDetail, UserRole, UserSortField } from '@tmi/shared';
 
 /** "Sofia Okafor" -> "SO". */
 export function initials(name: string): string {
@@ -76,4 +76,48 @@ export function formatInstant(iso: string | null, timeZone: string, fallback: st
 /** Whether the typed confirmation names the person: trimmed, case-insensitive. */
 export function confirmsName(typed: string, fullName: string): boolean {
   return typed.trim().toLowerCase() === fullName.trim().toLowerCase() && typed.trim().length > 0;
+}
+
+/** A payment opened from a person's record (UI upgrades U5): who it is to or from comes with it. */
+export interface PersonPaymentPrefill {
+  key: 'tutor' | 'parent' | 'student';
+  title: string;
+  params: Record<string, string>;
+}
+
+/**
+ * The payments a person's record can start, already filled: to a tutor; from a parent; and for a
+ * student, from their primary guardian (or their only one) -- as a Billing row does.
+ */
+export function personPaymentPrefills(
+  person: Pick<UserDetail, 'id' | 'roles' | 'guardians'>,
+): PersonPaymentPrefill[] {
+  const out: PersonPaymentPrefill[] = [];
+  if (person.roles.includes('tutor')) {
+    out.push({
+      key: 'tutor',
+      title: 'Record a payment to them',
+      params: { direction: 'to_tutor', party: person.id },
+    });
+  }
+  if (person.roles.includes('parent')) {
+    out.push({
+      key: 'parent',
+      title: 'Record a payment from them',
+      params: { direction: 'from_parent', party: person.id },
+    });
+  }
+  if (person.roles.includes('student')) {
+    const payer =
+      person.guardians.find((guardian) => guardian.is_primary) ??
+      (person.guardians.length === 1 ? person.guardians[0] : undefined);
+    if (payer) {
+      out.push({
+        key: 'student',
+        title: 'Record a payment for them',
+        params: { direction: 'from_parent', party: payer.user_id, student: person.id },
+      });
+    }
+  }
+  return out;
 }

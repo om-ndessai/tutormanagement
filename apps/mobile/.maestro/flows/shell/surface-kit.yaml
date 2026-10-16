@@ -1,0 +1,175 @@
+# The surface kit (UI upgrades U2), through its developer-only previews: a step flow that refuses
+# Next until a step is filled, skips an optional step, edits from the Review and comes back to it,
+# and jumps to the step that owns a field the "server" refused; then a quick sheet whose action is
+# pinned at the bottom and refuses an empty save. Static rows: no request is made.
+appId: ${APP_ID}
+tags:
+  - shell
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dev/kit
+- extendedWaitUntil:
+    visible:
+      id: step-flow
+    timeout: 15000
+- assertVisible: 'Step 1 of 4'
+- assertVisible:
+    id: step-flow-progress
+- assertVisible:
+    id: step-flow-title
+    text: '.*Who is it for\?.*'
+- assertVisible: 'Cancel'
+- assertNotVisible:
+    id: step-flow-skip
+- takeScreenshot: kit-step-1
+# Next is refused until someone is chosen.
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'Choose someone to carry on.'
+    timeout: 5000
+- assertVisible: 'Step 1 of 4'
+# The search narrows the rows.
+- tapOn:
+    id: search-picker-input
+- inputText: 'cas'
+- extendedWaitUntil:
+    visible:
+      id: search-picker-row-c
+    timeout: 5000
+- assertNotVisible:
+    id: search-picker-row-a
+- tapOn:
+    id: search-picker-row-c
+- assertNotVisible: 'Choose someone to carry on.'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# Step 2: a required field.
+- extendedWaitUntil:
+    visible: 'Step 2 of 4'
+    timeout: 5000
+- assertVisible:
+    id: step-flow-title
+    text: '.*A few details.*'
+- assertVisible: 'Back'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'Enter a name.'
+    timeout: 5000
+- tapOn:
+    id: kit-name
+- inputText: 'Robin'
+- assertNotVisible: 'Enter a name.'
+- takeScreenshot: kit-step-2-keyboard
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# Step 3 is optional: Skip.
+- extendedWaitUntil:
+    visible: 'Step 3 of 4'
+    timeout: 5000
+- assertVisible:
+    id: step-flow-skip
+- tapOn:
+    id: step-flow-skip
+# The Review: a card per step, Edit goes back and returns.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- assertVisible: 'Step 4 of 4'
+- assertVisible: 'Casey Demo'
+- assertVisible: 'Robin'
+- assertVisible: 'Nothing added'
+- assertVisible: 'Finish'
+- takeScreenshot: kit-review
+- tapOn:
+    id: step-flow-edit-note
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Anything else\?.*'
+    timeout: 5000
+- assertVisible: 'Back to review'
+- tapOn:
+    id: kit-note
+- inputText: 'server'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- assertVisible: 'server'
+# The "server" refuses the first step's field: the flow opens that step with its message.
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'The server refused this person.'
+    timeout: 10000
+- assertVisible:
+    id: step-flow-title
+    text: '.*Who is it for\?.*'
+- takeScreenshot: kit-server-error
+# Leaving with work in it asks first.
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible: 'Discard changes\?'
+    timeout: 5000
+- tapOn: 'Discard'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+
+# The quick sheet.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dev/kit-sheet
+- extendedWaitUntil:
+    visible:
+      id: quick-sheet
+    timeout: 15000
+- assertVisible: 'Quick sheet'
+- assertVisible:
+    id: quick-sheet-save
+- assertVisible:
+    id: quick-sheet-cancel
+- takeScreenshot: kit-quick-sheet
+- tapOn:
+    id: quick-sheet-save
+- extendedWaitUntil:
+    visible: 'Enter something first.'
+    timeout: 5000
+- tapOn:
+    id: kit-sheet-input
+- inputText: 'Done'
+- assertNotVisible: 'Enter something first.'
+# No hideKeyboard here: on iOS it is a swipe, which a sheet takes as a drag. The action is above
+# the keyboard, on the sheet's foot. The refusal line went, so the fitted sheet settles first.
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: quick-sheet-save
+- extendedWaitUntil:
+    notVisible:
+      id: quick-sheet
+    timeout: 10000
+- assertVisible:
+    id: screen-home

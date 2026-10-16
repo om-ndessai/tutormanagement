@@ -1,0 +1,54 @@
+# A tutor's Home offers the write-up they left today (UI upgrades U6): after Next up, a "Finish
+# write-up" card for Alex's draft of his lesson with Sofia (seeded), which opens the record step
+# flow on that draft ("Finish this draft", its covered note kept). No money anywhere. An older
+# draft, or somebody else's, is never offered (jest); clean-sessions.js removes the draft.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/seed-draft.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-tutoring-sessions
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: home-finish-write-up-open
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'Finish write-up'
+- assertVisible:
+    id: home-finish-write-up-lesson
+    text: 'Sofia Okafor · Today, 12:00.*1:00 AM'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: home-finish-write-up
+- tapOn:
+    id: home-finish-write-up-open
+# The record step flow, on the draft's write-up.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was planned\?.*'
+    timeout: 15000
+- assertVisible: 'Finish this draft'
+- assertNotVisible: '.*\$[0-9].*'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was covered\?.*'
+    timeout: 10000
+- assertVisible: 'Fractions on the number line.'
+- takeScreenshot: home-finish-write-up-flow
