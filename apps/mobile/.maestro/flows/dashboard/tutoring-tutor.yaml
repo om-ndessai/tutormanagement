@@ -15,10 +15,15 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- assertVisible: 'Alex Chen'
+# UI upgrades U6: a greeting on the organization's clock, Today, then the figures above the tabs.
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Alex'
+- assertVisible:
+    id: home-today
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 30000
 - assertVisible:
     id: tabs-tutoring

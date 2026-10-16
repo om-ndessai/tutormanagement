@@ -8,6 +8,8 @@ import { ListItem } from '@/components/list-item';
 import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';
+import { chooseHomeRole, useHomeRole } from '@/features/dashboard/home-role';
+import { RoleSelector } from '@/features/dashboard/role-selector';
 import { useSetDefaultOrganization } from '@/features/organizations/api';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
@@ -32,6 +34,7 @@ export default function AccountSheet() {
   const toast = useToast();
   const setDefault = useSetDefaultOrganization();
   const { openWizard } = useOnboarding();
+  const homeRole = useHomeRole();
   if (!user) return null;
 
   const others = memberships.filter((m) => m.status === 'active' && m.slug !== organization?.slug);
@@ -72,6 +75,15 @@ export default function AccountSheet() {
           {organization ? ` at ${organization.short_name}` : ''}
         </Text>
       </View>
+
+      {/* Which dashboard Home shows, for someone with several roles here (UI upgrades U6: the
+          chips moved off Home, which now opens on the greeting and Today). */}
+      {homeRole && homeRole.roles.length > 1 ? (
+        <View testID="account-home-role" style={{ gap: space.xs }}>
+          <List.Subheader style={{ paddingHorizontal: 0 }}>Home shows</List.Subheader>
+          <RoleSelector roles={homeRole.roles} current={homeRole.current} onChoose={chooseHomeRole} />
+        </View>
+      ) : null}
 
       {organization && active.length > 0 ? (
         <View>

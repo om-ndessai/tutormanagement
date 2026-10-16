@@ -1,0 +1,108 @@
+# A parent's Home is centred on the child (UI upgrades U6). Maria (tutor, and Sofia's parent) turns
+# Home to her parent dashboard: Today, the figures, then Sofia's card -- her next lesson, this month
+# in words with a small bar, and a coral celebration for the topic she mastered yesterday (seeded).
+# The celebration shows once per topic on this phone: after a relaunch (the phone's storage kept)
+# it is gone. No tutor's pay on the card. clean-sessions.js removes the seeded lesson.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/seed-mastery.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-figures
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: dashboard-role-parent
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: dashboard-role-parent
+- extendedWaitUntil:
+    visible:
+      id: dashboard-parent
+    timeout: 15000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Maria'
+- assertVisible:
+    id: home-today
+- extendedWaitUntil:
+    visible:
+      id: home-child-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+# Her next lesson (Sofia's weekly one with Alex), this month, and the bar.
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008-next
+    text: '(Next: .*|Under way now) with Alex Chen'
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008-month
+    text: '[0-9]+ lessons? this month, [0-9]+ topics? mastered'
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008-bar
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008-plan
+    text: '[0-9]+% of the plan mastered.*'
+# The celebration, in coral, for yesterday's mastery.
+- extendedWaitUntil:
+    visible:
+      id: home-celebration-00000000-0000-4000-8000-000000000008
+    timeout: 10000
+- assertVisible:
+    id: home-celebration-00000000-0000-4000-8000-000000000008-text
+    text: 'Sofia mastered .+!'
+- assertNotVisible: 'Your pay'
+- takeScreenshot: home-parent-child-card
+- tapOn:
+    id: home-celebration-00000000-0000-4000-8000-000000000008-close
+- assertNotVisible:
+    id: home-celebration-00000000-0000-4000-8000-000000000008
+# The card opens the child's progress.
+- tapOn:
+    id: home-child-00000000-0000-4000-8000-000000000008-open
+- extendedWaitUntil:
+    visible: "Sofia Okafor.*"
+    timeout: 15000
+# Once per topic on this phone: relaunched with its storage kept, Home has no celebration.
+- stopApp
+- launchApp:
+    clearState: false
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: ../../subflows/dev-client-load.yaml
+- extendedWaitUntil:
+    visible:
+      id: home-figures
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: dashboard-role-parent
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: dashboard-role-parent
+- extendedWaitUntil:
+    visible:
+      id: home-child-00000000-0000-4000-8000-000000000008
+    timeout: 15000
+- assertNotVisible:
+    id: home-celebration-00000000-0000-4000-8000-000000000008
+- takeScreenshot: home-parent-child-card-again

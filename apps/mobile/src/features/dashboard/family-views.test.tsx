@@ -74,7 +74,9 @@ function allText(): string {
 
 describe('family dashboards', () => {
   it('a student sees no money at all, even on lessons the server prices for the family', async () => {
-    await renderWithProviders(<StudentView data={studentDashboard} />);
+    await renderWithProviders(
+      <StudentView data={studentDashboard} studentId="student-1" studentName="Sofia Okafor" />,
+    );
     expect(screen.getByTestId('reflection-prompts')).toBeTruthy();
     expect(screen.getByText('How did your lessons go?')).toBeTruthy();
     expect(screen.getByTestId('student-sessions')).toBeTruthy();

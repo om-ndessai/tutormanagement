@@ -20,7 +20,7 @@ tags:
 # followed mid-render sat on its skeletons past the wait.
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml

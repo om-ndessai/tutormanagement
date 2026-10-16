@@ -238,6 +238,17 @@ native rebuild of both dev builds, so build only while the devices are free.
   `billing/*`, `progress/*`, `forms/*`, `shell/create`, `exposure/student-controls`,
   `exposure/narrow-audiences` green on iOS and Android (30 each, after the flow fixes in #50);
   `npm run smoke -- mobile` green on both. Design entry #50)*
+- [x] U6. Mobile: the homes — every Home opens on a greeting on the organization's clock and Today
+  ("2 lessons today", "Next at 4:00 PM with Sofia", or a calm line; a cancelled lesson never next),
+  then one compact row of figures in sentence case (above the Tutoring/Finance tabs for the office
+  and tutors); a parent gets a card per child and a student their own (the next lesson, this month in
+  words with a small bar, a coral celebration for a topic mastered lately, once per topic on the
+  phone, stilled by reduce motion); a tutor gets "Finish write-up" for their draft from today, after
+  Next up; the role chips moved into the account sheet ("Home shows"); a small Home title. Also the
+  jest suite's blank renders (RNTL 14's async `fireEvent`/`unmount` left un-awaited) *(built and tested 2026-10-15: typecheck, lint, jest (90 suites, 512 tests), export green;
+  `home/*`, `dashboard/*`, `exposure/*`, `onboarding/{tour,wizard-admin}` and the other flows that read
+  Home's header (29) green on iOS and Android; `npm run smoke -- mobile` green on both. Design entry
+  #51)*
 
 ## Phase 4 — Google sign-in
 

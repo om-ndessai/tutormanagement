@@ -87,7 +87,7 @@ it('never makes an absent email a link', async () => {
   const open = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   await renderWithProviders(<EmailOrNone email={null} testID="email" />);
   expect(screen.getByText('No email')).toBeTruthy();
-  fireEvent.press(screen.getByTestId('email'));
+  await fireEvent.press(screen.getByTestId('email'));
   expect(open).not.toHaveBeenCalled();
 });
 
@@ -145,7 +145,10 @@ describe('the record in sections (UI upgrades U5)', () => {
     expect(screen.queryByTestId('person-section-payment')).toBeNull();
     expect(screen.getByTestId('person-edit-family')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('person-edit-pay'));
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/person-form', params: { id: 'maria', section: 'pay' } });
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: '/person-form',
+      params: { id: 'maria', section: 'pay' },
+    });
   });
 
   it('gives anyone else no Edit, and another tutor no Pay and tax', async () => {
@@ -173,12 +176,21 @@ it('gives the office a row menu, and nobody else one', async () => {
   };
   const office = await renderWithProviders(<UserCard user={maria} actions={actions} canAct />);
   expect(screen.getByTestId('people-row-menu-maria')).toBeTruthy();
-  fireEvent.press(screen.getByLabelText(/^Maria Okafor, .*open their record$/));
+  await fireEvent.press(screen.getByLabelText(/^Maria Okafor, .*open their record$/));
   expect(actions.onView).toHaveBeenCalledWith(maria);
-  office.unmount();
+  await office.unmount();
   await renderWithProviders(
     <UserCard user={{ ...maria, deleted_at: '2026-10-09T05:00:00Z' }} actions={actions} canAct={false} />,
   );
   expect(screen.queryByTestId('people-row-menu-maria')).toBeNull();
   expect(screen.getByLabelText(/Deactivated, open their record$/)).toBeTruthy();
+});
+
+// RNTL 14's `fireEvent.press` and `unmount` are async: un-awaited, the press's act() overlapped the
+// next render's, and every later render in this file came out null (the row-menu test above did).
+it('renders normally after the row-menu test', async () => {
+  mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+  await renderWithProviders(<EmailOrNone email="maria.okafor@gmail.com" testID="email" />);
+  expect(screen.toJSON()).not.toBeNull();
+  expect(screen.getByText('maria.okafor@gmail.com')).toBeTruthy();
 });

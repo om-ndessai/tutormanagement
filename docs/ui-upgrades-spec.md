@@ -209,6 +209,26 @@ Changes from the plan, all in `docs/mobile/build-log.md` #50:
   celebration in coral when a topic is mastered, stilled by reduce motion.
 - Tutors: Next up, then "Finish write-up" for a draft left from today.
 
+**Status: done 2026-10-15 (app).** Every Home opens on "Good morning/afternoon/evening, <first name>"
+on the organization's clock (morning from 5:00, afternoon from noon, evening from 5:00 PM), its short
+name under it, then **Today** ("2 lessons today", "Next at 4:00 PM with Sofia"; "No lessons today" when
+calm; a cancelled lesson counted apart and never next), then one compact row of figures. A parent gets
+a card per child and a student their own: the next lesson, this month in words with a small bar, and a
+coral "Sofia mastered Fractions!" for a plan topic at mastery (the shared `computeProgress` rule, 4 or
+above) scored in the last two weeks, once per topic on the phone, stilled by reduce motion. A tutor's
+Tutoring tab is Next up, then **Finish write-up** for their own draft from today (opening the U4 flow on
+it), then the rest. The role chips are in the account sheet ("Home shows"); Home's title is the small
+one. No API, schema or shared change. Changes from the plan, all in `docs/mobile/build-log.md` #51:
+- The office's and tutors' figures are the old Analytics section, moved **above** the Tutoring/Finance
+  tabs (counts only), rather than a second row of figures.
+- The parent's "Your children" balances panel is now **Balances**, below the child cards and the
+  reflection prompts.
+- While an admin views someone with several roles, that person's role chips stay on Home under the
+  "Viewing as" banner; the account sheet holds the reader's own.
+- A child card says "Under way now with …" once the lesson has started, as Today does.
+- The app's jest suite had blank renders after some tests: RNTL 14's `fireEvent` and `unmount` are
+  async and were not awaited. All are awaited now.
+
 ## Phase U7: release
 
 Full local web suite, `npm run smoke` (web, iOS, Android), every Maestro folder on both platforms,

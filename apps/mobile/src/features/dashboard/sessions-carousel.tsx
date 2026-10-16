@@ -5,7 +5,6 @@ import {
   formatDuration,
   formatMinutesOfDay,
   parseClockTime,
-  zonedClockParts,
   type TutoringSession,
   type UpcomingSession,
 } from '@tmi/shared';
@@ -22,7 +21,7 @@ import { formatLessonDay } from '@/features/schedules/lesson-cancellation';
 import { useActiveSession } from '@/features/teaching/api';
 import { useLines } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
-import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
@@ -37,18 +36,8 @@ import {
   relativeDay,
   type CarouselItem,
 } from './carousel-model';
+import { useOrgClock } from './home-data';
 import { cancelHref, nextUpActions, recordHref, startHref, type NextUpActions } from './next-up-actions';
-
-/** The organization's clock, re-read every half minute so the countdown stays true. */
-function useOrgClock() {
-  const timeZone = useOrgTimeZone();
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(timer);
-  }, []);
-  return zonedClockParts(now.toISOString(), timeZone);
-}
 
 const CARD_HEIGHT = 150;
 

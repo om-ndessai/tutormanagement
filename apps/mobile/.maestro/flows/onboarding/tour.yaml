@@ -13,7 +13,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 30000
 - assertNotVisible:
     id: tour-offer

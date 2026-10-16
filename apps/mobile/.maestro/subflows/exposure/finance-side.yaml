@@ -16,7 +16,7 @@ appId: ${APP_ID}
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: 'dashboard-(section-analytics|student|parent)'
+      id: '(home-figures|dashboard-student|dashboard-parent)'
     timeout: 30000
 # Sessions, Finance: the reader's own total, and lessons labelled from their side.
 - runFlow:

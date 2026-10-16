@@ -64,9 +64,7 @@ describe('LessonReminderSheet', () => {
     await renderWithProviders(<LessonReminderSheet />);
     expect(await screen.findByTestId('lesson-reminder')).toBeTruthy();
 
-    await act(async () => {
-      fireEvent.press(screen.getByTestId('lesson-reminder-dismiss'));
-    });
+    await fireEvent.press(screen.getByTestId('lesson-reminder-dismiss'));
     expect(screen.queryByTestId('lesson-reminder')).toBeNull();
     expect(JSON.parse((await AsyncStorage.getItem('tmi.remindersDismissed')) ?? '[]')).toEqual([
       'sch-1:2026-10-08',

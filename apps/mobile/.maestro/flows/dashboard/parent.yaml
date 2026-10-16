@@ -1,4 +1,4 @@
-# A parent's dashboard (Anita, parent of Sanjay): not tabbed, as on the web. Her children, what the
+# A parent's dashboard (Anita, parent of Sanjay): not tabbed, as on the web. A card per child, what the
 # family was charged and still owes, each child's progress, recent lessons priced from the
 # family's side ("You pay") and the family's payments -- never a tutor's pay.
 appId: ${APP_ID}
@@ -25,9 +25,30 @@ tags:
 - assertVisible:
     id: stat-outstanding
     text: 'Outstanding: \$[0-9,]+\.[0-9]{2}\. \$[0-9,]+\.[0-9]{2} paid'
-- assertVisible: 'Your children'
-- assertVisible: '.*sessions? · \$[0-9,]+\.[0-9]{2} charged'
+# UI upgrades U6: the greeting and Today first, then a card for Sanjay: his next lesson (his weekly
+# one with Priya), this month, and no plan yet -- no money on the card.
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Anita'
+- assertVisible:
+    id: home-today
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000006
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000006-next
+    text: '(Next: .*|Under way now) with Priya Raghavan'
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000006-plan
+    text: 'No learning plan yet'
 - takeScreenshot: parent-top
+# The balances, by child, below the cards.
+- scrollUntilVisible:
+    element:
+      id: parent-children
+    direction: DOWN
+    centerElement: true
+- assertVisible: 'Balances'
+- assertVisible: '.*sessions? · \$[0-9,]+\.[0-9]{2} charged'
 - scrollUntilVisible:
     element:
       id: recent-sessions

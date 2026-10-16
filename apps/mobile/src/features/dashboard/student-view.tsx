@@ -6,12 +6,13 @@ import { Divider, Icon, Text } from 'react-native-paper';
 
 import { countOf } from '@/lib/plural';
 import { EmptyNote, Panel } from '@/components/section';
-import { StatCard, StatGrid } from '@/components/stat-card';
+import { FigureRow } from '@/components/figure-row';
 import { StudentProgressCard } from '@/features/progress/progress-card';
-import { ROLE_ICONS } from '@/features/users/role-icon';
-import { TourTarget } from '@/features/onboarding/tour-targets';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { ChildCard } from './child-card';
+import { CHILD_HORIZON_DAYS, nextLessonFor } from './home-model';
+import { TodayCard, useToday } from './home-top';
 import { ReflectionPrompts } from './reflections';
 import { SessionList } from './session-list';
 
@@ -50,39 +51,48 @@ function GoalBanner({ goal, course }: { goal: string; course: string | null }) {
 }
 
 /**
- * A student's dashboard: their goal, their lessons, the reflections they are asked for, their
+ * A student's dashboard: Today, their figures, their own card (next lesson, this month, a
+ * celebration: UI upgrades U6), their goal, their lessons, the reflections they are asked for, their
  * progress and their tutors. No money at all: the session list is passed `hideMoney`, though the
  * server labels a student's own lessons from the family's side.
  */
-export function StudentView({ data }: { data: StudentDashboard }) {
+export function StudentView({
+  data,
+  studentId,
+  studentName,
+}: {
+  data: StudentDashboard;
+  /** Whose dashboard: the reader, or the student an admin is viewing. */
+  studentId: string;
+  studentName: string;
+}) {
   const theme = useAppTheme();
+  const today = useToday({ who: 'tutor', studentIds: [studentId], horizonDays: CHILD_HORIZON_DAYS });
   return (
     <View testID="dashboard-student" style={{ gap: space.lg }}>
+      <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />
+      <FigureRow
+        tourId="dash-my-stats"
+        figures={[
+          { label: 'Sessions', value: data.totals.session_count, to: '/sessions' },
+          { label: 'Time tutored', value: data.totals.total_minutes, formatValue: formatDuration },
+          { label: 'Tutors', value: data.tutors.length },
+        ]}
+      />
+
+      {/* UI upgrades U6: their own card -- the next lesson and this month -- first. */}
+      <ChildCard
+        studentId={studentId}
+        name={studentName}
+        self
+        progress={data.progress}
+        next={nextLessonFor(today.lessons, studentId)}
+        today={today.today}
+      />
+
       {data.goal && !data.progress?.plan ? (
         <GoalBanner goal={data.goal} course={data.current_math_course} />
       ) : null}
-
-      <TourTarget id="dash-my-stats">
-        <StatGrid>
-          {[
-            <StatCard
-              key="sessions"
-              label="Sessions"
-              value={data.totals.session_count}
-              icon="book-open-variant"
-              to="/sessions"
-            />,
-            <StatCard
-              key="time"
-              label="Time tutored"
-              value={data.totals.total_minutes}
-              formatValue={formatDuration}
-              icon="pulse"
-            />,
-            <StatCard key="tutors" label="Tutors" value={data.tutors.length} icon={ROLE_ICONS.tutor} />,
-          ]}
-        </StatGrid>
-      </TourTarget>
 
       {/* Phase 25: the lessons still waiting for their reflection, near the top, because it is the
           one thing here they are asked to do. */}

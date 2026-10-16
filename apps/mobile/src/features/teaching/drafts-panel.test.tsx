@@ -52,7 +52,7 @@ describe('the drafts panel', () => {
     expect(screen.getByText(/Wed, Oct 7 · 4:00–5:00 PM · In person$/)).toBeOnTheScreen();
     // A draft carries no money, and the panel shows none.
     expect(screen.queryByText(/\$/)).toBeNull();
-    fireEvent.press(screen.getByTestId('draft-continue-d2'));
+    await fireEvent.press(screen.getByTestId('draft-continue-d2'));
     expect(onEdit).toHaveBeenCalledWith(expect.objectContaining({ id: 'd2' }));
     expect(screen.getByLabelText('Discard the draft with Ben Whitfield')).toBeOnTheScreen();
   });
