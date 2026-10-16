@@ -7,6 +7,16 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { AIM_AMBER, AIM_AMBER_INK, AIM_AMBER_TEXT, GOOGLE_G } from '@/theme/brand-art';
 import { radius, space } from '@/theme/tokens';
 
+import {
+  WORDMARK_AIM,
+  WORDMARK_ARROW_HEAD,
+  WORDMARK_ARROW_SHAFT,
+  WORDMARK_ARROW_STROKE,
+  WORDMARK_ASPECT,
+  WORDMARK_TRUE,
+  WORDMARK_VIEWBOX,
+} from './wordmark-paths.generated';
+
 /** Where "Contact us" writes to: the developer's address, by the owner's choice (2026-10-13). */
 const CONTACT_URL = 'mailto:om.ndessai@gmail.com';
 
@@ -68,48 +78,99 @@ function HaloMark({ size = 132 }: { size?: number }) {
   );
 }
 
+/** The platform's name as drawn art: "Aim" in amber, "True" in slate, the T's arm flying on as an arrow. */
+function Wordmark({ width = 214 }: { width?: number }) {
+  const theme = useAppTheme();
+  const amber = theme.dark ? AIM_AMBER : AIM_AMBER_TEXT;
+  return (
+    <View accessible accessibilityRole="header" accessibilityLabel="AimTrue" testID="sign-in-wordmark">
+      <Svg width={width} height={width / WORDMARK_ASPECT} viewBox={WORDMARK_VIEWBOX}>
+        <Path d={WORDMARK_AIM} fill={amber} />
+        <Path d={WORDMARK_TRUE} fill={theme.tokens.primary} />
+        <Path d={WORDMARK_ARROW_SHAFT} fill={amber} />
+        <Path
+          d={WORDMARK_ARROW_HEAD}
+          fill="none"
+          stroke={amber}
+          strokeWidth={WORDMARK_ARROW_STROKE}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    </View>
+  );
+}
+
+/** The four things the platform does, in order, joined by small amber dots. */
+const STEPS = ['Goals', 'Assess', 'Plan', 'Track'] as const;
+
 /**
- * The way in for someone who signs in with Google (the production app): the platform's name, its
- * tagline, what it is for, the mark in the middle of the screen, and one button. No card, no
- * server, nothing a developer needs.
+ * The way in for someone who signs in with Google (the production app): the mark, the platform's
+ * name, its promise and what it does, together in the middle of the screen, then one button. No
+ * card, no server, nothing a developer needs. An organization's own address shows its name and
+ * tagline as text instead of the platform's drawn name.
  */
 export function Welcome({ busy, onSignIn }: { busy: boolean; onSignIn: () => void }) {
   const brand = useBrand();
   const theme = useAppTheme();
-  // The name in two colours, "Aim" in amber: its first syllable is the platform's whole idea.
-  const lead = brand.name.slice(0, 3);
-  const rest = brand.name.slice(3);
+  const platform = brand.slug === null;
+  const amber = theme.dark ? AIM_AMBER : AIM_AMBER_TEXT;
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ alignItems: 'center', gap: space.xs, paddingTop: space.lg }}>
-        <Text variant="displaySmall" accessibilityRole="header" style={{ fontWeight: '800' }}>
-          <Text style={{ color: theme.dark ? AIM_AMBER : AIM_AMBER_TEXT, fontWeight: '800' }}>{lead}</Text>
-          <Text style={{ color: theme.tokens.primary, fontWeight: '800' }}>{rest}</Text>
-        </Text>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: space.sm,
+          paddingTop: space.xl,
+        }}
+      >
+        <HaloMark size={96} />
+        {platform ? (
+          <Wordmark />
+        ) : (
+          <Text
+            variant="displaySmall"
+            accessibilityRole="header"
+            style={{ color: theme.tokens.primary, textAlign: 'center' }}
+          >
+            {brand.name}
+          </Text>
+        )}
         <Text
-          variant="titleMedium"
+          variant="titleLarge"
           style={{
+            marginTop: space.xs,
             color: theme.colors.onSurface,
-            fontWeight: '300',
-            fontStyle: 'italic',
+            fontFamily: 'Nunito_600SemiBold_Italic',
             textAlign: 'center',
           }}
         >
-          {brand.tagline}
+          {platform ? 'Set Goals. Aim True' : brand.tagline}
         </Text>
-        <Text
-          variant="bodyMedium"
-          style={{ color: theme.colors.onSurfaceVariant, fontWeight: '600', textAlign: 'center' }}
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}
+          accessible
+          accessibilityLabel={STEPS.join(', ')}
+          testID="sign-in-steps"
         >
-          Plans, lessons and progress tracking
-        </Text>
+          {STEPS.map((step, index) => (
+            <View key={step} style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+              {index > 0 ? (
+                <Text variant="bodyMedium" style={{ color: amber }}>
+                  •
+                </Text>
+              ) : null}
+              <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant, fontWeight: '600' }}>
+                {step}
+              </Text>
+            </View>
+          ))}
+        </View>
       </View>
 
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <HaloMark />
-      </View>
-
-      <View style={{ alignItems: 'center', gap: space.sm, paddingBottom: space.xl }}>
+      <View style={{ alignItems: 'center', gap: space.sm, paddingTop: space.lg, paddingBottom: space.xl }}>
         <Pressable
           testID="sign-in-google"
           accessibilityRole="button"
