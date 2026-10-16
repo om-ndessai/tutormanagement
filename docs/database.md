@@ -86,7 +86,8 @@ npx wrangler d1 execute tmi-portal-db --remote \
 SQLite can add a column and can add or drop an index. Since 3.35 it can also drop a column
 (`ALTER TABLE ... DROP COLUMN`), rewriting rows in place with no implicit delete -- but not a
 column that is a key, UNIQUE or indexed, or one a foreign key, trigger or view names (tested on
-local SQLite; not yet on D1 itself). It cannot retype one. Anything beyond that
+local SQLite, and on the local D1 in Phase 35's rehearsal; on D1 itself, rehearse it on the demo
+first). Dropping an unreferenced column is NOT a table rebuild: no implicit delete, so no cascade. It cannot retype one. Anything beyond that
 needs the create-new-table / copy / drop / rename dance, written out explicitly, and on D1 that
 is not safe for a referenced table (below).
 
@@ -191,6 +192,9 @@ sed -n '/BEGIN PHASE 16 TABLES/,/END PHASE 16 TABLES/p' db/schema.sql > /tmp/pha
 sed -n '/BEGIN CURRICULUM CATALOG/,/END CURRICULUM CATALOG/p' db/schema.sql >> /tmp/phase16.sql
 npx wrangler d1 execute tmi-portal-db --remote --file=/tmp/phase16.sql
 ```
+
+(Since Phase 35 the catalog block is no longer in `schema.sql`: it is `db/catalog.sql`, generated,
+and runs on its own -- see Phase 35 below.)
 
 Keeping a student's goal and their active plan's goal equal needs no schema change -- the API
 does it on every write -- but rows written before that rule existed are brought into line once,
@@ -497,6 +501,97 @@ and the statements ran clean, the three checks answered 0, nothing and nothing, 
 survived, and the catalog block (which now upserts `curricula` and names `curriculum_id` on each
 level) re-ran on top. The catalog block now needs `curriculum_id` to exist, so it runs only
 after this one.
+
+Phase 35 (North Carolina Math, both editions, and choosing; 2026-10) moves the catalog out of
+`schema.sql` into `db/catalog.sql`, generated from `db/catalog/*.json` by
+`node db/generate-catalog.mjs` (never hand-edited; `npm run typecheck` fails while it is stale).
+The release carries **the first non-additive statement on `tutoring-db`**, approved by the owner
+on 2026-10-16: `ALTER TABLE curriculum_levels DROP COLUMN program`. Its CHECK allowed Beast
+Academy and AoPS alone, so no other curriculum's level could be inserted while it stood, and an
+upsert that omits a NOT NULL column fails before its `ON CONFLICT` is reached. It is not a table
+rebuild -- rows are rewritten in place, with no implicit delete, so no cascade can fire -- and
+the Phase 34 Worker never reads `program`, so it keeps working through the drop. Then one added
+column, `curriculum_topics.description`, and the catalog. NC rows are inert until an
+organization offers them.
+
+Before the release, in this order:
+
+1. **A copy of production.** Restore the latest export into a local D1
+   (`wrangler d1 execute tutoring-db --local --persist-to=/tmp/prod-copy --file=<export>.sql`),
+   run the block below against it with `--local --persist-to=/tmp/prod-copy` in place of
+   `--remote`, start the new Worker on it (`wrangler dev --persist-to=/tmp/prod-copy`) and check a
+   `tmi` member reads the eight Beast Academy levels and nothing else; then the local suite.
+2. **D1 itself, on the demo.** In `tutoring-test-db` (TEST account, `--env tutoring-test`),
+   create throwaway tables with the OLD DDL and child rows, and drop the column there -- rebuilding
+   that database from `schema.sql` would not exercise the drop, as it already has the new shape:
+
+   ```bash
+   npx wrangler d1 execute tutoring-test-db --env tutoring-test --remote --command="CREATE TABLE zz_levels (id TEXT PRIMARY KEY, program TEXT NOT NULL CHECK (program IN ('a','b')), name TEXT NOT NULL, stage INTEGER NOT NULL UNIQUE); CREATE TABLE zz_topics (id TEXT PRIMARY KEY, level_id TEXT NOT NULL REFERENCES zz_levels (id)); INSERT INTO zz_levels VALUES ('L1','a','One',1); INSERT INTO zz_topics VALUES ('T1','L1')"
+   npx wrangler d1 execute tutoring-test-db --env tutoring-test --remote --command="ALTER TABLE zz_levels DROP COLUMN program"
+   npx wrangler d1 execute tutoring-test-db --env tutoring-test --remote --command="SELECT (SELECT COUNT(*) FROM zz_topics), (SELECT group_concat(name) FROM pragma_table_info('zz_levels'))"
+   # 1, "id,name,stage" -- then:
+   npx wrangler d1 execute tutoring-test-db --env tutoring-test --remote --command="DROP TABLE zz_topics; DROP TABLE zz_levels"
+   ```
+3. **A Time Travel bookmark** noted beside the export
+   (`npx wrangler d1 time-travel info tutoring-db`).
+
+If D1 refuses the drop, stop: the fallback is the whole-database restore named under "Rebuilding
+a table is not safe on D1", and that is the owner's decision. Rolling the Worker back is safe to
+the Phase 34 build; anything older needs `program` put back with an `ADD COLUMN` and an `UPDATE`.
+
+Production, in the usual order -- the backup, this block, the catalog, the checks, then the
+deploy:
+
+```bash
+cd apps/api
+# D1 may answer "not authorized to use function: sqlite_version" (the local D1 does); DROP COLUMN
+# needs 3.35 or later, which step 2 above proves on D1 itself.
+npx wrangler d1 execute tutoring-db --remote --command="SELECT sqlite_version()"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT (SELECT COUNT(*) FROM assessment_topic_ratings), (SELECT COUNT(*) FROM learning_plan_topics), (SELECT COUNT(*) FROM session_topic_ratings), (SELECT COUNT(*) FROM curriculum_topics)"
+# The one non-additive statement. Not a table rebuild: no implicit delete, so no cascade.
+npx wrangler d1 execute tutoring-db --remote --command="ALTER TABLE curriculum_levels DROP COLUMN program"
+npx wrangler d1 execute tutoring-db --remote --command="ALTER TABLE curriculum_topics ADD COLUMN description TEXT"
+npx wrangler d1 execute tutoring-db --remote --file=./db/catalog.sql
+```
+
+Then, read-only:
+
+```bash
+# the first three counts unchanged; topics 116 plus the NC rows
+npx wrangler d1 execute tutoring-db --remote --command="SELECT (SELECT COUNT(*) FROM assessment_topic_ratings), (SELECT COUNT(*) FROM learning_plan_topics), (SELECT COUNT(*) FROM session_topic_ratings), (SELECT COUNT(*) FROM curriculum_topics)"
+# ba 8, nc-2017 14, nc-2026 14
+npx wrangler d1 execute tutoring-db --remote --command="SELECT curriculum_id, COUNT(*) FROM curriculum_levels GROUP BY curriculum_id"
+# per level, against the official documents
+npx wrangler d1 execute tutoring-db --remote --command="SELECT l.id, COUNT(t.id) FROM curriculum_levels l LEFT JOIN curriculum_topics t ON t.level_id = l.id WHERE l.curriculum_id <> 'ba' GROUP BY l.id ORDER BY l.stage"
+# empty
+npx wrangler d1 execute tutoring-db --remote --command="PRAGMA foreign_key_check"
+# nothing: every organization still has its default
+npx wrangler d1 execute tutoring-db --remote --command="SELECT o.slug FROM organizations o WHERE NOT EXISTS (SELECT 1 FROM organization_curricula oc WHERE oc.organization_id = o.id AND oc.is_default = 1)"
+# "id,name,stage,grade_band,description,curriculum_id,code"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT group_concat(name) FROM pragma_table_info('curriculum_levels')"
+```
+
+Every new database gets the same catalog from `db:rebuild`, `db:rebuild:test` and
+`scripts/e2e.sh`, which run `catalog.sql` straight after `schema.sql`. Re-running `catalog.sql`
+on production later -- a corrected name, a new standard -- is safe at any time: upserts of the
+platform's rows only, never a DELETE.
+
+**The generator's guard.** It compares the sources with the previous `catalog.sql` and refuses a
+dropped curriculum, level or topic, a level whose stage changed or that moved curriculum, a topic
+that moved level or changed number, a stage outside its curriculum's thousand or used twice, and
+a code used twice within a curriculum. A curriculum never shipped to production may be replaced
+wholesale, once, with `--unreleased=<id>` (repeatable): that is how the reviewed NC files replace
+the placeholders the code was built against --
+`node db/generate-catalog.mjs --unreleased=nc-2017 --unreleased=nc-2026`. Never use it for one
+that is live.
+
+Rehearsed locally (wrangler's local D1) on a database built from Phase 34's `schema.sql` (with its
+catalog block) and seed: `DROP COLUMN program` and `ADD COLUMN description` ran clean, then
+`catalog.sql` twice; the three rating counts were unchanged (290, 279, 311), topics went from 116
+to 116 plus the NC rows, `PRAGMA foreign_key_check` was empty, every organization kept its
+default, both tables' columns came out in the order a rebuilt database has, and the Beast Academy
+rows (curricula, levels, topics) dumped identical to the Phase 34 database's.
+`SELECT sqlite_version()` was refused there ("not authorized"), hence the note above.
 
 ### Rebuilding a table is not safe on D1
 

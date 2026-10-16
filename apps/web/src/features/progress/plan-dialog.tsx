@@ -204,7 +204,7 @@ export function PlanDialog({
               <Input
                 id="goal"
                 value={goal}
-                placeholder="e.g. Ready for AoPS Prealgebra by next school year"
+                placeholder="e.g. Ready for next year’s math course"
                 onChange={(event) => setGoal(event.target.value)}
                 aria-invalid={Boolean(errors.goal)}
               />

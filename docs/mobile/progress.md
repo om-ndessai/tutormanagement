@@ -260,6 +260,14 @@ native rebuild of both dev builds, so build only while the devices are free.
   `onboarding/tour`, new `subflows/open-schedule`) but **unrun: device testing paused by the owner,
   still owed**, with the screenshots. Design entry #52)*
 
+## Portal Phase 35 — North Carolina Math, and choosing curricula
+
+- [ ] 53. Mobile: the Curricula card on the Organization screen, and the pickers' curriculum switch,
+  unit groups, descriptions and retired-level rule *(built 2026-10-16 with the web, on branch
+  `phase35-code`: typecheck, lint, jest green; flow `organization/curricula` written. Still owed:
+  `mobile:export`, the flow and `progress/*` on iOS and Android, and `npm run smoke -- mobile`. Merged onto the UI upgrades 2026-10-16: the switch, unit groups and
+  descriptions now sit inside U5's planned-first, collapsed-level assessment editor)*
+
 ## Phase 4 — Google sign-in
 
 - [ ] API: bearer sessions for the mobile app

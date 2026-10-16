@@ -28,19 +28,23 @@ test.describe('progress tracking', () => {
       code: 'BA3.10',
       level_id: 'BA3',
     });
-    expect(ba3).toMatchObject({ code: 'BA3', curriculum_id: 'ba' });
+    expect(ba3).toMatchObject({ code: 'BA3', curriculum_id: 'ba', retired: false });
+    // Phase 35: a Beast Academy chapter has no description; its title says enough.
+    expect(ba3.topics.every((topic: any) => topic.description === null)).toBe(true);
     // The ladder's order is the catalog's, not a number the client works out.
     expect(ba3).not.toHaveProperty('stage');
   });
 
-  test('organization B reads the same Beast Academy ladder, through its own list', async ({ as }) => {
+  test('organization B still reads the Beast Academy ladder it has retired, after its own', async ({ as }) => {
+    // Phase 35: B teaches North Carolina's standards now (curricula.spec.ts);
+    // Beast Academy, retired there, is listed last and unchanged.
     const bAdmin = await as('orgBAdmin', { org: ORGS.b.slug });
     const levels = await unwrap<any[]>(await bAdmin.request.get('/api/curriculum'), 'curriculum');
 
-    expect(levels.map((level) => level.id)).toEqual([
+    expect(levels.filter((level) => level.curriculum_id === 'ba').map((level) => level.id)).toEqual([
       'BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO',
     ]);
-    expect(levels.every((level) => level.curriculum_id === 'ba')).toBe(true);
+    expect(levels.slice(-8).every((level) => level.curriculum_id === 'ba' && level.retired)).toBe(true);
   });
 
   test('a student’s progress reaches their family and tutors, and nobody else', async ({ as }) => {

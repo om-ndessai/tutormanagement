@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import { ORGS, expect, test } from '../support/fixtures.js';
 import { unwrap } from '../support/api.js';
+import { northCarolinaWords } from '../support/catalog.js';
 import type { PersonKey } from '../support/people.js';
 
 /**
@@ -60,6 +61,8 @@ const READS = [
   '/api/progress',
   // Phase 34: the catalog, through the organization's own list of curricula.
   '/api/curriculum',
+  // Phase 35: that list itself, which every member reads.
+  '/api/curricula',
   // Phase 32: the organization's notification log (admins; refused to others).
   '/api/organization/notifications',
 ];
@@ -119,8 +122,10 @@ test.describe('R13: nothing crosses organizations', () => {
     const onlyB = new Set([...b].filter((id) => !a.has(id)));
     expect(onlyB.size, 'organization B has rows of its own').toBeGreaterThan(5);
 
-    // The names only B has, and B's own notes.
-    const words = ['Rosa Delgado', 'Kwame Mensah', 'Lily Chen', 'Arjun Patel', 'Riverside'];
+    // The names only B has, and B's own notes -- and, since Phase 35, the North
+    // Carolina catalog, which B offers and A does not (read from its source
+    // files, so the real catalog replaces the words without touching this).
+    const words = ['Rosa Delgado', 'Kwame Mensah', 'Lily Chen', 'Arjun Patel', 'Riverside', ...northCarolinaWords()];
 
     const personas: PersonKey[] = ['admin', 'tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
     for (const who of personas) {

@@ -23,7 +23,13 @@ import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
-import { useOrganizationNotifications, useOrganizationSettings, useUpdateOrganizationSettings } from './api';
+import {
+  useCurriculumOfferings,
+  useOrganizationNotifications,
+  useOrganizationSettings,
+  useUpdateOrganizationSettings,
+} from './api';
+import { CurriculaCard } from './curricula-card';
 import { EmailNotificationsCard } from './notifications-card';
 import { formFromSettings, validateForm, type PayerField, type SettingsForm } from './settings-form';
 
@@ -33,12 +39,13 @@ export function OrganizationSettingsScreen() {
   const isAdmin = Boolean(user?.roles.includes('admin'));
   const settings = useOrganizationSettings(isAdmin);
   const notifications = useOrganizationNotifications(isAdmin);
+  const offerings = useCurriculumOfferings(isAdmin);
   const [refreshing, setRefreshing] = useState(false);
 
   async function onRefresh() {
     setRefreshing(true);
     try {
-      await Promise.all([settings.refetch(), notifications.refetch()]);
+      await Promise.all([settings.refetch(), notifications.refetch(), offerings.refetch()]);
     } finally {
       setRefreshing(false);
     }
@@ -63,7 +70,7 @@ export function OrganizationSettingsScreen() {
       {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). */}
       <SecureMoney tag="organization" />
       <PageIntro>
-        {`What ${organization.name} files its 1099s under, and how the portal presents it.`}
+        {`What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`}
       </PageIntro>
 
       {settings.isPending ? (
@@ -96,6 +103,8 @@ export function OrganizationSettingsScreen() {
       </Panel>
 
       <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+
+      <CurriculaCard />
     </Screen>
   );
 }

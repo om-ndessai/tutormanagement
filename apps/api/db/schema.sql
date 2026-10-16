@@ -1143,20 +1143,22 @@ END;
 -- curricula / organization_curricula - which ladders an organization teaches
 -- ---------------------------------------------------------------------------
 -- The catalog (curriculum_levels, curriculum_topics, below) holds one or more
--- curricula. Today it holds one, Beast Academy ('ba'), which keeps the three
--- AoPS books as its upper levels. An organization reads and writes only the
--- curricula on its own list, organization_curricula: every catalog read and
--- every id check in the API goes through that list, so it is the one choke
--- point between an organization and the catalog.
+-- curricula: Beast Academy ('ba'), which keeps the three AoPS books as its
+-- upper levels, and North Carolina's standards in both editions ('nc-2017',
+-- 'nc-2026'; Phase 35). An organization reads and writes only the curricula
+-- on its own list, organization_curricula, which its admins choose on the
+-- Organization page: every catalog read and every id check in the API goes
+-- through that list, so it is the one choke point between an organization and
+-- the catalog.
 --
 --   curricula ──┬── curriculum_levels ── curriculum_topics ── (ratings, plan topics)
 --               └── organization_curricula ── organizations
 --
 -- A platform curriculum (organization_id NULL) is reference data, written by
--- this file and never by the application. One with organization_id set is
+-- db/catalog.sql and never by the application. One with organization_id set is
 -- that organization's own and nobody else's (R13); no row has one yet.
 CREATE TABLE curricula (
-  -- The platform's: a slug ('ba'). An organization's own: a UUID.
+  -- The platform's: a slug ('ba', 'nc-2017'). An organization's own: a UUID.
   id              TEXT PRIMARY KEY,
   -- NULL: the platform's, shared by every organization that offers it.
   -- Set: that organization's own, and nobody else's.
@@ -1243,17 +1245,21 @@ END;
 -- ---------------------------------------------------------------------------
 -- curriculum_levels / curriculum_topics - the ladder, as reference data
 -- ---------------------------------------------------------------------------
--- Rows are inserted by this file (see the catalog block at the end) and never
--- written by the application. Since Phase 34 every level belongs to a
+-- Rows are inserted by db/catalog.sql (generated from db/catalog/*.json) and
+-- never written by the application. Since Phase 34 every level belongs to a
 -- curriculum (`curricula`, above), and an organization reads only those on
--- its own list; this ladder is Beast Academy ('ba'). Ids are human-readable codes rather than UUIDs
--- because they ARE the naming convention the office speaks in:
+-- its own list. Platform ids are reviewed, human-readable keys, unique across
+-- the catalog; `code` is what people read where it differs (North Carolina's
+-- official "NC.5.NF.1" for the id NC17.5.NF.1). Beast Academy's ids are its
+-- codes, the naming convention the office speaks in:
 --
 --   level  BA1 .. BA5   Beast Academy Level 1 .. 5
 --          PRE          AoPS Prealgebra
 --          ALG          AoPS Introduction to Algebra
 --          GEO          AoPS Introduction to Geometry
 --   topic  <level>.<nn> e.g. BA3.10 is "topic 10 of Beast Academy Level 3"
+--   NC     NC17.<grade|course>, NC26.<...>; a topic is one numbered state
+--          standard, its `unit` the domain (Phase 35)
 --
 -- A Beast Academy topic is one chapter of a guide book, numbered straight
 -- through the level (3A's chapters are BA3.01-03, 3B's continue from there),
@@ -1265,18 +1271,20 @@ END;
 -- history. Correct a name in place; add new chapters with new numbers.
 CREATE TABLE curriculum_levels (
   id          TEXT PRIMARY KEY,
-  program     TEXT NOT NULL CHECK (program IN ('beast_academy', 'aops')),
+  -- (Phase 35 dropped `program`, whose CHECK allowed Beast Academy and AoPS
+  -- alone; production's ALTER TABLE ... DROP COLUMN, docs/database.md.)
   name        TEXT NOT NULL,
   -- Position on the ladder, which is what "a lower level" means. Algebra and
   -- geometry are often taken in either order; the ladder places algebra first
-  -- because AoPS recommends it.
+  -- because AoPS recommends it. Unique across the whole catalog, so each
+  -- platform curriculum has its own thousand (Beast Academy 1-8, nc-2017
+  -- from 1001, nc-2026 from 2001), and a shipped stage never changes: the
+  -- generator refuses either.
   stage       INTEGER NOT NULL UNIQUE CHECK (stage > 0),
   grade_band  TEXT,
   description TEXT,
   -- Phase 34, last because production gains them by ALTER TABLE (where this
   -- column is nullable; a level without one is invisible to everybody).
-  -- `program` above is no longer read; it goes when a second curriculum
-  -- arrives.
   curriculum_id TEXT NOT NULL REFERENCES curricula (id),
   -- What people read. NULL where the id already is the code, as for every
   -- Beast Academy row; the API answers COALESCE(code, id). Ids are keys.
@@ -1292,12 +1300,17 @@ CREATE TABLE curriculum_topics (
   level_id  TEXT NOT NULL REFERENCES curriculum_levels (id),
   -- The <nn> in the code: chapter order within the level.
   number    INTEGER NOT NULL CHECK (number > 0),
-  -- The Beast Academy guide book the chapter is in ("3D"); NULL for AoPS.
+  -- The Beast Academy guide book the chapter is in ("3D"); NULL for AoPS;
+  -- a state standard's domain. The pickers group topics under it.
   unit      TEXT,
   name      TEXT NOT NULL,
   -- Phase 34: what people read, as on curriculum_levels. Last of the
   -- columns, where production's ALTER TABLE put it.
   code      TEXT,
+  -- Phase 35: a line under the name in the pickers. For a state standard, a
+  -- summary of it (and, for the 2026 edition, its objectives); NULL for a
+  -- Beast Academy chapter, whose title says enough.
+  description TEXT,
 
   UNIQUE (level_id, number)
 );
@@ -1769,150 +1782,9 @@ BEGIN
 END;
 
 -- ---------------------------------------------------------------------------
--- Curriculum catalog (Phase 16) -- reference data, part of the schema
+-- The curriculum catalog -- reference data, in db/catalog.sql (Phase 35)
 -- ---------------------------------------------------------------------------
--- Written as upserts so this block can be run against a live database on its
--- own (docs/database.md): re-running it corrects names and adds chapters
--- without disturbing a single rating. Never add a DELETE here.
--- BEGIN CURRICULUM CATALOG
--- The curricula first: every level names one.
-INSERT INTO curricula (id, name, source, sort) VALUES
-  ('ba', 'Beast Academy', 'Beast Academy and Art of Problem Solving', 1)
-ON CONFLICT (id) DO UPDATE SET
-  name = excluded.name, source = excluded.source, sort = excluded.sort;
-
-INSERT INTO curriculum_levels (id, curriculum_id, program, name, stage, grade_band, description) VALUES
-  ('BA1', 'ba', 'beast_academy', 'Beast Academy Level 1', 1, 'Ages 6-8 (about grade 1)', 'Guide books 1A-1D.'),
-  ('BA2', 'ba', 'beast_academy', 'Beast Academy Level 2', 2, 'Ages 7-9 (about grade 2)', 'Guide books 2A-2D.'),
-  ('BA3', 'ba', 'beast_academy', 'Beast Academy Level 3', 3, 'Ages 8-10 (about grade 3)', 'Guide books 3A-3D.'),
-  ('BA4', 'ba', 'beast_academy', 'Beast Academy Level 4', 4, 'Ages 9-12 (about grade 4)', 'Guide books 4A-4D.'),
-  ('BA5', 'ba', 'beast_academy', 'Beast Academy Level 5', 5, 'Ages 10-13 (about grade 5)', 'Guide books 5A-5D.'),
-  ('PRE', 'ba', 'aops', 'AoPS Prealgebra', 6, 'About grades 5-7', 'After Beast Academy 5. The bridge from arithmetic to algebra.'),
-  ('ALG', 'ba', 'aops', 'AoPS Introduction to Algebra', 7, 'Grades 6-9', 'Follows Prealgebra.'),
-  ('GEO', 'ba', 'aops', 'AoPS Introduction to Geometry', 8, 'Grades 7-10', 'Usually after Introduction to Algebra; the two are sometimes taken in either order.')
-ON CONFLICT (id) DO UPDATE SET
-  curriculum_id = excluded.curriculum_id,
-  program = excluded.program, name = excluded.name, stage = excluded.stage,
-  grade_band = excluded.grade_band, description = excluded.description;
-
-INSERT INTO curriculum_topics (id, level_id, number, unit, name) VALUES
-  ('BA1.01', 'BA1', 1, '1A', 'Counting'),
-  ('BA1.02', 'BA1', 2, '1A', 'Shapes'),
-  ('BA1.03', 'BA1', 3, '1A', 'Comparing'),
-  ('BA1.04', 'BA1', 4, '1B', 'Addition'),
-  ('BA1.05', 'BA1', 5, '1B', 'Subtraction'),
-  ('BA1.06', 'BA1', 6, '1B', 'Categories'),
-  ('BA1.07', 'BA1', 7, '1C', 'Addition & Subtraction'),
-  ('BA1.08', 'BA1', 8, '1C', 'Comparing'),
-  ('BA1.09', 'BA1', 9, '1C', 'Patterns'),
-  ('BA1.10', 'BA1', 10, '1D', 'Big Numbers'),
-  ('BA1.11', 'BA1', 11, '1D', 'Measurement'),
-  ('BA1.12', 'BA1', 12, '1D', 'Problem Solving'),
-  ('BA2.01', 'BA2', 1, '2A', 'Place Value'),
-  ('BA2.02', 'BA2', 2, '2A', 'Comparing'),
-  ('BA2.03', 'BA2', 3, '2A', 'Addition'),
-  ('BA2.04', 'BA2', 4, '2B', 'Subtraction'),
-  ('BA2.05', 'BA2', 5, '2B', 'Expressions'),
-  ('BA2.06', 'BA2', 6, '2B', 'Problem Solving'),
-  ('BA2.07', 'BA2', 7, '2C', 'Measurement'),
-  ('BA2.08', 'BA2', 8, '2C', 'Strategies'),
-  ('BA2.09', 'BA2', 9, '2C', 'Odds & Evens'),
-  ('BA2.10', 'BA2', 10, '2D', 'Big Numbers'),
-  ('BA2.11', 'BA2', 11, '2D', 'Algorithms'),
-  ('BA2.12', 'BA2', 12, '2D', 'Problem Solving'),
-  ('BA3.01', 'BA3', 1, '3A', 'Shapes'),
-  ('BA3.02', 'BA3', 2, '3A', 'Skip-Counting'),
-  ('BA3.03', 'BA3', 3, '3A', 'Perimeter & Area'),
-  ('BA3.04', 'BA3', 4, '3B', 'Multiplication'),
-  ('BA3.05', 'BA3', 5, '3B', 'Perfect Squares'),
-  ('BA3.06', 'BA3', 6, '3B', 'The Distributive Property'),
-  ('BA3.07', 'BA3', 7, '3C', 'Variables'),
-  ('BA3.08', 'BA3', 8, '3C', 'Division'),
-  ('BA3.09', 'BA3', 9, '3C', 'Measurement'),
-  ('BA3.10', 'BA3', 10, '3D', 'Fractions'),
-  ('BA3.11', 'BA3', 11, '3D', 'Estimation'),
-  ('BA3.12', 'BA3', 12, '3D', 'Area'),
-  ('BA4.01', 'BA4', 1, '4A', 'Shapes'),
-  ('BA4.02', 'BA4', 2, '4A', 'Multiplication'),
-  ('BA4.03', 'BA4', 3, '4A', 'Exponents'),
-  ('BA4.04', 'BA4', 4, '4B', 'Counting'),
-  ('BA4.05', 'BA4', 5, '4B', 'Division'),
-  ('BA4.06', 'BA4', 6, '4B', 'Logic'),
-  ('BA4.07', 'BA4', 7, '4C', 'Factors'),
-  ('BA4.08', 'BA4', 8, '4C', 'Fractions'),
-  ('BA4.09', 'BA4', 9, '4C', 'Integers'),
-  ('BA4.10', 'BA4', 10, '4D', 'Fractions'),
-  ('BA4.11', 'BA4', 11, '4D', 'Decimals'),
-  ('BA4.12', 'BA4', 12, '4D', 'Probability'),
-  ('BA5.01', 'BA5', 1, '5A', '3D Solids'),
-  ('BA5.02', 'BA5', 2, '5A', 'Integers'),
-  ('BA5.03', 'BA5', 3, '5A', 'Expressions & Equations'),
-  ('BA5.04', 'BA5', 4, '5B', 'Statistics'),
-  ('BA5.05', 'BA5', 5, '5B', 'Factors & Multiples'),
-  ('BA5.06', 'BA5', 6, '5B', 'Fractions'),
-  ('BA5.07', 'BA5', 7, '5C', 'Sequences'),
-  ('BA5.08', 'BA5', 8, '5C', 'Ratios & Rates'),
-  ('BA5.09', 'BA5', 9, '5C', 'Decimals'),
-  ('BA5.10', 'BA5', 10, '5D', 'Percents'),
-  ('BA5.11', 'BA5', 11, '5D', 'Square Roots'),
-  ('BA5.12', 'BA5', 12, '5D', 'Exponents'),
-  ('PRE.01', 'PRE', 1, NULL, 'Properties of Arithmetic'),
-  ('PRE.02', 'PRE', 2, NULL, 'Exponents'),
-  ('PRE.03', 'PRE', 3, NULL, 'Number Theory'),
-  ('PRE.04', 'PRE', 4, NULL, 'Fractions'),
-  ('PRE.05', 'PRE', 5, NULL, 'Equations and Inequalities'),
-  ('PRE.06', 'PRE', 6, NULL, 'Decimals'),
-  ('PRE.07', 'PRE', 7, NULL, 'Ratios, Conversions, and Rates'),
-  ('PRE.08', 'PRE', 8, NULL, 'Percents'),
-  ('PRE.09', 'PRE', 9, NULL, 'Square Roots'),
-  ('PRE.10', 'PRE', 10, NULL, 'Angles'),
-  ('PRE.11', 'PRE', 11, NULL, 'Perimeter and Area'),
-  ('PRE.12', 'PRE', 12, NULL, 'Right Triangles and Quadrilaterals'),
-  ('PRE.13', 'PRE', 13, NULL, 'Data and Statistics'),
-  ('PRE.14', 'PRE', 14, NULL, 'Counting'),
-  ('PRE.15', 'PRE', 15, NULL, 'Problem-Solving Strategies'),
-  ('ALG.01', 'ALG', 1, NULL, 'Follow the Rules'),
-  ('ALG.02', 'ALG', 2, NULL, 'x Marks the Spot'),
-  ('ALG.03', 'ALG', 3, NULL, 'One-Variable Linear Equations'),
-  ('ALG.04', 'ALG', 4, NULL, 'More Variables'),
-  ('ALG.05', 'ALG', 5, NULL, 'Multi-Variable Linear Equations'),
-  ('ALG.06', 'ALG', 6, NULL, 'Ratios and Percents'),
-  ('ALG.07', 'ALG', 7, NULL, 'Proportion'),
-  ('ALG.08', 'ALG', 8, NULL, 'Graphing Lines'),
-  ('ALG.09', 'ALG', 9, NULL, 'Introduction to Inequalities'),
-  ('ALG.10', 'ALG', 10, NULL, 'Quadratic Equations – Part 1'),
-  ('ALG.11', 'ALG', 11, NULL, 'Special Factorizations'),
-  ('ALG.12', 'ALG', 12, NULL, 'Complex Numbers'),
-  ('ALG.13', 'ALG', 13, NULL, 'Quadratic Equations – Part 2'),
-  ('ALG.14', 'ALG', 14, NULL, 'Graphing Quadratics'),
-  ('ALG.15', 'ALG', 15, NULL, 'More Inequalities'),
-  ('ALG.16', 'ALG', 16, NULL, 'Functions'),
-  ('ALG.17', 'ALG', 17, NULL, 'Graphing Functions'),
-  ('ALG.18', 'ALG', 18, NULL, 'Polynomials'),
-  ('ALG.19', 'ALG', 19, NULL, 'Exponents and Logarithms'),
-  ('ALG.20', 'ALG', 20, NULL, 'Special Functions'),
-  ('ALG.21', 'ALG', 21, NULL, 'Sequences & Series'),
-  ('ALG.22', 'ALG', 22, NULL, 'Special Manipulations'),
-  ('GEO.01', 'GEO', 1, NULL, 'What''s in a Name?'),
-  ('GEO.02', 'GEO', 2, NULL, 'Angles'),
-  ('GEO.03', 'GEO', 3, NULL, 'Congruent Triangles'),
-  ('GEO.04', 'GEO', 4, NULL, 'Perimeter and Area'),
-  ('GEO.05', 'GEO', 5, NULL, 'Similar Triangles'),
-  ('GEO.06', 'GEO', 6, NULL, 'Right Triangles'),
-  ('GEO.07', 'GEO', 7, NULL, 'Special Parts of a Triangle'),
-  ('GEO.08', 'GEO', 8, NULL, 'Quadrilaterals'),
-  ('GEO.09', 'GEO', 9, NULL, 'Polygons'),
-  ('GEO.10', 'GEO', 10, NULL, 'Geometric Inequalities'),
-  ('GEO.11', 'GEO', 11, NULL, 'Circles'),
-  ('GEO.12', 'GEO', 12, NULL, 'Circles and Angles'),
-  ('GEO.13', 'GEO', 13, NULL, 'Power of a Point'),
-  ('GEO.14', 'GEO', 14, NULL, 'Three-Dimensional Geometry'),
-  ('GEO.15', 'GEO', 15, NULL, 'Curved Surfaces'),
-  ('GEO.16', 'GEO', 16, NULL, 'The More Things Change...'),
-  ('GEO.17', 'GEO', 17, NULL, 'Analytic Geometry'),
-  ('GEO.18', 'GEO', 18, NULL, 'Introduction to Trigonometry'),
-  ('GEO.19', 'GEO', 19, NULL, 'Problem Solving Strategies in Geometry')
-ON CONFLICT (id) DO UPDATE SET
-  level_id = excluded.level_id, number = excluded.number, unit = excluded.unit,
-  name = excluded.name;
--- END CURRICULUM CATALOG
+-- The platform's curricula (Beast Academy, North Carolina Math 2017 and 2026)
+-- are generated from db/catalog/*.json by db/generate-catalog.mjs, which
+-- refuses a dropped id or a changed stage. Every database is built from this
+-- file THEN catalog.sql (npm run db:rebuild, db:rebuild:test, scripts/e2e.sh).

@@ -18,7 +18,7 @@ What did NOT change, and must not be "tidied": the Cloudflare Workers and their 
 (`tmi-portal`, `tutoring`, `tutoring-test`), the databases, the `tmi_session` cookie and the
 `@tmi/*` packages. `docs/naming/README.md` is the record of how the name was chosen.
 
-**Phases 1 to 19, and 21 to 34, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 35, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -31,8 +31,9 @@ as Analytics, a sessions carousel, a progress spotlight and recent activity (21)
 one lesson of a standing schedule cancelled and restored, without touching the series (24), the
 student's own reflection on each lesson (25), and a welcome wizard with a feature tour and guided
 setup of a new student or tutor (26), multiple organizations (27-31), and per-organization email
-notifications (32), tutoring locations with an in-app reminder (33), and curricula, with
-Beast Academy alone, read through each organization's own list (34).
+notifications (32), tutoring locations with an in-app reminder (33), curricula, with
+Beast Academy alone, read through each organization's own list (34), and North Carolina's
+standards in both editions, with each organization's admins choosing what it offers (35).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -136,7 +137,7 @@ Run from the repo root.
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Worker on :8787 and Vite on :5173 together. **Use http://localhost:5173** — Vite proxies `/api` to the Worker. |
-| `npm run db:rebuild` | **Drops and recreates** every local table from `apps/api/db/schema.sql` |
+| `npm run db:rebuild` | **Drops and recreates** every local table from `apps/api/db/schema.sql`, then loads the curriculum catalog (`db/catalog.sql`) |
 | `npm run db:seed` | Reload local data from `apps/api/db/seed.sql` |
 | `npm run db:reset` | Rebuild, then seed |
 | `npm run db:studio` | Dump the users table from local D1 |
@@ -173,9 +174,9 @@ inherit another's database, and do not "tidy" that duplication away.
 ## Rules
 
 **There are no migrations.** This is a greenfield project: `apps/api/db/schema.sql` is the
-single source of truth, and `npm run db:rebuild` drops and recreates everything from it. To
-change the data model, edit that file and re-run `npm run db:reset`. Do not add a migrations
-folder or numbered migration files.
+single source of truth, and `npm run db:rebuild` drops and recreates everything from it (then
+loads `db/catalog.sql`, the generated curriculum catalog). To change the data model, edit that
+file and re-run `npm run db:reset`. Do not add a migrations folder or numbered migration files.
 
 **A person is one `users` row across every organization: their sign-in and how to reach them
 (name, email, phone) -- nothing else.** Belonging to an organization is `org_members` (its
@@ -523,12 +524,26 @@ author may delete them — not admins. Never put comment text in an audit descri
 read by admins, and a comment is not theirs by default.
 
 **Progress is measured on one 1-5 scale against an organization's curricula.** The catalog
-(`curricula` > `curriculum_levels` > `curriculum_topics`) is reference data at the end of
-`schema.sql`, written as upserts -- never delete a topic, ratings reference it. Today it holds one
-curriculum, Beast Academy (`ba`): levels `BA1`-`BA5`, `PRE`, `ALG`, `GEO`; topics `<level>.<nn>`
-(`BA3.10`). An organization reads and writes only the curricula on its own list
-(`organization_curricula`, exactly one default -- rule 9 in `docs/data-model.md`), and every
-catalog query joins it (`listCurriculum`, `findUnknownCurriculumIds`). Ids are keys, `code` is
+(`curricula` > `curriculum_levels` > `curriculum_topics`) is reference data GENERATED from
+`apps/api/db/catalog/*.json` by `db/generate-catalog.mjs` into `db/catalog.sql`: upserts of
+platform rows, one statement per level, run after `schema.sql` by every build path (`db:rebuild`,
+`db:rebuild:test`, `scripts/e2e.sh`). Never hand-edit `catalog.sql`; `npm run typecheck` fails while
+it is stale. The generator refuses a dropped id, a changed stage or topic number, a stage outside its
+curriculum's thousand (Beast Academy 1-999, `nc-2017` 1001+, `nc-2026` 2001+) and a repeated code --
+never delete a topic, ratings reference it (`--unreleased=<id>` waives that for a curriculum never
+shipped to production, and only then). Three curricula: Beast Academy (`ba`: `BA1`-`BA5`, `PRE`,
+`ALG`, `GEO`; topics `BA3.10`), and North Carolina's standards, `nc-2017` and `nc-2026` (a level is
+a grade or course, `NC17.3`, `NC26.M1`; a topic one numbered standard, `NC17.3.OA.1` shown as
+`NC.3.OA.1`, its `unit` the domain, its `description` the standard's summary). An organization reads
+and writes only the curricula on its own list (`organization_curricula`, exactly one default -- rule
+9 in `docs/data-model.md`), and every catalog query joins it (`listCurriculum`,
+`findUnknownCurriculumIds`, `repositories/curricula.ts`). Its admins choose it on the Organization
+page's Curricula card (`PUT /api/organization/curricula`, one batch; `curriculum.offering_updated`,
+never `organization.*`, which the console lists): what is left out is RETIRED, never deleted --
+hidden from pickers unless something chosen is in it (`pickerLevels`), still readable, and still
+writable, because every edit resends its whole set of ids. Pickers group topics by `unit`, show the
+description as a second line, and offer a curriculum switch only when two or more are offered, so
+an organization on one sees none. Ids are keys, `code` is
 what people read (the API answers `COALESCE(code, id)`): print `code`, take a topic's level from
 its row, never the id's text, and sort by catalog position (`indexCurriculum`). The shared id
 shape may only ever widen. Progress

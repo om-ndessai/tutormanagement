@@ -2,6 +2,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
+  CurriculumOffering,
+  CurriculumOfferingInput,
   NotificationLogEntry,
   OrganizationSettings,
   UpdateOrganizationSettingsInput,
@@ -27,6 +29,35 @@ export function useUpdateOrganizationSettings() {
     mutationFn: (input: UpdateOrganizationSettingsInput) =>
       apiClient.patch<ApiOk<OrganizationSettings>>('/organization/settings', input),
     onSuccess: (response) => queryClient.setQueryData(settingsKey, response),
+  });
+}
+
+const curriculaKey = ['organization', 'curricula'] as const;
+
+/** Phase 35: every curriculum the organization may offer, with its standing here. Its admins only. */
+export function useCurriculumOfferings(enabled: boolean) {
+  return useQuery({
+    queryKey: curriculaKey,
+    queryFn: () => apiClient.get<ApiOk<CurriculumOffering[]>>('/organization/curricula'),
+    enabled,
+  });
+}
+
+/**
+ * Replaces the choice of curricula. Every picker reads the catalog through it,
+ * so ['curriculum'] (the catalog and the list) is fetched again; other open
+ * tabs see the change on reload.
+ */
+export function useUpdateCurriculumOffering() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: CurriculumOfferingInput) =>
+      apiClient.put<ApiOk<CurriculumOffering[]>>('/organization/curricula', input),
+    onSuccess: (response) => {
+      queryClient.setQueryData(curriculaKey, response);
+      void queryClient.invalidateQueries({ queryKey: ['curriculum'] });
+      void queryClient.invalidateQueries({ queryKey: ['audit'] });
+    },
   });
 }
 

@@ -62,6 +62,39 @@ for (const width of WIDTHS) {
   }
 }
 
+// Phase 35: an organization offering several curricula -- the Organization
+// page's Curricula card with three rows, and the plan dialog's pickers with a
+// curriculum switch and a standard's description under its name.
+for (const width of WIDTHS) {
+  test(`several curricula do not scroll sideways at ${width}px`, async ({ as }) => {
+    const page = await as('orgBAdmin', { org: 'riverside' });
+    await page.setViewportSize({ width, height: 844 });
+    const overflow = () =>
+      page.evaluate(() => {
+        const doc = document.documentElement;
+        const dialog = document.querySelector('[role="dialog"]');
+        return Math.max(doc.scrollWidth - doc.clientWidth, dialog ? dialog.scrollWidth - dialog.clientWidth : 0);
+      });
+
+    await page.goto('/organization');
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('curricula-card')).toBeVisible();
+    expect(await overflow(), `/organization at ${width}px`).toBeLessThanOrEqual(0);
+
+    const users = await (await page.request.get('/api/users?search=Lily')).json();
+    await page.goto(`/progress/${users.data[0].id}`);
+    await page.waitForLoadState('networkidle');
+    await page.getByRole('button', { name: 'Edit plan' }).first().click();
+    await expect(page.getByRole('dialog').getByTestId('curriculum-switch')).toBeVisible();
+    expect(await overflow(), `the plan dialog at ${width}px`).toBeLessThanOrEqual(0);
+    await page.getByRole('dialog').getByRole('button', { name: 'Cancel' }).click();
+
+    await page.getByRole('button', { name: 'Edit assessment' }).first().click();
+    await expect(page.getByRole('dialog').getByText('Topic ratings')).toBeVisible();
+    expect(await overflow(), `the assessment dialog at ${width}px`).toBeLessThanOrEqual(0);
+  });
+}
+
 // The dashboard's sessions carousel scrolls sideways inside itself; the page
 // around it must not, for a tutor as much as for an admin.
 for (const width of WIDTHS) {

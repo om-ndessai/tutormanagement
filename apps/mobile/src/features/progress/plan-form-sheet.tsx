@@ -211,7 +211,7 @@ export function PlanForm({
           label="Goal"
           value={goal}
           onChangeText={setGoal}
-          placeholder="e.g. Ready for AoPS Prealgebra by next school year"
+          placeholder="e.g. Ready for next year’s math course"
           returnKeyType="done"
           error={Boolean(errors.goal)}
         />

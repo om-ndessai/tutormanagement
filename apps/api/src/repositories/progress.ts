@@ -48,14 +48,15 @@ function organizationToday(timeZone: string): string {
 /**
  * The catalog as this organization sees it, level by level in teaching
  * order: retired curricula last, the default first, then display order and
- * the ladder.
+ * the ladder. Each level says whether its curriculum is retired here, so a
+ * picker can hide it unless something already chosen is in it.
  */
 export async function listCurriculum(db: D1Database, org: OrgId): Promise<CurriculumLevel[]> {
   const [levels, topics] = await db.batch<Record<string, unknown>>([
     db
       .prepare(
         `SELECT l.id, COALESCE(l.code, l.id) AS code, l.curriculum_id, l.name, l.grade_band,
-                l.description
+                l.description, oc.retired_at IS NOT NULL AS retired
          FROM curriculum_levels l
          JOIN organization_curricula oc ON oc.curriculum_id = l.curriculum_id
                                        AND oc.organization_id = ?
@@ -66,7 +67,8 @@ export async function listCurriculum(db: D1Database, org: OrgId): Promise<Curric
       .bind(org),
     db
       .prepare(
-        `SELECT t.id, COALESCE(t.code, t.id) AS code, t.level_id, t.number, t.unit, t.name
+        `SELECT t.id, COALESCE(t.code, t.id) AS code, t.level_id, t.number, t.unit, t.name,
+                t.description
          FROM curriculum_topics t
          JOIN curriculum_levels l ON l.id = t.level_id
          JOIN organization_curricula oc ON oc.curriculum_id = l.curriculum_id
@@ -85,8 +87,10 @@ export async function listCurriculum(db: D1Database, org: OrgId): Promise<Curric
     byLevel.set(row.level_id, list);
   }
 
-  return ((levels?.results ?? []) as unknown as Omit<CurriculumLevel, 'topics'>[]).map((level) => ({
+  type LevelRow = Omit<CurriculumLevel, 'topics' | 'retired'> & { retired: number };
+  return ((levels?.results ?? []) as unknown as LevelRow[]).map((level) => ({
     ...level,
+    retired: level.retired === 1,
     topics: byLevel.get(level.id) ?? [],
   }));
 }
