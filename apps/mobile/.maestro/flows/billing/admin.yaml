@@ -63,21 +63,49 @@ tags:
 - assertVisible:
     id: billing-family-balance-00000000-0000-4000-8000-000000000006
     text: '\$80\.00'
+# A family's row opens the payment quick sheet with who already filled (UI upgrades U5).
+- tapOn:
+    id: billing-family-00000000-0000-4000-8000-000000000006
+- extendedWaitUntil:
+    visible:
+      id: payment-who
+      text: 'From Anita Patel, for Sanjay Patel'
+    timeout: 15000
+- assertNotVisible:
+    id: payment-party
+- assertNotVisible:
+    id: payment-reference
+- takeScreenshot: billing-admin-prefilled
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: payment-cancel
+- extendedWaitUntil:
+    notVisible:
+      id: payment-who
+    timeout: 10000
 - scrollUntilVisible:
     element: 'Payments'
     direction: DOWN
     timeout: 60000
 - takeScreenshot: billing-admin-log
-# Record a payment from Anita for Sanjay.
+# Record a payment from Anita for Sanjay, choosing her (the sheet opened with nobody filled).
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
       LINK: aimtrue://payment-form
 - extendedWaitUntil:
     visible:
-      id: payment-party-search
+      id: payment-party
     timeout: 20000
 - assertVisible: 'Record a payment'
+# The quick sheet keeps the list closed until it is wanted (UI upgrades U5).
+- tapOn:
+    id: payment-party
+- extendedWaitUntil:
+    visible:
+      id: payment-party-search
+    timeout: 5000
 - tapOn:
     id: payment-party-search
 - inputText: 'Anita'

@@ -188,6 +188,78 @@ native rebuild of both dev builds, so build only while the devices are free.
   (flow fixes: pairings/admin scrolls to Save, schedule/browse centres "Show all", seed-next-up.js sends
   `location_ids`); `npm run smoke -- mobile` green on both)*
 
+## UI upgrades — warmth and short tasks (docs/ui-upgrades-spec.md)
+
+- [x] U2. Mobile: the surface kit and the create button — `StepFlow`, `QuickSheet`, `SearchPicker`
+  (`src/components/`), the app-drawn tab bar with a "+" between Schedule and Progress and its sheet of
+  the reader's own actions; the top-right "+" on Sessions, Users, Billing and Schedule removed *(built
+  2026-10-14: typecheck, lint, jest (79 suites, 416 tests), export green; tested 2026-10-14/15:
+  `shell/*` (navigation, new `create` and `surface-kit`) and every flow that tapped a removed "+"
+  (`people/create-student`, `create-student-new-parent`, `create-tutor`, `sessions/record`, `drafts`,
+  `autosave`, `record-finance`, `dictation/*`, `exposure/student-controls`, `exposure/money-tutoring`,
+  `billing/parent`, `billing/tutor`) green on iOS and Android; `sessions/live`, `onboarding/tour`,
+  `locations/reminder` (the bar's new height and the tour's tab targets) green on iOS, tour and reminder
+  on Android, live on Android green up to the notification shade, where another app's "$" notification
+  trips the money check; `npm run smoke -- mobile` green on both. Design entry #47)*
+- [x] U3. Mobile: Add a student, family first, and Add a tutor as step flows — the Family step leads,
+  with a parent search (rows name their children) and "New parent" as a quick sheet inside the flow;
+  then the student, school and goal, a week of Morning / After school / Evening bands with the exact
+  grid behind "Fine-tune hours", their lessons, the price, Review and Add (one request with the
+  guardians); a tutor's Basics, Background, Teaching, Availability, Pay; what next after adding; a
+  "Finish tax setup" card on a tutor's record (admins, until the 1099 address and the SSN fact are
+  set); the create button, People's empty state and the welcome wizard open the flows; the flows and
+  the wizard rise as pushed screens (a sheet over a full-screen modal is invisible to VoiceOver on iOS)
+  *(built and tested 2026-10-15: typecheck, lint, jest (82 suites, 432 tests), export green;
+  `people/*`, `onboarding/*`, `shell/*` green on Android (15/15) and on iOS but for `people/tutor-view`
+  and `shell/surface-kit`, which fail on iOS on the committed code too; `npm run smoke -- mobile` green
+  on both. Design entry #48)*
+- [x] U4. Mobile: Record a lesson and the student's reflection — from Next up, a quick sheet filled
+  with the student, today, the times and the place ("It ran as planned", or "Different times"), then
+  "Write up the lesson"; from the create button (and Sessions' Tutoring button, the quick action, a
+  draft's Continue) a step flow: Student, When, then the write-up as four optional cards (Planned,
+  Covered, Homework, Progress) with a large Dictate button, autosaved as a draft as before; Finance
+  and editing a lesson keep the record sheet; the reflection as one question per card with five
+  faces and words, progress dots, the homework note and a thank-you; and the two iOS reds U3 left
+  (Maestro's reports inside Metro's watched folder) *(built and tested 2026-10-15: typecheck, lint,
+  jest (84 suites, 449 tests), export green; `sessions/*`, `home/*`, `dictation/*`, `shell/*`,
+  `dashboard/reflection`, `exposure/money-tutoring` green on iOS and Android (Android
+  `dictate-permission` once intermittent at its Profile step, green on re-run); `people/tutor-view`
+  and `shell/surface-kit` green on iOS; `npm run smoke -- mobile` green on both. Design entry #49)*
+- [x] U5. Mobile: Schedule a lesson, Record a payment, Assessment and Section editing — scheduling as a
+  step flow (Who, When, From when, Where as place cards with one of each kind at most, a Review said as
+  a sentence) from the create button, Schedule's button and the carousel's "Nothing scheduled",
+  editing kept on the sheet; the payment as a fitted quick sheet (the amount large, who filled from a
+  Billing row or the person's record with Change, method chips, More details); the assessment's
+  topics planned-first with a five-step pill that shows its word, the levels closed until opened; a
+  person's record in sections (Contact, Background or School and goal, Availability, Teaching or
+  Lessons and price, Pay and tax or Payment, Family), each with its own Edit opening only that section,
+  the whole form in the record's menu *(built and tested 2026-10-15: typecheck, lint, jest (88
+  suites, 474 tests), export green; `schedule/*`, `locations/schedule-locations`, `people/*`,
+  `billing/*`, `progress/*`, `forms/*`, `shell/create`, `exposure/student-controls`,
+  `exposure/narrow-audiences` green on iOS and Android (30 each, after the flow fixes in #50);
+  `npm run smoke -- mobile` green on both. Design entry #50)*
+- [x] U6. Mobile: the homes — every Home opens on a greeting on the organization's clock and Today
+  ("2 lessons today", "Next at 4:00 PM with Sofia", or a calm line; a cancelled lesson never next),
+  then one compact row of figures in sentence case (above the Tutoring/Finance tabs for the office
+  and tutors); a parent gets a card per child and a student their own (the next lesson, this month in
+  words with a small bar, a coral celebration for a topic mastered lately, once per topic on the
+  phone, stilled by reduce motion); a tutor gets "Finish write-up" for their draft from today, after
+  Next up; the role chips moved into the account sheet ("Home shows"); a small Home title. Also the
+  jest suite's blank renders (RNTL 14's async `fireEvent`/`unmount` left un-awaited) *(built and tested 2026-10-15: typecheck, lint, jest (90 suites, 512 tests), export green;
+  `home/*`, `dashboard/*`, `exposure/*`, `onboarding/{tour,wizard-admin}` and the other flows that read
+  Home's header (29) green on iOS and Android; `npm run smoke -- mobile` green on both. Design entry
+  #51)*
+- [ ] U2 revised. Mobile: the tab bar, option B (owner, 2026-10-15) — Home, Sessions · **+** ·
+  Progress, More: the "+" an amber disc in a hump that rises from the bar's centre (react-native-svg,
+  computed from the bar's width), a flat bar of four for parents and students; Schedule leaves the
+  bar and lives inside Sessions behind a Lessons | Schedule switch heading both screens (its route,
+  stack and links unchanged; Sessions lit while it is in front); the banner, toasts, the reminder and
+  the screens' foot clear the hump; the tour's Schedule step lights Sessions *(built 2026-10-15:
+  typecheck, lint, jest (93 suites, 523 tests), export green; flows updated (`shell/{navigation,create}`,
+  `schedule/*`, `locations/{reminder,schedule-locations}`, `sessions/live`, `exposure/live-surfaces`,
+  `onboarding/tour`, new `subflows/open-schedule`) but **unrun: device testing paused by the owner,
+  still owed**, with the screenshots. Design entry #52)*
+
 ## Phase 4 — Google sign-in
 
 - [ ] API: bearer sessions for the mobile app

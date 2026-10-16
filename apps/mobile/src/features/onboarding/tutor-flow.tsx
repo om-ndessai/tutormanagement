@@ -1,8 +1,9 @@
 // Ported from apps/web/src/features/onboarding/tutor-flow.tsx @ 1132322.
 //
-// Adding a tutor (Phase 26): who they are, then how they are paid, then when they can teach, then
-// their students. Each step is the app's own person form, showing just that part of it (`sections`)
-// -- the record is saved whole every time, so a step never clears what an earlier one set.
+// Adding a tutor (Phase 26): who they are, then their tax details and how they are paid, then their
+// students. Since UI upgrades U3 the first step is the Add a tutor flow (`/onboarding/add-tutor`, in
+// the wizard's own stack: basics, background, teaching, availability and pay); the second is the person form scoped to the tax fields
+// and payment handles (`sections`) -- the record is saved whole, so it never clears the rest.
 import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
@@ -13,12 +14,11 @@ import { backToStart, useAwaitedSheet } from './student-flow';
 import { useWizardFrame } from './wizard-layout';
 import { WizardHeading } from './wizard-screens';
 
-type Step = 'tutor' | 'financials' | 'availability' | 'pairing' | 'done';
+type Step = 'tutor' | 'financials' | 'pairing' | 'done';
 
 const STEPS: { key: Step; label: string }[] = [
   { key: 'tutor', label: 'Tutor' },
-  { key: 'financials', label: 'Financials' },
-  { key: 'availability', label: 'Availability' },
+  { key: 'financials', label: 'Tax and payment' },
   { key: 'pairing', label: 'Students' },
 ];
 
@@ -68,10 +68,7 @@ export function TutorFlow() {
                 icon="plus"
                 onPress={() =>
                   openSheet(
-                    {
-                      pathname: '/person-form',
-                      params: { preset: 'tutor', sections: 'identity,tutor-background' },
-                    },
+                    '/onboarding/add-tutor',
                     'person',
                     (id, name) => {
                       setTutor({ id, name });
@@ -87,8 +84,8 @@ export function TutorFlow() {
           }
         >
           <StepText>
-            Their name, the Google address they sign in with, a phone number, and their background: education,
-            school and area.
+            Their name and the Google address they sign in with, their background, when they can teach, and
+            what they are paid per hour.
           </StepText>
         </StepPanel>
       ) : null}
@@ -96,7 +93,7 @@ export function TutorFlow() {
       {step === 'financials' && tutor ? (
         <StepPanel
           testID="tutor-flow-financials"
-          title={`How ${tutor.name} is paid`}
+          title={`Tax and payment for ${tutor.name}`}
           actions={
             <>
               <Button
@@ -106,52 +103,22 @@ export function TutorFlow() {
                   openSheet(
                     {
                       pathname: '/person-form',
-                      params: { id: tutor.id, sections: 'tutor-financials,payment-handles' },
+                      params: { id: tutor.id, sections: 'tutor-tax,payment-handles' },
                     },
                     'person',
-                    () => complete('financials', 'availability'),
+                    () => complete('financials', 'pairing'),
                   )
                 }
               >
-                Set up financials
-              </Button>
-              {skip('availability')}
-            </>
-          }
-        >
-          <StepText>
-            Their default pay per hour, whether they are paid in advance, how they are paid (Zelle, Venmo),
-            their mailing address for the 1099, and whether the office holds their SSN — a tick, never the
-            number.
-          </StepText>
-        </StepPanel>
-      ) : null}
-
-      {step === 'availability' && tutor ? (
-        <StepPanel
-          testID="tutor-flow-availability"
-          title={`When ${tutor.name} can teach`}
-          actions={
-            <>
-              <Button
-                testID="tutor-flow-set-availability"
-                mode="contained"
-                onPress={() =>
-                  openSheet(
-                    { pathname: '/person-form', params: { id: tutor.id, sections: 'tutor-availability' } },
-                    'person',
-                    () => complete('availability', 'pairing'),
-                  )
-                }
-              >
-                Set availability
+                Set up tax and payment
               </Button>
               {skip('pairing')}
             </>
           }
         >
           <StepText>
-            The hours they are free each week, whether they teach online, and their longest lesson.
+            Their mailing address for the 1099, whether the office holds their SSN — a tick, never the
+            number — and how they are paid (Zelle, Venmo).
           </StepText>
         </StepPanel>
       ) : null}

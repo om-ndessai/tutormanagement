@@ -13,8 +13,7 @@ import { Button, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
-import { IconButton } from '@/components/icon-button';
-import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { useBottomOverlap } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -40,7 +39,7 @@ export function PeopleScreen() {
   const { user: viewer } = useAuth();
   const brand = useBrand();
   const theme = useAppTheme();
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
   const isAdmin = viewer?.roles.includes('admin') ?? false;
   const [filters, setFilters] = useState<PeopleFilterState>(INITIAL);
   const debouncedSearch = useDebouncedValue(filters.search.trim());
@@ -109,7 +108,14 @@ export function PeopleScreen() {
     }
   }
 
-  const addUser = () => router.push('/person-form');
+  // Filtered to students or tutors, the empty directory's next step is that role's own step flow
+  // (UI upgrades U3); anyone else is the full person form.
+  const add =
+    filters.role === 'student'
+      ? { label: 'Add a student', go: () => router.push('/add-student') }
+      : filters.role === 'tutor'
+        ? { label: 'Add a tutor', go: () => router.push('/add-tutor') }
+        : { label: 'Add user', go: () => router.push('/person-form') };
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
@@ -117,8 +123,8 @@ export function PeopleScreen() {
       <PageIntro testID="people-description">
         {`Everyone at ${brand.name}. A person can hold more than one role.`}
       </PageIntro>
-      {/* Adding is the header's +; the in-page button is the empty directory's next step only
-          (ux-audit F-15). */}
+      {/* Adding is the tab bar's create button (UI upgrades U2); the in-page button is the empty
+          directory's next step only (ux-audit F-15). */}
       <PeopleFilters
         value={filters}
         onChange={(next) => setFilters((current) => ({ ...current, ...next }))}
@@ -160,18 +166,6 @@ export function PeopleScreen() {
       <Stack.Screen
         options={{
           title: 'Users',
-          headerRight: isAdmin
-            ? () => (
-                <IconButton
-                  testID="people-add"
-                  icon="plus"
-                  size={24}
-                  accessibilityLabel="Add user"
-                  style={{ margin: 0 }}
-                  onPress={addUser}
-                />
-              )
-            : undefined,
         }}
       />
       <FlashList
@@ -190,8 +184,8 @@ export function PeopleScreen() {
               title="No users match these filters."
               action={
                 isAdmin ? (
-                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={addUser}>
-                    Add user
+                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={add.go}>
+                    {add.label}
                   </Button>
                 ) : undefined
               }
@@ -208,7 +202,7 @@ export function PeopleScreen() {
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         style={{ flex: 1, backgroundColor: theme.colors.background }}
-        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
+        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bottomOverlap }}
       />
       {dialog}
     </>

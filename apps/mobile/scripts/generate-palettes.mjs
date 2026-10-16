@@ -5,8 +5,11 @@
 // OKLCH, light and dark. React Native cannot read CSS or OKLCH, so this script applies the same
 // cascade the browser does and writes sRGB hex into src/theme/palettes.generated.ts.
 //
-//   light, palette p = :root  <  :root[data-palette=p]
+//   light, palette p = :root  <  :root[data-palette=p]  <  :root[data-palette]
 //   dark,  palette p = :root  <  .dark  <  :root[data-palette=p]  <  .dark:root[data-palette=p]
+//                      <  :root[data-palette]  <  .dark:root[data-palette]
+//
+// The last two are the warm foundation, laid over every palette (UI upgrades U1).
 //
 // (`:root[data-palette]` outranks `.dark` on specificity, which is why every palette restates
 // its dark tokens.) 'plum', the institute's own, is the unqualified :root.
@@ -29,8 +32,9 @@ export function parseBlocks(css) {
   const re = /([^{}]+)\{([^{}]*)\}/g;
   let m;
   while ((m = re.exec(clean))) {
-    // Drop any statements (@import ...;) that precede the selector.
-    const selector = m[1].split(';').pop().trim();
+    // Drop any statements (@import ...;) that precede the selector. A selector list is one
+    // block per selector, as the browser applies it.
+    const selectors = m[1].split(';').pop().split(',').map((part) => part.trim());
     const decls = {};
     for (const d of m[2].split(';')) {
       const i = d.indexOf(':');
@@ -38,7 +42,7 @@ export function parseBlocks(css) {
       const name = d.slice(0, i).trim();
       if (name.startsWith('--')) decls[name] = d.slice(i + 1).trim();
     }
-    blocks.push({ selector, decls });
+    for (const selector of selectors) blocks.push({ selector, decls });
   }
   return blocks;
 }
@@ -112,9 +116,10 @@ export function generate(css) {
   for (const p of PALETTES) {
     const own = p === 'plum' ? [] : [`:root[data-palette='${p}']`];
     const ownDark = p === 'plum' ? [] : [`.dark:root[data-palette='${p}']`];
+    // The warm foundation (UI upgrades U1) is laid over every palette, after its own blocks.
     const schemes = {
-      light: merged(blocks, [':root', ...own]),
-      dark: merged(blocks, [':root', '.dark', ...own, ...ownDark]),
+      light: merged(blocks, [':root', ...own, ':root[data-palette]']),
+      dark: merged(blocks, [':root', '.dark', ...own, ...ownDark, ':root[data-palette]', '.dark:root[data-palette]']),
     };
     result[p] = {};
     for (const [scheme, decls] of Object.entries(schemes)) {

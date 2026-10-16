@@ -16,7 +16,7 @@ import { Chip, Icon, Text } from 'react-native-paper';
 import { ConnectivityBanner } from '@/components/connectivity';
 import { readableDates } from '@/features/teaching/session-format';
 import { PageIntro } from '@/components/page-intro';
-import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { useBottomOverlap } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { formatInstant } from '@/features/users/people-model';
@@ -38,7 +38,7 @@ import { useCommentFeedPages } from './use-comment-feed-pages';
  */
 export function CommentsScreen() {
   const theme = useAppTheme();
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
   const [targetType, setTargetType] = useState<CommentTargetType | undefined>(undefined);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -154,7 +154,7 @@ export function CommentsScreen() {
         onRefresh={() => void onRefresh()}
         contentInsetAdjustmentBehavior="automatic"
         style={{ flex: 1, backgroundColor: theme.colors.background }}
-        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
+        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bottomOverlap }}
       />
     </>
   );

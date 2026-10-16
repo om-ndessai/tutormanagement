@@ -1,6 +1,7 @@
 // Ported from apps/web/src/components/layout/focus-notice.tsx @ 1132322
 import { View } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -28,7 +29,7 @@ export function FocusNotice({
   if (!active) return null;
 
   return (
-    <Card mode="outlined" testID="focus-notice" style={{ borderRadius: radius.lg }}>
+    <OutlinedCard testID="focus-notice" style={{ borderRadius: radius.lg }}>
       <View
         style={{
           flexDirection: 'row',
@@ -49,6 +50,6 @@ export function FocusNotice({
           Show all
         </Button>
       </View>
-    </Card>
+    </OutlinedCard>
   );
 }

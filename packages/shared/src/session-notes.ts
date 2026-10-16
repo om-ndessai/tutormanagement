@@ -223,7 +223,7 @@ export const REFLECTION_QUESTIONS: readonly {
     centred: false,
     ask: 'Did you learn anything new?',
     askAbout: (name) => `Did ${name} learn anything new?`,
-    labels: { 1: 'Nothing new', 2: 'A little', 3: 'Some', 4: 'Quite a lot', 5: 'A lot' },
+    labels: { 1: 'Not really', 2: 'A little', 3: 'Some', 4: 'A lot', 5: 'Loads!' },
   },
   {
     key: 'difficulty',
@@ -231,7 +231,7 @@ export const REFLECTION_QUESTIONS: readonly {
     centred: true,
     ask: 'How difficult was the topic?',
     askAbout: (name) => `How difficult was the topic for ${name}?`,
-    labels: { 1: 'Far too easy', 2: 'A bit easy', 3: 'About right', 4: 'A bit hard', 5: 'Far too hard' },
+    labels: { 1: 'Much too easy', 2: 'A bit easy', 3: 'About right', 4: 'A bit hard', 5: 'Much too hard' },
   },
   {
     key: 'understanding',
@@ -239,13 +239,7 @@ export const REFLECTION_QUESTIONS: readonly {
     centred: false,
     ask: 'Has your understanding of the topic improved?',
     askAbout: (name) => `Has ${name}’s understanding of the topic improved?`,
-    labels: {
-      1: 'No better',
-      2: 'A little better',
-      3: 'Somewhat better',
-      4: 'Clearly better',
-      5: 'Much better',
-    },
+    labels: { 1: 'Not really', 2: 'A little', 3: 'Some', 4: 'A lot', 5: 'Loads!' },
   },
   {
     key: 'pace',
@@ -253,7 +247,7 @@ export const REFLECTION_QUESTIONS: readonly {
     centred: true,
     ask: 'How was the pace?',
     askAbout: (name) => `How was the pace for ${name}?`,
-    labels: { 1: 'Far too slow', 2: 'A bit slow', 3: 'Just right', 4: 'A bit fast', 5: 'Far too fast' },
+    labels: { 1: 'Much too slow', 2: 'A bit slow', 3: 'About right', 4: 'A bit fast', 5: 'Much too fast' },
   },
 ];
 

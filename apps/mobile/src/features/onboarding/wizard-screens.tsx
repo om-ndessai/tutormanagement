@@ -175,7 +175,7 @@ function Choice({
                 testID={`${testID}-badge`}
                 compact
                 icon={badge === 'Done' ? 'check' : undefined}
-                textStyle={{ fontSize: 11, marginVertical: 0 }}
+                textStyle={{ fontSize: 12, marginVertical: 0 }}
               >
                 {badge}
               </Chip>

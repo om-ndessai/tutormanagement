@@ -13,7 +13,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 30000
 - tapOn:
     id: tabs-finance
@@ -75,7 +75,7 @@ tags:
     id: tabs-tutoring
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: dashboard-section-tutoring-sessions
     timeout: 10000
 - assertNotVisible:
     id: session-money

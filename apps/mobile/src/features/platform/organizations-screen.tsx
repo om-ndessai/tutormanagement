@@ -5,7 +5,8 @@ import { ORG_PALETTE_LABELS, type OrganizationListItem } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Card, Chip, Icon, Text, TouchableRipple } from 'react-native-paper';
+import { Button, Chip, Icon, Text, TouchableRipple } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
@@ -75,9 +76,8 @@ export function OrganizationsScreen() {
       ) : (
         <View style={{ gap: space.sm }} accessibilityLabel="Organizations">
           {rows.map((org) => (
-            <Card
+            <OutlinedCard
               key={org.id}
-              mode="outlined"
               style={{ borderRadius: radius.lg, opacity: org.archived_at ? 0.7 : 1 }}
             >
               <TouchableRipple
@@ -115,7 +115,7 @@ export function OrganizationsScreen() {
                   <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} />
                 </View>
               </TouchableRipple>
-            </Card>
+            </OutlinedCard>
           ))}
         </View>
       )}

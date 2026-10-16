@@ -15,9 +15,8 @@ import { Button, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
-import { IconButton } from '@/components/icon-button';
 import { FocusNotice } from '@/components/focus-notice';
-import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { useBottomOverlap } from '@/components/live-banner-inset';
 import { SecureMoney } from '@/components/secure-money';
 import { SwipeRow } from '@/components/swipe-row';
 import { Skeleton } from '@/components/skeleton';
@@ -34,6 +33,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { CancelledLessonsPanel } from '@/features/schedules/cancelled-lessons-panel';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
+import { SessionsSwitch } from '@/features/shell/sessions-switch';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments, useSession } from './api';
@@ -99,7 +99,11 @@ export function SessionsScreen() {
 
   // Recording is for tutors and the office. The sheet shows money only when opened from Finance.
   const mayRecord = isTutor || isAdmin;
-  const openRecord = () => router.push({ pathname: '/record-session', params: { tab } });
+  // Tutoring records through the step flow (UI upgrades U4); Finance keeps the sheet and its money.
+  const openRecord = () =>
+    tab === 'finance'
+      ? router.push({ pathname: '/record-session', params: { tab } })
+      : router.push('/record-lesson');
   // A live lesson is a tutor's, one at a time: hidden while one is running (the banner has it).
   const active = useActiveSession();
   // The Start sheet's own query: a tutor with no student of their own (a tutor who only parents
@@ -107,7 +111,7 @@ export function SessionsScreen() {
   const ownPairings = useAssignments({ tutor_user_id: isTutor ? user?.id : undefined });
   const teaches = isTutor && (ownPairings.data?.data.length ?? 0) > 0;
   const mayStart = teaches && active.isSuccess && !active.data.data.mine;
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
 
   async function onRefresh() {
     setRefreshing(true);
@@ -155,20 +159,12 @@ export function SessionsScreen() {
   const header = (
     <View style={{ gap: space.lg, paddingBottom: space.md }}>
       <ConnectivityBanner />
+      {/* Schedule lives inside Sessions (the tab bar, revised 2026-10-15). */}
+      <SessionsSwitch current="lessons" />
       <Stack.Screen
         options={{
           headerRight: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {mayRecord ? (
-                <IconButton
-                  testID="sessions-record"
-                  icon="plus"
-                  size={24}
-                  accessibilityLabel="Record a session"
-                  style={{ margin: 0 }}
-                  onPress={openRecord}
-                />
-              ) : null}
               <SearchButton />
               <AccountButton />
             </View>
@@ -201,7 +197,7 @@ export function SessionsScreen() {
         <DraftsPanel
           today={today}
           onEdit={(draft) =>
-            router.push({ pathname: '/record-session', params: { draft: draft.id, tab: 'tutoring' } })
+            router.push({ pathname: '/record-lesson', params: { draft: draft.id } })
           }
         />
       ) : null}
@@ -352,7 +348,7 @@ export function SessionsScreen() {
       contentInsetAdjustmentBehavior="automatic"
       keyboardShouldPersistTaps="handled"
       style={{ flex: 1, backgroundColor: theme.colors.background }}
-      contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
+      contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bottomOverlap }}
     />
   );
 }

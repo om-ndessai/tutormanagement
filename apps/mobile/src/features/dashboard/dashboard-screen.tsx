@@ -19,14 +19,15 @@ import { useTourScroller } from '@/features/onboarding/tour-targets';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
 import { useAuth } from '@/providers/auth-provider';
-import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { useDashboard } from './api';
 import { AdminFinance, TutorFinance } from './finance-views';
 import { ParentView } from './parent-balance-view';
+import { publishHomeRole, onHomeRoleChosen } from './home-role';
+import { Greeting, TodayCard, useToday, type TodayScope } from './home-top';
 import { RoleSelector } from './role-selector';
 import { StudentView } from './student-view';
-import { AdminTutoring, TutorTutoring } from './tutoring-views';
+import { AdminFigures, AdminTutoring, TutorFigures, TutorTutoring } from './tutoring-views';
 import { onSubjectChosen } from './view-as';
 import { ViewAsBanner } from './view-as-banner';
 
@@ -67,7 +68,6 @@ function HeaderActions({ isAdmin, viewingId }: { isAdmin: boolean; viewingId: st
  */
 export function DashboardScreen() {
   const { user } = useAuth();
-  const brand = useBrand();
   const theme = useAppTheme();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
@@ -107,6 +107,20 @@ export function DashboardScreen() {
   }, [reportDashboard, shownRole, viewingId]);
   const tourScroller = useTourScroller();
 
+  // The account sheet's role chips (U6): what Home shows of the reader's own, and their choice.
+  const ownRoles = viewingId ? null : (subject?.roles ?? null);
+  const ownKey = ownRoles?.join(',');
+  useEffect(() => {
+    publishHomeRole(
+      ownKey && shownRole ? { roles: ownKey.split(',') as UserRole[], current: shownRole } : null,
+    );
+  }, [ownKey, shownRole]);
+  useEffect(() => () => publishHomeRole(null), []);
+  useEffect(
+    () => onHomeRoleChosen((role) => navigation.setParams({ role, tab: undefined } as never)),
+    [navigation],
+  );
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -133,21 +147,31 @@ export function DashboardScreen() {
       <Stack.Screen
         options={{ headerRight: () => <HeaderActions isAdmin={isAdmin} viewingId={viewingId} /> }}
       />
-      <View style={{ gap: 2 }}>
-        <Text testID={viewingOther ? 'dashboard-heading' : 'home-user'} variant="titleMedium">
-          {viewingOther && subject ? `${subject.full_name}'s dashboard` : user?.full_name}
-        </Text>
-        {/* The organization's name is the account sheet's too; under large text it gives its
-            lines to the dashboard (ux-audit F-12, F-15). */}
-        {viewingOther || !large ? (
-          <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-            {viewingOther ? 'You are seeing the portal exactly as they see it.' : brand.name}
+      {viewingOther && subject ? (
+        <View style={{ gap: 2 }}>
+          <Text testID="dashboard-heading" variant="titleMedium">
+            {`${subject.full_name}'s dashboard`}
           </Text>
-        ) : null}
-      </View>
+          {large ? null : (
+            <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+              You are seeing the portal exactly as they see it.
+            </Text>
+          )}
+        </View>
+      ) : (
+        <Greeting />
+      )}
       {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
-      {subject && response ? <RoleSelector roles={subject.roles} current={response.role} /> : null}
-      <RoleDashboard query={query} subjectId={viewingOther ? subject?.user_id : undefined} />
+      {/* The reader's own roles are chosen in the account sheet (UI upgrades U6); while viewing
+          somebody else, their roles stay here, under whose they are. */}
+      {viewingOther && subject && response ? (
+        <RoleSelector roles={subject.roles} current={response.role} />
+      ) : null}
+      <RoleDashboard
+        query={query}
+        subjectId={viewingOther ? subject?.user_id : undefined}
+        mine={!viewingId}
+      />
       {/* Phase 33: a lesson about to start, where its locations ask for a reminder. Never while
           viewing someone else. */}
       {!viewingId ? <LessonReminderSheet /> : null}
@@ -155,13 +179,22 @@ export function DashboardScreen() {
   );
 }
 
+/** Today for the office or a tutor: above the tabs, no money. */
+function ScopedToday({ scope }: { scope: TodayScope }) {
+  const today = useToday(scope);
+  return <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />;
+}
+
 function RoleDashboard({
   query,
   subjectId,
+  mine,
 }: {
   query: ReturnType<typeof useDashboard>;
   /** The person being viewed, when it is not the reader. */
   subjectId: string | undefined;
+  /** The reader's own dashboard (not an admin's "view as"). */
+  mine: boolean;
 }) {
   const { data, isPending, isError, error, refetch } = query;
   const response = data?.data;
@@ -173,21 +206,36 @@ function RoleDashboard({
   switch (view.kind) {
     case 'admin':
       return (
-        <TutoringFinanceTabs
-          tutoring={<AdminTutoring data={view} />}
-          finance={<AdminFinance data={view} />}
-        />
+        <>
+          <ScopedToday scope={{ who: 'both' }} />
+          <AdminFigures data={view} />
+          <TutoringFinanceTabs
+            tutoring={<AdminTutoring data={view} />}
+            finance={<AdminFinance data={view} />}
+          />
+        </>
       );
     case 'tutor':
       return (
-        <TutoringFinanceTabs
-          tutoring={<TutorTutoring data={view} />}
-          finance={<TutorFinance data={view} subjectId={subjectId} />}
-        />
+        <>
+          {/* Their own teaching only, even for a tutor who also parents (as the carousel). */}
+          <ScopedToday scope={{ who: 'student', tutorUserId: view.earnings.user_id }} />
+          <TutorFigures data={view} />
+          <TutoringFinanceTabs
+            tutoring={<TutorTutoring data={view} mine={mine} />}
+            finance={<TutorFinance data={view} subjectId={subjectId} />}
+          />
+        </>
       );
     case 'parent':
       return <ParentView data={view} />;
     case 'student':
-      return <StudentView data={view} />;
+      return (
+        <StudentView
+          data={view}
+          studentId={response.subject.user_id}
+          studentName={response.subject.full_name}
+        />
+      );
   }
 }

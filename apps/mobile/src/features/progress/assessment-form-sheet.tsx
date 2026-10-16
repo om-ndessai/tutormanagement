@@ -33,9 +33,9 @@ import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
-import { useCreateAssessment, useStudentProgress, useTopicIndex, useUpdateAssessment } from './api';
+import { useCreateAssessment, useCurriculum, useStudentProgress, useUpdateAssessment } from './api';
 import { RatingLegend } from './rating';
-import { LevelPicker, TopicRatingsEditor } from './topic-pickers';
+import { AssessmentTopicsEditor, LevelPicker } from './topic-pickers';
 
 function close() {
   if (router.canGoBack()) router.back();
@@ -89,7 +89,8 @@ export function AssessmentForm({
   const muted = theme.tokens.mutedForeground;
   const toast = useToast();
   const today = organizationToday(useOrgTimeZone());
-  const { levels, topics } = useTopicIndex();
+  const { data } = useCurriculum();
+  const levels = data?.data ?? [];
   const { student } = progress;
 
   const [assessedOn, setAssessedOn] = useState(existing?.assessed_on ?? today);
@@ -218,11 +219,12 @@ export function AssessmentForm({
         </View>
         <RatingLegend />
         {levels.length > 0 ? (
-          <TopicRatingsEditor
+          // The plan's topics first, then each level, closed until opened (UI upgrades U5).
+          <AssessmentTopicsEditor
             levels={levels}
             ratings={ratings}
             onChange={setRatings}
-            initialLevel={level || (existing?.ratings[0] ? topics.get(existing.ratings[0].topic_id)?.level_id : undefined)}
+            plannedIds={progress.plan?.topic_ids ?? []}
           />
         ) : (
           <ListSkeleton label="Loading the curriculum…" count={4} height={56} />

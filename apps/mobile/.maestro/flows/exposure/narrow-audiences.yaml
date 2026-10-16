@@ -65,7 +65,7 @@ env:
       LINK: aimtrue://people/${PRIYA}
 - extendedWaitUntil:
     visible:
-      id: person-section-tutor
+      id: person-section-background
     timeout: 20000
 - assertNotVisible:
     id: person-menu

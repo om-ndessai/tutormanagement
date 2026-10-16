@@ -1,5 +1,5 @@
 import { upcoming } from '@/test/fixtures';
-import { START_LEAD_MINUTES, lessonAtHand, nextUpActions } from './next-up-actions';
+import { START_LEAD_MINUTES, lessonAtHand, nextUpActions, placeFor, recordHref } from './next-up-actions';
 
 const TODAY = '2026-10-08';
 const lesson = upcoming({ occurs_on: TODAY, start_time: '16:00', end_time: '17:00' });
@@ -57,5 +57,34 @@ describe('nextUpActions', () => {
     const none = { start: false, record: false, cancel: false };
     expect(nextUpActions({ ...base, userId: 'tutor-2', isAdmin: false })).toEqual(none);
     expect(nextUpActions({ ...base, userId: undefined, isAdmin: false })).toEqual(none);
+  });
+});
+
+describe('the place and the record link (UI upgrades U4)', () => {
+  const place = (kind: 'physical' | 'virtual', name: string) => ({ kind, name }) as never;
+
+  it("names the place of the lesson's kind, else the first, else the old free text", () => {
+    const both = { ...lesson, locations: [place('physical', 'Library'), place('virtual', 'Zoom room')] };
+    expect(placeFor(both)).toBe('Library');
+    expect(placeFor({ ...both, mode: 'virtual' })).toBe('Zoom room');
+    expect(placeFor({ ...lesson, mode: 'virtual', locations: [place('physical', 'Library')] })).toBe(
+      'Library',
+    );
+    expect(placeFor({ ...lesson, locations: [], location: 'Room 2' })).toBe('Room 2');
+    expect(placeFor({ ...lesson, locations: [], location: null })).toBeNull();
+  });
+
+  it('opens the quick sheet with the lesson filled in, and no place when there is none', () => {
+    expect(recordHref({ ...lesson, locations: [], location: null })).toEqual({
+      pathname: '/record-as-planned',
+      params: {
+        student: lesson.student_user_id,
+        tutor: lesson.tutor_user_id,
+        date: TODAY,
+        start: '16:00',
+        end: '17:00',
+        mode: lesson.mode,
+      },
+    });
   });
 });

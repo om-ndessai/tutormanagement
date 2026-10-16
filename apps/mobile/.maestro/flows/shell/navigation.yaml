@@ -1,5 +1,8 @@
-# The app shell: the same tabs for everyone, More reaching every other page, the account sheet
-# with appearance and the organization switcher (whose switch rebrands the app).
+# The app shell: the same tabs for everyone (Home, Sessions, Progress, More), the create button in
+# the bar's hump for anyone with something to create (UI upgrades U2, revised 2026-10-15; its sheet
+# is shell/create), Schedule inside Sessions behind Lessons | Schedule, More reaching every other
+# page, the account sheet with appearance and the organization switcher (whose switch rebrands the
+# app).
 appId: ${APP_ID}
 tags:
   - smoke
@@ -13,13 +16,41 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
+- assertVisible:
+    id: create-button
 - takeScreenshot: shell-home
 - tapOn: 'Sessions'
 - assertVisible:
     id: screen-sessions
-- tapOn: 'Schedule'
-- assertVisible:
-    id: screen-schedule
+# Schedule lives inside Sessions (the tab bar, revised 2026-10-15): Lessons | Schedule heads both,
+# and the Sessions tab brings Lessons back.
+- tapOn:
+    id: sessions-switch-schedule
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 10000
+- assertNotVisible:
+    id: tab-schedule
+- takeScreenshot: shell-schedule
+- tapOn:
+    id: sessions-switch-lessons
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
+- tapOn:
+    id: sessions-switch-schedule
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 10000
+- tapOn:
+    id: tab-sessions
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 10000
 - tapOn: 'Progress'
 - assertVisible:
     id: screen-progress

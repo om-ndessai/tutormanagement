@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/onboarding/tour.tsx @ 1132322. The page dimmed, one part of
 // it lit, and a card saying what that part does: Back, Next, Skip tour, Finish. The web's
-// `data-tour` elements are views registered with `useTourTarget`; the tab bar, which the system
-// draws, is lit from where its tabs sit.
+// `data-tour` elements are views registered with `useTourTarget`, the tabs among them
+// (`tab-<index>`, registered by the app's tab bar).
 import type { TourOutcome } from '@tmi/shared';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
@@ -18,6 +18,7 @@ import { haptics } from '@/lib/haptics';
 import { withAlpha } from '@/theme/alpha';
 import { useAppTheme } from '@/providers/theme-provider';
 import { motion, radius, space } from '@/theme/tokens';
+import { TAB_BAR_ABOVE_INSET } from '@/features/teaching/live-session';
 import { placementOf, TAB_COUNT, type TourStep } from './tour-steps';
 import {
   measureView,
@@ -34,19 +35,12 @@ const TOP_CLEAR = 70;
 const BOTTOM_CLEAR = 300;
 
 /**
- * Where a tab sits in the system's tab bar: Material 3's 80dp bar across the bottom on Android;
- * on iOS the floating bar, inset from the sides. An approximation -- the system draws the bar
- * and exposes no frames -- close enough to say "this one".
+ * Where a tab sits in the app's tab bar, docked across the bottom (`TAB_BAR_ABOVE_INSET` tall),
+ * when its view cannot be measured: an approximation that ignores the create button's slot, close
+ * enough to say "this one". The registered tab view (`tab-<index>`) is used whenever it is there.
  */
 export function tabRect(index: number, width: number, height: number, insets: EdgeInsets): WindowRect {
-  if (Platform.OS === 'ios') {
-    const side = 20;
-    const barHeight = 62;
-    const bottom = Math.max(insets.bottom - 12, 8);
-    const tab = (width - side * 2) / TAB_COUNT;
-    return { x: side + tab * index, y: height - bottom - barHeight, width: tab, height: barHeight };
-  }
-  const barHeight = 80;
+  const barHeight = TAB_BAR_ABOVE_INSET[Platform.OS === 'ios' ? 'ios' : 'android'];
   const tab = width / TAB_COUNT;
   return { x: tab * index, y: height - insets.bottom - barHeight, width: tab, height: barHeight };
 }
@@ -136,7 +130,11 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
       const where = placementOf(step.target);
       let rect: WindowRect | null = null;
       if (where.kind === 'tab') {
-        rect = tabRect(where.index, width, height, insets);
+        // The app draws the tab bar (U2) and registers each tab as `tab-<index>`; the computed
+        // rect is the fallback while it is not laid out.
+        rect =
+          (await resolveTarget(registry, `tab-${where.index}`))?.rect ??
+          tabRect(where.index, width, height, insets);
       } else {
         const found = await resolveTarget(registry, where.id);
         if (found) {
@@ -292,8 +290,11 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
           </Text>
           <Text testID="tour-body" variant="bodyMedium">
             {step.body}
-            {placement?.kind === 'tab' && placement.underMore ? (
-              <Text style={{ color: theme.tokens.mutedForeground }}> You will find it under More.</Text>
+            {placement?.kind === 'tab' && placement.within ? (
+              <Text style={{ color: theme.tokens.mutedForeground }}>
+                {' '}
+                You will find it under {placement.within}.
+              </Text>
             ) : null}
           </Text>
           <View style={styles.actions}>

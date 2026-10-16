@@ -5,7 +5,8 @@ import { SESSION_MODE_LABELS, formatDuration, type TutoringSession } from '@tmi/
 import { router, Stack } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
@@ -91,17 +92,17 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
 
       {/* Finance only: the lesson's money from the reader's side. */}
       {showMoney && session.money_view !== 'none' ? (
-        <Card mode="outlined" style={{ borderRadius: radius.lg }}>
+        <OutlinedCard style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg, flexDirection: 'row', justifyContent: 'space-between' }}>
             <PartHeading>Money</PartHeading>
             <SessionMoney session={session} />
           </View>
-        </Card>
+        </OutlinedCard>
       ) : null}
 
       {/* The write-up, the student's reflection and the assessments (Phases 23 and 25). No money
           here on either tab: this is what a tutor reads with the student beside them. */}
-      <Card mode="outlined" style={{ borderRadius: radius.lg }}>
+      <OutlinedCard style={{ borderRadius: radius.lg }}>
         <View style={{ padding: space.lg, gap: space.lg }}>
           {hasWrittenNotes(session) ? (
             <SessionNotesView session={session} />
@@ -115,7 +116,7 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
           ) : null}
           <AssessmentsView assessments={session.assessments} />
         </View>
-      </Card>
+      </OutlinedCard>
 
       {/* What the reader thought: their own assessment (never the student's -- they reflect), and
           the student's reflection for whoever may enter it. */}

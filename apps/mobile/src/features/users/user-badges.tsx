@@ -81,7 +81,7 @@ function Badge({
         flexShrink: 0,
       }}
     >
-      <Text style={{ fontSize: 11, fontWeight: '600', color }}>{label}</Text>
+      <Text style={{ fontSize: 12, fontWeight: '600', color }}>{label}</Text>
     </View>
   );
 }
@@ -124,7 +124,7 @@ export function DeletedBadge({ testID }: { testID?: string }) {
       label="Deactivated"
       background="transparent"
       color={theme.tokens.mutedForeground}
-      borderColor={theme.colors.outline}
+      borderColor={theme.colors.outlineVariant}
       dashed
     />
   );

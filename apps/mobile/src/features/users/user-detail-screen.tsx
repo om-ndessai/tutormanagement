@@ -2,7 +2,6 @@
 // pushed screen, with the directory's row actions in its header for an admin.
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
 import { Divider, Menu } from 'react-native-paper';
 
 import { IconButton } from '@/components/icon-button';
@@ -12,7 +11,7 @@ import { Screen } from '@/components/screen';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { useUserDetail } from './api';
-import { canActOn } from './people-model';
+import { canActOn, personPaymentPrefills } from './people-model';
 import { useUserActions } from './use-user-actions';
 import { UserDetailView } from './user-detail-view';
 
@@ -51,35 +50,48 @@ export function UserDetailScreen() {
         options={{
           title: person?.full_name ?? 'User',
           headerRight:
-            person && isAdmin
+            person && isAdmin && (canAct || !isDeleted)
               ? () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    {/* Admins only, as the API: the person themselves asks the office. */}
-                    {!isDeleted ? (
+                  // Admins only, as the API: the person themselves asks the office. Each section of the
+                  // record has its own Edit (UI upgrades U5); the whole form stays here, for roles,
+                  // status and changes across several sections.
+                  <Menu
+                    visible={menuOpen}
+                    onDismiss={() => setMenuOpen(false)}
+                    anchor={
                       <IconButton
-                        testID="person-edit"
-                        icon="pencil-outline"
+                        testID="person-menu"
+                        icon="dots-horizontal-circle-outline"
                         size={24}
-                        accessibilityLabel={`Edit ${person.full_name}`}
+                        accessibilityLabel={`Actions for ${person.full_name}`}
                         style={{ margin: 0 }}
-                        onPress={() => router.push({ pathname: '/person-form', params: { id: person.id } })}
+                        onPress={() => setMenuOpen(true)}
+                      />
+                    }
+                  >
+                    {!isDeleted ? (
+                      <Menu.Item
+                        testID="person-edit"
+                        leadingIcon="pencil-outline"
+                        title="Edit everything"
+                        onPress={run(() => router.push({ pathname: '/person-form', params: { id: person.id } }))}
                       />
                     ) : null}
-                    {canAct ? (
-                      <Menu
-                        visible={menuOpen}
-                        onDismiss={() => setMenuOpen(false)}
-                        anchor={
-                          <IconButton
-                            testID="person-menu"
-                            icon="dots-horizontal-circle-outline"
-                            size={24}
-                            accessibilityLabel={`Actions for ${person.full_name}`}
-                            style={{ margin: 0 }}
-                            onPress={() => setMenuOpen(true)}
+                    {/* Finance: who it is to or from comes with the sheet (U5). */}
+                    {!isDeleted
+                      ? personPaymentPrefills(person).map((prefill) => (
+                          <Menu.Item
+                            key={prefill.key}
+                            testID={`person-record-payment-${prefill.key}`}
+                            leadingIcon="cash-plus"
+                            title={prefill.title}
+                            onPress={run(() => router.push({ pathname: '/payment-form', params: prefill.params }))}
                           />
-                        }
-                      >
+                        ))
+                      : null}
+                    {canAct ? (
+                      <>
+                        {!isDeleted ? <Divider /> : null}
                         {isDeleted ? (
                           <Menu.Item
                             testID="person-restore"
@@ -103,9 +115,9 @@ export function UserDetailScreen() {
                           titleStyle={{ color: theme.colors.error }}
                           onPress={run(() => hardDelete(person))}
                         />
-                      </Menu>
+                      </>
                     ) : null}
-                  </View>
+                  </Menu>
                 )
               : undefined,
         }}

@@ -13,7 +13,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { CHIP_HIT_SLOP, MIN_TARGET, radius, space } from '@/theme/tokens';
 import { countByLevel, moveTopic, toggleTopic } from './progress-model';
-import { RatingChip, RatingPicker, TopicName } from './rating';
+import { RatingChip, RatingPill, TopicName } from './rating';
 
 const NONE = 'none';
 
@@ -122,25 +122,36 @@ function LevelHeading({ level }: { level: CurriculumLevel }) {
 }
 
 /**
- * Scores topics one level at a time: "pick topic 10 from level 3 and mark it 1". Choosing another
- * level keeps what was scored elsewhere, and the chips show every level's count so far.
+ * The assessment's topic scores (UI upgrades U5): the topics of the student's learning plan first,
+ * each with a five-step pill, then every level of the ladder collapsed until it is opened -- a level
+ * says how many of its topics are rated, so a score in a closed level is never lost from sight.
+ * Opening one level keeps the others as they were. A topic in the plan is rated in the plan's list
+ * only, so no topic has two pills.
  */
-export function TopicRatingsEditor({
+export function AssessmentTopicsEditor({
   levels,
   ratings,
   onChange,
-  initialLevel,
+  plannedIds = [],
 }: {
   levels: CurriculumLevel[];
   ratings: Map<string, Rating>;
   onChange: (next: Map<string, Rating>) => void;
-  initialLevel?: string;
+  /** The active plan's topics, in teaching order. */
+  plannedIds?: readonly string[];
 }) {
   const theme = useAppTheme();
-  const [levelId, setLevelId] = useState(initialLevel || levels[0]?.id || '');
-  const level = levels.find((candidate) => candidate.id === levelId);
+  const muted = theme.tokens.mutedForeground;
+  const [open, setOpen] = useState<ReadonlySet<string>>(new Set());
+  const planned = useMemo(() => new Set(plannedIds), [plannedIds]);
+  // Each topic with its level and code, from the catalog's own row (Phase 34).
   const catalog = useMemo(() => indexCurriculum(levels), [levels]);
-  const counts = useMemo(() => countByLevel(ratings.keys(), catalog), [ratings, catalog]);
+  // A level counts the scores it holds itself: a planned topic's is counted in the plan's list.
+  const counts = useMemo(
+    () => countByLevel([...ratings.keys()].filter((id) => !planned.has(id)), catalog),
+    [planned, ratings, catalog],
+  );
+  const plannedRated = plannedIds.filter((id) => ratings.has(id)).length;
 
   function set(topicId: string, value: Rating | null) {
     const next = new Map(ratings);
@@ -149,41 +160,135 @@ export function TopicRatingsEditor({
     onChange(next);
   }
 
+  function toggle(levelId: string) {
+    haptics.selection();
+    setOpen((was) => {
+      const next = new Set(was);
+      if (next.has(levelId)) next.delete(levelId);
+      else next.add(levelId);
+      return next;
+    });
+  }
+
+  const box = {
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    borderRadius: radius.md,
+    overflow: 'hidden' as const,
+  };
+
   return (
     <View style={{ gap: space.md }}>
-      <LevelTabs
-        testID="assessment-level-tab"
-        levels={levels}
-        value={levelId}
-        onChange={setLevelId}
-        counts={counts}
-      />
-      {level ? (
-        <View
-          style={{
-            borderWidth: 1,
-            borderColor: theme.colors.outlineVariant,
-            borderRadius: radius.md,
-            overflow: 'hidden',
-          }}
-        >
-          <LevelHeading level={level} />
-          {level.topics.map((topic) => (
-            <View key={topic.id}>
-              <Divider />
-              <View style={{ paddingHorizontal: space.md, paddingVertical: space.sm, gap: space.sm }}>
-                <TopicName code={topic.code} name={topic.name} unit={topic.unit} />
-                <RatingPicker
-                  testID={`assessment-topic-${topic.id}`}
-                  name={`${topic.code} ${topic.name}`}
-                  value={ratings.get(topic.id) ?? null}
-                  onChange={(value) => set(topic.id, value)}
-                />
-              </View>
-            </View>
+      {plannedIds.length > 0 ? (
+        <View testID="assessment-planned" style={box}>
+          <View
+            style={{ backgroundColor: theme.tokens.muted, paddingHorizontal: space.md, paddingVertical: space.sm }}
+          >
+            <Text variant="labelLarge" accessibilityRole="header">
+              In their plan
+              <Text style={{ color: muted }}>{` · ${plannedRated} of ${plannedIds.length} rated`}</Text>
+            </Text>
+          </View>
+          {plannedIds.map((id) => (
+            <TopicRatingRow
+              key={id}
+              id={id}
+              code={catalog.get(id)?.code ?? id}
+              name={catalog.get(id)?.name}
+              unit={catalog.get(id)?.unit}
+              value={ratings.get(id) ?? null}
+              onChange={(value) => set(id, value)}
+            />
           ))}
         </View>
-      ) : null}
+      ) : (
+        <Text testID="assessment-no-plan" variant="bodySmall" style={{ color: muted }}>
+          No learning plan yet: open a level to rate its topics.
+        </Text>
+      )}
+
+      <View style={{ gap: space.sm }}>
+        {levels.map((level) => {
+          const expanded = open.has(level.id);
+          const count = counts.get(level.id) ?? 0;
+          const rest = level.topics.filter((topic) => !planned.has(topic.id));
+          if (rest.length === 0) return null;
+          return (
+            <View key={level.id} style={box}>
+              <Pressable
+                testID={`assessment-group-${level.id}`}
+                accessibilityRole="button"
+                accessibilityState={{ expanded }}
+                accessibilityLabel={`${level.name}${count > 0 ? `, ${count} rated` : ''}`}
+                onPress={() => toggle(level.id)}
+                style={({ pressed }) => ({
+                  minHeight: MIN_TARGET + 4,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: space.sm,
+                  paddingHorizontal: space.md,
+                  backgroundColor: pressed || expanded ? theme.tokens.muted : 'transparent',
+                })}
+              >
+                <View style={{ flex: 1 }}>
+                  <Text variant="labelLarge">
+                    {level.name}
+                    {level.grade_band ? <Text style={{ color: muted }}> · {level.grade_band}</Text> : null}
+                  </Text>
+                </View>
+                {count > 0 ? (
+                  <Text variant="labelMedium" style={{ color: theme.colors.primary }}>
+                    {`${count} rated`}
+                  </Text>
+                ) : null}
+                <Icon source={expanded ? 'chevron-up' : 'chevron-down'} size={20} color={muted} />
+              </Pressable>
+              {expanded
+                ? rest.map((topic) => (
+                    <TopicRatingRow
+                      key={topic.id}
+                      id={topic.id}
+                      code={topic.code}
+                      name={topic.name}
+                      unit={topic.unit}
+                      value={ratings.get(topic.id) ?? null}
+                      onChange={(value) => set(topic.id, value)}
+                    />
+                  ))
+                : null}
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+/** One topic: its code and name, and the pill underneath. */
+function TopicRatingRow({
+  id,
+  code,
+  name,
+  unit,
+  value,
+  onChange,
+}: {
+  /** The catalog key: testIDs and the rating's map key. */
+  id: string;
+  /** What people read (Phase 34); the id for a topic the catalog no longer lists. */
+  code: string;
+  name: string | undefined;
+  unit?: string | null;
+  value: Rating | null;
+  onChange: (value: Rating | null) => void;
+}) {
+  return (
+    <View>
+      <Divider />
+      <View testID={`assessment-row-${id}`} style={{ paddingHorizontal: space.md, paddingVertical: space.sm, gap: space.sm }}>
+        <TopicName code={code} name={name} unit={unit} />
+        <RatingPill testID={`assessment-topic-${id}`} name={`${code} ${name ?? ''}`} value={value} onChange={onChange} />
+      </View>
     </View>
   );
 }

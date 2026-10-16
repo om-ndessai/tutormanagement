@@ -5,7 +5,6 @@ import {
   formatDuration,
   formatMinutesOfDay,
   parseClockTime,
-  zonedClockParts,
   type TutoringSession,
   type UpcomingSession,
 } from '@tmi/shared';
@@ -22,7 +21,7 @@ import { formatLessonDay } from '@/features/schedules/lesson-cancellation';
 import { useActiveSession } from '@/features/teaching/api';
 import { useLines } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
-import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
@@ -37,18 +36,8 @@ import {
   relativeDay,
   type CarouselItem,
 } from './carousel-model';
+import { useOrgClock } from './home-data';
 import { cancelHref, nextUpActions, recordHref, startHref, type NextUpActions } from './next-up-actions';
-
-/** The organization's clock, re-read every half minute so the countdown stays true. */
-function useOrgClock() {
-  const timeZone = useOrgTimeZone();
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(timer);
-  }, []);
-  return zonedClockParts(now.toISOString(), timeZone);
-}
 
 const CARD_HEIGHT = 150;
 
@@ -73,6 +62,9 @@ export function SessionsCarousel({
 }) {
   const theme = useAppTheme();
   const clock = useOrgClock();
+  const { user } = useAuth();
+  // Who may schedule goes straight to Schedule a lesson (UI upgrades U5); anyone else to the page.
+  const mayScheduleHere = user?.roles.some((role) => role === 'admin' || role === 'tutor') ?? false;
   const upcoming = useUpcomingSessions(tutorUserId);
   const list = useRef<FlatList<CarouselItem>>(null);
   const placed = useRef(false);
@@ -168,7 +160,7 @@ export function SessionsCarousel({
             width={item.width}
             height={cardHeight}
             text="Nothing scheduled. Set up a schedule →"
-            onPress={() => router.navigate('/schedule')}
+            onPress={() => (mayScheduleHere ? router.push('/schedule-lesson') : router.navigate('/schedule'))}
             testID="carousel-none-scheduled"
           />
         );
@@ -185,7 +177,7 @@ export function SessionsCarousel({
               borderRadius: radius.lg,
               borderWidth: 1,
               borderStyle: 'dashed',
-              borderColor: theme.colors.outline,
+              borderColor: theme.colors.outlineVariant,
               alignItems: 'center',
               justifyContent: 'center',
               gap: space.xs,
@@ -255,9 +247,9 @@ function NowMarker({ width }: { width: number }) {
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.5}
-        style={{ fontSize: 10, fontWeight: '600', letterSpacing: 0.6, color: theme.colors.primary }}
+        style={{ fontSize: 12, fontWeight: '700', color: theme.colors.primary }}
       >
-        NOW
+        Now
       </Text>
       <View style={{ flex: 1, width: 1, backgroundColor: withAlpha(theme.colors.primary, 0.5) }} />
     </View>
@@ -290,7 +282,7 @@ function NoteCard({
         borderRadius: radius.lg,
         borderWidth: 1,
         borderStyle: 'dashed',
-        borderColor: theme.colors.outline,
+        borderColor: theme.colors.outlineVariant,
         alignItems: 'center',
         justifyContent: 'center',
         padding: space.lg,
@@ -395,10 +387,8 @@ function Overline({ children, color }: { children: string; color?: string }) {
     <Text
       numberOfLines={lines}
       style={{
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: '500',
-        letterSpacing: 0.6,
-        textTransform: 'uppercase',
         color: color ?? theme.tokens.mutedForeground,
       }}
     >
@@ -446,7 +436,7 @@ function Badge({ children, tone = 'muted' }: { children: string; tone?: 'muted' 
     >
       <Text
         style={{
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: '500',
           color:
             tone === 'warning'
@@ -669,11 +659,7 @@ function NextCard({
             backgroundColor: withAlpha(theme.colors.onPrimary, 0.15),
           }}
         >
-          <Text
-            style={{ fontSize: 10, fontWeight: '600', letterSpacing: 0.6, color: theme.colors.onPrimary }}
-          >
-            NEXT UP
-          </Text>
+          <Text style={{ fontSize: 12, fontWeight: '700', color: theme.colors.onPrimary }}>Next up</Text>
         </View>
         <Text
           testID="carousel-countdown"

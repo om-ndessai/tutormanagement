@@ -5,7 +5,7 @@
 import { containsSsn, SSN_REJECTED_MESSAGE } from '@tmi/shared';
 import { useEffect, useRef } from 'react';
 import { Pressable, View, type TextInput as NativeTextInput } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 import Animated, {
   cancelAnimation,
   useAnimatedStyle,
@@ -35,6 +35,11 @@ export interface DictationFieldProps {
   maxLength: number;
   /** Rewrites spoken curriculum codes ("B A three point ten" -> BA3.10). */
   normalise?: (text: string) => string;
+  /**
+   * The mic as a large button under the field, labelled "Dictate" -- the main field of a write-up
+   * card (UI upgrades U4) -- rather than the icon beside it. Same testID, same behaviour.
+   */
+  prominent?: boolean;
 }
 
 const MIC = 48;
@@ -80,6 +85,7 @@ export function DictationField({
   long = false,
   maxLength,
   normalise,
+  prominent = false,
 }: DictationFieldProps) {
   const theme = useAppTheme();
   const input = useRef<NativeTextInput>(null);
@@ -122,23 +128,40 @@ export function DictationField({
             />
           ) : null}
         </View>
-        <View
-          style={{ width: MIC, height: MIC, alignItems: 'center', justifyContent: 'center', marginTop: 6 }}
-        >
-          {listening ? <PulseRing color={theme.colors.primary} /> : null}
-          <IconButton
-            testID={`dictate-${testID}`}
-            icon={listening ? 'stop' : 'microphone'}
-            mode={listening ? 'contained' : undefined}
-            containerColor={listening ? theme.colors.primary : undefined}
-            iconColor={listening ? theme.colors.onPrimary : theme.colors.primary}
-            size={24}
-            accessibilityLabel={listening ? `Stop dictating ${label}` : `Dictate ${label}`}
-            accessibilityState={{ selected: listening, busy: phase === 'preparing' }}
-            onPress={dictation.toggle}
-          />
-        </View>
+        {prominent ? null : (
+          <View
+            style={{ width: MIC, height: MIC, alignItems: 'center', justifyContent: 'center', marginTop: 6 }}
+          >
+            {listening ? <PulseRing color={theme.colors.primary} /> : null}
+            <IconButton
+              testID={`dictate-${testID}`}
+              icon={listening ? 'stop' : 'microphone'}
+              mode={listening ? 'contained' : undefined}
+              containerColor={listening ? theme.colors.primary : undefined}
+              iconColor={listening ? theme.colors.onPrimary : theme.colors.primary}
+              size={24}
+              accessibilityLabel={listening ? `Stop dictating ${label}` : `Dictate ${label}`}
+              accessibilityState={{ selected: listening, busy: phase === 'preparing' }}
+              onPress={dictation.toggle}
+            />
+          </View>
+        )}
       </View>
+      {prominent ? (
+        <Button
+          testID={`dictate-${testID}`}
+          icon={listening ? 'stop' : 'microphone'}
+          mode={listening ? 'contained' : 'contained-tonal'}
+          onPress={dictation.toggle}
+          accessibilityLabel={listening ? `Stop dictating ${label}` : `Dictate ${label}`}
+          accessibilityState={{ selected: listening, busy: phase === 'preparing' }}
+          style={{ marginTop: space.sm }}
+          contentStyle={{ minHeight: 56 }}
+          labelStyle={{ fontSize: 16 }}
+        >
+          {listening ? 'Stop dictating' : 'Dictate'}
+        </Button>
+      ) : null}
       {listening ? (
         <View testID={`dictation-interim-${testID}`} style={{ paddingTop: space.xs, gap: 2 }}>
           <Text variant="bodySmall" style={{ color: muted }}>

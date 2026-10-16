@@ -15,10 +15,15 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- assertVisible: 'Priya Raghavan'
+# UI upgrades U6: a greeting on the organization's clock, Today, then the figures above the tabs.
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Priya'
+- assertVisible:
+    id: home-today
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: home-figures
     timeout: 20000
 - assertVisible:
     id: tabs-tutoring
@@ -77,11 +82,14 @@ tags:
     visible:
       id: dashboard-finance-admin
     timeout: 10000
+# The figures (counts only) stay above both tabs; the Tutoring sections do not.
+- assertVisible:
+    id: home-figures
 - assertNotVisible:
-    id: dashboard-section-analytics
+    id: dashboard-section-tutoring-sessions
 - tapOn:
     id: tabs-tutoring
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-analytics
+      id: dashboard-section-tutoring-sessions
     timeout: 10000

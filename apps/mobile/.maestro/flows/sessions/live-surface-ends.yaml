@@ -51,7 +51,9 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- assertVisible: 'Riverside Tutoring'
+- assertVisible:
+    id: home-org
+    text: 'Riverside'
 - assertNotVisible:
     id: live-banner
 - runFlow:

@@ -1,7 +1,8 @@
-# A tutor records a lesson from the Tutoring tab (Alex, tutor in chmi): the sheet shows the length
-# and never a figure. Recording with no student says so under the field. He records a lesson with
-# Ben (an hour and a half, notes, homework done, a goal rating and his own assessment); it is in
-# the list; he edits its notes, then deletes it, which also puts the data back for other flows.
+# A tutor records a lesson from the create button (Alex, tutor in chmi), a step flow (UI upgrades
+# U4): Student, When, then the write-up cards. It shows the length and never a figure. Next with no
+# student says why. He records a lesson with Ben (an hour and a half, notes, homework done, a goal
+# rating and his own assessment); it is in the list; he edits it on the record sheet (editing stays
+# the full form), then deletes it, which also puts the data back for other flows.
 appId: ${APP_ID}
 # Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
 # one) are removed before this flow, and whatever this flow leaves is removed after it.
@@ -25,71 +26,104 @@ tags:
 - tapOn: 'Sessions'
 - extendedWaitUntil:
     visible:
-      id: sessions-record
+      id: screen-sessions
     timeout: 20000
 - assertVisible:
     id: sessions-record-button
+# Recording is the tab bar's create button, and a step flow (UI upgrades U2, U4).
 - tapOn:
-    id: sessions-record
+    id: create-button
+- tapOn:
+    id: create-action-record-session
 - extendedWaitUntil:
     visible:
-      id: record-pairing
+      id: step-flow-title
+      text: '.*Who was the lesson with\?.*'
     timeout: 15000
-- assertVisible: 'Record a session'
-- assertVisible:
-    id: record-preview
+- assertVisible: 'Record a lesson'
+- assertVisible: 'Step 1 of 6'
 - assertNotVisible:
     id: record-money
 - assertNotVisible: '.*\$[0-9].*'
-- takeScreenshot: record-tutoring-sheet
-# No student chosen: the sheet says so.
-- scrollUntilVisible:
-    element:
-      id: record-submit
-    direction: DOWN
-    timeout: 30000
+- takeScreenshot: record-step-student
+# Taps during the rise are not delivered (iOS, U3).
+- waitForAnimationToEnd:
+    timeout: 3000
+# No student chosen: Next is refused, and the step says why.
 - tapOn:
-    id: record-submit
-- scrollUntilVisible:
-    element:
-      id: record-error
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: record-student-error
       text: 'Choose which student this session was with.'
-    direction: DOWN
     timeout: 10000
-- scrollUntilVisible:
-    element:
-      id: record-pairing-a0000000-0000-4000-8000-000000000002
-    direction: UP
-    centerElement: true
-    timeout: 30000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000002
-- assertVisible: '.*Ben Whitfield.*'
+- assertVisible: 'Step 1 of 6'
+# Only his own pairings: Ben, never another tutor's students.
 - assertNotVisible:
-    id: record-pairing-a0000000-0000-4000-8000-000000000001
+    id: record-student-row-a0000000-0000-4000-8000-000000000004
+- tapOn:
+    id: record-student-row-a0000000-0000-4000-8000-000000000002
+- assertNotVisible:
+    id: record-student-error
+- tapOn:
+    id: step-flow-next
+# When: an hour and a half, in one tap. The length, never a figure.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When was it\?.*'
+    timeout: 10000
 - tapOn:
     id: record-length-90
+- assertVisible:
+    id: record-preview
 - assertVisible: '1 hr 30 min'
 - assertNotVisible:
     id: record-money
 - assertNotVisible: '.*\$[0-9].*'
-- scrollUntilVisible:
-    element:
-      id: record-homework-done
-    direction: DOWN
-    centerElement: true
+- takeScreenshot: record-step-when
 - tapOn:
-    id: record-homework-done
-- scrollUntilVisible:
-    element:
-      id: record-notes
-    direction: DOWN
-    centerElement: true
+    id: step-flow-next
+# The write-up: four optional cards. Planned is skipped.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was planned\?.*'
+    timeout: 10000
+- assertVisible:
+    id: dictate-record-planned
+    text: '.*Dictate.*'
+- takeScreenshot: record-step-planned
+- tapOn:
+    id: step-flow-skip
+# Covered: the notes.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was covered\?.*'
+    timeout: 10000
 - tapOn:
     id: record-notes
 - inputText: 'Recorded from the phone: long division'
-# A tap on a heading closes the keyboard (the sheet's scroll view lets an unhandled tap through).
-- tapOn: 'This lesson'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# Homework: last time's was done.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Homework.*'
+    timeout: 10000
+- tapOn:
+    id: record-homework-done
+- tapOn:
+    id: step-flow-next
+# Progress: a goal rating and his own view of the lesson.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Progress.*'
+    timeout: 10000
 - scrollUntilVisible:
     element:
       id: record-goal-3
@@ -109,12 +143,11 @@ tags:
 - assertVisible: 'Went well'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: record-filled
-- scrollUntilVisible:
-    element:
-      id: record-submit
-    direction: DOWN
+- assertVisible:
+    id: step-flow-next
+    text: 'Record lesson'
 - tapOn:
-    id: record-submit
+    id: step-flow-next
 - extendedWaitUntil:
     visible: 'Session recorded.'
     timeout: 15000

@@ -29,8 +29,6 @@ tags:
 - assertNotVisible:
     id: billing-record
 - assertNotVisible:
-    id: billing-add
-- assertNotVisible:
     id: billing-tax-summary
 - assertNotVisible:
     id: stat-owed-to-tutors

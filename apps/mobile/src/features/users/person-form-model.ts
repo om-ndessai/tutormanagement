@@ -26,12 +26,21 @@ export interface GuardianValue {
  */
 export const USER_FORM_SECTIONS = [
   'identity',
+  // Name, email and phone without the status: the record's Contact section (UI upgrades U5).
+  'contact',
   'roles',
   'admin',
   'tutor-background',
   'tutor-financials',
+  // The mailing address and the SSN tick alone: the tutor record's Finish tax setup (U3).
+  'tutor-tax',
   'tutor-availability',
+  // Online and the longest lesson: a tutor record's Teaching section (U5).
+  'tutor-lessons',
   'student',
+  // A student's school, course and goal; and their lessons and price (U5's sections).
+  'student-school',
+  'student-lessons',
   'availability',
   'payment-handles',
   'guardians',

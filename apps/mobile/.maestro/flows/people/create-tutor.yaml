@@ -1,7 +1,9 @@
-# The office adds a tutor (Priya): Tutor, name and email (required now), background, the mailing
-# address for their 1099 (only in the financials block), pay rates, a two-hour limit, and three
-# hours of availability on two days. The new record shows the pay, the address and the hours
-# collapsed into ranges. Cleans up after itself.
+# The office adds a tutor (Priya) as a step flow (UI upgrades U3): Basics (an email is required now:
+# Next is refused without one), Background (education), Teaching (online, a two-hour limit), the week in bands
+# with one hour added in the exact grid, Pay (rates), the Review and Add. No mailing address or SSN
+# is asked: the new record carries a "Finish tax setup" card, which opens the person form scoped to
+# the address and the SSN tick (a tick, never the number); with both set the card is gone and the
+# record shows the pay, the address and the hours. Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -21,54 +23,148 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- runFlow:
-    file: ../../subflows/open-link.yaml
-    env:
-      LINK: aimtrue://people
-- extendedWaitUntil:
-    visible:
-      id: people-add
-    timeout: 20000
 - tapOn:
-    id: people-add
+    id: create-button
 - extendedWaitUntil:
     visible:
-      id: person-form-name
+      id: create-action-add-tutor
+    timeout: 10000
+- tapOn:
+    id: create-action-add-tutor
+# Basics.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the tutor\?.*'
     timeout: 15000
+- assertVisible: 'Step 1 of 6'
 - tapOn:
-    id: person-role-tutor
-- assertVisible: 'They sign in with this Google address.'
-- tapOn:
-    id: person-form-name
+    id: add-tutor-name
 - inputText: 'Ravi Shah'
-- pressKey: Enter
+- hideKeyboard
 - tapOn:
-    id: person-form-email
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'An email address is required.*'
+    timeout: 5000
+- tapOn:
+    id: add-tutor-email
 - inputText: 'ravi.shah@example.com'
-- pressKey: Enter
-- scrollUntilVisible:
-    element:
-      id: person-tutor-education
-    direction: DOWN
-    timeout: 20000
+- hideKeyboard
 - tapOn:
-    id: person-tutor-education
+    id: step-flow-next
+# Background.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their background.*'
+    timeout: 5000
+- tapOn:
+    id: add-tutor-education
 - inputText: 'BS, Mathematics'
-- pressKey: Enter
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# Teaching.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their teaching.*'
+    timeout: 5000
+- tapOn:
+    id: add-tutor-online
+- tapOn:
+    id: add-tutor-limit-120
+- tapOn:
+    id: step-flow-next
+# The week: Tuesday after school, then 7 PM on Thursday from the exact grid.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When can they teach\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-tutor-band-2-after-school
+- tapOn:
+    id: add-tutor-fine-tune
+- extendedWaitUntil:
+    visible:
+      id: availability-day-4
+    timeout: 5000
+- tapOn:
+    id: availability-day-4
+- tapOn:
+    id: availability-hour-4-19
+- assertVisible: '4 hours selected'
+- tapOn:
+    id: add-tutor-week
+- extendedWaitUntil:
+    visible: 'Thursday evening, some hours.*'
+    timeout: 5000
+- takeScreenshot: add-tutor-week
+- tapOn:
+    id: step-flow-next
+# Pay.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their pay.*'
+    timeout: 5000
+- tapOn:
+    id: person-tutor-rate-in-person
+- inputText: '70'
+- tapOn:
+    id: person-tutor-rate-virtual
+- inputText: '60'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# The Review: no address, no SSN.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- assertVisible: 'ravi.shah@example.com'
+- assertVisible: 'Tuesday: 3:00–6:00 PM'
+- assertNotVisible: 'Mailing address'
+- assertNotVisible: '.*SSN.*'
 - scrollUntilVisible:
-    element:
-      id: person-tutor-address1
+    element: '\$70\.00 / hr'
     direction: DOWN
-    timeout: 20000
+    timeout: 10000
+- takeScreenshot: add-tutor-review
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: add-person-done
+    timeout: 15000
+- assertVisible: 'Ravi Shah is added'
+- assertVisible:
+    id: add-person-done-tax
+- tapOn:
+    id: add-person-done-record
+# The record: Finish tax setup, until the address and the SSN fact are both on file.
+- extendedWaitUntil:
+    visible:
+      id: tax-setup-card
+    timeout: 15000
+- assertVisible: 'Mailing address: missing'
+- assertVisible: 'SSN on file \(a tick, never the number\): missing'
+- takeScreenshot: tax-setup-card
+- tapOn:
+    id: tax-setup-open
+- extendedWaitUntil:
+    visible:
+      id: person-tutor-address1
+    timeout: 15000
+- assertVisible: 'Finish tax setup'
+- assertNotVisible:
+    id: person-tutor-rate-in-person
 - tapOn:
     id: person-tutor-address1
 - inputText: '12 Oak Street'
 - pressKey: Enter
-- scrollUntilVisible:
-    element:
-      id: person-tutor-city
-    direction: DOWN
-    timeout: 20000
 - tapOn:
     id: person-tutor-city
 - inputText: 'Durham'
@@ -88,45 +184,11 @@ tags:
 - pressKey: Enter
 - scrollUntilVisible:
     element:
-      id: person-tutor-rate-virtual
+      id: person-tutor-ssn
     direction: DOWN
     timeout: 20000
 - tapOn:
-    id: person-tutor-rate-in-person
-- inputText: '70'
-- pressKey: Enter
-- tapOn:
-    id: person-tutor-rate-virtual
-- inputText: '60'
-- pressKey: Enter
-- scrollUntilVisible:
-    element:
-      id: person-tutor-limit-120
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: person-tutor-limit-120
-- scrollUntilVisible:
-    element:
-      id: availability-hour-1-17
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: availability-day-2
-- tapOn:
-    id: availability-hour-2-16
-- tapOn:
-    id: availability-hour-2-17
-- tapOn:
-    id: availability-day-4
-- tapOn:
-    id: availability-hour-4-16
-- assertVisible: '3 hours selected'
-- scrollUntilVisible:
-    element: 'Tuesday: 4:00–6:00 PM'
-    direction: DOWN
-    timeout: 20000
-- takeScreenshot: person-form-availability
+    id: person-tutor-ssn
 - scrollUntilVisible:
     element:
       id: person-form-save
@@ -136,34 +198,37 @@ tags:
     id: person-form-save
 - extendedWaitUntil:
     visible:
-      id: screen-people
+      id: person-section-background
     timeout: 15000
-- tapOn:
-    id: people-search
-- inputText: 'Ravi'
 - extendedWaitUntil:
-    visible: 'Ravi Shah, ravi.shah@example.com, Tutor, Active, open their record'
-    timeout: 15000
-- tapOn: 'Ravi Shah, ravi.shah@example.com, Tutor, Active, open their record'
-- extendedWaitUntil:
-    visible:
-      id: person-section-tutor
-    timeout: 15000
+    notVisible:
+      id: tax-setup-card
+    timeout: 10000
+# The record in sections (UI upgrades U5): Availability, Teaching, then Pay and tax.
 - scrollUntilVisible:
     element:
-      id: person-pay-in-person
+      id: person-section-availability
     direction: DOWN
     timeout: 20000
-- assertVisible: '\$70\.00 / hr'
-- assertVisible: '12 Oak Street.*Durham, NC 27701'
+- scrollUntilVisible:
+    element: 'Thursday'
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: '3:00–6:00 PM'
 - scrollUntilVisible:
     element: '2 hr'
     direction: DOWN
     timeout: 20000
 - scrollUntilVisible:
     element:
-      id: person-section-availability
+      id: person-pay-in-person
     direction: DOWN
     timeout: 20000
-- assertVisible: '4:00–6:00 PM'
-- assertVisible: 'Thursday'
+- assertVisible: '\$70\.00 / hr'
+# The address sits under the rates and the top-up in Pay and tax.
+- scrollUntilVisible:
+    element: '12 Oak Street.*Durham, NC 27701'
+    direction: DOWN
+    centerElement: true
+    timeout: 20000

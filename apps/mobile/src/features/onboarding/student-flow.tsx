@@ -2,26 +2,25 @@
 //
 // Adding a student, in the order that works (Phase 26): the family first -- a student cannot exist
 // without a parent on file -- then the student, their assessment, their plan, and a tutor. Every
-// step opens the app's own form sheet as a route, preset; nothing here is a second copy of a form.
+// step opens the app's own flow or sheet as a route; nothing here is a second copy of a form. Since
+// UI upgrades U3 the family and the student are one step: the Add a student flow, which starts with
+// the family and adds a new parent inside it (`/onboarding/add-student`, in the wizard's own stack).
 // The sheets say what they saved (`form-bridge`), which moves the flow on. Any step may be
 // skipped, and whatever was already added stays.
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-native-paper';
 
-import { OptionPicker } from '@/components/option-picker';
 import { Screen } from '@/components/screen';
-import { useUsers } from '@/features/users/api';
 import { onFormSaved, type SavedForm } from '@/lib/form-bridge';
 import { FlowSteps, StepPanel, StepText } from './flow-steps';
 import { useWizardFrame } from './wizard-layout';
 import { WizardHeading } from './wizard-screens';
 
-type Step = 'family' | 'student' | 'assessment' | 'plan' | 'pairing' | 'done';
+type Step = 'student' | 'assessment' | 'plan' | 'pairing' | 'done';
 
 const STEPS: { key: Step; label: string }[] = [
-  { key: 'family', label: 'Family' },
-  { key: 'student', label: 'Student' },
+  { key: 'student', label: 'Family and student' },
   { key: 'assessment', label: 'Assessment' },
   { key: 'plan', label: 'Learning plan' },
   { key: 'pairing', label: 'Tutor' },
@@ -64,13 +63,9 @@ export function StudentFlow() {
   const { leaveFor } = useWizardFrame();
   const openSheet = useAwaitedSheet();
 
-  const [step, setStep] = useState<Step>('family');
+  const [step, setStep] = useState<Step>('student');
   const [done, setDone] = useState(new Set<string>());
-  const [parent, setParent] = useState<Person | null>(null);
-  const [chosenParent, setChosenParent] = useState('');
   const [student, setStudent] = useState<Person | null>(null);
-
-  const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' });
 
   function complete(key: Step, next: Step) {
     setDone((previous) => new Set(previous).add(key));
@@ -78,10 +73,8 @@ export function StudentFlow() {
   }
 
   function restart() {
-    setStep('family');
+    setStep('student');
     setDone(new Set());
-    setParent(null);
-    setChosenParent('');
     setStudent(null);
   }
 
@@ -100,66 +93,10 @@ export function StudentFlow() {
       />
       <FlowSteps steps={STEPS} current={step} done={done} />
 
-      {step === 'family' ? (
-        // The web's order, but the button to create the family leads: on a phone the open list of
-        // existing parents would otherwise push it below the fold.
-        <StepPanel testID="student-flow-family" title="First, the family" actions={skip('done')}>
-          <StepText>
-            Every student needs a parent or guardian on file, who is billed and kept informed. Choose an
-            existing family, or create their account.
-          </StepText>
-          <Button
-            testID="student-flow-create-parent"
-            mode="contained"
-            icon="plus"
-            onPress={() =>
-              openSheet(
-                {
-                  pathname: '/person-form',
-                  params: { preset: 'parent', sections: 'identity,payment-handles' },
-                },
-                'person',
-                (id, name) => {
-                  setParent({ id, name });
-                  complete('family', 'student');
-                },
-              )
-            }
-          >
-            Create a family account
-          </Button>
-          <OptionPicker
-            testID="student-flow-parent"
-            label="An existing parent"
-            placeholder="Choose a parent"
-            searchPlaceholder="Search parents"
-            options={(parents.data?.data ?? []).map((candidate) => ({
-              id: candidate.id,
-              label: candidate.full_name,
-            }))}
-            value={chosenParent}
-            onChange={setChosenParent}
-          />
-          <Button
-            testID="student-flow-use-parent"
-            mode="outlined"
-            disabled={!chosenParent}
-            onPress={() => {
-              const found = parents.data?.data.find((candidate) => candidate.id === chosenParent);
-              if (!found) return;
-              setParent({ id: found.id, name: found.full_name });
-              complete('family', 'student');
-            }}
-          >
-            Use this family
-          </Button>
-        </StepPanel>
-      ) : null}
-
-      {step === 'student' && parent ? (
+      {step === 'student' ? (
         <StepPanel
           testID="student-flow-student"
-          title="Now the student"
+          title="First, the family and the student"
           actions={
             <>
               <Button
@@ -167,21 +104,10 @@ export function StudentFlow() {
                 mode="contained"
                 icon="plus"
                 onPress={() =>
-                  openSheet(
-                    {
-                      pathname: '/person-form',
-                      params: {
-                        preset: 'student',
-                        guardian: parent.id,
-                        sections: 'identity,student,guardians,availability',
-                      },
-                    },
-                    'person',
-                    (id, name) => {
-                      setStudent({ id, name });
-                      complete('student', 'assessment');
-                    },
-                  )
+                  openSheet('/onboarding/add-student', 'person', (id, name) => {
+                    setStudent({ id, name });
+                    complete('student', 'assessment');
+                  })
                 }
               >
                 Add the student
@@ -191,8 +117,9 @@ export function StudentFlow() {
           }
         >
           <StepText>
-            Linked to {parent.name}. Their school, course, goal for the year and what the family is charged
-            per hour. A child with no email of their own needs none.
+            Every student needs a parent or guardian on file, who is billed and kept informed: choose an
+            existing family or add a new parent, then the student — their school, goal, when they can learn
+            and what the family is charged per hour. A child with no email of their own needs none.
           </StepText>
         </StepPanel>
       ) : null}

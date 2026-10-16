@@ -632,6 +632,93 @@
 }
 
 /*
+ * The warm foundation (UI upgrades U1, docs/ui-upgrades-spec.md)
+ * ==============================================================
+ * Laid over EVERY palette, after their blocks: an organization keeps its brand
+ * ramp, primary, accent and rating scale, but the neutrals -- the 80-90% of a
+ * screen that is page, card, text and border -- no longer follow the brand hue.
+ * They are one warm ramp (cream, warm grey, warm ink), which is what makes the
+ * portal feel like a family's rather than an instrument panel.
+ *
+ * `:root[data-palette]` matches every organization (the brand provider always
+ * sets the attribute) and outranks `:root`; coming after the palette blocks, it
+ * wins over them at equal specificity. The dark block does the same for
+ * `.dark:root[data-palette='x']`. apps/mobile/scripts/generate-palettes.mjs
+ * applies both selectors in the same order.
+ *
+ * Contrast (light): muted text on the page 5.5:1, ink 14.7:1, an input's edge
+ * 3.1:1 (a control's boundary needs 3:1; dividers stay soft on --border).
+ *
+ * --highlight (amber, the logo's centre) marks what to notice first: Next up,
+ * a due date, a new item. --celebrate (coral) is kept for good news: a topic
+ * mastered, a goal on track. --info is a neutral blue notice. None of them is
+ * the brand colour, and each is used with an icon or a word, never alone.
+ */
+:root,
+:root[data-palette] {
+  --background: oklch(0.974 0.01 82);
+  --foreground: oklch(0.255 0.01 67);
+
+  --card: oklch(0.994 0.006 85);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.994 0.006 85);
+  --popover-foreground: var(--foreground);
+
+  --secondary: oklch(0.948 0.014 78);
+  --muted: oklch(0.948 0.014 78);
+  --muted-foreground: oklch(0.504 0.017 71);
+
+  --border: oklch(0.908 0.019 75);
+  --input: oklch(0.639 0.023 72);
+
+  --sidebar: oklch(0.954 0.014 78);
+  --sidebar-foreground: oklch(0.285 0.012 67);
+  --sidebar-muted-foreground: oklch(0.504 0.017 71);
+  --sidebar-border: oklch(0.898 0.02 77);
+
+  --highlight: oklch(0.818 0.148 79);
+  --highlight-foreground: oklch(0.255 0.021 67);
+  --highlight-soft: oklch(0.958 0.038 85);
+  --highlight-soft-foreground: oklch(0.465 0.094 71);
+  --celebrate: oklch(0.692 0.148 35);
+  --celebrate-foreground: oklch(0.2 0.04 35);
+  --info: oklch(0.507 0.097 245);
+  --info-foreground: oklch(0.985 0.004 245);
+}
+
+.dark:root,
+.dark:root[data-palette] {
+  --background: oklch(0.199 0.006 56);
+  --foreground: oklch(0.949 0.011 72);
+
+  --card: oklch(0.247 0.01 67);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.247 0.01 67);
+  --popover-foreground: var(--foreground);
+
+  --secondary: oklch(0.285 0.01 61);
+  --muted: oklch(0.285 0.01 61);
+  --muted-foreground: oklch(0.772 0.019 70);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 22%);
+
+  --sidebar: oklch(0.217 0.009 59);
+  --sidebar-foreground: oklch(0.934 0.013 71);
+  --sidebar-muted-foreground: oklch(0.788 0.019 70);
+  --sidebar-border: oklch(1 0 0 / 12%);
+
+  --highlight: oklch(0.834 0.125 78);
+  --highlight-foreground: oklch(0.23 0.024 72);
+  --highlight-soft: oklch(0.312 0.035 81);
+  --highlight-soft-foreground: oklch(0.872 0.097 82);
+  --celebrate: oklch(0.741 0.127 34);
+  --celebrate-foreground: oklch(0.2 0.04 35);
+  --info: oklch(0.766 0.074 247);
+  --info-foreground: oklch(0.2 0.03 247);
+}
+
+/*
  * Expose the tokens to Tailwind so `bg-primary`, `text-muted-foreground`,
  * `border-sidebar-border`, `bg-brand-100` and friends all resolve.
  */
@@ -656,6 +743,14 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-highlight-soft: var(--highlight-soft);
+  --color-highlight-soft-foreground: var(--highlight-soft-foreground);
+  --color-celebrate: var(--celebrate);
+  --color-celebrate-foreground: var(--celebrate-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -689,7 +784,7 @@
 
   /* Poppins matches the geometric sans in the institute's wordmark. */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Poppins', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {

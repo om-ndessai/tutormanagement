@@ -1,4 +1,11 @@
-import { liveTimes, stopToast, bannerBottom, TAB_BAR_ABOVE_INSET, BANNER_GAP } from './live-session';
+import {
+  liveTimes,
+  stopToast,
+  bannerBottom,
+  TAB_BAR_ABOVE_INSET,
+  TAB_BAR_HUMP,
+  BANNER_GAP,
+} from './live-session';
 
 describe('the live lesson', () => {
   it('says "from" and "ends by" on the organization clock, not UTC or the device', () => {
@@ -25,5 +32,13 @@ describe('the live lesson', () => {
     expect(bannerBottom('ios', 34, true)).toBe(34 + TAB_BAR_ABOVE_INSET.ios + BANNER_GAP);
     expect(bannerBottom('android', 24, true)).toBe(24 + TAB_BAR_ABOVE_INSET.android + BANNER_GAP);
     expect(bannerBottom('ios', 34, false)).toBe(34 + BANNER_GAP);
+  });
+
+  it('clears the hump too when the bar has a "+", on a tab only', () => {
+    expect(bannerBottom('ios', 34, true, true)).toBe(34 + TAB_BAR_ABOVE_INSET.ios + TAB_BAR_HUMP + BANNER_GAP);
+    expect(bannerBottom('android', 24, true, true)).toBe(
+      24 + TAB_BAR_ABOVE_INSET.android + TAB_BAR_HUMP + BANNER_GAP,
+    );
+    expect(bannerBottom('ios', 34, false, true)).toBe(34 + BANNER_GAP);
   });
 });

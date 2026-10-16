@@ -1,7 +1,9 @@
-# A child whose parent is not on file yet (Priya): Student and a name, then "New parent…" opens the
-# same person form over the first, preset to the parent role; saving it (one request) brings the
-# parent back into the student's list, and saving the student (one more request, naming them) gives
-# a record that lists the new parent. Cleans up after itself.
+# A child whose parent is not on file yet (Priya), family first (UI upgrades U3): the parent search
+# finds nobody, so "New parent" opens a quick sheet over the flow with the name already typed;
+# adding her (her own request) brings her back to the Family step, chosen. Then the student, their
+# school, a week of bands with one hour fine-tuned off (the band then reads "some hours"), online
+# lessons, a longest lesson and the price; the Review says all of it, and Add sends the student with her in ONE
+# request. The record lists the new parent. Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -21,80 +23,179 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- runFlow:
-    file: ../../subflows/open-link.yaml
-    env:
-      LINK: aimtrue://people
+- tapOn:
+    id: create-button
 - extendedWaitUntil:
     visible:
-      id: people-add
-    timeout: 20000
+      id: create-action-add-student
+    timeout: 10000
 - tapOn:
-    id: people-add
+    id: create-action-add-student
 - extendedWaitUntil:
     visible:
-      id: person-form-name
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
     timeout: 15000
 - tapOn:
-    id: person-role-student
-- tapOn:
-    id: person-form-name
-- inputText: 'Zuri Marsh'
-- tapOn:
-    id: person-form-title
-- scrollUntilVisible:
-    element:
-      id: guardian-new
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: guardian-new
-# The parent's own form, over the student's.
-- extendedWaitUntil:
-    visible: 'Add a parent'
-    timeout: 15000
-- assertVisible: 'They sign in with this Google address.'
-- assertNotVisible:
-    id: person-role-student
-- takeScreenshot: person-form-nested-parent
-- tapOn:
-    id: person-form-name
+    id: add-student-parents-input
 - inputText: 'Hannah Marsh'
-- tapOn:
-    id: person-form-email
-- inputText: 'hannah.marsh@example.com'
-- tapOn: 'Add a parent'
-- scrollUntilVisible:
-    element:
-      id: person-form-save
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: person-form-save
-# Back in the student's form, with her chosen.
-- extendedWaitUntil:
-    visible: 'Hannah Marsh'
-    timeout: 15000
-- takeScreenshot: person-form-new-parent-chosen
-- scrollUntilVisible:
-    element:
-      id: person-form-save
-    direction: DOWN
-    timeout: 20000
-- tapOn:
-    id: person-form-save
 - extendedWaitUntil:
     visible:
-      id: screen-people
+      id: add-student-parents-empty
     timeout: 15000
+- assertVisible: 'No parent matches.'
+- hideKeyboard
 - tapOn:
-    id: people-search
-- inputText: 'Zuri'
-- pressKey: Enter
+    id: add-student-new-parent-empty
+# The parent's quick sheet, over the flow, her name carried over from the search.
 - extendedWaitUntil:
-    visible: 'Zuri Marsh, No email, Student, Active, open their record'
+    visible:
+      id: new-parent
     timeout: 15000
-- tapOn: 'Zuri Marsh, No email, Student, Active, open their record'
+- assertVisible: 'New parent'
+- assertVisible: 'Hannah Marsh'
+- takeScreenshot: new-parent-sheet
+# Refused without an email: a parent signs in.
+- tapOn:
+    id: new-parent-save
+- extendedWaitUntil:
+    visible: 'An email address is required.*'
+    timeout: 5000
+- tapOn:
+    id: new-parent-email
+- inputText: 'hannah.marsh@example.com'
+# The title puts the keyboard away (never hideKeyboard in an iOS form sheet), and the fitted sheet
+# settles before its action is tapped.
+- tapOn: 'They sign in with this Google address.*'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: new-parent-save
+# Back on the family step, with her chosen.
+- extendedWaitUntil:
+    notVisible:
+      id: new-parent
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
+    timeout: 10000
+- assertVisible: 'Remove Hannah Marsh'
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: add-student-new-parent-chosen
+- tapOn:
+    id: step-flow-next
+# The student.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the student\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-name
+- inputText: 'Zuri Marsh'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# School and goal.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-school
+- inputText: 'Culbreth Middle'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# The week: after school on Tuesday and Thursday, then Thursday's last hour fine-tuned off.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When can they learn\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-band-2-after-school
+- tapOn:
+    id: add-student-band-4-after-school
+- assertVisible: '6 hours a week'
+- tapOn:
+    id: add-student-fine-tune
+- extendedWaitUntil:
+    visible:
+      id: availability-day-4
+    timeout: 5000
+- tapOn:
+    id: availability-day-4
+- tapOn:
+    id: availability-hour-4-17
+- assertVisible: '5 hours selected'
+- tapOn:
+    id: add-student-week
+- extendedWaitUntil:
+    visible: 'Thursday after school, some hours.*'
+    timeout: 5000
+- takeScreenshot: add-student-week
+- tapOn:
+    id: step-flow-next
+# Lessons: online too, an hour and a half at most.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their lessons.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-online
+- tapOn:
+    id: add-student-limit-90
+- tapOn:
+    id: step-flow-next
+# The price: what the family is charged.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*The price.*'
+    timeout: 5000
+- tapOn:
+    id: person-student-price-in-person
+- inputText: '95'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- assertVisible: 'Hannah Marsh — Guardian'
+- assertVisible: 'Culbreth Middle'
+- assertVisible: 'Tuesday: 3:00–6:00 PM'
+- assertVisible: 'Thursday: 3:00–5:00 PM'
+- scrollUntilVisible:
+    element: 'In person and online'
+    direction: DOWN
+    timeout: 10000
+- assertVisible: 'Longest lesson: 1 hr 30 min'
+- scrollUntilVisible:
+    element: '\$95\.00 / hr'
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: add-person-done
+    timeout: 15000
+- assertVisible: 'Zuri Marsh is added'
+- tapOn:
+    id: add-person-done-record
+- extendedWaitUntil:
+    visible:
+      id: person-name
+    timeout: 15000
+- assertVisible: 'Culbreth Middle'
 - scrollUntilVisible:
     element: 'Hannah Marsh, Guardian, Primary contact.*'
     direction: DOWN

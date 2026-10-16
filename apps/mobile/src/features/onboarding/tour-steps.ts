@@ -236,29 +236,41 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
 };
 
-/** The tab bar, in its order (`app/(org)/(tabs)/_layout.tsx`). */
-export const TAB_COUNT = 5;
+/**
+ * The tab bar, in its order (`features/shell/app-tab-bar.tsx`): Home, Sessions, Progress, More,
+ * the "+" not counted. Schedule is no tab since the bar was revised (2026-10-15): it lives inside
+ * Sessions, so its step lights Sessions and says so.
+ */
+export const TAB_COUNT = 4;
 const TAB_INDEX: Record<string, number> = {
   'nav-dashboard': 0,
   'nav-sessions': 1,
-  'nav-schedule': 2,
-  'nav-progress': 3,
+  'nav-progress': 2,
 };
-const MORE_TAB = 4;
+const SESSIONS_TAB = 1;
+const MORE_TAB = 3;
+/** Pages reached from inside a tab rather than from More. */
+const INSIDE_TAB: Record<string, { index: number; within: 'Sessions' }> = {
+  'nav-schedule': { index: SESSIONS_TAB, within: 'Sessions' },
+};
 
 /**
  * Where a step points on the phone: a view registered under its id (`useTourTarget`), or a tab.
- * A menu item that is not a tab points at More, and the card says it is found there -- the web's
- * "You will find it in the menu" for a phone-width sidebar.
+ * A menu item that is not a tab points at the tab it is found in -- More for most, Sessions for
+ * Schedule -- and the card says so: the web's "You will find it in the menu" for a phone-width
+ * sidebar.
  */
-export type TourPlacement = { kind: 'view'; id: string } | { kind: 'tab'; index: number; underMore: boolean };
+export type TourPlacement =
+  | { kind: 'view'; id: string }
+  | { kind: 'tab'; index: number; within: 'More' | 'Sessions' | null };
 
 export function placementOf(target: string): TourPlacement {
   if (target.startsWith('nav-')) {
     const index = TAB_INDEX[target];
-    return index === undefined
-      ? { kind: 'tab', index: MORE_TAB, underMore: true }
-      : { kind: 'tab', index, underMore: false };
+    if (index !== undefined) return { kind: 'tab', index, within: null };
+    const inside = INSIDE_TAB[target];
+    if (inside) return { kind: 'tab', index: inside.index, within: inside.within };
+    return { kind: 'tab', index: MORE_TAB, within: 'More' };
   }
   return { kind: 'view', id: target };
 }

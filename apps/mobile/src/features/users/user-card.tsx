@@ -3,7 +3,8 @@
 import { USER_ROLES, USER_ROLE_LABELS, USER_STATUS_LABELS, type User } from '@tmi/shared';
 import { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Card, Divider, Menu, Text } from 'react-native-paper';
+import { Divider, Menu, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { AdaptiveRow } from '@/components/adaptive-row';
 import { useLargeText, useLines } from '@/hooks/use-large-text';
@@ -47,9 +48,8 @@ export const UserCard = memo(function UserCard({
   return (
     <SwipeRow actions={swipeActions} testID={`people-row-${user.id}`}>
       {({ openMenu }) => (
-        <Card
+        <OutlinedCard
           testID={`people-row-${user.id}`}
-          mode="outlined"
           style={{ borderRadius: radius.lg, opacity: isDeleted ? 0.6 : 1 }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
@@ -104,7 +104,7 @@ export const UserCard = memo(function UserCard({
               </View>
             ) : null}
           </View>
-        </Card>
+        </OutlinedCard>
       )}
     </SwipeRow>
   );

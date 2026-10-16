@@ -9,7 +9,8 @@ import { RELATIONSHIPS, RELATIONSHIP_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, Icon, Searchbar, Text } from 'react-native-paper';
+import { Button, Icon, Searchbar, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { FieldError } from '@/components/field-error';
 import { IconButton } from '@/components/icon-button';
@@ -94,66 +95,15 @@ export function GuardianPicker({
         </Text>
       </View>
 
-      {value.map((link) => {
-        const name = nameFor(link.guardian_user_id);
-        return (
-          <Card
-            key={link.guardian_user_id}
-            testID={`guardian-${link.guardian_user_id}`}
-            mode="outlined"
-            style={{ borderRadius: radius.md }}
-          >
-            <View style={{ padding: space.md, gap: space.sm }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-                <Text variant="bodyMedium" style={{ flex: 1, fontWeight: '600' }} numberOfLines={1}>
-                  {name}
-                </Text>
-                <IconButton
-                  testID={`guardian-${link.guardian_user_id}-remove`}
-                  icon="close"
-                  accessibilityLabel={`Remove ${name}`}
-                  onPress={() => {
-                    haptics.selection();
-                    onChange(removeGuardian(value, link.guardian_user_id));
-                  }}
-                  style={{ margin: 0 }}
-                />
-              </View>
-              <View style={{ flexDirection: 'row', gap: space.xs }} accessibilityLabel="Relationship">
-                {RELATIONSHIPS.map((relationship) => (
-                  <Choice
-                    key={relationship}
-                    testID={`guardian-${link.guardian_user_id}-rel-${relationship}`}
-                    label={RELATIONSHIP_LABELS[relationship]}
-                    selected={link.relationship === relationship}
-                    onPress={() => onChange(updateGuardian(value, link.guardian_user_id, { relationship }))}
-                  />
-                ))}
-              </View>
-              <Pressable
-                testID={`guardian-${link.guardian_user_id}-primary`}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: link.is_primary }}
-                accessibilityLabel={`${name} is the primary contact`}
-                onPress={() => {
-                  haptics.selection();
-                  onChange(updateGuardian(value, link.guardian_user_id, { is_primary: true }));
-                }}
-                style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: MIN_TARGET }}
-              >
-                <Icon
-                  source={link.is_primary ? 'radiobox-marked' : 'radiobox-blank'}
-                  size={20}
-                  color={link.is_primary ? theme.colors.primary : muted}
-                />
-                <Text variant="bodyMedium" style={{ color: muted }}>
-                  Primary contact
-                </Text>
-              </Pressable>
-            </View>
-          </Card>
-        );
-      })}
+      {value.map((link) => (
+        <GuardianLinkCard
+          key={link.guardian_user_id}
+          link={link}
+          name={nameFor(link.guardian_user_id)}
+          onChange={(patch) => onChange(updateGuardian(value, link.guardian_user_id, patch))}
+          onRemove={() => onChange(removeGuardian(value, link.guardian_user_id))}
+        />
+      ))}
 
       <Searchbar
         testID="guardian-search"
@@ -166,7 +116,7 @@ export function GuardianPicker({
         accessibilityLabel="Search parents to add"
       />
       {search && candidates.length > 0 ? (
-        <Card mode="outlined" style={{ borderRadius: radius.md }}>
+        <OutlinedCard style={{ borderRadius: radius.md }}>
           {candidates.slice(0, 8).map((candidate) => (
             <Pressable
               key={candidate.id}
@@ -190,7 +140,7 @@ export function GuardianPicker({
               ) : null}
             </Pressable>
           ))}
-        </Card>
+        </OutlinedCard>
       ) : null}
       {search && !isFetching && candidates.length === 0 ? (
         <Text variant="bodySmall" style={{ color: muted }}>
@@ -212,5 +162,82 @@ export function GuardianPicker({
 
       {error ? <FieldError>{error}</FieldError> : null}
     </View>
+  );
+}
+
+/**
+ * One chosen guardian: their name, the relationship, and whether they are the primary contact.
+ * Shared by this picker and the Add a student flow's Family step (UI upgrades U3).
+ */
+export function GuardianLinkCard({
+  link,
+  name,
+  onChange,
+  onRemove,
+  showPrimary = true,
+}: {
+  link: GuardianValue;
+  name: string;
+  onChange: (patch: Partial<GuardianValue>) => void;
+  onRemove: () => void;
+  /** Off while they are the only one: the first guardian is the primary contact anyway. */
+  showPrimary?: boolean;
+}) {
+  const theme = useAppTheme();
+  const muted = theme.tokens.mutedForeground;
+  return (
+    <OutlinedCard testID={`guardian-${link.guardian_user_id}`} style={{ borderRadius: radius.md }}>
+      <View style={{ padding: space.md, gap: space.sm }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+          <Text variant="bodyMedium" style={{ flex: 1, fontWeight: '600' }} numberOfLines={1}>
+            {name}
+          </Text>
+          <IconButton
+            testID={`guardian-${link.guardian_user_id}-remove`}
+            icon="close"
+            accessibilityLabel={`Remove ${name}`}
+            onPress={() => {
+              haptics.selection();
+              onRemove();
+            }}
+            style={{ margin: 0 }}
+          />
+        </View>
+        <View style={{ flexDirection: 'row', gap: space.xs }} accessibilityLabel="Relationship">
+          {RELATIONSHIPS.map((relationship) => (
+            <Choice
+              key={relationship}
+              testID={`guardian-${link.guardian_user_id}-rel-${relationship}`}
+              label={RELATIONSHIP_LABELS[relationship]}
+              accessibilityLabel={`${name}: ${RELATIONSHIP_LABELS[relationship]}`}
+              selected={link.relationship === relationship}
+              onPress={() => onChange({ relationship })}
+            />
+          ))}
+        </View>
+        {showPrimary ? (
+          <Pressable
+            testID={`guardian-${link.guardian_user_id}-primary`}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: link.is_primary }}
+            accessibilityLabel={`${name} is the primary contact`}
+            onPress={() => {
+              haptics.selection();
+              onChange({ is_primary: true });
+            }}
+            style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: MIN_TARGET }}
+          >
+            <Icon
+              source={link.is_primary ? 'radiobox-marked' : 'radiobox-blank'}
+              size={20}
+              color={link.is_primary ? theme.colors.primary : muted}
+            />
+            <Text variant="bodyMedium" style={{ color: muted }}>
+              Primary contact
+            </Text>
+          </Pressable>
+        ) : null}
+      </View>
+    </OutlinedCard>
   );
 }

@@ -1,8 +1,9 @@
-# The office edits a record (Priya). Maria's phone changes and the record shows it. Clearing a
+# The office edits a record (Priya), a section at a time (UI upgrades U5): Contact's Edit opens just
+# the name, email and phone. Maria's phone changes and the record shows it. Clearing a
 # tutor's email is refused -- everybody but a student-only person signs in with one -- and the rule
 # is said under the field; nothing is saved. Alex also belongs to another organization, so his
-# name, email and phone are the platform's: the form says so and holds them still. Cleans up after
-# itself.
+# name, email and phone are the platform's: the whole form, from the record's menu ("Edit
+# everything"), says so and holds them still. Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -28,16 +29,23 @@ tags:
       LINK: aimtrue://people?view=00000000-0000-4000-8000-000000000004
 - extendedWaitUntil:
     visible:
-      id: person-edit
+      id: person-edit-contact
     timeout: 20000
 - assertVisible: 'Maria Okafor'
 - tapOn:
-    id: person-edit
+    id: person-edit-contact
 - extendedWaitUntil:
-    visible: 'Edit user'
+    visible:
+      id: person-form-title
+      text: 'Contact: Maria Okafor'
     timeout: 15000
 - assertNotVisible:
     id: person-form-locked
+# Only the contact block: no status, no roles, no tutor details.
+- assertNotVisible:
+    id: person-status-active
+- assertNotVisible:
+    id: person-tutor-education
 - tapOn:
     id: person-form-phone
 - eraseText: 20
@@ -60,9 +68,11 @@ tags:
     id: screen-person
 # Taking the email off a tutor.
 - tapOn:
-    id: person-edit
+    id: person-edit-contact
 - extendedWaitUntil:
-    visible: 'Edit user'
+    visible:
+      id: person-form-title
+      text: 'Contact: Maria Okafor'
     timeout: 15000
 - tapOn:
     id: person-form-email
@@ -118,7 +128,16 @@ tags:
       id: person-name
     timeout: 20000
 - tapOn:
+    id: person-menu
+- extendedWaitUntil:
+    visible:
+      id: person-edit
+    timeout: 5000
+- tapOn:
     id: person-edit
+- extendedWaitUntil:
+    visible: 'Edit user'
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: person-form-locked

@@ -58,10 +58,10 @@ export function CommentsButton({
             position: 'absolute',
             top: 4,
             right: 4,
-            minWidth: 16,
-            height: 16,
-            paddingHorizontal: 3,
-            borderRadius: 8,
+            minWidth: 18,
+            height: 18,
+            paddingHorizontal: 4,
+            borderRadius: 9,
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: theme.colors.primary,
@@ -69,7 +69,7 @@ export function CommentsButton({
         >
           <Text
             testID={`comments-count-${target.target_id}`}
-            style={{ fontSize: 10, lineHeight: 12, fontWeight: '600', color: theme.colors.onPrimary }}
+            style={{ fontSize: 12, lineHeight: 16, fontWeight: '700', color: theme.colors.onPrimary }}
           >
             {count > 9 ? '9+' : String(count)}
           </Text>

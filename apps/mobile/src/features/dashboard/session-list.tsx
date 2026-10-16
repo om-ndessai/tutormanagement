@@ -23,7 +23,7 @@ function Tag({ label, tone }: { label: string; tone?: 'warning' }) {
         backgroundColor: tone ? 'transparent' : theme.tokens.muted,
       }}
     >
-      <Text style={{ fontSize: 10, fontWeight: '500', color: tone ? warningInk : theme.colors.onSurface }}>
+      <Text style={{ fontSize: 12, fontWeight: '500', color: tone ? warningInk : theme.colors.onSurface }}>
         {label}
       </Text>
     </View>

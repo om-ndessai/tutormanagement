@@ -10,3 +10,18 @@ export const LiveBannerInsetContext = createContext(0);
 export function useLiveBannerInset(): number {
   return use(LiveBannerInsetContext);
 }
+
+/**
+ * How far the tab bar reaches up over the foot of a screen above it: the hump that holds the "+"
+ * (the tab bar, revised 2026-10-15), for a reader whose bar has one. Provided by the tabs layout,
+ * so a sheet or a page outside the tabs gets 0.
+ */
+export const TabBarOverlapContext = createContext(0);
+
+/**
+ * The room a scrolling screen leaves at its foot for what floats over it: the live lesson banner
+ * and the tab bar's hump. The last row scrolls clear of both.
+ */
+export function useBottomOverlap(): number {
+  return use(LiveBannerInsetContext) + use(TabBarOverlapContext);
+}

@@ -78,7 +78,7 @@ export function PairingRates({ assignment, isAdmin }: { assignment: Assignment; 
                 backgroundColor: theme.tokens.muted,
               }}
             >
-              <Text style={{ fontSize: 10, fontWeight: '500' }}>custom</Text>
+              <Text style={{ fontSize: 12, fontWeight: '500' }}>custom</Text>
             </View>
           ) : null}
         </View>

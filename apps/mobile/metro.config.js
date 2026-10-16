@@ -14,6 +14,16 @@ const appOrigin = path.join(projectRoot, 'package.json');
 const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [sharedRoot];
+
+// Maestro writes its reports -- screenshots, view hierarchies, 100 MB of device log per flow -- into
+// .maestro/out while a flow runs. Watched, every file it wrote made Metro's watcher fire mid-flow,
+// and on iOS that cost a step its effect: a Close tapped while a run was writing its report got no
+// "Discard changes?" and a Back got no pop (people/tutor-view, shell/surface-kit; build log #49).
+// Nothing in there is source, so Metro neither crawls nor watches it.
+const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const reports = new RegExp(`^${escape(path.join(projectRoot, '.maestro', 'out'))}\\/.*`);
+const blocked = config.resolver.blockList;
+config.resolver.blockList = [...(Array.isArray(blocked) ? blocked : blocked ? [blocked] : []), reports];
 config.resolver.nodeModulesPaths = [path.resolve(projectRoot, 'node_modules')];
 
 const defaultResolve = config.resolver.resolveRequest;

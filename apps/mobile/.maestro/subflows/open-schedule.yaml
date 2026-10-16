@@ -1,0 +1,16 @@
+# Open Schedule from any tab (the tab bar, revised 2026-10-15): Schedule is no tab of its own; it
+# lives inside Sessions, behind the Lessons | Schedule switch at the top of the Sessions screen.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tab-sessions
+- extendedWaitUntil:
+    visible:
+      id: sessions-switch-schedule
+    timeout: 15000
+- tapOn:
+    id: sessions-switch-schedule
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule
+    timeout: 15000

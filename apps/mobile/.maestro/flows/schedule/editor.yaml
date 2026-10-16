@@ -1,7 +1,13 @@
-# The office schedules a standing lesson and removes it. Priya picks the pairing of Sanjay with
-# herself, Mondays, the default time and length, saves; the week strip's Monday finds it; she
-# removes it. Changes data: reset the database afterwards.
+# The office schedules a standing lesson and removes it. Priya opens Schedule a lesson from the
+# Schedule page (the step flow, UI upgrades U5), picks the pairing of Sanjay with herself, Mondays,
+# the default time and length, her own in-person place; the Review says it as a sentence; Schedule.
+# The week strip's Monday finds it; editing it is still the sheet (U5 keeps corrections there),
+# which she opens and closes; she removes it. Cleans up after itself.
 appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-schedules.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-schedules.js
 tags:
   - feature
 ---
@@ -14,7 +20,7 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- tapOn: 'Schedule'
+- runFlow: ../../subflows/open-schedule.yaml
 - extendedWaitUntil:
     visible:
       id: schedule-add-button
@@ -23,32 +29,64 @@ tags:
     id: schedule-add-button
 - extendedWaitUntil:
     visible:
-      id: schedule-pairing-search
+      id: step-flow-title
+      text: '.*Who is the lesson with\?.*'
     timeout: 15000
+# A tap while the flow is still rising is not delivered.
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
-    id: schedule-pairing-search
+    id: schedule-pairing-input
 - inputText: 'Sanjay'
-# Wait for the list to narrow before tapping, or the tap lands where a row used to be.
-- extendedWaitUntil:
-    notVisible: 'Showing 8 of .*'
-    timeout: 10000
 - extendedWaitUntil:
     visible:
-      id: schedule-pairing-a0000000-0000-4000-8000-000000000004
+      id: schedule-pairing-row-a0000000-0000-4000-8000-000000000004
     timeout: 10000
 - tapOn:
-    id: schedule-pairing-a0000000-0000-4000-8000-000000000004
-- assertVisible: 'Student: Sanjay Patel\. Change'
+    id: schedule-pairing-row-a0000000-0000-4000-8000-000000000004
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When is it\?.*'
+    timeout: 10000
 - tapOn:
     id: schedule-form-day-1
-- takeScreenshot: schedule-editor-form
-- scrollUntilVisible:
-    element:
-      id: schedule-form-save
-    direction: DOWN
+- assertVisible:
+    id: schedule-when-line
+    text: 'Mondays, 4:00–5:00 PM'
+- takeScreenshot: schedule-editor-when
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*From when\?.*'
     timeout: 10000
 - tapOn:
-    id: schedule-form-save
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Where is it\?.*'
+    timeout: 10000
+# The tutor's own in-person place comes with the pairing.
+- assertVisible:
+    id: schedule-place-0c100000-0000-4000-8000-000000000007
+- takeScreenshot: schedule-editor-where
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: schedule-review-sentence
+    timeout: 10000
+- assertVisible:
+    id: schedule-review-sentence
+    text: 'Every Monday, 4:00–5:00 PM, at Institute, room 2, starting [A-Z][a-z]{2} [0-9]+(, [0-9]{4})?\.'
+- takeScreenshot: schedule-editor-review
+- tapOn:
+    id: step-flow-next
 - extendedWaitUntil:
     visible: 'Session scheduled\.'
     timeout: 15000
@@ -62,6 +100,20 @@ tags:
     visible: "Remove Sanjay Patel's Mondays 4:00.*"
     timeout: 10000
 - takeScreenshot: schedule-editor-created
+# A correction is the sheet, as before.
+- tapOn: "Edit Sanjay Patel's Mondays 4:00.*"
+- extendedWaitUntil:
+    visible:
+      id: screen-schedule-form
+    timeout: 15000
+- assertVisible: 'Edit schedule'
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-schedule-form
+- extendedWaitUntil:
+    visible: "Remove Sanjay Patel's Mondays 4:00.*"
+    timeout: 10000
 - tapOn: "Remove Sanjay Patel's Mondays 4:00.*"
 - extendedWaitUntil:
     visible: 'Remove this recurring session\?'

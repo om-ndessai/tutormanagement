@@ -54,20 +54,37 @@ tags:
       id: reflection-learned_new-4
     timeout: 15000
 - assertVisible: 'How did this lesson go for you?'
+# One question per card (UI upgrades U4): learned-new, then on to pace.
 - tapOn:
     id: reflection-learned_new-4
 - tapOn:
+    id: reflection-next
+- tapOn:
+    id: reflection-next
+- tapOn:
+    id: reflection-next
+- extendedWaitUntil:
+    visible:
+      id: reflection-pace-3
+    timeout: 5000
+- tapOn:
     id: reflection-pace-3
-- scrollUntilVisible:
-    element:
+- assertVisible:
+    id: reflection-word-pace
+    text: 'About right'
+- tapOn:
+    id: reflection-next
+- extendedWaitUntil:
+    visible:
       id: reflection-save
-    direction: DOWN
-    centerElement: true
+    timeout: 5000
 - tapOn:
     id: reflection-save
 - extendedWaitUntil:
     visible: 'Thanks — your reflection is saved.'
     timeout: 10000
+- tapOn:
+    id: reflection-done
 - extendedWaitUntil:
     visible:
       id: session-reflection
@@ -116,6 +133,23 @@ tags:
 - assertVisible:
     id: session-assess
 - takeScreenshot: reflection-detail-parent
+# Even reached directly, the reflection is Sofia's: Maria reads her faces, and has nothing to save.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://reflection?session=${output.sessionId}
+- extendedWaitUntil:
+    visible:
+      id: reflection-read-only
+    timeout: 15000
+- assertVisible: 'Sofia entered this reflection, so it is theirs to change.'
+- assertVisible:
+    id: reflection-learned_new-4
+- assertNotVisible:
+    id: reflection-save
+- takeScreenshot: reflection-read-only-parent
+- tapOn:
+    id: reflection-close
 # Remove the lesson this flow recorded, so the other flows see the seed.
 - runScript:
     file: ../../scripts/local-api.js

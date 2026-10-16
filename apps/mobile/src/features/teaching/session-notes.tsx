@@ -43,7 +43,7 @@ export const HOMEWORK_ICONS: Record<HomeworkStatus, string> = {
 function homeworkTone(theme: AppTheme, status: HomeworkStatus) {
   const t = theme.tokens;
   if (status === 'done') return { color: t.success, border: withAlpha(t.success, 0.4) };
-  if (status === 'none_set') return { color: t.mutedForeground, border: theme.colors.outline };
+  if (status === 'none_set') return { color: t.mutedForeground, border: theme.colors.outlineVariant };
   return {
     color: theme.scheme === 'dark' ? t.warning : t.warningForeground,
     border: withAlpha(t.warning, 0.6),
@@ -69,7 +69,7 @@ export function HomeworkStatusBadge({ status }: { status: HomeworkStatus }) {
       }}
     >
       <Icon source={HOMEWORK_ICONS[status]} size={12} color={tone.color} />
-      <Text style={{ fontSize: 10, fontWeight: '500', color: tone.color }}>
+      <Text style={{ fontSize: 12, fontWeight: '500', color: tone.color }}>
         Homework: {HOMEWORK_STATUS_LABELS[status].toLowerCase()}
       </Text>
     </View>
@@ -84,10 +84,8 @@ export function PartHeading({ children, aside }: { children: ReactNode; aside?: 
       <Text
         accessibilityRole="header"
         style={{
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: '500',
-          letterSpacing: 0.6,
-          textTransform: 'uppercase',
           color: theme.tokens.mutedForeground,
         }}
       >

@@ -27,7 +27,7 @@ describe('home-screen quick actions', () => {
 
   it('lead to their sheet only while the reader still teaches in this organization', () => {
     expect(quickActionRoute('start-lesson', ['tutor'])).toBe('/start-lesson');
-    expect(quickActionRoute('record-session', ['tutor'])).toBe('/record-session');
+    expect(quickActionRoute('record-session', ['tutor'])).toBe('/record-lesson');
     expect(quickActionRoute('start-lesson', ['parent'])).toBeNull();
     expect(quickActionRoute('anything-else', ['tutor'])).toBeNull();
     expect(quickActionRoute(undefined, ['tutor'])).toBeNull();

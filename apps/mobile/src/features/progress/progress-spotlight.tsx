@@ -2,7 +2,8 @@
 import type { StudentProgress } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
-import { Card, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { AdaptiveRow } from '@/components/adaptive-row';
 import { useLines } from '@/hooks/use-large-text';
@@ -47,7 +48,7 @@ function ProgressSpotlightCard({ progress }: { progress: StudentProgress }) {
       }
       style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
     >
-      <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
+      <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
         <View style={{ paddingHorizontal: 14, paddingVertical: space.md }}>
           <AdaptiveRow justify="space-between">
             <Text numberOfLines={lines} variant="bodyMedium" style={{ flexShrink: 1, fontWeight: '500' }}>
@@ -78,7 +79,7 @@ function ProgressSpotlightCard({ progress }: { progress: StudentProgress }) {
             )}
           </View>
         </View>
-      </Card>
+      </OutlinedCard>
     </Pressable>
   );
 }

@@ -32,10 +32,11 @@ export function quickActionItems(roles: readonly Role[] | undefined): QuickActio
 export function quickActionRoute(
   id: string | undefined,
   roles: readonly Role[] | undefined,
-): '/start-lesson' | '/record-session' | null {
+): '/start-lesson' | '/record-lesson' | null {
   if (!roles?.includes('tutor')) return null;
   if (id === 'start-lesson') return '/start-lesson';
-  if (id === 'record-session') return '/record-session';
+  // The record step flow (UI upgrades U4); the action's id stays, as phones have it set.
+  if (id === 'record-session') return '/record-lesson';
   return null;
 }
 

@@ -1,0 +1,180 @@
+# A person's record in sections, each with its own Edit (UI upgrades U5). Priya opens Ben Whitfield
+# (a student): Contact, School and goal, Availability, Lessons and price and Family; no Pay and tax.
+# School and goal's Edit opens only the school, course and goal; she changes his school and saves:
+# the record shows it, and his price and his parents are as they were (a scoped edit saves the whole
+# record). Lessons and price's Edit opens only its own fields. The record's menu keeps the whole form
+# ("Edit everything") and starts a payment for him, already filled with his primary guardian. She
+# puts his school back. Cleans up after itself.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people?view=00000000-0000-4000-8000-000000000009
+- extendedWaitUntil:
+    visible:
+      id: person-edit-school
+    timeout: 20000
+- assertVisible:
+    id: person-section-contact
+- assertVisible:
+    id: person-edit-contact
+- assertVisible: 'Ephesus Elementary'
+- takeScreenshot: section-edit-record
+# School and goal: just those three.
+- tapOn:
+    id: person-edit-school
+- extendedWaitUntil:
+    visible:
+      id: person-form-title
+      text: 'School and goal: Ben Whitfield'
+    timeout: 15000
+- assertVisible:
+    id: person-student-school
+- assertNotVisible:
+    id: person-form-name
+- assertNotVisible:
+    id: person-status-active
+- assertNotVisible:
+    id: person-student-price-in-person
+- tapOn:
+    id: person-student-school
+- eraseText: 30
+- tapOn:
+    id: person-student-school
+- eraseText: 30
+- inputText: 'Culbreth Middle'
+- pressKey: Enter
+- takeScreenshot: section-edit-school-form
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 15000
+- extendedWaitUntil:
+    visible: 'Culbreth Middle'
+    timeout: 15000
+- assertNotVisible: 'Ephesus Elementary'
+# The rest of the record is as it was.
+- scrollUntilVisible:
+    element:
+      id: person-price-in-person
+    direction: DOWN
+    timeout: 20000
+- assertVisible: '\$95\.00 / hr'
+- assertNotVisible:
+    id: person-section-pay
+- scrollUntilVisible:
+    element:
+      id: person-guardian-00000000-0000-4000-8000-000000000002
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: person-section-family
+# Lessons and price: its own fields only.
+- scrollUntilVisible:
+    element:
+      id: person-edit-lessons
+    direction: UP
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: person-edit-lessons
+- extendedWaitUntil:
+    visible:
+      id: person-form-title
+      text: 'Lessons and price: Ben Whitfield'
+    timeout: 15000
+- assertVisible:
+    id: person-student-virtual
+- assertNotVisible:
+    id: person-student-school
+- takeScreenshot: section-edit-lessons-form
+- scrollUntilVisible:
+    element:
+      id: person-form-cancel
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 15000
+# The menu: the whole form, and a payment already filled from the record.
+- tapOn:
+    id: person-menu
+- extendedWaitUntil:
+    visible:
+      id: person-edit
+    timeout: 5000
+- assertVisible:
+    id: person-record-payment-student
+- tapOn:
+    id: person-record-payment-student
+- extendedWaitUntil:
+    visible:
+      id: payment-who
+      text: 'From Dana Whitfield, for Ben Whitfield'
+    timeout: 15000
+- takeScreenshot: section-edit-payment-prefilled
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: payment-cancel
+- extendedWaitUntil:
+    notVisible:
+      id: payment-who
+    timeout: 10000
+# His school back as it was.
+- scrollUntilVisible:
+    element:
+      id: person-edit-school
+    direction: UP
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: person-edit-school
+- extendedWaitUntil:
+    visible:
+      id: person-student-school
+    timeout: 15000
+- tapOn:
+    id: person-student-school
+- eraseText: 30
+- tapOn:
+    id: person-student-school
+- eraseText: 30
+- inputText: 'Ephesus Elementary'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible: 'Ephesus Elementary'
+    timeout: 15000

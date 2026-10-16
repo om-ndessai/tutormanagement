@@ -24,31 +24,19 @@ tags:
 - tapOn: 'Sessions'
 - extendedWaitUntil:
     visible:
-      id: sessions-record
+      id: screen-sessions
     timeout: 20000
-- tapOn:
-    id: sessions-record
-- extendedWaitUntil:
-    visible:
-      id: record-pairing-a0000000-0000-4000-8000-000000000001
-    timeout: 15000
-- tapOn:
-    id: record-pairing-a0000000-0000-4000-8000-000000000001
-- scrollUntilVisible:
-    element:
-      id: record-planned
-    direction: DOWN
-    centerElement: true
+# Record a lesson is a step flow (UI upgrades U4): Sofia, then the Planned card.
+- runFlow:
+    file: ../../subflows/record-lesson-start.yaml
+    env:
+      PAIRING: a0000000-0000-4000-8000-000000000001
 - tapOn:
     id: record-planned
 - inputText: 'Private draft from Alex'
 # Return closes the keyboard on the short parts of the write-up.
 - pressKey: Enter
-- scrollUntilVisible:
-    element:
-      id: record-save-draft
-    direction: DOWN
-    timeout: 20000
+# Save draft: the explicit, logged save, at the top of the flow.
 - tapOn:
     id: record-save-draft
 - extendedWaitUntil:

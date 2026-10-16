@@ -36,7 +36,10 @@ tags:
     visible:
       id: screen-home
     timeout: 20000
-- assertVisible: 'Sofia Okafor'
+# Home greets her by name on the organization's clock (UI upgrades U6).
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Sofia'
 # Signing out is in the account sheet (the shell, 12).
 - tapOn:
     id: account-button

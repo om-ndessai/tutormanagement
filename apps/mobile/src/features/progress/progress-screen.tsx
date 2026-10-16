@@ -7,7 +7,8 @@ import { PROGRESS_STATUS_LABELS, type ProgressOverview, type ProgressStatus } fr
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
-import { Card, Chip, Divider, Menu, Searchbar, Text } from 'react-native-paper';
+import { Chip, Divider, Menu, Searchbar, Text } from 'react-native-paper';
+import { OutlinedCard } from '@/components/outlined-card';
 
 import { AdaptiveRow } from '@/components/adaptive-row';
 import { useLargeText } from '@/hooks/use-large-text';
@@ -226,14 +227,14 @@ export function ProgressScreen() {
             {filtered ? 'No student matches.' : 'There are no students for you to follow yet.'}
           </Text>
         ) : (
-          <Card mode="outlined" style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
+          <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: 0 }}>
             {rows.map((row, index) => (
               <View key={row.student_user_id}>
                 {index > 0 ? <Divider /> : null}
                 <ProgressRow row={row} />
               </View>
             ))}
-          </Card>
+          </OutlinedCard>
         )
       ) : null}
     </Screen>
