@@ -242,11 +242,12 @@ export function RatingPicker({
 
 /** A topic as its code and name: "BA3.10 Long division", with the unit when it has one. */
 export function TopicName({
-  id,
+  code,
   name,
   unit,
 }: {
-  id: string;
+  /** The catalog's code, never the id (a key); for a topic the catalog no longer lists, its id. */
+  code: string;
   name: string | undefined;
   unit?: string | null;
 }) {
@@ -260,7 +261,7 @@ export function TopicName({
           color: theme.tokens.mutedForeground,
         }}
       >
-        {id}{' '}
+        {code}{' '}
       </Text>
       {name ?? 'Unknown topic'}
       {unit ? <Text style={{ fontSize: 12, color: theme.tokens.mutedForeground }}> ({unit})</Text> : null}

@@ -49,6 +49,7 @@ DELETE FROM user_roles;
 DELETE FROM org_members;
 DELETE FROM organization_logos;
 DELETE FROM platform_admins;
+DELETE FROM organization_curricula;
 DELETE FROM organizations;
 DELETE FROM user_onboarding;
 DELETE FROM users;
@@ -59,6 +60,12 @@ DELETE FROM users;
 INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, calendar_domain) VALUES
   ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 'chmi.tutor-portal.invalid'),
   ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 'riverside.tutor-portal.invalid');
+
+-- Each teaches from Beast Academy alone, as its default (Phase 34): the API
+-- reads the catalog only through this list.
+INSERT INTO organization_curricula (organization_id, curriculum_id, is_default) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'ba', 1),
+  ('0b000000-0000-4000-8000-000000000001', 'ba', 1);
 
 -- --- people ----------------------------------------------------------------
 INSERT INTO users (id, email, full_name, phone) VALUES

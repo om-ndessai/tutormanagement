@@ -1,4 +1,4 @@
-import { expect, test } from '../support/fixtures.js';
+import { ORGS, expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
 import { PEOPLE } from '../support/people.js';
 import { visible } from '../support/ui.js';
@@ -24,7 +24,23 @@ test.describe('progress tracking', () => {
     expect(ba3.topics.find((topic: any) => topic.id === 'BA3.10')).toMatchObject({
       unit: '3D',
       name: 'Fractions',
+      // Phase 34: Beast Academy's ids are its codes, and the level comes from the row.
+      code: 'BA3.10',
+      level_id: 'BA3',
     });
+    expect(ba3).toMatchObject({ code: 'BA3', curriculum_id: 'ba' });
+    // The ladder's order is the catalog's, not a number the client works out.
+    expect(ba3).not.toHaveProperty('stage');
+  });
+
+  test('organization B reads the same Beast Academy ladder, through its own list', async ({ as }) => {
+    const bAdmin = await as('orgBAdmin', { org: ORGS.b.slug });
+    const levels = await unwrap<any[]>(await bAdmin.request.get('/api/curriculum'), 'curriculum');
+
+    expect(levels.map((level) => level.id)).toEqual([
+      'BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO',
+    ]);
+    expect(levels.every((level) => level.curriculum_id === 'ba')).toBe(true);
   });
 
   test('a student’s progress reaches their family and tutors, and nobody else', async ({ as }) => {

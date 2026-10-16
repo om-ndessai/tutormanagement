@@ -13,12 +13,13 @@ import { optionalText } from './users.js';
 const QUARTER_HOUR = 15;
 
 // ---------------------------------------------------------------------------
-// The curriculum ladder (Phase 16)
+// The curriculum catalog (Phase 16; curricula since Phase 34)
 // ---------------------------------------------------------------------------
-// Beast Academy levels 1-5, then the Art of Problem Solving books. The catalog
-// itself is reference data inserted by db/schema.sql; these are its shapes.
-//
-// Naming convention, which is also the id of every row:
+// The catalog is reference data inserted by db/schema.sql; these are its
+// shapes. It holds curricula, each a ladder of levels with topics. An
+// organization reads and writes only the curricula on its own list; today
+// every organization offers one, Beast Academy, which runs levels 1-5 and
+// then the Art of Problem Solving books:
 //
 //   level   BA1 .. BA5   Beast Academy Level 1 .. 5
 //           PRE          AoPS Prealgebra
@@ -26,20 +27,19 @@ const QUARTER_HOUR = 15;
 //           GEO          AoPS Introduction to Geometry
 //   topic   <level>.<nn> BA3.10 is "topic 10 of Beast Academy Level 3"
 //
-// Short, sortable, and readable aloud -- "BA3 point 10" -- which is what an
-// assessor jotting on paper actually writes.
+// Ids are keys; `code` is what people read. For Beast Academy they are the
+// same, and the API answers the id where a row has no code of its own. A
+// screen prints `code`, and takes a topic's level from `level_id`, never from
+// the id's text.
 
-export const CURRICULUM_PROGRAMS = ['beast_academy', 'aops'] as const;
-export type CurriculumProgram = (typeof CURRICULUM_PROGRAMS)[number];
-
-export const CURRICULUM_PROGRAM_LABELS: Record<CurriculumProgram, string> = {
-  beast_academy: 'Beast Academy',
-  aops: 'Art of Problem Solving',
-};
+/** The curriculum a new organization starts on. */
+export const DEFAULT_CURRICULUM_ID = 'ba';
 
 export interface CurriculumTopic {
-  /** "BA3.10" */
+  /** "BA3.10" -- the key every rating stores. */
   id: string;
+  /** What people read: "BA3.10". */
+  code: string;
   level_id: string;
   number: number;
   /** The Beast Academy guide book ("3D"); null for an AoPS chapter. */
@@ -50,20 +50,47 @@ export interface CurriculumTopic {
 export interface CurriculumLevel {
   /** "BA3", "PRE", "ALG", "GEO" */
   id: string;
-  program: CurriculumProgram;
+  /** What people read: "BA3". */
+  code: string;
+  /** "ba" */
+  curriculum_id: string;
   name: string;
-  /** Position on the ladder; lower is earlier. */
-  stage: number;
   grade_band: string | null;
   description: string | null;
+  /** In teaching order. */
   topics: CurriculumTopic[];
 }
 
-const levelId = z.string().trim().regex(/^[A-Z]{2,3}\d?$/, 'Choose a level from the list.');
-const topicId = z
-  .string()
-  .trim()
-  .regex(/^[A-Z]{2,3}\d?\.\d{2}$/, 'Choose a topic from the list.');
+/** A topic as found in the catalog: with its level and its place in teaching order. */
+export interface IndexedTopic extends CurriculumTopic {
+  level: CurriculumLevel;
+  /** 0 for the first topic of the first level, counting straight through. */
+  position: number;
+}
+
+/**
+ * Every topic of the catalog by id, with its level (from the row, never the
+ * id's text) and its catalog position, which is the order to sort topics in.
+ */
+export function indexCurriculum(levels: readonly CurriculumLevel[]): Map<string, IndexedTopic> {
+  const index = new Map<string, IndexedTopic>();
+  for (const level of levels) {
+    for (const topic of level.topics) index.set(topic.id, { ...topic, level, position: index.size });
+  }
+  return index;
+}
+
+/**
+ * One shape for every catalog id -- curricula, levels and topics -- wide
+ * enough for a state standard ("NC17.5.NF.1") or a UUID. It may only ever
+ * widen: a stored draft whose topic id stops matching silently loses its
+ * ratings on read. Wrapped in the SSN guard because "123-45-6789" fits it,
+ * and a refusal would otherwise echo the number back.
+ */
+const CATALOG_ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$/;
+
+const levelId = refuseSsn(z.string().trim().regex(CATALOG_ID, 'Choose a level from the list.'));
+const topicId = refuseSsn(z.string().trim().regex(CATALOG_ID, 'Choose a topic from the list.'));
 
 // ---------------------------------------------------------------------------
 // Ratings

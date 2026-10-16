@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ApiRequestError } from '@/lib/api-client';
 import { localToday } from './dates';
-import { useCreateAssessment, useCurriculum, useUpdateAssessment } from './api';
+import { useCreateAssessment, useTopicIndex, useUpdateAssessment } from './api';
 import { RatingLegend } from './rating';
 import { LevelSelect, TopicRatingsEditor } from './topic-pickers';
 
@@ -45,8 +45,7 @@ export function AssessmentDialog({
   /** Called once it has saved -- the onboarding wizard ticks its step off. */
   onSaved?: () => void;
 }) {
-  const { data } = useCurriculum();
-  const levels = data?.data ?? [];
+  const { levels, topics } = useTopicIndex();
 
   const [assessedOn, setAssessedOn] = useState(localToday());
   const [course, setCourse] = useState('');
@@ -178,7 +177,9 @@ export function AssessmentDialog({
                   levels={levels}
                   ratings={ratings}
                   onChange={setRatings}
-                  initialLevel={level || existing?.ratings[0]?.topic_id.split('.')[0]}
+                  initialLevel={
+                    level || (existing?.ratings[0] && topics.get(existing.ratings[0].topic_id)?.level_id)
+                  }
                 />
               )}
               {errors.ratings && (

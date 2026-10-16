@@ -1096,6 +1096,7 @@ DELETE FROM user_roles;
 DELETE FROM org_members;
 DELETE FROM organization_logos;
 DELETE FROM platform_admins;
+DELETE FROM organization_curricula;
 DELETE FROM organizations;
 DELETE FROM user_onboarding;
 DELETE FROM users;
@@ -1104,6 +1105,10 @@ DELETE FROM users;
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
 ${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'calendar_domain'], organizations)}
+
+-- Each teaches from Beast Academy alone, as its default (Phase 34): the API
+-- reads the catalog only through this list.
+${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default'], [[A, q('ba'), 1], [B, q('ba'), 1]])}
 
 -- --- people ----------------------------------------------------------------
 ${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers])}

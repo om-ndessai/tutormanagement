@@ -18,7 +18,7 @@ What did NOT change, and must not be "tidied": the Cloudflare Workers and their 
 (`tmi-portal`, `tutoring`, `tutoring-test`), the databases, the `tmi_session` cookie and the
 `@tmi/*` packages. `docs/naming/README.md` is the record of how the name was chosen.
 
-**Phases 1 to 19, and 21 to 33, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 34, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -31,7 +31,8 @@ as Analytics, a sessions carousel, a progress spotlight and recent activity (21)
 one lesson of a standing schedule cancelled and restored, without touching the series (24), the
 student's own reflection on each lesson (25), and a welcome wizard with a feature tour and guided
 setup of a new student or tutor (26), multiple organizations (27-31), and per-organization email
-notifications (32), and tutoring locations with an in-app reminder (33).
+notifications (32), tutoring locations with an in-app reminder (33), and curricula, with
+Beast Academy alone, read through each organization's own list (34).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -209,7 +210,9 @@ sit outside it.
 `OrgId` (only `requireOrg`, or a row's own column, mints one); scope helpers never return `null` --
 an admin's scope is `alias.organization_id = ?`; a lookup by id adds the organization and answers
 404 for a row elsewhere. `scripts/check-org-scope.mjs` (run by `npm run typecheck`) fails on a
-`.prepare(` touching an organization table without it; a query that genuinely reads across
+`.prepare(` touching an organization table without it -- the four catalog tables (`curricula`,
+`organization_curricula`, `curriculum_levels`, `curriculum_topics`) count, since an unjoined read
+of them would hand out curricula the organization does not offer; a query that genuinely reads across
 organizations (the cron's sweep, sign-in) says so with an `org-scope:` comment. The database
 backs it up: every root table's `BEFORE INSERT` trigger refuses a person who is not a member of
 the row's organization, and `BEFORE UPDATE OF organization_id` refuses any move.
@@ -519,9 +522,16 @@ fourth copy of the rule. Comments are never editable (no `updated_at`, no PATCH 
 author may delete them — not admins. Never put comment text in an audit description: the log is
 read by admins, and a comment is not theirs by default.
 
-**Progress is measured on one 1-5 scale against one curriculum ladder.** Levels are `BA1`-`BA5`,
-`PRE`, `ALG`, `GEO`; topics are `<level>.<nn>` (`BA3.10`). The catalog is reference data at the
-end of `schema.sql`, written as upserts -- never delete a topic, ratings reference it. Progress
+**Progress is measured on one 1-5 scale against an organization's curricula.** The catalog
+(`curricula` > `curriculum_levels` > `curriculum_topics`) is reference data at the end of
+`schema.sql`, written as upserts -- never delete a topic, ratings reference it. Today it holds one
+curriculum, Beast Academy (`ba`): levels `BA1`-`BA5`, `PRE`, `ALG`, `GEO`; topics `<level>.<nn>`
+(`BA3.10`). An organization reads and writes only the curricula on its own list
+(`organization_curricula`, exactly one default -- rule 9 in `docs/data-model.md`), and every
+catalog query joins it (`listCurriculum`, `findUnknownCurriculumIds`). Ids are keys, `code` is
+what people read (the API answers `COALESCE(code, id)`): print `code`, take a topic's level from
+its row, never the id's text, and sort by catalog position (`indexCurriculum`). The shared id
+shape may only ever widen. Progress
 figures are derived by `computeProgress` in `packages/shared/src/progress.ts`, never stored.
 Assessments and plans are admin-written; a tutor scores a lesson through the session's
 optional `progress` field, which lives in `session_progress`, not on the billing row.

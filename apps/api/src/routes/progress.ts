@@ -44,11 +44,13 @@ const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid id.' }) });
 const studentParamSchema = z.object({ studentId: z.uuid({ message: 'Not a valid student id.' }) });
 
 /**
- * The curriculum is reference data every signed-in person may read: a parent
- * reading their child's plan needs to know what "BA3.10" is.
+ * The curriculum is reference data every member may read: a parent reading
+ * their child's plan needs to know what "BA3.10" is. Only the curricula this
+ * organization offers. Never cache it over HTTP without `Vary: X-Organization`:
+ * the URL is the same for every organization.
  */
 export const curriculumRoutes = new Hono<AppEnv>().get('/', async (c) => {
-  const body: ApiOk<CurriculumLevel[]> = { data: await listCurriculum(c.env.DB) };
+  const body: ApiOk<CurriculumLevel[]> = { data: await listCurriculum(c.env.DB, c.get('org').id) };
   return c.json(body);
 });
 
@@ -65,15 +67,19 @@ async function requireStudent(db: D1Database, org: OrgId, studentId: string) {
   return student;
 }
 
-/** Level and topic ids must name catalog rows; says which ones do not. */
+/**
+ * Level and topic ids must name rows of a curriculum this organization
+ * offers (retired or not); says which ones do not.
+ */
 async function assertCatalogIds(
   db: D1Database,
-  fields: { field: string; table: 'curriculum_levels' | 'curriculum_topics'; ids: string[] }[],
+  org: OrgId,
+  fields: { field: string; kind: 'level' | 'topic'; ids: string[] }[],
 ) {
   const details: Record<string, string[]> = {};
 
-  for (const { field, table, ids } of fields) {
-    const unknown = await findUnknownCurriculumIds(db, table, ids);
+  for (const { field, kind, ids } of fields) {
+    const unknown = await findUnknownCurriculumIds(db, org, kind, ids);
     if (unknown.length > 0) {
       details[field] = [`Not in the curriculum: ${unknown.join(', ')}.`];
     }
@@ -106,13 +112,13 @@ export const progressRoutes = new Hono<AppEnv>()
     const input = c.req.valid('json');
     const student = await requireStudent(c.env.DB, c.get('org').id, input.student_user_id);
 
-    await assertCatalogIds(c.env.DB, [
+    await assertCatalogIds(c.env.DB, c.get('org').id, [
       {
         field: 'recommended_level_id',
-        table: 'curriculum_levels',
+        kind: 'level',
         ids: input.recommended_level_id ? [input.recommended_level_id] : [],
       },
-      { field: 'ratings', table: 'curriculum_topics', ids: input.ratings.map((r) => r.topic_id) },
+      { field: 'ratings', kind: 'topic', ids: input.ratings.map((r) => r.topic_id) },
     ]);
 
     const viewer = c.get('user');
@@ -153,15 +159,15 @@ export const progressRoutes = new Hono<AppEnv>()
         throw ApiError.notFound('That assessment does not exist.');
       }
 
-      await assertCatalogIds(c.env.DB, [
+      await assertCatalogIds(c.env.DB, c.get('org').id, [
         {
           field: 'recommended_level_id',
-          table: 'curriculum_levels',
+          kind: 'level',
           ids: input.recommended_level_id ? [input.recommended_level_id] : [],
         },
         {
           field: 'ratings',
-          table: 'curriculum_topics',
+          kind: 'topic',
           ids: (input.ratings ?? []).map((r) => r.topic_id),
         },
       ]);
@@ -224,13 +230,13 @@ export const progressRoutes = new Hono<AppEnv>()
       }
     }
 
-    await assertCatalogIds(c.env.DB, [
+    await assertCatalogIds(c.env.DB, c.get('org').id, [
       {
         field: 'target_level_id',
-        table: 'curriculum_levels',
+        kind: 'level',
         ids: input.target_level_id ? [input.target_level_id] : [],
       },
-      { field: 'topic_ids', table: 'curriculum_topics', ids: input.topic_ids },
+      { field: 'topic_ids', kind: 'topic', ids: input.topic_ids },
     ]);
 
     const viewer = c.get('user');
@@ -296,13 +302,13 @@ export const progressRoutes = new Hono<AppEnv>()
         }
       }
 
-      await assertCatalogIds(c.env.DB, [
+      await assertCatalogIds(c.env.DB, c.get('org').id, [
         {
           field: 'target_level_id',
-          table: 'curriculum_levels',
+          kind: 'level',
           ids: input.target_level_id ? [input.target_level_id] : [],
         },
-        { field: 'topic_ids', table: 'curriculum_topics', ids: input.topic_ids ?? [] },
+        { field: 'topic_ids', kind: 'topic', ids: input.topic_ids ?? [] },
       ]);
 
       const updated = await updatePlan(c.env.DB, c.get('org').id, id, input);

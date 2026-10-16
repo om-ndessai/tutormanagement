@@ -44,6 +44,8 @@ DROP TABLE IF EXISTS assessment_topic_ratings;
 DROP TABLE IF EXISTS assessments;
 DROP TABLE IF EXISTS curriculum_topics;
 DROP TABLE IF EXISTS curriculum_levels;
+DROP TABLE IF EXISTS organization_curricula;
+DROP TABLE IF EXISTS curricula;
 
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS session_reflections;
@@ -1136,6 +1138,87 @@ END;
 -- END PHASE 26 TABLES
 
 
+-- BEGIN PHASE 34 TABLES
+-- ---------------------------------------------------------------------------
+-- curricula / organization_curricula - which ladders an organization teaches
+-- ---------------------------------------------------------------------------
+-- The catalog (curriculum_levels, curriculum_topics, below) holds one or more
+-- curricula. Today it holds one, Beast Academy ('ba'), which keeps the three
+-- AoPS books as its upper levels. An organization reads and writes only the
+-- curricula on its own list, organization_curricula: every catalog read and
+-- every id check in the API goes through that list, so it is the one choke
+-- point between an organization and the catalog.
+--
+--   curricula ──┬── curriculum_levels ── curriculum_topics ── (ratings, plan topics)
+--               └── organization_curricula ── organizations
+--
+-- A platform curriculum (organization_id NULL) is reference data, written by
+-- this file and never by the application. One with organization_id set is
+-- that organization's own and nobody else's (R13); no row has one yet.
+CREATE TABLE curricula (
+  -- The platform's: a slug ('ba'). An organization's own: a UUID.
+  id              TEXT PRIMARY KEY,
+  -- NULL: the platform's, shared by every organization that offers it.
+  -- Set: that organization's own, and nobody else's.
+  organization_id TEXT REFERENCES organizations (id),
+  name            TEXT NOT NULL,
+  -- Where it comes from. No CHECK: a new source is never a table change.
+  source          TEXT,
+  -- '2017', '2026'; NULL when the source has none.
+  edition         TEXT,
+  description     TEXT,
+  source_url      TEXT,
+  -- Display order only.
+  sort            INTEGER NOT NULL DEFAULT 0,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- An organization's list. Exactly one default per organization: the index
+-- allows at most one, and the API makes sure there is one (creating an
+-- organization inserts it; docs/data-model.md has the audit query).
+CREATE TABLE organization_curricula (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  curriculum_id   TEXT NOT NULL REFERENCES curricula (id),
+  is_default      INTEGER NOT NULL DEFAULT 0 CHECK (is_default IN (0, 1)),
+  -- Hidden from pickers; everything written against it still reads, and a
+  -- write may still name it. Rows are never deleted.
+  retired_at      TEXT,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (organization_id, curriculum_id),
+  CHECK (is_default = 0 OR retired_at IS NULL)
+);
+
+CREATE UNIQUE INDEX organization_curricula_one_default
+  ON organization_curricula (organization_id) WHERE is_default = 1;
+
+-- A row may name the platform's curriculum or this organization's own, never
+-- another organization's. The API repeats the same test in its SQL.
+CREATE TRIGGER organization_curricula_same_organization
+BEFORE INSERT ON organization_curricula
+WHEN NOT EXISTS (SELECT 1 FROM curricula c WHERE c.id = NEW.curriculum_id
+                 AND (c.organization_id IS NULL OR c.organization_id = NEW.organization_id))
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+-- The row's key never moves: neither to another organization nor, by an
+-- update, onto a curriculum the insert trigger would have refused.
+CREATE TRIGGER organization_curricula_organization_fixed
+BEFORE UPDATE OF organization_id, curriculum_id ON organization_curricula
+WHEN NEW.organization_id IS NOT OLD.organization_id OR NEW.curriculum_id IS NOT OLD.curriculum_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER curricula_organization_fixed
+BEFORE UPDATE OF organization_id ON curricula
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+-- END PHASE 34 TABLES
+
+
 -- BEGIN PHASE 16 TABLES
 -- (Markers used to carry this block to production verbatim; docs/database.md.)
 -- ===========================================================================
@@ -1161,7 +1244,9 @@ END;
 -- curriculum_levels / curriculum_topics - the ladder, as reference data
 -- ---------------------------------------------------------------------------
 -- Rows are inserted by this file (see the catalog block at the end) and never
--- written by the application. Ids are human-readable codes rather than UUIDs
+-- written by the application. Since Phase 34 every level belongs to a
+-- curriculum (`curricula`, above), and an organization reads only those on
+-- its own list; this ladder is Beast Academy ('ba'). Ids are human-readable codes rather than UUIDs
 -- because they ARE the naming convention the office speaks in:
 --
 --   level  BA1 .. BA5   Beast Academy Level 1 .. 5
@@ -1187,8 +1272,20 @@ CREATE TABLE curriculum_levels (
   -- because AoPS recommends it.
   stage       INTEGER NOT NULL UNIQUE CHECK (stage > 0),
   grade_band  TEXT,
-  description TEXT
+  description TEXT,
+  -- Phase 34, last because production gains them by ALTER TABLE (where this
+  -- column is nullable; a level without one is invisible to everybody).
+  -- `program` above is no longer read; it goes when a second curriculum
+  -- arrives.
+  curriculum_id TEXT NOT NULL REFERENCES curricula (id),
+  -- What people read. NULL where the id already is the code, as for every
+  -- Beast Academy row; the API answers COALESCE(code, id). Ids are keys.
+  code        TEXT
 );
+
+-- A curriculum's levels, in ladder order. Platform stages sit in disjoint
+-- thousands per curriculum (Beast Academy 1-8) and never change once shipped.
+CREATE INDEX curriculum_levels_curriculum_idx ON curriculum_levels (curriculum_id, stage);
 
 CREATE TABLE curriculum_topics (
   id        TEXT PRIMARY KEY,
@@ -1198,6 +1295,9 @@ CREATE TABLE curriculum_topics (
   -- The Beast Academy guide book the chapter is in ("3D"); NULL for AoPS.
   unit      TEXT,
   name      TEXT NOT NULL,
+  -- Phase 34: what people read, as on curriculum_levels. Last of the
+  -- columns, where production's ALTER TABLE put it.
+  code      TEXT,
 
   UNIQUE (level_id, number)
 );
@@ -1675,16 +1775,23 @@ END;
 -- own (docs/database.md): re-running it corrects names and adds chapters
 -- without disturbing a single rating. Never add a DELETE here.
 -- BEGIN CURRICULUM CATALOG
-INSERT INTO curriculum_levels (id, program, name, stage, grade_band, description) VALUES
-  ('BA1', 'beast_academy', 'Beast Academy Level 1', 1, 'Ages 6-8 (about grade 1)', 'Guide books 1A-1D.'),
-  ('BA2', 'beast_academy', 'Beast Academy Level 2', 2, 'Ages 7-9 (about grade 2)', 'Guide books 2A-2D.'),
-  ('BA3', 'beast_academy', 'Beast Academy Level 3', 3, 'Ages 8-10 (about grade 3)', 'Guide books 3A-3D.'),
-  ('BA4', 'beast_academy', 'Beast Academy Level 4', 4, 'Ages 9-12 (about grade 4)', 'Guide books 4A-4D.'),
-  ('BA5', 'beast_academy', 'Beast Academy Level 5', 5, 'Ages 10-13 (about grade 5)', 'Guide books 5A-5D.'),
-  ('PRE', 'aops', 'AoPS Prealgebra', 6, 'About grades 5-7', 'After Beast Academy 5. The bridge from arithmetic to algebra.'),
-  ('ALG', 'aops', 'AoPS Introduction to Algebra', 7, 'Grades 6-9', 'Follows Prealgebra.'),
-  ('GEO', 'aops', 'AoPS Introduction to Geometry', 8, 'Grades 7-10', 'Usually after Introduction to Algebra; the two are sometimes taken in either order.')
+-- The curricula first: every level names one.
+INSERT INTO curricula (id, name, source, sort) VALUES
+  ('ba', 'Beast Academy', 'Beast Academy and Art of Problem Solving', 1)
 ON CONFLICT (id) DO UPDATE SET
+  name = excluded.name, source = excluded.source, sort = excluded.sort;
+
+INSERT INTO curriculum_levels (id, curriculum_id, program, name, stage, grade_band, description) VALUES
+  ('BA1', 'ba', 'beast_academy', 'Beast Academy Level 1', 1, 'Ages 6-8 (about grade 1)', 'Guide books 1A-1D.'),
+  ('BA2', 'ba', 'beast_academy', 'Beast Academy Level 2', 2, 'Ages 7-9 (about grade 2)', 'Guide books 2A-2D.'),
+  ('BA3', 'ba', 'beast_academy', 'Beast Academy Level 3', 3, 'Ages 8-10 (about grade 3)', 'Guide books 3A-3D.'),
+  ('BA4', 'ba', 'beast_academy', 'Beast Academy Level 4', 4, 'Ages 9-12 (about grade 4)', 'Guide books 4A-4D.'),
+  ('BA5', 'ba', 'beast_academy', 'Beast Academy Level 5', 5, 'Ages 10-13 (about grade 5)', 'Guide books 5A-5D.'),
+  ('PRE', 'ba', 'aops', 'AoPS Prealgebra', 6, 'About grades 5-7', 'After Beast Academy 5. The bridge from arithmetic to algebra.'),
+  ('ALG', 'ba', 'aops', 'AoPS Introduction to Algebra', 7, 'Grades 6-9', 'Follows Prealgebra.'),
+  ('GEO', 'ba', 'aops', 'AoPS Introduction to Geometry', 8, 'Grades 7-10', 'Usually after Introduction to Algebra; the two are sometimes taken in either order.')
+ON CONFLICT (id) DO UPDATE SET
+  curriculum_id = excluded.curriculum_id,
   program = excluded.program, name = excluded.name, stage = excluded.stage,
   grade_band = excluded.grade_band, description = excluded.description;
 

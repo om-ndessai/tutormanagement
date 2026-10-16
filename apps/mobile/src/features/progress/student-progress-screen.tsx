@@ -255,7 +255,7 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
                         testID={`progress-topic-${row.topic_id}`}
                         style={{ paddingVertical: space.sm, gap: 6 }}
                       >
-                        <TopicName id={row.topic_id} name={topic?.name} unit={topic?.unit} />
+                        <TopicName code={topic?.code ?? row.topic_id} name={topic?.name} unit={topic?.unit} />
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                           <RatingChip rating={row.baseline} size={22} />
                           <Text
@@ -337,7 +337,7 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
         assessments={progress.assessments}
         isAdmin={isAdmin}
         levelName={levelName}
-        topicName={(id) => topics.get(id)?.name}
+        topicName={(id) => topics.get(id)}
         onEdit={(row) => assess(row)}
         onDelete={(row) => confirmDelete({ kind: 'assessment', row })}
       />

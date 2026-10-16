@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/progress/topic-pickers.tsx @ 1132322. The web's level Select
 // becomes a row of level chips (with how many topics each holds so far), and the plan's two
 // columns stack: the chosen list, in teaching order, above the topics to choose from.
-import type { CurriculumLevel, Rating } from '@tmi/shared';
+import { indexCurriculum, type CurriculumLevel, type Rating } from '@tmi/shared';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Chip, Divider, Icon, Text } from 'react-native-paper';
@@ -12,7 +12,7 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { CHIP_HIT_SLOP, MIN_TARGET, radius, space } from '@/theme/tokens';
-import { levelOf, moveTopic, toggleTopic } from './progress-model';
+import { countByLevel, moveTopic, toggleTopic } from './progress-model';
 import { RatingChip, RatingPicker, TopicName } from './rating';
 
 const NONE = 'none';
@@ -42,7 +42,7 @@ export function LevelPicker({
       placeholder={placeholder}
       options={[
         { id: NONE, label: 'None' },
-        ...levels.map((level) => ({ id: level.id, label: level.id, detail: level.name })),
+        ...levels.map((level) => ({ id: level.id, label: level.code, detail: level.name })),
       ]}
       // None is a choice like any other, so the field starts closed on it.
       value={value || NONE}
@@ -97,7 +97,7 @@ export function LevelTabs({
               onChange(level.id);
             }}
           >
-            {count > 0 ? `${level.id} · ${count}` : level.id}
+            {count > 0 ? `${level.code} · ${count}` : level.code}
           </Chip>
         );
       })}
@@ -121,12 +121,6 @@ function LevelHeading({ level }: { level: CurriculumLevel }) {
   );
 }
 
-function countByLevel(ids: Iterable<string>): Map<string, number> {
-  const counts = new Map<string, number>();
-  for (const id of ids) counts.set(levelOf(id), (counts.get(levelOf(id)) ?? 0) + 1);
-  return counts;
-}
-
 /**
  * Scores topics one level at a time: "pick topic 10 from level 3 and mark it 1". Choosing another
  * level keeps what was scored elsewhere, and the chips show every level's count so far.
@@ -145,7 +139,8 @@ export function TopicRatingsEditor({
   const theme = useAppTheme();
   const [levelId, setLevelId] = useState(initialLevel || levels[0]?.id || '');
   const level = levels.find((candidate) => candidate.id === levelId);
-  const counts = useMemo(() => countByLevel(ratings.keys()), [ratings]);
+  const catalog = useMemo(() => indexCurriculum(levels), [levels]);
+  const counts = useMemo(() => countByLevel(ratings.keys(), catalog), [ratings, catalog]);
 
   function set(topicId: string, value: Rating | null) {
     const next = new Map(ratings);
@@ -177,10 +172,10 @@ export function TopicRatingsEditor({
             <View key={topic.id}>
               <Divider />
               <View style={{ paddingHorizontal: space.md, paddingVertical: space.sm, gap: space.sm }}>
-                <TopicName id={topic.id} name={topic.name} unit={topic.unit} />
+                <TopicName code={topic.code} name={topic.name} unit={topic.unit} />
                 <RatingPicker
                   testID={`assessment-topic-${topic.id}`}
-                  name={`${topic.id} ${topic.name}`}
+                  name={`${topic.code} ${topic.name}`}
                   value={ratings.get(topic.id) ?? null}
                   onChange={(value) => set(topic.id, value)}
                 />
@@ -212,16 +207,15 @@ export function PlanTopicsEditor({
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
-  const [levelId, setLevelId] = useState(value[0] ? levelOf(value[0]) : (levels[0]?.id ?? ''));
+  const catalog = useMemo(() => indexCurriculum(levels), [levels]);
+  const [levelId, setLevelId] = useState(
+    (value[0] && catalog.get(value[0])?.level_id) || levels[0]?.id || '',
+  );
   const level = levels.find((candidate) => candidate.id === levelId);
   const chosen = new Set(value);
-  const counts = useMemo(() => countByLevel(value), [value]);
-
-  const names = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const l of levels) for (const topic of l.topics) map.set(topic.id, topic.name);
-    return map;
-  }, [levels]);
+  const counts = useMemo(() => countByLevel(value, catalog), [value, catalog]);
+  /** A topic's code, or its id if the catalog no longer lists it. */
+  const codeOf = (topicId: string) => catalog.get(topicId)?.code ?? topicId;
 
   const box = {
     borderWidth: 1,
@@ -255,13 +249,13 @@ export function PlanTopicsEditor({
                   {index + 1}
                 </Text>
                 <View style={{ flex: 1 }}>
-                  <TopicName id={topicId} name={names.get(topicId)} />
+                  <TopicName code={codeOf(topicId)} name={catalog.get(topicId)?.name} />
                 </View>
                 <IconButton
                   testID={`plan-up-${topicId}`}
                   icon="arrow-up"
                   size={18}
-                  accessibilityLabel={`Move ${topicId} earlier`}
+                  accessibilityLabel={`Move ${codeOf(topicId)} earlier`}
                   disabled={index === 0}
                   onPress={() => {
                     haptics.selection();
@@ -273,7 +267,7 @@ export function PlanTopicsEditor({
                   testID={`plan-down-${topicId}`}
                   icon="arrow-down"
                   size={18}
-                  accessibilityLabel={`Move ${topicId} later`}
+                  accessibilityLabel={`Move ${codeOf(topicId)} later`}
                   disabled={index === value.length - 1}
                   onPress={() => {
                     haptics.selection();
@@ -285,7 +279,7 @@ export function PlanTopicsEditor({
                   testID={`plan-remove-${topicId}`}
                   icon="close"
                   size={18}
-                  accessibilityLabel={`Remove ${topicId}`}
+                  accessibilityLabel={`Remove ${codeOf(topicId)}`}
                   onPress={() => {
                     haptics.selection();
                     onChange(toggleTopic(value, topicId));
@@ -319,7 +313,7 @@ export function PlanTopicsEditor({
                   testID={`plan-topic-${topic.id}`}
                   accessibilityRole="checkbox"
                   accessibilityState={{ checked: selected }}
-                  accessibilityLabel={`${topic.id} ${topic.name}${score ? `, assessed ${score}` : ''}`}
+                  accessibilityLabel={`${topic.code} ${topic.name}${score ? `, assessed ${score}` : ''}`}
                   onPress={() => {
                     haptics.selection();
                     onChange(toggleTopic(value, topic.id));
@@ -353,7 +347,7 @@ export function PlanTopicsEditor({
                     {selected ? <Icon source="check" size={14} color={theme.colors.onPrimary} /> : null}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <TopicName id={topic.id} name={topic.name} />
+                    <TopicName code={topic.code} name={topic.name} />
                   </View>
                   {score ? <RatingChip rating={score} size={20} /> : null}
                 </Pressable>

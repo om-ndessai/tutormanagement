@@ -83,9 +83,12 @@ npx wrangler d1 execute tmi-portal-db --remote \
   --command="ALTER TABLE users ADD COLUMN new_column TEXT"
 ```
 
-SQLite can add a column and can add or drop an index, but it cannot drop or retype a column
-in place. Anything beyond an additive change needs the create-new-table / copy / drop / rename
-dance, written out explicitly.
+SQLite can add a column and can add or drop an index. Since 3.35 it can also drop a column
+(`ALTER TABLE ... DROP COLUMN`), rewriting rows in place with no implicit delete -- but not a
+column that is a key, UNIQUE or indexed, or one a foreign key, trigger or view names (tested on
+local SQLite; not yet on D1 itself). It cannot retype one. Anything beyond that
+needs the create-new-table / copy / drop / rename dance, written out explicitly, and on D1 that
+is not safe for a referenced table (below).
 
 The session-limit columns added with the auto-stop work are exactly this kind of additive
 change:
@@ -371,6 +374,129 @@ BEGIN
   SELECT RAISE(ABORT, 'location_not_in_pairing');
 END;
 ```
+
+Phase 34 (curricula, with Beast Academy alone, 2026-10-16) is two new tables, an index and three
+triggers, marked in `schema.sql`, then three added columns, the `ba` row and each organization's
+default. **Run it before deploying the Worker**: every catalog read and id check joins
+`organization_curricula`, so a Worker deployed ahead of it fails on every progress screen and every
+scored lesson. The running Worker keeps working throughout, because nothing it reads changes;
+`program` stays, unread. `curriculum_id` is nullable here and NOT NULL in a rebuilt database, as
+`ALTER` allows: a level without one is invisible to every organization, so it fails safe, and the
+first check finds it.
+
+```bash
+cd apps/api
+sed -n '/BEGIN PHASE 34 TABLES/,/END PHASE 34 TABLES/p' db/schema.sql > /tmp/phase34.sql
+cat >> /tmp/phase34.sql <<'SQL'
+INSERT INTO curricula (id, name, source, sort)
+  VALUES ('ba', 'Beast Academy', 'Beast Academy and Art of Problem Solving', 1)
+  ON CONFLICT (id) DO UPDATE SET name = excluded.name, source = excluded.source, sort = excluded.sort;
+ALTER TABLE curriculum_levels ADD COLUMN curriculum_id TEXT REFERENCES curricula (id);
+ALTER TABLE curriculum_levels ADD COLUMN code TEXT;
+ALTER TABLE curriculum_topics ADD COLUMN code TEXT;
+UPDATE curriculum_levels SET curriculum_id = 'ba' WHERE curriculum_id IS NULL;
+CREATE INDEX curriculum_levels_curriculum_idx ON curriculum_levels (curriculum_id, stage);
+INSERT INTO organization_curricula (organization_id, curriculum_id, is_default)
+  SELECT id, 'ba', 1 FROM organizations WHERE true
+  ON CONFLICT (organization_id, curriculum_id) DO NOTHING;
+SQL
+npx wrangler d1 execute tutoring-db --remote --file=/tmp/phase34.sql
+
+# read-only checks: 0, nothing, nothing
+npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) FROM curriculum_levels WHERE curriculum_id IS NULL"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT o.slug FROM organizations o WHERE NOT EXISTS (SELECT 1 FROM organization_curricula oc WHERE oc.organization_id = o.id AND oc.is_default = 1)"
+npx wrangler d1 execute tutoring-db --remote --command="PRAGMA foreign_key_check"
+```
+
+The block, as it stands in `schema.sql`:
+
+```sql
+-- BEGIN PHASE 34 TABLES
+-- ---------------------------------------------------------------------------
+-- curricula / organization_curricula - which ladders an organization teaches
+-- ---------------------------------------------------------------------------
+-- The catalog (curriculum_levels, curriculum_topics, below) holds one or more
+-- curricula. Today it holds one, Beast Academy ('ba'), which keeps the three
+-- AoPS books as its upper levels. An organization reads and writes only the
+-- curricula on its own list, organization_curricula: every catalog read and
+-- every id check in the API goes through that list, so it is the one choke
+-- point between an organization and the catalog.
+--
+--   curricula ──┬── curriculum_levels ── curriculum_topics ── (ratings, plan topics)
+--               └── organization_curricula ── organizations
+--
+-- A platform curriculum (organization_id NULL) is reference data, written by
+-- this file and never by the application. One with organization_id set is
+-- that organization's own and nobody else's (R13); no row has one yet.
+CREATE TABLE curricula (
+  -- The platform's: a slug ('ba'). An organization's own: a UUID.
+  id              TEXT PRIMARY KEY,
+  -- NULL: the platform's, shared by every organization that offers it.
+  -- Set: that organization's own, and nobody else's.
+  organization_id TEXT REFERENCES organizations (id),
+  name            TEXT NOT NULL,
+  -- Where it comes from. No CHECK: a new source is never a table change.
+  source          TEXT,
+  -- '2017', '2026'; NULL when the source has none.
+  edition         TEXT,
+  description     TEXT,
+  source_url      TEXT,
+  -- Display order only.
+  sort            INTEGER NOT NULL DEFAULT 0,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- An organization's list. Exactly one default per organization: the index
+-- allows at most one, and the API makes sure there is one (creating an
+-- organization inserts it; docs/data-model.md has the audit query).
+CREATE TABLE organization_curricula (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  curriculum_id   TEXT NOT NULL REFERENCES curricula (id),
+  is_default      INTEGER NOT NULL DEFAULT 0 CHECK (is_default IN (0, 1)),
+  -- Hidden from pickers; everything written against it still reads, and a
+  -- write may still name it. Rows are never deleted.
+  retired_at      TEXT,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (organization_id, curriculum_id),
+  CHECK (is_default = 0 OR retired_at IS NULL)
+);
+
+CREATE UNIQUE INDEX organization_curricula_one_default
+  ON organization_curricula (organization_id) WHERE is_default = 1;
+
+-- A row may name the platform's curriculum or this organization's own, never
+-- another organization's. The API repeats the same test in its SQL.
+CREATE TRIGGER organization_curricula_same_organization
+BEFORE INSERT ON organization_curricula
+WHEN NOT EXISTS (SELECT 1 FROM curricula c WHERE c.id = NEW.curriculum_id
+                 AND (c.organization_id IS NULL OR c.organization_id = NEW.organization_id))
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+-- The row's key never moves: neither to another organization nor, by an
+-- update, onto a curriculum the insert trigger would have refused.
+CREATE TRIGGER organization_curricula_organization_fixed
+BEFORE UPDATE OF organization_id, curriculum_id ON organization_curricula
+WHEN NEW.organization_id IS NOT OLD.organization_id OR NEW.curriculum_id IS NOT OLD.curriculum_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER curricula_organization_fixed
+BEFORE UPDATE OF organization_id ON curricula
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+-- END PHASE 34 TABLES
+```
+
+Rehearsed locally against a database built from the previous `schema.sql` and seed: the block
+and the statements ran clean, the three checks answered 0, nothing and nothing, every rating
+survived, and the catalog block (which now upserts `curricula` and names `curriculum_id` on each
+level) re-ran on top. The catalog block now needs `curriculum_id` to exist, so it runs only
+after this one.
 
 ### Rebuilding a table is not safe on D1
 

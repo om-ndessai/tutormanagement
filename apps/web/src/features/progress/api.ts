@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
@@ -5,13 +6,13 @@ import type {
   AssessmentPayload,
   AssessmentUpdatePayload,
   CurriculumLevel,
-  CurriculumTopic,
   LearningPlan,
   PlanPayload,
   PlanUpdatePayload,
   ProgressOverview,
   StudentProgress,
 } from '@tmi/shared';
+import { indexCurriculum } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
 import { auditKeys } from '@/features/audit/api';
@@ -34,15 +35,14 @@ export function useCurriculum() {
   });
 }
 
-/** Topic lookup by id ("BA3.10"), with its level, for labelling anything scored. */
+/**
+ * Topic lookup by id ("BA3.10"), with its level and its catalog position, for
+ * labelling anything scored (by its `code`) and sorting it in teaching order.
+ */
 export function useTopicIndex() {
   const { data } = useCurriculum();
-  const levels = data?.data ?? [];
-
-  const topics = new Map<string, CurriculumTopic & { level: CurriculumLevel }>();
-  for (const level of levels) {
-    for (const topic of level.topics) topics.set(topic.id, { ...topic, level });
-  }
+  const levels = useMemo(() => data?.data ?? [], [data]);
+  const topics = useMemo(() => indexCurriculum(levels), [levels]);
 
   return { levels, topics };
 }

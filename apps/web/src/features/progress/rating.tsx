@@ -202,21 +202,26 @@ export function ProgressStatusBadge({ status }: { status: ProgressStatus }) {
   );
 }
 
-/** "BA3.10 Fractions" with the code set apart, which is how the office reads them. */
+/**
+ * "BA3.10 Fractions" with the code set apart, which is how the office reads
+ * them. Prints the catalog's `code`, never the id: the id is a key, and need
+ * not be anything a person would read.
+ */
 export function TopicName({
-  id,
+  code,
   name,
   unit,
   className,
 }: {
-  id: string;
+  /** The topic's code; for a topic the catalog no longer lists, its id. */
+  code: string;
   name: string | undefined;
   unit?: string | null;
   className?: string;
 }) {
   return (
     <span className={cn('min-w-0', className)}>
-      <span className="text-muted-foreground mr-1.5 font-mono text-[11px]">{id}</span>
+      <span className="text-muted-foreground mr-1.5 font-mono text-[11px]">{code}</span>
       <span>{name ?? 'Unknown topic'}</span>
       {unit && <span className="text-muted-foreground ml-1 text-xs">({unit})</span>}
     </span>

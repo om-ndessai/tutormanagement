@@ -32,7 +32,7 @@ import {
 import { ApiRequestError } from '@/lib/api-client';
 import { localToday } from './dates';
 import { TEXTAREA } from './assessment-dialog';
-import { useCreatePlan, useCurriculum, useUpdatePlan } from './api';
+import { useCreatePlan, useTopicIndex, useUpdatePlan } from './api';
 import { LevelSelect, PlanTopicsEditor } from './topic-pickers';
 
 const SESSION_LENGTHS = [30, 45, 60, 75, 90, 120];
@@ -77,8 +77,7 @@ export function PlanDialog({
   /** Called once it has saved -- the onboarding wizard ticks its step off. */
   onSaved?: () => void;
 }) {
-  const { data } = useCurriculum();
-  const levels = useMemo(() => data?.data ?? [], [data]);
+  const { levels, topics: catalog } = useTopicIndex();
 
   const [goal, setGoal] = useState('');
   const [targetLevel, setTargetLevel] = useState('');
@@ -117,13 +116,11 @@ export function PlanDialog({
       return;
     }
 
-    const order = new Map<string, number>();
-    levels.forEach((level) =>
-      level.topics.forEach((topic) => order.set(topic.id, level.stage * 100 + topic.number)),
-    );
+    // Weakest first, then in teaching order (the catalog's own position).
+    const position = (topicId: string) => catalog.get(topicId)?.position ?? 0;
     const weakest = (assessment?.ratings ?? [])
       .filter((row) => row.rating <= 3)
-      .sort((a, b) => a.rating - b.rating || (order.get(a.topic_id) ?? 0) - (order.get(b.topic_id) ?? 0))
+      .sort((a, b) => a.rating - b.rating || position(a.topic_id) - position(b.topic_id))
       .map((row) => row.topic_id);
 
     const today = localToday();
@@ -136,7 +133,7 @@ export function PlanDialog({
     setRecommendation('');
     setTopics(weakest);
     setStatus('active');
-  }, [open, existing, assessment, levels, defaultGoal]);
+  }, [open, existing, assessment, catalog, defaultGoal]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
