@@ -91,6 +91,40 @@ test.describe('autosaving a write-up', () => {
     await clearDrafts(tutor);
   });
 
+  // The drafts panel reads a cached list, refetched only when the draft first
+  // appears. Checking the server alone missed that Edit opened the first tick's
+  // copy, and posting it wrote that back over the rest.
+  test('Edit opens what the last autosave kept, not the first', async ({ as }) => {
+    const tutor = await as('tutor');
+    await clearDrafts(tutor);
+
+    const dialog = await openRecordForm(tutor);
+    const notes = dialog.getByLabel('Session notes', { exact: true });
+    const marker = `Half typed ${Date.now()}`;
+    await notes.fill(marker);
+    await expect(dialog.getByTestId('autosave-status')).toContainText('Draft autosaved', { timeout: 10_000 });
+    await notes.fill(`${marker} and finished`);
+    await expect
+      .poll(async () => (await unwrap<any[]>(await tutor.request.get('/api/sessions/drafts'), 'drafts'))[0]?.notes, {
+        timeout: 10_000,
+      })
+      .toBe(`${marker} and finished`);
+    await dialog.getByRole('button', { name: 'Cancel' }).click();
+
+    await tutor.getByRole('button', { name: 'Edit' }).first().click();
+    await expect(dialog.getByLabel('Session notes', { exact: true })).toHaveValue(`${marker} and finished`);
+    await dialog.getByRole('button', { name: 'Post session' }).click();
+    await expect(tutor.getByText('Your drafts')).toHaveCount(0);
+
+    const sessions = await unwrap<any[]>(
+      await tutor.request.get(`/api/sessions?limit=20&sort=created_at&direction=desc`),
+      'sessions',
+    );
+    expect(sessions.filter((session) => session.notes?.startsWith(marker)).map((s) => s.notes)).toEqual([
+      `${marker} and finished`,
+    ]);
+  });
+
   test('an autosave writes no log line; pressing Save draft does', async ({ as }) => {
     const tutor = await as('tutor');
     const admin = await as('admin');

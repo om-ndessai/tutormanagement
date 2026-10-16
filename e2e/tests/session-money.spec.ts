@@ -69,6 +69,14 @@ test.describe('session money, per reader', () => {
     await expect(visible(parent, 'You pay').first()).toBeVisible();
     await expect(parent.getByText('Your pay')).toHaveCount(0);
 
+    // A student's own prices are on Finance only; their dashboard shows none, as in the app.
+    const student = await as('student');
+    await student.goto('/sessions?tab=finance');
+    await expect(visible(student, 'You pay').first()).toBeVisible();
+    await student.goto('/');
+    await expect(student.getByTestId('dash-my-sessions').or(student.getByText('Your sessions'))).not.toHaveCount(0);
+    await expect(student.getByText(/You pay|\$\d/)).toHaveCount(0);
+
     const admin = await as('admin');
     await admin.goto('/sessions?tab=finance');
     await expect(visible(admin, 'CHMI cut')).toBeVisible();

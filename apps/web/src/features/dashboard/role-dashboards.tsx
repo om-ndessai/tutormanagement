@@ -595,8 +595,9 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         )}
       </Panel>
 
+      {/* No money, as in the app: a student's prices are on the Sessions page's Finance tab. */}
       <Panel index={5} tourId="dash-my-sessions" title="Your sessions" action={{ label: 'All sessions', to: '/sessions' }}>
-        <SessionList sessions={data.recent_sessions} showTutor />
+        <SessionList sessions={data.recent_sessions} showTutor hideMoney />
       </Panel>
     </div>
   );
