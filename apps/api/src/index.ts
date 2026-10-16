@@ -14,7 +14,7 @@ import { auditRoutes } from './routes/audit.js';
 import { commentsRoutes } from './routes/comments.js';
 import { dashboardRoutes } from './routes/dashboard.js';
 import { paymentsRoutes } from './routes/payments.js';
-import { curriculumRoutes, progressRoutes } from './routes/progress.js';
+import { curriculaRoutes, curriculumRoutes, progressRoutes } from './routes/progress.js';
 import { locationsRoutes } from './routes/locations.js';
 import { schedulesRoutes } from './routes/schedules.js';
 import { sessionsRoutes } from './routes/sessions.js';
@@ -109,6 +109,7 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/locations', locationsRoutes)
   .route('/payments', paymentsRoutes)
   .route('/curriculum', curriculumRoutes)
+  .route('/curricula', curriculaRoutes)
   .route('/progress', progressRoutes)
   .route('/onboarding', onboardingRoutes);
 

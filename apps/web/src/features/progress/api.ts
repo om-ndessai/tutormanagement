@@ -5,6 +5,7 @@ import type {
   Assessment,
   AssessmentPayload,
   AssessmentUpdatePayload,
+  Curriculum,
   CurriculumLevel,
   LearningPlan,
   PlanPayload,
@@ -24,13 +25,26 @@ export const progressKeys = {
 };
 
 /**
- * The catalog never changes while the portal is open -- it is edited in
- * db/schema.sql and shipped with a deploy -- so it is fetched once.
+ * The catalog as this organization sees it. It changes only with a deploy or
+ * when an admin changes which curricula are offered -- which invalidates
+ * ['curriculum'] (both keys) in this tab; other tabs see it on reload.
  */
 export function useCurriculum() {
   return useQuery({
     queryKey: ['curriculum'],
     queryFn: () => apiClient.get<ApiOk<CurriculumLevel[]>>('/curriculum'),
+    staleTime: Infinity,
+  });
+}
+
+/**
+ * Phase 35: the curricula on this organization's list, the default first and
+ * retired last. A picker offers a switch only when two or more are offered.
+ */
+export function useCurricula() {
+  return useQuery({
+    queryKey: ['curriculum', 'curricula'],
+    queryFn: () => apiClient.get<ApiOk<Curriculum[]>>('/curricula'),
     staleTime: Infinity,
   });
 }

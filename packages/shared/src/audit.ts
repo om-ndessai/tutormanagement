@@ -64,6 +64,11 @@ export const AUDIT_ACTIONS = [
   'plan.updated',
   'plan.deleted',
 
+  // Phase 35. Deliberately not organization.*: the platform console lists
+  // those across organizations, and this sentence may one day name an
+  // organization's own curriculum (R14).
+  'curriculum.offering_updated',
+
   'membership.invited',
   'membership.accepted',
   'membership.declined',
@@ -146,6 +151,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'plan.created': 'Learning plan created',
   'plan.updated': 'Learning plan updated',
   'plan.deleted': 'Learning plan deleted',
+
+  'curriculum.offering_updated': 'Curricula offered changed',
 
   'membership.invited': 'Invited to the organization',
   'membership.accepted': 'Invitation accepted',

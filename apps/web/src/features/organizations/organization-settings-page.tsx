@@ -23,6 +23,7 @@ import {
   useOrganizationSettings,
   useUpdateOrganizationSettings,
 } from './api';
+import { CurriculaCard } from './curricula-card';
 import { NotificationsSwitch } from './notifications-switch';
 
 /** The payer box, as the form holds it. The notifications switch saves on its own. */
@@ -106,7 +107,7 @@ export function OrganizationSettingsPage() {
     <>
       <PageHeader
         title="Organization"
-        description={`What ${organization.name} files its 1099s under, and how the portal presents it.`}
+        description={`What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`}
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
@@ -167,6 +168,8 @@ export function OrganizationSettingsPage() {
         </Card>
 
         <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+
+        <CurriculaCard />
       </div>
     </>
   );

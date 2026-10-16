@@ -61,11 +61,15 @@ INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, pa
   ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 'chmi.tutor-portal.invalid'),
   ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 'riverside.tutor-portal.invalid');
 
--- Each teaches from Beast Academy alone, as its default (Phase 34): the API
--- reads the catalog only through this list.
-INSERT INTO organization_curricula (organization_id, curriculum_id, is_default) VALUES
-  ('0a000000-0000-4000-8000-000000000001', 'ba', 1),
-  ('0b000000-0000-4000-8000-000000000001', 'ba', 1);
+-- What each teaches from (Phase 34; the API reads the catalog only through
+-- this list). A, like the institute, offers Beast Academy alone. B offers
+-- North Carolina's standards, 2017 by default, and has retired Beast Academy.
+-- The catalog itself is db/catalog.sql, loaded before this file.
+INSERT INTO organization_curricula (organization_id, curriculum_id, is_default, retired_at) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'ba', 1, NULL),
+  ('0b000000-0000-4000-8000-000000000001', 'nc-2017', 1, NULL),
+  ('0b000000-0000-4000-8000-000000000001', 'nc-2026', 0, NULL),
+  ('0b000000-0000-4000-8000-000000000001', 'ba', 0, '2026-09-15T12:00:00.000Z');
 
 -- --- people ----------------------------------------------------------------
 INSERT INTO users (id, email, full_name, phone) VALUES
@@ -1541,7 +1545,7 @@ INSERT INTO comments (organization_id, id, author_user_id, target_user_id, targe
   ('0b000000-0000-4000-8000-000000000001', '0b600000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000002', NULL, '0b300000-0000-4000-8000-000000000001', NULL, NULL, 'Riverside: Lily did all the homework.', '2026-09-18T19:00:00.000Z');
 
 -- --- where each student started, and where they are going (Phase 16) ------
--- The curriculum catalog itself is part of db/schema.sql, not of this file.
+-- The curriculum catalog itself is db/catalog.sql, not part of this file.
 INSERT INTO assessments (organization_id, id, student_user_id, assessor_user_id, assessed_on, school_course, recommended_level_id, summary) VALUES
   ('0a000000-0000-4000-8000-000000000001', 'd0000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000008', '00000000-0000-4000-8000-000000000001', '2026-08-25', 'Grade 5 math (school), finished BA3 at home', 'BA4', 'Sofia reads problems carefully and enjoys puzzles. Place value and multiplication are secure. Fractions are the gap: she can name halves and quarters but cannot compare unlike fractions or add them. Division with remainders is slow. Recommend starting in Beast Academy 4 and pulling the Level 3 fractions chapter forward before 4C.'),
   ('0a000000-0000-4000-8000-000000000001', 'd0000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000009', '00000000-0000-4000-8000-000000000001', '2026-08-28', 'Grade 4 math', 'BA3', 'Ben is quick with addition and subtraction but multiplication facts past 5 are not automatic, and long division has no model behind it yet. Start in Beast Academy 3B.'),
@@ -1580,7 +1584,8 @@ INSERT INTO assessments (organization_id, id, student_user_id, assessor_user_id,
   ('0a000000-0000-4000-8000-000000000001', 'd1111111-0000-4000-8000-000000000032', '33333333-0000-4000-8000-000000000071', '00000000-0000-4000-8000-000000000001', '2026-07-31', 'Algebra II', 'BA4', 'Placed at BA4. Some gaps from BA3 to close first.'),
   ('0a000000-0000-4000-8000-000000000001', 'd1111111-0000-4000-8000-000000000033', '33333333-0000-4000-8000-000000000076', '00000000-0000-4000-8000-000000000001', '2026-07-25', 'AP Statistics', 'BA2', 'Placed at BA2. Some gaps from BA1 to close first.'),
   ('0a000000-0000-4000-8000-000000000001', 'd1111111-0000-4000-8000-000000000034', '33333333-0000-4000-8000-000000000077', '00000000-0000-4000-8000-000000000001', '2026-08-01', 'Algebra II', 'BA4', 'Placed at BA4. Some gaps from BA3 to close first.'),
-  ('0b000000-0000-4000-8000-000000000001', '0b700000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000003', '0b100000-0000-4000-8000-000000000001', '2026-08-11', 'Grade 5 Mathematics', 'BA4', 'Riverside: secure on place value, shaky on fractions.');
+  ('0b000000-0000-4000-8000-000000000001', '0b700000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000003', '0b100000-0000-4000-8000-000000000001', '2026-08-11', 'Grade 5 Mathematics', 'BA4', 'Riverside: secure on place value, shaky on fractions.'),
+  ('0b000000-0000-4000-8000-000000000001', '0b700000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000003', '0b100000-0000-4000-8000-000000000001', '2026-08-31', 'Grade 5 Mathematics', 'NC17.K', 'Riverside: placed on the state standards.');
 
 INSERT INTO assessment_topic_ratings (assessment_id, topic_id, rating) VALUES
   ('d0000000-0000-4000-8000-000000000001', 'BA3.04', 5),
@@ -1878,7 +1883,9 @@ INSERT INTO assessment_topic_ratings (assessment_id, topic_id, rating) VALUES
   ('d1111111-0000-4000-8000-000000000034', 'BA4.09', 1),
   ('d1111111-0000-4000-8000-000000000034', 'BA4.12', 2),
   ('d1111111-0000-4000-8000-000000000034', 'BA4.05', 2),
-  ('d1111111-0000-4000-8000-000000000034', 'BA4.01', 1);
+  ('d1111111-0000-4000-8000-000000000034', 'BA4.01', 1),
+  ('0b700000-0000-4000-8000-000000000002', 'NC17.K.CC.1', 2),
+  ('0b700000-0000-4000-8000-000000000002', 'NC26.K.ANR.1', 3);
 
 INSERT INTO learning_plans (organization_id, id, student_user_id, assessment_id, goal, target_level_id, starts_on, target_on, sessions_per_week, session_minutes, recommendation, status, created_by_user_id) VALUES
   ('0a000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000008', 'd0000000-0000-4000-8000-000000000001', 'Ready for AoPS Prealgebra by the start of next school year', 'PRE', '2026-09-01', '2027-06-15', 2, 60, 'Twice a week for an hour. Fractions first (BA3.10, then 4C and 4D), then the rest of Level 4 and the Level 5 chapters that Prealgebra leans on hardest.', 'active', '00000000-0000-4000-8000-000000000001'),
@@ -1916,7 +1923,8 @@ INSERT INTO learning_plans (organization_id, id, student_user_id, assessment_id,
   ('0a000000-0000-4000-8000-000000000001', 'e1111111-0000-4000-8000-000000000032', '33333333-0000-4000-8000-000000000071', 'd1111111-0000-4000-8000-000000000032', 'Ready for Beast Academy 5 by June', 'BA5', '2026-08-09', '2027-06-15', 2, 60, NULL, 'active', '00000000-0000-4000-8000-000000000001'),
   ('0a000000-0000-4000-8000-000000000001', 'e1111111-0000-4000-8000-000000000033', '33333333-0000-4000-8000-000000000076', 'd1111111-0000-4000-8000-000000000033', 'Ready for Beast Academy 3 by June', 'BA3', '2026-08-09', '2027-03-31', 2, 60, NULL, 'active', '00000000-0000-4000-8000-000000000001'),
   ('0a000000-0000-4000-8000-000000000001', 'e1111111-0000-4000-8000-000000000034', '33333333-0000-4000-8000-000000000077', 'd1111111-0000-4000-8000-000000000034', 'Ready for Beast Academy 5 by June', 'BA5', '2026-08-08', '2027-01-31', 2, 90, NULL, 'active', '00000000-0000-4000-8000-000000000001'),
-  ('0b000000-0000-4000-8000-000000000001', '0b800000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000003', '0b700000-0000-4000-8000-000000000001', 'Fractions with confidence.', 'BA5', '2026-08-16', '2027-01-18', 1, 60, 'Riverside: weekly, fractions first.', 'active', '0b100000-0000-4000-8000-000000000001');
+  ('0b000000-0000-4000-8000-000000000001', '0b800000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000003', '0b700000-0000-4000-8000-000000000001', 'Fractions with confidence.', 'BA5', '2026-08-16', '2027-01-18', 1, 60, 'Riverside: weekly, fractions first.', 'closed', '0b100000-0000-4000-8000-000000000001'),
+  ('0b000000-0000-4000-8000-000000000001', '0b800000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000003', '0b700000-0000-4000-8000-000000000002', 'Fractions with confidence.', 'NC17.K', '2026-09-05', '2027-02-17', 1, 60, 'Riverside: weekly, on the state standards.', 'active', '0b100000-0000-4000-8000-000000000001');
 
 INSERT INTO learning_plan_topics (plan_id, topic_id, position) VALUES
   ('e0000000-0000-4000-8000-000000000001', 'BA3.10', 0),
@@ -2203,7 +2211,9 @@ INSERT INTO learning_plan_topics (plan_id, topic_id, position) VALUES
   ('e1111111-0000-4000-8000-000000000034', 'BA4.09', 2),
   ('e1111111-0000-4000-8000-000000000034', 'BA4.12', 3),
   ('e1111111-0000-4000-8000-000000000034', 'BA4.05', 4),
-  ('e1111111-0000-4000-8000-000000000034', 'BA4.01', 5);
+  ('e1111111-0000-4000-8000-000000000034', 'BA4.01', 5),
+  ('0b800000-0000-4000-8000-000000000002', 'NC17.K.CC.1', 0),
+  ('0b800000-0000-4000-8000-000000000002', 'NC26.K.ANR.1', 1);
 
 -- --- each lesson, scored against the plan ----------------------------------
 INSERT INTO session_progress (session_id, plan_id, goal_rating) VALUES
@@ -2333,7 +2343,8 @@ INSERT INTO session_progress (session_id, plan_id, goal_rating) VALUES
   ('51111111-0000-4000-8000-000000000209', 'e1111111-0000-4000-8000-000000000034', 3),
   ('51111111-0000-4000-8000-000000000208', 'e1111111-0000-4000-8000-000000000034', 4),
   ('51111111-0000-4000-8000-000000000207', 'e1111111-0000-4000-8000-000000000034', 3),
-  ('51111111-0000-4000-8000-000000000205', 'e1111111-0000-4000-8000-000000000034', 4);
+  ('51111111-0000-4000-8000-000000000205', 'e1111111-0000-4000-8000-000000000034', 4),
+  ('0b300000-0000-4000-8000-000000000001', '0b800000-0000-4000-8000-000000000002', 3);
 
 INSERT INTO session_topic_ratings (session_id, topic_id, rating) VALUES
   ('50000000-0000-4000-8000-000000000001', 'BA3.10', 1),
@@ -2652,7 +2663,8 @@ INSERT INTO session_topic_ratings (session_id, topic_id, rating) VALUES
   ('51111111-0000-4000-8000-000000000207', 'BA4.12', 3),
   ('51111111-0000-4000-8000-000000000207', 'BA4.05', 2),
   ('51111111-0000-4000-8000-000000000205', 'BA4.05', 3),
-  ('51111111-0000-4000-8000-000000000205', 'BA4.01', 2);
+  ('51111111-0000-4000-8000-000000000205', 'BA4.01', 2),
+  ('0b300000-0000-4000-8000-000000000001', 'NC17.K.CC.1', 3);
 
 -- --- how lessons were written up, and what people thought of them (Phase 23)
 INSERT INTO session_write_ups (session_id, planned, previous_review, homework_review, homework_status, homework_assigned) VALUES

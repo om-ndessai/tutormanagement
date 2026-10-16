@@ -1,0 +1,82 @@
+# The organization's curricula (Phase 35; Rosa, Riverside's admin): North Carolina's 2017 standards
+# are the default, 2026 is offered beside them, and Beast Academy is retired. She offers Beast
+# Academy again and saves; the card reads it back from the server. The default's switch cannot be
+# turned off. Changes data: the runner resets the database, and the choice is put back after it.
+appId: ${APP_ID}
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/local-api.js
+      env:
+        METHOD: PUT
+        API_PATH: /organization/curricula
+        AS: rosa.delgado.tutoring@gmail.com
+        ORG: riverside
+        BODY: '{"offered":["nc-2017","nc-2026"],"default_curriculum_id":"nc-2017"}'
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: rosa.delgado.tutoring@gmail.com
+      ORG: riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-curriculum-ba
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'Retired'
+- assertVisible:
+    id: org-curriculum-nc-2017
+- assertVisible:
+    id: org-curriculum-nc-2026
+- takeScreenshot: organization-curricula
+# The default is always offered.
+- assertVisible:
+    id: org-curriculum-offer-nc-2017
+    enabled: false
+- tapOn:
+    id: org-curriculum-offer-ba
+- scrollUntilVisible:
+    element:
+      id: org-curricula-save
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: org-curricula-save
+- extendedWaitUntil:
+    visible: 'Curricula saved.'
+    timeout: 10000
+# Pulled to refresh, the card reads it back: Beast Academy is offered again, so no longer retired.
+- scrollUntilVisible:
+    element:
+      id: org-tin
+    direction: UP
+- swipe:
+    start: 50%, 35%
+    end: 50%, 85%
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-curriculum-ba
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertNotVisible: 'Retired'
+- takeScreenshot: organization-curricula-saved

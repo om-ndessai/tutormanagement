@@ -94,6 +94,16 @@ Locally: `E2E_BASE_URL=http://localhost:5173 npx playwright test` against `npm r
 `exposure-organizations.spec.ts` (R13, R14), `organizations.spec.ts` and `platform.spec.ts`
 cover organizations.
 
+`curricula.spec.ts` (Phase 35) — B offers North Carolina's 2017 standards (default) and 2026,
+with Beast Academy retired; A offers Beast Academy alone. B reads NC first and retired Beast
+Academy last; A refuses an NC id on an assessment, a plan, a lesson and a draft; B's closed plan
+still opens on "Beast Academy Level 5"; the `PUT` is 403 for a non-admin and 422 for an unknown
+id, an empty list or a default not offered. Changes to an offering run in a throwaway
+organization made through the console, where a draft scored against `nc-2026` still posts, once,
+after it is retired. The NC catalog's names and counts are never pinned: specs read them from
+`apps/api/db/catalog/*.json` (`support/catalog.ts`), so the reviewed catalog can replace the
+placeholders without touching a test.
+
 ## The deployments
 
 | | Production | Test |

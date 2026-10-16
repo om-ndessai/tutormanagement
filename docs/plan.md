@@ -246,5 +246,22 @@ Built 2026-10-16:
   catalog's position (`indexCurriculum` in shared).
 - No new route, mutation or audit action. Production SQL: `docs/database.md`, Phase 34.
 
-Next, when the owner schedules it: Phase B (North Carolina Math, both editions, and an
-organization choosing its curricula).
+Phase 35.
+North Carolina Math, the 2017 and 2026 editions, and an organization choosing which it offers:
+the plan's "Phase B" (`docs/curricula-plan.md`).
+
+Built 2026-10-16 (code; the reviewed NC catalog and the production release follow):
+- The catalog is generated: `apps/api/db/catalog/{ba,nc-2017,nc-2026}.json` ->
+  `db/generate-catalog.mjs` -> `db/catalog.sql`, run after `schema.sql` by every build path and
+  checked by `npm run typecheck`; it refuses a dropped id, a changed stage or number, a stage
+  outside its thousand and a repeated code. Beast Academy's rows came out identical.
+- `curriculum_levels.program` dropped (approved), `curriculum_topics.description` added; no
+  statement column.
+- `GET /api/curricula` (any member), `GET`/`PUT /api/organization/curricula` (admins; one batch;
+  `curriculum.offering_updated`, no line when nothing changed). Retired, never deleted.
+- Web and app: the Curricula card on the Organization page; pickers group topics by unit, show
+  the description, hide a retired curriculum unless something chosen is in it, and offer a
+  curriculum switch only with two or more; ties sort by catalog position; the plan's example goal
+  no longer names AoPS.
+- Seed: Riverside offers nc-2017 (default) and nc-2026, Beast Academy retired. Production SQL:
+  `docs/database.md`, Phase 35.

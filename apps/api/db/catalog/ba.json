@@ -1,0 +1,1019 @@
+{
+  "id": "ba",
+  "name": "Beast Academy",
+  "source": "Beast Academy and Art of Problem Solving",
+  "edition": null,
+  "source_url": null,
+  "description": null,
+  "sort": 1,
+  "levels": [
+    {
+      "id": "BA1",
+      "code": null,
+      "name": "Beast Academy Level 1",
+      "stage": 1,
+      "grade_band": "Ages 6-8 (about grade 1)",
+      "description": "Guide books 1A-1D.",
+      "topics": [
+        {
+          "id": "BA1.01",
+          "code": null,
+          "number": 1,
+          "unit": "1A",
+          "name": "Counting",
+          "description": null
+        },
+        {
+          "id": "BA1.02",
+          "code": null,
+          "number": 2,
+          "unit": "1A",
+          "name": "Shapes",
+          "description": null
+        },
+        {
+          "id": "BA1.03",
+          "code": null,
+          "number": 3,
+          "unit": "1A",
+          "name": "Comparing",
+          "description": null
+        },
+        {
+          "id": "BA1.04",
+          "code": null,
+          "number": 4,
+          "unit": "1B",
+          "name": "Addition",
+          "description": null
+        },
+        {
+          "id": "BA1.05",
+          "code": null,
+          "number": 5,
+          "unit": "1B",
+          "name": "Subtraction",
+          "description": null
+        },
+        {
+          "id": "BA1.06",
+          "code": null,
+          "number": 6,
+          "unit": "1B",
+          "name": "Categories",
+          "description": null
+        },
+        {
+          "id": "BA1.07",
+          "code": null,
+          "number": 7,
+          "unit": "1C",
+          "name": "Addition & Subtraction",
+          "description": null
+        },
+        {
+          "id": "BA1.08",
+          "code": null,
+          "number": 8,
+          "unit": "1C",
+          "name": "Comparing",
+          "description": null
+        },
+        {
+          "id": "BA1.09",
+          "code": null,
+          "number": 9,
+          "unit": "1C",
+          "name": "Patterns",
+          "description": null
+        },
+        {
+          "id": "BA1.10",
+          "code": null,
+          "number": 10,
+          "unit": "1D",
+          "name": "Big Numbers",
+          "description": null
+        },
+        {
+          "id": "BA1.11",
+          "code": null,
+          "number": 11,
+          "unit": "1D",
+          "name": "Measurement",
+          "description": null
+        },
+        {
+          "id": "BA1.12",
+          "code": null,
+          "number": 12,
+          "unit": "1D",
+          "name": "Problem Solving",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "BA2",
+      "code": null,
+      "name": "Beast Academy Level 2",
+      "stage": 2,
+      "grade_band": "Ages 7-9 (about grade 2)",
+      "description": "Guide books 2A-2D.",
+      "topics": [
+        {
+          "id": "BA2.01",
+          "code": null,
+          "number": 1,
+          "unit": "2A",
+          "name": "Place Value",
+          "description": null
+        },
+        {
+          "id": "BA2.02",
+          "code": null,
+          "number": 2,
+          "unit": "2A",
+          "name": "Comparing",
+          "description": null
+        },
+        {
+          "id": "BA2.03",
+          "code": null,
+          "number": 3,
+          "unit": "2A",
+          "name": "Addition",
+          "description": null
+        },
+        {
+          "id": "BA2.04",
+          "code": null,
+          "number": 4,
+          "unit": "2B",
+          "name": "Subtraction",
+          "description": null
+        },
+        {
+          "id": "BA2.05",
+          "code": null,
+          "number": 5,
+          "unit": "2B",
+          "name": "Expressions",
+          "description": null
+        },
+        {
+          "id": "BA2.06",
+          "code": null,
+          "number": 6,
+          "unit": "2B",
+          "name": "Problem Solving",
+          "description": null
+        },
+        {
+          "id": "BA2.07",
+          "code": null,
+          "number": 7,
+          "unit": "2C",
+          "name": "Measurement",
+          "description": null
+        },
+        {
+          "id": "BA2.08",
+          "code": null,
+          "number": 8,
+          "unit": "2C",
+          "name": "Strategies",
+          "description": null
+        },
+        {
+          "id": "BA2.09",
+          "code": null,
+          "number": 9,
+          "unit": "2C",
+          "name": "Odds & Evens",
+          "description": null
+        },
+        {
+          "id": "BA2.10",
+          "code": null,
+          "number": 10,
+          "unit": "2D",
+          "name": "Big Numbers",
+          "description": null
+        },
+        {
+          "id": "BA2.11",
+          "code": null,
+          "number": 11,
+          "unit": "2D",
+          "name": "Algorithms",
+          "description": null
+        },
+        {
+          "id": "BA2.12",
+          "code": null,
+          "number": 12,
+          "unit": "2D",
+          "name": "Problem Solving",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "BA3",
+      "code": null,
+      "name": "Beast Academy Level 3",
+      "stage": 3,
+      "grade_band": "Ages 8-10 (about grade 3)",
+      "description": "Guide books 3A-3D.",
+      "topics": [
+        {
+          "id": "BA3.01",
+          "code": null,
+          "number": 1,
+          "unit": "3A",
+          "name": "Shapes",
+          "description": null
+        },
+        {
+          "id": "BA3.02",
+          "code": null,
+          "number": 2,
+          "unit": "3A",
+          "name": "Skip-Counting",
+          "description": null
+        },
+        {
+          "id": "BA3.03",
+          "code": null,
+          "number": 3,
+          "unit": "3A",
+          "name": "Perimeter & Area",
+          "description": null
+        },
+        {
+          "id": "BA3.04",
+          "code": null,
+          "number": 4,
+          "unit": "3B",
+          "name": "Multiplication",
+          "description": null
+        },
+        {
+          "id": "BA3.05",
+          "code": null,
+          "number": 5,
+          "unit": "3B",
+          "name": "Perfect Squares",
+          "description": null
+        },
+        {
+          "id": "BA3.06",
+          "code": null,
+          "number": 6,
+          "unit": "3B",
+          "name": "The Distributive Property",
+          "description": null
+        },
+        {
+          "id": "BA3.07",
+          "code": null,
+          "number": 7,
+          "unit": "3C",
+          "name": "Variables",
+          "description": null
+        },
+        {
+          "id": "BA3.08",
+          "code": null,
+          "number": 8,
+          "unit": "3C",
+          "name": "Division",
+          "description": null
+        },
+        {
+          "id": "BA3.09",
+          "code": null,
+          "number": 9,
+          "unit": "3C",
+          "name": "Measurement",
+          "description": null
+        },
+        {
+          "id": "BA3.10",
+          "code": null,
+          "number": 10,
+          "unit": "3D",
+          "name": "Fractions",
+          "description": null
+        },
+        {
+          "id": "BA3.11",
+          "code": null,
+          "number": 11,
+          "unit": "3D",
+          "name": "Estimation",
+          "description": null
+        },
+        {
+          "id": "BA3.12",
+          "code": null,
+          "number": 12,
+          "unit": "3D",
+          "name": "Area",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "BA4",
+      "code": null,
+      "name": "Beast Academy Level 4",
+      "stage": 4,
+      "grade_band": "Ages 9-12 (about grade 4)",
+      "description": "Guide books 4A-4D.",
+      "topics": [
+        {
+          "id": "BA4.01",
+          "code": null,
+          "number": 1,
+          "unit": "4A",
+          "name": "Shapes",
+          "description": null
+        },
+        {
+          "id": "BA4.02",
+          "code": null,
+          "number": 2,
+          "unit": "4A",
+          "name": "Multiplication",
+          "description": null
+        },
+        {
+          "id": "BA4.03",
+          "code": null,
+          "number": 3,
+          "unit": "4A",
+          "name": "Exponents",
+          "description": null
+        },
+        {
+          "id": "BA4.04",
+          "code": null,
+          "number": 4,
+          "unit": "4B",
+          "name": "Counting",
+          "description": null
+        },
+        {
+          "id": "BA4.05",
+          "code": null,
+          "number": 5,
+          "unit": "4B",
+          "name": "Division",
+          "description": null
+        },
+        {
+          "id": "BA4.06",
+          "code": null,
+          "number": 6,
+          "unit": "4B",
+          "name": "Logic",
+          "description": null
+        },
+        {
+          "id": "BA4.07",
+          "code": null,
+          "number": 7,
+          "unit": "4C",
+          "name": "Factors",
+          "description": null
+        },
+        {
+          "id": "BA4.08",
+          "code": null,
+          "number": 8,
+          "unit": "4C",
+          "name": "Fractions",
+          "description": null
+        },
+        {
+          "id": "BA4.09",
+          "code": null,
+          "number": 9,
+          "unit": "4C",
+          "name": "Integers",
+          "description": null
+        },
+        {
+          "id": "BA4.10",
+          "code": null,
+          "number": 10,
+          "unit": "4D",
+          "name": "Fractions",
+          "description": null
+        },
+        {
+          "id": "BA4.11",
+          "code": null,
+          "number": 11,
+          "unit": "4D",
+          "name": "Decimals",
+          "description": null
+        },
+        {
+          "id": "BA4.12",
+          "code": null,
+          "number": 12,
+          "unit": "4D",
+          "name": "Probability",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "BA5",
+      "code": null,
+      "name": "Beast Academy Level 5",
+      "stage": 5,
+      "grade_band": "Ages 10-13 (about grade 5)",
+      "description": "Guide books 5A-5D.",
+      "topics": [
+        {
+          "id": "BA5.01",
+          "code": null,
+          "number": 1,
+          "unit": "5A",
+          "name": "3D Solids",
+          "description": null
+        },
+        {
+          "id": "BA5.02",
+          "code": null,
+          "number": 2,
+          "unit": "5A",
+          "name": "Integers",
+          "description": null
+        },
+        {
+          "id": "BA5.03",
+          "code": null,
+          "number": 3,
+          "unit": "5A",
+          "name": "Expressions & Equations",
+          "description": null
+        },
+        {
+          "id": "BA5.04",
+          "code": null,
+          "number": 4,
+          "unit": "5B",
+          "name": "Statistics",
+          "description": null
+        },
+        {
+          "id": "BA5.05",
+          "code": null,
+          "number": 5,
+          "unit": "5B",
+          "name": "Factors & Multiples",
+          "description": null
+        },
+        {
+          "id": "BA5.06",
+          "code": null,
+          "number": 6,
+          "unit": "5B",
+          "name": "Fractions",
+          "description": null
+        },
+        {
+          "id": "BA5.07",
+          "code": null,
+          "number": 7,
+          "unit": "5C",
+          "name": "Sequences",
+          "description": null
+        },
+        {
+          "id": "BA5.08",
+          "code": null,
+          "number": 8,
+          "unit": "5C",
+          "name": "Ratios & Rates",
+          "description": null
+        },
+        {
+          "id": "BA5.09",
+          "code": null,
+          "number": 9,
+          "unit": "5C",
+          "name": "Decimals",
+          "description": null
+        },
+        {
+          "id": "BA5.10",
+          "code": null,
+          "number": 10,
+          "unit": "5D",
+          "name": "Percents",
+          "description": null
+        },
+        {
+          "id": "BA5.11",
+          "code": null,
+          "number": 11,
+          "unit": "5D",
+          "name": "Square Roots",
+          "description": null
+        },
+        {
+          "id": "BA5.12",
+          "code": null,
+          "number": 12,
+          "unit": "5D",
+          "name": "Exponents",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "PRE",
+      "code": null,
+      "name": "AoPS Prealgebra",
+      "stage": 6,
+      "grade_band": "About grades 5-7",
+      "description": "After Beast Academy 5. The bridge from arithmetic to algebra.",
+      "topics": [
+        {
+          "id": "PRE.01",
+          "code": null,
+          "number": 1,
+          "unit": null,
+          "name": "Properties of Arithmetic",
+          "description": null
+        },
+        {
+          "id": "PRE.02",
+          "code": null,
+          "number": 2,
+          "unit": null,
+          "name": "Exponents",
+          "description": null
+        },
+        {
+          "id": "PRE.03",
+          "code": null,
+          "number": 3,
+          "unit": null,
+          "name": "Number Theory",
+          "description": null
+        },
+        {
+          "id": "PRE.04",
+          "code": null,
+          "number": 4,
+          "unit": null,
+          "name": "Fractions",
+          "description": null
+        },
+        {
+          "id": "PRE.05",
+          "code": null,
+          "number": 5,
+          "unit": null,
+          "name": "Equations and Inequalities",
+          "description": null
+        },
+        {
+          "id": "PRE.06",
+          "code": null,
+          "number": 6,
+          "unit": null,
+          "name": "Decimals",
+          "description": null
+        },
+        {
+          "id": "PRE.07",
+          "code": null,
+          "number": 7,
+          "unit": null,
+          "name": "Ratios, Conversions, and Rates",
+          "description": null
+        },
+        {
+          "id": "PRE.08",
+          "code": null,
+          "number": 8,
+          "unit": null,
+          "name": "Percents",
+          "description": null
+        },
+        {
+          "id": "PRE.09",
+          "code": null,
+          "number": 9,
+          "unit": null,
+          "name": "Square Roots",
+          "description": null
+        },
+        {
+          "id": "PRE.10",
+          "code": null,
+          "number": 10,
+          "unit": null,
+          "name": "Angles",
+          "description": null
+        },
+        {
+          "id": "PRE.11",
+          "code": null,
+          "number": 11,
+          "unit": null,
+          "name": "Perimeter and Area",
+          "description": null
+        },
+        {
+          "id": "PRE.12",
+          "code": null,
+          "number": 12,
+          "unit": null,
+          "name": "Right Triangles and Quadrilaterals",
+          "description": null
+        },
+        {
+          "id": "PRE.13",
+          "code": null,
+          "number": 13,
+          "unit": null,
+          "name": "Data and Statistics",
+          "description": null
+        },
+        {
+          "id": "PRE.14",
+          "code": null,
+          "number": 14,
+          "unit": null,
+          "name": "Counting",
+          "description": null
+        },
+        {
+          "id": "PRE.15",
+          "code": null,
+          "number": 15,
+          "unit": null,
+          "name": "Problem-Solving Strategies",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "ALG",
+      "code": null,
+      "name": "AoPS Introduction to Algebra",
+      "stage": 7,
+      "grade_band": "Grades 6-9",
+      "description": "Follows Prealgebra.",
+      "topics": [
+        {
+          "id": "ALG.01",
+          "code": null,
+          "number": 1,
+          "unit": null,
+          "name": "Follow the Rules",
+          "description": null
+        },
+        {
+          "id": "ALG.02",
+          "code": null,
+          "number": 2,
+          "unit": null,
+          "name": "x Marks the Spot",
+          "description": null
+        },
+        {
+          "id": "ALG.03",
+          "code": null,
+          "number": 3,
+          "unit": null,
+          "name": "One-Variable Linear Equations",
+          "description": null
+        },
+        {
+          "id": "ALG.04",
+          "code": null,
+          "number": 4,
+          "unit": null,
+          "name": "More Variables",
+          "description": null
+        },
+        {
+          "id": "ALG.05",
+          "code": null,
+          "number": 5,
+          "unit": null,
+          "name": "Multi-Variable Linear Equations",
+          "description": null
+        },
+        {
+          "id": "ALG.06",
+          "code": null,
+          "number": 6,
+          "unit": null,
+          "name": "Ratios and Percents",
+          "description": null
+        },
+        {
+          "id": "ALG.07",
+          "code": null,
+          "number": 7,
+          "unit": null,
+          "name": "Proportion",
+          "description": null
+        },
+        {
+          "id": "ALG.08",
+          "code": null,
+          "number": 8,
+          "unit": null,
+          "name": "Graphing Lines",
+          "description": null
+        },
+        {
+          "id": "ALG.09",
+          "code": null,
+          "number": 9,
+          "unit": null,
+          "name": "Introduction to Inequalities",
+          "description": null
+        },
+        {
+          "id": "ALG.10",
+          "code": null,
+          "number": 10,
+          "unit": null,
+          "name": "Quadratic Equations – Part 1",
+          "description": null
+        },
+        {
+          "id": "ALG.11",
+          "code": null,
+          "number": 11,
+          "unit": null,
+          "name": "Special Factorizations",
+          "description": null
+        },
+        {
+          "id": "ALG.12",
+          "code": null,
+          "number": 12,
+          "unit": null,
+          "name": "Complex Numbers",
+          "description": null
+        },
+        {
+          "id": "ALG.13",
+          "code": null,
+          "number": 13,
+          "unit": null,
+          "name": "Quadratic Equations – Part 2",
+          "description": null
+        },
+        {
+          "id": "ALG.14",
+          "code": null,
+          "number": 14,
+          "unit": null,
+          "name": "Graphing Quadratics",
+          "description": null
+        },
+        {
+          "id": "ALG.15",
+          "code": null,
+          "number": 15,
+          "unit": null,
+          "name": "More Inequalities",
+          "description": null
+        },
+        {
+          "id": "ALG.16",
+          "code": null,
+          "number": 16,
+          "unit": null,
+          "name": "Functions",
+          "description": null
+        },
+        {
+          "id": "ALG.17",
+          "code": null,
+          "number": 17,
+          "unit": null,
+          "name": "Graphing Functions",
+          "description": null
+        },
+        {
+          "id": "ALG.18",
+          "code": null,
+          "number": 18,
+          "unit": null,
+          "name": "Polynomials",
+          "description": null
+        },
+        {
+          "id": "ALG.19",
+          "code": null,
+          "number": 19,
+          "unit": null,
+          "name": "Exponents and Logarithms",
+          "description": null
+        },
+        {
+          "id": "ALG.20",
+          "code": null,
+          "number": 20,
+          "unit": null,
+          "name": "Special Functions",
+          "description": null
+        },
+        {
+          "id": "ALG.21",
+          "code": null,
+          "number": 21,
+          "unit": null,
+          "name": "Sequences & Series",
+          "description": null
+        },
+        {
+          "id": "ALG.22",
+          "code": null,
+          "number": 22,
+          "unit": null,
+          "name": "Special Manipulations",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "GEO",
+      "code": null,
+      "name": "AoPS Introduction to Geometry",
+      "stage": 8,
+      "grade_band": "Grades 7-10",
+      "description": "Usually after Introduction to Algebra; the two are sometimes taken in either order.",
+      "topics": [
+        {
+          "id": "GEO.01",
+          "code": null,
+          "number": 1,
+          "unit": null,
+          "name": "What's in a Name?",
+          "description": null
+        },
+        {
+          "id": "GEO.02",
+          "code": null,
+          "number": 2,
+          "unit": null,
+          "name": "Angles",
+          "description": null
+        },
+        {
+          "id": "GEO.03",
+          "code": null,
+          "number": 3,
+          "unit": null,
+          "name": "Congruent Triangles",
+          "description": null
+        },
+        {
+          "id": "GEO.04",
+          "code": null,
+          "number": 4,
+          "unit": null,
+          "name": "Perimeter and Area",
+          "description": null
+        },
+        {
+          "id": "GEO.05",
+          "code": null,
+          "number": 5,
+          "unit": null,
+          "name": "Similar Triangles",
+          "description": null
+        },
+        {
+          "id": "GEO.06",
+          "code": null,
+          "number": 6,
+          "unit": null,
+          "name": "Right Triangles",
+          "description": null
+        },
+        {
+          "id": "GEO.07",
+          "code": null,
+          "number": 7,
+          "unit": null,
+          "name": "Special Parts of a Triangle",
+          "description": null
+        },
+        {
+          "id": "GEO.08",
+          "code": null,
+          "number": 8,
+          "unit": null,
+          "name": "Quadrilaterals",
+          "description": null
+        },
+        {
+          "id": "GEO.09",
+          "code": null,
+          "number": 9,
+          "unit": null,
+          "name": "Polygons",
+          "description": null
+        },
+        {
+          "id": "GEO.10",
+          "code": null,
+          "number": 10,
+          "unit": null,
+          "name": "Geometric Inequalities",
+          "description": null
+        },
+        {
+          "id": "GEO.11",
+          "code": null,
+          "number": 11,
+          "unit": null,
+          "name": "Circles",
+          "description": null
+        },
+        {
+          "id": "GEO.12",
+          "code": null,
+          "number": 12,
+          "unit": null,
+          "name": "Circles and Angles",
+          "description": null
+        },
+        {
+          "id": "GEO.13",
+          "code": null,
+          "number": 13,
+          "unit": null,
+          "name": "Power of a Point",
+          "description": null
+        },
+        {
+          "id": "GEO.14",
+          "code": null,
+          "number": 14,
+          "unit": null,
+          "name": "Three-Dimensional Geometry",
+          "description": null
+        },
+        {
+          "id": "GEO.15",
+          "code": null,
+          "number": 15,
+          "unit": null,
+          "name": "Curved Surfaces",
+          "description": null
+        },
+        {
+          "id": "GEO.16",
+          "code": null,
+          "number": 16,
+          "unit": null,
+          "name": "The More Things Change...",
+          "description": null
+        },
+        {
+          "id": "GEO.17",
+          "code": null,
+          "number": 17,
+          "unit": null,
+          "name": "Analytic Geometry",
+          "description": null
+        },
+        {
+          "id": "GEO.18",
+          "code": null,
+          "number": 18,
+          "unit": null,
+          "name": "Introduction to Trigonometry",
+          "description": null
+        },
+        {
+          "id": "GEO.19",
+          "code": null,
+          "number": 19,
+          "unit": null,
+          "name": "Problem Solving Strategies in Geometry",
+          "description": null
+        }
+      ]
+    }
+  ]
+}

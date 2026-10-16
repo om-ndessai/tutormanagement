@@ -16,7 +16,7 @@
  *
  *   node db/generate-seed.mjs        # rewrites db/seed.sql
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -997,12 +997,41 @@ const commentsB = [
   [B, q(id('0b600000', 1)), q(B_CAST.rosa), q(CAST.alex), 'NULL', 'NULL', 'NULL', q('Riverside note: prefers Tuesday pick-ups.'), q(`${isoDay(4)}T12:00:00.000Z`)],
   [B, q(id('0b600000', 2)), q(B_CAST.kwame), 'NULL', q(SB(1)), 'NULL', 'NULL', q('Riverside: Lily did all the homework.'), q(`${isoDay(2)}T19:00:00.000Z`)],
 ];
+// B teaches North Carolina's standards (Phase 35): nc-2017 as its default and
+// nc-2026 beside it, with Beast Academy retired -- still readable, so Lily's
+// first assessment (BA4) and her closed BA5 plan keep their names as history.
+// Her NC work names the FIRST topic of the first level of each NC source
+// file, read here, so these rows survive the catalog's being rewritten.
+const catalogSource = (file) =>
+  JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'catalog', file), 'utf8'));
+const nc17 = catalogSource('nc-2017.json');
+const nc26 = catalogSource('nc-2026.json');
+const NC17_LEVEL = nc17.levels[0].id;
+const NC17_TOPIC = nc17.levels[0].topics[0].id;
+const NC26_TOPIC = nc26.levels[0].topics[0].id;
+const curriculaB = [
+  [B, q(nc17.id), 1, 'NULL'],
+  [B, q(nc26.id), 0, 'NULL'],
+  [B, q('ba'), 0, q('2026-09-15T12:00:00.000Z')],
+];
+
 const assessmentsB = [
   [B, q(id('0b700000', 1)), q(B_CAST.lily), q(B_CAST.rosa), q(isoDay(40)), q('Grade 5 Mathematics'), q('BA4'), q('Riverside: secure on place value, shaky on fractions.')],
+  [B, q(id('0b700000', 2)), q(B_CAST.lily), q(B_CAST.rosa), q(isoDay(20)), q('Grade 5 Mathematics'), q(NC17_LEVEL), q('Riverside: placed on the state standards.')],
 ];
 const plansB = [
-  [B, q(id('0b800000', 1)), q(B_CAST.lily), q(id('0b700000', 1)), q('Fractions with confidence.'), q('BA5'), q(isoDay(35)), q(isoDay(-120)), 1, 60, q('Riverside: weekly, fractions first.'), q('active'), q(B_CAST.rosa)],
+  // Closed when Riverside moved to the state standards: history, never deleted.
+  [B, q(id('0b800000', 1)), q(B_CAST.lily), q(id('0b700000', 1)), q('Fractions with confidence.'), q('BA5'), q(isoDay(35)), q(isoDay(-120)), 1, 60, q('Riverside: weekly, fractions first.'), q('closed'), q(B_CAST.rosa)],
+  [B, q(id('0b800000', 2)), q(B_CAST.lily), q(id('0b700000', 2)), q('Fractions with confidence.'), q(NC17_LEVEL), q(isoDay(15)), q(isoDay(-150)), 1, 60, q('Riverside: weekly, on the state standards.'), q('active'), q(B_CAST.rosa)],
 ];
+assessmentRatings.push(
+  [q(id('0b700000', 2)), q(NC17_TOPIC), 2],
+  [q(id('0b700000', 2)), q(NC26_TOPIC), 3],
+);
+planTopics.push([q(id('0b800000', 2)), q(NC17_TOPIC), 0], [q(id('0b800000', 2)), q(NC26_TOPIC), 1]);
+// Lily's lesson two days ago, scored against the NC plan.
+sessionProgress.push([q(SB(1)), q(id('0b800000', 2)), 3]);
+sessionRatings.push([q(SB(1)), q(NC17_TOPIC), 3]);
 
 // --- locations (Phase 33) ----------------------------------------------------
 // Every tutor has an in-person place and an online room; every student a home. Each pairing
@@ -1106,9 +1135,11 @@ DELETE FROM users;
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
 ${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'calendar_domain'], organizations)}
 
--- Each teaches from Beast Academy alone, as its default (Phase 34): the API
--- reads the catalog only through this list.
-${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default'], [[A, q('ba'), 1], [B, q('ba'), 1]])}
+-- What each teaches from (Phase 34; the API reads the catalog only through
+-- this list). A, like the institute, offers Beast Academy alone. B offers
+-- North Carolina's standards, 2017 by default, and has retired Beast Academy.
+-- The catalog itself is db/catalog.sql, loaded before this file.
+${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB])}
 
 -- --- people ----------------------------------------------------------------
 ${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers])}
@@ -1163,7 +1194,7 @@ ${insert('schedule_cancellations', ['schedule_id', 'occurs_on', 'note', 'cancell
 ${insert('comments', ['organization_id', 'id', 'author_user_id', 'target_user_id', 'target_session_id', 'target_assignment_id', 'target_scheduled_session_id', 'body', 'created_at'], [...inOrg(A, comments), ...commentsB])}
 
 -- --- where each student started, and where they are going (Phase 16) ------
--- The curriculum catalog itself is part of db/schema.sql, not of this file.
+-- The curriculum catalog itself is db/catalog.sql, not part of this file.
 ${insert('assessments', ['organization_id', 'id', 'student_user_id', 'assessor_user_id', 'assessed_on', 'school_course', 'recommended_level_id', 'summary'], [...inOrg(A, assessments), ...assessmentsB])}
 
 ${insert('assessment_topic_ratings', ['assessment_id', 'topic_id', 'rating'], assessmentRatings, 80)}

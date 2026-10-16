@@ -1,0 +1,71 @@
+{
+  "id": "nc-2017",
+  "name": "PLACEHOLDER NC Math (2017)",
+  "source": "North Carolina Department of Public Instruction",
+  "edition": "2017",
+  "source_url": "https://www.dpi.nc.gov/districts-schools/classroom-resources/office-teaching-and-learning",
+  "description": "PLACEHOLDER: replaced by the reviewed catalog before release.",
+  "sort": 2,
+  "levels": [
+    {
+      "id": "NC17.K",
+      "code": "K",
+      "name": "PLACEHOLDER NC Kindergarten (2017)",
+      "stage": 1001,
+      "grade_band": "Kindergarten",
+      "description": null,
+      "topics": [
+        {
+          "id": "NC17.K.CC.1",
+          "code": "NC.K.CC.1",
+          "number": 1,
+          "unit": "Counting and Cardinality",
+          "name": "PLACEHOLDER Count to 100",
+          "description": "PLACEHOLDER description of NC.K.CC.1.",
+          "statement": null,
+          "objectives": []
+        },
+        {
+          "id": "NC17.K.OA.1",
+          "code": "NC.K.OA.1",
+          "number": 2,
+          "unit": "Operations and Algebraic Thinking",
+          "name": "PLACEHOLDER Add and subtract with objects",
+          "description": "PLACEHOLDER description of NC.K.OA.1.",
+          "statement": null,
+          "objectives": []
+        }
+      ]
+    },
+    {
+      "id": "NC17.1",
+      "code": "1",
+      "name": "PLACEHOLDER NC Grade 1 (2017)",
+      "stage": 1002,
+      "grade_band": "Grade 1",
+      "description": null,
+      "topics": [
+        {
+          "id": "NC17.1.OA.1",
+          "code": "NC.1.OA.1",
+          "number": 1,
+          "unit": "Operations and Algebraic Thinking",
+          "name": "PLACEHOLDER Word problems within 20",
+          "description": "PLACEHOLDER description of NC.1.OA.1.",
+          "statement": null,
+          "objectives": []
+        },
+        {
+          "id": "NC17.1.NBT.1",
+          "code": "NC.1.NBT.1",
+          "number": 2,
+          "unit": "Number and Operations in Base Ten",
+          "name": "PLACEHOLDER Count to 150",
+          "description": "PLACEHOLDER description of NC.1.NBT.1.",
+          "statement": null,
+          "objectives": []
+        }
+      ]
+    }
+  ]
+}

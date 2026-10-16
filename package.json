@@ -18,7 +18,7 @@
     "dev:api": "npm run dev --workspace @tmi/api",
     "dev:web": "npm run dev --workspace @tmi/web",
     "build": "npm run build --workspace @tmi/web",
-    "typecheck": "node scripts/check-org-scope.mjs && npm run typecheck --workspaces --if-present && node scripts/typecheck-mobile.mjs",
+    "typecheck": "node scripts/check-org-scope.mjs && node apps/api/db/generate-catalog.mjs --check && npm run typecheck --workspaces --if-present && node scripts/typecheck-mobile.mjs",
     "db:create": "npm run db:create --workspace @tmi/api",
     "db:seed": "npm run db:seed --workspace @tmi/api",
     "db:reset": "npm run db:reset --workspace @tmi/api",

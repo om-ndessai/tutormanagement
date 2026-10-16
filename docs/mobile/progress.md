@@ -188,6 +188,13 @@ native rebuild of both dev builds, so build only while the devices are free.
   (flow fixes: pairings/admin scrolls to Save, schedule/browse centres "Show all", seed-next-up.js sends
   `location_ids`); `npm run smoke -- mobile` green on both)*
 
+## Portal Phase 35 — North Carolina Math, and choosing curricula
+
+- [ ] 47. Mobile: the Curricula card on the Organization screen, and the pickers' curriculum switch,
+  unit groups, descriptions and retired-level rule *(built 2026-10-16 with the web, on branch
+  `phase35-code`: typecheck, lint, jest green; flow `organization/curricula` written. Still owed:
+  `mobile:export`, the flow and `progress/*` on iOS and Android, and `npm run smoke -- mobile`)*
+
 ## Phase 4 — Google sign-in
 
 - [ ] API: bearer sessions for the mobile app

@@ -1,4 +1,10 @@
-import type { CurriculumLevel, ProgressOverview, ProgressStatus } from '@tmi/shared';
+import {
+  pickerLevels,
+  topicsByUnit,
+  type CurriculumLevel,
+  type ProgressOverview,
+  type ProgressStatus,
+} from '@tmi/shared';
 
 import { studentProgress } from '@/test/fixtures';
 import {
@@ -151,4 +157,39 @@ it('lists lessons newest first with cancelled ones in place', () => {
     '2026-09-15',
     '2026-09-08',
   ]);
+});
+
+// Phase 35: the shared helpers the pickers use on the device.
+describe('pickerLevels and topicsByUnit', () => {
+  const topic = (id: string, level_id: string, unit: string | null) => ({
+    id,
+    code: id,
+    level_id,
+    number: 1,
+    unit,
+    name: id,
+    description: null,
+  });
+  const levels = [
+    { id: 'NC17.3', curriculum_id: 'nc-2017', retired: false, topics: [topic('NC17.3.OA.1', 'NC17.3', 'OA')] },
+    { id: 'NC26.3', curriculum_id: 'nc-2026', retired: false, topics: [topic('NC26.3.ANR.1', 'NC26.3', 'ANR')] },
+    { id: 'BA4', curriculum_id: 'ba', retired: true, topics: [topic('BA4.05', 'BA4', '4B')] },
+    { id: 'BA5', curriculum_id: 'ba', retired: true, topics: [topic('BA5.02', 'BA5', '5A')] },
+  ] as unknown as CurriculumLevel[];
+
+  it('hides a retired curriculum unless something chosen is in it', () => {
+    expect(pickerLevels(levels).map((level) => level.id)).toEqual(['NC17.3', 'NC26.3']);
+    expect(pickerLevels(levels, ['BA4.05']).map((level) => level.id)).toEqual(['NC17.3', 'NC26.3', 'BA4']);
+    expect(pickerLevels(levels, ['BA5']).map((level) => level.id)).toEqual(['NC17.3', 'NC26.3', 'BA5']);
+    expect(pickerLevels(levels, [], 'nc-2026').map((level) => level.id)).toEqual(['NC26.3']);
+  });
+
+  it('groups a level’s topics in runs of one unit, keeping their order', () => {
+    const topics = [topic('a', 'L', 'OA'), topic('b', 'L', 'OA'), topic('c', 'L', 'NBT'), topic('d', 'L', null)];
+    expect(topicsByUnit(topics).map((group) => [group.unit, group.topics.map((t) => t.id)])).toEqual([
+      ['OA', ['a', 'b']],
+      ['NBT', ['c']],
+      [null, ['d']],
+    ]);
+  });
 });

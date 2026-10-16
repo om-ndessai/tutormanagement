@@ -15,17 +15,21 @@ const QUARTER_HOUR = 15;
 // ---------------------------------------------------------------------------
 // The curriculum catalog (Phase 16; curricula since Phase 34)
 // ---------------------------------------------------------------------------
-// The catalog is reference data inserted by db/schema.sql; these are its
-// shapes. It holds curricula, each a ladder of levels with topics. An
-// organization reads and writes only the curricula on its own list; today
-// every organization offers one, Beast Academy, which runs levels 1-5 and
-// then the Art of Problem Solving books:
+// The catalog is reference data, generated into db/catalog.sql from
+// db/catalog/*.json; these are its shapes. It holds curricula, each a ladder
+// of levels with topics. An organization reads and writes only the curricula
+// on its own list, which its admins choose (Phase 35). Beast Academy runs
+// levels 1-5 and then the Art of Problem Solving books:
 //
 //   level   BA1 .. BA5   Beast Academy Level 1 .. 5
 //           PRE          AoPS Prealgebra
 //           ALG          AoPS Introduction to Algebra
 //           GEO          AoPS Introduction to Geometry
 //   topic   <level>.<nn> BA3.10 is "topic 10 of Beast Academy Level 3"
+//
+// North Carolina's standards come in two editions, 'nc-2017' and 'nc-2026':
+// a level is a grade or a course (NC17.3, NC26.M1), a topic one numbered
+// standard (NC17.3.OA.1, shown as "NC.3.OA.1"), its unit the domain.
 //
 // Ids are keys; `code` is what people read. For Beast Academy they are the
 // same, and the API answers the id where a row has no code of its own. A
@@ -42,9 +46,11 @@ export interface CurriculumTopic {
   code: string;
   level_id: string;
   number: number;
-  /** The Beast Academy guide book ("3D"); null for an AoPS chapter. */
+  /** The Beast Academy guide book ("3D"), a state standard's domain; null for an AoPS chapter. */
   unit: string | null;
   name: string;
+  /** A second line in the pickers: a standard's summary. Null for Beast Academy. */
+  description: string | null;
 }
 
 export interface CurriculumLevel {
@@ -57,6 +63,11 @@ export interface CurriculumLevel {
   name: string;
   grade_band: string | null;
   description: string | null;
+  /**
+   * Its curriculum is retired here: hidden from the pickers unless something
+   * already chosen is in it, and still readable everywhere else (Phase 35).
+   */
+  retired: boolean;
   /** In teaching order. */
   topics: CurriculumTopic[];
 }
@@ -91,6 +102,91 @@ const CATALOG_ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$/;
 
 const levelId = refuseSsn(z.string().trim().regex(CATALOG_ID, 'Choose a level from the list.'));
 const topicId = refuseSsn(z.string().trim().regex(CATALOG_ID, 'Choose a topic from the list.'));
+const curriculumId = refuseSsn(z.string().trim().regex(CATALOG_ID, 'Choose a curriculum from the list.'));
+
+// ---------------------------------------------------------------------------
+// Which curricula an organization offers (Phase 35)
+// ---------------------------------------------------------------------------
+
+/** A curriculum on this organization's list: `GET /api/curricula`, any member. */
+export interface Curriculum {
+  /** "ba", "nc-2017", "nc-2026" */
+  id: string;
+  /** "Beast Academy" */
+  name: string;
+  source: string | null;
+  /** "2017", "2026"; null when the source has none. */
+  edition: string | null;
+  description: string | null;
+  source_url: string | null;
+  /** Where plans and assessments start. Exactly one per organization. */
+  is_default: boolean;
+  /** No longer offered: hidden from pickers, but what was written against it still reads. */
+  retired: boolean;
+}
+
+/**
+ * Every curriculum this organization may offer, with its standing here:
+ * `GET /api/organization/curricula`, its admins only. `offered` is on the
+ * list and not retired; a curriculum never offered has both flags false.
+ */
+export interface CurriculumOffering extends Curriculum {
+  offered: boolean;
+  level_count: number;
+  topic_count: number;
+}
+
+/**
+ * `PUT /api/organization/curricula`: the whole choice at once. What is not
+ * offered is retired (never deleted -- what was written against it keeps its
+ * names), and the default must be one of those offered.
+ */
+export const curriculumOfferingSchema = z
+  .object({
+    offered: z
+      .array(curriculumId)
+      .min(1, 'Offer at least one curriculum.')
+      .max(50)
+      .refine((ids) => new Set(ids).size === ids.length, { message: 'A curriculum is listed twice.' }),
+    default_curriculum_id: curriculumId,
+  })
+  .refine((value) => value.offered.includes(value.default_curriculum_id), {
+    message: 'The default must be one of the curricula offered.',
+    path: ['default_curriculum_id'],
+  });
+
+export type CurriculumOfferingInput = z.input<typeof curriculumOfferingSchema>;
+export type CurriculumOfferingPayload = z.output<typeof curriculumOfferingSchema>;
+
+/**
+ * The levels a picker shows: those of curricula still offered, plus a retired
+ * one's only where something already chosen is in it -- an old plan still
+ * shows, and saves, what it was written against. `keep` holds level ids and
+ * topic ids alike. Optionally narrowed to one curriculum (the switch).
+ */
+export function pickerLevels(
+  levels: readonly CurriculumLevel[],
+  keep: Iterable<string> = [],
+  curriculumId?: string | null,
+): CurriculumLevel[] {
+  const wanted = new Set(keep);
+  return levels.filter(
+    (level) =>
+      (!curriculumId || level.curriculum_id === curriculumId) &&
+      (!level.retired || wanted.has(level.id) || level.topics.some((topic) => wanted.has(topic.id))),
+  );
+}
+
+/** A level's topics in runs of one unit, in teaching order: the pickers' groups. */
+export function topicsByUnit(topics: readonly CurriculumTopic[]): { unit: string | null; topics: CurriculumTopic[] }[] {
+  const groups: { unit: string | null; topics: CurriculumTopic[] }[] = [];
+  for (const topic of topics) {
+    const last = groups[groups.length - 1];
+    if (last && last.unit === topic.unit) last.topics.push(topic);
+    else groups.push({ unit: topic.unit, topics: [topic] });
+  }
+  return groups;
+}
 
 // ---------------------------------------------------------------------------
 // Ratings

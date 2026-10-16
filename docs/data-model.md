@@ -433,18 +433,39 @@ curriculum_levels ─┬─ curriculum_topics ──┬── assessment_topic_r
 
 A topic is `<level>.<nn>`, so "topic 10 from level 3" is `BA3.10` and nothing else. The chapter
 lists were taken from beastacademy.com and the AoPS tables of contents (current editions). The
-catalog is reference data, inserted by an idempotent upsert block at the end of `schema.sql`;
-topics are never deleted, because every rating references one without a cascade.
+catalog is reference data, generated since Phase 35 from `apps/api/db/catalog/*.json` by
+`db/generate-catalog.mjs` into `db/catalog.sql` (idempotent upserts, run after `schema.sql`);
+topics are never deleted, because every rating references one without a cascade, and the
+generator refuses a source file that drops one, changes a level's stage or a topic's number.
 
 **Curricula (Phase 34).** That ladder is one curriculum, Beast Academy (`ba`, in `curricula`),
 which keeps the three AoPS books as its upper levels; every level names its `curriculum_id`. An
 organization reads and writes only the curricula on its own list, `organization_curricula`
 (`is_default`, `retired_at`), which every catalog read and id check joins
 (`listCurriculum`, `findUnknownCurriculumIds`): an id outside it is "Not in the curriculum",
-the same answer as an invented one. Today every organization offers Beast Academy alone, as its
-default. A `curricula` row with `organization_id` set would be that organization's own; the
+the same answer as an invented one. A new organization starts on Beast Academy, as its default.
+A `curricula` row with `organization_id` set would be that organization's own; the
 `organization_curricula_same_organization` trigger keeps it off anybody else's list, and the
 SQL repeats the test.
+
+**North Carolina, and choosing (Phase 35).** Two more platform curricula: the state's standards
+in the edition in classrooms now (`nc-2017`) and the one adopted on 2026-10-01 (`nc-2026`).
+
+| Curriculum | Levels | Topics |
+| --- | --- | --- |
+| `nc-2017` | `NC17.K`, `NC17.1` … `NC17.8`, `NC17.M1` … `NC17.M4`, `NC17.PC`; stages from 1001 | one per numbered standard, `NC17.3.OA.1` shown as `NC.3.OA.1`; lettered parts fold into the description |
+| `nc-2026` | `NC26.K` … `NC26.8`, `NC26.M1`, `NC26.M2`, `NC26.ALR`, `NC26.ASDS`, `NC26.MSM`; stages from 2001 | one per standard, `NC26.3.ANR.3` shown as `3.ANR.3`; its objectives in the description |
+
+A topic's `unit` is its domain, and its `description` (new in Phase 35, NULL for Beast Academy)
+the line the pickers show under its name. Each curriculum's stages sit in their own thousand,
+and a shipped stage never changes. An organization's admins choose its list on the
+Organization page (`PUT /api/organization/curricula`: the whole choice, one batch modelled on
+`setDefaultOrganization` -- clear the default, retire the absent, add or bring back the offered,
+set the default). What is left out is **retired** (`retired_at`), never deleted: hidden from the
+pickers unless something already chosen is in it, still readable, and still writable -- every
+edit resends its whole set of ids, and refusing a retired one would fail every save of an old
+plan. A plan, an assessment or a lesson may mix the curricula an organization offers; none of
+them gains a column.
 
 - **Ids are keys; codes are what people read.** `code` on levels and topics is NULL where the id
   already is the code, as for every Beast Academy row, and the API answers `COALESCE(code, id)`.
@@ -453,7 +474,9 @@ SQL repeats the test.
   is the catalog's own (`indexCurriculum` in shared gives each topic its position). `stage` is
   the database's ladder order and is not sent.
 - **The shared id shape only ever widens**, and is wrapped in the SSN guard.
-- `program` is still in the table, unread; it goes with the second curriculum.
+- `program` (Beast Academy or AoPS, by CHECK) was dropped in Phase 35, the one non-additive
+  statement on `tutoring-db` so far: its CHECK refused any other curriculum's level. The
+  distinction survives in the level names.
 
 **One rating scale, 1-5, everywhere.** 1 means the student performs poorly or needs help, 5 that
 they have it cold (`TOPIC_RATING_LABELS`). The assessment, each lesson's topic scores and the
@@ -855,8 +878,9 @@ because "the database guarantees it" would be wrong:
    most one; "at least one" is a cross-row fact no constraint can state, because a new
    organization's row must exist before its list can reference it. `createOrganization` inserts
    the organization and its default (`DEFAULT_CURRICULUM_ID`, Beast Academy) in one batch, and
-   it is the only path that creates an organization. Audited by the query under "Reading the
-   model".
+   it is the only path that creates an organization. Changing the choice (Phase 35) is one batch
+   that clears the default and sets the new one, and the shared schema refuses a default that is
+   not among those offered, or an empty list. Audited by the query under "Reading the model".
 
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
 a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's

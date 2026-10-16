@@ -526,7 +526,7 @@ function AssessmentPanel({
   assessments: Assessment[];
   isAdmin: boolean;
   levelName: (id: string | null) => string | null;
-  topicName: (id: string) => { code: string; name: string; unit: string | null } | undefined;
+  topicName: (id: string) => { code: string; name: string; unit: string | null; position: number } | undefined;
   onEdit: (row: Assessment) => void;
   onDelete: (row: Assessment) => void;
 }) {
@@ -579,7 +579,13 @@ function AssessmentPanel({
           ) : (
             <ul className="divide-border divide-y rounded-md border">
               {[...current.ratings]
-                .sort((a, b) => a.rating - b.rating || a.topic_id.localeCompare(b.topic_id))
+                // Equal ratings in teaching order: the catalog's position, not the id's text.
+                .sort(
+                  (a, b) =>
+                    a.rating - b.rating ||
+                    (topicName(a.topic_id)?.position ?? Infinity) - (topicName(b.topic_id)?.position ?? Infinity) ||
+                    a.topic_id.localeCompare(b.topic_id),
+                )
                 .map((row) => (
                   <li key={row.topic_id} className="flex items-center gap-2 px-3 py-1.5">
                     <TopicName

@@ -158,7 +158,7 @@ This replaces the rule "a person is one users row; what they do is user_roles":
 | **Per organization: what it records about a person** | `org_tutor_profiles`, `org_student_profiles`, `org_guardianships`, `org_payment_handles`, `org_availability_slots` |
 | **Per organization: root rows** (gain `organization_id`) | `assignments`, `sessions`, `scheduled_sessions`, `session_drafts`, `active_sessions`, `payments`, `comments`, `assessments`, `learning_plans`, `audit_events` |
 | **Inherit through their parent** | `session_write_ups`, `session_assessments`, `session_reflections`, `session_progress`, `session_topic_ratings`, `schedule_cancellations`, `assessment_topic_ratings`, `learning_plan_topics` |
-| **Global reference data** | `curriculum_levels`, `curriculum_topics` |
+| **Global reference data** | `curriculum_levels`, `curriculum_topics` (since Phase 34 read only through an organization's own list, `organization_curricula`; Phase 35 lets its admins choose it) |
 
 **Why each of these is per-organization:**
 - **Pay rates, prices and the maximum lesson length** are each organization's business decision.
@@ -323,6 +323,8 @@ Nothing in production is dropped:
 - **`active_sessions` keeps its primary key on `tutor_user_id`.** That is correct: nobody teaches
   two lessons at once anywhere. The "already running" error names no other organization's student.
 - **The curriculum stays global.** A curriculum per organization would be a separate roadmap item.
+  (Since Phases 34-35 the catalog holds several platform curricula and each organization offers
+  its own choice of them; an organization's own curriculum is the curricula plan's Phase D.)
 
 ---
 

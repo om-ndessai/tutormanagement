@@ -8,6 +8,7 @@ import {
   PLAN_STATUS_LABELS,
   type ApiOk,
   type Assessment,
+  type Curriculum,
   type CurriculumLevel,
   type LearningPlan,
   type ProgressOverview,
@@ -22,6 +23,7 @@ import { ApiError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
 import { getLiveUserById } from '../repositories/users.js';
+import { listOrganizationCurricula } from '../repositories/curricula.js';
 import {
   buildStudentProgress,
   progressReader,
@@ -51,6 +53,16 @@ const studentParamSchema = z.object({ studentId: z.uuid({ message: 'Not a valid 
  */
 export const curriculumRoutes = new Hono<AppEnv>().get('/', async (c) => {
   const body: ApiOk<CurriculumLevel[]> = { data: await listCurriculum(c.env.DB, c.get('org').id) };
+  return c.json(body);
+});
+
+/**
+ * Phase 35: the curricula on this organization's list, offered and retired,
+ * the default first. Any member: the pickers offer a switch between the ones
+ * still offered. Choosing them is the admins', at /api/organization/curricula.
+ */
+export const curriculaRoutes = new Hono<AppEnv>().get('/', async (c) => {
+  const body: ApiOk<Curriculum[]> = { data: await listOrganizationCurricula(c.env.DB, c.get('org').id) };
   return c.json(body);
 });
 

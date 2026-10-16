@@ -1,6 +1,7 @@
-import { SSN_REJECTED_MESSAGE, type NotificationLogEntry } from '@tmi/shared';
+import { SSN_REJECTED_MESSAGE, type CurriculumOffering, type NotificationLogEntry } from '@tmi/shared';
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 
+import { ApiRequestError } from '@/lib/api-client';
 import { renderWithProviders } from '@/test/render';
 import { OrganizationSettingsScreen } from './organization-settings-screen';
 import { validateForm } from './settings-form';
@@ -16,11 +17,35 @@ jest.mock('@/providers/auth-provider', () => ({ useAuth: () => mockAuth() }));
 const mockSettings = jest.fn();
 const mockNotifications = jest.fn();
 const mockPatch = jest.fn();
+const mockOfferings = jest.fn();
+const mockPut = jest.fn();
 jest.mock('./api', () => ({
   useOrganizationSettings: (enabled: boolean) => mockSettings(enabled),
   useOrganizationNotifications: (enabled: boolean) => mockNotifications(enabled),
   useUpdateOrganizationSettings: () => ({ mutateAsync: mockPatch, isPending: false }),
+  useCurriculumOfferings: (enabled: boolean) => mockOfferings(enabled),
+  useUpdateCurriculumOffering: () => ({ mutateAsync: mockPut, isPending: false }),
 }));
+
+const offering = (id: string, name: string, flags: Partial<CurriculumOffering>): CurriculumOffering => ({
+  id,
+  name,
+  source: null,
+  edition: null,
+  description: null,
+  source_url: null,
+  is_default: false,
+  retired: false,
+  offered: false,
+  level_count: 8,
+  topic_count: 116,
+  ...flags,
+});
+const OFFERINGS: CurriculumOffering[] = [
+  offering('ba', 'Beast Academy', { is_default: true, offered: true }),
+  offering('nc-2017', 'NC Math (2017)', {}),
+  offering('nc-2026', 'NC Math (2026)', { retired: true }),
+];
 
 const ORGANIZATION = { name: 'Chapel Hill Math', palette: 'indigo', time_zone: 'America/New_York' };
 const SETTINGS = {
@@ -70,10 +95,18 @@ function asAdmin(isAdmin = true) {
     refetch: jest.fn(),
   });
   mockNotifications.mockReturnValue({ data: isAdmin ? { data: LOG } : undefined, refetch: jest.fn() });
+  mockOfferings.mockReturnValue({
+    data: isAdmin ? { data: OFFERINGS } : undefined,
+    isPending: !isAdmin,
+    dataUpdatedAt: 1,
+    refetch: jest.fn(),
+  });
 }
 
 beforeEach(() => {
   mockPatch.mockReset();
+  mockPut.mockReset();
+  mockOfferings.mockReset();
   mockSettings.mockReset();
   mockNotifications.mockReset();
 });
@@ -85,7 +118,9 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.getByText('Only an administrator can see the organization’s settings.')).toBeTruthy();
     expect(mockSettings).toHaveBeenCalledWith(false);
     expect(mockNotifications).toHaveBeenCalledWith(false);
+    expect(mockOfferings).toHaveBeenCalledWith(false);
     expect(screen.queryByTestId('org-tin')).toBeNull();
+    expect(screen.queryByTestId('org-curricula')).toBeNull();
   });
 
   it('prefills the payer box and shows what the platform sets', async () => {
@@ -132,6 +167,45 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.getByText('Not delivered')).toBeTruthy();
     // The subject is not repeated when the email went to them.
     expect(screen.queryByText(/Added to the organization · Ben Whitfield/)).toBeNull();
+  });
+});
+
+describe('CurriculaCard', () => {
+  it('lists every curriculum with its standing; the default cannot be switched off', async () => {
+    asAdmin();
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.getByTestId('org-curriculum-ba')).toBeTruthy();
+    expect(screen.getByText('NC Math (2017)')).toBeTruthy();
+    expect(screen.getByText('Retired')).toBeTruthy();
+    expect(screen.getByTestId('org-curriculum-offer-ba').props.accessibilityState.disabled).toBe(true);
+    // Nothing changed yet, so there is nothing to save.
+    expect(screen.getByTestId('org-curricula-save').props.accessibilityState.disabled).toBe(true);
+  });
+
+  it('offers one more, moves the default to it, and saves the whole choice', async () => {
+    asAdmin();
+    mockPut.mockResolvedValue({ data: OFFERINGS });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    await fireEvent(screen.getByTestId('org-curriculum-offer-nc-2017'), 'valueChange', true);
+    await fireEvent.press(screen.getByTestId('org-curriculum-default-nc-2017'));
+    await fireEvent(screen.getByTestId('org-curriculum-offer-ba'), 'valueChange', false);
+    await fireEvent.press(screen.getByTestId('org-curricula-save'));
+    await waitFor(() =>
+      expect(mockPut).toHaveBeenCalledWith({ offered: ['nc-2017'], default_curriculum_id: 'nc-2017' }),
+    );
+  });
+
+  it('says what the server refused, under the card', async () => {
+    asAdmin();
+    mockPut.mockRejectedValue(
+      new ApiRequestError(422, 'validation_failed', 'Please correct the highlighted fields.', {
+        offered: ['Not a curriculum this organization can offer: x.'],
+      }),
+    );
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    await fireEvent(screen.getByTestId('org-curriculum-offer-nc-2026'), 'valueChange', true);
+    await fireEvent.press(screen.getByTestId('org-curricula-save'));
+    expect(await screen.findByText('Not a curriculum this organization can offer: x.')).toBeTruthy();
   });
 });
 

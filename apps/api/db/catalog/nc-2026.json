@@ -1,0 +1,71 @@
+{
+  "id": "nc-2026",
+  "name": "PLACEHOLDER NC Math (2026)",
+  "source": "North Carolina Department of Public Instruction",
+  "edition": "2026",
+  "source_url": "https://docs.google.com/document/d/1LxwEUZkpFTH77pZ0GQgazvAZQNllNx-YJcsp-K3siKw/",
+  "description": "PLACEHOLDER: replaced by the reviewed catalog before release.",
+  "sort": 3,
+  "levels": [
+    {
+      "id": "NC26.K",
+      "code": "K",
+      "name": "PLACEHOLDER NC Kindergarten (2026)",
+      "stage": 2001,
+      "grade_band": "Kindergarten",
+      "description": null,
+      "topics": [
+        {
+          "id": "NC26.K.ANR.1",
+          "code": "K.ANR.1",
+          "number": 1,
+          "unit": "Algebraic and Numerical Reasoning",
+          "name": "PLACEHOLDER Count and compare",
+          "description": "PLACEHOLDER description of K.ANR.1.",
+          "statement": null,
+          "objectives": []
+        },
+        {
+          "id": "NC26.K.SGMR.1",
+          "code": "K.SGMR.1",
+          "number": 2,
+          "unit": "Spatial, Geometric and Measurement Reasoning",
+          "name": "PLACEHOLDER Name shapes",
+          "description": "PLACEHOLDER description of K.SGMR.1.",
+          "statement": null,
+          "objectives": []
+        }
+      ]
+    },
+    {
+      "id": "NC26.1",
+      "code": "1",
+      "name": "PLACEHOLDER NC Grade 1 (2026)",
+      "stage": 2002,
+      "grade_band": "Grade 1",
+      "description": null,
+      "topics": [
+        {
+          "id": "NC26.1.ANR.1",
+          "code": "1.ANR.1",
+          "number": 1,
+          "unit": "Algebraic and Numerical Reasoning",
+          "name": "PLACEHOLDER Add and subtract within 20",
+          "description": "PLACEHOLDER description of 1.ANR.1.",
+          "statement": null,
+          "objectives": []
+        },
+        {
+          "id": "NC26.1.RD.1",
+          "code": "1.RD.1",
+          "number": 2,
+          "unit": "Reasoning with Data",
+          "name": "PLACEHOLDER Sort and count data",
+          "description": "PLACEHOLDER description of 1.RD.1.",
+          "statement": null,
+          "objectives": []
+        }
+      ]
+    }
+  ]
+}

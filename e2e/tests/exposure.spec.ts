@@ -195,6 +195,8 @@ test.describe('what each non-admin can see', () => {
       await read('/api/schedules/upcoming?limit=10');
       await read('/api/comments/feed');
       await read('/api/progress');
+      // Phase 35: the organization's curricula, which every member reads.
+      await read('/api/curricula');
       await read('/api/sessions/active');
 
       // R16 (Phase 33): a person's own list of locations is read only by them and their parents
@@ -305,6 +307,12 @@ test.describe('what each non-admin can see', () => {
     expect((await parent.request.get(`/api/payments/monthly?year=2026&user_id=${tutorId}`)).status()).toBe(403);
     // Phase 32: who was emailed about what is the office's to read.
     expect((await parent.request.get('/api/organization/notifications')).status()).toBe(403);
+    // Phase 35: the choice of curricula is the admins'.
+    expect((await parent.request.get('/api/organization/curricula')).status()).toBe(403);
+    expect(
+      (await parent.request.put('/api/organization/curricula', { data: { offered: ['ba'], default_curriculum_id: 'ba' } }))
+        .status(),
+    ).toBe(403);
 
     // A comment the reader cannot read is missing, not forbidden. Seeded:
     // Anita's note about her son Sanjay, whom Alex does not teach.
