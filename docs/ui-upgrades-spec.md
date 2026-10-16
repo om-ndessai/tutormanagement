@@ -95,6 +95,15 @@ A QuickSheet is a root ScrollView in a `fitToContents` form sheet (the only layo
 react-native-screens resizes). Dev previews: `aimtrue://dev/kit`, `aimtrue://dev/kit-sheet`.
 Details in `docs/mobile/build-log.md` #47.
 
+**Tab bar, revised 2026-10-15.** The owner found the bar asymmetric (the "+" after the third of five
+tabs) and chose option B: **Home, Sessions · + · Progress, More**, the "+" a 56pt amber disc in a
+hump that rises 40pt from the centre of the bar's top edge (a flat bar of four for anyone with
+nothing to create). Schedule leaves the bar and lives inside Sessions: a **Lessons | Schedule**
+switch heads both screens, the Schedule route and its links are unchanged, and Sessions shows as
+chosen while Schedule is open. The live banner, toasts and the reminder clear the hump. Built and
+jest-tested; the device flows are updated but unrun (device testing paused by the owner). Details in
+`docs/mobile/build-log.md` #52.
+
 ## Phase U3: add a student (parent first) and add a tutor
 
 **Student, app.** A step flow, opened from the create button and from People:

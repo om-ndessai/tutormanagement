@@ -1,6 +1,7 @@
 # A tutor takes the tour from the account menu (Alex): the wizard, Take the tour, then the
 # dashboard dimmed with one part lit and a card ("1 of N"); Back and Next move between steps, and
-# Finish brings the wizard back on confirming his details (a non-admin's last step). Closing it
+# Finish brings the wizard back on confirming his details (a non-admin's last step). Schedule's
+# step lights Sessions, where Schedule lives now. Closing it
 # changes nothing: he had been through it already.
 appId: ${APP_ID}
 tags:
@@ -63,6 +64,19 @@ tags:
 - tapOn:
     id: tour-next
 - takeScreenshot: tour-step-3
+# Schedule is inside Sessions (the tab bar, revised 2026-10-15): its step lights the Sessions tab
+# and says where to find it.
+- repeat:
+    times: 12
+    while:
+      notVisible: '.*You will find it under Sessions\..*'
+    commands:
+      - tapOn:
+          id: tour-next
+- assertVisible:
+    id: tour-title
+    text: 'Schedule'
+- takeScreenshot: tour-schedule-step
 # On through the menu to the end.
 - repeat:
     while:

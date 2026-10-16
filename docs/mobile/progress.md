@@ -249,6 +249,16 @@ native rebuild of both dev builds, so build only while the devices are free.
   `home/*`, `dashboard/*`, `exposure/*`, `onboarding/{tour,wizard-admin}` and the other flows that read
   Home's header (29) green on iOS and Android; `npm run smoke -- mobile` green on both. Design entry
   #51)*
+- [ ] U2 revised. Mobile: the tab bar, option B (owner, 2026-10-15) — Home, Sessions · **+** ·
+  Progress, More: the "+" an amber disc in a hump that rises from the bar's centre (react-native-svg,
+  computed from the bar's width), a flat bar of four for parents and students; Schedule leaves the
+  bar and lives inside Sessions behind a Lessons | Schedule switch heading both screens (its route,
+  stack and links unchanged; Sessions lit while it is in front); the banner, toasts, the reminder and
+  the screens' foot clear the hump; the tour's Schedule step lights Sessions *(built 2026-10-15:
+  typecheck, lint, jest (93 suites, 523 tests), export green; flows updated (`shell/{navigation,create}`,
+  `schedule/*`, `locations/{reminder,schedule-locations}`, `sessions/live`, `exposure/live-surfaces`,
+  `onboarding/tour`, new `subflows/open-schedule`) but **unrun: device testing paused by the owner,
+  still owed**, with the screenshots. Design entry #52)*
 
 ## Phase 4 — Google sign-in
 

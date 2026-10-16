@@ -39,13 +39,32 @@ export function stopToast(
  */
 export const TAB_BAR_ABOVE_INSET = { ios: 56, android: 80 } as const;
 
+/**
+ * How far the hump that holds the "+" rises above the flat bar (the tab bar, revised 2026-10-15).
+ * Only a bar with a "+" has it; a reader with nothing to create keeps a flat bar.
+ */
+export const TAB_BAR_HUMP = 40;
+
+/** How much of the window's foot the tab bar takes above the inset, hump included when it has one. */
+export function tabBarClearance(platform: 'ios' | 'android', hump: boolean): number {
+  return TAB_BAR_ABOVE_INSET[platform] + (hump ? TAB_BAR_HUMP : 0);
+}
+
 /** The gap between the banner and whatever it floats above. */
 export const BANNER_GAP = 8;
 
 /** The banner's height: two lines and a 44pt button row. */
 export const BANNER_HEIGHT = 64;
 
-/** How far the banner sits above the bottom edge: clear of the tab bar on a tab, else of the inset. */
-export function bannerBottom(platform: 'ios' | 'android', insetBottom: number, onTab: boolean): number {
-  return insetBottom + (onTab ? TAB_BAR_ABOVE_INSET[platform] : 0) + BANNER_GAP;
+/**
+ * How far the banner sits above the bottom edge: clear of the tab bar on a tab -- and of its hump,
+ * when the bar has a "+" -- else of the inset.
+ */
+export function bannerBottom(
+  platform: 'ios' | 'android',
+  insetBottom: number,
+  onTab: boolean,
+  hump = false,
+): number {
+  return insetBottom + (onTab ? tabBarClearance(platform, hump) : 0) + BANNER_GAP;
 }

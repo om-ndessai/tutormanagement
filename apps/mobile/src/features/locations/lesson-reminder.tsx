@@ -21,6 +21,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/icon-button';
 import { useLiveBannerInset } from '@/components/live-banner-inset';
 import { useUpcomingSessions } from '@/features/schedules/api';
+import { useTabBarHump } from '@/features/shell/tab-bar-hump';
 import { bannerBottom } from '@/features/teaching/live-session';
 import { haptics } from '@/lib/haptics';
 import { readPref, STORAGE_KEYS, writePref } from '@/lib/storage';
@@ -102,7 +103,10 @@ function ReminderSheetFrame({ children }: { children: ReactNode }) {
   const insets = useSafeAreaInsets();
   const liveInset = useLiveBannerInset();
   const reduced = useReducedMotion();
-  const bottom = bannerBottom(Platform.OS === 'ios' ? 'ios' : 'android', insets.bottom, true) + liveInset;
+  // Clear of the bar's hump too, where the bar has a "+" (the tab bar, revised 2026-10-15).
+  const hump = useTabBarHump();
+  const bottom =
+    bannerBottom(Platform.OS === 'ios' ? 'ios' : 'android', insets.bottom, true, hump) + liveInset;
   return (
     <Animated.View
       entering={reduced ? undefined : FadeInDown.duration(250)}

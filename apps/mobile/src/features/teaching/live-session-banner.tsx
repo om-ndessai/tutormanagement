@@ -19,6 +19,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/icon-button';
 import { LiveBannerInsetContext } from '@/components/live-banner-inset';
 import { useReportToastPlacement, useToast } from '@/components/toast';
+import { useTabBarHump } from '@/features/shell/tab-bar-hump';
 import { ApiRequestError } from '@/lib/api-client';
 import { useLargeText } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
@@ -62,10 +63,13 @@ function usePlacement(active: ActiveSession | null) {
   const route = segments[1] ?? '';
   const visible = Boolean(active) && !SHEET_ROUTES.has(route);
   const onTab = route === '(tabs)';
+  // The bar's hump rises above it where the bar has a "+" (the tab bar, revised 2026-10-15).
+  const hump = useTabBarHump();
   return {
     visible,
     onTab,
-    bottom: bannerBottom(Platform.OS === 'ios' ? 'ios' : 'android', insets.bottom, onTab),
+    hump,
+    bottom: bannerBottom(Platform.OS === 'ios' ? 'ios' : 'android', insets.bottom, onTab, hump),
   };
 }
 
@@ -77,7 +81,7 @@ function usePlacement(active: ActiveSession | null) {
 export function LiveSessionHost({ children }: { children: ReactNode }) {
   const { data, refetch } = useActiveSession();
   const active = data?.data.mine ?? null;
-  const { visible, onTab, bottom } = usePlacement(active);
+  const { visible, onTab, hump, bottom } = usePlacement(active);
   // The same lesson on the Lock Screen / in the notifications (#45): one query drives both, so
   // they never disagree; it ends when this host goes (organization switch, sign-out).
   useLiveSurface(active);
@@ -86,7 +90,7 @@ export function LiveSessionHost({ children }: { children: ReactNode }) {
   const [measured, setMeasured] = useState(BANNER_HEIGHT);
   const bannerInset = visible ? Math.max(measured, BANNER_HEIGHT) + BANNER_GAP : 0;
   // A toast clears the tab bar and this banner (ux-audit F-2).
-  useReportToastPlacement({ onTab, bannerInset });
+  useReportToastPlacement({ onTab, bannerInset, hump });
 
   // The server closes a lesson at its limit on the next read; read at that instant so an
   // auto-stopped lesson leaves the screen when it stops, not at the next 30 s poll.

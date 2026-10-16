@@ -13,7 +13,7 @@ import { Button, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
-import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { useBottomOverlap } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -39,7 +39,7 @@ export function PeopleScreen() {
   const { user: viewer } = useAuth();
   const brand = useBrand();
   const theme = useAppTheme();
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
   const isAdmin = viewer?.roles.includes('admin') ?? false;
   const [filters, setFilters] = useState<PeopleFilterState>(INITIAL);
   const debouncedSearch = useDebouncedValue(filters.search.trim());
@@ -202,7 +202,7 @@ export function PeopleScreen() {
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         style={{ flex: 1, backgroundColor: theme.colors.background }}
-        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
+        contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bottomOverlap }}
       />
       {dialog}
     </>

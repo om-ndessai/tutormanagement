@@ -290,8 +290,11 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
           </Text>
           <Text testID="tour-body" variant="bodyMedium">
             {step.body}
-            {placement?.kind === 'tab' && placement.underMore ? (
-              <Text style={{ color: theme.tokens.mutedForeground }}> You will find it under More.</Text>
+            {placement?.kind === 'tab' && placement.within ? (
+              <Text style={{ color: theme.tokens.mutedForeground }}>
+                {' '}
+                You will find it under {placement.within}.
+              </Text>
             ) : null}
           </Text>
           <View style={styles.actions}>

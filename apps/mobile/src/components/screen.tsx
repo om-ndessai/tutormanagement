@@ -5,7 +5,7 @@ import { useSafeAreaInsets, type Edge } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/providers/theme-provider';
 import { ConnectivityBanner } from './connectivity';
 import { FieldErrorProvider, useFieldErrorAnchors } from './field-error';
-import { useLiveBannerInset } from './live-banner-inset';
+import { useBottomOverlap } from './live-banner-inset';
 import { space } from '@/theme/tokens';
 
 /**
@@ -44,7 +44,7 @@ export function Screen({
 }) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
   // The scroll view, for bringing errors into view: the caller's own ref object when it passes
   // one; with a callback ref (the tour's), ours, handing the view on and its cleanup back.
   const own = useRef<ScrollView | null>(null);
@@ -61,7 +61,7 @@ export function Screen({
     padding: space.lg,
     gap: space.lg,
     paddingTop: space.lg + (edges.includes('top') ? insets.top : 0),
-    paddingBottom: space.xxl + (edges.includes('bottom') ? insets.bottom : 0) + bannerInset,
+    paddingBottom: space.xxl + (edges.includes('bottom') ? insets.bottom : 0) + bottomOverlap,
     ...contentStyle,
   };
   if (!scroll) {

@@ -1,5 +1,5 @@
 // A toast clears the tab bar on a tab and the live banner while it shows (ux-audit F-2).
-import { BANNER_GAP, BANNER_HEIGHT, TAB_BAR_ABOVE_INSET } from '@/features/teaching/live-session';
+import { BANNER_GAP, BANNER_HEIGHT, TAB_BAR_ABOVE_INSET, TAB_BAR_HUMP } from '@/features/teaching/live-session';
 import { NO_PLACEMENT, TOAST_GAP, toastBottom } from './toast-placement';
 
 const INSET = 34;
@@ -8,6 +8,11 @@ const BANNER = BANNER_HEIGHT + BANNER_GAP;
 test.each(['ios', 'android'] as const)('%s: on a tab the toast sits above the tab bar', (platform) => {
   const bottom = toastBottom(platform, INSET, { onTab: true, bannerInset: 0 });
   expect(bottom).toBeGreaterThanOrEqual(INSET + TAB_BAR_ABOVE_INSET[platform] + TOAST_GAP);
+});
+
+test.each(['ios', 'android'] as const)('%s: with a "+" in the bar it clears the hump', (platform) => {
+  const bottom = toastBottom(platform, INSET, { onTab: true, bannerInset: 0, hump: true });
+  expect(bottom).toBeGreaterThanOrEqual(INSET + TAB_BAR_ABOVE_INSET[platform] + TAB_BAR_HUMP + TOAST_GAP);
 });
 
 test.each(['ios', 'android'] as const)(

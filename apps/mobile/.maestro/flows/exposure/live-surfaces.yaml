@@ -100,7 +100,7 @@ tags:
       id: live-banner
     timeout: 10000
 - runFlow: ../../subflows/exposure/no-money.yaml
-- tapOn: 'Schedule'
+- runFlow: ../../subflows/open-schedule.yaml
 - extendedWaitUntil:
     visible:
       id: screen-schedule

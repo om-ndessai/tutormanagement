@@ -130,7 +130,7 @@ tags:
     timeout: 15000
 - assertNotVisible:
     id: step-flow
-- tapOn: 'Schedule'
+- runFlow: ../../subflows/open-schedule.yaml
 - extendedWaitUntil:
     visible:
       id: schedule-day-3

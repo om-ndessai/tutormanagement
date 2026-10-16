@@ -102,7 +102,7 @@ tags:
       id: screen-home
     timeout: 10000
 # Record a lesson, from a tab other than Home: the flow is Tutoring's, so no money on it.
-- tapOn: 'Schedule'
+- runFlow: ../../subflows/open-schedule.yaml
 - extendedWaitUntil:
     visible:
       id: screen-schedule
@@ -177,7 +177,7 @@ tags:
       id: screen-home
     timeout: 10000
 
-# A parent: the four tabs and More, and no "+".
+# A parent: Home, Sessions, Progress and More on a flat bar, and no "+" (no hump either).
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -187,8 +187,14 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- assertVisible: 'Sessions'
-- assertVisible: 'More'
+- assertVisible:
+    id: tab-dashboard
+- assertVisible:
+    id: tab-sessions
+- assertVisible:
+    id: tab-progress
+- assertVisible:
+    id: tab-more
 - assertNotVisible:
     id: create-button
 - takeScreenshot: create-none-parent

@@ -19,6 +19,7 @@ import { EmptyState, ErrorState } from '@/components/state-views';
 import { useToast } from '@/components/toast';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
+import { SessionsSwitch } from '@/features/shell/sessions-switch';
 import { ApiRequestError } from '@/lib/api-client';
 import { downloadAndShare } from '@/lib/download';
 import { haptics } from '@/lib/haptics';
@@ -147,6 +148,8 @@ export function SchedulesScreen() {
           ),
         }}
       />
+      {/* Schedule lives inside Sessions (the tab bar, revised 2026-10-15). */}
+      <SessionsSwitch current="schedule" />
       <PageIntro>Standing weekly lessons. Add them to your calendar in one tap.</PageIntro>
       {mayCreate || all.length > 0 ? (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>

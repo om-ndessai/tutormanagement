@@ -10,7 +10,10 @@ jest.mock('react-native-reanimated', () => ({
   ...require('react-native-reanimated/mock'),
   useReducedMotion: () => true,
 }));
-jest.mock('@/providers/auth-provider', () => ({ useOrgTimeZone: () => 'America/New_York' }));
+jest.mock('@/providers/auth-provider', () => ({
+  useAuth: () => ({ user: { id: 'tutor-1', roles: ['tutor'] } }),
+  useOrgTimeZone: () => 'America/New_York',
+}));
 jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));

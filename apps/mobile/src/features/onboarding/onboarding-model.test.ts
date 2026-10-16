@@ -39,10 +39,12 @@ describe('the tour on a phone', () => {
     }
   });
 
-  it('lights the tabs the tab bar has, and points the rest of the menu at More', () => {
-    expect(placementOf('nav-sessions')).toEqual({ kind: 'tab', index: 1, underMore: false });
-    expect(placementOf('nav-progress')).toEqual({ kind: 'tab', index: 3, underMore: false });
-    expect(placementOf('nav-billing')).toEqual({ kind: 'tab', index: 4, underMore: true });
+  it('lights the tabs the tab bar has, Schedule in Sessions, and the rest of the menu in More', () => {
+    expect(placementOf('nav-dashboard')).toEqual({ kind: 'tab', index: 0, within: null });
+    expect(placementOf('nav-sessions')).toEqual({ kind: 'tab', index: 1, within: null });
+    expect(placementOf('nav-schedule')).toEqual({ kind: 'tab', index: 1, within: 'Sessions' });
+    expect(placementOf('nav-progress')).toEqual({ kind: 'tab', index: 2, within: null });
+    expect(placementOf('nav-billing')).toEqual({ kind: 'tab', index: 3, within: 'More' });
     expect(placementOf('dash-analytics')).toEqual({ kind: 'view', id: 'dash-analytics' });
     expect(placementOf('getting-started')).toEqual({ kind: 'view', id: 'getting-started' });
   });

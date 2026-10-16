@@ -29,7 +29,7 @@ const PlacementContext = createContext<((placement: ToastPlacement) => void) | n
  * optional action such as Undo. A success or error also gives its haptic -- the toast's is the
  * only one, so a caller never adds its own (ux-audit F-19).
  *
- * Placement (ux-audit F-2): above the tab bar and the live lesson banner, which the `(org)` layout
+ * Placement (ux-audit F-2): above the tab bar (and its hump, when it has a "+") and the live lesson banner, which the `(org)` layout
  * reports through `useReportToastPlacement`, so a toast never covers the tab labels or takes a tap
  * meant for a tab. On iOS it is drawn in a window of its own above everything
  * (`FullWindowOverlay`), so a toast raised from a form sheet shows over the sheet rather than
@@ -57,7 +57,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const report = useCallback((next: ToastPlacement) => {
     setPlacement((previous) =>
-      previous.onTab === next.onTab && previous.bannerInset === next.bannerInset ? previous : next,
+      previous.onTab === next.onTab &&
+      previous.bannerInset === next.bannerInset &&
+      Boolean(previous.hump) === Boolean(next.hump)
+        ? previous
+        : next,
     );
   }, []);
 
@@ -100,10 +104,10 @@ export function useToast(): ToastApi {
 }
 
 /** Tells the toast what it must clear at the bottom of the screen; reset when the caller goes. */
-export function useReportToastPlacement({ onTab, bannerInset }: ToastPlacement) {
+export function useReportToastPlacement({ onTab, bannerInset, hump = false }: ToastPlacement) {
   const report = use(PlacementContext);
   useEffect(() => {
-    report?.({ onTab, bannerInset });
-  }, [report, onTab, bannerInset]);
+    report?.({ onTab, bannerInset, hump });
+  }, [report, onTab, bannerInset, hump]);
   useEffect(() => () => report?.(NO_PLACEMENT), [report]);
 }

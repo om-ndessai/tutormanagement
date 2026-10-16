@@ -16,7 +16,7 @@ import { Button, Text } from 'react-native-paper';
 import { ConnectivityBanner } from '@/components/connectivity';
 import { PageIntro } from '@/components/page-intro';
 import { FocusNotice } from '@/components/focus-notice';
-import { useLiveBannerInset } from '@/components/live-banner-inset';
+import { useBottomOverlap } from '@/components/live-banner-inset';
 import { SecureMoney } from '@/components/secure-money';
 import { SwipeRow } from '@/components/swipe-row';
 import { Skeleton } from '@/components/skeleton';
@@ -33,6 +33,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { CancelledLessonsPanel } from '@/features/schedules/cancelled-lessons-panel';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
+import { SessionsSwitch } from '@/features/shell/sessions-switch';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments, useSession } from './api';
@@ -110,7 +111,7 @@ export function SessionsScreen() {
   const ownPairings = useAssignments({ tutor_user_id: isTutor ? user?.id : undefined });
   const teaches = isTutor && (ownPairings.data?.data.length ?? 0) > 0;
   const mayStart = teaches && active.isSuccess && !active.data.data.mine;
-  const bannerInset = useLiveBannerInset();
+  const bottomOverlap = useBottomOverlap();
 
   async function onRefresh() {
     setRefreshing(true);
@@ -158,6 +159,8 @@ export function SessionsScreen() {
   const header = (
     <View style={{ gap: space.lg, paddingBottom: space.md }}>
       <ConnectivityBanner />
+      {/* Schedule lives inside Sessions (the tab bar, revised 2026-10-15). */}
+      <SessionsSwitch current="lessons" />
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -345,7 +348,7 @@ export function SessionsScreen() {
       contentInsetAdjustmentBehavior="automatic"
       keyboardShouldPersistTaps="handled"
       style={{ flex: 1, backgroundColor: theme.colors.background }}
-      contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bannerInset }}
+      contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl + bottomOverlap }}
     />
   );
 }

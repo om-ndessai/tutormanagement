@@ -1,6 +1,7 @@
-// The app's tab bar (UI upgrades U2): the four tabs and More in their order for everyone, the
-// create button between Schedule and Progress only for a reader with something to create, and its
-// sheet listing that reader's own actions.
+// The app's tab bar (UI upgrades U2, revised 2026-10-15): Home, Sessions, Progress and More for
+// everyone, the create button in a hump between Sessions and Progress only for a reader with
+// something to create, and its sheet listing that reader's own actions. Schedule is a route of the
+// tabs but not a tab: it lights Sessions.
 import { fireEvent, screen } from '@testing-library/react-native';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 
@@ -66,36 +67,57 @@ beforeEach(() => {
   mockPairings.mockReturnValue({ data: { data: [{ id: 'pairing' }] } });
 });
 
-/** The bar's slots, left to right, by testID. */
+/** The bar's slots, left to right (tree order), by testID. */
 function slots(): string[] {
-  const bar = screen.getByTestId('tab-bar');
-  return (bar.props.children as { props: { testID?: string; name?: string } }[])
-    .flat()
-    .map((child) => (child.props.name ? `tab-${child.props.name}` : 'create-button'));
+  return screen
+    .getAllByTestId(/^(tab-(dashboard|sessions|schedule|progress|more)|create-button)$/)
+    .map((node) => String(node.props.testID));
 }
 
-test('a parent: the four tabs and More, and no create button', async () => {
+/** The bar's width, as its layout reports it: the hump is drawn from it. */
+async function layOut(width = 390) {
+  await fireEvent(screen.getByTestId('tab-bar'), 'layout', {
+    nativeEvent: { layout: { x: 0, y: 0, width, height: 90 } },
+  });
+}
+
+test('a parent: four tabs on a flat bar, no Schedule, no create button and no hump', async () => {
   as(['parent']);
   await renderWithProviders(<AppTabBar {...props().props} />);
+  await layOut();
   expect(screen.queryByTestId('create-button')).toBeNull();
-  for (const label of ['Home', 'Sessions', 'Schedule', 'Progress', 'More']) {
+  expect(screen.queryByTestId('tab-bar-hump')).toBeNull();
+  expect(slots()).toEqual(['tab-dashboard', 'tab-sessions', 'tab-progress', 'tab-more']);
+  for (const label of ['Home', 'Sessions', 'Progress', 'More']) {
     expect(screen.getByText(label)).toBeTruthy();
   }
+  expect(screen.queryByText('Schedule')).toBeNull();
   expect(screen.queryByTestId('create-sheet')).toBeNull();
 });
 
-test('an admin: the create button sits between Schedule and Progress', async () => {
+test('an admin: two tabs either side of the create button, in its hump', async () => {
   as(['admin']);
   await renderWithProviders(<AppTabBar {...props().props} />);
+  await layOut();
   expect(screen.getByLabelText('Create')).toBeTruthy();
-  expect(slots()).toEqual([
-    'tab-dashboard',
-    'tab-sessions',
-    'tab-schedule',
-    'create-button',
-    'tab-progress',
-    'tab-more',
-  ]);
+  expect(screen.getByTestId('create-button').props.accessibilityHint).toBe(
+    'Record, start or schedule a lesson, and more',
+  );
+  expect(screen.getByTestId('tab-bar-hump')).toBeTruthy();
+  expect(slots()).toEqual(['tab-dashboard', 'tab-sessions', 'create-button', 'tab-progress', 'tab-more']);
+});
+
+test('on Schedule, Sessions shows as chosen, and tapping it goes back to Lessons', async () => {
+  as(['tutor']);
+  const { navigation, props: barProps } = props(2);
+  await renderWithProviders(<AppTabBar {...barProps} />);
+  expect(screen.getByTestId('tab-sessions').props.accessibilityState).toMatchObject({ selected: true });
+  expect(screen.getByTestId('tab-dashboard').props.accessibilityState).toMatchObject({ selected: false });
+  await fireEvent.press(screen.getByTestId('tab-sessions'));
+  expect(navigation.emit).toHaveBeenCalledWith(
+    expect.objectContaining({ type: 'tabPress', target: 'sessions-key' }),
+  );
+  expect(navigation.navigate).toHaveBeenCalledWith('sessions', undefined);
 });
 
 test('a tab press goes to that tab; the open tab is left to its stack', async () => {
