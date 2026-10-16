@@ -256,6 +256,7 @@ test.describe('curricula', () => {
           full_name: 'Sam Curricula',
           email: '',
           roles: ['student'],
+          student_profile: { charge_rate_in_person_cents: 90_00 },
           guardians: [{ guardian_user_id: parent.id, relationship: 'mother', is_primary: true }],
         },
       }),
@@ -305,7 +306,7 @@ test.describe('curricula', () => {
 
     // It still posts -- a retired curriculum stays writable -- and only once.
     const posted = await cora.request.post(`/api/sessions/drafts/${draft.id}/post`, inOrg);
-    expect(posted.status()).toBe(201);
+    expect(posted.status(), await posted.text()).toBe(201);
     const session = (await posted.json()).data;
     expect(session.progress.topic_ratings).toEqual([{ topic_id: FIRST_NC26_TOPIC.id, rating: 3 }]);
     expect((await cora.request.post(`/api/sessions/drafts/${draft.id}/post`, inOrg)).status()).toBe(404);
@@ -336,6 +337,8 @@ test.describe('curricula', () => {
 
     // On the page: the card, one row each, saved with its own button.
     await cora.goto(`/organization?org=${slug}`);
+    // Cora is new, so the welcome wizard opens first (it follows her record, not the cookie).
+    await cora.getByTestId('onboarding-wizard').getByRole('button', { name: /done/ }).click();
     const card = cora.getByTestId('curricula-card');
     await expect(card.getByTestId(`curriculum-${NC26.id}`).getByText('Retired')).toBeVisible();
     await expect(card.getByRole('switch', { name: 'Offer Beast Academy' })).toBeDisabled();

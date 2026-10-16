@@ -225,6 +225,18 @@ export const progressRoutes = new Hono<AppEnv>()
     const input = c.req.valid('json');
     const student = await requireStudent(c.env.DB, c.get('org').id, input.student_user_id);
 
+    // What the request names is checked before the student's state: an id
+    // outside this organization's curricula is refused as invalid, whether or
+    // not a plan is already running.
+    await assertCatalogIds(c.env.DB, c.get('org').id, [
+      {
+        field: 'target_level_id',
+        kind: 'level',
+        ids: input.target_level_id ? [input.target_level_id] : [],
+      },
+      { field: 'topic_ids', kind: 'topic', ids: input.topic_ids },
+    ]);
+
     // One active plan per student, which is what makes "the plan" a lesson is
     // scored against unambiguous. The index would refuse it; this says why.
     if (await getActivePlanId(c.env.DB, c.get('org').id, student.id)) {
@@ -241,15 +253,6 @@ export const progressRoutes = new Hono<AppEnv>()
         });
       }
     }
-
-    await assertCatalogIds(c.env.DB, c.get('org').id, [
-      {
-        field: 'target_level_id',
-        kind: 'level',
-        ids: input.target_level_id ? [input.target_level_id] : [],
-      },
-      { field: 'topic_ids', kind: 'topic', ids: input.topic_ids },
-    ]);
 
     const viewer = c.get('user');
     const plan = await createPlan(c.env.DB, c.get('org').id, input, viewer.id);

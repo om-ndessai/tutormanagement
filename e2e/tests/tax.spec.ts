@@ -163,7 +163,7 @@ test.describe('the organization TIN', () => {
 
     await admin.goto('/organization');
     await admin.getByLabel(/Payer TIN/).fill('47-2019388');
-    await admin.getByRole('button', { name: 'Save' }).click();
+    await admin.getByRole('button', { name: 'Save', exact: true }).click();
     await expect(admin.getByText('Organization settings saved.')).toBeVisible();
 
     const settings = await unwrap<any>(

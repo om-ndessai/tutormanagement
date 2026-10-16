@@ -281,5 +281,8 @@ as NCDPI's terms grant non-commercial use only -- `docs/curricula/sources.md`):
 - Seed: Riverside offers nc-2017 (default) and nc-2026, Beast Academy retired. Production SQL:
   `docs/database.md`, Phase 35.
 
+The owner reviewed the NC topic names (`docs/curricula/nc-topic-names.md`) on 2026-10-16 and
+approved them as drafted.
+
 Later, unscheduled: the 2017-to-2026 crosswalk (the plan's "Phase C", needed by fall 2028) and an
 organization's own curriculum ("Phase D").

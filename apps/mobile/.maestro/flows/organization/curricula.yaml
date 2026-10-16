@@ -44,10 +44,16 @@ tags:
 - assertVisible:
     id: org-curriculum-nc-2026
 - takeScreenshot: organization-curricula
-# The default is always offered.
+# The default is always offered: a tap on its switch changes nothing. (Proved by behaviour, as
+# Maestro cannot read a native iOS switch's disabled state.)
 - assertVisible:
     id: org-curriculum-offer-nc-2017
-    enabled: false
+    checked: true
+- tapOn:
+    id: org-curriculum-offer-nc-2017
+- assertVisible:
+    id: org-curriculum-offer-nc-2017
+    checked: true
 - tapOn:
     id: org-curriculum-offer-ba
 - scrollUntilVisible:

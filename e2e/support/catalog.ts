@@ -40,20 +40,22 @@ export const topicsOf = (curriculum: CatalogCurriculum) => curriculum.levels.fla
 
 /**
  * Text only North Carolina's catalog holds, for "nothing of it reaches an
- * organization that does not offer it": its ids, its curricula's and levels'
- * names, and its topics' names -- leaving out any that Beast Academy also uses
- * or that are short enough to turn up inside other text ("Area").
+ * organization that does not offer it": its ids and official codes, and its
+ * curricula's and levels' names -- leaving out any that Beast Academy also uses
+ * or that are short enough to turn up inside other text ("Grade 3").
  */
 export function northCarolinaWords(): string[] {
-  const beastAcademy = new Set([BA.name, ...BA.levels.map((l) => l.name), ...topicsOf(BA).map((t) => t.name)]);
+  const beastAcademy = new Set([BA.name, ...BA.levels.map((l) => l.name)]);
+  // Ids and official codes are North Carolina's alone; any row of its catalog carries them. Topic
+  // NAMES are not used: a standard's short name is everyday maths ("Long division", "Equivalent
+  // fractions") and turns up, rightly, in another organization's own lesson notes.
   const ids = [NC17, NC26].flatMap((curriculum) => [
     ...curriculum.levels.map((level) => level.id),
-    ...topicsOf(curriculum).map((topic) => topic.id),
+    ...topicsOf(curriculum).flatMap((topic) => [topic.id, ...(topic.code ? [topic.code] : [])]),
   ]);
   const names = [NC17, NC26].flatMap((curriculum) => [
     curriculum.name,
     ...curriculum.levels.map((level) => level.name),
-    ...topicsOf(curriculum).map((topic) => topic.name),
   ]);
   return [
     ...new Set([...ids, ...names.filter((name) => name.length >= 12 && !beastAcademy.has(name))]),
