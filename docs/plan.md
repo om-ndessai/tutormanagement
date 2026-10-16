@@ -228,9 +228,10 @@ Locations menu item (portal sidebar, app's More) listing every tutor's and stude
 by person, with add (choosing the person first), edit and remove. Still one owner per location:
 `GET /api/locations` without `user_id` returns the organization's list to admins and an empty list
 to anybody else (R16). No schema change.
+
 Phase 34.
 Curricula, with Beast Academy alone: Phase A of the multi-curriculum plan
-(`~/.claude/plans/the-tutoring-portal-is-curious-muffin.md`, approved by the owner). The catalog
+(`docs/curricula-plan.md`, approved by the owner). The catalog
 can hold more than one curriculum, and each organization reads and writes only the ones on its own
 list. Additive, and no visible change: every organization offers Beast Academy alone, as its default.
 
@@ -246,5 +247,21 @@ Built 2026-10-16:
   catalog's position (`indexCurriculum` in shared).
 - No new route, mutation or audit action. Production SQL: `docs/database.md`, Phase 34.
 
-Next, when the owner schedules it: Phase B (North Carolina Math, both editions, and an
-organization choosing its curricula).
+Phase 35.
+Part 2: North Carolina Math, the 2017 and 2026 editions, and an organization choosing which it
+offers (a Curricula card on the Organization page). The plan's "Phase B".
+
+Decided with the owner (2026-10-16), the plan's open points 1-5 as recommended:
+- A 2026 topic is one state standard; its objectives go in the description.
+- Courses: NC Math 1-4 and Precalculus (2017); Math 1, Math 2 and the three state electives (2026).
+  AP is not part of it.
+- Short topic names are drafted from the NCDPI documents and reviewed by the owner before the
+  production release; the full official statements are stored only if NCDPI's terms allow,
+  otherwise linked.
+- Ids as planned (`nc-2017`, `nc-2026`, `NC17.3.OA.1`, `NC26.3.ANR.3`); people see the official code.
+- `ALTER TABLE curriculum_levels DROP COLUMN program` on `tutoring-db` is approved: the first
+  non-additive statement there, rehearsed on a copy of production and on the demo first, after the
+  backup.
+
+Later, unscheduled: the 2017-to-2026 crosswalk (the plan's "Phase C", needed by fall 2028) and an
+organization's own curriculum ("Phase D").
