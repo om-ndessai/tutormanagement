@@ -31,7 +31,10 @@ tags:
       id: org-notifications-switch
     direction: DOWN
     centerElement: true
-- assertVisible: 'Nothing sent yet.'
+# The log is append-only and shared by the whole suite (earlier flows schedule and record lessons
+# with notifications on), so its contents depend on run order: the empty state is proved in jest
+# (organization-views.test.tsx); here, the section is shown and this flow's own row is pinned below.
+- assertVisible: 'Recent emails'
 - tapOn:
     id: org-notifications-switch
 - extendedWaitUntil:
@@ -62,8 +65,9 @@ tags:
     visible:
       id: org-tin
     timeout: 20000
+# This flow's own row, not an older one: Sofia's lesson, told to her parent, moments ago.
 - scrollUntilVisible:
-    element: 'Session recorded.*'
+    element: 'Session recorded · Sofia Okafor · (just now|1 minute ago|2 minutes ago)'
     direction: DOWN
     timeout: 20000
 - assertVisible: 'Maria Okafor'

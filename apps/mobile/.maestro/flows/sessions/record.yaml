@@ -157,6 +157,13 @@ tags:
     timeout: 15000
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: record-in-list
+# The "Session recorded." toast sits over the list's foot, right above the bar's hump, where the
+# new lesson's notes line lands: bring the card to mid-screen before tapping it.
+- scrollUntilVisible:
+    element: 'Recorded from the phone: long division'
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
 - tapOn: 'Recorded from the phone: long division'
 - extendedWaitUntil:
     visible:

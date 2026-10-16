@@ -109,11 +109,13 @@ tags:
     visible:
       id: screen-profile
     timeout: 20000
+# The switch is the profile's last card, below the person's whole recent activity, which grows
+# with every flow that comments as Alex: give the scroll the time to get there.
 - scrollUntilVisible:
     element:
       id: dictation-network-switch
     direction: DOWN
-    timeout: 20000
+    timeout: 45000
 - assertVisible:
     id: profile-dictation
 - assertVisible:

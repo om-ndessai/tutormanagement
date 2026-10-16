@@ -133,6 +133,16 @@ describe('OrganizationSettingsScreen', () => {
     // The subject is not repeated when the email went to them.
     expect(screen.queryByText(/Added to the organization · Ben Whitfield/)).toBeNull();
   });
+
+  it('says so when nothing has been sent yet', async () => {
+    asAdmin();
+    mockNotifications.mockReturnValue({ data: { data: [] }, refetch: jest.fn() });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.getByText('Recent emails')).toBeTruthy();
+    expect(screen.getByTestId('org-notifications-empty')).toBeTruthy();
+    expect(screen.getByText('Nothing sent yet.')).toBeTruthy();
+    expect(screen.queryByText('Maria Okafor')).toBeNull();
+  });
 });
 
 describe('validateForm', () => {

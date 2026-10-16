@@ -45,7 +45,7 @@ tags:
     text: 'Today'
 - assertVisible:
     id: record-quick-times
-    text: '${output.startClock}.*2 hr'
+    text: '${output.startClock}.*${output.lengthLabel}'
 - assertVisible:
     id: record-quick-place
 - assertVisible:

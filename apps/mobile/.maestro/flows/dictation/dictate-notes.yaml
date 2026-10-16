@@ -112,6 +112,13 @@ tags:
 - extendedWaitUntil:
     visible: 'Factorised quadratics by grouping'
     timeout: 15000
+# The "Session recorded." toast sits over the list's foot, right above the bar's hump, where the
+# new lesson's notes line lands: bring the card to mid-screen before tapping it.
+- scrollUntilVisible:
+    element: 'Factorised quadratics by grouping'
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
 - tapOn: 'Factorised quadratics by grouping'
 - scrollUntilVisible:
     element:

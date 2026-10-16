@@ -2,7 +2,8 @@
 // today's weekday, begun an hour ago on the organization's clock and running two hours, so it is
 // under way, starts before any other lesson of his still running today, and is his "Next up".
 // Through the LOCAL Worker only (sign-in off, X-Dev-User). clean-schedules.js removes it.
-// Sets output.studentId, output.studentName, output.scheduleId, output.startPattern, output.startClock.
+// Sets output.studentId, output.studentName, output.scheduleId, output.startPattern, output.startClock,
+// output.lengthLabel.
 var ORG = 'chmi';
 var ALEX = 'alex.chen.math@gmail.com';
 var ALEX_ID = '00000000-0000-4000-8000-000000000003';
@@ -62,3 +63,7 @@ output.startPattern =
   hour12 + ':' + (start % 60 < 10 ? '0' : '') + (start % 60) + '.' + (start < 720 ? 'AM' : 'PM');
 // The start without its AM/PM ("9:45"): a range names the half of the day once, at its end.
 output.startClock = hour12 + ':' + (start % 60 < 10 ? '0' : '') + (start % 60);
+// Its length as the app writes it ("2 hr", "1 hr 45 min"): two hours, except within two hours of
+// midnight, where the lesson is cut short to end the same day.
+output.lengthLabel =
+  Math.floor(duration / 60) + ' hr' + (duration % 60 === 0 ? '' : ' ' + (duration % 60) + ' min');

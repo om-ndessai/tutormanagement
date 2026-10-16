@@ -144,10 +144,13 @@ tags:
     visible:
       id: screen-home
     timeout: 10000
+# Centred: scrolled only until visible, the card stops at the list's foot, where its middle (the
+# point a tap lands on) is under the tab bar's hump, which belongs to the "+".
 - scrollUntilVisible:
     element:
       id: progress-spotlight-card
     direction: DOWN
+    centerElement: true
     timeout: 20000
 - tapOn:
     id: progress-spotlight-card

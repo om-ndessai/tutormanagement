@@ -40,7 +40,11 @@ tags:
     visible:
       id: session-assess-${output.sessionId}
     timeout: 20000
-# The card's content is one labelled button that opens the lesson (F-20).
+# The card's content is one labelled button that opens the lesson (F-20). The focused list settles
+# first: a tap while it was still laying out reached Android as a long press, which opens the row
+# menu instead of the lesson (2026-10-16).
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: session-card-${output.sessionId}
 - extendedWaitUntil:
@@ -98,7 +102,11 @@ tags:
     visible:
       id: session-assess-${output.sessionId}
     timeout: 20000
-# The card's content is one labelled button that opens the lesson (F-20).
+# The card's content is one labelled button that opens the lesson (F-20). The focused list settles
+# first: a tap while it was still laying out reached Android as a long press, which opens the row
+# menu instead of the lesson (2026-10-16).
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: session-card-${output.sessionId}
 - extendedWaitUntil:
@@ -169,7 +177,11 @@ tags:
     timeout: 20000
 - assertNotVisible:
     id: session-assess-${output.sessionId}
-# The card's content is one labelled button that opens the lesson (F-20).
+# The card's content is one labelled button that opens the lesson (F-20). The focused list settles
+# first: a tap while it was still laying out reached Android as a long press, which opens the row
+# menu instead of the lesson (2026-10-16).
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: session-card-${output.sessionId}
 - extendedWaitUntil:

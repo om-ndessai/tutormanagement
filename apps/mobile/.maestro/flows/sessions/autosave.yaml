@@ -183,6 +183,13 @@ tags:
     timeout: 15000
 - takeScreenshot: autosave-posted
 # Put the data back: delete the lesson from its detail.
+# The "Session recorded." toast sits over the list's foot, right above the bar's hump, where the
+# new lesson's notes line lands: bring the card to mid-screen before tapping it.
+- scrollUntilVisible:
+    element: 'Autosaved from the phone'
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
 - tapOn: 'Autosaved from the phone'
 - scrollUntilVisible:
     element:
