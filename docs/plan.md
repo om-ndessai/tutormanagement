@@ -286,3 +286,23 @@ approved them as drafted.
 
 Later, unscheduled: the 2017-to-2026 crosswalk (the plan's "Phase C", needed by fall 2028) and an
 organization's own curriculum ("Phase D").
+
+Phase 36: (planned -- awaiting the owner's approval; do not build until approved)
+The AI layer (roadmap F11), and the question bank it writes. Plan: `docs/ai-platform-plan.md`.
+One gateway, `runAi`, through which every model call passes: an allowlist of providers (Anthropic
+and Workers AI through Cloudflare AI Gateway, and a fake for tests), consent refusal for anything a
+child produced until F7 exists, redaction, the SSN guard on prompts and replies, cost caps, and a
+log of runs that never holds content. Its first use writes maths questions for each NC 2026
+standard, checked by a second independent solve, and approved one by one by a platform admin in
+the console. No person's data goes through it in this phase. Open for the owner: the provider, Workers
+Paid, the caps (the plan's table).
+
+Phase 37: (planned -- awaiting the owner's approval; do not build until approved; needs Phase 36)
+A free online maths assessment that brings in families (roadmap G1 with L4). Plan:
+`docs/online-assessment-plan.md`. A public page per organization (off until its admins turn it on):
+a parent starts it, the child answers an adaptive test (a staircase per strand, grades 3-8 and
+Math 1 on NC 2026, about 25 questions, no AI during the test), and the family sees strand levels,
+strengths and gaps at once. The organization gets a lead (New → Contacted → Consultation booked →
+Enrolled / Lost) with the full result, and Enrol prefills the existing student form, then a draft
+assessment where NC 2026 is offered. Open for the owner: decisions 1-6 in the plan, including no
+emailed report until a sender exists, and counsel on the children's-privacy notice.
