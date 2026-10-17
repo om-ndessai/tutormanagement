@@ -287,15 +287,34 @@ approved them as drafted.
 Later, unscheduled: the 2017-to-2026 crosswalk (the plan's "Phase C", needed by fall 2028) and an
 organization's own curriculum ("Phase D").
 
-Phase 36: (planned -- awaiting the owner's approval; do not build until approved)
+Phase 36: (approved 2026-10-17: Claude as the provider, the free plan for now, grades 3-8 and
+Math 1; "the goal here is to build a reliable question bank")
 The AI layer (roadmap F11), and the question bank it writes. Plan: `docs/ai-platform-plan.md`.
 One gateway, `runAi`, through which every model call passes: an allowlist of providers (Anthropic
 and Workers AI through Cloudflare AI Gateway, and a fake for tests), consent refusal for anything a
 child produced until F7 exists, redaction, the SSN guard on prompts and replies, cost caps, and a
 log of runs that never holds content. Its first use writes maths questions for each NC 2026
 standard, checked by a second independent solve, and approved one by one by a platform admin in
-the console. No person's data goes through it in this phase. Open for the owner: the provider, Workers
-Paid, the caps (the plan's table).
+the console. No person's data goes through it in this phase. Each question passes code checks
+(an exact computed answer among them), a blind solve by a second model, and a person's approval.
+
+Built 2026-10-17 (`docs/ai-platform-plan.md`):
+- `runAi` (`apps/api/src/lib/ai/run.ts`), the only way to a model, with `scripts/check-ai-gateway.mjs`
+  in the typecheck; tasks in `AI_TASKS` (shared): `question_bank.draft` (Claude Sonnet 5.5) and
+  `question_bank.check` (Claude Opus 5.5). Switches, daily and monthly caps per task plus a platform
+  cap, consent refusal for `child_input` tasks, redaction, the SSN guard both ways, one retry, and
+  `ai_runs` without content. Anthropic directly, or through AI Gateway when `AI_GATEWAY_URL` is set;
+  the fake everywhere but production.
+- The bank: `questions` and `question_bank_topics`; code checks (`lintQuestion`, exact
+  `evaluateExact`, `checkAnswer`), the blind solve, approval only from `checked`, edits clearing it,
+  retire and restore, "needs a figure" per standard. Console: Question bank (coverage against 6 per
+  standard, a standard's questions, a keyboard review queue, writing for a whole grade) and AI.
+- `db/questions/*.json` -> `db/questions.sql` (12 hand-written questions for 4.ANR.1-2 until the
+  first export), loaded by every local and demo build; `npm run questions:export`.
+- Not built: Workers AI as a provider (its local binding needs a Cloudflare login); a test of the
+  consent refusal through a real task (no `child_input` task exists yet -- the first one adds it).
+- Production SQL: `docs/database.md`, Phase 36. Writing questions needs `ANTHROPIC_API_KEY` set on
+  both production Workers.
 
 Phase 37: (planned -- awaiting the owner's approval; do not build until approved; needs Phase 36)
 A free online maths assessment that brings in families (roadmap G1 with L4). Plan:

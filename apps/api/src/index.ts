@@ -22,6 +22,8 @@ import { usersRoutes } from './routes/users.js';
 import { onboardingRoutes } from './routes/onboarding.js';
 import { logoRoutes, organizationRoutes } from './routes/organization.js';
 import { platformRoutes } from './routes/platform.js';
+import { aiRoutes } from './routes/ai.js';
+import { questionBankRoutes } from './routes/question-bank.js';
 
 const app = new Hono<AppEnv>();
 
@@ -86,6 +88,9 @@ const publicRoutes = new Hono<AppEnv>()
 const platformApi = new Hono<AppEnv>()
   .use('*', requireAuth)
   .use('*', requirePlatformAdmin)
+  // Phase 36: the AI layer and the question bank it writes.
+  .route('/ai', aiRoutes)
+  .route('/questions', questionBankRoutes)
   .route('/', platformRoutes);
 
 /**

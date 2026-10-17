@@ -23,14 +23,48 @@ catalog text (a standard's code, name and description). **No person's data, and 
 through it in Phase 36.** The child-data gate is built and tested now so the first task that needs it
 cannot forget it.
 
-## Decisions for the owner
+## Decisions (owner, 2026-10-17)
 
-| # | Question | My recommendation |
-| --- | --- | --- |
-| 1 | Provider for writing questions | **Anthropic (Claude Sonnet 5.5)** through AI Gateway: the strongest at checked maths, terms allow it, about $5-15 for the whole bank. Workers AI (`gpt-oss-120b`, free allowance about 28 long drafts a day) stays registered as the second provider. Needs an Anthropic API account and key (yours to create). |
-| 2 | Workers Paid ($5 a month) | Move now, before Phase 37 puts a public page on the free plan, where a busy day stops the portal until midnight UTC. The roadmap's own advice ("before the first AI or student-facing feature"). Not strictly needed for Phase 36 alone. |
-| 3 | Who approves questions | Platform admins (you), in the console. A question reaches no child until a person approves it (AG4). |
-| 4 | Spending caps | $5 a day and $25 a month for question writing, editable in the console; over the cap, the request is refused with a clear message. |
+- **Provider: Claude** (Anthropic), key as the Worker secret `ANTHROPIC_API_KEY`. Questions are
+  written by Claude Sonnet 5.5 and solved independently by Claude Opus 5.5: a different model checks
+  the work, so the two are less likely to make the same mistake. Workers AI is not built in this
+  phase (its local binding needs a Cloudflare login, which would break the local suite); the
+  provider list stays open for it.
+- **The free plan, for now.** Nothing here needs Workers Paid: a model call waits on the network,
+  which the 10 ms CPU limit does not count, and each request makes one call. AI Gateway is free and
+  optional (`AI_GATEWAY` var); without it, calls go straight to Anthropic.
+- **Grades 3-8 and Math 1 on NC 2026** (98 standards) are the bank's scope.
+- Approvers are platform admins; caps start at $5 a day and $25 a month, editable in the console.
+- Phase 37's other questions wait. **The goal of this phase is a reliable question bank.**
+
+## How a question earns trust
+
+Nothing reaches a child without passing every layer, and the human last:
+
+1. **Written to a form.** Claude Sonnet returns each question through a forced tool call, validated
+   by Zod: stem, kind (`choice` or `numeric`), four choices or a numeric key, a worked solution, the
+   objective it targets, its difficulty (1 easier / 2 on grade / 3 stretch), and, wherever the answer
+   is a calculation, a **`compute` expression** (numbers, `+ - * / ^ ( )` only).
+2. **Checked by code** (`lintQuestion` in shared, no model):
+   - a choice question has four distinct choices, exactly one of which is the key, and no "all/none
+     of the above";
+   - a numeric key parses (whole, decimal, fraction, mixed number);
+   - `compute`, evaluated **exactly** with rational arithmetic (`evaluateExact`), equals the key;
+   - balanced `$...$`, a length limit, the SSN guard;
+   - no near-duplicate of another question on the same standard.
+3. **Solved again, blind.** Claude Opus gets only the stem and the choices (shuffled), works it, and
+   gives a final answer, which `checkAnswer` must match to the key. It also judges: is there exactly
+   one defensible answer, does it test this standard, is it right for the grade, and is it free of
+   errors. Any "no" flags the question, with the reason.
+4. **Approved by a person**, with everything beside it: the standard, the rendered question, the
+   key, the solution, and each check's result. An edit re-runs the code checks at once, and the blind
+   solve on request; approval is refused while a check fails.
+5. **Watched in use** (Phase 37): `times_used` and `times_correct` flag a question nearly everyone
+   misses or nobody does.
+
+Status follows from it: `draft` (written) → `checked` (layers 2-3 passed) or `flagged` (a reason
+shown) → `approved` → `retired`. A per-standard target, 6 approved (2 at each difficulty), drives
+the coverage view.
 
 ## Build
 
@@ -41,15 +75,16 @@ cannot forget it.
 - **Tasks are a registry, `AI_TASKS` in `packages/shared/src/ai.ts`.** Each has an id, a label, Zod
   schemas for input and output, `child_input` (true when anything a child produced is in it), its
   provider and model, and default caps. Adding an AI feature means adding a task. Phase 36 registers
-  one: `question_bank.draft`.
-- **Providers.** An allowlist in code (AG3): `anthropic` (Messages API through the AI Gateway URL, key
-  as the Worker secret `ANTHROPIC_API_KEY`), `workers_ai` (the `AI` binding), and `fake`
-  (deterministic fixtures for local and e2e runs, so no test spends money or quota). `AI_PROVIDER`
+  two: `question_bank.draft` and `question_bank.check`.
+- **Providers.** An allowlist in code (AG3): `anthropic` (Messages API, through AI Gateway when
+  `AI_GATEWAY` is set, key as the Worker secret `ANTHROPIC_API_KEY`) and `fake` (deterministic, for
+  local and e2e runs, so no test spends money or quota; it writes sums whose blind solve it can
+  check, and one wrong key per batch so a flag is exercised). `AI_PROVIDER`
   in `vars` picks `fake` on `tutoring-test` and locally; the production pair use the task's own
   provider.
 - **Before sending.**
   - Consent (AG1): a task with `child_input` is refused (`403 ai_consent_required`) until F7 exists.
-    In this phase that is every such task; an e2e test registers a fake one and proves the refusal.
+    No such task exists in this phase, so the refusal is tested by the first one that does.
   - Redaction (AG2): names, emails and phone numbers the caller names are swapped for tokens
     (`[PERSON_1]`) and restored in the reply. It is a pure function in shared with unit tests,
     unused by `question_bank.draft` (catalog text has no people), ready for the next task.

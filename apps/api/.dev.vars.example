@@ -11,3 +11,9 @@ ENVIRONMENT=development
 # HMAC key used to sign session cookies. Must be at least 32 characters.
 # Generate one with:  openssl rand -base64 48
 SESSION_SECRET=replace-with-at-least-32-random-characters-please
+
+# Phase 36: the AI layer answers locally from its fake provider, which costs
+# nothing. To try Claude for real, set both (never commit the key):
+# AI_PROVIDER=anthropic
+# ANTHROPIC_API_KEY=sk-ant-...
+AI_PROVIDER=fake

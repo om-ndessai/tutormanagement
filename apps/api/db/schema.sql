@@ -35,6 +35,10 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS question_bank_topics;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS ai_runs;
+DROP TABLE IF EXISTS ai_task_settings;
 DROP TABLE IF EXISTS notification_log;
 DROP TABLE IF EXISTS session_topic_ratings;
 DROP TABLE IF EXISTS session_progress;
@@ -1788,3 +1792,90 @@ END;
 -- are generated from db/catalog/*.json by db/generate-catalog.mjs, which
 -- refuses a dropped id or a changed stage. Every database is built from this
 -- file THEN catalog.sql (npm run db:rebuild, db:rebuild:test, scripts/e2e.sh).
+
+-- ---------------------------------------------------------------------------
+-- The AI layer and the question bank (Phase 36, docs/ai-platform-plan.md)
+-- ---------------------------------------------------------------------------
+-- Every model call goes through the Worker's runAi (apps/api/src/lib/ai).
+
+-- A platform admin's settings for a task in AI_TASKS (packages/shared/src/ai.ts).
+-- No row: the task's defaults. Caps are cents, checked before every call.
+CREATE TABLE ai_task_settings (
+  task              TEXT PRIMARY KEY,
+  enabled           INTEGER NOT NULL DEFAULT 1 CHECK (enabled IN (0, 1)),
+  daily_cap_cents   INTEGER NOT NULL CHECK (daily_cap_cents >= 0),
+  monthly_cap_cents INTEGER NOT NULL CHECK (monthly_cap_cents >= 0),
+  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- One row per call, refused ones included: what was asked of whom, what it cost
+-- and how it ended. NEVER the prompt or the reply (AG7) -- `detail` is an error
+-- code or an HTTP status, never text from the model.
+CREATE TABLE ai_runs (
+  id                TEXT PRIMARY KEY,
+  -- NULL for a platform task (the question bank). Set once a task runs on an
+  -- organization's data; such a task joins check-org-scope's list.
+  organization_id   TEXT REFERENCES organizations (id),
+  task              TEXT NOT NULL,
+  provider          TEXT NOT NULL,
+  model             TEXT NOT NULL,
+  input_tokens      INTEGER NOT NULL DEFAULT 0,
+  output_tokens     INTEGER NOT NULL DEFAULT 0,
+  cost_microdollars INTEGER NOT NULL DEFAULT 0,
+  outcome           TEXT NOT NULL CHECK (outcome IN ('ok', 'invalid_output', 'provider_error',
+                      'refused_disabled', 'refused_consent', 'refused_budget', 'refused_ssn')),
+  detail            TEXT,
+  actor_user_id     TEXT REFERENCES users (id) ON DELETE SET NULL,
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX ai_runs_task_time_idx ON ai_runs (task, created_at);
+CREATE INDEX ai_runs_time_idx ON ai_runs (created_at);
+
+-- The question bank: platform reference data, like the catalog. One standard
+-- per question. Written by a model, checked by code and by a second model
+-- solving it blind (`checks`), and approved by a platform admin -- the only
+-- status a test may draw on. Never deleted once used: retired instead.
+CREATE TABLE questions (
+  id             TEXT PRIMARY KEY,
+  topic_id       TEXT NOT NULL REFERENCES curriculum_topics (id),
+  difficulty     INTEGER NOT NULL CHECK (difficulty IN (1, 2, 3)),
+  kind           TEXT NOT NULL CHECK (kind IN ('choice', 'numeric')),
+  -- The specific skill within the standard, as the writer named it.
+  skill          TEXT,
+  -- Text with maths in $...$ (KaTeX).
+  stem           TEXT NOT NULL,
+  -- JSON array: four strings for 'choice', [] for 'numeric'.
+  choices        TEXT NOT NULL DEFAULT '[]',
+  -- The correct choice's text, or the number.
+  answer         TEXT NOT NULL,
+  -- Arithmetic the answer must equal exactly, when it is a calculation.
+  compute        TEXT,
+  solution       TEXT NOT NULL,
+  status         TEXT NOT NULL DEFAULT 'draft'
+                   CHECK (status IN ('draft', 'checked', 'flagged', 'approved', 'retired')),
+  -- JSON QuestionChecks: the code checks' problems and the blind solve.
+  checks         TEXT NOT NULL DEFAULT '{"lint":[],"solve":null}',
+  source         TEXT NOT NULL DEFAULT 'ai' CHECK (source IN ('ai', 'manual')),
+  draft_run_id   TEXT REFERENCES ai_runs (id) ON DELETE SET NULL,
+  reviewed_by    TEXT REFERENCES users (id) ON DELETE SET NULL,
+  reviewed_at    TEXT,
+  -- Phase 37: how it fares in use.
+  times_used     INTEGER NOT NULL DEFAULT 0,
+  times_correct  INTEGER NOT NULL DEFAULT 0,
+  created_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK (status != 'approved' OR (reviewed_by IS NOT NULL AND reviewed_at IS NOT NULL))
+);
+
+CREATE INDEX questions_topic_idx ON questions (topic_id, status, difficulty);
+CREATE INDEX questions_status_idx ON questions (status, created_at);
+
+-- What the bank knows about a standard: whether it cannot be asked without a
+-- figure (left out of tests until figures exist). No row: it can.
+CREATE TABLE question_bank_topics (
+  topic_id     TEXT PRIMARY KEY REFERENCES curriculum_topics (id),
+  needs_figure INTEGER NOT NULL DEFAULT 0 CHECK (needs_figure IN (0, 1)),
+  updated_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);

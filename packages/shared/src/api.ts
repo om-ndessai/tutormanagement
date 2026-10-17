@@ -49,6 +49,14 @@ export const ERROR_CODES = [
   // The deployment is missing required configuration. Distinct from
   // internal_error because the fix is a config change, not a code change.
   'not_configured',
+
+  // Phase 36: the AI layer refused or failed a call. Each says why in its
+  // message; none carries what was sent or returned.
+  'ai_disabled',
+  'ai_consent_required',
+  'ai_budget_exhausted',
+  'ai_refused',
+  'ai_failed',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

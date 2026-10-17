@@ -18,7 +18,7 @@ What did NOT change, and must not be "tidied": the Cloudflare Workers and their 
 (`tmi-portal`, `tutoring`, `tutoring-test`), the databases, the `tmi_session` cookie and the
 `@tmi/*` packages. `docs/naming/README.md` is the record of how the name was chosen.
 
-**Phases 1 to 19, and 21 to 35, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
+**Phases 1 to 19, and 21 to 36, are built** (20 is planned, not built). In short: Google sign-in (1), the people model (2), the audit
 log (3), recorded sessions (4), payments and balances (5), the admin's view of anyone's
 dashboard (6→8), live session timers (7), recurring schedules and calendar files (9), CSV
 exports (10), the deployed test environment (11), comments (12), tutor advances (13), SSN
@@ -32,8 +32,9 @@ one lesson of a standing schedule cancelled and restored, without touching the s
 student's own reflection on each lesson (25), and a welcome wizard with a feature tour and guided
 setup of a new student or tutor (26), multiple organizations (27-31), and per-organization email
 notifications (32), tutoring locations with an in-app reminder (33), curricula, with
-Beast Academy alone, read through each organization's own list (34), and North Carolina's
-standards in both editions, with each organization's admins choosing what it offers (35).
+Beast Academy alone, read through each organization's own list (34), North Carolina's
+standards in both editions, with each organization's admins choosing what it offers (35), and
+the AI layer with the question bank it writes, in the platform console (36).
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -139,7 +140,8 @@ Run from the repo root.
 | `npm run dev` | Worker on :8787 and Vite on :5173 together. **Use http://localhost:5173** — Vite proxies `/api` to the Worker. |
 | `npm run db:rebuild` | **Drops and recreates** every local table from `apps/api/db/schema.sql`, then loads the curriculum catalog (`db/catalog.sql`) |
 | `npm run db:seed` | Reload local data from `apps/api/db/seed.sql` |
-| `npm run db:reset` | Rebuild, then seed |
+| `npm run db:reset` | Rebuild, then seed, the platform admin and the question bank's approved questions (`db/questions.sql`) |
+| `npm run questions:export` | Copy production's APPROVED questions into `apps/api/db/questions/*.json` and regenerate `db/questions.sql` (one read-only SELECT on `tutoring-db`) |
 | `npm run db:studio` | Dump the users table from local D1 |
 | `npm run typecheck` | Typecheck all three packages — run this before declaring work done |
 | `npm run smoke` | The smoke test on BOTH clients, locally: the web tests tagged `@smoke`, then the mobile flows tagged `smoke` on the iOS simulator and the Android emulator. `-- web\|mobile\|ios\|android` runs one side. **Run it after any change to the API, the shared contract or the schema** |
@@ -550,6 +552,30 @@ shape may only ever widen. Progress
 figures are derived by `computeProgress` in `packages/shared/src/progress.ts`, never stored.
 Assessments and plans are admin-written; a tutor scores a lesson through the session's
 optional `progress` field, which lives in `session_progress`, not on the billing row.
+
+**Every model call goes through `runAi`, and every AI feature is a task** (Phase 36,
+`docs/ai-platform-plan.md`). `apps/api/src/lib/ai/run.ts` is the one place a provider is called
+(`scripts/check-ai-gateway.mjs`, run by `npm run typecheck`, fails on a provider address, the key
+or a Workers AI binding anywhere else). A feature registers a task in `AI_TASKS`
+(`packages/shared/src/ai.ts`: provider, model, caps, `child_input`) and calls `runAi` with a Zod
+schema the reply must match. `runAi` refuses a switched-off task, an exhausted cap, SSN-shaped text
+in the prompt or the reply, and -- until parental consent (roadmap F7) exists -- any `child_input`
+task; it redacts names, emails and phones; and it writes an `ai_runs` row for every attempt, refused
+ones too, holding tokens, cost and outcome, never the prompt or the reply. The provider is `fake`
+everywhere but production (no AI_PROVIDER in the production `vars`, on purpose: `wrangler dev`
+would inherit it), so no test spends money; `ANTHROPIC_API_KEY` is a secret on the production pair.
+Nothing a model writes reaches a family or a student without a person approving it.
+
+**A question reaches a test only by passing every check and a person** (Phase 36). The bank
+(`questions`, platform reference data on the NC 2026 standards, grades 3-8 and Math 1) is written
+by Claude Sonnet, checked by code (`lintQuestion` in shared: the form, four distinct choices with
+exactly one matching the key, the `compute` expression evaluated EXACTLY -- `evaluateExact`, big
+integer fractions, never floats -- equal to the key, no near-copy), then solved blind by Claude Opus
+with the choices shuffled and no key (`checkAnswer` must match). Only `checked` may be approved, by
+a platform admin; any edit clears the blind solve and the approval. Questions are retired, never
+deleted. Never loosen a check to get a question through: fix the question. Production's console is
+the bank's source; `db/questions.sql` (local and demo only) is generated from the exported JSON and
+never hand-edited.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

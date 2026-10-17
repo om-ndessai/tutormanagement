@@ -23,6 +23,10 @@ import { PlatformActivityPage } from '@/features/platform/platform-activity-page
 import { PlatformAdminsPage } from '@/features/platform/platform-admins-page';
 import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
 import { PlatformShell } from '@/features/platform/platform-shell';
+import { AiPage } from '@/features/question-bank/ai-page';
+import { QuestionBankPage } from '@/features/question-bank/question-bank-page';
+import { ReviewPage } from '@/features/question-bank/review-page';
+import { StandardPage } from '@/features/question-bank/standard-page';
 import { ProfilePage } from '@/pages/profile-page';
 
 export function App() {
@@ -41,6 +45,10 @@ export function App() {
           <Route path="admins" element={<PlatformAdminsPage />} />
           <Route path="people" element={<PlatformPeoplePage />} />
           <Route path="activity" element={<PlatformActivityPage />} />
+          <Route path="questions" element={<QuestionBankPage />} />
+          <Route path="questions/review" element={<ReviewPage />} />
+          <Route path="questions/:topicId" element={<StandardPage />} />
+          <Route path="ai" element={<AiPage />} />
         </Route>
 
         {/* The portal itself runs inside the organization this tab chose. */}

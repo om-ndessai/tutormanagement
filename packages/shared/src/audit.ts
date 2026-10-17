@@ -87,6 +87,17 @@ export const AUDIT_ACTIONS = [
   'platform_admin.added',
   'person.updated_by_platform',
   'person.sign_in_unpinned',
+
+  // Phase 36: the AI layer and the question bank. Platform events (no
+  // organization); never a prompt, a reply or a question's text (AG7).
+  'ai.task_updated',
+  'question_bank.drafted',
+  'question_bank.checked',
+  'question_bank.topic_updated',
+  'question.updated',
+  'question.approved',
+  'question.retired',
+  'question.restored',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -172,6 +183,15 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'platform_admin.added': 'Platform admin added',
   'person.updated_by_platform': 'Shared details updated by the platform',
   'person.sign_in_unpinned': 'Google sign-in unpinned',
+
+  'ai.task_updated': 'AI task settings changed',
+  'question_bank.drafted': 'Questions written',
+  'question_bank.checked': 'Questions checked',
+  'question_bank.topic_updated': 'Standard marked',
+  'question.updated': 'Question edited',
+  'question.approved': 'Question approved',
+  'question.retired': 'Question retired',
+  'question.restored': 'Question restored',
 };
 
 export interface AuditEvent {

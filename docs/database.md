@@ -593,6 +593,112 @@ default, both tables' columns came out in the order a rebuilt database has, and 
 rows (curricula, levels, topics) dumped identical to the Phase 34 database's.
 `SELECT sqlite_version()` was refused there ("not authorized"), hence the note above.
 
+Phase 36 (the AI layer and the question bank; 2026-10) is additive: four new tables and their
+indexes, no change to any existing one. The bank starts empty on production; it is written there,
+in the console, and `npm run questions:export` copies its approved questions back into the
+repository for local and demo builds (`db/questions.sql`, never run on production). Production,
+after the backup, in one file (`--command` is not needed):
+
+```sql
+CREATE TABLE ai_task_settings (
+  task              TEXT PRIMARY KEY,
+  enabled           INTEGER NOT NULL DEFAULT 1 CHECK (enabled IN (0, 1)),
+  daily_cap_cents   INTEGER NOT NULL CHECK (daily_cap_cents >= 0),
+  monthly_cap_cents INTEGER NOT NULL CHECK (monthly_cap_cents >= 0),
+  updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- One row per call, refused ones included: what was asked of whom, what it cost
+-- and how it ended. NEVER the prompt or the reply (AG7) -- `detail` is an error
+-- code or an HTTP status, never text from the model.
+CREATE TABLE ai_runs (
+  id                TEXT PRIMARY KEY,
+  -- NULL for a platform task (the question bank). Set once a task runs on an
+  -- organization's data; such a task joins check-org-scope's list.
+  organization_id   TEXT REFERENCES organizations (id),
+  task              TEXT NOT NULL,
+  provider          TEXT NOT NULL,
+  model             TEXT NOT NULL,
+  input_tokens      INTEGER NOT NULL DEFAULT 0,
+  output_tokens     INTEGER NOT NULL DEFAULT 0,
+  cost_microdollars INTEGER NOT NULL DEFAULT 0,
+  outcome           TEXT NOT NULL CHECK (outcome IN ('ok', 'invalid_output', 'provider_error',
+                      'refused_disabled', 'refused_consent', 'refused_budget', 'refused_ssn')),
+  detail            TEXT,
+  actor_user_id     TEXT REFERENCES users (id) ON DELETE SET NULL,
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX ai_runs_task_time_idx ON ai_runs (task, created_at);
+CREATE INDEX ai_runs_time_idx ON ai_runs (created_at);
+
+-- The question bank: platform reference data, like the catalog. One standard
+-- per question. Written by a model, checked by code and by a second model
+-- solving it blind (`checks`), and approved by a platform admin -- the only
+-- status a test may draw on. Never deleted once used: retired instead.
+CREATE TABLE questions (
+  id             TEXT PRIMARY KEY,
+  topic_id       TEXT NOT NULL REFERENCES curriculum_topics (id),
+  difficulty     INTEGER NOT NULL CHECK (difficulty IN (1, 2, 3)),
+  kind           TEXT NOT NULL CHECK (kind IN ('choice', 'numeric')),
+  -- The specific skill within the standard, as the writer named it.
+  skill          TEXT,
+  -- Text with maths in $...$ (KaTeX).
+  stem           TEXT NOT NULL,
+  -- JSON array: four strings for 'choice', [] for 'numeric'.
+  choices        TEXT NOT NULL DEFAULT '[]',
+  -- The correct choice's text, or the number.
+  answer         TEXT NOT NULL,
+  -- Arithmetic the answer must equal exactly, when it is a calculation.
+  compute        TEXT,
+  solution       TEXT NOT NULL,
+  status         TEXT NOT NULL DEFAULT 'draft'
+                   CHECK (status IN ('draft', 'checked', 'flagged', 'approved', 'retired')),
+  -- JSON QuestionChecks: the code checks' problems and the blind solve.
+  checks         TEXT NOT NULL DEFAULT '{"lint":[],"solve":null}',
+  source         TEXT NOT NULL DEFAULT 'ai' CHECK (source IN ('ai', 'manual')),
+  draft_run_id   TEXT REFERENCES ai_runs (id) ON DELETE SET NULL,
+  reviewed_by    TEXT REFERENCES users (id) ON DELETE SET NULL,
+  reviewed_at    TEXT,
+  -- Phase 37: how it fares in use.
+  times_used     INTEGER NOT NULL DEFAULT 0,
+  times_correct  INTEGER NOT NULL DEFAULT 0,
+  created_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK (status != 'approved' OR (reviewed_by IS NOT NULL AND reviewed_at IS NOT NULL))
+);
+
+CREATE INDEX questions_topic_idx ON questions (topic_id, status, difficulty);
+CREATE INDEX questions_status_idx ON questions (status, created_at);
+
+-- What the bank knows about a standard: whether it cannot be asked without a
+-- figure (left out of tests until figures exist). No row: it can.
+CREATE TABLE question_bank_topics (
+  topic_id     TEXT PRIMARY KEY REFERENCES curriculum_topics (id),
+  needs_figure INTEGER NOT NULL DEFAULT 0 CHECK (needs_figure IN (0, 1)),
+  updated_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+```
+
+```bash
+cd apps/api
+npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as phase36.sql>
+```
+
+Then, read-only:
+
+```bash
+# "ai_runs,ai_task_settings,question_bank_topics,questions"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT group_concat(name) FROM (SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('ai_runs', 'ai_task_settings', 'questions', 'question_bank_topics') ORDER BY name)"
+# 98: the standards the bank covers (NC 2026, grades 3-8 and Math 1)
+npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) FROM curriculum_topics t WHERE t.level_id IN ('NC26.3','NC26.4','NC26.5','NC26.6','NC26.7','NC26.8','NC26.M1')"
+```
+
+Then the Anthropic key on both production Workers (the owner's): `npx wrangler secret put
+ANTHROPIC_API_KEY` and `npx wrangler secret put ANTHROPIC_API_KEY --env tutoring`. Until it is set,
+writing questions answers 503 `not_configured` and logs a `provider_error` run (`no_api_key`).
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

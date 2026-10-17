@@ -13,6 +13,8 @@ const TABS = [
   { to: '/platform', label: 'Organizations', end: true },
   { to: '/platform/admins', label: 'Platform admins', end: false },
   { to: '/platform/people', label: 'People', end: false },
+  { to: '/platform/questions', label: 'Question bank', end: false },
+  { to: '/platform/ai', label: 'AI', end: false },
   { to: '/platform/activity', label: 'Activity', end: false },
 ];
 

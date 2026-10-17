@@ -555,7 +555,8 @@ export async function listPlatformAudit(db: D1Database, limit: number) {
               a.action, a.description, a.created_at
        FROM audit_events a LEFT JOIN organizations o ON o.id = a.organization_id
        WHERE a.action LIKE 'organization.%' OR a.action LIKE 'platform_admin.%'
-          OR a.action LIKE 'person.%'
+          OR a.action LIKE 'person.%' OR a.action LIKE 'ai.%'
+          OR a.action LIKE 'question.%' OR a.action LIKE 'question_bank.%'
        ORDER BY a.created_at DESC
        LIMIT ?`,
     )

@@ -40,6 +40,19 @@ export interface Env {
   PUBLIC_URL?: string;
 
   /**
+   * Phase 36, the AI layer (lib/ai/run.ts). "false" stops every model call.
+   */
+  AI_ENABLED?: string;
+  /** `anthropic` or `fake`. Unset: the task's own provider in production, `fake` anywhere else. */
+  AI_PROVIDER?: string;
+  /** Cloudflare AI Gateway's Anthropic base URL; unset, calls go straight to Anthropic. */
+  AI_GATEWAY_URL?: string;
+  /** Every task together, cents a month (default 5000). */
+  AI_MONTHLY_CAP_CENTS?: string;
+  /** SECRET. Anthropic's API key, `wrangler secret put ANTHROPIC_API_KEY`. */
+  ANTHROPIC_API_KEY?: string;
+
+  /**
    * SECRET. HMAC key for session cookies, >= 32 characters.
    * Set with `wrangler secret put SESSION_SECRET`; locally it comes from
    * apps/api/.dev.vars.
