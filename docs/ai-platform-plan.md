@@ -146,7 +146,14 @@ questions:export` (read-only against production, one query) writes the approved 
 `apps/api/db/questions/*.json`, committed, and the generator turns it into `db/questions.sql`,
 loaded after `catalog.sql` by every local and test build path, so the local suite and the demo test
 against real questions. A small fixture set exists from day one so Phase 37 can be built before the
-bank is.
+bank is. The export copies `checked` questions too, so a part-reviewed bank stays whole locally.
+
+**The first writing (2026-10-17)** was done before the owner set `ANTHROPIC_API_KEY`, by Claude Code
+running the same pipeline outside the Worker: Sonnet agents wrote 9 per standard from the catalog's
+summaries, `lintQuestion` checked them, Opus agents solved them blind with shuffled choices, and the
+flagged were rewritten and solved again. The `checked` result went into `db/questions/*.json` and,
+by `generate-questions.mjs --production`, into production's bank to await review
+(`docs/database.md`, Phase 36).
 
 ### Maths on screen
 Questions need fractions, exponents and symbols. KaTeX (bundled, not from a CDN) renders `$...$` in

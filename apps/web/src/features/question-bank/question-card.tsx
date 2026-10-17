@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 import { CheckIcon, PencilIcon, RotateCcwIcon, ScanSearchIcon, XIcon } from 'lucide-react';
 import {
@@ -42,7 +42,7 @@ export function errorMessage(error: unknown): string {
 /** Each check, passed or not, so a reviewer sees what was verified as well as what failed. */
 function CheckList({ question }: { question: Question }) {
   const { lint, solve } = question.checks;
-  const rows: { ok: boolean; text: string }[] = [
+  const rows: { ok: boolean; text: ReactNode }[] = [
     {
       ok: lint.length === 0,
       text: lint.length === 0 ? 'Code checks passed (form, choices, exact answer, no near-copy).' : lint.join(' '),
@@ -55,7 +55,12 @@ function CheckList({ question }: { question: Question }) {
     rows.push(
       {
         ok: solve.agreed,
-        text: solve.agreed ? `Solved blind: ${solve.answer}, which matches.` : `Solved blind: ${solve.answer}, which does NOT match.`,
+        // The answer may be a choice with maths in it.
+        text: (
+          <>
+            Solved blind: <MathText text={solve.answer} />, which {solve.agreed ? 'matches' : 'does NOT match'}.
+          </>
+        ),
       },
       { ok: solve.single_answer, text: solve.single_answer ? 'One defensible answer.' : 'More than one defensible answer.' },
       { ok: solve.aligned, text: solve.aligned ? 'Tests this standard.' : 'Does not test this standard.' },

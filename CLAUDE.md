@@ -575,7 +575,9 @@ with the choices shuffled and no key (`checkAnswer` must match). Only `checked` 
 a platform admin; any edit clears the blind solve and the approval. Questions are retired, never
 deleted. Never loosen a check to get a question through: fix the question. Production's console is
 the bank's source; `db/questions.sql` (local and demo only) is generated from the exported JSON and
-never hand-edited.
+never hand-edited. Its first writing (2026-10-17) was done by Claude Code agents running the same
+pipeline outside the Worker, and reached production as `checked` (`generate-questions.mjs
+--production`), never approved: approving is a person's act.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

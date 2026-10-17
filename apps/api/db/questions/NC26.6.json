@@ -1,0 +1,4768 @@
+{
+  "level_id": "NC26.6",
+  "source": "Written 2026-10-17 by Claude Sonnet and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Hand-written fixture questions are \"approved\".",
+  "notes": {
+    "NC26.6.RPR.2": "Double number lines and graphs of ratio relationships are not tested because they need a figure; ratio tables, conversions, percents and independent/dependent variables are tested in words.",
+    "NC26.6.ANR.2": "Models (area, tape or number-line models) are not used because they need a figure; the operations, interpreting quotients, word problems and estimation are tested.",
+    "NC26.6.ANR.5": "Number-line positions are not shown (text only); ordering is tested through lists and statements. Negative fractions and decimals are not used.",
+    "NC26.6.ANR.7": "Graphing an inequality is tested only through a written description of the graph (open circle, arrow direction).",
+    "NC26.6.SGMR.2": "Plotting and reflection are tested with coordinates written as (x, y); no figure is referred to.",
+    "NC26.6.SGMR.3": "Nets are tested through written descriptions of the faces, not a picture of a net.",
+    "NC26.6.RD.3": "Dot plots, histograms and box plots are given as written lists of values, bar heights or the five key values; no picture is referred to. Quartiles are used only for even counts or five-number summaries, so there is no method ambiguity.",
+    "NC26.6.RD.4": "The \"mean as a balance point\" is covered by the fair-share and missing-value questions in words."
+  },
+  "questions": [
+    {
+      "id": "743fceb9-b8d4-4b43-b945-855bb582d5c3",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Part-to-part ratio language",
+      "stem": "A bag has 5 red marbles and 3 blue marbles. What is the ratio of red marbles to blue marbles?",
+      "choices": [
+        "3 to 5",
+        "5 to 8",
+        "5 to 3",
+        "3 to 8"
+      ],
+      "answer": "5 to 3",
+      "compute": null,
+      "solution": "\"Red to blue\" puts red first and blue second, so the ratio is 5 to 3. The ratio 3 to 5 is in the wrong order, and 5 to 8 and 3 to 8 compare one color to all 8 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 to 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red to blue is 5 to 3, in the order named.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "f25a7775-5886-42dd-971c-0b823b21841d",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Part-to-whole ratio language",
+      "stem": "A class has 9 girls and 11 boys. What is the ratio of girls to all of the students in the class?",
+      "choices": [
+        "9 to 20",
+        "11 to 20",
+        "20 to 9",
+        "9 to 11"
+      ],
+      "answer": "9 to 20",
+      "compute": null,
+      "solution": "There are 9 + 11 = 20 students in all. Girls to all students is 9 to 20. The ratio 9 to 11 compares girls to boys, not to all students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 to 20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total students = 9 + 11 = 20. Girls to all students = 9 to 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c92c9a1d-1337-450f-9c2e-58b2d022b26b",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent ratios",
+      "stem": "The ratios $2 : 5$ and $6 : n$ are equivalent. What is the value of $n$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "6*5/2",
+      "solution": "To go from 2 to 6, multiply by 3. Multiply the 5 by 3 as well: $5 \\times 3 = 15$. So $n = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2:5 = 6:n. 2 x 3 = 6, so n = 5 x 3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "569144e6-6d6a-4752-b943-2a540dd20815",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit ratio (amount per 1)",
+      "stem": "A car uses 6 gallons of gas to travel 150 miles. How many miles does the car travel on 1 gallon of gas?",
+      "choices": [],
+      "answer": "25",
+      "compute": "150/6",
+      "solution": "Divide the miles by the gallons: $150 \\div 6 = 25$. The car travels 25 miles on 1 gallon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate: 150 / 6 = 25 miles per gallon.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "b0e76a7e-43a2-4c4f-8959-8e1468dfc3a3",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Writing a ratio as a fraction",
+      "stem": "A fruit bowl has 3 pears and 5 apples. Which fraction shows the ratio of pears to apples?",
+      "choices": [
+        "$\\frac{5}{3}$",
+        "$\\frac{3}{8}$",
+        "$\\frac{5}{8}$",
+        "$\\frac{3}{5}$"
+      ],
+      "answer": "$\\frac{3}{5}$",
+      "compute": null,
+      "solution": "The ratio of pears to apples is 3 to 5, which is written $\\frac{3}{5}$ with pears on top. $\\frac{5}{3}$ has the order reversed, and $\\frac{3}{8}$ and $\\frac{5}{8}$ compare one fruit to all 8 pieces of fruit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pears to apples = 3 to 5 = 3/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "8a37d108-7fd4-44c4-ab0c-39a9fd005b7b",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognizing equivalent ratios",
+      "stem": "Which ratio is equivalent to $12 : 18$?",
+      "choices": [
+        "$3 : 2$",
+        "$2 : 3$",
+        "$6 : 12$",
+        "$13 : 19$"
+      ],
+      "answer": "$2 : 3$",
+      "compute": null,
+      "solution": "Divide both numbers by 6: $12 \\div 6 = 2$ and $18 \\div 6 = 3$, giving $2 : 3$. Subtracting 6 from each number (6 : 12) or adding 1 to each (13 : 19) does not keep the ratio equivalent, and 3 : 2 is in the wrong order.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 : 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12:18, divide both by 6: 2:3. 6:12 = 1:2 (no); 3:2 is reversed; 13:19 adds 1 (not equivalent).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c3559f47-eba5-4764-a1e5-fed38bbe63ad",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "The two unit ratios in words",
+      "stem": "A school trip has 24 students and 8 teachers. Which statement is true?",
+      "choices": [
+        "There are 3 teachers for every 1 student.",
+        "There are 3 students for every 1 teacher.",
+        "There are 16 students for every 1 teacher.",
+        "There are 8 students for every 1 teacher."
+      ],
+      "answer": "There are 3 students for every 1 teacher.",
+      "compute": null,
+      "solution": "Divide: $24 \\div 8 = 3$, so there are 3 students for every 1 teacher. (Equivalently, there is $\\frac{1}{3}$ of a teacher for every student.) Subtracting 24 - 8 = 16 or using the number of teachers, 8, does not give a unit ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 3 students for every 1 teacher.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 students / 8 teachers = 3 students per teacher. Others: 16 per teacher (wrong), 3 teachers per student (reversed), 8 per teacher (wrong).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "7da3662d-c042-434f-b85e-398bb6f6eab9",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit ratio that is a fraction",
+      "stem": "Mia reads 6 pages in 15 minutes at a steady pace. How many pages does she read in 1 minute?",
+      "choices": [],
+      "answer": "2/5",
+      "compute": "6/15",
+      "solution": "Divide the pages by the minutes: $6 \\div 15 = \\frac{6}{15} = \\frac{2}{5}$. She reads $\\frac{2}{5}$ of a page in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 pages / 15 minutes = 6/15 = 2/5 = 0.4 pages per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "5bdd8a60-8b38-4023-9ba1-2666802f7bf1",
+      "topic_id": "NC26.6.RPR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ratio language with three quantities",
+      "stem": "A garden has 6 roses, 4 tulips and 10 daisies. Which statement is true?",
+      "choices": [
+        "The ratio of roses to tulips is 4 to 6.",
+        "The ratio of roses to all of the flowers is 6 to 14.",
+        "The ratio of daisies to roses is 6 to 10.",
+        "The ratio of tulips to all of the flowers is 4 to 20."
+      ],
+      "answer": "The ratio of tulips to all of the flowers is 4 to 20.",
+      "compute": null,
+      "solution": "There are $6 + 4 + 10 = 20$ flowers in all, so tulips to all flowers is 4 to 20. The other statements are false: roses to tulips is 6 to 4, daisies to roses is 10 to 6, and roses to all flowers is 6 to 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The ratio of tulips to all of the flowers is 4 to 20.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = 6 + 4 + 10 = 20. Roses:tulips = 6:4 (option says 4:6, false). Tulips:all = 4:20 (true). Daisies:roses = 10:6 (option says 6:10, false). Roses:all = 6:20 (option says 6:14, false).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "a7d860cc-b932-47fe-ab36-27b79c76c3b7",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ratio table (scaling)",
+      "stem": "A recipe uses 2 cups of rice for every 3 cups of water. How many cups of water are needed for 10 cups of rice?",
+      "choices": [],
+      "answer": "15",
+      "compute": "10/2*3",
+      "solution": "10 cups of rice is $10 \\div 2 = 5$ times as much as 2 cups, so multiply the water by 5: $3 \\times 5 = 15$ cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rice:water = 2:3. 10 cups rice = 5 x 2, so water = 5 x 3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "ad96a58b-0e64-43fb-b621-2d019f736efd",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Percent of a quantity",
+      "stem": "What is 25% of 80?",
+      "choices": [],
+      "answer": "20",
+      "compute": "25/100*80",
+      "solution": "25% means 25 per 100, or $\\frac{25}{100} = \\frac{1}{4}$. One fourth of 80 is $80 \\div 4 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% of 80 = 80 / 4 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "f7a2334c-ff9d-4b27-bbe3-bb89fd274ee9",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Finding a percent",
+      "stem": "Sam answered 9 out of 10 questions correctly on a quiz. What percent of the questions did Sam answer correctly?",
+      "choices": [],
+      "answer": "90",
+      "compute": "9/10*100",
+      "solution": "9 out of 10 is the same rate as 90 out of 100, so Sam answered 90% of the questions correctly.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/10 = 90/100 = 90%.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "93a4467b-500a-4173-9959-0000def34cc2",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit conversion",
+      "stem": "How many inches are in 4 yards? There are 3 feet in 1 yard and 12 inches in 1 foot.",
+      "choices": [],
+      "answer": "144",
+      "compute": "4*3*12",
+      "solution": "4 yards is $4 \\times 3 = 12$ feet. 12 feet is $12 \\times 12 = 144$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "144",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 yards = 4 x 3 = 12 feet = 12 x 12 = 144 inches.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "bf761273-2e4a-4fa3-920b-197f9474a91e",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Finding a part (percent of a price)",
+      "stem": "A jacket costs 40 dollars. It is on sale for 15% off. How many dollars does the sale take off the price?",
+      "choices": [
+        "6",
+        "25",
+        "15",
+        "34"
+      ],
+      "answer": "6",
+      "compute": "15/100*40",
+      "solution": "15% of 40 is $\\frac{15}{100} \\times 40 = 6$. So the sale takes off 6 dollars. (The sale price would be 40 - 6 = 34 dollars, but the question asks for the amount taken off.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15% of 40 = 0.15 x 40 = 6 dollars off (sale price would be 34).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "1633c6ed-129d-471c-bba9-64ad7801c162",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Independent and dependent variables",
+      "stem": "A plant is 5 centimeters tall and grows 2 centimeters each day. The equation $h = 5 + 2d$ gives its height $h$, in centimeters, after $d$ days. Which statement is correct?",
+      "choices": [
+        "The height $h$ is the independent variable, because it is the larger number.",
+        "The number of days $d$ is the dependent variable, because it changes each day.",
+        "The height $h$ is the dependent variable, because it depends on the number of days.",
+        "Both $h$ and $d$ are independent variables, because both can be any number."
+      ],
+      "answer": "The height $h$ is the dependent variable, because it depends on the number of days.",
+      "compute": null,
+      "solution": "The height is found from the number of days, so the height $h$ depends on $d$. That makes $h$ the dependent variable and $d$ the independent variable.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The height $h$ is the dependent variable, because it depends on the number of days.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h = 5 + 2d: d (days) is chosen/independent; h depends on d, so h is the dependent variable. Other options give wrong roles or wrong reasons.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "f4822fa5-8306-4d7d-9074-14dc310da33c",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Finding the whole from a part and a percent",
+      "stem": "Jordan has read 36 pages, which is 40% of a book. How many pages are in the whole book?",
+      "choices": [],
+      "answer": "90",
+      "compute": "36/(40/100)",
+      "solution": "40% of the book is 36 pages, so 10% is $36 \\div 4 = 9$ pages. The whole book is 100%, which is $9 \\times 10 = 90$ pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 = 40% of total. 10% = 9, so 100% = 90 pages. Check 0.4 x 90 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c6b4c339-459b-4afd-b7db-42cd27cb26b7",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rate and unit conversion",
+      "stem": "A cyclist rides at a steady speed of 12 miles per hour. How many miles does the cyclist ride in 45 minutes?",
+      "choices": [],
+      "answer": "9",
+      "compute": "12*45/60",
+      "solution": "45 minutes is $\\frac{45}{60} = \\frac{3}{4}$ of an hour. Then $\\frac{3}{4} \\times 12 = 9$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 minutes = 3/4 hour. 12 x 3/4 = 9 miles.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "a4af5c47-f25b-48e3-ace4-1bbc80891131",
+      "topic_id": "NC26.6.RPR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratio problem with a total",
+      "stem": "Grape juice and apple juice are mixed in the ratio 3 to 5. A pitcher holds 40 cups of the mix. How many cups of the mix are grape juice?",
+      "choices": [],
+      "answer": "15",
+      "compute": "40*3/8",
+      "solution": "Each batch of the mix has $3 + 5 = 8$ parts, and 3 of the 8 parts are grape. $40 \\div 8 = 5$ cups per part, so grape juice is $3 \\times 5 = 15$ cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ratio 3:5, 8 parts total. 40 / 8 = 5 cups per part. Grape = 3 x 5 = 15 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d5a43c38-fcbb-4bdf-9dc9-0f991545931e",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Greatest common factor",
+      "stem": "What is the greatest common factor of 12 and 18?",
+      "choices": [],
+      "answer": "6",
+      "compute": null,
+      "solution": "Factors of 12: 1, 2, 3, 4, 6, 12. Factors of 18: 1, 2, 3, 6, 9, 18. The greatest factor in both lists is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 = 2^2 x 3, 18 = 2 x 3^2. GCF = 2 x 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "b5d3a8d3-3aec-46ed-aaf5-76f9e6565e31",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Least common multiple",
+      "stem": "What is the least common multiple of 4 and 6?",
+      "choices": [],
+      "answer": "12",
+      "compute": null,
+      "solution": "Multiples of 4: 4, 8, 12, 16, ... Multiples of 6: 6, 12, 18, ... The smallest number in both lists is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 4: 4, 8, 12; of 6: 6, 12. LCM = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "f2ada9f7-58b0-4dd2-bf38-a7eca420c162",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Prime factorization in exponent form",
+      "stem": "Which is the prime factorization of 20 written with an exponent?",
+      "choices": [
+        "$2 \\times 10$",
+        "$4 \\times 5$",
+        "$2^2 \\times 5$",
+        "$2 \\times 5^2$"
+      ],
+      "answer": "$2^2 \\times 5$",
+      "compute": null,
+      "solution": "$20 = 2 \\times 2 \\times 5 = 2^2 \\times 5$. The options $2 \\times 10$ and $4 \\times 5$ use numbers that are not prime, and $2 \\times 5^2$ equals 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^2 \\times 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 = 2 x 2 x 5 = 2^2 x 5. 4 x 5 and 2 x 10 are not prime factorizations; 2 x 5^2 = 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "3e79c317-511c-4242-927d-3d996f8b1792",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Greatest common factor",
+      "stem": "What is the greatest common factor of 36 and 48?",
+      "choices": [],
+      "answer": "12",
+      "compute": null,
+      "solution": "$36 = 2^2 \\times 3^2$ and $48 = 2^4 \\times 3$. Both contain $2^2$ and $3$, so the greatest common factor is $2^2 \\times 3 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 = 2^2 x 3^2, 48 = 2^4 x 3. GCF = 2^2 x 3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "53a6d10d-53e2-49d2-a282-44485c0a4e31",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Least common multiple in context",
+      "stem": "A bus leaves a stop every 12 minutes and a tram leaves every 15 minutes. Both leave at 8:00 a.m. How many minutes later will they next leave at the same time?",
+      "choices": [],
+      "answer": "60",
+      "compute": null,
+      "solution": "The answer is the least common multiple of 12 and 15. Multiples of 15: 15, 30, 45, 60. Of these, 60 is the first that is also a multiple of 12 ($12 \\times 5 = 60$). So they next leave together 60 minutes later.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(12, 15): 12 = 2^2 x 3, 15 = 3 x 5, LCM = 60 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "bfe2618e-78a1-4571-af34-a1610e53d1a0",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factoring a sum with the distributive property",
+      "stem": "Which expression shows $24 + 36$ rewritten as the greatest common factor times a sum?",
+      "choices": [
+        "$12(2 + 3)$",
+        "$12(24 + 36)$",
+        "$6(4 + 5)$",
+        "$12(2 + 36)$"
+      ],
+      "answer": "$12(2 + 3)$",
+      "compute": null,
+      "solution": "The greatest common factor of 24 and 36 is 12. Divide each number by 12: $24 \\div 12 = 2$ and $36 \\div 12 = 3$. So $24 + 36 = 12(2 + 3)$. Check: $12 \\times 5 = 60$ and $24 + 36 = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12(2 + 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(24, 36) = 12. 24 + 36 = 12(2 + 3) = 60. 6(4 + 5) also equals 60 but 6 is not the GCF; others do not equal 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d8dfdf1b-26eb-47cc-bd98-4603393538b5",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Greatest common factor in a problem",
+      "stem": "Ms. Cruz has 84 pencils and 126 erasers. She makes identical supply packs that use all of the pencils and all of the erasers. What is the greatest number of packs she can make?",
+      "choices": [],
+      "answer": "42",
+      "compute": null,
+      "solution": "The number of packs must divide both 84 and 126, so it is their greatest common factor. $84 = 2^2 \\times 3 \\times 7$ and $126 = 2 \\times 3^2 \\times 7$. The shared factors are $2 \\times 3 \\times 7 = 42$, so she can make 42 packs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "84 = 2^2 x 3 x 7, 126 = 2 x 3^2 x 7. GCF = 2 x 3 x 7 = 42 packs (2 pencils and 3 erasers each).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "9eb07db1-d298-4654-b868-4cd474b7030c",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Prime factorization in exponent form",
+      "stem": "Which is the prime factorization of 72 written with exponents?",
+      "choices": [
+        "$2^3 \\times 3$",
+        "$2^3 \\times 3^2$",
+        "$2^2 \\times 3^3$",
+        "$2^3 \\times 9$"
+      ],
+      "answer": "$2^3 \\times 3^2$",
+      "compute": null,
+      "solution": "$72 = 8 \\times 9 = 2^3 \\times 3^2$. The option $2^3 \\times 3$ equals 24, $2^2 \\times 3^3$ equals 108, and $2^3 \\times 9$ uses 9, which is not prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^3 \\times 3^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 = 8 x 9 = 2^3 x 3^2. 2^3 x 9 is not fully prime; 2^3 x 3 = 24; 2^2 x 3^3 = 108.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "4e780a90-2960-4929-a8e4-57b34c413eba",
+      "topic_id": "NC26.6.ANR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value of a number written in exponent form",
+      "stem": "A number's prime factorization is $2^3 \\times 3 \\times 5^2$. What is the number?",
+      "choices": [],
+      "answer": "600",
+      "compute": "2^3*3*5^2",
+      "solution": "$2^3 = 8$ and $5^2 = 25$, so the number is $8 \\times 3 \\times 25 = 600$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^3 x 3 x 5^2 = 8 x 3 x 25 = 600.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "f363c4bd-e2c5-4926-8326-4e1024793717",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Adding fractions with unlike denominators",
+      "stem": "What is $\\frac{2}{3} + \\frac{1}{6}$?",
+      "choices": [],
+      "answer": "5/6",
+      "compute": "2/3+1/6",
+      "solution": "Write $\\frac{2}{3}$ as $\\frac{4}{6}$. Then $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 = 4/6. 4/6 + 1/6 = 5/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "35b70e73-577b-4b59-aa0e-74acc5204ded",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiplying fractions",
+      "stem": "What is $\\frac{3}{4} \\times \\frac{2}{5}$?",
+      "choices": [],
+      "answer": "3/10",
+      "compute": "3/4*2/5",
+      "solution": "Multiply the numerators and the denominators: $\\frac{3 \\times 2}{4 \\times 5} = \\frac{6}{20} = \\frac{3}{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3 x 2)/(4 x 5) = 6/20 = 3/10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "de2f280c-1ac6-4475-9f9c-614c19215b92",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Checking reasonableness by estimating",
+      "stem": "Rounding each mixed number to the nearest whole number, which is the best estimate of $4\\frac{7}{8} + 2\\frac{1}{9}$?",
+      "choices": [
+        "6",
+        "8",
+        "12",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "5+2",
+      "solution": "$4\\frac{7}{8}$ is close to 5 and $2\\frac{1}{9}$ is close to 2, so the sum is about $5 + 2 = 7$. Dropping the fractions gives 6, which is too low, and 8 and 12 are too high.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 7/8 rounds to 5; 2 1/9 rounds to 2. 5 + 2 = 7 (exact sum about 6.99).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "4cf65fef-80f1-4b1b-9ad9-93964ae06119",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtracting mixed numbers",
+      "stem": "What is $5\\frac{1}{3} - 2\\frac{3}{4}$? Give the answer as a mixed number.",
+      "choices": [],
+      "answer": "2 7/12",
+      "compute": "16/3-11/4",
+      "solution": "Use twelfths: $5\\frac{1}{3} = 5\\frac{4}{12} = 4\\frac{16}{12}$ and $2\\frac{3}{4} = 2\\frac{9}{12}$. Then $4\\frac{16}{12} - 2\\frac{9}{12} = 2\\frac{7}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 7/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 1/3 = 64/12, 2 3/4 = 33/12. 64/12 - 33/12 = 31/12 = 2 7/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c1deb20a-21b4-4c70-a185-ffa0467aceb5",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Dividing a fraction by a fraction (how many fit)",
+      "stem": "How many $\\frac{1}{8}$-cup scoops fit exactly into $\\frac{3}{4}$ cup of flour?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(3/4)/(1/8)",
+      "solution": "$\\frac{3}{4} = \\frac{6}{8}$, which is 6 eighths. So 6 scoops of $\\frac{1}{8}$ cup fill $\\frac{3}{4}$ cup. In symbols, $\\frac{3}{4} \\div \\frac{1}{8} = \\frac{3}{4} \\times 8 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 / 1/8 = 3/4 x 8 = 6 scoops.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "38ec236a-eea4-48d4-8fc9-15cfbb61f7e9",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpreting a quotient",
+      "stem": "Which question can be answered by finding $4 \\div \\frac{1}{3}$?",
+      "choices": [
+        "What is one third of 4 cups of juice?",
+        "How much juice does each of 3 people get if they share 4 cups equally?",
+        "How many 4-cup jugs can be filled from one third of a cup of juice?",
+        "How many one-third-cup servings are in 4 cups of juice?"
+      ],
+      "answer": "How many one-third-cup servings are in 4 cups of juice?",
+      "compute": null,
+      "solution": "$4 \\div \\frac{1}{3}$ asks how many groups of $\\frac{1}{3}$ fit into 4, so the answer is 12 servings. One third of 4 is multiplication, the jug question is $\\frac{1}{3} \\div 4$, and sharing 4 cups among 3 people is $4 \\div 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many one-third-cup servings are in 4 cups of juice?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 / (1/3) asks how many groups of 1/3 are in 4: servings of one-third cup in 4 cups (= 12). One third of 4 is 4 x 1/3; sharing among 3 is 4 / 3; the jug option is (1/3) / 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "9d0af842-284b-419f-b238-8c1081de657a",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiplying mixed numbers in context",
+      "stem": "A recipe needs $2\\frac{1}{2}$ cups of flour. Maya makes $1\\frac{3}{5}$ times the recipe. How many cups of flour does she need?",
+      "choices": [],
+      "answer": "4",
+      "compute": "5/2*8/5",
+      "solution": "Write the mixed numbers as fractions: $2\\frac{1}{2} = \\frac{5}{2}$ and $1\\frac{3}{5} = \\frac{8}{5}$. Then $\\frac{5}{2} \\times \\frac{8}{5} = \\frac{40}{10} = 4$ cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 1/2 x 1 3/5 = 5/2 x 8/5 = 40/10 = 4 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "e846fd63-a613-4967-89ff-c9460a683337",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpreting a quotient greater than 1",
+      "stem": "A baker has $\\frac{5}{6}$ kilogram of dough. Each loaf uses $\\frac{2}{3}$ kilogram. How many loaves can the baker make, counting part of a loaf? Give the answer as a mixed number.",
+      "choices": [],
+      "answer": "1 1/4",
+      "compute": "(5/6)/(2/3)",
+      "solution": "Divide: $\\frac{5}{6} \\div \\frac{2}{3} = \\frac{5}{6} \\times \\frac{3}{2} = \\frac{15}{12} = \\frac{5}{4} = 1\\frac{1}{4}$ loaves.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 / 2/3 = 5/6 x 3/2 = 15/12 = 5/4 = 1 1/4 loaves.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c66b7d85-3ab8-4b98-aab8-c07a4a597aab",
+      "topic_id": "NC26.6.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step word problem with mixed numbers",
+      "stem": "Ben has $7\\frac{1}{6}$ yards of fabric. He uses $2\\frac{1}{3}$ yards for a curtain and $1\\frac{3}{4}$ yards for a pillow. How many yards of fabric are left? Give the answer as a mixed number.",
+      "choices": [],
+      "answer": "3 1/12",
+      "compute": "43/6-7/3-7/4",
+      "solution": "He uses $2\\frac{1}{3} + 1\\frac{3}{4} = 2\\frac{4}{12} + 1\\frac{9}{12} = 3\\frac{13}{12} = 4\\frac{1}{12}$ yards. Then $7\\frac{1}{6} - 4\\frac{1}{12} = 7\\frac{2}{12} - 4\\frac{1}{12} = 3\\frac{1}{12}$ yards are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 1/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In twelfths: 7 1/6 = 86/12, 2 1/3 = 28/12, 1 3/4 = 21/12. Used 49/12. Left 86/12 - 49/12 = 37/12 = 3 1/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "00b6665d-345d-4049-9bec-4ee888c8a316",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Adding decimals",
+      "stem": "What is $4.37 + 2.8$?",
+      "choices": [],
+      "answer": "7.17",
+      "compute": "4.37+2.8",
+      "solution": "Line up the decimal points: $4.37 + 2.80 = 7.17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.37 + 2.80 = 7.17.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "0bfffcaf-9164-4911-b1e3-89a5f3d80b01",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtracting decimals",
+      "stem": "What is $9.5 - 3.27$?",
+      "choices": [],
+      "answer": "6.23",
+      "compute": "9.5-3.27",
+      "solution": "Write 9.5 as 9.50 and line up the decimal points: $9.50 - 3.27 = 6.23$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.50 - 3.27 = 6.23.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "b15fdc3c-fcbd-402a-b240-76b80c7c88fd",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimating a decimal product",
+      "stem": "Which is the best estimate of $6.82 \\times 3.1$?",
+      "choices": [
+        "18",
+        "21",
+        "28",
+        "210"
+      ],
+      "answer": "21",
+      "compute": "7*3",
+      "solution": "Round 6.82 to 7 and 3.1 to 3. Then $7 \\times 3 = 21$. The estimate 18 comes from rounding 6.82 down to 6, 28 from rounding 3.1 up to 4, and 210 has the decimal point in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.82 is about 7, 3.1 is about 3; 7 x 3 = 21 (exact 21.142).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c118f8c9-143f-4ec6-963b-99cf07c3c4f7",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiplying decimals",
+      "stem": "What is $3.25 \\times 1.2$?",
+      "choices": [],
+      "answer": "3.9",
+      "compute": "3.25*1.2",
+      "solution": "Multiply as whole numbers: $325 \\times 12 = 3900$. The factors have 2 + 1 = 3 decimal places in all, so the product is 3.900 = 3.9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "325 x 12 = 3900; 3 decimal places: 3.900 = 3.9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "c1c8d9ab-40ab-44f8-859b-8a891f63b91f",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Dividing decimals",
+      "stem": "What is $15.36 \\div 0.8$?",
+      "choices": [],
+      "answer": "19.2",
+      "compute": "15.36/0.8",
+      "solution": "Multiply both numbers by 10 to make the divisor a whole number: $153.6 \\div 8 = 19.2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15.36 / 0.8 = 153.6 / 8 = 19.2. Check 19.2 x 0.8 = 15.36.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "ef3245a6-0af2-4ffd-9d50-b7622084dce1",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decimal word problem (money)",
+      "stem": "A notebook costs 2.45 dollars. Kai buys 4 notebooks and pays with a 20 dollar bill. How many dollars of change should Kai get back?",
+      "choices": [],
+      "answer": "10.2",
+      "compute": "20-4*2.45",
+      "solution": "The notebooks cost $4 \\times 2.45 = 9.80$ dollars. The change is $20 - 9.80 = 10.20$ dollars, or 10.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 2.45 = 9.80. 20 - 9.80 = 10.20 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "700d281f-1571-4b01-bb8a-100d9cc6b5b7",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Adding decimals to thousandths",
+      "stem": "Three boards are 1.275 meters, 0.8 meter and 2.065 meters long. Laid end to end, how many meters long are they together?",
+      "choices": [],
+      "answer": "4.14",
+      "compute": "1.275+0.8+2.065",
+      "solution": "Line up the decimal points: $1.275 + 0.800 + 2.065 = 4.140$, which is 4.14 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.275 + 0.800 + 2.065 = 4.140 = 4.14 meters.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "cf3cc8fc-ba34-4e02-81b9-11a0943a4d6a",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Dividing by a decimal in a word problem",
+      "stem": "A runner jogs 5.75 kilometers each day. How many days will it take the runner to jog a total of 46 kilometers?",
+      "choices": [],
+      "answer": "8",
+      "compute": "46/5.75",
+      "solution": "Divide the total by the distance each day: $46 \\div 5.75$. Multiply both numbers by 100 to get $4600 \\div 575 = 8$. Check: $5.75 \\times 8 = 46$. It takes 8 days.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46 / 5.75 = 4600 / 575 = 8 days. Check 5.75 x 8 = 46.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "af710742-c176-40c6-b402-7aa41bddb0f1",
+      "topic_id": "NC26.6.ANR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiplying decimals and placing the decimal point",
+      "stem": "Which is the product $0.48 \\times 6.5$?",
+      "choices": [
+        "31.2",
+        "0.312",
+        "3.12",
+        "2.88"
+      ],
+      "answer": "3.12",
+      "compute": "0.48*6.5",
+      "solution": "Multiply as whole numbers: $48 \\times 65 = 3120$. The factors have 2 + 1 = 3 decimal places, so the product is 3.120 = 3.12. Estimate to check: about $0.5 \\times 6.5 \\approx 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 x 65 = 3120; 3 decimal places: 3.120 = 3.12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "91db5992-3e27-425b-97dc-bca6a8e23906",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Adding integers",
+      "stem": "What is $-7 + 12$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "-7+12",
+      "solution": "Seven of the 12 positive units cancel the 7 negative units (zero pairs). That leaves $12 - 7 = 5$ positive units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-7 + 12 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "042aed9b-e9c3-482f-b4e2-fbf49451fd20",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtracting integers",
+      "stem": "What is $5 - 9$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "5-9",
+      "solution": "$5 - 9 = 5 + (-9)$. Nine negative units cancel 5 positive units and leave 4 negative units, so the answer is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 9 = 5 + (-9) = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "b743bf1b-c5a1-4cc2-8cd4-3fff4adf8762",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zero pairs",
+      "stem": "A collection has 5 positive chips and 8 negative chips. Each positive chip and negative chip together make a zero pair. What is the value of the whole collection?",
+      "choices": [
+        "-3",
+        "-13",
+        "3",
+        "13"
+      ],
+      "answer": "-3",
+      "compute": "5-8",
+      "solution": "Five zero pairs cancel, using all 5 positive chips and 5 of the negative chips. That leaves 3 negative chips, so the value is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 zero pairs cancel; 3 negative chips remain: 5 + (-8) = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d31eed18-ed14-4d64-bb04-259393d74bee",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtraction as adding the opposite",
+      "stem": "Which expression has the same value as $7 - (-5)$?",
+      "choices": [
+        "$-7 + 5$",
+        "$7 - 5$",
+        "$7 + 5$",
+        "$-7 - 5$"
+      ],
+      "answer": "$7 + 5$",
+      "compute": null,
+      "solution": "Subtracting $-5$ is the same as adding its opposite, 5. So $7 - (-5) = 7 + 5 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Subtracting -5 is adding its opposite: 7 - (-5) = 7 + 5 = 12. Others: -2, 2, -12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "92594322-4922-4e92-9508-d367ddb68aa7",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiplying integers",
+      "stem": "What is $-3 \\times 6$?",
+      "choices": [],
+      "answer": "-18",
+      "compute": "-3*6",
+      "solution": "$3 \\times 6 = 18$. A negative number times a positive number is negative, so $-3 \\times 6 = -18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3 x 6 = -18.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "b607632c-32cd-42cf-933a-930f31f490e8",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Integers in context (temperature)",
+      "stem": "At dawn the temperature was $-8$ degrees. By noon it had risen 15 degrees. What was the temperature at noon, in degrees?",
+      "choices": [],
+      "answer": "7",
+      "compute": "-8+15",
+      "solution": "Rising 15 degrees from $-8$ gives $-8 + 15 = 7$ degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-8 + 15 = 7 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "a4732f02-f87d-420b-aeca-58389179ec58",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Dividing and subtracting integers",
+      "stem": "What is $-12 \\div 4 - (-7)$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "-12/4+7",
+      "solution": "First divide: $-12 \\div 4 = -3$. Then $-3 - (-7) = -3 + 7 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-12 / 4 = -3. -3 - (-7) = -3 + 7 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "001163e6-b4fc-46c7-b440-7d6e19442048",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step integer problem in context",
+      "stem": "A diver is at $-14$ meters, which is 14 meters below the surface. She swims up 6 meters and then down 11 meters. What is her position now, in meters?",
+      "choices": [],
+      "answer": "-19",
+      "compute": "-14+6-11",
+      "solution": "Swimming up adds 6 and swimming down subtracts 11: $-14 + 6 - 11 = -8 - 11 = -19$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-14 + 6 = -8; -8 - 11 = -19 meters.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "e842d582-c7f2-447e-a3a3-e12eb0c70fe2",
+      "topic_id": "NC26.6.ANR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reasoning with integer products and sums",
+      "stem": "Two integers have a product of $-20$ and a sum of $1$. What is the lesser of the two integers?",
+      "choices": [],
+      "answer": "-4",
+      "compute": null,
+      "solution": "The product is negative, so one integer is positive and one is negative. The factor pairs of 20 are 1 and 20, 2 and 10, 4 and 5. Only 5 and $-4$ have a sum of 1 ($5 + (-4) = 1$), and $5 \\times (-4) = -20$. The lesser integer is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor pairs of -20 with sum 1: 5 and -4 (5 x -4 = -20, 5 + -4 = 1). Others: 4,-5 sum -1; 10,-2 sum 8; 2,-10; 20,-1; 1,-20 - none sum 1. Lesser = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "3035020b-9c53-4fb7-8fba-9217670d301a",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Comparing negative integers",
+      "stem": "Which statement about integers is true?",
+      "choices": [
+        "$-5 < -2$",
+        "$-5 > -2$",
+        "$-2 < -5$",
+        "$5 < -2$"
+      ],
+      "answer": "$-5 < -2$",
+      "compute": null,
+      "solution": "On a number line, $-5$ is farther left than $-2$, so $-5 < -2$ is true. Of two negative numbers, the one closer to zero is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5 < -2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5 is left of -2 on the number line, so -5 < -2. 5 < -2 false; -2 < -5 false; -5 > -2 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "888c8424-f41a-4f9e-ada3-bfe2845b4da4",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Opposites",
+      "stem": "What is the opposite of $-13$?",
+      "choices": [],
+      "answer": "13",
+      "compute": null,
+      "solution": "Opposites are the same distance from zero on opposite sides of zero. The opposite of $-13$ is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The opposite of -13 is 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "697721f6-af5c-4570-82a8-d9ff9fd1f05a",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent forms (fraction to decimal)",
+      "stem": "Write $\\frac{3}{4}$ as a decimal.",
+      "choices": [],
+      "answer": "0.75",
+      "compute": "3/4",
+      "solution": "$\\frac{3}{4} = \\frac{75}{100} = 0.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 = 75/100 = 0.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "58ccd157-dfcf-416a-ace3-bcfd0a9b965c",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Comparing fractions and decimals",
+      "stem": "Which of these numbers is the greatest?",
+      "choices": [
+        "$\\frac{3}{5}$",
+        "$0.58$",
+        "$0.059$",
+        "$\\frac{5}{8}$"
+      ],
+      "answer": "$\\frac{5}{8}$",
+      "compute": null,
+      "solution": "Write each as a decimal: $\\frac{3}{5} = 0.6$, $0.58$, $0.059$, and $\\frac{5}{8} = 0.625$. The greatest is $0.625 = \\frac{5}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/5 = 0.6, 0.059, 0.58, 5/8 = 0.625. Greatest is 5/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "45eb0a4d-9367-4304-b6b0-f8eedd83f377",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Absolute value",
+      "stem": "What is the value of $|-8| + |5|$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "8+5",
+      "solution": "The absolute value of a number is its distance from zero. $|-8| = 8$ and $|5| = 5$, so the sum is $8 + 5 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|-8| = 8, |5| = 5, sum 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "47e83d0a-8f49-4108-b1dc-7c38d8821cac",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ordering fractions and decimals",
+      "stem": "Which list shows the numbers in order from least to greatest?",
+      "choices": [
+        "$0.35, \\frac{1}{3}, \\frac{3}{8}, 0.4$",
+        "$\\frac{1}{3}, 0.35, \\frac{3}{8}, 0.4$",
+        "$\\frac{1}{3}, \\frac{3}{8}, 0.35, 0.4$",
+        "$0.4, \\frac{3}{8}, 0.35, \\frac{1}{3}$"
+      ],
+      "answer": "$\\frac{1}{3}, 0.35, \\frac{3}{8}, 0.4$",
+      "compute": null,
+      "solution": "As decimals: $\\frac{1}{3} \\approx 0.333$, $0.35$, $\\frac{3}{8} = 0.375$, and $0.4$. In order from least to greatest: $\\frac{1}{3}, 0.35, \\frac{3}{8}, 0.4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{3}, 0.35, \\frac{3}{8}, 0.4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3 = 0.333..., 0.35, 3/8 = 0.375, 0.4. Order: 1/3, 0.35, 3/8, 0.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "47e09e09-dae2-4c47-8eb5-cc32041d78dc",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Comparing a mixed number and a decimal",
+      "stem": "Which comparison is true?",
+      "choices": [
+        "$2\\frac{3}{8} > 2.4$",
+        "$2\\frac{3}{8} < 2.4$",
+        "$2\\frac{3}{8} < 2.04$",
+        "$2\\frac{3}{8} = 2.4$"
+      ],
+      "answer": "$2\\frac{3}{8} < 2.4$",
+      "compute": null,
+      "solution": "$2\\frac{3}{8} = 2.375$. Since $2.375 < 2.4$, the statement $2\\frac{3}{8} < 2.4$ is true. The other three statements are false, since 2.375 is not greater than 2.4, not equal to 2.4, and not less than 2.04.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2\\frac{3}{8} < 2.4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 3/8 = 2.375 < 2.4. So < is true; > and = false; 2.375 < 2.04 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "04b497ea-5378-4c59-922f-f5a715923c27",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Absolute value and distance from zero",
+      "stem": "Which number has the greatest absolute value?",
+      "choices": [
+        "$-9$",
+        "$12$",
+        "$14$",
+        "$-15$"
+      ],
+      "answer": "$-15$",
+      "compute": "-15",
+      "solution": "The absolute values are 9, 12, 15 and 14. The greatest is 15, which belongs to $-15$, because $-15$ is the farthest from zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Absolute values 15, 14, 12, 9. Greatest is |-15| = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "1c7cca74-1ef7-4df8-bc54-a7769788df05",
+      "topic_id": "NC26.6.ANR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Inequality statements and integers",
+      "stem": "How many integers $x$ make the statement $-4 < x < 3$ true?",
+      "choices": [],
+      "answer": "6",
+      "compute": null,
+      "solution": "The integers greater than $-4$ and less than 3 are $-3, -2, -1, 0, 1, 2$. That is 6 integers. The endpoints $-4$ and 3 are not included.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Integers strictly between -4 and 3: -3, -2, -1, 0, 1, 2 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d62d62e8-7df6-4ff5-aba5-67f38de2aaf6",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Whole-number exponents",
+      "stem": "What is the value of $2^5$?",
+      "choices": [],
+      "answer": "32",
+      "compute": "2^5",
+      "solution": "$2^5 = 2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^5 = 2 x 2 x 2 x 2 x 2 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "addedb51-85ae-453c-816a-20362fd9b518",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Order of operations",
+      "stem": "What is the value of $6 + 4 \\times 3$?",
+      "choices": [],
+      "answer": "18",
+      "compute": "6+4*3",
+      "solution": "Multiply before adding: $4 \\times 3 = 12$, then $6 + 12 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiply first: 4 x 3 = 12; 6 + 12 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "e3dd3fa1-05a5-4674-b41c-3b77f2b9a5e7",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Parts of an expression (coefficient)",
+      "stem": "In the expression $4a + 9$, what is the coefficient of $a$?",
+      "choices": [
+        "4",
+        "$a$",
+        "13",
+        "9"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The coefficient is the number multiplied by the variable. In $4a$, the number multiplied by $a$ is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The coefficient is the number multiplying a: 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d62a4943-45b4-4292-acf7-46dbcfc752df",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluating an algebraic expression",
+      "stem": "What is the value of $3x + 5$ when $x = 4$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "3*4+5",
+      "solution": "Substitute 4 for $x$: $3 \\times 4 + 5 = 12 + 5 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(4) + 5 = 12 + 5 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "a10811a6-3d97-401f-a2be-1d02a0bee63c",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Translating words to an expression",
+      "stem": "Which expression means \"7 less than twice a number $n$\"?",
+      "choices": [
+        "$7 - 2n$",
+        "$2n + 7$",
+        "$2n - 7$",
+        "$2(n - 7)$"
+      ],
+      "answer": "$2n - 7$",
+      "compute": null,
+      "solution": "\"Twice a number $n$\" is $2n$. \"7 less than\" that is $2n - 7$. The option $7 - 2n$ reverses the order, and $2(n - 7)$ doubles the 7 less than $n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2n - 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Twice n is 2n; 7 less than that is 2n - 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "3c0d392e-6227-4bd8-8a5e-5376815e7cb5",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent expressions (distributive property)",
+      "stem": "Which expression is equivalent to $2(3x + 5)$?",
+      "choices": [
+        "$6x + 5$",
+        "$5x + 7$",
+        "$6x + 10$",
+        "$6x + 7$"
+      ],
+      "answer": "$6x + 10$",
+      "compute": null,
+      "solution": "Multiply both terms inside the parentheses by 2: $2 \\times 3x = 6x$ and $2 \\times 5 = 10$. So $2(3x + 5) = 6x + 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distribute: 2 x 3x + 2 x 5 = 6x + 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "1bf48979-9d94-47c3-95e0-9946765f5b38",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Order of operations with exponents and parentheses",
+      "stem": "What is the value of $(9 - 3)^2 \\div 4 + 2 \\times 5$?",
+      "choices": [],
+      "answer": "19",
+      "compute": "(9-3)^2/4+2*5",
+      "solution": "Parentheses first: $9 - 3 = 6$. Exponent: $6^2 = 36$. Then divide and multiply: $36 \\div 4 = 9$ and $2 \\times 5 = 10$. Finally add: $9 + 10 = 19$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(9 - 3)^2 = 6^2 = 36. 36 / 4 = 9. 2 x 5 = 10. 9 + 10 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "29509d45-72ad-48a8-8b23-045b7d1dd234",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluating with two variables and an exponent",
+      "stem": "What is the value of $2a^2 - b$ when $a = 5$ and $b = 7$?",
+      "choices": [],
+      "answer": "43",
+      "compute": "2*5^2-7",
+      "solution": "Substitute: $2 \\times 5^2 - 7$. The exponent comes first: $5^2 = 25$. Then $2 \\times 25 = 50$ and $50 - 7 = 43$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(5^2) - 7 = 2(25) - 7 = 50 - 7 = 43.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "49bc9df5-2d5a-4450-8d16-31c3275731bd",
+      "topic_id": "NC26.6.ANR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent expressions (combining like terms)",
+      "stem": "Which expression is equivalent to $x + x + x + 4$?",
+      "choices": [
+        "$3x + 4$",
+        "$4x + 3$",
+        "$x^3 + 4$",
+        "$7x$"
+      ],
+      "answer": "$3x + 4$",
+      "compute": null,
+      "solution": "Three $x$'s added together make $3x$, and the 4 stays separate, so the expression is $3x + 4$. Repeated addition is not an exponent ($x^3$ means $x \\times x \\times x$), and $3x$ and 4 are not like terms, so they cannot be combined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + x + x = 3x, so 3x + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d4654474-f5c9-4971-b4bc-adf62dd5366a",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solving a one-step addition equation",
+      "stem": "Solve $x + 8 = 15$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "15-8",
+      "solution": "Subtract 8 from both sides: $x = 15 - 8 = 7$. Check: $7 + 8 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 15 - 8 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "1d2e359d-fc41-4bad-a8a4-016456b25e03",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solving a one-step multiplication equation",
+      "stem": "Solve $6n = 48$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "48/6",
+      "solution": "Divide both sides by 6: $n = 48 \\div 6 = 8$. Check: $6 \\times 8 = 48$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n = 48 / 6 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "d1f566f9-1c97-488d-a293-125311703860",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Checking a solution by substitution",
+      "stem": "Which value of $x$ makes the equation $x - 4 = 9$ true?",
+      "choices": [
+        "5",
+        "13",
+        "9",
+        "36"
+      ],
+      "answer": "13",
+      "compute": "9+4",
+      "solution": "Try 13: $13 - 4 = 9$, which is true. The value 5 gives $5 - 4 = 1$, 9 gives $9 - 4 = 5$, and 36 gives $36 - 4 = 32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 9 + 4 = 13. Check 13 - 4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "39237fed-8d50-4f92-b51c-37008359d88a",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solving a one-step division equation",
+      "stem": "Solve $\\frac{x}{5} = 12$.",
+      "choices": [],
+      "answer": "60",
+      "compute": "12*5",
+      "solution": "Multiply both sides by 5: $x = 12 \\times 5 = 60$. Check: $60 \\div 5 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 12 x 5 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "ef0f627f-cfbc-4cca-8e24-71ad86aae1e5",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing and solving an equation from a story",
+      "stem": "Sam spent 56 dollars on movie tickets that cost 7 dollars each. How many tickets did Sam buy?",
+      "choices": [],
+      "answer": "8",
+      "compute": "56/7",
+      "solution": "If $t$ is the number of tickets, then $7t = 56$. Divide both sides by 7: $t = 8$. Check: $7 \\times 8 = 56$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7t = 56, t = 8 tickets.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "93029d8c-9ba1-4dfe-9ce0-71cb0ac29430",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solutions of an inequality",
+      "stem": "Which number is a solution of the inequality $x > 7$?",
+      "choices": [
+        "6",
+        "5",
+        "7",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "A solution must be greater than 7. Only 8 is greater than 7. The number 7 is not a solution because 7 is not greater than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 8 is greater than 7 (7 itself is not, since the inequality is strict).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "6331ba7d-0335-437e-89e6-4a7ef0ae930a",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solving an equation with fractions",
+      "stem": "Solve $x + \\frac{3}{4} = 2\\frac{1}{2}$. Give the answer as a mixed number.",
+      "choices": [],
+      "answer": "1 3/4",
+      "compute": "5/2-3/4",
+      "solution": "Subtract $\\frac{3}{4}$ from both sides: $x = 2\\frac{1}{2} - \\frac{3}{4} = \\frac{10}{4} - \\frac{3}{4} = \\frac{7}{4} = 1\\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 2 1/2 - 3/4 = 10/4 - 3/4 = 7/4 = 1 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "50c48f85-f276-4beb-89f1-c731b01d9a9b",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reading an inequality from a number-line description",
+      "stem": "An inequality is graphed on a number line. The graph has an open circle at 5 and an arrow pointing to the right, toward the larger numbers. Which inequality does the graph show?",
+      "choices": [
+        "$x < 5$",
+        "$x = 5$",
+        "$x > -5$",
+        "$x > 5$"
+      ],
+      "answer": "$x > 5$",
+      "compute": null,
+      "solution": "The arrow points toward numbers greater than 5, and the open circle means 5 itself is not included. That is $x > 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x > 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Open circle at 5 excludes 5; arrow right means greater: x > 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "b3178367-dde8-48fb-b96b-3f0048f6a587",
+      "topic_id": "NC26.6.ANR.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Writing and solving an equation (decimals)",
+      "stem": "Four friends split the cost of a gift equally. Each friend pays 7.25 dollars. What was the cost of the gift, in dollars?",
+      "choices": [],
+      "answer": "29",
+      "compute": "7.25*4",
+      "solution": "If the gift costs $c$ dollars, then $\\frac{c}{4} = 7.25$. Multiply both sides by 4: $c = 7.25 \\times 4 = 29$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c / 4 = 7.25, so c = 4 x 7.25 = 29 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:26.534Z"
+        }
+      }
+    },
+    {
+      "id": "83b8ecd6-0f95-43c8-abbf-d490b4088865",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Area of a triangle from its base and height",
+      "stem": "A triangle has a base of 10 centimeters and a height of 6 centimeters. What is its area in square centimeters?",
+      "choices": [],
+      "answer": "30",
+      "compute": "1/2*10*6",
+      "solution": "The area of a triangle is half of the base times the height: $\\frac{1}{2} \\times 10 \\times 6 = 30$ square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area = 1/2 x base x height = 1/2 x 10 x 6 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "d9ebfd11-a01b-4608-85e8-12be84927990",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Area of a parallelogram from its base and height",
+      "stem": "A parallelogram has a base of 9 meters and a height of 4 meters. What is its area in square meters?",
+      "choices": [
+        "$18$",
+        "$36$",
+        "$26$",
+        "$13$"
+      ],
+      "answer": "$36$",
+      "compute": "9*4",
+      "solution": "The area of a parallelogram is base times height: $9 \\times 4 = 36$ square meters. (18 halves the product as if it were a triangle, 26 is $2 \\times (9 + 4)$, and 13 adds the two numbers.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$36$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area of parallelogram = base x height = 9 x 4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "31b94543-89cd-40c0-b6e6-8c67cdc3745b",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Decomposing a rectangle into two triangles",
+      "stem": "A rectangular piece of paper is 14 inches long and 6 inches wide. Fran cuts it along a diagonal into two identical triangles. What is the area of one triangle in square inches?",
+      "choices": [],
+      "answer": "42",
+      "compute": "14*6/2",
+      "solution": "The rectangle has area $14 \\times 6 = 84$ square inches. The two triangles are identical, so each has half of that: $84 \\div 2 = 42$ square inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangle area = 14 x 6 = 84. A diagonal cuts it into two identical triangles, each 84 / 2 = 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "8524823d-2407-4a70-8931-07b0169fc153",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Finding a triangle's height from its area and base",
+      "stem": "A triangle has an area of 40 square centimeters and a base of 10 centimeters. What is its height in centimeters?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2*40/10",
+      "solution": "Area $= \\frac{1}{2} \\times \\text{base} \\times \\text{height}$, so $40 = \\frac{1}{2} \\times 10 \\times h = 5h$. Then $h = 40 \\div 5 = 8$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 = 1/2 x 10 x h = 5h, so h = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "525030dc-570f-4012-abbc-e0f46232152b",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Parallelogram area uses the height, not the slanted side",
+      "stem": "A parallelogram has a base of 10 centimeters. Its slanted side is 6 centimeters long, and its height (measured at a right angle to the base) is 5 centimeters. What is its area in square centimeters?",
+      "choices": [
+        "$60$",
+        "$25$",
+        "$50$",
+        "$16$"
+      ],
+      "answer": "$50$",
+      "compute": "10*5",
+      "solution": "Area is base times height: $10 \\times 5 = 50$ square centimeters. The slanted side is not the height, so $10 \\times 6 = 60$ is wrong. (25 halves the product as if it were a triangle, and 16 adds $10 + 6$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area = base x perpendicular height = 10 x 5 = 50. The slanted side (6) is not used.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "874e264c-f4af-452c-88bc-caedfa61f8b9",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Area of a composite figure made of two rectangles",
+      "stem": "An L-shaped patio is made from two rectangles that do not overlap. One rectangle is 8 meters by 5 meters. The other is 4 meters by 3 meters. What is the total area of the patio in square meters?",
+      "choices": [
+        "$52$",
+        "$28$",
+        "$20$",
+        "$12$"
+      ],
+      "answer": "$52$",
+      "compute": "8*5+4*3",
+      "solution": "Add the areas of the two rectangles: $8 \\times 5 = 40$ and $4 \\times 3 = 12$, so the total is $40 + 12 = 52$ square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$52$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 5 = 40 and 4 x 3 = 12; total 40 + 12 = 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "be5de139-fcd9-4ef5-ab49-780ece2dde9e",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Area of a trapezoid by decomposing it into a rectangle and triangles",
+      "stem": "Maya cuts a trapezoid into a rectangle and two right triangles. The trapezoid has parallel sides of 6 centimeters and 10 centimeters and a height of 4 centimeters. The rectangle is 6 centimeters by 4 centimeters. Each right triangle has a base of 2 centimeters and a height of 4 centimeters. What is the area of the trapezoid in square centimeters?",
+      "choices": [],
+      "answer": "32",
+      "compute": "6*4+2*(1/2*2*4)",
+      "solution": "Rectangle: $6 \\times 4 = 24$. Each triangle: $\\frac{1}{2} \\times 2 \\times 4 = 4$, so the two triangles are $8$. Total: $24 + 8 = 32$ square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangle 6 x 4 = 24. Each triangle 1/2 x 2 x 4 = 4, two of them = 8. Total 32. Check: 6 + 2 + 2 = 10 matches the long side; formula (6 + 10)/2 x 4 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "57ce856b-a27e-475c-a34d-b085e50483c2",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "How changing a triangle's height changes its area",
+      "stem": "The area of a triangle is 36 square inches. A second triangle has the same base but twice the height. What is the area of the second triangle in square inches?",
+      "choices": [
+        "$36$",
+        "$144$",
+        "$18$",
+        "$72$"
+      ],
+      "answer": "$72$",
+      "compute": "36*2",
+      "solution": "Area is $\\frac{1}{2} \\times \\text{base} \\times \\text{height}$. With the same base and double the height, the area doubles: $36 \\times 2 = 72$ square inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$72$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area = 1/2 b h. Same base, twice the height doubles the area: 2 x 36 = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "05732ff8-b231-4abd-8358-76b9dd5b9e79",
+      "topic_id": "NC26.6.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Area of a polygon made of a rectangle and a triangle",
+      "stem": "A lot is shaped like a rectangle with a triangle attached along one of its 10-meter sides. The rectangle is 10 meters by 6 meters. The triangle has a base of 10 meters and a height of 4 meters. What is the total area of the lot in square meters?",
+      "choices": [],
+      "answer": "80",
+      "compute": "10*6+1/2*10*4",
+      "solution": "Rectangle: $10 \\times 6 = 60$. Triangle: $\\frac{1}{2} \\times 10 \\times 4 = 20$. Total: $60 + 20 = 80$ square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangle 10 x 6 = 60. Triangle 1/2 x 10 x 4 = 20. Total 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "79fd2371-fc6c-43b2-8f3a-2f1457a443ad",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Telling which quadrant a point is in from the signs of its coordinates",
+      "stem": "Which point is in the part of the coordinate plane where both the x-coordinate and the y-coordinate are negative?",
+      "choices": [
+        "$(4, -2)$",
+        "$(-4, 2)$",
+        "$(-4, -2)$",
+        "$(4, 2)$"
+      ],
+      "answer": "$(-4, -2)$",
+      "compute": null,
+      "solution": "Both coordinates must be negative. Only $(-4, -2)$ has a negative x-coordinate and a negative y-coordinate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-4, -2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Both coordinates negative is Quadrant III: (-4, -2).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "fcebebc6-f480-42b8-88a8-052c090035ef",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reflecting a point across the x-axis",
+      "stem": "The point $(3, 5)$ is reflected across the x-axis. What are the coordinates of the new point?",
+      "choices": [
+        "$(3, -5)$",
+        "$(-3, 5)$",
+        "$(-3, -5)$",
+        "$(5, 3)$"
+      ],
+      "answer": "$(3, -5)$",
+      "compute": null,
+      "solution": "A reflection across the x-axis keeps the x-coordinate and changes the sign of the y-coordinate, so $(3, 5)$ becomes $(3, -5)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3, -5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reflection across the x-axis keeps x and negates y: (3, 5) -> (3, -5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "855348a8-4dcf-4555-bbe7-8f3f76627d61",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Distance between two points with the same x-coordinate",
+      "stem": "Point $A$ is at $(4, 1)$ and point $B$ is at $(4, 8)$. How many units apart are the two points?",
+      "choices": [],
+      "answer": "7",
+      "compute": "8-1",
+      "solution": "The points have the same x-coordinate, so they are on one vertical line. The distance is the difference of the y-coordinates: $8 - 1 = 7$ units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same x-coordinate; distance = |8 - 1| = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "2bcd5c0e-8945-47c2-9679-02840248c727",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Distance between points on opposite sides of an axis",
+      "stem": "Point $A$ is at $(-7, 2)$ and point $B$ is at $(3, 2)$. How many units apart are the two points?",
+      "choices": [
+        "$4$",
+        "$21$",
+        "$9$",
+        "$10$"
+      ],
+      "answer": "$10$",
+      "compute": "7+3",
+      "solution": "The points have the same y-coordinate, and they are on opposite sides of the y-axis. Add their distances from the axis: $7 + 3 = 10$ units. (Subtracting $7 - 3 = 4$ would be right only if both were on the same side.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same y-coordinate; distance = |3 - (-7)| = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "9313c3e9-e50d-41e5-89f4-ddc228c9a4ab",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distance between a point and its reflection",
+      "stem": "The point $(-3, 4)$ is reflected across the x-axis. How many units apart are the original point and its reflection?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4+4",
+      "solution": "The reflection is $(-3, -4)$. The two points are 4 units above and 4 units below the x-axis, so they are $4 + 4 = 8$ units apart.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reflection of (-3, 4) across the x-axis is (-3, -4). Distance = |4 - (-4)| = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "cfcee2fd-f4c7-4cf5-8c04-d097bb52adfa",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Perimeter of a rectangle on the coordinate plane",
+      "stem": "A rectangle has vertices at $(1, 2)$, $(7, 2)$, $(7, -3)$ and $(1, -3)$. What is the perimeter of the rectangle in units?",
+      "choices": [],
+      "answer": "22",
+      "compute": "2*(6+5)",
+      "solution": "The width is $7 - 1 = 6$ units. The height is $2 - (-3) = 5$ units. The perimeter is $2 \\times (6 + 5) = 22$ units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width from x = 1 to 7 is 6; height from y = -3 to 2 is 5. Perimeter = 2(6 + 5) = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "b39bc221-2a1b-49db-bffb-da5c489ab552",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Area of a rectangle from two opposite corners",
+      "stem": "A rectangle has two opposite corners at $(-4, 3)$ and $(2, -1)$, and its sides are parallel to the axes. What is the area of the rectangle in square units?",
+      "choices": [],
+      "answer": "24",
+      "compute": "6*4",
+      "solution": "The width is $2 - (-4) = 6$ units and the height is $3 - (-1) = 4$ units. The area is $6 \\times 4 = 24$ square units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width |2 - (-4)| = 6; height |3 - (-1)| = 4. Area = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "e568bbb5-8ff8-4986-9fbf-9f40e174bf81",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Area of a right triangle on the coordinate plane",
+      "stem": "A triangle has vertices at $(-3, -2)$, $(5, -2)$ and $(5, 4)$. What is its area in square units?",
+      "choices": [],
+      "answer": "24",
+      "compute": "1/2*8*6",
+      "solution": "The side from $(-3, -2)$ to $(5, -2)$ is horizontal and is $5 - (-3) = 8$ units long. The side from $(5, -2)$ to $(5, 4)$ is vertical and is $4 - (-2) = 6$ units long. They meet at a right angle, so the area is $\\frac{1}{2} \\times 8 \\times 6 = 24$ square units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base along y = -2 from x = -3 to 5: 8. Height along x = 5 from y = -2 to 4: 6. Right triangle area = 1/2 x 8 x 6 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "cee0f6ae-049b-4116-975e-039804bc3bfd",
+      "topic_id": "NC26.6.SGMR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Finding the fourth vertex of a rectangle",
+      "stem": "Three vertices of a rectangle are $(-3, 4)$, $(5, 4)$ and $(5, -2)$. The sides are parallel to the axes. What is the fourth vertex?",
+      "choices": [
+        "$(3, -2)$",
+        "$(-3, -2)$",
+        "$(-3, 2)$",
+        "$(-2, -3)$"
+      ],
+      "answer": "$(-3, -2)$",
+      "compute": null,
+      "solution": "The fourth vertex shares its x-coordinate with $(-3, 4)$, which is $-3$, and its y-coordinate with $(5, -2)$, which is $-2$. So it is $(-3, -2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-3, -2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Missing corner takes x from (-3, 4) and y from (5, -2): (-3, -2).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "5e138ebf-b618-4e73-8efd-b34654aef49c",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Naming the solid a net folds into",
+      "stem": "A net is made of exactly 2 triangles and 3 rectangles joined along their edges. When it is folded up, which solid does it make?",
+      "choices": [
+        "A rectangular prism",
+        "A triangular pyramid",
+        "A triangular prism",
+        "A square pyramid"
+      ],
+      "answer": "A triangular prism",
+      "compute": null,
+      "solution": "A triangular prism has 2 triangular bases and 3 rectangular side faces. A rectangular prism has 6 rectangles, and the pyramids have only one base.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A triangular prism",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two triangular bases plus three rectangular lateral faces fold into a triangular prism (a triangular pyramid has 4 triangles; a square pyramid 1 square + 4 triangles; a rectangular prism 6 rectangles).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "30341452-0f82-4ca3-8e4b-ebf1572b9656",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Volume of a rectangular prism",
+      "stem": "A box shaped like a rectangular prism is 5 centimeters long, 4 centimeters wide and 3 centimeters tall. What is its volume in cubic centimeters?",
+      "choices": [],
+      "answer": "60",
+      "compute": "5*4*3",
+      "solution": "Volume is length times width times height: $5 \\times 4 \\times 3 = 60$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V = 5 x 4 x 3 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "2ee5e309-85f7-413d-8b49-72d2b9174717",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Surface area of a cube",
+      "stem": "A cube has edges that are each 3 inches long. What is its surface area in square inches?",
+      "choices": [
+        "$27$",
+        "$54$",
+        "$36$",
+        "$18$"
+      ],
+      "answer": "$54$",
+      "compute": "6*3*3",
+      "solution": "A cube has 6 faces. Each face is a square of area $3 \\times 3 = 9$, so the surface area is $6 \\times 9 = 54$ square inches. (27 is the volume, 36 counts only four faces, and 18 counts only two.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$54$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each face 3 x 3 = 9; six faces: 54.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "8545dd84-38a4-43a9-8ed5-d66724c9f03d",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Surface area of a rectangular prism",
+      "stem": "A rectangular prism is 6 centimeters long, 4 centimeters wide and 3 centimeters tall. What is its surface area in square centimeters?",
+      "choices": [],
+      "answer": "108",
+      "compute": "2*(6*4+6*3+4*3)",
+      "solution": "There are three pairs of matching faces: $6 \\times 4 = 24$, $6 \\times 3 = 18$ and $4 \\times 3 = 12$. Add them and double: $2 \\times (24 + 18 + 12) = 108$ square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "108",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "SA = 2(6x4 + 6x3 + 4x3) = 2(24 + 18 + 12) = 2 x 54 = 108.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "c2f1c5c7-4f77-4cb0-b696-cad923ac8891",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Volume of a rectangular prism with fractional edges",
+      "stem": "A rectangular prism has a length of $2\\frac{1}{2}$ feet, a width of $1\\frac{1}{2}$ feet and a height of 2 feet. What is its volume in cubic feet?",
+      "choices": [],
+      "answer": "7 1/2",
+      "compute": "5/2*3/2*2",
+      "solution": "Multiply the three edges: $\\frac{5}{2} \\times \\frac{3}{2} \\times 2 = \\frac{30}{4} = 7\\frac{1}{2}$ cubic feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V = 5/2 x 3/2 x 2 = 30/4 = 15/2 = 7.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "5139bf6d-f832-4887-838b-545a4068f61b",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Total area of the faces in a net",
+      "stem": "A net for a box has six rectangles: two that are 5 by 3, two that are 5 by 2 and two that are 3 by 2 (all measures in centimeters). What is the total area of the net in square centimeters?",
+      "choices": [
+        "$62$",
+        "$31$",
+        "$30$",
+        "$50$"
+      ],
+      "answer": "$62$",
+      "compute": "2*(5*3+5*2+3*2)",
+      "solution": "Find the area of each kind of rectangle: $5 \\times 3 = 15$, $5 \\times 2 = 10$ and $3 \\times 2 = 6$. There are two of each, so the total is $2 \\times (15 + 10 + 6) = 62$ square centimeters. (31 counts each kind once, 30 is the volume, and 50 leaves out one pair of faces.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$62$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(5x3) + 2(5x2) + 2(3x2) = 30 + 20 + 12 = 62.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "69c8db82-1a0c-48c7-be83-e01e50ed9ef2",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Surface area of a triangular prism",
+      "stem": "A triangular prism has two identical right-triangle bases with legs of 3 centimeters and 4 centimeters and a longest side of 5 centimeters. The prism is 10 centimeters long. What is its surface area in square centimeters?",
+      "choices": [],
+      "answer": "132",
+      "compute": "2*(1/2*3*4)+(3+4+5)*10",
+      "solution": "The two triangular bases have area $2 \\times \\left(\\frac{1}{2} \\times 3 \\times 4\\right) = 12$. The three rectangular faces are $3 \\times 10 = 30$, $4 \\times 10 = 40$ and $5 \\times 10 = 50$, which total $120$. The surface area is $12 + 120 = 132$ square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "132",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two triangles: 2 x (1/2 x 3 x 4) = 12. Three rectangles: 3x10 + 4x10 + 5x10 = 120. Total 132.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "ba7aebf3-45d4-4784-927b-021fb4d47dbb",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Counting unit cubes with fractional edges that fill a prism",
+      "stem": "A box is 2 inches long, $1\\frac{1}{2}$ inches wide and 1 inch tall. It is filled exactly with small cubes whose edges are each $\\frac{1}{2}$ inch long. How many small cubes fill the box?",
+      "choices": [],
+      "answer": "24",
+      "compute": "(2*2)*(3/2*2)*(1*2)",
+      "solution": "Count the cubes along each edge: $2 \\div \\frac{1}{2} = 4$ along the length, $1\\frac{1}{2} \\div \\frac{1}{2} = 3$ along the width and $1 \\div \\frac{1}{2} = 2$ along the height. The number of cubes is $4 \\times 3 \\times 2 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cubes along each edge: 2 / (1/2) = 4, (3/2) / (1/2) = 3, 1 / (1/2) = 2. Count = 4 x 3 x 2 = 24. Check: volume 3 / (1/8) = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "c25007fe-5c7e-436b-981d-f0062128fb21",
+      "topic_id": "NC26.6.SGMR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Surface area of a square pyramid from its faces",
+      "stem": "A square pyramid has a square base with sides of 6 centimeters. Its four triangular faces each have a base of 6 centimeters and a height of 5 centimeters. What is the surface area of the pyramid in square centimeters?",
+      "choices": [
+        "$60$",
+        "$66$",
+        "$96$",
+        "$156$"
+      ],
+      "answer": "$96$",
+      "compute": "6*6+4*(1/2*6*5)",
+      "solution": "The base is $6 \\times 6 = 36$. Each triangle is $\\frac{1}{2} \\times 6 \\times 5 = 15$, so the four triangles are $60$. The total is $36 + 60 = 96$ square centimeters. (60 leaves out the base, 66 uses only one triangle, and 156 forgets the one half.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$96$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base 6 x 6 = 36. Each triangle 1/2 x 6 x 5 = 15; four = 60. Total 96.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "78b8de7c-7cc0-4a3d-8b7c-0f65e61571b4",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Probability values must be between 0 and 1",
+      "stem": "Which number could NOT be the probability of an event?",
+      "choices": [
+        "$0$",
+        "$\\frac{1}{2}$",
+        "$1$",
+        "$\\frac{4}{3}$"
+      ],
+      "answer": "$\\frac{4}{3}$",
+      "compute": null,
+      "solution": "A probability is always between 0 and 1, including 0 and 1. The number $\\frac{4}{3}$ is greater than 1, so it cannot be a probability.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{4}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Probabilities lie from 0 to 1 inclusive. 4/3 > 1, so it cannot be a probability; 0, 1/2 and 1 can.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "6c272577-53f4-4c24-a034-d679cad592b7",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Theoretical probability from counting outcomes",
+      "stem": "A bag has 3 red marbles and 7 blue marbles. One marble is picked without looking. What is the probability that it is red? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "3/10",
+      "compute": "3/10",
+      "solution": "There are $3 + 7 = 10$ marbles and 3 of them are red, so the probability is $\\frac{3}{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 red out of 3 + 7 = 10 marbles: 3/10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "8f22f97a-cb79-4752-8b36-b8b34413a11c",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Probability of rolling a number less than 3",
+      "stem": "A fair six-sided die has faces numbered 1 to 6. It is rolled once. What is the probability of rolling a number less than 3?",
+      "choices": [
+        "$\\frac{1}{3}$",
+        "$\\frac{1}{6}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": "$\\frac{1}{3}$",
+      "compute": null,
+      "solution": "The numbers less than 3 are 1 and 2, which is 2 of the 6 equally likely outcomes. So the probability is $\\frac{2}{6} = \\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Less than 3: {1, 2}, 2 outcomes of 6: 2/6 = 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "8d9df91e-f931-4315-be4c-fc3557f29477",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Probability that an event does not happen",
+      "stem": "A bag has 5 red, 3 green and 2 yellow marbles. One marble is picked without looking. What is the probability that it is NOT green? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "7/10",
+      "compute": "7/10",
+      "solution": "There are $5 + 3 + 2 = 10$ marbles. The marbles that are not green number $5 + 2 = 7$, so the probability is $\\frac{7}{10}$. (Another way: $1 - \\frac{3}{10} = \\frac{7}{10}$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7/10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total 10; not green = 5 + 2 = 7. P = 7/10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "6bfe6c6d-afda-4d37-b109-136ed34cf251",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Describing a probability close to 0 in words",
+      "stem": "The probability of rain tomorrow is $0.05$. Which statement best describes this?",
+      "choices": [
+        "Rain is certain not to happen",
+        "Rain is very unlikely but not impossible",
+        "Rain is as likely as not",
+        "Rain is very likely"
+      ],
+      "answer": "Rain is very unlikely but not impossible",
+      "compute": null,
+      "solution": "A probability of 0.05 is very close to 0, so the event is very unlikely. It is not exactly 0, so it is not impossible.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rain is very unlikely but not impossible",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.05 is close to 0 but greater than 0: very unlikely, not impossible.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "dae7068b-91fc-4e9f-9272-9baa6825b74e",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Experimental probability from a trial",
+      "stem": "Ana tosses a fair coin 50 times and gets heads 28 times. What is the experimental probability of getting heads, as a decimal?",
+      "choices": [],
+      "answer": "0.56",
+      "compute": "28/50",
+      "solution": "Experimental probability is the number of times the event happened divided by the number of trials: $\\frac{28}{50} = 0.56$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 / 50 = 0.56.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "d06742f1-0385-452f-9190-4dd6c1229243",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Comparing an experiment with theory",
+      "stem": "A spinner has 4 equal sections numbered 1, 2, 3 and 4. Leo spins it 80 times and it lands on 3 a total of 26 times. How many more times than the theoretical probability predicts did it land on 3?",
+      "choices": [],
+      "answer": "6",
+      "compute": "26-80/4",
+      "solution": "The theoretical probability of landing on 3 is $\\frac{1}{4}$, so in 80 spins you would expect $\\frac{1}{4} \\times 80 = 20$ times. It landed on 3 a total of 26 times, which is $26 - 20 = 6$ more times than expected.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "Wording is slightly awkward ('than the theoretical probability predicts'); clearer: 'How many more times did it land on 3 than the theoretical probability predicts?' Answer is still unambiguous.",
+          "work": "P(3) = 1/4; predicted 80 x 1/4 = 20. Actual 26; 26 - 20 = 6 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "36d2ce14-37a9-4a8f-b3a0-ff5c55935b24",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Finding how many items to add to reach a target probability",
+      "stem": "A bag has 4 red marbles and 6 blue marbles. How many blue marbles must be added so that the probability of picking a red marble is $\\frac{1}{4}$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "4/(1/4)-10",
+      "solution": "The number of red marbles stays at 4. For the probability to be $\\frac{1}{4}$, the bag needs $4 \\div \\frac{1}{4} = 16$ marbles in all. It now has 10, so add $16 - 10 = 6$ blue marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red stays 4. Need 4 / total = 1/4, so total = 16. Currently 10, so add 6 blue. Check 4/16 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "dcc79f24-b1b2-41e2-9846-84507e887ef5",
+      "topic_id": "NC26.6.RD.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Comparing the probabilities of several events",
+      "stem": "Which event has the greatest probability? In each event, every outcome is equally likely.",
+      "choices": [
+        "Rolling a number greater than 2 on a fair six-sided die",
+        "Tossing a fair coin and getting tails",
+        "Picking a prime number from cards numbered 1 to 10",
+        "Picking a red marble from a bag with 3 red and 7 blue marbles"
+      ],
+      "answer": "Rolling a number greater than 2 on a fair six-sided die",
+      "compute": null,
+      "solution": "Rolling a number greater than 2: 3, 4, 5 or 6, so $\\frac{4}{6} \\approx 0.67$. Tails: $\\frac{1}{2} = 0.5$. A prime from 1 to 10 (2, 3, 5, 7): $\\frac{4}{10} = 0.4$. A red marble: $\\frac{3}{10} = 0.3$. The die has the greatest probability.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rolling a number greater than 2 on a fair six-sided die",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Die > 2: {3,4,5,6} = 4/6 = 2/3. Primes 1-10: 2,3,5,7 = 4/10 = 0.4. Red: 3/10 = 0.3. Tails: 1/2. Greatest is 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "b0c88353-dc0f-4afc-b854-a491816a65c0",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Telling a statistical question from other questions",
+      "stem": "Which of these is a statistical question?",
+      "choices": [
+        "How many pets do the students in a sixth-grade class have?",
+        "How many pets does Sam have?",
+        "How old is the teacher of the sixth-grade class?",
+        "What time does school start on Monday?"
+      ],
+      "answer": "How many pets do the students in a sixth-grade class have?",
+      "compute": null,
+      "solution": "A statistical question is one where you expect the answers to vary, so you need data from a group. Each student in a class may have a different number of pets. The other questions each have one answer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many pets do the students in a sixth-grade class have?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A statistical question expects variability in the answers. Pets of students in a class vary; the others have a single answer.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "ae33b87e-c5b0-4a95-9a12-2d929e814fd8",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Organizing data by counting in a category",
+      "stem": "Ten students were asked how they get to school. Their answers were: bus, bus, walk, car, bus, walk, bike, bus, car, bus. How many of the students ride the bus?",
+      "choices": [],
+      "answer": "5",
+      "compute": null,
+      "solution": "Count the answers that say bus: the 1st, 2nd, 5th, 8th and 10th answers. That is 5 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "bus(1), bus(2), walk, car, bus(3), walk, bike, bus(4), car, bus(5): 5 ride the bus.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "ce889d42-f465-4126-a35d-7c34fe954cb7",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sample versus population",
+      "stem": "Nia asks 20 students in her school about their favorite sport. She wants to know the favorite sport of all 400 students in the school. What are the 20 students she asked?",
+      "choices": [
+        "The population",
+        "A sample",
+        "A statistical question",
+        "The data display"
+      ],
+      "answer": "A sample",
+      "compute": null,
+      "solution": "The population is everyone she wants to learn about, which is all 400 students. The 20 students she asked are a part of that group, which is called a sample.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A sample",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The 400 students are the population; the 20 asked are a sample.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "6cb3da64-bb0b-47f5-8fae-9f5c748ac7e8",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Spotting a biased survey question",
+      "stem": "Mr. Cole wants to know where students like to read. Which survey question is worded in a way that pushes people toward one answer?",
+      "choices": [
+        "Where do you like to read best: the library, a classroom, or home?",
+        "Everyone loves the fantastic new library, so isn't it the best place to read?",
+        "How many times a week do you read at the library?",
+        "What is your favorite place to read?"
+      ],
+      "answer": "Everyone loves the fantastic new library, so isn't it the best place to read?",
+      "compute": null,
+      "solution": "The question that says \"Everyone loves the fantastic new library\" tells people what answer to give, so it is biased. The other questions are neutral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Everyone loves the fantastic new library, so isn't it the best place to read?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The question that states 'Everyone loves the fantastic new library' leads respondents to agree; it is the biased one.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "afd60d88-824e-478d-8216-4969ae2c439f",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Organizing survey results in a frequency table",
+      "stem": "A survey of 25 students asked how many brothers and sisters each has. The results were: 0 siblings, 4 students; 1 sibling, 9 students; 2 siblings, 8 students; 3 siblings, 4 students. How many students have at least 2 siblings?",
+      "choices": [],
+      "answer": "12",
+      "compute": "8+4",
+      "solution": "\"At least 2\" means 2 or more. Add the students with 2 siblings and with 3 siblings: $8 + 4 = 12$ students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At least 2 siblings: 2 siblings (8) + 3 siblings (4) = 12. Totals check: 4 + 9 + 8 + 4 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "0a8e6d13-0b1a-4e7e-ba1a-2937fbbdd31c",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choosing a representative sample",
+      "stem": "A school has 600 students. The principal wants to know the favorite lunch of all students. Which way of choosing 40 students to ask is most likely to give a representative sample?",
+      "choices": [
+        "Ask the first 40 students in the pizza line",
+        "Ask the 40 students on the soccer team",
+        "Ask 40 students who volunteer in the cafeteria",
+        "Choose 40 names at random from a list of all students"
+      ],
+      "answer": "Choose 40 names at random from a list of all students",
+      "compute": null,
+      "solution": "A random choice from the list of everyone gives every student the same chance of being asked. The other groups all favor certain kinds of students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Choose 40 names at random from a list of all students",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A random selection from the full list gives every student an equal chance; the other methods are biased groups.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "c602e0d3-5ad2-4c53-8c05-86a416c5dca5",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "A large sample can still be biased",
+      "stem": "Ruth wants to know which sport is the favorite of the people in her town. Plan A is to ask 500 people leaving a basketball game. Plan B is to ask 50 people chosen at random from a list of all the town's residents. Which statement is true?",
+      "choices": [
+        "Plan B is better, because a random sample is more likely to represent the whole town",
+        "Plan A is better, because a larger sample is always more representative",
+        "Plan A is better, because basketball fans know the most about sports",
+        "The plans are equally good, because both ask people"
+      ],
+      "answer": "Plan B is better, because a random sample is more likely to represent the whole town",
+      "compute": null,
+      "solution": "People leaving a basketball game are probably more likely than other residents to name basketball, so Plan A is biased no matter how many are asked. A smaller random sample of all residents represents the town better.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Plan B is better, because a random sample is more likely to represent the whole town",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Plan A samples only basketball spectators (biased); Plan B is random from the whole town, so more representative despite being smaller.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "bfc0a331-4ff7-4b2b-b635-ec96740a182a",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Taking an equal share from each group for a sample",
+      "stem": "A school has 200 sixth graders, 200 seventh graders and 200 eighth graders. Mia wants a sample of 60 students that includes the same number from each grade. How many students should she choose from each grade?",
+      "choices": [],
+      "answer": "20",
+      "compute": "60/3",
+      "solution": "There are 3 grades and the sample must have the same number from each, so each grade gets $60 \\div 3 = 20$ students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 split equally among 3 grades: 60 / 3 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "0253e399-b173-43f1-932f-5e6df22728ce",
+      "topic_id": "NC26.6.RD.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Organizing data into a fraction of the whole",
+      "stem": "Twelve students recorded how many books they read last month: 2, 3, 3, 5, 0, 2, 3, 4, 2, 3, 5, 3. What fraction of the students read more than 3 books? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "3/12",
+      "solution": "The values greater than 3 are 5, 4 and 5, which is 3 students out of 12. The fraction is $\\frac{3}{12} = \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Values greater than 3: 5, 4, 5 = 3 students out of 12. 3/12 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "50c8d37f-18cb-40c2-abea-37ddfd86fbc1",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reading the total from a dot plot",
+      "stem": "A dot plot shows the number of pets owned by students, with one dot for each student. It has these dots: 0 pets, 3 dots; 1 pet, 5 dots; 2 pets, 4 dots; 3 pets, 2 dots. How many students are shown on the dot plot?",
+      "choices": [],
+      "answer": "14",
+      "compute": "3+5+4+2",
+      "solution": "Each dot is one student, so add the dots: $3 + 5 + 4 + 2 = 14$ students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 5 + 4 + 2 = 14 dots, one per student.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "150f58f4-fcf8-41d1-9b06-785b1c0c2dbb",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Finding the tallest bar of a histogram",
+      "stem": "A histogram of 16 quiz scores has bars with these heights: 0 to 9, 2 scores; 10 to 19, 6 scores; 20 to 29, 5 scores; 30 to 39, 3 scores. Which interval contains the most scores?",
+      "choices": [
+        "0 to 9",
+        "20 to 29",
+        "10 to 19",
+        "30 to 39"
+      ],
+      "answer": "10 to 19",
+      "compute": null,
+      "solution": "The tallest bar is the one with the greatest height. The interval 10 to 19 has 6 scores, which is more than any other interval.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 to 19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Heights 2, 6, 5, 3 (total 16). Tallest bar is 10 to 19 with 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "db1ed497-11b9-4e7b-9628-7a1d63d80212",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Range from the five key values of a box plot",
+      "stem": "A box plot of daily visitors to a park has a minimum of 12, a first quartile of 20, a median of 26, a third quartile of 34 and a maximum of 50. What is the range of the data?",
+      "choices": [
+        "$14$",
+        "$26$",
+        "$30$",
+        "$38$"
+      ],
+      "answer": "$38$",
+      "compute": "50-12",
+      "solution": "The range is the maximum minus the minimum: $50 - 12 = 38$. (14 is the IQR, $34 - 20$; 26 is the median.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$38$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range = max - min = 50 - 12 = 38.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "3cfd38b8-bbd6-435e-9adb-7ebf68a0bad2",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interquartile range from five key values",
+      "stem": "Forty students recorded how many minutes they read. The smallest time was 4, the first quartile was 9, the median was 15, the third quartile was 22 and the largest time was 31. What is the interquartile range (IQR) in minutes?",
+      "choices": [],
+      "answer": "13",
+      "compute": "22-9",
+      "solution": "The interquartile range is the third quartile minus the first quartile: $22 - 9 = 13$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "IQR = Q3 - Q1 = 22 - 9 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "7dbab2d4-e3e3-4992-b6db-78393e9b251a",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Describing a gap and an outlier in a dot plot",
+      "stem": "A dot plot shows the number of goals scored in 19 games: 0 goals, 4 dots; 1 goal, 6 dots; 2 goals, 5 dots; 3 goals, 3 dots; 4 goals, 0 dots; 5 goals, 0 dots; 6 goals, 1 dot. Which statement is true?",
+      "choices": [
+        "The most common number of goals was 6",
+        "There is a gap between 3 and 6, and the value 6 is far from the rest of the data",
+        "Every number of goals from 0 to 6 occurred at least once",
+        "Most games had 4 or more goals"
+      ],
+      "answer": "There is a gap between 3 and 6, and the value 6 is far from the rest of the data",
+      "compute": null,
+      "solution": "No game had 4 or 5 goals, so there is a gap between 3 and 6. Only one game had 6 goals, far from the others. The most common number was 1 goal (6 games), and 4 or more goals happened in only 1 game.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There is a gap between 3 and 6, and the value 6 is far from the rest of the data",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total 4+6+5+3+0+0+1 = 19. Games with 4+ goals: 1 (not most). Mode is 1 goal, not 6. 4 and 5 goals never occurred. So there is a gap (4, 5) between 3 and 6, and 6 is an outlier.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "49a0912a-59e2-4f61-ac73-25fad3be53e7",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Finding the interval that holds the median of a histogram",
+      "stem": "A histogram of 19 ages has these bars: 1 to 5, 6 values; 6 to 10, 5 values; 11 to 15, 4 values; 16 to 20, 4 values. In which interval is the median age?",
+      "choices": [
+        "6 to 10",
+        "1 to 5",
+        "11 to 15",
+        "16 to 20"
+      ],
+      "answer": "6 to 10",
+      "compute": null,
+      "solution": "With 19 values, the median is the 10th value in order. The first bar holds values 1 to 6, and the second bar holds values 7 to 11. So the 10th value is in the interval 6 to 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 to 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 values (6+5+4+4), median is the 10th. Values 1-6 are in 1 to 5; values 7-11 are in 6 to 10. The 10th lies in 6 to 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "3e579c22-2bfa-42fa-b0b5-3510532a9470",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Comparing the spread of two box plots",
+      "stem": "Class A's test scores have these five key values: smallest 50, first quartile 62, median 70, third quartile 78, largest 90. Class B's have: smallest 40, first quartile 60, median 70, third quartile 84, largest 100. How much greater is Class B's IQR than Class A's IQR?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(84-60)-(78-62)",
+      "solution": "Class A's IQR is $78 - 62 = 16$. Class B's IQR is $84 - 60 = 24$. The difference is $24 - 16 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Class A IQR = 78 - 62 = 16. Class B IQR = 84 - 60 = 24. Difference 24 - 16 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "61b66ccf-52bd-4910-a2d8-1330d75f63e7",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Counting the values in the tallest bar when building a histogram",
+      "stem": "Thirteen quiz scores are: 47, 52, 58, 61, 63, 65, 68, 72, 75, 79, 83, 88, 91. Jin makes a histogram with the bins 40 to 49, 50 to 59, 60 to 69, 70 to 79, 80 to 89 and 90 to 99. How many scores are in the tallest bar?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "Count the scores in each bin: 40 to 49 has 1, 50 to 59 has 2, 60 to 69 has 4 (61, 63, 65, 68), 70 to 79 has 3, 80 to 89 has 2 and 90 to 99 has 1. The tallest bar is 60 to 69, with 4 scores.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40-49: 47 (1). 50-59: 52, 58 (2). 60-69: 61, 63, 65, 68 (4). 70-79: 72, 75, 79 (3). 80-89: 83, 88 (2). 90-99: 91 (1). Total 13. Tallest bar has 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "2c78cf3c-05bf-4cd9-a7fc-2410ebfa7d0b",
+      "topic_id": "NC26.6.RD.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Comparing center and spread of two dot plots",
+      "stem": "Plot A shows the values 5, 5, 6, 6, 6, 7, 7. Plot B shows the values 2, 4, 6, 6, 6, 8, 10. Which statement is true?",
+      "choices": [
+        "Plot A has a greater median than Plot B",
+        "The two plots have the same range",
+        "Both have a median of 6, but Plot B is more spread out",
+        "Plot A is more spread out than Plot B"
+      ],
+      "answer": "Both have a median of 6, but Plot B is more spread out",
+      "compute": null,
+      "solution": "Both sets have 7 values and the middle (4th) value is 6, so both medians are 6. Plot A has a range of $7 - 5 = 2$ and Plot B has a range of $10 - 2 = 8$, so Plot B is more spread out.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both have a median of 6, but Plot B is more spread out",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: median 6 (4th of 7), range 7 - 5 = 2. B: median 6, range 10 - 2 = 8. Same median, B more spread out. Other options false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "98148096-a60c-40e1-96d4-d326364fa2b7",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Finding a mean",
+      "stem": "What is the mean of the numbers 4, 6, 8, 10 and 12?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(4+6+8+10+12)/5",
+      "solution": "Add the numbers: $4 + 6 + 8 + 10 + 12 = 40$. Divide by how many there are: $40 \\div 5 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum 4+6+8+10+12 = 40; 40 / 5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "1cd0f6bf-25b6-4a7e-b9db-5b6eb2e37064",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Finding a median of an unordered list",
+      "stem": "What is the median of the numbers 9, 3, 12, 5 and 6?",
+      "choices": [
+        "$7$",
+        "$6$",
+        "$12$",
+        "$9$"
+      ],
+      "answer": "$6$",
+      "compute": "6",
+      "solution": "Put the numbers in order: 3, 5, 6, 9, 12. The middle number is 6. (7 is the mean, 12 is the middle of the unordered list, and 9 is the range.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sorted: 3, 5, 6, 9, 12. Middle value 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "9e4cb29b-6c7d-413a-9183-8402f3037fcd",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "The mean as a fair share",
+      "stem": "Four friends have 3, 5, 6 and 10 stickers. They put all the stickers together and share them equally. How many stickers does each friend get?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(3+5+6+10)/4",
+      "solution": "There are $3 + 5 + 6 + 10 = 24$ stickers in all. Shared equally among 4 friends, each gets $24 \\div 4 = 6$ stickers. This is the mean.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total 3 + 5 + 6 + 10 = 24; 24 / 4 = 6 each (the mean as fair share).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "9c7ed238-6fb9-4068-acc0-9cc3df8b5632",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Median of an even number of values",
+      "stem": "What is the median of the numbers 25, 12, 30, 18, 15 and 20?",
+      "choices": [],
+      "answer": "19",
+      "compute": "(18+20)/2",
+      "solution": "Put the numbers in order: 12, 15, 18, 20, 25, 30. With six numbers, the median is halfway between the two middle ones: $(18 + 20) \\div 2 = 19$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sorted: 12, 15, 18, 20, 25, 30. Median = (18 + 20) / 2 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "549d7603-189d-48b5-af3a-53cc81ab202b",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Finding a missing value from a mean",
+      "stem": "Dev took five tests and his mean score was 82. His first four scores were 78, 85, 90 and 80. What was his fifth score?",
+      "choices": [],
+      "answer": "77",
+      "compute": "5*82-(78+85+90+80)",
+      "solution": "A mean of 82 over 5 tests means the total is $5 \\times 82 = 410$. The first four scores add to $78 + 85 + 90 + 80 = 333$. The fifth score is $410 - 333 = 77$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "77",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total needed 5 x 82 = 410. First four: 78 + 85 + 90 + 80 = 333. Fifth = 410 - 333 = 77.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "2c9d6667-7b49-4e61-a56f-2ec1aeff84f9",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choosing the better measure of center when there is an outlier",
+      "stem": "Five students' walking times to school, in minutes, are 6, 7, 8, 9 and 60. Which measure best describes a typical walking time, and why?",
+      "choices": [
+        "The mean, because it uses every value",
+        "The mean, because outliers do not affect it",
+        "The median, because the value 60 pulls the mean up",
+        "The range, because it uses the smallest and largest values"
+      ],
+      "answer": "The median, because the value 60 pulls the mean up",
+      "compute": null,
+      "solution": "The median is 8 minutes. The mean is $90 \\div 5 = 18$ minutes, which is larger than four of the five times because the 60 pulls it up. The median describes a typical time better here.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The median, because the value 60 pulls the mean up",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mean = 90 / 5 = 18, pulled up by the outlier 60; median 8 is typical. Range is spread, not centre; outliers do affect the mean.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "3312d8f3-1946-4d39-8266-ba5d03423090",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "How adding a value changes a mean",
+      "stem": "The mean of 5 numbers is 20. A sixth number, 32, is added to the set. What is the mean of all 6 numbers?",
+      "choices": [],
+      "answer": "22",
+      "compute": "(5*20+32)/6",
+      "solution": "The first 5 numbers add to $5 \\times 20 = 100$. With 32 added the total is $132$ for 6 numbers, and $132 \\div 6 = 22$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum of 5 = 100. Add 32: 132. Mean = 132 / 6 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "1524faa6-be56-41e4-9b6e-37a7c2098710",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "How an outlier changes the mean",
+      "stem": "A data set is 4, 5, 6, 7 and 8. The 8 is changed to 38. By how much does the mean increase?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(4+5+6+7+38)/5-(4+5+6+7+8)/5",
+      "solution": "The original total is $30$, so the mean is $30 \\div 5 = 6$. The new total is $60$, so the new mean is $60 \\div 5 = 12$. The mean increases by $12 - 6 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum rises by 38 - 8 = 30; mean rises by 30 / 5 = 6 (from 6 to 12).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "f174fcfc-0ec6-4670-bf94-864497c47c36",
+      "topic_id": "NC26.6.RD.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Building a data set with a given mean and median",
+      "stem": "Which set of numbers has a mean of 10 and a median of 8?",
+      "choices": [
+        "$8, 8, 9, 12, 13$",
+        "$5, 8, 10, 13, 14$",
+        "$4, 6, 8, 9, 10$",
+        "$6, 8, 8, 12, 16$"
+      ],
+      "answer": "$6, 8, 8, 12, 16$",
+      "compute": null,
+      "solution": "For $6, 8, 8, 12, 16$: the total is 50, so the mean is $50 \\div 5 = 10$, and the middle number is 8. The set $8, 8, 9, 12, 13$ has mean 10 but median 9; $5, 8, 10, 13, 14$ has mean 10 but median 10; and $4, 6, 8, 9, 10$ has median 8 but a mean of 7.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6, 8, 8, 12, 16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: sum 50, mean 10, median 9. B: sum 50, mean 10, median 10. C: sum 37, mean 7.4. D: 6+8+8+12+16 = 50, mean 10, median 8. Only D.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "5e38bcd8-2018-4ca0-887e-f8ee7042ba25",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "What a comparison of means does and does not show",
+      "stem": "Two classes took the same quiz. The mean score in Class 1 was 18 and the mean score in Class 2 was 15. Which statement does this information support?",
+      "choices": [
+        "On average, Class 1 scored higher than Class 2",
+        "Every student in Class 1 scored higher than every student in Class 2",
+        "Class 1 had a smaller range of scores than Class 2",
+        "Class 1 had more students than Class 2"
+      ],
+      "answer": "On average, Class 1 scored higher than Class 2",
+      "compute": null,
+      "solution": "A higher mean tells us that, on average, Class 1 scored higher. It does not tell us about every student, the spread of the scores or the number of students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "On average, Class 1 scored higher than Class 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Means compare averages only; they say nothing about every individual, range, or class size.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "60e249f6-06c4-481c-b973-829d1e200d0d",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Describing spread with the range",
+      "stem": "A student recorded the hours of sleep that 10 classmates got last night: 7, 8, 8, 9, 9, 9, 9, 10, 10, 11. What is the range of the data in hours?",
+      "choices": [],
+      "answer": "4",
+      "compute": "11-7",
+      "solution": "The range is the greatest value minus the least value: $11 - 7 = 4$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range = 11 - 7 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "35406896-397b-47c6-9897-ad9f66220fd1",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Summarizing a distribution with its center and spread",
+      "stem": "Nine students' waiting times for the bus, in minutes, were 5, 6, 6, 7, 7, 7, 8, 8 and 9. Which sentence summarizes the data correctly?",
+      "choices": [
+        "The median is 6 minutes and the times go from 5 to 9 minutes",
+        "The median is 7 minutes and the times go from 5 to 8 minutes",
+        "The median is 7 minutes and the times go from 5 to 9 minutes",
+        "The median is 9 minutes and the times go from 5 to 7 minutes"
+      ],
+      "answer": "The median is 7 minutes and the times go from 5 to 9 minutes",
+      "compute": null,
+      "solution": "The 9 values are already in order, and the middle (5th) value is 7, so the median is 7 minutes. The smallest time is 5 and the largest is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The median is 7 minutes and the times go from 5 to 9 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 sorted values; median is the 5th: 7. Min 5, max 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "f99ade84-2fd3-4282-bba8-bca378024404",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Using variability to compare two sets of data",
+      "stem": "Over five days, Maya's bike ride to school took 20, 21, 20, 22 and 21 minutes. Jon's took 12, 30, 15, 28 and 19 minutes. Both have a mean of 20.8 minutes. Which statement is supported by the data?",
+      "choices": [
+        "Jon's rides are faster on average",
+        "Maya's times vary less than Jon's times",
+        "Maya's times vary more than Jon's times",
+        "Maya's mean time is greater than Jon's"
+      ],
+      "answer": "Maya's times vary less than Jon's times",
+      "compute": null,
+      "solution": "The means are equal, so neither rides faster on average. Maya's times range from 20 to 22 (a range of 2) and Jon's from 12 to 30 (a range of 18), so Maya's times vary less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Maya's times vary less than Jon's times",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Maya sum 104, Jon sum 104, both mean 20.8 (checked). Maya range 22 - 20 = 2; Jon range 30 - 12 = 18. Maya varies less. Means equal, so C and D false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "3b536122-0349-4861-af55-5bda63eeeac9",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Measuring the effect of an outlier on a summary",
+      "stem": "Ten classmates reported how many books they read last month: 3, 4, 4, 5, 5, 5, 6, 6, 7 and 25. The mean of the first nine numbers is 5. By how much does the 25 raise the mean when it is included?",
+      "choices": [],
+      "answer": "2",
+      "compute": "70/10-45/9",
+      "solution": "The first nine numbers add to $9 \\times 5 = 45$, so with the 25 the total is $70$. The mean of all ten is $70 \\div 10 = 7$. The 25 raises the mean from 5 to 7, which is by 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First nine: 3+4+4+5+5+5+6+6+7 = 45, mean 5 (checked). With 25: 70 / 10 = 7. Raised by 7 - 5 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "dff7ad3e-19ad-40a0-94b9-0cf25ee911e9",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Reflecting on the methods of an investigation",
+      "stem": "Sofia wants to find the typical number of hours that students at her school spend on video games. She asks 20 members of the school gaming club. What should she change to make her investigation better?",
+      "choices": [
+        "Ask the same 20 students a second time",
+        "Ask only the students who play the most",
+        "Ask fewer students",
+        "Ask students chosen at random from the whole school"
+      ],
+      "answer": "Ask students chosen at random from the whole school",
+      "compute": null,
+      "solution": "Gaming club members probably play more than most students, so her sample is biased. A random sample from the whole school would better represent all of its students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ask students chosen at random from the whole school",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Gaming club members are a biased sample; a random sample of the whole school is representative.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "6dcd0a2b-d2c7-48f8-ac33-fa96fef6cf3e",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Drawing an inference from the mean and median together",
+      "stem": "On a test, 12 students had a mean score of 78 and a median score of 85. Which conclusion is best supported?",
+      "choices": [
+        "A few very high scores probably pulled the mean above the median",
+        "More than half of the students scored below 78",
+        "A few low scores probably pulled the mean below the median",
+        "Every student scored between 78 and 85"
+      ],
+      "answer": "A few low scores probably pulled the mean below the median",
+      "compute": null,
+      "solution": "The median is 85, so half of the students scored 85 or more. The mean is lower, at 78, which happens when a few very low scores pull the mean down. The other statements are not supported, or are impossible, when the median is 85 and the mean is 78.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A few low scores probably pulled the mean below the median",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mean (78) below median (85) indicates a few low scores pulled the mean down. A: not implied. C: opposite. D: median 85 means about half scored at or above 85, so not more than half below 78.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "201b485c-dc33-4467-b678-7cebe1e31965",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Describing the spread of the middle half of the data",
+      "stem": "Twelve runners' times, in seconds, were 14, 15, 16, 16, 17, 17, 18, 19, 20, 20, 21 and 29. The middle half of the times lie between the first quartile and the third quartile. How many seconds wide is that middle part (the IQR)?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20-16",
+      "solution": "The lower six times are 14, 15, 16, 16, 17, 17, so the first quartile is the middle of those: $(16 + 16) \\div 2 = 16$. The upper six times are 18, 19, 20, 20, 21, 29, so the third quartile is $(20 + 20) \\div 2 = 20$. The IQR is $20 - 16 = 4$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 sorted values. Lower half 14, 15, 16, 16, 17, 17: Q1 = (16 + 16)/2 = 16. Upper half 18, 19, 20, 20, 21, 29: Q3 = (20 + 20)/2 = 20. IQR = 4. (Interpolation methods also give 16 and 20.)",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    },
+    {
+      "id": "689b02fd-237a-4b9d-a11c-281f872673ea",
+      "topic_id": "NC26.6.RD.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Using a representative sample to estimate for the whole group",
+      "stem": "A representative sample of 40 students from a school of 600 students was asked how long they spend on homework each night. In the sample, 14 students said they spend more than an hour. About how many of the 600 students would you expect to spend more than an hour?",
+      "choices": [],
+      "answer": "210",
+      "compute": "14/40*600",
+      "solution": "In the sample, $\\frac{14}{40} = 0.35$ of the students spend more than an hour. If the sample is representative, about $0.35 \\times 600 = 210$ students in the school do.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "210",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sample proportion 14/40 = 0.35. 0.35 x 600 = 210.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:35.292Z"
+        }
+      }
+    }
+  ]
+}

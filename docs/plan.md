@@ -309,8 +309,11 @@ Built 2026-10-17 (`docs/ai-platform-plan.md`):
   `evaluateExact`, `checkAnswer`), the blind solve, approval only from `checked`, edits clearing it,
   retire and restore, "needs a figure" per standard. Console: Question bank (coverage against 6 per
   standard, a standard's questions, a keyboard review queue, writing for a whole grade) and AI.
-- `db/questions/*.json` -> `db/questions.sql` (12 hand-written questions for 4.ANR.1-2 until the
-  first export), loaded by every local and demo build; `npm run questions:export`.
+- `db/questions/*.json` -> `db/questions.sql` (12 hand-written questions for 4.ANR.1-2, plus the
+  first writing), loaded by every local and demo build; `npm run questions:export`.
+- The first writing, 2026-10-17, without the API key: Claude Code ran the same pipeline (Sonnet
+  writes, `lintQuestion`, Opus solves blind) over all 98 standards, 9 questions each; what passed
+  is `checked` in the repository and in production's bank, waiting for a platform admin's review.
 - Not built: Workers AI as a provider (its local binding needs a Cloudflare login); a test of the
   consent refusal through a real task (no `child_input` task exists yet -- the first one adds it).
 - Production SQL: `docs/database.md`, Phase 36. Writing questions needs `ANTHROPIC_API_KEY` set on

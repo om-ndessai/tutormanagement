@@ -44,6 +44,11 @@ const OUTSIDE: { who: 'admin' | 'platformAdmin'; path: string }[] = [
   { who: 'platformAdmin', path: '/platform/admins' },
   { who: 'platformAdmin', path: '/platform/people' },
   { who: 'platformAdmin', path: '/platform/activity' },
+  // Phase 36: the question bank, with the repository's questions and their maths.
+  { who: 'platformAdmin', path: '/platform/questions' },
+  { who: 'platformAdmin', path: '/platform/questions/NC26.M1.ANFR.1' },
+  { who: 'platformAdmin', path: '/platform/questions/review' },
+  { who: 'platformAdmin', path: '/platform/ai' },
 ];
 for (const width of WIDTHS) {
   for (const { who, path } of [...OUTSIDE, { who: 'admin' as const, path: '/organization' }]) {

@@ -699,6 +699,24 @@ Then the Anthropic key on both production Workers (the owner's): `npx wrangler s
 ANTHROPIC_API_KEY` and `npx wrangler secret put ANTHROPIC_API_KEY --env tutoring`. Until it is set,
 writing questions answers 503 `not_configured` and logs a `provider_error` run (`no_api_key`).
 
+**The bank's first writing (2026-10-17) was done without the key**, by Claude Code: Claude Sonnet
+agents wrote 9 questions per standard (3 at each difficulty) from the catalog's own summaries,
+`lintQuestion` checked them, Claude Opus agents solved them blind (choices shuffled, no key), and
+the flagged ones were rewritten once and solved again. What passed is in `db/questions/*.json` as
+`checked` (with its blind solve in `checks`; no `ai_runs` row, since `runAi` was not involved). It
+reaches production as INSERTs, never as approvals -- approving is a person's act, in the console:
+
+```bash
+cd apps/api
+node db/generate-questions.mjs --production=/tmp/questions-seed.sql   # the checked questions only
+npx wrangler d1 execute tutoring-db --remote --file=/tmp/questions-seed.sql
+# read-only: how many wait for review, and on how many standards
+npx wrangler d1 execute tutoring-db --remote --command="SELECT status, COUNT(*), COUNT(DISTINCT topic_id) FROM questions GROUP BY status"
+```
+
+`ON CONFLICT (id) DO NOTHING` leaves a question already there alone, so running it twice adds
+nothing.
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

@@ -1,0 +1,3109 @@
+{
+  "level_id": "NC26.5",
+  "source": "Written 2026-10-17 by Claude Sonnet and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Hand-written fixture questions are \"approved\".",
+  "notes": {
+    "NC26.5.ANR.5": "Fraction answer options in choice questions are written as plain a/b (not LaTeX) so the checker can recompute them.",
+    "NC26.5.ANR.4": "Whole-number multipliers and divisors are kept at 4 or below, since the summary says 'within 4'.",
+    "NC26.5.SGMR.1": "Trapezoid and kite are avoided as answers or options because their definitions (inclusive or exclusive) vary; only square, rectangle, rhombus and parallelogram are used.",
+    "NC26.5.SGMR.2": "All points are given as written ordered pairs in the first quadrant; no figure is referred to.",
+    "NC26.5.RD.1": "No graphs are shown: data are given as written lists of values, so questions test categorical vs numerical data, planning, reading values, conclusions and predictions from the data."
+  },
+  "questions": [
+    {
+      "id": "e307d596-3d51-4b29-8380-7909233c78f5",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Order of operations: multiplication before addition",
+      "stem": "Find the value of $6 + 4 \\times 3$.",
+      "choices": [],
+      "answer": "18",
+      "compute": "6+4*3",
+      "solution": "Multiply first: $4 \\times 3 = 12$. Then add: $6 + 12 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiply first: 4 x 3 = 12. Then 6 + 12 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c4e69b83-29bd-4342-b549-2381c3f3b24f",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order of operations: division before subtraction",
+      "stem": "What is the value of $30 - 12 \\div 3$?",
+      "choices": [
+        "6",
+        "18",
+        "26",
+        "34"
+      ],
+      "answer": "26",
+      "compute": "30-12/3",
+      "solution": "Divide first: $12 \\div 3 = 4$. Then subtract: $30 - 4 = 26$. (Subtracting first would give 6, which is a common mistake.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide first: 12 / 3 = 4. Then 30 - 4 = 26.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "113fa276-5c0e-472a-87b0-67450ba3fb67",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an expression for a described calculation",
+      "stem": "Which expression means \"add 5 and 2, then multiply the result by 3\"?",
+      "choices": [
+        "$5 + 2 \\times 3$",
+        "$(5 + 2) \\times 3$",
+        "$5 \\times 3 + 2$",
+        "$5 + 2 + 3$"
+      ],
+      "answer": "$(5 + 2) \\times 3$",
+      "compute": null,
+      "solution": "The adding happens first, so $5 + 2$ goes inside parentheses and the result is multiplied by 3: $(5 + 2) \\times 3$. Without parentheses, the multiplication would be done first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5 + 2) \\times 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Add 5 and 2 first needs parentheses: (5 + 2), then times 3: (5 + 2) x 3 = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "60b125b0-8c22-4716-8c0d-4979aaa40255",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Parentheses change the order of operations",
+      "stem": "Find the value of $36 \\div (2 + 4)$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "36/(2+4)",
+      "solution": "Work inside the parentheses first: $2 + 4 = 6$. Then divide: $36 \\div 6 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Parentheses: 2 + 4 = 6. 36 / 6 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "657921ea-c90c-481d-819e-dc22ef366534",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Distributive property",
+      "stem": "Which expression is equal to $7 \\times (20 + 4)$?",
+      "choices": [
+        "$7 \\times 20 + 4$",
+        "$7 \\times 20 \\times 4$",
+        "$7 \\times 20 - 7 \\times 4$",
+        "$7 \\times 20 + 7 \\times 4$"
+      ],
+      "answer": "$7 \\times 20 + 7 \\times 4$",
+      "compute": null,
+      "solution": "The 7 multiplies both numbers in the parentheses: $7 \\times 20 + 7 \\times 4$. Check: $7 \\times 24 = 168$ and $140 + 28 = 168$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 20 + 7 \\times 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive property: 7 x (20 + 4) = 7 x 20 + 7 x 4 = 140 + 28 = 168. Others: 144, 560, 112.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "045524bc-fab6-424a-b604-9e385f95712e",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Associative property of addition",
+      "stem": "What number goes in the box to make the equation true? $12 + (8 + 15) = (12 + \\square) + 15$",
+      "choices": [],
+      "answer": "8",
+      "compute": null,
+      "solution": "Numbers can be grouped in a different way without changing a sum. On the right, 12 is now added to the first number of the pair, which is 8. So the box is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associative property: 12 + (8 + 15) = (12 + 8) + 15, so the box is 8. Check: 35 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "037a88e1-019e-482d-b4df-d3a8b1e0c3bc",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate an expression with parentheses and two other operations",
+      "stem": "Find the value of $2 \\times (15 - 6) + 4 \\times 3$.",
+      "choices": [],
+      "answer": "30",
+      "compute": "2*(15-6)+4*3",
+      "solution": "Parentheses first: $15 - 6 = 9$. Then multiply: $2 \\times 9 = 18$ and $4 \\times 3 = 12$. Then add: $18 + 12 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 6 = 9; 2 x 9 = 18; 4 x 3 = 12; 18 + 12 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "8e6bf441-28e3-45a9-8463-bd6fdc8d7d29",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare the values of expressions",
+      "stem": "Which expression has the greatest value?",
+      "choices": [
+        "$24 \\div 4 + 2$",
+        "$24 \\div (4 + 2)$",
+        "$(24 - 4) \\times 2$",
+        "$24 - 4 \\times 2$"
+      ],
+      "answer": "$(24 - 4) \\times 2$",
+      "compute": null,
+      "solution": "$24 \\div 4 + 2 = 8$, $24 \\div (4 + 2) = 4$, $24 - 4 \\times 2 = 16$, and $(24 - 4) \\times 2 = 40$. The greatest is $(24 - 4) \\times 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(24 - 4) \\times 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(24-4) x 2 = 40; 24/(4+2) = 4; 24 - 4x2 = 16; 24/4 + 2 = 8. Greatest is 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "4c2b990f-e1e9-4c7b-aba8-a56a1341fadb",
+      "topic_id": "NC26.5.ANR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "Each box holds 6 red pens and 4 blue pens. Which expression gives the number of pens in 3 boxes?",
+      "choices": [
+        "$3 \\times (6 + 4)$",
+        "$3 \\times 6 + 4$",
+        "$3 + 6 \\times 4$",
+        "$3 \\times 6 \\times 4$"
+      ],
+      "answer": "$3 \\times (6 + 4)$",
+      "compute": null,
+      "solution": "One box holds $6 + 4$ pens. Three boxes hold 3 times that: $3 \\times (6 + 4) = 30$ pens. The other expressions multiply only one kind of pen by 3, or multiply all three numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times (6 + 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each box has 6 + 4 = 10 pens; 3 boxes: 3 x (6 + 4) = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "629dacb6-1103-4921-8440-3f117303c8a7",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Value of a digit up to the millions",
+      "stem": "In the number $3{,}482{,}915$, what is the value of the digit 4?",
+      "choices": [],
+      "answer": "400000",
+      "compute": "4*100000",
+      "solution": "Reading from the left, the places are millions (3), hundred thousands (4), ten thousands (8), and so on. The 4 is in the hundred thousands place, so its value is $4 \\times 100{,}000 = 400{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,482,915: 3 millions, 4 hundred thousands. Value = 400,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "5c641146-d135-4dcd-bfec-85fe2bcc86fb",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Expanded form of a decimal",
+      "stem": "Which number is equal to $6 + 0.2 + 0.05$?",
+      "choices": [
+        "6.025",
+        "6.25",
+        "6.205",
+        "6.52"
+      ],
+      "answer": "6.25",
+      "compute": "6+0.2+0.05",
+      "solution": "The 6 is the ones, 0.2 is 2 tenths, and 0.05 is 5 hundredths. Together they make 6.25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 0.2 + 0.05 = 6.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "6080079a-8800-4b1d-8187-676fd38e63c4",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by 10",
+      "stem": "What is $3.6 \\times 10$?",
+      "choices": [],
+      "answer": "36",
+      "compute": "3.6*10",
+      "solution": "Multiplying by 10 moves every digit one place to the left, so 3.6 becomes 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplying by 10 moves each digit one place left: 3.6 x 10 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "64989e4d-388a-414d-89d9-abc8b7f17d1a",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read a decimal written in words",
+      "stem": "Which decimal is written in words as \"four and thirty-seven thousandths\"?",
+      "choices": [
+        "4.37",
+        "4.0037",
+        "4.307",
+        "4.037"
+      ],
+      "answer": "4.037",
+      "compute": "4+37/1000",
+      "solution": "\"Four\" is the whole number. \"Thirty-seven thousandths\" needs three places after the decimal point: 037. So the number is 4.037.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.037",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four and thirty-seven thousandths = 4 + 37/1000 = 4.037.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "4911f6cc-36fc-426e-ac15-55d26fc25905",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a power of ten",
+      "stem": "What is $9.3 \\div 100$?",
+      "choices": [],
+      "answer": "0.093",
+      "compute": "9.3/100",
+      "solution": "Dividing by 100 moves every digit two places to the right, so 9.3 becomes 0.093.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.093",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dividing by 100 moves digits two places right: 9.3 / 100 = 0.093.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b69f8f40-5165-4170-92d9-a492187579fa",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order decimals",
+      "stem": "Which list shows these decimals in order from least to greatest: 0.45, 0.405, 0.054, 0.5?",
+      "choices": [
+        "0.054, 0.405, 0.45, 0.5",
+        "0.5, 0.45, 0.405, 0.054",
+        "0.5, 0.45, 0.054, 0.405",
+        "0.054, 0.45, 0.405, 0.5"
+      ],
+      "answer": "0.054, 0.405, 0.45, 0.5",
+      "compute": null,
+      "solution": "Write each with three decimal places: 0.450, 0.405, 0.054, 0.500. From least to greatest: 0.054, 0.405, 0.450, 0.500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.054, 0.405, 0.45, 0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "As thousandths: 0.450, 0.405, 0.054, 0.500. Order: 0.054, 0.405, 0.45, 0.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "31a8a173-c318-4cf0-82a5-b7f19019e67d",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare the value of a digit in two numbers",
+      "stem": "How many times as great is the value of the digit 7 in $7{,}214$ as the value of the digit 7 in $3.072$?",
+      "choices": [],
+      "answer": "100000",
+      "compute": "7000/0.07",
+      "solution": "In $7{,}214$ the 7 is in the thousands place, so its value is 7,000. In $3.072$ the 7 is in the hundredths place, so its value is 0.07. Since $7{,}000 \\div 0.07 = 100{,}000$, the first is 100,000 times as great.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In 7,214 the 7 is worth 7,000. In 3.072 the 7 is in the hundredths place, worth 0.07. 7,000 / 0.07 = 100,000 (five places apart, 10^5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b4cbd36f-4a87-48f4-acf6-42b03247a424",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reverse a pattern of dividing by ten",
+      "stem": "A number is divided by 10. The result is 0.38. What is the number?",
+      "choices": [],
+      "answer": "3.8",
+      "compute": "0.38*10",
+      "solution": "Dividing by 10 moves each digit one place to the right, so to undo it multiply by 10: $0.38 \\times 10 = 3.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n / 10 = 0.38, so n = 0.38 x 10 = 3.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "ce24ab06-39b0-465f-8d90-6609badad014",
+      "topic_id": "NC26.5.ANR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which comparison is true?",
+      "choices": [
+        "$0.15 > 0.5$",
+        "$2.04 > 2.4$",
+        "$0.7 > 0.699$",
+        "$3.1 < 3.099$"
+      ],
+      "answer": "$0.7 > 0.699$",
+      "compute": null,
+      "solution": "Compare place by place. $0.700 > 0.699$ is true. The others are false: $0.15 < 0.50$, $2.04 < 2.40$, and $3.100 > 3.099$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.7 > 0.699$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.15 < 0.5; 3.1 > 3.099; 2.04 < 2.4; 0.700 > 0.699 is true.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c53f88f6-297a-49d9-b533-3ca835a47809",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a two-digit number",
+      "stem": "Find $124 \\times 12$.",
+      "choices": [],
+      "answer": "1488",
+      "compute": "124*12",
+      "solution": "$124 \\times 10 = 1{,}240$ and $124 \\times 2 = 248$. Add: $1{,}240 + 248 = 1{,}488$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1488",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "124 x 12 = 124 x 10 + 124 x 2 = 1,240 + 248 = 1,488.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "4dd9ccd9-a694-4154-abc7-281a6f8b1404",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide a four-digit number by a one-digit number",
+      "stem": "What is $1{,}248 \\div 4$?",
+      "choices": [
+        "312",
+        "32",
+        "302",
+        "3,012"
+      ],
+      "answer": "312",
+      "compute": "1248/4",
+      "solution": "$12 \\div 4 = 3$ (hundreds), $4 \\div 4 = 1$ (tens), $8 \\div 4 = 2$ (ones). The quotient is 312. Check: $312 \\times 4 = 1{,}248$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "312",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,248 / 4: 12/4 = 3, 4/4 = 1, 8/4 = 2 -> 312. Check 312 x 4 = 1,248.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "d0e73874-5ef3-4dbc-8025-a4cfb10c7e7c",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "A box holds 305 pencils. How many pencils are in 20 boxes?",
+      "choices": [],
+      "answer": "6100",
+      "compute": "305*20",
+      "solution": "$305 \\times 2 = 610$, and multiplying by 10 more gives $6{,}100$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "305 x 20 = 6,100.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "e50efa73-121a-4e40-801f-12ecef196ab3",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a two-digit number",
+      "stem": "Find $467 \\times 38$.",
+      "choices": [],
+      "answer": "17746",
+      "compute": "467*38",
+      "solution": "$467 \\times 30 = 14{,}010$ and $467 \\times 8 = 3{,}736$. Add: $14{,}010 + 3{,}736 = 17{,}746$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17746",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "467 x 38 = 467 x 30 + 467 x 8 = 14,010 + 3,736 = 17,746.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "6be2ca6a-1c38-4a2a-bc60-8c0a487078cb",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret a remainder in a division problem",
+      "stem": "Pencils are packed 8 to a box. A school has $1{,}250$ pencils. How many boxes are needed to pack all of the pencils?",
+      "choices": [],
+      "answer": "157",
+      "compute": null,
+      "solution": "$1{,}250 \\div 8 = 156$ with a remainder of 2. The 156 full boxes hold $1{,}248$ pencils, and the 2 pencils left over need one more box. So 157 boxes are needed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "157",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,250 / 8 = 156 R 2 (8 x 156 = 1,248). The 2 leftover pencils need one more box, so 157 boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "1d59c5c5-3258-4502-a522-ccc061e02455",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Long division with a zero in the quotient",
+      "stem": "What is $2{,}436 \\div 6$?",
+      "choices": [
+        "46",
+        "416",
+        "406",
+        "460"
+      ],
+      "answer": "406",
+      "compute": "2436/6",
+      "solution": "$24 \\div 6 = 4$ (hundreds). The 3 tens cannot be shared by 6, so the tens digit is 0. Then $36 \\div 6 = 6$ (ones). The quotient is 406. Check: $406 \\times 6 = 2{,}436$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "406",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,436 / 6: 24/6 = 4, 3/6 = 0 r3, 36/6 = 6 -> 406. Check 406 x 6 = 2,436.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b93e5814-eba2-45f5-9d10-ed2ba4008647",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step problem with multiplication and division",
+      "stem": "A school buys 24 boxes of markers. Each box has 36 markers. The markers are shared equally among 9 classes. How many markers does each class get?",
+      "choices": [],
+      "answer": "96",
+      "compute": "24*36/9",
+      "solution": "Total markers: $24 \\times 36 = 864$. Each class gets $864 \\div 9 = 96$ markers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 x 36 = 864 markers; 864 / 9 = 96 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c1951f61-c466-42e1-b390-9447b35cbb83",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the remainder in a division problem",
+      "stem": "A baker packs 7 muffins into each bag. She has $4{,}000$ muffins. After she fills as many bags as she can, how many muffins are left over?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4000-7*571",
+      "solution": "$4{,}000 \\div 7 = 571$ with a remainder. $7 \\times 571 = 3{,}997$, and $4{,}000 - 3{,}997 = 3$. So 3 muffins are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,000 / 7: 7 x 571 = 3,997, remainder 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "9a42db75-441b-4aad-894d-31d185be602f",
+      "topic_id": "NC26.5.ANR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Which is the best estimate for $5{,}987 \\div 3$?",
+      "choices": [
+        "200",
+        "20,000",
+        "1,000",
+        "2,000"
+      ],
+      "answer": "2,000",
+      "compute": "6000/3",
+      "solution": "$5{,}987$ is close to $6{,}000$, and $6{,}000 \\div 3 = 2{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5,987 is about 6,000; 6,000 / 3 = 2,000. (Exact about 1,995.7.)",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "7560e3b1-c0ba-46af-9524-67f3c76927cc",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Find $3.45 + 2.3$.",
+      "choices": [],
+      "answer": "5.75",
+      "compute": "3.45+2.3",
+      "solution": "Line up the decimal points: $3.45 + 2.30 = 5.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.45 + 2.30 = 5.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "357448a0-75a4-4892-bb4e-c4d17f8e0253",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "What is $8.6 - 3.25$?",
+      "choices": [
+        "5.45",
+        "5.35",
+        "4.81",
+        "11.85"
+      ],
+      "answer": "5.35",
+      "compute": "8.6-3.25",
+      "solution": "Line up the decimal points and write 8.6 as 8.60: $8.60 - 3.25 = 5.35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.60 - 3.25 = 5.35.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "42059910-c886-4990-a6f7-074cdef8a9ca",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Each bottle holds 2.4 liters of juice. How many liters of juice are in 3 bottles?",
+      "choices": [],
+      "answer": "7.2",
+      "compute": "2.4*3",
+      "solution": "$2.4 \\times 3 = 7.2$. (24 tenths times 3 is 72 tenths.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4 x 3 = 7.2 liters.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b5f9e763-4145-40cc-92e4-a4202b2f921e",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract decimals to the thousandths",
+      "stem": "Find $12.4 - 5.678$.",
+      "choices": [],
+      "answer": "6.722",
+      "compute": "12.4-5.678",
+      "solution": "Write 12.4 as 12.400 and line up the decimal points: $12.400 - 5.678 = 6.722$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.722",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.400 - 5.678 = 6.722.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "f13d42b3-c589-419b-9657-868ef790544b",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Find $8.52 \\div 4$.",
+      "choices": [],
+      "answer": "2.13",
+      "compute": "8.52/4",
+      "solution": "$8.52 \\div 4 = 2.13$. Check: $2.13 \\times 4 = 8.52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.52 / 4 = 2.13 (4 x 2.13 = 8.52).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b4351ef6-21e1-4898-a711-5818c67661c1",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number in context",
+      "stem": "A rope is 1.25 meters long. How many meters long are 4 of these ropes laid end to end?",
+      "choices": [
+        "0.5",
+        "4.25",
+        "50",
+        "5"
+      ],
+      "answer": "5",
+      "compute": "1.25*4",
+      "solution": "$1.25 \\times 4 = 5$. (125 hundredths times 4 is 500 hundredths, which is 5.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.25 x 4 = 5 meters.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "69231eb7-d162-4db6-9b59-59e862237c9b",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step problem with decimals",
+      "stem": "Jo buys a notebook for 2.75 dollars and 3 pens that cost 1.35 dollars each. How many dollars does Jo spend in all?",
+      "choices": [],
+      "answer": "6.8",
+      "compute": "2.75+3*1.35",
+      "solution": "The pens cost $3 \\times 1.35 = 4.05$ dollars. Add the notebook: $2.75 + 4.05 = 6.80$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 pens: 3 x 1.35 = 4.05. Total: 2.75 + 4.05 = 6.80 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "03c6048f-dd62-4103-b853-352f77969bf1",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step problem with dividing and subtracting decimals",
+      "stem": "A ribbon 9.6 meters long is cut into 3 equal pieces. Then 0.45 meter is cut off one of the pieces. How many meters long is that piece now?",
+      "choices": [
+        "2.75",
+        "3.05",
+        "3.65",
+        "3.2"
+      ],
+      "answer": "2.75",
+      "compute": "9.6/3-0.45",
+      "solution": "Each piece is $9.6 \\div 3 = 3.2$ meters. After cutting off 0.45 meter: $3.2 - 0.45 = 2.75$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.6 / 3 = 3.2 m per piece; 3.2 - 0.45 = 2.75 m.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "196c45fe-d223-468b-8927-be54b046932e",
+      "topic_id": "NC26.5.ANR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a sum of decimals",
+      "stem": "Which is the best estimate of $4.9 + 2.1 + 7.05$?",
+      "choices": [
+        "13",
+        "140",
+        "14",
+        "1.4"
+      ],
+      "answer": "14",
+      "compute": "5+2+7",
+      "solution": "Round each number to the nearest whole number: $5 + 2 + 7 = 14$. The exact sum is 14.05.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Round: 5 + 2 + 7 = 14 (exact 14.05). Best estimate 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "4572d1ff-6dbc-442a-a2de-c06db54e8c45",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add fractions with unlike denominators",
+      "stem": "Find $\\frac{1}{2} + \\frac{1}{4}$.",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "1/2+1/4",
+      "solution": "Rename $\\frac{1}{2}$ as $\\frac{2}{4}$. Then $\\frac{2}{4} + \\frac{1}{4} = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 = 2/4; 2/4 + 1/4 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "1a39ef15-a1c8-4ed6-a118-eec14d623909",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract fractions with unlike denominators",
+      "stem": "What is $\\frac{5}{6} - \\frac{1}{3}$?",
+      "choices": [
+        "4/6",
+        "4/3",
+        "1/3",
+        "1/2"
+      ],
+      "answer": "1/2",
+      "compute": "5/6-1/3",
+      "solution": "Rename $\\frac{1}{3}$ as $\\frac{2}{6}$. Then $\\frac{5}{6} - \\frac{2}{6} = \\frac{3}{6} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3 = 2/6; 5/6 - 2/6 = 3/6 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "45314cab-b39d-45bc-b233-af928ed4b642",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "A fraction as division",
+      "stem": "3 friends share 2 sandwiches equally. What fraction of a sandwich does each friend get?",
+      "choices": [],
+      "answer": "2/3",
+      "compute": "2/3",
+      "solution": "Sharing 2 equally among 3 is $2 \\div 3 = \\frac{2}{3}$ of a sandwich each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 sandwiches / 3 friends = 2/3 sandwich each.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "cc6b9ec7-5756-486e-b6b4-70c540ede22d",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply fractions",
+      "stem": "Find $\\frac{2}{3} \\times \\frac{3}{4}$.",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "2/3*3/4",
+      "solution": "Multiply the numerators and the denominators: $\\frac{2 \\times 3}{3 \\times 4} = \\frac{6}{12} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 x 3/4 = 6/12 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "7eaa047f-4abe-43a6-82ab-d603ab8096ef",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add fractions with unlike denominators",
+      "stem": "What is $\\frac{2}{3} + \\frac{1}{4}$?",
+      "choices": [
+        "11/12",
+        "3/7",
+        "3/12",
+        "5/12"
+      ],
+      "answer": "11/12",
+      "compute": "2/3+1/4",
+      "solution": "Use a common denominator of 12: $\\frac{8}{12} + \\frac{3}{12} = \\frac{11}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 = 8/12, 1/4 = 3/12; sum 11/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "2915b4f5-9a8f-4adb-a777-a193eb9e9dc6",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Scaling: multiplying by a fraction less than 1",
+      "stem": "Without finding the products, which expression is less than $\\frac{5}{8}$?",
+      "choices": [
+        "$\\frac{5}{8} \\times \\frac{4}{3}$",
+        "$\\frac{5}{8} \\times \\frac{5}{5}$",
+        "$\\frac{5}{8} \\times \\frac{3}{4}$",
+        "$\\frac{5}{8} \\times 2$"
+      ],
+      "answer": "$\\frac{5}{8} \\times \\frac{3}{4}$",
+      "compute": null,
+      "solution": "Multiplying by a number less than 1 makes a number smaller. Only $\\frac{3}{4}$ is less than 1. The factor $\\frac{5}{5}$ equals 1 (no change), and $\\frac{4}{3}$ and 2 are greater than 1 (larger).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{8} \\times \\frac{3}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplying by a fraction less than 1 gives a smaller product. 5/5 = 1 (equal), 2 and 4/3 are greater than 1, 3/4 < 1. So 5/8 x 3/4 < 5/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "3bbf0087-8540-49a4-a3d4-914cb3bedd06",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide a unit fraction by a whole number",
+      "stem": "One-third of a pizza is shared equally among 4 people. What fraction of the whole pizza does each person get?",
+      "choices": [],
+      "answer": "1/12",
+      "compute": "(1/3)/4",
+      "solution": "Each person gets $\\frac{1}{3} \\div 4 = \\frac{1}{12}$ of the pizza. (Cut each third into 4 equal parts; 12 such parts make the whole.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3 / 4 = 1/3 x 1/4 = 1/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c680e00c-c796-4944-b17f-19cb3bd17a23",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide a whole number by a unit fraction",
+      "stem": "A ribbon 4 meters long is cut into pieces that are each $\\frac{1}{5}$ of a meter long. How many pieces are there?",
+      "choices": [
+        "4/5",
+        "20",
+        "1/20",
+        "5/4"
+      ],
+      "answer": "20",
+      "compute": "4/(1/5)",
+      "solution": "Each meter makes 5 pieces, so 4 meters make $4 \\times 5 = 20$ pieces. That is $4 \\div \\frac{1}{5} = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 / (1/5) = 4 x 5 = 20 pieces.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "ccf4260c-1301-41f2-99c4-b2f349732b88",
+      "topic_id": "NC26.5.ANR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add fractions with unlike denominators in a mixed-number answer",
+      "stem": "Tom ran $\\frac{2}{3}$ mile on Monday and $\\frac{3}{4}$ mile on Tuesday. How many miles did he run in all? Write your answer as a mixed number.",
+      "choices": [],
+      "answer": "1 5/12",
+      "compute": "2/3+3/4",
+      "solution": "Use a common denominator of 12: $\\frac{8}{12} + \\frac{9}{12} = \\frac{17}{12} = 1\\frac{5}{12}$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 5/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 + 3/4 = 8/12 + 9/12 = 17/12 = 1 5/12 miles.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "f03602c9-757a-4fac-b962-fe34580d5e5c",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Extend an adding pattern",
+      "stem": "A pattern starts at 0 and adds 3 each time: 0, 3, 6, 9, ... What is the 6th number in the pattern?",
+      "choices": [],
+      "answer": "15",
+      "compute": "0+5*3",
+      "solution": "Continue the pattern: 0, 3, 6, 9, 12, 15. The 6th number is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0, 3, 6, 9, 12, 15: the 6th number is 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "351bb115-dbba-40d6-9fb0-a93e9364b013",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Relationship between matching numbers of two patterns",
+      "stem": "Pattern A starts at 0 and adds 2: 0, 2, 4, 6. Pattern B starts at 0 and adds 6: 0, 6, 12, 18. How are the matching numbers related?",
+      "choices": [
+        "Each number in B is 4 more than the matching number in A",
+        "Each number in B is 6 more than the matching number in A",
+        "Each number in B is 3 times the matching number in A",
+        "Each number in B is 2 times the matching number in A"
+      ],
+      "answer": "Each number in B is 3 times the matching number in A",
+      "compute": null,
+      "solution": "Match them up: $0 \\to 0$, $2 \\to 6$, $4 \\to 12$, $6 \\to 18$. Each number in B is 3 times the number in A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each number in B is 3 times the matching number in A",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs (0,0), (2,6), (4,12), (6,18): B = 3 x A. Differences vary (4, 8, 12), so not a constant 'more than'.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "8448b512-ca64-41a4-8d9e-036410134acf",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Extend a multiplying pattern",
+      "stem": "A pattern starts at 3 and multiplies by 2 each time: 3, 6, 12, 24, ... What is the next number?",
+      "choices": [],
+      "answer": "48",
+      "compute": "24*2",
+      "solution": "Each number is double the one before it, so the next number is $24 \\times 2 = 48$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 x 2 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c62643b2-8e3a-44a7-bd83-4f2a903b5963",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the relationship between two patterns to predict",
+      "stem": "Pattern A: 0, 4, 8, 12, ... Pattern B: 0, 8, 16, 24, ... The 10th number in Pattern A is 36. What is the 10th number in Pattern B?",
+      "choices": [],
+      "answer": "72",
+      "compute": "36*2",
+      "solution": "Each number in B is 2 times the matching number in A ($4 \\to 8$, $8 \\to 16$, $12 \\to 24$). So the 10th number in B is $36 \\times 2 = 72$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A's nth term 4(n-1): 10th = 36 (matches). B's nth term 8(n-1) = 2 x A: 10th = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "1b33c68c-3640-4e53-9cfe-c219087555ce",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Relationship between matching numbers of two patterns",
+      "stem": "Pattern X starts at 1 and adds 2: 1, 3, 5, 7. Pattern Y starts at 4 and adds 2: 4, 6, 8, 10. Which statement describes the matching numbers?",
+      "choices": [
+        "Each number in Y is 3 more than the matching number in X",
+        "Each number in Y is 3 times the matching number in X",
+        "Each number in Y is 2 more than the matching number in X",
+        "Each number in Y is 4 more than the matching number in X"
+      ],
+      "answer": "Each number in Y is 3 more than the matching number in X",
+      "compute": null,
+      "solution": "Match them up: $1 \\to 4$, $3 \\to 6$, $5 \\to 8$, $7 \\to 10$. The difference is always 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each number in Y is 3 more than the matching number in X",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs (1,4), (3,6), (5,8), (7,10): Y = X + 3 each time. Not 3 times (1 -> 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b67f5338-3ddd-42a2-8264-4b975679d58b",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the position of a number in a pattern",
+      "stem": "A pattern starts at 7 and adds 6 each time: 7, 13, 19, 25, ... In what position is the number 43? (The number 7 is in position 1.)",
+      "choices": [],
+      "answer": "7",
+      "compute": "(43-7)/6+1",
+      "solution": "Continue: 7 (1st), 13 (2nd), 19 (3rd), 25 (4th), 31 (5th), 37 (6th), 43 (7th). The number 43 is in position 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 6(n-1) = 43 -> 6(n-1) = 36 -> n - 1 = 6 -> n = 7. List: 7, 13, 19, 25, 31, 37, 43 (7th).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "794c0d76-4770-4d09-90df-1268b2fb7abd",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the relationship between two patterns, with division",
+      "stem": "Pattern A starts at 0 and adds 6. Pattern B starts at 0 and adds 2. The 8th number in Pattern A is 42. What is the 8th number in Pattern B?",
+      "choices": [],
+      "answer": "14",
+      "compute": "42/3",
+      "solution": "Each number in A is 3 times the matching number in B, because 6 is 3 times 2. So the 8th number in B is $42 \\div 3 = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A's 8th = 7 x 6 = 42 (matches). B's 8th = 7 x 2 = 14; each B term is 1/3 of A's: 42/3 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "116d7b4e-8b2e-4862-8cae-91f2382d3ca6",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose rules that make a given relationship",
+      "stem": "Two patterns both start at 0. Each number in the second pattern must be twice the matching number in the first pattern. Which pair of rules does this?",
+      "choices": [
+        "First pattern: add 3. Second pattern: add 5.",
+        "First pattern: add 3. Second pattern: add 6.",
+        "First pattern: add 6. Second pattern: add 3.",
+        "First pattern: add 3. Second pattern: add 9."
+      ],
+      "answer": "First pattern: add 3. Second pattern: add 6.",
+      "compute": null,
+      "solution": "Both start at 0, so the second pattern's step must be twice the first pattern's step. With add 3 in the first pattern the second must add 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "First pattern: add 3. Second pattern: add 6.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Both start at 0; if first adds 3 and second adds 6, terms are 3k and 6k, so second = 2 x first. Add 6/add 3 gives half; add 5 and add 9 give 5/3 and 3 times.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "07b35c6d-6ec3-4753-b270-60c44ea37c9a",
+      "topic_id": "NC26.5.ANR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Work backward using the relationship between two patterns",
+      "stem": "Pattern X: 0, 5, 10, 15, ... Pattern Y: 0, 10, 20, 30, ... A number in Pattern Y is 90. What is the matching number in Pattern X?",
+      "choices": [],
+      "answer": "45",
+      "compute": "90/2",
+      "solution": "Each number in Y is 2 times the matching number in X. So the matching number in X is $90 \\div 2 = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Y = 2 x X (10 = 2 x 5 etc.). 90 / 2 = 45. (Y: 90 is 10th term 9x10; X 10th = 45.)",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "dfa4d510-e046-441d-85fb-8a09d3407bc7",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name a quadrilateral from its properties",
+      "stem": "A quadrilateral has 4 sides of equal length and 4 right angles. Which name describes it most specifically?",
+      "choices": [
+        "rectangle",
+        "rhombus",
+        "parallelogram",
+        "square"
+      ],
+      "answer": "square",
+      "compute": null,
+      "solution": "A rectangle, a rhombus and a parallelogram all describe it, but a square is the most specific name: it has equal sides and right angles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 equal sides and 4 right angles -> square, the most specific name.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "604e6363-3086-4a12-8535-a5149341349d",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Hierarchy: which category fits inside another",
+      "stem": "Which statement is true?",
+      "choices": [
+        "Every square is a rectangle.",
+        "Every rectangle is a square.",
+        "Every rhombus is a rectangle.",
+        "Every parallelogram is a square."
+      ],
+      "answer": "Every square is a rectangle.",
+      "compute": null,
+      "solution": "A square has 4 right angles, which is what makes a rectangle. But a rectangle can have sides of different lengths, so it is not always a square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every square is a rectangle.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has 4 right angles and opposite sides parallel, so it is a rectangle. The others are false (a rhombus need not have right angles, etc.).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "8f6c2995-82a7-49e0-b107-7fe636a2ff46",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Parallel sides of a rectangle",
+      "stem": "How many pairs of parallel sides does a rectangle have?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "The two long sides are parallel to each other and the two short sides are parallel to each other. That makes 2 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rectangle is a parallelogram: 2 pairs of parallel sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c3016ea5-ecde-4ace-8879-55ed85293d67",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Attributes that every rhombus has",
+      "stem": "Which attribute do ALL rhombuses have?",
+      "choices": [
+        "Four right angles",
+        "Four sides of equal length",
+        "Opposite sides that are different lengths",
+        "Exactly one pair of parallel sides"
+      ],
+      "answer": "Four sides of equal length",
+      "compute": null,
+      "solution": "A rhombus is defined by four sides of equal length. Only some rhombuses (squares) have right angles. A rhombus has 2 pairs of parallel sides, and all its sides are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Four sides of equal length",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rhombus is defined by four equal sides. Right angles not required; it has 2 pairs of parallel sides; opposite sides are equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "be5639e5-d816-446d-8f07-b0afd4594f37",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Shapes that always have four right angles",
+      "stem": "Which list contains only shapes that ALWAYS have four right angles?",
+      "choices": [
+        "square, rhombus",
+        "rectangle, parallelogram",
+        "square, rectangle",
+        "rhombus, parallelogram"
+      ],
+      "answer": "square, rectangle",
+      "compute": null,
+      "solution": "Squares and rectangles always have four right angles. Rhombuses and parallelograms can lean over, so their angles are not always right angles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "square, rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Squares and rectangles always have four right angles; rhombuses and parallelograms need not.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "e4878db0-9296-45f5-9a42-ec90b86b3a12",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use an attribute of a category to find a measurement",
+      "stem": "A rhombus has four sides of equal length. One side is 7 centimeters long. What is the perimeter of the rhombus, in centimeters?",
+      "choices": [],
+      "answer": "28",
+      "compute": "7*4",
+      "solution": "All 4 sides are 7 centimeters long, so the perimeter is $4 \\times 7 = 28$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 7 = 28 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "37ae1ce6-3b88-44c9-bac2-c54f6e3256f8",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Attributes carry down to subcategories",
+      "stem": "Which statement about the attributes of quadrilaterals is true?",
+      "choices": [
+        "Every attribute of a square is also an attribute of a rectangle.",
+        "Every attribute of a rhombus is also an attribute of a rectangle.",
+        "Every attribute of a square is also an attribute of a rhombus.",
+        "Every attribute of a rectangle is also an attribute of a square."
+      ],
+      "answer": "Every attribute of a rectangle is also an attribute of a square.",
+      "compute": null,
+      "solution": "A square is a kind of rectangle, so it has every attribute that rectangles have. The other statements fail: a square has four equal sides, which a rectangle does not always have, and a square has right angles, which a rhombus does not always have.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every attribute of a rectangle is also an attribute of a square.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square is a special rectangle, so every property all rectangles have (4 right angles, opposite sides parallel and equal) holds for squares. Square->rectangle fails (equal sides), square->rhombus fails (right angles), rhombus->rectangle fails (right angles).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "ec246ab0-4628-49fb-9ddd-c22f02702e81",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a counterexample to test a claim",
+      "stem": "Sam says: \"This shape has four sides of equal length, so it must be a square.\" Which shape shows that Sam is wrong?",
+      "choices": [
+        "A rhombus with angles of 60 degrees and 120 degrees",
+        "A rectangle with sides 4 centimeters and 6 centimeters",
+        "A square with sides of 4 centimeters",
+        "A parallelogram with sides 3 centimeters and 5 centimeters"
+      ],
+      "answer": "A rhombus with angles of 60 degrees and 120 degrees",
+      "compute": null,
+      "solution": "We need a shape with four equal sides that is not a square. A rhombus with no right angles is one. The other shapes either do not have four equal sides, or are squares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A rhombus with angles of 60 degrees and 120 degrees",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rhombus with 60 and 120 degree angles has four equal sides but no right angles, so it is not a square. Rectangle 4x6 and parallelogram 3x5 do not have equal sides; a square agrees with Sam.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "41846ef8-51e4-4411-be2f-3a09140b4d51",
+      "topic_id": "NC26.5.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count shapes that always have an attribute",
+      "stem": "Look at these four shapes: square, rectangle, rhombus, parallelogram. How many of them ALWAYS have four sides of equal length?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "A square and a rhombus always have four equal sides. A rectangle and a parallelogram only have equal opposite sides, so they do not always have four equal sides. The answer is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Always four equal sides: square and rhombus. Rectangle and parallelogram not always. Count = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "69d9bb6f-7785-478a-961d-db96ec54be59",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read a coordinate",
+      "stem": "The point $(5, 2)$ is plotted on a coordinate plane. How many units above the x-axis is the point?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "In $(5, 2)$ the first number says how far right and the second number says how far up. The point is 2 units above the x-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y-coordinate is 2, so 2 units above the x-axis.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "0fae19af-9245-473b-a3fa-0a9e9b768e01",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name a point reached by moving from the origin",
+      "stem": "Starting at the origin $(0, 0)$, you move 3 units right and 6 units up. Which ordered pair names where you are?",
+      "choices": [
+        "$(6, 3)$",
+        "$(3, 6)$",
+        "$(3, 9)$",
+        "$(0, 9)$"
+      ],
+      "answer": "$(3, 6)$",
+      "compute": null,
+      "solution": "The first number is the move right (3) and the second is the move up (6), so you are at $(3, 6)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Right 3 gives x = 3, up 6 gives y = 6: (3, 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "e346e8e5-7213-4297-b165-91bb09a23b99",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Points on an axis",
+      "stem": "Which point is on the y-axis?",
+      "choices": [
+        "$(0, 5)$",
+        "$(5, 0)$",
+        "$(5, 5)$",
+        "$(2, 3)$"
+      ],
+      "answer": "$(0, 5)$",
+      "compute": null,
+      "solution": "A point on the y-axis is 0 units right of it, so its first number is 0. That is $(0, 5)$. The point $(5, 0)$ is on the x-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(0, 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Points on the y-axis have x = 0: (0, 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "d2f8cc02-c012-4893-ae11-5321ab96eb81",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distance between two points on a vertical line",
+      "stem": "On a coordinate plane, Point A is at $(2, 3)$ and Point B is at $(2, 9)$. How many units apart are A and B?",
+      "choices": [],
+      "answer": "6",
+      "compute": "9-3",
+      "solution": "Both points have x-coordinate 2, so they are on a vertical line. The distance is $9 - 3 = 6$ units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same x; 9 - 3 = 6 units.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "5fecc83a-c43f-4a00-985d-a89c6fdb027c",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Move a point on the coordinate plane",
+      "stem": "Point P is at $(3, 4)$. Dana moves it 5 units right and 2 units up. What are the new coordinates?",
+      "choices": [
+        "$(5, 9)$",
+        "$(8, 2)$",
+        "$(8, 6)$",
+        "$(6, 8)$"
+      ],
+      "answer": "$(8, 6)$",
+      "compute": null,
+      "solution": "Moving right adds to the first number: $3 + 5 = 8$. Moving up adds to the second number: $4 + 2 = 6$. The new point is $(8, 6)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(8, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3 + 5, 4 + 2) = (8, 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "7420d5ed-f8d2-40a2-8c5d-f333385f29a0",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Perimeter of a rectangle from its corners",
+      "stem": "A rectangle on a coordinate plane has corners at $(1, 1)$, $(6, 1)$, $(6, 4)$ and $(1, 4)$. What is its perimeter, in units?",
+      "choices": [],
+      "answer": "16",
+      "compute": "2*(5+3)",
+      "solution": "The width is $6 - 1 = 5$ units and the height is $4 - 1 = 3$ units. The perimeter is $2 \\times (5 + 3) = 16$ units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length 6 - 1 = 5, width 4 - 1 = 3. Perimeter 2(5 + 3) = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "6de252a2-065c-4ac6-8081-5b7931402d2b",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Distance along a path on the coordinate plane",
+      "stem": "On a coordinate plane, a bug crawls in a straight line from $(2, 3)$ to $(7, 3)$ and then in a straight line to $(7, 9)$. How many units does it crawl in all?",
+      "choices": [],
+      "answer": "11",
+      "compute": "(7-2)+(9-3)",
+      "solution": "First part: the y-coordinate stays 3, so the distance is $7 - 2 = 5$ units. Second part: the x-coordinate stays 7, so the distance is $9 - 3 = 6$ units. Total: $5 + 6 = 11$ units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2,3) to (7,3): 5 units; (7,3) to (7,9): 6 units. Total 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "71ba71db-a373-4f61-857a-7cf67dd50847",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ordered pairs made from two patterns",
+      "stem": "Pattern 1 starts at 0 and adds 2. Pattern 2 starts at 0 and adds 6. Matching numbers form ordered pairs (Pattern 1 number, Pattern 2 number), such as $(0, 0)$ and $(2, 6)$. Which ordered pair is also one of these pairs?",
+      "choices": [
+        "$(12, 4)$",
+        "$(4, 8)$",
+        "$(6, 12)$",
+        "$(4, 12)$"
+      ],
+      "answer": "$(4, 12)$",
+      "compute": null,
+      "solution": "Pattern 1: 0, 2, 4, 6. Pattern 2: 0, 6, 12, 18. The third numbers make the pair $(4, 12)$. The pair $(6, 12)$ is wrong because the pair for 6 is $(6, 18)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, 12)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs are (2k, 6k): (0,0), (2,6), (4,12), (6,18)... (4,12) is one; (4,8), (12,4), (6,12) are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "f17789d5-523b-41ca-a3fc-b3b81a0f60a1",
+      "topic_id": "NC26.5.SGMR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing corner of a rectangle",
+      "stem": "Three corners of a rectangle on a coordinate plane are $(2, 2)$, $(8, 2)$ and $(8, 5)$. What are the coordinates of the fourth corner?",
+      "choices": [
+        "$(5, 2)$",
+        "$(2, 5)$",
+        "$(2, 8)$",
+        "$(5, 8)$"
+      ],
+      "answer": "$(2, 5)$",
+      "compute": null,
+      "solution": "The fourth corner is above $(2, 2)$ and left of $(8, 5)$. So it has x-coordinate 2 and y-coordinate 5: $(2, 5)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sides are horizontal/vertical. Corners use x in {2,8}, y in {2,5}: missing (2, 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "a5dc15c2-f7e8-4e9f-b9f3-54da72c61e54",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Convert meters to centimeters",
+      "stem": "How many centimeters are in 4 meters?",
+      "choices": [],
+      "answer": "400",
+      "compute": "4*100",
+      "solution": "There are 100 centimeters in 1 meter, so in 4 meters there are $4 \\times 100 = 400$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 m = 100 cm; 4 x 100 = 400.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "8dabc438-e9b2-4b85-b878-fdac8b343954",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Convert feet to inches",
+      "stem": "How many inches are in 3 feet? (1 foot = 12 inches)",
+      "choices": [
+        "36",
+        "15",
+        "4",
+        "1/4"
+      ],
+      "answer": "36",
+      "compute": "3*12",
+      "solution": "Each foot is 12 inches, so 3 feet is $3 \\times 12 = 36$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 12 = 36 inches.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "62a25d05-3d9d-4b64-91f3-ab5c2078cf69",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Convert gallons to quarts",
+      "stem": "A bucket holds 5 gallons of water. How many quarts is that? (1 gallon = 4 quarts)",
+      "choices": [],
+      "answer": "20",
+      "compute": "5*4",
+      "solution": "Each gallon is 4 quarts, so 5 gallons is $5 \\times 4 = 20$ quarts.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 4 = 20 quarts.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "42e750cb-61fd-4f23-b173-cbd4ed4592d9",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Convert meters to kilometers",
+      "stem": "A hiking path is $2{,}400$ meters long. How many kilometers long is it?",
+      "choices": [],
+      "answer": "2.4",
+      "compute": "2400/1000",
+      "solution": "There are 1,000 meters in 1 kilometer, so $2{,}400 \\div 1{,}000 = 2.4$ kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 km = 1,000 m; 2,400 / 1,000 = 2.4 km.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "36cf4e8e-4ef0-4b58-bb0a-d8e7cf298bef",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Check that a conversion is reasonable",
+      "stem": "Lena changes 24 inches to feet and gets 288 feet. Why can you tell that her answer is not reasonable?",
+      "choices": [
+        "A foot is shorter than an inch, so there should be more feet than inches.",
+        "A foot is longer than an inch, so there should be more feet than inches.",
+        "A foot is longer than an inch, so there should be fewer feet than inches.",
+        "Feet cannot be changed into inches or the other way around."
+      ],
+      "answer": "A foot is longer than an inch, so there should be fewer feet than inches.",
+      "compute": null,
+      "solution": "A foot is a longer unit, so it takes fewer feet than inches to measure the same length. 24 inches is $24 \\div 12 = 2$ feet, not 288 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A foot is longer than an inch, so there should be fewer feet than inches.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 inches = 2 feet. A foot is longer than an inch, so the number of feet must be smaller than 24; 288 is what you get by multiplying by 12 instead of dividing.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "47f0f25d-3fd3-47d0-b1a2-2d68cb4e978c",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Convert pounds to ounces",
+      "stem": "A puppy weighs 7 pounds. How many ounces does the puppy weigh? (1 pound = 16 ounces)",
+      "choices": [],
+      "answer": "112",
+      "compute": "7*16",
+      "solution": "Each pound is 16 ounces, so 7 pounds is $7 \\times 16 = 112$ ounces.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "112",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x 16 = 112 ounces.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "7c7f3a43-6fa9-4377-8f7f-ffb58137d64c",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step problem with metric units",
+      "stem": "A bucket holds 5 liters of water. Jo pours out 1,200 milliliters. How many milliliters of water are left in the bucket?",
+      "choices": [],
+      "answer": "3800",
+      "compute": "5*1000-1200",
+      "solution": "5 liters is $5 \\times 1{,}000 = 5{,}000$ milliliters. Then $5{,}000 - 1{,}200 = 3{,}800$ milliliters are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 L = 5,000 mL; 5,000 - 1,200 = 3,800 mL.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b79b93e5-13a2-4fb9-9b1d-1c47b52dfac3",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare lengths in different metric units",
+      "stem": "Which length is the greatest?",
+      "choices": [
+        "1.5 meters",
+        "190 centimeters",
+        "1,800 millimeters",
+        "0.002 kilometers"
+      ],
+      "answer": "0.002 kilometers",
+      "compute": null,
+      "solution": "Change each to centimeters: 1.5 meters is 150 cm, 190 cm stays 190 cm, 1,800 millimeters is 180 cm, and 0.002 kilometers is 2 meters, which is 200 cm. The greatest is 0.002 kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.002 kilometers",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In meters: 1,800 mm = 1.8 m; 1.5 m; 190 cm = 1.9 m; 0.002 km = 2 m. Greatest is 0.002 km.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "ed09ffb3-9317-490f-941b-2731819bcfc9",
+      "topic_id": "NC26.5.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step conversion with customary units",
+      "stem": "A ribbon is 3 yards long. Mia cuts it into pieces that are each 9 inches long. How many pieces does she get? (1 yard = 3 feet and 1 foot = 12 inches)",
+      "choices": [],
+      "answer": "12",
+      "compute": "3*3*12/9",
+      "solution": "3 yards is $3 \\times 3 = 9$ feet, which is $9 \\times 12 = 108$ inches. Then $108 \\div 9 = 12$ pieces.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 yd = 9 ft = 108 in; 108 / 9 = 12 pieces.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "88b8a58d-8114-4c7a-933e-38f187aac621",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count unit cubes in a rectangular prism",
+      "stem": "A rectangular prism is built from unit cubes. It is 4 cubes long, 3 cubes wide and 2 cubes tall. How many unit cubes make the prism?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4*3*2",
+      "solution": "One layer has $4 \\times 3 = 12$ cubes. There are 2 layers, so $12 \\times 2 = 24$ cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3 x 2 = 24 cubes.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "9e7bcb8e-908c-4bbf-a44d-579d2fe90ddf",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Volume of a rectangular prism from its dimensions",
+      "stem": "A box is 5 centimeters long, 2 centimeters wide and 3 centimeters tall. What is its volume, in cubic centimeters?",
+      "choices": [
+        "10",
+        "30",
+        "15",
+        "62"
+      ],
+      "answer": "30",
+      "compute": "5*2*3",
+      "solution": "Volume = length $\\times$ width $\\times$ height $= 5 \\times 2 \\times 3 = 30$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 2 x 3 = 30 cubic cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "aeeb1ae7-8a25-4e3f-99ca-fb1adec18093",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Volume of a cube",
+      "stem": "A cube has edges that are each 4 inches long. What is its volume, in cubic inches?",
+      "choices": [],
+      "answer": "64",
+      "compute": "4*4*4",
+      "solution": "All three dimensions are 4 inches: $4 \\times 4 \\times 4 = 64$ cubic inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 4 x 4 = 64 cubic inches.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "f46fdb08-854a-4033-8bfc-70ef066b1366",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Volume from the area of the base and the height",
+      "stem": "The base of a rectangular prism has an area of 18 square meters. The prism is 6 meters tall. What is its volume, in cubic meters?",
+      "choices": [
+        "24",
+        "54",
+        "108",
+        "3"
+      ],
+      "answer": "108",
+      "compute": "18*6",
+      "solution": "Volume = area of the base $\\times$ height $= 18 \\times 6 = 108$ cubic meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "108",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V = B x h = 18 x 6 = 108 cubic m.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "27ce1f87-2d02-434b-9ac1-66798391b285",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing dimension from the volume",
+      "stem": "A rectangular prism has a volume of 240 cubic centimeters. Its length is 8 centimeters and its width is 5 centimeters. How tall is it, in centimeters?",
+      "choices": [],
+      "answer": "6",
+      "compute": "240/(8*5)",
+      "solution": "The base area is $8 \\times 5 = 40$ square centimeters. Since volume = base area $\\times$ height, the height is $240 \\div 40 = 6$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base area 8 x 5 = 40; height = 240 / 40 = 6 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b33c9509-8429-4e30-a193-9f7d230ef94f",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pack a box with unit cubes in layers",
+      "stem": "Mia covers the bottom of a box with one layer of 1-inch cubes. The layer has 5 rows with 8 cubes in each row. The box is 4 inches tall. How many 1-inch cubes does it take to fill the box?",
+      "choices": [],
+      "answer": "160",
+      "compute": "5*8*4",
+      "solution": "One layer has $5 \\times 8 = 40$ cubes. The box is 4 inches tall, so it holds 4 layers: $40 \\times 4 = 160$ cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One layer: 5 x 8 = 40 cubes. 4 inches tall -> 4 layers: 40 x 4 = 160.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "b44c4541-fa7d-4464-baa7-bfa249d8bccf",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Volume of a composite solid",
+      "stem": "Two rectangular prisms are joined to make one solid. They touch along a face but do not overlap. One prism is 6 cm by 4 cm by 3 cm. The other is 5 cm by 2 cm by 3 cm. What is the volume of the whole solid, in cubic centimeters?",
+      "choices": [],
+      "answer": "102",
+      "compute": "6*4*3+5*2*3",
+      "solution": "First prism: $6 \\times 4 \\times 3 = 72$. Second prism: $5 \\times 2 \\times 3 = 30$. Add the volumes: $72 + 30 = 102$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "102",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 4 x 3 = 72; 5 x 2 x 3 = 30; total 72 + 30 = 102 (no overlap).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "9d49dab1-86e0-4dd7-9029-194641b547f9",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "How volume changes when the edges are doubled",
+      "stem": "A cube has a volume of 27 cubic centimeters. A second cube has edges that are twice as long as the edges of the first cube. What is the volume of the second cube, in cubic centimeters?",
+      "choices": [],
+      "answer": "216",
+      "compute": "(2*3)^3",
+      "solution": "The first cube has edges of 3 cm because $3 \\times 3 \\times 3 = 27$. The second cube has edges of 6 cm, so its volume is $6 \\times 6 \\times 6 = 216$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "216",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First cube edge 3 cm (3 x 3 x 3 = 27). Second edge 6 cm: 6 x 6 x 6 = 216.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "c69cd36b-cdbd-43ed-93b2-0baf15f2864a",
+      "topic_id": "NC26.5.SGMR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Volume of a partly filled prism",
+      "stem": "A tank is 10 feet long, 6 feet wide and 4 feet tall. It is filled with water to a depth of 3 feet. How many cubic feet of water are in the tank?",
+      "choices": [
+        "240",
+        "60",
+        "72",
+        "180"
+      ],
+      "answer": "180",
+      "compute": "10*6*3",
+      "solution": "The water forms a prism that is 10 feet by 6 feet by 3 feet. Its volume is $10 \\times 6 \\times 3 = 180$ cubic feet. (240 is the volume of the whole tank.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Water is 10 x 6 x 3 = 180 cubic feet (not full height 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "28d789b0-c561-4b27-b9e6-10966552bf4a",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize a question about categorical data",
+      "stem": "Which question would give categorical data?",
+      "choices": [
+        "How many pencils are in your bag?",
+        "How many inches tall are you?",
+        "What is your favorite color?",
+        "How many minutes do you read each night?"
+      ],
+      "answer": "What is your favorite color?",
+      "compute": null,
+      "solution": "Categorical data sorts answers into groups, such as colors. The other questions ask for numbers that can be counted or measured.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "What is your favorite color?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Favorite color gives categories, not numbers; the others give numerical counts or measurements.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "6f62c13f-7ccf-450f-b128-adacc4e24126",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare values of data that change over time",
+      "stem": "A class counted the books it read each week. Week 1: 4 books. Week 2: 6 books. Week 3: 9 books. Week 4: 12 books. How many more books were read in Week 4 than in Week 1?",
+      "choices": [],
+      "answer": "8",
+      "compute": "12-4",
+      "solution": "Week 4 had 12 books and Week 1 had 4 books. $12 - 4 = 8$ more books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 4 = 8 more books.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "ce4c1f81-cc50-4059-8f1a-871a717431a9",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read where a line graph goes down",
+      "stem": "A bakery sold 40 loaves on Monday, 35 on Tuesday, 50 on Wednesday, 55 on Thursday and 60 on Friday. A line graph of these sales joins the points for the days in order. Between which two days does the line go down?",
+      "choices": [
+        "Wednesday to Thursday",
+        "Thursday to Friday",
+        "Tuesday to Wednesday",
+        "Monday to Tuesday"
+      ],
+      "answer": "Monday to Tuesday",
+      "compute": null,
+      "solution": "The line goes down when the number sold gets smaller from one day to the next. From Monday (40) to Tuesday (35) the number falls. From Tuesday to Wednesday (50), Wednesday to Thursday (55) and Thursday to Friday (60) it rises. So the line goes down between Monday and Tuesday.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Monday to Tuesday",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mon 40 -> Tue 35: down. Tue 35 -> Wed 50: up. Wed 50 -> Thu 55: up. Thu 55 -> Fri 60: up. Only Monday to Tuesday goes down.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:41:51.098Z"
+        }
+      }
+    },
+    {
+      "id": "9539d1f5-3fbf-4d4c-9c7a-32e416e7c6f7",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read a line plot of data",
+      "stem": "The number of pets that each of 10 students has was put on a line plot. The data are: 0, 1, 1, 2, 2, 2, 3, 3, 4, 5. How many of the students have more than 2 pets?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "The values greater than 2 are 3, 3, 4 and 5. That is 4 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 2 pets: 3, 3, 4, 5 -> 4 students.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "3a14022e-1d42-4d6f-b997-a00ae2f8188c",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Plan how to collect data",
+      "stem": "Carlos wants to find out which sport the students at his school like best. Which is the best way to collect the data?",
+      "choices": [
+        "Ask his 4 closest friends",
+        "Ask 30 students chosen from many different classes",
+        "Ask only students who play soccer",
+        "Ask only the students in his own class"
+      ],
+      "answer": "Ask 30 students chosen from many different classes",
+      "compute": null,
+      "solution": "To learn about the whole school, ask a larger group that comes from many parts of the school. The other groups would leave out many students, or favor one sport.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ask 30 students chosen from many different classes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A sample from many classes represents the whole school; the other choices are biased or too narrow.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "dedd725d-dc32-4080-9e22-bb322b130984",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Draw a conclusion from data over time",
+      "stem": "Maria measured a plant at the end of each month. Month 1: 10 cm. Month 2: 14 cm. Month 3: 18 cm. Month 4: 22 cm. Which statement is supported by the data?",
+      "choices": [
+        "The plant grew 22 cm in Month 4.",
+        "The plant grew faster in Month 4 than in Month 2.",
+        "The plant was shorter in Month 4 than in Month 3.",
+        "The plant grew 4 cm each month."
+      ],
+      "answer": "The plant grew 4 cm each month.",
+      "compute": null,
+      "solution": "The heights go up by 4 each month: $14 - 10 = 4$, $18 - 14 = 4$, $22 - 18 = 4$. The plant was 22 cm tall in Month 4, which is not the same as growing 22 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The plant grew 4 cm each month.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Changes: 14-10 = 4, 18-14 = 4, 22-18 = 4. Constant 4 cm per month. Not faster in Month 4; did not grow 22 cm; got taller.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "56b4242a-2cb1-48c0-aa85-87355add4583",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add up the amounts in a line plot with fractions",
+      "stem": "A line plot shows the amount of juice, in cups, in 8 glasses: $\\frac{1}{2}$, $\\frac{1}{4}$, $\\frac{1}{2}$, $\\frac{3}{4}$, $\\frac{1}{2}$, $\\frac{1}{4}$, $\\frac{1}{2}$, $\\frac{3}{4}$. All of the juice is poured into one pitcher. How many cups of juice are in the pitcher?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4*(1/2)+2*(1/4)+2*(3/4)",
+      "solution": "There are 4 glasses of $\\frac{1}{2}$ cup (2 cups in all), 2 glasses of $\\frac{1}{4}$ cup ($\\frac{1}{2}$ cup in all) and 2 glasses of $\\frac{3}{4}$ cup ($1\\frac{1}{2}$ cups in all). Total: $2 + \\frac{1}{2} + 1\\frac{1}{2} = 4$ cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four 1/2 = 2; two 1/4 = 1/2; two 3/4 = 3/2. Total 2 + 1/2 + 3/2 = 4 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "541c0c3c-0c3d-433c-966a-6e076173b7f1",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Make a prediction from data over time",
+      "stem": "A store counted its visitors each day. Day 1: 20. Day 2: 35. Day 3: 50. Day 4: 65. If the pattern continues, how many visitors will the store have on Day 7?",
+      "choices": [],
+      "answer": "110",
+      "compute": "65+3*15",
+      "solution": "The number goes up by 15 each day ($35 - 20 = 15$, and so on). Day 5: 80, Day 6: 95, Day 7: 110.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Increase 15 per day: Day 5 = 80, Day 6 = 95, Day 7 = 110.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    },
+    {
+      "id": "eea01a11-ab1e-4310-a126-cf793c50222a",
+      "topic_id": "NC26.5.RD.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Draw a true conclusion from a bar graph's data",
+      "stem": "Students voted for a sport. Soccer got 18 votes, swimming 12 votes, tennis 8 votes and running 24 votes. Which statement is true?",
+      "choices": [
+        "Running got twice as many votes as swimming.",
+        "Soccer got 3 times as many votes as tennis.",
+        "Swimming and tennis together got more votes than running.",
+        "Tennis got half as many votes as soccer."
+      ],
+      "answer": "Running got twice as many votes as swimming.",
+      "compute": null,
+      "solution": "$24 = 2 \\times 12$, so running got twice as many as swimming. The others are false: $3 \\times 8 = 24$, not 18; $12 + 8 = 20$, which is less than 24; and half of 18 is 9, not 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Running got twice as many votes as swimming.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 8 = 24 not 18; half of 18 is 9 not 8; 2 x 12 = 24 = running (true); 12 + 8 = 20 < 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:36:14.367Z"
+        }
+      }
+    }
+  ]
+}

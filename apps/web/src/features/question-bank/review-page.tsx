@@ -4,7 +4,7 @@ import { ArrowLeftIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { PageHeader } from '@/components/layout/page-header';
-import { useQuestionAction, useQuestions } from './api';
+import { useQuestionAction, useQuestionCoverage, useQuestions } from './api';
 import { QuestionCard, errorMessage } from './question-card';
 
 /**
@@ -14,6 +14,7 @@ import { QuestionCard, errorMessage } from './question-card';
  */
 export function ReviewPage() {
   const queue = useQuestions({ status: 'checked' });
+  const coverage = useQuestionCoverage();
   const items = queue.data?.data ?? [];
   const [skipped, setSkipped] = useState<string[]>([]);
   const action = useQuestionAction();
@@ -43,7 +44,9 @@ export function ReviewPage() {
     return () => window.removeEventListener('keydown', onKey);
   }, [current, action]);
 
-  const left = items.filter((q) => !skipped.includes(q.id)).length;
+  // The queue loads a page at a time; the count is the whole bank's.
+  const waiting = coverage.data?.data.reduce((sum, level) => sum + level.topics.reduce((n, t) => n + t.checked, 0), 0);
+  const left = (waiting ?? items.length) - skipped.length;
 
   return (
     <>

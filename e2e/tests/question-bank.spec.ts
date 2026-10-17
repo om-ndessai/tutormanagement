@@ -228,11 +228,15 @@ test.describe('the question bank in the console', () => {
     // The fixture bank: 4.ANR.1 and 4.ANR.2 are at target.
     await expect(platform.getByTestId('bank-level-NC26.4')).toContainText('2 of 12 standards at target');
 
+    // The repository's bank already holds questions on this standard; eight more join them.
+    const before = (
+      await unwrap<any[]>(await platform.request.get('/api/platform/questions?topic_id=NC26.7.ANR.1&limit=200'), 'listing')
+    ).filter((q) => q.status !== 'retired').length;
     await platform.getByTestId('bank-level-NC26.7').getByRole('button', { name: /7\.ANR\.1/ }).click();
     await expect(platform.getByRole('heading', { name: /7\.ANR\.1/ })).toBeVisible();
     await platform.getByRole('button', { name: 'Write 8 questions' }).click();
     await expect(platform.getByRole('status')).toContainText('Done: 8 written, 7 passed every check, 1 flagged', { timeout: 20_000 });
-    await expect(platform.getByTestId('question-card')).toHaveCount(8);
+    await expect(platform.getByTestId('question-card')).toHaveCount(before + 8);
     await expect(platform.locator('[data-testid="question-card"][data-status="flagged"]')).toContainText('does NOT match');
 
     // The review queue, by keyboard.

@@ -1,6 +1,12 @@
 {
   "level_id": "NC26.4",
-  "source": "fixture: hand-written 2026-10-17 for local and demo builds, until the first export from production",
+  "source": "fixture: hand-written 2026-10-17 for local and demo builds, until the first export from production. Written 2026-10-17 by Claude Sonnet and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Hand-written fixture questions are \"approved\".. Written 2026-10-17 by Claude Sonnet and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Hand-written fixture questions are \"approved\".. Written 2026-10-17 by Claude Sonnet and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Hand-written fixture questions are \"approved\".",
+  "notes": {
+    "NC26.4.SGMR.1": "Protractor reading cannot be tested fairly without a figure, so the questions test degrees as parts of a circle, estimating and classifying angles, and finding unknown angles by adding and subtracting.",
+    "NC26.4.RD.1": "Line plots and bar graphs are described in words or as written-out tables and data lists; no figure is referred to.",
+    "NC26.4.ANR.7": "Shape patterns are described by their counts (toothpicks in each figure).",
+    "NC26.4.SGMR.2": "The ray question uses \\overrightarrow, \\overline and \\overleftrightarrow; the renderer must support them."
+  },
   "questions": [
     {
       "id": "9b000000-0000-4000-8000-000000000001",
@@ -22,7 +28,12 @@
       "kind": "choice",
       "skill": "Word form to standard form",
       "stem": "Which number is forty-two thousand, six hundred five?",
-      "choices": ["42,605", "42,650", "4,265", "420,605"],
+      "choices": [
+        "42,605",
+        "42,650",
+        "4,265",
+        "420,605"
+      ],
       "answer": "42,605",
       "compute": "42605",
       "solution": "Forty-two thousand is $42{,}000$; six hundred five is $605$. Together: $42{,}605$.",
@@ -48,7 +59,12 @@
       "kind": "choice",
       "skill": "Comparing numbers",
       "stem": "Which comparison is true?",
-      "choices": ["$56{,}091 > 56{,}109$", "$56{,}091 < 56{,}109$", "$56{,}091 = 56{,}109$", "$56{,}190 < 56{,}109$"],
+      "choices": [
+        "$56{,}091 > 56{,}109$",
+        "$56{,}091 < 56{,}109$",
+        "$56{,}091 = 56{,}109$",
+        "$56{,}190 < 56{,}109$"
+      ],
       "answer": "$56{,}091 < 56{,}109$",
       "compute": null,
       "solution": "Both start with $56$ thousands. In the hundreds place, $0 < 1$, so $56{,}091 < 56{,}109$.",
@@ -74,7 +90,12 @@
       "kind": "choice",
       "skill": "Ordering numbers",
       "stem": "Which list puts $70{,}512$, $70{,}215$ and $75{,}021$ in order from least to greatest?",
-      "choices": ["70,215; 70,512; 75,021", "70,512; 70,215; 75,021", "75,021; 70,512; 70,215", "70,215; 75,021; 70,512"],
+      "choices": [
+        "70,215; 70,512; 75,021",
+        "70,512; 70,215; 75,021",
+        "75,021; 70,512; 70,215",
+        "70,215; 75,021; 70,512"
+      ],
       "answer": "70,215; 70,512; 75,021",
       "compute": null,
       "solution": "$75{,}021$ has the most thousands, so it is greatest. Of the other two, $70{,}215$ has fewer hundreds than $70{,}512$.",
@@ -100,7 +121,12 @@
       "kind": "choice",
       "skill": "Subtracting thousands",
       "stem": "What is $9{,}000 - 3{,}000$?",
-      "choices": ["6,000", "12,000", "3,000", "5,000"],
+      "choices": [
+        "6,000",
+        "12,000",
+        "3,000",
+        "5,000"
+      ],
       "answer": "6,000",
       "compute": "9000-3000",
       "solution": "$9$ thousands take away $3$ thousands leaves $6$ thousands: $6{,}000$.",
@@ -139,7 +165,12 @@
       "kind": "choice",
       "skill": "Two steps: subtract, then add",
       "stem": "A library had $52{,}318$ books. It gave away $8{,}749$ books and then bought $3{,}560$ new ones. How many books does it have now?",
-      "choices": ["47,129", "40,009", "64,627", "47,029"],
+      "choices": [
+        "47,129",
+        "40,009",
+        "64,627",
+        "47,029"
+      ],
       "answer": "47,129",
       "compute": "52318-8749+3560",
       "solution": "$52{,}318 - 8{,}749 = 43{,}569$, then $43{,}569 + 3{,}560 = 47{,}129$.",
@@ -157,6 +188,3359 @@
       "compute": "63000-27085",
       "solution": "The missing number is $63{,}000 - 27{,}085 = 35{,}915$. Check: $35{,}915 + 27{,}085 = 63{,}000$.",
       "status": "approved"
+    },
+    {
+      "id": "d9bbbc27-84a7-48f3-9190-08f4c3ced831",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value of a digit in a 5-digit number",
+      "stem": "What is the value of the digit 7 in the number $37{,}428$?",
+      "choices": [
+        "7,000",
+        "70,000",
+        "700",
+        "70"
+      ],
+      "answer": "7,000",
+      "compute": "7000",
+      "solution": "Read the places from the left: 3 is in the ten-thousands place, 7 is in the thousands place, 4 is in the hundreds place, 2 is in the tens place and 8 is in the ones place. So the 7 stands for 7 thousands, which is 7,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In 37,428 the 7 is in the thousands place, so its value is 7 x 1,000 = 7,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "3c93a2c2-6da4-47b2-9ce7-e8fe22402827",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Standard form from expanded form",
+      "stem": "Write the number as digits: $60{,}000 + 4{,}000 + 300 + 5$.",
+      "choices": [],
+      "answer": "64305",
+      "compute": "60000+4000+300+5",
+      "solution": "There are 6 ten-thousands, 4 thousands, 3 hundreds, 0 tens and 5 ones. The number is 64,305.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64305",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,000 + 4,000 + 300 + 0 tens + 5 = 64,305.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "124b7257-9f98-4d26-95c9-cda050a323be",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare 5-digit numbers",
+      "stem": "Which of these numbers is the greatest?",
+      "choices": [
+        "41,086",
+        "40,968",
+        "41,680",
+        "41,608"
+      ],
+      "answer": "41,680",
+      "compute": "41680",
+      "solution": "Compare from the left. All four have 4 ten-thousands, and 40,968 has only 0 thousands, so it is the least. The other three have 1 thousand. Compare the hundreds: 41,086 has 0, while 41,680 and 41,608 each have 6. Compare the tens: 41,680 has 8 and 41,608 has 0. So 41,680 is the greatest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41,680",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All have 4 ten-thousands. 40,968 has 0 thousands, the rest 1, so it is not greatest. Among 41,608, 41,680, 41,086 compare hundreds: 6, 6, 0; then tens: 41,608 has 0 tens, 41,680 has 8 tens. Greatest is 41,680.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "11da634d-ff74-40ad-9bd2-92f876e35f05",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "In the number $26{,}640$, the first 6 (in the thousands place) is worth how many times as much as the second 6 (in the hundreds place)?",
+      "choices": [],
+      "answer": "10",
+      "compute": "6000/600",
+      "solution": "The first 6 is worth 6,000 and the second 6 is worth 600. Since $6{,}000 \\div 600 = 10$, the first 6 is worth 10 times as much. Each place is 10 times the place to its right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Thousands 6 is worth 6,000; hundreds 6 is worth 600. 6,000 / 600 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "4fbeb9ad-2c6a-4d0e-ba89-24f2fe612b9e",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expanded form of a 5-digit number with zeros",
+      "stem": "Which shows $50{,}209$ in expanded form?",
+      "choices": [
+        "$5{,}000 + 200 + 9$",
+        "$50{,}000 + 20 + 9$",
+        "$50{,}000 + 200 + 9$",
+        "$50{,}000 + 2{,}000 + 9$"
+      ],
+      "answer": "$50{,}000 + 200 + 9$",
+      "compute": null,
+      "solution": "The 5 is in the ten-thousands place, so it is worth 50,000. The thousands digit is 0. The 2 is in the hundreds place, so it is worth 200. The tens digit is 0, and the 9 is 9 ones. So $50{,}209 = 50{,}000 + 200 + 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50{,}000 + 200 + 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50,209 = 5 ten-thousands + 0 thousands + 2 hundreds + 0 tens + 9 ones = 50,000 + 200 + 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "0d2333cc-573f-45c0-a511-6aa08fcb3e6b",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order three 5-digit numbers",
+      "stem": "Which list puts $35{,}412$, $34{,}999$ and $35{,}142$ in order from least to greatest?",
+      "choices": [
+        "$35{,}412$, $35{,}142$, $34{,}999$",
+        "$34{,}999$, $35{,}412$, $35{,}142$",
+        "$35{,}142$, $34{,}999$, $35{,}412$",
+        "$34{,}999$, $35{,}142$, $35{,}412$"
+      ],
+      "answer": "$34{,}999$, $35{,}142$, $35{,}412$",
+      "compute": null,
+      "solution": "34,999 has 4 thousands, so it is the least. The other two both have 5 thousands, so compare the hundreds: 35,142 has 1 hundred and 35,412 has 4 hundreds. From least to greatest: 34,999; 35,142; 35,412.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$34{,}999$, $35{,}142$, $35{,}412$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "34,999 < 35,142 < 35,412 (34 thousand is least; then 35,142 has 1 hundred vs 4 hundreds).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "54a2a68d-e5a2-4982-9fce-15d1d080901a",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the number where a digit has a given value",
+      "stem": "In which number does the digit 4 have a value of $4{,}000$?",
+      "choices": [
+        "42,815",
+        "28,415",
+        "28,154",
+        "24,815"
+      ],
+      "answer": "24,815",
+      "compute": "24815",
+      "solution": "A 4 is worth 4,000 only in the thousands place. In 42,815 the 4 is in the ten-thousands place (40,000). In 28,415 it is in the hundreds place (400). In 28,154 it is in the ones place (4). In 24,815 it is in the thousands place, worth 4,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24,815",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42,815: 4 is 40,000. 28,154: 4 is 4. 24,815: 4 is in thousands = 4,000. 28,415: 4 is 400. Answer 24,815.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "d196afa2-a390-48ad-9d72-61af1ceecc92",
+      "topic_id": "NC26.4.ANR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a number from place values that include zeros",
+      "stem": "A number has 3 ten-thousands, 0 thousands, 7 hundreds, 0 tens and 2 ones. What is the number?",
+      "choices": [],
+      "answer": "30702",
+      "compute": "3*10000+7*100+2",
+      "solution": "Write the digits from the largest place to the smallest: 3, 0, 7, 0, 2. The number is 30,702.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30702",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 10,000 + 0 + 7 x 100 + 0 + 2 = 30,702.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "ce53eeae-188f-4889-88a8-a3827547cba0",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add two 4-digit numbers",
+      "stem": "What is $4{,}326 + 2{,}573$?",
+      "choices": [],
+      "answer": "6899",
+      "compute": "4326+2573",
+      "solution": "Add each place, starting with the ones: 6 + 3 = 9, 2 + 7 = 9, 3 + 5 = 8, 4 + 2 = 6. No place needs regrouping, so the sum is 6,899.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6899",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,326 + 2,573: ones 6+3=9, tens 2+7=9, hundreds 3+5=8, thousands 4+2=6. = 6,899.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "578ade9e-e484-4766-8e30-ce4d7ceb419a",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract two 4-digit numbers",
+      "stem": "What is $8{,}465 - 3{,}142$?",
+      "choices": [],
+      "answer": "5323",
+      "compute": "8465-3142",
+      "solution": "Subtract each place, starting with the ones: 5 - 2 = 3, 6 - 4 = 2, 4 - 1 = 3, 8 - 3 = 5. The difference is 5,323.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5323",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,465 - 3,142: ones 5-2=3, tens 6-4=2, hundreds 4-1=3, thousands 8-3=5. = 5,323.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "f7c47c6b-3a22-4724-8eb7-656bdbeda6ea",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add with regrouping in a word problem",
+      "stem": "A school collected 1,250 cans in May and 1,375 cans in June. How many cans did it collect in all?",
+      "choices": [
+        "2,625",
+        "2,525",
+        "2,725",
+        "2,635"
+      ],
+      "answer": "2,625",
+      "compute": "2625",
+      "solution": "Add: 1,250 + 1,375. Ones: 0 + 5 = 5. Tens: 5 + 7 = 12, so write 2 and regroup 1 hundred. Hundreds: 2 + 3 + 1 = 6. Thousands: 1 + 1 = 2. The total is 2,625. (2,525 forgets the regrouped hundred.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2,625",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,250 + 1,375 = 2,625.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "6bf617b0-a28f-4177-8df2-1a97cf093c8b",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add 5-digit numbers with regrouping",
+      "stem": "What is $37{,}482 + 25{,}619$?",
+      "choices": [],
+      "answer": "63101",
+      "compute": "37482+25619",
+      "solution": "Ones: 2 + 9 = 11, write 1, regroup 1. Tens: 8 + 1 + 1 = 10, write 0, regroup 1. Hundreds: 4 + 6 + 1 = 11, write 1, regroup 1. Thousands: 7 + 5 + 1 = 13, write 3, regroup 1. Ten-thousands: 3 + 2 + 1 = 6. The sum is 63,101.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63101",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "37,482 + 25,619: 37,482 + 25,000 = 62,482; + 619 = 63,101. Check: 63,101 - 25,619 = 37,482.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "8a3fc122-3f93-41e8-bb3e-2622eab474ff",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract across zeros",
+      "stem": "What is $52{,}000 - 18{,}745$?",
+      "choices": [],
+      "answer": "33255",
+      "compute": "52000-18745",
+      "solution": "Regroup across the zeros: 52,000 is 51,999 + 1, so 52,000 - 18,745 = 51,999 - 18,745 + 1 = 33,254 + 1 = 33,255. You can check by adding: 18,745 + 33,255 = 52,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33255",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52,000 - 18,745 = 33,255. Check: 18,745 + 33,255 = 52,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "467ec5df-aebb-4d77-aaeb-13769860ab40",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract in a word problem",
+      "stem": "A stadium has 45,380 seats. At one game, 28,947 of the seats are filled. How many seats are empty?",
+      "choices": [
+        "17,433",
+        "16,433",
+        "23,647",
+        "74,327"
+      ],
+      "answer": "16,433",
+      "compute": "16433",
+      "solution": "Subtract the filled seats from all the seats: 45,380 - 28,947 = 16,433. Check: 28,947 + 16,433 = 45,380. (74,327 comes from adding instead, and 23,647 from taking the smaller digit from the larger in every column.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16,433",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Empty = 45,380 - 28,947 = 16,433. Check: 28,947 + 16,433 = 45,380.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "d93ae2ec-0fcb-493b-8e8d-bb525fd27b3f",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step add then subtract",
+      "stem": "Mia has 24,500 points. She earns 8,750 more points and then spends 12,900 points. How many points does Mia have now?",
+      "choices": [],
+      "answer": "20350",
+      "compute": "24500+8750-12900",
+      "solution": "First add: 24,500 + 8,750 = 33,250. Then subtract: 33,250 - 12,900 = 20,350.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20350",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24,500 + 8,750 = 33,250; 33,250 - 12,900 = 20,350.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "404e2af5-6a36-4a66-b977-6e2ddbdea1fa",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing addend",
+      "stem": "What number must be added to $18{,}365$ to make $50{,}000$?",
+      "choices": [],
+      "answer": "31635",
+      "compute": "50000-18365",
+      "solution": "The missing number is 50,000 - 18,365 = 31,635. Check: 18,365 + 31,635 = 50,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31635",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50,000 - 18,365 = 31,635. Check: 18,365 + 31,635 = 50,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "3ee0ccf6-078a-4c48-af3a-cf42e2a1b1ee",
+      "topic_id": "NC26.4.ANR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract across zeros with 5 digits",
+      "stem": "What is $70{,}004 - 2{,}659$?",
+      "choices": [
+        "72,655",
+        "67,345",
+        "68,345",
+        "67,455"
+      ],
+      "answer": "67,345",
+      "compute": "67345",
+      "solution": "70,004 - 2,659: take 2,000 first to get 68,004, then take 659 more: 68,004 - 659 = 67,345. Check: 67,345 + 2,659 = 70,004.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67,345",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,004 - 2,659 = 67,345. Check: 67,345 + 2,659 = 70,004.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "46a64a4f-c04a-4987-a7f9-84780377bb54",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiplication fact fluency",
+      "stem": "What is $7 \\times 8$?",
+      "choices": [],
+      "answer": "56",
+      "compute": "7*8",
+      "solution": "7 groups of 8 is 56, so $7 \\times 8 = 56$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x 8 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "fa6c14be-188d-443a-867d-66155c75ccf4",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify a prime number",
+      "stem": "Which of these numbers is prime?",
+      "choices": [
+        "21",
+        "33",
+        "29",
+        "39"
+      ],
+      "answer": "29",
+      "compute": "29",
+      "solution": "A prime number has exactly two factors, 1 and itself. 21 = 3 x 7, 33 = 3 x 11 and 39 = 3 x 13, so they are composite. 29 cannot be made by multiplying two smaller whole numbers, so 29 is prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21 = 3 x 7, 33 = 3 x 11, 39 = 3 x 13 are composite; 29 has only factors 1 and 29, so prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "26bcfb78-6a9d-4f69-8b52-102348fbe9f1",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify a multiple",
+      "stem": "Which of these numbers is a multiple of 7?",
+      "choices": [
+        "37",
+        "35",
+        "53",
+        "57"
+      ],
+      "answer": "35",
+      "compute": "35",
+      "solution": "Multiples of 7 are 7, 14, 21, 28, 35, 42, 49, 56, 63. Only 35 is in the list: 7 x 5 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 = 7 x 5. 57 = 3 x 19, 37 prime, 53 prime: not multiples of 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "83bd4b0c-7fa6-4cd1-b398-3f3b37400989",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-digit by two-digit product",
+      "stem": "What is $47 \\times 23$?",
+      "choices": [],
+      "answer": "1081",
+      "compute": "47*23",
+      "solution": "47 x 20 = 940 and 47 x 3 = 141. Add the parts: 940 + 141 = 1,081.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1081",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 x 23 = 47 x 20 + 47 x 3 = 940 + 141 = 1,081.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "bf596239-c16a-44b3-b8cd-35a18a8adbaa",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Division with a remainder in context",
+      "stem": "A baker puts 8 muffins in each box. She has 75 muffins. How many boxes can she fill completely?",
+      "choices": [],
+      "answer": "9",
+      "compute": "72/8",
+      "solution": "75 divided by 8 is 9 with a remainder of 3, because 8 x 9 = 72 and 75 - 72 = 3. The 3 left-over muffins do not fill a box, so she fills 9 boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75 / 8 = 9 remainder 3 (8 x 9 = 72). 9 full boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "4a5a4cc9-8819-4c86-b8db-6b38041bd8de",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiplicative comparison: find the smaller amount",
+      "stem": "A red ribbon is 36 centimeters long. It is 4 times as long as a blue ribbon. How long is the blue ribbon, in centimeters?",
+      "choices": [
+        "144",
+        "32",
+        "40",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "36/4",
+      "solution": "\"4 times as long\" means red = 4 x blue. So blue = 36 divided by 4 = 9 centimeters. Check: 4 x 9 = 36. (144 multiplies instead, 32 subtracts 4 and 40 adds 4.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red = 4 x blue, so blue = 36 / 4 = 9 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "fae14c9c-4390-442f-ac0a-dfdfedc8b6da",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Four-digit by one-digit quotient with a zero",
+      "stem": "What is $3{,}648 \\div 6$?",
+      "choices": [],
+      "answer": "608",
+      "compute": "3648/6",
+      "solution": "6 x 600 = 3,600, and 3,648 - 3,600 = 48. Then 48 divided by 6 is 8. So the quotient is 600 + 8 = 608. Check: 6 x 608 = 3,648.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "608",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,648 / 6: 36/6 = 6, 4/6 = 0 r4, 48/6 = 8 -> 608. Check 6 x 608 = 3,648.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "b7327b39-4c4c-44cb-af43-453983b214d2",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the factor pairs of a number",
+      "stem": "A factor pair is two whole numbers that multiply to make a number. The order does not matter, so $2 \\times 18$ and $18 \\times 2$ are the same pair. How many factor pairs does 36 have?",
+      "choices": [],
+      "answer": "5",
+      "compute": null,
+      "solution": "The factor pairs of 36 are 1 x 36, 2 x 18, 3 x 12, 4 x 9 and 6 x 6. That is 5 pairs. (6 x 6 counts as one pair.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs for 36: 1x36, 2x18, 3x12, 4x9, 6x6. 5 does not divide 36. That is 5 pairs (6x6 counts, as two whole numbers 6 and 6 multiply to 36).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "ab6e77e2-db14-47fa-8988-fc944f98ad64",
+      "topic_id": "NC26.4.ANR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a remainder",
+      "stem": "A school trip has 150 students. Each bus seats 40 students. What is the fewest number of buses needed so that every student has a seat?",
+      "choices": [
+        "3",
+        "4",
+        "5",
+        "30"
+      ],
+      "answer": "4",
+      "compute": "(150-30)/40+1",
+      "solution": "150 divided by 40 is 3 with a remainder of 30. Three buses seat 120 students, and 30 students are left without a seat, so one more bus is needed. The fewest number of buses is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "150 / 40 = 3 remainder 30; 3 buses seat 120, so 30 students need a 4th bus. 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "3f84e3b2-76ff-4cce-85d2-7cfa0bdc6f4d",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step problem: multiply then subtract",
+      "stem": "Ben has 5 packs of cards with 8 cards in each pack. He gives 6 cards to a friend. How many cards does Ben have left?",
+      "choices": [],
+      "answer": "34",
+      "compute": "5*8-6",
+      "solution": "First find how many cards Ben starts with: 5 x 8 = 40. Then subtract the 6 he gives away: 40 - 6 = 34.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 8 = 40 cards; 40 - 6 = 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "946cf622-b682-4f3e-8835-f604574d8eaa",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the equation that matches a story",
+      "stem": "Tom has 4 bags with the same number of marbles in each bag, and 3 loose marbles. He has 31 marbles in all. Let $n$ be the number of marbles in each bag. Which equation matches the story?",
+      "choices": [
+        "$4 + n + 3 = 31$",
+        "$4 + n \\times 3 = 31$",
+        "$4 \\times n + 3 = 31$",
+        "$4 \\times (n + 3) = 31$"
+      ],
+      "answer": "$4 \\times n + 3 = 31$",
+      "compute": null,
+      "solution": "The 4 bags hold $4 \\times n$ marbles. Adding the 3 loose marbles gives $4 \\times n + 3$, and that equals 31. So the equation is $4 \\times n + 3 = 31$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times n + 3 = 31$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 bags of n marbles = 4 x n, plus 3 loose = 31: 4 x n + 3 = 31 (n = 7).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "64a8c029-3a99-42d7-b38a-68faddf1f473",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step problem: divide then subtract",
+      "stem": "A farmer has 56 apples. He puts them into bags of 8 apples each. Then he sells 3 of the bags. How many bags are left?",
+      "choices": [],
+      "answer": "4",
+      "compute": "56/8-3",
+      "solution": "56 apples in bags of 8 makes 56 divided by 8 = 7 bags. After selling 3 bags, 7 - 3 = 4 bags are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56 / 8 = 7 bags; 7 - 3 = 4 bags left.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "c1b9bf4c-0127-4672-ba08-55c90f871f49",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Three quantities: cost and change",
+      "stem": "Mr. Lee buys 6 notebooks that cost 3 dollars each and a backpack that costs 18 dollars. He pays with 50 dollars. How many dollars of change does he get back?",
+      "choices": [],
+      "answer": "14",
+      "compute": "50-(6*3+18)",
+      "solution": "The notebooks cost 6 x 3 = 18 dollars. Together with the backpack, he spends 18 + 18 = 36 dollars. His change is 50 - 36 = 14 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 3 = 18; 18 + 18 = 36 dollars spent; 50 - 36 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "02c87929-a084-4177-aa96-c2ce57820ec6",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a two-step equation with a letter",
+      "stem": "Find the value of $n$ in this equation: $n \\times 6 + 4 = 52$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "(52-4)/6",
+      "solution": "Undo the adding first: $n \\times 6 = 52 - 4 = 48$. Then undo the multiplying: $n = 48 \\div 6 = 8$. Check: $8 \\times 6 + 4 = 52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n x 6 + 4 = 52 -> n x 6 = 48 -> n = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "8e46bef0-a17e-4de7-8705-57aa2aab7015",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate to check an answer",
+      "stem": "Sam wants to estimate $29 \\times 31 + 48$. Which expression gives the best estimate?",
+      "choices": [
+        "$20 \\times 30 + 50$",
+        "$30 \\times 30 + 50$",
+        "$30 \\times 40 + 50$",
+        "$30 \\times 30 + 500$"
+      ],
+      "answer": "$30 \\times 30 + 50$",
+      "compute": null,
+      "solution": "Round each number to the nearest ten: 29 to 30, 31 to 30 and 48 to 50. That gives $30 \\times 30 + 50$. The other expressions round one of the numbers to something that is not close.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$30 \\times 30 + 50$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Round 29 to 30, 31 to 30, 48 to 50: 30 x 30 + 50 = 950 (exact 947).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "9772a3fa-6bbe-4374-884d-fd850a51c9e0",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiplicative comparison then add",
+      "stem": "A theater sells 128 tickets on Friday. On Saturday it sells 3 times as many tickets as on Friday. How many tickets does it sell on the two days together?",
+      "choices": [],
+      "answer": "512",
+      "compute": "128+3*128",
+      "solution": "Saturday: 3 x 128 = 384 tickets. Both days: 128 + 384 = 512 tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "512",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Saturday 3 x 128 = 384; total 128 + 384 = 512.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "40158e9d-1771-4146-9ccb-5621989587c3",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Work backward to find a starting amount",
+      "stem": "Kai had some marbles. He bought 3 bags with 15 marbles in each bag. Now he has 80 marbles. How many marbles did Kai have at first?",
+      "choices": [],
+      "answer": "35",
+      "compute": "80-3*15",
+      "solution": "The bags hold 3 x 15 = 45 marbles. Kai had 80 - 45 = 35 marbles at first. Check: 35 + 45 = 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bought 3 x 15 = 45; start = 80 - 45 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "a6f989d9-d68a-4280-b2f9-1c91140e73a6",
+      "topic_id": "NC26.4.ANR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Which story can be solved with $n = 3 \\times 14 + 8$?",
+      "choices": [
+        "14 bags of 8 beads each, then 3 more beads are added. How many beads?",
+        "3 bags of 14 beads each, then 8 beads are given away. How many beads are left?",
+        "14 beads are shared equally by 3 bags, then 8 more beads are added. How many beads?",
+        "3 bags of 14 beads each, then 8 more beads are added. How many beads?"
+      ],
+      "answer": "3 bags of 14 beads each, then 8 more beads are added. How many beads?",
+      "compute": null,
+      "solution": "$3 \\times 14$ means 3 groups of 14, and $+ 8$ means 8 more. So the story is 3 bags of 14 beads each with 8 more beads added.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 bags of 14 beads each, then 8 more beads are added. How many beads?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 14 + 8 = 3 groups of 14, then add 8: 3 bags of 14 beads each, then 8 more added.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "56fa85e7-d8bc-45c8-b384-d2684b5a6149",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find an equivalent fraction",
+      "stem": "What number does $n$ stand for so that the fractions are equal? $\\frac{1}{2} = \\frac{n}{8}$",
+      "choices": [],
+      "answer": "4",
+      "compute": "1*8/2",
+      "solution": "The denominator 2 was multiplied by 4 to make 8, so multiply the numerator 1 by 4 as well. $n = 4$, and $\\frac{1}{2} = \\frac{4}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 = 4/8 (multiply top and bottom by 4). n = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "ad62ccf2-4129-4759-aa7c-4a86020d0996",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tenths as decimals",
+      "stem": "Which decimal is equal to $\\frac{7}{10}$?",
+      "choices": [
+        "0.07",
+        "0.17",
+        "0.7",
+        "7.10"
+      ],
+      "answer": "0.7",
+      "compute": "7/10",
+      "solution": "$\\frac{7}{10}$ means 7 tenths, which is written 0.7. (0.07 is 7 hundredths.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/10 = seven tenths = 0.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "ab72ad21-f827-4a36-be6b-69ec23b4f87c",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare a fraction to one half",
+      "stem": "Which fraction is greater than $\\frac{1}{2}$?",
+      "choices": [
+        "$\\frac{3}{8}$",
+        "$\\frac{2}{5}$",
+        "$\\frac{1}{3}$",
+        "$\\frac{5}{8}$"
+      ],
+      "answer": "$\\frac{5}{8}$",
+      "compute": null,
+      "solution": "Half of 8 is 4, so a fraction with denominator 8 is greater than $\\frac{1}{2}$ when its numerator is more than 4. $\\frac{5}{8}$ is greater than $\\frac{1}{2}$, and $\\frac{3}{8}$ is less. Half of 5 is 2 and a half, so $\\frac{2}{5}$ (numerator 2) is less than $\\frac{1}{2}$. One of 3 equal parts is less than half of the whole, so $\\frac{1}{3}$ is less than $\\frac{1}{2}$. Only $\\frac{5}{8}$ is greater than $\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Half of 8 is 4, so 5/8 > 4/8 = 1/2. 2/5 < 2.5/5, 1/3 < 1/2, 3/8 < 4/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "290a5367-604d-4453-b6e6-557e959a52f1",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decimals and hundredths",
+      "stem": "Look at the decimal 0.6 written as hundredths: $0.6 = \\frac{n}{100}$. What number does $n$ stand for?",
+      "choices": [],
+      "answer": "60",
+      "compute": "0.6*100",
+      "solution": "0.6 is 6 tenths. Each tenth is 10 hundredths, so 6 tenths is 60 hundredths. So $0.6 = \\frac{60}{100}$ and $n = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.6 = 6 tenths = 60 hundredths, so n = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "aa2291b5-7d44-4be0-82fd-281b952fa50f",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order decimals",
+      "stem": "Which list shows $0.4$, $0.38$, $0.5$ and $0.09$ in order from least to greatest?",
+      "choices": [
+        "0.09, 0.4, 0.38, 0.5",
+        "0.09, 0.38, 0.4, 0.5",
+        "0.5, 0.4, 0.38, 0.09",
+        "0.38, 0.09, 0.4, 0.5"
+      ],
+      "answer": "0.09, 0.38, 0.4, 0.5",
+      "compute": null,
+      "solution": "Write them with hundredths: 0.40, 0.38, 0.50 and 0.09. In order from least to greatest: 0.09, 0.38, 0.40, 0.50. (0.4 is greater than 0.38, even though 4 is less than 38.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.09, 0.38, 0.4, 0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "As hundredths: 0.40, 0.38, 0.50, 0.09. Order: 0.09, 0.38, 0.4, 0.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "ec543be0-8306-4a7c-9b16-44374f39cc4b",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognize an equivalent fraction",
+      "stem": "Which fraction is equivalent to $\\frac{3}{4}$?",
+      "choices": [
+        "$\\frac{6}{8}$",
+        "$\\frac{4}{5}$",
+        "$\\frac{3}{8}$",
+        "$\\frac{6}{7}$"
+      ],
+      "answer": "$\\frac{6}{8}$",
+      "compute": null,
+      "solution": "Multiply the numerator and the denominator by the same number. With 2: $\\frac{3 \\times 2}{4 \\times 2} = \\frac{6}{8}$. The others change the numerator and denominator differently.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{6}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 = (3x2)/(4x2) = 6/8. 6/7, 4/5, 3/8 are not equal to 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "3fed0b11-19c2-4422-a279-d9e89f6676f3",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare fractions with unlike denominators",
+      "stem": "Which comparison is true?",
+      "choices": [
+        "$\\frac{2}{3} > \\frac{3}{4}$",
+        "$\\frac{1}{4} > \\frac{1}{3}$",
+        "$\\frac{5}{8} > \\frac{3}{5}$",
+        "$\\frac{3}{10} > \\frac{1}{2}$"
+      ],
+      "answer": "$\\frac{5}{8} > \\frac{3}{5}$",
+      "compute": null,
+      "solution": "Use common denominators. $\\frac{2}{3} = \\frac{8}{12}$ and $\\frac{3}{4} = \\frac{9}{12}$, so the first is false. A third is bigger than a fourth, so the second is false. $\\frac{5}{8} = \\frac{25}{40}$ and $\\frac{3}{5} = \\frac{24}{40}$, so $\\frac{5}{8} > \\frac{3}{5}$ is true. $\\frac{3}{10}$ is less than $\\frac{5}{10} = \\frac{1}{2}$, so the last is false.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{8} > \\frac{3}{5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 = 8/12 < 9/12 = 3/4 (false). 3/10 < 5/10 (false). 1/4 < 1/3 (false). 5/8 = 25/40 > 24/40 = 3/5 (true).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "5d1976c2-a1dc-4989-b558-502e435d8698",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tenths and hundredths as a decimal",
+      "stem": "A number has 3 tenths and 4 hundredths. Write the number as a decimal.",
+      "choices": [],
+      "answer": "0.34",
+      "compute": "3/10+4/100",
+      "solution": "3 tenths is 0.3 and 4 hundredths is 0.04. Together they make 0.34.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 tenths + 4 hundredths = 0.34.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "053fb83a-26c8-4d83-946f-8d770dbb0c4b",
+      "topic_id": "NC26.4.ANR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a decimal between two decimals",
+      "stem": "Which decimal is between $0.3$ and $0.4$?",
+      "choices": [
+        "0.04",
+        "0.35",
+        "0.45",
+        "0.25"
+      ],
+      "answer": "0.35",
+      "compute": "0.35",
+      "solution": "Write 0.3 as 0.30 and 0.4 as 0.40. The numbers between them have hundredths from 0.31 to 0.39, such as 0.35. 0.04 is less than 0.3, and 0.45 and 0.25 are outside the two numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 0.30 and 0.40: 0.35. 0.25 < 0.3, 0.45 > 0.4, 0.04 < 0.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "0be403d2-0413-4c28-917a-e17d35d64399",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add fractions with like denominators",
+      "stem": "What is $\\frac{2}{8} + \\frac{3}{8}$?",
+      "choices": [],
+      "answer": "5/8",
+      "compute": "2/8+3/8",
+      "solution": "The denominators are the same, so add the numerators: 2 + 3 = 5. The sum is $\\frac{5}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/8 + 3/8 = 5/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "a527b8c1-b47b-4fd8-b792-78bed192cfff",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract fractions with like denominators",
+      "stem": "What is $\\frac{7}{9} - \\frac{4}{9}$?",
+      "choices": [],
+      "answer": "1/3",
+      "compute": "7/9-4/9",
+      "solution": "The denominators are the same, so subtract the numerators: 7 - 4 = 3. The difference is $\\frac{3}{9}$, which is the same as $\\frac{1}{3}$. Either form is correct.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/9 - 4/9 = 3/9, which equals 1/3. Entry must accept either form.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "c24ca82c-50c7-4afb-999a-2a9119ff3f88",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decompose a fraction into a sum",
+      "stem": "Which sum is equal to $\\frac{5}{6}$?",
+      "choices": [
+        "$\\frac{2}{6} + \\frac{2}{6}$",
+        "$\\frac{2}{6} + \\frac{3}{6}$",
+        "$\\frac{3}{6} + \\frac{3}{6}$",
+        "$\\frac{2}{3} + \\frac{3}{3}$"
+      ],
+      "answer": "$\\frac{2}{6} + \\frac{3}{6}$",
+      "compute": null,
+      "solution": "$\\frac{5}{6}$ is 5 sixths. 2 sixths + 3 sixths = 5 sixths. The first sum is 4 sixths, the third is 6 sixths, and the last has thirds, not sixths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{6} + \\frac{3}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/6 + 3/6 = 5/6. Others: 5/3, 6/6, 4/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "acf16cd1-14ef-40a0-aaf0-18ff55eee4cc",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add mixed numbers with like denominators",
+      "stem": "What is $2\\frac{3}{8} + 1\\frac{2}{8}$?",
+      "choices": [],
+      "answer": "3 5/8",
+      "compute": "2+3/8+1+2/8",
+      "solution": "Add the whole numbers: 2 + 1 = 3. Add the fractions: $\\frac{3}{8} + \\frac{2}{8} = \\frac{5}{8}$. The sum is $3\\frac{5}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 5/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Wholes 2 + 1 = 3; eighths 3/8 + 2/8 = 5/8. Total 3 5/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "9e52c3fc-5d7b-43af-a9ed-c43f6c384e5d",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a fraction by a whole number",
+      "stem": "What is $4 \\times \\frac{3}{5}$?",
+      "choices": [],
+      "answer": "12/5",
+      "compute": "4*3/5",
+      "solution": "4 groups of $\\frac{3}{5}$ is $\\frac{3}{5} + \\frac{3}{5} + \\frac{3}{5} + \\frac{3}{5} = \\frac{12}{5}$, which is also $2\\frac{2}{5}$. Either form is correct.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3/5 = 12/5 = 2 2/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "12b4944d-5610-42c2-96d4-b3887c7b8bef",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a fraction of a set",
+      "stem": "A bag has 24 marbles. $\\frac{3}{8}$ of the marbles are red. How many marbles are red?",
+      "choices": [
+        "3",
+        "72",
+        "21",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "24/8*3",
+      "solution": "$\\frac{1}{8}$ of 24 is 24 divided by 8 = 3. So $\\frac{3}{8}$ of 24 is 3 x 3 = 9 marbles. (3 is only one eighth, and 72 is 24 x 3.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/8 of 24 = 3; 3/8 of 24 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "594456c3-e938-4fc7-ad0d-c6726cee2402",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract mixed numbers with regrouping",
+      "stem": "What is $4\\frac{1}{5} - 1\\frac{3}{5}$?",
+      "choices": [],
+      "answer": "2 3/5",
+      "compute": "4+1/5-1-3/5",
+      "solution": "Write each as a fraction: $4\\frac{1}{5} = \\frac{21}{5}$ and $1\\frac{3}{5} = \\frac{8}{5}$. Subtract: $\\frac{21}{5} - \\frac{8}{5} = \\frac{13}{5} = 2\\frac{3}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 3/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 1/5 - 1 3/5 = 21/5 - 8/5 = 13/5 = 2 3/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "7088f85b-c18c-42cd-b5cb-3bef41bf1220",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a fraction by a whole number in context",
+      "stem": "Dara runs $\\frac{3}{8}$ of a mile each morning for 5 mornings. How many miles does she run in all?",
+      "choices": [],
+      "answer": "1 7/8",
+      "compute": "5*3/8",
+      "solution": "$5 \\times \\frac{3}{8} = \\frac{15}{8}$. Since $\\frac{8}{8}$ is 1 whole, $\\frac{15}{8} = 1\\frac{7}{8}$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 3/8 = 15/8 = 1 7/8 miles.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "faa9ab9c-e758-4ac0-acfd-c5b045ce9657",
+      "topic_id": "NC26.4.ANR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a mixed number as a fraction",
+      "stem": "Which fraction is equal to $2\\frac{3}{5}$?",
+      "choices": [
+        "$\\frac{6}{5}$",
+        "$\\frac{13}{5}$",
+        "$\\frac{23}{5}$",
+        "$\\frac{10}{5}$"
+      ],
+      "answer": "$\\frac{13}{5}$",
+      "compute": null,
+      "solution": "Each whole is $\\frac{5}{5}$, so 2 wholes are $\\frac{10}{5}$. Add the $\\frac{3}{5}$: $\\frac{10}{5} + \\frac{3}{5} = \\frac{13}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{13}{5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 3/5 = 10/5 + 3/5 = 13/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "2e8362aa-5d3f-4afd-8931-3e1cd39210a3",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Continue a pattern from its rule",
+      "stem": "A pattern starts at 4 and adds 6 each time: 4, 10, 16, 22, ... What is the next number in the pattern?",
+      "choices": [],
+      "answer": "28",
+      "compute": "22+6",
+      "solution": "Add 6 to the last number: 22 + 6 = 28.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "22 + 6 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "19a6fdeb-f283-4127-912d-61019cb6f55a",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the rule of a number pattern",
+      "stem": "Which rule describes this pattern? 5, 10, 15, 20, 25",
+      "choices": [
+        "Multiply by 2",
+        "Add 10",
+        "Add 5",
+        "Add 4"
+      ],
+      "answer": "Add 5",
+      "compute": null,
+      "solution": "Each number is 5 more than the one before: 10 - 5 = 5, 15 - 10 = 5, and so on. The rule is add 5. (Multiplying by 2 works for 5 to 10, but 10 x 2 = 20, not 15.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each term is 5 more than the one before: add 5. Multiply by 2 fails at 10 -> 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "a233c8e6-35e3-4cc6-a05d-12752302d999",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell growing patterns from repeating patterns",
+      "stem": "Which of these is a growing pattern?",
+      "choices": [
+        "red, blue, red, blue, red, blue",
+        "A, B, B, A, B, B, A, B",
+        "triangle, circle, triangle, circle",
+        "2, 4, 6, 8, 10, 12"
+      ],
+      "answer": "2, 4, 6, 8, 10, 12",
+      "compute": null,
+      "solution": "A repeating pattern has a part that repeats over and over. A growing pattern changes by a rule, such as getting 2 bigger each time. Only 2, 4, 6, 8, 10, 12 grows. The others repeat.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2, 4, 6, 8, 10, 12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2, 4, 6, 8, 10, 12 increases by 2 each time (growing). The other three repeat a unit.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "f905d240-0767-41d7-83bd-08c41708c4f6",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pattern with a subtraction rule",
+      "stem": "A pattern starts at 100 and subtracts 8 each time. What is the fifth number in the pattern?",
+      "choices": [],
+      "answer": "68",
+      "compute": "100-4*8",
+      "solution": "The numbers are 100, 92, 84, 76, 68. The fifth number is 68.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100, 92, 84, 76, 68. Fifth number = 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "0645328a-9aca-4254-8cc0-fdc670ef22ad",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the rule from input and output",
+      "stem": "A rule changes each input number into an output number. 2 becomes 6, 3 becomes 9 and 5 becomes 15. Which rule fits all three?",
+      "choices": [
+        "Add 4",
+        "Multiply by 3",
+        "Add 6",
+        "Multiply by 2"
+      ],
+      "answer": "Multiply by 3",
+      "compute": null,
+      "solution": "Check each rule on all three. Multiply by 3 gives 2 x 3 = 6, 3 x 3 = 9 and 5 x 3 = 15, which are all correct. Add 4 fits 2 to 6 but not 3 to 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiply by 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 3 = 6, 3 x 3 = 9, 5 x 3 = 15. Add 4 gives 7 for 3; add 6 gives 8 for 2; x2 gives 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "29bbdb93-3f50-43b9-a547-39988d35a49e",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Growing shape pattern",
+      "stem": "A pattern of toothpick figures uses 4 toothpicks in Figure 1, 7 toothpicks in Figure 2 and 10 toothpicks in Figure 3. It keeps going by adding 3 more toothpicks each time. How many toothpicks are in Figure 6?",
+      "choices": [],
+      "answer": "19",
+      "compute": "4+5*3",
+      "solution": "Figure 4 has 13, Figure 5 has 16 and Figure 6 has 19. Another way: Figure 6 is 5 steps after Figure 1, so 4 + 5 x 3 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 7, 10, 13, 16, 19 for figures 1-6. Figure 6 = 19 (3n + 1).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "95cb7f25-9e64-4df7-ba55-32bca62dd7f0",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a later term of a pattern",
+      "stem": "A pattern starts at 7 and adds 5 each time: 7, 12, 17, 22, ... What is the 10th number in the pattern?",
+      "choices": [],
+      "answer": "52",
+      "compute": "7+9*5",
+      "solution": "The 10th number is 9 steps after the first. Each step adds 5, so 7 + 9 x 5 = 7 + 45 = 52.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10th = 7 + 9 x 5 = 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "d5e342c7-4f6e-4f39-90e2-32f738ff7558",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "List a pattern from a multiplication rule",
+      "stem": "A pattern starts at 3 and follows the rule \"multiply by 2\". Which list shows the first four numbers?",
+      "choices": [
+        "3, 6, 12, 24",
+        "3, 6, 9, 12",
+        "3, 5, 7, 9",
+        "3, 6, 10, 16"
+      ],
+      "answer": "3, 6, 12, 24",
+      "compute": null,
+      "solution": "Start with 3. 3 x 2 = 6, 6 x 2 = 12, and 12 x 2 = 24. The list is 3, 6, 12, 24. (3, 6, 9, 12 adds 3 each time.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3, 6, 12, 24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3, 6, 12, 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "cea87297-ea17-4218-bd15-69d568b72b05",
+      "topic_id": "NC26.4.ANR.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether a number belongs to a pattern",
+      "stem": "The pattern 4, 9, 14, 19, 24, ... follows the rule \"add 5\". Which number is in this pattern?",
+      "choices": [
+        "60",
+        "59",
+        "61",
+        "56"
+      ],
+      "answer": "59",
+      "compute": "59",
+      "solution": "Every number in the pattern is 4 more than a multiple of 5, so it ends in 4 or 9. Only 59 ends in 9. Check: 4 + 11 x 5 = 59.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "59",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms are 4 more than a multiple of 5 (end in 4 or 9): ..., 54, 59, 64. 59 is in; 56, 60, 61 are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "3304af5a-7fe4-4ffa-934f-1082e4696a2c",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Degrees in a half-turn",
+      "stem": "A full turn around a circle is 360 degrees. How many degrees is a half-turn?",
+      "choices": [],
+      "answer": "180",
+      "compute": "360/2",
+      "solution": "A half-turn is half of a full turn: 360 divided by 2 = 180 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360 / 2 = 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "6300e954-2cb2-4839-a408-1c66d63b6da4",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name an angle by its measure",
+      "stem": "An angle measures 120 degrees. What kind of angle is it?",
+      "choices": [
+        "acute",
+        "right",
+        "straight",
+        "obtuse"
+      ],
+      "answer": "obtuse",
+      "compute": null,
+      "solution": "An acute angle is less than 90 degrees, a right angle is exactly 90 degrees, and an obtuse angle is greater than 90 degrees and less than 180 degrees. A straight angle is 180 degrees. 120 degrees is between 90 and 180, so it is obtuse.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "obtuse",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 90 and 180 degrees: obtuse.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "15330690-668a-4a6f-a50a-4dc570ba90ee",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate an angle",
+      "stem": "Which angle is closest to a right angle?",
+      "choices": [
+        "15 degrees",
+        "88 degrees",
+        "120 degrees",
+        "150 degrees"
+      ],
+      "answer": "88 degrees",
+      "compute": null,
+      "solution": "A right angle is 90 degrees. 88 degrees is only 2 degrees away. The others are 75, 30 and 60 degrees away.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "88 degrees",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distance from 90: 150->60, 15->75, 88->2, 120->30. Closest: 88 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "c6c3214c-a90c-439d-8bbc-86456f4b6401",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add adjacent angles",
+      "stem": "Ray BD is inside angle ABC and splits it into two angles. Angle ABD measures 47 degrees and angle DBC measures 38 degrees. How many degrees does angle ABC measure?",
+      "choices": [],
+      "answer": "85",
+      "compute": "47+38",
+      "solution": "The whole angle is the sum of its two parts: 47 + 38 = 85 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "85",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 + 38 = 85.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "2176f69b-a5ca-47b1-80ec-00409f281907",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown angle on a straight line",
+      "stem": "Angle PQR and angle RQS are next to each other on a straight line, so together they measure 180 degrees. Angle PQR measures 112 degrees. How many degrees does angle RQS measure?",
+      "choices": [],
+      "answer": "68",
+      "compute": "180-112",
+      "solution": "Subtract the known angle from 180: 180 - 112 = 68 degrees. Check: 112 + 68 = 180.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "180 - 112 = 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "0807cd07-ee16-476f-9cc8-09dd634502fb",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Angle as a fraction of a circle",
+      "stem": "An angle opens through $\\frac{1}{6}$ of a full circle. A full circle is 360 degrees. How many degrees is the angle?",
+      "choices": [
+        "36",
+        "45",
+        "60",
+        "90"
+      ],
+      "answer": "60",
+      "compute": "360/6",
+      "solution": "$\\frac{1}{6}$ of 360 is 360 divided by 6 = 60 degrees. (90 degrees is $\\frac{1}{4}$ of a circle and 45 degrees is $\\frac{1}{8}$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360 / 6 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "0f2995fd-9e29-41e0-a5b6-b87c5a105c42",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the third angle along a straight line",
+      "stem": "Three angles are next to each other along a straight line. Two of them measure 48 degrees and 75 degrees. How many degrees does the third angle measure?",
+      "choices": [],
+      "answer": "57",
+      "compute": "180-48-75",
+      "solution": "Together the three angles measure 180 degrees. The two known angles add to 48 + 75 = 123 degrees. The third angle is 180 - 123 = 57 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "57",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "180 - 48 - 75 = 57.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "48b5c991-c0c2-4f87-b2da-d18572d95234",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "A turn as a fraction of a circle",
+      "stem": "A turn through 270 degrees is what fraction of a full circle (360 degrees)?",
+      "choices": [
+        "$\\frac{3}{4}$",
+        "$\\frac{1}{4}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{1}{3}$"
+      ],
+      "answer": "$\\frac{3}{4}$",
+      "compute": null,
+      "solution": "A quarter of a circle is 90 degrees. 270 is 3 x 90, so the turn is 3 quarters, or $\\frac{3}{4}$, of the circle. Check: $\\frac{270}{360} = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "270 / 360 = 27/36 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "575fd2d9-dd24-49ff-b677-1891a8f5b206",
+      "topic_id": "NC26.4.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Angles with a given difference",
+      "stem": "Two angles are next to each other and together measure 150 degrees. The larger angle is 20 degrees greater than the smaller angle. How many degrees does the smaller angle measure?",
+      "choices": [],
+      "answer": "65",
+      "compute": "(150-20)/2",
+      "solution": "If the larger angle were 20 degrees smaller, the two angles would be equal and would add to 150 - 20 = 130 degrees. Each would measure 130 divided by 2 = 65 degrees. So the smaller angle is 65 degrees and the larger is 85 degrees. Check: 65 + 85 = 150.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remove the extra 20: 150 - 20 = 130; 130 / 2 = 65. Check 65 + 85 = 150, 85 - 65 = 20. A sum-and-difference problem; a stretch for grade 4 but solvable by guess and check.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "d4040402-e737-4f38-808b-d342553ec02c",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Classify a triangle by its angles",
+      "stem": "A triangle has one angle that is exactly 90 degrees. What kind of triangle is it?",
+      "choices": [
+        "acute triangle",
+        "obtuse triangle",
+        "right triangle",
+        "equilateral triangle"
+      ],
+      "answer": "right triangle",
+      "compute": null,
+      "solution": "A triangle with a 90 degree angle (a right angle) is a right triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "right triangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One 90-degree angle: right triangle.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "cd65ee4f-6da1-495b-a7c7-cba7adee0280",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Classify a triangle by its sides",
+      "stem": "A triangle has side lengths of 6 cm, 7 cm and 8 cm. What kind of triangle is it, by its sides?",
+      "choices": [
+        "isosceles",
+        "equilateral",
+        "scalene",
+        "right"
+      ],
+      "answer": "scalene",
+      "compute": null,
+      "solution": "The three sides are all different lengths. A triangle with no equal sides is scalene. (An isosceles triangle has two equal sides and an equilateral triangle has three.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "scalene",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All three sides different: scalene.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "12edc0a3-9a0e-42db-b713-6a7e0c02cd7b",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Parallel sides of a quadrilateral",
+      "stem": "How many pairs of parallel sides does a rectangle have?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "In a rectangle, the two long sides are parallel to each other, and the two short sides are parallel to each other. That makes 2 pairs of parallel sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rectangle's opposite sides are parallel: top with bottom, left with right. That is 2 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:41:51.098Z"
+        }
+      }
+    },
+    {
+      "id": "88a6480e-d165-4706-b7eb-6735a7492295",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Classify a triangle by its angle measures",
+      "stem": "A triangle has angles that measure 40 degrees, 45 degrees and 95 degrees. What kind of triangle is it, by its angles?",
+      "choices": [
+        "obtuse",
+        "acute",
+        "right",
+        "equilateral"
+      ],
+      "answer": "obtuse",
+      "compute": null,
+      "solution": "One angle, 95 degrees, is greater than 90 degrees, so the triangle has an obtuse angle. It is an obtuse triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "obtuse",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "95 > 90, so one obtuse angle: obtuse triangle (40 + 45 + 95 = 180).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "39e51cd2-b027-4160-a079-8779064a9c3f",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name a quadrilateral from its attributes",
+      "stem": "A quadrilateral has four right angles. Two of its sides are 6 cm long and the other two sides are 3 cm long. Which name is correct for this shape?",
+      "choices": [
+        "square",
+        "rhombus",
+        "pentagon",
+        "rectangle"
+      ],
+      "answer": "rectangle",
+      "compute": null,
+      "solution": "A quadrilateral with four right angles is a rectangle. It is not a square or a rhombus, because those need all four sides equal. It is not a pentagon, which has five sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four right angles with opposite sides 6 and 3 (not all equal): rectangle, not square or rhombus.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "42eadc1a-db00-4d0e-9781-37a614213f7e",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Notation for a ray",
+      "stem": "Which symbol names the ray that starts at point P and passes through point Q?",
+      "choices": [
+        "$\\overrightarrow{QP}$",
+        "$\\overrightarrow{PQ}$",
+        "$\\overline{PQ}$",
+        "$\\overleftrightarrow{PQ}$"
+      ],
+      "answer": "$\\overrightarrow{PQ}$",
+      "compute": null,
+      "solution": "A ray has one endpoint and goes on forever in one direction. Its name starts with the endpoint and has an arrow pointing the way it goes: $\\overrightarrow{PQ}$. $\\overrightarrow{QP}$ starts at Q, $\\overline{PQ}$ is a line segment and $\\overleftrightarrow{PQ}$ is a line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\overrightarrow{PQ}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ray starting at P through Q: arrow over PQ pointing right, $\\overrightarrow{PQ}$.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "8603d746-4321-43a6-b4a6-cd5dc2acce20",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Relationships between quadrilaterals",
+      "stem": "Which statement is true?",
+      "choices": [
+        "Every rectangle is a square.",
+        "Every rhombus has four right angles.",
+        "A square has no parallel sides.",
+        "Every square is a rectangle."
+      ],
+      "answer": "Every square is a rectangle.",
+      "compute": null,
+      "solution": "A square has four right angles, so it is a rectangle with all sides equal. Every square is a rectangle. But a rectangle does not need equal sides, a rhombus does not need right angles, and a square has two pairs of parallel sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every square is a rectangle.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has four right angles, so it is a rectangle. The others are false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "d1f14235-34b0-4161-8e68-b6051003e00d",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count quadrilaterals in a list",
+      "stem": "Here are six shapes: square, triangle, rectangle, pentagon, rhombus, trapezoid. How many of them are quadrilaterals?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "A quadrilateral has four sides. The square, rectangle, rhombus and trapezoid each have four sides. The triangle has 3 sides and the pentagon has 5. So 4 of them are quadrilaterals.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quadrilaterals: square, rectangle, rhombus, trapezoid = 4. Triangle (3) and pentagon (5) are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "b8a7c9df-e64d-4651-923c-6097663b9ca8",
+      "topic_id": "NC26.4.SGMR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Attributes that always hold for a quadrilateral",
+      "stem": "Which quadrilateral always has four sides of equal length?",
+      "choices": [
+        "rhombus",
+        "rectangle",
+        "parallelogram",
+        "trapezoid"
+      ],
+      "answer": "rhombus",
+      "compute": null,
+      "solution": "A rhombus is defined as a quadrilateral with four equal sides. A rectangle can have long and short sides, a parallelogram only needs opposite sides equal, and a trapezoid can have sides of four different lengths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rhombus",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rhombus has 4 equal sides by definition. Parallelograms, rectangles and trapezoids need not.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "c695f65b-3f27-471c-beeb-62d98dea599d",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Elapsed time in minutes",
+      "stem": "Sara starts her homework at 4:20 p.m. and finishes at 5:05 p.m. How many minutes does she work?",
+      "choices": [],
+      "answer": "45",
+      "compute": "40+5",
+      "solution": "From 4:20 to 5:00 is 40 minutes. From 5:00 to 5:05 is 5 more minutes. 40 + 5 = 45 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4:20 -> 5:00 is 40 min; 5:00 -> 5:05 is 5 min. 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "fdebdc34-45a8-4d50-b234-f9ee3ad282e7",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose a unit for mass",
+      "stem": "Which unit is best for measuring the mass of a pencil?",
+      "choices": [
+        "kilograms",
+        "grams",
+        "milliliters",
+        "meters"
+      ],
+      "answer": "grams",
+      "compute": null,
+      "solution": "A pencil is very light, so use a small unit of mass: grams. A kilogram is 1,000 grams, much too big. Milliliters measure capacity and meters measure length.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "grams",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A pencil has a mass of a few grams.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "e724780f-e36d-4fd6-9a74-d122bcd62626",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Convert meters to centimeters",
+      "stem": "A rope is 3 meters long. How many centimeters long is it?",
+      "choices": [],
+      "answer": "300",
+      "compute": "3*100",
+      "solution": "1 meter is 100 centimeters, so 3 meters is 3 x 100 = 300 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 100 = 300 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "be93ba06-6d32-4a4c-b137-13be83ff4c83",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Capacity: convert and subtract",
+      "stem": "A jug holds 4 liters of water. Ben pours 750 milliliters into a glass. How many milliliters of water are left in the jug?",
+      "choices": [],
+      "answer": "3250",
+      "compute": "4*1000-750",
+      "solution": "4 liters is 4 x 1,000 = 4,000 milliliters. After pouring out 750 milliliters, 4,000 - 750 = 3,250 milliliters are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3250",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 L = 4,000 mL; 4,000 - 750 = 3,250.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "95f3611a-aec3-4484-99e5-52eba9c14c84",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Elapsed time across the hour",
+      "stem": "A bus leaves at 8:50 a.m. and arrives at 10:15 a.m. How long is the trip?",
+      "choices": [
+        "2 hours 35 minutes",
+        "1 hour 15 minutes",
+        "1 hour 25 minutes",
+        "1 hour 35 minutes"
+      ],
+      "answer": "1 hour 25 minutes",
+      "compute": null,
+      "solution": "From 8:50 to 9:00 is 10 minutes. From 9:00 to 10:00 is 1 hour. From 10:00 to 10:15 is 15 minutes. Total: 1 hour and 10 + 15 = 25 minutes, so 1 hour 25 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 hour 25 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8:50 -> 9:50 = 1 h; 9:50 -> 10:15 = 25 min. 1 hour 25 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "6f92dafd-2cba-4ab5-9da7-d6279d856dad",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a length",
+      "stem": "Which is the best estimate for the height of a classroom door?",
+      "choices": [
+        "2 centimeters",
+        "20 meters",
+        "2 kilometers",
+        "2 meters"
+      ],
+      "answer": "2 meters",
+      "compute": null,
+      "solution": "A door is a little taller than a tall adult, about 2 meters. 2 centimeters is about the width of a finger, and 20 meters or 2 kilometers are far too long.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A door is about 2 m tall.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "0e5437b8-cf17-4536-accb-4ba78a77577e",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Mass: convert and subtract",
+      "stem": "A recipe needs 2 kilograms of flour. Mia has 1,450 grams of flour. How many more grams of flour does she need?",
+      "choices": [],
+      "answer": "550",
+      "compute": "2*1000-1450",
+      "solution": "2 kilograms is 2 x 1,000 = 2,000 grams. She needs 2,000 - 1,450 = 550 more grams.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "550",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 kg = 2,000 g; 2,000 - 1,450 = 550.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "b1116232-c030-4645-bb23-be9ac9e53d58",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the end time",
+      "stem": "Practice starts at 3:35 p.m. and lasts 1 hour 50 minutes. At what time does it end?",
+      "choices": [
+        "5:25 p.m.",
+        "4:25 p.m.",
+        "5:15 p.m.",
+        "5:35 p.m."
+      ],
+      "answer": "5:25 p.m.",
+      "compute": null,
+      "solution": "Add 1 hour: 3:35 + 1 hour = 4:35. Add 50 minutes: 4:35 to 5:00 is 25 minutes, and 25 more minutes make 50, so the end time is 5:25 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5:25 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:35 + 1 h = 4:35; + 50 min = 5:25 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "652634b5-be2d-4973-9dfe-2d9375ddcfdf",
+      "topic_id": "NC26.4.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Capacity: convert then divide",
+      "stem": "A water bottle holds 500 milliliters. How many bottles can be filled completely from 6 liters of water?",
+      "choices": [],
+      "answer": "12",
+      "compute": "6*1000/500",
+      "solution": "6 liters is 6 x 1,000 = 6,000 milliliters. Each bottle takes 500 milliliters, so 6,000 divided by 500 = 12 bottles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 L = 6,000 mL; 6,000 / 500 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "a601b7b5-6fbe-412e-9ca9-4836cdfdd618",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Area of a rectangle",
+      "stem": "A rectangle is 8 cm long and 5 cm wide. What is its area in square centimeters?",
+      "choices": [],
+      "answer": "40",
+      "compute": "8*5",
+      "solution": "Area = length x width = 8 x 5 = 40 square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 5 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "62ea30c8-a5b6-4ab0-96b7-400d667163dc",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Perimeter of a rectangle",
+      "stem": "What is the perimeter, in centimeters, of a rectangle that is 9 cm long and 4 cm wide?",
+      "choices": [
+        "36",
+        "26",
+        "13",
+        "22"
+      ],
+      "answer": "26",
+      "compute": "2*(9+4)",
+      "solution": "Perimeter = 2 x (length + width) = 2 x (9 + 4) = 2 x 13 = 26 centimeters. (36 is the area, 13 is only half of the way around and 22 leaves out one of the widths.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x (9 + 4) = 26.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "1b9bcf04-5afa-455c-affb-b98d73218628",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the perimeter formula",
+      "stem": "Which expression gives the perimeter of a rectangle that is 12 m long and 5 m wide?",
+      "choices": [
+        "$12 \\times 5$",
+        "$12 + 5$",
+        "$2 \\times 12 \\times 5$",
+        "$2 \\times (12 + 5)$"
+      ],
+      "answer": "$2 \\times (12 + 5)$",
+      "compute": null,
+      "solution": "A rectangle has two lengths and two widths, so the perimeter is $2 \\times (12 + 5)$. $12 \\times 5$ is the area.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 \\times (12 + 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter = 12 + 5 + 12 + 5 = 2 x (12 + 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "9c7d6477-b284-472c-bef8-aac07f0e1a21",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing side from the area",
+      "stem": "A rectangular garden has an area of 72 square meters. Its length is 9 meters. How many meters wide is it?",
+      "choices": [],
+      "answer": "8",
+      "compute": "72/9",
+      "solution": "Area = length x width, so width = 72 divided by 9 = 8 meters. Check: 9 x 8 = 72.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 / 9 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "61979056-c606-4033-bec1-62da86766e45",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing side from the perimeter",
+      "stem": "A rectangle has a perimeter of 30 cm. Its length is 9 cm. How many centimeters wide is it?",
+      "choices": [],
+      "answer": "6",
+      "compute": "30/2-9",
+      "solution": "A length and a width together are half of the perimeter: 30 divided by 2 = 15 cm. The width is 15 - 9 = 6 cm. Check: 2 x (9 + 6) = 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length + width = 30 / 2 = 15; width = 15 - 9 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "d9fe8daa-85f1-4dfa-bad9-3e5e4957923a",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Area of a figure made of two rectangles",
+      "stem": "A floor is made of two rectangles that do not overlap. One rectangle is 10 meters by 4 meters. The other is 6 meters by 3 meters. What is the total area of the floor in square meters?",
+      "choices": [],
+      "answer": "58",
+      "compute": "10*4+6*3",
+      "solution": "The first rectangle has area 10 x 4 = 40 square meters. The second has area 6 x 3 = 18 square meters. Together: 40 + 18 = 58 square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "58",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 4 = 40; 6 x 3 = 18; 40 + 18 = 58.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "deb73bfd-8218-4ebe-a589-a322d4b0d7ca",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Same area, different perimeter",
+      "stem": "Rectangle A is 6 units by 4 units. Rectangle B is 12 units by 2 units. They have the same area. How many units greater is the perimeter of rectangle B than the perimeter of rectangle A?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2*(12+2)-2*(6+4)",
+      "solution": "Both have area 24 square units. Perimeter of A: 2 x (6 + 4) = 20 units. Perimeter of B: 2 x (12 + 2) = 28 units. The difference is 28 - 20 = 8 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 2 x (6 + 4) = 20. B: 2 x (12 + 2) = 28. 28 - 20 = 8. (Both areas 24.)",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "065f9633-b463-4482-bae1-6ce3bc003d80",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Smallest perimeter for a given area",
+      "stem": "Which rectangle has an area of 64 square centimeters and the smallest perimeter?",
+      "choices": [
+        "8 cm by 8 cm",
+        "4 cm by 16 cm",
+        "2 cm by 32 cm",
+        "1 cm by 64 cm"
+      ],
+      "answer": "8 cm by 8 cm",
+      "compute": null,
+      "solution": "All four have area 64 square centimeters. Perimeters: 8 by 8 is 2 x 16 = 32 cm, 4 by 16 is 2 x 20 = 40 cm, 2 by 32 is 2 x 34 = 68 cm and 1 by 64 is 2 x 65 = 130 cm. The smallest is 8 cm by 8 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 cm by 8 cm",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeters: 1x64 -> 130, 2x32 -> 68, 4x16 -> 40, 8x8 -> 32. Smallest: 8 cm by 8 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "1335cd80-f738-4dbf-b098-ee6b10b0a2c2",
+      "topic_id": "NC26.4.SGMR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Same perimeter, different area",
+      "stem": "Rectangle P is 7 units long and 5 units wide. Rectangle Q has the same perimeter as rectangle P, and Q is 9 units long. How many more square units of area does rectangle P have than rectangle Q?",
+      "choices": [],
+      "answer": "8",
+      "compute": "7*5-(12-9)*9",
+      "solution": "The perimeter of P is 2 x (7 + 5) = 24 units, so a length and a width of Q add up to 24 / 2 = 12. Q is 9 units long, so it is 12 - 9 = 3 units wide. The area of P is 7 x 5 = 35 square units. The area of Q is 9 x 3 = 27 square units. P has 35 - 27 = 8 more square units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter of P = 2 x (7 + 5) = 24. Q has perimeter 24 and length 9, so 9 + width = 12, width = 3. Area P = 7 x 5 = 35; area Q = 9 x 3 = 27. Difference = 35 - 27 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:41:51.098Z"
+        }
+      }
+    },
+    {
+      "id": "6f3b48f0-a2e9-49e7-a387-56444a5a3cac",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Range of a data set",
+      "stem": "Five students read 3, 5, 5, 8 and 9 books. What is the range of the number of books?",
+      "choices": [],
+      "answer": "6",
+      "compute": "9-3",
+      "solution": "The range is the greatest value minus the least value: 9 - 3 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "f5940ef5-8f3a-4f6c-a0cb-b423eaf2a6f3",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Mode of a data set",
+      "stem": "What is the mode of these numbers: 4, 7, 7, 2, 9, 7, 4?",
+      "choices": [],
+      "answer": "7",
+      "compute": null,
+      "solution": "The mode is the value that appears most often. 7 appears 3 times, 4 appears 2 times, and 2 and 9 appear once. The mode is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 appears 3 times, 4 twice, others once. Mode 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "2ff3d6aa-bafa-44f6-9e99-865b344186bd",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Numerical versus categorical questions",
+      "stem": "Which question can be answered with a number, so it is a numerical question?",
+      "choices": [
+        "What is your favorite color?",
+        "Which sport do you like best?",
+        "How many pets do you have?",
+        "What is your favorite food?"
+      ],
+      "answer": "How many pets do you have?",
+      "compute": null,
+      "solution": "A numerical question is answered with a number. \"How many pets do you have?\" is answered with a number. The others are answered with a color, a sport or a food, which are categories.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many pets do you have?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pets is answered with a count; the others with a category.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "a5c64702-b811-4f10-b25a-b87f187eb6c2",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Median of a data set",
+      "stem": "Seven students read 12, 8, 15, 10, 9, 11 and 14 pages. What is the median number of pages?",
+      "choices": [],
+      "answer": "11",
+      "compute": null,
+      "solution": "Put the numbers in order: 8, 9, 10, 11, 12, 14, 15. The median is the middle number. With 7 numbers, the middle is the 4th, which is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sorted: 8, 9, 10, 11, 12, 14, 15. Middle (4th) = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "8fd0e9eb-c27b-4565-b302-c2460d9f39be",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Total from a frequency table",
+      "stem": "Students were asked how many siblings they have. 0 siblings: 5 students. 1 sibling: 9 students. 2 siblings: 6 students. 3 siblings: 2 students. How many students were asked in all?",
+      "choices": [
+        "20",
+        "17",
+        "6",
+        "22"
+      ],
+      "answer": "22",
+      "compute": "5+9+6+2",
+      "solution": "Add the number of students in every row: 5 + 9 + 6 + 2 = 22. (6 is 0 + 1 + 2 + 3, the number of siblings added up, not the number of students.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 9 + 6 + 2 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "9c3cc17d-6d34-4ef1-bea7-da8ea3408f99",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read a line plot described in words",
+      "stem": "A line plot shows the number of goals a team scored in 10 games. There are 2 Xs above 0, 3 Xs above 1, 4 Xs above 2 and 1 X above 3. In how many games did the team score more than 1 goal?",
+      "choices": [],
+      "answer": "5",
+      "compute": "4+1",
+      "solution": "Each X is one game. More than 1 goal means 2 goals or 3 goals. There are 4 Xs above 2 and 1 X above 3, so 4 + 1 = 5 games.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 1 goal = 2 or 3 goals: 4 + 1 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "7504ba6f-708b-4d07-bc67-120aaa3c6547",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Median from a frequency table",
+      "stem": "Nine worms were measured to the nearest centimeter. 3 cm: 2 worms. 4 cm: 3 worms. 5 cm: 1 worm. 6 cm: 3 worms. What is the median length, in centimeters?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "List the lengths in order: 3, 3, 4, 4, 4, 5, 6, 6, 6. There are 9 lengths, so the median is the 5th one, which is 4 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ordered: 3,3,4,4,4,5,6,6,6. Middle (5th) value = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "af0e9757-bc29-404d-8d3e-f2143901da9f",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Draw a conclusion from two sets of data",
+      "stem": "Two classes voted for their favorite fruit. Class A: apples 8, bananas 6, grapes 4. Class B: apples 5, bananas 9, grapes 7. Which fruit got the most votes from the two classes together?",
+      "choices": [
+        "Apples",
+        "Bananas",
+        "Grapes",
+        "They all got the same number"
+      ],
+      "answer": "Bananas",
+      "compute": null,
+      "solution": "Add the two classes. Apples: 8 + 5 = 13. Bananas: 6 + 9 = 15. Grapes: 4 + 7 = 11. Bananas got the most votes. (Apples got the most votes in Class A alone.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Bananas",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Apples 8+5=13, bananas 6+9=15, grapes 4+7=11. Bananas.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
+    },
+    {
+      "id": "cbe35c6c-85ea-4477-99ff-87d6a4e42c0a",
+      "topic_id": "NC26.4.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Range and mode together",
+      "stem": "Nine students' scores on a quiz are 5, 8, 6, 8, 7, 8, 5, 6 and 9. What is the sum of the range and the mode?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(9-5)+8",
+      "solution": "The range is 9 - 5 = 4. The mode is the most common score: 8 appears 3 times, 5 and 6 appear twice, 7 and 9 once. So the mode is 8. The sum is 4 + 8 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range 9 - 5 = 4. Mode 8 (three times; 5 and 6 twice). 4 + 8 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:37:02.149Z"
+        }
+      }
     }
   ]
 }

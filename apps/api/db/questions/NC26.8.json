@@ -1,0 +1,4529 @@
+{
+  "level_id": "NC26.8",
+  "source": "Written 2026-10-17 by Claude Sonnet and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Hand-written fixture questions are \"approved\".",
+  "notes": {
+    "NC26.8.ANFR.2": "Sketching functions from real situations and reading graphs cannot be tested fairly without a figure, so tables, ordered pairs and verbal descriptions are used instead.",
+    "NC26.8.ANFR.3": "Graphing a line is not tested (no figures); slope, intercepts, equations from points or tables, interpretation and comparison are tested in text.",
+    "NC26.8.ANFR.4": "Placing numbers on a number line is tested by estimating and ordering values in words; no picture is used.",
+    "NC26.8.SGMR.1": "Transformations are tested with coordinates written as (x, y); no grid or drawing is referred to. Rotations are 90 degrees about the origin only.",
+    "NC26.8.SGMR.2": "Dilations are tested with coordinates and lengths; drawing a dilation is not tested.",
+    "NC26.8.SGMR.3": "Arguing with models is tested through counting possible triangles and reasoning about measurements; no figures are used.",
+    "NC26.8.RD.3": "Every distribution is written out as a list of values or a five-number summary, since no dot plot or number line is shown. The summary standard text mentions \"reading non-standard displays\": covered by one stem-and-leaf question written out in words; plotting several sets on one display cannot be tested without a figure.",
+    "NC26.8.RD.2": "Mostly conceptual choice questions (statistical questions, random and biased samples, simulation design, neutral wording) because the skills are about method; three numeric questions use sample proportions and a simulation tally.",
+    "NC26.8.RD.4": "Standard deviation is computed by hand only for data sets whose variance is a perfect square (population standard deviation: the question defines it in the stem); no technology is assumed.",
+    "NC26.8.RD.5": "Written-up investigations are tested through summary figures (means, ranges, percents, sample sizes), since no display is shown."
+  },
+  "questions": [
+    {
+      "id": "0c997d68-a63b-4cda-a2f8-6bcbf25d49ab",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a linear equation with the variable on both sides",
+      "stem": "Solve for $x$: $5x + 3 = 2x + 15$",
+      "choices": [],
+      "answer": "4",
+      "compute": "(15-3)/(5-2)",
+      "solution": "Subtract $2x$ from both sides: $3x + 3 = 15$. Subtract 3 from both sides: $3x = 12$. Divide by 3: $x = 4$. Check: $5(4) + 3 = 23$ and $2(4) + 15 = 23$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x + 3 = 2x + 15 -> 3x = 12 -> x = 4. Check: 23 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "4a90734e-30cc-4df9-9446-4f3fadcf7b23",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an equation from a situation with two quantities",
+      "stem": "Maya has 5 dollars and saves 2 dollars each week. Leo has 11 dollars and saves 1 dollar each week. Let $w$ be the number of weeks. Which equation says that they have the same amount of money after $w$ weeks?",
+      "choices": [
+        "$2 + 5w = 1 + 11w$",
+        "$5 + 2w = 11 + w$",
+        "$5 + 2w = 11w$",
+        "$5 + 11 = 2w + w$"
+      ],
+      "answer": "$5 + 2w = 11 + w$",
+      "compute": null,
+      "solution": "After $w$ weeks Maya has $5 + 2w$ dollars (5 to start, 2 more each week). Leo has $11 + w$ dollars. \"The same amount\" means the two are equal: $5 + 2w = 11 + w$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 2w = 11 + w$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Maya after w weeks: 5 + 2w. Leo: 11 + 1w = 11 + w. Same amount: 5 + 2w = 11 + w. Other options mix up the start and the rate.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "084c344b-7ea5-4dd8-bc0a-7dfe6b9bf52e",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the whole numbers that satisfy an inequality with the variable on both sides",
+      "stem": "What is the greatest whole number $x$ that makes $4x - 5 < x + 7$ true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "12/3-1",
+      "solution": "Subtract $x$ from both sides: $3x - 5 < 7$. Add 5: $3x < 12$. Divide by 3: $x < 4$. The greatest whole number less than 4 is 3. Check: for $x = 3$, $4(3) - 5 = 7$ and $3 + 7 = 10$, and $7 < 10$. For $x = 4$ both sides equal 11, so 4 does not work.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x - 5 < x + 7 -> 3x < 12 -> x < 4. Greatest whole number below 4 is 3. Check x=3: 7 < 10 true; x=4: 11 < 11 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "b02d8e1e-e415-42a8-9894-990ef1b2db96",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an equation that needs the distributive property",
+      "stem": "Solve for $x$: $4(x - 2) = 2x + 6$",
+      "choices": [],
+      "answer": "7",
+      "compute": "(6+8)/(4-2)",
+      "solution": "Distribute: $4x - 8 = 2x + 6$. Subtract $2x$: $2x - 8 = 6$. Add 8: $2x = 14$. Divide by 2: $x = 7$. Check: $4(7 - 2) = 20$ and $2(7) + 6 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x - 8 = 2x + 6 -> 2x = 14 -> x = 7. Check: 4(5) = 20 = 14 + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "bb299894-ce21-4e7d-918e-ac884fba4a43",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognise an equation with infinitely many solutions",
+      "stem": "How many solutions does the equation $3(x + 2) = 3x + 6$ have?",
+      "choices": [
+        "Infinitely many solutions",
+        "No solution",
+        "Exactly one solution, $x = 0$",
+        "Exactly one solution, $x = 6$"
+      ],
+      "answer": "Infinitely many solutions",
+      "compute": null,
+      "solution": "Distribute on the left: $3x + 6 = 3x + 6$. Both sides are exactly the same expression, so the equation is true for every value of $x$. It has infinitely many solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Infinitely many solutions",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x + 2) = 3x + 6, identical to the right side, so every x works: infinitely many solutions.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "94684697-319e-4880-8eaa-82608bd61087",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve an inequality where dividing by a negative reverses the sign",
+      "stem": "Which inequality shows all the solutions of $5 - 2x \\ge x - 7$?",
+      "choices": [
+        "$x \\ge 4$",
+        "$x \\ge -4$",
+        "$x \\le 4$",
+        "$x \\le 12$"
+      ],
+      "answer": "$x \\le 4$",
+      "compute": null,
+      "solution": "Add $2x$ to both sides: $5 \\ge 3x - 7$. Add 7: $12 \\ge 3x$. Divide by 3: $4 \\ge x$, which is the same as $x \\le 4$. Check: $x = 0$ gives $5 \\ge -7$, which is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 2x >= x - 7 -> 12 >= 3x -> x <= 4. Check x=4: -3 >= -3 true; x=5: -5 >= -2 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "9e26f99e-67b3-4ea4-8885-9455f67ae762",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an equation with fraction coefficients on both sides",
+      "stem": "Solve for $x$: $\\frac{1}{2}x + 3 = \\frac{1}{4}x + 8$",
+      "choices": [],
+      "answer": "20",
+      "compute": "(8-3)/(1/2-1/4)",
+      "solution": "Subtract $\\frac{1}{4}x$ from both sides: $\\frac{1}{4}x + 3 = 8$. Subtract 3: $\\frac{1}{4}x = 5$. Multiply by 4: $x = 20$. Check: $\\frac{1}{2}(20) + 3 = 13$ and $\\frac{1}{4}(20) + 8 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)x - (1/4)x = 8 - 3 -> (1/4)x = 5 -> x = 20. Check: 10 + 3 = 13 = 5 + 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "96a68c46-383c-4294-86e1-3d0eaa5c7660",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the constant that gives infinitely many solutions",
+      "stem": "The equation $3(2x - 4) = 6x + k$ has infinitely many solutions. What is the value of $k$?",
+      "choices": [
+        "$12$",
+        "$-4$",
+        "$0$",
+        "$-12$"
+      ],
+      "answer": "$-12$",
+      "compute": "0-12",
+      "solution": "Distribute on the left: $6x - 12 = 6x + k$. The $x$ terms already match. The equation is true for every $x$ only when the constants match too, so $k = -12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(2x - 4) = 6x - 12. For infinitely many solutions 6x - 12 = 6x + k for all x, so k = -12. Any other k gives no solution.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "1010f3ba-a88f-4542-8bfb-ad60b98ff79b",
+      "topic_id": "NC26.8.ANFR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use an equation with the variable on both sides to solve a problem",
+      "stem": "Gym A charges 20 dollars to join plus 8 dollars for each visit. Gym B charges 50 dollars to join plus 5 dollars for each visit. After how many visits is the total cost the same at both gyms?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(50-20)/(8-5)",
+      "solution": "Let $v$ be the number of visits. Gym A costs $20 + 8v$ and Gym B costs $50 + 5v$. Set them equal: $20 + 8v = 50 + 5v$. Subtract $5v$: $20 + 3v = 50$. Subtract 20: $3v = 30$. So $v = 10$. Check: both cost 100 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 + 8v = 50 + 5v -> 3v = 30 -> v = 10. Check: 20 + 80 = 100; 50 + 50 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "cfd7cd33-6da2-4b25-81af-1266d1442291",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell whether a set of input-output pairs is a function",
+      "stem": "Each pair below is written as (input, output). Which set of pairs is a function?",
+      "choices": [
+        "(1, 4), (1, 5), (2, 6), (3, 7)",
+        "(2, 3), (3, 4), (2, 5), (4, 6)",
+        "(5, 1), (6, 2), (7, 3), (5, 4)",
+        "(1, 4), (2, 5), (3, 6), (4, 7)"
+      ],
+      "answer": "(1, 4), (2, 5), (3, 6), (4, 7)",
+      "compute": null,
+      "solution": "A function gives exactly one output for each input. In the first set every input appears once. In the other sets an input is repeated with two different outputs: 1 gives 4 and 5, 2 gives 3 and 5, and 5 gives 1 and 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(1, 4), (2, 5), (3, 6), (4, 7)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A repeats input 2 with outputs 3 and 5; B repeats input 1; D repeats input 5. C has inputs 1,2,3,4 each once, so it is a function.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "e503e807-2094-4fc7-be51-942303181737",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a function rule to find an output",
+      "stem": "A function's rule is: the output is 3 more than twice the input. What is the output when the input is 5?",
+      "choices": [],
+      "answer": "13",
+      "compute": "2*5+3",
+      "solution": "Twice the input is $2 \\times 5 = 10$. Three more than that is $10 + 3 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Output = 2(5) + 3 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "82f8f8cc-1e93-4490-8a0f-40ed1465a29f",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Describe how a quantity changes as time passes",
+      "stem": "A candle is measured at 0, 1, 2 and 3 hours. Its heights are 20, 17, 14 and 11 centimeters. Which statement describes the height as time goes on?",
+      "choices": [
+        "The height increases by 3 centimeters each hour",
+        "The height decreases by 20 centimeters each hour",
+        "The height decreases by 3 centimeters each hour",
+        "The height decreases by 11 centimeters each hour"
+      ],
+      "answer": "The height decreases by 3 centimeters each hour",
+      "compute": null,
+      "solution": "Each hour the height goes from 20 to 17 to 14 to 11. It drops by 3 centimeters every hour, so the function is decreasing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The height decreases by 3 centimeters each hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 -> 17 -> 14 -> 11: each hour the height drops by 3 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "763cd066-6a1f-4613-ab9c-85145c8415a7",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether a function from a list of pairs is linear",
+      "stem": "A function has these (input, output) pairs: (1, 2), (2, 5), (3, 10), (4, 17). Is the function linear?",
+      "choices": [
+        "No, because the output does not change by the same amount each time",
+        "Yes, because the output always goes up",
+        "Yes, because the input goes up by 1 each time",
+        "Yes, because the output is always greater than the input"
+      ],
+      "answer": "No, because the output does not change by the same amount each time",
+      "compute": null,
+      "solution": "The outputs change by 3, then 5, then 7. A linear function changes by the same amount each time the input goes up by 1, so this function is not linear.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, because the output does not change by the same amount each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Output changes: 2->5 (+3), 5->10 (+5), 10->17 (+7). Equal input steps but unequal output changes, so not linear (outputs are x^2 + 1).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "5e4a7009-c109-4876-adc1-0e5fc350e084",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell which relationship gives exactly one output for each input",
+      "stem": "Which relationship gives exactly one output for every input?",
+      "choices": [
+        "Input: a letter of the alphabet. Output: a word that starts with that letter",
+        "Input: a whole number from 1 to 20. Output: a whole number that divides it evenly",
+        "Input: the side length of a square. Output: the area of that square",
+        "Input: a country. Output: a city in that country"
+      ],
+      "answer": "Input: the side length of a square. Output: the area of that square",
+      "compute": null,
+      "solution": "A square with a given side length has only one area, so this is a function. A letter can start many words, 12 is divided evenly by 1, 2, 3, 4, 6 and 12, and a country has many cities, so those inputs have more than one possible output.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Input: the side length of a square. Output: the area of that square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A letter has many words; a number like 6 has divisors 1,2,3,6; a country has many cities. A square's side determines exactly one area (s^2). So C.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "16a4113b-fb0d-4c1f-8af8-165ef904080f",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find how long a quantity is decreasing",
+      "stem": "A hiker's height above sea level is measured every hour. At hours 0, 1, 2, 3, 4 and 5 the heights in meters are 100, 300, 500, 500, 300 and 100. For how many hours is the height decreasing?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "The height rises from hour 0 to hour 2, stays at 500 from hour 2 to hour 3, and falls from hour 3 to hour 5 (500, then 300, then 100). It is decreasing for $5 - 3 = 2$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hours 0-1: up; 1-2: up; 2-3: level (500 to 500); 3-4: down; 4-5: down. Decreasing during 2 hours.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "d5225943-2cf3-4b4c-b55b-aba1a97f6090",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell a non-linear equation from linear ones",
+      "stem": "Which equation represents a non-linear function?",
+      "choices": [
+        "$y = 3 - 2x$",
+        "$y = 2x^2 - 3$",
+        "$y = \\frac{x}{2} - 3$",
+        "$y = 5x$"
+      ],
+      "answer": "$y = 2x^2 - 3$",
+      "compute": null,
+      "solution": "A linear function can be written $y = mx + b$, with $x$ only to the first power. The equation $y = 3 - 2x$ is linear (slope $-2$), $y = \\frac{x}{2} - 3$ is linear (slope $\\frac{1}{2}$), and $y = 5x$ is linear. The equation $y = 2x^2 - 3$ has $x^2$, so its graph is not a line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2x^2 - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 2x^2 - 3 has an x^2 term, so it is not linear. The others are y = -2x + 3, y = x/2 - 3, y = 5x, all linear.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "ed6a6168-ab3d-457e-a00b-11a067a1e4e7",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Continue a pattern of change in a non-linear function",
+      "stem": "The outputs of a function for the inputs 0, 1, 2, 3 and 4 are 5, 7, 11, 17 and 25. Each time, the amount the output increases by is 2 more than the amount it increased by the time before. What is the output when the input is 5?",
+      "choices": [],
+      "answer": "35",
+      "compute": "25+10",
+      "solution": "The increases are $7 - 5 = 2$, $11 - 7 = 4$, $17 - 11 = 6$ and $25 - 17 = 8$. They go up by 2 each time, so the next increase is 10. The output for input 5 is $25 + 10 = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Increases: 2, 4, 6, 8. Next increase is 10, so output at 5 is 25 + 10 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "1019ed24-c01e-470a-8443-1cadd2f49ea7",
+      "topic_id": "NC26.8.ANFR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fix a relation so that it becomes a function",
+      "stem": "The pairs (1, 2), (1, 3), (1, 4), (2, 5), (3, 7), (3, 9) are written as (input, output) and do not make a function. What is the fewest number of pairs that must be removed so that every input has exactly one output?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(3-1)+(2-1)",
+      "solution": "Input 1 has three pairs, so two must be removed. Input 2 has one pair, which is fine. Input 3 has two pairs, so one must be removed. In total $2 + 0 + 1 = 3$ pairs are removed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Input 1 has 3 outputs (keep 1, remove 2). Input 2 has 1. Input 3 has 2 outputs (remove 1). Fewest removals = 2 + 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "425be7cb-2b1f-40dc-89b2-8676be10581c",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read the slope from slope-intercept form",
+      "stem": "What is the slope of the line $y = -5x + 9$?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "0-5",
+      "solution": "In $y = mx + b$ the slope is $m$, the number multiplied by $x$. Here the slope is $-5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = mx + b with m = -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "8b66fa5a-8f83-4cb2-b755-20825eec66fa",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read the y-intercept when the terms are written in a different order",
+      "stem": "What is the $y$-intercept of the line $y = 3 - 4x$?",
+      "choices": [
+        "$-4$",
+        "$4$",
+        "$3$",
+        "$-3$"
+      ],
+      "answer": "$3$",
+      "compute": "3",
+      "solution": "Rewrite as $y = -4x + 3$. The constant term is the $y$-intercept, so it is 3. (The $-4$ is the slope.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 3 - 4x = -4x + 3; at x = 0, y = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "cfcdac1f-103b-494e-a029-28437def46da",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the equation of a line from its slope and y-intercept",
+      "stem": "Which equation is for a line with slope 2 and $y$-intercept $-4$?",
+      "choices": [
+        "$y = 2x - 4$",
+        "$y = -4x + 2$",
+        "$y = 2x + 4$",
+        "$y = -2x - 4$"
+      ],
+      "answer": "$y = 2x - 4$",
+      "compute": null,
+      "solution": "Use $y = mx + b$ with $m = 2$ and $b = -4$: $y = 2x - 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2x - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = mx + b with m = 2, b = -4: y = 2x - 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "3a820287-334d-4be2-878e-f32ad3243ac8",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the slope of the line through two points",
+      "stem": "What is the slope of the line through the points $(2, 9)$ and $(5, 0)$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "(0-9)/(5-2)",
+      "solution": "Slope is the change in $y$ divided by the change in $x$: $\\frac{0 - 9}{5 - 2} = \\frac{-9}{3} = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope = (0 - 9)/(5 - 2) = -9/3 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "7a4cb05e-e921-4ef7-8978-f87ed029ded0",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the slope of a linear model in context",
+      "stem": "A plumber's charge in dollars is given by $y = 45x + 30$, where $x$ is the number of hours worked. What does the 45 tell us?",
+      "choices": [
+        "A fixed fee charged once for coming to the job",
+        "The total charge for 30 hours of work",
+        "The number of hours worked",
+        "The charge for each hour of work"
+      ],
+      "answer": "The charge for each hour of work",
+      "compute": null,
+      "solution": "The slope 45 is the change in the charge for each 1 hour of work. The 30 is the fixed fee, charged even for 0 hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The charge for each hour of work",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In y = 45x + 30, 45 multiplies the hours, so it is the rate per hour; 30 is the fixed fee.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "0e62970f-b1d8-4a08-90d0-258605705147",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the equation of a linear function from a list of pairs",
+      "stem": "A linear function has these $(x, y)$ pairs: (0, 4), (2, 10), (4, 16). Which equation matches it?",
+      "choices": [
+        "$y = 6x + 4$",
+        "$y = 3x + 4$",
+        "$y = 4x + 3$",
+        "$y = 3x - 4$"
+      ],
+      "answer": "$y = 3x + 4$",
+      "compute": null,
+      "solution": "When $x = 0$, $y = 4$, so the $y$-intercept is 4. When $x$ goes up by 2, $y$ goes up by 6, so the slope is $\\frac{6}{2} = 3$. The equation is $y = 3x + 4$. Check: $x = 4$ gives $3(4) + 4 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 3x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope = (10 - 4)/(2 - 0) = 3; intercept 4 (from (0,4)). y = 3x + 4. Check (4,16): 12 + 4 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "f1835b01-541b-44a4-9c8c-7206463f4a4f",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare the rates of change of two linear functions shown in different ways",
+      "stem": "Function A is $y = 5x - 1$. Function B is the line through the points $(1, 2)$ and $(4, 11)$. How much greater is the slope of Function A than the slope of Function B?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-(11-2)/(4-1)",
+      "solution": "The slope of A is 5. The slope of B is $\\frac{11 - 2}{4 - 1} = \\frac{9}{3} = 3$. The difference is $5 - 3 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope A = 5. Slope B = (11 - 2)/(4 - 1) = 9/3 = 3. Difference 5 - 3 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "ba59d9de-7544-4f44-9bf0-932eaadf80fc",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the y-intercept of a line from its slope and one point",
+      "stem": "A line has slope $-3$ and passes through the point $(4, 1)$. What is its $y$-intercept?",
+      "choices": [],
+      "answer": "13",
+      "compute": "1+3*4",
+      "solution": "Write $y = -3x + b$. Put in the point: $1 = -3(4) + b = -12 + b$. Then $b = 1 + 12 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = -3x + b; 1 = -3(4) + b = -12 + b -> b = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "af4a0305-d0d7-49aa-82d3-9d978c782b05",
+      "topic_id": "NC26.8.ANFR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find where a line crosses the x-axis",
+      "stem": "At what value of $x$ does the line $y = \\frac{3}{4}x - 6$ cross the $x$-axis?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6/(3/4)",
+      "solution": "The line crosses the $x$-axis where $y = 0$: $0 = \\frac{3}{4}x - 6$. Add 6: $\\frac{3}{4}x = 6$. Multiply by $\\frac{4}{3}$: $x = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Crosses x-axis where y = 0: (3/4)x = 6 -> x = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "54c7a41b-84b5-4023-ad2a-bb7ee962200f",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognise an irrational number",
+      "stem": "Which number is irrational?",
+      "choices": [
+        "$\\sqrt{49}$",
+        "$\\frac{22}{7}$",
+        "$\\sqrt{7}$",
+        "$0.125$"
+      ],
+      "answer": "$\\sqrt{7}$",
+      "compute": null,
+      "solution": "An irrational number cannot be written as a fraction of two integers. 7 is not a perfect square, so $\\sqrt{7}$ is irrational. But $\\sqrt{49} = 7$, $\\frac{22}{7}$ is a fraction, and $0.125 = \\frac{1}{8}$, so those are rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{7}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.125 = 1/8, 22/7 is a fraction, sqrt(49) = 7. sqrt(7) is not a perfect square root, so irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "ce6d0804-2019-4596-ac15-088f3afe07b8",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Classify a number within the real numbers",
+      "stem": "Which statement about the number $-6$ is true?",
+      "choices": [
+        "It is an integer and a rational number",
+        "It is a whole number and an integer",
+        "It is a counting number and a rational number",
+        "It is an irrational number"
+      ],
+      "answer": "It is an integer and a rational number",
+      "compute": null,
+      "solution": "The number $-6$ is an integer, and every integer is rational ($-6 = \\frac{-6}{1}$). It is not a whole number or a counting number, because those are 0, 1, 2, ... or 1, 2, 3, ... and have no negatives. It is not irrational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is an integer and a rational number",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-6 is an integer and equals -6/1, so rational. It is not irrational, not a counting number and not a whole number (whole numbers are 0, 1, 2, ...).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "654c84a3-9d7a-495c-8873-995d6ac86e18",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Place a square root between whole numbers",
+      "stem": "What is the greatest whole number that is less than $\\sqrt{50}$?",
+      "choices": [],
+      "answer": "7",
+      "compute": null,
+      "solution": "Since $7^2 = 49$ and $8^2 = 64$, and 50 is between 49 and 64, $\\sqrt{50}$ is between 7 and 8. The greatest whole number less than it is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^2 = 49 < 50 < 64 = 8^2, so 7 < sqrt(50) < 8. Greatest whole number less than it is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "68524fe7-7d29-4824-bb03-ba703dfa6098",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Approximate an expression with pi",
+      "stem": "What is the value of $4\\pi$, rounded to the nearest whole number?",
+      "choices": [
+        "12",
+        "13",
+        "16",
+        "7"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Since $\\pi \\approx 3.14$, we get $4\\pi \\approx 12.56$. Rounded to the nearest whole number that is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3.14159 = 12.566..., rounds to 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "e603fb09-6e51-428e-bf81-9b2d40d3db34",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a square root",
+      "stem": "Which value is the best estimate of $\\sqrt{20}$?",
+      "choices": [
+        "4",
+        "5",
+        "10",
+        "4.5"
+      ],
+      "answer": "4.5",
+      "compute": "4.5",
+      "solution": "Since $4^2 = 16$ and $5^2 = 25$, $\\sqrt{20}$ is between 4 and 5. Check $4.5^2 = 20.25$, which is very close to 20, so 4.5 is the best estimate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^2 = 16, 5^2 = 25, 4.5^2 = 20.25. sqrt(20) = 4.472..., closest to 4.5 (distance 0.03 vs 0.47 and 0.53).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "b0e3848a-d8d0-4fce-a718-6b1feecd8224",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate an expression with pi using a given approximation",
+      "stem": "Use 3.14 as the value of $\\pi$. What is the value of $5\\pi - 2$?",
+      "choices": [],
+      "answer": "13.7",
+      "compute": "5*3.14-2",
+      "solution": "Multiply: $5 \\times 3.14 = 15.7$. Subtract 2: $15.7 - 2 = 13.7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 3.14 = 15.7; 15.7 - 2 = 13.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "ba9310d9-71b8-4bbf-90e7-5f807fff6091",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Approximate a square root to the nearest tenth",
+      "stem": "What is $\\sqrt{60}$, rounded to the nearest tenth?",
+      "choices": [],
+      "answer": "7.7",
+      "compute": null,
+      "solution": "Since $7.7^2 = 59.29$ and $7.8^2 = 60.84$, $\\sqrt{60}$ is between 7.7 and 7.8. The halfway point is 7.75, and $7.75^2 = 60.0625$, which is more than 60, so $\\sqrt{60}$ is below 7.75. Rounded to the nearest tenth, $\\sqrt{60} \\approx 7.7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.7^2 = 59.29, 7.8^2 = 60.84; 7.75^2 = 60.0625 > 60, so sqrt(60) is between 7.7 and 7.75 (about 7.746). Rounds to 7.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "654cb301-5089-450a-82e2-caafc0a3bca6",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a number that is irrational and lies in a given interval",
+      "stem": "Which number is irrational and lies between 5 and 6?",
+      "choices": [
+        "$\\sqrt{28}$",
+        "$\\sqrt{25}$",
+        "$\\frac{16}{3}$",
+        "$\\sqrt{40}$"
+      ],
+      "answer": "$\\sqrt{28}$",
+      "compute": null,
+      "solution": "$\\sqrt{28}$ is between $\\sqrt{25} = 5$ and $\\sqrt{36} = 6$, and 28 is not a perfect square, so it is irrational. $\\sqrt{25} = 5$ is rational and not between 5 and 6. $\\frac{16}{3} \\approx 5.33$ is between 5 and 6 but rational. $\\sqrt{40} \\approx 6.3$ is irrational but greater than 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{28}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 5 and 6 means between sqrt(25) and sqrt(36). sqrt(40) > 6; sqrt(25) = 5 rational; 16/3 = 5.33 rational. sqrt(28) is about 5.29 and irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "22e4eed2-5ceb-4faf-ada7-4291dd07f0d9",
+      "topic_id": "NC26.8.ANFR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order rational and irrational numbers",
+      "stem": "Which list puts $3$, $\\pi$, $\\sqrt{10}$ and $3.2$ in order from least to greatest?",
+      "choices": [
+        "$3, \\sqrt{10}, \\pi, 3.2$",
+        "$\\pi, 3, \\sqrt{10}, 3.2$",
+        "$3, \\pi, \\sqrt{10}, 3.2$",
+        "$3, \\pi, 3.2, \\sqrt{10}$"
+      ],
+      "answer": "$3, \\pi, \\sqrt{10}, 3.2$",
+      "compute": null,
+      "solution": "Approximate each number: $\\pi \\approx 3.14$, $\\sqrt{10} \\approx 3.16$ (because $3.16^2 \\approx 9.99$), and 3.2 and 3 are given. In order: $3 < 3.14 < 3.16 < 3.2$, that is $3, \\pi, \\sqrt{10}, 3.2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3, \\pi, \\sqrt{10}, 3.2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3; pi = 3.14159...; sqrt(10) = 3.1623 (3.16^2 = 9.9856, 3.17^2 = 10.0489); 3.2. Order: 3, pi, sqrt(10), 3.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "fb113841-778f-4507-af75-9c6502ebca62",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply powers with the same base",
+      "stem": "Which expression is equal to $5^4 \\times 5^3$?",
+      "choices": [
+        "$5^{12}$",
+        "$25^7$",
+        "$5^{1}$",
+        "$5^7$"
+      ],
+      "answer": "$5^7$",
+      "compute": null,
+      "solution": "When you multiply powers with the same base, add the exponents: $5^4 \\times 5^3 = 5^{4+3} = 5^7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5^7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same base: add exponents, 5^(4+3) = 5^7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "05add28c-8739-42b7-9eb0-7d77f8edda8b",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve x squared equals a positive number",
+      "stem": "Which choice shows all the solutions of $x^2 = 49$?",
+      "choices": [
+        "$x = 7$ and $x = -7$",
+        "$x = 7$ only",
+        "$x = -7$ only",
+        "$x = 24.5$"
+      ],
+      "answer": "$x = 7$ and $x = -7$",
+      "compute": null,
+      "solution": "Both $7 \\times 7 = 49$ and $(-7) \\times (-7) = 49$, so $x = 7$ and $x = -7$ are both solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 7$ and $x = -7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^2 = 49 and (-7)^2 = 49, so x = 7 and x = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "f3431ee0-1c95-4dd2-a995-16b6ce4f8cdc",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number in scientific notation as an ordinary number",
+      "stem": "Write $4.7 \\times 10^3$ as a whole number.",
+      "choices": [],
+      "answer": "4700",
+      "compute": "4.7*10^3",
+      "solution": "$10^3 = 1{,}000$ and $4.7 \\times 1{,}000 = 4{,}700$. Moving the decimal point 3 places to the right gives the same result.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.7 x 1000 = 4700.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "4fa60040-5e94-4bf8-bfb5-8de43678a27d",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate a negative exponent",
+      "stem": "What is the value of $3^{-2}$? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/9",
+      "compute": "1/3^2",
+      "solution": "A negative exponent means the reciprocal: $3^{-2} = \\frac{1}{3^2} = \\frac{1}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^-2 = 1/3^2 = 1/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "a8ae1055-07fe-40ec-a93a-9a1807101529",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a cube root to solve x cubed equals a number",
+      "stem": "A cube has a volume of 512 cubic centimeters. How long is each edge, in centimeters?",
+      "choices": [],
+      "answer": "8",
+      "compute": null,
+      "solution": "The volume of a cube is edge $\\times$ edge $\\times$ edge, so $x^3 = 512$. Since $8 \\times 8 \\times 8 = 512$, each edge is 8 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Edge = cube root of 512; 8^3 = 512, so 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "06e51559-eed4-437a-ba9b-1f4bfaaaa55b",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare numbers in scientific notation",
+      "stem": "Which number is the greatest?",
+      "choices": [
+        "$9.2 \\times 10^{5}$",
+        "$7.9 \\times 10^{4}$",
+        "$4.5 \\times 10^{6}$",
+        "$3.1 \\times 10^{5}$"
+      ],
+      "answer": "$4.5 \\times 10^{6}$",
+      "compute": null,
+      "solution": "Compare the powers of 10 first. $10^6$ is the largest power, so $4.5 \\times 10^6 = 4{,}500{,}000$ is greater than $9.2 \\times 10^5 = 920{,}000$, $3.1 \\times 10^5 = 310{,}000$ and $7.9 \\times 10^4 = 79{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4.5 \\times 10^{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Values: 310,000; 79,000; 920,000; 4,500,000. Greatest is 4.5 x 10^6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "b620394f-638b-43b1-b6b5-02f213d5231c",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply numbers in scientific notation",
+      "stem": "Which choice shows $(3 \\times 10^4) \\times (2 \\times 10^3)$ in scientific notation?",
+      "choices": [
+        "$6 \\times 10^{12}$",
+        "$6 \\times 10^{7}$",
+        "$5 \\times 10^{7}$",
+        "$6 \\times 10^{1}$"
+      ],
+      "answer": "$6 \\times 10^{7}$",
+      "compute": null,
+      "solution": "Multiply the numbers in front: $3 \\times 2 = 6$. Add the exponents of 10: $10^4 \\times 10^3 = 10^7$. The product is $6 \\times 10^7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 10^{7}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3 x 2) x 10^(4+3) = 6 x 10^7, already in scientific notation.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "d84171de-31de-4d2a-a981-3eaaf3ff6c94",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine exponent properties",
+      "stem": "What is the value of $\\frac{(3^2)^3}{3^4}$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(3^2)^3/3^4",
+      "solution": "A power of a power multiplies the exponents: $(3^2)^3 = 3^6$. Dividing powers of the same base subtracts the exponents: $\\frac{3^6}{3^4} = 3^2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3^2)^3 = 3^6; 3^6 / 3^4 = 3^2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "66d0979f-d561-4ada-a9be-4903ea6c822b",
+      "topic_id": "NC26.8.ANFR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide numbers in scientific notation in a problem",
+      "stem": "A signal travels $3 \\times 10^8$ meters each second. How many seconds does it take to travel $6 \\times 10^{10}$ meters?",
+      "choices": [],
+      "answer": "200",
+      "compute": "(6*10^10)/(3*10^8)",
+      "solution": "Time = distance $\\div$ speed $= \\frac{6 \\times 10^{10}}{3 \\times 10^8}$. Divide the numbers in front: $6 \\div 3 = 2$. Subtract the exponents: $10^{10} \\div 10^8 = 10^2$. So the time is $2 \\times 10^2 = 200$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Time = (6 x 10^10)/(3 x 10^8) = 2 x 10^2 = 200 seconds.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "8317e9aa-ec92-405c-8d94-bb85f1c05ca8",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Translate a point",
+      "stem": "Point A is at (2, 5). It is moved 3 units to the right and 4 units down. What are its new coordinates?",
+      "choices": [
+        "(5, 9)",
+        "(-1, 1)",
+        "(5, 1)",
+        "(-1, 9)"
+      ],
+      "answer": "(5, 1)",
+      "compute": null,
+      "solution": "Moving right adds to $x$: $2 + 3 = 5$. Moving down subtracts from $y$: $5 - 4 = 1$. The new point is (5, 1).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(5, 1)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2 + 3, 5 - 4) = (5, 1).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "ef653049-ad32-4144-82d4-2f6fbc29ab7c",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reflect a point across the y-axis",
+      "stem": "A point at (6, -2) is reflected across the $y$-axis. What is the $x$-coordinate of its image?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "0-6",
+      "solution": "A reflection across the $y$-axis changes the sign of the $x$-coordinate and keeps the $y$-coordinate. The image is $(-6, -2)$, so its $x$-coordinate is $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reflection across y-axis: (x, y) -> (-x, y). (6, -2) -> (-6, -2). x-coordinate -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "023d7d75-10cd-4b0c-8e7d-4542273ddbb1",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Know that rigid transformations keep lengths",
+      "stem": "A triangle has a perimeter of 24 centimeters. It is translated 5 units to the right and 2 units up. What is the perimeter of the new triangle, in centimeters?",
+      "choices": [],
+      "answer": "24",
+      "compute": "24",
+      "solution": "A translation is a rigid transformation. It moves the triangle without changing any side length, so the perimeter stays 24 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A translation is rigid: lengths are kept, so the perimeter stays 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "28936f7b-f356-4219-8273-b2bd48d38dd2",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rotate a point 90 degrees about the origin",
+      "stem": "Point P is at (3, 1). It is rotated $90^\\circ$ counterclockwise about the origin. What are the coordinates of its image?",
+      "choices": [
+        "(-1, 3)",
+        "(1, -3)",
+        "(-3, -1)",
+        "(1, 3)"
+      ],
+      "answer": "(-1, 3)",
+      "compute": null,
+      "solution": "A $90^\\circ$ counterclockwise rotation about the origin takes $(x, y)$ to $(-y, x)$. So (3, 1) goes to (-1, 3).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(-1, 3)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 degrees counterclockwise about origin: (x, y) -> (-y, x). (3, 1) -> (-1, 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "9d00d06b-93a9-4a17-928f-d06c9d760e00",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine a translation and a reflection",
+      "stem": "Point Q is at (1, 2). It is first moved 4 units to the left and 1 unit up, and then reflected across the $x$-axis. What are the coordinates of its final image?",
+      "choices": [
+        "(-3, 3)",
+        "(3, 3)",
+        "(5, -3)",
+        "(-3, -3)"
+      ],
+      "answer": "(-3, -3)",
+      "compute": null,
+      "solution": "Moving 4 left and 1 up takes (1, 2) to (-3, 3). Reflecting across the $x$-axis changes the sign of the $y$-coordinate, giving (-3, -3).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(-3, -3)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1, 2) -> (1 - 4, 2 + 1) = (-3, 3). Reflect across x-axis: (-3, -3).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "4038bd36-8532-4f2a-b98a-483db4a68d9a",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name the transformation that maps a triangle onto its image",
+      "stem": "Triangle ABC has vertices A(2, 3), B(5, 3) and C(2, 7). Its image has vertices A'(2, -3), B'(5, -3) and C'(2, -7). Which transformation moved the triangle?",
+      "choices": [
+        "A reflection across the $y$-axis",
+        "A reflection across the $x$-axis",
+        "A translation 6 units down",
+        "A rotation of $90^\\circ$ clockwise about the origin"
+      ],
+      "answer": "A reflection across the $x$-axis",
+      "compute": null,
+      "solution": "Every vertex keeps its $x$-coordinate and has the sign of its $y$-coordinate changed, which is a reflection across the $x$-axis. A translation 6 units down would take C(2, 7) to (2, 1), not (2, -7).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A reflection across the $x$-axis",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each (x, y) -> (x, -y): reflection across the x-axis. Translation 6 down would send C(2,7) to (2,1), not (2,-7). Rotation 90 cw sends A to (3,-2). y-axis reflection changes x.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "aff3ed8f-afe3-438b-b71b-e6f9084a4b3c",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine a rotation and a translation",
+      "stem": "Point R is at (-2, 6). It is rotated $90^\\circ$ clockwise about the origin and then moved 3 units to the left. What is the $x$-coordinate of its final image?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6-3",
+      "solution": "A $90^\\circ$ clockwise rotation about the origin takes $(x, y)$ to $(y, -x)$, so (-2, 6) goes to (6, 2). Moving 3 units left subtracts 3 from $x$: (3, 2). The $x$-coordinate is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 degrees clockwise: (x, y) -> (y, -x). (-2, 6) -> (6, 2). Left 3: (3, 2). x-coordinate 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "959de84a-8848-4c94-900f-07e128803bda",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the image of a vertex from a given translation",
+      "stem": "A triangle has vertices (1, 1), (4, 1) and (1, 5). It is translated so that the vertex (4, 1) moves to (-2, 6). What is the $y$-coordinate of the image of the vertex (1, 5)?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+(6-1)",
+      "solution": "The vertex (4, 1) moves to (-2, 6), which is 6 units left and 5 units up. Every point moves the same way, so (1, 5) moves to (-5, 10). Its $y$-coordinate is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Translation vector: (-2 - 4, 6 - 1) = (-6, 5). (1, 5) -> (-5, 10). y-coordinate 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "0e0d1f98-14cb-444b-9414-e3adc8974983",
+      "topic_id": "NC26.8.SGMR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Describe a sequence of two transformations",
+      "stem": "Triangle ABC has vertices A(1, 2), B(3, 2) and C(1, 5). Its image has vertices A'(-1, -2), B'(-3, -2) and C'(-1, -5). Which sequence of transformations maps the triangle onto its image?",
+      "choices": [
+        "A reflection across the $x$-axis, then a translation 2 units left",
+        "A reflection across the $y$-axis only",
+        "A reflection across the $x$-axis, then a reflection across the $y$-axis",
+        "A rotation of $90^\\circ$ clockwise about the origin"
+      ],
+      "answer": "A reflection across the $x$-axis, then a reflection across the $y$-axis",
+      "compute": null,
+      "solution": "Reflecting across the $x$-axis takes A(1, 2) to (1, -2), B to (3, -2) and C to (1, -5). Reflecting that across the $y$-axis gives (-1, -2), (-3, -2) and (-1, -5), which match the image. The translation option works for A but takes B to (1, -2), not (-3, -2).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A reflection across the $x$-axis, then a reflection across the $y$-axis",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Map is (x, y) -> (-x, -y). Reflect over x-axis (x,-y) then y-axis (-x,-y): matches all three. Rotation 90 cw: A -> (2,-1), no. x-reflection then 2 left: B(3,2) -> (1,-2), not (-3,-2). y-reflection only: A -> (-1,2), no.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "a51b780a-32ea-4843-9b48-0a786495689d",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Dilate a point about the origin",
+      "stem": "Point A is at (3, 4). It is dilated about the origin with a scale factor of 2. What are the coordinates of its image?",
+      "choices": [
+        "(5, 6)",
+        "(6, 8)",
+        "(1.5, 2)",
+        "(6, 4)"
+      ],
+      "answer": "(6, 8)",
+      "compute": null,
+      "solution": "A dilation about the origin with scale factor $k$ takes $(x, y)$ to $(kx, ky)$. With $k = 2$, (3, 4) goes to (6, 8).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(6, 8)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiply both coordinates by 2: (6, 8).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "7e532b6d-33cd-49e0-b580-66e3aac685c0",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a scale factor from two lengths",
+      "stem": "A dilation changes a segment of length 4 centimeters into a segment of length 12 centimeters. What is the scale factor?",
+      "choices": [],
+      "answer": "3",
+      "compute": "12/4",
+      "solution": "The scale factor is the new length divided by the old length: $12 \\div 4 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scale factor = 12/4 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "6093ef0c-9ed6-4a25-8ccc-7f101b1b9801",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Know that dilations keep angle measures",
+      "stem": "A triangle has angles of $40^\\circ$, $60^\\circ$ and $80^\\circ$. It is dilated with a scale factor of 3. Which statement about the image is true?",
+      "choices": [
+        "Its angles are $120^\\circ$, $180^\\circ$ and $240^\\circ$",
+        "Its angles are $43^\\circ$, $63^\\circ$ and $83^\\circ$",
+        "Its angles are $37^\\circ$, $57^\\circ$ and $77^\\circ$",
+        "Its angles are still $40^\\circ$, $60^\\circ$ and $80^\\circ$"
+      ],
+      "answer": "Its angles are still $40^\\circ$, $60^\\circ$ and $80^\\circ$",
+      "compute": null,
+      "solution": "A dilation changes lengths by the scale factor but does not change angle measures. The image is the same shape, only bigger, so its angles are still $40^\\circ$, $60^\\circ$ and $80^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Its angles are still $40^\\circ$, $60^\\circ$ and $80^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dilations preserve angle measures, so they stay 40, 60, 80 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "ae7be4a9-d4ef-4133-9299-5d0229284285",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Dilate a point by a scale factor less than 1",
+      "stem": "Point B is at (12, -9). It is dilated about the origin with a scale factor of $\\frac{1}{3}$. What are the coordinates of its image?",
+      "choices": [
+        "(4, -3)",
+        "(36, -27)",
+        "(9, -6)",
+        "(4, 3)"
+      ],
+      "answer": "(4, -3)",
+      "compute": null,
+      "solution": "Multiply both coordinates by $\\frac{1}{3}$: $12 \\times \\frac{1}{3} = 4$ and $-9 \\times \\frac{1}{3} = -3$. The image is (4, -3).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(4, -3)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(12/3, -9/3) = (4, -3).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "d8453267-9601-40a2-b26c-83ee850cb4df",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a scale factor from the coordinates of a point and its image",
+      "stem": "A dilation about the origin takes the point (4, 6) to the point (10, 15). What is the scale factor?",
+      "choices": [],
+      "answer": "5/2",
+      "compute": "10/4",
+      "solution": "Each coordinate is multiplied by the scale factor $k$. From $4k = 10$ we get $k = \\frac{10}{4} = \\frac{5}{2}$. Check: $6 \\times \\frac{5}{2} = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/4 = 2.5 and 15/6 = 2.5, consistent. Scale factor 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "5804e0f7-3add-4fe3-973e-2355b998bea4",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the perimeter of a dilated triangle",
+      "stem": "A triangle has sides of 6 cm, 8 cm and 10 cm. It is dilated with a scale factor of 1.5. What is the perimeter of the new triangle, in centimeters?",
+      "choices": [],
+      "answer": "36",
+      "compute": "(6+8+10)*1.5",
+      "solution": "The original perimeter is $6 + 8 + 10 = 24$ cm. Every length is multiplied by 1.5, so the new perimeter is $24 \\times 1.5 = 36$ cm. (The new sides are 9, 12 and 15, which also add to 36.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Original perimeter 6 + 8 + 10 = 24; times 1.5 = 36. (Sides 9, 12, 15.)",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "9914d394-f8eb-49aa-93a7-41df1ee50c4c",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the area of a dilated triangle",
+      "stem": "A triangle has vertices (0, 0), (4, 0) and (0, 3). It is dilated about the origin with a scale factor of 2. What is the area of the image, in square units?",
+      "choices": [],
+      "answer": "24",
+      "compute": "(4*2)*(3*2)/2",
+      "solution": "The image has vertices (0, 0), (8, 0) and (0, 6). It is a right triangle with legs 8 and 6, so its area is $\\frac{1}{2} \\times 8 \\times 6 = 24$ square units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Image vertices (0,0), (8,0), (0,6): right triangle with legs 8 and 6, area = 1/2 x 8 x 6 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "b22abd7a-209a-4870-bd6b-a59eff474faa",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the scale factor of a dilation and apply it to another point",
+      "stem": "A dilation about the origin takes the point (6, 9) to the point (4, 6). The same dilation takes the point (15, -3) to a new point. What is the sum of the two coordinates of the new point?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(15-3)*4/6",
+      "solution": "The scale factor is $\\frac{4}{6} = \\frac{2}{3}$ (check: $9 \\times \\frac{2}{3} = 6$). The point (15, -3) goes to $(15 \\times \\frac{2}{3}, -3 \\times \\frac{2}{3}) = (10, -2)$. The sum of the coordinates is $10 + (-2) = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scale factor 4/6 = 6/9 = 2/3. (15, -3) -> (10, -2). Sum 10 + (-2) = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "a05a9a9b-4824-4421-bae6-5924156c3f99",
+      "topic_id": "NC26.8.SGMR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a scale factor found from one pair of sides to find another side",
+      "stem": "A triangle has sides of 9 cm, 12 cm and 15 cm. A dilation makes a new triangle whose shortest side is 6 cm. What is the length of the longest side of the new triangle, in centimeters?",
+      "choices": [],
+      "answer": "10",
+      "compute": "15*6/9",
+      "solution": "The shortest side goes from 9 to 6, so the scale factor is $\\frac{6}{9} = \\frac{2}{3}$. The longest side becomes $15 \\times \\frac{2}{3} = 10$ cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Shortest 9 -> 6, scale factor 2/3. Longest 15 x 2/3 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "3dec18ce-a043-4363-9e5d-096cdee9f20f",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use the side-length condition for a triangle",
+      "stem": "Which three lengths, in centimeters, can be the sides of a triangle?",
+      "choices": [
+        "3, 4, 8",
+        "2, 3, 5",
+        "4, 4, 9",
+        "5, 6, 10"
+      ],
+      "answer": "5, 6, 10",
+      "compute": null,
+      "solution": "The two shorter sides must add up to more than the longest side. $5 + 6 = 11 > 10$ works. $3 + 4 = 7 < 8$, $2 + 3 = 5$ (equal, not more), and $4 + 4 = 8 < 9$ all fail.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5, 6, 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+4=7 < 8 no; 2+3=5 = 5 no (flat); 4+4=8 < 9 no; 5+6=11 > 10 yes (and 5+10>6, 6+10>5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "aacc70fd-a01f-4757-a08f-edfa2349c019",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the angle sum of a triangle",
+      "stem": "Two angles of a triangle measure $48^\\circ$ and $75^\\circ$. What is the measure of the third angle, in degrees?",
+      "choices": [],
+      "answer": "57",
+      "compute": "180-48-75",
+      "solution": "The angles of a triangle add up to $180^\\circ$. The first two add to $48 + 75 = 123$, so the third is $180 - 123 = 57$ degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "57",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "180 - 48 - 75 = 57.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "a408a89a-d652-4335-927a-c82949b4bf94",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell which sets of three angles can form a triangle",
+      "stem": "Which three angle measures can be the angles of a triangle?",
+      "choices": [
+        "$35^\\circ, 55^\\circ, 80^\\circ$",
+        "$40^\\circ, 60^\\circ, 80^\\circ$",
+        "$50^\\circ, 60^\\circ, 80^\\circ$",
+        "$70^\\circ, 70^\\circ, 60^\\circ$"
+      ],
+      "answer": "$40^\\circ, 60^\\circ, 80^\\circ$",
+      "compute": null,
+      "solution": "The angles of a triangle must add to $180^\\circ$. $40 + 60 + 80 = 180$ works. The other sets add to 170, 190 and 200.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40^\\circ, 60^\\circ, 80^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sums: 200, 190, 180, 170. Only 40, 60, 80 sums to 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "c8c47a85-1c41-44f7-9d37-dfe2ae60d230",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the greatest possible third side",
+      "stem": "Two sides of a triangle are 5 cm and 9 cm long. The third side is a whole number of centimeters. What is the greatest possible length of the third side, in centimeters?",
+      "choices": [],
+      "answer": "13",
+      "compute": "5+9-1",
+      "solution": "The third side must be less than the sum of the other two: less than $5 + 9 = 14$. The greatest whole number less than 14 is 13. (Check: $5 + 13 > 9$ and $9 + 13 > 5$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 5 < s < 9 + 5 -> 4 < s < 14. Greatest whole number is 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "bac3dfb6-721a-4763-af47-7da44d183099",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the angle sum in a right triangle",
+      "stem": "In a right triangle, one acute angle is 4 times as large as the other acute angle. What is the measure of the smaller acute angle, in degrees?",
+      "choices": [],
+      "answer": "18",
+      "compute": "90/5",
+      "solution": "The two acute angles of a right triangle add to $90^\\circ$ (since the right angle uses 90 of the 180). If the smaller is $x$, then $x + 4x = 90$, so $5x = 90$ and $x = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Acute angles sum to 90: x + 4x = 90 -> x = 18. Angles 18 and 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "a8ded595-424e-4d00-8563-8c589ee932ed",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell which information fixes exactly one triangle",
+      "stem": "Which information is enough to build exactly one triangle, so that every triangle that fits it has the same size and shape?",
+      "choices": [
+        "Side lengths of 4 cm, 6 cm and 9 cm",
+        "Angles of $40^\\circ$, $60^\\circ$ and $80^\\circ$",
+        "Two side lengths, 5 cm and 7 cm",
+        "One side of 6 cm and one angle of $50^\\circ$"
+      ],
+      "answer": "Side lengths of 4 cm, 6 cm and 9 cm",
+      "compute": null,
+      "solution": "Three side lengths that satisfy the triangle condition ($4 + 6 > 9$) give one triangle. Three angles fix only the shape, so triangles of any size fit. Two sides, or one side and one angle, leave other measures free.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Side lengths of 4 cm, 6 cm and 9 cm",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One side and one angle: many triangles. Two sides alone: many. Three angles: same shape, any size. Three sides 4, 6, 9 (4+6=10>9, valid): exactly one triangle (SSS).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "7aa38b38-8ab4-4c4b-aa4d-01a9cf121daf",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the possible whole-number lengths of a third side",
+      "stem": "Two sides of a triangle are 8 cm and 11 cm long. The third side is a whole number of centimeters. How many different lengths are possible for the third side?",
+      "choices": [],
+      "answer": "15",
+      "compute": "(8+11-1)-(11-8+1)+1",
+      "solution": "The third side must be greater than $11 - 8 = 3$ and less than $8 + 11 = 19$. The whole numbers from 4 to 18 work, and there are $18 - 4 + 1 = 15$ of them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 - 8 < s < 11 + 8 -> 3 < s < 19, so s = 4, 5, ..., 18: 18 - 4 + 1 = 15 lengths.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "7c85fbb4-46b6-472a-b112-5dbc809d40cd",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use an algebra equation with the angle sum of a triangle",
+      "stem": "The angles of a triangle measure $x$ degrees, $(2x + 10)$ degrees and $(3x - 10)$ degrees. What is the measure of the largest angle, in degrees?",
+      "choices": [],
+      "answer": "80",
+      "compute": "3*(180/6)-10",
+      "solution": "The angles add to 180: $x + (2x + 10) + (3x - 10) = 6x = 180$, so $x = 30$. The angles are $30$, $2(30) + 10 = 70$ and $3(30) - 10 = 80$. The largest is 80 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + 2x + 10 + 3x - 10 = 6x = 180 -> x = 30. Angles 30, 70, 80. Largest 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "4d3cc5c2-4b6b-44fb-b18b-36ffc666598f",
+      "topic_id": "NC26.8.SGMR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide how many triangles fit given sides and the angle between them",
+      "stem": "A triangle has one side of 10 cm and another side of 12 cm, and the angle between those two sides is $30^\\circ$. How many triangles with different shapes or sizes can be built with these measurements?",
+      "choices": [
+        "Exactly two",
+        "None",
+        "Exactly one",
+        "Infinitely many"
+      ],
+      "answer": "Exactly one",
+      "compute": null,
+      "solution": "Two sides and the angle between them fix the third side and the other two angles, so only one triangle (up to identical size and shape) can be built.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Exactly one",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two sides and the included angle (SAS) fix the triangle: exactly one.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:35:20.783Z"
+        }
+      }
+    },
+    {
+      "id": "d8aa8497-7af7-42c0-af68-d784e80e0109",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Angle sum of a triangle",
+      "stem": "Two angles of a triangle measure $48^\\circ$ and $67^\\circ$. What is the measure of the third angle, in degrees?",
+      "choices": [],
+      "answer": "65",
+      "compute": "180-48-67",
+      "solution": "The three angles of a triangle add up to $180^\\circ$. First, $48 + 67 = 115$. Then $180 - 115 = 65$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "180 - 48 - 67 = 65.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "88ae32a1-302a-4128-9f2f-4d910519ae16",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Corresponding angles and parallel lines",
+      "stem": "Two parallel lines are cut by a transversal. Angle 1 and angle 2 are corresponding angles. Angle 1 measures $110^\\circ$. What is the measure of angle 2, in degrees?",
+      "choices": [
+        "70",
+        "110",
+        "55",
+        "250"
+      ],
+      "answer": "110",
+      "compute": "110",
+      "solution": "When two parallel lines are cut by a transversal, corresponding angles are equal. So angle 2 also measures $110^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Corresponding angles formed by parallel lines and a transversal are congruent, so angle 2 = 110.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "4997cbef-2039-4292-9200-935b5620c79f",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Exterior angle of a triangle",
+      "stem": "One side of a triangle is extended to form an exterior angle. The two interior angles that are not next to the exterior angle measure $40^\\circ$ and $55^\\circ$. What is the measure of the exterior angle, in degrees?",
+      "choices": [],
+      "answer": "95",
+      "compute": "40+55",
+      "solution": "An exterior angle of a triangle equals the sum of the two interior angles that are not next to it. $40 + 55 = 95$. Check: the third interior angle is $180 - 95 = 85$, and $40 + 55 + 85 = 180$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "95",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exterior angle = sum of the two remote interior angles = 40 + 55 = 95.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "d5546ac1-c07d-4d8b-aa38-6bf7c394b146",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unknown angles in a triangle (algebra)",
+      "stem": "The angles of a triangle measure $(x+10)^\\circ$, $(2x)^\\circ$ and $(x+30)^\\circ$. What is the measure of the largest angle, in degrees?",
+      "choices": [],
+      "answer": "70",
+      "compute": "2*(180-40)/4",
+      "solution": "The angles add up to $180$: $(x+10) + 2x + (x+30) = 4x + 40 = 180$, so $4x = 140$ and $x = 35$. The angles are $45^\\circ$, $70^\\circ$ and $65^\\circ$. The largest is $70^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+10) + 2x + (x+30) = 180 -> 4x + 40 = 180 -> x = 35. Angles: 45, 70, 65. Largest = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "8aa47413-92fe-4336-b197-26e143899abc",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Alternate interior angles and parallel lines",
+      "stem": "Two parallel lines are cut by a transversal. Two alternate interior angles measure $(3x+5)^\\circ$ and $65^\\circ$. What is the value of $x$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "(65-5)/3",
+      "solution": "Alternate interior angles are equal when the lines are parallel. So $3x + 5 = 65$. Subtract 5: $3x = 60$. Divide by 3: $x = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Alternate interior angles are congruent: 3x + 5 = 65 -> 3x = 60 -> x = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "06f64e13-493f-4479-a52c-24a49bbcc5ec",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Same-side interior angles and parallel lines",
+      "stem": "Two parallel lines are cut by a transversal. Two angles on the same side of the transversal and between the parallel lines measure $(2x+10)^\\circ$ and $(x+20)^\\circ$. What is the value of $x$?",
+      "choices": [
+        "10",
+        "50",
+        "60",
+        "70"
+      ],
+      "answer": "50",
+      "compute": "(180-30)/3",
+      "solution": "Same-side interior angles add up to $180^\\circ$ when the lines are parallel. So $(2x+10) + (x+20) = 180$, which gives $3x + 30 = 180$. Then $3x = 150$ and $x = 50$. The angles are $110^\\circ$ and $70^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same-side interior angles are supplementary: (2x+10) + (x+20) = 180 -> 3x + 30 = 180 -> x = 50. Check: 110 + 70 = 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "949c46c2-de6a-4c64-a2ed-f78efc709385",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Exterior angle used to find an interior angle",
+      "stem": "In triangle $ABC$, angle $A$ measures $50^\\circ$. The exterior angle at vertex $B$ (formed by extending a side of the triangle past $B$) measures $115^\\circ$. What is the measure of angle $C$, in degrees?",
+      "choices": [],
+      "answer": "65",
+      "compute": "115-50",
+      "solution": "The exterior angle at $B$ equals the sum of the two interior angles that are not next to it, angles $A$ and $C$. So $50 + C = 115$ and $C = 65$. Check: angle $B$ is $180 - 115 = 65$, and $50 + 65 + 65 = 180$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exterior angle at B = A + C, so C = 115 - 50 = 65. Check: B = 180 - 115 = 65; 50 + 65 + 65 = 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "3386c128-bccf-47a5-8f91-77f90f9a8a90",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Exterior angle with algebra",
+      "stem": "A triangle has an exterior angle that measures $(4x-10)^\\circ$. The two interior angles that are not next to it measure $(x+20)^\\circ$ and $(x+30)^\\circ$. What is the measure of the exterior angle, in degrees?",
+      "choices": [
+        "30",
+        "70",
+        "110",
+        "120"
+      ],
+      "answer": "110",
+      "compute": "4*30-10",
+      "solution": "The exterior angle equals the sum of the two far interior angles: $4x - 10 = (x+20) + (x+30) = 2x + 50$. So $2x = 60$ and $x = 30$. The exterior angle is $4(30) - 10 = 110^\\circ$. Check: $50 + 60 = 110$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exterior angle = sum of remote interiors: 4x - 10 = (x+20) + (x+30) = 2x + 50 -> 2x = 60 -> x = 30. Exterior = 4(30) - 10 = 110 (remote interiors 50 and 60).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "7e59dc14-f6f3-4f76-af4a-c73b5312bdba",
+      "topic_id": "NC26.8.SGMR.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step angle problem with parallel lines",
+      "stem": "Two parallel lines are cut by a transversal. Two corresponding angles measure $(5x-12)^\\circ$ and $(3x+18)^\\circ$. What is the measure, in degrees, of an angle that forms a linear pair with the angle measuring $(5x-12)^\\circ$?",
+      "choices": [],
+      "answer": "117",
+      "compute": "180-(5*15-12)",
+      "solution": "Corresponding angles are equal, so $5x - 12 = 3x + 18$. Then $2x = 30$ and $x = 15$. The angle is $5(15) - 12 = 63^\\circ$. A linear pair adds up to $180^\\circ$, so the other angle is $180 - 63 = 117^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "117",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Corresponding angles equal: 5x - 12 = 3x + 18 -> 2x = 30 -> x = 15. Angle = 5(15) - 12 = 63. Linear pair: 180 - 63 = 117.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "121fb7eb-1fab-46f9-a3de-49d85fac053a",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the hypotenuse (whole-number answer)",
+      "stem": "The legs of a right triangle are 6 inches and 8 inches long. How long is the hypotenuse, in inches?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(6^2+8^2)/10",
+      "solution": "Use $a^2 + b^2 = c^2$. $6^2 + 8^2 = 36 + 64 = 100$, so $c = \\sqrt{100} = 10$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c = sqrt(6^2 + 8^2) = sqrt(36 + 64) = sqrt(100) = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "86728be9-589b-48fc-8e73-af9b0df955d3",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "State the Pythagorean Theorem",
+      "stem": "A right triangle has legs of length $a$ and $b$ and a hypotenuse of length $c$. Which equation is always true?",
+      "choices": [
+        "$a+b=c$",
+        "$a^2+b^2=c^2$",
+        "$a^2+c^2=b^2$",
+        "$a^2-b^2=c^2$"
+      ],
+      "answer": "$a^2+b^2=c^2$",
+      "compute": null,
+      "solution": "The Pythagorean Theorem says that the sum of the squares of the two legs equals the square of the hypotenuse: $a^2 + b^2 = c^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$a^2+b^2=c^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pythagorean Theorem with legs a, b and hypotenuse c: a^2 + b^2 = c^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "570ecc02-6a37-4271-86bc-8b7ea6ecf5b2",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a leg of a right triangle in context",
+      "stem": "A 20-foot ladder leans against a wall. The bottom of the ladder is 16 feet from the wall. How high up the wall does the ladder reach, in feet?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(20^2-16^2)/12",
+      "solution": "The ladder is the hypotenuse of a right triangle. $16^2 + h^2 = 20^2$, so $h^2 = 400 - 256 = 144$ and $h = 12$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h = sqrt(20^2 - 16^2) = sqrt(400 - 256) = sqrt(144) = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "289d0be1-06ce-4b23-a212-bbd388a9dd19",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the hypotenuse (square root answer)",
+      "stem": "The legs of a right triangle are 5 cm and 7 cm long. What is the length of the hypotenuse, in centimeters?",
+      "choices": [
+        "$74$",
+        "$12$",
+        "$\\sqrt{74}$",
+        "$\\sqrt{24}$"
+      ],
+      "answer": "$\\sqrt{74}$",
+      "compute": null,
+      "solution": "$c^2 = 5^2 + 7^2 = 25 + 49 = 74$, so $c = \\sqrt{74}$. (Adding the legs, $5 + 7 = 12$, is not the hypotenuse, and $74$ is $c^2$, not $c$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{74}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c^2 = 5^2 + 7^2 = 25 + 49 = 74, so c = sqrt(74).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "f6659e1c-20c9-4a0b-8bda-abf893a89600",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distance on the coordinate plane",
+      "stem": "Point $A$ is at $(1, 2)$ and point $B$ is at $(6, 14)$ on a coordinate plane. What is the distance from $A$ to $B$, in units?",
+      "choices": [],
+      "answer": "13",
+      "compute": "(5^2+12^2)/13",
+      "solution": "The horizontal change is $6 - 1 = 5$ and the vertical change is $14 - 2 = 12$. These are the legs of a right triangle, so the distance is $\\sqrt{5^2 + 12^2} = \\sqrt{169} = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "dx = 6 - 1 = 5, dy = 14 - 2 = 12. d = sqrt(25 + 144) = sqrt(169) = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "988f2dbc-3f69-4b15-ab84-cd5c118cfc91",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Converse of the Pythagorean Theorem",
+      "stem": "A triangle has side lengths 8 cm, 15 cm and 17 cm. Which statement is correct?",
+      "choices": [
+        "It is a right triangle, because $8^2+15^2=17^2$",
+        "It is not a right triangle, because $8+15\\ne 17$",
+        "It is not a right triangle, because $8^2+17^2\\ne 15^2$",
+        "It is not a right triangle, because its three sides are all different lengths"
+      ],
+      "answer": "It is a right triangle, because $8^2+15^2=17^2$",
+      "compute": null,
+      "solution": "Test the converse with the longest side as the hypotenuse: $8^2 + 15^2 = 64 + 225 = 289$ and $17^2 = 289$. The two are equal, so the triangle is a right triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is a right triangle, because $8^2+15^2=17^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8^2 + 15^2 = 64 + 225 = 289 = 17^2, so by the converse it is a right triangle.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "2637e58b-8633-4cf1-831d-a8d89a82597c",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Distance between points with negative coordinates",
+      "stem": "Point $A$ is at $(-5, -2)$ and point $B$ is at $(2, 22)$ on a coordinate plane. What is the distance from $A$ to $B$, in units?",
+      "choices": [],
+      "answer": "25",
+      "compute": "(7^2+24^2)/25",
+      "solution": "The horizontal change is $2 - (-5) = 7$ and the vertical change is $22 - (-2) = 24$. The distance is $\\sqrt{7^2 + 24^2} = \\sqrt{49 + 576} = \\sqrt{625} = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "dx = 2 - (-5) = 7, dy = 22 - (-2) = 24. d = sqrt(49 + 576) = sqrt(625) = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "6c10e86d-7d0b-4286-af0f-0818ce1e473c",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distance on the coordinate plane (square root answer)",
+      "stem": "Point $P$ is at $(-2, 5)$ and point $Q$ is at $(3, -1)$ on a coordinate plane. What is the distance from $P$ to $Q$, in units?",
+      "choices": [
+        "$11$",
+        "$\\sqrt{61}$",
+        "$\\sqrt{17}$",
+        "$\\sqrt{11}$"
+      ],
+      "answer": "$\\sqrt{61}$",
+      "compute": null,
+      "solution": "The horizontal change is $3 - (-2) = 5$ and the vertical change is $5 - (-1) = 6$. The distance is $\\sqrt{5^2 + 6^2} = \\sqrt{25 + 36} = \\sqrt{61}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{61}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "dx = 3 - (-2) = 5, dy = -1 - 5 = -6. d = sqrt(25 + 36) = sqrt(61).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "778704a0-e33c-4792-b511-90236eb8c1f0",
+      "topic_id": "NC26.8.SGMR.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pythagorean Theorem in an isosceles triangle",
+      "stem": "An isosceles triangle has two sides that are each 17 cm long and a base that is 16 cm long. What is the height of the triangle from the base to the opposite corner, in centimeters?",
+      "choices": [],
+      "answer": "15",
+      "compute": "(17^2-8^2)/15",
+      "solution": "The height cuts the base into two halves of 8 cm and makes a right triangle with hypotenuse 17 cm. So $h^2 + 8^2 = 17^2$, which gives $h^2 = 289 - 64 = 225$ and $h = 15$ cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The height bisects the base: half-base 8, side 17. h = sqrt(17^2 - 8^2) = sqrt(289 - 64) = sqrt(225) = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "53d6aac8-d156-4b91-900f-e91c84f6daf6",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pyramid volume compared with a prism",
+      "stem": "A prism and a pyramid have the same base and the same height. The volume of the prism is 90 cubic centimeters. What is the volume of the pyramid, in cubic centimeters?",
+      "choices": [],
+      "answer": "30",
+      "compute": "90/3",
+      "solution": "A pyramid holds one third of the volume of a prism with the same base and height. $90 \\div 3 = 30$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pyramid volume = 1/3 of prism with same base and height: 90 / 3 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "31ed1ad2-41d9-45d8-935e-ff7ce21ff7b5",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Cone volume compared with a cylinder",
+      "stem": "A cone and a cylinder have the same radius and the same height. The volume of the cylinder is $60\\pi$ cubic centimeters. What is the volume of the cone?",
+      "choices": [
+        "$30\\pi$ cubic centimeters",
+        "$60\\pi$ cubic centimeters",
+        "$20\\pi$ cubic centimeters",
+        "$180\\pi$ cubic centimeters"
+      ],
+      "answer": "$20\\pi$ cubic centimeters",
+      "compute": null,
+      "solution": "A cone holds one third of the volume of a cylinder with the same radius and height. $\\frac{1}{3} \\times 60\\pi = 20\\pi$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20\\pi$ cubic centimeters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cone volume = 1/3 of cylinder with same radius and height: 60pi / 3 = 20pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "973dc9be-e8da-442a-b2e5-6443770c4824",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Volume of a square pyramid",
+      "stem": "A square pyramid has a base edge of 6 cm and a height of 10 cm. What is its volume, in cubic centimeters?",
+      "choices": [],
+      "answer": "120",
+      "compute": "1/3*6^2*10",
+      "solution": "The base area is $6 \\times 6 = 36$ square centimeters. Volume $= \\frac{1}{3} \\times 36 \\times 10 = 120$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V = (1/3)(6^2)(10) = (1/3)(36)(10) = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "d995d1b1-37a0-4c76-afc4-c1beae593e44",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Surface area of a square pyramid",
+      "stem": "A square pyramid has a base edge of 10 cm. The height of each triangular face (the slant height) is 13 cm. What is the total surface area of the pyramid, in square centimeters?",
+      "choices": [],
+      "answer": "360",
+      "compute": "10^2+4*(1/2*10*13)",
+      "solution": "The square base has area $10 \\times 10 = 100$. Each triangular face has area $\\frac{1}{2} \\times 10 \\times 13 = 65$, and there are 4 of them, so $4 \\times 65 = 260$. The total is $100 + 260 = 360$ square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "360",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base = 10^2 = 100. Each triangular face = (1/2)(10)(13) = 65; four faces = 260. Total = 100 + 260 = 360.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "bc496dbe-4174-4cf7-b81c-db5591659c7a",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Volume of a cone",
+      "stem": "A cone has a radius of 3 cm and a height of 8 cm. What is its volume, in cubic centimeters?",
+      "choices": [
+        "$24\\pi$",
+        "$72\\pi$",
+        "$8\\pi$",
+        "$36\\pi$"
+      ],
+      "answer": "$24\\pi$",
+      "compute": null,
+      "solution": "Volume $= \\frac{1}{3}\\pi r^2 h = \\frac{1}{3} \\times \\pi \\times 3^2 \\times 8 = \\frac{1}{3} \\times 72\\pi = 24\\pi$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V = (1/3)pi r^2 h = (1/3)pi(9)(8) = 24pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "91880cf9-a38c-4852-a389-98d9551281da",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Volume of a sphere",
+      "stem": "A sphere has a radius of 3 cm. Its volume is $k\\pi$ cubic centimeters. What is the value of $k$?",
+      "choices": [],
+      "answer": "36",
+      "compute": "4/3*3^3",
+      "solution": "Volume $= \\frac{4}{3}\\pi r^3 = \\frac{4}{3} \\times \\pi \\times 27 = 36\\pi$. So $k = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V = (4/3)pi(3^3) = (4/3)(27)pi = 36pi, so k = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "12730f45-9959-4656-9c81-6c34d590c3f8",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the height of a cone from its volume",
+      "stem": "A cone has a radius of 4 cm and a volume of $48\\pi$ cubic centimeters. What is its height, in centimeters?",
+      "choices": [],
+      "answer": "9",
+      "compute": "48*3/16",
+      "solution": "Volume $= \\frac{1}{3}\\pi r^2 h$, so $48\\pi = \\frac{1}{3} \\times \\pi \\times 16 \\times h$. Divide by $\\pi$ and multiply by 3: $144 = 16h$, so $h = 9$ cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/3)pi(4^2)h = 48pi -> (16/3)h = 48 -> h = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "0b35fb82-6d60-4e66-b910-527112a24194",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Sphere inside a cylinder",
+      "stem": "A sphere fits exactly inside a cylinder: it touches the top, the bottom and the curved side of the cylinder. The volume of the cylinder is $54\\pi$ cubic centimeters. What is the volume of the sphere, in cubic centimeters?",
+      "choices": [
+        "$18\\pi$",
+        "$27\\pi$",
+        "$72\\pi$",
+        "$36\\pi$"
+      ],
+      "answer": "$36\\pi$",
+      "compute": null,
+      "solution": "The cylinder has radius $r$ and height $2r$, so its volume is $\\pi r^2 (2r) = 2\\pi r^3 = 54\\pi$. Then $r^3 = 27$ and $r = 3$. The sphere has volume $\\frac{4}{3}\\pi (3^3) = 36\\pi$ cubic centimeters. (It is $\\frac{2}{3}$ of the cylinder: $\\frac{2}{3} \\times 54\\pi = 36\\pi$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$36\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cylinder has radius r and height 2r: 2pi r^3 = 54pi -> r^3 = 27 -> r = 3. Sphere = (4/3)pi(27) = 36pi (equivalently 2/3 of the cylinder).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "cc135c39-c281-4779-8ebf-0674fa44e14b",
+      "topic_id": "NC26.8.SGMR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Surface area of a pyramid using its height",
+      "stem": "A square pyramid has a base edge of 16 cm and a height of 15 cm, measured straight up from the center of the base to the top. What is its total surface area, in square centimeters?",
+      "choices": [],
+      "answer": "800",
+      "compute": "16^2+4*(1/2*16*17)",
+      "solution": "First find the slant height (the height of a triangular face). It is the hypotenuse of a right triangle with legs 15 and $16 \\div 2 = 8$: $\\sqrt{15^2 + 8^2} = \\sqrt{289} = 17$. The base has area $16^2 = 256$. Each triangular face has area $\\frac{1}{2} \\times 16 \\times 17 = 136$, and $4 \\times 136 = 544$. The total is $256 + 544 = 800$ square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slant height: from base centre to midpoint of an edge is 8; slant = sqrt(15^2 + 8^2) = sqrt(225 + 64) = sqrt(289) = 17. Lateral = 4 * (1/2)(16)(17) = 4 * 136 = 544. Base = 16^2 = 256. Total = 800.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "d8abf898-e74a-4f4f-b8cf-8deeafbe7a1d",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify mutually exclusive events",
+      "stem": "A number cube with faces numbered 1 to 6 is rolled once. Which pair of events is mutually exclusive?",
+      "choices": [
+        "Rolling an even number and rolling an odd number",
+        "Rolling an even number and rolling a number greater than 3",
+        "Rolling a prime number and rolling an odd number",
+        "Rolling a number less than 4 and rolling an odd number"
+      ],
+      "answer": "Rolling an even number and rolling an odd number",
+      "compute": null,
+      "solution": "Mutually exclusive events cannot both happen on the same roll. A number cannot be both even and odd. The other pairs share an outcome: 4 and 6 are even and greater than 3; 3 and 5 are prime and odd; 1 and 3 are less than 4 and odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rolling an even number and rolling an odd number",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Even {2,4,6} and odd {1,3,5} share nothing: mutually exclusive. Others overlap: even & >3 share 4,6; <4 & odd share 1,3; prime & odd share 3,5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "3cc5ff25-0c1b-45e6-bcab-0077d7ed8115",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Probability of one event or another (mutually exclusive)",
+      "stem": "A bag holds 4 red marbles, 3 blue marbles and 5 green marbles. One marble is drawn at random. What is the probability that it is red or blue?",
+      "choices": [],
+      "answer": "7/12",
+      "compute": "(4+3)/12",
+      "solution": "There are $4 + 3 + 5 = 12$ marbles. A marble cannot be both red and blue, so add: $\\frac{4}{12} + \\frac{3}{12} = \\frac{7}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 marbles; red or blue = 4 + 3 = 7. P = 7/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "1175d36a-b86f-48b4-84ff-9f6131fd9f46",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Probability of an \"or\" event on a spinner",
+      "stem": "A spinner has 10 equal sections numbered 1 to 10. It is spun once. What is the probability that it lands on a number less than 3 or greater than 8?",
+      "choices": [],
+      "answer": "2/5",
+      "compute": "4/10",
+      "solution": "Numbers less than 3: 1 and 2. Numbers greater than 8: 9 and 10. No number is in both lists, so 4 of the 10 outcomes work. The probability is $\\frac{4}{10} = \\frac{2}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Less than 3: {1,2}; greater than 8: {9,10}; disjoint. 4/10 = 2/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "8888b1c9-1dfc-4dc1-b95a-7f57cf1da7a4",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Probability of mutually exclusive events from a list of outcomes",
+      "stem": "A bag holds 12 tiles numbered 1 to 12. One tile is drawn at random. What is the probability that it is a prime number or the number 9?",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "(5+1)/12",
+      "solution": "The prime numbers from 1 to 12 are 2, 3, 5, 7 and 11, which is 5 tiles. The number 9 is not prime, so the events are mutually exclusive: $5 + 1 = 6$ tiles work. The probability is $\\frac{6}{12} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Primes 1-12: 2,3,5,7,11 (5). 9 is not prime, so add 1: 6/12 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "2492f874-718b-40dd-bf83-416d10a49385",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Justify adding probabilities",
+      "stem": "A fair number cube is rolled once. Jamal finds the probability of rolling a 2 or a 5 by adding $\\frac{1}{6} + \\frac{1}{6} = \\frac{1}{3}$. Why is it correct to add the two probabilities?",
+      "choices": [
+        "Both probabilities have the same denominator",
+        "The two probabilities are equal",
+        "One roll cannot be both a 2 and a 5",
+        "Both numbers are less than 6"
+      ],
+      "answer": "One roll cannot be both a 2 and a 5",
+      "compute": null,
+      "solution": "Probabilities can be added when the events are mutually exclusive, which means they cannot both happen at once. One roll cannot be both a 2 and a 5, so the probabilities may be added.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "One roll cannot be both a 2 and a 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adding is valid because the events are mutually exclusive: a single roll cannot show both 2 and 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "25d6016b-e919-4235-8b0f-0480b4fce099",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Probability of overlapping (inclusive) events from counts",
+      "stem": "In a class of 30 students, 12 play soccer, 9 play basketball and 4 play both sports. One student is chosen at random. What is the probability that the student plays soccer or basketball or both?",
+      "choices": [],
+      "answer": "17/30",
+      "compute": "(12+9-4)/30",
+      "solution": "The 4 students who play both sports are counted in both the 12 and the 9, so subtract them once: $12 + 9 - 4 = 17$ students play at least one of the sports. The probability is $\\frac{17}{30}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17/30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Soccer or basketball = 12 + 9 - 4 = 17 students. P = 17/30.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "eedbd3e6-9b12-4b40-b67a-fa0a5cb2620a",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Probability of both events from the probability of either",
+      "stem": "For two events $A$ and $B$, $P(A) = 0.5$, $P(B) = 0.45$ and $P(A \\text{ or } B) = 0.8$. What is $P(A \\text{ and } B)$, the probability that both events happen?",
+      "choices": [],
+      "answer": "0.15",
+      "compute": "0.5+0.45-0.8",
+      "solution": "For any two events, $P(A \\text{ or } B) = P(A) + P(B) - P(A \\text{ and } B)$. So $0.8 = 0.5 + 0.45 - P(A \\text{ and } B)$, which gives $P(A \\text{ and } B) = 0.95 - 0.8 = 0.15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P(A and B) = P(A) + P(B) - P(A or B) = 0.5 + 0.45 - 0.8 = 0.15.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "304e1f68-2fd5-481f-99d9-4a021e2d04b9",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Complement of mutually exclusive events",
+      "stem": "On a certain day, the probability of rain is 0.35 and the probability of snow is 0.2. Rain and snow are mutually exclusive on this day. What is the probability that it neither rains nor snows?",
+      "choices": [
+        "0.55",
+        "0.45",
+        "0.15",
+        "0.07"
+      ],
+      "answer": "0.45",
+      "compute": "1-(0.35+0.2)",
+      "solution": "Because the events are mutually exclusive, $P(\\text{rain or snow}) = 0.35 + 0.2 = 0.55$. The probability of neither is $1 - 0.55 = 0.45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mutually exclusive: P(rain or snow) = 0.35 + 0.2 = 0.55. Neither = 1 - 0.55 = 0.45.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "94792b6a-e8ab-4739-b55b-96bc312a5fc2",
+      "topic_id": "NC26.8.RD.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Probability of overlapping events among integers",
+      "stem": "One integer from 1 to 40 is chosen at random. What is the probability that it is a multiple of 4 or a multiple of 6?",
+      "choices": [],
+      "answer": "13/40",
+      "compute": "(10+6-3)/40",
+      "solution": "Multiples of 4: 4, 8, ..., 40, which is 10 numbers. Multiples of 6: 6, 12, ..., 36, which is 6 numbers. Numbers that are both are multiples of 12: 12, 24 and 36, which is 3 numbers. Count them once: $10 + 6 - 3 = 13$. The probability is $\\frac{13}{40}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13/40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 4 up to 40: 10. Multiples of 6: 6 (6,...,36). Multiples of both (12): 12, 24, 36 = 3. 10 + 6 - 3 = 13. P = 13/40.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "1ad53dc6-ecd4-4a4c-9825-d3a6e9a98fd0",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize a statistical question",
+      "stem": "Which of these is a statistical question?",
+      "choices": [
+        "How many minutes do the students in our school spend on homework each night?",
+        "How many students are in our school on the first day of class?",
+        "What time does the first bell ring at our school each day?",
+        "How many minutes are there in one hour of the day?"
+      ],
+      "answer": "How many minutes do the students in our school spend on homework each night?",
+      "compute": null,
+      "solution": "A statistical question expects answers that vary, so it needs data from many people. Each student may spend a different number of minutes on homework. The other questions each have a single fixed answer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many minutes do the students in our school spend on homework each night?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A statistical question anticipates variability in the data. Homework minutes vary among students; the others each have one fixed answer.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "e0b5f2e6-83a2-4a5c-9a91-b4e243c2ce49",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify a random sample",
+      "stem": "A school has 600 students. The principal wants to know what students think of the lunch menu. Which method gives a random sample of students?",
+      "choices": [
+        "Ask the first 30 students who arrive in the lunch line",
+        "Ask 30 members of the school's cooking club",
+        "Draw 30 names from a hat that holds every student's name",
+        "Ask the 30 students who volunteer after seeing a sign"
+      ],
+      "answer": "Draw 30 names from a hat that holds every student's name",
+      "compute": null,
+      "solution": "In a random sample, every student has an equal chance of being chosen. Drawing names from a hat that holds everyone's name does this. The other methods favor students who are early, who like cooking, or who choose to take part.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Draw 30 names from a hat that holds every student's name",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Drawing names from a hat holding every student gives every student an equal chance: a random sample. The others are convenience or voluntary samples.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "de1fff23-2067-4230-9255-d7adec294d21",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a sample to predict for a population",
+      "stem": "In a random sample of 50 students at a school, 20 said they walk to school. The school has 600 students. About how many students at the school would you predict walk to school?",
+      "choices": [],
+      "answer": "240",
+      "compute": "20/50*600",
+      "solution": "$\\frac{20}{50} = \\frac{2}{5}$ of the sample walk. Assuming the sample is representative, predict $\\frac{2}{5} \\times 600 = 240$ students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "240",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sample rate 20/50 = 40%. 0.4 * 600 = 240.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "34892d35-4130-4b97-ad25-5e36fa7c94ec",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify bias in a sample",
+      "stem": "A town wants to know whether its residents want a new park. The town surveys 100 people as they leave a sports store. Why might this sample be biased?",
+      "choices": [
+        "One hundred people is always too few for a survey",
+        "People at a sports store may not represent all of the town's residents",
+        "Surveys cannot be given outside a person's home",
+        "People who are leaving a store cannot answer honestly"
+      ],
+      "answer": "People at a sports store may not represent all of the town's residents",
+      "compute": null,
+      "solution": "A sample is biased when it does not represent the whole population. People shopping at a sports store may like outdoor activities more than other residents, so their answers may not match the whole town.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "People at a sports store may not represent all of the town's residents",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sports-store shoppers are likely more interested in parks/sports than the general town population, so they may not represent all residents.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "3c178ea5-dd7a-44ce-a0a2-4a0bf0649b88",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose a simulation",
+      "stem": "About 40% of the students at a school are in the band. Which tool could be used to simulate choosing one student at random and seeing whether the student is in the band?",
+      "choices": [
+        "A spinner with 10 equal sections, 4 of them labeled \"band\"",
+        "A coin: heads means the student is in the band",
+        "A number cube: rolling a 4 means the student is in the band",
+        "A spinner with 4 equal sections, 1 of them labeled \"band\""
+      ],
+      "answer": "A spinner with 10 equal sections, 4 of them labeled \"band\"",
+      "compute": null,
+      "solution": "The tool must give \"band\" with probability 40%, which is $\\frac{4}{10}$. A 10-section spinner with 4 band sections does that. A coin gives 50%, a number cube gives about 17%, and a 4-section spinner with one band section gives 25%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A spinner with 10 equal sections, 4 of them labeled \"band\"",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need a 40% chance: 4 of 10 equal sections = 40%. Others give 25%, 50%, 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "25aa734a-1f4a-432c-8548-adf7de552f1c",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare samples from several populations",
+      "stem": "A researcher asks 40 randomly chosen students at each of three schools whether they own a bike. At School A, 22 of the 40 students say yes. At School B, 26 say yes. At School C, 30 say yes. How many percentage points higher is the percent of bike owners in the sample from School C than in the sample from School A?",
+      "choices": [],
+      "answer": "20",
+      "compute": "30/40*100-22/40*100",
+      "solution": "School C: $\\frac{30}{40} = 75\\%$. School A: $\\frac{22}{40} = 55\\%$. (School B, $\\frac{26}{40} = 65\\%$, is not needed.) The difference is $75 - 55 = 20$ percentage points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "School A: 22/40 = 55%. School C: 30/40 = 75%. Difference = 20 percentage points.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "a714afcb-abe5-4de9-b472-58c75f7cf8c3",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the sample that best represents several populations",
+      "stem": "A school has 300 students in each of grades 6, 7 and 8. A researcher wants to compare how much sleep students in each grade get. Which sample would best represent all of the school's students?",
+      "choices": [
+        "The first 60 students who arrive at school in the morning",
+        "60 students who are on the school's sports teams",
+        "60 students who choose to answer a poll on the school website",
+        "20 students chosen at random from each grade's class list"
+      ],
+      "answer": "20 students chosen at random from each grade's class list",
+      "compute": null,
+      "solution": "A good sample is random and includes students from every grade. Choosing 20 at random from each grade's list does that. The other samples are not random and may over-represent early arrivals, athletes or students who like to answer polls.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20 students chosen at random from each grade's class list",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A random sample from each grade (equal-sized grades) represents the whole school; the others are voluntary, convenience or biased (sports teams).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "99d529be-c75e-4c16-ae96-714e3172428a",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate a probability from simulation results",
+      "stem": "Mia simulates choosing random samples of 10 students from a population in which 30% of students like soccer. She runs 25 trials. In 6 of the 25 trials, 5 or more of the 10 students in the sample liked soccer. Based on her simulation, what is the estimated probability, as a percent, that a random sample of 10 students has 5 or more who like soccer?",
+      "choices": [],
+      "answer": "24",
+      "compute": "6/25*100",
+      "solution": "The estimate is the fraction of trials in which the event happened: $\\frac{6}{25} = 0.24 = 24\\%$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Estimated probability = 6/25 = 0.24 = 24%.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "2cdd81a0-10f8-4b72-8929-0c191f2c89f9",
+      "topic_id": "NC26.8.RD.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Recognize an unbiased survey question",
+      "stem": "A student wants to ask classmates about their sleep. Which survey question is the least biased, meaning it does not push people toward a particular answer?",
+      "choices": [
+        "Don't you agree that students sleep far too little?",
+        "How many hours do you usually sleep on a school night?",
+        "How terribly do you sleep on school nights?",
+        "Wouldn't you say that you are always too tired at school?"
+      ],
+      "answer": "How many hours do you usually sleep on a school night?",
+      "compute": null,
+      "solution": "A fair question uses neutral wording. The other three questions use loaded words (\"far too little\", \"terribly\", \"always too tired\") that suggest the answer the writer expects.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many hours do you usually sleep on a school night?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The neutral question asks for hours without leading wording.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "d171f08c-e5c9-4df7-874c-6cb707dedf90",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare the ranges of two data sets",
+      "stem": "Data set P is 3, 5, 5, 8, 9. Data set Q is 1, 4, 6, 7, 12. How much greater is the range of Q than the range of P?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(12-1)-(9-3)",
+      "solution": "The range of P is $9 - 3 = 6$. The range of Q is $12 - 1 = 11$. The difference is $11 - 6 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range P = 9 - 3 = 6. Range Q = 12 - 1 = 11. Difference = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "2d18d25c-03ec-4b5a-b664-3f25fb1ec448",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare the medians of two data sets",
+      "stem": "Quiz scores for two classes are listed. Class A: 70, 75, 80, 85, 90. Class B: 60, 78, 82, 84, 96. Which statement is true?",
+      "choices": [
+        "Class B's median is 2 points higher than Class A's median",
+        "Class A's median is 2 points higher than Class B's median",
+        "The two classes have the same median",
+        "Class B's median is 16 points higher than Class A's median"
+      ],
+      "answer": "Class B's median is 2 points higher than Class A's median",
+      "compute": null,
+      "solution": "The median is the middle value of the ordered list. Class A: 80. Class B: 82. So Class B's median is 2 points higher. (The two classes have the same mean, 80, but not the same median. The ranges are 20 and 36, which differ by 16.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Class B's median is 2 points higher than Class A's median",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Median A = 80 (middle of 5). Median B = 82. B is 2 points higher.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "08b49d5a-bc05-449b-9099-7fb372e41e17",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the smallest range among three data sets",
+      "stem": "Three data sets are listed. Set X: 12, 15, 18, 20. Set Y: 10, 11, 13, 14. Set Z: 5, 9, 12, 21. What is the smallest range of the three sets?",
+      "choices": [],
+      "answer": "4",
+      "compute": "14-10",
+      "solution": "Set X: $20 - 12 = 8$. Set Y: $14 - 10 = 4$. Set Z: $21 - 5 = 16$. The smallest range is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range X = 20 - 12 = 8; Y = 14 - 10 = 4; Z = 21 - 5 = 16. Smallest = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "014759da-0a02-4600-8168-ec102660b2a9",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare distributions: outliers and medians",
+      "stem": "Test scores are listed for two groups. Group 1: 45, 82, 84, 85, 85, 86, 88. Group 2: 70, 75, 78, 80, 82, 85, 88. Which statement is true?",
+      "choices": [
+        "Group 2 has an outlier, and its median is higher than Group 1's median",
+        "Neither group has an outlier, and the medians are equal",
+        "Group 1 has an outlier, and its median is lower than Group 2's median",
+        "Group 1 has an outlier, and its median is higher than Group 2's median"
+      ],
+      "answer": "Group 1 has an outlier, and its median is higher than Group 2's median",
+      "compute": null,
+      "solution": "Group 1 has one score, 45, far below all of the others, so it is an outlier. Group 2's scores are spread fairly evenly with no outlier. The median of Group 1 is the 4th of 7 values, 85. The median of Group 2 is 80. So Group 1 has an outlier and the higher median.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Group 1 has an outlier, and its median is higher than Group 2's median",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Group 1 median = 85; Q1 = 82, Q3 = 86, IQR 4, lower fence 76, so 45 is an outlier. Group 2 median = 80; Q1 = 75, Q3 = 85, IQR 10, fences 60 and 100, no outlier. Group 1 has an outlier and higher median.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "84257947-9259-47ab-8b69-6381109471b8",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare the means of two data sets",
+      "stem": "Data set A is 10, 12, 14, 16. Data set B is 9, 13, 19, 23. How much greater is the mean of B than the mean of A?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(9+13+19+23)/4-(10+12+14+16)/4",
+      "solution": "Mean of A: $\\frac{10+12+14+16}{4} = \\frac{52}{4} = 13$. Mean of B: $\\frac{9+13+19+23}{4} = \\frac{64}{4} = 16$. The difference is $16 - 13 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mean A = 52/4 = 13. Mean B = 64/4 = 16. Difference = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "dc6011ff-19cc-478e-a39f-a6d048513158",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare the spread of three data sets with equal means",
+      "stem": "Three data sets each have six values and a mean of 10. Set A: 9, 9, 10, 10, 11, 11. Set B: 5, 8, 10, 10, 12, 15. Set C: 10, 10, 10, 10, 10, 10. Which set's values are the most spread out?",
+      "choices": [
+        "Set A",
+        "Set B",
+        "Set C",
+        "They are equally spread out because their means are equal"
+      ],
+      "answer": "Set B",
+      "compute": null,
+      "solution": "Set A ranges from 9 to 11 (range 2). Set B ranges from 5 to 15 (range 10). Set C has no spread at all (range 0). Set B is the most spread out. Equal means do not mean equal spread.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Set B",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range A = 2, B = 10, C = 0; B's values are farthest from 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "376052da-2055-4797-aafd-34784da72eec",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Mean of two data sets combined",
+      "stem": "Group 1 has the values 3, 7 and 8. Group 2 has the values 5, 9, 11 and 13. What is the mean of all seven values together?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(3+7+8+5+9+11+13)/7",
+      "solution": "Add all seven values: $3 + 7 + 8 + 5 + 9 + 11 + 13 = 56$. Divide by 7: $56 \\div 7 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum = 3+7+8 + 5+9+11+13 = 18 + 38 = 56. Mean = 56/7 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "489208b7-dcfa-4dbc-9bc1-9da34b0a2a01",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare interquartile ranges of four data sets",
+      "stem": "Four data sets are summarized by their minimum, first quartile, median, third quartile and maximum, in that order. Set A: 5, 12, 15, 20, 30. Set B: 3, 15, 18, 21, 45. Set C: 8, 10, 16, 22, 28. Set D: 14, 18, 21, 24, 26. Which set has the greatest interquartile range?",
+      "choices": [
+        "Set A",
+        "Set B",
+        "Set C",
+        "Set D"
+      ],
+      "answer": "Set C",
+      "compute": null,
+      "solution": "The interquartile range is the third quartile minus the first quartile. Set A: $20 - 12 = 8$. Set B: $21 - 15 = 6$. Set C: $22 - 10 = 12$. Set D: $24 - 18 = 6$. Set C has the greatest. (Set B has the greatest range, but that is a different measure.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Set C",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "IQR = Q3 - Q1: A 20 - 12 = 8; B 21 - 15 = 6; C 22 - 10 = 12; D 24 - 18 = 6. Greatest: C.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "f1d7fefb-cf8d-437c-9679-2f905ecdde64",
+      "topic_id": "NC26.8.RD.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read a stem-and-leaf display",
+      "stem": "A stem-and-leaf display for 9 test scores is described here. Stem 6 has leaves 2 and 5. Stem 7 has leaves 0, 4, 4 and 8. Stem 8 has leaves 1, 3 and 9. (Stem 6 with leaf 2 means a score of 62.) What is the median score?",
+      "choices": [],
+      "answer": "74",
+      "compute": null,
+      "solution": "The scores in order are 62, 65, 70, 74, 74, 78, 81, 83, 89. There are 9 scores, so the median is the 5th one, which is 74.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "74",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scores in order: 62, 65, 70, 74, 74, 78, 81, 83, 89. Median (5th of 9) = 74.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "e108ecb8-4239-43ac-8cc4-ea99813e2ca4",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compute a variance",
+      "stem": "The variance of a data set is the mean of the squared distances of the values from the mean. The data set 3, 5, 7, 9 has a mean of 6. What is its variance?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(9+1+1+9)/4",
+      "solution": "The distances from the mean 6 are 3, 1, 1 and 3. Their squares are 9, 1, 1 and 9. The mean of the squares is $\\frac{9+1+1+9}{4} = \\frac{20}{4} = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distances from 6: -3, -1, 1, 3; squares 9, 1, 1, 9; sum 20; mean 20/4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "f165d422-07a9-48fa-b5da-0ea7a126d133",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret standard deviation as spread",
+      "stem": "Two data sets have the same mean. Set X has a standard deviation of 2 and Set Y has a standard deviation of 7. Which statement is true?",
+      "choices": [
+        "The values in Set Y are more spread out than the values in Set X",
+        "The values in Set X are more spread out than the values in Set Y",
+        "Both sets are equally spread out, because they have the same mean",
+        "Set Y has a greater mean than Set X"
+      ],
+      "answer": "The values in Set Y are more spread out than the values in Set X",
+      "compute": null,
+      "solution": "The standard deviation measures how far values typically are from the mean. A larger standard deviation means more spread. Set Y's is larger, so its values are more spread out.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The values in Set Y are more spread out than the values in Set X",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Larger standard deviation means more spread: Y (7) is more spread than X (2).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "335b06d5-4f0b-4ca9-af2a-b518ca1350ca",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Relate variance and standard deviation",
+      "stem": "A data set has a variance of 25. What is its standard deviation?",
+      "choices": [],
+      "answer": "5",
+      "compute": "25/5",
+      "solution": "The standard deviation is the square root of the variance. $\\sqrt{25} = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Standard deviation = sqrt(25) = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "86df02fd-6b50-46f6-b547-23377be36378",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute a standard deviation",
+      "stem": "The data set 2, 4, 4, 4, 5, 5, 7, 9 has a mean of 5. What is its standard deviation? (The standard deviation is the square root of the mean of the squared distances from the mean.)",
+      "choices": [],
+      "answer": "2",
+      "compute": "(9+1+1+1+0+0+4+16)/8/2",
+      "solution": "The distances from 5 are 3, 1, 1, 1, 0, 0, 2 and 4. Their squares are 9, 1, 1, 1, 0, 0, 4 and 16, which add up to 32. The mean of the squares is $32 \\div 8 = 4$. The standard deviation is $\\sqrt{4} = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Deviations from 5: -3, -1, -1, -1, 0, 0, 2, 4; squares 9, 1, 1, 1, 0, 0, 4, 16; sum 32; mean 32/8 = 4; SD = sqrt(4) = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "cfd65034-058e-42e4-afd5-6d4377481b58",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Effect of adding a constant on center and spread",
+      "stem": "Every value in a data set is increased by 10. What happens to the mean and to the standard deviation of the data set?",
+      "choices": [
+        "The mean and the standard deviation both go up by 10",
+        "The mean goes up by 10 and the standard deviation stays the same",
+        "The mean stays the same and the standard deviation goes up by 10",
+        "The mean goes up by 10 and the standard deviation is multiplied by 10"
+      ],
+      "answer": "The mean goes up by 10 and the standard deviation stays the same",
+      "compute": null,
+      "solution": "Adding 10 to every value slides the whole data set up by 10, so the mean goes up by 10. The distances between the values and the mean do not change, so the standard deviation stays the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The mean goes up by 10 and the standard deviation stays the same",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adding 10 shifts every value and the mean by 10; distances from the mean are unchanged, so SD stays the same.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "957bc7f5-314b-4bbf-a1de-1f32d4689903",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare standard deviations without computing",
+      "stem": "Three data sets each have five values and a mean of 10. Set 1: 9, 10, 10, 10, 11. Set 2: 6, 8, 10, 12, 14. Set 3: 0, 5, 10, 15, 20. Which set has the greatest standard deviation?",
+      "choices": [
+        "Set 1",
+        "Set 3",
+        "Set 2",
+        "All three have the same standard deviation, because the means are equal"
+      ],
+      "answer": "Set 3",
+      "compute": null,
+      "solution": "The standard deviation is larger when values are farther from the mean. Set 3's values are the farthest from 10, and Set 1's are the closest. Equal means do not mean equal standard deviations.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Set 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Set 3 has values farthest from 10 (deviations 10, 5, 0, 5, 10) versus Set 2 (4, 2, 0, 2, 4) and Set 1 (1, 0, 0, 0, 1). Set 3 greatest SD.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "3f8c1362-c609-4038-b68d-4c5f6c4e1d83",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare standard deviations of two data sets",
+      "stem": "Data set X is 6, 6, 14, 14. Data set Y is 8, 8, 12, 12. Both sets have a mean of 10. How much greater is the standard deviation of X than the standard deviation of Y?",
+      "choices": [],
+      "answer": "2",
+      "compute": "(16+16+16+16)/4/4-(4+4+4+4)/4/2",
+      "solution": "In X, every value is 4 away from the mean, so every squared distance is 16, the variance is 16 and the standard deviation is 4. In Y, every value is 2 away, so every squared distance is 4, the variance is 4 and the standard deviation is 2. The difference is $4 - 2 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "X: every value is 4 from 10, so SD = 4. Y: every value is 2 from 10, so SD = 2. Difference = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "6d89e636-2b6f-4c12-91ca-4b223bf528e1",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the mean and standard deviation to compare two scores",
+      "stem": "On a test, the mean score is 70 and the standard deviation is 5. Mia's score is 2 standard deviations above the mean. Leo's score is 1.5 standard deviations below the mean. How many points higher is Mia's score than Leo's score?",
+      "choices": [],
+      "answer": "17.5",
+      "compute": "(70+2*5)-(70-1.5*5)",
+      "solution": "Mia's score is $70 + 2 \\times 5 = 80$. Leo's score is $70 - 1.5 \\times 5 = 62.5$. The difference is $80 - 62.5 = 17.5$ points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mia = 70 + 2(5) = 80. Leo = 70 - 1.5(5) = 62.5. Difference = 17.5 (= 3.5 * 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "70d82f6d-b628-434f-b766-0a2f3cd97145",
+      "topic_id": "NC26.8.RD.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose a measure of spread when there are outliers",
+      "stem": "A data set has a few extremely large values that are far from the rest of the data. Which measure of spread is least affected by those extreme values?",
+      "choices": [
+        "The range",
+        "The variance",
+        "The interquartile range",
+        "The standard deviation"
+      ],
+      "answer": "The interquartile range",
+      "compute": null,
+      "solution": "The range, the variance and the standard deviation all use the extreme values, so a few very large values change them a lot. The interquartile range uses only the middle half of the data, so it is hardly affected.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The interquartile range",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The IQR uses only the middle 50% of the data, so extreme values barely affect it; range, variance and SD all use the extremes.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "200cc912-1a67-4e3f-b8a2-bb9c919f275f",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare the means of several populations",
+      "stem": "The mean test scores of students at three schools are 72 for School A, 78 for School B and 75 for School C. How many points higher is the greatest mean than the least mean?",
+      "choices": [],
+      "answer": "6",
+      "compute": "78-72",
+      "solution": "The greatest mean is 78 (School B) and the least is 72 (School A). $78 - 72 = 6$ points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest 78 - least 72 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "68be8afd-ce4c-4f84-a27e-1f924fc957e1",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Draw a conclusion supported by group means",
+      "stem": "A survey finds the mean number of minutes students exercise each day. Class 1 has a mean of 25, Class 2 has a mean of 40 and Class 3 has a mean of 32. Which statement is supported by these means?",
+      "choices": [
+        "On average, Class 2 students exercise more than Class 1 students",
+        "Every student in Class 2 exercises more than every student in Class 1",
+        "On average, Class 3 students exercise more than Class 2 students",
+        "Class 1 students vary the most in how long they exercise"
+      ],
+      "answer": "On average, Class 2 students exercise more than Class 1 students",
+      "compute": null,
+      "solution": "Class 2's mean (40) is greater than Class 1's mean (25), so on average Class 2 students exercise more. Means say nothing about every individual student or about how much the students vary.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "On average, Class 2 students exercise more than Class 1 students",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Class 2 mean 40 > Class 1 mean 25, so on average Class 2 exercises more. Means say nothing about variability or every individual.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "9f427040-ef4c-4dcc-8904-247344396ddc",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Mean of three equal-sized groups",
+      "stem": "Three groups of 10 students each took a typing test. The mean scores, in words per minute, were 70 for Group A, 80 for Group B and 90 for Group C. What is the mean score of all 30 students?",
+      "choices": [],
+      "answer": "80",
+      "compute": "(70+80+90)/3",
+      "solution": "The groups are the same size, so the overall mean is the mean of the three group means: $\\frac{70+80+90}{3} = \\frac{240}{3} = 80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal group sizes: (10*70 + 10*80 + 10*90)/30 = 2400/30 = 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "466f9744-0161-4c08-b1b8-75b9312fce46",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combined mean of groups of different sizes",
+      "stem": "Group 1 has 10 students with a mean score of 80 points. Group 2 has 30 students with a mean score of 60 points. What is the mean score of all 40 students together?",
+      "choices": [],
+      "answer": "65",
+      "compute": "(10*80+30*60)/40",
+      "solution": "Group 1's total is $10 \\times 80 = 800$ and Group 2's total is $30 \\times 60 = 1800$. The total for all 40 students is $2600$, so the mean is $2600 \\div 40 = 65$. (It is closer to 60 than to 80 because Group 2 is larger.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(10*80 + 30*60)/40 = (800 + 1800)/40 = 2600/40 = 65.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "245e609e-ab46-4316-81b5-8341c120ef21",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare center and spread across populations",
+      "stem": "Plants were grown with three fertilizers, and their heights after four weeks were recorded in centimeters. Fertilizer A: mean 12, range 3. Fertilizer B: mean 14, range 12. Fertilizer C: mean 13, range 4. Which statement is supported by these data?",
+      "choices": [
+        "Fertilizer A has the highest mean height and varies the least",
+        "Fertilizer C has the lowest mean height and varies the most",
+        "Fertilizer B has the highest mean height, but its heights vary the most",
+        "Every plant grown with Fertilizer B was taller than every plant grown with Fertilizer A"
+      ],
+      "answer": "Fertilizer B has the highest mean height, but its heights vary the most",
+      "compute": null,
+      "solution": "B has the highest mean (14) and the largest range (12), so it varies the most. A has the lowest mean (12), so the second statement is false, and C is neither the lowest in mean nor the most variable. The last statement is not supported: means and ranges do not tell us that every plant was taller.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Fertilizer B has the highest mean height, but its heights vary the most",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B has highest mean (14) and largest range (12). A has lowest mean; C does not vary most; means/ranges cannot show every B plant taller.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "20a3f420-fc29-45e4-ab2c-86d8ec67b1be",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare percents when sample sizes differ",
+      "stem": "Students in three grades were asked whether they like a new class schedule. In Grade 6, 18 of 20 students said yes. In Grade 7, 30 of 50 said yes. In Grade 8, 33 of 44 said yes. Which grade had the greatest percent of students saying yes?",
+      "choices": [
+        "Grade 6",
+        "Grade 7",
+        "Grade 8",
+        "The three grades are tied"
+      ],
+      "answer": "Grade 6",
+      "compute": null,
+      "solution": "Compare percents, not counts. Grade 6: $\\frac{18}{20} = 90\\%$. Grade 7: $\\frac{30}{50} = 60\\%$. Grade 8: $\\frac{33}{44} = 75\\%$. Grade 6 is greatest, even though Grade 8 had the most students saying yes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Grade 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Grade 6: 18/20 = 90%. Grade 7: 30/50 = 60%. Grade 8: 33/44 = 75%. Greatest: Grade 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "fe9d70dc-a93b-47c2-864a-11eb23daa34f",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing group mean from the overall mean",
+      "stem": "Three classes of 10 students each recorded how many books they read this year. Class A had a mean of 7 books and Class B had a mean of 9 books. The mean for Class C is not known. All 30 students together had a mean of 9 books. What was the mean for Class C?",
+      "choices": [],
+      "answer": "11",
+      "compute": "(30*9-10*7-10*9)/10",
+      "solution": "All 30 students read $30 \\times 9 = 270$ books. Class A read $10 \\times 7 = 70$ and Class B read $10 \\times 9 = 90$, so Class C read $270 - 70 - 90 = 110$ books. The mean for Class C is $110 \\div 10 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = 30 * 9 = 270. A total 70, B total 90. C total = 270 - 160 = 110. Mean C = 110/10 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "0cf8831c-a641-4d95-95ef-6687c510529d",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the better summary measure for a skewed population",
+      "stem": "The sale prices of homes in a town, in thousands of dollars, have a mean of 310 and a median of 220. Most homes sold for between 150 and 250, but a few sold for over 1000. Which measure better describes a typical home price, and why?",
+      "choices": [
+        "The mean, because it includes every price, so extreme prices cannot affect it",
+        "The median, because a few very high prices pull the mean up",
+        "The range, because it shows how much homes usually cost",
+        "The mean, because it is always greater than the median"
+      ],
+      "answer": "The median, because a few very high prices pull the mean up",
+      "compute": null,
+      "solution": "A few very expensive homes raise the mean to 310, higher than what most homes cost. The median, 220, stays in the middle of the typical prices, so it describes a typical home better.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The median, because a few very high prices pull the mean up",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The data are skewed by a few very high prices that pull the mean (310) above most prices; the median (220) is typical.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    },
+    {
+      "id": "1b56b9d1-978a-426d-ab64-fe5eafb24d4f",
+      "topic_id": "NC26.8.RD.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reflect on methods when comparing several populations",
+      "stem": "Dev surveyed 12 students in each of four grades about how many hours they read each week, and the grade means differed a lot. Dev is not sure the differences are real. Which step would best help Dev decide?",
+      "choices": [
+        "Survey only the grade with the highest mean",
+        "Ignore any grade whose mean is different from the others",
+        "Ask only friends, since they will answer honestly",
+        "Repeat the survey with a larger random sample from each grade"
+      ],
+      "answer": "Repeat the survey with a larger random sample from each grade",
+      "compute": null,
+      "solution": "Small samples can give means that differ just by chance. Taking larger random samples from every grade gives more reliable means. The other steps leave out data or add bias.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Repeat the survey with a larger random sample from each grade",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Small samples vary a lot; a larger random sample from each grade gives more reliable means to compare.",
+          "run_id": "claude-code",
+          "at": "2026-10-17T18:34:49.484Z"
+        }
+      }
+    }
+  ]
+}
