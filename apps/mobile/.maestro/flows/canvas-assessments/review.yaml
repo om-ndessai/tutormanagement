@@ -1,0 +1,95 @@
+# Reviewing an assessment's PDF in the app (Phase 38, R17). A submitted Grade 4 assessment of
+# Sofia's (seeded through the local API): Priya, an admin, opens its PDF and pdf.js draws every page
+# inside the app -- the summary line above it, no download anywhere. Sofia sees the row as submitted
+# with no "Open PDF", and the review screen's link refuses her: the PDF is for her tutors and the
+# office.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+tags:
+  - feature
+---
+- runScript: ../../scripts/seed-canvas-assessment.js
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-open-pdf-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-status-${output.assessmentId}
+    text: 'Submitted'
+- tapOn:
+    id: assessment-open-pdf-${output.assessmentId}
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-review
+    timeout: 15000
+- assertVisible: 'Sofia Okafor · Grade 4'
+- assertVisible:
+    id: assessment-review-summary
+    text: '1 of 10 questions written.*'
+# pdf.js has drawn the cover and one page per question.
+- extendedWaitUntil:
+    visible:
+      id: assessment-pdf-pages
+      text: '\d+ pages'
+    timeout: 45000
+- assertNotVisible:
+    id: assessment-pdf-error
+- assertNotVisible: 'Download'
+- takeScreenshot: canvas-assessment-pdf
+# The student: the row, submitted, and no PDF.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-status-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-status-${output.assessmentId}
+    text: 'Submitted'
+- assertNotVisible:
+    id: assessment-open-pdf-${output.assessmentId}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments/review/${output.assessmentId}
+- extendedWaitUntil:
+    visible:
+      id: assessment-review-denied
+    timeout: 15000
+- assertNotVisible:
+    id: assessment-pdf-viewer

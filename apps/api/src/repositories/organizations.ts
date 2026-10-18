@@ -33,6 +33,8 @@ interface OrgRow {
   builtin_logo: string | null;
   time_zone: string;
   email_notifications: number;
+  canvas_assessments: number;
+  canvas_assessments_unreviewed: number;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -43,7 +45,7 @@ interface OrgRow {
 
 /** Every organization column, plus the logo versions that make its URLs. */
 const SELECT_ORG = `SELECT o.id, o.slug, o.name, o.short_name, o.tagline, o.blurb, o.place,
-       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.calendar_domain, o.archived_at,
+       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.calendar_domain, o.archived_at,
        o.created_at, o.updated_at,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'mark') AS mark_sha,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'full') AS full_sha
@@ -74,6 +76,8 @@ function toOrganization(row: OrgRow): Organization {
     ...toBrand(row),
     time_zone: row.time_zone as OrgTimeZone,
     email_notifications: row.email_notifications === 1,
+    canvas_assessments: row.canvas_assessments === 1,
+    canvas_assessments_unreviewed: row.canvas_assessments_unreviewed === 1,
     calendar_domain: row.calendar_domain,
     archived_at: row.archived_at,
     created_at: row.created_at,
@@ -296,11 +300,17 @@ export async function getOrganizationSettings(
   const row = await db
     .prepare(
       `SELECT tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code,
-              email_notifications
+              email_notifications, canvas_assessments, canvas_assessments_unreviewed
        FROM organizations WHERE id = ?`,
     )
     .bind(org)
-    .first<Omit<OrganizationSettings, 'email_notifications'> & { email_notifications: number }>();
+    .first<
+      Omit<OrganizationSettings, 'email_notifications' | 'canvas_assessments' | 'canvas_assessments_unreviewed'> & {
+        email_notifications: number;
+        canvas_assessments: number;
+        canvas_assessments_unreviewed: number;
+      }
+    >();
   if (!row) {
     return {
       tin: null,
@@ -310,9 +320,16 @@ export async function getOrganizationSettings(
       payer_state: null,
       payer_postal_code: null,
       email_notifications: false,
+      canvas_assessments: false,
+      canvas_assessments_unreviewed: false,
     };
   }
-  return { ...row, email_notifications: row.email_notifications === 1 };
+  return {
+    ...row,
+    email_notifications: row.email_notifications === 1,
+    canvas_assessments: row.canvas_assessments === 1,
+    canvas_assessments_unreviewed: row.canvas_assessments_unreviewed === 1,
+  };
 }
 
 export async function updateOrganizationSettings(

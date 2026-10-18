@@ -1,0 +1,10 @@
+# One stroke on the assessment's canvas: a swipe rightward from its centre (a touch, as a finger
+# writes). A LEFT stroke and a RIGHT one cross at the centre. Two files, because Maestro reads a
+# swipe's direction when it parses the flow, so it cannot come from a variable.
+appId: ${APP_ID}
+---
+- swipe:
+    from:
+      id: assessment-canvas
+    direction: RIGHT
+    duration: 700

@@ -35,6 +35,8 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS canvas_assessment_files;
+DROP TABLE IF EXISTS canvas_assessments;
 DROP TABLE IF EXISTS question_bank_topics;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS ai_runs;
@@ -167,6 +169,14 @@ CREATE TABLE organizations (
   -- assessment, a schedule, a recorded session) email the people they
   -- concern. Off until an admin chooses.
   email_notifications INTEGER NOT NULL DEFAULT 0 CHECK (email_notifications IN (0, 1)),
+
+  -- Phase 38: whether the Assessment menu (beta) is on: answers written by
+  -- hand on a canvas, and a PDF for the tutor. Off until its admins choose.
+  canvas_assessments INTEGER NOT NULL DEFAULT 0 CHECK (canvas_assessments IN (0, 1)),
+  -- Phase 38: a trial -- assessments may also draw on questions the bank has
+  -- checked but no person has approved yet. Off until its admins choose; the
+  -- tutor's PDF marks each such question.
+  canvas_assessments_unreviewed INTEGER NOT NULL DEFAULT 0 CHECK (canvas_assessments_unreviewed IN (0, 1)),
 
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
@@ -1879,3 +1889,83 @@ CREATE TABLE question_bank_topics (
   needs_figure INTEGER NOT NULL DEFAULT 0 CHECK (needs_figure IN (0, 1)),
   updated_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
+
+
+-- Phase 38: the Assessment menu (beta). One row per attempt: a student answers
+-- approved bank questions by hand, one question per page; on submitting, the
+-- Worker writes a PDF for the tutor (docs/canvas-assessment-plan.md).
+CREATE TABLE canvas_assessments (
+  id                 TEXT PRIMARY KEY,
+  organization_id    TEXT NOT NULL REFERENCES organizations (id),
+  student_user_id    TEXT NOT NULL REFERENCES users (id),
+  -- Who started it: the student, a guardian, a tutor of theirs or an admin.
+  started_by_user_id TEXT NOT NULL REFERENCES users (id),
+  -- A bank level, 'NC26.5'. The questions are platform reference data.
+  level_id           TEXT NOT NULL,
+  -- JSON array of question ids, in the order they are asked.
+  question_ids       TEXT NOT NULL,
+  status             TEXT NOT NULL DEFAULT 'in_progress'
+                       CHECK (status IN ('in_progress', 'submitted', 'discarded')),
+  -- Counted on submitting: pages with any writing; the multiple-choice
+  -- questions, how many were answered and how many correctly (by code); and
+  -- how many questions were drawn while still unreviewed in the bank.
+  questions_written  INTEGER NOT NULL DEFAULT 0,
+  choice_questions   INTEGER NOT NULL DEFAULT 0,
+  choices_answered   INTEGER NOT NULL DEFAULT 0,
+  choices_correct    INTEGER NOT NULL DEFAULT 0,
+  unreviewed_questions INTEGER NOT NULL DEFAULT 0,
+  started_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  submitted_at       TEXT,
+  updated_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK ((status = 'submitted') = (submitted_at IS NOT NULL))
+);
+
+CREATE INDEX canvas_assessments_org_time_idx ON canvas_assessments (organization_id, started_at);
+CREATE INDEX canvas_assessments_student_idx ON canvas_assessments (organization_id, student_user_id);
+
+CREATE TRIGGER canvas_assessments_same_organization
+BEFORE INSERT ON canvas_assessments
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.started_by_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER canvas_assessments_organization_fixed
+BEFORE UPDATE OF organization_id ON canvas_assessments
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER canvas_assessments_set_updated_at
+AFTER UPDATE ON canvas_assessments
+FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE canvas_assessments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+-- Its files, kept apart so a list never reads a blob: the PDF ('answers'), the
+-- handwriting it was drawn from ('strokes', deflated JSON) and, from Phase 39,
+-- the PDF with an AI evaluation ('evaluated'). In D1 for now; moving them to R2
+-- replaces `bytes` with a key here and nowhere else.
+CREATE TABLE canvas_assessment_files (
+  assessment_id   TEXT NOT NULL REFERENCES canvas_assessments (id),
+  kind            TEXT NOT NULL CHECK (kind IN ('answers', 'strokes', 'evaluated')),
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  content_type    TEXT NOT NULL,
+  bytes           BLOB NOT NULL,
+  size            INTEGER NOT NULL,
+  sha256          TEXT NOT NULL,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (assessment_id, kind)
+);
+
+CREATE TRIGGER canvas_assessment_files_same_organization
+BEFORE INSERT ON canvas_assessment_files
+WHEN NOT EXISTS (SELECT 1 FROM canvas_assessments a WHERE a.id = NEW.assessment_id AND a.organization_id = NEW.organization_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;

@@ -60,6 +60,8 @@ const ORG: OrganizationListItem = {
   logo_full_url: null,
   time_zone: 'America/Chicago',
   email_notifications: true,
+  canvas_assessments: false,
+  canvas_assessments_unreviewed: false,
   calendar_domain: 'lakeside.invalid',
   archived_at: null,
   created_at: '2026-10-01T00:00:00Z',

@@ -290,6 +290,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   builds carry react-native-webview; the e2e variant and the personal device build still need
   their rebuild.)*
 
+## Portal Phase 38 — the Assessment menu (beta)
+
+- [x] 55. Mobile: the Assessment menu (beta), at parity with the web — the menu entry with its Beta
+  badge (only while the organization has it on), the Organization screen's two switches, starting
+  one and the list, taking one (KaTeX question, lettered choices, a canvas with pen, eraser, undo
+  and clear, the work kept on the device until submitted) and the reviewer's PDF drawn in the app by
+  pdf.js. Built 2026-10-18 (design 55); jest, typecheck, lint and export green; the flows
+  `canvas-assessments/{take,review,menu,open}` green on iOS and Android.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

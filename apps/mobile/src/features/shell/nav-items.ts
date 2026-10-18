@@ -1,5 +1,8 @@
-// Ported from NAV_ITEMS in apps/web/src/components/layout/app-shell.tsx @ 1132322
+// Ported from NAV_ITEMS in apps/web/src/components/layout/app-shell.tsx @ 22b9701 (Phase 38 added
+// `feature` and `badge`: the Assessment menu, in beta, only while the organization has it on).
 import type { Href } from 'expo-router';
+
+import type { Organization } from '@tmi/shared';
 
 import { useAuth } from '@/providers/auth-provider';
 
@@ -24,6 +27,10 @@ export interface NavItem {
   tab?: boolean;
   /** The feature tour points at this (the web's data-tour="nav-…"). */
   tourId: string;
+  /** Shown only while the organization has this switched on. */
+  feature?: 'canvas_assessments';
+  /** A small label beside it, such as "Beta". */
+  badge?: string;
 }
 
 export const NAV_ITEMS: NavItem[] = [
@@ -58,6 +65,16 @@ export const NAV_ITEMS: NavItem[] = [
     keywords: ['plans', 'assessments', 'goals'],
     tab: true,
     tourId: 'nav-progress',
+  },
+  {
+    // Phase 38, in beta: answers written on a canvas. Only while the organization has it on.
+    href: '/assessments',
+    label: 'Assessment',
+    icon: 'draw-pen',
+    keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'],
+    feature: 'canvas_assessments',
+    badge: 'Beta',
+    tourId: 'nav-assessments',
   },
   {
     href: '/people',
@@ -120,9 +137,19 @@ export const NAV_ITEMS: NavItem[] = [
   },
 ];
 
+/** The menu, less what this reader's roles do not reach and what the organization has off. */
+export function visibleNavItems(
+  roles: readonly string[] | undefined,
+  organization: Pick<Organization, 'canvas_assessments'> | null | undefined,
+): NavItem[] {
+  const admin = Boolean(roles?.includes('admin'));
+  return NAV_ITEMS.filter(
+    (item) => (!item.admin || admin) && (!item.feature || Boolean(organization?.[item.feature])),
+  );
+}
+
 /** The menu, less what this reader's roles do not reach. */
 export function useNavItems(): NavItem[] {
-  const { user } = useAuth();
-  const admin = Boolean(user?.roles.includes('admin'));
-  return NAV_ITEMS.filter((item) => !item.admin || admin);
+  const { user, organization } = useAuth();
+  return visibleNavItems(user?.roles, organization);
 }

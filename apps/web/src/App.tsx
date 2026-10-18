@@ -28,6 +28,9 @@ import { QuestionBankPage } from '@/features/question-bank/question-bank-page';
 import { ReviewPage } from '@/features/question-bank/review-page';
 import { StandardPage } from '@/features/question-bank/standard-page';
 import { ProfilePage } from '@/pages/profile-page';
+import { AssessmentsPage } from '@/features/canvas-assessments/assessments-page';
+import { TakeAssessmentPage } from '@/features/canvas-assessments/take-assessment-page';
+import { ReviewAssessmentPage } from '@/features/canvas-assessments/review-assessment-page';
 
 export function App() {
   return (
@@ -62,6 +65,9 @@ export function App() {
           <Route path="sessions" element={<SessionsPage />} />
           <Route path="progress" element={<ProgressPage />} />
           <Route path="progress/:studentId" element={<StudentProgressPage />} />
+          <Route path="assessments" element={<AssessmentsPage />} />
+          <Route path="assessments/:id" element={<TakeAssessmentPage />} />
+          <Route path="assessments/:id/review" element={<ReviewAssessmentPage />} />
           <Route path="schedule" element={<SchedulesPage />} />
           <Route path="locations" element={<LocationsPage />} />
           <Route path="billing" element={<BillingPage />} />

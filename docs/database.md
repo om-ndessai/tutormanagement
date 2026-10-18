@@ -721,6 +721,108 @@ npx wrangler d1 execute tutoring-db --remote --command="SELECT status, COUNT(*),
 `ON CONFLICT (id) DO NOTHING` leaves a question already there alone, so running it twice adds
 nothing.
 
+Phase 38 (the Assessment menu, in beta; 2026-10, `docs/canvas-assessment-plan.md`) is additive: two
+columns on `organizations` (the menu and the unreviewed-questions trial, both off everywhere) and two new tables with their indexes and triggers. The
+handwriting and the PDFs are BLOBs in `canvas_assessment_files` for now; moving them to R2 replaces
+that table's `bytes` with a key and touches nothing else. Production, after the backup, in one file:
+
+```sql
+ALTER TABLE organizations ADD COLUMN canvas_assessments INTEGER NOT NULL DEFAULT 0
+  CHECK (canvas_assessments IN (0, 1));
+ALTER TABLE organizations ADD COLUMN canvas_assessments_unreviewed INTEGER NOT NULL DEFAULT 0
+  CHECK (canvas_assessments_unreviewed IN (0, 1));
+
+-- Phase 38: the Assessment menu (beta). One row per attempt: a student answers
+-- approved bank questions by hand, one question per page; on submitting, the
+-- Worker writes a PDF for the tutor (docs/canvas-assessment-plan.md).
+CREATE TABLE canvas_assessments (
+  id                 TEXT PRIMARY KEY,
+  organization_id    TEXT NOT NULL REFERENCES organizations (id),
+  student_user_id    TEXT NOT NULL REFERENCES users (id),
+  -- Who started it: the student, a guardian, a tutor of theirs or an admin.
+  started_by_user_id TEXT NOT NULL REFERENCES users (id),
+  -- A bank level, 'NC26.5'. The questions are platform reference data.
+  level_id           TEXT NOT NULL,
+  -- JSON array of question ids, in the order they are asked.
+  question_ids       TEXT NOT NULL,
+  status             TEXT NOT NULL DEFAULT 'in_progress'
+                       CHECK (status IN ('in_progress', 'submitted', 'discarded')),
+  -- Counted on submitting: pages with any writing; the multiple-choice
+  -- questions, how many were answered and how many correctly (by code); and
+  -- how many questions were drawn while still unreviewed in the bank.
+  questions_written  INTEGER NOT NULL DEFAULT 0,
+  choice_questions   INTEGER NOT NULL DEFAULT 0,
+  choices_answered   INTEGER NOT NULL DEFAULT 0,
+  choices_correct    INTEGER NOT NULL DEFAULT 0,
+  unreviewed_questions INTEGER NOT NULL DEFAULT 0,
+  started_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  submitted_at       TEXT,
+  updated_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  CHECK ((status = 'submitted') = (submitted_at IS NOT NULL))
+);
+
+CREATE INDEX canvas_assessments_org_time_idx ON canvas_assessments (organization_id, started_at);
+CREATE INDEX canvas_assessments_student_idx ON canvas_assessments (organization_id, student_user_id);
+
+CREATE TRIGGER canvas_assessments_same_organization
+BEFORE INSERT ON canvas_assessments
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.started_by_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER canvas_assessments_organization_fixed
+BEFORE UPDATE OF organization_id ON canvas_assessments
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+CREATE TRIGGER canvas_assessments_set_updated_at
+AFTER UPDATE ON canvas_assessments
+FOR EACH ROW WHEN NEW.updated_at = OLD.updated_at
+BEGIN
+  UPDATE canvas_assessments SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = NEW.id;
+END;
+
+-- Its files, kept apart so a list never reads a blob: the PDF ('answers'), the
+-- handwriting it was drawn from ('strokes', deflated JSON) and, from Phase 39,
+-- the PDF with an AI evaluation ('evaluated'). In D1 for now; moving them to R2
+-- replaces `bytes` with a key here and nowhere else.
+CREATE TABLE canvas_assessment_files (
+  assessment_id   TEXT NOT NULL REFERENCES canvas_assessments (id),
+  kind            TEXT NOT NULL CHECK (kind IN ('answers', 'strokes', 'evaluated')),
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  content_type    TEXT NOT NULL,
+  bytes           BLOB NOT NULL,
+  size            INTEGER NOT NULL,
+  sha256          TEXT NOT NULL,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (assessment_id, kind)
+);
+
+CREATE TRIGGER canvas_assessment_files_same_organization
+BEFORE INSERT ON canvas_assessment_files
+WHEN NOT EXISTS (SELECT 1 FROM canvas_assessments a WHERE a.id = NEW.assessment_id AND a.organization_id = NEW.organization_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+```
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as phase38.sql>
+# read-only: the two tables, and the switch off in every organization
+npx wrangler d1 execute tutoring-db --remote --command="SELECT group_concat(name) FROM (SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'canvas_assessment%' ORDER BY name)"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT slug, canvas_assessments, canvas_assessments_unreviewed FROM organizations ORDER BY slug"
+```
+
+The size to watch: a submission stores its PDF and its strokes (a vector PDF, about 10-200 KB in all),
+against D1's 500 MB per database on the free plan -- a few thousand submissions before R2 is needed.
+A query for the running total: `SELECT COUNT(*), SUM(size) FROM canvas_assessment_files`.
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

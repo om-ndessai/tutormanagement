@@ -1,0 +1,210 @@
+# Taking an assessment (Phase 38), as Priya (admin, chmi), for Sofia: More lists Assessment with its
+# Beta badge; she starts Grade 4 (the only grade with approved questions locally) and writes on two
+# pages -- choosing A or B wherever the question is multiple choice (the draw is random), drawing a
+# stroke, Undo and the eraser each taking it away again. Leaving and continuing keeps the work on
+# the device. Submit asks first, then the list shows it submitted. Nothing is marked on the way.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-assessments
+    centerElement: true
+- assertVisible:
+    id: more-nav-assessments-badge
+- tapOn:
+    id: more-nav-assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- assertVisible:
+    id: assessment-beta
+# Start one: Sofia, Grade 4.
+- tapOn:
+    id: assessment-student
+# An admin follows every student: the list shows eight at a time, so search for her. Her row sits
+# just under the search field, above the keyboard; tapping it closes the list and the keyboard
+# (hideKeyboard on iOS taps the screen, which chose her before the flow's own tap).
+- runFlow:
+    when:
+      visible:
+        id: assessment-student-search
+    commands:
+      - tapOn:
+          id: assessment-student-search
+      - inputText: 'Sofia'
+- tapOn:
+    id: assessment-student-00000000-0000-4000-8000-000000000008
+- assertVisible:
+    id: assessment-student
+    text: 'Student: Sofia Okafor. Change'
+- tapOn:
+    id: assessment-level
+- extendedWaitUntil:
+    visible:
+      id: assessment-level-NC26.4
+    timeout: 15000
+- tapOn:
+    id: assessment-level-NC26.4
+- tapOn:
+    id: assessment-begin
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-take
+    timeout: 20000
+- extendedWaitUntil:
+    visible: 'Question 1 of 10'
+    timeout: 15000
+- assertVisible:
+    id: assessment-canvas
+- takeScreenshot: canvas-assessment-page-1
+# Page 1: an answer where there are choices, then a stroke.
+- runFlow:
+    when:
+      visible:
+        id: assessment-choice-A
+    commands:
+      - tapOn:
+          id: assessment-choice-A
+      - assertVisible:
+          id: assessment-page-1
+          text: 'Question 1, answered'
+      # Tapping it again takes the choice back; once more chooses it.
+      - tapOn:
+          id: assessment-choice-A
+      - assertVisible:
+          id: assessment-page-1
+          text: 'Question 1'
+      - tapOn:
+          id: assessment-choice-A
+- runFlow:
+    file: ../../subflows/canvas-assessments/write-right.yaml
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-1
+      text: 'Question 1, has writing.*'
+    timeout: 5000
+- assertVisible:
+    id: assessment-undo
+    enabled: true
+- takeScreenshot: canvas-assessment-written
+# Page 2: write, undo, write, erase, write.
+- tapOn:
+    id: assessment-next
+- extendedWaitUntil:
+    visible: 'Question 2 of 10'
+    timeout: 5000
+- assertVisible:
+    id: assessment-page-2
+    text: 'Question 2'
+- runFlow:
+    when:
+      visible:
+        id: assessment-choice-B
+    commands:
+      - tapOn:
+          id: assessment-choice-B
+- runFlow:
+    file: ../../subflows/canvas-assessments/write-right.yaml
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-2
+      text: 'Question 2, has writing.*'
+    timeout: 5000
+- tapOn:
+    id: assessment-undo
+- assertNotVisible:
+    id: assessment-page-2
+    text: '.*has writing.*'
+- runFlow:
+    file: ../../subflows/canvas-assessments/write-left.yaml
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-2
+      text: 'Question 2, has writing.*'
+    timeout: 5000
+- tapOn:
+    id: assessment-eraser
+- runFlow:
+    file: ../../subflows/canvas-assessments/write-right.yaml
+- assertNotVisible:
+    id: assessment-page-2
+    text: '.*has writing.*'
+- tapOn:
+    id: assessment-pen
+- runFlow:
+    file: ../../subflows/canvas-assessments/write-left.yaml
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-2
+      text: 'Question 2, has writing.*'
+    timeout: 5000
+# Back to page 1: its writing is still there.
+- tapOn:
+    id: assessment-previous
+- extendedWaitUntil:
+    visible: 'Question 1 of 10'
+    timeout: 5000
+- assertVisible:
+    id: assessment-page-1
+    text: 'Question 1, has writing.*'
+# Leaving and continuing keeps the work, which never left the device.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: 'assessment-continue-.*'
+    centerElement: true
+- tapOn:
+    id: 'assessment-continue-.*'
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-2
+      text: 'Question 2, has writing.*'
+    timeout: 15000
+- assertVisible:
+    id: assessment-page-1
+    text: 'Question 1, has writing.*'
+# Submit, after a confirm that says how many have no answer.
+- tapOn:
+    id: assessment-submit
+- assertVisible: '.*questions have no answer yet\. Once submitted it cannot be changed.*'
+- runFlow: ../../subflows/canvas-assessments/confirm-submit.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: 'assessment-status-.*'
+      text: 'Submitted'
+    centerElement: true
+- assertVisible:
+    id: 'assessment-summary-.*'
+    text: '2 of 10 questions written.*started by Priya Raghavan'
+- assertVisible:
+    id: 'assessment-open-pdf-.*'
+- takeScreenshot: canvas-assessment-submitted

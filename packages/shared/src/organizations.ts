@@ -168,6 +168,14 @@ export const organizationSettingsSchema = z.object({
   ),
   /** Its own admins may switch notifications too, as may platform admins. */
   email_notifications: z.boolean(),
+  /** Phase 38: the Assessment menu (beta). Its own admins only; off until they choose. */
+  canvas_assessments: z.boolean(),
+  /**
+   * Phase 38: let assessments draw on questions the bank has checked but no
+   * person has approved yet -- a trial, off until its admins choose; the
+   * tutor's PDF marks each such question.
+   */
+  canvas_assessments_unreviewed: z.boolean(),
 });
 export const updateOrganizationSettingsSchema = organizationSettingsSchema
   .partial()
@@ -198,6 +206,10 @@ export interface Organization extends OrganizationBrand {
   time_zone: OrgTimeZone;
   /** Phase 32: whether its notifying actions send email. */
   email_notifications: boolean;
+  /** Phase 38: whether the Assessment menu (beta) is on. */
+  canvas_assessments: boolean;
+  /** Phase 38: whether assessments may draw on checked-but-unreviewed questions. */
+  canvas_assessments_unreviewed: boolean;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -213,6 +225,8 @@ export interface OrganizationSettings {
   payer_state: string | null;
   payer_postal_code: string | null;
   email_notifications: boolean;
+  canvas_assessments: boolean;
+  canvas_assessments_unreviewed: boolean;
 }
 
 // ---------------------------------------------------------------------------

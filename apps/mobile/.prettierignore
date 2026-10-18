@@ -7,3 +7,4 @@ src/features/question-bank/katex-css.generated.ts
 package-lock.json
 *.md
 assets
+src/features/canvas-assessments/pdfjs.generated.ts

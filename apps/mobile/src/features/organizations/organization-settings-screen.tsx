@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322.
+// Ported from apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322 (the
+// Assessment card, Phase 38, @ 22b9701).
 //
 // The organization's own settings, for its admins: the payer box on every 1099 it issues. Its name,
 // look and clock are set by the platform, and shown here for reference. The organization's name on
@@ -29,6 +30,7 @@ import {
   useOrganizationSettings,
   useUpdateOrganizationSettings,
 } from './api';
+import { CanvasAssessmentsCard } from './canvas-assessments-card';
 import { CurriculaCard } from './curricula-card';
 import { EmailNotificationsCard } from './notifications-card';
 import { formFromSettings, validateForm, type PayerField, type SettingsForm } from './settings-form';
@@ -105,6 +107,11 @@ export function OrganizationSettingsScreen() {
       <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
 
       <CurriculaCard />
+
+      <CanvasAssessmentsCard
+        enabled={settings.data?.data.canvas_assessments ?? false}
+        unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
+      />
     </Screen>
   );
 }

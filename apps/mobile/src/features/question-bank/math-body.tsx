@@ -20,14 +20,21 @@ export const DRAW_TIMEOUT_MS = 3000;
 
 /**
  * Reports `#q`'s height with its key, now, whenever its box changes (ResizeObserver), and once the
- * fonts are in. `window.__q` swaps the body in place (Review keeps one web view for the session).
+ * fonts are in. With it, each `.choice` box's top and height (`c`), which the assessment lays native
+ * buttons over (Phase 38); the bank ignores them. `window.__q` swaps the body in place (Review keeps one web view for the session).
  */
 const REPORTER = `(function () {
   var q = document.getElementById('q');
   if (!q || !window.ReactNativeWebView) return;
   function post() {
     var h = Math.ceil(q.getBoundingClientRect().height);
-    window.ReactNativeWebView.postMessage(JSON.stringify({ k: q.getAttribute('data-k'), h: h }));
+    var c = [];
+    var boxes = q.querySelectorAll('.choice');
+    for (var i = 0; i < boxes.length; i++) {
+      var r = boxes[i].getBoundingClientRect();
+      c.push([Math.round(r.top), Math.round(r.height)]);
+    }
+    window.ReactNativeWebView.postMessage(JSON.stringify({ k: q.getAttribute('data-k'), h: h, c: c }));
   }
   window.__q = function (k, html) { q.setAttribute('data-k', k); q.innerHTML = html; post(); };
   try { new ResizeObserver(post).observe(q); } catch (e) {}
@@ -45,7 +52,28 @@ export function shellColors(theme: AppTheme): ShellColors {
     keyBg: withAlpha(theme.tokens.success, 0.12),
     soft: withAlpha(theme.colors.surfaceVariant, 0.5),
     error: theme.colors.error,
+    accent: theme.colors.primary,
+    accentBg: withAlpha(theme.colors.primary, 0.1),
   };
+}
+
+/** A choice's box in the body, in points from its top. */
+export interface ChoiceBox {
+  top: number;
+  height: number;
+}
+
+/** The page's `c`, read defensively: pairs of finite numbers only. */
+export function choiceBoxes(raw: unknown[]): ChoiceBox[] {
+  return raw.flatMap((entry) =>
+    Array.isArray(entry) &&
+    typeof entry[0] === 'number' &&
+    typeof entry[1] === 'number' &&
+    Number.isFinite(entry[0]) &&
+    Number.isFinite(entry[1])
+      ? [{ top: entry[0], height: entry[1] }]
+      : [],
+  );
 }
 
 /** Only the page's own load: nothing is ever opened, here or outside the app. */
@@ -72,6 +100,7 @@ export function MathBody({
   plain,
   contentKey,
   onRendered,
+  onChoiceBoxes,
   persistent = false,
   testID,
 }: {
@@ -80,6 +109,8 @@ export function MathBody({
   plain: string;
   contentKey: string;
   onRendered?: (key: string) => void;
+  /** Each `.choice` box's top and height in the body, as the page reports them (Phase 38). */
+  onChoiceBoxes?: (key: string, boxes: ChoiceBox[]) => void;
   persistent?: boolean;
   testID?: string;
 }) {
@@ -143,7 +174,7 @@ export function MathBody({
   }, [failed, contentKey, onRendered]);
 
   function onMessage(event: WebViewMessageEvent) {
-    let message: { k?: unknown; h?: unknown };
+    let message: { k?: unknown; h?: unknown; c?: unknown };
     try {
       message = JSON.parse(event.nativeEvent.data) as typeof message;
     } catch {
@@ -155,6 +186,8 @@ export function MathBody({
       return;
     }
     if (message.k !== contentKey || typeof message.h !== 'number' || message.h <= 0) return;
+    // Before onRendered, so a listener knows the boxes once it hears the body is drawn.
+    if (onChoiceBoxes && Array.isArray(message.c)) onChoiceBoxes(contentKey, choiceBoxes(message.c));
     const height = Math.ceil(message.h) + 2;
     setMeasured((was) =>
       was?.key === contentKey && was.height === height ? was : { key: contentKey, height },

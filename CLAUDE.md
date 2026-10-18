@@ -34,7 +34,8 @@ setup of a new student or tutor (26), multiple organizations (27-31), and per-or
 notifications (32), tutoring locations with an in-app reminder (33), curricula, with
 Beast Academy alone, read through each organization's own list (34), North Carolina's
 standards in both editions, with each organization's admins choosing what it offers (35), and
-the AI layer with the question bank it writes, in the platform console (36).
+the AI layer with the question bank it writes, in the platform console (36). Phase 38, the
+Assessment menu in beta (answers written on a canvas, a PDF for the tutor), is built ahead of 37.
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -104,6 +105,10 @@ to run straight through, so they are not paused between phases. `docs/mobile/` h
 the resumable `progress.md`, the parity tracker and the build log; `apps/mobile/CLAUDE.md`
 holds the app's rules and commands.
 
+- **Feature parity is the default (owner, 2026-10-18).** Every feature is built, tested and released
+  on the web app AND the mobile app together, unless the owner explicitly says one platform only. A
+  phase is not done while its other half is missing; "web only" needs the owner's word, recorded in
+  `docs/mobile/parity.md`. Installing on the physical phones is separate, and only when asked.
 - **A second client of the same API.** A change to the Worker, the shared contract or the schema
   is smoke-tested on the web app AND the mobile app before it is done: `npm run smoke` (see
   "The Worker has two clients" under Rules).
@@ -572,7 +577,10 @@ by Claude Sonnet, checked by code (`lintQuestion` in shared: the form, four dist
 exactly one matching the key, the `compute` expression evaluated EXACTLY -- `evaluateExact`, big
 integer fractions, never floats -- equal to the key, no near-copy), then solved blind by Claude Opus
 with the choices shuffled and no key (`checkAnswer` must match). Only `checked` may be approved, by
-a platform admin; any edit clears the blind solve and the approval. Questions are retired, never
+a platform admin; any edit clears the blind solve and the approval. The one exception is an organization's
+own trial (Phase 38): while its `canvas_assessments_unreviewed` is on (its admins' switch, off by
+default), its Assessments may also draw `checked` questions, and the tutor's PDF marks each one "not yet
+reviewed". `draft`, `flagged` and `retired` never reach a student. Questions are retired, never
 deleted. Never loosen a check to get a question through: fix the question. Production's console is
 the bank's source; `db/questions.sql` (local and demo only) is generated from the exported JSON and
 never hand-edited. Its first writing (2026-10-17) was done by Claude Code agents running the same
@@ -581,6 +589,20 @@ pipeline outside the Worker, and reached production as `checked` (`generate-ques
 its coverage and lists scan every question in D1, so an approval writes into the loaded caches and
 the queue pages by `questions_status_idx` -- refetching after each approval would spend the
 account's daily reads in one session (`docs/ai-platform-plan.md`, "Reads").
+
+**An Assessment (Phase 38, beta) is written by hand, and its PDF is the tutor's.** While an
+organization's `canvas_assessments` is on (its admins' switch, off by default), the Assessment menu
+lets anyone who may follow a student's progress start one for them: up to 10 approved bank questions
+of a grade, one page each, answered on a canvas with nothing marked (`docs/canvas-assessment-plan.md`); a
+multiple-choice question is answered by choosing, with the canvas for working, and code marks the choice
+for the tutor (`checkAnswer`), never a model. Web and app alike; the PDF is shown in the portal and in the
+app (pdf.js), never handed over as a download.
+The work stays in the browser until it is submitted; the Worker then writes the PDF itself
+(`lib/pdf.ts`, standard fonts and vector strokes, no library -- the free plan's 10 ms of CPU) and stores
+it with the strokes in `canvas_assessment_files`, D1 for now, R2 later. Handwriting travels as strings
+(`parseStroke`), never as arrays Zod would have to walk. The PDF carries the answers, so only the
+student's current tutors and the admins open it (R17); everyone else in the student's audience sees
+the row. Phase 39's AI evaluation needs consent first: it reads a child's handwriting.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

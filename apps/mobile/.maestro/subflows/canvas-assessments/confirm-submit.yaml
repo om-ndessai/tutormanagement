@@ -1,0 +1,21 @@
+# Submit's confirm (Phase 38) is a native alert over a screen whose header has its own Submit: tap
+# the alert's. Android's dialog draws its buttons in capitals.
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible: 'Submit this assessment\?'
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Submit'
+          below: '.*Once submitted it cannot be changed.*'
+          index: 0
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'android:id/button1'

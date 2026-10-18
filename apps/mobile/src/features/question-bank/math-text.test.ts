@@ -113,7 +113,10 @@ describe('the whole bank', () => {
       for (const part of splitMath(text)) {
         if (!part.math) continue;
         const out = latexToText(part.value, mode);
-        if (/[\\{}$]/.test(out)) left.push(`${part.value} -> ${out}`);
+        // A set's own braces (\{1, 2, 3\}) are meant to be read: as many as the source escaped.
+        const sets = (part.value.match(/\\[{}]/g) ?? []).length;
+        const braces = (out.match(/[{}]/g) ?? []).length;
+        if (/[\\$]/.test(out) || braces > sets) left.push(`${part.value} -> ${out}`);
       }
     }
     expect(left).toEqual([]);

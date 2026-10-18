@@ -15,6 +15,7 @@ import {
   UsersIcon,
   XIcon,
   MapPinIcon,
+  PenLineIcon,
 } from 'lucide-react';
 
 import { DeveloperCredit } from '@/components/layout/developer-credit';
@@ -29,17 +30,27 @@ import {
 } from '@/components/layout/command-palette';
 import { OrgSwitcher } from '@/features/organizations/org-switcher';
 import { useAuth } from '@/providers/auth-provider';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useBrand } from '@/providers/brand-provider';
 
-const NAV_ITEMS: (PaletteDestination & { end: boolean; admin?: boolean })[] = [
+const NAV_ITEMS: (PaletteDestination & {
+  end: boolean;
+  admin?: boolean;
+  /** Shown only while the organization has this switched on. */
+  feature?: 'canvas_assessments';
+  /** A small label beside it, such as "Beta". */
+  badge?: string;
+})[] = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true, keywords: ['home', 'overview'] },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false, keywords: ['people', 'students', 'tutors', 'parents', 'family'] },
   { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, keywords: ['assignments', 'tutor', 'student'] },
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, keywords: ['lessons', 'record', 'notes', 'drafts'] },
   { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, keywords: ['plans', 'assessments', 'goals'] },
+  // Phase 38, in beta: answers written on a canvas. Only while the organization has it on.
+  { to: '/assessments', label: 'Assessment', icon: PenLineIcon, end: false, feature: 'canvas_assessments', badge: 'Beta', keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'] },
   { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, keywords: ['calendar', 'cancel', 'weekly'] },
   // Every tutor's and student's places (Phase 33): admins only.
   { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },
@@ -53,9 +64,11 @@ const NAV_ITEMS: (PaletteDestination & { end: boolean; admin?: boolean })[] = [
 
 /** The menu, less what this reader's roles do not reach. */
 function useNavItems() {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const admin = Boolean(user?.roles.includes('admin'));
-  return NAV_ITEMS.filter((item) => !item.admin || admin);
+  return NAV_ITEMS.filter(
+    (item) => (!item.admin || admin) && (!item.feature || Boolean(organization?.[item.feature])),
+  );
 }
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
@@ -63,7 +76,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <nav className="flex flex-col gap-1" aria-label="Main">
-      {items.map(({ to, label, icon: Icon, end }) => (
+      {items.map(({ to, label, icon: Icon, end, badge }) => (
         <NavLink
           key={to}
           to={to}
@@ -85,6 +98,11 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
         >
           <Icon className="icon-pop size-4 shrink-0" />
           {label}
+          {badge && (
+            <Badge variant="secondary" className="ml-auto px-1.5 py-0 text-[10px] font-semibold">
+              {badge}
+            </Badge>
+          )}
         </NavLink>
       ))}
     </nav>

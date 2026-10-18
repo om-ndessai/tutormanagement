@@ -1,4 +1,4 @@
-import { downloadAndShare, filenameFrom } from '@/lib/download';
+import { downloadAndShare, fetchBytes, filenameFrom } from '@/lib/download';
 import { setActiveOrg } from '@/lib/organization';
 
 const mockShare = jest.fn(() => Promise.resolve());
@@ -90,5 +90,33 @@ describe('downloads', () => {
     });
     await expect(downloadAndShare('/sessions/export.csv', 'sessions.csv')).rejects.toThrow('Not yours.');
     expect(mockFiles).toHaveLength(0);
+  });
+
+  it('fetches bytes in memory for the in-app viewer: no file, no share sheet (Phase 38)', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      arrayBuffer: () => Promise.resolve(new Uint8Array([37, 80, 68, 70]).buffer),
+      headers: { get: () => 'inline; filename="assessment.pdf"' },
+    });
+    const bytes = await fetchBytes('/canvas-assessments/a-1/pdf', 'application/pdf');
+    expect(Array.from(bytes)).toEqual([37, 80, 68, 70]);
+    const [url, init] = mockFetch.mock.calls[0] as [string, { headers: Record<string, string>; credentials: string }];
+    expect(url).toBe('http://localhost:8787/api/canvas-assessments/a-1/pdf?org=chmi');
+    expect(init.headers['X-Organization']).toBe('chmi');
+    expect(init.headers.Accept).toBe('application/pdf');
+    expect(init.credentials).toBe('include');
+    expect(mockFiles).toHaveLength(0);
+    expect(mockShare).not.toHaveBeenCalled();
+  });
+
+  it('answers a PDF the reader may not open with the server\'s 404', async () => {
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 404,
+      json: () => Promise.resolve({ error: { code: 'not_found', message: 'Assessment not found.' } }),
+      headers: { get: () => null },
+    });
+    await expect(fetchBytes('/canvas-assessments/a-1/pdf')).rejects.toMatchObject({ status: 404 });
   });
 });

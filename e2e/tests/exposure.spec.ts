@@ -199,6 +199,27 @@ test.describe('what each non-admin can see', () => {
       await read('/api/curricula');
       await read('/api/sessions/active');
 
+      // R17 (Phase 38): a submitted Assessment reaches the student's audience as a row, but its
+      // PDF -- which carries the answers -- only the student's current tutors and the admins.
+      const started = await unwrap<any>(
+        await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
+        'the office starting an assessment',
+      );
+      await unwrap<any>(
+        await admin.request.post(`/api/canvas-assessments/${started.id}/submit`, { data: { pages: [] } }),
+        'the office submitting it',
+      );
+      const assessments = (await get(page, '/api/canvas-assessments')) as any[];
+      check(reader, '/api/canvas-assessments', assessments, problems);
+      const tutorsSofia = (await get(page, `/api/assignments?student_user_id=${sofiaId}`) as any[]).some(
+        (pairing) => pairing.tutor_user_id === id && pairing.is_active,
+      );
+      const pdf = await page.request.get(`/api/canvas-assessments/${started.id}/pdf`);
+      if (pdf.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the PDF answered ${pdf.status()}`);
+      const theirs = assessments.find((row) => row.id === started.id);
+      if (theirs && theirs.can_review !== tutorsSofia) problems.push(`R17: can_review ${theirs.can_review}`);
+      if (theirs && theirs.started_by_name && !tutorsSofia) problems.push('R17: named who started it');
+
       // R16 (Phase 33): a person's own list of locations is read only by them and their parents
       // (and the office). Anybody else's reads as empty.
       for (const person of people) {

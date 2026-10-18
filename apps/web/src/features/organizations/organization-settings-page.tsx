@@ -1,41 +1,49 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   NOTIFICATION_KIND_LABELS,
   ORG_PALETTE_LABELS,
   ORG_TIME_ZONE_LABELS,
   formatRelativeTime,
   type OrganizationSettings,
-} from '@tmi/shared';
+} from "@tmi/shared";
 
-import { LogoLockup } from '@/components/brand/logo';
-import { PageHeader } from '@/components/layout/page-header';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ApiRequestError } from '@/lib/api-client';
-import { cn } from '@/lib/utils';
-import { useAuth } from '@/providers/auth-provider';
+import { LogoLockup } from "@/components/brand/logo";
+import { PageHeader } from "@/components/layout/page-header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ApiRequestError } from "@/lib/api-client";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/providers/auth-provider";
 import {
   useOrganizationNotifications,
   useOrganizationSettings,
   useUpdateOrganizationSettings,
-} from './api';
-import { CurriculaCard } from './curricula-card';
-import { NotificationsSwitch } from './notifications-switch';
+} from "./api";
+import { CurriculaCard } from "./curricula-card";
+import { NotificationsSwitch } from "./notifications-switch";
 
-/** The payer box, as the form holds it. The notifications switch saves on its own. */
-type SettingsForm = Record<Exclude<keyof OrganizationSettings, 'email_notifications'>, string>;
+/** The payer box, as the form holds it. The two switches save on their own. */
+type SettingsForm = Record<
+  Exclude<
+    keyof OrganizationSettings,
+    | "email_notifications"
+    | "canvas_assessments"
+    | "canvas_assessments_unreviewed"
+  >,
+  string
+>;
 
 const EMPTY: SettingsForm = {
-  tin: '',
-  payer_address_line1: '',
-  payer_address_line2: '',
-  payer_city: '',
-  payer_state: '',
-  payer_postal_code: '',
+  tin: "",
+  payer_address_line1: "",
+  payer_address_line2: "",
+  payer_city: "",
+  payer_state: "",
+  payer_postal_code: "",
 };
 
 /**
@@ -45,7 +53,7 @@ const EMPTY: SettingsForm = {
  */
 export function OrganizationSettingsPage() {
   const { organization, user } = useAuth();
-  const isAdmin = Boolean(user?.roles.includes('admin'));
+  const isAdmin = Boolean(user?.roles.includes("admin"));
   const settings = useOrganizationSettings(isAdmin);
   const update = useUpdateOrganizationSettings();
 
@@ -55,9 +63,16 @@ export function OrganizationSettingsPage() {
   useEffect(() => {
     const loaded = settings.data?.data;
     if (!loaded) return;
-    const { email_notifications: _flag, ...payer } = loaded;
+    const {
+      email_notifications: _flag,
+      canvas_assessments: _assessments,
+      canvas_assessments_unreviewed: _unreviewed,
+      ...payer
+    } = loaded;
     setForm(
-      Object.fromEntries(Object.entries(payer).map(([key, value]) => [key, value ?? ''])) as SettingsForm,
+      Object.fromEntries(
+        Object.entries(payer).map(([key, value]) => [key, value ?? ""]),
+      ) as SettingsForm,
     );
   }, [settings.data]);
 
@@ -65,7 +80,10 @@ export function OrganizationSettingsPage() {
 
   if (!isAdmin) {
     return (
-      <PageHeader title="Organization" description="Only an administrator can see the organization’s settings." />
+      <PageHeader
+        title="Organization"
+        description="Only an administrator can see the organization’s settings."
+      />
     );
   }
 
@@ -74,7 +92,7 @@ export function OrganizationSettingsPage() {
     setErrors({});
     try {
       await update.mutateAsync(form);
-      toast.success('Organization settings saved.');
+      toast.success("Organization settings saved.");
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
@@ -83,17 +101,28 @@ export function OrganizationSettingsPage() {
     }
   }
 
-  const field = (key: keyof SettingsForm, label: string, hint?: string, placeholder?: string) => (
+  const field = (
+    key: keyof SettingsForm,
+    label: string,
+    hint?: string,
+    placeholder?: string,
+  ) => (
     <div className="grid content-start gap-2">
-      <Label htmlFor={`org-${key}`} className={cn(errors[key] && 'text-destructive')}>
-        {label} <span className="text-muted-foreground font-normal">(optional)</span>
+      <Label
+        htmlFor={`org-${key}`}
+        className={cn(errors[key] && "text-destructive")}
+      >
+        {label}{" "}
+        <span className="text-muted-foreground font-normal">(optional)</span>
       </Label>
       <Input
         id={`org-${key}`}
         value={form[key]}
         placeholder={placeholder}
         aria-invalid={Boolean(errors[key])}
-        onChange={(event) => setForm((previous) => ({ ...previous, [key]: event.target.value }))}
+        onChange={(event) =>
+          setForm((previous) => ({ ...previous, [key]: event.target.value }))
+        }
       />
       {errors[key] ? (
         <p className="text-destructive text-xs">{errors[key]}</p>
@@ -113,27 +142,34 @@ export function OrganizationSettingsPage() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
         <Card className="py-0">
           <CardContent className="p-5">
-            <form className="grid gap-4" onSubmit={save} aria-label="1099 payer details">
+            <form
+              className="grid gap-4"
+              onSubmit={save}
+              aria-label="1099 payer details"
+            >
               <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
                 1099 payer
               </h2>
               {field(
-                'tin',
-                'Payer TIN',
-                'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
-                '12-3456789',
+                "tin",
+                "Payer TIN",
+                "The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.",
+                "12-3456789",
               )}
               <div className="grid gap-4 sm:grid-cols-2">
-                {field('payer_address_line1', 'Address')}
-                {field('payer_address_line2', 'Address line 2')}
-                {field('payer_city', 'City')}
+                {field("payer_address_line1", "Address")}
+                {field("payer_address_line2", "Address line 2")}
+                {field("payer_city", "City")}
                 <div className="grid grid-cols-2 gap-4">
-                  {field('payer_state', 'State', undefined, 'NC')}
-                  {field('payer_postal_code', 'ZIP', undefined, '27514')}
+                  {field("payer_state", "State", undefined, "NC")}
+                  {field("payer_postal_code", "ZIP", undefined, "27514")}
                 </div>
               </div>
               <div className="flex justify-end">
-                <Button type="submit" disabled={update.isPending || settings.isPending}>
+                <Button
+                  type="submit"
+                  disabled={update.isPending || settings.isPending}
+                >
                   Save
                 </Button>
               </div>
@@ -157,21 +193,134 @@ export function OrganizationSettingsPage() {
                 <dd>{ORG_PALETTE_LABELS[organization.palette]}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground text-xs">Lessons are recorded on</dt>
+                <dt className="text-muted-foreground text-xs">
+                  Lessons are recorded on
+                </dt>
                 <dd>{ORG_TIME_ZONE_LABELS[organization.time_zone]} time</dd>
               </div>
             </dl>
             <p className="text-muted-foreground text-xs">
-              To change the name, logo, palette or clock, ask the platform administrator.
+              To change the name, logo, palette or clock, ask the platform
+              administrator.
             </p>
           </CardContent>
         </Card>
 
-        <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+        <EmailNotificationsCard
+          enabled={settings.data?.data.email_notifications ?? false}
+        />
 
         <CurriculaCard />
+
+        <CanvasAssessmentsCard
+          enabled={settings.data?.data.canvas_assessments ?? false}
+          unreviewed={
+            settings.data?.data.canvas_assessments_unreviewed ?? false
+          }
+        />
       </div>
     </>
+  );
+}
+
+/**
+ * Phase 38: the Assessment menu (beta). Saving refreshes the session, so the
+ * menu appears or goes at once for the admin who switched it.
+ */
+function CanvasAssessmentsCard({
+  enabled,
+  unreviewed,
+}: {
+  enabled: boolean;
+  unreviewed: boolean;
+}) {
+  const update = useUpdateOrganizationSettings();
+  const { refreshSession } = useAuth();
+
+  async function toggle(next: boolean) {
+    try {
+      await update.mutateAsync({ canvas_assessments: next });
+      await refreshSession();
+      toast.success(
+        next ? "The Assessment menu is on." : "The Assessment menu is off.",
+      );
+    } catch (caught) {
+      toast.error(
+        caught instanceof ApiRequestError
+          ? caught.message
+          : "Could not change the Assessment menu.",
+      );
+    }
+  }
+
+  async function toggleUnreviewed(next: boolean) {
+    try {
+      await update.mutateAsync({ canvas_assessments_unreviewed: next });
+      await refreshSession();
+      toast.success(
+        next
+          ? "Assessments may now use questions not yet reviewed."
+          : "Assessments use approved questions only.",
+      );
+    } catch (caught) {
+      toast.error(
+        caught instanceof ApiRequestError
+          ? caught.message
+          : "Could not change the questions used.",
+      );
+    }
+  }
+
+  return (
+    <Card className="py-0" data-testid="canvas-assessments-setting">
+      <CardContent className="grid gap-4 p-5 text-sm">
+        <div className="flex items-start gap-4">
+          <div className="grid flex-1 gap-1">
+            <h2 className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
+              Assessment
+              <Badge
+                variant="secondary"
+                className="px-1.5 py-0 text-[10px] tracking-normal normal-case"
+              >
+                Beta
+              </Badge>
+            </h2>
+            <p className="text-muted-foreground text-xs">
+              When on, everyone here sees an Assessment menu. A student answers
+              approved questions by hand on a canvas, one question per page,
+              with nothing marked while they work; on submitting, their tutors
+              and the admins get a PDF of the questions and the handwriting. It
+              collects students’ handwriting, so check that your consent forms
+              cover it before students under 13 use it.
+            </p>
+          </div>
+          <NotificationsSwitch
+            checked={enabled}
+            disabled={update.isPending}
+            onCheckedChange={toggle}
+            label="Assessment menu"
+          />
+        </div>
+        <div className="flex items-start gap-4 border-t pt-4">
+          <div className="grid flex-1 gap-1">
+            <h3 className="text-xs font-medium">
+              Include questions not yet reviewed
+            </h3>
+            <p className="text-muted-foreground text-xs">
+              A trial: assessments also draw on questions that passed every
+              automatic check in the question bank but that no person has
+              approved yet. The tutor’s PDF marks each one “not yet reviewed”.
+            </p>
+          </div>
+          <NotificationsSwitch
+            checked={unreviewed}
+            disabled={update.isPending}
+            onCheckedChange={toggleUnreviewed}
+            label="Include questions not yet reviewed"
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -188,9 +337,15 @@ function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
   async function toggle(next: boolean) {
     try {
       await update.mutateAsync({ email_notifications: next });
-      toast.success(next ? 'Email notifications are on.' : 'Email notifications are off.');
+      toast.success(
+        next ? "Email notifications are on." : "Email notifications are off.",
+      );
     } catch (caught) {
-      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not change notifications.');
+      toast.error(
+        caught instanceof ApiRequestError
+          ? caught.message
+          : "Could not change notifications.",
+      );
     }
   }
 
@@ -203,13 +358,18 @@ function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
               Email notifications
             </h2>
             <p className="text-muted-foreground text-xs">
-              When on, the people concerned are emailed when someone is added, a plan or assessment
-              is added, lessons are scheduled, or a session is recorded. An email says what happened
-              and links here — never money, notes or scores. On Cloudflare’s free plan only verified
+              When on, the people concerned are emailed when someone is added, a
+              plan or assessment is added, lessons are scheduled, or a session
+              is recorded. An email says what happened and links here — never
+              money, notes or scores. On Cloudflare’s free plan only verified
               addresses receive mail; the others show as not delivered below.
             </p>
           </div>
-          <NotificationsSwitch checked={enabled} disabled={update.isPending} onCheckedChange={toggle} />
+          <NotificationsSwitch
+            checked={enabled}
+            disabled={update.isPending}
+            onCheckedChange={toggle}
+          />
         </div>
 
         <div className="grid gap-2">
@@ -219,21 +379,31 @@ function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
           ) : (
             <ul className="grid gap-1.5" aria-label="Recent emails">
               {entries.slice(0, 12).map((entry) => (
-                <li key={entry.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
+                <li
+                  key={entry.id}
+                  className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs"
+                >
                   <span className="font-medium">{entry.recipient_name}</span>
                   <span className="text-muted-foreground">
                     {NOTIFICATION_KIND_LABELS[entry.kind]}
-                    {entry.subject_name && entry.subject_name !== entry.recipient_name
+                    {entry.subject_name &&
+                    entry.subject_name !== entry.recipient_name
                       ? ` · ${entry.subject_name}`
-                      : ''}{' '}
+                      : ""}{" "}
                     · {formatRelativeTime(entry.created_at)}
                   </span>
                   <Badge
-                    variant={entry.status === 'failed' ? 'destructive' : 'secondary'}
+                    variant={
+                      entry.status === "failed" ? "destructive" : "secondary"
+                    }
                     title={entry.detail ?? undefined}
                     className="ml-auto"
                   >
-                    {entry.status === 'sent' ? 'Sent' : entry.status === 'failed' ? 'Not delivered' : 'Not sent here'}
+                    {entry.status === "sent"
+                      ? "Sent"
+                      : entry.status === "failed"
+                        ? "Not delivered"
+                        : "Not sent here"}
                   </Badge>
                 </li>
               ))}

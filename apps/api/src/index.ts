@@ -24,6 +24,7 @@ import { logoRoutes, organizationRoutes } from './routes/organization.js';
 import { platformRoutes } from './routes/platform.js';
 import { aiRoutes } from './routes/ai.js';
 import { questionBankRoutes } from './routes/question-bank.js';
+import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 
 const app = new Hono<AppEnv>();
 
@@ -116,7 +117,8 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/curriculum', curriculumRoutes)
   .route('/curricula', curriculaRoutes)
   .route('/progress', progressRoutes)
-  .route('/onboarding', onboardingRoutes);
+  .route('/onboarding', onboardingRoutes)
+  .route('/canvas-assessments', canvasAssessmentRoutes);
 
 const api = new Hono<AppEnv>()
   .route('/', publicRoutes)

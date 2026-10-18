@@ -1,0 +1,111 @@
+# The Assessment menu follows the organization's switch (Phase 38). Priya (admin, chmi) turns it
+# off on the Organization screen: More no longer lists it. On again: it is back, with its Beta badge.
+# Sofia, a student, sees it too, and starts her own -- no student picker. The clean script puts the
+# switch back on whatever happens.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-assessments-switch
+    direction: DOWN
+    centerElement: true
+- assertVisible: 'Include questions not yet reviewed'
+- tapOn:
+    id: org-assessments-switch
+- extendedWaitUntil:
+    visible: 'The Assessment menu is off.'
+    timeout: 10000
+- runFlow: ../../subflows/go-back.yaml
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-billing
+    centerElement: true
+- assertNotVisible:
+    id: more-nav-assessments
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-assessments-switch
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: org-assessments-switch
+- extendedWaitUntil:
+    visible: 'The Assessment menu is on.'
+    timeout: 10000
+- runFlow: ../../subflows/go-back.yaml
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-assessments
+    centerElement: true
+- assertVisible:
+    id: more-nav-assessments-badge
+# A student: the menu, and her own assessment only.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-assessments
+    centerElement: true
+- tapOn:
+    id: more-nav-assessments
+- extendedWaitUntil:
+    visible:
+      id: assessment-start
+    timeout: 15000
+- assertNotVisible:
+    id: assessment-student
+- assertVisible:
+    id: assessment-level

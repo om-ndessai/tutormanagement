@@ -98,6 +98,12 @@ export const AUDIT_ACTIONS = [
   'question.approved',
   'question.retired',
   'question.restored',
+
+  // Phase 38: the Assessment menu (beta). The student and the grade, never a
+  // question or anything written.
+  'canvas_assessment.started',
+  'canvas_assessment.submitted',
+  'canvas_assessment.discarded',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -192,6 +198,9 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'question.approved': 'Question approved',
   'question.retired': 'Question retired',
   'question.restored': 'Question restored',
+  'canvas_assessment.started': 'Assessment started',
+  'canvas_assessment.submitted': 'Assessment submitted',
+  'canvas_assessment.discarded': 'Assessment discarded',
 };
 
 export interface AuditEvent {

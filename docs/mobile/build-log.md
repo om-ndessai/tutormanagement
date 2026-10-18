@@ -1518,3 +1518,129 @@ Reused: `Screen`, `PageIntro`, `FigureRow`, `OutlinedCard`, `EmptyState`/`Loadin
 - *Flows:* `scripts/question-bank-counts.js` takes an optional `TOPIC` and then also counts that standard's questions by status. `subflows/question-bank/nothing-of-the-desk.yaml` matches the web's control texts whole ("Edit", "Write 8 questions", …), because a question's own words may say "Write …". `subflows/question-bank/confirm-retire.yaml` taps the alert's Retire, not the screen's (on Android, `android:id/button1`).
 
 **Verified (2026-10-17):** flows `question-bank/coverage`, `question-bank/review`, `question-bank/standard-actions`, `platform/org-admin-denied`, `exposure/platform-boundary` and `smoke/diagnostics` (`diag-katex` reads "ok": KaTeX and the BigInt exact answers on Hermes) were green on iOS 27 (iPhone 17) and Android 37 (Medium Phone), through `npm run e2e:mobile -- both`. `npm run smoke -- mobile` was green on both. Jest: 614 passed (97 suites, 17 in `question-bank-views`). `mobile:typecheck`, `mobile:lint` (0 errors) and `mobile:export` were green. Screenshots reviewed on both platforms in light and dark: Review, and a standard's cards with fractions (6.ANR.2), square roots (8.ANFR.4), powers (8.ANFR.5) and a²+b²=c² (8.SGMR.5). Also at the largest text size: iOS AX5 and Android 2×. Exposure: the bank, a standard and Review show no seeded person, no `$`-digit text and no `session-money`. An organization's admin who follows a link to `/platform/questions` or `/question-review` lands on Home.
+
+## 55. Phase 38: the Assessment menu (beta) — design (2026-10-18)
+**Scope:** the web's Assessment menu, at parity, in the app: the menu entry with its Beta badge (every role, only while `organization.canvas_assessments`), the Organization screen's two switches, the Assessment screen (start card and list), taking one (one question per page, typeset as the bank, lettered choices to tap, a canvas for working), and the reviewer's PDF shown inside the app. This replaces parity's "web only for now" row. **Left out:** the web's "Download" button on the review page. The owner asked for the PDF to be shown in the app and never handed to a share sheet or written to disk. It carries the answer key and the worked solutions. No API, schema or shared change.
+
+**Web sources:** `apps/web/src/features/canvas-assessments/{api.ts, assessments-page.tsx, take-assessment-page.tsx, drawing-canvas.tsx, review-assessment-page.tsx, pdf-viewer.tsx}`; NAV_ITEMS in `components/layout/app-shell.tsx` (`feature`, `badge`); `CanvasAssessmentsCard` in `features/organizations/organization-settings-page.tsx`.
+
+**Endpoints:** (`apps/api/src/routes/canvas-assessments.ts`, guarded, 403 while the switch is off; `api.ts` copied with `canvasAssessmentKeys` and the invalidation sets identical)
+- `GET /canvas-assessments/levels`: `useCanvasAssessmentLevels` (5-minute stale time). Anyone.
+- `GET /canvas-assessments`: `useCanvasAssessments`. Anyone; R17 decides the rows.
+- `POST /canvas-assessments`: `useStartCanvasAssessment`. The student's audience; 404 for a student they cannot see, 409 `no_questions`.
+- `GET /canvas-assessments/:id`: `useCanvasAssessment` (taking: `staleTime: Infinity`, no refetch on focus) and `useCanvasAssessmentSummary` (reviewing). Questions come only to the person who started it, while it is in progress.
+- `POST /canvas-assessments/:id/submit`: `useSubmitCanvasAssessment`. Invalidates the list and removes the detail.
+- `POST /canvas-assessments/:id/discard`: `useDiscardCanvasAssessment`.
+- `GET /canvas-assessments/:id/pdf`: fetched as bytes by `fetchBytes` in `src/lib/download.ts`, the one place outside the api client that may call `fetch`. It carries the same headers (organization; developer identity while sign-in is off) and the session cookie. Only the student's tutors and the admins; 404 otherwise.
+- `PATCH /organization/settings` `{canvas_assessments}` / `{canvas_assessments_unreviewed}`: the existing `useUpdateOrganizationSettings`, then `refreshSession()`, so the menu follows at once.
+
+**Screens & routes:** (stack screens in `(org)`, each route thin)
+- `app/(org)/assessments/index.tsx` → `AssessmentsScreen`, `screen-assessments`.
+- `app/(org)/assessments/[id].tsx` → `TakeAssessmentScreen`, `screen-assessment-take`. It is a stack screen with `gestureEnabled: false`, so a swipe from the left edge while writing never leaves the page. Work is kept anyway. The header's back button still leaves.
+- `app/(org)/assessments/review/[id].tsx` → `ReviewAssessmentScreen`, `screen-assessment-review`. It lives under `review/` rather than `[id]/review`, so the two dynamic routes never shadow each other.
+- More and Search list "Assessment" with a "Beta" badge, from `NAV_ITEMS` (`feature: 'canvas_assessments'`, `badge: 'Beta'`), only while the organization has it on. It is not a tab, so the bar never reshapes.
+
+**Components:** (new, in `src/features/canvas-assessments/`)
+- `api.ts`.
+- `assessments-screen.tsx`: the intro with a Beta pill, `StartCard`, and the list of rows. Continue / Discard (a native confirm) / Open PDF.
+- `take-assessment-screen.tsx`. It fills the screen without scrolling:
+  - the numbered page buttons, in a horizontal row;
+  - the question card: its own scroll, capped at about 40% of the height;
+  - the tool row: Pen, Eraser, Undo, Clear page;
+  - the canvas: the largest 5:4 box that fits what is left;
+  - Previous / Next.
+  - Submit is in the header.
+- `question-view.tsx`. The stem and choices are drawn by the bank's `MathBody` (KaTeX on Hermes, one web view, `persistent`, so a selection or a page change swaps in place). Each choice gets a **native pressable laid over its box**, from boxes the page reports. This gives real radio buttons with testIDs and labels, and no tap handler in the page. If the page cannot draw, the choices fall back to native rows with plain text.
+- `drawing-canvas.tsx`. `react-native-svg` with `viewBox="0 0 1000 800"`, so strokes are drawn in canvas units. Finished strokes are one memoized `Svg` layer. The live stroke is a separate `AnimatedPath`, whose `d` is built on the UI thread from a shared value. Input is RNGH `Gesture.Manual()` with per-touch ids (onTouchesDown, Move, Up, Cancelled), which gives:
+  - a stylus seen once means touches are ignored (palm rejection), using `pointerType`;
+  - only the touch that started the stroke draws;
+  - the stroke is finished on JS with `finishStroke`;
+  - the eraser hit-tests on JS.
+- `drawing-model.ts` (pure, ported from `drawing-canvas.tsx`): `finishStroke`, `simplify` (RDP), `pageSize`, `distanceToStroke`, `strokeHits`, `strokePath` (a worklet), `PEN_WIDTH`.
+- `assessment-model.ts` (pure): `unansweredCount`, `toggleChoice`, `pageMarks` (writing / answered per page), `submitPages`, `levelOptionLabel`, `rowSummary`, `reviewSummary`, `parseSavedWork`.
+- `work-store.ts`: the work on this device, through `src/lib/storage.ts`'s new keyed helpers (`tmi.canvasWork.<id>`). It is saved, debounced, as it changes and is read back on open. It is cleared on submit and on discard, and when the assessment is no longer in progress.
+- `pdf-viewer.tsx` with `pdf-viewer-html.ts`: a `react-native-webview` page that holds pdf.js 6.3.289. Its `pdf.min.mjs` and `pdf.worker.min.mjs` are inlined as base64 in `pdfjs.generated.ts`, written by `scripts/generate-pdfjs.mjs` (`--check` in `mobile:typecheck`, as `generate-katex-css.mjs`). The page:
+  - decodes both and imports the library from a Blob URL; the worker runs from a Blob URL, with pdf.js's own fake worker as the fallback;
+  - when it posts `ready`, the host fetches the PDF, base64-encodes it on Hermes (`bytesToBase64`, `src/lib/base64.ts`) and hands it over with `injectJavaScript`;
+  - draws every page to a canvas at the page's width (device pixel ratio capped at 2), stacked and scrolled by the web view;
+  - posts `pages` and `done`/`error`.
+
+  The CSP is `default-src 'none'; script-src 'unsafe-inline' blob:; worker-src blob:; style-src 'unsafe-inline'; img-src blob: data:; font-src blob: data:; connect-src blob: data:`. Navigation is refused except the page itself, and nothing touches the disk.
+- `review-assessment-screen.tsx`: the summary line above the viewer, as the web's.
+- `canvas-assessments-card.tsx` in `src/features/organizations/`: the two Paper switches (`org-assessments-switch`, `org-assessments-unreviewed-switch`), as the email notifications card.
+- **Reused:** `OptionPicker` (gains `disabled` options, for a grade with no questions), `Panel`, `PageIntro`, `Screen`, `ErrorState`, `DetailSkeleton`, `useToast`, `haptics`, `MathBody`/`mathHtml`. `ShellColors` gains an `accent`, and the shell a `.choice.sel` rule in the primary colour (never the bank's green "key", which would read as "correct").
+
+**Interaction & motion:**
+- Choosing gives `haptics.selection()`. Submit asks first with `haptics.warning()`, and success gives the toast's own haptic. A full page gives `haptics.error()` and the web's toast.
+- No feedback while working: no marks, no colours other than the selection.
+- Nothing animates but the stroke itself, so reduce motion has nothing to still.
+- The canvas ink is `onSurface` on a `surface` card, so it follows the theme.
+
+**Exposure checks:**
+- **Money:** none anywhere.
+- **SSN:** no free text is typed here at all.
+- **Organization:**
+  - The list, the levels and every route are per organization (the api client's `X-Organization`). The download helper adds it too.
+  - The saved work is keyed by assessment id, which is unique across organizations. It is cleared on submit and discard.
+  - No name in code: the switch copy says "your organization".
+- **R17 is the server's:**
+  - Continue and Discard only on `can_continue`; Open PDF only on `can_review`.
+  - The review screen shows "This assessment’s PDF is for the student’s tutors and the office." when `can_review` is false, and a 404 from the PDF shows "The PDF could not be shown."
+  - The take screen shows the web's sentence when there are no questions.
+  - A student starts only their own (no picker). The picker lists `/users?role=student`, which the server already narrows.
+- **The PDF never leaves the app:**
+  - There is no share, download, `File` or cache write: the bytes go from `fetch` to base64 to the web view's memory.
+  - The web view has `incognito`, `cacheEnabled={false}` and no file access.
+- **No system surface carries any of it.**
+
+**testIDs:**
+- **The Assessment screen:** `screen-assessments`, `assessment-start`, `assessment-student` (options `assessment-student-<id>`), `assessment-level` (options `assessment-level-NC26.4`), `assessment-begin`, `assessment-row-<id>`, `assessment-continue-<id>`, `assessment-discard-<id>`, `assessment-open-pdf-<id>`, `assessment-status-<id>`, `assessments-empty`.
+- **The menu:** `more-nav-assessments`.
+- **Taking one:** `screen-assessment-take`, `assessment-title`, `assessment-page-<n>` (label "Question n, has writing, answered"), `assessment-question`, `assessment-choice-A`…`F`, `assessment-pen`, `assessment-eraser`, `assessment-undo`, `assessment-clear`, `assessment-canvas`, `assessment-previous`, `assessment-next`, `assessment-submit`, `assessment-unavailable`.
+- **Reviewing:** `screen-assessment-review`, `assessment-review-summary`, `assessment-pdf-viewer`, `assessment-pdf-pages` ("N pages", once drawn), `assessment-pdf-error`, `assessment-review-denied`.
+- **The Organization screen:** `org-assessments`, `org-assessments-switch`, `org-assessments-unreviewed-switch`.
+
+**Tests:**
+- **Jest:**
+  - `drawing-model.test.ts`: rounding, clamping to the page, dropping repeats, RDP keeping the corners and dropping collinear points, `pageSize`, the eraser's reach, `strokePath` for a dot and a line.
+  - `assessment-model.test.ts`: the unanswered count (a choice question counts by its choice, the others by writing), `toggleChoice` choosing and clearing, `pageMarks`, `submitPages` with `formatStroke` and a `null` choice for numeric questions, the summaries, and saved work parsed defensively.
+  - `base64.test.ts` against Node's `Buffer`.
+  - `pdf-viewer-html.test.ts`: the CSP, both scripts present, and no `</script` in the page.
+  - `nav-items` filtering by feature.
+- **Maestro** (`.maestro/flows/canvas-assessments/`, as Priya in `chmi`):
+  - `take.yaml` (tagged `feature`):
+    - More → Assessment (Beta) → choose Sofia and Grade 4 → Start;
+    - on each of two pages: tap A if it is a choice question, swipe on the canvas, and see the page button say "has writing";
+    - Undo on page 2 empties it; draw again; Previous → page 1 still has writing;
+    - Submit → confirm → the list shows "Submitted".
+  - `review.yaml` (tagged `feature`): a script starts and submits one for Sofia through the local API. Then Open PDF → `screen-assessment-review` → the summary line → `assessment-pdf-pages` reads "N pages".
+  - `menu.yaml` (tagged `feature`): Priya turns the switch off on Organization → More no longer lists Assessment; on again → listed. Sofia (a student) sees it and has no student picker.
+  - **Smoke:** `take.yaml` is not tagged `smoke`, since it is several minutes with two pages. A short `smoke/assessment.yaml` only opens the screen and sees the start card and the grade list. That covers the routes and the shared types on both platforms in seconds.
+
+**Risks / open questions:**
+- **Module import from a Blob URL in an opaque-origin page** (`about:blank`) on WKWebView and Android's WebView. If it is refused, the page will set `baseUrl` to a fixed `https://localhost/` origin (still offline, still refused navigation), and nothing else changes. Only a simulator run can show which.
+- **Bundle size:** pdf.js adds about 2.3 MB of base64 to the JS bundle (Hermes bytecode, mapped, not parsed at start).
+- **Stylus on Android:** `pointerType` STYLUS comes from RNGH's touch events. The emulator has no stylus, so palm rejection is checked by hand on an iPad with a Pencil.
+- **Maestro swipes** are touches, so the first stroke is drawn as with a finger.
+
+**Changed while building (2026-10-18):**
+- **The viewer's page has a fixed origin.** The page is loaded with `baseUrl: 'https://pdf-viewer.invalid/'` (`PDF_VIEWER_BASE_URL`), which settles the first risk above.
+  - Checked in Chrome: a page with no address has an opaque origin, and from it a module worker from a Blob URL fails. pdf.js then fell back to its in-page "fake worker".
+  - With the origin, the real worker runs. The 11-page PDF the Worker's own `buildAssessmentPdf` writes drew in full, through `ready` → `__render` → `pages` → `done`.
+  - The host allows exactly that URL (and `about:blank`) as navigation. `.invalid` never resolves, and the CSP lets the page fetch nothing.
+  - WebKit (WKWebView) still needs its run on the simulator.
+- **No blink at the end of a stroke.** `onStroke` returns whether the page kept the stroke. A kept stroke's live copy is cleared once the page holds it; a refused one is cleared at once.
+- **The badge is app-wide.** It is `src/components/badge-pill.tsx` (`BadgePill`), shown on the More row (`more-nav-assessments-badge`), the Search row, the Assessment screen (`assessment-beta`), the take screen and the Organization card.
+- **React Compiler lint.** No ref is written during render. The canvas's gesture is rebuilt each render, as the progress chart's is, and the eraser names stroke objects. The reducer drops any it no longer holds.
+- **The flows' clean script** (`scripts/clean-canvas-assessments.js`, run before and after each flow) switches chmi's menu back on with the trial off, and discards anything left in progress.
+- **Two flow fixes after the first device run:**
+  - The status pill's `testID` (`assessment-status-<id>`) moved from the pill's View to its Text. The View carried no text, so neither platform could match "Submitted" on it.
+  - In `take.yaml`, `hideKeyboard` after searching for Sofia is gone. On iOS it taps the screen, which chose her row and closed the list before the flow's own tap. The flow now taps her row and asserts that the picker reads "Student: Sofia Okafor. Change".
+- **The canvas write subflow** is split into `write-right.yaml` and `write-left.yaml`. Maestro parses a swipe's direction when it loads the flow, so `${DIRECTION}` could not be used.
+
+**Verified (2026-10-18):** `canvas-assessments/{open,menu,take,review}` were green on iOS (simulator 328F7D61) and Android (emulator-5554), through `npm run e2e:mobile -- both apps/mobile/.maestro/flows/canvas-assessments`. On both platforms:
+- the canvas drew from swipes; Undo, the eraser and the pen worked, and the work survived leaving and continuing;
+- the KaTeX choices could be tapped;
+- pdf.js drew the PDF in the app;
+- Sofia was refused the PDF.
+

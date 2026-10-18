@@ -19,6 +19,8 @@ export interface PickerOption {
   label: string;
   /** A muted second part, e.g. "with Alex Chen". */
   detail?: string;
+  /** Shown but not choosable (the web's disabled SelectItem): a grade with no questions yet. */
+  disabled?: boolean;
 }
 
 export function OptionPicker({
@@ -127,7 +129,8 @@ export function OptionPicker({
                     <Pressable
                       testID={`${testID}-${option.id}`}
                       accessibilityRole="radio"
-                      accessibilityState={{ checked: selected }}
+                      accessibilityState={{ checked: selected, disabled: Boolean(option.disabled) }}
+                      disabled={option.disabled}
                       onPress={() => {
                         haptics.selection();
                         // The search field goes with the list; on Android its keyboard would stay.
@@ -146,7 +149,10 @@ export function OptionPicker({
                         backgroundColor: pressed ? theme.tokens.muted : 'transparent',
                       })}
                     >
-                      <Text variant="bodyMedium" style={{ flex: 1 }}>
+                      <Text
+                        variant="bodyMedium"
+                        style={{ flex: 1, color: option.disabled ? muted : theme.colors.onSurface }}
+                      >
                         {option.label}
                         {option.detail ? (
                           <Text variant="bodySmall" style={{ color: muted }}>

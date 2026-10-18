@@ -56,6 +56,8 @@ const SETTINGS = {
   payer_state: 'NC',
   payer_postal_code: '27514',
   email_notifications: true,
+  canvas_assessments: false,
+  canvas_assessments_unreviewed: false,
 };
 const LOG: NotificationLogEntry[] = [
   {

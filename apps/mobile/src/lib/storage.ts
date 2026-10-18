@@ -5,6 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
  * organization (which only picks where a person lands -- the API checks membership on every
  * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), and the developer sign-in persona. Never a lesson,
  * a note, an amount or an SSN; and never the query cache.
+ *
+ * One exception, kept apart below (`canvasWork*`): an assessment's handwriting while it is being
+ * taken (Phase 38), as the web keeps it in the browser, so leaving and coming back loses nothing. It
+ * never reaches the server until it is submitted, and it is removed on submit and on discard.
  */
 export const STORAGE_KEYS = {
   server: 'tmi.server',
@@ -39,5 +43,25 @@ export async function writePref(key: Key, value: string | null): Promise<void> {
     else await AsyncStorage.setItem(key, value);
   } catch {
     // A preference that cannot be saved is simply not remembered.
+  }
+}
+
+/** Where an in-progress assessment's work is kept: one key per assessment (ids are unique everywhere). */
+const CANVAS_WORK_PREFIX = 'tmi.canvasWork.';
+
+export async function readCanvasWork(assessmentId: string): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(CANVAS_WORK_PREFIX + assessmentId);
+  } catch {
+    return null;
+  }
+}
+
+export async function writeCanvasWork(assessmentId: string, value: string | null): Promise<void> {
+  try {
+    if (value === null) await AsyncStorage.removeItem(CANVAS_WORK_PREFIX + assessmentId);
+    else await AsyncStorage.setItem(CANVAS_WORK_PREFIX + assessmentId, value);
+  } catch {
+    // Full storage: the work is still in memory until it is submitted.
   }
 }

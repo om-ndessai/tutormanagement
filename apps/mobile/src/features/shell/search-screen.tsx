@@ -8,6 +8,7 @@ import { View } from 'react-native';
 import { ActivityIndicator, List, Searchbar, Surface, Text } from 'react-native-paper';
 
 import { useRefresh } from '@/hooks/use-refresh';
+import { BadgePill } from '@/components/badge-pill';
 import { ListItem } from '@/components/list-item';
 import { Screen } from '@/components/screen';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
@@ -199,6 +200,7 @@ export function SearchScreen() {
               testID={`search-goto-${item.tourId}`}
               title={item.label}
               left={(props) => <List.Icon {...props} icon={item.icon} />}
+              right={item.badge ? () => <BadgePill label={item.badge} /> : undefined}
               onPress={() => go(item.href)}
             />
           ))}

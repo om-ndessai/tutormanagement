@@ -82,6 +82,12 @@ export interface ShellColors {
   keyBg: string;
   soft: string;
   error: string;
+  /**
+   * A choice the reader has selected (Phase 38's assessment): the theme's primary, never the key's
+   * green, which would read as "correct". Defaults to the text colour.
+   */
+  accent?: string;
+  accentBg?: string;
 }
 
 /**
@@ -122,7 +128,7 @@ export function mathShell({
   const scale = Math.min(fontScale, MAX_MATH_SCALE);
   const px = (size: number) => `${Math.round(size * scale * 10) / 10}px`;
   const css = `
-:root{--fg:${colors.fg};--muted:${colors.muted};--border:${colors.border};--key:${colors.key};--key-bg:${colors.keyBg};--soft:${colors.soft};--error:${colors.error};color-scheme:${scheme}}
+:root{--fg:${colors.fg};--muted:${colors.muted};--border:${colors.border};--key:${colors.key};--key-bg:${colors.keyBg};--soft:${colors.soft};--error:${colors.error};--accent:${colors.accent ?? colors.fg};--accent-bg:${colors.accentBg ?? colors.soft};color-scheme:${scheme}}
 html,body{margin:0;padding:0;background:transparent;color:var(--fg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{font-family:-apple-system,system-ui,Roboto,sans-serif;font-size:${px(SIZES.solution)};line-height:1.5;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #q{display:flow-root}
@@ -131,7 +137,9 @@ body{font-family:-apple-system,system-ui,Roboto,sans-serif;font-size:${px(SIZES.
 .choices{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:8px}
 .choice{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:${px(SIZES.choice)}}
 .choice.key{border-color:var(--key);background:var(--key-bg);font-weight:600}
+.choice.sel{border-color:var(--accent);background:var(--accent-bg);font-weight:600}
 .letter{color:var(--muted);min-width:1.1em;font-weight:500}
+.choice.sel .letter{color:var(--accent);font-weight:700}
 .choice .text{flex:1;min-width:0}
 .mark{color:var(--key);font-weight:700}
 .answer{font-size:${px(SIZES.choice)};margin:0 0 12px}

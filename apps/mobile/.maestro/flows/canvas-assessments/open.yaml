@@ -1,0 +1,39 @@
+# Smoke (Phase 38): the Assessment menu on the main path, in seconds. Priya (admin, chmi) opens it
+# from More; the start card shows, and the grades come from the API (Grade 4 has questions). Starts
+# nothing, changes nothing.
+appId: ${APP_ID}
+tags:
+  - smoke
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-assessments
+    centerElement: true
+- tapOn:
+    id: more-nav-assessments
+- extendedWaitUntil:
+    visible:
+      id: assessment-start
+    timeout: 15000
+- tapOn:
+    id: assessment-level
+- extendedWaitUntil:
+    visible:
+      id: assessment-level-NC26.4
+      text: 'Grade 4.*10 questions.*'
+    timeout: 15000

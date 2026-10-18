@@ -73,7 +73,12 @@ export const organizationRoutes = new Hono<AppEnv>()
       const settings = await updateOrganizationSettings(c.env.DB, org.id, input);
 
       // Names what changed, never the TIN itself: the log is read widely.
-      const { email_notifications: notifications, ...details } = input;
+      const {
+        email_notifications: notifications,
+        canvas_assessments: assessments,
+        canvas_assessments_unreviewed: unreviewed,
+        ...details
+      } = input;
       const changes = Object.keys(details).map((key) =>
         key === 'tin' ? 'TIN' : key.replace(/^payer_/, '').replace(/_/g, ' '),
       );
@@ -84,6 +89,14 @@ export const organizationRoutes = new Hono<AppEnv>()
           notifications === undefined
             ? null
             : `Turned ${org.name}'s email notifications ${notifications ? 'on' : 'off'}`,
+          assessments === undefined
+            ? null
+            : `Turned ${org.name}'s Assessment menu (beta) ${assessments ? 'on' : 'off'}`,
+          unreviewed === undefined
+            ? null
+            : unreviewed
+              ? `Let ${org.name}'s assessments use questions not yet reviewed`
+              : `Limited ${org.name}'s assessments to approved questions`,
         ]
           .filter(Boolean)
           .join('; '),

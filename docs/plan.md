@@ -330,3 +330,54 @@ strengths and gaps at once. The organization gets a lead (New → Contacted → 
 Enrolled / Lost) with the full result, and Enrol prefills the existing student form, then a draft
 assessment where NC 2026 is offered. Open for the owner: decisions 1-6 in the plan, including no
 emailed report until a sender exists, and counsel on the children's-privacy notice.
+
+Phase 38: (requested 2026-10-18 by the owner, who asked for it to be built; local build first, release
+after the owner approves)
+The Assessment menu, in beta: answers written on a canvas, and a PDF for the tutor. Plan:
+`docs/canvas-assessment-plan.md`. Each organization's admins switch it on (off by default). Anyone who
+may follow a student's progress starts an assessment for them: up to 10 approved bank questions of a
+grade, one page each, answered by hand on a canvas, with no feedback while working. Pages can be
+revisited and edited, and the work can be submitted at any time. On submit, the Worker writes a PDF
+(the questions, the handwriting as vector strokes, the answer and worked solution for the tutor),
+stored in D1 for now (R2 later). Only the student's tutors and the admins open the PDF (R17); the
+student's audience sees that it was submitted. Web and the app alike (parity, owner 2026-10-18).
+The first, smaller step toward the think-aloud canvas (roadmap AI-13).
+
+Added 2026-10-18 at the owner's request: feature parity on web and the app (now the default rule for
+every phase), multiple-choice questions answered by choosing (with the canvas for working; code marks
+the choice for the tutor), the PDF shown inside the portal and the app (pdf.js) rather than
+downloaded, and an organization flag to try questions not yet reviewed (`canvas_assessments_unreviewed`,
+off by default; the PDF marks them).
+
+Built locally 2026-10-18 (not yet released):
+- Shared `canvas-assessments.ts` (the stroke wire format, `parseStroke`, LaTeX to plain text, the
+  limits); `organizations.canvas_assessments` and the admins' switch on the Organization page.
+- API `routes/canvas-assessments.ts` (levels, list, start, detail, submit, discard, PDF), its
+  repository, and `lib/pdf.ts`, a hand-written PDF writer (standard fonts, vector strokes, deflated
+  pages) with `lib/canvas-assessment-pdf.ts` for the layout. Files in `canvas_assessment_files`.
+- Web `features/canvas-assessments/` (the list and start card, taking it, the canvas); the menu item
+  with its Beta badge. Seed: on in organization A, off in B.
+- R17 in `docs/data-exposure.md`; production SQL in `docs/database.md`, Phase 38. Tests:
+  `canvas-assessments.spec.ts` and the R17 crawl in `exposure.spec.ts`. The full local suite (228)
+  and `npm run smoke -- mobile` (iOS and Android) passed.
+
+Phase 39: (planned 2026-10-18; DELAYED by the owner on 2026-10-18, after Phase 40; needs the owner's
+decisions on consent, plan section "The consent it needs")
+A second PDF for the tutor, with an AI evaluation. Plan: `docs/canvas-assessment-plan.md`. A new task,
+`canvas_assessment.evaluate` (Claude, `child_input`), reads a name-free PDF redrawn from the stored
+strokes, with each question's key and worked solution; it returns a verdict per question, which code
+overrides wherever the answer it read can be checked exactly. It is drawn into "Answers with AI
+evaluation", which only the student's tutors and the admins read. Because the child's handwriting goes
+to a model, it brings the smallest slice of F7: a `consents` table (an admin records a guardian's signed
+form; a guardian can withdraw), checked by `runAi` for every `child_input` task.
+
+Phase 40: (requested 2026-10-18; queued: built once Phase 38 is fully released; web and the app)
+The tutor reviews an assessment online, and organizations set how many questions one has. Plan:
+`docs/canvas-assessment-plan.md`, "Phase 40". On a submitted assessment the student's tutor (or an
+admin) opens a review screen showing the submitted PDF's pages and marks it up in place: a red pen over
+any page, a note per question and an overall comment; no scoring for now (owner, 2026-10-18 -- a later
+phase). A draft saves as they go; "Save as reviewed" writes a third PDF, the reviewed assessment (the
+comment, then the submitted pages with the tutor's ink and notes; no answer key), marks the assessment
+reviewed, and lets the student, their parents, their tutors and the admins all read it in the portal
+and the app. Organizations' admins also set the number of questions an assessment draws (1-25, default
+10).

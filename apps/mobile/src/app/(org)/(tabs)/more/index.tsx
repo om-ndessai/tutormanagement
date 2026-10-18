@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 import { List, Surface, Text } from 'react-native-paper';
 
+import { BadgePill } from '@/components/badge-pill';
 import { ListItem } from '@/components/list-item';
 import { Screen } from '@/components/screen';
 import { useNavItems } from '@/features/shell/nav-items';
@@ -36,7 +37,12 @@ export default function MoreScreen() {
               testID={`more-${item.tourId}`}
               title={item.label}
               left={(props) => <List.Icon {...props} icon={item.icon} />}
-              right={(props) => <List.Icon {...props} icon="chevron-right" />}
+              right={(props) => (
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
+                  {item.badge ? <BadgePill label={item.badge} testID={`more-${item.tourId}-badge`} /> : null}
+                  <List.Icon {...props} icon="chevron-right" />
+                </View>
+              )}
               onPress={() => router.push(item.href)}
             />
           ))}
