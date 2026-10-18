@@ -349,7 +349,9 @@ the choice for the tutor), the PDF shown inside the portal and the app (pdf.js) 
 downloaded, and an organization flag to try questions not yet reviewed (`canvas_assessments_unreviewed`,
 off by default; the PDF marks them).
 
-Built locally 2026-10-18 (not yet released):
+Released 2026-10-18 (commit 37bdad1; production backed up to
+`~/tmi-portal-backups/tutoring-db-20261018-102402-pre-phase38.sql`, Phase 38 SQL applied, both Workers
+deployed; both switches off in every organization until its admins turn them on):
 - Shared `canvas-assessments.ts` (the stroke wire format, `parseStroke`, LaTeX to plain text, the
   limits); `organizations.canvas_assessments` and the admins' switch on the Organization page.
 - API `routes/canvas-assessments.ts` (levels, list, start, detail, submit, discard, PDF), its
@@ -371,7 +373,7 @@ evaluation", which only the student's tutors and the admins read. Because the ch
 to a model, it brings the smallest slice of F7: a `consents` table (an admin records a guardian's signed
 form; a guardian can withdraw), checked by `runAi` for every `child_input` task.
 
-Phase 40: (requested 2026-10-18; queued: built once Phase 38 is fully released; web and the app)
+Phase 40: (requested 2026-10-18; next -- Phase 38 is released; web and the app)
 The tutor reviews an assessment online, and organizations set how many questions one has. Plan:
 `docs/canvas-assessment-plan.md`, "Phase 40". On a submitted assessment the student's tutor (or an
 admin) opens a review screen showing the submitted PDF's pages and marks it up in place: a red pen over
