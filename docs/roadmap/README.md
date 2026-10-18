@@ -8,7 +8,8 @@ Nothing here is scheduled. Features are chosen by ID and become phases in
 | --- | --- |
 | [feature-plans.md](feature-plans.md) | What comparable products do that this portal does not, and a build plan for each: 72 features, each with an ID |
 | [canvas-gap-analysis.md](canvas-gap-analysis.md) | How the portal compares with Canvas, capability by capability, and a staged plan for compatibility with it: 9 more features (C1–C9) |
-| [future-ai.md](future-ai.md) | Automated homework evaluation, live handwriting recognition, and 10 other AI features, with architectures, costs, safeguards, and what running them on Cloudflare takes |
+| [future-ai.md](future-ai.md) | Automated homework evaluation, live handwriting recognition, the think-aloud canvas, and 10 other AI features, with architectures, costs, safeguards, and what running them on Cloudflare takes |
+| [think-aloud-canvas.md](think-aloud-canvas.md) | The research behind AI-13 (2026-10-18): a canvas where the student's working is their thinking aloud, answered on the canvas with approved hints. No audio. |
 
 ---
 
@@ -241,6 +242,7 @@ V is vision.
 | [AI-10](future-ai.md#ai-10--smarter-operations-no-ai-provider) | Smarter operations (no AI provider) | O | M | M | S3 or G6 | 4 |
 | [AI-11](future-ai.md#ai-11--explain-your-thinking-recordings) | Explain-your-thinking recordings | S T | L | L | AI-7, F2, F7, F11 | V |
 | [AI-12](future-ai.md#ai-12--pre-lesson-brief) | Pre-lesson brief | T | H | S | F11, L6, L7 (L1, L8, L14, AI-6 help) | 3 |
+| [AI-13](future-ai.md#ai-13--the-think-aloud-canvas) | The think-aloud canvas | S T | H | XL | Stage 1: none in lessons (it brings its own canvas); F1 to practise at home. Reading the ink: F7, F11 | 4 |
 
 ### What each wave achieves
 
@@ -249,7 +251,7 @@ V is vision.
 | 1 | Quick wins on today's data | 22 | Mostly small, and no new infrastructure. It acts on data the portal already holds: people's available hours, lesson ratings, and when each topic was last rated. It adds backups, compliance records for tutors, maths rendering, and a forecast of each student's finish date. |
 | 2 | Run the business in the portal | 22 | Email and notifications (after Phase 20), attendance and cancellations, reminders, statements and online payment, enquiries, messages to families, the lesson cockpit, an installable app. This is where the table-stakes gap closes. |
 | 3 | Learning between lessons | 19 | Consent, student sign-in and files, then homework, reports, review of mastered topics, messaging, the school calendar, and the first tutor-facing AI: the pre-lesson brief, dictated notes, drafted digests. |
-| 4 | Practice, groups and growth | 18 | Practice sets and diagnostics, group classes, packages, onboarding, matching, staff roles, adaptive practice. |
+| 4 | Practice, groups and growth | 19 | Practice sets and diagnostics, group classes, packages, onboarding, matching, staff roles, adaptive practice, the think-aloud canvas. |
 | V | Vision | 12 | Video lessons and the whiteboard, automated homework evaluation, live handwriting recognition, the student study helper, partner-school connections. |
 
 ---

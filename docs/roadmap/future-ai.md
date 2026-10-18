@@ -25,9 +25,13 @@ touch. Ordered by evidence first and risk second:
    - Line-by-line checking of a student's ink (AI-7, stage 1). It uses no language model,
      but the handwriting goes to a recognition service, so it needs consent (F7) like
      everything after it.
+   - The think-aloud canvas with approved hints on request (AI-13, stage 1). The hints are
+     written by the bank's pipeline and approved by a person, and nothing the child writes is
+     sent anywhere.
 4. **Children's work with an AI in the loop, behind consent.** Homework evaluation (AI-1),
-   misconception suggestions (AI-6), adaptive practice (AI-4). F7 must exist first. Every
-   result is reviewed by a tutor until measured accuracy says otherwise.
+   misconception suggestions (AI-6), adaptive practice (AI-4), and the think-aloud canvas
+   reading each line (AI-13, stage 2). F7 must exist first. Every result is reviewed by a
+   tutor until measured accuracy says otherwise.
 5. **A child talking to an AI.** The study helper (AI-9) and explained recordings (AI-11).
    Last, piloted with a few consenting families, fully visible to guardians and tutors.
 
@@ -56,6 +60,7 @@ produces also needs **F7 consent**.
 | AI-10 | Smarter operations: schedule optimiser, churn warning | proven, *no AI provider* | M | $0 |
 | AI-11 | Explain-your-thinking recordings | emerging | L | low |
 | AI-12 | Pre-lesson brief for the tutor | proven | S | within free tiers |
+| AI-13 | The think-aloud canvas: feedback and approved hints on the student's own working | proven (stage 1), emerging | XL | $0 for stage 1; about 1 cent a half hour once it reads |
 
 ### AI-1 · Automated homework evaluation
 
@@ -182,7 +187,9 @@ an L.
 handwriting, one step per line. As each line is finished the portal recognises it and checks
 that it follows from the line before. It marks the first step that does not, like Mathspace
 does, and like Apple's Math Notes does for calculations. The tutor can watch live from their
-own screen, in the room or online.
+own screen, in the room or online. The think-aloud canvas (AI-13) builds on this canvas: it
+answers the working with approved hints, and checks each line against the question's own key
+values.
 
 **The design.**
 
@@ -569,11 +576,159 @@ writes only the connecting sentences and the questions; the facts are listed, no
 **Needs.** F11, L6, L7; better with L1, L8, L14, AI-6. **Maturity.** Proven pattern. **Cost.** Within
 the Workers AI free allowance: one short generation per lesson. **Size.** S.
 
+### AI-13 · The think-aloud canvas
+
+**The idea.** The student thinks out loud in ink.
+- **The student.** Given a question from the bank, they work it on a canvas, one step per line.
+- **The app.** It answers on the canvas: a mark beside a line, a hint, or a prompt to explain a
+  step. There is no microphone and no spoken feedback, and it never gives the answer.
+- **What it builds on.** AI-7's design for the canvas, and the question bank (Phase 36).
+- **The research.** [think-aloud-canvas.md](think-aloud-canvas.md), including why taking audio
+  out makes it much more feasible.
+
+**Why.**
+- **Feedback on each step is what works.** In VanLehn's review, tutoring systems that respond to
+  each step came close to human tutors: an effect of 0.76, against 0.79. Those that respond only
+  to the final answer reached 0.31.
+- **Explaining a step deepens learning, even by choosing a reason.** Students who explained their
+  steps by picking a reason from a glossary learned with more understanding (Aleven & Koedinger,
+  2002). So an eight-year-old need not write or say a sentence.
+- **A flag is enough.** Marking an error without explaining it, and leaving the student in
+  charge, did not slow learning compared with immediate correction (Corbett & Anderson).
+
+**Three rules shape it.**
+1. **The model reads, code judges, and a person wrote the words.**
+   - **A model only transcribes a line.**
+   - **Code decides whether the line is right.**
+   - **Every word the student sees was approved with the question.**
+2. **Unasked, it only flags what code has checked.** Hints wait for the student to ask.
+3. **It shows what it read.** Every flag says "I read: …" and offers "That's not what I wrote".
+   A misreading is then never taken for a mistake, and every one is counted.
+
+**The design.**
+
+```mermaid
+flowchart LR
+  subgraph Tablet [Student's tablet: web or app]
+    C[Canvas<br/>one step per line] --> P{Pen paused at<br/>a line's end,<br/>or Check tapped}
+    P --> L[That line's image,<br/>cropped to its ink]
+    H[Hint tapped] --> N[The question's<br/>next approved hint]
+    O[On the canvas:<br/>a mark in the margin,<br/>what was read,<br/>a hint card]
+  end
+  L --> W[Worker: runAi]
+  W --> R[Reader, blind:<br/>no answer,<br/>no solution]
+  R -- the line as written --> W
+  B[(Bank: key values,<br/>known wrong answers,<br/>approved hints)] --> W
+  W -- a verdict and<br/>a hint's id --> O
+```
+
+**How each part works.**
+- **The canvas.** AI-7's design: Pointer Events and perfect-freehand on the web,
+  `@shopify/react-native-skia` in the app.
+  - **Lines.** Faint rules guide one step per line, and the app finds each line from the gaps in
+    the ink.
+  - **Marks.** The app always knows exactly where a line is, so a mark lands on it without asking
+    a model for coordinates.
+  - **Web and app.** Without audio, the two are equal.
+- **Reading one line at a time.**
+  - **What is sent.** When the pen pauses at the end of a line, or the student taps Check, the
+    app sends that line's image. It never sends the strokes' timing or pressure.
+  - **Blind.** The reader never sees the answer or the solution, so it cannot "correct" a slip
+    into the expected answer. That is the failure a 2026 study of handwritten grading found.
+  - **The result.** The line as written, or "unreadable". An unreadable line is never flagged.
+  - **Which reader.** The stage 0 spike chooses: Claude Haiku 5.5, Mathpix, or a Workers AI vision
+    model. Recognition on the device (MyScript's native SDK, or AI-7 stage 3) is the long-term
+    aim, so the ink never leaves the tablet.
+- **Judging, in the Worker.**
+  - **Arithmetic.** `evaluateExact` (shared) evaluates each side of a line exactly.
+  - **Equations.** The question's own solution is put in for the letter. A line it no longer
+    satisfies has gone wrong.
+  - **Known slips.** A value equal to one of the question's known wrong answers names the
+    misconception behind it.
+  - **Secrets.** The answer, key values and wrong answers stay in the Worker and never reach the
+    tablet, as [Checking the maths](#checking-the-maths) requires for practice.
+  - **What it cannot judge.** Words, number lines, area models and shapes get no verdict. 58% of
+    the bank (5,658 of 9,712 questions) has an exact `compute` to check against.
+- **What the student sees.**
+  - **A "?" in the margin** of a line code found wrong, once the pen has paused.
+    - **Tapped**, it says "I read: …", with *Let me fix it*, *That's not what I wrote* and *Hint*.
+    - **Only as maths.** The reading is shown only when it parses as maths, so no sentence a
+      model wrote reaches the student.
+  - **Hints only when asked.**
+    - **The ladder.** Each Hint climbs the question's ladder.
+    - **Misconceptions.** When the wrong value is a known one, its own hint.
+    - **A long stall.** It makes the Hint button pulse, nothing more.
+  - **At most one prompt to explain per question.** "Which reason fits this step?", answered by
+    tapping one of a few approved reasons.
+  - **Ticks on correct lines**, only if the tutor turns them on, because instant marking can
+    become a crutch (AI-7).
+  - **The final answer**, marked by `checkAnswer`, never by a model.
+- **Hint ladders in the bank.** Each question gains three things, approved with it:
+  - **Two to four graded hints.** Name the idea, ask a leading question, then show a worked step
+    on a *similar* example.
+  - **Key values.** The exact results a correct solution passes through.
+  - **Known wrong answers.** Each has a hint, taken from the question's wrong choices or from
+    common slips.
+
+  How they are made:
+  - **Written** by the bank's pipeline (Sonnet).
+  - **Linted by code.** No hint contains the key or its choice. Every key value evaluates
+    exactly, and the last equals `compute`.
+  - **Checked blind by Opus** for whether a hint gives the answer away.
+  - **Approved by a person.** An edit clears the approval, as it does for a question.
+- **The tutor's view.**
+  - **In a lesson.** The tutor sits beside the student, or watches from their own device through
+    AI-7's relay.
+  - **Afterwards.** Which hints were used and which lines were flagged, so progress can tell a
+    question solved alone from one solved with help.
+
+**Staged path.**
+
+| Stage | Adds | Leaves the tablet |
+| --- | --- | --- |
+| 0 | **The spike, with no child's data.** Staff write about 200 lines on an iPad: right steps, slips, half-finished and messy lines, column arithmetic, stacked fractions. Four readers are compared, and ladders for two standards are written and reviewed. | Adults' handwriting only |
+| 1 | **The canvas with approved hints on request.** Ladders in the bank, prompts to explain, the final answer checked by code. No AI at run time. | Nothing, unless the working is saved |
+| 2 | **The canvas reads.** Line reading, judging in the Worker, the "?" flag with "I read: …", misconception hints. In lessons first. | One line's image at a time |
+| 3 | **Practising alone.** For a signed-in student, with a summary for the tutor. | The same |
+| 4 | *The owner's call:* a model's view of what code cannot check (words and drawings), shown to the tutor first. | The same |
+
+**Cost.**
+- **Reading a line.** With Haiku 5.5, about 650 tokens in and 50 out: about $0.0001. That is
+  **about 1 cent a half hour** at 100 lines. With Sonnet 5.5 or Mathpix, about 20 cents.
+- **Writing ladders for the whole bank.** About $150 through the API, or half that with batch
+  processing. Through the agent pipeline that wrote the bank, there is no API spend.
+- **Stage 1.** Costs nothing to run.
+
+**Unknowns to measure first.** All in stage 0:
+- **Reading children's working.** Nothing published measures it. Models do worst on the work of
+  students who struggle, and at assessing errors (DrawEduMath, 2026). The research proposes pass
+  marks.
+- **Column arithmetic and stacked fractions.** They do not fit on one line.
+- **Pen or finger.** Writing with a finger on a phone is likely too rough to read, so phones may
+  stay at stage 1.
+- **Speed.** Under 2 seconds from pause to flag, on the tablets students use.
+- **Review time.** Ladders add to the bank's review queue. Standards could be done as they are
+  first used.
+
+**Needs.**
+- **Stage 1.** Nothing new for use in lessons. It brings its own canvas, which V2 and AI-7 later
+  share, and the bank is built (Phase 36).
+  - **F1** only for practice at home.
+  - **Saving the working** is F7's whiteboard case.
+- **Stage 2.**
+  - **F7**, with an `ai_processing` consent.
+  - **F11** is built, but `runAi` must accept an image, and `AI_MODELS` must include the chosen
+    reader.
+- **Stage 3.** F1.
+
+**Maturity.** Stage 1 is proven; reading children's working is emerging. **Size.** XL, of
+which stage 1 is an L.
+
 ---
 
 ## Checking the maths
 
-Every feature that marks maths (L3, L4, AI-1, AI-7) depends on one question: *is this
+Every feature that marks maths (L3, L4, AI-1, AI-7, AI-13) depends on one question: *is this
 expression, or this step, mathematically right?* A computer algebra system answers it,
 never a language model.
 
@@ -593,7 +748,7 @@ the Worker. So the engine runs in a browser, and the Worker at most compares num
 | --- | --- | --- |
 | The tutor's browser | Reviewing homework (AI-1 stages 1–2): the engine re-checks as the tutor fixes a transcript | The tutor may see the answer key |
 | The student's browser | Live step checking (AI-7), where each line is compared with the line before | Comparing a student's own consecutive lines reveals no answer key |
-| The Worker, by fingerprint | Practice and diagnostics (L3, L4), where the answer must stay secret | Only numbers are compared on the server: see below |
+| The Worker, by fingerprint | Practice and diagnostics (L3, L4), and the think-aloud canvas's line checks (AI-13), where the answer must stay secret | Only numbers are compared on the server: see below |
 
 **Fingerprints: marking without revealing the answer.**
 1. When a tutor saves an item, their browser evaluates the correct answer at, say, eight random
@@ -653,9 +808,17 @@ daily limit makes calls fail until 00:00 UTC; on Paid the overage is billed inst
   children.
 - **Summaries and drafting.** `gpt-oss-120b` handles about 28 long drafts a day free. Short
   briefs (AI-12) and digest paragraphs (AI-3) are far smaller.
-- **Vision.** Llama 4 Scout, Gemma 3 and Mistral Small 3.1 all read images. None has been
-  tested on handwritten maths, which the AI-1 head-to-head must settle. There is no dedicated
-  OCR model.
+- **Vision.** As of 18 October 2026, these models read images:
+  - Llama 4 Scout
+  - Llama 3.2 Vision
+  - Mistral Small 3.1
+  - Qwen 3.8
+  - Kimi K2.6
+  - GLM-5.3 Flash
+  - Moondream 3.1, which also lists OCR and can point at things
+
+  None has been tested on handwritten maths. The AI-1 head-to-head and AI-13's spike must
+  settle that. There is no dedicated OCR model.
 - **Cloudflare's terms.** Cloudflare states that customer content is not used to train models.
   Since July 2026 some large models, and new frontier models at launch, are paid-plan only.
 
@@ -800,6 +963,20 @@ features specifically:
 - **Copyright and reusable content.**
   - [AoPS terms](https://artofproblemsolving.com/company/tos)
   - [OpenStax Prealgebra 2e](https://openstax.org/details/books/prealgebra-2e)
+
+**The think-aloud canvas (AI-13).** The full list is in
+[think-aloud-canvas.md](think-aloud-canvas.md#sources).
+- **Reading handwritten maths.**
+  - [Grading handwritten maths with vision models (2026)](https://arxiv.org/abs/2605.19043)
+  - [OmniHandwritingOCR (2026)](https://arxiv.org/abs/2608.18586)
+  - [DrawEduMath's 2026 follow-up](https://arxiv.org/abs/2603.00925)
+- **Feedback on steps.**
+  - [VanLehn 2011](https://marginalrevolution.com/marginalrevolution/2013/10/how-good-are-computers-as-tutors.html)
+  - [Corbett & Anderson](https://escholarship.org/uc/item/1vt1j669)
+  - [Aleven & Koedinger 2002](https://serc.carleton.edu/resources/40402.html)
+- **Recognition on the device.**
+  - [PencilKit handwriting recognition, WWDC26](https://developer.apple.com/videos/play/wwdc2026/203)
+  - [MyScript platforms](https://developer.myscript.com/doc/interactive-ink/4.5/overview/platforms/)
 
 **Vendor terms for children's data.**
 - [Gemini API terms](https://ai.google.dev/gemini-api/terms)
