@@ -95,12 +95,18 @@ export async function listQuestions(
     where.push('t.level_id = ?');
     binds.push(filter.level_id);
   }
+  // A status alone (the review queue) walks questions_status_idx oldest first, so D1 reads only the
+  // page asked for; catalog order would read and sort every question of that status on each call.
+  const order =
+    filter.status && !filter.topic_id && !filter.level_id
+      ? 'q.created_at'
+      : 'l.stage, t.number, q.difficulty, q.created_at';
   const result = await db
     .prepare(
       // org-scope: the platform's question bank reads the platform catalog.
       `${SELECT_QUESTION}
        ${where.length ? `WHERE ${where.join(' AND ')}` : ''}
-       ORDER BY l.stage, t.number, q.difficulty, q.created_at
+       ORDER BY ${order}
        LIMIT ?`,
     )
     .bind(...binds, filter.limit)

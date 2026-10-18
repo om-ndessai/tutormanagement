@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeftIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { PageHeader } from '@/components/layout/page-header';
-import { useQuestionAction, useQuestionCoverage, useQuestions } from './api';
+import { QUESTION_PAGE, useQuestionAction, useQuestionCoverage, useQuestions } from './api';
 import { QuestionCard, errorMessage } from './question-card';
 
 /**
@@ -47,6 +47,20 @@ export function ReviewPage() {
   // The queue loads a page at a time; the count is the whole bank's.
   const waiting = coverage.data?.data.reduce((sum, level) => sum + level.topics.reduce((n, t) => n + t.checked, 0), 0);
   const left = (waiting ?? items.length) - skipped.length;
+
+  // Approvals take questions out of the loaded page without a refetch (api.ts); ask for the next
+  // page only when this one runs low and more are waiting -- once per page, so a page of skipped
+  // questions does not refetch in a loop.
+  const unskipped = items.filter((q) => !skipped.includes(q.id)).length;
+  const askedFor = useRef<string | null>(null);
+  useEffect(() => {
+    if (!queue.isSuccess || queue.isFetching || unskipped >= 10 || items.length >= (waiting ?? 0)) return;
+    if (items.length >= QUESTION_PAGE) return;
+    const page = items.map((q) => q.id).join();
+    if (askedFor.current === page) return;
+    askedFor.current = page;
+    void queue.refetch();
+  }, [queue, unskipped, items, waiting]);
 
   return (
     <>

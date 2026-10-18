@@ -242,9 +242,17 @@ test.describe('the question bank in the console', () => {
     // The review queue, by keyboard.
     await platform.goto('/platform/questions/review');
     const first = await platform.getByTestId('question-stem').textContent();
+    // An approval writes into the loaded queue and counts; it never re-reads them, since each
+    // re-read scans the whole bank in D1 (the account's daily read allowance is shared).
+    const rereads: string[] = [];
+    platform.on('request', (request) => {
+      const url = new URL(request.url());
+      if (request.method() === 'GET' && url.pathname.startsWith('/api/platform/questions')) rereads.push(url.pathname + url.search);
+    });
     await platform.keyboard.press('a');
     await expect(platform.getByText('Approved.')).toBeVisible();
     await expect(platform.getByTestId('question-stem')).not.toHaveText(first ?? '');
+    expect(rereads, 'an approval re-read the bank').toEqual([]);
     await platform.keyboard.press('n');
     await expect(platform.getByTestId('review-position')).toContainText('1 skipped');
 

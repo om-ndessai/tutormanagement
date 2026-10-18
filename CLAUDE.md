@@ -577,7 +577,10 @@ deleted. Never loosen a check to get a question through: fix the question. Produ
 the bank's source; `db/questions.sql` (local and demo only) is generated from the exported JSON and
 never hand-edited. Its first writing (2026-10-17) was done by Claude Code agents running the same
 pipeline outside the Worker, and reached production as `checked` (`generate-questions.mjs
---production`), never approved: approving is a person's act.
+--production`), never approved: approving is a person's act. **Reviewing must not re-read the bank:**
+its coverage and lists scan every question in D1, so an approval writes into the loaded caches and
+the queue pages by `questions_status_idx` -- refetching after each approval would spend the
+account's daily reads in one session (`docs/ai-platform-plan.md`, "Reads").
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

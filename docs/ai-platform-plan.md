@@ -166,8 +166,17 @@ maths in notes, stays a separate roadmap item).
 - **Question bank**: coverage by grade and strand (approved / checked / draft / needs a figure),
   "Draft questions" for chosen standards, and the review queue.
 
-The mobile app's console gets nothing: authoring is a desk job. A row in `docs/mobile/parity.md`
-says so ("web only").
+The mobile app's console reviews (owner, 2026-10-17, design #54 in `docs/mobile/build-log.md`): the
+bank's coverage, the review queue and a standard's questions, with Approve, Retire and Restore.
+Writing, solving, editing and the AI page stay on the web, where authoring belongs.
+
+**Reads.** Coverage and a status's list each read every question of the bank in D1, and the bank
+is meant to reach about 10,000 questions; the account's 5 M rows a day are shared with every
+organization. So an approval, a retirement or a restore writes its answer into the caches already
+loaded (`useApplyQuestion` on the web, the same on the app) rather than refetching them, the review
+queue reads a page by `questions_status_idx` (oldest first) and asks for the next only when the
+loaded one runs low, and the bank's queries are not refetched on focus for a minute.
+`question-bank.spec.ts` fails if an approval re-reads anything.
 
 ## Data
 
