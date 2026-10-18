@@ -35,7 +35,8 @@ notifications (32), tutoring locations with an in-app reminder (33), curricula, 
 Beast Academy alone, read through each organization's own list (34), North Carolina's
 standards in both editions, with each organization's admins choosing what it offers (35), and
 the AI layer with the question bank it writes, in the platform console (36). Phase 38, the
-Assessment menu in beta (answers written on a canvas, a PDF for the tutor), is built ahead of 37.
+Assessment menu in beta (answers written on a canvas, a PDF for the tutor), and Phase 40, the tutor's
+review of it online, are built ahead of 37.
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
