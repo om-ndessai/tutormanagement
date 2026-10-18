@@ -155,6 +155,19 @@ flagged were rewritten and solved again. The `checked` result went into `db/ques
 by `generate-questions.mjs --production`, into production's bank to await review
 (`docs/database.md`, Phase 36).
 
+**The second writing (2026-10-17/18)**, the same way, brought the bank to about 100 per standard
+(9,700 `checked` on 98 standards, 98 to 105 each) for the adaptive test, which needs many questions
+per standard so that a child rarely meets the same one twice. Each writer took one standard and
+wrote 90 (30 per difficulty) across every skill its summary names, against the stems already kept.
+Three further checks came out of it and were applied to the whole bank:
+- **The key must not stand out by length.** On the statistics standards the correct option was the
+  longest in up to 77% of questions, so the longest-sounding answer scored. Those wrong options were
+  rewritten so the key's length rank is spread evenly, and solved blind again.
+- **No option is named by its position** ("the first statement") in a stem or solution: options are
+  shown shuffled. Solutions only, so no new solve was needed.
+- **A standard deviation is defined in the stem** (divide by n) wherever n − 1 would change the
+  answer, and a congruence question offers exactly one valid rule "using only the facts given".
+
 ### Maths on screen
 Questions need fractions, exponents and symbols. KaTeX (bundled, not from a CDN) renders `$...$` in
 the console's review screen and in Phase 37's test page. The rest of the portal is unchanged (F6,

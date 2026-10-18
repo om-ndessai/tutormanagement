@@ -314,6 +314,8 @@ Built 2026-10-17 (`docs/ai-platform-plan.md`):
 - The first writing, 2026-10-17, without the API key: Claude Code ran the same pipeline (Sonnet
   writes, `lintQuestion`, Opus solves blind) over all 98 standards, 9 questions each; what passed
   is `checked` in the repository and in production's bank, waiting for a platform admin's review.
+- The second writing, 2026-10-17/18, the same way: 90 more per standard, so the bank holds 9,700
+  `checked` (98 to 105 per standard) plus the 12 approved fixtures (`docs/ai-platform-plan.md`).
 - Not built: Workers AI as a provider (its local binding needs a Cloudflare login); a test of the
   consent refusal through a real task (no `child_input` task exists yet -- the first one adds it).
 - Production SQL: `docs/database.md`, Phase 36. Writing questions needs `ANTHROPIC_API_KEY` set on

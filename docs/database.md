@@ -699,6 +699,10 @@ Then the Anthropic key on both production Workers (the owner's): `npx wrangler s
 ANTHROPIC_API_KEY` and `npx wrangler secret put ANTHROPIC_API_KEY --env tutoring`. Until it is set,
 writing questions answers 503 `not_configured` and logs a `provider_error` run (`no_api_key`).
 
+The second writing (2026-10-17/18, about 100 per standard, 9,700 `checked`) loads the same way:
+the file holds every `checked` question, and `ON CONFLICT (id) DO NOTHING` leaves the ones already
+in production -- including any approved or retired since -- exactly as they are.
+
 **The bank's first writing (2026-10-17) was done without the key**, by Claude Code: Claude Sonnet
 agents wrote 9 questions per standard (3 at each difficulty) from the catalog's own summaries,
 `lintQuestion` checked them, Claude Opus agents solved them blind (choices shuffled, no key), and
