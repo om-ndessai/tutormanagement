@@ -1,0 +1,126 @@
+# Review, one checked question at a time (#54). Nav opens "Review N checked" from the bank: the card
+# reads aloud in order, its checks say what passed, the solver's working opens. Skip, Approve and
+# Retire (after its confirm) each move on and count down "N left" -- from the caches, with no
+# re-read of the queue. The API then counts two fewer waiting and one more approved, the bank agrees
+# on return, and the console's Activity lists both actions. Uses up two checked questions; the runner
+# resets the database before and after (no API puts a question back to checked).
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runScript: ../../scripts/question-bank-counts.js
+- evalScript: ${output.startWaiting = output.waiting; output.startApproved = output.approved}
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: platform-org-chmi
+    timeout: 30000
+- tapOn: 'Questions'
+- extendedWaitUntil:
+    visible:
+      id: question-bank-review
+      text: 'Review ${output.startWaiting} checked'
+    timeout: 20000
+- tapOn:
+    id: question-bank-review
+- extendedWaitUntil:
+    visible:
+      id: screen-question-review
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: question-bank-left
+      text: '${output.startWaiting} left'
+    timeout: 20000
+- assertVisible:
+    id: question-bank-position
+- assertVisible:
+    id: 'question-bank-body-.*'
+    text: 'Question\. .+ Solution\. .+'
+- extendedWaitUntil:
+    visible:
+      id: question-bank-approve
+      enabled: true
+    timeout: 15000
+- takeScreenshot: question-bank-review
+- scrollUntilVisible:
+    element: 'Passed: Code checks passed.*'
+    centerElement: true
+- scrollUntilVisible:
+    element: 'Passed: Solved blind: .*, which matches\.'
+    centerElement: true
+- scrollUntilVisible:
+    element:
+      id: 'question-bank-work-toggle-.*'
+    centerElement: true
+- tapOn:
+    id: 'question-bank-work-toggle-.*'
+- extendedWaitUntil:
+    visible:
+      id: 'question-bank-work-[0-9a-f]{8}-.*'
+    timeout: 5000
+- takeScreenshot: question-bank-review-working
+# Skip.
+- tapOn:
+    id: question-bank-skip
+- extendedWaitUntil:
+    visible:
+      id: question-bank-left
+      text: '${output.startWaiting - 1} left, 1 skipped'
+    timeout: 10000
+# Approve.
+- extendedWaitUntil:
+    visible:
+      id: question-bank-approve
+      enabled: true
+    timeout: 15000
+- tapOn:
+    id: question-bank-approve
+- extendedWaitUntil:
+    visible:
+      id: question-bank-left
+      text: '${output.startWaiting - 2} left, 1 skipped'
+    timeout: 15000
+# Retire, after its confirm.
+- extendedWaitUntil:
+    visible:
+      id: question-bank-retire
+      enabled: true
+    timeout: 15000
+- tapOn:
+    id: question-bank-retire
+- extendedWaitUntil:
+    visible: 'Retire this question\?'
+    timeout: 5000
+- runFlow: ../../subflows/question-bank/confirm-retire.yaml
+- extendedWaitUntil:
+    visible:
+      id: question-bank-left
+      text: '${output.startWaiting - 3} left, 1 skipped'
+    timeout: 15000
+- assertNotVisible:
+    id: question-bank-error
+# The server agrees: two fewer waiting (approved, retired), one more approved.
+- runScript: ../../scripts/question-bank-counts.js
+- assertTrue: ${output.waiting == output.startWaiting - 2}
+- assertTrue: ${output.approved == output.startApproved + 1}
+# And so does the bank, on return.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: question-bank-review
+      text: 'Review ${output.waiting} checked'
+    timeout: 15000
+- assertVisible:
+    id: stat-approved
+    text: 'Approved: ${output.approved}'
+# The console's Activity: what happened, never the question's words.
+- tapOn: 'Activity'
+- extendedWaitUntil:
+    visible: '.*Nav Dessai approved a question on .*'
+    timeout: 20000
+- assertVisible: '.*Nav Dessai retired a question on .*'

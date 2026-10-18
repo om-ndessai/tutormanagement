@@ -3,6 +3,7 @@ ios
 android
 .expo
 src/theme/palettes.generated.ts
+src/features/question-bank/katex-css.generated.ts
 package-lock.json
 *.md
 assets

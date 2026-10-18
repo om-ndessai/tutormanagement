@@ -1,5 +1,6 @@
 # R14: an organization's admin is nobody in the console. Priya (admin of chmi): a deep link to
-# /platform lands her back in her organization, and the account sheet offers no way in.
+# /platform -- or to its question bank or Review (#54) -- lands her back in her organization, and the
+# account sheet offers no way in.
 appId: ${APP_ID}
 tags:
   - exposure
@@ -24,6 +25,30 @@ tags:
 - assertNotVisible:
     id: screen-platform
 - assertNotVisible: 'New organization'
+# The question bank (#54): its tab and its Review, by link, land on Home too.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://platform/questions'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: screen-platform-questions
+- assertNotVisible: 'Review [0-9]+ checked'
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://question-review'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: screen-question-review
+- assertNotVisible:
+    id: question-bank-approve
 - tapOn:
     id: account-button
 - extendedWaitUntil:

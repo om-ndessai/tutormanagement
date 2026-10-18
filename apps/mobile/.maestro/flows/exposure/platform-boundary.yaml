@@ -1,7 +1,8 @@
 # The platform console's boundary (R14). Nav, a platform admin in no organization: the console's
-# tabs are organizations, admins, people (look-up by email) and its own activity -- no Sessions,
-# Schedule, Progress or Billing. Its organization list and an organization's page show the
-# organization and its admins (Priya), never its students, tutors, lessons or money; a link into an
+# tabs are organizations, the question bank, admins, people (look-up by email) and its own activity --
+# no Sessions, Schedule, Progress or Billing. Its organization list and an organization's page show
+# the organization and its admins (Priya), never its students, tutors, lessons or money; the question
+# bank (#54: the tab, a standard, Review) is reference data with none of them either. A link into an
 # organization's lessons or a person's record leaves him on the console. Priya, an organization's
 # admin, is offered no way into the console, not even from Search.
 appId: ${APP_ID}
@@ -68,6 +69,49 @@ tags:
     id: screen-person
 - runFlow: ../../subflows/exposure/no-org-records.yaml
 - takeScreenshot: exposure-console-links
+# The question bank (#54): platform reference data -- no person, lesson or money of any
+# organization on its tab, a standard's questions or Review.
+- tapOn: 'Questions'
+- extendedWaitUntil:
+    visible:
+      id: question-bank-review
+    timeout: 20000
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- tapOn:
+    id: question-bank-level-NC26.4
+- scrollUntilVisible:
+    element:
+      id: question-bank-standard-NC26.4.ANR.1
+    centerElement: true
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- tapOn:
+    id: question-bank-standard-NC26.4.ANR.1
+- extendedWaitUntil:
+    visible:
+      id: 'question-bank-card-.*'
+    timeout: 20000
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- scroll
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- runFlow: ../../subflows/go-back.yaml
+- scrollUntilVisible:
+    element:
+      id: question-bank-review
+    direction: UP
+- tapOn:
+    id: question-bank-review
+- extendedWaitUntil:
+    visible:
+      id: 'question-bank-card-.*'
+    timeout: 20000
+- runFlow: ../../subflows/exposure/no-org-records.yaml
+- assertNotVisible: 'Sessions'
+- assertNotVisible: 'Billing'
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-questions
+    timeout: 15000
 # The console's own log: no money.
 - tapOn: 'Activity'
 - extendedWaitUntil:

@@ -5,7 +5,7 @@ const expoConfig = require('eslint-config-expo/flat');
 
 module.exports = defineConfig([
   expoConfig,
-  { ignores: ['dist/*', 'ios/*', 'android/*', '.expo/*', 'src/theme/palettes.generated.ts'] },
+  { ignores: ['dist/*', 'ios/*', 'android/*', '.expo/*', 'src/theme/palettes.generated.ts', 'src/features/question-bank/katex-css.generated.ts'] },
   {
     rules: {
       'no-restricted-syntax': [

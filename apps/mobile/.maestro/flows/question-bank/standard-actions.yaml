@@ -1,0 +1,118 @@
+# A standard's questions and their actions (#54), on NC26.M1.SGMR.3 -- a Math 1 standard, last in
+# the review queue, so question-bank/review never reaches it. From a link: Approve the first checked
+# question ("Approved.", the filter counts move), Retire it after the confirm ("Retired."), then
+# Restore it ("Restored: check it again.") -- back as Not checked, or Flagged if its checks now fail.
+# The counts are the API's (question-bank-counts.js with TOPIC). Leaves one question not checked; the
+# runner resets the database before and after.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runScript:
+    file: ../../scripts/question-bank-counts.js
+    env:
+      TOPIC: NC26.M1.SGMR.3
+- evalScript: ${output.c0 = output.topicChecked; output.a0 = output.topicApproved; output.r0 = output.topicRetired; output.back0 = output.topicDraft + output.topicFlagged}
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: platform-org-chmi
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform/questions/NC26.M1.SGMR.3
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-question-standard
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: question-bank-filter-checked
+      text: 'Checked \(${output.c0}\)'
+    timeout: 20000
+- assertVisible: '.*SGMR\.3 · Coordinate geometry'
+- tapOn:
+    id: question-bank-filter-checked
+- scrollUntilVisible:
+    element:
+      id: 'question-bank-approve-.*'
+    centerElement: true
+- takeScreenshot: question-bank-standard-before
+- tapOn:
+    id: 'question-bank-approve-.*'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Approved\.'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: question-bank-filter-checked
+    direction: UP
+- assertVisible:
+    id: question-bank-filter-checked
+    text: 'Checked \(${output.c0 - 1}\)'
+- assertVisible:
+    id: question-bank-filter-approved
+    text: 'Approved \(${output.a0 + 1}\)'
+# Retire it: it is the standard's only approved question (none were before).
+- tapOn:
+    id: question-bank-filter-approved
+- scrollUntilVisible:
+    element:
+      id: 'question-bank-retire-.*'
+    centerElement: true
+- assertVisible: 'Approved by Nav Dessai.*'
+- tapOn:
+    id: 'question-bank-retire-.*'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Retire this question\?'
+    timeout: 5000
+- runFlow: ../../subflows/question-bank/confirm-retire.yaml
+- extendedWaitUntil:
+    visible: 'Retired\.'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: question-bank-filter-retired
+    direction: UP
+- assertVisible:
+    id: question-bank-filter-retired
+    text: 'Retired \(${output.r0 + 1}\)'
+- assertVisible:
+    id: question-bank-filter-approved
+    text: 'Approved \(${output.a0}\)'
+# Restore it: back to be checked at the desk.
+- tapOn:
+    id: question-bank-filter-retired
+- scrollUntilVisible:
+    element:
+      id: 'question-bank-restore-.*'
+    centerElement: true
+- assertNotVisible:
+    id: 'question-bank-retire-.*'
+- tapOn:
+    id: 'question-bank-restore-.*'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Restored: check it again\.'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: question-bank-filter-retired
+    direction: UP
+- assertVisible:
+    id: question-bank-filter-retired
+    text: 'Retired \(${output.r0}\)'
+- takeScreenshot: question-bank-standard-after
+- runScript:
+    file: ../../scripts/question-bank-counts.js
+    env:
+      TOPIC: NC26.M1.SGMR.3
+- assertTrue: ${output.topicDraft + output.topicFlagged == output.back0 + 1}
+- assertTrue: ${output.topicChecked == output.c0 - 1}

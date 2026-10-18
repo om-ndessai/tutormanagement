@@ -44,3 +44,39 @@ jest.mock('@/features/teaching/live-surface-driver', () => ({
     isShowing: jest.fn(async () => false),
   },
 }));
+
+// react-native-webview (the question bank's maths, #54): a plain View that reports its body's height
+// as the real page's injected reporter does -- once per page, and again for each body swapped in
+// place (`window.__q(key, html)`). `global.webviewHeight` lets a test hold the report back.
+jest.mock('react-native-webview', () => {
+  const React = require('react') as typeof import('react');
+  const { View } = require('react-native') as typeof import('react-native');
+  type MockWebViewProps = {
+    source?: { html?: string };
+    onMessage?: (event: unknown) => void;
+    testID?: string;
+  };
+  const report = (props: MockWebViewProps, key: string | undefined) => {
+    const height = (globalThis as { webviewHeight?: number | null }).webviewHeight;
+    if (height === null) return;
+    props.onMessage?.({ nativeEvent: { data: JSON.stringify({ k: key, h: height ?? 120 }) } });
+  };
+  const WebView = React.forwardRef<{ injectJavaScript: (js: string) => void }, MockWebViewProps>(
+    function MockWebView(props, ref) {
+      const latest = React.useRef(props);
+      latest.current = props;
+      React.useImperativeHandle(ref, () => ({
+        injectJavaScript: (js: string) => {
+          const swap = /window\.__q\("((?:[^"\\]|\\.)*)"/.exec(js);
+          if (swap) report(latest.current, JSON.parse(`"${swap[1]}"`) as string);
+        },
+      }));
+      const html = props.source?.html ?? '';
+      React.useEffect(() => {
+        report(latest.current, /data-k="([^"]*)"/.exec(html)?.[1]);
+      }, [html]);
+      return React.createElement(View, { testID: 'mock-webview' });
+    },
+  );
+  return { __esModule: true, default: WebView, WebView };
+});

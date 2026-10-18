@@ -21,6 +21,10 @@ tags:
 - assertVisible:
     id: diag-ssn
     text: 'true / false'
+# The question bank's maths (#54): KaTeX's renderToString and the exact answers (BigInt) on Hermes.
+- assertVisible:
+    id: diag-katex
+    text: 'ok'
 # 16:30 UTC on 1 July 2026, on each organization clock (DST where observed).
 - assertVisible: { id: diag-tz-America-New_York, text: '2026-07-01 12:30' }
 - assertVisible: { id: diag-tz-America-Chicago, text: '2026-07-01 11:30' }

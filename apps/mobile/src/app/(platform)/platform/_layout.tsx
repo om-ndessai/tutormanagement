@@ -2,11 +2,16 @@ import { NativeTabs } from 'expo-router/unstable-native-tabs';
 
 import { useAppTheme } from '@/providers/theme-provider';
 
-/** The console's tabs, drawn by the system as the organization's are: Organizations, Admins, People, Activity. */
+/**
+ * The console's tabs, drawn by the system as the organization's are: Organizations, Questions (the
+ * question bank, #54), Admins, People, Activity. Five is the most Android's bar holds, and with five
+ * it shows only the selected label unless told otherwise; a sixth page will need another home.
+ */
 export default function PlatformTabsLayout() {
   const theme = useAppTheme();
   return (
     <NativeTabs
+      labelVisibilityMode="labeled"
       tintColor={theme.colors.primary}
       iconColor={{ default: theme.colors.onSurfaceVariant, selected: theme.colors.primary }}
       indicatorColor={theme.colors.primaryContainer}
@@ -19,6 +24,13 @@ export default function PlatformTabsLayout() {
       <NativeTabs.Trigger name="(organizations)">
         <NativeTabs.Trigger.Label>Organizations</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf={{ default: 'building.2', selected: 'building.2.fill' }} md="domain" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="questions">
+        <NativeTabs.Trigger.Label>Questions</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'checklist', selected: 'checklist.checked' }}
+          md="fact_check"
+        />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="admins">
         <NativeTabs.Trigger.Label>Admins</NativeTabs.Trigger.Label>

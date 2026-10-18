@@ -1254,3 +1254,267 @@ The previous review has no card of its own: it is how last time is looked back o
 - `dictation/dictate-permission` (Android): the switch is the profile's last card, below Alex's recent activity, which grows with every flow that comments as him; the 20 s scroll ran out. Timeout 45 s.
 - `home/next-up-start` (Android): the dev client crashed natively while loading the bundle (SIGSEGV in `MountingCoordinator::pullTransaction`, logcat) and Google Calendar came to the front; not reproduced in three later runs. An RN/dev-client crash at launch, not this flow.
 - `sessions/assess` (Android, this run): the tap on the focused card arrived as a long press (row menu opened); `waitForAnimationToEnd` before each of its three card taps.
+
+## 54. Phase 36: the question bank in the console — design (2026-10-17)
+**Scope:** the reviewing half of the web console's question bank, on the phone. The owner asked for it on 2026-10-17, replacing parity's "web only": he will approve thousands of questions (881 `checked` now, ~9,800 later). Platform admins get three screens:
+- **Question bank:** totals; each level's standards at target; each standard's approved counts by difficulty and "N to review"; a prominent "Review N checked".
+- **Review:** one `checked` question at a time, with Approve, Retire, Skip and "N left".
+- **A standard's questions:** filtered by status, with Approve when `checked`, Retire and Restore.
+
+Maths is drawn by KaTeX, as on the web. **Left on the web, by design:**
+- *Write questions* ("Write for N standards", "Write 8 questions", `use-write-questions.ts`) and *Solve blind / Check again*. Each is a paid model run through `runAi` on the production key. It takes minutes, the page loops it, and its result is a batch to read at a desk.
+- *Edit* (`question-edit-dialog.tsx`). Typing LaTeX, choices, the key and the `compute` expression needs a keyboard and a second look. Every edit also clears the blind solve, so it ends in a Check again anyway.
+- The *Needs a figure* switch. It decides what gets written and what a test may ask, so it stays with writing. The app shows it as a read-only chip.
+- The *AI page* (`ai-page.tsx`: tasks, caps, spend, runs).
+
+A question the phone cannot fix is retired, or skipped and left for the desk. No API, schema or shared change.
+
+**Web sources:** `apps/web/src/features/question-bank/{api.ts, question-bank-page.tsx, review-page.tsx (with today's "N left" from coverage), standard-page.tsx, question-card.tsx, math-text.tsx}`.
+
+**Endpoints:** all are mounted behind `requireAuth` + `requirePlatformAdmin`, none behind `requireOrg` (`apps/api/src/routes/question-bank.ts`).
+- `GET /platform/questions/coverage`: `useQuestionCoverage`.
+- `GET /platform/questions?status=checked&limit=200` and `?topic_id=<id>&limit=200`: `useQuestions(filter, enabled)`.
+- `POST /platform/questions/:id/approve|retire|restore`: `useQuestionAction`. Each returns the updated `Question`. Approve returns 409 unless the question is `checked` and still lint-clean; restore returns 409 unless it is `retired`.
+
+`api.ts` is copied from the web with `bankKeys` identical (all five keys, so a later port shares them) and only these three hooks. Its header comment names the hooks left out and why.
+
+**One deliberate change from the web: no refetch per action, to save D1 reads.**
+- *The cost today:* after every action the web invalidates `['platform','questions']`, which refetches the 200-question queue and the coverage. That reads about 4,500 D1 rows per approval: the queue reads every `checked` row through `questions_status_idx` and joins three tables to sort them, and the coverage reads every question.
+- *What that means:* one pass through today's 881 reads ~4 M rows, most of the account's 5 M a day. At ~9,800 questions it is ~30,000 rows per approval, so ~170 approvals a day would stop production for every organization (as happened on 2026-10-06).
+- *The app's version:* `useBankInvalidation` keeps the same keys but changes two things.
+  1. It writes the server's answer into the caches. `applyActionToList` removes the question from any cached `['platform','questions','list', filter]` whose status it no longer has, and replaces it in the others. `applyActionToCoverage(coverage, before, after)` moves one count from the old status's bucket to the new one (approved counts by difficulty).
+  2. It then invalidates the same keys and `['platform','ai']` with `refetchType: 'none'`.
+- *When it does refetch:* Review refetches its queue only when fewer than 10 un-acted questions remain in the loaded page and more are waiting, or on pull-to-refresh. The bank screen refetches coverage on focus when it is stale (`useFocusEffect`), once per return.
+- *The result:* a review session of 881 reads ~75 k rows, mostly the POSTs' own reads plus a few page refetches.
+- *For the owner:* the web's review page refetches on every action today. Giving it the same cache update, or a lighter queue endpoint, is worth doing before the bank grows. That is outside this design.
+
+**Maths. The decision:** KaTeX runs on Hermes, and its HTML is shown in one `react-native-webview` per card, with KaTeX's CSS and fonts bundled in the app.
+- *Why a web view:* the reviewer must see what a student will see, and Phase 37's test page draws with KaTeX on the web.
+  - A native approximation (Unicode, or MathJax to SVG through react-native-svg) would draw something else: stacked fractions, the `\sqrt` bar, `\overrightarrow`, `\left( \right)` sized to their content.
+  - It would also miss KaTeX's red error for a span it cannot parse, which is exactly what a reviewer must catch.
+  - Text with inline maths that wraps with the words is what a web view does well and RN `Text` cannot: inline SVG in `Text` breaks baselines and wrapping.
+- *Why KaTeX runs on Hermes, not in the page:* `katex.renderToString` is pure JS and needs no DOM (its only `document` use is guarded).
+  - It takes the same options as `math-text.tsx`: `throwOnError: false, trust: false, strict: 'ignore'`, with `errorColor` set to the theme's `error`.
+  - `output: 'html'`, since the web view is hidden from assistive tech.
+  - Because the HTML is built in the app, the page carries **no script**. Its CSP is `default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src 'none'; script-src 'none'; base-uri 'none'; form-action 'none'`.
+  - Plain text between `$…$` spans is HTML-escaped, and `trust: false` refuses `\href`, `\url`, `\includegraphics` and `\html*`.
+  - The HTML builder is a pure function, tested in Jest against the real KaTeX.
+- *Offline, nothing remote:*
+  - `katex` is added to the app at the web's version (`^0.16.22`), so both clients use one renderer.
+  - `scripts/generate-katex-css.mjs` writes `src/features/question-bank/katex-css.generated.ts` from `node_modules/katex/dist/katex.min.css`. Each `@font-face` keeps only its woff2, inlined as a `data:` URI. All 20 faces are kept (~400 KB), so no glyph silently falls back.
+  - Its `--check` runs in `mobile:typecheck` beside the palettes. The file is never edited by hand. KaTeX's CSS carries no colour.
+- *Themed:* the page's colours are CSS variables filled from `useAppTheme()`:
+  - `--fg` from `onSurface`, `--muted` from `onSurfaceVariant`, `--border` from `outlineVariant`;
+  - `--key` from `tokens.success`, with `withAlpha(success, 0.12)` behind the key;
+  - `--soft` (the solution box) from `withAlpha(surfaceVariant, 0.5)`, `--error` from `error`.
+
+  The background is transparent over the card, and `color-scheme` follows the theme. There are no colour literals, so the rules script's colour check still passes. Body text uses the system font, like the app's body.
+- *Sized:*
+  - Text size is the base size × `useWindowDimensions().fontScale`: stem 17, choices 16, solution 15 at 1×. Android sets `textZoom={100}` so scaling happens only once. The viewport is `width=device-width, user-scalable=no`.
+  - For height, an injected script (`injectedJavaScript`, which the page's CSP does not govern) watches the content with `ResizeObserver`, and again after `document.fonts.ready`. It posts `{ k: <question id>, h }`.
+  - The host sets its height from that and ignores a message for any other key. A skeleton shows until the first message arrives.
+- *Fast enough:* Review keeps **one** web view for the whole session.
+  - The shell (CSS, fonts, variables) loads once. Each next question's body is swapped in place with `injectJavaScript('window.__q(<id>, <html>)')`.
+  - So Approve → the next question costs a few ms of KaTeX on Hermes and a repaint, never a new web view. The slow part is Android starting Chromium the first time (~0.3–0.5 s), paid once.
+  - A change of theme or text size rebuilds the shell.
+  - On the standard screen each card has its own web view (a standard holds ~9 today), in a windowed `FlatList` (`initialNumToRender` 2, `windowSize` 3). It is not a FlashList, whose recycling would hand one question's web view to another and re-measure on every scroll.
+- *Locked down:*
+  - The origin list and `onShouldStartLoadWithRequest` allow only the page's own `about:blank` load.
+  - Also set: `allowFileAccess={false}`, `allowsLinkPreview={false}`, `dataDetectorTypes="none"`, `textInteractionEnabled={false}` (iOS), `setSupportMultipleWindows={false}`, `cacheEnabled={false}`, `incognito`, `scrollEnabled={false}`. `webviewDebuggingEnabled` is on only in the development variant.
+  - The wrapper has `pointerEvents="none"`: swipes scroll the screen, and nothing in the page can be tapped.
+  - `onContentProcessDidTerminate` and `onRenderProcessGone` remount the view. If no height arrives within 3 s, the card shows the plain text instead (`question-bank-body-fallback`, "Couldn't draw the maths; showing it as text.").
+- *Accessible:* the web view is hidden from assistive tech (`accessibilityElementsHidden`, `importantForAccessibility="no-hide-descendants"`). Its wrapper is one `text` element whose `accessibilityLabel` reads the body in order, built by `mathToText(…, 'speech')`.
+  - An example label: "Question. What is the value of the digit 7 in 4,732? Choice A: 7. Choice B: 70. Choice C: 700, the answer. Choice D: 7,000. Solution. …"
+  - Spoken forms: fractions as "3 over 4", `\times` "times", `\div` "divided by", `\le` "less than or equal to", `x^2` "x squared", `^\circ` "degrees", `\sqrt{x}` "square root of x", `\overrightarrow{AB}` "ray AB", `\overleftrightarrow{AB}` "line AB", `\overline{AB}` "segment AB", `\square` "blank", `4{,}732` "4,732", `\%` "percent".
+  - An unknown command is read by its name, never dropped.
+  - The key is marked by a ✓ and bold weight as well as colour. Maestro reads this same label.
+- *Native rebuild:* `npx expo install react-native-webview` adds a native module (no config plugin). Both dev builds, the e2e variant and the personal device build must be rebuilt (`real-devices.md`; that rebuild is planned anyway).
+- *Considered and not chosen:*
+  - Expo DOM components (`'use dom'`). They need no rebuild, because `@expo/dom-webview` 57.0.1 is already linked through `expo` (ExpoDomWebView in the Podfile, DomWebViewModule on Android). But each instance boots React DOM and KaTeX inside the page, which is slower to first paint. The page needs script, so `script-src 'none'` is impossible. It is a second Metro bundle under this app's custom resolver, and nobody has confirmed whether Metro rewrites KaTeX's `url()` fonts there.
+  - `@expo/dom-webview` used directly with a `data:` URI. Also no rebuild, but it is built for DOM components: its source takes only a URI, it has no navigation hook, it allows file access on Android, and its props are not a public API.
+
+    Either of these is the fallback if the owner wants the bank on the phone before the next rebuild.
+  - MathJax to SVG through react-native-svg (no rebuild): a different renderer from the student's, a heavy JS load on Hermes, and no inline wrapping.
+
+**Screens & routes:**
+- **Console tabs** (`(platform)/platform/_layout.tsx`): a fifth NativeTabs trigger, **Questions** (`questions`; sf `checklist` / `checklist.checked`, md `fact_check`), second after Organizations: Organizations, Questions, Admins, People, Activity.
+  - Set `labelVisibilityMode="labeled"`: with five items, Android's bar otherwise shows only the selected label.
+  - Five is the most Android's bar holds, so a sixth console page will need another home.
+- **The tab's stack** (`(platform)/platform/questions/_layout.tsx`, Stack with `useStackOptions()`): `index` titled "Question bank" with `ConsoleHeaderButtons`; `[topicId]` with a small title (the standard's code).
+- **Question bank**, `/platform/questions` (`QuestionBankScreen`, `screen-platform-questions`), top to bottom:
+  - `PageIntro`: the web's sentence on who writes, checks and approves, and the target (6 per standard, 2 at each difficulty).
+  - **Review N checked**: a full-width contained button (`question-bank-review`, icon `clipboard-check-outline`) → `/question-review`. At 0 it reads "Nothing to review" and is disabled.
+  - `FigureRow` (`question-bank-totals`): Approved; At target (`x / y` of the standards that can be asked in text); To review; Flagged.
+  - Each level as a collapsible section, closed at first (U5's pattern; seven headers fit on one screen). The header reads e.g. "Grade 3" with "0 of 11 standards at target · 99 to review" (the fresh seed).
+  - Opening a level lists its standards as rows:
+    - the code (bold) and the name (two lines);
+    - a read-only "Needs a figure" chip when set;
+    - three approved pills, one count per difficulty: `tokens.success` tint at target, `warning` tint above 0, muted at 0;
+    - the web's status line: "8 to review · 1 flagged · 2 not checked", otherwise "At target".
+  - A row opens `/platform/questions/<topicId>`. Pull to refresh.
+- **A standard**, `/platform/questions/[topicId]` (`StandardScreen`, `screen-platform-question-standard`):
+  - The topic is looked up in the coverage, as the web does.
+  - Heading "4.ANR.1" with the name, "Grade 4 · <unit>" and the description (`PageIntro`).
+  - The status filter is a wrapping row of chips, each with its count: All (leaves retired out, as the web does), Not checked, Checked, Flagged, Approved, Retired.
+  - The filtered questions are `QuestionCard`s in a windowed `FlatList`, each with `QuestionActions`: **Approve** only when `checked`, **Retire** unless retired, **Restore** only when retired. Toasts match the web: "Approved.", "Retired.", "Restored: check it again.".
+  - If the coverage has no such standard: "That standard is not in the question bank." (`question-bank-not-found`, R9's not-found wording).
+  - Pull to refresh.
+- **Review**, `/question-review` (`ReviewScreen`, `screen-question-review`):
+  - It sits on the console's outer stack (`(platform)/question-review.tsx`, `headerShown: true`, small title "Review"), so it covers the tabs and the question gets the whole height. It still wears the platform brand (`usePlatformBrand()` in the group's layout).
+  - At the top: `question-bank-position` "Grade 3 · 3.ANR.1 Place value to 10,000", and `question-bank-left` "880 left, 2 skipped". These are the web's words: `left = waiting − skipped`, where `waiting` is the coverage's `checked` count.
+  - Then the `QuestionCard` in a ScrollView, scrolled back to the top for each new question.
+  - A bar fixed at the bottom (`question-bank-actions`, above the home indicator) holds **Retire** (outlined, error colour), **Skip** (text) and **Approve** (contained, widest, on the right within thumb reach). Each is at least 48pt. Under large text, Approve takes the first row and Retire and Skip share the second.
+  - The queue is `useQuestions({ status: 'checked' })`. The current question is the first one neither skipped nor acted on this session (`nextInQueue(items, skipped, done)`). `done` holds the ids the server has accepted, so a background refetch that still lists one never brings it back.
+  - Empty states (`question-bank-empty`): "Nothing waiting for review." with "Back to the question bank"; or "Only skipped questions are left." with **Go through them again** (`question-bank-again`, which clears the skipped list).
+
+**Components:** new, in `src/features/question-bank/`:
+- `api.ts`.
+- `bank-model.ts`, pure: `bankTotals`, `levelSummary`, `standardStatusLine`, `approvedTone`, `filterCounts`, `nextInQueue`, `leftCount`, `applyActionToList`, `applyActionToCoverage`, `actionsFor(status)`.
+- `math-text.ts`, pure:
+  - `splitMath`: the web's split, unchanged; an odd number of `$` keeps the text as typed.
+  - `mathToText(text, 'display' | 'speech')`.
+- `question-html.ts`, pure:
+  - `questionBodyHtml(question, { errorColor })`: the stem; then either the four choices lettered A–D, with the key found by shared `checkAnswer` and marked, or "Answer: …"; then the solution box headed SOLUTION.
+  - `mathShell({ colors, fontScale, scheme, body, key })` and `bodySpeech(question)`.
+- `katex-css.generated.ts`.
+- `math-body.tsx`: `MathBody`, the web view host described above. Props: `html`, `speech`, `contentKey`, `onRendered(key)`, and `persistent` for Review's in-place swap.
+- `question-card.tsx`, `QuestionCard`, top to bottom:
+  - The web card's top row: a `StatusBadge` (`QUESTION_STATUS_LABELS`; draft muted, checked `primary` tint, flagged `error` tint, approved `success` tint, retired muted and struck through), the difficulty (`QUESTION_DIFFICULTY_LABELS`), "Multiple choice" or "Number answer", the skill, and "N problems" when flagged (`checkProblems`).
+  - The `MathBody`.
+  - `CheckList`: native rows, ✓ in `success` or ✗ in `error`, with the web's sentences.
+    - The blind solve's answer goes through `mathToText(…, 'display')`, e.g. "Solved blind: 3/4, which matches.".
+    - "Not yet solved blind." where the web shows it, and the solver's note in `error`.
+  - **Show the solver's working**, a text button (`question-bank-work-toggle`) that opens the working underneath as native text (`mathToText`; one working in 881 has maths).
+  - The provenance line: "Approved by Nav Dessai, 2 hours ago" (shared `formatRelativeTime`), "Edited by hand" or "Written by Claude".
+  - A `footer` slot.
+- `question-card.tsx` also holds `QuestionActions`: the standard screen's buttons and their toasts.
+- `retire-confirm.ts`: `confirmRetire(): Promise<boolean>`.
+- The three screens.
+
+Reused: `Screen`, `PageIntro`, `FigureRow`, `OutlinedCard`, `EmptyState`/`LoadingState`/`ErrorState`, `SkeletonGroup`/`ListSkeleton`, `useToast`, `haptics`, `useLargeText`, `withAlpha`, `CHIP_HIT_SLOP`, `useStackOptions`, `ConsoleHeaderButtons`.
+
+`app/dev/diagnostics.tsx` gains `diag-katex`. It renders `$\frac{3}{4} \times 4{,}732$` through `questionBodyHtml` and `checkAnswer`'s BigInt fractions on Hermes, and shows "ok" or the error.
+
+**Interaction & motion:**
+- *Layout:* plain stacks under the console's native tabs (immersive-design: "Platform console: plain stack, platform brand always"). Review is a pushed task screen with its actions at the bottom.
+- *Haptics* (`src/lib/haptics.ts`):
+  - Approve, once the server accepts it → `haptics.success()`.
+  - Retire → `haptics.warning()` as its confirm opens, then `haptics.success()` once retired. The confirm reads "Retire this question?" / "It leaves the bank. Restoring it sends it back to be checked at the desk." with Cancel and Retire (destructive).
+  - Skip → `haptics.selection()`.
+  - A refusal → `haptics.error()`.
+  - On the standard screen the toast gives the success or error haptic, so the buttons add none (the toast's rule).
+- *No toasts on Review:* the next card is the confirmation, and a toast would cover the action bar.
+  - A refusal (e.g. 409 "It is nearly the same as another question on this standard.") stays inline above the bar (`question-bank-error`, a live region) until the card changes.
+  - A 409 also refetches the queue, since something changed elsewhere.
+- *Approve waits for the server* (~0.2 s, with the button's spinner), then moves on without waiting for any refetch.
+- *No double approvals:* the actions enable only once the web view reports the current question's height (so it has been drawn), and not within 350 ms of the card changing. A quick second tap cannot approve a question nobody saw.
+- *No swipe-to-approve:* a sideways swipe on a long card is too easy to make by accident, and an approval cannot be undone.
+- *Approve is not confirmed* (it is the job). Retire is, because a retired question can only come back through the desk.
+- *Screen reader:* after a move, focus goes to the position line, which announces "Approved. Next: Grade 3, 3.ANR.1. 879 left."
+- *Reduce motion:* the swap is instant (no slide), so there is nothing to still.
+
+**Exposure checks:**
+- **R14:** the screens call only `/platform/questions*`. The bank is platform reference data with no person, lesson, money or progress in it; `times_used` and `times_correct` are not shown, as on the web.
+  - The group sits behind `Stack.Protected guard={platformAdmin}`, and the server's `requirePlatformAdmin` refuses anyone else.
+  - An organization admin's links to `/platform/questions` or `/question-review` land on Home.
+- **Money:** none.
+  - Word problems write "dollars" in words; the bank has no `\$`.
+  - Splitting on `$` works as on the web: a lone `$` keeps the text as typed.
+  - Labels drop the `$` delimiters, so no `$`-digit text reaches the screen.
+- **SSN:** the feature sends only ids. It has no text field, no dictation and no free text anywhere. The bank's own text is SSN-checked on the server by `lintQuestion` and `refuseSsn`.
+- **Organizations:** no `X-Organization` is needed and none is read. No organization's name appears in code; level and standard names are data. The console wears the platform brand.
+- **Colours:** tokens only, passed into the page as CSS variables. The generated CSS has none.
+- **Audit:** the server records it (`question.approved`/`retired`/`restored`, e.g. "Nav Dessai approved a question on 3.ANR.1."), never the question's text. Nothing is logged or stored on the device; the query cache is not persisted and is cleared on sign-out.
+- **The web view:** no network, no navigation, no page script, no file access, no storage (see above).
+- **System surfaces:** none.
+
+**testIDs:**
+- Screens: `screen-platform-questions`, `screen-platform-question-standard`, `screen-question-review`. The tab's label is "Questions".
+- Bank:
+  - `question-bank-review`;
+  - `question-bank-totals`, plus `stat-approved`, `stat-at-target`, `stat-to-review`, `stat-flagged`, each with `-value`;
+  - `question-bank-level-<levelId>` (the header, which toggles) and `question-bank-level-<levelId>-summary`;
+  - `question-bank-standard-<topicId>`, with `-approved`, `-status`, `-figure`.
+- Standard: `question-bank-filter-<all|draft|checked|flagged|approved|retired>`, `question-bank-not-found`, `question-bank-list`.
+- Card:
+  - `question-bank-card-<id>`, `question-bank-status-<id>`;
+  - `question-bank-body-<id>` (its label is the spoken text) and `question-bank-body-fallback`;
+  - `question-bank-checks-<id>`, `question-bank-work-toggle-<id>`, `question-bank-work-<id>`, `question-bank-provenance-<id>`;
+  - `question-bank-approve-<id>`, `question-bank-retire-<id>`, `question-bank-restore-<id>`.
+- Review: `question-bank-position`, `question-bank-left`, `question-bank-actions`, `question-bank-approve`, `question-bank-retire`, `question-bank-skip`, `question-bank-error`, `question-bank-empty`, `question-bank-again`.
+- Diagnostics: `diag-katex`.
+
+**Tests:**
+- **Jest:**
+  - `math-text.test.ts`:
+    - the split: balanced, odd and empty;
+    - display and speech forms for every command the bank uses: `\frac` `\times` `\div` `\circ` `\pi` `\sqrt` `\angle` `\le` `\ge` `\text` `\approx` `\to` `\square` `\overrightarrow` `\left` `\right` `\%` `\cdot` `\overline` `\overleftrightarrow` `\ldots` `\ne` `\hat`, `{,}`, and powers;
+    - a sweep over every string in `apps/api/db/questions/*.json`: no `\`, `{`, `}` or `$` left in any converted span.
+  - `question-html.test.ts`, with the real KaTeX:
+    - `\frac{3}{4}` produces KaTeX markup;
+    - `<script>`, `<img onerror>` and `&` in a stem come out as text;
+    - `\href{…}` and `\includegraphics` produce no `href=` or `<img`;
+    - an unknown command produces KaTeX's error span in the theme's error colour;
+    - the shell's CSP has `default-src 'none'` and `script-src 'none'`, and no `http`;
+    - colours come only from the tokens given;
+    - the key choice is marked, and a numeric question shows "Answer:";
+    - `bodySpeech` reads in order and names the key.
+  - `bank-model.test.ts`:
+    - the totals, and "at target" counted among standards askable in text only;
+    - the level summary, status lines and pill tones;
+    - filter counts, with All leaving retired out;
+    - `nextInQueue` skips both skipped and done; `leftCount` never goes below 0;
+    - `applyActionToList` and `applyActionToCoverage` for approve, retire from each status, and restore to draft and to flagged.
+  - `question-bank-views.test.tsx`, with `react-native-webview` mocked in `src/test/setup.ts` as a View that reports a height:
+    - the bank: its totals; "Review 881 checked", disabled at 0; a level opens its standards;
+    - Review: Approve posts, gives the success haptic and shows the next question without a refetch; a refetch that still lists the approved question does not bring it back;
+    - the actions stay disabled until the body reports and for 350 ms (fake timers);
+    - Retire asks first and posts only on confirm; Skip and "N left, 1 skipped";
+    - a 409 stays inline and keeps the card; both empty states and "Go through them again";
+    - cards offer Approve only when checked and Restore only when retired;
+    - no Edit, Write, Solve blind, Check again or figure switch anywhere;
+    - the body's label is the spoken text, and the web view is hidden from assistive tech.
+  - The `katex-css` staleness check runs in `mobile:typecheck`.
+- **Maestro** (`.maestro/flows/question-bank/`, tagged `feature`; as Nav, `ndessai@gmail.com`, with `ORG: ''`):
+  - A new `scripts/question-bank-counts.js` (localhost only, as Nav) reads the coverage and outputs `waiting`, `approved`, `flagged` and `atTarget`. The flows assert the numbers the API gives, not a seed count that other flows change.
+  - These flows do not clean up after themselves. No API puts a question back to `checked`: restore makes it "Not checked", and the local fake solver would not pass a real question. So they read the counts at the start, act on whatever comes first, and rely on the runner resetting the database before and after a run. Each run uses up two or three of the 881 `checked` questions.
+  - `question-bank/coverage`:
+    - open the Questions tab; the totals equal the script's; "Review N checked" shows;
+    - open Grade 4: "2 of 12 standards at target" (the seed's two fixture standards, `NC26.4.ANR.1` and `.2`, have six approved each, two per difficulty);
+    - `question-bank-standard-NC26.4.ANR.1` shows pills 2·2·2 and "8 to review";
+    - its screen: Approved (6), each "Approved by Nav Dessai" with no Approve button; Checked (8) with Approve;
+    - no "Edit", "Write", "Solve blind" or "Check again" anywhere;
+    - screenshots, light and dark.
+  - `question-bank/review`:
+    - tap "Review N checked" → `screen-question-review`; `question-bank-left` reads "N left";
+    - the body's label is not empty, and the checks read "Code checks passed" and "Solved blind: … matches"; the working opens;
+    - Skip → "N-1 left, 1 skipped"; Approve → "N-2 left, 1 skipped"; Retire → confirm → "N-3 left, 1 skipped";
+    - the script then reads `waiting` as N−2 and `approved` up by 1, and the bank's totals agree;
+    - Activity lists "Nav Dessai approved a question on …" and "… retired a question on …";
+    - screenshots of the review card (a fraction question and a numeric one), light and dark, and at the largest text size.
+  - `question-bank/standard-actions`:
+    - open `aimtrue://platform/questions/NC26.M1.SGMR.3` (a Math 1 standard, last in the queue, so the review flow never reaches it);
+    - Checked → Approve the first → "Approved." and the chip counts move;
+    - Retire it (confirm) → "Retired." → Retired (1) → Restore → "Restored: check it again.", with its status now "Not checked" or "Flagged".
+  - Exposure:
+    - `platform/org-admin-denied` gains Priya opening `aimtrue://platform/questions` and `aimtrue://question-review`: both land on Home, never on `screen-platform-questions` or `screen-question-review`.
+    - `exposure/platform-boundary` walks the Questions tab, a standard and Review through `no-org-records` (no seeded person, no `$`-digit text, no `session-money`).
+- **Smoke:** no question-bank flow joins `smoke`. It is not on the main path, and nothing in the API, shared contract or schema changes. `smoke/diagnostics` gains one assertion, `diag-katex` reading "ok": KaTeX on Hermes is the one thing Jest (on Node) cannot prove, and that stays true for every later Hermes or KaTeX upgrade.
+
+**Risks / open questions:**
+- **D1 reads on the web's review page** (see above): the owner decides whether the web adopts the same cache update. The app does from day one.
+- **KaTeX on Hermes** is unproven until the diagnostics row runs on both platforms. It is pure JS with `document` guarded, but Jest cannot show it. If it fails, KaTeX moves into the page (its script inlined, CSP `script-src 'unsafe-inline'`) and nothing else changes.
+- **Very large text:** inline maths wraps at operators, but a fraction does not, and the web view cannot scroll sideways (it takes no touches). Check the largest size in screenshots. A long expression may need `overflow-wrap` tuning or a lower cap on the scale inside maths.
+- **Accessibility:** one accessibility element per body makes a long label. Per-section proxies could follow if the owner wants them: the page would report each block's box, with a native element laid over each.
+- **Queue size:** the queue holds 200 at a time (the web's limit). After skipping more than ~190 in one sitting, it shows "Only skipped questions are left." while more are waiting. "Go through them again" resets, as on the web.
+- **Out-of-date doc:** `docs/ai-platform-plan.md` line 169 ("The mobile app's console gets nothing") has been wrong since the owner's change. It is outside `docs/mobile/` and was not edited here.
+- **Possible follow-ups, not in scope:** Review for one level or one standard (`level_id` and `topic_id` are already list filters in the API); a badge with the count on the Questions tab.
+
+**Changed while building (2026-10-17):**
+- *The page hides itself from assistive tech too:* `#q` carries `aria-hidden="true"` (WebKit ignores it on `<body>`). The native `accessibilityElementsHidden` on the wrapper did not stop iOS exposing every KaTeX span. On the standard screen, with several cards, that took the accessibility tree past XCTest's depth limit, and Maestro saw an empty app. With it, VoiceOver and the tests read only the native label, as designed. `incognito` stays.
+- *The page's text scale is capped at 2× (`MAX_MATH_SCALE`):* at iOS's largest accessibility size (about 3.1×), stacked fractions on consecutive lines all but touched. The native text around the page still follows the reader's size in full. This settles the "very large text" risk above.
+- *Review's bar labels are capped at 2× (`maxFontSizeMultiplier`):* the bar stays on screen, and at the largest size "Retire" broke mid-word and the bar took a third of the screen. The large-text layout (Approve on its own row) is unchanged.
+- *Both dev builds already carried the native module:* react-native-webview was installed at 15:23. The Android dev build (15:26) and the iOS one (16:15) were built after that, as checked in the APK's dex and the app's debug dylib, and nothing native has changed since. The e2e variant and the personal device build still need their rebuild.
+- *Flows:* `scripts/question-bank-counts.js` takes an optional `TOPIC` and then also counts that standard's questions by status. `subflows/question-bank/nothing-of-the-desk.yaml` matches the web's control texts whole ("Edit", "Write 8 questions", …), because a question's own words may say "Write …". `subflows/question-bank/confirm-retire.yaml` taps the alert's Retire, not the screen's (on Android, `android:id/button1`).
+
+**Verified (2026-10-17):** flows `question-bank/coverage`, `question-bank/review`, `question-bank/standard-actions`, `platform/org-admin-denied`, `exposure/platform-boundary` and `smoke/diagnostics` (`diag-katex` reads "ok": KaTeX and the BigInt exact answers on Hermes) were green on iOS 27 (iPhone 17) and Android 37 (Medium Phone), through `npm run e2e:mobile -- both`. `npm run smoke -- mobile` was green on both. Jest: 614 passed (97 suites, 17 in `question-bank-views`). `mobile:typecheck`, `mobile:lint` (0 errors) and `mobile:export` were green. Screenshots reviewed on both platforms in light and dark: Review, and a standard's cards with fractions (6.ANR.2), square roots (8.ANFR.4), powers (8.ANFR.5) and a²+b²=c² (8.SGMR.5). Also at the largest text size: iOS AX5 and Android 2×. Exposure: the bank, a standard and Review show no seeded person, no `$`-digit text and no `session-money`. An organization's admin who follows a link to `/platform/questions` or `/question-review` lands on Home.

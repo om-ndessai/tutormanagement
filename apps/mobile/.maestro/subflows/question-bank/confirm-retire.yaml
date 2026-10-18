@@ -1,0 +1,18 @@
+# Retire's confirm (#54) is a native alert over a screen that has its own Retire button: tap the
+# alert's. Android's dialog draws its buttons in capitals.
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Retire'
+          below: 'It leaves the bank\..*'
+          index: 0
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'android:id/button1'

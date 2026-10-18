@@ -272,6 +272,24 @@ native rebuild of both dev builds, so build only while the devices are free.
   2026-10-16: `mobile:export`, `organization/curricula`, `progress/*` and `npm run smoke -- mobile`
   green on iOS and Android; released to production with Phase 35)*
 
+## Portal Phase 36 — the question bank on the phone
+
+- [x] 54. Mobile: the question bank in the console. Covers:
+  - the coverage: totals, levels, standards and "Review N checked";
+  - the review queue, one question at a time: Approve, Retire, Skip and "N left";
+  - a standard's questions by status: Approve, Retire and Restore;
+  - maths by KaTeX, run on Hermes and shown in one `react-native-webview` per card. This needs a
+    native rebuild of both dev builds and the personal build;
+  - caches updated from each answer instead of refetched, to save D1 reads.
+
+  Writing, editing, checking and the AI page stay on the web. *(owner, 2026-10-17; design
+  entry #54. Built 2026-10-17: typecheck, lint, jest (614) and `mobile:export` green; flows
+  `question-bank/{coverage,review,standard-actions}`, `platform/org-admin-denied`,
+  `exposure/platform-boundary` and `smoke/diagnostics` (`diag-katex` "ok" on Hermes) green on iOS 27
+  (iPhone 17) and Android 37 (Medium Phone); `npm run smoke -- mobile` green on both. Both dev
+  builds carry react-native-webview; the e2e variant and the personal device build still need
+  their rebuild.)*
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

@@ -1,11 +1,21 @@
 // Developer-only: proves the shared contract's formatting on this engine (Hermes on iOS and
 // Android), which Jest cannot -- Jest runs on Node's ICU. Asserted by
 // .maestro/flows/smoke/diagnostics.yaml. Not reachable in the production variant.
-import { containsSsn, formatCents, formatRelativeTime, ORG_TIME_ZONES, zonedClockParts } from '@tmi/shared';
+import {
+  checkAnswer,
+  containsSsn,
+  evaluateExact,
+  formatCents,
+  formatFraction,
+  formatRelativeTime,
+  ORG_TIME_ZONES,
+  zonedClockParts,
+} from '@tmi/shared';
 import { Redirect } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
+import { questionBodyHtml } from '@/features/question-bank/question-html';
 import { liveSurface } from '@/features/teaching/live-surface';
 
 import * as speech from '@/lib/speech';
@@ -102,6 +112,35 @@ function useSpeechProbe() {
   return { report, probe, run };
 }
 
+/**
+ * The question bank's maths on this engine (#54): KaTeX's renderToString on Hermes, through the card's
+ * own builder, and the bank's exact answers (BigInt fractions). "ok", or what failed.
+ */
+function katexProbe(): string {
+  try {
+    const html = questionBodyHtml(
+      {
+        kind: 'choice',
+        stem: 'What is $\\frac{3}{4} \\times 4{,}732$?',
+        choices: ['3,549', '3,550', '3,600', '4,732'],
+        answer: '3,549',
+        solution: '$\\frac{3}{4} \\times 4{,}732 = 3{,}549$.',
+      },
+      { errorColor: 'currentColor' },
+    );
+    if (!html.includes('class="katex"') || !html.includes('mfrac')) return 'no KaTeX markup';
+    if (html.includes('katex-error')) return 'KaTeX could not read the test span';
+    if (!html.includes('class="choice key"')) return 'the key was not marked';
+    const exact = evaluateExact('3/4*4732');
+    if (!exact || formatFraction(exact) !== '3549')
+      return `evaluateExact gave ${exact ? formatFraction(exact) : 'null'}`;
+    if (!checkAnswer({ kind: 'numeric', answer: '3549' }, '7098/2')) return 'checkAnswer refused 7098/2';
+    return 'ok';
+  } catch (error) {
+    return `threw: ${error instanceof Error ? error.message : String(error)}`;
+  }
+}
+
 export default function Diagnostics() {
   const liveSurfaceStatus = useLiveSurfaceStatus();
   const speechProbe = useSpeechProbe();
@@ -121,6 +160,7 @@ export default function Diagnostics() {
         </Text>
       </Pressable>
       <Row id="diag-cents" label="formatCents(1234567)" value={formatCents(1234567)} />
+      <Row id="diag-katex" label="KaTeX and exact answers (question bank)" value={katexProbe()} />
       <Row
         id="diag-relative"
         label="formatRelativeTime(3 hours ago)"

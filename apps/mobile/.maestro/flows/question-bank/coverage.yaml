@@ -1,0 +1,101 @@
+# The question bank in the console (#54): Nav, a platform admin, opens the Questions tab. The totals
+# and "Review N checked" equal what the API counts (question-bank-counts.js), Grade 4 has its two
+# fixture standards at target, NC26.4.ANR.1 shows 2 approved at each difficulty and 8 to review, and
+# its own screen lists the six approved (approved by Nav, no Approve) and the eight checked (each with
+# Approve). Nothing of the desk -- writing, editing, checking -- is offered anywhere. Changes nothing.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runScript: ../../scripts/question-bank-counts.js
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: platform-org-chmi
+    timeout: 30000
+- tapOn: 'Questions'
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-questions
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: question-bank-review
+      text: 'Review ${output.waiting} checked'
+    timeout: 20000
+- assertVisible:
+    id: stat-approved
+    text: 'Approved: ${output.approved}'
+- assertVisible:
+    id: stat-at-target
+    text: 'At target: ${output.atTarget} / ${output.askable}'
+- assertVisible:
+    id: stat-to-review
+    text: 'To review: ${output.waiting}'
+- assertVisible:
+    id: stat-flagged
+    text: 'Flagged: ${output.flagged}'
+- takeScreenshot: question-bank-coverage
+# Grade 4: the seed's two fixture standards are at target.
+- scrollUntilVisible:
+    element:
+      id: question-bank-level-NC26.4
+    centerElement: true
+- assertVisible:
+    id: question-bank-level-NC26.4-summary
+    text: '2 of 12 standards at target.*'
+- tapOn:
+    id: question-bank-level-NC26.4
+- scrollUntilVisible:
+    element:
+      id: question-bank-standard-NC26.4.ANR.1
+    centerElement: true
+- assertVisible:
+    id: question-bank-standard-NC26.4.ANR.1-approved
+    text: 'Approved: Easier 2, On grade 2, .* 2'
+- assertVisible:
+    id: question-bank-standard-NC26.4.ANR.1-status
+    text: '8 to review'
+- takeScreenshot: question-bank-level-open
+- runFlow: ../../subflows/question-bank/nothing-of-the-desk.yaml
+# The standard's own screen.
+- tapOn:
+    id: question-bank-standard-NC26.4.ANR.1
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-question-standard
+    timeout: 15000
+- extendedWaitUntil:
+    visible: '4.ANR.1 · Place value to 100,000'
+    timeout: 15000
+- assertVisible:
+    id: question-bank-filter-approved
+    text: 'Approved \(6\)'
+- assertVisible:
+    id: question-bank-filter-checked
+    text: 'Checked \(8\)'
+- tapOn:
+    id: question-bank-filter-approved
+- extendedWaitUntil:
+    visible: 'Approved by Nav Dessai.*'
+    timeout: 15000
+- assertNotVisible:
+    id: 'question-bank-approve-.*'
+- assertVisible:
+    id: 'question-bank-retire-.*'
+- runFlow: ../../subflows/question-bank/nothing-of-the-desk.yaml
+- takeScreenshot: question-bank-standard-approved
+- tapOn:
+    id: question-bank-filter-checked
+- assertNotVisible: 'Approved by Nav Dessai.*'
+- scrollUntilVisible:
+    element:
+      id: 'question-bank-approve-.*'
+    centerElement: true
+- assertNotVisible: 'Approved by Nav Dessai.*'
+- runFlow: ../../subflows/question-bank/nothing-of-the-desk.yaml
+- takeScreenshot: question-bank-standard-checked

@@ -1,0 +1,9 @@
+# Writing, editing and checking questions stay at the desk (#54): none of the web's controls for them
+# on the screen in front. Whole-text matches, as a question's own words may say "Write ...".
+appId: ${APP_ID}
+---
+- assertNotVisible: 'Edit'
+- assertNotVisible: 'Write [0-9]+ questions'
+- assertNotVisible: 'Write for [0-9]+ standards?'
+- assertNotVisible: 'Solve blind'
+- assertNotVisible: 'Check again'
