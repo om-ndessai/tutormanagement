@@ -1,0 +1,125 @@
+# Reopening a review (Phase 40). Sofia's assessment, reviewed by Alex through the local API: his
+# list offers "Edit review"; the editor shows it saved as reviewed, with no pen; "Reopen review"
+# makes it a draft again. The list then shows "Review in progress" and "Continue review", and Sofia
+# no longer has the review to open -- its link answers that it has not been reviewed yet.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+tags:
+  - feature
+---
+- runScript: ../../scripts/seed-canvas-assessment.js
+- runScript: ../../scripts/seed-canvas-review.js
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-review-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-status-${output.assessmentId}
+    text: 'Reviewed'
+- assertVisible:
+    id: assessment-review-${output.assessmentId}
+    text: 'Edit review'
+- tapOn:
+    id: assessment-review-${output.assessmentId}
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-review
+    timeout: 15000
+- assertVisible:
+    id: review-status
+    text: 'Reviewed'
+- assertVisible:
+    id: review-save-state
+    text: 'Saved as reviewed.*Reopen it to change it\.'
+- assertNotVisible:
+    id: review-pen
+- assertNotVisible:
+    id: review-finish
+- tapOn:
+    id: review-reopen
+- extendedWaitUntil:
+    visible: 'Review reopened\..*'
+    timeout: 10000
+- assertVisible:
+    id: review-status
+    text: 'Draft'
+- assertVisible:
+    id: review-finish
+- assertVisible:
+    id: review-pen
+# The list: a review in progress again.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: assessment-review-draft-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-review-${output.assessmentId}
+    text: 'Continue review'
+- assertVisible:
+    id: assessment-status-${output.assessmentId}
+    text: 'Submitted'
+- assertNotVisible:
+    id: assessment-open-review-${output.assessmentId}
+# Sofia: nothing to open now.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-status-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-status-${output.assessmentId}
+    text: 'Submitted'
+- assertNotVisible:
+    id: assessment-open-review-${output.assessmentId}
+- assertNotVisible:
+    id: assessment-review-draft-${output.assessmentId}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments/pdf/${output.assessmentId}?kind=reviewed
+- extendedWaitUntil:
+    visible:
+      id: assessment-pdf-denied
+    timeout: 15000
+- assertVisible: 'This assessment has not been reviewed yet\.'

@@ -5,7 +5,9 @@
 // URL and the worker runs from another (pdf.js falls back to its own in-page worker if a worker is
 // refused). The PDF itself arrives from the host as base64 through `window.__render`, fetched by
 // the app with the session -- it is never a URL the page could load, and never a file on the device.
-// The page tells the host `ready`, `pages` and `done` (or `error`). Pure: no React.
+// The page tells the host `ready`, `pages` and `done` (or `error`). Phase 40: the same page also
+// draws each page as a PNG for the review editor (`window.__images`: `image`, then `images-done`).
+// Pure: no React.
 import { escapeHtml } from '@/features/question-bank/question-html';
 import { PDFJS_LIB_BASE64, PDFJS_WORKER_BASE64 } from './pdfjs.generated';
 
@@ -99,6 +101,41 @@ const SCRIPT = `(function () {
         post({ t: 'error' });
       });
   };
+  // Phase 40: every page as a PNG, the width asked for, posted back one at a time for the review
+  // editor to show natively with the tutor's ink over it. Nothing is drawn on this page.
+  window.__images = function (base64, width) {
+    pdfjs()
+      .then(function (lib) {
+        return lib.getDocument({ data: bytes(base64), isEvalSupported: false }).promise;
+      })
+      .then(function (doc) {
+        var chain = Promise.resolve();
+        for (var n = 1; n <= doc.numPages; n++) {
+          (function (number) {
+            chain = chain.then(function () {
+              return doc.getPage(number).then(function (page) {
+                var base = page.getViewport({ scale: 1 });
+                var viewport = page.getViewport({ scale: width / base.width });
+                var canvas = document.createElement('canvas');
+                canvas.width = Math.floor(viewport.width);
+                canvas.height = Math.floor(viewport.height);
+                return page.render({ canvas: canvas, viewport: viewport }).promise.then(function () {
+                  post({ t: 'image', n: number, src: canvas.toDataURL('image/png') });
+                  canvas.width = 0;
+                  canvas.height = 0;
+                });
+              });
+            });
+          })(n);
+        }
+        return chain.then(function () {
+          post({ t: 'images-done', n: doc.numPages });
+        });
+      })
+      .catch(function () {
+        post({ t: 'error' });
+      });
+  };
   post({ t: 'ready' });
 })();`;
 
@@ -121,19 +158,38 @@ export type PdfViewerMessage =
   | { t: 'ready' }
   | { t: 'pages'; n: number }
   | { t: 'done'; n: number }
+  | { t: 'image'; n: number; src: string }
+  | { t: 'images-done'; n: number }
   | { t: 'error' };
 
 export function readViewerMessage(data: string): PdfViewerMessage | null {
   try {
-    const message = JSON.parse(data) as { t?: unknown; n?: unknown };
+    const message = JSON.parse(data) as { t?: unknown; n?: unknown; src?: unknown };
     if (message.t === 'ready' || message.t === 'error') return { t: message.t };
-    if ((message.t === 'pages' || message.t === 'done') && typeof message.n === 'number') {
+    if (
+      (message.t === 'pages' || message.t === 'done' || message.t === 'images-done') &&
+      typeof message.n === 'number'
+    ) {
       return { t: message.t, n: message.n };
+    }
+    // Only a PNG drawn by the page itself.
+    if (
+      message.t === 'image' &&
+      typeof message.n === 'number' &&
+      typeof message.src === 'string' &&
+      message.src.startsWith('data:image/png;base64,')
+    ) {
+      return { t: 'image', n: message.n, src: message.src };
     }
     return null;
   } catch {
     return null;
   }
+}
+
+/** The call that asks the page for every page as a PNG `width` pixels wide (Phase 40). */
+export function imagesCall(base64: string, width: number): string {
+  return `window.__images && window.__images(${JSON.stringify(base64)}, ${Math.round(width)}); true;`;
 }
 
 /** The call that hands the PDF to the page: base64 and a label, both as JSON string literals. */

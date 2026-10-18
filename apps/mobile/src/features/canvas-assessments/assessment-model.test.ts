@@ -157,6 +157,9 @@ describe('the sentences', () => {
     submitted_at: '2026-10-18T11:55:00Z',
     can_review: true,
     can_continue: false,
+    reviewed_at: null,
+    reviewed_by_name: null,
+    review_draft: null,
   };
 
   it('offers a grade with its question count, or says it has none', () => {
@@ -168,6 +171,19 @@ describe('the sentences', () => {
     );
     expect(levelOptionDetail({ level_id: 'NC26.5', label: 'Grade 5', available: 0, unreviewed: 0 })).toBe(
       'no approved questions yet',
+    );
+  });
+
+  it('uses the organization’s own count (Phase 40)', () => {
+    const grade4 = { level_id: 'NC26.4' as const, label: 'Grade 4', available: 12, unreviewed: 0 };
+    expect(levelOptionDetail(grade4, 11)).toBe('11 questions');
+    expect(levelOptionDetail(grade4, 25)).toBe('12 questions');
+    expect(startNote(false, 11)).toMatch(/^Up to 11 questions of the grade/);
+  });
+
+  it('names the reviewer once it is reviewed (Phase 40)', () => {
+    expect(rowSummary({ ...ROW, reviewed_at: '2026-10-18T11:58:00Z', reviewed_by_name: 'Alex Chen' }, NOW)).toBe(
+      '7 of 10 questions written · 3 of 4 choices correct · submitted 5 minutes ago · reviewed by Alex Chen · started by Priya Raghavan',
     );
   });
 

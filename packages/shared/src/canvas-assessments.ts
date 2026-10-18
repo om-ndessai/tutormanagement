@@ -45,8 +45,10 @@ export function levelLabel(levelId: string): string {
 export const CANVAS_LIMITS = {
   width: 1000,
   height: 800,
-  /** Questions drawn for one assessment. */
+  /** Questions drawn for one assessment, unless the organization sets its own (Phase 40). */
   questions: 10,
+  /** The most an organization may set (Phase 40): 25 pages stays well under D1's 2 MB a value. */
+  maxQuestions: 25,
   strokesPerPage: 600,
   numbersPerPage: 20_000,
   /** Characters in one stroke's string. */
@@ -69,7 +71,10 @@ export interface CanvasStroke {
  * in range, at least one point, every point on the page. Hand-written rather
  * than a regex over the whole string, so it stays linear on 60,000 characters.
  */
-export function parseStroke(text: string): CanvasStroke | null {
+export function parseStroke(
+  text: string,
+  bounds: { width: number; height: number } = CANVAS_LIMITS,
+): CanvasStroke | null {
   const numbers: number[] = [];
   let current = 0;
   let digits = 0;
@@ -101,7 +106,7 @@ export function parseStroke(text: string): CanvasStroke | null {
   for (let i = 0; i < points.length; i += 2) {
     const x = points[i]!;
     const y = points[i + 1]!;
-    if (x < 0 || x > CANVAS_LIMITS.width || y < 0 || y > CANVAS_LIMITS.height) return null;
+    if (x < 0 || x > bounds.width || y < 0 || y > bounds.height) return null;
   }
   return { width, points };
 }
@@ -126,7 +131,7 @@ export const canvasPageSchema = z.object({
 export type CanvasPage = z.infer<typeof canvasPageSchema>;
 
 export const submitCanvasAssessmentSchema = z.object({
-  pages: z.array(canvasPageSchema).max(CANVAS_LIMITS.questions),
+  pages: z.array(canvasPageSchema).max(CANVAS_LIMITS.maxQuestions),
 });
 export type SubmitCanvasAssessmentInput = z.infer<typeof submitCanvasAssessmentSchema>;
 
@@ -164,6 +169,14 @@ export interface CanvasAssessment {
   can_review: boolean;
   /** The viewer started it and it is still in progress. */
   can_continue: boolean;
+  /**
+   * Phase 40: when a tutor saved it as reviewed, and who. The reviewed PDF is
+   * then readable by the student's whole audience (R17).
+   */
+  reviewed_at: string | null;
+  reviewed_by_name: string | null;
+  /** Reviewers only: a review is in progress (a draft), not yet saved as reviewed. */
+  review_draft: boolean | null;
 }
 
 export interface CanvasAssessmentDetail extends CanvasAssessment {
@@ -182,6 +195,58 @@ export interface CanvasAssessmentLevel {
   available: number;
   /** How many of `available` are not yet reviewed. */
   unreviewed: number;
+}
+
+// ---------------------------------------------------------------------------
+// Reviewing online (Phase 40)
+// ---------------------------------------------------------------------------
+// A tutor marks a submitted assessment up over its PDF's pages: red ink, a note
+// per question, an overall comment. No scoring yet (owner, 2026-10-18). The
+// review is kept as data and the reviewed PDF rebuilt from it, so the submitted
+// PDF is never changed. Ink is in the PDF page's own points, from its top-left
+// corner, so a mark lands where it was drawn on the rendered page.
+
+export const REVIEW_PAGE = { width: 612, height: 792 } as const;
+
+export const REVIEW_LIMITS = {
+  noteChars: 1000,
+  commentChars: 2000,
+  strokesPerPage: 400,
+  numbersPerPage: 20_000,
+} as const;
+
+export const reviewInkPageSchema = z.object({
+  question_id: z.string().uuid(),
+  strokes: z.array(z.string().min(1).max(CANVAS_LIMITS.strokeChars)).max(REVIEW_LIMITS.strokesPerPage),
+});
+
+export const saveCanvasReviewSchema = z.object({
+  /** A note per question, by its id. */
+  notes: z.record(z.string().uuid(), z.string().max(REVIEW_LIMITS.noteChars)).default({}),
+  comment: z.string().max(REVIEW_LIMITS.commentChars).default(''),
+  ink: z.array(reviewInkPageSchema).max(CANVAS_LIMITS.maxQuestions).default([]),
+});
+export type SaveCanvasReviewInput = z.input<typeof saveCanvasReviewSchema>;
+
+/** A page of the review: the question as the student saw it, and what the tutor has added. */
+export interface CanvasReviewQuestion {
+  id: string;
+  kind: QuestionKind;
+  skill: string | null;
+  stem: string;
+  /** Its page in the submitted PDF (1 is the cover, so the first question is 2). */
+  pdf_page: number;
+}
+
+export interface CanvasReview {
+  status: 'none' | 'draft' | 'final';
+  notes: Record<string, string>;
+  comment: string;
+  ink: { question_id: string; strokes: string[] }[];
+  reviewer_name: string | null;
+  updated_at: string | null;
+  finished_at: string | null;
+  questions: CanvasReviewQuestion[];
 }
 
 /** The bank statuses an assessment may draw on: approved, and -- on the organization's trial flag -- checked. */
@@ -213,7 +278,7 @@ const LATEX_SYMBOLS: Record<string, string> = {
   circ: '°',
   angle: 'angle ',
   triangle: 'triangle ',
-  square: 'square ',
+  square: '[ ]',
   cong: ' congruent to ',
   parallel: ' || ',
   to: ' -> ',

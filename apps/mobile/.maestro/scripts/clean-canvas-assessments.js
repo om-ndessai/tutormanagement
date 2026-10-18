@@ -1,5 +1,6 @@
 // Puts the Assessment menu back as the seed has it, before and after every canvas-assessments/*
-// flow (Phase 38): chmi's switch on and its unreviewed trial off, and every assessment still in
+// flow (Phase 38): chmi's switch on, its unreviewed trial off and (Phase 40) 10 questions an
+// assessment, and every assessment still in
 // progress there discarded (as Priya, an admin, who may discard any), so a flow that failed
 // part-way leaves no "Continue" for the next. Submitted ones cannot be taken back through the API;
 // the runner resets the database around a run. Never anything but localhost.
@@ -18,6 +19,7 @@ function call(method, path, body) {
 var settings = call('PATCH', '/organization/settings', {
   canvas_assessments: true,
   canvas_assessments_unreviewed: false,
+  canvas_assessment_questions: 10,
 });
 if (settings.status >= 300) throw new Error('Could not switch the Assessment menu back on: ' + settings.status);
 

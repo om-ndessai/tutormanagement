@@ -1,3 +1,4 @@
+import { inflateSync } from 'node:zlib';
 import type { Page } from '@playwright/test';
 
 import { PEOPLE, expect, test } from '../support/fixtures.js';
@@ -43,6 +44,17 @@ function checkPdf(bytes: Buffer): number {
     if (id > 0) expect(text.startsWith(`${id} 0 obj`, Number(entry.slice(0, 10)))).toBe(true);
   });
   return Number(/\/Count (\d+)/.exec(text)![1]);
+}
+
+/** The text drawn on a PDF's pages: our own PDFs deflate each page's content stream. */
+function pdfText(bytes: Buffer): string {
+  const text = bytes.toString('latin1');
+  let out = '';
+  for (const match of text.matchAll(/\/Length (\d+) \/Filter \/FlateDecode >>\nstream\n/g)) {
+    const start = match.index! + match[0].length;
+    out += inflateSync(bytes.subarray(start, start + Number(match[1]))).toString('latin1');
+  }
+  return out;
 }
 
 test.describe('the Assessment menu (beta)', () => {
@@ -145,8 +157,8 @@ test.describe('the Assessment menu (beta)', () => {
     expect(await savedStrokes(admin, id)).toEqual({});
 
     // The PDF opens in the portal, drawn page by page -- never a download.
-    await row.getByRole('link', { name: 'Open PDF' }).click();
-    await expect(admin).toHaveURL(new RegExp(`/assessments/${id}/review$`));
+    await row.getByRole('link', { name: 'Submitted PDF' }).click();
+    await expect(admin).toHaveURL(new RegExp(`/assessments/${id}/pdf$`));
     await expect(admin.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'ready', { timeout: 20_000 });
     await expect(admin.getByTestId('pdf-page')).toHaveCount(detail0.questions.length + 1);
     const summary = await unwrap<any>(await admin.request.get(`/api/canvas-assessments/${id}`), 'the summary');
@@ -172,7 +184,8 @@ test.describe('the Assessment menu (beta)', () => {
       expect(shown.choices_correct).toBeNull();
       await reader.goto('/assessments');
       await expect(reader.getByTestId(`assessment-${id}`)).toContainText('Submitted');
-      await expect(reader.getByTestId(`assessment-${id}`).getByRole('link', { name: 'Open PDF' })).toHaveCount(0);
+      await expect(reader.getByTestId(`assessment-${id}`).getByRole('link', { name: 'Submitted PDF' })).toHaveCount(0);
+      await expect(reader.getByTestId(`assessment-${id}`).getByRole('link', { name: 'Review', exact: true })).toHaveCount(0);
     }
 
     // Submitted once: never again, and never discarded.
@@ -255,5 +268,107 @@ test.describe('the Assessment menu (beta)', () => {
       'discarding',
     );
     expect(discarded.status).toBe('discarded');
+  });
+
+  test('Phase 40: a tutor reviews it online, and the family reads the review', async ({ as }) => {
+    const admin = await as('admin');
+    const sofiaId = await idOf(admin, PEOPLE.student.email);
+    const started = await unwrap<any>(
+      await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
+      'starting',
+    );
+    const taking = await unwrap<any>(await admin.request.get(`/api/canvas-assessments/${started.id}`), 'the questions');
+    await unwrap<any>(
+      await admin.request.post(`/api/canvas-assessments/${started.id}/submit`, {
+        data: { pages: [{ question_id: taking.questions[0].id, strokes: ['4 100 100 300 200 500 150'], choice: null }] },
+      }),
+      'submitting',
+    );
+
+    // Alex, her tutor, opens the review from the list and marks the first page up.
+    const tutor = await as('tutor');
+    await tutor.goto('/assessments');
+    await tutor.getByTestId(`assessment-${started.id}`).getByRole('link', { name: 'Review', exact: true }).click();
+    await expect(tutor).toHaveURL(new RegExp(`/assessments/${started.id}/review$`));
+    const page1 = tutor.getByTestId('review-page-1');
+    await expect(page1.getByRole('img', { name: 'Question 1 as submitted' })).toBeVisible({ timeout: 20_000 });
+    const overlay = page1.getByTestId('assessment-canvas');
+    await overlay.scrollIntoViewIfNeeded();
+    const box = (await overlay.boundingBox())!;
+    await tutor.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.4);
+    await tutor.mouse.down();
+    for (let step = 1; step <= 8; step += 1) {
+      await tutor.mouse.move(box.x + box.width * (0.2 + step * 0.03), box.y + box.height * (0.4 + step * 0.01));
+    }
+    await tutor.mouse.up();
+    await tutor.getByTestId('review-note-1').fill('Line up the place values before you add.');
+    await tutor.getByTestId('review-comment').fill('A good start on place value.');
+    await expect(tutor.getByTestId('review-save-state')).toContainText('Draft saved', { timeout: 10_000 });
+
+    // The draft is the reviewers' alone, and it survives a reload.
+    const draft = await unwrap<any>(await tutor.request.get(`/api/canvas-assessments/${started.id}/review`), 'the draft');
+    expect(draft.status).toBe('draft');
+    expect(draft.ink[0].strokes.length).toBe(1);
+    expect(draft.notes[taking.questions[0].id]).toBe('Line up the place values before you add.');
+    const student = await as('student');
+    expect((await student.request.get(`/api/canvas-assessments/${started.id}/review`)).status()).toBe(404);
+    expect((await student.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`)).status()).toBe(404);
+    await tutor.reload();
+    await expect(tutor.getByTestId('review-note-1')).toHaveValue('Line up the place values before you add.');
+
+    // Saved as reviewed: the reviewed PDF opens in the portal.
+    await tutor.getByTestId('review-finish').click();
+    await tutor.getByTestId('review-finish-confirm').click();
+    await expect(tutor).toHaveURL(new RegExp(`/assessments/${started.id}/pdf\\?kind=reviewed$`));
+    await expect(tutor.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'ready', { timeout: 20_000 });
+
+    // The student and their parent read it; it carries the tutor's notes, never the answer key.
+    for (const who of ['student', 'parentTutor'] as const) {
+      const reader = await as(who);
+      await reader.goto('/assessments');
+      const row = reader.getByTestId(`assessment-${started.id}`);
+      await expect(row).toContainText('Reviewed');
+      await row.getByRole('link', { name: 'Open the review' }).click();
+      await expect(reader.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'ready', { timeout: 20_000 });
+      await expect(reader.getByTestId('pdf-page')).toHaveCount(started.question_count + 1);
+      expect((await reader.request.get(`/api/canvas-assessments/${started.id}/pdf`)).status()).toBe(404);
+    }
+    const reviewed = await student.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`);
+    const text = pdfText(await reviewed.body());
+    expect(text).toContain('Line up the place values before you add.');
+    expect(text).toContain('A good start on place value.');
+    expect(text).not.toContain('FOR THE TUTOR');
+    expect(text).not.toContain('Worked solution');
+    // Somebody else's parent: not found.
+    const other = await as('parent');
+    expect((await other.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`)).status()).toBe(404);
+
+    // Reopened: the family loses it until it is saved as reviewed again; a final review is not edited in place.
+    expect((await tutor.request.put(`/api/canvas-assessments/${started.id}/review`, { data: { comment: 'x' } })).status()).toBe(409);
+    expect((await tutor.request.post(`/api/canvas-assessments/${started.id}/review/reopen`, { data: {} })).status()).toBe(200);
+    expect((await student.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`)).status()).toBe(404);
+    expect((await student.request.post(`/api/canvas-assessments/${started.id}/review/finish`, { data: {} })).status()).toBe(404);
+    expect((await tutor.request.post(`/api/canvas-assessments/${started.id}/review/finish`, { data: {} })).status()).toBe(200);
+  });
+
+  test('Phase 40: an organization sets how many questions an assessment draws', async ({ as }) => {
+    const admin = await as('admin');
+    await admin.goto('/organization');
+    await admin.getByTestId('assessment-question-count').click();
+    await admin.getByRole('option', { name: '3', exact: true }).click();
+    await expect(admin.getByText('Assessments now have 3 questions.')).toBeVisible();
+    try {
+      const sofiaId = await idOf(admin, PEOPLE.student.email);
+      const started = await unwrap<any>(
+        await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
+        'starting',
+      );
+      expect(started.question_count).toBe(3);
+      expect(
+        (await admin.request.patch('/api/organization/settings', { data: { canvas_assessment_questions: 26 } })).status(),
+      ).toBe(422);
+    } finally {
+      await admin.request.patch('/api/organization/settings', { data: { canvas_assessment_questions: 10 } });
+    }
   });
 });

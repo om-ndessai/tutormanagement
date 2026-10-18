@@ -1,9 +1,14 @@
 import { Hono, type MiddlewareHandler } from 'hono';
 import {
   CANVAS_LIMITS,
+  REVIEW_LIMITS,
+  REVIEW_PAGE,
   checkAnswer,
+  containsSsn,
   levelLabel,
   parseStroke,
+  saveCanvasReviewSchema,
+  type CanvasReview,
   startCanvasAssessmentSchema,
   submitCanvasAssessmentSchema,
   type ApiOk,
@@ -23,12 +28,18 @@ import {
   countDrawableQuestions,
   discardCanvasAssessment,
   drawQuestionIds,
+  finishReview,
   getCanvasAssessmentFile,
+  getReview,
+  getReviewedPdf,
   getVisibleCanvasAssessment,
   insertCanvasAssessment,
   listCanvasAssessments,
+  reopenReview,
+  saveReviewDraft,
   submitCanvasAssessment,
 } from '../repositories/canvas-assessments.js';
+import type { OrgContext } from '../lib/org.js';
 import { canViewStudentProgress } from '../repositories/progress.js';
 import { getQuestions } from '../repositories/questions.js';
 import { getLiveUserById } from '../repositories/users.js';
@@ -50,6 +61,62 @@ const encoder = new TextEncoder();
 async function deflate(bytes: Uint8Array): Promise<Uint8Array> {
   const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate'));
   return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function inflateJson<T>(bytes: Uint8Array): Promise<T> {
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate'));
+  return JSON.parse(await new Response(stream).text()) as T;
+}
+
+/** The body as JSON, refusing one too large before it is parsed: handwriting and ink are large. */
+async function readLargeJson(c: { req: { header(name: string): string | undefined; text(): Promise<string> } }): Promise<unknown> {
+  const declared = Number(c.req.header('content-length') ?? '0');
+  if (declared > CANVAS_LIMITS.bodyBytes) {
+    throw new ApiError(413, 'bad_request', 'That is more writing than one assessment can hold.');
+  }
+  const raw = await c.req.text();
+  if (raw.length > CANVAS_LIMITS.bodyBytes) {
+    throw new ApiError(413, 'bad_request', 'That is more writing than one assessment can hold.');
+  }
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw ApiError.badRequest('The request body is not valid JSON.');
+  }
+}
+
+/**
+ * The question pages as submitted: each question, its handwriting and choice,
+ * from the stored strokes -- what both PDFs are drawn from.
+ */
+async function submittedPages(db: D1Database, org: OrgContext, assessmentId: string, questionIds: string[]) {
+  const file = await getCanvasAssessmentFile(db, org.id, assessmentId, 'strokes');
+  const stored = file
+    ? await inflateJson<{ pages: { question_id: string; strokes: string[]; choice?: number | null }[] }>(file.bytes)
+    : { pages: [] };
+  const byQuestion = new Map(stored.pages.map((page) => [page.question_id, page]));
+  const questions = await getQuestions(db, questionIds);
+  return questions.map((question) => {
+    const page = byQuestion.get(question.id);
+    const strokes = (page?.strokes ?? []).map((text) => parseStroke(text)).filter((s): s is CanvasStroke => s !== null);
+    const index = question.kind === 'choice' ? (page?.choice ?? null) : null;
+    const choice = index !== null && index < question.choices.length ? index : null;
+    return {
+      question,
+      strokes,
+      choice,
+      correct: choice === null ? null : checkAnswer(question, question.choices[choice]!),
+    };
+  });
+}
+
+/** Refuses a review that would carry an SSN, as every free-text field does. */
+function refuseSsnInReview(notes: Record<string, string>, comment: string): void {
+  if (containsSsn(comment) || Object.values(notes).some((note) => containsSsn(note))) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      notes: ['That looks like a Social Security number, which is never stored.'],
+    });
+  }
 }
 
 /** "Sofia Reyes" -> "sofia-reyes", for a file name. */
@@ -88,7 +155,7 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     const drawn = await drawQuestionIds(
       c.env.DB,
       input.level_id,
-      CANVAS_LIMITS.questions,
+      org.canvas_assessment_questions,
       org.canvas_assessments_unreviewed,
     );
     if (drawn.ids.length === 0) {
@@ -272,20 +339,161 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     return c.json(body);
   })
 
+  // -------------------------------------------------------------------------
+  // Phase 40: the tutor's review. Written by the student's current tutors and
+  // the admins only; anyone else is told the assessment is missing.
+  // -------------------------------------------------------------------------
+
+  .get('/:id/review', async (c) => {
+    const org = c.get('org');
+    const found = await getVisibleCanvasAssessment(c.env.DB, org.id, c.get('user'), c.req.param('id'));
+    if (!found || !found.shown.can_review) throw ApiError.notFound('Assessment not found.');
+    const stored = await getReview(c.env.DB, org.id, found.stored.id);
+    const questions = await getQuestions(c.env.DB, found.stored.question_ids);
+    const body: ApiOk<CanvasReview> = {
+      data: {
+        status: stored?.status ?? 'none',
+        notes: stored?.notes ?? {},
+        comment: stored?.comment ?? '',
+        ink: stored?.ink ? await inflateJson<CanvasReview['ink']>(stored.ink) : [],
+        reviewer_name: stored?.reviewer_name ?? null,
+        updated_at: stored?.updated_at ?? null,
+        finished_at: stored?.finished_at ?? null,
+        // The cover is page 1 of the submitted PDF; the first question is page 2.
+        questions: questions.map((q, index) => ({ id: q.id, kind: q.kind, skill: q.skill, stem: q.stem, pdf_page: index + 2 })),
+      },
+    };
+    return c.json(body);
+  })
+
+  .put('/:id/review', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    const parsed = saveCanvasReviewSchema.safeParse(await readLargeJson(c));
+    if (!parsed.success) {
+      throw ApiError.validation('Please correct the highlighted fields.', { review: ['The review could not be read.'] });
+    }
+    const found = await getVisibleCanvasAssessment(c.env.DB, org.id, user, c.req.param('id'));
+    if (!found || !found.shown.can_review) throw ApiError.notFound('Assessment not found.');
+
+    const asked = new Set(found.stored.question_ids);
+    const { notes, comment, ink } = parsed.data;
+    if (Object.keys(notes).some((id) => !asked.has(id)) || ink.some((page) => !asked.has(page.question_id))) {
+      throw ApiError.validation('Please correct the highlighted fields.', { review: ['A note or a page names a question this assessment did not ask.'] });
+    }
+    refuseSsnInReview(notes, comment);
+    for (const page of ink) {
+      let numbers = 0;
+      for (const text of page.strokes) {
+        const stroke = parseStroke(text, REVIEW_PAGE);
+        if (!stroke) throw ApiError.validation('Please correct the highlighted fields.', { review: ['A mark could not be read.'] });
+        numbers += stroke.points.length + 1;
+      }
+      if (numbers > REVIEW_LIMITS.numbersPerPage) {
+        throw new ApiError(413, 'bad_request', 'One page holds more marking than a review can keep.');
+      }
+    }
+    // Empty notes are dropped, so a cleared note is not kept as "".
+    const kept = Object.fromEntries(Object.entries(notes).filter(([, note]) => note.trim() !== ''));
+    const saved = await saveReviewDraft(c.env.DB, org.id, found.stored.id, user.id, {
+      notes: kept,
+      comment,
+      ink: await deflate(encoder.encode(JSON.stringify(ink.filter((page) => page.strokes.length > 0)))),
+    });
+    if (!saved) throw ApiError.conflict('This review has been saved as reviewed. Reopen it to change it.');
+    return c.json({ data: { saved: true } });
+  })
+
+  .post('/:id/review/finish', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    const found = await getVisibleCanvasAssessment(c.env.DB, org.id, user, c.req.param('id'));
+    if (!found || !found.shown.can_review) throw ApiError.notFound('Assessment not found.');
+    const review = await getReview(c.env.DB, org.id, found.stored.id);
+    if (!review) throw ApiError.conflict('Mark the assessment up first: there is no review to save yet.');
+    if (review.status === 'final') throw ApiError.conflict('This review has already been saved as reviewed.');
+
+    const ink = review.ink ? await inflateJson<CanvasReview['ink']>(review.ink) : [];
+    const pages = await submittedPages(c.env.DB, org, found.stored.id, found.stored.question_ids);
+    const pdf = await buildAssessmentPdf({
+      organizationName: org.name,
+      timeZone: org.time_zone,
+      studentName: found.stored.student_name,
+      startedByName: found.stored.started_by_name,
+      levelId: found.stored.level_id,
+      startedAt: found.stored.started_at,
+      submittedAt: found.stored.submitted_at ?? found.stored.started_at,
+      pages,
+      review: {
+        reviewerName: user.full_name,
+        reviewedAt: new Date().toISOString(),
+        comment: review.comment,
+        notes: review.notes,
+        ink: Object.fromEntries(
+          ink.map((page) => [
+            page.question_id,
+            page.strokes.map((text) => parseStroke(text, REVIEW_PAGE)).filter((s): s is CanvasStroke => s !== null),
+          ]),
+        ),
+      },
+    });
+    if (!(await finishReview(c.env.DB, org.id, found.stored.id, user.id, pdf))) {
+      throw ApiError.conflict('This review has already been saved as reviewed.');
+    }
+    const student = await getLiveUserById(c.env.DB, org.id, found.stored.student_user_id);
+    await recordAudit(c.env.DB, user, org.id, {
+      action: 'canvas_assessment.reviewed',
+      description: `Reviewed ${found.stored.student_name}'s ${levelLabel(found.stored.level_id)} assessment`,
+      subject: student,
+      entity_type: 'canvas_assessment',
+      entity_id: found.stored.id,
+    });
+    const after = await getVisibleCanvasAssessment(c.env.DB, org.id, user, found.stored.id);
+    if (!after) throw ApiError.notFound('Assessment not found.');
+    const body: ApiOk<CanvasAssessment> = { data: after.shown };
+    return c.json(body);
+  })
+
+  .post('/:id/review/reopen', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    const found = await getVisibleCanvasAssessment(c.env.DB, org.id, user, c.req.param('id'));
+    if (!found || !found.shown.can_review) throw ApiError.notFound('Assessment not found.');
+    if (!(await reopenReview(c.env.DB, org.id, found.stored.id))) {
+      throw ApiError.conflict('Only a review saved as reviewed can be reopened.');
+    }
+    const student = await getLiveUserById(c.env.DB, org.id, found.stored.student_user_id);
+    await recordAudit(c.env.DB, user, org.id, {
+      action: 'canvas_assessment.review_reopened',
+      description: `Reopened the review of ${found.stored.student_name}'s ${levelLabel(found.stored.level_id)} assessment`,
+      subject: student,
+      entity_type: 'canvas_assessment',
+      entity_id: found.stored.id,
+    });
+    const after = await getVisibleCanvasAssessment(c.env.DB, org.id, user, found.stored.id);
+    if (!after) throw ApiError.notFound('Assessment not found.');
+    const body: ApiOk<CanvasAssessment> = { data: after.shown };
+    return c.json(body);
+  })
+
   /**
-   * The PDF, as a plain link (`?org=`). It carries the answers and worked
-   * solutions, so only the student's current tutors and the admins open it;
-   * for anybody else it does not exist (R17).
+   * The PDFs, as plain links (`?org=`). The submitted one carries the answers
+   * and worked solutions, so only the student's current tutors and the admins
+   * open it. The reviewed one (`?kind=reviewed`, Phase 40) is the student's
+   * whole audience's once it exists. For anybody else they do not exist (R17).
    */
   .get('/:id/pdf', async (c) => {
     const org = c.get('org');
     const found = await getVisibleCanvasAssessment(c.env.DB, org.id, c.get('user'), c.req.param('id'));
-    if (!found || !found.shown.can_review) throw ApiError.notFound('Assessment not found.');
-    const file = await getCanvasAssessmentFile(c.env.DB, org.id, found.stored.id, 'answers');
-    if (!file) throw ApiError.notFound('Assessment not found.');
+    const reviewed = c.req.query('kind') === 'reviewed';
+    if (!found || (!reviewed && !found.shown.can_review)) throw ApiError.notFound('Assessment not found.');
+    const bytes = reviewed
+      ? await getReviewedPdf(c.env.DB, org.id, found.stored.id)
+      : (await getCanvasAssessmentFile(c.env.DB, org.id, found.stored.id, 'answers'))?.bytes;
+    if (!bytes) throw ApiError.notFound('Assessment not found.');
 
-    const name = `assessment-${fileSlug(found.stored.student_name)}-${found.stored.level_id.toLowerCase().replace('.', '-')}.pdf`;
-    return new Response(file.bytes, {
+    const name = `assessment-${reviewed ? 'review-' : ''}${fileSlug(found.stored.student_name)}-${found.stored.level_id.toLowerCase().replace('.', '-')}.pdf`;
+    return new Response(bytes, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `inline; filename="${name}"`,

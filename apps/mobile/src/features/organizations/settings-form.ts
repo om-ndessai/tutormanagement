@@ -2,7 +2,7 @@
 // apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322. The switches
 // (notifications; the Assessment menu and its trial, Phase 38) save on their own, so they are not
 // part of the form.
-import { updateOrganizationSettingsSchema, type OrganizationSettings } from '@tmi/shared';
+import { CANVAS_LIMITS, updateOrganizationSettingsSchema, type OrganizationSettings } from '@tmi/shared';
 
 export const PAYER_FIELDS = [
   'tin',
@@ -45,4 +45,9 @@ export function validateForm(
     errors[key] ??= issue.message;
   }
   return { ok: false, errors };
+}
+
+/** Phase 40: the count the Assessment card's stepper moves to, inside 1-25. */
+export function stepQuestionCount(current: number, by: number): number {
+  return Math.min(CANVAS_LIMITS.maxQuestions, Math.max(1, current + by));
 }

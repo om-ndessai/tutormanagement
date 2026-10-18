@@ -1,5 +1,5 @@
 // The rules of apps/web/src/features/canvas-assessments/{take-assessment-page.tsx,
-// assessments-page.tsx, review-assessment-page.tsx} @ 22b9701, kept pure so they are tested without a
+// assessments-page.tsx, review-assessment-page.tsx} @ 37bdad1 (with Phase 40), kept pure so they are tested without a
 // screen: what counts as unanswered, choosing and un-choosing, what a page button shows, the request
 // a submission sends, the work saved on the device, and the sentences under a row and a review.
 import {
@@ -115,19 +115,22 @@ export function parseSavedWork(raw: string | null): SavedWork {
   }
 }
 
-/** A grade as the picker offers it (the web's SelectItem): "Grade 4 · 10 questions". */
-export function levelOptionDetail(level: CanvasAssessmentLevel): string {
+/**
+ * A grade as the picker offers it (the web's SelectItem): "Grade 4 · 10 questions", at most the
+ * organization's own count (Phase 40).
+ */
+export function levelOptionDetail(level: CanvasAssessmentLevel, questions = 10): string {
   if (level.available === 0) return 'no approved questions yet';
   return (
-    `${Math.min(level.available, 10)} question${level.available === 1 ? '' : 's'}` +
+    `${Math.min(level.available, questions)} question${level.available === 1 ? '' : 's'}` +
     (level.unreviewed > 0 ? ' · includes unreviewed' : '')
   );
 }
 
-/** The start card's note under the pickers. */
-export function startNote(includesUnreviewed: boolean): string {
+/** The start card's note under the pickers, with the organization's count (Phase 40). */
+export function startNote(includesUnreviewed: boolean, questions = 10): string {
   return (
-    'Up to 10 questions of the grade, chosen at random' +
+    `Up to ${questions} questions of the grade, chosen at random` +
     (includesUnreviewed
       ? ', including questions not yet reviewed in the bank (your organization is trying them out)'
       : ' from the approved ones') +
@@ -141,7 +144,8 @@ export function rowSummary(row: CanvasAssessment, now?: Date): string {
     (row.status === 'submitted'
       ? `${row.questions_written} of ${row.question_count} questions written` +
         (row.choice_questions ? ` · ${row.choices_correct} of ${row.choice_questions} choices correct` : '') +
-        ` · submitted ${formatRelativeTime(row.submitted_at ?? row.started_at, now)}`
+        ` · submitted ${formatRelativeTime(row.submitted_at ?? row.started_at, now)}` +
+        (row.reviewed_at && row.reviewed_by_name ? ` · reviewed by ${row.reviewed_by_name}` : '')
       : `${row.question_count} questions · started ${formatRelativeTime(row.started_at, now)}`) +
     (row.started_by_name ? ` · started by ${row.started_by_name}` : '')
   );

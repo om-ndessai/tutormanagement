@@ -77,6 +77,7 @@ export const organizationRoutes = new Hono<AppEnv>()
         email_notifications: notifications,
         canvas_assessments: assessments,
         canvas_assessments_unreviewed: unreviewed,
+        canvas_assessment_questions: questionCount,
         ...details
       } = input;
       const changes = Object.keys(details).map((key) =>
@@ -97,6 +98,9 @@ export const organizationRoutes = new Hono<AppEnv>()
             : unreviewed
               ? `Let ${org.name}'s assessments use questions not yet reviewed`
               : `Limited ${org.name}'s assessments to approved questions`,
+          questionCount === undefined
+            ? null
+            : `Set ${org.name}'s assessments to ${questionCount} question${questionCount === 1 ? '' : 's'}`,
         ]
           .filter(Boolean)
           .join('; '),

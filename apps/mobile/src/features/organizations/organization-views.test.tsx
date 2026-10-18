@@ -58,6 +58,7 @@ const SETTINGS = {
   email_notifications: true,
   canvas_assessments: false,
   canvas_assessments_unreviewed: false,
+  canvas_assessment_questions: 10,
 };
 const LOG: NotificationLogEntry[] = [
   {

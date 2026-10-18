@@ -1,0 +1,21 @@
+# "Save as reviewed"'s confirm (Phase 40) is a native alert over a screen with its own "Save as
+# reviewed": tap the alert's. Android's dialog draws its buttons in capitals.
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible: 'Save this as reviewed\?'
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Save as reviewed'
+          below: '.*You can reopen it later to change it.*'
+          index: 0
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'android:id/button1'

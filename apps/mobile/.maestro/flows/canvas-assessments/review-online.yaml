@@ -1,0 +1,162 @@
+# Reviewing online (Phase 40). Alex, Sofia's tutor, opens "Review" on her submitted Grade 4
+# assessment (seeded through the local API): the submitted pages are drawn in the app with a red-ink
+# layer; he marks page 1, writes a note on it and an overall comment, and the draft saves itself.
+# "Save as reviewed" (after its confirm) writes the reviewed PDF and opens it. Then Sofia: the row
+# reads "Reviewed", offers "Open the review" (and still no submitted PDF), and the viewer draws it.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+tags:
+  - feature
+---
+- runScript: ../../scripts/seed-canvas-assessment.js
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-review-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-review-${output.assessmentId}
+    text: 'Review'
+- tapOn:
+    id: assessment-review-${output.assessmentId}
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-review
+    timeout: 15000
+- assertVisible:
+    id: review-status
+    text: 'Draft'
+- assertVisible:
+    id: review-pen
+# The submitted pages, drawn by pdf.js and shown natively.
+- extendedWaitUntil:
+    visible:
+      id: review-ink-1
+    timeout: 45000
+- assertVisible:
+    id: review-undo-1
+    enabled: false
+- runFlow: ../../subflows/canvas-assessments/mark-page-1.yaml
+- assertVisible:
+    id: review-undo-1
+    enabled: true
+- extendedWaitUntil:
+    visible:
+      id: review-save-state
+      text: 'Draft saved\..*'
+    timeout: 10000
+- takeScreenshot: canvas-review-marked
+# A note on question 1.
+- scrollUntilVisible:
+    element:
+      id: review-note-1
+    centerElement: true
+- tapOn:
+    id: review-note-1
+- inputText: 'Check the place value.'
+# The overall comment.
+- scrollUntilVisible:
+    element:
+      id: review-comment
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: review-comment
+- inputText: 'Good working throughout.'
+- extendedWaitUntil:
+    visible:
+      id: review-save-state
+      text: 'Draft saved\..*'
+    timeout: 10000
+# Save as reviewed: the reviewed PDF opens.
+- scrollUntilVisible:
+    element:
+      id: review-finish
+    direction: UP
+- tapOn:
+    id: review-finish
+- runFlow: ../../subflows/canvas-assessments/confirm-finish.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-pdf
+    timeout: 20000
+- assertVisible:
+    id: assessment-pdf-title
+    text: 'Review: Sofia Okafor · Grade 4'
+- assertVisible:
+    id: assessment-review-summary
+    text: 'Reviewed by Alex Chen.*'
+- extendedWaitUntil:
+    visible:
+      id: assessment-pdf-pages
+      text: '\d+ pages'
+    timeout: 45000
+- takeScreenshot: canvas-review-reviewed-pdf
+# Sofia: Reviewed, and the review to open -- never the submitted PDF.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-open-review-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assessment-status-${output.assessmentId}
+    text: 'Reviewed'
+- assertNotVisible:
+    id: assessment-open-pdf-${output.assessmentId}
+- assertNotVisible:
+    id: assessment-review-${output.assessmentId}
+- assertNotVisible:
+    id: assessment-review-draft-${output.assessmentId}
+- tapOn:
+    id: assessment-open-review-${output.assessmentId}
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-pdf
+    timeout: 15000
+- assertVisible:
+    id: assessment-pdf-title
+    text: 'Review: Sofia Okafor · Grade 4'
+- assertNotVisible:
+    id: assessment-pdf-edit-review
+- extendedWaitUntil:
+    visible:
+      id: assessment-pdf-pages
+      text: '\d+ pages'
+    timeout: 45000
+- assertNotVisible:
+    id: assessment-pdf-error

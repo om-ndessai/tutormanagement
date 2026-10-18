@@ -373,7 +373,7 @@ evaluation", which only the student's tutors and the admins read. Because the ch
 to a model, it brings the smallest slice of F7: a `consents` table (an admin records a guardian's signed
 form; a guardian can withdraw), checked by `runAi` for every `child_input` task.
 
-Phase 40: (requested 2026-10-18; next -- Phase 38 is released; web and the app)
+Phase 40: (requested 2026-10-18; building after Phase 38's release; web and the app)
 The tutor reviews an assessment online, and organizations set how many questions one has. Plan:
 `docs/canvas-assessment-plan.md`, "Phase 40". On a submitted assessment the student's tutor (or an
 admin) opens a review screen showing the submitted PDF's pages and marks it up in place: a red pen over

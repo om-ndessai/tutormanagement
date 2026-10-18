@@ -602,7 +602,12 @@ The work stays in the browser until it is submitted; the Worker then writes the 
 it with the strokes in `canvas_assessment_files`, D1 for now, R2 later. Handwriting travels as strings
 (`parseStroke`), never as arrays Zod would have to walk. The PDF carries the answers, so only the
 student's current tutors and the admins open it (R17); everyone else in the student's audience sees
-the row. Phase 39's AI evaluation needs consent first: it reads a child's handwriting.
+the row. **Reviewing (Phase 40) keeps the submitted PDF untouched:** the tutor's red ink (in the PDF page's own
+points), notes and comment are a `canvas_assessment_reviews` row, and "Save as reviewed" rebuilds a
+reviewed PDF from the stored strokes and the review -- same page layout, the note where the answer key
+was -- which the student's whole audience then reads. No scoring yet. An organization's admins set how
+many questions an assessment draws (`canvas_assessment_questions`, 1-25). Phase 39's AI evaluation
+(delayed) needs consent first: it reads a child's handwriting.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

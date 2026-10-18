@@ -117,7 +117,7 @@ function StartCard() {
                     {level.label} ·{' '}
                     {level.available === 0
                       ? 'no approved questions yet'
-                      : `${Math.min(level.available, 10)} question${level.available === 1 ? '' : 's'}` +
+                      : `${Math.min(level.available, organization?.canvas_assessment_questions ?? 10)} question${level.available === 1 ? '' : 's'}` +
                         (level.unreviewed > 0 ? ' · includes unreviewed' : '')}
                   </SelectItem>
                 ))}
@@ -129,7 +129,7 @@ function StartCard() {
           </Button>
         </div>
         <p className="text-muted-foreground text-xs">
-          Up to 10 questions of the grade, chosen at random
+          Up to {organization?.canvas_assessment_questions ?? 10} questions of the grade, chosen at random
           {organization?.canvas_assessments_unreviewed
             ? ', including questions not yet reviewed in the bank (your organization is trying them out)'
             : ' from the approved ones'}
@@ -176,15 +176,20 @@ function AssessmentList() {
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium">{row.student_name}</span>
                       <span className="text-muted-foreground text-sm">{levelLabel(row.level_id)}</span>
-                      <Badge variant={row.status === 'submitted' ? 'default' : 'secondary'}>
-                        {CANVAS_ASSESSMENT_STATUS_LABELS[row.status]}
+                      <Badge
+                        variant={row.status === 'submitted' ? 'default' : 'secondary'}
+                        data-testid={`assessment-status-${row.id}`}
+                      >
+                        {row.reviewed_at ? 'Reviewed' : CANVAS_ASSESSMENT_STATUS_LABELS[row.status]}
                       </Badge>
+                      {row.review_draft && <Badge variant="outline">Review in progress</Badge>}
                     </div>
                     <p className="text-muted-foreground text-xs">
                       {row.status === 'submitted'
                         ? `${row.questions_written} of ${row.question_count} questions written` +
                           (row.choice_questions ? ` · ${row.choices_correct} of ${row.choice_questions} choices correct` : '') +
-                          ` · submitted ${formatRelativeTime(row.submitted_at ?? row.started_at)}`
+                          ` · submitted ${formatRelativeTime(row.submitted_at ?? row.started_at)}` +
+                          (row.reviewed_at && row.reviewed_by_name ? ` · reviewed by ${row.reviewed_by_name}` : '')
                         : `${row.question_count} questions · started ${formatRelativeTime(row.started_at)}`}
                       {row.started_by_name ? ` · started by ${row.started_by_name}` : ''}
                     </p>
@@ -201,10 +206,22 @@ function AssessmentList() {
                       </>
                     )}
                     {row.can_review && (
-                      <Button asChild size="sm" variant="outline">
-                        <Link to={`/assessments/${row.id}/review`}>
-                          <FileTextIcon /> Open PDF
-                        </Link>
+                      <>
+                        <Button asChild size="sm">
+                          <Link to={`/assessments/${row.id}/review`}>
+                            {row.reviewed_at ? 'Edit review' : row.review_draft ? 'Continue review' : 'Review'}
+                          </Link>
+                        </Button>
+                        <Button asChild size="sm" variant="outline">
+                          <Link to={`/assessments/${row.id}/pdf`}>
+                            <FileTextIcon /> Submitted PDF
+                          </Link>
+                        </Button>
+                      </>
+                    )}
+                    {row.reviewed_at && (
+                      <Button asChild size="sm" variant={row.can_review ? 'outline' : 'default'}>
+                        <Link to={`/assessments/${row.id}/pdf?kind=reviewed`}>Open the review</Link>
                       </Button>
                     )}
                   </div>

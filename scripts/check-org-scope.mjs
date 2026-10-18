@@ -28,7 +28,7 @@ const ORG_TABLES = [
   'user_roles', 'tutor_profiles', 'student_profiles', 'payment_handles',
   'availability_slots', 'guardianships', 'org_members', 'notification_log',
   'locations', 'assignment_locations', 'schedule_locations',
-  'canvas_assessments', 'canvas_assessment_files',
+  'canvas_assessments', 'canvas_assessment_files', 'canvas_assessment_reviews',
   // The catalog (Phase 34): read only through an organization's list, so an
   // unjoined query on levels or topics would hand out curricula it does not offer.
   'curricula', 'organization_curricula', 'curriculum_levels', 'curriculum_topics',

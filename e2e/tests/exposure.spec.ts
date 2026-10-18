@@ -219,6 +219,11 @@ test.describe('what each non-admin can see', () => {
       const theirs = assessments.find((row) => row.id === started.id);
       if (theirs && theirs.can_review !== tutorsSofia) problems.push(`R17: can_review ${theirs.can_review}`);
       if (theirs && theirs.started_by_name && !tutorsSofia) problems.push('R17: named who started it');
+      // Phase 40: writing a review is the tutors' and the office's; a reviewed PDF does not exist until saved.
+      const review = await page.request.get(`/api/canvas-assessments/${started.id}/review`);
+      if (review.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the review answered ${review.status()}`);
+      const notYet = await page.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`);
+      if (notYet.status() !== 404) problems.push(`R17: an unreviewed assessment's review answered ${notYet.status()}`);
 
       // R16 (Phase 33): a person's own list of locations is read only by them and their parents
       // (and the office). Anybody else's reads as empty.

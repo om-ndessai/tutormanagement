@@ -823,6 +823,64 @@ The size to watch: a submission stores its PDF and its strokes (a vector PDF, ab
 against D1's 500 MB per database on the free plan -- a few thousand submissions before R2 is needed.
 A query for the running total: `SELECT COUNT(*), SUM(size) FROM canvas_assessment_files`.
 
+Phase 40 (reviewing online, and the question count; 2026-10, `docs/canvas-assessment-plan.md`) is
+additive: three columns and one table. "Reviewed" is `reviewed_at` on the assessment, not a new
+status, and the reviewed PDF lives on the review row, so no CHECK constraint changes (that would mean
+rebuilding a table). Production, after the backup, in one file:
+
+```sql
+ALTER TABLE organizations ADD COLUMN canvas_assessment_questions INTEGER NOT NULL DEFAULT 10
+  CHECK (canvas_assessment_questions BETWEEN 1 AND 25);
+ALTER TABLE canvas_assessments ADD COLUMN reviewed_by_user_id TEXT REFERENCES users (id);
+ALTER TABLE canvas_assessments ADD COLUMN reviewed_at TEXT;
+
+-- Phase 40: a tutor's review of a submitted assessment -- red ink over its
+-- pages, a note per question, an overall comment; no scoring yet. Kept as
+-- data, and the reviewed PDF rebuilt from it, so the submitted PDF never
+-- changes. Only the student's current tutors and the admins write it; once
+-- 'final', its PDF is the student's whole audience's to read (R17).
+CREATE TABLE canvas_assessment_reviews (
+  assessment_id    TEXT PRIMARY KEY REFERENCES canvas_assessments (id),
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  reviewer_user_id TEXT NOT NULL REFERENCES users (id),
+  -- JSON: { question id: note }.
+  notes            TEXT NOT NULL DEFAULT '{}',
+  comment          TEXT NOT NULL DEFAULT '',
+  -- Deflated JSON: [{ question_id, strokes: ["w x y x y ..."] }], in PDF points.
+  ink              BLOB,
+  status           TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'final')),
+  -- The reviewed PDF, while 'final'. In D1 for now, with the other files.
+  pdf              BLOB,
+  pdf_size         INTEGER,
+  updated_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  finished_at      TEXT,
+
+  CHECK ((status = 'final') = (finished_at IS NOT NULL AND pdf IS NOT NULL))
+);
+
+CREATE TRIGGER canvas_assessment_reviews_same_organization
+BEFORE INSERT ON canvas_assessment_reviews
+WHEN NOT EXISTS (SELECT 1 FROM canvas_assessments a WHERE a.id = NEW.assessment_id AND a.organization_id = NEW.organization_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.reviewer_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER canvas_assessment_reviews_organization_fixed
+BEFORE UPDATE OF organization_id ON canvas_assessment_reviews
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as phase40.sql>
+# read-only: the new table, and every organization at 10 questions
+npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'canvas_assessment_reviews'"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT slug, canvas_assessment_questions FROM organizations ORDER BY slug"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

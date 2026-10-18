@@ -299,6 +299,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   pdf.js. Built 2026-10-18 (design 55); jest, typecheck, lint and export green; the flows
   `canvas-assessments/{take,review,menu,open}` green on iOS and Android.
 
+## Portal Phase 40 — the tutor reviews it online, and the organization sets its length
+
+- [x] 56. Mobile: reviewing an assessment online, at parity with the web — the submitted pages with
+  the tutor's red ink, a note per question and an overall comment, a self-saving draft, "Save as
+  reviewed" and "Reopen review"; the reviewed PDF for the student's whole audience; the list's new
+  states and buttons; the Organization card's question count. Built 2026-10-18 (design 56); jest,
+  typecheck, lint and export green; the flows `canvas-assessments/{review-online,review-reopen,
+  question-count}` (and Phase 38's four) green on iOS and Android; `smoke -- mobile` green.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

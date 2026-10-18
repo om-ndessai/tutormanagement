@@ -31,6 +31,7 @@ import { ProfilePage } from '@/pages/profile-page';
 import { AssessmentsPage } from '@/features/canvas-assessments/assessments-page';
 import { TakeAssessmentPage } from '@/features/canvas-assessments/take-assessment-page';
 import { ReviewAssessmentPage } from '@/features/canvas-assessments/review-assessment-page';
+import { AssessmentPdfPage } from '@/features/canvas-assessments/assessment-pdf-page';
 
 export function App() {
   return (
@@ -68,6 +69,7 @@ export function App() {
           <Route path="assessments" element={<AssessmentsPage />} />
           <Route path="assessments/:id" element={<TakeAssessmentPage />} />
           <Route path="assessments/:id/review" element={<ReviewAssessmentPage />} />
+          <Route path="assessments/:id/pdf" element={<AssessmentPdfPage />} />
           <Route path="schedule" element={<SchedulesPage />} />
           <Route path="locations" element={<LocationsPage />} />
           <Route path="billing" element={<BillingPage />} />

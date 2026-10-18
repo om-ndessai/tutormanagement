@@ -4,6 +4,8 @@ import type {
   CanvasAssessment,
   CanvasAssessmentDetail,
   CanvasAssessmentLevel,
+  CanvasReview,
+  SaveCanvasReviewInput,
   StartCanvasAssessmentInput,
   SubmitCanvasAssessmentInput,
 } from '@tmi/shared';
@@ -19,6 +21,7 @@ export const canvasAssessmentKeys = {
   levels: ['canvas-assessments', 'levels'] as const,
   detail: (id: string) => ['canvas-assessments', 'detail', id] as const,
   summary: (id: string) => ['canvas-assessments', 'summary', id] as const,
+  review: (id: string) => ['canvas-assessments', 'review', id] as const,
 };
 
 /** The grades, with how many approved questions each can draw on. */
@@ -89,7 +92,51 @@ export function useDiscardCanvasAssessment() {
   });
 }
 
-/** The PDF, as a plain link: the session cookie goes along, `?org=` names the organization. */
-export function canvasAssessmentPdfUrl(id: string): string {
-  return withOrg(`/api/canvas-assessments/${id}/pdf`);
+/**
+ * A PDF, as a plain link: the session cookie goes along, `?org=` names the
+ * organization. The submitted one is the tutors' and admins'; the reviewed one
+ * (Phase 40) the student's whole audience's.
+ */
+export function canvasAssessmentPdfUrl(id: string, kind: 'submitted' | 'reviewed' = 'submitted'): string {
+  return withOrg(`/api/canvas-assessments/${id}/pdf${kind === 'reviewed' ? '?kind=reviewed' : ''}`);
+}
+
+// Phase 40: the tutor's review.
+
+export function useCanvasReview(id: string | undefined) {
+  return useQuery({
+    queryKey: canvasAssessmentKeys.review(id ?? ''),
+    queryFn: () => apiClient.get<ApiOk<CanvasReview>>(`/canvas-assessments/${id}/review`),
+    enabled: Boolean(id),
+    // The editor owns the draft once loaded: never refetch it under the tutor's pen.
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useSaveCanvasReview(id: string) {
+  return useMutation({
+    mutationFn: (input: SaveCanvasReviewInput) => apiClient.put<ApiOk<{ saved: boolean }>>(`/canvas-assessments/${id}/review`, input),
+  });
+}
+
+function useReviewStep(id: string, step: 'finish' | 'reopen') {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<ApiOk<CanvasAssessment>>(`/canvas-assessments/${id}/review/${step}`, {}),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: canvasAssessmentKeys.list });
+      void queryClient.invalidateQueries({ queryKey: canvasAssessmentKeys.summary(id) });
+      void queryClient.invalidateQueries({ queryKey: canvasAssessmentKeys.review(id) });
+    },
+  });
+}
+
+/** Saves the review as reviewed: the reviewed PDF is written and the family can read it. */
+export function useFinishCanvasReview(id: string) {
+  return useReviewStep(id, 'finish');
+}
+
+export function useReopenCanvasReview(id: string) {
+  return useReviewStep(id, 'reopen');
 }

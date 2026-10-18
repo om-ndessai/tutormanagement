@@ -111,6 +111,7 @@ export function OrganizationSettingsScreen() {
       <CanvasAssessmentsCard
         enabled={settings.data?.data.canvas_assessments ?? false}
         unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
+        questions={settings.data?.data.canvas_assessment_questions ?? 10}
       />
     </Screen>
   );

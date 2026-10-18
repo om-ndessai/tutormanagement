@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/canvas-assessments/pdf-viewer.tsx @ 22b9701.
+// Ported from apps/web/src/features/canvas-assessments/pdf-viewer.tsx @ 37bdad1 (with Phase 40's
+// `kind`: the submitted PDF, or the reviewed one).
 //
 // An assessment's PDF, shown in the app rather than downloaded: it carries the answer key and the
 // worked solutions, so it is never written to the device or offered to the share sheet. pdf.js
@@ -15,7 +16,7 @@ import { bytesToBase64 } from '@/lib/base64';
 import { APP_VARIANT } from '@/lib/variant';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { fetchCanvasAssessmentPdf } from './api';
+import { fetchCanvasAssessmentPdf, type CanvasAssessmentPdfKind } from './api';
 import { PDF_VIEWER_BASE_URL, pdfViewerHtml, readViewerMessage, renderCall } from './pdf-viewer-html';
 
 /** How long the page may take to draw before the viewer says it could not. */
@@ -26,9 +27,46 @@ function onlyThePage(request: { url: string }): boolean {
   return request.url === PDF_VIEWER_BASE_URL || request.url === 'about:blank';
 }
 
+/**
+ * The web view's locks, shared by the viewer and the page-image renderer (Phase 40): no navigation
+ * but the page's own load, no files, no storage, no cookies, no cache, no windows, no media.
+ */
+export const LOCKED_WEBVIEW_PROPS = {
+  originWhitelist: ['*'],
+  onShouldStartLoadWithRequest: onlyThePage,
+  allowFileAccess: false,
+  allowFileAccessFromFileURLs: false,
+  allowUniversalAccessFromFileURLs: false,
+  allowsLinkPreview: false,
+  // iOS only: Android's wrapper aborts on a string here (see the question bank's MathBody).
+  dataDetectorTypes: Platform.OS === 'ios' ? ('none' as const) : undefined,
+  setSupportMultipleWindows: false,
+  javaScriptCanOpenWindowsAutomatically: false,
+  domStorageEnabled: false,
+  thirdPartyCookiesEnabled: false,
+  sharedCookiesEnabled: false,
+  geolocationEnabled: false,
+  mediaPlaybackRequiresUserAction: true,
+  allowsInlineMediaPlayback: false,
+  mixedContentMode: 'never' as const,
+  saveFormDataDisabled: true,
+  cacheEnabled: false,
+  incognito: true,
+  textZoom: 100,
+  webviewDebuggingEnabled: APP_VARIANT === 'development',
+};
+
 type ViewerState = 'loading' | 'ready' | 'error';
 
-export function PdfViewer({ assessmentId, label }: { assessmentId: string; label: string }) {
+export function PdfViewer({
+  assessmentId,
+  label,
+  kind = 'submitted',
+}: {
+  assessmentId: string;
+  label: string;
+  kind?: CanvasAssessmentPdfKind;
+}) {
   const theme = useAppTheme();
   const webview = useRef<WebView>(null);
   const [state, setState] = useState<ViewerState>('loading');
@@ -56,7 +94,7 @@ export function PdfViewer({ assessmentId, label }: { assessmentId: string; label
   useEffect(() => {
     let cancelled = false;
     pdf.current = null;
-    fetchCanvasAssessmentPdf(assessmentId)
+    fetchCanvasAssessmentPdf(assessmentId, kind)
       .then((bytes) => {
         if (cancelled) return;
         pdf.current = bytesToBase64(bytes);
@@ -70,7 +108,7 @@ export function PdfViewer({ assessmentId, label }: { assessmentId: string; label
     };
     // handOver reads refs only.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assessmentId]);
+  }, [assessmentId, kind]);
 
   // A page that never finishes drawing is reported, not left spinning.
   useEffect(() => {
@@ -90,7 +128,7 @@ export function PdfViewer({ assessmentId, label }: { assessmentId: string; label
     } else if (message.t === 'done') {
       setPages(message.n);
       setState('ready');
-    } else {
+    } else if (message.t === 'error') {
       setState('error');
     }
   }
@@ -120,33 +158,12 @@ export function PdfViewer({ assessmentId, label }: { assessmentId: string; label
           key={generation}
           ref={webview}
           source={source}
-          originWhitelist={['*']}
-          onShouldStartLoadWithRequest={onlyThePage}
+          {...LOCKED_WEBVIEW_PROPS}
           onMessage={onMessage}
           onContentProcessDidTerminate={remount}
           onRenderProcessGone={remount}
           bounces={false}
           overScrollMode="never"
-          allowFileAccess={false}
-          allowFileAccessFromFileURLs={false}
-          allowUniversalAccessFromFileURLs={false}
-          allowsLinkPreview={false}
-          // iOS only: Android's wrapper aborts on a string here (see the question bank's MathBody).
-          dataDetectorTypes={Platform.OS === 'ios' ? 'none' : undefined}
-          setSupportMultipleWindows={false}
-          javaScriptCanOpenWindowsAutomatically={false}
-          domStorageEnabled={false}
-          thirdPartyCookiesEnabled={false}
-          sharedCookiesEnabled={false}
-          geolocationEnabled={false}
-          mediaPlaybackRequiresUserAction
-          allowsInlineMediaPlayback={false}
-          mixedContentMode="never"
-          saveFormDataDisabled
-          cacheEnabled={false}
-          incognito
-          textZoom={100}
-          webviewDebuggingEnabled={APP_VARIANT === 'development'}
           style={{
             flex: 1,
             backgroundColor: theme.colors.background,

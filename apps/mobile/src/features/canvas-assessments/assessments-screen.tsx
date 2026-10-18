@@ -1,11 +1,11 @@
-// Ported from apps/web/src/features/canvas-assessments/assessments-page.tsx @ 22b9701.
+// Ported from apps/web/src/features/canvas-assessments/assessments-page.tsx @ 37bdad1, with Phase 40
+// (the organization's question count; Reviewed, Review in progress, and the review's buttons).
 //
 // Phase 38: the Assessment menu (beta), docs/canvas-assessment-plan.md. Starting one for a student,
 // and the list of those the reader may see. Who sees which row, who may continue or discard one and
 // who may open its PDF are the server's (R17: `can_continue`, `can_review`); the screen only offers
 // what it says.
 import {
-  CANVAS_ASSESSMENT_STATUS_LABELS,
   levelLabel,
   type CanvasAssessment,
   type QuestionBankLevelId,
@@ -39,6 +39,7 @@ import {
   useStartCanvasAssessment,
 } from './api';
 import { levelOptionDetail, rowSummary, startNote } from './assessment-model';
+import { rowActions, statusLabel } from './review-model';
 
 export function AssessmentsScreen() {
   const list = useCanvasAssessments();
@@ -127,7 +128,7 @@ function StartCard() {
           options={levelList.map((level) => ({
             id: level.level_id,
             label: level.label,
-            detail: `· ${levelOptionDetail(level)}`,
+            detail: `· ${levelOptionDetail(level, organization?.canvas_assessment_questions ?? 10)}`,
             disabled: level.available === 0,
           }))}
           value={levelId}
@@ -146,7 +147,10 @@ function StartCard() {
           Start
         </Button>
         <Text testID="assessment-start-note" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          {startNote(Boolean(organization?.canvas_assessments_unreviewed))}
+          {startNote(
+            Boolean(organization?.canvas_assessments_unreviewed),
+            organization?.canvas_assessment_questions ?? 10,
+          )}
         </Text>
       </View>
     </Panel>
@@ -196,7 +200,27 @@ function StatusPill({ row }: { row: CanvasAssessment }) {
         variant="labelMedium"
         style={{ color: submitted ? theme.colors.onPrimary : theme.tokens.secondaryForeground }}
       >
-        {CANVAS_ASSESSMENT_STATUS_LABELS[row.status]}
+        {statusLabel(row)}
+      </Text>
+    </View>
+  );
+}
+
+/** "Review in progress": a draft review, shown to its reviewers only (the server sends null to others). */
+function DraftPill({ row }: { row: CanvasAssessment }) {
+  const theme = useAppTheme();
+  return (
+    <View
+      style={{
+        borderWidth: 1,
+        borderColor: theme.colors.outline,
+        borderRadius: radius.sm,
+        paddingHorizontal: space.sm,
+        paddingVertical: 1,
+      }}
+    >
+      <Text testID={`assessment-review-draft-${row.id}`} variant="labelMedium">
+        Review in progress
       </Text>
     </View>
   );
@@ -229,7 +253,8 @@ function AssessmentRow({ row }: { row: CanvasAssessment }) {
     }
   }
 
-  const actions = row.can_continue || row.can_review;
+  const actions = rowActions(row);
+  const anyAction = actions.continue || actions.review !== null || actions.openReview;
   return (
     <OutlinedCard testID={`assessment-row-${row.id}`} style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.lg, gap: space.sm }}>
@@ -239,6 +264,7 @@ function AssessmentRow({ row }: { row: CanvasAssessment }) {
             {levelLabel(row.level_id)}
           </Text>
           <StatusPill row={row} />
+          {row.review_draft ? <DraftPill row={row} /> : null}
         </View>
         <Text
           testID={`assessment-summary-${row.id}`}
@@ -247,40 +273,63 @@ function AssessmentRow({ row }: { row: CanvasAssessment }) {
         >
           {rowSummary(row)}
         </Text>
-        {actions ? (
+        {anyAction ? (
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.xs }}>
-            {row.can_continue ? (
-              <>
-                <Button
-                  testID={`assessment-continue-${row.id}`}
-                  mode="contained"
-                  compact
-                  onPress={() => router.push({ pathname: '/assessments/[id]', params: { id: row.id } })}
-                >
-                  Continue
-                </Button>
-                <Button
-                  testID={`assessment-discard-${row.id}`}
-                  mode="outlined"
-                  compact
-                  disabled={discard.isPending}
-                  onPress={confirmDiscard}
-                  textColor={theme.colors.error}
-                  style={{ borderColor: withAlpha(theme.colors.error, 0.5) }}
-                >
-                  Discard
-                </Button>
-              </>
+            {actions.continue ? (
+              <Button
+                testID={`assessment-continue-${row.id}`}
+                mode="contained"
+                compact
+                onPress={() => router.push({ pathname: '/assessments/[id]', params: { id: row.id } })}
+              >
+                Continue
+              </Button>
             ) : null}
-            {row.can_review ? (
+            {actions.discard ? (
+              <Button
+                testID={`assessment-discard-${row.id}`}
+                mode="outlined"
+                compact
+                disabled={discard.isPending}
+                onPress={confirmDiscard}
+                textColor={theme.colors.error}
+                style={{ borderColor: withAlpha(theme.colors.error, 0.5) }}
+              >
+                Discard
+              </Button>
+            ) : null}
+            {actions.review ? (
+              <Button
+                testID={`assessment-review-${row.id}`}
+                mode="contained"
+                compact
+                icon="draw-pen"
+                onPress={() => router.push({ pathname: '/assessments/review/[id]', params: { id: row.id } })}
+              >
+                {actions.review}
+              </Button>
+            ) : null}
+            {actions.submittedPdf ? (
               <Button
                 testID={`assessment-open-pdf-${row.id}`}
                 mode="outlined"
                 compact
                 icon="file-document-outline"
-                onPress={() => router.push({ pathname: '/assessments/review/[id]', params: { id: row.id } })}
+                onPress={() => router.push({ pathname: '/assessments/pdf/[id]', params: { id: row.id } })}
               >
-                Open PDF
+                Submitted PDF
+              </Button>
+            ) : null}
+            {actions.openReview ? (
+              <Button
+                testID={`assessment-open-review-${row.id}`}
+                mode={actions.review ? 'outlined' : 'contained'}
+                compact
+                onPress={() =>
+                  router.push({ pathname: '/assessments/pdf/[id]', params: { id: row.id, kind: 'reviewed' } })
+                }
+              >
+                Open the review
               </Button>
             ) : null}
           </View>

@@ -1,7 +1,7 @@
-// Ported from apps/web/src/features/canvas-assessments/api.ts @ 22b9701
+// Ported from apps/web/src/features/canvas-assessments/api.ts @ 37bdad1, with Phase 40 (the review)
 //
 // Mobile: the same hooks, query keys and invalidation sets. The web's `canvasAssessmentPdfUrl` (a
-// plain link) becomes `fetchCanvasAssessmentPdf`: the app fetches the bytes through
+// plain link, either PDF) becomes `fetchCanvasAssessmentPdf`: the app fetches the bytes through
 // src/lib/download.ts and hands them to its in-app viewer, never to a file or the share sheet.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
@@ -9,6 +9,8 @@ import type {
   CanvasAssessment,
   CanvasAssessmentDetail,
   CanvasAssessmentLevel,
+  CanvasReview,
+  SaveCanvasReviewInput,
   StartCanvasAssessmentInput,
   SubmitCanvasAssessmentInput,
 } from '@tmi/shared';
@@ -24,6 +26,7 @@ export const canvasAssessmentKeys = {
   levels: ['canvas-assessments', 'levels'] as const,
   detail: (id: string) => ['canvas-assessments', 'detail', id] as const,
   summary: (id: string) => ['canvas-assessments', 'summary', id] as const,
+  review: (id: string) => ['canvas-assessments', 'review', id] as const,
 };
 
 /** The grades, with how many approved questions each can draw on. */
@@ -94,10 +97,58 @@ export function useDiscardCanvasAssessment() {
   });
 }
 
+/** Which PDF: the submitted one (tutors and admins), or (Phase 40) the reviewed one (the whole audience). */
+export type CanvasAssessmentPdfKind = 'submitted' | 'reviewed';
+
 /**
- * The PDF's bytes, for the in-app viewer: the organization and the session go along, as with every
- * request. Never written to a file. Only the student's tutors and the admins get it; anyone else, 404.
+ * A PDF's bytes, for the in-app viewer: the organization and the session go along, as with every
+ * request. Never written to a file. The submitted one is the student's tutors' and the admins';
+ * the reviewed one (Phase 40) the student's whole audience's once it exists. Anyone else, 404.
  */
-export function fetchCanvasAssessmentPdf(id: string): Promise<Uint8Array> {
-  return fetchBytes(`/canvas-assessments/${id}/pdf`, 'application/pdf');
+export function fetchCanvasAssessmentPdf(
+  id: string,
+  kind: CanvasAssessmentPdfKind = 'submitted',
+): Promise<Uint8Array> {
+  return fetchBytes(`/canvas-assessments/${id}/pdf${kind === 'reviewed' ? '?kind=reviewed' : ''}`, 'application/pdf');
+}
+
+// Phase 40: the tutor's review.
+
+export function useCanvasReview(id: string | undefined) {
+  return useQuery({
+    queryKey: canvasAssessmentKeys.review(id ?? ''),
+    queryFn: () => apiClient.get<ApiOk<CanvasReview>>(`/canvas-assessments/${id}/review`),
+    enabled: Boolean(id),
+    // The editor owns the draft once loaded: never refetch it under the tutor's pen.
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useSaveCanvasReview(id: string) {
+  return useMutation({
+    mutationFn: (input: SaveCanvasReviewInput) =>
+      apiClient.put<ApiOk<{ saved: boolean }>>(`/canvas-assessments/${id}/review`, input),
+  });
+}
+
+function useReviewStep(id: string, step: 'finish' | 'reopen') {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<ApiOk<CanvasAssessment>>(`/canvas-assessments/${id}/review/${step}`, {}),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: canvasAssessmentKeys.list });
+      void queryClient.invalidateQueries({ queryKey: canvasAssessmentKeys.summary(id) });
+      void queryClient.invalidateQueries({ queryKey: canvasAssessmentKeys.review(id) });
+    },
+  });
+}
+
+/** Saves the review as reviewed: the reviewed PDF is written and the family can read it. */
+export function useFinishCanvasReview(id: string) {
+  return useReviewStep(id, 'finish');
+}
+
+export function useReopenCanvasReview(id: string) {
+  return useReviewStep(id, 'reopen');
 }

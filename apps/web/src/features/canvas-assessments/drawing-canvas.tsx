@@ -54,11 +54,15 @@ function simplify(points: number[], tolerance: number): number[] {
 }
 
 /** The finished stroke as it is kept: whole units, inside the page, simplified. */
-export function finishStroke(raw: number[], width = PEN_WIDTH): CanvasStroke {
+export function finishStroke(
+  raw: number[],
+  width = PEN_WIDTH,
+  size: { width: number; height: number } = CANVAS_LIMITS,
+): CanvasStroke {
   const rounded: number[] = [];
   for (let i = 0; i < raw.length; i += 2) {
-    const x = Math.min(CANVAS_LIMITS.width, Math.max(0, Math.round(raw[i]!)));
-    const y = Math.min(CANVAS_LIMITS.height, Math.max(0, Math.round(raw[i + 1]!)));
+    const x = Math.min(size.width, Math.max(0, Math.round(raw[i]!)));
+    const y = Math.min(size.height, Math.max(0, Math.round(raw[i + 1]!)));
     const last = rounded.length;
     if (last >= 2 && rounded[last - 2] === x && rounded[last - 1] === y) continue;
     rounded.push(x, y);
@@ -115,6 +119,9 @@ export function DrawingCanvas({
   onErase,
   className,
   label,
+  size = CANVAS_LIMITS,
+  penWidth = PEN_WIDTH,
+  variant = 'page',
 }: {
   strokes: readonly CanvasStroke[];
   tool: CanvasTool;
@@ -124,6 +131,14 @@ export function DrawingCanvas({
   onErase: (indexes: number[]) => void;
   className?: string;
   label: string;
+  /** Its own units: the student's 1000 x 800 page, or (Phase 40) a PDF page in points. */
+  size?: { width: number; height: number };
+  penWidth?: number;
+  /**
+   * 'page': the student's paper, its own card. 'overlay' (Phase 40): a
+   * transparent layer of the tutor's red ink over a rendered PDF page.
+   */
+  variant?: 'page' | 'overlay';
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const live = useRef<{ pointerId: number; points: number[] } | null>(null);
@@ -136,15 +151,15 @@ export function DrawingCanvas({
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const scale = canvas.width / CANVAS_LIMITS.width;
+    const scale = canvas.width / size.width;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // The ink is the page's own text colour, so it follows the theme.
     ctx.strokeStyle = getComputedStyle(canvas).color;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     for (const stroke of strokesRef.current) drawStroke(ctx, stroke.points, stroke.width, scale);
-    if (live.current) drawStroke(ctx, live.current.points, PEN_WIDTH, scale);
-  }, []);
+    if (live.current) drawStroke(ctx, live.current.points, penWidth, scale);
+  }, [size.width, penWidth]);
 
   // Sized to its box in device pixels, and redrawn whenever the box changes.
   useEffect(() => {
@@ -169,8 +184,8 @@ export function DrawingCanvas({
   function toCanvas(event: { clientX: number; clientY: number }): [number, number] {
     const rect = canvasRef.current!.getBoundingClientRect();
     return [
-      ((event.clientX - rect.left) / rect.width) * CANVAS_LIMITS.width,
-      ((event.clientY - rect.top) / rect.height) * CANVAS_LIMITS.height,
+      ((event.clientX - rect.left) / rect.width) * size.width,
+      ((event.clientY - rect.top) / rect.height) * size.height,
     ];
   }
 
@@ -218,7 +233,7 @@ export function DrawingCanvas({
     const current = live.current;
     if (!current || current.pointerId !== event.pointerId) return;
     live.current = null;
-    if (tool === 'pen' && current.points.length >= 2) onStroke(finishStroke(current.points));
+    if (tool === 'pen' && current.points.length >= 2) onStroke(finishStroke(current.points, penWidth, size));
     redraw();
   }
 
@@ -231,7 +246,11 @@ export function DrawingCanvas({
       className={cn(
         // As wide as the page allows, but never taller than the screen leaves room for, so the
         // whole page can be written on without scrolling (a pen cannot scroll and write at once).
-        'bg-card text-foreground mx-auto block aspect-[5/4] w-full max-w-[min(100%,calc((100dvh-15rem)*1.25))] touch-none rounded-lg border select-none',
+        'block w-full touch-none select-none',
+        variant === 'page'
+          ? 'bg-card text-foreground mx-auto aspect-[5/4] max-w-[min(100%,calc((100dvh-15rem)*1.25))] rounded-lg border'
+          : // The tutor's ink: red, over the page beneath.
+            'text-destructive absolute inset-0 h-full',
         tool === 'eraser' ? 'cursor-cell' : 'cursor-crosshair',
         className,
       )}

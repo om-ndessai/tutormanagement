@@ -1,7 +1,9 @@
-// Ported from apps/web/src/features/canvas-assessments/drawing-canvas.tsx @ 22b9701 (simplify,
-// finishStroke, pageSize, distanceToStroke and the eraser's reach; the midpoint curve of drawStroke
-// as an SVG path). Mobile: pure, so Jest covers it; `strokePath` is also a worklet, because the
-// stroke being written is drawn on the UI thread.
+// Ported from apps/web/src/features/canvas-assessments/drawing-canvas.tsx @ 37bdad1 and its Phase 40
+// change (simplify, finishStroke, pageSize, distanceToStroke and the eraser's reach; the midpoint
+// curve of drawStroke as an SVG path). A surface has units of its own: the student's 1000 x 800
+// page, or a PDF page in points for the tutor's red ink. Mobile: pure, so Jest covers it;
+// `strokePath` and `toCanvasUnits` are also worklets, because the stroke being written is drawn on
+// the UI thread.
 import { CANVAS_LIMITS, type CanvasStroke } from '@tmi/shared';
 
 export type CanvasTool = 'pen' | 'eraser';
@@ -48,12 +50,24 @@ export function simplify(points: number[], tolerance: number): number[] {
   return out;
 }
 
+/** A drawing surface's own units: the student's page, or (Phase 40) a PDF page in points. */
+export interface CanvasSize {
+  width: number;
+  height: number;
+}
+
+/** What one page may hold: the student's page, or (Phase 40) the tutor's ink on one. */
+export interface PageLimits {
+  strokesPerPage: number;
+  numbersPerPage: number;
+}
+
 /** The finished stroke as it is kept: whole units, inside the page, simplified. */
-export function finishStroke(raw: number[], width = PEN_WIDTH): CanvasStroke {
+export function finishStroke(raw: number[], width = PEN_WIDTH, size: CanvasSize = CANVAS_LIMITS): CanvasStroke {
   const rounded: number[] = [];
   for (let i = 0; i < raw.length; i += 2) {
-    const x = Math.min(CANVAS_LIMITS.width, Math.max(0, Math.round(raw[i]!)));
-    const y = Math.min(CANVAS_LIMITS.height, Math.max(0, Math.round(raw[i + 1]!)));
+    const x = Math.min(size.width, Math.max(0, Math.round(raw[i]!)));
+    const y = Math.min(size.height, Math.max(0, Math.round(raw[i + 1]!)));
     const last = rounded.length;
     if (last >= 2 && rounded[last - 2] === x && rounded[last - 1] === y) continue;
     rounded.push(x, y);
@@ -67,10 +81,14 @@ export function pageSize(strokes: readonly CanvasStroke[]): number {
 }
 
 /** Whether one more stroke still fits on the page (the web's "This page is full" check). */
-export function strokeFits(strokes: readonly CanvasStroke[], stroke: CanvasStroke): boolean {
+export function strokeFits(
+  strokes: readonly CanvasStroke[],
+  stroke: CanvasStroke,
+  limits: PageLimits = CANVAS_LIMITS,
+): boolean {
   return (
-    strokes.length < CANVAS_LIMITS.strokesPerPage &&
-    pageSize(strokes) + stroke.points.length + 1 <= CANVAS_LIMITS.numbersPerPage
+    strokes.length < limits.strokesPerPage &&
+    pageSize(strokes) + stroke.points.length + 1 <= limits.numbersPerPage
   );
 }
 
@@ -119,15 +137,22 @@ export function strokePath(points: readonly number[]): string {
   return `${d}L${points[n - 2]} ${points[n - 1]}`;
 }
 
-/** A point on a view of `width` x `height` points, in canvas units. */
-export function toCanvasUnits(x: number, y: number, width: number, height: number): [number, number] {
+/** A point on a view of `width` x `height` points, in the surface's units (the student's page by default). */
+export function toCanvasUnits(
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  unitsWide: number = CANVAS_LIMITS.width,
+  unitsHigh: number = CANVAS_LIMITS.height,
+): [number, number] {
   'worklet';
-  return [(x / (width || 1)) * CANVAS_LIMITS.width, (y / (height || 1)) * CANVAS_LIMITS.height];
+  return [(x / (width || 1)) * unitsWide, (y / (height || 1)) * unitsHigh];
 }
 
-/** The largest 5:4 page (the canvas's shape) that fits in a box. */
-export function fitCanvas(width: number, height: number): { width: number; height: number } {
-  const ratio = CANVAS_LIMITS.width / CANVAS_LIMITS.height;
+/** The largest box of `size`'s shape (the student's 5:4 page by default) that fits in a box. */
+export function fitCanvas(width: number, height: number, size: CanvasSize = CANVAS_LIMITS): CanvasSize {
+  const ratio = size.width / size.height;
   const w = Math.max(0, Math.min(width, height * ratio));
   return { width: Math.floor(w), height: Math.floor(w / ratio) };
 }

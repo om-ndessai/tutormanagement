@@ -1,6 +1,13 @@
 // The PDF viewer's page (Phase 38): pdf.js inlined, nothing it could load from anywhere, and the
 // PDF handed over only as data.
-import { PDF_VIEWER_BASE_URL, PDF_VIEWER_CSP, pdfViewerHtml, readViewerMessage, renderCall } from './pdf-viewer-html';
+import {
+  PDF_VIEWER_BASE_URL,
+  PDF_VIEWER_CSP,
+  imagesCall,
+  pdfViewerHtml,
+  readViewerMessage,
+  renderCall,
+} from './pdf-viewer-html';
 import { PDFJS_LIB_BASE64, PDFJS_VERSION, PDFJS_WORKER_BASE64 } from './pdfjs.generated';
 
 const page = pdfViewerHtml({ background: 'BG-TOKEN', border: 'BORDER-TOKEN' });
@@ -43,6 +50,19 @@ describe('talking to the page', () => {
     expect(readViewerMessage('{"t":"error"}')).toEqual({ t: 'error' });
     expect(readViewerMessage('{"t":"done"}')).toBeNull();
     expect(readViewerMessage('nope')).toBeNull();
+  });
+
+  it('takes back only the page’s own PNGs, and when all are in (Phase 40)', () => {
+    expect(readViewerMessage('{"t":"image","n":2,"src":"data:image/png;base64,iVBOR"}')).toEqual({
+      t: 'image',
+      n: 2,
+      src: 'data:image/png;base64,iVBOR',
+    });
+    expect(readViewerMessage('{"t":"image","n":2,"src":"https://example.com/x.png"}')).toBeNull();
+    expect(readViewerMessage('{"t":"image","n":2,"src":"data:text/html;base64,PGI+"}')).toBeNull();
+    expect(readViewerMessage('{"t":"images-done","n":11}')).toEqual({ t: 'images-done', n: 11 });
+    expect(page).toContain('window.__images = function (base64, width)');
+    expect(imagesCall('JVBERi0=', 1199.6)).toBe('window.__images && window.__images("JVBERi0=", 1200); true;');
   });
 
   it('hands the PDF over as string literals, whatever the label holds', () => {

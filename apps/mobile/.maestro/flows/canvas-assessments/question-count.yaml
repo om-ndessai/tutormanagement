@@ -1,0 +1,64 @@
+# Phase 40: the organization sets how many questions an assessment draws. Priya (admin, chmi) moves
+# "Questions in an assessment" from 10 to 11 on the Organization screen; it saves with its toast,
+# and the start card then says "Up to 11" and offers Grade 4 (12 approved) with 11 questions. The
+# clean script puts it back to 10.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-canvas-assessments.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+# The card is the page's last: it can be scrolled into view, never to the middle.
+- scrollUntilVisible:
+    element:
+      id: org-assessment-questions-increase
+    direction: DOWN
+- assertVisible: 'Questions in an assessment'
+- assertVisible:
+    id: org-assessment-questions
+    text: '10'
+- tapOn:
+    id: org-assessment-questions-increase
+- assertVisible:
+    id: org-assessment-questions
+    text: '11'
+- extendedWaitUntil:
+    visible: 'Assessments now have 11 questions\.'
+    timeout: 10000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: assessment-start
+    timeout: 15000
+- assertVisible:
+    id: assessment-start-note
+    text: 'Up to 11 questions of the grade.*'
+- tapOn:
+    id: assessment-level
+- extendedWaitUntil:
+    visible:
+      id: assessment-level-NC26.4
+      text: 'Grade 4.*11 questions.*'
+    timeout: 15000

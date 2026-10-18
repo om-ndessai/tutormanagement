@@ -35,6 +35,7 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS canvas_assessment_reviews;
 DROP TABLE IF EXISTS canvas_assessment_files;
 DROP TABLE IF EXISTS canvas_assessments;
 DROP TABLE IF EXISTS question_bank_topics;
@@ -177,6 +178,9 @@ CREATE TABLE organizations (
   -- checked but no person has approved yet. Off until its admins choose; the
   -- tutor's PDF marks each such question.
   canvas_assessments_unreviewed INTEGER NOT NULL DEFAULT 0 CHECK (canvas_assessments_unreviewed IN (0, 1)),
+  -- Phase 40: how many questions an assessment draws.
+  canvas_assessment_questions INTEGER NOT NULL DEFAULT 10
+    CHECK (canvas_assessment_questions BETWEEN 1 AND 25),
 
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
@@ -1917,6 +1921,10 @@ CREATE TABLE canvas_assessments (
   started_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   submitted_at       TEXT,
   updated_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  -- Phase 40: a tutor saved its review as reviewed (the review is
+  -- canvas_assessment_reviews). Status stays 'submitted': "reviewed" is these.
+  reviewed_by_user_id TEXT REFERENCES users (id),
+  reviewed_at        TEXT,
 
   CHECK ((status = 'submitted') = (submitted_at IS NOT NULL))
 );
@@ -1968,4 +1976,43 @@ BEFORE INSERT ON canvas_assessment_files
 WHEN NOT EXISTS (SELECT 1 FROM canvas_assessments a WHERE a.id = NEW.assessment_id AND a.organization_id = NEW.organization_id)
 BEGIN
   SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+-- Phase 40: a tutor's review of a submitted assessment -- red ink over its
+-- pages, a note per question, an overall comment; no scoring yet. Kept as
+-- data, and the reviewed PDF rebuilt from it, so the submitted PDF never
+-- changes. Only the student's current tutors and the admins write it; once
+-- 'final', its PDF is the student's whole audience's to read (R17).
+CREATE TABLE canvas_assessment_reviews (
+  assessment_id    TEXT PRIMARY KEY REFERENCES canvas_assessments (id),
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  reviewer_user_id TEXT NOT NULL REFERENCES users (id),
+  -- JSON: { question id: note }.
+  notes            TEXT NOT NULL DEFAULT '{}',
+  comment          TEXT NOT NULL DEFAULT '',
+  -- Deflated JSON: [{ question_id, strokes: ["w x y x y ..."] }], in PDF points.
+  ink              BLOB,
+  status           TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'final')),
+  -- The reviewed PDF, while 'final'. In D1 for now, with the other files.
+  pdf              BLOB,
+  pdf_size         INTEGER,
+  updated_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  finished_at      TEXT,
+
+  CHECK ((status = 'final') = (finished_at IS NOT NULL AND pdf IS NOT NULL))
+);
+
+CREATE TRIGGER canvas_assessment_reviews_same_organization
+BEFORE INSERT ON canvas_assessment_reviews
+WHEN NOT EXISTS (SELECT 1 FROM canvas_assessments a WHERE a.id = NEW.assessment_id AND a.organization_id = NEW.organization_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.reviewer_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER canvas_assessment_reviews_organization_fixed
+BEFORE UPDATE OF organization_id ON canvas_assessment_reviews
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
 END;

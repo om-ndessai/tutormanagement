@@ -1,0 +1,9 @@
+# One red stroke on the review's first page (Phase 40): a swipe across its ink layer, as a finger
+# marks. Sideways, so even a scroll that took it could not move the page.
+appId: ${APP_ID}
+---
+- swipe:
+    from:
+      id: review-ink-1
+    direction: RIGHT
+    duration: 700

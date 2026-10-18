@@ -176,6 +176,12 @@ export const organizationSettingsSchema = z.object({
    * tutor's PDF marks each such question.
    */
   canvas_assessments_unreviewed: z.boolean(),
+  /** Phase 40: how many questions an assessment draws, 1-25 (default 10). */
+  canvas_assessment_questions: z
+    .number({ message: 'Choose how many questions.' })
+    .int('Use a whole number.')
+    .min(1, 'At least 1 question.')
+    .max(25, 'At most 25 questions.'),
 });
 export const updateOrganizationSettingsSchema = organizationSettingsSchema
   .partial()
@@ -210,6 +216,8 @@ export interface Organization extends OrganizationBrand {
   canvas_assessments: boolean;
   /** Phase 38: whether assessments may draw on checked-but-unreviewed questions. */
   canvas_assessments_unreviewed: boolean;
+  /** Phase 40: how many questions an assessment draws. */
+  canvas_assessment_questions: number;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -227,6 +235,7 @@ export interface OrganizationSettings {
   email_notifications: boolean;
   canvas_assessments: boolean;
   canvas_assessments_unreviewed: boolean;
+  canvas_assessment_questions: number;
 }
 
 // ---------------------------------------------------------------------------

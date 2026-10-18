@@ -39,7 +39,22 @@ export interface AssessmentPdfInput {
     /** Whether that choice is the key (by code); null when nothing was selected. */
     correct: boolean | null;
   }[];
+  /**
+   * Phase 40: a tutor's finished review. The reviewed PDF keeps every question
+   * page's layout exactly, so the ink lands where it was drawn, but carries the
+   * tutor's note where the answer key was: it is read by the family too.
+   */
+  review?: {
+    reviewerName: string;
+    reviewedAt: string;
+    comment: string;
+    notes: Record<string, string>;
+    /** Per question, in PDF points from the page's top-left corner. */
+    ink: Record<string, CanvasStroke[]>;
+  };
 }
+
+const REVIEW_INK: Rgb = [0.8, 0.1, 0.12];
 
 /** "October 18, 2026 at 4:05 PM", on the organization's clock. */
 function when(iso: string, timeZone: string): string {
@@ -149,6 +164,62 @@ function cover(doc: PdfDocument, input: AssessmentPdfInput): void {
   );
 }
 
+function reviewCover(doc: PdfDocument, input: AssessmentPdfInput): void {
+  const review = input.review!;
+  const page = doc.addPage();
+  let y = PAGE_HEIGHT - MARGIN - 10;
+  page.text(MARGIN, y, input.organizationName, 10, 'regular', MUTED);
+  y -= 30;
+  page.text(MARGIN, y, 'Assessment review', 22, 'bold');
+  y -= 18;
+  page.text(MARGIN, y, 'The student\'s answers, marked by their tutor.', 11, 'regular', MUTED);
+  y -= 34;
+  const facts: [string, string][] = [
+    ['Student', input.studentName],
+    ['Grade', levelLabel(input.levelId)],
+    ['Submitted', when(input.submittedAt, input.timeZone)],
+    ['Reviewed by', review.reviewerName],
+    ['Reviewed', when(review.reviewedAt, input.timeZone)],
+  ];
+  for (const [label, value] of facts) {
+    page.text(MARGIN, y, label, 10, 'regular', MUTED);
+    page.text(MARGIN + 90, y, value, 11, 'bold');
+    y -= 18;
+  }
+  y -= 16;
+  page.text(MARGIN, y, 'The tutor\'s comment', 12, 'bold');
+  y -= 6;
+  page.line(MARGIN, y, PAGE_WIDTH - MARGIN, y, RULE);
+  y -= 16;
+  const comment = review.comment.trim();
+  y = writeLines(
+    page,
+    comment ? wrapText(comment, 11, CONTENT_WIDTH).slice(0, 18) : ['No overall comment.'],
+    MARGIN,
+    y,
+    11,
+    15,
+    comment ? 'regular' : 'italic',
+    comment ? [0, 0, 0] : MUTED,
+  );
+
+  const noted = input.pages
+    .map((p, index) => ({ index, note: (review.notes[p.question.id] ?? '').trim() }))
+    .filter((entry) => entry.note);
+  if (noted.length > 0 && y > MARGIN + 80) {
+    y -= 18;
+    page.text(MARGIN, y, 'Notes on each question', 12, 'bold');
+    y -= 6;
+    page.line(MARGIN, y, PAGE_WIDTH - MARGIN, y, RULE);
+    y -= 16;
+    for (const { index, note } of noted) {
+      if (y < MARGIN + 30) break;
+      const lines = wrapText(`${index + 1}. ${note}`, 10, CONTENT_WIDTH);
+      y = writeLines(page, lines.slice(0, Math.max(1, Math.floor((y - MARGIN - 20) / 13))), MARGIN, y, 10, 13) - 4;
+    }
+  }
+}
+
 function questionPage(doc: PdfDocument, input: AssessmentPdfInput, index: number): void {
   const { question, strokes, choice, correct } = input.pages[index]!;
   const page = doc.addPage();
@@ -158,7 +229,7 @@ function questionPage(doc: PdfDocument, input: AssessmentPdfInput, index: number
   let y = PAGE_HEIGHT - MARGIN - 32;
   page.text(MARGIN, y, `Question ${index + 1}`, 13, 'bold');
   page.text(MARGIN + 80, y, question.topic_code, 9, 'regular', MUTED);
-  if (question.status !== 'approved') {
+  if (question.status !== 'approved' && !input.review) {
     // The organization's trial: a question the bank checked but no person has approved yet.
     const tag = 'NOT YET REVIEWED';
     page.text(PAGE_WIDTH - MARGIN - textWidth(tag, 8, 'bold'), y, tag, 8, 'bold', [0.62, 0.36, 0.05]);
@@ -197,11 +268,23 @@ function questionPage(doc: PdfDocument, input: AssessmentPdfInput, index: number
   const tutorHeight = 22 + 12 + shown.length * 11.5 + 8;
   page.rect(MARGIN, MARGIN, CONTENT_WIDTH, tutorHeight, { fill: TUTOR_FILL, stroke: RULE });
   let ty = MARGIN + tutorHeight - 15;
-  page.text(MARGIN + 10, ty, 'FOR THE TUTOR', 8, 'bold', MUTED);
-  ty -= 13;
-  page.text(MARGIN + 10, ty, answerLine, 10, 'bold');
-  ty -= 13;
-  writeLines(page, shown, MARGIN + 10, ty, 9, 11.5, 'regular', [0.2, 0.2, 0.25]);
+  if (input.review) {
+    // The same box, so the page keeps its layout and the ink its place: the
+    // tutor's note instead of the answer key, which stays the tutors' (R17).
+    page.text(MARGIN + 10, ty, 'THE TUTOR\'S NOTE', 8, 'bold', MUTED);
+    ty -= 13;
+    const note = (input.review.notes[question.id] ?? '').trim();
+    const room = Math.max(1, Math.floor((tutorHeight - 22) / 11.5));
+    const lines = note ? wrapText(note, 9.5, CONTENT_WIDTH - 20) : ['No note.'];
+    const fitted = lines.length > room ? [...lines.slice(0, room - 1), `${lines[room - 1]}…`] : lines;
+    writeLines(page, fitted, MARGIN + 10, ty, 9.5, 11.5, note ? 'regular' : 'italic', note ? REVIEW_INK : MUTED);
+  } else {
+    page.text(MARGIN + 10, ty, 'FOR THE TUTOR', 8, 'bold', MUTED);
+    ty -= 13;
+    page.text(MARGIN + 10, ty, answerLine, 10, 'bold');
+    ty -= 13;
+    writeLines(page, shown, MARGIN + 10, ty, 9, 11.5, 'regular', [0.2, 0.2, 0.25]);
+  }
 
   // The working, between the question and the tutor's box, at the canvas's own shape.
   const boxTop = y - 8;
@@ -221,12 +304,19 @@ function questionPage(doc: PdfDocument, input: AssessmentPdfInput, index: number
   } else {
     page.strokes(strokes, left, innerTop, scale, INK);
   }
+
+  // The tutor's red ink, over everything, where it was drawn on the page.
+  const ink = input.review?.ink[question.id];
+  if (ink && ink.length > 0) page.strokes(ink, 0, PAGE_HEIGHT, 1, REVIEW_INK);
 }
 
 /** The whole document, as bytes. */
 export async function buildAssessmentPdf(input: AssessmentPdfInput): Promise<Uint8Array> {
-  const doc = new PdfDocument(`Assessment: ${input.studentName}, ${levelLabel(input.levelId)}`);
-  cover(doc, input);
+  const doc = new PdfDocument(
+    `${input.review ? 'Assessment review' : 'Assessment'}: ${input.studentName}, ${levelLabel(input.levelId)}`,
+  );
+  if (input.review) reviewCover(doc, input);
+  else cover(doc, input);
   for (let index = 0; index < input.pages.length; index += 1) questionPage(doc, input, index);
   return doc.save();
 }

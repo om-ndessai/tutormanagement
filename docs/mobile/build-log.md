@@ -1644,3 +1644,93 @@ Reused: `Screen`, `PageIntro`, `FigureRow`, `OutlinedCard`, `EmptyState`/`Loadin
 - pdf.js drew the PDF in the app;
 - Sofia was refused the PDF.
 
+
+## 56. Phase 40: the tutor reviews it online, and the organization sets its length — design (2026-10-18)
+**Scope:** the web's Phase 40, at parity in the app:
+- the review editor: the submitted PDF's pages with a red-ink layer, a note per question, an overall comment, a draft that saves itself 1.5 s after the last change, "Save as reviewed" (after a confirm), and "Reopen review";
+- one PDF screen for both PDFs (`?kind=reviewed` for the whole audience);
+- the list's new states and buttons;
+- the start card's count, from the organization;
+- the Organization card's "Questions in an assessment".
+
+No scoring. No API, schema or shared change.
+
+**Web sources:** `apps/web/src/features/canvas-assessments/{api.ts, review-assessment-page.tsx, assessment-pdf-page.tsx, use-pdf-pages.ts, assessments-page.tsx, drawing-canvas.tsx}`; `CanvasAssessmentsCard` in `organizations/organization-settings-page.tsx`.
+
+**Endpoints:** (copied into `api.ts` with `canvasAssessmentKeys.review` and the same invalidation)
+- `GET /canvas-assessments/:id/review`: `useCanvasReview`. Tutors and admins; `staleTime: Infinity`.
+- `PUT /canvas-assessments/:id/review`: `useSaveCanvasReview`. Ink as `formatStroke` strings in `REVIEW_PAGE` points; 409 once final.
+- `POST /:id/review/finish` and `POST /:id/review/reopen`: `useFinishCanvasReview` and `useReopenCanvasReview`. Both invalidate the list, the summary and the review.
+- `GET /:id/pdf[?kind=reviewed]`: `fetchCanvasAssessmentPdf(id, kind)`, through `fetchBytes`, in memory only.
+- `PATCH /organization/settings {canvas_assessment_questions}`: then `refreshSession()`.
+
+**Screens & routes:**
+- `app/(org)/assessments/review/[id].tsx` is now the editor: `ReviewAssessmentScreen`, `screen-assessment-review`.
+- The PDF screen moves to `app/(org)/assessments/pdf/[id].tsx` (`?kind=reviewed`): `AssessmentPdfScreen`, `screen-assessment-pdf`, the port of `assessment-pdf-page.tsx`. For the submitted kind it offers Review / Edit the review. There is no Download, as in Phase 38.
+
+**Components:**
+- **Page images: one renderer, two uses.** `pdf-viewer-html.ts` gains `window.__images(base64, width)`, which draws each page to a canvas and posts it back as a PNG data URL (`{t:'image', n, src}`, then `images-done`). `usePdfPageImages` (`use-pdf-pages.tsx`) mounts a hidden 1×1 web view for this and returns `{state, pages, renderer}`. The images are shown with RN `Image` from the data URLs: nothing is written to disk, and the bytes are fetched as in Phase 38.
+- **The ink layer.** `DrawingCanvas` gains `size` (its units; `REVIEW_PAGE` for the ink), `penWidth` (2 points), `variant: 'overlay'` (transparent, no border, ink in the theme's `error` red), `disabled` (a final review) and `blocksScroll`.
+  - The editor scrolls through an RNGH `ScrollView`, and the overlay's gesture blocks it (`blocksExternalGesture`). A touch on a page marks it, and one beside it scrolls.
+  - Once a stylus has been used, a finger touch on a page fails the gesture, so the finger scrolls instead.
+- **`drawing-model.ts`:**
+  - `finishStroke(raw, width, size)`;
+  - `toCanvasUnits(x, y, w, h, uw, uh)`;
+  - `strokeFits(strokes, stroke, limits)`, which takes `REVIEW_LIMITS` for ink.
+- **`review-model.ts`** (pure):
+  - `inkFrom(review)`, through `parseStroke(text, REVIEW_PAGE)`;
+  - `reviewPayload(comment, notes, ink)`;
+  - `saveStateText(...)`, the web's sentences;
+  - `listActions(row)`: which buttons a row gets;
+  - `statusLabel(row)`: "Reviewed" once `reviewed_at`.
+- **Ink, Undo and Clear marks** reuse `takeReducer` (pages = ink, with a history per question).
+- **`assessment-pdf-screen.tsx`:** wraps `PdfViewer`, which gains `kind`.
+- **`canvas-assessments-card.tsx`:** a stepper, "Questions in an assessment" (1–25: − n +, an adjustable control for assistive tech). The value is saved 600 ms after the last tap, with the web's toast.
+
+**Interaction & motion:**
+- The pen and eraser give `haptics.selection()`.
+- "Save as reviewed" uses a native confirm (the web's sentence) and `haptics.warning()`.
+- The draft is also flushed when the screen is left. The web does not do this, but leaving by Back is much easier on a phone.
+- Nothing animates.
+
+**Exposure checks:**
+- **Who reviews.** The editor and the submitted PDF open only on `can_review`; anyone else sees the web's sentences. "Open the review" shows only on `reviewed_at`, and the API answers 404 for the reviewed PDF before then.
+- **Drafts.** A draft reaches reviewers only: `review_draft` is null for everyone else.
+- **Money, SSN, organization.**
+  - No money anywhere.
+  - Notes and comments are free text, and the API's SSN guard answers 422 with the server's words.
+  - The organization travels on every request.
+  - Nothing goes to disk or to a share sheet.
+
+**testIDs:**
+- **The list:** `assessment-status-<id>` (text "Reviewed"), `assessment-review-draft-<id>`, `assessment-review-<id>` (Review / Continue review / Edit review), `assessment-open-pdf-<id>` (now "Submitted PDF"), `assessment-open-review-<id>`, `assessment-start-note`.
+- **The editor:** `screen-assessment-review`, `review-save-state`, `review-comment`, `review-pen`, `review-eraser`, `review-page-<n>`, `review-ink-<n>`, `review-undo-<n>`, `review-clear-<n>`, `review-note-<n>`, `review-finish`, `review-reopen`, `review-open-reviewed`, `review-submitted-pdf`, `assessment-review-denied`.
+- **The PDF screen:** `screen-assessment-pdf`, `assessment-pdf-title`, `assessment-review-summary`, `assessment-pdf-edit-review`, `assessment-pdf-denied`, plus the viewer's `assessment-pdf-pages`.
+- **The Organization card:** `org-assessment-questions`, `-decrease`, `-increase`.
+
+**Tests:**
+- **Jest:** `review-model.test.ts`; `drawing-model` with sizes and limits; the model's count-aware sentences; the viewer page's `__images`.
+- **Maestro:**
+  - `review-online`: Alex marks, writes a note and the comment, sees "Draft saved", and saves as reviewed; the reviewed PDF draws.
+  - `review-family`: Sofia sees "Reviewed" and "Open the review", and the viewer draws; she gets no Submitted PDF and no Review.
+  - `review-reopen`: Alex reopens a finished review, and the list then shows "Review in progress" and "Continue review"; Sofia loses "Open the review".
+  - `question-count`: Priya sets 11, and the start card says "Up to 11" and "Grade 4 · 11 questions".
+  - `review` (Phase 38) is updated for the moved PDF screen.
+
+**Risks / open questions:**
+- **Scroll against pen.** It holds only if RNGH's ScrollView respects `blocksExternalGesture`. Otherwise a stroke may scroll the page. The flows' strokes and the Undo button's state will show it.
+- **Memory.** About 11 PNG data URLs of roughly 1200 px are held in memory, a few MB.
+
+**Changed while building (2026-10-18):**
+- **The pure rules have their own homes.** The stepper's rule (`stepQuestionCount`) lives in `settings-form.ts`, which is pure; Jest could not load the card's imports.
+- **The web view's locks are shared.** `LOCKED_WEBVIEW_PROPS` (in `pdf-viewer.tsx`) holds them, and the viewer and the page-image renderer both use it.
+- **The ink reuses the take screen's reducer.** `takeReducer` with pages = ink gives Undo and Clear marks per question, and the eraser works by stroke identity, as on the take screen.
+- **Checked in Chrome.** `window.__images` posted 11 PNGs of about 110–250 KB each from the Worker's own PDF. WKWebView and Android's WebView are not checked yet.
+- **The Phase 38 flow is updated.** `review.yaml` now takes "Submitted PDF" to `screen-assessment-pdf`. Sofia is refused both the PDF screen (`assessment-pdf-denied`) and the editor (`assessment-review-denied`).
+- **The stepper's adjustable role is on the number.** It was first on the group, which Android folds into one accessibility node: that hid the − and + buttons' ids from the tests and merged the buttons for TalkBack. The number (`org-assessment-questions`) is now the adjustable control, with "Questions in an assessment" as its hint, and the buttons stay their own elements.
+- **The question-count flow scrolls without centring.** The card is the page's last, so `question-count.yaml` scrolls it into view without `centerElement`; it can never sit in the middle.
+
+**Verified (2026-10-18):**
+- `npm run e2e:mobile -- both apps/mobile/.maestro/flows/canvas-assessments`: all seven flows green on iOS (simulator 328F7D61) and Android (emulator-5554): `open`, `menu`, `take`, `review`, `review-online`, `review-reopen`, `question-count`.
+- The hidden web view draws the pages as PNGs on both platforms. A Maestro swipe marks the red-ink layer, and the RNGH ScrollView did not take the stroke.
+- `npm run smoke -- mobile`: green on both (diagnostics, sign-in, open, navigation).

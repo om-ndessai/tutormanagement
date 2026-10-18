@@ -36,6 +36,9 @@ interface AssessmentRow {
   unreviewed_questions: number;
   started_at: string;
   submitted_at: string | null;
+  reviewed_at: string | null;
+  reviewed_by_name: string | null;
+  review_status: 'draft' | 'final' | null;
   tutors_student: number;
 }
 
@@ -50,6 +53,8 @@ export interface StoredCanvasAssessment {
   question_ids: string[];
   status: CanvasAssessmentStatus;
   started_at: string;
+  submitted_at: string | null;
+  reviewed_at: string | null;
   /** The viewer may open its PDF: an admin, or one of the student's current tutors. */
   can_review: boolean;
 }
@@ -62,13 +67,16 @@ const SELECT_ROWS = `
   SELECT c.id, c.student_user_id, s.full_name AS student_name, c.started_by_user_id,
          b.full_name AS started_by_name, c.level_id, c.question_ids, c.status,
          c.questions_written, c.choice_questions, c.choices_answered, c.choices_correct,
-         c.unreviewed_questions, c.started_at, c.submitted_at,
+         c.unreviewed_questions, c.started_at, c.submitted_at, c.reviewed_at,
+         r.full_name AS reviewed_by_name, v.status AS review_status,
          EXISTS (SELECT 1 FROM assignments a
                  WHERE a.organization_id = c.organization_id AND a.student_user_id = c.student_user_id
                    AND a.tutor_user_id = ? AND a.is_active = 1) AS tutors_student
   FROM canvas_assessments c
   JOIN users s ON s.id = c.student_user_id
-  JOIN users b ON b.id = c.started_by_user_id`;
+  JOIN users b ON b.id = c.started_by_user_id
+  LEFT JOIN users r ON r.id = c.reviewed_by_user_id
+  LEFT JOIN canvas_assessment_reviews v ON v.assessment_id = c.id`;
 
 function canReview(viewer: User, row: AssessmentRow): boolean {
   return isAdmin(viewer) || row.tutors_student === 1;
@@ -85,6 +93,8 @@ function toStored(viewer: User, row: AssessmentRow): StoredCanvasAssessment {
     question_ids: JSON.parse(row.question_ids) as string[],
     status: row.status,
     started_at: row.started_at,
+    submitted_at: row.submitted_at,
+    reviewed_at: row.reviewed_at,
     can_review: canReview(viewer, row),
   };
 }
@@ -111,6 +121,10 @@ export function toCanvasAssessment(viewer: User, row: AssessmentRow): CanvasAsse
     submitted_at: row.submitted_at,
     can_review: review && row.status === 'submitted',
     can_continue: mine && row.status === 'in_progress',
+    // Phase 40: once saved as reviewed, the student's whole audience reads the review.
+    reviewed_at: row.reviewed_at,
+    reviewed_by_name: row.reviewed_at ? row.reviewed_by_name : null,
+    review_draft: review ? row.review_status === 'draft' : null,
   };
 }
 
@@ -308,4 +322,126 @@ export async function getCanvasAssessmentFile(
     contentType: row.content_type,
     bytes: Array.isArray(row.bytes) ? new Uint8Array(row.bytes) : new Uint8Array(row.bytes),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Reviews (Phase 40)
+// ---------------------------------------------------------------------------
+
+export interface StoredReview {
+  status: 'draft' | 'final';
+  notes: Record<string, string>;
+  comment: string;
+  /** Still deflated: the routes inflate it. */
+  ink: Uint8Array | null;
+  reviewer_name: string;
+  updated_at: string;
+  finished_at: string | null;
+}
+
+function asBytes(value: ArrayBuffer | number[] | null): Uint8Array | null {
+  if (value === null) return null;
+  return Array.isArray(value) ? new Uint8Array(value) : new Uint8Array(value);
+}
+
+export async function getReview(db: D1Database, org: OrgId, id: string): Promise<StoredReview | null> {
+  const row = await db
+    .prepare(
+      `SELECT v.status, v.notes, v.comment, v.ink, u.full_name AS reviewer_name, v.updated_at, v.finished_at
+       FROM canvas_assessment_reviews v JOIN users u ON u.id = v.reviewer_user_id
+       WHERE v.assessment_id = ? AND v.organization_id = ?`,
+    )
+    .bind(id, org)
+    .first<{
+      status: 'draft' | 'final';
+      notes: string;
+      comment: string;
+      ink: ArrayBuffer | number[] | null;
+      reviewer_name: string;
+      updated_at: string;
+      finished_at: string | null;
+    }>();
+  if (!row) return null;
+  return { ...row, notes: JSON.parse(row.notes) as Record<string, string>, ink: asBytes(row.ink) };
+}
+
+/** Saves the draft: a new one, or the existing draft. A final review is reopened first. */
+export async function saveReviewDraft(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+  reviewer: string,
+  input: { notes: Record<string, string>; comment: string; ink: Uint8Array },
+): Promise<boolean> {
+  const result = await db
+    .prepare(
+      `INSERT INTO canvas_assessment_reviews (assessment_id, organization_id, reviewer_user_id, notes, comment, ink)
+       VALUES (?, ?, ?, ?, ?, ?)
+       ON CONFLICT (assessment_id) DO UPDATE SET
+         reviewer_user_id = excluded.reviewer_user_id, notes = excluded.notes, comment = excluded.comment,
+         ink = excluded.ink, updated_at = ${NOW}
+       WHERE canvas_assessment_reviews.status = 'draft'`,
+    )
+    .bind(id, org, reviewer, JSON.stringify(input.notes), input.comment, input.ink)
+    .run();
+  return result.meta.changes > 0;
+}
+
+/** Saves it as reviewed: the PDF on the review, and who and when on the assessment. */
+export async function finishReview(
+  db: D1Database,
+  org: OrgId,
+  id: string,
+  reviewer: string,
+  pdf: Uint8Array,
+): Promise<boolean> {
+  const results = await db.batch([
+    db
+      .prepare(
+        `UPDATE canvas_assessment_reviews
+         SET status = 'final', pdf = ?, pdf_size = ?, finished_at = ${NOW}, updated_at = ${NOW}, reviewer_user_id = ?
+         WHERE assessment_id = ? AND organization_id = ? AND status = 'draft'`,
+      )
+      .bind(pdf, pdf.length, reviewer, id, org),
+    db
+      .prepare(
+        `UPDATE canvas_assessments SET reviewed_by_user_id = ?, reviewed_at = ${NOW}
+         WHERE id = ? AND organization_id = ? AND status = 'submitted'
+           AND EXISTS (SELECT 1 FROM canvas_assessment_reviews v
+                       WHERE v.assessment_id = canvas_assessments.id AND v.status = 'final')`,
+      )
+      .bind(reviewer, id, org),
+  ]);
+  return (results[0]?.meta.changes ?? 0) > 0;
+}
+
+/** Reopens a finished review as a draft; its PDF goes until it is saved as reviewed again. */
+export async function reopenReview(db: D1Database, org: OrgId, id: string): Promise<boolean> {
+  const results = await db.batch([
+    db
+      .prepare(
+        `UPDATE canvas_assessment_reviews
+         SET status = 'draft', pdf = NULL, pdf_size = NULL, finished_at = NULL, updated_at = ${NOW}
+         WHERE assessment_id = ? AND organization_id = ? AND status = 'final'`,
+      )
+      .bind(id, org),
+    db
+      .prepare(
+        `UPDATE canvas_assessments SET reviewed_by_user_id = NULL, reviewed_at = NULL
+         WHERE id = ? AND organization_id = ?`,
+      )
+      .bind(id, org),
+  ]);
+  return (results[0]?.meta.changes ?? 0) > 0;
+}
+
+export async function getReviewedPdf(db: D1Database, org: OrgId, id: string): Promise<Uint8Array | null> {
+  const row = await db
+    .prepare(
+      `SELECT pdf FROM canvas_assessment_reviews
+       WHERE assessment_id = ? AND organization_id = ? AND status = 'final'`,
+    )
+    .bind(id, org)
+    .first<{ pdf: ArrayBuffer | number[] | null }>();
+  return row ? asBytes(row.pdf) : null;
 }

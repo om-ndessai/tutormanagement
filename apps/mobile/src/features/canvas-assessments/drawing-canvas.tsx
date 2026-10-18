@@ -1,17 +1,20 @@
-// Ported from apps/web/src/features/canvas-assessments/drawing-canvas.tsx @ 22b9701.
+// Ported from apps/web/src/features/canvas-assessments/drawing-canvas.tsx @ 37bdad1 and its Phase 40
+// change (`size`, `penWidth`, `variant: 'overlay'`).
 //
-// A page to write on. Mobile: react-native-svg draws, react-native-gesture-handler listens, and
-// nothing native is added. The page is an `Svg` whose viewBox is the canvas's own units (a 1000 x
-// 800 page, whatever the screen), so strokes are kept, drawn and sent in those units and the PDF
-// never depends on the device. Two layers keep a long page smooth:
+// A surface to write on: the student's page, or (Phase 40) a transparent layer of the tutor's red
+// ink over a rendered PDF page. Mobile: react-native-svg draws, react-native-gesture-handler
+// listens, and nothing native is added. The surface is an `Svg` whose viewBox is its own units (a
+// 1000 x 800 page, or the PDF page's 612 x 792 points, whatever the screen), so strokes are kept,
+// drawn and sent in those units and never depend on the device. Two layers keep a long page smooth:
 //   - the finished strokes, one memoized Svg that re-renders only when a stroke is added or taken;
 //   - the stroke being written, one AnimatedPath whose path is built on the UI thread from the
 //     touch points (a worklet), so writing never waits on JavaScript or re-renders the page.
 // Input is a manual gesture with every touch's id, so one finger, a stylus or a mouse each draw
-// one stroke; once a stylus has written here, touches are ignored, which is palm rejection. No
-// feedback: it only draws.
-import type { CanvasStroke } from '@tmi/shared';
-import { memo, useCallback, useEffect } from 'react';
+// one stroke; once a stylus has written here, touches are ignored, which is palm rejection (and
+// inside a scroll view, such a touch is handed back to it, so a finger scrolls while a pen marks).
+// No feedback: it only draws.
+import { CANVAS_LIMITS, type CanvasStroke } from '@tmi/shared';
+import { memo, useCallback, useEffect, type RefObject } from 'react';
 import { View } from 'react-native';
 import { Gesture, GestureDetector, PointerType } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
@@ -20,10 +23,17 @@ import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius } from '@/theme/tokens';
-import { finishStroke, PEN_WIDTH, strokeHits, strokePath, toCanvasUnits, type CanvasTool } from './drawing-model';
+import {
+  finishStroke,
+  PEN_WIDTH,
+  strokeHits,
+  strokePath,
+  toCanvasUnits,
+  type CanvasSize,
+  type CanvasTool,
+} from './drawing-model';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
-const VIEW_BOX = '0 0 1000 800';
 /** No stroke is being written. */
 const NONE = -1;
 
@@ -31,12 +41,14 @@ const NONE = -1;
 const FinishedStrokes = memo(function FinishedStrokes({
   strokes,
   ink,
+  viewBox,
 }: {
   strokes: readonly CanvasStroke[];
   ink: string;
+  viewBox: string;
 }) {
   return (
-    <Svg width="100%" height="100%" viewBox={VIEW_BOX} style={{ position: 'absolute' }}>
+    <Svg width="100%" height="100%" viewBox={viewBox} style={{ position: 'absolute' }}>
       {strokes.map((stroke, index) => (
         <Path
           key={index}
@@ -60,10 +72,16 @@ export function DrawingCanvas({
   onStroke,
   onErase,
   label,
+  size = CANVAS_LIMITS,
+  penWidth = PEN_WIDTH,
+  variant = 'page',
+  disabled = false,
+  scrollRef,
+  testID = 'assessment-canvas',
 }: {
   strokes: readonly CanvasStroke[];
   tool: CanvasTool;
-  /** The page's size on screen, in points (5:4: the screen fits it, `fitCanvas`). */
+  /** The surface's size on screen, in points (the screen fits its shape: `fitCanvas`). */
   width: number;
   height: number;
   /** A finished stroke; the page decides whether it still fits, and says whether it kept it. */
@@ -71,23 +89,39 @@ export function DrawingCanvas({
   /** The strokes the eraser touched, as the objects themselves (never indexes into a stale list). */
   onErase: (hit: CanvasStroke[]) => void;
   label: string;
+  /** Its own units: the student's 1000 x 800 page, or (Phase 40) a PDF page in points. */
+  size?: CanvasSize;
+  penWidth?: number;
+  /**
+   * 'page': the student's paper, its own card. 'overlay' (Phase 40): a transparent layer of the
+   * tutor's red ink over a rendered PDF page.
+   */
+  variant?: 'page' | 'overlay';
+  /** Shown, but takes no touches (a review saved as reviewed). */
+  disabled?: boolean;
+  /** The scroll view it sits in: a touch on the surface marks it rather than scrolling. */
+  scrollRef?: RefObject<unknown>;
+  testID?: string;
 }) {
   const theme = useAppTheme();
-  const ink = theme.colors.onSurface;
+  const overlay = variant === 'overlay';
+  // The student's ink is the page's text colour; the tutor's is red, over the page beneath.
+  const ink = overlay ? theme.colors.error : theme.colors.onSurface;
+  const viewBox = `0 0 ${size.width} ${size.height}`;
 
-  // The UI thread's side: the stroke being written, whose touch it is, and what the page knows.
+  // The UI thread's side: the stroke being written, whose touch it is, and what the surface knows.
   const live = useSharedValue<number[]>([]);
   const liveTouch = useSharedValue(NONE);
   const penSeen = useSharedValue(false);
   const erasing = useSharedValue(tool === 'eraser');
-  const size = useSharedValue({ width, height });
+  const box = useSharedValue({ width, height, unitsWide: size.width, unitsHigh: size.height });
 
   useEffect(() => {
     erasing.set(tool === 'eraser');
   }, [tool, erasing]);
   useEffect(() => {
-    size.set({ width, height });
-  }, [width, height, size]);
+    box.set({ width, height, unitsWide: size.width, unitsHigh: size.height });
+  }, [width, height, size.width, size.height, box]);
 
   // Once the finished layer holds the stroke (or the page changed under it), the live one goes --
   // unless a new stroke has started since. The gesture is rebuilt on each render (as the progress
@@ -104,10 +138,10 @@ export function DrawingCanvas({
     (points: number[]) => {
       // A kept stroke's live copy goes once the page holds it (the effect above), so it never
       // blinks; one the page refused (it is full) goes now.
-      const kept = points.length >= 2 && onStroke(finishStroke(points));
+      const kept = points.length >= 2 && onStroke(finishStroke(points, penWidth, size));
       if (!kept) clearLive();
     },
-    [onStroke, clearLive],
+    [onStroke, clearLive, penWidth, size],
   );
   // The strokes as this render knows them: a touch that arrives before the next render names
   // strokes already gone, which the screen's reducer simply finds no longer there.
@@ -119,19 +153,24 @@ export function DrawingCanvas({
     [strokes, onErase],
   );
 
-  const gesture = Gesture.Manual()
+  let gesture = Gesture.Manual()
+    .enabled(!disabled)
     .onTouchesDown((event, manager) => {
       'worklet';
       if (event.pointerType === PointerType.STYLUS) penSeen.set(true);
-      // Palm rejection: once a stylus has written here, a touch is a resting hand.
-      if (event.pointerType === PointerType.TOUCH && penSeen.get()) return;
+      // Palm rejection: once a stylus has written here, a touch is a resting hand (or, in a scroll
+      // view, a finger scrolling): it is let go.
+      if (event.pointerType === PointerType.TOUCH && penSeen.get()) {
+        if (liveTouch.get() === NONE) manager.fail();
+        return;
+      }
       if (liveTouch.get() !== NONE) return;
       const touch = event.changedTouches[0];
       if (!touch) return;
       manager.activate();
       liveTouch.set(touch.id);
-      const { width: w, height: h } = size.get();
-      const [x, y] = toCanvasUnits(touch.x, touch.y, w, h);
+      const b = box.get();
+      const [x, y] = toCanvasUnits(touch.x, touch.y, b.width, b.height, b.unitsWide, b.unitsHigh);
       if (erasing.get()) {
         live.set([]);
         scheduleOnRN(eraseAt, x, y);
@@ -143,10 +182,10 @@ export function DrawingCanvas({
       'worklet';
       const id = liveTouch.get();
       if (id === NONE) return;
-      const { width: w, height: h } = size.get();
+      const b = box.get();
       for (const touch of event.changedTouches) {
         if (touch.id !== id) continue;
-        const [x, y] = toCanvasUnits(touch.x, touch.y, w, h);
+        const [x, y] = toCanvasUnits(touch.x, touch.y, b.width, b.height, b.unitsWide, b.unitsHigh);
         if (erasing.get()) {
           scheduleOnRN(eraseAt, x, y);
         } else {
@@ -177,34 +216,40 @@ export function DrawingCanvas({
       }
       manager.end();
     });
+  // Inside a scroll view, the scroll waits for this gesture: a touch on the surface marks it.
+  if (scrollRef) gesture = gesture.blocksExternalGesture(scrollRef as never);
 
   const liveProps = useAnimatedProps(() => ({ d: strokePath(live.get()) }));
 
   return (
     <GestureDetector gesture={gesture}>
       <View
-        testID="assessment-canvas"
+        testID={testID}
         accessible
         accessibilityRole="image"
         accessibilityLabel={label}
         collapsable={false}
-        style={{
-          width,
-          height,
-          alignSelf: 'center',
-          borderRadius: radius.lg,
-          borderWidth: 1,
-          borderColor: theme.colors.outlineVariant,
-          backgroundColor: theme.colors.surface,
-          overflow: 'hidden',
-        }}
+        style={
+          overlay
+            ? { position: 'absolute', left: 0, top: 0, width, height }
+            : {
+                width,
+                height,
+                alignSelf: 'center',
+                borderRadius: radius.lg,
+                borderWidth: 1,
+                borderColor: theme.colors.outlineVariant,
+                backgroundColor: theme.colors.surface,
+                overflow: 'hidden',
+              }
+        }
       >
-        <FinishedStrokes strokes={strokes} ink={ink} />
-        <Svg width="100%" height="100%" viewBox={VIEW_BOX} style={{ position: 'absolute' }}>
+        <FinishedStrokes strokes={strokes} ink={ink} viewBox={viewBox} />
+        <Svg width="100%" height="100%" viewBox={viewBox} style={{ position: 'absolute' }}>
           <AnimatedPath
             animatedProps={liveProps}
             stroke={ink}
-            strokeWidth={PEN_WIDTH}
+            strokeWidth={penWidth}
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
