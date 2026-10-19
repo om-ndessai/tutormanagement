@@ -1,8 +1,8 @@
 // One choice from a list, inline in a form sheet: the web's Select, as a field that opens a list of
 // options below it. A search field appears once there are more options than fit at a glance. The
 // record sheet's PairingPicker is the same shape, specialised to pairings.
-import { useState } from 'react';
-import { Keyboard, Pressable, View } from 'react-native';
+import { useState, type ReactNode } from 'react';
+import { Keyboard, Pressable, ScrollView, View, type ViewStyle } from 'react-native';
 import { Divider, Icon, Searchbar, Text } from 'react-native-paper';
 
 import { FieldError } from '@/components/field-error';
@@ -34,6 +34,7 @@ export function OptionPicker({
   emptyText,
   searchPlaceholder = 'Search',
   defaultOpen,
+  scroll = false,
 }: {
   /** The field's testID; each option is `<testID>-<id>`, the search field `<testID>-search`. */
   testID: string;
@@ -47,6 +48,11 @@ export function OptionPicker({
   searchPlaceholder?: string;
   /** Whether the list starts open (default: while nothing is chosen). A fitted quick sheet starts it closed. */
   defaultOpen?: boolean;
+  /**
+   * Every option in a list that scrolls within about eight rows, rather than the first eight and a
+   * search: for a short, fixed list a reader scans (the Assessment's levels), not a long one of names.
+   */
+  scroll?: boolean;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -61,7 +67,7 @@ export function OptionPicker({
       option.label.toLowerCase().includes(needle) ||
       (option.detail?.toLowerCase().includes(needle) ?? false),
   );
-  const shown = matching.slice(0, SHOWN);
+  const shown = scroll ? matching : matching.slice(0, SHOWN);
 
   return (
     <View style={{ gap: space.sm }}>
@@ -117,9 +123,10 @@ export function OptionPicker({
             />
           ) : null}
           {options.length > 0 ? (
-            <View
+            <ListFrame
+              scroll={scroll}
+              testID={`${testID}-list`}
               style={{ borderWidth: 1, borderColor: theme.colors.outlineVariant, borderRadius: radius.md }}
-              accessibilityRole="radiogroup"
             >
               {shown.map((option, index) => {
                 const selected = option.id === value;
@@ -171,9 +178,9 @@ export function OptionPicker({
                   Nothing matches that name.
                 </Text>
               ) : null}
-            </View>
+            </ListFrame>
           ) : null}
-          {matching.length > SHOWN ? (
+          {!scroll && matching.length > SHOWN ? (
             <Text variant="bodySmall" style={{ color: muted }}>
               Showing {SHOWN} of {matching.length}. Type to narrow it down.
             </Text>
@@ -181,5 +188,37 @@ export function OptionPicker({
         </View>
       ) : null}
     </View>
+  );
+}
+
+/** The options' frame: a plain view, or, for a `scroll` picker, a list about eight rows tall that scrolls. */
+function ListFrame({
+  scroll,
+  testID,
+  style,
+  children,
+}: {
+  scroll: boolean;
+  testID: string;
+  style: ViewStyle;
+  children: ReactNode;
+}) {
+  if (!scroll) {
+    return (
+      <View style={style} accessibilityRole="radiogroup">
+        {children}
+      </View>
+    );
+  }
+  return (
+    <ScrollView
+      testID={testID}
+      // Inside the screen's own scroll view: Android scrolls the inner list only when told to.
+      nestedScrollEnabled
+      style={[style, { maxHeight: SHOWN * (ICON_TARGET + 8) }]}
+      accessibilityRole="radiogroup"
+    >
+      {children}
+    </ScrollView>
   );
 }

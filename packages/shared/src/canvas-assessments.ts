@@ -27,23 +27,27 @@ export const CANVAS_ASSESSMENT_LEVEL_IDS = QUESTION_BANK_LEVEL_IDS;
 
 export type CanvasAssessmentLevelId = (typeof CANVAS_ASSESSMENT_LEVEL_IDS)[number];
 
-/** What people read for an Assessment level: "Grade 5", "Math 1", "Beast Academy 3". */
+/**
+ * What people read for an Assessment level, kept short for a picker on a phone (owner, 2026-10-19):
+ * "G5", "Math 1", "BA3", "AoPS Algebra". NC's grades are G, Beast Academy's levels BA, so no two
+ * levels in one list share a name.
+ */
 export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string> = {
-  'NC26.3': 'Grade 3',
-  'NC26.4': 'Grade 4',
-  'NC26.5': 'Grade 5',
-  'NC26.6': 'Grade 6',
-  'NC26.7': 'Grade 7',
-  'NC26.8': 'Grade 8',
+  'NC26.3': 'G3',
+  'NC26.4': 'G4',
+  'NC26.5': 'G5',
+  'NC26.6': 'G6',
+  'NC26.7': 'G7',
+  'NC26.8': 'G8',
   'NC26.M1': 'Math 1',
-  BA1: 'Beast Academy 1',
-  BA2: 'Beast Academy 2',
-  BA3: 'Beast Academy 3',
-  BA4: 'Beast Academy 4',
-  BA5: 'Beast Academy 5',
+  BA1: 'BA1',
+  BA2: 'BA2',
+  BA3: 'BA3',
+  BA4: 'BA4',
+  BA5: 'BA5',
   PRE: 'AoPS Prealgebra',
-  ALG: 'AoPS Introduction to Algebra',
-  GEO: 'AoPS Introduction to Geometry',
+  ALG: 'AoPS Algebra',
+  GEO: 'AoPS Geometry',
 };
 
 /**

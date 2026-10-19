@@ -60,5 +60,5 @@ tags:
 - extendedWaitUntil:
     visible:
       id: assessment-level-NC26.4
-      text: 'Grade 4.*11 questions.*'
+      text: 'G4 .*11 questions.*'
     timeout: 15000

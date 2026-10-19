@@ -98,7 +98,7 @@ test.describe('the Assessment menu (beta)', () => {
     await admin.getByLabel('Student').click();
     await admin.getByRole('option', { name: PEOPLE.student.name }).click();
     await admin.getByLabel('Level').click();
-    await admin.getByRole('option', { name: /Grade 4/ }).click();
+    await admin.getByRole('option', { name: /^G4\b/ }).click();
     await admin.getByTestId('assessment-begin').click();
     await expect(admin).toHaveURL(/\/assessments\/[0-9a-f-]{36}$/);
     const id = admin.url().split('/').at(-1)!;

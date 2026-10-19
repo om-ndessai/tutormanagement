@@ -1,5 +1,6 @@
 # Smoke (Phase 38): the Assessment menu on the main path, in seconds. Priya (admin, chmi) opens it
-# from More; the start card shows, and the grades come from the API (Grade 4 has questions). Starts
+# from More; the start card shows, and the levels come from the API (G4 has questions). The list of
+# levels scrolls within itself down to the AoPS ones (Phase 41: 15 levels, more than fit). Starts
 # nothing, changes nothing.
 appId: ${APP_ID}
 tags:
@@ -35,5 +36,19 @@ tags:
 - extendedWaitUntil:
     visible:
       id: assessment-level-NC26.4
-      text: 'Grade 4.*10 questions.*'
+      text: 'G4 .*10 questions.*'
     timeout: 15000
+# The list scrolls: a swipe inside it reaches AoPS Algebra, the 14th of 15 (chmi offers Beast Academy).
+- repeat:
+    while:
+      notVisible:
+        id: assessment-level-ALG
+    times: 5
+    commands:
+      - swipe:
+          from:
+            id: assessment-level-list
+          direction: UP
+- assertVisible:
+    id: assessment-level-ALG
+    text: 'AoPS Algebra.*'

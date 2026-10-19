@@ -134,6 +134,8 @@ function StartCard() {
           value={levelId}
           onChange={setLevelId}
           defaultOpen={false}
+          searchPlaceholder="Search levels"
+          scroll
         />
         <Button
           testID="assessment-begin"

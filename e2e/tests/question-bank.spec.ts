@@ -161,12 +161,12 @@ test.describe('the question bank’s rules', () => {
       );
       expect(offered.map((l) => l.level_id)).toEqual(levels.map((l) => l.level_id));
       const ba3 = offered.find((l) => l.level_id === 'BA3')!;
-      expect(ba3.label).toBe('Beast Academy 3');
+      expect(ba3.label).toBe('BA3');
       expect(ba3.available).toBeGreaterThan(0);
       const [sofia] = await unwrap<{ id: string }[]>(await admin.request.get('/api/users?search=Sofia'), 'Sofia');
       const started = await unwrap<{ id: string; unreviewed_questions: number; question_count: number }>(
         await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofia.id, level_id: 'BA3' } }),
-        'starting a Beast Academy 3 assessment',
+        'starting a BA3 assessment',
       );
       expect(started.unreviewed_questions).toBe(started.question_count);
       await unwrap(await admin.request.post(`/api/canvas-assessments/${started.id}/discard`, { data: {} }), 'discarding');

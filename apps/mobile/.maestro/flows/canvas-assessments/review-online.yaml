@@ -101,7 +101,7 @@ tags:
     timeout: 20000
 - assertVisible:
     id: assessment-pdf-title
-    text: 'Review: Sofia Okafor · Grade 4'
+    text: 'Review: Sofia Okafor · G4'
 - assertVisible:
     id: assessment-review-summary
     text: 'Reviewed by Alex Chen.*'
@@ -150,7 +150,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: assessment-pdf-title
-    text: 'Review: Sofia Okafor · Grade 4'
+    text: 'Review: Sofia Okafor · G4'
 - assertNotVisible:
     id: assessment-pdf-edit-review
 - extendedWaitUntil:

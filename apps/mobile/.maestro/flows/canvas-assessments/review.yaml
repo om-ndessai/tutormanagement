@@ -44,7 +44,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: assessment-pdf-title
-    text: 'Sofia Okafor · Grade 4'
+    text: 'Sofia Okafor · G4'
 - assertVisible:
     id: assessment-pdf-edit-review
     text: 'Review'
