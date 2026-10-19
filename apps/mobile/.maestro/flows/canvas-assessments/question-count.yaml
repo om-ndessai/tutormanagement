@@ -54,7 +54,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: assessment-start-note
-    text: 'Up to 11 questions of the grade.*'
+    text: 'Up to 11 questions of the level.*'
 - tapOn:
     id: assessment-level
 - extendedWaitUntil:

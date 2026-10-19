@@ -338,5 +338,8 @@ export async function coverage(db: D1Database): Promise<QuestionCoverageLevel[]>
       draft: row.draft,
     });
   }
-  return levels;
+  // In the bank's own order (NC 2026 first), not by catalog stage, which would put Beast
+  // Academy's chapters (stages 1-999) ahead of the NC standards being reviewed.
+  const rank = (id: string) => (QUESTION_BANK_LEVEL_IDS as readonly string[]).indexOf(id);
+  return levels.sort((a, b) => rank(a.level_id) - rank(b.level_id));
 }

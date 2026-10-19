@@ -9,7 +9,12 @@ import { containsSsn, refuseSsn } from './tax.js';
 // blind, and approved by a platform admin before any child sees one
 // (docs/ai-platform-plan.md, "How a question earns trust").
 
-/** The levels the bank covers: NC 2026, grades 3-8 and Math 1 (owner, 2026-10-17). */
+/**
+ * The levels the bank covers, in the console's order: NC 2026, grades 3-8 and Math 1 (owner,
+ * 2026-10-17), then Beast Academy's Levels 1-5 and the three AoPS books its catalog carries, one
+ * chapter a topic (owner, 2026-10-18; the bank only -- the Assessment menu draws on
+ * CANVAS_ASSESSMENT_LEVEL_IDS).
+ */
 export const QUESTION_BANK_LEVEL_IDS = [
   'NC26.3',
   'NC26.4',
@@ -18,6 +23,14 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'NC26.7',
   'NC26.8',
   'NC26.M1',
+  'BA1',
+  'BA2',
+  'BA3',
+  'BA4',
+  'BA5',
+  'PRE',
+  'ALG',
+  'GEO',
 ] as const;
 
 export const QUESTION_KINDS = ['choice', 'numeric'] as const;

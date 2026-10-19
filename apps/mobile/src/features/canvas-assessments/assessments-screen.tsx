@@ -8,7 +8,7 @@
 import {
   levelLabel,
   type CanvasAssessment,
-  type QuestionBankLevelId,
+  type CanvasAssessmentLevelId,
 } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
@@ -97,7 +97,7 @@ function StartCard() {
     try {
       const created = await start.mutateAsync({
         student_user_id: chosenStudent,
-        level_id: levelId as QuestionBankLevelId,
+        level_id: levelId as CanvasAssessmentLevelId,
       });
       router.push({ pathname: '/assessments/[id]', params: { id: created.data.id } });
     } catch (caught) {
@@ -123,8 +123,8 @@ function StartCard() {
         ) : null}
         <OptionPicker
           testID="assessment-level"
-          label="Grade"
-          placeholder={levels.isPending ? 'Loading…' : 'Choose a grade'}
+          label="Level"
+          placeholder={levels.isPending ? 'Loading…' : 'Choose a level'}
           options={levelList.map((level) => ({
             id: level.level_id,
             label: level.label,

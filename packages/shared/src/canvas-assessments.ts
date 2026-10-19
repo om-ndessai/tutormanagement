@@ -18,10 +18,17 @@ export const CANVAS_ASSESSMENT_STATUS_LABELS: Record<CanvasAssessmentStatus, str
   discarded: 'Discarded',
 };
 
-export type QuestionBankLevelId = (typeof QUESTION_BANK_LEVEL_IDS)[number];
+/**
+ * The bank levels an Assessment may draw on: every level of the bank, NC 2026's and (owner,
+ * 2026-10-19) Beast Academy's. A Beast Academy level is offered only to an organization whose
+ * curriculum list includes Beast Academy (`assessmentLevelCurriculum`).
+ */
+export const CANVAS_ASSESSMENT_LEVEL_IDS = QUESTION_BANK_LEVEL_IDS;
 
-/** What people read for a bank level: "Grade 5", "Math 1". */
-export const QUESTION_BANK_LEVEL_LABELS: Record<QuestionBankLevelId, string> = {
+export type CanvasAssessmentLevelId = (typeof CANVAS_ASSESSMENT_LEVEL_IDS)[number];
+
+/** What people read for an Assessment level: "Grade 5", "Math 1", "Beast Academy 3". */
+export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string> = {
   'NC26.3': 'Grade 3',
   'NC26.4': 'Grade 4',
   'NC26.5': 'Grade 5',
@@ -29,10 +36,26 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<QuestionBankLevelId, string> = {
   'NC26.7': 'Grade 7',
   'NC26.8': 'Grade 8',
   'NC26.M1': 'Math 1',
+  BA1: 'Beast Academy 1',
+  BA2: 'Beast Academy 2',
+  BA3: 'Beast Academy 3',
+  BA4: 'Beast Academy 4',
+  BA5: 'Beast Academy 5',
+  PRE: 'AoPS Prealgebra',
+  ALG: 'AoPS Introduction to Algebra',
+  GEO: 'AoPS Introduction to Geometry',
 };
 
+/**
+ * The curriculum an organization must offer for a level to appear in its Assessment menu, or
+ * null for one every organization sees (NC 2026's grades, as since Phase 38).
+ */
+export function assessmentLevelCurriculum(levelId: string): string | null {
+  return levelId.startsWith('NC26.') ? null : 'ba';
+}
+
 export function levelLabel(levelId: string): string {
-  return QUESTION_BANK_LEVEL_LABELS[levelId as QuestionBankLevelId] ?? levelId;
+  return QUESTION_BANK_LEVEL_LABELS[levelId as CanvasAssessmentLevelId] ?? levelId;
 }
 
 /**
@@ -118,7 +141,7 @@ export function formatStroke(stroke: CanvasStroke): string {
 
 export const startCanvasAssessmentSchema = z.object({
   student_user_id: z.string().uuid('Choose a student.'),
-  level_id: z.enum(QUESTION_BANK_LEVEL_IDS, { message: 'Choose a grade.' }),
+  level_id: z.enum(CANVAS_ASSESSMENT_LEVEL_IDS, { message: 'Choose a level.' }),
 });
 export type StartCanvasAssessmentInput = z.infer<typeof startCanvasAssessmentSchema>;
 
@@ -185,7 +208,7 @@ export interface CanvasAssessmentDetail extends CanvasAssessment {
 }
 
 export interface CanvasAssessmentLevel {
-  level_id: QuestionBankLevelId;
+  level_id: CanvasAssessmentLevelId;
   label: string;
   /**
    * Questions it can draw on (standards needing a figure left out): the

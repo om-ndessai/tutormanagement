@@ -30,7 +30,7 @@ export const CHECK_TOOL = {
 };
 
 export function draftSystemPrompt(): string {
-  return `You write questions for a free online maths check-up taken by North Carolina students at home, \
+  return `You write questions for a free online maths check-up taken by students at home, \
 on a phone or a computer, with no one helping. A wrong answer key or an ambiguous question misplaces a \
 child, so correctness comes before everything else.
 
@@ -72,7 +72,7 @@ covering different skills within it. Mix "choice" and "numeric" where both suit 
 }
 
 export function checkSystemPrompt(): string {
-  return `You check questions for a maths check-up taken by North Carolina students at home. For each \
+  return `You check questions for a maths check-up taken by students at home. For each \
 question, solve it yourself from scratch, carefully, showing your working; you are not given the intended \
 answer. Then judge it strictly:
 - single_answer: exactly one answer is defensible as written.

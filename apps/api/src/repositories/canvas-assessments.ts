@@ -1,11 +1,11 @@
 import {
-  QUESTION_BANK_LEVEL_IDS,
+  CANVAS_ASSESSMENT_LEVEL_IDS,
   QUESTION_BANK_LEVEL_LABELS,
   drawableStatuses,
   type CanvasAssessment,
   type CanvasAssessmentLevel,
   type CanvasAssessmentStatus,
-  type QuestionBankLevelId,
+  type CanvasAssessmentLevelId,
   type User,
 } from '@tmi/shared';
 
@@ -167,32 +167,40 @@ export async function getVisibleCanvasAssessment(
  * "needs a figure" are left out, as from every test. The bank is platform
  * reference data; the approved few are read through `questions_status_idx`.
  */
+const SORTED_LEVELS = [...CANVAS_ASSESSMENT_LEVEL_IDS].sort();
+/** Every topic of every Assessment level sorts in [first level + '.', last level + '/'). */
+const ASSESSMENT_TOPICS_FROM = `${SORTED_LEVELS[0]}.`;
+const ASSESSMENT_TOPICS_TO = `${SORTED_LEVELS.at(-1)}/`;
+
 export async function countDrawableQuestions(
   db: D1Database,
   includeUnreviewed: boolean,
 ): Promise<CanvasAssessmentLevel[]> {
   const statuses = drawableStatuses(includeUnreviewed);
   // One row per standard and status: about 100 standards, so the grouping is
-  // small even when the 9,700 checked questions are counted.
+  // small even when the 9,700 checked questions are counted. Only the
+  // Assessment's levels, by topic range: Beast Academy's chapters are in the
+  // bank too, and are not read here.
   const result = await db
     .prepare(
       `SELECT q.topic_id, q.status, COUNT(*) AS n FROM questions q
-       WHERE q.status IN (${statuses.map(() => '?').join(', ')})
+       WHERE q.topic_id >= ? AND q.topic_id < ?
+         AND q.status IN (${statuses.map(() => '?').join(', ')})
          AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
        GROUP BY q.topic_id, q.status`,
     )
-    .bind(...statuses)
+    .bind(ASSESSMENT_TOPICS_FROM, ASSESSMENT_TOPICS_TO, ...statuses)
     .all<{ topic_id: string; status: string; n: number }>();
   const counts = new Map<string, { available: number; unreviewed: number }>();
   for (const row of result.results ?? []) {
-    const level = QUESTION_BANK_LEVEL_IDS.find((id) => row.topic_id.startsWith(`${id}.`));
+    const level = CANVAS_ASSESSMENT_LEVEL_IDS.find((id) => row.topic_id.startsWith(`${id}.`));
     if (!level) continue;
     const entry = counts.get(level) ?? { available: 0, unreviewed: 0 };
     entry.available += row.n;
     if (row.status !== 'approved') entry.unreviewed += row.n;
     counts.set(level, entry);
   }
-  return QUESTION_BANK_LEVEL_IDS.map((level_id: QuestionBankLevelId) => ({
+  return CANVAS_ASSESSMENT_LEVEL_IDS.map((level_id: CanvasAssessmentLevelId) => ({
     level_id,
     label: QUESTION_BANK_LEVEL_LABELS[level_id],
     available: counts.get(level_id)?.available ?? 0,
@@ -207,7 +215,7 @@ export async function countDrawableQuestions(
  */
 export async function drawQuestionIds(
   db: D1Database,
-  levelId: QuestionBankLevelId,
+  levelId: CanvasAssessmentLevelId,
   count: number,
   includeUnreviewed: boolean,
 ): Promise<{ ids: string[]; unreviewed: number }> {

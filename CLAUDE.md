@@ -573,7 +573,8 @@ would inherit it), so no test spends money; `ANTHROPIC_API_KEY` is a secret on t
 Nothing a model writes reaches a family or a student without a person approving it.
 
 **A question reaches a test only by passing every check and a person** (Phase 36). The bank
-(`questions`, platform reference data on the NC 2026 standards, grades 3-8 and Math 1) is written
+(`questions`, platform reference data on the NC 2026 standards, grades 3-8 and Math 1, and since Phase 41
+on Beast Academy's chapters, one chapter a topic, `docs/question-bank-beast-academy.md`) is written
 by Claude Sonnet, checked by code (`lintQuestion` in shared: the form, four distinct choices with
 exactly one matching the key, the `compute` expression evaluated EXACTLY -- `evaluateExact`, big
 integer fractions, never floats -- equal to the key, no near-copy), then solved blind by Claude Opus
@@ -594,7 +595,8 @@ account's daily reads in one session (`docs/ai-platform-plan.md`, "Reads").
 **An Assessment (Phase 38, beta) is written by hand, and its PDF is the tutor's.** While an
 organization's `canvas_assessments` is on (its admins' switch, off by default), the Assessment menu
 lets anyone who may follow a student's progress start one for them: up to 10 approved bank questions
-of a grade, one page each, answered on a canvas with nothing marked (`docs/canvas-assessment-plan.md`); a
+of a level (an NC grade, or -- where the organization offers Beast Academy -- a Beast Academy or AoPS
+level, Phase 41), one page each, answered on a canvas with nothing marked (`docs/canvas-assessment-plan.md`); a
 multiple-choice question is answered by choosing, with the canvas for working, and code marks the choice
 for the tutor (`checkAnswer`), never a model. Web and app alike; the PDF is shown in the portal and in the
 app (pdf.js), never handed over as a download.

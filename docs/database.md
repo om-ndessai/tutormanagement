@@ -699,6 +699,10 @@ Then the Anthropic key on both production Workers (the owner's): `npx wrangler s
 ANTHROPIC_API_KEY` and `npx wrangler secret put ANTHROPIC_API_KEY --env tutoring`. Until it is set,
 writing questions answers 503 `not_configured` and logs a `provider_error` run (`no_api_key`).
 
+Phase 41's writing (2026-10-18/19, 8,859 `checked` on 90 Beast Academy and AoPS chapters, no schema
+change) loads the same way, from its own file of INSERTs (`assemble.mjs` in the writing's workspace,
+the same rows as `db/questions/{BA1..BA5,PRE,ALG}.json`).
+
 The second writing (2026-10-17/18, about 100 per standard, 9,700 `checked`) loads the same way:
 the file holds every `checked` question, and `ON CONFLICT (id) DO NOTHING` leaves the ones already
 in production -- including any approved or retired since -- exactly as they are.

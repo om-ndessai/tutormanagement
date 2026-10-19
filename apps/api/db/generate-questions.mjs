@@ -37,7 +37,10 @@ const OUTPUT = join(here, 'questions.sql');
 /** db/platform-admin.sql's platform admin. */
 const REVIEWER = '0c000000-0000-4000-8000-000000000001';
 /** packages/shared/src/questions.ts, QUESTION_BANK_LEVEL_IDS. */
-const LEVELS = new Set(['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1']);
+const LEVELS = new Set([
+  ...['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1'],
+  ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
+]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const checkOnly = process.argv.includes('--check');

@@ -395,3 +395,25 @@ deployed; every organization at 10 questions, the Assessment switch still off ev
 - R17 extended in `docs/data-exposure.md`; production SQL in `docs/database.md`, Phase 40. Tests: the
   full local suite (231), the canvas-assessments flows (7) and `npm run smoke -- mobile` on iOS and
   Android, Jest 670.
+
+Phase 41: (requested 2026-10-18 by the owner; generation paused the same night, 90 of 116 chapters written; offered in the Assessment menu on the owner's word, 2026-10-19; web and the app)
+The question bank on Beast Academy's chapters. Plan: `docs/question-bank-beast-academy.md`. The bank
+grows from the NC 2026 standards to every chapter of the catalog's Beast Academy curriculum: Levels 1-5
+and the three AoPS books it carries (Prealgebra, Introduction to Algebra, Introduction to Geometry),
+116 chapters, about 100 questions each (owner, 2026-10-18), written and checked the way the NC
+writings were (Sonnet writers, `lintQuestion`, Opus solving blind) and loaded as `checked`, for a
+platform admin to approve. The questions are original: written from our own summary of each chapter,
+never from the books. The console (web and app) shows the new levels after the NC ones; the Assessment
+menu keeps drawing on NC 2026 alone (`CANVAS_ASSESSMENT_LEVEL_IDS`) until the owner asks otherwise. No
+schema change: a question's topic is already any catalog topic.
+
+Where it stands (2026-10-19): 8,859 `checked` questions on 90 chapters (Beast Academy 1-5, Prealgebra,
+Introduction to Algebra 1-13 and 16-17), 51 flagged and left out until a repair round. Not yet in the
+bank: Algebra 14, 15 and 18-22 (14, 15, 18-21 written but not solved blind; 22 not written) and all of
+Introduction to Geometry; generation stopped when the owner paused it and the account's usage limit was
+reached. The owner then asked for what was built to be saved and offered for assessment: the Assessment
+menu now offers every bank level, a Beast Academy one only to an organization whose curriculum list
+includes Beast Academy (`assessmentLevelCurriculum`); its questions are `checked`, so they are drawn
+only while the organization includes questions not yet reviewed, until a platform admin approves them.
+The writing's workspace (briefs, tooling, drafts, the flagged questions) is kept in
+`~/aimtrue-question-bank/qb3`.

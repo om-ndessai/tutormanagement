@@ -1,6 +1,7 @@
 import { Hono, type MiddlewareHandler } from 'hono';
 import {
   CANVAS_LIMITS,
+  assessmentLevelCurriculum,
   REVIEW_LIMITS,
   REVIEW_PAGE,
   checkAnswer,
@@ -22,7 +23,9 @@ import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { buildAssessmentPdf } from '../lib/canvas-assessment-pdf.js';
 import { ApiError } from '../lib/errors.js';
+import type { OrgId } from '../lib/org.js';
 import { isAdmin } from '../lib/scope.js';
+import { listOrganizationCurricula } from '../repositories/curricula.js';
 import { zValidator } from '../lib/validate.js';
 import {
   countDrawableQuestions,
@@ -124,13 +127,26 @@ function fileSlug(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'student';
 }
 
+/** The curricula this organization offers now (retired ones are left out of new assessments). */
+async function offeredCurricula(db: D1Database, org: OrgId): Promise<Set<string>> {
+  return new Set((await listOrganizationCurricula(db, org)).filter((c) => !c.retired).map((c) => c.id));
+}
+
+function levelOffered(levelId: string, offered: Set<string>): boolean {
+  const curriculum = assessmentLevelCurriculum(levelId);
+  return curriculum === null || offered.has(curriculum);
+}
+
 export const canvasAssessmentRoutes = new Hono<AppEnv>()
   .use('*', requireCanvasAssessments)
 
   .get('/levels', async (c) => {
-    const body: ApiOk<CanvasAssessmentLevel[]> = {
-      data: await countDrawableQuestions(c.env.DB, c.get('org').canvas_assessments_unreviewed),
-    };
+    const org = c.get('org');
+    const [levels, offered] = await Promise.all([
+      countDrawableQuestions(c.env.DB, org.canvas_assessments_unreviewed),
+      offeredCurricula(c.env.DB, org.id),
+    ]);
+    const body: ApiOk<CanvasAssessmentLevel[]> = { data: levels.filter((l) => levelOffered(l.level_id, offered)) };
     return c.json(body);
   })
 
@@ -151,6 +167,11 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     // told the student is missing, not forbidden.
     if (!(await canViewStudentProgress(c.env.DB, org.id, user, input.student_user_id))) {
       throw ApiError.notFound('That student was not found.');
+    }
+    if (!levelOffered(input.level_id, await offeredCurricula(c.env.DB, org.id))) {
+      throw ApiError.validation('That level is not offered here.', {
+        level_id: ['Beast Academy levels need Beast Academy on the organization’s curriculum list.'],
+      });
     }
     const drawn = await drawQuestionIds(
       c.env.DB,

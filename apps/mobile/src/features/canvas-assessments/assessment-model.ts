@@ -130,7 +130,7 @@ export function levelOptionDetail(level: CanvasAssessmentLevel, questions = 10):
 /** The start card's note under the pickers, with the organization's count (Phase 40). */
 export function startNote(includesUnreviewed: boolean, questions = 10): string {
   return (
-    `Up to ${questions} questions of the grade, chosen at random` +
+    `Up to ${questions} questions of the level, chosen at random` +
     (includesUnreviewed
       ? ', including questions not yet reviewed in the bank (your organization is trying them out)'
       : ' from the approved ones') +

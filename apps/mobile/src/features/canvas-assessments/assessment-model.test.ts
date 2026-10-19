@@ -178,7 +178,7 @@ describe('the sentences', () => {
     const grade4 = { level_id: 'NC26.4' as const, label: 'Grade 4', available: 12, unreviewed: 0 };
     expect(levelOptionDetail(grade4, 11)).toBe('11 questions');
     expect(levelOptionDetail(grade4, 25)).toBe('12 questions');
-    expect(startNote(false, 11)).toMatch(/^Up to 11 questions of the grade/);
+    expect(startNote(false, 11)).toMatch(/^Up to 11 questions of the level/);
   });
 
   it('names the reviewer once it is reviewed (Phase 40)', () => {

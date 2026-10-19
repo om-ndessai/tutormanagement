@@ -130,6 +130,65 @@ test.describe('the question bank’s rules', () => {
     }
   });
 
+  test('Phase 41: the bank covers Beast Academy’s chapters, after NC, and so does the Assessment where it is offered', async ({ as }) => {
+    const platform = await as('platformAdmin', { org: null });
+    const levels = await unwrap<{ level_id: string; topics: { topic_id: string }[] }[]>(
+      await platform.request.get('/api/platform/questions/coverage'),
+      'coverage',
+    );
+    expect(levels.map((l) => l.level_id)).toEqual([
+      ...['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1'],
+      ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
+    ]);
+    expect(levels.find((l) => l.level_id === 'BA3')?.topics.map((t) => t.topic_id)).toContain('BA3.06');
+    // A chapter is a standard the console can write for, like any other.
+    const written = await unwrap<{ questions: { topic_id: string }[] }>(
+      await platform.request.post('/api/platform/questions/draft', { data: { topic_id: 'BA3.06', count: 4 } }),
+      'writing for a chapter',
+    );
+    expect(written.questions.every((q) => q.topic_id === 'BA3.06')).toBe(true);
+
+    // The Assessment menu offers them too (owner, 2026-10-19), to an organization whose curriculum
+    // list includes Beast Academy (A's does); they are checked, not approved, so they are drawn only
+    // while the organization includes questions not yet reviewed.
+    const admin = await as('admin');
+    const setA = (data: Record<string, boolean>) => admin.request.patch('/api/organization/settings', { data });
+    expect((await setA({ canvas_assessments_unreviewed: true })).status()).toBe(200);
+    try {
+      const offered = await unwrap<{ level_id: string; label: string; available: number }[]>(
+        await admin.request.get('/api/canvas-assessments/levels'),
+        'assessment levels',
+      );
+      expect(offered.map((l) => l.level_id)).toEqual(levels.map((l) => l.level_id));
+      const ba3 = offered.find((l) => l.level_id === 'BA3')!;
+      expect(ba3.label).toBe('Beast Academy 3');
+      expect(ba3.available).toBeGreaterThan(0);
+      const [sofia] = await unwrap<{ id: string }[]>(await admin.request.get('/api/users?search=Sofia'), 'Sofia');
+      const started = await unwrap<{ id: string; unreviewed_questions: number; question_count: number }>(
+        await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofia.id, level_id: 'BA3' } }),
+        'starting a Beast Academy 3 assessment',
+      );
+      expect(started.unreviewed_questions).toBe(started.question_count);
+      await unwrap(await admin.request.post(`/api/canvas-assessments/${started.id}/discard`, { data: {} }), 'discarding');
+    } finally {
+      await setA({ canvas_assessments_unreviewed: false });
+    }
+
+    // B offers NC's standards only: no Beast Academy level, and asking for one is refused.
+    const adminB = await as('orgBAdmin', { org: 'riverside' });
+    const setB = (data: Record<string, boolean>) => adminB.request.patch('/api/organization/settings', { data });
+    expect((await setB({ canvas_assessments: true })).status()).toBe(200);
+    try {
+      const offeredB = await unwrap<{ level_id: string }[]>(await adminB.request.get('/api/canvas-assessments/levels'), 'B levels');
+      expect(offeredB.map((l) => l.level_id)).toEqual(['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1']);
+      const [lily] = await unwrap<{ id: string }[]>(await adminB.request.get('/api/users?search=Lily%20Chen'), 'Lily');
+      const refused = await adminB.request.post('/api/canvas-assessments', { data: { student_user_id: lily.id, level_id: 'BA3' } });
+      expect(refused.status()).toBe(422);
+    } finally {
+      await setB({ canvas_assessments: false });
+    }
+  });
+
   test('written, checked by code and blind, approved only once every check passed', async ({ as }) => {
     const platform = await as('platformAdmin', { org: null });
     const written = await unwrap<{ questions: any[] }>(

@@ -7,7 +7,7 @@ import {
   formatRelativeTime,
   levelLabel,
   type CanvasAssessment,
-  type QuestionBankLevelId,
+  type CanvasAssessmentLevelId,
 } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
@@ -75,7 +75,7 @@ function StartCard() {
     try {
       const created = await start.mutateAsync({
         student_user_id: chosenStudent,
-        level_id: levelId as QuestionBankLevelId,
+        level_id: levelId as CanvasAssessmentLevelId,
       });
       navigate(`/assessments/${created.data.id}`);
     } catch (caught) {
@@ -106,10 +106,10 @@ function StartCard() {
             </div>
           )}
           <div className="grid gap-1.5">
-            <Label htmlFor="assessment-level">Grade</Label>
+            <Label htmlFor="assessment-level">Level</Label>
             <Select value={levelId} onValueChange={setLevelId}>
               <SelectTrigger id="assessment-level" className="w-full">
-                <SelectValue placeholder="Choose a grade" />
+                <SelectValue placeholder="Choose a level" />
               </SelectTrigger>
               <SelectContent>
                 {levelList.map((level) => (
@@ -129,7 +129,7 @@ function StartCard() {
           </Button>
         </div>
         <p className="text-muted-foreground text-xs">
-          Up to {organization?.canvas_assessment_questions ?? 10} questions of the grade, chosen at random
+          Up to {organization?.canvas_assessment_questions ?? 10} questions of the level, chosen at random
           {organization?.canvas_assessments_unreviewed
             ? ', including questions not yet reviewed in the bank (your organization is trying them out)'
             : ' from the approved ones'}
