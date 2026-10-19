@@ -417,3 +417,9 @@ includes Beast Academy (`assessmentLevelCurriculum`); its questions are `checked
 only while the organization includes questions not yet reviewed, until a platform admin approves them.
 The writing's workspace (briefs, tooling, drafts, the flagged questions) is kept in
 `~/aimtrue-question-bank/qb3`.
+
+Released 2026-10-19 (commit d68bcd9; production backed up to
+`~/tmi-portal-backups/tutoring-db-20261019-061757-pre-phase41.sql`, the 8,859 `checked` questions
+loaded as INSERTs, both Workers deployed). Every production organization offers Beast Academy, so each
+sees its levels once its Assessment menu is on; the questions are drawn only while "include questions
+not yet reviewed" is on, until they are approved in the console.
