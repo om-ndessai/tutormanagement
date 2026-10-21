@@ -1,4 +1,4 @@
-# Gamification: Question Quest and points (Phases 42-44)
+# Gamification: Question Quest and points (Phases 42, 44 and 45)
 
 The owner's brief is `docs/gamification.md` (2026-10-19/20): make the platform sticky, especially the
 app on phones and iPads, starting with **students answering the question bank's unapproved questions
@@ -49,7 +49,7 @@ Where the brief meets a rule, and what this plan recommends:
 6. **Points are about children.** A public leaderboard of children's names conflicts with
    `docs/data-exposure.md`. *Recommended:* a student's points and badges are seen by the student, their
    guardians, their current tutors and the admins (the progress audience, R-new); no leaderboard in
-   Phase 42-43; an opt-in, first-names-or-nicknames leaderboard is a Phase 44 proposal behind its own
+   Phases 42 and 44; an opt-in, first-names-or-nicknames leaderboard is a Phase 45 proposal behind its own
    flag.
 7. **The beginning grade.** A per-organization fact about a student, so it is a `student_profiles`
    column (the people-model rule), chosen from the bank's levels (G3-G8, Math 1, BA1-BA5, AoPS).
@@ -102,11 +102,11 @@ Where the brief meets a rule, and what this plan recommends:
 - `activity_days`: organization_id, user_id, day (on the organization's clock, `zonedClockParts`),
   answers, reviews; one row per person per day, upserted. Streaks and "days active" are derived from
   it cheaply (a current streak reads at most a few dozen rows).
-- `user_badges` (Phase 43): organization_id, user_id, badge, earned_at; unique per badge.
+- `user_badges` (Phase 44): organization_id, user_id, badge, earned_at; unique per badge.
 - Every table carries `organization_id`, with the same-organization triggers; every query names the
   organization (`check-org-scope.mjs`).
 
-## Metrics kept (Phase 43)
+## Metrics kept (Phase 44)
 
 Per person per organization, derived from the tables above: points (total, this week), questions
 answered and confirmed correct, reviews done, approvals and flags (tutors), current streak and longest
@@ -116,7 +116,7 @@ and to the audience in item 6.
 
 ## Proposals: earning and redeeming
 
-Earning (Phase 42-43):
+Earning (Phases 42 and 44):
 - A student: 1 point for each answer, and 1 more when the answer was right and the question is
   approved. A tutor: 1 point for every review, approve or flag alike (owner, 2026-10-20).
 - Streak bonuses: +2 at 3 days, +5 at 7, +10 at 30 (once each per streak).
@@ -124,7 +124,7 @@ Earning (Phase 42-43):
   cleared (every unapproved question of a level answered); Sharp eye (a tutor's flag the platform admin
   upholds); Helper (a tutor's 100 reviews).
 
-Redeeming (Phase 44, its own flag):
+Redeeming (Phase 45, its own flag):
 - **A rewards shelf each organization writes**: its admins list rewards with a points price ("choose
   the next lesson's game", "a sticker", "5 minutes of puzzle time", "a certificate"). A student (or
   their parent) asks to redeem; a tutor or admin marks it given; the ledger takes the points off. No
@@ -141,10 +141,10 @@ Redeeming (Phase 44, its own flag):
   (set from the Quest page's student list, web and app); the signed-in student's full-screen Quest; the tutor's full-screen review queue and landing; approvals and flags into the bank;
   `quest_attempts`, `points_ledger`, `activity_days`; points shown on Quest and the queue; exposure
   rule and its crawl; audit actions; web and app together (parity), iPad layout.
-- **Phase 43 — Streaks, metrics and badges.** The metrics above, the "My progress" card, streak
+- **Phase 44 — Streaks, metrics and badges.** The metrics above, the "My progress" card, streak
   bonuses, `user_badges` and the badge set, a gentle in-app nudge on the Home screen ("2-day streak:
   one question keeps it going"); push reminders wait for the push roadmap item.
-- **Phase 44 — Rewards.** The rewards shelf, redemption requests and their approval, certificates, the
+- **Phase 45 — Rewards.** The rewards shelf, redemption requests and their approval, certificates, the
   opt-in leaderboard.
 
 ## Decisions (owner, 2026-10-20)

@@ -975,7 +975,7 @@ BEGIN
 END;
 
 -- One row per person per day of activity, on the organization's clock: what
--- streaks and "days active" are derived from (Phase 43), and the daily rollup
+-- streaks and "days active" are derived from (Phase 44), and the daily rollup
 -- of the ledger's points, written in the same batch as each award, so a
 -- balance reads a row per day rather than every award. The ledger stays the
 -- record; this is its running sum by day.

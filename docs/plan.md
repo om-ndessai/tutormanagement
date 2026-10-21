@@ -424,15 +424,16 @@ loaded as INSERTs, both Workers deployed). Every production organization offers 
 sees its levels once its Assessment menu is on; the questions are drawn only while "include questions
 not yet reviewed" is on, until they are approved in the console.
 
-Phases 42-44: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
-day; Phase 42 released 2026-10-20, web and the app; 43 and 44 not started)
+Phases 42, 44 and 45: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
+day; Phase 42 released 2026-10-20, web and the app; 44 and 45 not started -- renumbered from 43 and 44
+when the owner put the tutor's Home first, 2026-10-20)
 Gamification, starting with the question bank. Plan: `docs/gamification-plan.md`.
 - **Phase 42 — Question Quest and points.** An organization flag; each student's beginning level; the
   student answers the bank's unapproved questions one at a time, full screen (no going back), marked by
   code; their tutor reviews each in a full-screen queue and confirms the question (approved into the
   bank) or flags it; points to both, kept in an append-only ledger; daily activity kept for streaks.
-- **Phase 43 — Streaks, metrics and badges.**
-- **Phase 44 — Rewards** (an organization's own rewards shelf, certificates, an opt-in leaderboard).
+- **Phase 44 — Streaks, metrics and badges.**
+- **Phase 45 — Rewards** (an organization's own rewards shelf, certificates, an opt-in leaderboard).
 
 Phase 42 released 2026-10-20 (commit acfc8a2; production backed up to
 `~/tmi-portal-backups/tutoring-db-20261020-210749-pre-phase42.sql`, the Phase 42 SQL applied, both
@@ -441,3 +442,16 @@ page, Gamification). Owed: the phones carry an older app build until they are re
 status bar still shows over Quest (needs `UIViewControllerBasedStatusBarAppearance` and a native
 rebuild) and the screen may sleep (needs `expo-keep-awake` as the app's own dependency) -- the
 owner's call.
+
+Phase 43: (requested 2026-10-20 by the owner, to come next; proposal with mockups, awaiting the owner's
+answers to its open questions before building; web and the app)
+The tutor's Home: make it the screen a tutor opens before and after a lesson. Plan and mockups:
+`docs/tutor-home-plan.md` (`docs/tutor-home/`). Recent Activity leaves everyone's Home (every role, web
+and app; the Activity page stays). At the top of a tutor's Home, a "Now" card that changes with the
+day: a lesson ended and not recorded -> "Yay, you completed one more lesson with Sofia", confetti, and
+Record it now, which opens the record sheet filled in from the schedule; a lesson in the next 12 hours
+-> a personal message about it, with Directions or the meeting link and Start; otherwise the next
+lesson and anything waiting. Under it, for that lesson: the homework set last time, where it is (Open in
+Google Maps, or the link), the next topic on the student's plan, and the assessment notes from the
+previous lesson (hidden until tapped, since the student may see the screen). One new read route for the
+tutor's own lessons; no schema change.

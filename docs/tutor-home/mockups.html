@@ -1,0 +1,138 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tutor Home mockups</title>
+<style>
+:root{--bg:#f8f4ef;--card:#fffdf9;--ink:#1f1b16;--muted:#6f675e;--line:#e7dfd4;--primary:#3f48b0;--primary-soft:#e9eafb;--ok:#2f7d5b;--ok-soft:#e3f2ea;--warn:#a5631b;--warn-soft:#fbefdf;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,"SF Pro Text",system-ui,sans-serif;width:390px;min-height:844px;position:relative;overflow:hidden}
+body.long{overflow:visible;padding-bottom:84px}
+.status{height:47px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-weight:600;font-size:16px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:4px 20px 10px}
+.top h1{font-size:28px;font-weight:700;letter-spacing:-.4px}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;font-weight:700;font-size:13px}
+.seg{margin:0 20px 14px;display:grid;grid-template-columns:1fr 1fr;background:#efe8de;border-radius:10px;padding:3px;font-size:13px;font-weight:600}
+.seg span{text-align:center;padding:6px;border-radius:8px;color:var(--muted)}.seg .on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px #0001}
+.wrap{padding:0 16px 120px;display:grid;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.hero{background:linear-gradient(160deg,#3f48b0,#5a3fa8);color:#fff;border:none;padding:18px}
+.hero .kicker{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.hero h2{font-size:21px;line-height:1.25;margin:6px 0 4px;font-weight:700}
+.hero p{opacity:.9;font-size:14px}
+.chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.chip{background:#ffffff26;border-radius:999px;padding:5px 10px;font-size:12.5px;font-weight:600}
+.btns{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;text-align:center;border-radius:12px;padding:11px 8px;font-weight:650;font-size:14px}
+.btn.w{background:#fff;color:var(--primary)}.btn.g{background:#ffffff26;color:#fff}
+.btn.p{background:var(--primary);color:#fff}.btn.o{border:1px solid var(--line);color:var(--primary);background:var(--card)}
+.label{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+.card h3{font-size:16px;margin:6px 0 4px}
+.card .body{color:var(--ink);font-size:14.5px}
+.muted{color:var(--muted);font-size:13px}
+.badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:650}
+.b-ok{background:var(--ok-soft);color:var(--ok)}.b-warn{background:var(--warn-soft);color:var(--warn)}.b-p{background:var(--primary-soft);color:var(--primary)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.map{height:86px;border-radius:12px;margin:8px 0;background:
+ linear-gradient(90deg,#0000 47%,#fff 47% 53%,#0000 53%),linear-gradient(0deg,#0000 40%,#fff 40% 46%,#0000 46%),
+ linear-gradient(135deg,#dfe9d6,#e8efe0 40%,#d9e6f0);position:relative}
+.pin{position:absolute;left:52%;top:30%;width:22px;height:22px;background:#d93a3a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 4px #0003}
+.pin:after{content:"";position:absolute;inset:6px;background:#fff;border-radius:50%}
+.gmaps{display:flex;align-items:center;gap:8px;font-weight:650;color:var(--primary);font-size:14px}
+.topic{display:flex;gap:10px;align-items:flex-start}
+.code{font:600 12px ui-monospace,monospace;background:#f1ece4;border-radius:6px;padding:3px 6px;color:var(--muted)}
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:84px;background:#fffdf9f2;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding-top:9px;font-size:10.5px;color:var(--muted)}
+.tabbar div{text-align:center}.tabbar .on{color:var(--primary);font-weight:650}.tabbar i{display:block;width:24px;height:24px;margin:0 auto 3px;border-radius:7px;background:currentColor;opacity:.25}.tabbar .on i{opacity:1}
+.carousel{display:flex;gap:10px;overflow:hidden}
+.mini{min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:13px}
+.sec{font-size:17px;font-weight:700;margin:8px 4px 0}
+.blur{filter:blur(4px);user-select:none}
+.reveal{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+/* celebration */
+.celebrate{background:linear-gradient(160deg,#2f7d5b,#3a9a72);color:#fff;border:none;text-align:center;padding:20px 18px}
+.celebrate .big{font-size:40px;line-height:1}
+.celebrate h2{font-size:21px;margin:8px 0 4px}
+.confetti{position:absolute;inset:0;pointer-events:none}
+.confetti b{position:absolute;width:8px;height:14px;border-radius:2px;opacity:.9}
+/* sheet */
+.scrim{position:absolute;inset:0;background:#0006}
+.sheet{position:absolute;left:0;right:0;bottom:0;top:96px;background:var(--card);border-radius:18px 18px 0 0;padding:10px 18px 18px;overflow:hidden}
+.grab{width:38px;height:5px;border-radius:3px;background:#d8d0c4;margin:0 auto 12px}
+.sheet h2{font-size:20px;margin-bottom:2px}
+.field{border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-top:10px}
+.field small{display:block;font-size:11.5px;color:var(--muted)}
+.field div{font-size:15px}
+.pre{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;color:var(--ok);background:var(--ok-soft);border-radius:6px;padding:1px 6px;vertical-align:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ta{min-height:58px;color:var(--muted)}
+</style></head>
+<body>
+<div class="status"><span>3:12</span><span>●●● ◔ ▮</span></div>
+<div id="screen"></div>
+<script>
+const s = new URLSearchParams(location.search).get('s') || '1';
+const tab = `<div class="tabbar"><div class="on"><i></i>Home</div><div><i></i>Sessions</div><div><i></i>Schedule</div><div><i></i>Progress</div><div><i></i>More</div></div>`;
+const head = (title='Home') => `<div class="top"><h1>${title}</h1><div class="avatar">AC</div></div><div class="seg"><span class="on">Tutoring</span><span>Finance</span></div>`;
+const homework = (extra='') => `<div class="card"><div class="label">📝 Homework from last time · Oct 16</div>
+  <div class="body" style="margin-top:6px">Beast Academy 4C, pages 48–53: factor trees. Finish problems 12–20 on prime factorization.</div>
+  <div class="row" style="margin-top:8px"><span class="muted">How the one before went</span><span class="badge b-warn">Partly done</span></div>${extra}</div>`;
+const location_ = `<div class="card"><div class="label">📍 Where</div><h3>Chapel Hill Public Library · Study room 2</h3>
+  <div class="muted">100 Library Dr, Chapel Hill, NC 27514</div><div class="map"><div class="pin"></div></div>
+  <div class="row"><span class="gmaps">↗ Open in Google Maps</span><span class="muted">12 min drive</span></div></div>`;
+const topic = `<div class="card"><div class="label">🎯 Next on the plan</div><div class="topic" style="margin-top:8px"><span class="code">BA4.08</span>
+  <div><b>Fractions</b><div class="muted">Equivalent fractions, simplest form, mixed numbers. Rated 2 of 5 last week; the plan wants 4 by Dec 15.</div></div></div></div>`;
+const notes = (open) => `<div class="card"><div class="label">💬 Assessment notes · last lesson</div>
+  ${open ? `<div class="body" style="margin-top:6px"><b>You:</b> Strong on primes; still guesses when a number has three factors. Slow down on factor trees.</div>
+  <div class="body" style="margin-top:6px"><b>Maria (parent):</b> Said it clicked by the end. Wants more word problems.</div>`
+  : `<div class="body blur" style="margin-top:6px">Strong on primes; still guesses when a number has three factors. Slow down on…</div>
+  <div class="reveal"><span class="muted">Hidden while the screen may be shared</span><span class="badge b-p">Tap to show</span></div>`}</div>`;
+const sessions = `<div class="sec">Tutoring Sessions</div><div class="carousel"><div class="mini"><b>Sofia Okafor</b><div class="muted">Today 4:30 PM · Next up</div></div><div class="mini"><b>Ben Whitfield</b><div class="muted">Thu 5:00 PM</div></div><div class="mini"><b>Sofia</b><div class="muted">Sat 10:00 AM</div></div></div>`;
+const progress = `<div class="sec">Progress</div><div class="card"><div class="row"><b>Sofia Okafor</b><span class="badge b-ok">On track</span></div><div class="muted">Grade 4 readiness · 62% of the plan</div></div>`;
+const screens = {
+  // 1. A lesson later today (within 12 hours): the personal message, with homework and the place right there.
+  1: `${head()}<div class="wrap">
+    <div class="card hero"><div class="kicker">Good afternoon, Alex</div>
+      <h2>Sofia's lesson is at 4:30 PM, in 1 h 18 min</h2>
+      <p>In person at the library. Last time you set factor trees; she said she'd bring her questions.</p>
+      <div class="chips"><span class="chip">📍 Library · 12 min</span><span class="chip">📝 Homework: pp. 48–53</span><span class="chip">🎯 Fractions next</span></div>
+      <div class="btns"><div class="btn w">↗ Directions</div><div class="btn g">Start lesson</div></div></div>
+    ${homework()}${location_}${topic}${notes(false)}${sessions}${progress}</div>${tab}`,
+  // 2. The lesson is tomorrow morning (still inside 12 hours): a calmer message.
+  2: `${head()}<div class="wrap">
+    <div class="card hero"><div class="kicker">Good evening, Alex</div>
+      <h2>Tomorrow at 8:00 AM: Ben, online</h2>
+      <p>You have a quiet evening. Ben's homework was the 4D decimals set — he marked it done.</p>
+      <div class="chips"><span class="chip">🎥 Zoom link ready</span><span class="chip">📝 Done</span><span class="chip">🎯 Decimals next</span></div>
+      <div class="btns"><div class="btn w">Open the link</div><div class="btn g">See the plan</div></div></div>
+    <div class="card"><div class="label">📝 Homework from last time · Oct 18</div><div class="body" style="margin-top:6px">BA4.11 decimals: compare and order, problems 1–15.</div><div class="row" style="margin-top:8px"><span class="muted">How it went</span><span class="badge b-ok">Done</span></div></div>
+    <div class="card"><div class="label">🎥 Where</div><h3>Online · Ben's Zoom room</h3><div class="row"><span class="gmaps">↗ Open the meeting link</span><span class="muted">opens at 7:55</span></div></div>
+    ${topic.replace('BA4.08','BA4.11').replace('<b>Fractions</b>','<b>Decimals</b>').replace('Equivalent fractions, simplest form, mixed numbers. Rated 2 of 5 last week; the plan wants 4 by Dec 15.','Tenths and hundredths, comparing, converting. Not rated yet.')}
+    ${notes(true).replace('Strong on primes; still guesses when a number has three factors. Slow down on factor trees.','Quick with place value. Mixes up 0.4 and 0.04 when tired — start with that.').replace('<div class="body" style="margin-top:6px"><b>Maria (parent):</b> Said it clicked by the end. Wants more word problems.</div>','')}
+    ${sessions.replace('Sofia Okafor</b><div class="muted">Today 4:30 PM · Next up','Ben Whitfield</b><div class="muted">Tomorrow 8:00 AM · Next up')}</div>${tab}`,
+  // 3. Opened after a lesson that is not recorded yet: the celebration.
+  3: `${head()}<div class="wrap">
+    <div class="card celebrate"><div class="big">🎉</div><h2>Yay! You completed one more lesson with Sofia</h2>
+      <p style="opacity:.92">That's 24 together since August. It ended at 5:30 PM — record it while it's fresh.</p>
+      <div class="btns"><div class="btn w" style="color:#2f7d5b">Record it now</div><div class="btn g">Later</div></div></div>
+    <div class="card"><div class="label">⏭ Up next</div><h3>Ben, tomorrow 8:00 AM · online</h3><div class="muted">Homework was BA4.11 decimals — marked done.</div></div>
+    ${sessions.replace('Sofia Okafor</b><div class="muted">Today 4:30 PM · Next up','Sofia Okafor</b><div class="muted">Today 4:30 PM · Not recorded')}${progress}</div>${tab}
+    <div class="confetti">${Array.from({length:24},(_,i)=>`<b style="left:${(i*37)%380}px;top:${40+((i*53)%300)}px;background:${['#f2b632','#3f48b0','#e2556b','#3a9a72','#8a5cd8'][i%5]};transform:rotate(${(i*47)%180}deg)"></b>`).join('')}</div>`,
+  // 4. "Record it now": the record sheet, filled in from the schedule.
+  4: `${head()}<div class="wrap"><div class="card celebrate"><div class="big">🎉</div><h2>Yay! You completed one more lesson with Sofia</h2></div></div>${tab}
+    <div class="scrim"></div><div class="sheet"><div class="grab"></div><h2>Record the lesson</h2><div class="muted">Filled in from Sofia's Tuesday schedule — check and save.</div>
+    <div class="field"><small>Pairing</small><div>Sofia Okafor <span class="pre">FROM SCHEDULE</span></div></div>
+    <div class="two"><div class="field"><small>Date</small><div>Tue, Oct 20</div></div><div class="field"><small>Mode</small><div>In person <span class="pre">✓</span></div></div></div>
+    <div class="two"><div class="field"><small>Started</small><div>4:30 PM <span class="pre">✓</span></div></div><div class="field"><small>Ended</small><div>5:30 PM <span class="pre">✓</span></div></div></div>
+    <div class="field"><small>Where</small><div>Chapel Hill Public Library <span class="pre">✓</span></div></div>
+    <div class="field ta"><small>Homework review</small><div>Last time: BA 4C pp. 48–53, factor trees. How did it go?</div></div>
+    <div class="field ta"><small>What was covered</small><div>…</div></div>
+    <div class="btns"><div class="btn o">Save draft</div><div class="btn p">Record session</div></div></div>`,
+  // 5. Nothing in the next 12 hours.
+  5: `${head()}<div class="wrap">
+    <div class="card hero" style="background:linear-gradient(160deg,#4a4f6e,#5b5f80)"><div class="kicker">Good morning, Alex</div>
+      <h2>No lessons in the next 12 hours</h2><p>Next: Sofia, Thursday 4:30 PM at the library.</p>
+      <div class="btns"><div class="btn w" style="color:#4a4f6e">Review 3 Quest answers</div><div class="btn g">Schedule</div></div></div>
+    <div class="card"><div class="label">✍️ Waiting for you</div><h3>1 lesson to record</h3><div class="muted">Ben, Monday 5:00 PM — not recorded yet.</div></div>
+    ${sessions.replace('Sofia Okafor</b><div class="muted">Today 4:30 PM · Next up','Sofia Okafor</b><div class="muted">Thu 4:30 PM · Next up')}${progress}</div>${tab}`,
+};
+document.getElementById('screen').innerHTML = screens[s];
+if (['1','2'].includes(s)) document.body.classList.add('long');
+</script></body></html>
