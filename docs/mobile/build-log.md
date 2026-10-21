@@ -1734,3 +1734,60 @@ No scoring. No API, schema or shared change.
 - `npm run e2e:mobile -- both apps/mobile/.maestro/flows/canvas-assessments`: all seven flows green on iOS (simulator 328F7D61) and Android (emulator-5554): `open`, `menu`, `take`, `review`, `review-online`, `review-reopen`, `question-count`.
 - The hidden web view draws the pages as PNGs on both platforms. A Maestro swipe marks the red-ink layer, and the RNGH ScrollView did not take the stroke.
 - `npm run smoke -- mobile`: green on both (diagnostics, sign-in, open, navigation).
+
+## 57. Phase 42: Question Quest — design and build (2026-10-20)
+**Scope:** the web's Question Quest at parity, in the app (`docs/gamification-plan.md`, its "Decisions"; `/CLAUDE.md`, "Question Quest (Phase 42)"; R18). The Organization screen's Gamification card with the Question Quest switch; Quest in More and Search only while the organization has `gamify_question_quest` on; the Quest page (a student's "Your Quest"; a reviewer's "Answers to review" and their students with a level picker); a student's Quest and a reviewer's queue full screen outside the tabs; the once-per-sign-in landing from Home. No API, schema or shared change from this work (the API, the contract and the web are the coordinator's, already built and tested).
+
+**Web sources:** `apps/web/src/features/quest/{api.ts, quest-page.tsx (QuestPage, QuestLanding), quest-play-page.tsx, quest-review-page.tsx, fullscreen-frame.tsx}`; the Quest item in `components/layout/app-shell.tsx`; `GamificationCard` in `features/organizations/organization-settings-page.tsx`.
+
+**Endpoints:** (`api.ts` copied: the same `questKeys`; the answer and review mutations write the state they return into the cache; `me` and `review` never go stale on their own; a review and a level change invalidate the students; every route answers 403 while the switch is off)
+- `GET /quest/me`, `POST /quest/answers {question_id, answer}`: `useQuestState`, `useAnswerQuest`. A student.
+- `GET /quest/review`, `POST /quest/review/:attemptId {decision, note?}`: `useQuestReview`, `useReviewQuest`. A tutor (their students) or an admin.
+- `GET /quest/students`, `PUT /quest/students/:id/level {level_id|null}`: `useQuestStudents`, `useSetQuestLevel`.
+- `PATCH /organization/settings {gamify_question_quest}`: the existing `useUpdateOrganizationSettings`, then `refreshSession()`, so More follows at once.
+
+**Screens & routes:** (in `(org)`, each route thin)
+- `app/(org)/quest/index.tsx` → `QuestScreen`, `screen-quest`: a stack screen, from More (`more-nav-quest`) and Search.
+- `app/(org)/quest/play.tsx` → `QuestPlayScreen`, `screen-quest-play`; `app/(org)/quest/review.tsx` → `QuestReviewScreen`, `screen-quest-review`. Both `presentation: 'fullScreenModal'` (Android falls back to a modal), no header, no swipe; their own frame (`quest-frame.tsx`): the title, the status (level / waiting, and the points), Exit (`router.dismissTo('/quest')`: down to the Quest page when it is beneath, in place of this screen when the landing opened it). They open no form-sheet route (a sheet over a full-screen modal never reached VoiceOver, U3): the flag reason is a sheet drawn in the frame itself, through a Paper `Portal.Host` the frame holds.
+- `app/(org)/(tabs)/dashboard/index.tsx` mounts `QuestLanding` beside Home.
+
+**Components:** (new, in `src/features/quest/`)
+- `quest-model.ts` (pure): `questRoles`; `questLandingKind` (a student who neither tutors nor runs it; a tutor who is neither an admin nor a student) and `decideQuestLanding` (nothing while off; a student with a question → play; a tutor with answers waiting → review; the welcome wizard, when about to open, comes first); the in-memory landed set (`landingKey(user, org)`, `markLanded`, `forgetQuestLandings`, called on sign-out from the root layout beside the quick actions); the web's sentences (`savedToast` from `QUEST_POINTS.student_attempt`, `reviewToast`, `movedUpText`, `finishedText`, `solverLine`, …); the level options (`Not set` + `QUESTION_BANK_LEVEL_IDS` by `levelLabel`); `questResponse`; `questWide` (≥ 700 pt: an iPad, either way up).
+- `quest-html.ts` (pure): the stem; the choices, lettered and larger than the bank's (em-sized, so they follow the reader's text size), the chosen one marked; the reviewer's body (options with the key marked and the student's answer tagged with their first name, edged in the error colour when it is not the key; the worked solution), with its speech and plain-text forms. Built on Hermes for the bank's KaTeX web view (`MathBody`); the student's page never holds a key or a solution (the server never sends them).
+- `quest-choices.tsx`: the Assessment's overlay pattern -- one `MathBody` draws the choices, a native radio button (`quest-choice-A..D`) is laid over each box the page reports; tap again to take it back; plain native rows if the page cannot draw.
+- `quest-play-screen.tsx`: "Question N", the stem, the choices or a number field (`quest-number`), Submit (`quest-submit`), the footnote; moved-up banner, no-level and finished states. No previous button. The stem and choices web views stay for the session (`persistent`), each next question swapped in place, and the screen returns to its top. A 409 ("no longer the one to answer") reads the state again.
+- `quest-review-screen.tsx`: level pill, topic code and name, difficulty, skill; the body; the student's answer with "Matches the key" / "Does not match" (`quest-answer-mark`), the key for a numeric question, the blind solver's line; the judging sentence; "Question is right" / "Question has a problem". The buttons wake once the question is drawn plus 350 ms (as the console's review). The flag sheet: a required reason, checked by `questReviewSchema` before sending; a refusal shows under the reason; it rides on the keyboard (`useKeyboardHeight`, plus the navigation bar on Android, whose reported height leaves it out) and Android's back cancels it. A 409 or 404 on a review reads the queue again.
+- `quest-screen.tsx`: Your Quest (`quest-play-card`, Start / Carry on), Answers to review (`quest-review-card`), Students (a card per student: an `OptionPicker` with `scroll`, `quest-level-<id>`, and the counts line).
+- `quest-notice.tsx`: the confirmations in Quest's own frame (below).
+- `organizations/gamification-card.tsx`: the switch (`org-quest-switch`), the owner's wording.
+- `shell/nav-items.ts`: Quest after Assessment, `feature: 'gamify_question_quest'`.
+
+**Exposure (R18):** the student's screens show only what `/quest/me` sends (no key, solution or checks); the review shows the key, solution and solver verdict to the reviewer only; nobody sees another student's points; no money; the flag reason goes through `refuseSsn` in the shared schema before any request; the organization travels on every request and the landed set is per organization.
+
+**Changed while building (2026-10-20):**
+- **The toast is said in Quest's frame.** On iOS the app's toast draws in its own window (`FullWindowOverlay`); over a full-screen modal it was drawn but never reached the accessibility tree (XCUITest, and so VoiceOver, could not see "Saved. +1 point"). `QuestNoticeHost` shows the same Paper Snackbar inside the frame, announced on iOS and a live region on Android, with the toast's haptics. The web's sentences are unchanged.
+- **The status bar is hidden on Android only.** The frame mounts `<StatusBar hidden />`; iOS ignores it as the app is configured (the scene life cycle with `UIViewControllerBasedStatusBarAppearance` off, so `setStatusBarHidden` is a no-op), and react-native-screens' `statusBarHidden` needs that key on (it asserts otherwise). Turning it on is a native change and moves every screen's status bar to the navigator: the owner's call.
+- **The screen is not kept awake.** `expo-keep-awake` is only Expo's transitive dependency (linked natively, not the app's own); adding it is `npx expo install expo-keep-awake`, left for the owner.
+- **The number keypad has the minus sign and the fraction bar.** About 9% of the bank's numeric keys are fractions or negatives (`3/4`, `-2`), which iOS's decimal pad cannot type: iOS uses `numbers-and-punctuation`, Android `phone-pad` (Gboard's phone pad: the digits, `−` and `.` on its first page, `/` on its second; checked on the emulator). Return only puts the keyboard away; sending stays a tap on Submit, as nothing can be taken back.
+- **The flag sheet is not a native modal.** First built as an RN `Modal`: on Android its window was not resized for the keyboard (the reason and the buttons sat under it), and typing a sentence into it left the screen blank and the review reloaded. Now a sheet portalled into the frame.
+- **The keyboard on Android.** Edge to edge, Android does not resize the window for the keyboard: the frame's content gets the keyboard's height as room to scroll on Android (iOS insets it itself), the notice sits above the keyboard, and closing the flag sheet puts the keyboard away (it stayed up over the review and hid "Flagged for the platform.").
+- **The two web views stay for the session** on the student's screen too: the question card is no longer keyed on the question, so each next question swaps in place instead of loading two new web views (the stem was blank for a moment).
+- **The landing gives way to the welcome wizard** (a first visit) and waits for Home to be in front.
+- **Owner, 2026-10-20 (mid-build):** a tutor earns one point per review only; the card says so, and `quest-start.js` expects +1 per review.
+
+**Tests:**
+- **Jest:** `quest-model.test.ts` (roles, the landing, the landed set, the sentences, the level options, the response, the width), `quest-html.test.ts` (no key on the student's page, the selection, escaping, the review marks and speech), `nav-items.test.ts` (Quest follows its own switch, after Assessment).
+- **Maestro** (`flows/quest/`, through `scripts/quest-start.js` and `quest-end.js` on the local Worker; the switch is always put back off):
+  - `play-number`: Sofia at G5 (a number first, locally): the number field, no choices; `3/4` typed; Return sends nothing (same points, the answer kept); Submit; the notice; points up by one.
+  - `play`: Sofia, started at BA3, lands in Quest; choosing and un-choosing; Submit; "Saved. +1 point"; her points up by one (read from the server first); Exit to the Quest page; Home does not land again.
+  - `review`: Sofia has answered two; Alex lands in the review; approve (the notice, one fewer waiting, a point); flag needs a reason, then flags (the notice, one fewer, a point); Exit.
+  - `level`: Priya, from More; Sofia's level set to G5 from the picker, then Not set.
+  - `menu`: with the switch off, More lists no Quest (student and admin) and nobody lands; on and off from the Gamification card.
+  - `finished`: at AoPS Geometry (nothing left locally), the finished state, and Back.
+
+**Verified (2026-10-20):**
+- `npm run mobile:typecheck`, `mobile:lint` (0 errors; the 25 warnings are the existing ones, none in this work), `mobile:test` (107 suites, 694 tests) and `mobile:export` (both platforms): green.
+- `npm run e2e:mobile -- both apps/mobile/.maestro/flows/quest`: all six flows green on iOS (simulator 328F7D61, iPhone 17) and Android (emulator-5554): `play`, `play-number`, `review`, `level`, `menu`, `finished`.
+- `npm run e2e:mobile -- both apps/mobile/.maestro/flows/canvas-assessments` (the Organization screen and the shared nav changed): all seven green on both.
+- `npm run smoke -- mobile`: green on both (diagnostics, sign-in, open, navigation).
+- Not checked: an iPad (no iPad simulator in the runner; the side-by-side layout is the `questWide` breakpoint, unit-tested); VoiceOver and TalkBack by hand.

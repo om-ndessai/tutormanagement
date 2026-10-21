@@ -35,6 +35,9 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS activity_days;
+DROP TABLE IF EXISTS points_ledger;
+DROP TABLE IF EXISTS quest_attempts;
 DROP TABLE IF EXISTS canvas_assessment_reviews;
 DROP TABLE IF EXISTS canvas_assessment_files;
 DROP TABLE IF EXISTS canvas_assessments;
@@ -181,6 +184,10 @@ CREATE TABLE organizations (
   -- Phase 40: how many questions an assessment draws.
   canvas_assessment_questions INTEGER NOT NULL DEFAULT 10
     CHECK (canvas_assessment_questions BETWEEN 1 AND 25),
+  -- Phase 42: gamification, Question Quest -- signed-in students answer the
+  -- bank's unapproved questions and their tutors approve them, for points.
+  -- Off until its admins choose (docs/gamification-plan.md).
+  gamify_question_quest INTEGER NOT NULL DEFAULT 0 CHECK (gamify_question_quest IN (0, 1)),
 
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
@@ -365,6 +372,11 @@ CREATE TABLE student_profiles (
                       CHECK (max_session_minutes IS NULL
                              OR (max_session_minutes > 0
                                  AND max_session_minutes % 15 = 0)),
+
+  -- Phase 42: the bank level Question Quest serves this student from (a
+  -- QUESTION_BANK_LEVEL_IDS value, checked in code). NULL until set; Quest
+  -- moves it up by itself once a level's unapproved questions are used up.
+  quest_level_id      TEXT,
 
   created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
@@ -1874,6 +1886,10 @@ CREATE TABLE questions (
   draft_run_id   TEXT REFERENCES ai_runs (id) ON DELETE SET NULL,
   reviewed_by    TEXT REFERENCES users (id) ON DELETE SET NULL,
   reviewed_at    TEXT,
+  -- Phase 42: how it was approved: 'console' (a platform admin) or 'quest' (a
+  -- tutor confirming a student's answer). No CHECK: a new way must not mean
+  -- rebuilding a table production cannot rebuild; QUESTION_APPROVED_VIA in shared.
+  approved_via   TEXT,
   -- Phase 37: how it fares in use.
   times_used     INTEGER NOT NULL DEFAULT 0,
   times_correct  INTEGER NOT NULL DEFAULT 0,
@@ -1885,6 +1901,10 @@ CREATE TABLE questions (
 
 CREATE INDEX questions_topic_idx ON questions (topic_id, status, difficulty);
 CREATE INDEX questions_status_idx ON questions (status, created_at);
+-- Phase 42: Question Quest's next question -- the checked questions of a
+-- level in the order they are served (chapter, then easier first), so a
+-- student's place is one seek, never a sort of the bank.
+CREATE INDEX questions_quest_idx ON questions (status, topic_id, difficulty);
 
 -- What the bank knows about a standard: whether it cannot be asked without a
 -- figure (left out of tests until figures exist). No row: it can.
@@ -2015,4 +2035,110 @@ BEFORE UPDATE OF organization_id ON canvas_assessment_reviews
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+
+-- ---------------------------------------------------------------------------
+-- Phase 42: gamification -- Question Quest (docs/gamification-plan.md)
+-- ---------------------------------------------------------------------------
+-- A signed-in student answers the bank's checked (unapproved) questions one
+-- at a time; code marks each answer; a tutor of theirs reviews it and either
+-- approves the question (for the whole platform, approved_via = 'quest') or
+-- flags it. Answers are these rows, never audit lines (there are too many).
+CREATE TABLE quest_attempts (
+  id                  TEXT PRIMARY KEY,
+  organization_id     TEXT NOT NULL REFERENCES organizations (id),
+  student_user_id     TEXT NOT NULL REFERENCES users (id),
+  question_id         TEXT NOT NULL REFERENCES questions (id),
+  -- The level it was served from.
+  level_id            TEXT NOT NULL,
+  answer              TEXT NOT NULL,
+  -- Marked by code (checkAnswer) against the bank's key when submitted.
+  correct             INTEGER NOT NULL CHECK (correct IN (0, 1)),
+  submitted_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  -- The tutor's review: 'approved' (the question is right) or 'flagged'.
+  review              TEXT CHECK (review IN ('approved', 'flagged')),
+  review_note         TEXT,
+  reviewed_by_user_id TEXT REFERENCES users (id),
+  reviewed_at         TEXT,
+
+  -- A question is served to a student once, ever.
+  UNIQUE (organization_id, student_user_id, question_id),
+  CHECK ((review IS NULL) = (reviewed_at IS NULL)),
+  CHECK ((review IS NULL) = (reviewed_by_user_id IS NULL))
+);
+
+-- The review queue: the organization's unreviewed answers, oldest first.
+CREATE INDEX quest_attempts_queue_idx ON quest_attempts (organization_id, reviewed_at, submitted_at);
+-- "Is this question waiting for a review here already?"
+CREATE INDEX quest_attempts_question_idx ON quest_attempts (question_id, organization_id);
+-- A student's own answers, newest first (where Quest resumes).
+CREATE INDEX quest_attempts_student_idx ON quest_attempts (organization_id, student_user_id, submitted_at);
+
+CREATE TRIGGER quest_attempts_same_organization
+BEFORE INSERT ON quest_attempts
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_attempts_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_attempts
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Points, append-only (never updated or deleted, like audit_events): a balance
+-- is always a SUM, never stored. `reason` is a POINTS_REASONS value (shared);
+-- no CHECK, so a later phase's reasons (streaks, badges, redemptions) need no
+-- rebuild. One award per attempt, person and reason.
+CREATE TABLE points_ledger (
+  id              TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  points          INTEGER NOT NULL,
+  reason          TEXT NOT NULL,
+  attempt_id      TEXT REFERENCES quest_attempts (id),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX points_ledger_user_idx ON points_ledger (organization_id, user_id, created_at);
+CREATE UNIQUE INDEX points_ledger_once ON points_ledger (attempt_id, user_id, reason) WHERE attempt_id IS NOT NULL;
+
+CREATE TRIGGER points_ledger_same_organization
+BEFORE INSERT ON points_ledger
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER points_ledger_no_update
+BEFORE UPDATE ON points_ledger
+BEGIN
+  SELECT RAISE(ABORT, 'points_ledger_append_only');
+END;
+
+-- One row per person per day of activity, on the organization's clock: what
+-- streaks and "days active" are derived from (Phase 43), and the daily rollup
+-- of the ledger's points, written in the same batch as each award, so a
+-- balance reads a row per day rather than every award. The ledger stays the
+-- record; this is its running sum by day.
+CREATE TABLE activity_days (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  -- YYYY-MM-DD in the organization's time zone.
+  day             TEXT NOT NULL,
+  answers         INTEGER NOT NULL DEFAULT 0,
+  reviews         INTEGER NOT NULL DEFAULT 0,
+  points          INTEGER NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (organization_id, user_id, day)
+);
+
+CREATE TRIGGER activity_days_same_organization
+BEFORE INSERT ON activity_days
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
 END;

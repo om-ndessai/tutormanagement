@@ -1,0 +1,61 @@
+# Question Quest (Phase 42), a level with nothing left. Sofia is set to AoPS Geometry (through the
+# local API), the end of its family, which has no question waiting locally. With nothing to answer
+# she is not taken into Quest on signing in; from More, her Quest page names the level, and her Quest
+# says she has answered everything there is for now, with Back to the Quest page. The switch is off
+# again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-end.js
+  - runScript:
+      file: ../../scripts/quest-start.js
+      env:
+        LEVEL: GEO
+onFlowComplete:
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertNotVisible:
+    id: screen-quest-play
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-play-summary
+      text: 'AoPS Geometry · .*'
+    timeout: 15000
+- assertNotVisible:
+    id: quest-review-card
+- tapOn:
+    id: quest-start
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-play
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-finished
+    timeout: 10000
+- assertVisible: 'You have answered every question there is to answer for now\..*'
+- assertNotVisible:
+    id: quest-submit
+- tapOn:
+    id: quest-back
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000

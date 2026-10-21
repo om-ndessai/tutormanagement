@@ -1,5 +1,6 @@
 // Ported from NAV_ITEMS in apps/web/src/components/layout/app-shell.tsx @ 22b9701 (Phase 38 added
-// `feature` and `badge`: the Assessment menu, in beta, only while the organization has it on).
+// `feature` and `badge`: the Assessment menu, in beta, only while the organization has it on; Phase 42
+// @ 82397b8, working tree, added Quest, only while the organization has Question Quest on).
 import type { Href } from 'expo-router';
 
 import type { Organization } from '@tmi/shared';
@@ -13,6 +14,9 @@ import { useAuth } from '@/providers/auth-provider';
  * and the search screen. The server decides what each page shows the
  * reader -- the menu only leaves out what their roles cannot open at all (Locations, Organization).
  */
+/** The organization's switches a menu item can follow. */
+export type NavFeature = 'canvas_assessments' | 'gamify_question_quest';
+
 export interface NavItem {
   href: Href;
   label: string;
@@ -28,7 +32,7 @@ export interface NavItem {
   /** The feature tour points at this (the web's data-tour="nav-…"). */
   tourId: string;
   /** Shown only while the organization has this switched on. */
-  feature?: 'canvas_assessments';
+  feature?: NavFeature;
   /** A small label beside it, such as "Beta". */
   badge?: string;
 }
@@ -75,6 +79,15 @@ export const NAV_ITEMS: NavItem[] = [
     feature: 'canvas_assessments',
     badge: 'Beta',
     tourId: 'nav-assessments',
+  },
+  {
+    // Phase 42: Question Quest (gamification). Only while the organization has it on.
+    href: '/quest',
+    label: 'Quest',
+    icon: 'trophy-outline',
+    keywords: ['game', 'points', 'questions', 'approve', 'review'],
+    feature: 'gamify_question_quest',
+    tourId: 'nav-quest',
   },
   {
     href: '/people',
@@ -140,7 +153,7 @@ export const NAV_ITEMS: NavItem[] = [
 /** The menu, less what this reader's roles do not reach and what the organization has off. */
 export function visibleNavItems(
   roles: readonly string[] | undefined,
-  organization: Pick<Organization, 'canvas_assessments'> | null | undefined,
+  organization: Partial<Pick<Organization, NavFeature>> | null | undefined,
 ): NavItem[] {
   const admin = Boolean(roles?.includes('admin'));
   return NAV_ITEMS.filter(

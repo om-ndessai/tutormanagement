@@ -1,0 +1,94 @@
+# Question Quest (Phase 42), where a student starts. With chmi's switch on (through the local API),
+# Priya, an admin, finds Quest under More, and on the Quest page the queue's card and every student
+# with their level. She sets Sofia's to G5 from the level picker (every level in a short scrolling
+# list): the toast says so, and the picker shows it, read back from the server. "Not set" clears it.
+# An admin is never taken into Quest on signing in. The switch is off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-end.js
+  - runScript: ../../scripts/quest-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 15000
+- assertVisible:
+    id: quest-review-card
+- assertNotVisible:
+    id: quest-play-card
+# The students' card runs far below the screen (an admin sees every student): wait on its sentence.
+- extendedWaitUntil:
+    visible: 'Set where each student starts\..*'
+    timeout: 15000
+# Sofia's row, started at BA3 by the script.
+- scrollUntilVisible:
+    element:
+      id: quest-level-00000000-0000-4000-8000-000000000008
+    centerElement: true
+    timeout: 60000
+- assertVisible:
+    id: quest-level-00000000-0000-4000-8000-000000000008
+    text: 'Sofia Okafor’s level: BA3\. Change'
+- tapOn:
+    id: quest-level-00000000-0000-4000-8000-000000000008
+- scrollUntilVisible:
+    element:
+      id: quest-level-00000000-0000-4000-8000-000000000008-NC26.5
+    centerElement: true
+- takeScreenshot: quest-level-picker
+- tapOn:
+    id: quest-level-00000000-0000-4000-8000-000000000008-NC26.5
+- extendedWaitUntil:
+    visible: 'Sofia Okafor starts at G5\.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-level-00000000-0000-4000-8000-000000000008
+      text: 'Sofia Okafor’s level: G5\. Change'
+    timeout: 10000
+# Not set clears it. Choosing G5 left the field at the top, under the header (the list was scrolled
+# into view below it): back up, to the middle. The list opens below it, Not set first.
+- scrollUntilVisible:
+    element:
+      id: quest-level-00000000-0000-4000-8000-000000000008
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: quest-level-00000000-0000-4000-8000-000000000008
+- scrollUntilVisible:
+    element:
+      id: quest-level-00000000-0000-4000-8000-000000000008-none
+- tapOn:
+    id: quest-level-00000000-0000-4000-8000-000000000008-none
+- extendedWaitUntil:
+    visible: 'Sofia Okafor’s level is cleared\.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-level-00000000-0000-4000-8000-000000000008
+      text: 'Sofia Okafor’s level: Not set\. Change'
+    timeout: 10000

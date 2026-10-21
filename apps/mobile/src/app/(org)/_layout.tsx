@@ -21,6 +21,17 @@ const STEP_FLOW_OPTIONS = {
   headerShown: false,
 } as const;
 
+/**
+ * Question Quest's play and review (Phase 42): full screen outside the tabs, with their own header
+ * and Exit (quest-frame.tsx). They open no form-sheet route -- the flag reason is a native modal --
+ * so a full-screen modal is safe here (Android falls back to a plain modal).
+ */
+const QUEST_OPTIONS = {
+  presentation: 'fullScreenModal',
+  gestureEnabled: false,
+  headerShown: false,
+} as const;
+
 export default function OrgLayout() {
   const { organization, user } = useAuth();
   const options = useStackOptions({ large: false });
@@ -50,6 +61,8 @@ export default function OrgLayout() {
             <Stack.Screen name="record-lesson" options={STEP_FLOW_OPTIONS} />
             {/* So is scheduling one (U5); editing a schedule keeps the sheet below. */}
             <Stack.Screen name="schedule-lesson" options={STEP_FLOW_OPTIONS} />
+            <Stack.Screen name="quest/play" options={QUEST_OPTIONS} />
+            <Stack.Screen name="quest/review" options={QUEST_OPTIONS} />
             {/* Recording the lesson at hand from Next up: one decision, a fitted quick sheet (U4). */}
             <Stack.Screen
               name="record-as-planned"

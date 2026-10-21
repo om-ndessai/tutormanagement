@@ -308,6 +308,20 @@ native rebuild of both dev builds, so build only while the devices are free.
   typecheck, lint and export green; the flows `canvas-assessments/{review-online,review-reopen,
   question-count}` (and Phase 38's four) green on iOS and Android; `smoke -- mobile` green.
 
+## Portal Phase 42 — Question Quest (gamification)
+
+- [x] 57. Mobile: Question Quest, at parity with the web — the Organization screen's Gamification
+  switch; Quest in More and Search while it is on; the Quest page (Your Quest, Answers to review,
+  the students' levels); a student's Quest and a reviewer's queue full screen outside the tabs (KaTeX
+  question, large choices, a number keypad, Submit with no going back, points; the key, the
+  student's answer and mark, the solution, Question is right / has a problem with a reason); the
+  iPad layout; the once-per-sign-in landing. Built 2026-10-20 (design 57); jest, typecheck, lint and
+  export green; the flows `quest/{play,play-number,review,level,menu,finished}` green on iOS and
+  Android; `canvas-assessments/*` and `smoke -- mobile` green on both; the six quest flows also green on the iPad Pro
+  13-inch simulator (side-by-side layout seen in its screenshots). Committed with Phase 42. Left for
+  the owner: the status bar on iOS (needs `UIViewControllerBasedStatusBarAppearance`) and keeping the
+  screen awake (needs `expo-keep-awake` as the app's own dependency).
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

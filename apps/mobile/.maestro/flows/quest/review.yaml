@@ -1,0 +1,120 @@
+# Question Quest (Phase 42), the tutor. With chmi's switch on and Sofia having answered two BA3
+# questions (through the local API), Alex, her tutor, signs in and lands straight in the review, full
+# screen: how many wait and his points at the top; the question with its key, Sofia's answer and
+# code's mark, the worked solution. "Question is right" approves it for the whole platform: the toast,
+# one fewer waiting, and his points up (by two when her answer matched the key) -- all read from the
+# server beforehand. On the next answer "Question has a problem" opens a sheet that will not flag
+# without a reason; with one, it flags: the toast, one fewer again, a point more. Exit goes to the
+# Quest page. The switch is off again at the end, whatever happens.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-end.js
+  - runScript:
+      file: ../../scripts/quest-start.js
+      env:
+        ANSWERS: '2'
+onFlowComplete:
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-review
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: quest-review-item
+    timeout: 15000
+- assertVisible:
+    id: quest-waiting
+    text: ${output.questWaiting}
+- assertVisible:
+    id: quest-review-level
+- assertVisible:
+    id: quest-answer-mark
+    text: '(Matches the key|Does not match)'
+- takeScreenshot: quest-review
+# Approve: the buttons wake once the question is drawn.
+- scrollUntilVisible:
+    element:
+      id: quest-approve
+    centerElement: true
+- extendedWaitUntil:
+    visible:
+      id: quest-approve
+      enabled: true
+    timeout: 10000
+- tapOn:
+    id: quest-approve
+- extendedWaitUntil:
+    visible: 'Approved\. The question is in the bank\.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-waiting
+      text: ${output.questWaitingAfterApprove}
+    timeout: 10000
+- assertVisible:
+    id: quest-points
+    text: ${output.questTutorPointsAfterApprove}
+# The next answer: flag it, which needs a reason.
+- extendedWaitUntil:
+    visible:
+      id: quest-review-item
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: quest-flag
+    centerElement: true
+- extendedWaitUntil:
+    visible:
+      id: quest-flag
+      enabled: true
+    timeout: 10000
+- tapOn:
+    id: quest-flag
+- extendedWaitUntil:
+    visible:
+      id: quest-flag-sheet
+    timeout: 10000
+- assertVisible: 'What is wrong with the question\?'
+- assertVisible:
+    id: quest-flag-confirm
+    enabled: false
+- tapOn:
+    id: quest-flag-note
+- inputText: 'Two of the options are correct.'
+- takeScreenshot: quest-flag-sheet
+- tapOn:
+    id: quest-flag-confirm
+- extendedWaitUntil:
+    visible: 'Flagged for the platform\.'
+    timeout: 10000
+- assertNotVisible:
+    id: quest-flag-sheet
+- extendedWaitUntil:
+    visible:
+      id: quest-waiting
+      text: ${output.questWaitingAfterFlag}
+    timeout: 10000
+- assertVisible:
+    id: quest-points
+    text: ${output.questTutorPointsAfterFlag}
+# Exit: the Quest page, with the queue's card.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- assertVisible:
+    id: quest-review-card
+- assertVisible:
+    id: quest-review-waiting
+    text: ${output.questWaitingAfterFlag}

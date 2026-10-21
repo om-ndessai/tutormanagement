@@ -1,0 +1,115 @@
+# Question Quest (Phase 42), the student. With chmi's switch on and Sofia started at BA3 (through the
+# local API), Sofia signs in and lands straight in Quest, full screen, outside the tabs: her level and
+# points at the top, one question. She answers it (a choice, or a number where it asks for one) and
+# submits: "Saved. +1 point" -- never right or wrong -- and her points go up by one, read from the
+# server beforehand. There is no going back. Exit takes her to the Quest page, and Home does not send
+# her back in: the landing is once per sign-in. The switch is off again at the end, whatever happens.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-end.js
+  - runScript: ../../scripts/quest-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+# Home first, then Quest takes over by itself.
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-play
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: quest-question
+    timeout: 15000
+- assertVisible:
+    id: quest-level
+    text: 'BA3'
+- assertNotVisible:
+    id: quest-previous
+- takeScreenshot: quest-play
+# Answer: a choice where there are choices (tap again to take it back), else a number.
+- runFlow:
+    when:
+      visible:
+        id: quest-choice-A
+    commands:
+      - assertVisible:
+          id: quest-submit
+          enabled: false
+      - tapOn:
+          id: quest-choice-B
+      - assertVisible:
+          id: quest-submit
+          enabled: true
+      - tapOn:
+          id: quest-choice-B
+      - assertVisible:
+          id: quest-submit
+          enabled: false
+      - tapOn:
+          id: quest-choice-A
+- runFlow:
+    when:
+      visible:
+        id: quest-number
+    commands:
+      - tapOn:
+          id: quest-number
+      - inputText: '7'
+      # Return only puts the keyboard away; sending is the button.
+      - pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: quest-submit
+    centerElement: true
+- assertVisible:
+    id: quest-submit
+    enabled: true
+- tapOn:
+    id: quest-submit
+- extendedWaitUntil:
+    visible: 'Saved\. \+1 point'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-points
+      text: ${output.questPointsNext}
+    timeout: 10000
+# The next question is there, and nothing is marked.
+- extendedWaitUntil:
+    visible:
+      id: quest-question
+    timeout: 10000
+- assertNotVisible: 'Correct'
+- takeScreenshot: quest-play-answered
+# Exit: the Quest page, with her card.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- assertVisible:
+    id: quest-play-card
+- assertVisible:
+    id: quest-start
+    text: 'Carry on'
+- assertVisible:
+    id: quest-play-points
+    text: ${output.questPointsNext}
+# Home again: Quest does not take over a second time.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible:
+    id: screen-quest-play

@@ -612,6 +612,23 @@ was -- which the student's whole audience then reads. No scoring yet. An organiz
 many questions an assessment draws (`canvas_assessment_questions`, 1-25). Phase 39's AI evaluation
 (delayed) needs consent first: it reads a child's handwriting.
 
+**Question Quest (Phase 42) is gamification on the question bank, and its approvals are real.** While
+an organization's `gamify_question_quest` is on (its admins' switch, off by default), a signed-in student
+answers the bank's `checked` questions one at a time from their level (`student_profiles.quest_level_id`,
+set by their tutor or an admin), with no going back; code marks each answer (`checkAnswer`); their
+current tutor (or an admin) reviews it, and "Question is right" approves the question **for every
+organization** (`approved_via = 'quest'`, owner, 2026-10-20) while a flag sends it, with its reason, to
+the console. A level used up moves the student to the next of its family by itself (`nextQuestLevel`).
+A student's points are separate for the attempt and for correctness; a tutor earns one per review,
+whatever its outcome, so approving never pays more than flagging (`QUEST_POINTS`): `points_ledger` is
+append-only (a trigger refuses updates) and a balance is a sum, read from `activity_days`, the per-day
+rollup written in the same batch -- never store a balance. Answers are `quest_attempts` rows, never
+audit lines; reviews and level changes are logged. The next question is one seek on
+`questions_quest_idx` from the student's last answer: keep it so, the bank is 18,000 rows and D1's
+reads are metered. Quest runs full screen outside the portal's frame (`/quest/play`, `/quest/review`)
+and lands a student or tutor there once per tab after sign-in (`QuestLanding`; the e2e fixture marks
+every tab landed unless `questLanding: true`). Plan and later phases: `docs/gamification-plan.md`.
+
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the
 longest lesson that person does; the SHORTER of the two applies, and `DEFAULT_MAX_SESSION_MINUTES`

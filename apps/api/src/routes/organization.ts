@@ -78,6 +78,7 @@ export const organizationRoutes = new Hono<AppEnv>()
         canvas_assessments: assessments,
         canvas_assessments_unreviewed: unreviewed,
         canvas_assessment_questions: questionCount,
+        gamify_question_quest: quest,
         ...details
       } = input;
       const changes = Object.keys(details).map((key) =>
@@ -101,6 +102,7 @@ export const organizationRoutes = new Hono<AppEnv>()
           questionCount === undefined
             ? null
             : `Set ${org.name}'s assessments to ${questionCount} question${questionCount === 1 ? '' : 's'}`,
+          quest === undefined ? null : `Turned ${org.name}'s Question Quest ${quest ? 'on' : 'off'}`,
         ]
           .filter(Boolean)
           .join('; '),

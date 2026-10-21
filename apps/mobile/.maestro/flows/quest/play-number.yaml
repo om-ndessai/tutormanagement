@@ -1,0 +1,68 @@
+# Question Quest (Phase 42), a question answered with a number. Sofia, started at G5 (whose first
+# question locally asks for a number), lands in Quest: no choices, a number field whose keypad has the
+# fraction bar and the minus sign. She types a fraction; Return only puts the keyboard away -- nothing
+# is sent until Submit, as nothing can be taken back. Then "Saved. +1 point", and her points up by one.
+# The switch is off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-end.js
+  - runScript:
+      file: ../../scripts/quest-start.js
+      env:
+        LEVEL: NC26.5
+onFlowComplete:
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-play
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: quest-number
+    timeout: 15000
+- assertVisible:
+    id: quest-level
+    text: 'G5'
+- assertNotVisible:
+    id: quest-choice-A
+- assertVisible:
+    id: quest-submit
+    enabled: false
+- tapOn:
+    id: quest-number
+- takeScreenshot: quest-number-keypad
+- inputText: '3/4'
+- assertVisible:
+    id: quest-number
+    text: '3/4'
+- pressKey: Enter
+# Return sent nothing: no notice, the same points, the answer still in the field.
+- assertNotVisible: 'Saved\. \+1 point'
+- assertVisible:
+    id: quest-points
+    text: ${output.questPointsNow}
+- assertVisible:
+    id: quest-number
+    text: '3/4'
+- scrollUntilVisible:
+    element:
+      id: quest-submit
+    centerElement: true
+- tapOn:
+    id: quest-submit
+- extendedWaitUntil:
+    visible: 'Saved\. \+1 point'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-points
+      text: ${output.questPointsNext}
+    timeout: 10000

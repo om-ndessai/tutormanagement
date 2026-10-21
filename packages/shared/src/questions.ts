@@ -33,6 +33,10 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'GEO',
 ] as const;
 
+/** Phase 42: how a question came to be approved. */
+export const QUESTION_APPROVED_VIA = ['console', 'quest'] as const;
+export type QuestionApprovedVia = (typeof QUESTION_APPROVED_VIA)[number];
+
 export const QUESTION_KINDS = ['choice', 'numeric'] as const;
 export type QuestionKind = (typeof QUESTION_KINDS)[number];
 
@@ -389,11 +393,14 @@ export interface QuestionChecks {
     run_id: string;
     at: string;
   };
+  /** Phase 42: a tutor flagged it in Question Quest, with their reason. */
+  quest_flag?: { note: string; by: string; at: string };
 }
 
 /** Why a checked question would not be `checked`, in plain words. */
 export function checkProblems(checks: QuestionChecks): string[] {
   const problems = [...checks.lint];
+  if (checks.quest_flag) problems.push(`A tutor flagged it in Question Quest: ${checks.quest_flag.note}`);
   const solve = checks.solve;
   if (!solve) return problems;
   if (!solve.agreed) problems.push(`The blind solve answered ${solve.answer}.`);
@@ -459,6 +466,8 @@ export interface Question {
   checks: QuestionChecks;
   source: 'ai' | 'manual';
   reviewed_by_name: string | null;
+  /** Phase 42: 'console' (a platform admin) or 'quest' (a tutor in Question Quest); null before. */
+  approved_via: QuestionApprovedVia | null;
   reviewed_at: string | null;
   times_used: number;
   times_correct: number;

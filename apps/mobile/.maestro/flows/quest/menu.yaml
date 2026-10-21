@@ -1,0 +1,113 @@
+# Question Quest (Phase 42) follows the organization's switch. With it off (the seed), More lists no
+# Quest, for an admin or a student, and Sofia is not taken into Quest on signing in. Priya (admin,
+# chmi) turns it on in the Organization screen's Gamification card: Quest is in More. Off again: it is
+# gone. The script puts the switch off whatever happens.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-end.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+# A student, with Quest off: no menu item, and Home stays Home.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+# The menu's top, where Quest would sit, just after Assessment (on in the seed).
+- assertVisible:
+    id: more-nav-assessments
+- assertNotVisible:
+    id: more-nav-quest
+- assertNotVisible:
+    id: screen-quest-play
+# The admin: off, then on, then off, from the Organization screen.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-assessments
+- assertNotVisible:
+    id: more-nav-quest
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+# The Gamification card is the page's last: scrolled into view, never centred.
+- scrollUntilVisible:
+    element:
+      id: org-quest-switch
+    direction: DOWN
+- assertVisible: 'Gamification'
+- tapOn:
+    id: org-quest-switch
+- extendedWaitUntil:
+    visible: 'Question Quest is on\.'
+    timeout: 10000
+- takeScreenshot: quest-org-switch
+- runFlow: ../../subflows/go-back.yaml
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- assertVisible:
+    id: more-nav-quest
+    text: '.*Quest.*'
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-quest-switch
+    direction: DOWN
+- tapOn:
+    id: org-quest-switch
+- extendedWaitUntil:
+    visible: 'Question Quest is off\.'
+    timeout: 10000
+- runFlow: ../../subflows/go-back.yaml
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-assessments
+- assertNotVisible:
+    id: more-nav-quest

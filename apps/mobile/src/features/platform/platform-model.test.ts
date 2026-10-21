@@ -63,6 +63,7 @@ const ORG: OrganizationListItem = {
   canvas_assessments: false,
   canvas_assessments_unreviewed: false,
   canvas_assessment_questions: 10,
+  gamify_question_quest: false,
   calendar_domain: 'lakeside.invalid',
   archived_at: null,
   created_at: '2026-10-01T00:00:00Z',

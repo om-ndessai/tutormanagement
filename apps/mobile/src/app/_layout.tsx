@@ -16,6 +16,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAppSwitcherProtection } from '@/components/privacy-cover';
+import { forgetQuestLandings } from '@/features/quest/quest-model';
 import { clearQuickActions } from '@/features/shell/quick-actions';
 import { endLiveSurface } from '@/features/teaching/live-surface';
 import { ToastProvider } from '@/components/toast';
@@ -58,9 +59,12 @@ function RootNavigator() {
   const signedIn = status === 'authenticated';
   useAppSwitcherProtection(signedIn);
   // Signed out: the home-screen quick actions go with the person (#43). Entering an organization
-  // sets them again, from the roles held there.
+  // sets them again, from the roles held there. Question Quest's landing (Phase 42) is once per
+  // sign-in, so the next sign-in lands afresh.
   useEffect(() => {
-    if (status === 'unauthenticated') clearQuickActions();
+    if (status !== 'unauthenticated') return;
+    clearQuickActions();
+    forgetQuestLandings();
   }, [status]);
   // Outside an organization no lesson may show on the Lock Screen or in the notifications (#45):
   // signed out, on the picker, or a relaunch that inherited a surface from a killed run.

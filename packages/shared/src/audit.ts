@@ -107,6 +107,11 @@ export const AUDIT_ACTIONS = [
   // Phase 40: a tutor's review. Never a note or the comment.
   'canvas_assessment.reviewed',
   'canvas_assessment.review_reopened',
+  // Phase 42: Question Quest. A tutor's review and a level set; never a
+  // student's answer (answers are quest_attempts rows) or a flag's reason.
+  'quest.question_approved',
+  'quest.question_flagged',
+  'quest.level_set',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -206,6 +211,9 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'canvas_assessment.discarded': 'Assessment discarded',
   'canvas_assessment.reviewed': 'Assessment reviewed',
   'canvas_assessment.review_reopened': 'Assessment review reopened',
+  'quest.question_approved': 'Quest question approved',
+  'quest.question_flagged': 'Quest question flagged',
+  'quest.level_set': 'Quest level set',
 };
 
 export interface AuditEvent {

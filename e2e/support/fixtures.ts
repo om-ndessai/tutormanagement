@@ -20,9 +20,24 @@ function markTourSeen() {
   document.cookie = 'tmi_tour_seen=1; path=/';
 }
 
+/**
+ * A tab that has already had its sign-in landing (Phase 42: Question Quest
+ * sends a student with a question waiting, and a tutor with answers waiting,
+ * straight into it, once per tab). Set so no other spec is taken there.
+ */
+function markQuestLanded() {
+  try {
+    sessionStorage.setItem('aimtrue.quest-landed', '1');
+  } catch {
+    // Storage blocked: the landing reads the same, and lands.
+  }
+}
+
 export interface AsOptions {
   /** A browser that has never shown the wizard: no tour cookie. */
   fresh?: boolean;
+  /** Let Question Quest's sign-in landing happen (Phase 42); off in every other spec. */
+  questLanding?: boolean;
   /** Act as this address rather than a seeded persona's. */
   email?: string;
   /**
@@ -44,6 +59,7 @@ export const test = base.extend<{
         extraHTTPHeaders: { 'X-Dev-User': options.email ?? PEOPLE[who].email },
       });
       if (!options.fresh) await context.addInitScript(markTourSeen);
+      if (!options.questLanding) await context.addInitScript(markQuestLanded);
 
       // The organization travels the way a returning browser's does: the
       // remembered-choice cookie, which the page reads and turns into its

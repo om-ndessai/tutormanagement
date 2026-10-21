@@ -37,6 +37,7 @@ interface QuestionRow {
   checks: string;
   source: 'ai' | 'manual';
   reviewed_by_name: string | null;
+  approved_via: 'console' | 'quest' | null;
   reviewed_at: string | null;
   times_used: number;
   times_correct: number;
@@ -48,7 +49,7 @@ const SELECT_QUESTION = `
   SELECT q.id, q.topic_id, COALESCE(t.code, t.id) AS topic_code, t.name AS topic_name,
          t.level_id, l.name AS level_name, q.difficulty, q.kind, q.skill, q.stem, q.choices,
          q.answer, q.compute, q.solution, q.status, q.checks, q.source,
-         u.full_name AS reviewed_by_name, q.reviewed_at, q.times_used, q.times_correct,
+         u.full_name AS reviewed_by_name, q.approved_via, q.reviewed_at, q.times_used, q.times_correct,
          q.created_at, q.updated_at
   FROM questions q
   JOIN curriculum_topics t ON t.id = q.topic_id
@@ -259,11 +260,12 @@ export async function setStatus(
 ): Promise<void> {
   await db
     .prepare(
-      `UPDATE questions SET status = ?, reviewed_by = ?, reviewed_at = CASE WHEN ? IS NULL THEN NULL ELSE ${NOW} END,
+      `UPDATE questions SET status = ?1, reviewed_by = ?2, reviewed_at = CASE WHEN ?2 IS NULL THEN NULL ELSE ${NOW} END,
+              approved_via = CASE WHEN ?1 = 'approved' THEN 'console' ELSE approved_via END,
               updated_at = ${NOW}
-       WHERE id = ?`,
+       WHERE id = ?3`,
     )
-    .bind(status, reviewer, reviewer, id)
+    .bind(status, reviewer, id)
     .run();
 }
 

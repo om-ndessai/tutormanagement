@@ -182,6 +182,8 @@ export const organizationSettingsSchema = z.object({
     .int('Use a whole number.')
     .min(1, 'At least 1 question.')
     .max(25, 'At most 25 questions.'),
+  /** Phase 42: Question Quest, the first gamification flag. Its own admins only; off until they choose. */
+  gamify_question_quest: z.boolean(),
 });
 export const updateOrganizationSettingsSchema = organizationSettingsSchema
   .partial()
@@ -218,6 +220,8 @@ export interface Organization extends OrganizationBrand {
   canvas_assessments_unreviewed: boolean;
   /** Phase 40: how many questions an assessment draws. */
   canvas_assessment_questions: number;
+  /** Phase 42: whether Question Quest (gamification) is on. */
+  gamify_question_quest: boolean;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -236,6 +240,7 @@ export interface OrganizationSettings {
   canvas_assessments: boolean;
   canvas_assessments_unreviewed: boolean;
   canvas_assessment_questions: number;
+  gamify_question_quest: boolean;
 }
 
 // ---------------------------------------------------------------------------

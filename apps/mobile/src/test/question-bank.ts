@@ -37,6 +37,7 @@ export function aQuestion(overrides: Partial<Question> = {}): Question {
     },
     source: 'ai',
     reviewed_by_name: null,
+    approved_via: null,
     reviewed_at: null,
     times_used: 0,
     times_correct: 0,

@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322 (the
-// Assessment card, Phase 38, @ 22b9701).
+// Assessment card, Phase 38, @ 22b9701; the Gamification card, Phase 42, @ 82397b8).
 //
 // The organization's own settings, for its admins: the payer box on every 1099 it issues. Its name,
 // look and clock are set by the platform, and shown here for reference. The organization's name on
@@ -32,6 +32,7 @@ import {
 } from './api';
 import { CanvasAssessmentsCard } from './canvas-assessments-card';
 import { CurriculaCard } from './curricula-card';
+import { GamificationCard } from './gamification-card';
 import { EmailNotificationsCard } from './notifications-card';
 import { formFromSettings, validateForm, type PayerField, type SettingsForm } from './settings-form';
 
@@ -113,6 +114,8 @@ export function OrganizationSettingsScreen() {
         unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
         questions={settings.data?.data.canvas_assessment_questions ?? 10}
       />
+
+      <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
     </Screen>
   );
 }

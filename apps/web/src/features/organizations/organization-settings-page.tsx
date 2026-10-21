@@ -31,7 +31,11 @@ import { NotificationsSwitch } from './notifications-switch';
 type SettingsForm = Record<
   Exclude<
     keyof OrganizationSettings,
-    'email_notifications' | 'canvas_assessments' | 'canvas_assessments_unreviewed' | 'canvas_assessment_questions'
+    | 'email_notifications'
+    | 'canvas_assessments'
+    | 'canvas_assessments_unreviewed'
+    | 'canvas_assessment_questions'
+    | 'gamify_question_quest'
   >,
   string
 >;
@@ -189,6 +193,8 @@ export function OrganizationSettingsPage() {
           unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
           questions={settings.data?.data.canvas_assessment_questions ?? 10}
         />
+
+        <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
       </div>
     </>
   );
@@ -302,6 +308,50 @@ function CanvasAssessmentsCard({
               ))}
             </SelectContent>
           </Select>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * Phase 42: gamification -- its flags, one switch each. The first is Question
+ * Quest. Saves at once and refreshes the session, so the menu follows.
+ */
+function GamificationCard({ questQuest }: { questQuest: boolean }) {
+  const update = useUpdateOrganizationSettings();
+  const { refreshSession } = useAuth();
+
+  async function toggle(next: boolean) {
+    try {
+      await update.mutateAsync({ gamify_question_quest: next });
+      await refreshSession();
+      toast.success(next ? 'Question Quest is on.' : 'Question Quest is off.');
+    } catch (caught) {
+      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not change Question Quest.');
+    }
+  }
+
+  return (
+    <Card className="py-0" data-testid="gamification-setting">
+      <CardContent className="grid gap-4 p-5 text-sm">
+        <div className="flex items-start gap-4">
+          <div className="grid flex-1 gap-1">
+            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Gamification</h2>
+            <h3 className="text-xs font-medium">Question Quest</h3>
+            <p className="text-muted-foreground text-xs">
+              When on, a student who signs in answers the question bank’s questions that no person has approved yet,
+              one at a time from the level their tutor sets, with no going back. Their tutor reviews each answer and
+              approves the question for every organization on the platform, or flags it. A student earns a point for
+              each answer and another when a correct answer is approved; a tutor earns a point for each review.
+            </p>
+          </div>
+          <NotificationsSwitch
+            checked={questQuest}
+            disabled={update.isPending}
+            onCheckedChange={(next) => void toggle(next)}
+            label="Question Quest"
+          />
         </div>
       </CardContent>
     </Card>

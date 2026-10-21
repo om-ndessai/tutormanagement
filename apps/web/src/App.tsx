@@ -32,6 +32,9 @@ import { AssessmentsPage } from '@/features/canvas-assessments/assessments-page'
 import { TakeAssessmentPage } from '@/features/canvas-assessments/take-assessment-page';
 import { ReviewAssessmentPage } from '@/features/canvas-assessments/review-assessment-page';
 import { AssessmentPdfPage } from '@/features/canvas-assessments/assessment-pdf-page';
+import { QuestLanding, QuestPage } from '@/features/quest/quest-page';
+import { QuestPlayPage } from '@/features/quest/quest-play-page';
+import { QuestReviewPage } from '@/features/quest/quest-review-page';
 
 export function App() {
   return (
@@ -57,8 +60,19 @@ export function App() {
 
         {/* The portal itself runs inside the organization this tab chose. */}
         <Route element={<RequireOrg />}>
+        {/* Phase 42: Question Quest runs full screen, outside the portal's frame. */}
+        <Route path="quest/play" element={<QuestPlayPage />} />
+        <Route path="quest/review" element={<QuestReviewPage />} />
         <Route element={<AppShell />}>
-          <Route index element={<DashboardPage />} />
+          <Route
+            index
+            element={
+              <>
+                <QuestLanding />
+                <DashboardPage />
+              </>
+            }
+          />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="users" element={<UsersPage />} />
@@ -70,6 +84,7 @@ export function App() {
           <Route path="assessments/:id" element={<TakeAssessmentPage />} />
           <Route path="assessments/:id/review" element={<ReviewAssessmentPage />} />
           <Route path="assessments/:id/pdf" element={<AssessmentPdfPage />} />
+          <Route path="quest" element={<QuestPage />} />
           <Route path="schedule" element={<SchedulesPage />} />
           <Route path="locations" element={<LocationsPage />} />
           <Route path="billing" element={<BillingPage />} />
