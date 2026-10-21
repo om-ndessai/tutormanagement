@@ -24,6 +24,11 @@ tags:
     visible:
       id: screen-quest-play
     timeout: 30000
+# The welcome closes itself (it may already have, while signing in finished).
+- extendedWaitUntil:
+    notVisible:
+      id: quest-welcome
+    timeout: 7000
 - extendedWaitUntil:
     visible:
       id: quest-number
@@ -66,3 +71,29 @@ tags:
       id: quest-points
       text: ${output.questPointsNext}
     timeout: 10000
+# Exit, and in again from the Quest page: this time the welcome is closed with its Close button.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: quest-start
+    timeout: 10000
+# The welcome's confetti and bar keep the screen moving for its 5 s: the tap does not wait for it
+# to settle, or the welcome would be gone before it is looked for.
+- tapOn:
+    id: quest-start
+    waitToSettleTimeoutMs: 500
+    retryTapIfNoChange: false
+- extendedWaitUntil:
+    visible:
+      id: quest-welcome-close
+    timeout: 15000
+- tapOn:
+    id: quest-welcome-close
+- extendedWaitUntil:
+    notVisible:
+      id: quest-welcome
+    timeout: 3000
+# The next question (a number or a choice) is there to answer.
+- assertVisible:
+    id: quest-question

@@ -1890,3 +1890,51 @@ screen. The confetti's "once" is device storage of ids and dates only.
 - Time-of-day: `seed-next-up.js` (the older `home/next-up-*` flows) refuses within an hour or so of
   midnight ("Too close to midnight"); seen at 23:45 and green after midnight.
 
+
+## 59. Question Quest: the welcome and the point's flight — build (2026-10-21)
+**Scope:** the owner's request of 2026-10-21, at parity with the web built the same day
+(`apps/web/src/features/quest/quest-welcome.tsx`): (1) on a saved answer a "+1"
+(`QUEST_POINTS.student_attempt`) rises from Submit to the header's points and fades, the trophy and
+count bump (scale 1.25 and back) as the number ticks up, and the question eases out and the next eases
+in; (2) a personal welcome each time the play screen opens (not after each answer): confetti, the title
+and line from `questWelcome(summary, questLevelLabel(level))`, and Points, Answered, Approved, Today and
+"Left in <level>" ("200+" at `QUEST_LEFT_CAP`), with "🔥 N days" while there is a streak. It closes by
+itself after `QUEST_WELCOME_MS` (a thin bar shrinks for those 5 s), on a tap anywhere, or on Close.
+Nothing is marked right or wrong. No API, schema, shared or web change from this work.
+
+**Endpoint:** `GET /quest/me/summary` → `QuestSummary`: `useQuestSummary()` in `api.ts`
+(`questKeys.summary = ['quest','summary']`, staleTime 0, read when the play screen mounts). The
+welcome is decided once per opening on numbers fetched since the screen opened (`isFetchedAfterMount`),
+and skipped when the summary fails, with no level, or when Quest is finished.
+
+**Components:** `quest-welcome-model.ts` (pure: `welcomeDecision`, `welcomeContent`, `leftLabel`,
+`streakLabel`, `burstText`, `burstPath`, `BURST_FLIGHT_MS` 700 ms); `quest-welcome.tsx` (a Paper
+`Portal` into the frame's own host; `quest-welcome`, `quest-welcome-title`, `quest-welcome-close`,
+`quest-welcome-<points|answered|approved|today|left>`; Home's `Confetti`, which gained a `fall` prop);
+`quest-burst.tsx` (`QuestBurstHost` in `QuestFrame`: a touchless layer over the whole frame; the "+1",
+`quest-points-burst`, measured from Submit to the header's points with `measureInWindow`);
+`QuestPoints live` (the play header only: a rise waits for the flight, then ticks up and bumps). The
+question card and the answer field fade and slide out while the answer is sent and slide in with the
+next (Reanimated `.set()`, as the compiler lint asks); an error brings them back.
+
+**Reduce motion:** no flight, no bump, no slide, no confetti, no shrinking bar; the number simply
+changes, "Saved" stays, and the welcome still closes after 5 s. **Haptics:** the "Saved" notice already
+gives `haptics.success()`; `haptics.ts` allows one haptic per confirmation, so the flight adds none.
+
+**Tests:** Jest `quest-welcome-model.test.ts` (the decision, the words and numbers, 200+, the streak,
+the flight's path). Maestro: `quest/play` (after Exit, Carry on: the welcome with "…Sofia!", its
+numbers and Close, gone by itself within 7 s; the points up by one after submitting) and
+`quest/play-number` (the welcome closed with Close). The landing's welcome is usually closed by the
+time the deep-link sign-in steps finish (they take ~7 s), so the flows only wait for it to be gone
+there and check it on the second opening. The "+1" lives ~1.5 s and Maestro's tap waits for the screen
+to settle (~3 s), so it is not asserted: the points are. The tap that opens Quest again passes
+`waitToSettleTimeoutMs: 500`: the confetti and the bar keep the screen moving for the welcome's 5 s,
+and on Android a settling tap took 7 s and found it already gone.
+
+**Verified (2026-10-21):** `mobile:typecheck`, `mobile:lint` (0 errors, the 25 existing warnings),
+`mobile:test` (110 suites, 730 tests), `mobile:export` (both platforms): green.
+`npm run e2e:mobile -- both apps/mobile/.maestro/flows/quest`: 6/6 on iOS and 6/6 on Android (after
+fixing the flows: an earlier run failed `play`/`play-number` on the landing's timing and on the next
+question being a choice, and `level` once on Android, untouched and green on rerun).
+`npm run smoke -- mobile`: 4/4 on iOS, 4/4 on Android. The welcome was checked in the flows'
+screenshots on both (the card, the streak, the five numbers, "200+", the bar, confetti on Android).

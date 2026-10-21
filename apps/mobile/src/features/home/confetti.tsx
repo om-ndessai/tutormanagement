@@ -15,6 +15,7 @@ import Animated, {
 import { useAppTheme } from '@/providers/theme-provider';
 
 const PIECES = 36;
+/** How far the pieces fall by default: the Now card's height. */
 const FALL = 420;
 
 interface Piece {
@@ -25,6 +26,7 @@ interface Piece {
   spin: number;
   color: string;
   wide: boolean;
+  fall: number;
 }
 
 /** A stable pseudo-random sequence, so a re-render does not reshuffle the pieces mid-fall. */
@@ -47,7 +49,7 @@ function ConfettiPiece({ piece }: { piece: Piece }) {
   const style = useAnimatedStyle(() => ({
     opacity: progress.value >= 1 ? 0 : 1,
     transform: [
-      { translateY: -24 + progress.value * FALL },
+      { translateY: -24 + progress.value * piece.fall },
       { translateX: Math.sin(progress.value * Math.PI * 2) * piece.drift },
       { rotate: `${progress.value * piece.spin}deg` },
     ],
@@ -70,7 +72,16 @@ function ConfettiPiece({ piece }: { piece: Piece }) {
   );
 }
 
-export function Confetti({ seed = 7, testID }: { seed?: number; testID?: string }) {
+export function Confetti({
+  seed = 7,
+  testID,
+  fall = FALL,
+}: {
+  seed?: number;
+  testID?: string;
+  /** How far the pieces fall, in points (Quest's welcome falls the height of the screen). */
+  fall?: number;
+}) {
   const reduced = useReducedMotion();
   const theme = useAppTheme();
   const t = theme.tokens;
@@ -85,8 +96,9 @@ export function Confetti({ seed = 7, testID }: { seed?: number; testID?: string 
       spin: (random() > 0.5 ? 1 : -1) * (180 + random() * 360),
       color: colors[index % colors.length] ?? t.primary,
       wide: random() > 0.5,
+      fall,
     }));
-  }, [seed, t.primary, t.success, t.highlight, t.celebrate, t.info, t.warning]);
+  }, [seed, fall, t.primary, t.success, t.highlight, t.celebrate, t.info, t.warning]);
 
   if (reduced) return null;
   return (

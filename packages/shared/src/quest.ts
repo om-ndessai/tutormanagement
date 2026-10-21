@@ -154,3 +154,77 @@ export interface QuestStudent {
 export function questLevelLabel(levelId: string | null): string {
   return levelId ? levelLabel(levelId) : 'No level yet';
 }
+
+// ---------------------------------------------------------------------------
+// The welcome (owner, 2026-10-21): a personal popup when a student opens
+// Quest, with confetti, a few numbers and one line to bring them back.
+// ---------------------------------------------------------------------------
+
+export interface QuestSummary {
+  first_name: string;
+  level_id: string | null;
+  points: number;
+  answered: number;
+  /** Answers a tutor approved as correct. */
+  confirmed: number;
+  answered_today: number;
+  /** Days in a row with an answer, ending today or yesterday (on the organization's clock). */
+  streak_days: number;
+  /** True when the streak counts yesterday but not yet today: one answer today keeps it. */
+  streak_at_risk: boolean;
+  best_streak: number;
+  /** Unanswered questions left in their level, capped at QUEST_LEFT_CAP. */
+  left_in_level: number;
+}
+
+/** The count of what is left in a level stops here: "200+" is enough to say. */
+export const QUEST_LEFT_CAP = 200;
+
+/** How long the welcome stays up before it closes itself. */
+export const QUEST_WELCOME_MS = 5000;
+
+/**
+ * Streaks from the days a student answered (YYYY-MM-DD, any order): the
+ * current run ending today or yesterday, whether it still needs today, and
+ * the longest run.
+ */
+export function questStreak(days: readonly string[], today: string): { current: number; atRisk: boolean; best: number } {
+  const set = new Set(days);
+  const back = (date: string, n: number) => {
+    const [y, m, d] = date.split('-').map(Number);
+    return new Date(Date.UTC(y!, m! - 1, d! - n)).toISOString().slice(0, 10);
+  };
+  const end = set.has(today) ? today : set.has(back(today, 1)) ? back(today, 1) : null;
+  let current = 0;
+  if (end) while (set.has(back(end, current))) current += 1;
+  let best = 0;
+  for (const day of set) {
+    if (set.has(back(day, 1))) continue;
+    let run = 0;
+    const [y, m, d] = day.split('-').map(Number);
+    while (set.has(new Date(Date.UTC(y!, m! - 1, d! + run)).toISOString().slice(0, 10))) run += 1;
+    best = Math.max(best, run);
+  }
+  return { current, atRisk: current > 0 && end !== today, best };
+}
+
+/** The welcome's headline and its one line to bring them back -- the same words on the web and the app. */
+export function questWelcome(summary: QuestSummary, levelLabelText: string): { title: string; line: string } {
+  const name = summary.first_name;
+  if (summary.answered === 0) {
+    return {
+      title: `Welcome to Question Quest, ${name}!`,
+      line: `Every answer earns a point, and another when your tutor approves a right one. Let's start ${levelLabelText}.`,
+    };
+  }
+  const title = summary.streak_days > 1 ? `${summary.streak_days} days in a row, ${name}!` : `Welcome back, ${name}!`;
+  let line: string;
+  if (summary.streak_at_risk) line = `Answer one today to keep your ${summary.streak_days}-day streak going.`;
+  else if (summary.streak_days >= 1 && summary.answered_today > 0)
+    line = `You're on a roll today: ${summary.answered_today} answered. Come back tomorrow to make it ${summary.streak_days + 1} days.`;
+  else if (summary.left_in_level > 0 && summary.left_in_level <= 20)
+    line = `Only ${summary.left_in_level} questions left in ${levelLabelText}. Finish it and move up!`;
+  else if (summary.best_streak > 1) line = `Your best streak is ${summary.best_streak} days. Start a new one today!`;
+  else line = 'Answer a few today, then come back tomorrow to start a streak.';
+  return { title, line };
+}

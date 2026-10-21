@@ -2,7 +2,8 @@
 # local API), Sofia signs in and lands straight in Quest, full screen, outside the tabs: her level and
 # points at the top, one question. She answers it (a choice, or a number where it asks for one) and
 # submits: "Saved. +1 point" -- never right or wrong -- and her points go up by one, read from the
-# server beforehand. There is no going back. Exit takes her to the Quest page, and Home does not send
+# server beforehand, and a "+1" flies up to them. There is no going back. The welcome (owner,
+# 2026-10-21) greets her by name each time Quest opens and closes by itself. Exit takes her to the Quest page, and Home does not send
 # her back in: the landing is once per sign-in. The switch is off again at the end, whatever happens.
 appId: ${APP_ID}
 onFlowStart:
@@ -23,6 +24,13 @@ tags:
     visible:
       id: screen-quest-play
     timeout: 30000
+# The welcome (owner, 2026-10-21) may already have closed itself while signing in finished (the
+# deep link's steps take seconds): it is gone within its 5 s either way. It is checked properly when
+# she opens Quest again from the Quest page, below.
+- extendedWaitUntil:
+    notVisible:
+      id: quest-welcome
+    timeout: 7000
 - extendedWaitUntil:
     visible:
       id: quest-question
@@ -103,6 +111,39 @@ tags:
 - assertVisible:
     id: quest-play-points
     text: ${output.questPointsNext}
+# Carry on: the welcome again, each time Quest opens -- her name, her numbers -- and it closes by
+# itself within its 5 s.
+# The welcome's confetti and bar keep the screen moving for its 5 s: the tap does not wait for it
+# to settle, or the welcome would be gone before it is looked for.
+- tapOn:
+    id: quest-start
+    waitToSettleTimeoutMs: 500
+    retryTapIfNoChange: false
+- extendedWaitUntil:
+    visible:
+      id: quest-welcome-title
+      text: '.*Sofia!'
+    timeout: 15000
+- assertVisible:
+    id: quest-welcome-points
+- assertVisible:
+    id: quest-welcome-left
+- assertVisible:
+    id: quest-welcome-close
+- takeScreenshot: quest-welcome
+- extendedWaitUntil:
+    notVisible:
+      id: quest-welcome
+    timeout: 7000
+- assertVisible:
+    id: quest-points
+    text: ${output.questPointsNext}
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
 # Home again: Quest does not take over a second time.
 - runFlow: ../../subflows/go-back.yaml
 - extendedWaitUntil:

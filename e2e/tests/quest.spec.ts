@@ -1,6 +1,7 @@
 import { test, expect } from '../support/fixtures.js';
 import { unwrap } from '../support/api.js';
 import type { Page } from '@playwright/test';
+import { questStreak, questWelcome } from '@tmi/shared';
 
 /**
  * Question Quest (Phase 42, docs/gamification-plan.md): a signed-in student
@@ -156,6 +157,10 @@ test.describe('Question Quest (Phase 42)', () => {
       await expect(student.getByTestId('quest-play')).toBeVisible();
       await expect(student.getByRole('navigation')).toHaveCount(0);
       await expect(student.getByTestId('quest-question')).toBeVisible();
+      // The welcome (owner, 2026-10-21): personal, with the numbers, and gone by itself after 5 seconds.
+      await expect(student.getByTestId('quest-welcome')).toBeVisible();
+      await expect(student.getByTestId('quest-welcome-title')).toContainText('Sofia');
+      await expect(student.getByTestId('quest-welcome')).toHaveCount(0, { timeout: 7_000 });
       const points = Number((await student.getByTestId('quest-points').innerText()).match(/\d+/)![0]);
       if (await student.getByTestId('quest-number').isVisible()) {
         await student.getByTestId('quest-number').fill('7');
@@ -164,6 +169,7 @@ test.describe('Question Quest (Phase 42)', () => {
       }
       await student.getByTestId('quest-submit').click();
       await expect(student.getByTestId('quest-points')).toContainText(`${points + 1} point`);
+      await expect(student.getByTestId('quest-points-burst')).toContainText('+1');
       // Leaving stays left: Exit goes to the portal's Quest page, and home does not bounce back.
       await student.getByTestId('quest-exit').click();
       await expect(student.getByTestId('quest-play-card')).toBeVisible();
@@ -182,5 +188,20 @@ test.describe('Question Quest (Phase 42)', () => {
       await expect(admin.getByRole('switch', { name: 'Question Quest' })).toHaveAttribute('aria-checked', 'true');
       await expect(admin.getByRole('link', { name: 'Quest' }).first()).toBeVisible();
     });
+  });
+
+  test('the welcome’s streak and words', () => {
+    // Today and the two days before: a 3-day streak, safe today.
+    expect(questStreak(['2026-10-21', '2026-10-20', '2026-10-19', '2026-10-10'], '2026-10-21')).toEqual({ current: 3, atRisk: false, best: 3 });
+    // Up to yesterday: still a streak, at risk until they answer today.
+    expect(questStreak(['2026-10-20', '2026-10-19'], '2026-10-21')).toEqual({ current: 2, atRisk: true, best: 2 });
+    // A gap: no streak now; the best run is kept.
+    expect(questStreak(['2026-10-15', '2026-10-14', '2026-10-13', '2026-10-01'], '2026-10-21')).toEqual({ current: 0, atRisk: false, best: 3 });
+    expect(questStreak([], '2026-10-21')).toEqual({ current: 0, atRisk: false, best: 0 });
+
+    const base = { first_name: 'Sofia', level_id: 'BA3', points: 9, answered: 7, confirmed: 2, answered_today: 0, streak_days: 2, streak_at_risk: true, best_streak: 2, left_in_level: 150 };
+    expect(questWelcome(base, 'BA3')).toEqual({ title: '2 days in a row, Sofia!', line: 'Answer one today to keep your 2-day streak going.' });
+    expect(questWelcome({ ...base, answered: 0, streak_days: 0, streak_at_risk: false }, 'BA3').title).toBe('Welcome to Question Quest, Sofia!');
+    expect(questWelcome({ ...base, streak_days: 0, streak_at_risk: false, best_streak: 1, left_in_level: 12 }, 'BA3').line).toBe('Only 12 questions left in BA3. Finish it and move up!');
   });
 });

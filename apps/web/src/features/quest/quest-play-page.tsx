@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { SparklesIcon, TrophyIcon } from 'lucide-react';
@@ -11,8 +11,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { MathText } from '@/features/question-bank/math-text';
-import { useAnswerQuest, useQuestState } from './api';
+import { useAnswerQuest, useQuestState, useQuestSummary } from './api';
 import { QuestFrame } from './fullscreen-frame';
+import { QuestWelcome } from './quest-welcome';
 
 // Phase 42: a student's Question Quest, full screen. One question at a time,
 // answered once: no going back, no skipping. Nothing is marked here -- the
@@ -24,6 +25,23 @@ const LETTERS = ['A', 'B', 'C', 'D'];
 export function QuestPlayPage() {
   const state = useQuestState();
   const data = state.data?.data;
+  // The welcome, once each time Quest opens (owner, 2026-10-21).
+  const summary = useQuestSummary();
+  const [welcomed, setWelcomed] = useState(false);
+  const closeWelcome = useCallback(() => setWelcomed(true), []);
+  const welcome = summary.data?.data;
+  const showWelcome = !welcomed && Boolean(welcome?.level_id) && Boolean(data?.question);
+
+  // The point collected: "+N" floats up beside the counter, which bumps as it ticks.
+  const points = data?.points ?? 0;
+  const previous = useRef<number | null>(null);
+  const [burst, setBurst] = useState<{ id: number; gained: number } | null>(null);
+  useEffect(() => {
+    if (previous.current !== null && points > previous.current) {
+      setBurst({ id: Date.now(), gained: points - previous.current });
+    }
+    previous.current = points;
+  }, [points]);
 
   return (
     <QuestFrame
@@ -34,8 +52,24 @@ export function QuestPlayPage() {
         data ? (
           <>
             <span data-testid="quest-level">{questLevelLabel(data.level_id)}</span>
-            <span className="text-foreground flex items-center gap-1 font-medium" data-testid="quest-points">
-              <TrophyIcon className="size-4" /> {data.points} {data.points === 1 ? 'point' : 'points'}
+            <span className="relative flex items-center">
+              <span
+                key={burst?.id ?? 'still'}
+                className={cn('text-foreground flex items-center gap-1 font-medium', burst && 'quest-bump')}
+                data-testid="quest-points"
+              >
+                <TrophyIcon className="size-4" /> {data.points} {data.points === 1 ? 'point' : 'points'}
+              </span>
+              {burst && (
+                <span
+                  key={`b${burst.id}`}
+                  className="quest-burst text-primary pointer-events-none absolute -top-3 right-0 text-sm font-bold"
+                  data-testid="quest-points-burst"
+                  aria-hidden
+                >
+                  +{burst.gained}
+                </span>
+              )}
             </span>
           </>
         ) : null
@@ -66,9 +100,12 @@ export function QuestPlayPage() {
               {questLevelLabel(data.level_id)}!
             </p>
           )}
-          <QuestionCard key={data.question.id} question={data.question} answered={data.answered} />
+          <div key={data.question.id} className="quest-enter">
+            <QuestionCard question={data.question} answered={data.answered} />
+          </div>
         </>
       )}
+      {showWelcome && welcome && <QuestWelcome summary={welcome} onClose={closeWelcome} />}
     </QuestFrame>
   );
 }

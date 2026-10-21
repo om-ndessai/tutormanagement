@@ -11,6 +11,7 @@ import {
   type QuestReviewQueue,
   type QuestState,
   type QuestStudent,
+  type QuestSummary,
   type User,
 } from '@tmi/shared';
 
@@ -28,6 +29,7 @@ import {
   managesQuestStudent,
   nextQuestQuestion,
   nextQuestReview,
+  questSummary,
   questTotals,
   questionKey,
   recordQuestAnswer,
@@ -104,6 +106,18 @@ export const questRoutes = new Hono<AppEnv>()
     const user = c.get('user');
     requireStudent(user);
     const body: ApiOk<QuestState> = { data: await questState(c.env.DB, c.get('org'), user.id) };
+    return c.json(body);
+  })
+
+  // The numbers for the welcome popup, read once when Quest opens (owner, 2026-10-21).
+  .get('/me/summary', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    requireStudent(user);
+    const levelId = await getQuestLevel(c.env.DB, org.id as OrgId, user.id);
+    const body: ApiOk<QuestSummary> = {
+      data: await questSummary(c.env.DB, org.id as OrgId, { studentId: user.id, levelId, timeZone: org.time_zone }),
+    };
     return c.json(body);
   })
 

@@ -1,12 +1,15 @@
 import {
+  QUEST_LEFT_CAP,
   QUEST_POINTS,
   checkAnswer,
+  questStreak,
   zonedClockParts,
   type PointsReason,
   type QuestQuestion,
   type QuestReviewDecision,
   type QuestReviewItem,
   type QuestStudent,
+  type QuestSummary,
   type QuestionChecks,
   type QuestionDifficulty,
   type QuestionKind,
@@ -420,4 +423,67 @@ export async function managesQuestStudent(
     .bind(org, studentId, reviewer.admin ? 1 : 0, reviewer.id)
     .first();
   return Boolean(row);
+}
+
+/**
+ * The numbers for a student's welcome (owner, 2026-10-21): read once when
+ * Quest opens. The days answered come from the daily rollup; what is left in
+ * the level is counted on questions_quest_idx and stops at QUEST_LEFT_CAP.
+ */
+export async function questSummary(
+  db: D1Database,
+  org: OrgId,
+  input: { studentId: string; levelId: string | null; timeZone: string },
+): Promise<QuestSummary> {
+  const today = zonedClockParts(new Date().toISOString(), input.timeZone).day;
+  const [person, days, totals, confirmed, left] = await Promise.all([
+    db.prepare('SELECT full_name FROM users WHERE id = ?').bind(input.studentId).first<{ full_name: string }>(),
+    db
+      .prepare(
+        `SELECT day, answers FROM activity_days
+         WHERE organization_id = ? AND user_id = ? AND answers > 0
+         ORDER BY day DESC LIMIT 400`,
+      )
+      .bind(org, input.studentId)
+      .all<{ day: string; answers: number }>(),
+    questTotals(db, org, input.studentId),
+    db
+      .prepare(
+        `SELECT COUNT(*) AS n FROM quest_attempts
+         WHERE organization_id = ? AND student_user_id = ? AND review = 'approved' AND correct = 1`,
+      )
+      .bind(org, input.studentId)
+      .first<{ n: number }>(),
+    input.levelId
+      ? db
+          .prepare(
+            `SELECT COUNT(*) AS n FROM (
+               SELECT 1 FROM questions q
+               WHERE q.status = 'checked' AND q.topic_id >= ? AND q.topic_id < ?
+                 AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
+                 AND NOT EXISTS (SELECT 1 FROM quest_attempts a
+                                 WHERE a.question_id = q.id AND a.organization_id = ? AND a.student_user_id = ?)
+               LIMIT ?)`,
+          )
+          .bind(`${input.levelId}.`, `${input.levelId}/`, org, input.studentId, QUEST_LEFT_CAP)
+          .first<{ n: number }>()
+      : Promise.resolve({ n: 0 }),
+  ]);
+  const rows = days.results ?? [];
+  const streak = questStreak(
+    rows.map((r) => r.day),
+    today,
+  );
+  return {
+    first_name: (person?.full_name ?? '').split(' ')[0] || 'there',
+    level_id: input.levelId,
+    points: totals.points,
+    answered: totals.answered,
+    confirmed: confirmed?.n ?? 0,
+    answered_today: rows.find((r) => r.day === today)?.answers ?? 0,
+    streak_days: streak.current,
+    streak_at_risk: streak.atRisk,
+    best_streak: streak.best,
+    left_in_level: left?.n ?? 0,
+  };
 }

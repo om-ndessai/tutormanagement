@@ -13,6 +13,7 @@ import type {
   QuestReviewQueue,
   QuestState,
   QuestStudent,
+  QuestSummary,
 } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
@@ -26,6 +27,7 @@ export const questKeys = {
   me: ['quest', 'me'] as const,
   review: ['quest', 'review'] as const,
   students: ['quest', 'students'] as const,
+  summary: ['quest', 'summary'] as const,
 };
 
 /** The student's level, the question to answer now, their points. */
@@ -36,6 +38,20 @@ export function useQuestState(enabled = true) {
     enabled,
     // The question must not change under the student while they answer it.
     staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+}
+
+/**
+ * The numbers for the welcome popup (owner, 2026-10-21): read fresh each time the play screen opens
+ * (staleTime 0), never refetched while it is open.
+ */
+export function useQuestSummary(enabled = true) {
+  return useQuery({
+    queryKey: questKeys.summary,
+    queryFn: () => apiClient.get<ApiOk<QuestSummary>>('/quest/me/summary'),
+    enabled,
+    staleTime: 0,
     refetchOnWindowFocus: false,
   });
 }

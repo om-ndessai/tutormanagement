@@ -7,6 +7,7 @@ import type {
   QuestReviewQueue,
   QuestState,
   QuestStudent,
+  QuestSummary,
 } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
@@ -88,4 +89,15 @@ export function questRoles(roles: readonly string[] | undefined) {
     plays: list.includes('student'),
     reviews: list.includes('tutor') || list.includes('admin'),
   };
+}
+
+/** The numbers for the welcome popup (owner, 2026-10-21): read fresh each time Quest opens. */
+export function useQuestSummary(enabled = true) {
+  return useQuery({
+    queryKey: [...questKeys.all, 'summary'] as const,
+    queryFn: () => apiClient.get<ApiOk<QuestSummary>>('/quest/me/summary'),
+    enabled,
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+  });
 }

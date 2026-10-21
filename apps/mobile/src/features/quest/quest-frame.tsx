@@ -7,7 +7,8 @@
 // change, the owner's call). Keeping the screen awake (the plan's wish) needs `expo-keep-awake` as the
 // app's own dependency, which it is not (only Expo's, transitively): left out until it is added with
 // `npx expo install`. Confirmations are said in the frame itself (quest-notice.tsx), and a sheet over
-// Quest portals into the frame's own host.
+// Quest portals into the frame's own host (the welcome too), and a saved answer's "+1" flies over
+// the frame (quest-burst.tsx).
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import type { ReactNode, RefObject } from 'react';
@@ -19,6 +20,7 @@ import { ConnectivityBanner } from '@/components/connectivity';
 import { useKeyboardHeight } from '@/hooks/use-keyboard-height';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
+import { QuestBurstHost } from './quest-burst';
 import { QuestNoticeHost } from './quest-notice';
 
 /** The widest the content grows on a large iPad: the question and the answer stay readable. */
@@ -55,68 +57,71 @@ export function QuestFrame({
   return (
     <View testID={testID} style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <QuestNoticeHost>
-        {/* Sheets drawn over Quest (the flag reason) portal into this frame, never into the app's
+        {/* A saved answer's "+1" flies over the whole frame, from Submit up to the points. */}
+        <QuestBurstHost>
+          {/* Sheets drawn over Quest (the flag reason) portal into this frame, never into the app's
             root host, which a full-screen modal covers on iOS. */}
-        <Portal.Host>
-          <StatusBar hidden animated />
-          <View
-            style={{
-              ...side,
-              paddingTop: Math.max(insets.top, space.md) + space.xs,
-              paddingBottom: space.md,
-              gap: space.xs,
-              borderBottomWidth: 1,
-              borderBottomColor: theme.colors.outlineVariant,
-              backgroundColor: theme.colors.surface,
-            }}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-              <Text
-                variant="titleLarge"
-                accessibilityRole="header"
-                numberOfLines={1}
-                style={{ flex: 1, fontWeight: '700' }}
-              >
-                {title}
-              </Text>
-              <Button testID="quest-exit" mode="outlined" icon="close" compact onPress={exitQuest}>
-                Exit
-              </Button>
-            </View>
-            {status ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  columnGap: space.lg,
-                  rowGap: 2,
-                }}
-              >
-                {status}
+          <Portal.Host>
+            <StatusBar hidden animated />
+            <View
+              style={{
+                ...side,
+                paddingTop: Math.max(insets.top, space.md) + space.xs,
+                paddingBottom: space.md,
+                gap: space.xs,
+                borderBottomWidth: 1,
+                borderBottomColor: theme.colors.outlineVariant,
+                backgroundColor: theme.colors.surface,
+              }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
+                <Text
+                  variant="titleLarge"
+                  accessibilityRole="header"
+                  numberOfLines={1}
+                  style={{ flex: 1, fontWeight: '700' }}
+                >
+                  {title}
+                </Text>
+                <Button testID="quest-exit" mode="outlined" icon="close" compact onPress={exitQuest}>
+                  Exit
+                </Button>
               </View>
-            ) : null}
-          </View>
-          <ScrollView
-            ref={scrollRef}
-            style={{ flex: 1 }}
-            contentContainerStyle={{
-              ...side,
-              paddingTop: space.lg,
-              paddingBottom: space.xxl + insets.bottom + keyboardRoom,
-              gap: space.lg,
-              width: '100%',
-              maxWidth: MAX_WIDTH + 2 * space.lg,
-              alignSelf: 'center',
-            }}
-            keyboardShouldPersistTaps="handled"
-            keyboardDismissMode="interactive"
-            automaticallyAdjustKeyboardInsets
-          >
-            <ConnectivityBanner />
-            {children}
-          </ScrollView>
-        </Portal.Host>
+              {status ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    columnGap: space.lg,
+                    rowGap: 2,
+                  }}
+                >
+                  {status}
+                </View>
+              ) : null}
+            </View>
+            <ScrollView
+              ref={scrollRef}
+              style={{ flex: 1 }}
+              contentContainerStyle={{
+                ...side,
+                paddingTop: space.lg,
+                paddingBottom: space.xxl + insets.bottom + keyboardRoom,
+                gap: space.lg,
+                width: '100%',
+                maxWidth: MAX_WIDTH + 2 * space.lg,
+                alignSelf: 'center',
+              }}
+              keyboardShouldPersistTaps="handled"
+              keyboardDismissMode="interactive"
+              automaticallyAdjustKeyboardInsets
+            >
+              <ConnectivityBanner />
+              {children}
+            </ScrollView>
+          </Portal.Host>
+        </QuestBurstHost>
       </QuestNoticeHost>
     </View>
   );
