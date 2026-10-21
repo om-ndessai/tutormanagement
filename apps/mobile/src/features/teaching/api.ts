@@ -44,6 +44,9 @@ function useTeachingInvalidation() {
     // A scored lesson moves the student's progress and every chart of it.
     void queryClient.invalidateQueries({ queryKey: ['progress'] });
     void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    // The tutor's Home (Phase 43): a recorded lesson leaves the Now card; a started or stopped one
+    // changes it.
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }
@@ -301,6 +304,8 @@ function useAssessmentInvalidation() {
   return () => {
     void queryClient.invalidateQueries({ queryKey: ['sessions'] });
     void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    // The brief's assessment notes (Phase 43).
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }

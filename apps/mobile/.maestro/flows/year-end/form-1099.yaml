@@ -16,7 +16,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 - tapOn:
     id: tabs-finance

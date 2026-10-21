@@ -402,6 +402,13 @@ dates them from the schedules on the institute clock, skipping any already recor
 cancelled date stays in the list, flagged (`cancellation`), and counts toward the page; the
 highlighted "next" card is the first one that is not cancelled.
 
+**Phase 43 changes the tutor's Home, the app first** (`docs/tutor-home-plan.md`, owner 2026-10-20): in the
+app, Analytics and Recent Activity leave every Home (Analytics moves to More → Dashboard), and a tutor's
+-- or an admin who tutors' -- Home leads with a "Now" card (a lesson just finished and unrecorded, with
+Record it now prefilled from the schedule; else the next lesson, in words) and that lesson's brief, all
+from `GET /api/home/tutor` (their own pairings only, no money, R19). The web dashboard keeps the four
+sections above until its half follows.
+
 **Dashboard cards are deliberately tight.** The vendored `Card` carries `py-6` of its own, so
 `StatCard` and `Panel` pass `py-0` and supply their own padding — dropping that is how a card
 silently grows by 48px. Stat grids use `items-start`: a grid row sizes every card to the

@@ -1,5 +1,6 @@
-// Record the lesson at hand from Home's Next up card (UI upgrades U4; #43 before it): a quick sheet
-// already filled with the student, today, the scheduled times and the place. "It ran as planned"
+// Record the lesson at hand from Home's Next up card (UI upgrades U4; #43 before it), or a finished
+// one from the tutor's Now card (Phase 43, with the homework set last time in Homework review): a
+// quick sheet already filled with the student, the day, the scheduled times and the place. "It ran as planned"
 // records it in one tap; "Different times" opens the two time fields first. Once recorded, the
 // sheet offers "Write up the lesson", which opens the write-up cards for that new lesson.
 //
@@ -20,6 +21,7 @@ import { Button, Icon, Text } from 'react-native-paper';
 
 import { useOffline } from '@/components/connectivity';
 import { DateTimeField } from '@/components/date-time-field';
+import { DictationField } from '@/features/dictation/dictation-field';
 import { FieldError } from '@/components/field-error';
 import { OutlinedCard } from '@/components/outlined-card';
 import { QuickSheet } from '@/components/quick-sheet';
@@ -35,6 +37,7 @@ import { formatSessionDay, formatSessionTimes } from '../session-format';
 import { organizationToday } from '../session-ranges';
 import { previewFigures } from './session-money-preview';
 import { formBody, issuesToErrors, prefilledForm, type RecordPrefill } from './use-session-form';
+import { PART_MAX } from './use-session-write-up';
 
 function close() {
   if (router.canGoBack()) router.back();
@@ -232,6 +235,18 @@ function AsPlanned({
           Different times
         </Button>
       )}
+      {/* Phase 43: from the Now card, the homework set last time starts the Homework review. */}
+      {prefill.homeworkReview !== undefined ? (
+        <DictationField
+          testID="record-quick-homework"
+          label="Homework review"
+          value={values.homeworkReview}
+          onChange={(text) => setValues((was) => ({ ...was, homeworkReview: text }))}
+          placeholder="How the homework from last time went"
+          error={errors['write_up.homework_review']}
+          maxLength={PART_MAX}
+        />
+      ) : null}
       <Text variant="bodySmall" style={{ color: muted }}>
         You can add notes, homework and progress once it is recorded.
       </Text>

@@ -1,0 +1,118 @@
+# The tutor's Now card (Phase 43), the next lesson (mockups 1 and 2): Alex's next lesson is with
+# Sofia, at his room. The card greets him by the part of the day and says when it is ("Sofia's lesson
+# is today at …, in …" / "tomorrow at …"), with Directions to the place (it is not 15 minutes away,
+# so See the plan, not Start). Under it the brief: the homework set last time, where, the next topic
+# on the plan, and the last lesson's assessment notes -- hidden until he taps Tap to show. Directions
+# and the Maps link are checked, not tapped: the flow never leaves the app. No money anywhere.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-home-now.js
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript:
+      file: ../../scripts/seed-home-now.js
+      env:
+        MODE: next
+onFlowComplete:
+  - runScript: ../../scripts/clean-home-now.js
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-now-next
+    timeout: 30000
+- assertVisible:
+    id: home-now-greeting
+    text: 'Good (morning|afternoon|evening), Alex'
+# The card's greeting stands in for the heading's: never twice on one screen.
+- assertNotVisible:
+    id: home-greeting
+- assertVisible:
+    id: home-now-headline
+    text: "Sofia's lesson is (today at .*, in .*|tomorrow at .*)"
+- assertVisible:
+    id: home-now-sentence
+    text: 'In person at Institute, room 2\..*'
+- assertVisible:
+    id: home-now-chip-place
+- assertVisible:
+    id: home-now-chip-homework
+- assertVisible:
+    id: home-now-directions
+- assertVisible:
+    id: home-now-plan
+- assertNotVisible:
+    id: home-now-start
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: home-now-next
+# The brief.
+- scrollUntilVisible:
+    element:
+      id: home-brief-homework
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: home-brief-homework-text
+    text: 'Five word problems from the green book.*'
+- scrollUntilVisible:
+    element:
+      id: home-brief-maps
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: home-brief-where
+- scrollUntilVisible:
+    element:
+      id: home-brief-topic
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: home-brief-top
+- scrollUntilVisible:
+    element:
+      id: home-brief-notes-show
+    direction: DOWN
+    centerElement: true
+# Hidden until tapped: the words are not on screen.
+- assertNotVisible:
+    id: home-brief-notes-list
+- assertVisible: 'Hidden while the screen may be shared.'
+- takeScreenshot: home-brief-notes-hidden
+- tapOn:
+    id: home-brief-notes-show
+- extendedWaitUntil:
+    visible:
+      id: home-brief-notes-list
+    timeout: 5000
+- assertVisible: '.*\((Parent|Student)\)'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: home-brief-notes-shown
+# Leaving Home hides them again.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- tapOn:
+    id: tab-dashboard
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: home-brief-notes
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: home-brief-notes-show
+- assertNotVisible:
+    id: home-brief-notes-list

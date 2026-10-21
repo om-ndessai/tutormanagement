@@ -4,11 +4,12 @@ import { useLocalSearchParams } from 'expo-router';
 import { RecordAsPlannedSheet } from '@/features/teaching/session-form/record-as-planned-sheet';
 
 /**
- * Record the lesson at hand from Home's Next up card (UI upgrades U4): a quick sheet filled from the
- * scheduled lesson (`?student&tutor&date&start&end&mode&place`).
+ * Record the lesson at hand from Home's Next up card (UI upgrades U4), or a finished one from the
+ * tutor's Now card (Phase 43): a quick sheet filled from the scheduled lesson
+ * (`?student&tutor&date&start&end&mode&place`, and `homework`, the Homework review's first line).
  */
 export default function RecordAsPlannedRoute() {
-  const { student, tutor, date, start, end, mode, place } = useLocalSearchParams<{
+  const { student, tutor, date, start, end, mode, place, homework } = useLocalSearchParams<{
     student?: string;
     tutor?: string;
     date?: string;
@@ -16,6 +17,7 @@ export default function RecordAsPlannedRoute() {
     end?: string;
     mode?: string;
     place?: string;
+    homework?: string;
   }>();
   return (
     <RecordAsPlannedSheet
@@ -26,6 +28,7 @@ export default function RecordAsPlannedRoute() {
         start: start || undefined,
         end: end || undefined,
         mode: SESSION_MODES.find((value) => value === mode),
+        ...(homework ? { homeworkReview: homework } : {}),
       }}
       place={place || undefined}
     />

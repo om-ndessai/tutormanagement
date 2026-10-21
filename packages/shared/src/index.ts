@@ -19,3 +19,4 @@ export * from './ai.js';
 export * from './questions.js';
 export * from './canvas-assessments.js';
 export * from './quest.js';
+export * from './home.js';

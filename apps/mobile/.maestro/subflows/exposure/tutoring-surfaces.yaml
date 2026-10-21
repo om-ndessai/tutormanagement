@@ -14,7 +14,7 @@ appId: ${APP_ID}
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(home-figures|dashboard-student|dashboard-parent)'
+      id: '(tabs-tutoring|dashboard-student|dashboard-parent)'
     timeout: 30000
 # Home, Tutoring (the default for a tutor or admin), and a student's dashboard.
 - runFlow:

@@ -60,12 +60,14 @@ function allText(): string {
 }
 
 describe('Tutoring tab views carry no money', () => {
-  it("the admin's renders its sections and no $; the figures sit above the tabs, counts only", async () => {
+  it("the admin's renders its sections and no $; no Analytics and no Recent Activity (Phase 43)", async () => {
     await renderWithProviders(<AdminTutoring data={adminDashboard} />);
-    for (const id of ['tutoring-sessions', 'progress', 'recent-activity']) {
+    for (const id of ['tutoring-sessions', 'progress']) {
       expect(screen.getByTestId(`dashboard-section-${id}`)).toBeTruthy();
     }
     expect(screen.queryByTestId('dashboard-section-analytics')).toBeNull();
+    expect(screen.queryByTestId('dashboard-section-recent-activity')).toBeNull();
+    expect(screen.queryByTestId('home-figures')).toBeNull();
     expect(screen.queryByTestId('session-money')).toBeNull();
     const text = allText();
     expect(text).toContain('Sofia Okafor');
@@ -93,6 +95,9 @@ describe('Tutoring tab views carry no money', () => {
   it("the tutor's adds Student Reflections, narrows the carousel to them, and has no $", async () => {
     await renderWithProviders(<TutorTutoring data={tutorDashboard} />);
     expect(screen.getByTestId('dashboard-section-student-reflections')).toBeTruthy();
+    // Phase 43: Recent Activity left every Home; Analytics is the Dashboard screen's.
+    expect(screen.queryByTestId('dashboard-section-recent-activity')).toBeNull();
+    expect(screen.queryByTestId('home-figures')).toBeNull();
     expect(mockUpcoming).toHaveBeenCalledWith('tutor-1');
     expect(screen.queryByTestId('session-money')).toBeNull();
     expect(allText()).not.toMatch(/\$/);

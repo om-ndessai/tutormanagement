@@ -13,7 +13,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 - tapOn:
     id: tabs-finance
@@ -73,10 +73,13 @@ tags:
     timeout: 60000
 - tapOn:
     id: tabs-tutoring
-- extendedWaitUntil:
-    visible:
+# Phase 43: the Now card and the brief lead the Tutoring tab of anyone who tutors.
+- scrollUntilVisible:
+    element:
       id: dashboard-section-tutoring-sessions
-    timeout: 10000
+    direction: DOWN
+    visibilityPercentage: 1
+    timeout: 15000
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'

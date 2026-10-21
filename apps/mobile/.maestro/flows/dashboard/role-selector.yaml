@@ -13,12 +13,11 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
-# Home opens on the greeting and Today: no role chips there.
-- assertVisible:
-    id: home-greeting
-    text: 'Good (morning|afternoon|evening), Maria'
+# Home opens on the greeting and Today: no role chips there. (The heading's greeting, or her Now
+# card's when it is about her next lesson -- Phase 43.)
+- assertVisible: 'Good (morning|afternoon|evening), Maria'
 - assertNotVisible:
     id: dashboard-role-tutor
 - assertNotVisible:

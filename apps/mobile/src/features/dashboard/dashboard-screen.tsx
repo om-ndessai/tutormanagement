@@ -3,7 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { USER_ROLES, type UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams, useNavigation } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
@@ -12,7 +12,8 @@ import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { DashboardSkeleton } from '@/components/skeletons';
-import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
+import { TutoringFinanceTabs, useTutoringFinanceTab } from '@/components/tutoring-finance-tabs';
+import { TutorNow, useNowState } from '@/features/home/tutor-now';
 import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useTourScroller } from '@/features/onboarding/tour-targets';
@@ -27,7 +28,7 @@ import { publishHomeRole, onHomeRoleChosen } from './home-role';
 import { Greeting, TodayCard, useToday, type TodayScope } from './home-top';
 import { RoleSelector } from './role-selector';
 import { StudentView } from './student-view';
-import { AdminFigures, AdminTutoring, TutorFigures, TutorTutoring } from './tutoring-views';
+import { AdminTutoring, TutorTutoring } from './tutoring-views';
 import { onSubjectChosen } from './view-as';
 import { ViewAsBanner } from './view-as-banner';
 
@@ -121,6 +122,17 @@ export function DashboardScreen() {
     [navigation],
   );
 
+  // Phase 43: the Now card greets the reader by name when it is about their next lesson, so the
+  // heading's greeting gives way to it on the Tutoring tab (never twice on one screen).
+  const tutors = !viewingId && (user?.roles.includes('tutor') ?? false);
+  const now = useNowState(tutors);
+  const [tab] = useTutoringFinanceTab();
+  const nowGreets =
+    tutors &&
+    tab === 'tutoring' &&
+    (shownRole === 'tutor' || shownRole === 'admin') &&
+    now.state.kind === 'next';
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -129,6 +141,7 @@ export function DashboardScreen() {
         queryClient.invalidateQueries({ queryKey: ['schedules', 'upcoming'] }),
         queryClient.invalidateQueries({ queryKey: ['finance'] }),
         queryClient.invalidateQueries({ queryKey: ['sessions'] }),
+        queryClient.invalidateQueries({ queryKey: ['home'] }),
       ]);
     } finally {
       setRefreshing(false);
@@ -158,7 +171,7 @@ export function DashboardScreen() {
             </Text>
           )}
         </View>
-      ) : (
+      ) : nowGreets ? null : (
         <Greeting />
       )}
       {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
@@ -171,6 +184,7 @@ export function DashboardScreen() {
         query={query}
         subjectId={viewingOther ? subject?.user_id : undefined}
         mine={!viewingId}
+        tutors={tutors}
       />
       {/* Phase 33: a lesson about to start, where its locations ask for a reminder. Never while
           viewing someone else. */}
@@ -189,12 +203,15 @@ function RoleDashboard({
   query,
   subjectId,
   mine,
+  tutors,
 }: {
   query: ReturnType<typeof useDashboard>;
   /** The person being viewed, when it is not the reader. */
   subjectId: string | undefined;
   /** The reader's own dashboard (not an admin's "view as"). */
   mine: boolean;
+  /** The reader tutors here and is on their own Home: the Now card and brief lead Tutoring. */
+  tutors: boolean;
 }) {
   const { data, isPending, isError, error, refetch } = query;
   const response = data?.data;
@@ -203,39 +220,49 @@ function RoleDashboard({
   if (isError || !response) return <ErrorState error={error} onRetry={() => void refetch()} />;
 
   const view = response.data;
+  // Phase 43 (the owner, 2026-10-20): Analytics left Home for the Dashboard screen (More →
+  // Dashboard), and the Now card with the next lesson's brief leads the Tutoring tab of anyone who
+  // tutors -- an admin too, for their own pairings.
+  const lead = mine && tutors ? <TutorNow /> : null;
+  let body: ReactNode;
   switch (view.kind) {
     case 'admin':
-      return (
+      body = (
         <>
           <ScopedToday scope={{ who: 'both' }} />
-          <AdminFigures data={view} />
           <TutoringFinanceTabs
-            tutoring={<AdminTutoring data={view} />}
+            tutoring={<AdminTutoring data={view} lead={lead} />}
             finance={<AdminFinance data={view} />}
           />
         </>
       );
+      break;
     case 'tutor':
-      return (
+      body = (
         <>
           {/* Their own teaching only, even for a tutor who also parents (as the carousel). */}
           <ScopedToday scope={{ who: 'student', tutorUserId: view.earnings.user_id }} />
-          <TutorFigures data={view} />
           <TutoringFinanceTabs
-            tutoring={<TutorTutoring data={view} mine={mine} />}
+            tutoring={<TutorTutoring data={view} mine={mine} lead={lead} />}
             finance={<TutorFinance data={view} subjectId={subjectId} />}
           />
         </>
       );
+      break;
     case 'parent':
-      return <ParentView data={view} />;
+      body = <ParentView data={view} />;
+      break;
     case 'student':
-      return (
+      body = (
         <StudentView
           data={view}
           studentId={response.subject.user_id}
           studentName={response.subject.full_name}
         />
       );
+      break;
   }
+  // No wrapping view: every level added deepens the tree iOS UI tests can read (XCUITest's snapshot
+  // stops at a depth, and the parent's figures fell past it).
+  return body;
 }

@@ -322,6 +322,17 @@ native rebuild of both dev builds, so build only while the devices are free.
   the owner: the status bar on iOS (needs `UIViewControllerBasedStatusBarAppearance`) and keeping the
   screen awake (needs `expo-keep-awake` as the app's own dependency).
 
+## Portal Phase 43 — the tutor's Home (app-first, the owner's word, 2026-10-20; the web is owed)
+
+- [x] 58. Mobile: the tutor's Home — the Now card (a finished lesson celebrated with confetti once
+  per phone, Record it now with the schedule and last time's homework filled in, Later; else the next
+  lesson whenever it is, with Directions / Open the link and Start lesson or See the plan) and the
+  brief (homework, where, next on the plan, assessment notes hidden until tapped), for tutors and
+  admins who tutor; Analytics moved to More → Dashboard; Recent Activity off every Home. Built
+  2026-10-20 (design 58). jest, typecheck, lint and export green; the flows
+  `home/*` (the five new ones and the five moved), `dashboard/*` and `locations/reminder` green on iOS
+  and Android; `smoke -- mobile` green on both. The web half is owed.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

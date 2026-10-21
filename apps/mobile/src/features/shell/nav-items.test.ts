@@ -48,4 +48,14 @@ describe('visibleNavItems', () => {
     expect(labels(['tutor'], true)).not.toContain('Organization');
     expect(labels(['admin'], true)).toContain('Organization');
   });
+
+  it('lists the Dashboard (the Analytics figures, Phase 43) for tutors and admins only; Home is the tab', () => {
+    const dashboard = (roles: string[]) =>
+      visibleNavItems(roles, null).filter((item) => item.label === 'Dashboard' && !item.tab);
+    expect(dashboard(['admin'])).toHaveLength(1);
+    expect(dashboard(['tutor', 'parent'])[0]).toMatchObject({ href: '/analytics', tourId: 'nav-analytics' });
+    expect(dashboard(['parent'])).toHaveLength(0);
+    expect(dashboard(['student'])).toHaveLength(0);
+    expect(visibleNavItems(['parent'], null).find((item) => item.tourId === 'nav-dashboard')?.label).toBe('Home');
+  });
 });

@@ -443,8 +443,8 @@ status bar still shows over Quest (needs `UIViewControllerBasedStatusBarAppearan
 rebuild) and the screen may sleep (needs `expo-keep-awake` as the app's own dependency) -- the
 owner's call.
 
-Phase 43: (requested 2026-10-20 by the owner, to come next; proposal with mockups, awaiting the owner's
-answers to its open questions before building; web and the app)
+Phase 43: (requested 2026-10-20 by the owner; decisions settled the same day; building, the app first by
+the owner's word -- the web dashboard follows)
 The tutor's Home: make it the screen a tutor opens before and after a lesson. Plan and mockups:
 `docs/tutor-home-plan.md` (`docs/tutor-home/`). Recent Activity leaves everyone's Home (every role, web
 and app; the Activity page stays). At the top of a tutor's Home, a "Now" card that changes with the

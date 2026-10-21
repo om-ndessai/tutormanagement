@@ -1791,3 +1791,102 @@ No scoring. No API, schema or shared change.
 - `npm run e2e:mobile -- both apps/mobile/.maestro/flows/canvas-assessments` (the Organization screen and the shared nav changed): all seven green on both.
 - `npm run smoke -- mobile`: green on both (diagnostics, sign-in, open, navigation).
 - Not checked: an iPad (no iPad simulator in the runner; the side-by-side layout is the `questWide` breakpoint, unit-tested); VoiceOver and TalkBack by hand.
+
+## 58. Phase 43: the tutor's Home — design and build, app-first (2026-10-20)
+**Scope:** `docs/tutor-home-plan.md`, with the owner's decisions of 2026-10-20, which override the
+plan: (1) Analytics leaves the tutor's and the admin's Home and is reached through More → Dashboard
+(and Search), the same components and data; (2) the Now card is about the NEXT lesson, whenever it
+is -- no 12-hour window; (3) the assessment notes are all the tutor can read on the last lesson
+(theirs, the student's, a parent's), hidden until tapped; (4) an admin who also tutors gets the same
+Now card and brief, for their own pairings; (5) Recent Activity leaves every role's Home (the Activity
+page stays in More). **App-first by the owner's word ("implement it on app"); the web half is owed**
+(`parity.md`). No API, schema, shared or web change from this work: `GET /api/home/tutor` and
+`packages/shared/src/home.ts` are the coordinator's, final.
+
+**Endpoint:** `GET /home/tutor` → `TutorHome` (`useTutorHome`, key `['home','tutor']`, in
+`src/features/home/api.ts`). Read when Home mounts and again on each return to Home (focus), and on
+pull-to-refresh; `['home']` is invalidated with the dashboard by every teaching mutation (record,
+start, stop, edit, delete), by an assessment, a schedule change and a cancellation. Only the reader's
+own pairings; an empty answer (next null, unrecorded []) shows nothing. Called only for a reader who
+tutors here, never while an admin views somebody else.
+
+**Components:** (new, `src/features/home/`)
+- `now-model.ts` (pure): `nowState` (first unrecorded not put off → celebrate; a lesson of the
+  reader's running → nothing new; `next` → the message; else none), `lessonKey`, the words
+  (`nextHeadline`/`lessonWhen` -- today with a countdown, under way, tomorrow, a weekday within the
+  week, a date beyond; `celebrateHeadline`, `togetherLine` -- "That's N+1 together since <Month>",
+  the year when not this one, "Your first lesson together!"; `endedLine`; `nowGreeting` from the
+  server's `part_of_day`; `briefSentence`; `homeworkReviewPrefill`), `canStartNow` (15 minutes before
+  the start until the end, that day), `placeAction` (Directions for a physical address; a virtual
+  place's address opened only when it is an http(s) link) and `mapChoices` (Google Maps; Apple Maps
+  too on iOS).
+- `now-card.tsx`: `CelebrateCard` (`home-now-celebrate`, success colours; `home-now-record` →
+  `/record-as-planned` with student, tutor, date, start, end, mode, place and `homework`;
+  `home-now-later`) and `NextCard` (`home-now-next`: `home-now-greeting`, `home-now-headline`,
+  `home-now-sentence`, chips, `home-now-directions` / `home-now-link`, `home-now-start` → the Start
+  sheet with the student and mode, else `home-now-plan` → the student's Progress).
+- `brief-cards.tsx`: `home-brief-homework` (with `home-brief-homework-status`), `home-brief-where`
+  (`home-brief-maps` / `home-brief-link`), `home-brief-topic` (or "No plan yet" with Open Progress),
+  `home-brief-notes` (bars in place of the words, not in the accessibility tree; `home-brief-notes-show`;
+  hidden again when Home loses focus).
+- `tutor-now.tsx`: `TutorNow` (the card, then the brief for `next`) and `useNowState`, which Home also
+  reads: while the card greets the reader on the Tutoring tab, the heading's greeting gives way (never
+  two greetings on one screen).
+- `confetti.tsx`: 36 pieces, Reanimated only, `pointerEvents="none"`, hidden from accessibility, and
+  nothing at all under reduce motion. Once per lesson per phone: `celebrated-lessons.ts`
+  (`STORAGE_KEYS.lessonsCelebrated`, schedule ids and dates only, the last 200), with
+  `haptics.success()`.
+- `later.ts`: "Later", in memory for the app session. `place-links.ts`: `Linking` only (an action
+  sheet on iOS for the two maps), no location read.
+- Elsewhere: `dashboard-screen.tsx` (the figures row and Recent Activity gone; `lead` passed into
+  `AdminTutoring`/`TutorTutoring`);
+  `analytics-screen.tsx` + `app/(org)/analytics.tsx` (`screen-dashboard-analytics`: "Analytics" with
+  the office's `AdminFigures` and/or the tutor's `TutorFigures`, "Your teaching" when both);
+  `nav-items.ts` (Dashboard → `/analytics`, `roles: ['admin','tutor']`, `nav-analytics`; the Home
+  tab's item is labelled Home); `record-as-planned-sheet.tsx` (`record-quick-homework`, shown only when
+  the Now card passes the homework); `tour-steps.ts` (the figures step lights Dashboard under More; the
+  admin's Recent Activity step removed).
+
+**Exposure:** nothing new is read: the route answers for the reader's own pairings (R16 for the
+address, Phase 23's rules for the assessments). No money on the card, the brief or the Dashboard
+screen. The confetti's "once" is device storage of ids and dates only.
+
+**Tests:**
+- **Jest:** `now-model.test.ts` (the state order and Later, the words with an injected clock, the
+  together wording, Start's window, the place actions and maps choice), `tutor-now.test.tsx` (nothing
+  for someone who teaches nobody; celebrate → the record route with the homework line, Later; the next
+  card and four brief cards, notes hidden until tapped; Start at 4:20 for 4:30; no card while running;
+  the empty brief), `nav-items.test.ts` (Dashboard for tutors and admins only), `tutoring-views.test.tsx`
+  (no Recent Activity, no figures on the tabs).
+- **Maestro** (`flows/home/`; `scripts/seed-home-now.js` places a lesson for Alex and Sofia relative
+  to now -- `MODE=ended`: ended ~30 min ago; `MODE=next`: in 30-45 min, else tomorrow 8 AM -- and
+  cancels any other lesson that would take the card; `clean-home-now.js` restores those):
+  `now-celebrate-record`, `now-next-brief`, `dashboard-analytics` (Priya: no figures or Recent
+  Activity on Home; More → Dashboard; Search finds it), `dashboard-analytics-tutor`,
+  `parent-no-activity`. Existing flows moved: the figures' assertions in `dashboard/tutoring-*` to the
+  Dashboard screen, their Recent Activity ones to absence; `home-figures` load waits →
+  `(tabs-tutoring|dashboard-parent|dashboard-student)`;
+  the greeting matched by text (heading or Now card); carousel actions reached by scrolling;
+  `shell/navigation` (smoke) opens Dashboard.
+
+**Changed while building (2026-10-20):**
+- **No wrapping view around Home.** A `home-dashboard` view around every role's Home (a single
+  "loaded" id for the flows) put the parent's figures one level deeper, past what XCUITest's
+  snapshot reads on iOS (`home-figures` vanished from the tree). Removed; the flows wait on the ids
+  each role already had.
+- **The quick record sheet gained Homework review** (`record-quick-homework`), only when the Now card
+  passes `homework`; the carousel's Record opens it as before.
+
+**Verified (2026-10-21):**
+- `npm run mobile:typecheck`, `mobile:lint` (0 errors, the 25 existing warnings), `mobile:test`
+  (109 suites, 718 tests), `mobile:export` (both platforms): green.
+- `npm run e2e:mobile -- both apps/mobile/.maestro/flows/home`: 10/10 on Android; on iOS 9/10, the
+  tenth (`finish-write-up`) failing only because the run crossed midnight (its seeded draft is
+  "today"), green on rerun. `dashboard/*` (10) and `locations/reminder`: green on iOS; on Android
+  `finance-ssn-receipt` (the Finance tab, untouched) missed its scroll once and was green on rerun.
+- `npm run smoke -- mobile`: 4/4 on iOS and 4/4 on Android.
+- Not run: `onboarding/tour` (its first step now lights More), `exposure/*` and the other folders
+  whose Home load wait changed (`progress/*`, `year-end/form-1099`, `exposure/organizations-apart`).
+- Time-of-day: `seed-next-up.js` (the older `home/next-up-*` flows) refuses within an hour or so of
+  midnight ("Too close to midnight"); seen at 23:45 and green after midnight.
+

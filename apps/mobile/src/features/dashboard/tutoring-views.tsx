@@ -1,11 +1,11 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 -- the Tutoring halves
 // of AdminView and TutorView. The Finance halves are in finance-views.tsx.
 import type { AdminDashboard, TutorDashboard } from '@tmi/shared';
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import { DashboardSection, Panel } from '@/components/section';
 import { FigureRow } from '@/components/figure-row';
-import { ActivityFeed } from '@/features/audit/activity-feed';
 import { ProgressSpotlight } from '@/features/progress/progress-spotlight';
 import { space } from '@/theme/tokens';
 import { FinishWriteUp } from './finish-write-up';
@@ -13,8 +13,9 @@ import { RecentReflections } from './reflections';
 import { SessionsCarousel } from './sessions-carousel';
 
 /**
- * The admin's figures (UI upgrades U6: the Analytics section, as one compact row above the tabs).
- * Counts only: it shows on Finance too, and money stays inside Finance.
+ * The admin's figures (UI upgrades U6: the Analytics section, as one compact row). Since Phase 43
+ * (the owner, 2026-10-20) they are on the Dashboard screen (More → Dashboard), not on Home. Counts
+ * only: money stays inside Finance.
  */
 export function AdminFigures({ data }: { data: AdminDashboard }) {
   return (
@@ -34,7 +35,7 @@ export function AdminFigures({ data }: { data: AdminDashboard }) {
   );
 }
 
-/** The tutor's figures, above the tabs. No money: what they earned is the Finance tab's. */
+/** The tutor's figures, on the Dashboard screen since Phase 43. No money: what they earned is the Finance tab's. */
 export function TutorFigures({ data }: { data: TutorDashboard }) {
   return (
     <FigureRow
@@ -53,12 +54,14 @@ export function TutorFigures({ data }: { data: TutorDashboard }) {
 }
 
 /**
- * The admin's Tutoring tab: its sections, most important first (the figures sit above the tabs
- * since U6). No money at all.
+ * The admin's Tutoring tab: its sections, most important first. Phase 43 (the owner, 2026-10-20):
+ * `lead` is the Now card and brief when the admin also tutors; Analytics moved to the Dashboard
+ * screen and Recent Activity left Home (the Activity page stays under More). No money at all.
  */
-export function AdminTutoring({ data }: { data: AdminDashboard }) {
+export function AdminTutoring({ data, lead }: { data: AdminDashboard; lead?: ReactNode }) {
   return (
     <View style={{ gap: space.xl }}>
+      {lead}
       <DashboardSection
         tourId="dash-sessions"
         title="Tutoring Sessions"
@@ -74,28 +77,29 @@ export function AdminTutoring({ data }: { data: AdminDashboard }) {
       >
         <ProgressSpotlight students={data.progress_spotlight} empty="No students yet." />
       </DashboardSection>
-
-      <DashboardSection
-        tourId="dash-activity"
-        title="Recent Activity"
-        action={{ label: 'Full log', to: '/activity' }}
-      >
-        <Panel>
-          <ActivityFeed events={data.recent_activity} />
-        </Panel>
-      </DashboardSection>
     </View>
   );
 }
 
 /**
- * The tutor's Tutoring tab: Next up first (the carousel's highlighted card), then the draft they
- * left today, then the rest. No money on this half: a tutor may have it open beside a student.
+ * The tutor's Tutoring tab (Phase 43): the Now card and brief, then Tutoring Sessions (Next up is
+ * the carousel's highlighted card), the draft they left today, Student Reflections and Progress.
+ * Recent Activity left Home (the owner, 2026-10-20). No money on this half: a tutor may have it open beside a student.
  * `mine` is false while an admin views it: a draft is its author's alone, so none is offered then.
  */
-export function TutorTutoring({ data, mine = true }: { data: TutorDashboard; mine?: boolean }) {
+export function TutorTutoring({
+  data,
+  mine = true,
+  lead,
+}: {
+  data: TutorDashboard;
+  mine?: boolean;
+  /** Phase 43: the Now card and the next lesson's brief, first (the reader's own Home only). */
+  lead?: ReactNode;
+}) {
   return (
     <View style={{ gap: space.xl }}>
+      {lead}
       <DashboardSection
         tourId="dash-sessions"
         title="Tutoring Sessions"
@@ -124,16 +128,6 @@ export function TutorTutoring({ data, mine = true }: { data: TutorDashboard; min
         action={{ label: 'All Progress', to: '/progress' }}
       >
         <ProgressSpotlight students={data.progress_spotlight} empty="No students assigned to you yet." />
-      </DashboardSection>
-
-      <DashboardSection
-        tourId="dash-activity"
-        title="Recent Activity"
-        action={{ label: 'Full log', to: '/activity' }}
-      >
-        <Panel>
-          <ActivityFeed events={data.recent_activity} showActor={false} />
-        </Panel>
       </DashboardSection>
     </View>
   );

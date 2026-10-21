@@ -21,7 +21,7 @@ tags:
 # followed mid-render sat on its skeletons past the wait.
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml

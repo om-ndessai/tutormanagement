@@ -1,6 +1,7 @@
 # The admin's dashboard, Tutoring tab (Priya, admin + tutor in chmi: the admin view is the
-# default). Four sections in order, the sessions carousel, and no money anywhere on the tab --
-# then the Finance tab and back.
+# default). Its sections in order, the sessions carousel, and no money anywhere on the tab -- then
+# the Finance tab and back. Phase 43 (the owner, 2026-10-20): no Analytics and no Recent Activity on
+# Home; the figures are on More → Dashboard, checked at the end.
 appId: ${APP_ID}
 tags:
   - feature
@@ -15,31 +16,28 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# UI upgrades U6: a greeting on the organization's clock, Today, then the figures above the tabs.
-- assertVisible:
-    id: home-greeting
-    text: 'Good (morning|afternoon|evening), Priya'
+# UI upgrades U6: a greeting on the organization's clock and Today above the tabs. Phase 43: she also
+# tutors, so her Now card may greet her instead of the heading (never both).
+- extendedWaitUntil:
+    visible:
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+    timeout: 20000
+- assertVisible: 'Good (morning|afternoon|evening), Priya'
 - assertVisible:
     id: home-today
-- extendedWaitUntil:
-    visible:
-      id: home-figures
-    timeout: 20000
 - assertVisible:
     id: tabs-tutoring
-- assertVisible:
-    id: stat-students
-- assertVisible:
-    id: stat-tutors
-- assertVisible:
-    id: stat-parents
-- assertVisible:
-    id: stat-sessions-running
-- assertVisible:
-    id: dashboard-section-tutoring-sessions
-- extendedWaitUntil:
-    visible:
+- assertNotVisible:
+    id: home-figures
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-tutoring-sessions
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
       id: carousel-now
+    direction: DOWN
     timeout: 15000
 - takeScreenshot: dashboard-admin-top
 - assertNotVisible:
@@ -58,16 +56,11 @@ tags:
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'
-- scrollUntilVisible:
-    element:
-      id: dashboard-section-recent-activity
-    direction: DOWN
-    visibilityPercentage: 1
-- scrollUntilVisible:
-    element:
-      id: dashboard-section-recent-activity-action
-    direction: DOWN
-- takeScreenshot: dashboard-admin-activity
+# Recent Activity left Home (Phase 43): nothing follows Progress.
+- scroll
+- assertNotVisible:
+    id: dashboard-section-recent-activity
+- takeScreenshot: dashboard-admin-bottom
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'
@@ -82,14 +75,37 @@ tags:
     visible:
       id: dashboard-finance-admin
     timeout: 10000
-# The figures (counts only) stay above both tabs; the Tutoring sections do not.
-- assertVisible:
+# The Tutoring sections stay on their tab; no figures on Finance's Home either.
+- assertNotVisible:
     id: home-figures
 - assertNotVisible:
     id: dashboard-section-tutoring-sessions
 - tapOn:
     id: tabs-tutoring
+# Phase 43: the Now card and the brief lead the Tutoring tab of anyone who tutors.
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-tutoring-sessions
+    direction: DOWN
+    visibilityPercentage: 1
+    timeout: 15000
+# The figures (counts only) are on More → Dashboard (Phase 43).
+- tapOn:
+    id: tab-more
 - extendedWaitUntil:
     visible:
-      id: dashboard-section-tutoring-sessions
+      id: screen-more
     timeout: 10000
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: stat-students
+    timeout: 20000
+- assertVisible:
+    id: stat-tutors
+- assertVisible:
+    id: stat-parents
+- assertVisible:
+    id: stat-sessions-running
+- assertNotVisible: '.*\$[0-9].*'

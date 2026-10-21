@@ -1,0 +1,37 @@
+# Phase 43 (the owner, 2026-10-20): Recent Activity is on no one's Home. A parent's Home (Anita)
+# shows her children, balances, recent lessons and payments -- and no Recent Activity, and no
+# Dashboard page in More (its figures are for tutors and the office). The Activity page stays.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: dashboard-parent
+    timeout: 30000
+- assertNotVisible:
+    id: home-now
+- scrollUntilVisible:
+    element:
+      id: parent-payments-action
+    direction: DOWN
+- scroll
+- assertNotVisible:
+    id: dashboard-section-recent-activity
+- assertNotVisible: 'Recent Activity'
+- takeScreenshot: home-parent-bottom
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertNotVisible:
+    id: more-nav-analytics
+- assertVisible:
+    id: more-nav-activity

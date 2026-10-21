@@ -13,7 +13,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 - assertNotVisible:
     id: view-as-banner
@@ -50,7 +50,7 @@ tags:
 - assertVisible: "Alex Chen's dashboard"
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 15000
 # Alex holds one role here: no role chips under the banner. His tutor view has Student Reflections,
 # and no Finish write-up: a draft is its author's alone.
@@ -81,10 +81,11 @@ tags:
     notVisible:
       id: view-as-banner
     timeout: 10000
+# Her own Home again: greeted by name (by the heading, or her Now card's -- Phase 43).
 - extendedWaitUntil:
-    visible:
-      id: stat-parents
+    visible: 'Good (morning|afternoon|evening), Priya'
     timeout: 15000
+- assertNotVisible: "Alex Chen's dashboard"
 # Her own roles are chosen in the account sheet (UI upgrades U6), and only once she is back.
 - assertNotVisible:
     id: dashboard-role-admin
@@ -139,5 +140,5 @@ tags:
     timeout: 10000
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 15000

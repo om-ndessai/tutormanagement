@@ -26,6 +26,7 @@ import { aiRoutes } from './routes/ai.js';
 import { questionBankRoutes } from './routes/question-bank.js';
 import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 import { questRoutes } from './routes/quest.js';
+import { homeRoutes } from './routes/home.js';
 
 const app = new Hono<AppEnv>();
 
@@ -120,7 +121,8 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/progress', progressRoutes)
   .route('/onboarding', onboardingRoutes)
   .route('/canvas-assessments', canvasAssessmentRoutes)
-  .route('/quest', questRoutes);
+  .route('/quest', questRoutes)
+  .route('/home', homeRoutes);
 
 const api = new Hono<AppEnv>()
   .route('/', publicRoutes)

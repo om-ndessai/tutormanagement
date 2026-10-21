@@ -1,0 +1,57 @@
+# Phase 43: a tutor's Home (Alex) has no Analytics and no Recent Activity; More → Dashboard has his
+# figures (students, sessions, running) -- counts only, no money.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 20000
+- assertNotVisible:
+    id: home-figures
+- scrollUntilVisible:
+    element:
+      id: progress-spotlight-card
+    direction: DOWN
+- scroll
+- scroll
+- assertNotVisible:
+    id: dashboard-section-recent-activity
+- assertNotVisible: 'Recent Activity'
+- takeScreenshot: home-tutor-bottom
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: screen-dashboard-analytics
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: stat-students
+    timeout: 20000
+- assertVisible:
+    id: stat-sessions
+- assertVisible:
+    id: stat-sessions-running
+- assertVisible:
+    id: dashboard-section-analytics
+- assertNotVisible:
+    id: stat-tutors
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: dashboard-analytics-tutor

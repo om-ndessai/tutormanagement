@@ -1,0 +1,100 @@
+# Phase 43 (the owner, 2026-10-20): Analytics left Home for the Dashboard page under More, and
+# Recent Activity left every Home (the Activity page stays under More). Priya (admin and tutor in
+# chmi): Home has neither; More → Dashboard has the office's counts and her own teaching's; Search
+# finds the page too.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 20000
+- assertNotVisible:
+    id: home-figures
+- assertNotVisible:
+    id: stat-students
+- scrollUntilVisible:
+    element:
+      id: progress-spotlight-card
+    direction: DOWN
+- scroll
+- scroll
+- assertNotVisible:
+    id: dashboard-section-recent-activity
+- assertNotVisible: 'Recent Activity'
+- takeScreenshot: home-admin-bottom
+# More → Dashboard.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-analytics
+- assertVisible:
+    id: more-nav-activity
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: screen-dashboard-analytics
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: stat-students
+    timeout: 20000
+- assertVisible:
+    id: stat-tutors
+- assertVisible:
+    id: stat-parents
+- assertVisible:
+    id: stat-sessions-running
+- assertVisible:
+    id: dashboard-section-analytics
+- extendedWaitUntil:
+    visible:
+      id: dashboard-section-your-teaching
+    timeout: 20000
+- assertVisible:
+    id: stat-sessions
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: dashboard-analytics-admin
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+# Search finds it as Dashboard; Home is Home.
+- tapOn:
+    id: more-search
+- extendedWaitUntil:
+    visible:
+      id: search-input
+    timeout: 10000
+- tapOn:
+    id: search-input
+- inputText: 'analytics'
+- extendedWaitUntil:
+    visible:
+      id: search-goto-nav-analytics
+    timeout: 5000
+- assertVisible:
+    id: search-goto-nav-analytics
+    text: 'Dashboard'
+- tapOn:
+    id: search-goto-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: screen-dashboard-analytics
+    timeout: 10000

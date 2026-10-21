@@ -2,6 +2,9 @@
 // the web's; only "Getting started" says where the phone keeps it (the account menu), and
 // `placementOf` says where each target is on a phone: a registered view, or a tab of the tab bar
 // (the menu items the tab bar has no room for live under More).
+// Phase 43 (app-first, 2026-10-20): Home lost Analytics and Recent Activity, so the figures' step
+// lights the Dashboard page under More and the Recent Activity step is gone; the web's tour follows
+// when its half of the phase is built.
 import type { UserRole } from '@tmi/shared';
 
 /**
@@ -23,7 +26,8 @@ export interface TourStep {
 export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   admin: [
     {
-      target: 'dash-analytics',
+      // Phase 43: the figures left Home for the Dashboard page, under More.
+      target: 'nav-analytics',
       title: 'The institute at a glance',
       body: 'Students, tutors, parents and lessons, counted. Each card opens the list behind it.',
     },
@@ -36,11 +40,6 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
       target: 'dash-progress',
       title: 'Progress towards each goal',
       body: 'A few students with their timeline against the plan. All Progress has everyone.',
-    },
-    {
-      target: 'dash-activity',
-      title: 'Recent activity',
-      body: 'The latest things people did in the portal. The full log is under Activity.',
     },
     {
       target: 'tabs',
@@ -95,7 +94,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   tutor: [
     {
-      target: 'dash-analytics',
+      target: 'nav-analytics',
       title: 'Your teaching at a glance',
       body: 'Your students, your lessons, and whether one is running now.',
     },

@@ -66,6 +66,20 @@ tags:
 - runFlow: ../../subflows/go-back.yaml
 - assertVisible:
     id: screen-more
+# Phase 43: the Analytics figures left Home for More → Dashboard.
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: screen-dashboard-analytics
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: stat-students
+    timeout: 20000
+- runFlow: ../../subflows/go-back.yaml
+- assertVisible:
+    id: screen-more
 - tapOn: 'Home'
 - tapOn:
     id: account-button

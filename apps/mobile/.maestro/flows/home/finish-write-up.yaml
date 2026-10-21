@@ -19,7 +19,14 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+    timeout: 30000
+# Phase 43: the Now card and the brief lead the Tutoring tab.
+- scrollUntilVisible:
+    element:
       id: dashboard-section-tutoring-sessions
+    direction: DOWN
+    visibilityPercentage: 1
     timeout: 30000
 - scrollUntilVisible:
     element:

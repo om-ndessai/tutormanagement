@@ -24,6 +24,8 @@ export interface NavItem {
   icon: string;
   keywords: string[];
   admin?: boolean;
+  /** Only for readers holding one of these roles here. */
+  roles?: readonly string[];
   /**
    * Reached from the tab bar, so not listed under More: one of the tabs, or inside one (Schedule,
    * inside Sessions since the bar was revised on 2026-10-15).
@@ -39,10 +41,11 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   {
+    // The Home tab. Called Home, as the tab bar calls it: "Dashboard" is the figures' own page now.
     href: '/dashboard',
-    label: 'Dashboard',
-    icon: 'view-dashboard-outline',
-    keywords: ['home', 'overview'],
+    label: 'Home',
+    icon: 'home-outline',
+    keywords: ['home', 'overview', 'next lesson'],
     tab: true,
     tourId: 'nav-dashboard',
   },
@@ -88,6 +91,16 @@ export const NAV_ITEMS: NavItem[] = [
     keywords: ['game', 'points', 'questions', 'approve', 'review'],
     feature: 'gamify_question_quest',
     tourId: 'nav-quest',
+  },
+  {
+    // Phase 43 (the owner, 2026-10-20): the Analytics figures, which left Home. For the roles that
+    // had them on Home: tutors and the office.
+    href: '/analytics',
+    label: 'Dashboard',
+    icon: 'view-dashboard-outline',
+    keywords: ['analytics', 'figures', 'counts', 'stats', 'overview'],
+    roles: ['admin', 'tutor'],
+    tourId: 'nav-analytics',
   },
   {
     href: '/people',
@@ -157,7 +170,10 @@ export function visibleNavItems(
 ): NavItem[] {
   const admin = Boolean(roles?.includes('admin'));
   return NAV_ITEMS.filter(
-    (item) => (!item.admin || admin) && (!item.feature || Boolean(organization?.[item.feature])),
+    (item) =>
+      (!item.admin || admin) &&
+      (!item.roles || item.roles.some((role) => roles?.includes(role))) &&
+      (!item.feature || Boolean(organization?.[item.feature])),
   );
 }
 

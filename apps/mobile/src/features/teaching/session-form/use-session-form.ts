@@ -70,6 +70,8 @@ export interface RecordPrefill {
   start?: string;
   end?: string;
   mode?: SessionMode;
+  /** Phase 43: "Last time: <the homework set>", from the tutor's Now card, for Homework review. */
+  homeworkReview?: string;
 }
 
 const CLOCK = /^([01]\d|2[0-3]):[0-5]\d$/;
@@ -100,6 +102,7 @@ export function prefilledForm(
     startedAt,
     endedAt,
     mode: prefill.mode ?? base.mode,
+    homeworkReview: prefill.homeworkReview ?? base.homeworkReview,
   };
 }
 

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 /**
  * Preferences kept on the device. Nothing sensitive: the server chosen, the theme, the last
  * organization (which only picks where a person lands -- the API checks membership on every
- * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), and the developer sign-in persona. Never a lesson,
+ * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), which finished lessons the Now card has thrown confetti for (schedule ids and dates only), and the developer sign-in persona. Never a lesson,
  * a note, an amount or an SSN; and never the query cache.
  *
  * One exception, kept apart below (`canvasWork*`): an assessment's handwriting while it is being
@@ -25,6 +25,8 @@ export const STORAGE_KEYS = {
   remindersDismissed: 'tmi.remindersDismissed',
   /** The mastered topics Home has celebrated on this phone (UI upgrades U6): `<student id>:<topic id>` keys, the last 200. */
   celebrated: 'tmi.celebrated',
+  /** The finished lessons the tutor's Now card has celebrated here (Phase 43): `<schedule id>:<date>` keys, the last 200. */
+  lessonsCelebrated: 'tmi.lessonsCelebrated',
 } as const;
 
 type Key = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

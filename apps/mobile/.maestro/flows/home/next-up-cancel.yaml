@@ -22,9 +22,12 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- extendedWaitUntil:
-    visible:
+# Phase 43: the Now card and the brief lead the Tutoring tab, so the carousel may be below them.
+- scrollUntilVisible:
+    element:
       id: carousel-next-cancel
+    direction: DOWN
+    centerElement: true
     timeout: 30000
 # Tap 1.
 - tapOn:
@@ -46,9 +49,12 @@ tags:
     timeout: 15000
 - takeScreenshot: next-up-cancelled
 # The date stays on the strip, flagged; the card no longer offers Start for it.
-- extendedWaitUntil:
-    visible:
+# Phase 43: the Now card and the brief lead the Tutoring tab, so the carousel may be below them.
+- scrollUntilVisible:
+    element:
       id: carousel-cancelled-${output.scheduleId}-.*
+    direction: DOWN
+    centerElement: true
     timeout: 15000
 - assertNotVisible:
     id: carousel-next-start

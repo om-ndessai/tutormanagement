@@ -22,6 +22,8 @@ function useScheduleInvalidation() {
 
   return () => {
     void queryClient.invalidateQueries({ queryKey: ['schedules'] });
+    // The tutor's Now card and brief are read from the schedules (Phase 43).
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }
@@ -111,6 +113,8 @@ function useCancellationInvalidation() {
     void queryClient.invalidateQueries({ queryKey: ['schedules'] });
     void queryClient.invalidateQueries({ queryKey: progressKeys.all });
     void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    // The tutor's Now card (Phase 43): a cancelled lesson is neither next nor waiting to be recorded.
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
   };
 }

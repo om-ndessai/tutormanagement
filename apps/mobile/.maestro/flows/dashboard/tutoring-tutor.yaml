@@ -1,5 +1,5 @@
-# The tutor's dashboard, Tutoring tab (Alex, tutor in chmi): five sections in order -- Student
-# Reflections between Tutoring Sessions and Progress -- the carousel narrowed to his own lessons,
+# The tutor's dashboard, Tutoring tab (Alex, tutor in chmi): the Now card and brief (Phase 43), then
+# Tutoring Sessions, Student Reflections and Progress -- the carousel narrowed to his own lessons,
 # and no money anywhere on the tab, which a tutor may have open beside a student.
 appId: ${APP_ID}
 tags:
@@ -15,29 +15,28 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# UI upgrades U6: a greeting on the organization's clock, Today, then the figures above the tabs.
-- assertVisible:
-    id: home-greeting
-    text: 'Good (morning|afternoon|evening), Alex'
+# UI upgrades U6: a greeting on the organization's clock and Today above the tabs. Phase 43: the Now
+# card may greet him instead of the heading (never both); no figures on Home.
+- extendedWaitUntil:
+    visible:
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+    timeout: 30000
+- assertVisible: 'Good (morning|afternoon|evening), Alex'
 - assertVisible:
     id: home-today
-- extendedWaitUntil:
-    visible:
-      id: home-figures
-    timeout: 30000
 - assertVisible:
     id: tabs-tutoring
-- assertVisible:
-    id: stat-students
-- assertVisible:
-    id: stat-sessions
-- assertVisible:
-    id: stat-sessions-running
-- assertVisible:
-    id: dashboard-section-tutoring-sessions
-- extendedWaitUntil:
-    visible:
+- assertNotVisible:
+    id: home-figures
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-tutoring-sessions
+    direction: DOWN
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
       id: carousel-next
+    direction: DOWN
     timeout: 15000
 - assertVisible:
     id: carousel-countdown
@@ -70,16 +69,29 @@ tags:
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'
-- scrollUntilVisible:
-    element:
-      id: dashboard-section-recent-activity
-    direction: DOWN
-    visibilityPercentage: 1
-- scrollUntilVisible:
-    element:
-      id: dashboard-section-recent-activity-action
-    direction: DOWN
-- takeScreenshot: dashboard-tutor-activity
+# Recent Activity left Home (Phase 43): nothing follows Progress.
+- scroll
+- assertNotVisible:
+    id: dashboard-section-recent-activity
+- takeScreenshot: dashboard-tutor-bottom
 - assertNotVisible:
     id: session-money
+- assertNotVisible: '.*\$[0-9].*'
+# His figures (counts only) are on More → Dashboard (Phase 43).
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: stat-students
+    timeout: 20000
+- assertVisible:
+    id: stat-sessions
+- assertVisible:
+    id: stat-sessions-running
 - assertNotVisible: '.*\$[0-9].*'

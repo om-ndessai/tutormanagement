@@ -20,7 +20,7 @@ env:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 # Shown in chmi.
 - runFlow:
@@ -53,7 +53,7 @@ env:
     id: account-org-riverside
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 # Home names the organization by its short name, under the greeting (UI upgrades U6).
 - assertVisible:
@@ -171,7 +171,7 @@ env:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-figures
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
     timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml
@@ -191,11 +191,12 @@ env:
     visible:
       id: screen-person
     timeout: 20000
+# Not centred: Comments can be the last section (the person's Recent activity renders nothing on a
+# freshly reset database), and the last thing on a page can never be scrolled to the middle.
 - scrollUntilVisible:
     element:
       id: person-comments
     direction: DOWN
-    centerElement: true
     timeout: 20000
 - tapOn:
     id: person-comments

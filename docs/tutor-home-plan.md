@@ -109,7 +109,18 @@ tab's neighbour -- see the open questions. No money anywhere on it (the Tutoring
   states (schedules seeded relative to now) and the exposure crawl; Maestro flows for the celebration →
   record path and the Directions link on iOS and Android; the smoke test.
 
-## Open questions for the owner
+## Decisions (owner, 2026-10-20)
+
+1. **Analytics leaves the tutor's (and admin's) Home**, reachable instead through the menu: More →
+   Dashboard opens the stat cards.
+2. **No 12-hour window: the Now card is about the next lesson**, whenever it is ("today at 4:30 PM, in
+   1 h 18 min", "tomorrow at 8:00 AM", "Saturday at 10:00 AM").
+3. **Assessment notes: every one the tutor can read** on the last lesson (their own, the student's, a
+   parent's), hidden until tapped.
+4. **Admins who tutor get the same Now card and brief**, for their own pairings.
+5. **The app first** ("implement it on app"): the API and the app now; the web dashboard follows.
+
+## The questions as they were asked
 
 1. **Analytics on the tutor's Home**: keep the four counts (below Progress), or drop them for tutors?
 2. **The 12-hour window**: fixed, or an organization setting?

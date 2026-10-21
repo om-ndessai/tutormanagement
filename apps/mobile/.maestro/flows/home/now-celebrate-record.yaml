@@ -1,0 +1,93 @@
+# The tutor's Now card (Phase 43), a finished lesson (mockups 3 and 4): Alex opens the app half an
+# hour after a lesson with Sofia that he has not recorded. A green card celebrates it ("Yay! You
+# completed one more lesson with Sofia", how many together and since when); Record it now opens the
+# quick sheet filled in from the schedule -- Sofia, the day, the times, the place -- with Homework
+# review starting from the homework set last time. Recorded, the card goes. No money anywhere.
+# seed-home-now.js places the lesson relative to now and cancels anything else that would take the
+# card; the cleaners put the seed back.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-home-now.js
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript:
+      file: ../../scripts/seed-home-now.js
+      env:
+        MODE: ended
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-home-now.js
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: home-now-celebrate
+    timeout: 30000
+- assertVisible:
+    id: home-now-celebrate-title
+    text: 'Yay! You completed one more lesson with Sofia'
+- assertVisible:
+    id: home-now-celebrate-detail
+    text: "That's [0-9]+ together since [A-Z][a-z]+.*It ended (yesterday )?at .*"
+- assertVisible:
+    id: home-now-record
+- assertVisible:
+    id: home-now-later
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: home-now-celebrate
+- tapOn:
+    id: home-now-record
+# The quick sheet, filled in from the schedule (mockup 4).
+- extendedWaitUntil:
+    visible:
+      id: record-quick-save
+    timeout: 15000
+- assertVisible: 'Record this lesson'
+- assertVisible:
+    id: record-quick-student
+    text: '${output.studentName}'
+- assertVisible:
+    id: record-quick-day
+    text: '${output.dayPattern}'
+- assertVisible:
+    id: record-quick-times
+    text: '${output.startClock}.*'
+- assertVisible:
+    id: record-quick-place
+    text: 'Institute, room 2.*'
+- assertVisible:
+    id: record-quick-homework
+- assertVisible: 'Last time: ${output.homework}'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: home-now-record-sheet
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: record-quick-save
+- extendedWaitUntil:
+    visible: 'Session recorded.'
+    timeout: 15000
+- tapOn:
+    id: record-quick-done-cancel
+# Back on Home, the lesson is on the record: the celebration has gone.
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: home-now-celebrate
+    timeout: 15000
+- takeScreenshot: home-now-recorded
