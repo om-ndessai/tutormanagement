@@ -425,7 +425,7 @@ sees its levels once its Assessment menu is on; the questions are drawn only whi
 not yet reviewed" is on, until they are approved in the console.
 
 Phases 42-44: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
-day; Phase 42 building, web and the app)
+day; Phase 42 released 2026-10-20, web and the app; 43 and 44 not started)
 Gamification, starting with the question bank. Plan: `docs/gamification-plan.md`.
 - **Phase 42 — Question Quest and points.** An organization flag; each student's beginning level; the
   student answers the bank's unapproved questions one at a time, full screen (no going back), marked by
@@ -433,3 +433,11 @@ Gamification, starting with the question bank. Plan: `docs/gamification-plan.md`
   bank) or flags it; points to both, kept in an append-only ledger; daily activity kept for streaks.
 - **Phase 43 — Streaks, metrics and badges.**
 - **Phase 44 — Rewards** (an organization's own rewards shelf, certificates, an opt-in leaderboard).
+
+Phase 42 released 2026-10-20 (commit acfc8a2; production backed up to
+`~/tmi-portal-backups/tutoring-db-20261020-210749-pre-phase42.sql`, the Phase 42 SQL applied, both
+Workers deployed). Question Quest is off in every organization until its admins turn it on (Organization
+page, Gamification). Owed: the phones carry an older app build until they are reinstalled; on iOS the
+status bar still shows over Quest (needs `UIViewControllerBasedStatusBarAppearance` and a native
+rebuild) and the screen may sleep (needs `expo-keep-awake` as the app's own dependency) -- the
+owner's call.
