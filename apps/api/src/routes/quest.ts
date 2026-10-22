@@ -35,6 +35,7 @@ import {
   recordQuestAnswer,
   setQuestLevel,
 } from '../repositories/quest.js';
+import { questGameRoutes } from './quest-games.js';
 
 // Question Quest (Phase 42, docs/gamification-plan.md): signed-in students
 // answer the bank's unapproved questions; their tutors approve or flag them;
@@ -100,6 +101,9 @@ async function reviewQueue(db: D1Database, org: OrgId, reviewer: { id: string; a
 
 export const questRoutes = new Hono<AppEnv>()
   .use('*', requireQuest)
+
+  // Phase 46: Quest Games, for every member (docs/quest-games-plan.md).
+  .route('/games', questGameRoutes)
 
   // The student's Quest: their level, the next question, their points.
   .get('/me', async (c) => {

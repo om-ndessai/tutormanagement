@@ -1,0 +1,221 @@
+# Quest Games (Phase 46), starting one. Anita, a parent, finds Quest under More (chmi's switch on,
+# through the local API): her Quest page is the Games panel alone -- no Your Quest, no review. Start a
+# game: G6 with its count of questions; 99 questions is out of range (the hint says so and Create waits);
+# 2, right +1 / wrong -1, teams of up to 2. Created, the lobby: a six-character code of the readable
+# alphabet, nobody yet, and Begin waits for a player. Alex joins on his own with that code (through the
+# API, as a second device would) and arrives by the poll. Begin: Anita hosts without playing. Alex skips
+# both questions: the results, "Alex wins!". Exit: the Quest page, the game listed as finished.
+# The switches are off again at the end, whatever happens.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+- assertVisible: 'Play the question bank together: start a game and share its code, or join one with a code\.'
+- assertNotVisible:
+    id: quest-play-card
+- assertNotVisible:
+    id: quest-review-card
+- takeScreenshot: game-hub-parent
+# Start a game.
+- tapOn:
+    id: game-new
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-new-game
+    timeout: 10000
+# The level list is open until a level is chosen (only levels with questions to draw are offered).
+- extendedWaitUntil:
+    visible:
+      id: game-level-search
+    timeout: 10000
+- tapOn:
+    id: game-level-search
+- inputText: 'G6'
+- extendedWaitUntil:
+    visible:
+      id: game-level-NC26.6
+    timeout: 5000
+- assertNotVisible:
+    id: game-level-NC26.5
+- assertNotVisible:
+    id: game-level-GEO
+- tapOn:
+    id: game-level-NC26.6
+- extendedWaitUntil:
+    visible:
+      id: game-level
+      text: 'Level: G6\. Change'
+    timeout: 5000
+- assertNotVisible:
+    id: game-level-list
+- takeScreenshot: game-new-level
+# Out of range: said under the field, and Create waits.
+- tapOn:
+    id: game-amount
+- eraseText: 5
+- inputText: '99'
+- extendedWaitUntil:
+    visible:
+      id: game-amount-hint
+      text: 'Choose how many questions \(1-50\)\.'
+    timeout: 5000
+# Done puts the keypad away (it would cover the team sizes and Create).
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: game-create
+    centerElement: true
+- assertVisible:
+    id: game-create
+    enabled: false
+- tapOn:
+    id: game-amount
+- eraseText: 5
+- inputText: '2'
+- extendedWaitUntil:
+    visible:
+      id: game-amount-hint
+      text: 'questions \(1-50\)'
+    timeout: 5000
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: game-marking-on
+    centerElement: true
+- tapOn:
+    id: game-marking-on
+- scrollUntilVisible:
+    element:
+      id: game-team-size-2
+    centerElement: true
+- tapOn:
+    id: game-team-size-2
+- takeScreenshot: game-new-sheet
+- scrollUntilVisible:
+    element:
+      id: game-create
+    centerElement: true
+- assertVisible:
+    id: game-create
+    enabled: true
+- tapOn:
+    id: game-create
+# The lobby.
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-game
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: game-lobby-code
+    timeout: 10000
+# Read as the code spelled out on iOS ("Game code: D D 9 K 6 B"), as the code itself on Android.
+- assertVisible:
+    id: game-lobby-code
+    text: '([A-HJKMNP-Z2-9]{6}|Game code: [A-HJKMNP-Z2-9]( [A-HJKMNP-Z2-9]){5})'
+- assertVisible:
+    id: game-rules
+    text: 'G6 · 2 questions · Right \+1, wrong −1 · teams of up to 2.*'
+- assertVisible: 'Nobody has joined yet\. Share the code\.'
+- assertVisible:
+    id: game-start
+    enabled: false
+- assertVisible:
+    id: game-cancel
+- assertVisible:
+    id: game-share
+- assertNotVisible:
+    id: game-waiting-host
+- takeScreenshot: game-lobby-empty
+# Alex joins on his own with the code, from "another device".
+- copyTextFrom:
+    id: game-lobby-code
+- evalScript: ${output.gameCode = maestro.copiedText.replace('Game code:', '').replace(/\s/g, '')}
+- runScript:
+    file: ../../scripts/quest-game-act.js
+    env:
+      AS: alex
+      ACTION: join-solo
+      CODE: ${output.gameCode}
+- extendedWaitUntil:
+    visible:
+      id: game-team-Alex
+    timeout: 10000
+- extendedWaitUntil:
+    visible: '1 player'
+    timeout: 5000
+- takeScreenshot: game-lobby
+- assertVisible:
+    id: game-start
+    enabled: true
+- tapOn:
+    id: game-start
+- extendedWaitUntil:
+    visible:
+      id: game-hosting
+    timeout: 10000
+- assertVisible:
+    id: game-end
+- assertNotVisible:
+    id: game-question
+- takeScreenshot: game-hosting
+# Alex skips both: the game is over.
+- runScript:
+    file: ../../scripts/quest-game-act.js
+    env:
+      AS: alex
+      ACTION: skip-all
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      text: 'Alex wins!'
+    timeout: 15000
+- assertVisible:
+    id: game-review-team-Alex
+- takeScreenshot: game-results-host
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: game-row-${output.gameCode}
+    centerElement: true
+    timeout: 15000
+# The row is one element on iOS (its label ends with the status): asserted on the row.
+- extendedWaitUntil:
+    visible:
+      id: game-row-${output.gameCode}
+      text: '.*G6 · 2 questions.*You host · 1 team.*Finished'
+    timeout: 10000

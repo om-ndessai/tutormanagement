@@ -19,6 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { questRoles, useQuestReview, useQuestState, useQuestStudents, useSetQuestLevel } from './api';
+import { GamesCard } from './games-card';
 
 // Phase 42: Question Quest's page in the portal. A student starts their Quest
 // here; a tutor or admin sees what waits for review, starts reviewing, and
@@ -39,6 +40,8 @@ export function QuestPage() {
       />
       <div className="grid gap-6">
         {roles.plays && <PlayCard />}
+        {/* Phase 46: games are for everyone here. */}
+        <GamesCard />
         {roles.reviews && <ReviewCard />}
         {roles.reviews && <StudentsCard />}
       </div>

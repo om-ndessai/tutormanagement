@@ -1938,3 +1938,320 @@ fixing the flows: an earlier run failed `play`/`play-number` on the landing's ti
 question being a choice, and `level` once on Android, untouched and green on rerun).
 `npm run smoke -- mobile`: 4/4 on iOS, 4/4 on Android. The welcome was checked in the flows'
 screenshots on both (the card, the streak, the five numbers, "200+", the bar, confetti on Android).
+
+## 60. Phase 46: Quest Games — design (2026-10-21)
+**Scope:** the web's Quest Games at parity (owner, 2026-10-21; `docs/quest-games-plan.md`, the
+Phase 46 entry at the end of `docs/plan.md`, R20). On the Quest page, a Games panel for EVERY role
+(the only Quest card a parent sees): Start a game, Join with a code, the person's recent games. Start a
+game: a bank level with its available count, a number of questions OR a time limit, negative marking,
+team size 1-6. Joining: a game's code (then on my own / start a team / a team's code) or a team's code
+(then that team). One full-screen game screen: the lobby (the code, the teams arriving, the host's
+Begin), play (one question in hand, Submit or Skip, right / wrong at once, the team's score, the clock,
+the live scoreboard), the results (places, the winner, the team's questions with the right answers
+and solutions). The API, the Durable Object, the contract and the web are built and green: **no API,
+schema or shared change from this work.** Left out, as on the web: joining after the start, Quest
+points for a game. Mobile-only additions: Share the code (the system share sheet), a confirm before the
+host cancels or ends a game.
+
+**Web sources:** `apps/web/src/features/quest/{games-api.ts, games-card.tsx (GamesCard,
+StartGameDialog, Toggle, JoinDialog, JoinChoices), game-page.tsx (GamePage, useTimeLeft, Lobby,
+Scoreboard, TeamRow, Play, QuestionPanel, Results)}`; the route `quest/games/:gameId` in
+`App.tsx` (outside the portal frame); `<GamesCard />` in `quest-page.tsx` between PlayCard and
+ReviewCard. Behaviour to match: `e2e/tests/quest-games.spec.ts`.
+
+**Endpoints:** (`src/features/quest/games-api.ts`, copied from the web's: the same `gameKeys`
+`['quest-games', …]`, the same `setQueryData` of the returned game and `invalidateQueries(list)` on
+create / join / every action; results `staleTime: Infinity`; levels 5 min. Every route is 403 while
+`gamify_question_quest` is off, so the panel only exists inside Quest, which is only in More / Search
+while it is on.)
+- `GET /quest/games/levels` — `useGameLevels(enabled)` — anyone (levels the organization offers, with `available`).
+- `GET /quest/games` — `useGames()` — anyone: games they host or play (an admin's: every game here).
+- `POST /quest/games` `{level_id, mode, question_count|duration_minutes, negative_marking, max_team_size}` — `useCreateGame()` — anyone.
+- `POST /quest/games/lookup` `{code}` — `useLookupGame()` — anyone in the organization with a code.
+- `GET /quest/games/:id` — `useGame(id, active)` — host, players, admins; anyone else 404.
+- `POST /quest/games/:id/join` `{as: solo | new_team+team_name | team+team_code}` — `useJoinGame()`.
+- `POST /quest/games/:id/{start,end,leave,answer}` — `useGameAction(id)` — start / end: host only (403 otherwise); answer `{question_id, answer | skip}`; leave answers `data: null` once out of the lobby.
+- `GET /quest/games/:id/results[?team=]` — `useGameResults(id, team, enabled)` — after the game; own team, or any team for the host and admins.
+- **The one deliberate change to the copy:** `useGame(id, active: boolean)` polls with
+  `refetchInterval: (q) => active && q.state.data?.data.status !== 'finished' ? GAME_POLL_MS : false`,
+  `active` being `useIsFocused()` from the game screen. TanStack's `focusManager` is already wired to
+  `AppState` (`query-provider.tsx`), so a backgrounded app stops polling too (`refetchIntervalInBackground`
+  stays false). A finished game is never polled again. Written in the file's port header.
+
+**Screens & routes:** (all in `(org)`, each route file thin)
+- `app/(org)/quest/index.tsx` → `QuestScreen` (`screen-quest`), unchanged route; the Games panel added.
+- `app/(org)/quest/new-game.tsx` → `NewGameSheet` (`screen-quest-new-game`): `presentation: 'formSheet'`,
+  `sheetAllowedDetents: [0.9, 1]`, grabber, no header (as `schedule-form`). Four inputs, so the
+  `QuickSheet` shell (title, line, action at the foot, `dirty` guard off: nothing is lost) with a
+  scrolling body rather than `fitToContents`.
+- `app/(org)/quest/join-game.tsx?code=` → `JoinGameSheet` (`screen-quest-join-game`): `formSheet`,
+  `fitToContents`, grabber. It runs the lookup itself on mount from `code` (one POST; the hub only
+  validates the six characters and opens it), so a refused code is said in the sheet
+  (`game-join-error`, the server's "No game or team has that code."). `joined: true` → straight to the game.
+- `app/(org)/quest/games/[gameId].tsx` → `GameScreen` (`screen-quest-game`): registered in
+  `(org)/_layout.tsx` as `quest/games/[gameId]` with `QUEST_OPTIONS` (full-screen modal, no swipe, no
+  header), beside play and review. Deep link `aimtrue://quest/games/<id>`. **It opens no sheet**
+  (U3: a form sheet over a full-screen modal never reaches VoiceOver): the lobby's join choices are
+  inline, the confirms are native `Alert`s, notices are `useQuestNotice`.
+- Navigation: create / join from a sheet → `router.replace({ pathname: '/quest/games/[gameId]', params })`
+  (the sheet gives way to the game; Exit's `dismissTo('/quest')` lands on the hub). A games-list row →
+  `router.push`. Leave in the lobby (reply `null`) → `exitQuest()` with "You left the game." on the hub.
+
+**Components:**
+- New, `src/features/quest/`:
+  - `games-api.ts` (above).
+  - `game-model.ts` (pure, Jest): `gameRowStatus(summary)` (Waiting to start / Playing now / Finished ·
+    1st), `gameRulesLine(game)` (level · length · marking · teams of up to N / everyone on their own ·
+    may include questions not yet reviewed, from `gameLengthLabel`, `gameMarkingLabel`), `teamSizeLabel`,
+    `amountProblem(mode, text)` (the `GAME_LIMITS` ranges, the web's words), `createInput(form)` →
+    `CreateGameInput` (checked with `createGameSchema` before sending), `answerNotice(last,
+    negativeMarking)` ("Right!", "Not quite.", "Not quite. −1", "Skipped."), `teamProgress(team, total)`
+    ("1/2", "Done", or the count in a timed game), `isOverseer(game)` (`is_host || me.team_id === null`),
+    `timeLeftMs(endsAt, serverNow, receivedAt, deviceNow)` (server offset, as the web's `useTimeLeft`),
+    `clockSpeech(ms)` ("4 minutes 5 seconds left"), `reviewLine(item)` (the native line of a result:
+    mark, who answered, "Answered: …", "Answer: …" through `questChoiceText`).
+  - `games-panel.tsx`: `GamesPanel` (`quest-games`), a `Panel` titled Games with the web's line;
+    Start a game (`game-new`, contained, 48 pt); the code field (`game-code`: Paper `TextInput`,
+    `autoCapitalize="characters"`, `autoCorrect={false}`, Android `keyboardType="visible-password"` to
+    stop suggestions, `normalizeGameCode` then sliced to `GAME_CODE_LENGTH`, monospace and letter-spaced,
+    Return submits) and Join (`game-join`, enabled at six); the recent games (`game-list`), a
+    `ListItem` per game (`game-row-<code>`): code, level, length, "You host" / "Priya hosts" · N teams,
+    `gameRowStatus` trailing. No skeleton rows on an empty list (the list just is not shown, as on the web).
+  - `new-game-sheet.tsx`: Level (`game-level`, `OptionPicker` with `scroll` and search, options
+    `label` + `detail: '· N questions'`, `available === 0` filtered out as on the web; "No level has
+    approved questions to play yet." when none); Length (`SegmentedTabs`, `game-mode-count` /
+    `game-mode-timed`, "A number of questions" / "Against the clock") and the amount (`game-amount`,
+    numeric `TextInput`, defaults 10 / 5, kept per mode, the range as its hint, `amountProblem` under
+    it); Marking (two `Choice`s, `game-marking-off` / `game-marking-on`, the shared labels); Team size
+    (six `Choice`s in a wrap, `game-team-size-1`…`-6`, "On their own", "2"…"6", default 4). Action
+    "Create the game" (`game-create`, disabled until valid); a refusal (409: too few questions) shows
+    above the action.
+  - `game-join-choices.tsx`: `JoinChoices` (the web's, used by the join sheet AND inline in the
+    lobby): a named team → "Join the team Owls (1 of 2 so far)" and `game-join-team-named`; else Play on
+    my own (`game-join-solo`), and when `max_team_size > 1` a team name (`game-team-name`, 30 max) with
+    Start a team (`game-join-new-team`) and a team code (`game-team-code`) with Join a team
+    (`game-join-team`). A refusal (full team, already in) is the server's message, inline
+    (`game-join-refused`).
+  - `join-game-sheet.tsx`: the lookup's title (level · length), "Priya's game · marking · teams",
+    then `JoinChoices`, or "This game has started / ended, so it cannot be joined now."
+  - `game-screen.tsx`: `GameScreen` in `QuestFrame` (title "Quest game · G6"; status: `GameClock`
+    and the team's points `game-my-score` once started); the missing state (`game-missing`, the
+    web's sentence and Back to Quest: a 404 reads as not found, never forbidden); `GameLobby`,
+    `GamePlay`, `GameResults` by `status`.
+  - `game-lobby.tsx`: "Game code" with the code large (`game-lobby-code`, displayLarge, monospace,
+    `accessibilityLabel` spelling it out letter by letter), Share (`game-share`, RN `Share.share`:
+    "Join my Quest game with the code ABC234." -- a code, never a name); `gameRulesLine`; the team's own
+    code (`game-team-code-shown`) when you started or joined a team; `JoinChoices` while you are not in
+    it; Begin the game (`game-start`, host, disabled with no player), Leave (`game-leave`), Cancel the
+    game (`game-cancel`, host, native confirm, then `end`); "Waiting for Priya to begin…"; the scoreboard
+    titled "N players".
+  - `game-scoreboard.tsx`: `Scoreboard` + `TeamRow` (`game-scoreboard`, `game-team-<name>`,
+    `game-team-score-<name>`): place with a crown for 1st, name "(you)", the first names (team only),
+    score and `teamProgress`; your team edged in `primary`. Read as one line per team to screen readers.
+  - `game-play.tsx`: the question card (`game-question`: "Question 2 of 2", stem in `MathBody`
+    `persistent` from `questStemHtml`, as Quest's play), `QuestChoices` (gains an optional
+    `testIDPrefix`, default `quest-choice`; the game passes `game-choice` → `game-choice-A`…) or a
+    number field (`game-number`, Quest's keypad choice: iOS `numbers-and-punctuation`, Android
+    `phone-pad`); Submit (`game-submit`) and Skip (`game-skip`); the answer state keyed on the question
+    id (a poll that hands over a different question resets it). After each answer: `answerNotice` through
+    `useQuestNotice` (success / error haptics; skip gets a new neutral `info` with `haptics.selection()`,
+    a small addition to `quest-notice.tsx`), and the reply's next question swaps into the same web
+    views. A 409 refetches the game. `game-waiting` when the team has nothing left; `game-hosting`
+    ("You are hosting. The scores update as the teams play.") for a host not playing; End the game now
+    (`game-end`, host, native confirm).
+  - `game-clock.tsx`: `GameClock` (`game-clock`), its own component so only it re-renders: a **1 s**
+    tick (not the web's 250 ms: re-rendering on Hermes Android has stalled the app before, progress.md
+    "Android launch stall"), `clockLabel(timeLeftMs(...))`, in `error` under 30 s; `accessibilityLabel`
+    `clockSpeech`; announced (iOS `announceForAccessibility`) once at one minute and at ten seconds.
+  - `game-results.tsx`: the headline (`game-winner`, `winnersLabel`), the rules line, the final
+    places (`Scoreboard`), Back to Quest; the team's questions ONE AT A TIME with a single persistent
+    `MathBody` (`gameResultHtml(item)` in `game-html.ts`: the stem, "Answered: …", "Answer: …", the
+    solution) -- never one web view per question (a timed game can have 150) -- with a native header
+    per item (`game-review-<n>`: "Question 1 · Right · Sofia · Answer: 5 to 3", from `reviewLine`, so
+    flows and screen readers have the key in native text), a strip of numbered chips coloured by
+    outcome (`game-review-chip-<n>`) and Previous / Next (`game-review-prev`, `game-review-next`).
+    Host and admins: a team switch (`game-review-team-<name>`). "No questions were answered." when empty.
+  - `game-html.ts` (pure, Jest): `gameResultHtml`, its speech and plain forms, escaped as `quest-html.ts`.
+- Reused: `QuestFrame`, `QuestStatus`, `exitQuest`, `QuestChoices`, `questStemHtml`/`questStemSpeech`/
+  `questStemText`, `questChoiceText`, `useQuestNotice`, `questWide`, `MathBody`, `Panel`, `ListItem`,
+  `OptionPicker`, `SegmentedTabs`, `Field`/`Choice`, `QuickSheet`, `OutlinedCard`, `DetailSkeleton`.
+- `quest-screen.tsx`: `<GamesPanel />` for every role, in the web's order -- after Your Quest (a
+  student), before Answers to review and Students (a tutor, an admin); for a parent it is the only
+  panel. The PageIntro gets a role-aware line (`questIntro(roles)` in `quest-model.ts`): a parent (no
+  student, tutor or admin role) reads "Play the question bank together: start a game and share its code,
+  or join one with a code." instead of the review blurb that does not apply to them. Pull to refresh
+  also refetches `useGames`.
+
+**Layout:** phone: the question, the answer, Submit / Skip, then the scoreboard under it (the team's
+score is also in the frame's status, so it is never off screen). iPad (`questWide`, ≥ 700 pt): a row,
+play `flex: 3` beside the scoreboard `flex: 2`, top-aligned (the web's `lg` grid); the lobby the same
+(code and choices beside the teams); results: places `flex: 2` beside the questions `flex: 3`. Frame
+width capped by `QuestFrame`'s `MAX_WIDTH`. Largest text sizes: Submit / Skip stack, team rows wrap.
+
+**Interaction & motion:** the full-screen focus pattern Quest already uses (no tab bar, Exit, notices
+in the frame). The question card eases out and the next in on each answer, with Quest's Reanimated
+slide (stilled under reduce motion); a team's new score ticks (`QuestPoints`-style bump, reduce motion
+just changes the number); a joining team fades into the scoreboard (`LinearTransition`/`FadeIn`, off
+under reduce motion). Haptics: selection on a choice (QuestChoices), success / error on the answer's
+notice (one per confirmation, `haptics.ts`), success when the game is finished and you placed 1st
+(once, keyed on game id). Keep awake: still not the app's own dependency (design 57) -- noted, not added.
+
+**Exposure checks:**
+- **R20, decided by the server:** the app shows what `GET /quest/games/:id` returns -- first names only
+  (`GamePlayer.first_name`; no `full_name` anywhere on these screens, the host's included, from
+  `host.first_name` / `host_first_name`); a rival team's `code` arrives null and is never shown; the
+  question in hand has no key (the play screen has no field to show one); keys and solutions appear only
+  from `/results`, after the game, and the team switch is offered only to `isOverseer` (the server 404s
+  anyone else anyway). A game you are not in answers 404 → `game-missing` "not found", never "forbidden".
+- **R13 / organization:** `X-Organization` on every request through `api-client.ts`; the `(org)` tree
+  remounts on a switch and the cache is cleared, so a polled game cannot survive into another
+  organization; a code is looked up in the current organization only.
+- **Money:** none in any game screen or sheet; nothing here renders a `formatCents` or `SessionMoney`.
+- **SSN:** the team name and the answer go through the shared schemas' `refuseSsn` (`joinGameSchema`,
+  `gameAnswerSchema`), checked before sending; nothing is persisted on the device (no AsyncStorage, the
+  cache not persisted); no dictation on these fields.
+- **Brand / colours:** no organization name in code (`brand.short` only where a name is needed: the
+  share text uses none); colours from `useAppTheme()` only.
+- **System surfaces:** the share sheet carries the code and nothing else; no notification, no Live
+  Activity; the app-switcher snapshot is covered by the existing privacy cover.
+- The app hides only what the server refuses: Begin / Cancel / End for `is_host`, Leave for a member in
+  the lobby, the join choices for a non-member in the lobby; a refusal (403 / 409) is shown as sent.
+
+**testIDs:** `screen-quest-new-game`, `screen-quest-join-game`, `screen-quest-game`; `quest-games`,
+`game-new`, `game-code`, `game-join`, `game-list`, `game-row-<code>`; `game-level`, `game-mode-count`,
+`game-mode-timed`, `game-amount`, `game-marking-off`, `game-marking-on`, `game-team-size-<1..6>`,
+`game-create`; `game-join-error`, `game-join-solo`, `game-team-name`, `game-join-new-team`,
+`game-team-code`, `game-join-team`, `game-join-team-named`, `game-join-refused`; `game-missing`,
+`game-lobby-code`, `game-share`, `game-team-code-shown`, `game-start`, `game-leave`, `game-cancel`,
+`game-scoreboard`, `game-team-<name>`, `game-team-score-<name>`; `game-clock`, `game-my-score`,
+`game-question`, `game-choice-<A..D>`, `game-number`, `game-submit`, `game-skip`, `game-waiting`,
+`game-hosting`, `game-end`; `game-winner`, `game-review-<n>`, `game-review-chip-<n>`,
+`game-review-prev`, `game-review-next`, `game-review-team-<name>`; `quest-exit`, `quest-notice` (existing).
+(The web's names where the web has the element, so the two suites read alike.)
+
+**Tests:**
+- **Jest:** `game-model.test.ts` (row status and place, the rules line, amount ranges and `createInput`
+  against `createGameSchema`, `answerNotice` with and without negative marking, `teamProgress`,
+  `isOverseer`, `timeLeftMs` with a device clock ahead of and behind the server's and never below zero,
+  `clockSpeech`, `reviewLine`, `questIntro` for a parent); `game-html.test.ts` (the result page holds
+  the key and the solution, escapes, the plain and speech forms); `quest-choices` keeps `quest-choice-*`
+  by default; `games-api` (with a mocked client): `useGame` polls only while active and not finished.
+- **Maestro** (`apps/mobile/.maestro/flows/quest/`, tag `feature`; local Worker only). Other players
+  act through the API from scripts, since a flow drives one device. Scripts (new, in `scripts/`, as
+  `quest-start.js` / `quest-end.js`, localhost only, `X-Dev-User`, org `chmi`):
+  - `quest-games-start.js` — as Priya: `PATCH /organization/settings {gamify_question_quest: true,
+    canvas_assessments_unreviewed: true}` (the seed has few approved questions), ends any unfinished game
+    left by an earlier run (`GET /quest/games` as the admin, `POST end` each); with env `SETUP`:
+    `host` (Priya hosts G6 (`NC26.6`), 2 questions, team size 2; outputs `gameId`, `gameCode`,
+    `gameCodeLower`), `team` (also Alex starts "Owls"; outputs `teamCode`), `play` (Priya hosts 2
+    questions, team size 1, Sofia joins solo, Priya begins), `team-play` (Priya hosts 2 questions, size
+    2; Alex starts "Owls", Sofia joins it by code, Priya begins, Alex is served first; outputs
+    `sofiaNumber`, the other of 1 and 2).
+  - `quest-game-act.js` — one act mid-flow, env `AS`, `ACTION`: `join-solo` with `CODE` (lookup then
+    join), `skip-all` (skips every question served to `AS` until none is left), `start` with `GAME`.
+  - `quest-games-end.js` — `onFlowStart` and `onFlowComplete` of every game flow: ends every unfinished
+    game, then `canvas_assessments_unreviewed: false` and `gamify_question_quest: false` (the seed's),
+    whatever happened; throws if it cannot switch them off.
+  - `game-start.yaml` — **Anita (a parent), start a game:** More → Quest; `quest-games` visible,
+    `quest-play-card` and `quest-review-card` not; `game-new` → the sheet; `game-level` → G6 with its
+    "· N questions"; `game-amount` 99 → the range hint and `game-create` disabled; 2; `game-marking-on`;
+    `game-team-size-2`; `game-create` → `screen-quest-game`, `game-lobby-code` matching
+    `[A-HJKMNP-Z2-9]{6}`, "Nobody has joined yet", `game-start` disabled; `copyTextFrom` the code →
+    `quest-game-act.js AS=alex ACTION=join-solo CODE=${maestro.copiedText}` → `game-team-Alex` appears
+    by the poll (≤ 10 s); `game-start` → `game-hosting`; `ACTION=skip-all` as Alex → `game-winner`
+    "Alex wins!"; Exit → `screen-quest`, `game-row-<code>` "Finished". Screenshots: lobby, results.
+  - `game-join.yaml` — **Sofia, join with a code:** `SETUP=host`; `aimtrue://quest/games/${output.gameId}`
+    before joining → `game-missing` (R20: 404, not forbidden); Exit; `game-code` `ZZZZZZ` → Join →
+    `game-join-error` "No game or team has that code."; dismiss; `game-code` `${output.gameCodeLower}`
+    (typed lower case: normalised) → Join → the sheet with "Priya's game"; `game-team-name` "Owls" →
+    `game-join-new-team` → the lobby, `game-team-code-shown` six characters, `game-team-Owls` "Sofia",
+    no `game-start`, "Waiting for Priya to begin…"; `game-leave` → the hub, "You left the game.". Then
+    `quest-games-start.js SETUP=team` → `game-code` `${output.teamCode}` → `game-join-team-named` "Join
+    Owls" ("1 of 2") → the lobby, `game-team-Owls` "Alex, Sofia".
+  - `game-play.yaml` — **Sofia, a two-question game to the results:** `SETUP=play`; Quest hub →
+    `game-row-${output.gameCode}` "Playing now" → `game-question` "Question 1 of 2", `game-my-score`
+    "0 points"; a choice (`game-choice-A`, tap again clears, `game-submit` disabled) or `7` in
+    `game-number` → `game-submit` → `quest-notice` `Right!|Not quite\.`; `game-question` "Question 2 of
+    2" → `game-skip` → "Skipped." → `game-winner` "Sofia wins!", `game-review-1` contains "Answer:",
+    `game-review-next` → `game-review-2` "Skipped"; Exit → `game-row-…` "Finished · 1st". Screenshots:
+    play, results.
+  - `game-team.yaml` — **the team's queue:** `SETUP=team-play`; Sofia opens the game → "Question
+    ${output.sofiaNumber} of 2" (never Alex's); `game-skip` → `game-waiting`; `quest-game-act.js AS=alex
+    ACTION=skip-all` → by the poll `game-winner` "Owls wins!"; `game-review-1` and `-2` name Alex and Sofia.
+  - Then `npm run e2e:mobile -- both apps/mobile/.maestro/flows/quest` (the six existing flows too:
+    `quest-screen.tsx`, `quest-choices.tsx` and `quest-notice.tsx` change) and
+    `npm run smoke -- mobile`. Nothing joins the smoke tag: games are not on the main path.
+  - iPad: the side-by-side layout is the `questWide` breakpoint (unit-tested); run the four game flows
+    on the iPad Pro 13-inch simulator if it is available and look at the screenshots, as for design 57.
+
+**Risks / open questions:**
+- `router.replace` from a form sheet to a full-screen modal route: if react-native-screens refuses
+  or flashes, fall back to `router.dismiss()` then `router.push` in the sheet's `onDismiss`. Check on both.
+- Polling every 2 s on Android Hermes: only `GameScreen` subscribes, `GameClock` ticks alone at 1 s,
+  team rows are memoised on their values; watch the emulator for the stall seen in #21 / #23.
+- The poll during play: `me.question` is stable (a reload keeps the hand), but a stale hand passed to a
+  teammate after two minutes changes it under the player -- the draft resets on the new id and a 409 on
+  Submit refetches; the notice says "That question moved to a teammate." (the server's message).
+- `copyTextFrom` + `${maestro.copiedText}` into a script's env is used by no flow yet; if it is
+  unreliable on Android, `game-start.yaml` reads the code from the server instead (a `GET /quest/games`
+  as Anita in `quest-game-act.js ACTION=join-latest`).
+- `canvas_assessments_unreviewed` is shared with the Assessment menu: the end script puts it off, as
+  `clean-canvas-assessments.js` expects; the two suites must not run concurrently.
+- Owner's call, not built: keeping the screen awake during a game (`expo-keep-awake`), as in design 57.
+
+**Build (2026-10-21), changes to the design:**
+- The series total follows the web's later change: a timed game shows no total ("Question 7", a team's
+  "12", never "of 150" or "12/150"); only a count game shows it (`seriesTotal` in `game-model.ts`, used by
+  the scoreboard and the question card).
+- `QuickSheet` gains an optional `primaryTestID`, so the new-game sheet's action is exactly `game-create`
+  (its Cancel stays `screen-quest-new-game-cancel`); the sheet's root is `screen-quest-new-game`.
+- The clock takes the device time of the reading from the query's `dataUpdatedAt` (a pure render; the
+  lint refuses `Date.now()` during render), so `GameClock` gets `receivedAt` beside `serverNow`.
+- A team row is one accessible element (read as one line, `teamRowSpeech`): its label carries the place,
+  the name, "(you)", the first names, the score and the progress. On iOS the children's testIDs
+  (`game-team-score-<name>`) may then be hidden from Maestro; assert on `game-team-<name>`'s text there.
+- Native lines the flows can read, beyond the design's list: `game-row-status-<code>`, `game-amount-hint`,
+  `game-join-title`, `game-join-line`, `game-join-closed`, `game-join-close`, `game-rules`,
+  `game-waiting-host`, `game-question-number`, `game-missing-back`, `game-back`, `game-review-empty`,
+  `game-review-body`.
+- The lobby's Share is the app's `IconButton` (the Jest check refuses Paper's directly). A leave whose
+  reply is null, or the game without you when you do not host, goes back to the hub with "You left the
+  game." (the app toast, shown on the hub once the modal is gone).
+- Celebration: the success haptic once per game per app run when your team placed 1st.
+
+**Test (2026-10-22), what the flows found:**
+- Flows `quest/{game-start,game-join,game-play,game-team}` and the scripts `quest-games-start.js`,
+  `quest-game-act.js`, `quest-games-end.js` as designed. The end script also clears Sofia's Quest level
+  (as `quest-end.js`): left set by another flow, it takes her into Quest on signing in. Maestro's `http`
+  refuses a POST without a body, so the scripts send `{}` to `start` / `end`. `copyTextFrom` +
+  `${maestro.copiedText}` into a script's env works on both platforms (iOS copies the code's spoken
+  label, "Game code: D D 9 K 6 B", which the flow strips), so `join-latest` was not needed; the script
+  keeps it (no `CODE`) as a fallback.
+- **App fixes (apps/mobile only):** (1) the amount field was a bare `number-pad`, which on iOS has no
+  return key: the keypad could not be put away and covered the team sizes and Create -- a tap meant for
+  "2" typed a 2 ("22 questions", teams of 4). Now `numbers-and-punctuation` + Done on iOS, as the
+  location form's reminder (`new-game-sheet.tsx`). (2) `OptionPicker`'s scrolling list lacked its own
+  `keyboardShouldPersistTaps`, so with the search keyboard up the first tap on a level only closed the
+  keyboard (`option-picker.tsx`; every `scroll` picker gains it). (3) The hub stays mounted under the
+  game modal, so a game that began or ended by someone else's hand still read "Playing now" on Exit:
+  the game screen now invalidates the list whenever the polled status changes (`game-screen.tsx`).
+- **Flow-side, not app:** on iOS 27 a tap within ~0.1 s of Maestro's last keystroke is swallowed (after
+  about a second the first tap on Join works; checked), so on iOS `game-join` sends the codes and the
+  team name with the keyboard's Go key (it joins the same way) and Android taps the buttons. The row
+  status, the team's code inside its sentence (nested `Text`) and the team-row score are not separate
+  elements on iOS: asserted on the row's label / the sentence. `level.yaml` (Phase 42) scrolls to the
+  review and students cards, which the Games panel now pushes down (an admin lists every game).
+- Known, not fixed: typing a code in lower case races the field's upper-casing (`games-panel.tsx`
+  `onChangeText` -> `gameCodeInput`): a controlled value that differs from the native text is written
+  back while keystrokes are in flight, and once on the iPad a character was dropped ("CFXT3"). A person
+  types uppercase there (`autoCapitalize="characters"`), so the value is never rewritten; the flow
+  passed on the re-run.
+
+**Verified (2026-10-22):** flows `quest/{game-start,game-join,game-play,game-team}` and the six Phase 42
+`quest/*` flows green on iOS 27 (iPhone 17) and Android 37 (Medium Phone) (`npm run e2e:mobile -- both
+apps/mobile/.maestro/flows/quest`, 20/20); the four game flows also on the iPad Pro 13-inch (M5) in
+dark mode (game-join after one re-run, the dropped keystroke above); `npm run smoke -- mobile` green on
+both (4/4 each); jest 770 passed; typecheck clean; screenshots reviewed light (iPhone, Android) and dark
+(iPad: side-by-side play, lobby and results); exposure checks: R20 a game she is not in reads "not
+found", never forbidden; first names only (no surname on the lobby); keys and solutions only on the
+results; the team switch only for the host; no money on any game screen.

@@ -26,6 +26,8 @@ export interface QuickSheetProps {
   testID?: string;
   /** The buttons' prefix when it differs from the root's (`payment` -> `payment-save`). */
   actionTestID?: string;
+  /** The action's own testID, when it must be exactly that (a game's `game-create`). */
+  primaryTestID?: string;
   title: string;
   /** One line under the title. */
   description?: string;
@@ -51,6 +53,7 @@ export interface QuickSheetProps {
 export function QuickSheet({
   testID = 'quick-sheet',
   actionTestID,
+  primaryTestID,
   title,
   description,
   children,
@@ -129,7 +132,7 @@ export function QuickSheet({
             {cancelLabel}
           </Button>
           <Button
-            testID={`${actions}-save`}
+            testID={primaryTestID ?? `${actions}-save`}
             mode="contained"
             icon={primaryIcon}
             onPress={() => void onPrimary({ leave: (close) => leave(close ?? back) })}

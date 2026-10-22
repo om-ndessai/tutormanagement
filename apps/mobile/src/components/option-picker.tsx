@@ -215,6 +215,9 @@ function ListFrame({
       testID={testID}
       // Inside the screen's own scroll view: Android scrolls the inner list only when told to.
       nestedScrollEnabled
+      // Its own setting, not the outer one's: without it a tap on an option while the search
+      // field's keyboard is up only puts the keyboard away, and the option needs a second tap.
+      keyboardShouldPersistTaps="handled"
       style={[style, { maxHeight: SHOWN * (ICON_TARGET + 8) }]}
       accessibilityRole="radiogroup"
     >

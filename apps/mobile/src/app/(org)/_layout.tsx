@@ -63,6 +63,28 @@ export default function OrgLayout() {
             <Stack.Screen name="schedule-lesson" options={STEP_FLOW_OPTIONS} />
             <Stack.Screen name="quest/play" options={QUEST_OPTIONS} />
             <Stack.Screen name="quest/review" options={QUEST_OPTIONS} />
+            {/* A Quest game (Phase 46) is full screen too, and opens no sheet: its join choices are
+                inline and its confirms native. Starting one, or a code to join, is a sheet over the
+                hub, which gives way to the game. */}
+            <Stack.Screen name="quest/games/[gameId]" options={QUEST_OPTIONS} />
+            <Stack.Screen
+              name="quest/new-game"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: [0.9, 1],
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="quest/join-game"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: 'fitToContents',
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
             {/* Recording the lesson at hand from Next up: one decision, a fitted quick sheet (U4). */}
             <Stack.Screen
               name="record-as-planned"

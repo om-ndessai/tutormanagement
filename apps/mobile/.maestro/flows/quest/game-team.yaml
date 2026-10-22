@@ -1,0 +1,110 @@
+# Quest Games (Phase 46), a team's shared queue. Priya hosts a two-question G6 game, teams of up to 2;
+# Alex started Owls and Sofia joined it by its code; Priya has begun, and Alex was served first
+# (through the local API). Sofia opens the game: she holds the OTHER question of the two, never
+# Alex's. She skips it: her team has nothing more to hand her, so she waits. Alex skips his (through
+# the API): by the poll, the results -- "Owls wins!" -- and the team's two questions, one answered by
+# each of them. The switches are off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/quest-games-start.js
+      env:
+        SETUP: team-play
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: game-row-${output.gameCode}
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: game-row-${output.gameCode}
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question ${output.sofiaNumber} of 2'
+    timeout: 15000
+- assertVisible:
+    id: game-team-Owls
+    text: '.*Owls \(you\).*Alex.*Sofia.*'
+- takeScreenshot: game-team-play
+- scrollUntilVisible:
+    element:
+      id: game-skip
+    centerElement: true
+- tapOn:
+    id: game-skip
+- extendedWaitUntil:
+    visible:
+      id: game-waiting
+    timeout: 10000
+- assertVisible: 'Your team has no more questions to hand out\.'
+- assertNotVisible:
+    id: game-submit
+- takeScreenshot: game-team-waiting
+# Alex skips his, on "his device".
+- runScript:
+    file: ../../scripts/quest-game-act.js
+    env:
+      AS: alex
+      ACTION: skip-all
+      GAME: ${output.gameId}
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      text: 'Owls wins!'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: game-review-1
+    centerElement: true
+- assertVisible:
+    id: game-review-1
+    text: 'Question 1 · Skipped · (Alex|Sofia) · Answer: .*'
+- scrollUntilVisible:
+    element:
+      id: game-review-next
+    centerElement: true
+- tapOn:
+    id: game-review-next
+- scrollUntilVisible:
+    element:
+      id: game-review-2
+    direction: UP
+    centerElement: true
+- assertVisible:
+    id: game-review-2
+    text: 'Question 2 · Skipped · (Alex|Sofia) · Answer: .*'
+# One each: Sofia answered the question she held.
+- assertVisible:
+    id: game-review-${output.sofiaNumber}
+    text: '.* · Sofia · .*'
+- takeScreenshot: game-team-results

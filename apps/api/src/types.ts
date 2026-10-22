@@ -1,6 +1,7 @@
 import type { User } from '@tmi/shared';
 import type { OrgContext } from './lib/org.js';
 import type { Person } from './repositories/people.js';
+import type { QuestGame } from './durable/quest-game.js';
 
 /**
  * Bindings declared in wrangler.jsonc, plus secrets set with `wrangler secret`.
@@ -10,6 +11,11 @@ import type { Person } from './repositories/people.js';
 export interface Env {
   /** D1 database holding the portal's data. */
   DB: D1Database;
+  /**
+   * Phase 46: Quest Games, one Durable Object per game, named
+   * `<organization>:<game id>` (durable/quest-game.ts). Bound on every Worker.
+   */
+  QUEST_GAMES: DurableObjectNamespace<QuestGame>;
   /** Static assets for the built React SPA. Bound in production deploys. */
   ASSETS: Fetcher;
   ENVIRONMENT: string;

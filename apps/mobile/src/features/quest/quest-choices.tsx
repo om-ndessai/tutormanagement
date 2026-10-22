@@ -4,6 +4,7 @@
 // choice or the next question swaps into the page in place); the page reports each choice's box and
 // a native radio button is laid over it -- the taps, the testIDs (`quest-choice-A`) and what
 // assistive tech reads are native. If the page cannot draw, they are plain native rows instead.
+// Phase 46: a Quest game uses them too, with its own testID prefix (`game-choice-A`).
 import { useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -23,11 +24,14 @@ export function QuestChoices({
   choices,
   selected,
   onChoose,
+  testIDPrefix = 'quest-choice',
 }: {
   questionId: string;
   choices: string[];
   selected: number | null;
   onChoose: (index: number) => void;
+  /** Each choice is `<prefix>-A`…: Quest's `quest-choice`, a game's `game-choice` (Phase 46). */
+  testIDPrefix?: string;
 }) {
   const theme = useAppTheme();
   const html = useMemo(
@@ -78,7 +82,7 @@ export function QuestChoices({
               return (
                 <Pressable
                   key={index}
-                  testID={`quest-choice-${LETTERS[index]}`}
+                  testID={`${testIDPrefix}-${LETTERS[index]}`}
                   accessibilityRole="radio"
                   accessibilityLabel={questChoiceSpeech(text, index)}
                   accessibilityState={{ checked: chosen }}
@@ -104,7 +108,7 @@ export function QuestChoices({
             return (
               <Pressable
                 key={index}
-                testID={`quest-choice-${LETTERS[index]}`}
+                testID={`${testIDPrefix}-${LETTERS[index]}`}
                 accessibilityRole="radio"
                 accessibilityLabel={questChoiceSpeech(text, index)}
                 accessibilityState={{ checked: chosen }}

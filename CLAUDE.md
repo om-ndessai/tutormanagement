@@ -636,6 +636,23 @@ reads are metered. Quest runs full screen outside the portal's frame (`/quest/pl
 and lands a student or tutor there once per tab after sign-in (`QuestLanding`; the e2e fixture marks
 every tab landed unless `questLanding: true`). Plan and later phases: `docs/gamification-plan.md`.
 
+**Quest Games (Phase 46) run in a Durable Object, one per game; D1 is only the record.** Under Quest's
+switch, any member starts a game (a bank level, a count or a time limit, negative marking, a team size)
+and anyone joins with its code -- on their own, by starting a team (its own code), or by a team's code;
+codes are found only in their own organization (`docs/quest-games-plan.md`). `QuestGame`
+(`durable/quest-game.ts`, bound `QUEST_GAMES` on all three Workers, SQLite-backed as the free plan
+requires) is named `<organization>:<game id>`, so another organization's id reaches an empty object
+(404). It holds the series WITH its keys, each team's queue and every player's hand in memory and in its
+own storage, and its one-request-at-a-time rule is what makes "the next question no teammate has been
+served" exact: keep serving and answering free of D1 (the series is drawn once, at the start: approved
+questions, plus `checked` while `canvas_assessments_unreviewed` is on). The rules are pure, in shared
+(`serveNext`, `answerQuestion`, `rankTeams`); every team plays the same series; the highest score wins.
+D1 (`quest_games`, `quest_game_teams`, `quest_game_players`) is written on create, join, start and end
+-- the end in two statements (one JSON UPDATE for every team), well inside the free plan's per-request
+query limit. A route checks the person and passes the call by RPC; the object answers `GameReply`, never
+throws an `ApiError`. Keys reach a client only on the results, after the game, for the reader's own team
+(R20); names are first names; a game awards no Quest points; answers are never audit lines.
+
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the
 longest lesson that person does; the SHORTER of the two applies, and `DEFAULT_MAX_SESSION_MINUTES`

@@ -21,6 +21,18 @@ export function questRoles(roles: readonly string[] | undefined) {
   };
 }
 
+/**
+ * The hub's line under its title (Phase 46): a parent -- no student, tutor or admin role -- has only
+ * the games, so the review blurb would not apply to them.
+ */
+export function questIntro(roles: readonly string[] | undefined): string {
+  const { plays, reviews } = questRoles(roles);
+  if (!plays && !reviews) {
+    return 'Play the question bank together: start a game and share its code, or join one with a code.';
+  }
+  return 'Answer the question bank’s new questions, one at a time, and earn points. Tutors check each answer and approve the question for everyone.';
+}
+
 // --- The landing ------------------------------------------------------------------------------
 
 /**

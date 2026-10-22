@@ -455,3 +455,13 @@ lesson and anything waiting. Under it, for that lesson: the homework set last ti
 Google Maps, or the link), the next topic on the student's plan, and the assessment notes from the
 previous lesson (hidden until tapped, since the student may see the screen). One new read route for the
 tutor's own lessons; no schema change.
+
+Phase 46: (requested 2026-10-21 by the owner; building, web and the app)
+Quest Games: the question bank played together with a code. Plan: `docs/quest-games-plan.md`. Under
+Quest, anyone signed in to the organization starts a game -- a level of the bank, a number of
+questions or a time limit, negative marking on or off, a team size -- and anyone joins it with its
+code, on their own or in a team with its own code. Every team plays the same series, drawn once at the
+start from approved questions (and checked ones while the organization includes questions not yet
+reviewed); a team's members are each served the next question no teammate has had. The most points
+wins. One Durable Object per game holds the series and the queues in memory (the free plan's in-memory
+state), so the next question reads nothing from D1; D1 keeps the game, the teams and the results.

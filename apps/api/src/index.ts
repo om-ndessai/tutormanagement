@@ -28,6 +28,9 @@ import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 import { questRoutes } from './routes/quest.js';
 import { homeRoutes } from './routes/home.js';
 
+// Phase 46: each Quest game's Durable Object, bound as QUEST_GAMES in wrangler.jsonc.
+export { QuestGame } from './durable/quest-game.js';
+
 const app = new Hono<AppEnv>();
 
 app.use('*', logger());

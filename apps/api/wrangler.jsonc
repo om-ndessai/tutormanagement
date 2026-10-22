@@ -65,6 +65,26 @@
 			"name": "EMAIL"
 		}
 	],
+	// Phase 46: Quest Games -- one Durable Object per game holds its series and
+	// its teams' queues in memory (docs/quest-games-plan.md). SQLite-backed, the
+	// kind the free plan includes. Not inherited by the named environments:
+	// each restates the binding and the migrations.
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "QUEST_GAMES",
+				"class_name": "QuestGame"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1-quest-games",
+			"new_sqlite_classes": [
+				"QuestGame"
+			]
+		}
+	],
 	"vars": {
 		// These are the values a DEPLOY ships with, so the safe setting wins here
 		// and local development opts out. `.dev.vars` overrides anything in this
@@ -150,6 +170,23 @@
 					"name": "EMAIL"
 				}
 			],
+			// Phase 46: restated, like every binding.
+			"durable_objects": {
+				"bindings": [
+					{
+						"name": "QUEST_GAMES",
+						"class_name": "QuestGame"
+					}
+				]
+			},
+			"migrations": [
+				{
+					"tag": "v1-quest-games",
+					"new_sqlite_classes": [
+						"QuestGame"
+					]
+				}
+			],
 			"vars": {
 				"ENVIRONMENT": "production",
 				// The same OAuth client; this origin is authorised on it too.
@@ -223,6 +260,23 @@
 				"AI_MONTHLY_CAP_CENTS": "5000"
 			},
 			"send_email": [],
+			// Phase 46: restated, like every binding.
+			"durable_objects": {
+				"bindings": [
+					{
+						"name": "QUEST_GAMES",
+						"class_name": "QuestGame"
+					}
+				]
+			},
+			"migrations": [
+				{
+					"tag": "v1-quest-games",
+					"new_sqlite_classes": [
+						"QuestGame"
+					]
+				}
+			],
 			"observability": {
 				"enabled": true
 			}

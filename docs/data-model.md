@@ -768,6 +768,19 @@ offers the tour to somebody who has already been through the wizard, rather than
 correction goes to the office as a comment on their own record (the Phase 12 rules), and the
 office makes it.
 
+### `quest_games`, `quest_game_teams`, `quest_game_players` (Phase 46)
+
+The record of a Quest game (`docs/quest-games-plan.md`). The play is NOT here: it runs in the game's
+Durable Object (`QuestGame`), which holds the series, the teams' queues and the answers in memory and
+in its own storage. These rows are what the rest of the portal reads -- the code lookup, a person's
+list of games, the audit -- written when a game is made, joined, begun and ended. A team is one row
+whether it is a team (with its own `code`) or one player on their own (`solo`, no code); its totals,
+`place` and `answers` (JSON) arrive at the end. A player is in one team per game (the primary key).
+Codes (`quest_games.code`, `quest_game_teams.code`) are unique for good and never repeat across the two
+tables, so a typed code names one thing; the lookup still requires the organization. The triggers
+refuse a host, a team's creator or a player who is not a member, and a team or player in another
+organization than its game.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application

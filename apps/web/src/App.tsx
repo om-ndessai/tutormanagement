@@ -35,6 +35,7 @@ import { AssessmentPdfPage } from '@/features/canvas-assessments/assessment-pdf-
 import { QuestLanding, QuestPage } from '@/features/quest/quest-page';
 import { QuestPlayPage } from '@/features/quest/quest-play-page';
 import { QuestReviewPage } from '@/features/quest/quest-review-page';
+import { GamePage } from '@/features/quest/game-page';
 
 export function App() {
   return (
@@ -63,6 +64,7 @@ export function App() {
         {/* Phase 42: Question Quest runs full screen, outside the portal's frame. */}
         <Route path="quest/play" element={<QuestPlayPage />} />
         <Route path="quest/review" element={<QuestReviewPage />} />
+        <Route path="quest/games/:gameId" element={<GamePage />} />
         <Route element={<AppShell />}>
           <Route
             index

@@ -112,6 +112,12 @@ export const AUDIT_ACTIONS = [
   'quest.question_approved',
   'quest.question_flagged',
   'quest.level_set',
+  // Phase 46: Quest Games.
+  'quest.game_created',
+  'quest.game_joined',
+  'quest.game_left',
+  'quest.game_started',
+  'quest.game_ended',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -214,6 +220,11 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'quest.question_approved': 'Quest question approved',
   'quest.question_flagged': 'Quest question flagged',
   'quest.level_set': 'Quest level set',
+  'quest.game_created': 'Quest game started',
+  'quest.game_joined': 'Quest game joined',
+  'quest.game_left': 'Quest game left',
+  'quest.game_started': 'Quest game begun',
+  'quest.game_ended': 'Quest game ended',
 };
 
 export interface AuditEvent {

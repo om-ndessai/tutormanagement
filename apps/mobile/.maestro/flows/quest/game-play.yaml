@@ -1,0 +1,191 @@
+# Quest Games (Phase 46), playing one to the results. Priya hosts a two-question G6 game, everyone on
+# their own; Sofia has joined and Priya has begun (through the local API). On her Quest page Sofia's
+# game reads "Playing now"; in it, "Question 1 of 2" and her score at the top. A choice (tapped again,
+# taken back) or a number, Submit: right or wrong is said at once -- never the key. Question 2: Skip,
+# "Skipped.". Every team done: the results, "Sofia wins!", each question with its right answer, one at
+# a time. Exit: her game, finished in 1st place. The switches are off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/quest-games-start.js
+      env:
+        SETUP: play
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: game-row-${output.gameCode}
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: game-row-${output.gameCode}
+    text: '.*Priya hosts · 1 team.*Playing now'
+- tapOn:
+    id: game-row-${output.gameCode}
+- extendedWaitUntil:
+    visible:
+      id: game-question
+    timeout: 15000
+- assertVisible:
+    id: game-question-number
+    text: '(?i)Question 1 of 2'
+- assertVisible:
+    id: game-my-score
+    text: '0 points'
+- assertNotVisible: '.*Answer:.*'
+- takeScreenshot: game-play
+# A choice where there are choices (tap again to take it back), else a number.
+- evalScript: ${output.answered = false}
+- runFlow:
+    when:
+      visible:
+        id: game-choice-A
+    commands:
+      - assertVisible:
+          id: game-submit
+          enabled: false
+      - tapOn:
+          id: game-choice-A
+      - assertVisible:
+          id: game-submit
+          enabled: true
+      - tapOn:
+          id: game-choice-A
+      - assertVisible:
+          id: game-submit
+          enabled: false
+      - tapOn:
+          id: game-choice-B
+      - scrollUntilVisible:
+          element:
+            id: game-submit
+          centerElement: true
+      - assertVisible:
+          id: game-submit
+          enabled: true
+      - tapOn:
+          id: game-submit
+      - evalScript: ${output.answered = true}
+# A number: Return sends it (as Submit does). Not when the choice was just sent, and question 2
+# happens to ask for a number.
+- runFlow:
+    when:
+      true: ${!output.answered}
+      visible:
+        id: game-number
+    commands:
+      - assertVisible:
+          id: game-submit
+          enabled: false
+      - tapOn:
+          id: game-number
+      - inputText: '7'
+      - extendedWaitUntil:
+          visible:
+            id: game-submit
+            enabled: true
+          timeout: 5000
+      - pressKey: Enter
+- extendedWaitUntil:
+    visible: '(Right!|Not quite\.)'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 2 of 2'
+    timeout: 10000
+# The scores sit under the question on a phone.
+- scrollUntilVisible:
+    element:
+      id: game-team-Sofia
+    centerElement: true
+- assertVisible:
+    id: game-team-Sofia
+    text: 'Sofia \(you\), (1 point|0 points), 1/2'
+- scrollUntilVisible:
+    element:
+      id: game-skip
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: game-skip
+- extendedWaitUntil:
+    visible: 'Skipped\.'
+    timeout: 10000
+# The results.
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      text: 'Sofia wins!'
+    timeout: 15000
+- assertNotVisible:
+    id: game-question
+- assertNotVisible:
+    id: game-review-team-Sofia
+- takeScreenshot: game-results
+- scrollUntilVisible:
+    element:
+      id: game-review-1
+    centerElement: true
+- assertVisible:
+    id: game-review-1
+    text: 'Question 1 · (Right|Not quite) · Sofia · Answered: .* · Answer: .*'
+- scrollUntilVisible:
+    element:
+      id: game-review-next
+    centerElement: true
+- tapOn:
+    id: game-review-next
+- scrollUntilVisible:
+    element:
+      id: game-review-2
+    direction: UP
+    centerElement: true
+- assertVisible:
+    id: game-review-2
+    text: 'Question 2 · Skipped · Sofia · Answer: .*'
+- takeScreenshot: game-results-review
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: game-row-${output.gameCode}
+    centerElement: true
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: game-row-${output.gameCode}
+      text: '.*Finished · 1st'
+    timeout: 10000

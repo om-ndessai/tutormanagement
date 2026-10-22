@@ -1006,6 +1006,138 @@ npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM sqlite_
 npx wrangler d1 execute tutoring-db --remote --command="SELECT slug, gamify_question_quest FROM organizations ORDER BY slug"
 ```
 
+Phase 46 (Quest Games; 2026-10, `docs/quest-games-plan.md`) is additive: three new tables, with
+their indexes and triggers, and no change to any existing table. The play itself lives in the
+`QuestGame` Durable Object (its own storage, created by the Worker's `migrations` block on deploy,
+`new_sqlite_classes`); D1 holds the record. Apply after the backup, before `npm run deploy`:
+
+```sql
+CREATE TABLE quest_games (
+  id                 TEXT PRIMARY KEY,
+  organization_id    TEXT NOT NULL REFERENCES organizations (id),
+  -- Six characters of GAME_CODE_ALPHABET (shared), unique for good: a code
+  -- names one game, and teams' codes never repeat a game's.
+  code               TEXT NOT NULL,
+  host_user_id       TEXT NOT NULL REFERENCES users (id),
+  -- A bank level (QUESTION_BANK_LEVEL_IDS).
+  level_id           TEXT NOT NULL,
+  mode               TEXT NOT NULL CHECK (mode IN ('count', 'timed')),
+  question_count     INTEGER CHECK (question_count IS NULL OR question_count BETWEEN 1 AND 50),
+  duration_seconds   INTEGER CHECK (duration_seconds IS NULL OR duration_seconds BETWEEN 60 AND 1800),
+  negative_marking   INTEGER NOT NULL DEFAULT 0 CHECK (negative_marking IN (0, 1)),
+  max_team_size      INTEGER NOT NULL DEFAULT 4 CHECK (max_team_size BETWEEN 1 AND 6),
+  -- Whether the series could include checked (unapproved) questions: the
+  -- organization's canvas_assessments_unreviewed at the start.
+  include_unreviewed INTEGER NOT NULL DEFAULT 0 CHECK (include_unreviewed IN (0, 1)),
+  status             TEXT NOT NULL DEFAULT 'lobby' CHECK (status IN ('lobby', 'running', 'finished')),
+  series_length      INTEGER,
+  created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  started_at         TEXT,
+  ended_at           TEXT,
+
+  CHECK ((mode = 'count') = (question_count IS NOT NULL)),
+  CHECK ((mode = 'timed') = (duration_seconds IS NOT NULL)),
+  -- A game ended in its lobby (never started) is finished without a start.
+  CHECK (status != 'running' OR started_at IS NOT NULL),
+  CHECK ((status = 'finished') = (ended_at IS NOT NULL))
+);
+
+CREATE UNIQUE INDEX quest_games_code ON quest_games (code);
+CREATE INDEX quest_games_org_idx ON quest_games (organization_id, created_at);
+
+CREATE TRIGGER quest_games_same_organization
+BEFORE INSERT ON quest_games
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.host_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_games_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_games
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- A team, or one player on their own (solo, no code). The totals, the place
+-- and the answers are written when the game ends.
+CREATE TABLE quest_game_teams (
+  id                 TEXT PRIMARY KEY,
+  organization_id    TEXT NOT NULL REFERENCES organizations (id),
+  game_id            TEXT NOT NULL REFERENCES quest_games (id),
+  code               TEXT,
+  name               TEXT NOT NULL,
+  solo               INTEGER NOT NULL DEFAULT 0 CHECK (solo IN (0, 1)),
+  created_by_user_id TEXT NOT NULL REFERENCES users (id),
+  created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  score              INTEGER,
+  correct            INTEGER,
+  wrong              INTEGER,
+  skipped            INTEGER,
+  finished_at        TEXT,
+  place              INTEGER,
+  -- JSON: [{ index, question_id, user_id, answer, correct, skipped, at }].
+  answers            TEXT,
+
+  CHECK ((solo = 1) = (code IS NULL))
+);
+
+CREATE UNIQUE INDEX quest_game_teams_code ON quest_game_teams (code) WHERE code IS NOT NULL;
+CREATE INDEX quest_game_teams_game_idx ON quest_game_teams (game_id);
+
+CREATE TRIGGER quest_game_teams_same_organization
+BEFORE INSERT ON quest_game_teams
+WHEN NOT EXISTS (SELECT 1 FROM quest_games g WHERE g.id = NEW.game_id AND g.organization_id = NEW.organization_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.created_by_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_teams_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_teams
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Who plays, in which team: one team per player per game. What each answered
+-- is in their team's answers (by user_id), so nothing more is written here.
+CREATE TABLE quest_game_players (
+  game_id         TEXT NOT NULL REFERENCES quest_games (id),
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  team_id         TEXT NOT NULL REFERENCES quest_game_teams (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  joined_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (game_id, user_id)
+);
+
+-- A person's games, newest first.
+CREATE INDEX quest_game_players_user_idx ON quest_game_players (organization_id, user_id);
+
+CREATE TRIGGER quest_game_players_same_organization
+BEFORE INSERT ON quest_game_players
+WHEN NOT EXISTS (SELECT 1 FROM quest_game_teams t
+                 WHERE t.id = NEW.team_id AND t.game_id = NEW.game_id AND t.organization_id = NEW.organization_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_players_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_players
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as phase46.sql>
+# read-only: the three tables and their code indexes
+npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM sqlite_master WHERE name IN ('quest_games', 'quest_game_teams', 'quest_game_players', 'quest_games_code', 'quest_game_teams_code')"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

@@ -36,14 +36,17 @@ tags:
     visible:
       id: screen-quest
     timeout: 15000
-- assertVisible:
-    id: quest-review-card
 - assertNotVisible:
     id: quest-play-card
-# The students' card runs far below the screen (an admin sees every student): wait on its sentence.
-- extendedWaitUntil:
-    visible: 'Set where each student starts\..*'
-    timeout: 15000
+# Below the Games panel (Phase 46), whose list is every game in the organization for an admin.
+- scrollUntilVisible:
+    element:
+      id: quest-review-card
+# The students' card runs far below the screen (an admin sees every student), and since Phase 46
+# the Games panel sits above it: scroll to its sentence.
+- scrollUntilVisible:
+    element: 'Set where each student starts\..*'
+    timeout: 30000
 # Sofia's row, started at BA3 by the script.
 - scrollUntilVisible:
     element:
@@ -65,11 +68,14 @@ tags:
 - extendedWaitUntil:
     visible: 'Sofia Okafor starts at G5\.'
     timeout: 10000
-- extendedWaitUntil:
-    visible:
+# The list closes and the page settles where it will: back up to her row, read from the server.
+- scrollUntilVisible:
+    element:
       id: quest-level-00000000-0000-4000-8000-000000000008
       text: 'Sofia Okafor’s level: G5\. Change'
-    timeout: 10000
+    direction: UP
+    centerElement: true
+    timeout: 30000
 # Not set clears it. Choosing G5 left the field at the top, under the header (the list was scrolled
 # into view below it): back up, to the middle. The list opens below it, Not set first.
 - scrollUntilVisible:

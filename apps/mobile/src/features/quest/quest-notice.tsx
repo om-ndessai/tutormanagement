@@ -19,6 +19,8 @@ interface Notice {
 interface QuestNoticeApi {
   success: (text: string) => void;
   error: (text: string) => void;
+  /** A neutral word with a selection tick (a game's "Skipped.", Phase 46). */
+  info: (text: string) => void;
 }
 
 const QuestNoticeContext = createContext<QuestNoticeApi | null>(null);
@@ -30,15 +32,20 @@ export function QuestNoticeHost({ children }: { children: ReactNode }) {
   const [notice, setNotice] = useState<Notice | null>(null);
   const keyboard = useKeyboardHeight();
 
-  const show = useCallback((text: string, tone: 'success' | 'error') => {
+  const show = useCallback((text: string, tone: 'success' | 'error' | 'info') => {
     if (tone === 'success') haptics.success();
-    else haptics.error();
+    else if (tone === 'error') haptics.error();
+    else haptics.selection();
     if (Platform.OS === 'ios') AccessibilityInfo.announceForAccessibility(text);
     setNotice({ id: Date.now(), text });
   }, []);
 
   const api = useMemo<QuestNoticeApi>(
-    () => ({ success: (text) => show(text, 'success'), error: (text) => show(text, 'error') }),
+    () => ({
+      success: (text) => show(text, 'success'),
+      error: (text) => show(text, 'error'),
+      info: (text) => show(text, 'info'),
+    }),
     [show],
   );
 

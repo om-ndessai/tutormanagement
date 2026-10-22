@@ -333,6 +333,24 @@ native rebuild of both dev builds, so build only while the devices are free.
   `home/*` (the five new ones and the five moved), `dashboard/*` and `locations/reminder` green on iOS
   and Android; `smoke -- mobile` green on both. The web half is owed.
 
+## Portal Phase 46 — Quest Games (parity: the web half is built)
+
+- [x] 60. Mobile: Quest Games, at parity with the web — the Games panel on the Quest page for every
+  role (a parent's only panel): Start a game (a form sheet: level with its count, questions or minutes,
+  marking, team size), Join with a code (a sheet that looks the code up: on my own, start a team, a
+  team's code, or the named team), the recent games; one full-screen game route
+  `quest/games/[gameId]` (lobby with the code and Share, the host's Begin / Cancel; play with Submit /
+  Skip, right or wrong at once, the server-set clock, the scoreboard under the question or beside it on
+  an iPad; results with the winner and the team's questions one at a time with the answers), polled
+  every 2 s only while focused and not finished; first names only (R20). Designed 2026-10-21
+  (design 60). Flows to write: `quest/{game-start,game-join,game-play,game-team}` with the scripts
+  `quest-games-start.js`, `quest-game-act.js`, `quest-games-end.js`. Built 2026-10-21 (build notes under
+  design 60): typecheck, lint, Jest (`game-model`, `game-html`, `games-api` tests) and the export
+  green. Tested 2026-10-22: `quest/{game-start,game-join,game-play,game-team}` and the six Phase 42
+  `quest/*` flows green on iOS and Android (20/20), the four game flows on the iPad (dark); `smoke --
+  mobile` green on both; jest 770. Three app fixes from the flows (the amount's keypad, `OptionPicker`'s
+  first tap, the hub's stale game status): build log, design 60.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

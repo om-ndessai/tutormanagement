@@ -6,6 +6,8 @@
 // itself runs full screen (quest-play-screen, quest-review-screen). docs/gamification-plan.md.
 // Mobile: a stack screen in the organization (from More and Search); the students' table is a card
 // per student, the level a picker (every level in a short scrolling list) over its counts.
+// Phase 46 (design 60): the Games panel for every role, in the web's order -- after Your Quest, before
+// Answers to review -- and for a parent the only panel, with a line under the title meant for them.
 import type { QuestStudent } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
@@ -30,10 +32,13 @@ import {
   levelOptions,
   levelToast,
   playSummary,
+  questIntro,
   questRoles,
   startLabel,
 } from './quest-model';
 import { QuestPoints } from './quest-points';
+import { useGames } from './games-api';
+import { GamesPanel } from './games-panel';
 
 const LEVEL_OPTIONS = levelOptions();
 
@@ -43,6 +48,7 @@ export function QuestScreen() {
   const state = useQuestState(roles.plays);
   const queue = useQuestReview(roles.reviews);
   const students = useQuestStudents(roles.reviews);
+  const games = useGames();
   const [refreshing, setRefreshing] = useState(false);
 
   async function onRefresh() {
@@ -52,6 +58,7 @@ export function QuestScreen() {
         roles.plays ? state.refetch() : null,
         roles.reviews ? queue.refetch() : null,
         roles.reviews ? students.refetch() : null,
+        games.refetch(),
       ]);
     } finally {
       setRefreshing(false);
@@ -61,11 +68,10 @@ export function QuestScreen() {
   return (
     <Screen testID="screen-quest" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ title: 'Question Quest' }} />
-      <PageIntro>
-        Answer the question bank’s new questions, one at a time, and earn points. Tutors check each answer and
-        approve the question for everyone.
-      </PageIntro>
+      <PageIntro>{questIntro(user?.roles)}</PageIntro>
       {roles.plays ? <PlayCard /> : null}
+      {/* Phase 46: games are for everyone here. */}
+      <GamesPanel />
       {roles.reviews ? <ReviewCard /> : null}
       {roles.reviews ? <StudentsCard /> : null}
     </Screen>

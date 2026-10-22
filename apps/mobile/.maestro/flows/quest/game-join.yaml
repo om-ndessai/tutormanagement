@@ -1,0 +1,249 @@
+# Quest Games (Phase 46), joining with a code. Priya hosts a G6 game, teams of up to 2 (through the
+# local API). Sofia, a student, opens its link before joining: not found -- never "forbidden" (R20,
+# the server answers 404). A code nobody has is refused in the join sheet, in the server's words. The
+# game's code typed in lower case is tidied and found: Priya's game; Sofia starts the team Owls -- the
+# lobby shows Owls with her first name and the team's own code, no Begin (she does not host), and
+# "Waiting for Priya to begin…". Leave: back on the Quest page, "You left the game.". Then a new
+# game, where Alex has started Owls: Sofia types the TEAM's code and is offered that team alone
+# ("1 of 2 so far"); she joins, and Owls is Alex and Sofia. The switches are off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/quest-games-start.js
+      env:
+        SETUP: host
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# R20: a game she is not in is not hers to read, and reads as not found.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://quest/games/${output.gameId}
+- extendedWaitUntil:
+    visible:
+      id: game-missing
+    timeout: 15000
+- assertVisible: 'This game was not found, or you are not in it\..*'
+- assertNotVisible: '.*[Ff]orbidden.*'
+- assertNotVisible:
+    id: game-lobby-code
+- tapOn:
+    id: game-missing-back
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 10000
+# A code nobody has.
+- scrollUntilVisible:
+    element:
+      id: game-code
+    centerElement: true
+- assertVisible:
+    id: game-join
+    enabled: false
+- tapOn:
+    id: game-code
+- inputText: 'ZZZZZZ'
+# Join wakes at six characters. On iOS 27 a tap that comes within a moment of the last keystroke is
+# swallowed (checked: about a second after typing, the first tap on Join opens the sheet; Maestro taps
+# within 0.1 s, a person never does), so iOS sends the code with the keyboard's Go key, which joins
+# the same way; Android taps Join.
+- extendedWaitUntil:
+    visible:
+      id: game-join
+      enabled: true
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: game-join
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-join-game
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: game-join-error
+      text: 'No game or team has that code\.'
+    timeout: 10000
+- tapOn:
+    id: game-join-close
+- extendedWaitUntil:
+    notVisible:
+      id: screen-quest-join-game
+    timeout: 10000
+# The game's code, typed in lower case: tidied as it is typed.
+- scrollUntilVisible:
+    element:
+      id: game-code
+    centerElement: true
+- tapOn:
+    id: game-code
+- inputText: ${output.gameCodeLower}
+- assertVisible:
+    id: game-code
+    text: ${output.gameCode}
+# Join wakes at six characters. On iOS 27 a tap that comes within a moment of the last keystroke is
+# swallowed (checked: about a second after typing, the first tap on Join opens the sheet; Maestro taps
+# within 0.1 s, a person never does), so iOS sends the code with the keyboard's Go key, which joins
+# the same way; Android taps Join.
+- extendedWaitUntil:
+    visible:
+      id: game-join
+      enabled: true
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: game-join
+- extendedWaitUntil:
+    visible:
+      id: game-join-title
+      text: 'G6 · 2 questions'
+    timeout: 10000
+- assertVisible:
+    id: game-join-line
+    text: 'Priya’s game · Right \+1, wrong 0 · teams of up to 2'
+- takeScreenshot: game-join-sheet
+- tapOn:
+    id: game-team-name
+- inputText: 'Owls'
+- extendedWaitUntil:
+    visible:
+      id: game-join-new-team
+      enabled: true
+    timeout: 5000
+# As for Join above: Go on iOS (it starts the team), the button on Android.
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: game-join-new-team
+# The lobby, in her team.
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-game
+    timeout: 15000
+# The team's code sits inside the sentence (a nested Text, whose own testID neither platform
+# exposes): asserted on the sentence.
+- extendedWaitUntil:
+    visible: 'Your team Owls’s code: [A-HJKMNP-Z2-9]{6}\. Teammates type it to join you\.'
+    timeout: 10000
+- assertVisible:
+    id: game-team-Owls
+    text: '.*Owls.*Sofia.*'
+- assertNotVisible:
+    id: game-start
+- assertNotVisible:
+    id: game-cancel
+- assertNotVisible:
+    id: game-join-solo
+- assertVisible:
+    id: game-waiting-host
+    text: 'Waiting for Priya to begin…'
+# First names only (R20): no surname anywhere on the screen.
+- assertNotVisible: '.*Okafor.*'
+- assertNotVisible: '.*Raghavan.*'
+- takeScreenshot: game-lobby-player
+- tapOn:
+    id: game-leave
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- extendedWaitUntil:
+    visible: 'You left the game\.'
+    timeout: 10000
+# A team's code: that team, and nothing else to choose.
+- runScript:
+    file: ../../scripts/quest-games-start.js
+    env:
+      SETUP: team
+- scrollUntilVisible:
+    element:
+      id: game-code
+    centerElement: true
+- tapOn:
+    id: game-code
+- inputText: ${output.teamCode}
+# Join wakes at six characters. On iOS 27 a tap that comes within a moment of the last keystroke is
+# swallowed (checked: about a second after typing, the first tap on Join opens the sheet; Maestro taps
+# within 0.1 s, a person never does), so iOS sends the code with the keyboard's Go key, which joins
+# the same way; Android taps Join.
+- extendedWaitUntil:
+    visible:
+      id: game-join
+      enabled: true
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: game-join
+- extendedWaitUntil:
+    visible:
+      id: game-join-team-named
+      text: 'Join Owls'
+    timeout: 10000
+- assertVisible: '.*1 of 2 so far.*'
+- assertNotVisible:
+    id: game-join-solo
+- assertNotVisible:
+    id: game-team-name
+- tapOn:
+    id: game-join-team-named
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-game
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: game-team-Owls
+      text: '.*Owls.*Alex.*Sofia.*'
+    timeout: 10000
+- assertVisible: '2 players'
+- takeScreenshot: game-lobby-team
