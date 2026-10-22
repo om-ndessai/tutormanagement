@@ -418,7 +418,7 @@ test.describe('Quest Games, round two (Phase 47)', () => {
 
 test.describe('Quest Games, curated (Phase 48)', () => {
   /** A finished game's questions, from the reader's own results. */
-  const seenIn = async (page: Page, id: string) =>
+  const seenIn = async (page: Page, id: string): Promise<string[]> =>
     (await unwrap<any>(await page.request.get(`/api/quest/games/${id}/results`), 'results')).items.map((i: any) => i.question.id as string);
 
   /** Skips every question the reader is served until the game ends. */
