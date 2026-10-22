@@ -1,11 +1,14 @@
 import { DurableObject } from 'cloudflare:workers';
 import {
+  GAME_COUNTDOWN_MS,
   GAME_LIMITS,
   answerQuestion,
   findTeamOf,
+  gameEndReason,
   gameEndsAt,
-  gameIsOver,
+  gameOpenToJoin,
   makeGameCode,
+  normalizeEngineGame,
   rankTeams,
   releaseHand,
   serveNext,
@@ -13,8 +16,10 @@ import {
   type EngineGame,
   type EngineTeam,
   type GameAnswerInput,
+  type GameEndReason,
   type GameLookup,
   type GameResults,
+  type GameSettings,
   type GameTeamView,
   type GameView,
   type JoinGameInput,
@@ -41,6 +46,11 @@ import {
 // exact. Every change is written to the object's own storage too, so an object
 // evicted from memory wakes with the game intact. Serving and answering read
 // nothing from D1; D1 is written when a game is joined, started and ended.
+//
+// Phase 47 (docs/quest-games-g2-plan.md): the host's start opens a countdown
+// (GAME_COUNTDOWN_MS) that every screen shows, so the first question comes to
+// everyone at once; points for right and wrong; a knockout end; a single
+// player's game, begun as it is made; joining left open while it runs.
 
 /** A lobby nobody starts is closed after a day; a count game nobody finishes, after three hours. */
 const LOBBY_TTL_MS = 24 * 60 * 60 * 1000;
@@ -72,7 +82,8 @@ export class QuestGame extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     void ctx.blockConcurrencyWhile(async () => {
-      this.game = (await ctx.storage.get<EngineGame>('game')) ?? null;
+      const stored = (await ctx.storage.get<EngineGame>('game')) ?? null;
+      this.game = stored ? normalizeEngineGame(stored) : null;
       this.series = (await ctx.storage.get<SeriesQuestion[]>('series')) ?? [];
       this.unwritten = (await ctx.storage.get<boolean>('unwritten')) ?? false;
     });
@@ -86,16 +97,18 @@ export class QuestGame extends DurableObject<Env> {
     return viewer.admin || game.host.user_id === viewer.id || findTeamOf(game, viewer.id) !== null;
   }
 
-  /** Ends the game if its time is up or every team is done: true when it did. */
+  /** Ends the game if its time is up, every team is done, or nobody can catch the leader. */
   private async settle(now: number): Promise<void> {
     const game = this.game;
-    if (game && game.status === 'running' && gameIsOver(game, now)) await this.finish(now);
+    const reason = game ? gameEndReason(game, now) : null;
+    if (reason) await this.finish(now, reason);
   }
 
-  private async finish(now: number): Promise<void> {
+  private async finish(now: number, reason: GameEndReason): Promise<void> {
     const game = this.game;
     if (!game || game.status === 'finished') return;
     game.status = 'finished';
+    game.end_reason = reason;
     // A timed game ends at its clock, even when the end is noticed later.
     const endsAt = gameEndsAt(game);
     game.ended_at = endsAt !== null ? Math.min(now, endsAt) : now;
@@ -123,13 +136,22 @@ export class QuestGame extends DurableObject<Env> {
   // What the Worker's routes call (RPC)
   // ---------------------------------------------------------------------------
 
-  /** Opens a new game, already recorded in D1. */
-  async create(game: EngineGame): Promise<GameReply<GameView>> {
+  /**
+   * Opens a new game, already recorded in D1. A single player's game is begun
+   * here too: the host is its one player, and the countdown starts at once.
+   */
+  async create(game: EngineGame, includeUnreviewed: boolean): Promise<GameReply<GameView>> {
     if (this.game) return conflict('That game already exists.');
-    this.game = game;
+    this.game = normalizeEngineGame(game);
     await this.save();
     await this.ctx.storage.setAlarm(game.created_at + LOBBY_TTL_MS);
-    return ok(this.toView(game, { id: game.host.user_id, admin: false }, Date.now()));
+    const host = { id: game.host.user_id, admin: false };
+    if (game.players === 'single') {
+      const solo = await this.addTeam(this.game, { id: game.host.user_id, first_name: game.host.first_name }, null, Date.now());
+      if (!solo.ok) return solo;
+      return this.begin(host, includeUnreviewed);
+    }
+    return ok(this.toView(this.game, host, Date.now()));
   }
 
   /** What a code shows before joining: anyone here with the code may see it. */
@@ -143,16 +165,12 @@ export class QuestGame extends DurableObject<Env> {
     return ok({
       game_id: game.id,
       team: team && team.code ? { id: team.id, name: team.name, code: team.code, players: team.players.length } : null,
-      level_id: game.level_id,
-      mode: game.mode,
-      question_count: game.question_count,
-      duration_seconds: game.duration_seconds,
-      negative_marking: game.negative_marking,
-      max_team_size: game.max_team_size,
+      ...this.settingsOf(game),
       host_first_name: game.host.first_name,
       status: game.status,
       teams: game.teams.map((t) => ({ id: t.id, name: t.name, solo: t.solo, players: t.players.length })),
       joined: findTeamOf(game, viewer.id) !== null,
+      open: gameOpenToJoin(game, now),
     });
   }
 
@@ -179,7 +197,10 @@ export class QuestGame extends DurableObject<Env> {
     await this.settle(now);
     const game = this.game;
     if (!game) return notFound();
-    if (game.status !== 'lobby' || this.busy) return conflict('This game has started, so it cannot be joined now.');
+    if (game.players === 'single') return conflict('This is a single-player game.');
+    if (!gameOpenToJoin(game, now) || this.busy) {
+      return conflict(game.status === 'finished' ? 'This game has ended.' : 'This game has started, so it cannot be joined now.');
+    }
     if (findTeamOf(game, person.id)) return conflict('You are in this game already.');
     const players = game.teams.reduce((n, t) => n + t.players.length, 0);
     if (players >= GAME_LIMITS.maxPlayers) return conflict('This game is full.');
@@ -205,7 +226,27 @@ export class QuestGame extends DurableObject<Env> {
     if (input.as === 'new_team' && game.max_team_size === 1) {
       return conflict('This game is for players on their own.');
     }
-    const solo = input.as === 'solo';
+    const added = await this.addTeam(game, person, input.as === 'new_team' ? input.team_name : null, now);
+    if (!added.ok) return added;
+    const solo = added.data.solo;
+    return ok({ view: this.toView(game, { id: person.id, admin: false }, now), team: { name: added.data.name, solo, started: !solo } });
+  }
+
+  /**
+   * A new team with its first player: a solo player's (no name, no code), or a
+   * named team with its own code. Refused past the game's most teams.
+   */
+  private async addTeam(
+    game: EngineGame,
+    person: { id: string; first_name: string },
+    teamName: string | null,
+    now: number,
+  ): Promise<GameReply<EngineTeam>> {
+    const live = game.teams.filter((t) => t.players.length > 0).length;
+    if (live >= game.max_teams) {
+      return conflict(`This game has its ${game.max_teams} ${game.max_team_size === 1 ? 'players' : 'teams'} already.`);
+    }
+    const solo = teamName === null;
     let code: string | null = null;
     if (!solo) {
       for (let tries = 0; tries < 6 && code === null; tries += 1) {
@@ -213,15 +254,18 @@ export class QuestGame extends DurableObject<Env> {
         if (!(await codeInUse(this.env.DB, candidate))) code = candidate;
       }
       if (code === null) return conflict('Could not make a team code just now. Try again.');
-      if (game.status !== 'lobby' || findTeamOf(game, person.id)) return conflict('This game has started, so it cannot be joined now.');
+      // The code check waited on D1: another request may have moved the game on.
+      if (!gameOpenToJoin(game, Date.now()) || findTeamOf(game, person.id)) {
+        return conflict('This game has started, so it cannot be joined now.');
+      }
     }
     const team: EngineTeam = {
       id: crypto.randomUUID(),
-      name: solo ? person.first_name : input.team_name,
+      name: teamName ?? person.first_name,
       solo,
       code,
       created_by: person.id,
-      players: [player],
+      players: [{ user_id: person.id, first_name: person.first_name, joined_at: now }],
       next: 0,
       returned: [],
       hands: {},
@@ -229,9 +273,10 @@ export class QuestGame extends DurableObject<Env> {
       last: {},
       finished_at: null,
     };
+    // Into memory first, so a join in the same moment sees the team (and the count) taken.
     game.teams.push(team);
     try {
-      await insertTeamWithPlayer(this.env.DB, org, {
+      await insertTeamWithPlayer(this.env.DB, orgIdFromRow(game.organization_id), {
         gameId: game.id,
         teamId: team.id,
         code,
@@ -244,7 +289,7 @@ export class QuestGame extends DurableObject<Env> {
       throw error;
     }
     await this.save();
-    return ok({ view: this.toView(game, { id: person.id, admin: false }, now), team: { name: team.name, solo, started: !solo } });
+    return ok(team);
   }
 
   /** Before the start, leaves the game; during it, hands their question back to the team. */
@@ -272,36 +317,47 @@ export class QuestGame extends DurableObject<Env> {
     return ok({ left_lobby: true });
   }
 
-  /** The host starts the game: the series is drawn once, here, and kept in memory. */
+  /** The host starts the game ("Start the Quest"). */
   async start(viewer: GameViewer, includeUnreviewed: boolean): Promise<GameReply<GameView>> {
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
     if (game.host.user_id !== viewer.id) return forbidden('Only the person who started the game can begin it.');
+    return this.begin(viewer, includeUnreviewed);
+  }
+
+  /**
+   * The series is drawn once, here, and kept in memory; the first question's
+   * moment is set GAME_COUNTDOWN_MS ahead, for every screen's doors to open on.
+   */
+  private async begin(viewer: GameViewer, includeUnreviewed: boolean): Promise<GameReply<GameView>> {
+    const game = this.game;
+    if (!game) return notFound();
     if (game.status !== 'lobby' || this.busy) return conflict('This game has already begun.');
     if (!game.teams.some((t) => t.players.length > 0)) return conflict('Nobody has joined yet.');
     this.busy = true;
     try {
       const wanted = game.mode === 'count' ? game.question_count! : GAME_LIMITS.timedSeries;
-      const series = await drawGameSeries(this.env.DB, { levelId: game.level_id, count: wanted, includeUnreviewed });
+      const series = await drawGameSeries(this.env.DB, { levelIds: game.level_ids, count: wanted, includeUnreviewed });
       if (series.length === 0) return conflict('There are no questions to play at this level yet.');
       if (game.mode === 'count' && series.length < wanted) {
         return conflict(`This level has only ${series.length} question${series.length === 1 ? '' : 's'} to play. Choose fewer.`);
       }
       const now = Date.now();
+      const startsAt = now + GAME_COUNTDOWN_MS;
       this.series = series;
       await this.ctx.storage.put('series', series);
       game.status = 'running';
-      game.started_at = now;
+      game.started_at = startsAt;
       game.series_length = series.length;
       game.include_unreviewed = includeUnreviewed;
       await this.save();
       await markGameStarted(this.env.DB, orgIdFromRow(game.organization_id), {
         gameId: game.id,
-        startedAt: now,
+        startedAt: startsAt,
         seriesLength: series.length,
         includeUnreviewed,
       });
-      await this.ctx.storage.setAlarm(gameEndsAt(game) ?? now + COUNT_GAME_TTL_MS);
+      await this.ctx.storage.setAlarm(gameEndsAt(game) ?? startsAt + COUNT_GAME_TTL_MS);
       return ok(this.toView(game, viewer, now));
     } finally {
       this.busy = false;
@@ -315,7 +371,7 @@ export class QuestGame extends DurableObject<Env> {
     if (game.host.user_id !== viewer.id && !viewer.admin) return forbidden('Only the person who started the game can end it.');
     if (game.status === 'finished') return conflict('This game has ended already.');
     if (this.busy) return conflict('The game is starting. Try again in a moment.');
-    await this.finish(Date.now());
+    await this.finish(Date.now(), 'host');
     return ok(this.toView(game, viewer, Date.now()));
   }
 
@@ -338,10 +394,12 @@ export class QuestGame extends DurableObject<Env> {
       if (outcome.reason === 'not_yours') {
         return conflict('That question is no longer yours to answer: a teammate has it, or it was answered.');
       }
+      if (outcome.reason === 'not_started') return conflict('The game has not begun yet.');
       return conflict('The game is over.');
     }
-    if (gameIsOver(game, now)) {
-      await this.finish(now);
+    const reason = gameEndReason(game, now);
+    if (reason) {
+      await this.finish(now, reason);
     } else {
       serveNext(game, team, viewer.id, now);
       await this.save();
@@ -388,9 +446,11 @@ export class QuestGame extends DurableObject<Env> {
     const game = this.game;
     if (!game) return;
     const now = Date.now();
-    if (game.status === 'lobby' && now >= game.created_at + LOBBY_TTL_MS) await this.finish(now);
-    else if (game.status === 'running' && (gameIsOver(game, now) || now >= (game.started_at ?? now) + COUNT_GAME_TTL_MS)) {
-      await this.finish(now);
+    const reason = gameEndReason(game, now);
+    if (game.status === 'lobby' && now >= game.created_at + LOBBY_TTL_MS) await this.finish(now, 'expired');
+    else if (game.status === 'running' && reason) await this.finish(now, reason);
+    else if (game.status === 'running' && now >= (game.started_at ?? now) + COUNT_GAME_TTL_MS) {
+      await this.finish(now, 'expired');
     } else if (game.status === 'finished' && this.unwritten) await this.writeResults();
     else if (game.status === 'running') await this.ctx.storage.setAlarm(gameEndsAt(game) ?? (game.started_at ?? now) + COUNT_GAME_TTL_MS);
   }
@@ -404,7 +464,7 @@ export class QuestGame extends DurableObject<Env> {
     const teams: GameTeamView[] = game.teams
       .filter((team) => team.players.length > 0 || team.answers.length > 0)
       .map((team) => {
-        const totals = teamTotals(team.answers, game.negative_marking);
+        const totals = teamTotals(team.answers, game);
         return {
           id: team.id,
           name: team.name,
@@ -425,12 +485,7 @@ export class QuestGame extends DurableObject<Env> {
     return {
       id: game.id,
       code: game.code,
-      level_id: game.level_id,
-      mode: game.mode,
-      question_count: game.question_count,
-      duration_seconds: game.duration_seconds,
-      negative_marking: game.negative_marking,
-      max_team_size: game.max_team_size,
+      ...this.settingsOf(game),
       unreviewed: game.include_unreviewed,
       status: game.status,
       host: game.host,
@@ -439,6 +494,7 @@ export class QuestGame extends DurableObject<Env> {
       started_at: iso(game.started_at),
       ends_at: iso(gameEndsAt(game)),
       ended_at: iso(game.ended_at),
+      end_reason: game.end_reason,
       now: iso(now)!,
       series_length: game.status === 'lobby' ? null : game.series_length,
       teams,
@@ -449,8 +505,27 @@ export class QuestGame extends DurableObject<Env> {
             ? { id: question.id, kind: question.kind, stem: question.stem, choices: question.choices, number: hand.index + 1 }
             : null,
         last: mine?.last[viewer.id] ?? null,
-        waiting: Boolean(mine && game.status === 'running' && !hand),
+        // Not while the doors count down: that is the countdown, not waiting.
+        waiting: Boolean(mine && game.status === 'running' && !hand && (game.started_at ?? 0) <= now),
       },
+    };
+  }
+
+  private settingsOf(game: EngineGame): GameSettings {
+    return {
+      level_id: game.level_id,
+      level_scope: game.level_scope,
+      mode: game.mode,
+      question_count: game.question_count,
+      duration_seconds: game.duration_seconds,
+      right_points: game.right_points,
+      wrong_points: game.wrong_points,
+      negative_marking: game.wrong_points < 0,
+      knockout: game.knockout,
+      players: game.players,
+      max_teams: game.max_teams,
+      max_team_size: game.max_team_size,
+      late_join: game.late_join,
     };
   }
 }

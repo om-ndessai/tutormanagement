@@ -923,6 +923,45 @@
   from { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 1; }
   to { transform: translate3d(var(--drift, 0px), 105vh, 0) rotate(var(--spin, 540deg)); opacity: 0.9; }
 }
+/* Phase 47: a game's doors opening on Go!, the count popping in, and the knockout stamp. */
+@utility quest-door-left {
+  animation: quest-door-left 900ms var(--ease-out-quint) forwards;
+}
+@keyframes quest-door-left {
+  to { transform: perspective(1200px) rotateY(80deg); opacity: 0.2; }
+}
+@utility quest-door-right {
+  animation: quest-door-right 900ms var(--ease-out-quint) forwards;
+}
+@keyframes quest-door-right {
+  to { transform: perspective(1200px) rotateY(-80deg); opacity: 0.2; }
+}
+@utility quest-count-pop {
+  animation: quest-count-pop 900ms var(--ease-out-quint);
+}
+@keyframes quest-count-pop {
+  0% { opacity: 0; transform: scale(2.2); }
+  25% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.85; transform: scale(0.92); }
+}
+@utility quest-go {
+  animation: quest-go 900ms var(--ease-out-quint) forwards;
+}
+@keyframes quest-go {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: scale(1.1); }
+}
+@utility quest-ko {
+  animation: quest-ko 2600ms var(--ease-out-quint) forwards;
+}
+@keyframes quest-ko {
+  0% { opacity: 0; transform: scale(3) rotate(-12deg); }
+  18% { opacity: 1; transform: scale(1) rotate(-8deg); }
+  26% { transform: scale(1.12) rotate(-8deg); }
+  34% { transform: scale(1) rotate(-8deg); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1) rotate(-8deg); }
+}
 @utility quest-countdown {
   animation: quest-countdown var(--duration, 5000ms) linear forwards;
 }

@@ -3,7 +3,8 @@
 # (through the local API). Sofia opens the game: she holds the OTHER question of the two, never
 # Alex's. She skips it: her team has nothing more to hand her, so she waits. Alex skips his (through
 # the API): by the poll, the results -- "Owls wins!" -- and the team's two questions, one answered by
-# each of them. The switches are off again at the end.
+# each of them. Phase 47: the setup waits out the doors' countdown before reading Alex's hand; the
+# waiting card is the game's status. The switches are off again at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -67,6 +68,7 @@ tags:
       id: game-waiting
     timeout: 10000
 - assertVisible: 'Your team has no more questions to hand out\.'
+- assertVisible: '(?i)Game status'
 - assertNotVisible:
     id: game-submit
 - takeScreenshot: game-team-waiting

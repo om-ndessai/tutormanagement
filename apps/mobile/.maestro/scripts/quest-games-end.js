@@ -1,14 +1,22 @@
 // Puts Quest Games (Phase 46) back as the seed has it, before and after every quest/game-*.yaml flow,
 // whatever happened in between: Sofia's Quest level cleared, every unfinished game in chmi ended (as Priya, an admin, whose list
 // is every game), then "include questions not yet reviewed" off (the Assessment menu's flows expect
-// it off, clean-canvas-assessments.js) and Question Quest off. Through the LOCAL Worker only.
+// it off, clean-canvas-assessments.js) and Question Quest off. Phase 47: every favorite of the four
+// people the game flows sign in as is deleted too, so a rerun starts with none. Through the LOCAL
+// Worker only.
 var ORG = 'chmi';
 var ADMIN = 'priya.raghavan@gmail.com';
+var PLAYERS = [
+  'priya.raghavan@gmail.com',
+  'anita.patel.nc@gmail.com',
+  'sofia.okafor@gmail.com',
+  'alex.chen.math@gmail.com',
+];
 
-function call(method, path, body) {
+function call(method, path, body, as) {
   var response = http.request('http://localhost:8787/api' + path, {
     method: method,
-    headers: { 'Content-Type': 'application/json', 'X-Dev-User': ADMIN, 'X-Organization': ORG },
+    headers: { 'Content-Type': 'application/json', 'X-Dev-User': as || ADMIN, 'X-Organization': ORG },
     // Maestro's http refuses a POST without a body.
     body: body === undefined ? (method === 'POST' ? '{}' : undefined) : JSON.stringify(body),
   });
@@ -32,6 +40,19 @@ if (list.status < 300) {
   }
 } else {
   problems.push('could not list the games: ' + list.status);
+}
+// Favorites are each person's own (R20): listed and deleted as each of them.
+for (var p = 0; p < PLAYERS.length; p++) {
+  var mine = call('GET', '/quest/games/favorites', undefined, PLAYERS[p]);
+  if (mine.status >= 300) {
+    problems.push('could not list the favorites of ' + PLAYERS[p] + ': ' + mine.status);
+    continue;
+  }
+  var favorites = json(mine.body).data;
+  for (var f = 0; f < favorites.length; f++) {
+    var gone = call('DELETE', '/quest/games/favorites/' + favorites[f].id, undefined, PLAYERS[p]);
+    if (gone.status >= 300) problems.push('could not delete a favorite: ' + gone.status);
+  }
 }
 var off = call('PATCH', '/organization/settings', { gamify_question_quest: false, canvas_assessments_unreviewed: false });
 if (off.status >= 300) throw new Error('Could not switch Question Quest back off: ' + off.status + ' ' + off.body);

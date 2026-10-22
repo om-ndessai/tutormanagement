@@ -1,22 +1,19 @@
-// Quest Games' screen rules (Phase 46, design 60): the games list's lines, the rules line, what
-// Create sends (checked against the shared schema), the moment's notice, a team's progress -- with no
-// "of 150" in a timed game -- who oversees, the clock on the server's time, the results' native line,
-// and the hub's line for a parent.
-import {
-  GAME_POLL_MS,
-  createGameSchema,
-  type GameResultItem,
-  type GameTeamView,
-  type GameView,
-} from '@tmi/shared';
+// Quest Games' screen rules (Phase 46, design 60): the games list's lines, the rules line, the moment's
+// notice, a team's progress -- with no "of 150" in a timed game -- who oversees, the clock on the
+// server's time, the results' native line, and the hub's line for a parent. Phase 47 (design 61): the
+// settings' words, the single-player and late-joining lookups, the lobby's board, the waiting card once
+// done, the results' headline and encouragement, who is celebrated, and the doors' words.
+import { GAME_POLL_MS, type GameResultItem, type GameTeamView, type GameView } from '@tmi/shared';
 
 import {
-  amountHint,
-  amountProblem,
+  JOIN_RUNNING_TEXT,
+  LOBBY_LABEL,
   answerNotice,
+  celebrates,
   clockAnnouncement,
   clockSpeech,
-  createInput,
+  countdownLabel,
+  countdownSpeech,
   gameCodeInput,
   gameCodeReady,
   gamePollInterval,
@@ -26,10 +23,13 @@ import {
   gameRulesLine,
   gameTitle,
   isOverseer,
+  joinClosedText,
+  lobbyBoardTitle,
   lookupLine,
-  notJoinableText,
   playersLabel,
   questionHeading,
+  resultsHeadline,
+  resultsLine,
   reviewHeading,
   reviewLine,
   scoreLabel,
@@ -38,11 +38,9 @@ import {
   spelledCode,
   teamProgress,
   teamRowSpeech,
-  teamSizeLabel,
-  teamSizeSpeech,
   timeLeftMs,
+  waitingCopy,
   waitingText,
-  wonGame,
 } from './game-model';
 import { questIntro } from './quest-model';
 
@@ -72,11 +70,18 @@ function game(over: Partial<GameView> = {}): GameView {
     id: 'g1',
     code: 'ABC234',
     level_id: 'NC26.6',
+    level_scope: 'level',
     mode: 'count',
     question_count: 2,
     duration_seconds: null,
+    right_points: 1,
+    wrong_points: 0,
     negative_marking: false,
+    knockout: false,
+    players: 'multi',
+    max_teams: 20,
     max_team_size: 2,
+    late_join: false,
     unreviewed: false,
     status: 'running',
     host: { user_id: 'p', first_name: 'Priya' },
@@ -85,6 +90,7 @@ function game(over: Partial<GameView> = {}): GameView {
     started_at: '2026-10-21T10:01:00.000Z',
     ends_at: null,
     ended_at: null,
+    end_reason: null,
     now: '2026-10-21T10:02:00.000Z',
     series_length: 2,
     teams: [team()],
@@ -128,6 +134,9 @@ describe('the hub', () => {
     expect(gameRowStatus({ status: 'running', place: null })).toBe('Playing now');
     expect(gameRowStatus({ status: 'finished', place: 1 })).toBe('Finished · 1st');
     expect(gameRowStatus({ status: 'finished', place: null })).toBe('Finished');
+    // Phase 47: a Random level's scope, and a single player's game.
+    expect(gameRowTitle({ ...row, level_scope: 'upward' })).toBe('G6 and up, at random · 2 questions');
+    expect(gameRowHost({ ...row, players: 'single' })).toBe('Single player');
   });
 
   it('shares the code and nothing else, and spells it out for a screen reader', () => {
@@ -146,73 +155,71 @@ describe('the hub', () => {
 });
 
 describe('the rules of a game', () => {
-  it('says the level, the length, the marking, the teams and the unreviewed note', () => {
-    expect(gameRulesLine(game())).toBe('G6 · 2 questions · Right +1, wrong 0 · teams of up to 2');
+  it('says the level, the length, the points, who plays, knockout, late joining and the unreviewed note', () => {
+    expect(gameRulesLine(game())).toBe('G6 · 2 questions · Right +1, wrong 0 · Up to 20 teams of up to 2');
     expect(
       gameRulesLine(
         game({
           mode: 'timed',
           duration_seconds: 300,
-          negative_marking: true,
+          wrong_points: -1,
+          max_teams: 10,
           max_team_size: 1,
           unreviewed: true,
         }),
       ),
     ).toBe(
-      'G6 · 5 minutes · Right +1, wrong −1 · everyone on their own · may include questions not yet reviewed',
+      'G6 · 5 minutes · Right +1, wrong −1 · Up to 10 players, each on their own · may include questions not yet reviewed',
     );
-    expect(lookupLine({ host_first_name: 'Priya', negative_marking: false, max_team_size: 2 })).toBe(
-      'Priya’s game · Right +1, wrong 0 · teams of up to 2',
+    expect(gameRulesLine(game({ wrong_points: -1, knockout: true, late_join: true, unreviewed: true }))).toBe(
+      'G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout · joining open while it runs · may include questions not yet reviewed',
     );
-    expect(notJoinableText('running')).toBe('This game has started, so it cannot be joined now.');
-    expect(notJoinableText('finished')).toBe('This game has ended, so it cannot be joined now.');
-    expect(teamSizeLabel(1)).toBe('On their own');
-    expect(teamSizeLabel(4)).toBe('4');
-    expect(teamSizeSpeech(1)).toBe('Everyone on their own');
-    expect(teamSizeSpeech(4)).toBe('Up to 4 a team');
-  });
-});
-
-describe('starting a game', () => {
-  it('holds the amount to the ranges, in the web’s words', () => {
-    expect(amountHint('count')).toBe('questions (1-50)');
-    expect(amountHint('timed')).toBe('minutes (1-30)');
-    expect(amountProblem('count', '10')).toBeNull();
-    expect(amountProblem('count', '99')).toBe('Choose how many questions (1-50).');
-    expect(amountProblem('count', '0')).toBe('Choose how many questions (1-50).');
-    expect(amountProblem('count', '')).toBe('Choose how many questions (1-50).');
-    expect(amountProblem('count', '2.5')).toBe('Choose how many questions (1-50).');
-    expect(amountProblem('timed', '30')).toBeNull();
-    expect(amountProblem('timed', '31')).toBe('Choose how many minutes (1-30).');
+    expect(gameRulesLine(game({ level_scope: 'upward', right_points: 2, wrong_points: -3 }))).toBe(
+      'G6 and up, at random · 2 questions · Right +2, wrong −3 · Up to 20 teams of up to 2',
+    );
+    expect(gameRulesLine(game({ players: 'single', max_teams: 1, max_team_size: 1 }))).toBe(
+      'G6 · 2 questions · Right +1, wrong 0 · Single player',
+    );
   });
 
-  it('sends what the shared schema accepts, and nothing while the form will not do', () => {
-    const form = {
-      levelId: 'NC26.6',
-      mode: 'count' as const,
-      amount: '2',
-      negativeMarking: true,
-      teamSize: 2,
+  it("gives the join sheet's line, with knockout", () => {
+    const lookup = {
+      host_first_name: 'Priya',
+      right_points: 1,
+      wrong_points: 0,
+      players: 'multi' as const,
+      max_teams: 20,
+      max_team_size: 2,
+      knockout: false,
     };
-    const input = createInput(form);
-    expect(input).toEqual({
-      level_id: 'NC26.6',
-      mode: 'count',
-      question_count: 2,
-      negative_marking: true,
-      max_team_size: 2,
-    });
-    expect(createGameSchema.safeParse(input).success).toBe(true);
-    expect(createInput({ ...form, mode: 'timed', amount: '5' })).toEqual({
-      level_id: 'NC26.6',
-      mode: 'timed',
-      duration_minutes: 5,
-      negative_marking: true,
-      max_team_size: 2,
-    });
-    expect(createInput({ ...form, levelId: '' })).toBeNull();
-    expect(createInput({ ...form, amount: '99' })).toBeNull();
-    expect(createInput({ ...form, teamSize: 7 })).toBeNull();
+    expect(lookupLine(lookup)).toBe('Priya’s game · Right +1, wrong 0 · Up to 20 teams of up to 2');
+    expect(lookupLine({ ...lookup, wrong_points: -1, knockout: true })).toBe(
+      'Priya’s game · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout',
+    );
+  });
+
+  it('refuses a single player’s game, and any other once it is closed: by `open`, not the status', () => {
+    const lookup = {
+      host_first_name: 'Priya',
+      players: 'multi' as const,
+      open: true,
+      status: 'lobby' as const,
+    };
+    expect(joinClosedText(lookup)).toBeNull();
+    // Running with joining left open: joinable, and said so above the choices.
+    expect(joinClosedText({ ...lookup, status: 'running' })).toBeNull();
+    expect(JOIN_RUNNING_TEXT).toBe(
+      'This game is under way: you can still join, and start from its first question.',
+    );
+    expect(joinClosedText({ ...lookup, status: 'running', open: false })).toBe(
+      'This game has started, so it cannot be joined now.',
+    );
+    expect(joinClosedText({ ...lookup, status: 'finished', open: false })).toBe(
+      'This game has ended, so it cannot be joined now.',
+    );
+    expect(joinClosedText({ ...lookup, players: 'single', open: false, status: 'running' })).toBe(
+      'This is Priya’s single-player game, so it cannot be joined.',
+    );
   });
 });
 
@@ -227,6 +234,20 @@ describe('in the game', () => {
     expect(playersLabel(game({ teams: [team({ players: [{ user_id: 'a', first_name: 'Alex' }] })] }))).toBe(
       '1 player',
     );
+  });
+
+  it('labels the lobby, and counts the places taken on its board', () => {
+    expect(LOBBY_LABEL).toBe('Game status · waiting to start · game code');
+    expect(lobbyBoardTitle(game({ max_teams: 10 }))).toBe('2 players · 1 of 10 teams');
+    expect(
+      lobbyBoardTitle(
+        game({
+          max_teams: 10,
+          max_team_size: 1,
+          teams: [team({ players: [{ user_id: 'a', first_name: 'Alex' }] })],
+        }),
+      ),
+    ).toBe('1 player · 1 of 10 places');
   });
 
   it('shows the series total in a count game only: never "of 150" against the clock', () => {
@@ -260,37 +281,106 @@ describe('in the game', () => {
     );
   });
 
-  it('says how the last answer went, with the −1 only under negative marking', () => {
-    expect(answerNotice({ correct: true, skipped: false }, false)).toEqual({
-      text: 'Right!',
+  it("says how the last answer went, with the game's points", () => {
+    const plain = { right_points: 1, wrong_points: 0 };
+    expect(answerNotice({ correct: true, skipped: false }, plain)).toEqual({
+      text: 'Right! +1',
       tone: 'success',
     });
-    expect(answerNotice({ correct: false, skipped: false }, false)).toEqual({
+    expect(answerNotice({ correct: true, skipped: false }, { right_points: 2, wrong_points: 0 })).toEqual({
+      text: 'Right! +2',
+      tone: 'success',
+    });
+    expect(answerNotice({ correct: false, skipped: false }, plain)).toEqual({
       text: 'Not quite.',
       tone: 'error',
     });
-    expect(answerNotice({ correct: false, skipped: false }, true)).toEqual({
-      text: 'Not quite. −1',
+    expect(answerNotice({ correct: false, skipped: false }, { right_points: 1, wrong_points: -3 })).toEqual({
+      text: 'Not quite. −3',
       tone: 'error',
     });
-    expect(answerNotice({ correct: false, skipped: true }, true)).toEqual({ text: 'Skipped.', tone: 'info' });
+    expect(answerNotice({ correct: false, skipped: true }, { right_points: 1, wrong_points: -1 })).toEqual({
+      text: 'Skipped.',
+      tone: 'info',
+    });
   });
 
-  it('waits for the team, and for the clock in a timed game', () => {
+  it('waits for the team, and once it is done for the others, the clock or a knockout', () => {
     expect(waitingText('count')).toBe(
       'Your teammates are answering the last ones. The game ends when every team is done.',
     );
     expect(waitingText('timed')).toMatch(/every team is done or the time is up\.$/);
+    expect(waitingCopy(game(), team())).toEqual({
+      title: 'Your team has no more questions to hand out.',
+      body: 'Your teammates are answering the last ones. The game ends when every team is done.',
+    });
+    const done = team({ finished_at: '2026-10-21T10:03:00.000Z', score: 3 });
+    expect(waitingCopy(game(), done)).toEqual({
+      title: 'Your team is done: 3 points.',
+      body: 'Waiting for the others to finish. The scores update here as they play.',
+    });
+    expect(waitingCopy(game({ mode: 'timed', knockout: true }), { ...done, solo: true, score: 1 })).toEqual({
+      title: 'You are done: 1 point.',
+      body: 'Waiting for the others to finish or the time to run out, or for a knockout. The scores update here as they play.',
+    });
   });
 
-  it('celebrates a first place only, once the game is finished', () => {
+  it('celebrates a first place, or a single player with any right answer, once the game is finished', () => {
     const won = game({ status: 'finished', teams: [team({ place: 1 })] });
-    expect(wonGame(won)).toBe(true);
-    expect(wonGame({ ...won, teams: [team({ place: 2 })] })).toBe(false);
-    expect(wonGame({ ...won, status: 'running' })).toBe(false);
-    expect(wonGame({ ...won, me: { team_id: null, question: null, last: null, waiting: false } })).toBe(
+    expect(celebrates(won)).toBe(true);
+    expect(celebrates({ ...won, teams: [team({ place: 2 })] })).toBe(false);
+    expect(celebrates({ ...won, status: 'running' })).toBe(false);
+    expect(celebrates({ ...won, me: { team_id: null, question: null, last: null, waiting: false } })).toBe(
       false,
     );
+    const single = game({
+      status: 'finished',
+      players: 'single',
+      teams: [team({ place: 1, correct: 0, score: 0 })],
+    });
+    expect(celebrates(single)).toBe(false);
+    expect(celebrates({ ...single, teams: [team({ place: 1, correct: 1 })] })).toBe(true);
+  });
+
+  it("heads the results: a single player's tally, else the winners, and a line for whoever played", () => {
+    const solo = team({ solo: true, name: 'Sofia', correct: 2, score: 2, answered: 2, place: 1 });
+    const single = game({ status: 'finished', players: 'single', teams: [solo] });
+    expect(resultsHeadline(single, solo)).toBe('2 right, 2 points');
+    expect(resultsHeadline(single, { ...solo, correct: 1, score: 1 })).toBe('1 right, 1 point');
+    expect(resultsHeadline(single, { ...solo, correct: 0, score: 0 })).toBe('0 right, 0 points');
+    // A single player is encouraged, never "You won".
+    expect(resultsLine(single, solo)).toBe('You got every one you answered right. Brilliant!');
+    const owls = team({ place: 1, score: 3 });
+    const multi = game({ status: 'finished', teams: [owls, team({ id: 't2', name: 'Bats', place: 2 })] });
+    expect(resultsHeadline(multi, owls)).toBe('Owls wins!');
+    expect(resultsLine(multi, owls)).toBe('Your team won with 3 points. Fantastic!');
+    expect(resultsLine(multi, { ...owls, solo: true, score: 1 })).toBe('You won with 1 point. Fantastic!');
+    const second = game({
+      status: 'finished',
+      me: { team_id: 't2', question: null, last: null, waiting: false },
+      teams: [owls, team({ id: 't2', name: 'Bats', place: 2, correct: 0, answered: 1 })],
+    });
+    expect(resultsLine(second, second.teams[1]!)).toBe(
+      'Every question you try makes the next one easier. Go again!',
+    );
+  });
+});
+
+describe("the doors' countdown", () => {
+  it('says Get ready, then 3, 2, 1, and Go! for the last second', () => {
+    expect(countdownLabel(5000)).toBe('Get ready');
+    expect(countdownLabel(4001)).toBe('Get ready');
+    expect(countdownLabel(4000)).toBe('3');
+    expect(countdownLabel(3000)).toBe('2');
+    expect(countdownLabel(1001)).toBe('1');
+    expect(countdownLabel(1000)).toBe('Go!');
+    expect(countdownLabel(1)).toBe('Go!');
+  });
+
+  it('tells a screen reader how long, and Go! at the end', () => {
+    expect(countdownSpeech(5000)).toBe('The Quest begins in 5 seconds');
+    expect(countdownSpeech(1500)).toBe('The Quest begins in 2 seconds');
+    expect(countdownSpeech(1000)).toBe('Go!');
   });
 });
 

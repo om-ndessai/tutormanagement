@@ -1,8 +1,13 @@
 import {
+  createGameSchema,
   rankTeams,
   teamTotals,
+  type CreateGameInput,
   type EngineGame,
+  type GameFavorite,
+  type GameLevelScope,
   type GameMode,
+  type GamePlayerMode,
   type GameStatus,
   type GameSummary,
   type QuestionKind,
@@ -18,26 +23,28 @@ import type { OrgId } from '../lib/org.js';
 const iso = (ms: number | null) => (ms === null ? null : new Date(ms).toISOString());
 
 /**
- * The series: up to `count` questions of a level at random, approved -- and,
- * on the organization's switch, checked ones too -- leaving out standards that
- * need a figure. Read once, when the game starts.
+ * The series: up to `count` questions at random from a game's levels (one, or
+ * -- Random, Phase 47 -- a level and those above it), approved -- and, on the
+ * organization's switch, checked ones too -- leaving out standards that need
+ * a figure. Read once, when the game starts; the game's object keeps it.
  */
 export async function drawGameSeries(
   db: D1Database,
-  input: { levelId: string; count: number; includeUnreviewed: boolean },
+  input: { levelIds: readonly string[]; count: number; includeUnreviewed: boolean },
 ): Promise<SeriesQuestion[]> {
   const statuses = input.includeUnreviewed ? ['approved', 'checked'] : ['approved'];
+  // Every topic of a level sorts between 'NC26.5.' and 'NC26.5/' ('/' follows '.').
+  const ranges = input.levelIds.map(() => '(q.topic_id >= ? AND q.topic_id < ?)').join(' OR ');
   const result = await db
     .prepare(
       // org-scope: the platform bank's questions, drawn for a game; nothing of an organization's.
       `SELECT q.id, q.kind, q.stem, q.choices, q.answer, q.solution FROM questions q
-       WHERE q.topic_id >= ? AND q.topic_id < ? AND q.status IN (${statuses.map(() => '?').join(', ')})
+       WHERE (${ranges}) AND q.status IN (${statuses.map(() => '?').join(', ')})
          AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
        ORDER BY random()
        LIMIT ?`,
     )
-    // Every topic of the level sorts between 'NC26.5.' and 'NC26.5/' ('/' follows '.').
-    .bind(`${input.levelId}.`, `${input.levelId}/`, ...statuses, input.count)
+    .bind(...input.levelIds.flatMap((id) => [`${id}.`, `${id}/`]), ...statuses, input.count)
     .all<{ id: string; kind: QuestionKind; stem: string; choices: string; answer: string; solution: string }>();
   return (result.results ?? []).map((row) => ({
     id: row.id,
@@ -71,18 +78,25 @@ export async function insertGame(
     code: string;
     hostId: string;
     levelId: string;
+    levelScope: GameLevelScope;
     mode: GameMode;
     questionCount: number | null;
     durationSeconds: number | null;
-    negativeMarking: boolean;
+    rightPoints: number;
+    wrongPoints: number;
+    knockout: boolean;
+    players: GamePlayerMode;
+    maxTeams: number;
     maxTeamSize: number;
+    lateJoin: boolean;
   },
 ): Promise<void> {
   await db
     .prepare(
       `INSERT INTO quest_games (id, organization_id, code, host_user_id, level_id, mode, question_count,
-                                duration_seconds, negative_marking, max_team_size)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                duration_seconds, negative_marking, max_team_size, level_scope, right_points,
+                                wrong_points, knockout, players, max_teams, late_join)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       input.id,
@@ -93,8 +107,15 @@ export async function insertGame(
       input.mode,
       input.questionCount,
       input.durationSeconds,
-      input.negativeMarking ? 1 : 0,
+      input.wrongPoints < 0 ? 1 : 0,
       input.maxTeamSize,
+      input.levelScope,
+      input.rightPoints,
+      input.wrongPoints,
+      input.knockout ? 1 : 0,
+      input.players,
+      input.maxTeams,
+      input.lateJoin ? 1 : 0,
     )
     .run();
 }
@@ -189,7 +210,7 @@ export async function markGameStarted(
 export async function writeGameResults(db: D1Database, org: OrgId, game: EngineGame): Promise<void> {
   const places = rankTeams(game);
   const teams = game.teams.map((team) => {
-    const totals = teamTotals(team.answers, game.negative_marking);
+    const totals = teamTotals(team.answers, game);
     return {
       id: team.id,
       ...totals,
@@ -200,8 +221,8 @@ export async function writeGameResults(db: D1Database, org: OrgId, game: EngineG
   });
   await db.batch([
     db
-      .prepare(`UPDATE quest_games SET status = 'finished', ended_at = ? WHERE organization_id = ? AND id = ?`)
-      .bind(iso(game.ended_at ?? Date.now()), org, game.id),
+      .prepare(`UPDATE quest_games SET status = 'finished', ended_at = ?, end_reason = ? WHERE organization_id = ? AND id = ?`)
+      .bind(iso(game.ended_at ?? Date.now()), game.end_reason, org, game.id),
     db
       .prepare(
         `UPDATE quest_game_teams AS t SET
@@ -227,7 +248,7 @@ export async function listGames(
 ): Promise<GameSummary[]> {
   const result = await db
     .prepare(
-      `SELECT g.id, g.code, g.level_id, g.mode, g.question_count, g.duration_seconds, g.status, g.created_at,
+      `SELECT g.id, g.code, g.level_id, g.level_scope, g.players, g.mode, g.question_count, g.duration_seconds, g.status, g.created_at,
               u.full_name AS host_name, g.host_user_id = ?2 AS is_host,
               (SELECT COUNT(*) FROM quest_game_teams t WHERE t.organization_id = g.organization_id AND t.game_id = g.id) AS teams,
               (SELECT t.place FROM quest_game_players p JOIN quest_game_teams t ON t.id = p.team_id
@@ -246,6 +267,8 @@ export async function listGames(
       id: string;
       code: string;
       level_id: string;
+      level_scope: GameLevelScope;
+      players: GamePlayerMode;
       mode: GameMode;
       question_count: number | null;
       duration_seconds: number | null;
@@ -260,6 +283,8 @@ export async function listGames(
     id: row.id,
     code: row.code,
     level_id: row.level_id,
+    level_scope: row.level_scope,
+    players: row.players,
     mode: row.mode,
     question_count: row.question_count,
     duration_seconds: row.duration_seconds,
@@ -275,4 +300,83 @@ export async function listGames(
 /** "Sofia Reyes" -> "Sofia": how a game names a person. */
 export function firstNameOf(fullName: string): string {
   return fullName.trim().split(/\s+/)[0] || 'Player';
+}
+
+// ---------------------------------------------------------------------------
+// Favorites (Phase 47): a person's own named settings, in one organization
+// ---------------------------------------------------------------------------
+
+interface FavoriteRow {
+  id: string;
+  name: string;
+  config: string;
+  updated_at: string;
+}
+
+/** A stored favorite, its settings checked again by the shared schema; null when they no longer parse. */
+function toFavorite(row: FavoriteRow): GameFavorite | null {
+  let parsed: ReturnType<typeof createGameSchema.safeParse>;
+  try {
+    parsed = createGameSchema.safeParse(JSON.parse(row.config));
+  } catch {
+    return null;
+  }
+  return parsed.success ? { id: row.id, name: row.name, config: parsed.data, updated_at: row.updated_at } : null;
+}
+
+export async function listFavorites(db: D1Database, org: OrgId, userId: string): Promise<GameFavorite[]> {
+  const result = await db
+    .prepare(
+      `SELECT id, name, config, updated_at FROM quest_game_favorites
+       WHERE organization_id = ? AND user_id = ?
+       ORDER BY updated_at DESC`,
+    )
+    .bind(org, userId)
+    .all<FavoriteRow>();
+  return (result.results ?? []).map(toFavorite).filter((f): f is GameFavorite => f !== null);
+}
+
+/** Saves under a name, replacing the person's favorite of that name (any case). Returns it, and whether it was new. */
+export async function saveFavorite(
+  db: D1Database,
+  org: OrgId,
+  input: { userId: string; name: string; config: CreateGameInput },
+): Promise<{ favorite: GameFavorite; created: boolean }> {
+  const existing = await db
+    .prepare('SELECT id FROM quest_game_favorites WHERE organization_id = ? AND user_id = ? AND name = ?')
+    .bind(org, input.userId, input.name)
+    .first<{ id: string }>();
+  const config = JSON.stringify(input.config);
+  const now = new Date().toISOString();
+  if (existing) {
+    await db
+      .prepare(
+        `UPDATE quest_game_favorites SET name = ?, config = ?, updated_at = ?
+         WHERE organization_id = ? AND user_id = ? AND id = ?`,
+      )
+      .bind(input.name, config, now, org, input.userId, existing.id)
+      .run();
+  } else {
+    await db
+      .prepare(
+        `INSERT INTO quest_game_favorites (id, organization_id, user_id, name, config, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(crypto.randomUUID(), org, input.userId, input.name, config, now, now)
+      .run();
+  }
+  const row = await db
+    .prepare('SELECT id, name, config, updated_at FROM quest_game_favorites WHERE organization_id = ? AND user_id = ? AND name = ?')
+    .bind(org, input.userId, input.name)
+    .first<FavoriteRow>();
+  return { favorite: toFavorite(row!)!, created: !existing };
+}
+
+/** Deletes the person's own favorite; returns its name, or null when they have none by that id. */
+export async function deleteFavorite(db: D1Database, org: OrgId, userId: string, id: string): Promise<string | null> {
+  const row = await db
+    .prepare('DELETE FROM quest_game_favorites WHERE organization_id = ? AND user_id = ? AND id = ? RETURNING name')
+    .bind(org, userId, id)
+    .first<{ name: string }>();
+  return row?.name ?? null;
 }

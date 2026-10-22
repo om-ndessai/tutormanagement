@@ -6,7 +6,8 @@
 // Cancel; Leave for a player; and the teams arriving. Mobile (design 60): Share opens the system share
 // sheet with the code and nothing else (no name); the join choices are inline (a full-screen game
 // opens no sheet, U3); Cancel asks first, natively. Leaving goes back to the hub with "You left the
-// game.". On an iPad the code and the choices sit beside the teams.
+// game.". On an iPad the code and the choices sit beside the teams. Phase 47 (design 61): the label is
+// the game's status, the host's action is "Start the Quest", and the board counts the places taken.
 import type { GameView } from '@tmi/shared';
 import { Share, View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
@@ -19,7 +20,14 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { JoinChoices } from './game-join-choices';
-import { gameRulesLine, playerCount, playersLabel, shareText, spelledCode } from './game-model';
+import {
+  LOBBY_LABEL,
+  gameRulesLine,
+  lobbyBoardTitle,
+  playerCount,
+  shareText,
+  spelledCode,
+} from './game-model';
 import { confirmEnd } from './game-play';
 import { Scoreboard } from './game-scoreboard';
 import { CODE_FONT } from './game-style';
@@ -83,7 +91,7 @@ export function GameLobby({ game }: { game: GameView }) {
             variant="labelMedium"
             style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
           >
-            Game code
+            {LOBBY_LABEL}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
             <Text
@@ -149,7 +157,7 @@ export function GameLobby({ game }: { game: GameView }) {
               disabled={players === 0 || action.isPending}
               contentStyle={{ minHeight: 52 }}
             >
-              Begin the game
+              Start the Quest
             </Button>
           ) : null}
           {mine ? (
@@ -190,7 +198,7 @@ export function GameLobby({ game }: { game: GameView }) {
 
   const board = (
     <View style={wide ? { flex: 2 } : undefined}>
-      <Scoreboard game={game} title={playersLabel(game)} />
+      <Scoreboard game={game} title={lobbyBoardTitle(game)} />
     </View>
   );
 

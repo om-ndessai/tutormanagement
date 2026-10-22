@@ -3,7 +3,9 @@
 # game reads "Playing now"; in it, "Question 1 of 2" and her score at the top. A choice (tapped again,
 # taken back) or a number, Submit: right or wrong is said at once -- never the key. Question 2: Skip,
 # "Skipped.". Every team done: the results, "Sofia wins!", each question with its right answer, one at
-# a time. Exit: her game, finished in 1st place. The switches are off again at the end.
+# a time. Exit: her game, finished in 1st place. Phase 47: the setup waits out the doors' countdown, so
+# her question is there when she opens the game (waited for up to 15 s all the same); right says its
+# points ("Right! +1"). The switches are off again at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -54,6 +56,8 @@ tags:
     visible:
       id: game-question
     timeout: 15000
+- assertNotVisible:
+    id: game-countdown-number
 - assertVisible:
     id: game-question-number
     text: '(?i)Question 1 of 2'
@@ -115,7 +119,7 @@ tags:
           timeout: 5000
       - pressKey: Enter
 - extendedWaitUntil:
-    visible: '(Right!|Not quite\.)'
+    visible: '(Right! \+1|Not quite\.)'
     timeout: 10000
 - extendedWaitUntil:
     visible:
@@ -135,8 +139,11 @@ tags:
       id: game-skip
     direction: UP
     centerElement: true
+# Her last answer ends the game and she wins: the confetti (Phase 47) keeps the screen moving, so the
+# tap does not wait for it to settle -- on Android that wait (6 s) outlasted the "Skipped." notice.
 - tapOn:
     id: game-skip
+    waitToSettleTimeoutMs: 500
 - extendedWaitUntil:
     visible: 'Skipped\.'
     timeout: 10000

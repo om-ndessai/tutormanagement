@@ -1,6 +1,7 @@
 // Ported from NAV_ITEMS in apps/web/src/components/layout/app-shell.tsx @ 22b9701 (Phase 38 added
 // `feature` and `badge`: the Assessment menu, in beta, only while the organization has it on; Phase 42
-// @ 82397b8, working tree, added Quest, only while the organization has Question Quest on).
+// @ 82397b8, working tree, added Quest, only while the organization has Question Quest on; Phase 47
+// @ 9eccdf2, working tree, gave Quest the Beta badge).
 import type { Href } from 'expo-router';
 
 import type { Organization } from '@tmi/shared';
@@ -84,12 +85,14 @@ export const NAV_ITEMS: NavItem[] = [
     tourId: 'nav-assessments',
   },
   {
-    // Phase 42: Question Quest (gamification). Only while the organization has it on.
+    // Phase 42: Question Quest (gamification). Only while the organization has it on. In beta since
+    // Phase 47, as on the web.
     href: '/quest',
     label: 'Quest',
     icon: 'trophy-outline',
     keywords: ['game', 'points', 'questions', 'approve', 'review'],
     feature: 'gamify_question_quest',
+    badge: 'Beta',
     tourId: 'nav-quest',
   },
   {

@@ -2255,3 +2255,398 @@ both (4/4 each); jest 770 passed; typecheck clean; screenshots reviewed light (i
 (iPad: side-by-side play, lobby and results); exposure checks: R20 a game she is not in reads "not
 found", never forbidden; first names only (no surname on the lobby); keys and solutions only on the
 results; the team switch only for the host; no money on any game screen.
+
+## 61. Phase 47: Quest Games, round two — design (2026-10-22)
+**Scope:** the web's Phase 47 at parity (`docs/quest-games-g2-plan.md`; the owner's brief, "Phase G2"
+in `docs/gamification.md`; R20 as it grows). (1) **Start a game becomes a five-step wizard**: Questions
+(the person's favorites first, then level tiles with their counts, and a Random tile with a "Starting
+at" picker), Length (count or timed, a − / + stepper), Scoring (points for right 1..10 and wrong −10..0,
+steppers, and a Knockout checkbox), Players (Single player / Multiplayer; for multiplayer the most
+teams 2..20, Everyone on their own / Teams of several, a team size 2..6, joining closed or open once it
+starts), Review (the choices in words, Save as a favorite with a name, then **Generate game code** or
+**Start game**, which replaces the wizard: no going back). (2) **Joining**: a game of one-player teams
+offers only "Join the game"; a game of teams offers no "on my own", only start a team or a team's
+code (so a teammate types two codes); the lookup says a single-player game cannot be joined, and uses
+`open` (late joining) rather than the lobby status. (3) **The game status page**: the lobby's label and
+"Start the Quest"; the doors countdown on every screen, 5 s by the server's clock, then the question at
+once; the "Game status" waiting card once a team is done; the results with the end-reason line, confetti
+for winners (a single player: any right answer), the K.O. stamp, and the encouragement line for the
+others; a single player's headline "N right, M points". (4) **Beta** on the app's Quest entry (More,
+Search) and the Quest screen. The API, the Durable Object, the contract and the web are built and green:
+**no API, schema or shared change from this work.** Mobile-only addition: a native confirm before a
+favorite is deleted (the web deletes on the ×; a × on a phone's tile is an easy mis-tap).
+
+**Web sources:** `apps/web/src/features/quest/{start-game-page.tsx (StartGamePage, Section, Tile,
+QuestionsStep, ReviewStep, Stepper, toRequest, fromConfig, summaryOf), game-page.tsx (GamePage, Rules,
+Lobby, Scoreboard, Play's waiting card, QuestionPanel's notices, Results), game-effects.tsx (useCountdown,
+DoorsCountdown, Confetti, KnockoutBurst), games-card.tsx (GamesCard rows, JoinDialog, JoinChoices),
+games-api.ts}`; the Quest item's `badge: 'Beta'` in `components/layout/app-shell.tsx` and the Badge in
+`quest-page.tsx`'s header; the route `quest/games/new` in `App.tsx`. Behaviour: `e2e/tests/quest-games.spec.ts`.
+Shared: `packages/shared/src/quest-games.ts` (`createGameSchema`, `CreateGameRequest`, `gameFavoriteSchema`,
+`GameFavorite`, `GameSettings`, `GameView.end_reason`, `GameLookup.open`, `GameSummary.level_scope/players`,
+`GAME_COUNTDOWN_MS`, the new `GAME_LIMITS`, `gameCountdownLeft`, `gameLevelLabel`, `gamePlayersLabel`,
+`gameMarkingLabel(scoring)`, `pointsLabel`, `gameEndLabel`, `gameEncouragement`).
+
+**Endpoints:** (`src/features/quest/games-api.ts`, the web's copy brought up to date: `gameKeys` gains
+`favorites: ['quest-games','favorites']`; the save and the delete invalidate it; everything else as in
+design 60, including the app's one deliberate change, `useGame(id, active)`)
+- `GET /quest/games/levels` — `useGameLevels()` — anyone (the tiles and "Starting at"; `available > 0` only).
+- `GET /quest/games/favorites` — `useGameFavorites()` — the person's own, in this organization (R20).
+- `PUT /quest/games/favorites` `{name, config}` (by name: saves or replaces) — `useSaveGameFavorite()`; 409 past `GAME_LIMITS.maxFavorites` (12), the server's sentence.
+- `DELETE /quest/games/favorites/:id` — `useDeleteGameFavorite()`; another person's or a stale id is 404.
+- `POST /quest/games` `CreateGameRequest` — `useCreateGame()` (the input type changes from `CreateGameInput`, now the schema's OUTPUT, to `CreateGameRequest`). A single player's reply is already `running`, the host its one player, `started_at` 5 s ahead of `now`.
+- `POST /quest/games/lookup` — `useLookupGame()` — now carries `players`, `open` and the settings.
+- `GET /quest/games/:id`, `POST …/{join,start,end,leave,answer}`, `GET …/results` — unchanged hooks; the replies carry `GameSettings` and `end_reason`.
+
+**Screens & routes:**
+- `app/(org)/quest/new-game.tsx` → `StartGameFlow` (replaces `NewGameSheet`; the route path, its deep
+  link and `screen-quest-new-game` stay). Presentation changes from `formSheet` to the step flows'
+  `STEP_FLOW_OPTIONS` in `(org)/_layout.tsx` (a card rising from the bottom, no swipe, no header), as
+  Add a student and Schedule a lesson: five steps do not fit a sheet, and the wizard opens no sheet (the
+  pickers are inline, the delete confirm is a native `Alert`), so it could be a full-screen modal, but
+  the card keeps the app's toast reachable (design 57: the toast window never reaches VoiceOver over a
+  full-screen modal). The layout's comment is updated.
+- Its last action: `router.replace({ pathname: '/quest/games/[gameId]', params })`, as the Phase 46
+  sheet did, so Back / Exit from the game lands on the hub, never in the made game's settings.
+- `quest/join-game` (sheet) and `quest/games/[gameId]` (full-screen modal, `QUEST_OPTIONS`): unchanged
+  routes. The countdown, the confetti and the K.O. stamp are drawn inside the game's `QuestFrame`
+  through its own Paper `Portal.Host` (as Quest's welcome), never an RN `Modal` (design 57: a native
+  modal over Quest misbehaved with the keyboard and VoiceOver).
+
+**Components:**
+- New, `src/features/quest/`:
+  - `game-wizard-model.ts` (pure, Jest), ported from `start-game-page.tsx`: `WizardDraft`, `WIZARD_START`
+    (count 10, 5 minutes, right 1, wrong 0, knockout off, multiplayer, most teams
+    `GAME_LIMITS.defaultTeams`, teams of `defaultTeamSize`, joining closed), `toRequest(draft)` and
+    `fromConfig(config)` (the web's, line for line: a single player sends no knockout, no late join, no
+    `max_teams`, a team size of 1; "Everyone on their own" sends 1), `summaryOf(request)` (level,
+    length, scoring, players, from the shared labels), `reviewLines(request)` (each step's lines for its
+    Review card: Questions; Length; Scoring + "Knockout: On|Off" for multiplayer; Players + "Joining:
+    Closed once it starts|Open while it runs" for multiplayer), `favoriteDetail(favorite)` ("G6 · 10
+    questions · Up to 10 teams of up to 4"), `favoritePlayable(favorite, levels)` and its refusal
+    ("G6 has no questions to play here now."), `levelProblem(draft)` ("Choose a level." / "Choose the
+    lowest level." for Random), `submitLabel(players)` ("Generate game code" / "Start game"),
+    `reviewHint(players)` (the web's two sentences).
+  - `start-game-flow.tsx`: `StartGameFlow` on the app's `StepFlow` (U2), title "Start a Quest game",
+    steps `questions`, `length`, `scoring`, `players` and the Review ("Ready?", the web's hint), the
+    draft controlled here, `dirty={false}` (as the Phase 46 sheet: nothing worth guarding is lost), each
+    step's content in a `View` with `game-step-<n>` and capped at 720 pt, centred (an iPad):
+    - **Questions:** "Your favorites" (only when there are any; the web's hint) — a `GameTile` per
+      favorite with a star, its name and `favoriteDetail`, and a × (`IconButton`, 44 pt, "Delete the
+      favorite Friday G6") that asks first (native `Alert`: "Delete “Friday G6”?" / Delete / Keep;
+      `haptics.warning()`), then deletes and toasts "Deleted “Friday G6”." A tap on a favorite fills the
+      draft (`fromConfig`) and jumps to the Review (`StepFlowHandle.goTo(REVIEW_KEY)`); an unplayable one
+      toasts the refusal. Then "Which questions?" — a tile per playable level (`level.label`, "N
+      questions"), a Random tile ("Any level from a starting one up", shuffle icon), the grid two
+      columns on a phone, four when `questWide`, one at the largest text sizes (`useLargeText`); a
+      `Skeleton` while the levels load; "No level has approved questions to play yet." when none. With
+      Random chosen: `OptionPicker` "Starting at" (`game-random-start`, `scroll`, the playable levels)
+      and the web's line under it. The step validates (`levelProblem`) rather than disabling Next: the
+      message shows under the tiles (`game-level-error`) with the error haptic, StepFlow's pattern.
+    - **Length:** the existing `SegmentedTabs` (`game-mode-count` / `game-mode-timed`, "A number of
+      questions" / "Against the clock"), then a `NumberStepper` "Questions" 1..50 or "Minutes" 1..30,
+      each kept per mode (`game-amount`).
+    - **Scoring:** the web's hint; `NumberStepper` "A right answer" (1..10) and "A wrong answer"
+      (−10..0), both shown through the shared `pointsLabel` ("+2", "−3", "0"); side by side when
+      `questWide`, stacked on a phone; then the Knockout row: a Paper `Checkbox.Android` in a pressable
+      row (`game-knockout`, one accessible element, role checkbox) with "Knockout" and the web's line.
+    - **Players:** two `GameTile`s, Single player ("Just you, for practice. It starts straight away.")
+      and Multiplayer ("Others join with a code, on their own or in teams."); for multiplayer, inside an
+      `OutlinedCard`: `NumberStepper` "Most teams" / "Most players" (2..20), "Teams" as two `Choice`s
+      (`game-team-style-solo` "Everyone on their own", `game-team-style-teams` "Teams of several"), with
+      teams a `NumberStepper` "Players in a team, at most" (2..6), and "Joining" as two `Choice`s
+      (`game-late-join-closed` "Closed once it starts", `game-late-join-open` "Open while it runs").
+      `Choice wide` wraps, so the long labels never squeeze into a segmented control.
+    - **Review:** StepFlow's cards with Edit, one per step, from `reviewLines` (`game-summary-<key>`);
+      then the favorite block: `TextInput` "Save as a favorite" (`game-fav-name`, placeholder "A name,
+      like Friday G5 race", `maxLength` 40, Return saves) and "Save as favorite" (`game-fav-save`, star
+      icon, enabled once a name is typed). Checked with `gameFavoriteSchema` first (an SSN-shaped name is
+      refused before sending); then the toast "Saved “Friday G6” to your favorites." or the server's
+      refusal. The action is `submitLabel` with `game-create`; a refusal (409, too few questions to draw)
+      is StepFlow's `formError` above the footer.
+  - `game-tile.tsx`: `GameTile` — a `Pressable`, role radio with `checked` (a favorite's tile is a
+    button), min height 80, the outline border, selected: the primary border and `withAlpha(primary,
+    0.12)`; icon, title (titleMedium) and detail (bodySmall, muted); `haptics.selection()`; one accessible
+    element ("G6, 412 questions, selected"); an optional corner slot for the favorite's ×.
+  - `game-effects.tsx` (ported from the web's): 
+    - `useGameCountdown(game, receivedAt)` — the ms left from the shared `gameCountdownLeft(game,
+      deviceNow - receivedAt)` (`receivedAt` is the query's `dataUpdatedAt`, as `GameClock`), recomputed
+      in a timer aligned to the next whole second (about six renders; never in render, the compiler
+      lint); `onDone` once at 0.
+    - `DoorsCountdown` (`game-countdown`): over the whole frame, a scrim of `withAlpha(brand950, 0.7)`;
+      two door panels, each half the width (`brand900`, two inset panels outlined in
+      `withAlpha(brand50, 0.15)`, a `brand200` handle), "The Quest begins" over "Get ready", then 3, 2, 1
+      (`game-countdown-number`, displayLarge, twice the size on an iPad, `brand50`); in the last second
+      the panels swing open on their outer edges (Reanimated `rotateY` 0 → ±100° with `perspective` and
+      `transformOrigin`, 700 ms, ease-in, fading) on "Go!", which pops (scale 0.6 → 1.15 → 1). Each
+      number pops in (1.4 → 1). The labels are the web's: `countdownLabel(ms)` in `game-model.ts`
+      (above 4 s "Get ready", then the second less one, "Go!" for the last second). iOS
+      `accessibilityViewIsModal`; the frame's body beneath is hidden from accessibility while it shows;
+      announced once on showing ("The Quest begins in 5 seconds", iOS `announceForAccessibility`,
+      Android a polite live region on the number) and "Go!" at the end. Touches are swallowed for its 5 s.
+    - `KnockoutStamp` (`game-knockout-burst`): "K.O.!" on `theme.colors.error` with `onError`, displayLarge
+      weight 900, rounded; lands once (scale 3 → 1, a spring, tilted −6°), holds, fades by 2.6 s;
+      `pointerEvents="none"`, hidden from accessibility (the end-reason line says it).
+    - Confetti: Home's `Confetti` (design 58), reused, with `fall` the window's height and the game's id
+      as its seed, portalled over the frame (`game-confetti`, hidden from accessibility).
+  - `game-model.ts`, changed: `gameTitle` with `gameLevelLabel`; `gameRulesLine(game)` the web's `Rules`
+    ("G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout · joining open while it
+    runs · may include questions not yet reviewed"); `lookupLine` ("Priya’s game · Right +1, wrong 0 · Up
+    to 20 teams of up to 2 · knockout"); `gameRowTitle` with `gameLevelLabel`; `gameRowHost` "Single
+    player" for a single game; `joinClosedText(lookup)` (single: "This is Priya’s single-player game, so
+    it cannot be joined."; else not open: "This game has started|ended, so it cannot be joined now.") and
+    `JOIN_RUNNING_TEXT` ("This game is under way: you can still join, and start from its first
+    question."); `answerNotice(last, scoring)` → "Right! +2", "Not quite. −3" (wrong below 0), "Not
+    quite.", "Skipped."; `LOBBY_LABEL` "Game status · waiting to start · game code"; `lobbyBoardTitle`
+    ("1 player · 1 of 10 teams|places"); `waitingCopy(game, mine)` (finished: "You are done|Your team is
+    done: N points." and "Waiting for the others to finish[ or the time to run out][, or for a knockout].
+    The scores update here as they play."; else Phase 46's two lines); `resultsHeadline(game, mine)`
+    (single: "N right, M points"; else `winnersLabel`); `resultsLine(game, mine)` ("You won with N points.
+    Fantastic!" / "Your team won …", else `gameEncouragement`); `celebrates(game)` (single: any right
+    answer; else first place) replacing `wonGame`; `countdownLabel`, `countdownSpeech`. Removed with the
+    sheet: `NewGameForm`, `createInput`, `amountProblem`, `amountHint`, `teamSizeLabel`, `teamSizeSpeech`.
+    The shared `pointsLabel` is imported as `signedPoints` here (Quest's own `pointsLabel` in
+    `quest-model.ts` means something else).
+  - `game-screen.tsx`: holds `useGameCountdown`; while counting, `DoorsCountdown` over everything, the
+    clock hidden (a timed game's clock starts at the doors, as on the web), and on 0 `query.refetch()` at
+    once rather than at the next poll.
+  - `game-lobby.tsx`: `LOBBY_LABEL`; "Start the Quest" (`game-start`, was "Begin the game"); the board
+    titled `lobbyBoardTitle`.
+  - `game-play.tsx`: while counting, a card "Get ready: the doors are opening…" (`game-getting-ready`)
+    under the doors; the waiting card (`game-waiting`) gains the label "Game status" and `waitingCopy`;
+    the notice from `answerNotice(last, reply.data)`.
+  - `game-results.tsx`: the end-reason line (`game-end-reason`, `gameEndLabel`, in the error colour for a
+    knockout) above the headline (`game-winner`, `resultsHeadline`), then `game-encouragement`
+    (`resultsLine`, only for someone who played). On a knockout the stamp first, then the confetti once it
+    fades (the plan: "a short knockout animation first"; the web plays both at once). The celebration
+    (confetti and the success haptic) once per game per app run (the existing `celebrated` set): reopening
+    a finished game from the hub shows the words only.
+  - `game-join-choices.tsx`: `maxTeamSize === 1` → one button "Join the game" (`game-join-solo`); teams →
+    no solo button, only Start a team and a team's code; a named team as before.
+  - `join-game-sheet.tsx`: the title with `gameLevelLabel`; `players === 'single'` or `!open` →
+    `game-join-closed` with `joinClosedText`; running and open → `game-join-running` above the choices.
+  - `games-panel.tsx`: rows from the changed model functions (no layout change).
+- New, `src/components/number-stepper.tsx`: `NumberStepper` — label, − (`<id>-minus`), the value, +
+  (`<id>-plus`), the range ("1 to 50", or "−10 to 0" through `format`) beside it, or under it at large
+  text sizes. The value is a `TextInput` (`<id>`): it shows `format(value)` and the raw number while
+  focused; iOS `numbers-and-punctuation` with Done (`returnKeyType="done"`, `submitBehavior="blurAndSubmit"`:
+  design 60's lesson, the number pad has no return key), Android `number-pad`, or `phone-pad` when `min < 0`
+  (its first page has the minus sign, design 57); typed "−3" or "-3" commits on blur or Done, clamped
+  (`stepperCommit(text, min, max, current)`, pure, Jest). The buttons are 44 pt `IconButton`s labelled the
+  web's way ("Questions: one less"), disabled at the bounds, `haptics.selection()` per tap; holding one
+  repeats after 400 ms every 90 ms (50 taps is too many). Kept separate elements (an accessible group
+  folds them into one on Android, as the canvas card found).
+- Changed elsewhere: `src/components/step-flow.tsx` gains two optional props, `submitTestID` (so the
+  final action is exactly `game-create`, as `QuickSheet.primaryTestID` in design 60; default unchanged)
+  and `review.trail` (content after the Review cards: the favorite block); `step-flow.test.tsx` covers
+  both. `shell/nav-items.ts`: Quest gets `badge: 'Beta'`, so More (`more-nav-quest-badge`) and Search show
+  it with no further change. `quest-screen.tsx`: the intro beside a `BadgePill` (`quest-beta`), the
+  Assessment screen's pattern (`assessment-beta`). `(org)/_layout.tsx`: `quest/new-game` → `STEP_FLOW_OPTIONS`.
+- Deleted: `new-game-sheet.tsx`.
+- Reused: `StepFlow`, `OptionPicker`, `SegmentedTabs`, `Choice`, `OutlinedCard`, `IconButton`, `Skeleton`,
+  `BadgePill`, `Confetti`, `QuestFrame` and its portal host, `useToast`, `useQuestNotice`, `questWide`,
+  `useLargeText`, `haptics`.
+
+**Layout (phone and iPad, light and dark):** the wizard is full width on a phone, its steps capped at
+720 pt and centred on an iPad, the tiles 2 / 4 / 1 columns (phone / `questWide` / largest text), the
+steppers of Scoring side by side on an iPad; StepFlow's footer rides the keyboard (the favorite's name,
+a typed amount). The doors fill the screen on both, the number twice the size on an iPad; on an iPad in
+landscape the panels are wider than tall, so the inset panels are kept proportional (two rows, as the
+web's). Dark: the tiles' selected fill is the alpha of `primary`, which reads on both; the doors use the
+brand ramp (`brand900` / `brand50`), the same contrast in both schemes; the stamp is `error` / `onError`.
+Check the doors with every `ORG_PALETTES` palette in both schemes (the brand ramp differs per
+organization). Everything from `useAppTheme()`: the web's confetti hex list is not copied (Home's
+confetti already takes its colours from tokens).
+
+**Interaction & motion:** the step flow (U2) for a task in steps, with Edit on the Review; the
+full-screen focus of Quest for the game. Reanimated only, nothing new installed. **Haptics:** selection
+on a tile, a choice and a stepper tap; the error buzz on a refused Next; a light impact on 3, 2 and 1
+and success on "Go!"; a light impact when the stamp lands; success for a winner (once per game); warning
+before a favorite's delete. **Reduce motion:** no doors (a plain card on the scrim with "The Quest
+begins" and the word or number, "Go!" for the last second, no pop), no stamp (the end-reason line in the
+error colour says it), no confetti (`Confetti` returns null); the steps change without sliding.
+Keep-awake: still not the app's own dependency (designs 57, 60) — the owner's call.
+
+**Exposure checks:**
+- **R20, decided by the server:** favorites are the reader's own; the app lists only what `GET
+  /favorites` returns and deletes by the id it returned; a 404 on a delete (another device deleted it)
+  toasts the server's "That favorite was not found." and refetches the list. A single player's game
+  cannot be joined: the lookup's `players` / `open` decide it, and the server refuses a join anyway. First
+  names only on every new line (the host's in the lookup and the waiting text). Keys still come only with
+  the results.
+- **R13 / organization:** `X-Organization` on every request; `['quest-games','favorites']` is cleared
+  with the cache on a switch (favorites are per organization), and the `(org)` tree remounts.
+- **Money:** none on any wizard step, game screen or effect.
+- **SSN:** the favorite's name through `gameFavoriteSchema` (`refuseSsn`) before sending; the team name
+  and answers as in design 60; no dictation on these fields; nothing stored on the device (favorites live
+  on the server, the cache is not persisted, the `celebrated` set is in memory and holds game ids).
+- **Brand / colours:** no organization name in code; the Beta pill, the tiles, the doors and the stamp
+  from theme tokens.
+- **System surfaces:** none touched (no notification for a countdown); the share text unchanged.
+- The app hides only what the server refuses: the solo button in a game of teams, joining a single or
+  closed game, Start the Quest for the host; every refusal shows the server's message.
+
+**testIDs:**
+- **Kept stable** (the four Phase 46 flows and the web's names): `screen-quest-new-game`,
+  `screen-quest-join-game`, `screen-quest-game`; `quest-games`, `game-new`, `game-code`, `game-join`,
+  `game-list`, `game-row-<code>`, `game-row-status-<code>`; `game-mode-count`, `game-mode-timed`,
+  `game-amount` (now the stepper's value field), `game-create` (now the wizard's final action);
+  `game-join-error`, `game-join-title`, `game-join-line`, `game-join-closed`, `game-join-close`,
+  `game-join-solo`, `game-team-name`, `game-join-new-team`, `game-team-code`, `game-join-team`,
+  `game-join-team-named`, `game-join-refused`; `game-missing`, `game-lobby-code`, `game-share`,
+  `game-team-code-shown`, `game-start`, `game-leave`, `game-cancel`, `game-rules`, `game-waiting-host`,
+  `game-scoreboard`, `game-team-<name>`, `game-clock`, `game-my-score`, `game-question`,
+  `game-question-number`, `game-choice-<A..D>`, `game-number`, `game-submit`, `game-skip`, `game-waiting`,
+  `game-hosting`, `game-end`, `game-winner`, `game-review-<n>`, `game-review-chip-<n>`, `game-review-prev`,
+  `game-review-next`, `game-review-team-<name>`, `game-back`; `quest-exit`, `quest-notice`, `more-nav-quest`.
+- **Gone** (the sheet): `game-level`, `game-level-search`, `game-level-<id>`, `game-level-list`,
+  `game-amount-hint`, `game-marking-off`, `game-marking-on`, `game-team-size-<1..6>`.
+- **New** (the web's name wherever the web has the element): `game-step-<1..5>`, `game-favorites`,
+  `game-fav-<name>`, `game-fav-delete-<name>`, `game-tile-<levelId>`, `game-tile-random`,
+  `game-random-start` (+ `-<id>`, `-search`), `game-level-error`, `game-amount-minus`, `game-amount-plus`,
+  `game-right` / `-minus` / `-plus`, `game-wrong` / `-minus` / `-plus`, `game-knockout`,
+  `game-players-single`, `game-players-multi`, `game-max-teams` / `-minus` / `-plus`,
+  `game-team-style-solo`, `game-team-style-teams`, `game-team-size` / `-minus` / `-plus`,
+  `game-late-join-closed`, `game-late-join-open`, `game-summary-<questions|length|scoring|players>`,
+  `game-fav-name`, `game-fav-save`; `game-countdown`, `game-countdown-number`, `game-getting-ready`,
+  `game-end-reason`, `game-encouragement`, `game-confetti`, `game-knockout-burst`, `game-join-running`;
+  `quest-beta`, `more-nav-quest-badge`. The kit's own: `step-flow-next`, `step-flow-back`,
+  `step-flow-close`, `step-flow-review`, `step-flow-edit-<key>`, `step-flow-error`.
+- On iOS the flows assert the countdown on `game-countdown-number` (a Text), not on the overlay's root,
+  and the knockout on `game-end-reason` (the stamp and confetti are hidden from accessibility:
+  screenshots only).
+
+**Tests:**
+- **Jest:** `game-wizard-model.test.ts` (`toRequest` for single / solo / teams against
+  `createGameSchema.parse`; `fromConfig(toRequest(d))` round trip; `reviewLines` with and without the
+  multiplayer lines; `favoriteDetail`; `favoritePlayable`; `levelProblem`; `submitLabel`);
+  `number-stepper.test.tsx` (clamp, "−3" and "-3", empty and junk keep the value, disabled at the
+  bounds, the labels, `pointsLabel` shown when not focused, the keyboard per platform);
+  `game-model.test.ts` updated (the rules and lookup lines, the single row, `joinClosedText`,
+  `answerNotice` with points, `lobbyBoardTitle`, `waitingCopy`, `resultsHeadline`, `resultsLine`,
+  `celebrates`, `countdownLabel` at 5000 / 4001 / 4000 / 3000 / 1001 / 1000 / 1 ms, `countdownSpeech`);
+  `game-effects.test.tsx` (reduce motion draws no doors and no stamp; the countdown follows the server's
+  `now` with a device clock ahead and behind, and calls `onDone` once); `start-game-flow.test.tsx` (a
+  favorite jumps to the Review with every step filled; "Generate game code" / "Start game"; the create
+  sends `toRequest`, then replaces the route with the game; the delete asks first; a refused Next shows
+  `game-level-error`); `game-join-choices` (size 1: only "Join the game"; teams: no solo);
+  `games-api.test.tsx` (favorites' key, invalidation after save and delete); `step-flow.test.tsx`
+  (`submitTestID`, `review.trail`); `nav-items.test.ts` (Quest carries Beta). `game-rules.test.ts` already
+  holds the plan's shared-rule cases (custom points, knockout with the brief's example and negative
+  points, the countdown, late joining, the upward levels, the old and new create forms): kept and run.
+- **Maestro** (`apps/mobile/.maestro/flows/quest/`, tag `feature`, local Worker only). Scripts:
+  - `quest-games-start.js`: a `waitForStart(id)` after every start — polls `GET /quest/games/:id` until
+    `now >= started_at` (no sleep in Maestro's JS; a `Date.now()` deadline of 10 s), so `team-play`'s read
+    of Alex's hand no longer finds nothing. The `host`, `team` and `play` setups keep Phase 46's
+    payload on purpose (an older app's request still works). New setups, in the new form: `late` (Priya
+    hosts NC26.6, 2 questions, everyone on their own, `late_join: true`; Alex joins; Priya starts; waits),
+    `single` (Priya's single-player game; outputs `gameCode`), `knockout` (2 questions, solo, `wrong_points:
+    -3`, `knockout: true`, `max_teams: 2`; Alex and Sofia join; Priya starts; waits).
+  - `quest-game-act.js`: `skip-all` first waits for a question to be served (up to 12 s) rather than
+    stopping at once in the countdown; new `answer-wrong` answers the question in AS's hand with
+    "not-an-answer" (the web spec's `WRONG`).
+  - `quest-games-end.js`: also deletes every favorite of Priya, Anita, Sofia and Alex, so a rerun starts
+    with none.
+  - Every tap that starts the doors (`game-start`, a single player's `game-create`) passes
+    `waitToSettleTimeoutMs: 500` (the doors keep the screen moving for 5 s; design 59's lesson), then
+    `extendedWaitUntil` `game-countdown-number`, then waits it out (10 s) before the next step.
+  - `game-start.yaml` (Anita, changed): through the wizard — `game-tile-NC26.6` (its count), `step-flow-next`;
+    Length: `game-amount` typed 99 and Done → shows 50 (clamped), typed 2; Scoring: `game-wrong-minus` →
+    "−1"; Players: `game-players-multi`, `game-team-style-teams`, `game-team-size-minus` twice → 2; Review:
+    `game-summary-*` in words, `game-create` "Generate game code" → the lobby (`game-rules` "G6 · 2
+    questions · Right \+1, wrong −1 · Up to 10 teams of up to 2.*", "Game status · waiting to start"),
+    Alex joins, `game-start` "Start the Quest" → the countdown → `game-hosting`; skip-all as before.
+  - `game-join.yaml` (Sofia, changed): `game-join-line` "Priya’s game · Right \+1, wrong 0 · Up to 20
+    teams of up to 2"; in a game of teams `game-join-solo` is absent (the lobby already asserts so); the
+    rest as is.
+  - `game-play.yaml` / `game-team.yaml` (changed): the notice `(Right! \+1|Not quite\.)`; the question
+    waited for with a 15 s timeout (it may open during the countdown).
+  - `game-late-join.yaml` (Sofia, new): `SETUP=late`; her code → `game-join-running`, one `game-join-solo`
+    "Join the game", no `game-team-name` → the game at "Question 1 of 2"; then `SETUP=single`'s code →
+    `game-join-closed` "This is Priya’s single-player game, so it cannot be joined."
+  - `game-single.yaml` (Sofia, new): the wizard with `game-tile-random` and Starting at G6, 2 questions,
+    `game-players-single`; the Review without Knockout / Joining lines; `game-create` "Start game" → the
+    countdown at once → Question 1 of 2; skip both → `game-winner` "0 right, 0 points",
+    `game-encouragement`; Exit → the row "Single player". Screenshots: the tiles, the doors, the results.
+  - `game-favorites.yaml` (Priya, new): a game through the wizard to the Review; `game-fav-name` "Friday
+    G6", `game-fav-save` → "Saved “Friday G6” to your favorites."; `step-flow-close`; Start a game again →
+    `game-favorites`, `game-fav-Friday G6` with its detail → tap → `step-flow-review` with the summaries;
+    `step-flow-back` lands on Players; close; again → `game-fav-delete-Friday G6` → Delete in the confirm →
+    "Deleted “Friday G6”.", the tile gone.
+  - `game-knockout.yaml` (Sofia, new): `SETUP=knockout`; Alex `skip-all`; Sofia opens the game at Question
+    1; `ACTION=answer-wrong AS=sofia` → by the poll `game-end-reason` "Knockout! Nobody could catch the
+    leader.", `game-winner` "Alex wins!", `game-encouragement` "Every question you try makes the next one
+    easier\. Go again!". Screenshot: the stamp.
+  - `menu.yaml` (changed): with the switch on, `more-nav-quest-badge` "Beta", and `quest-beta` on the
+    Quest screen.
+  - Then `npm run e2e:mobile -- both apps/mobile/.maestro/flows/quest` (all twelve game flows and Phase
+    42's six) and `npm run smoke -- mobile` (the shared contract changed). The game flows on the iPad Pro
+    13-inch simulator in dark mode, and screenshots of the wizard and the doors in light on the phones.
+
+**Risks / open questions:**
+- `router.replace` from a card route to a full-screen modal (design 60 replaced a form sheet): if iOS
+  flashes or refuses, `router.back()` then push the game in the transition's end, and say so in the build notes.
+- The doors' 3D swing: `transformOrigin` with `rotateY` on Android (RN 0.86) — if it renders flat or
+  clipped, the panels slide apart (`translateX`) instead; same timing.
+- Android Hermes and the 5 s of animation beside the 2 s poll: only the countdown re-renders (six times),
+  the doors run on the UI thread; watch for the stall of progress.md #21 / #23.
+- `waitForStart` busy-polls the local Worker (Maestro's JS has no sleep): a few hundred local requests
+  over 5 s, no quota spent; if it is too noisy, poll `/api/health` between reads.
+- A favorite saved under an existing name replaces it without asking (the plan's default, as on the web).
+- Two suites at once still must not run (the end script switches `canvas_assessments_unreviewed` off).
+
+**Build (2026-10-22), changes to the design and notes:**
+- Built as designed: `game-wizard-model.ts` (with `favoriteRefusal` beside `favoritePlayable`, which
+  answers a boolean), `start-game-flow.tsx`, `game-tile.tsx` (with `TileGrid`: rows of 2 / 4 / 1, the last
+  padded), `game-effects.tsx`, `components/number-stepper.tsx`; `StepFlow` gains `submitTestID` and
+  `review.trail`; Quest's `badge: 'Beta'`, `quest-beta`; the route on `STEP_FLOW_OPTIONS`;
+  `new-game-sheet.tsx` deleted. No change to `apps/api`, `packages/shared` or `apps/web`.
+- The wizard's root: `StepFlow` puts its own `step-flow` testID on its root, so the route wraps it in a
+  `View` with `screen-quest-new-game`. Each step's card on the Review is titled by the step's question
+  ("Which questions?", "How long is the game?", "How is it scored?", "Who plays?"), StepFlow's way, not the
+  web's row names; its lines are one accessible element (`game-summary-<key>`, label the lines joined by
+  ". ": "Right +1, wrong −1. Knockout: Off"). `game-step-5` wraps the favorite block after the Review's
+  cards (the cards themselves are StepFlow's `step-flow-review`).
+- The Questions step: the step's title is "Which questions?" with the web's hint, so the favorites come
+  first under their own "Your favorites" heading and a divider, then the level tiles with no second
+  heading. The Random picker (`OptionPicker`) starts open while no level is chosen, its own default.
+- `NumberStepper`: holding − or + repeats through `onPressIn` / `onPressOut` (400 ms, then every 90 ms);
+  the press that ends a repeating hold is not one more step. Its keyboard is `stepperKeyboard(os, min)`
+  (pure, tested); the range is `stepperRange` ("+1 to +10", "−10 to 0", the web's format of both bounds).
+- `useGameCountdown`: the time since the reading is clamped at 0 (a reading newer than the last tick
+  gives its own figure, never more), and the timer is aligned to the next whole second of the countdown.
+  `onDone` fires once per start it counted, never for a game opened already under way. The game screen
+  hides its body from the screen reader under the doors (`no-hide-descendants`), and the doors swallow
+  touches (`onStartShouldSetResponder`), Exit included, for the five seconds.
+- Doors: `game-door-left` / `game-door-right` testIDs added (hidden from accessibility; Jest uses them).
+  With reduce motion the plain card carries "The Quest begins" and the number. "Go!" shows in
+  `game-countdown-number` too (the web shows it in a separate span).
+- Results: the stamp and the confetti are once per game per app run (the `celebrated` set, read in a
+  `useState` initialiser); a knockout's stamp shows for everyone who sees the game end, the confetti then
+  only for a winner. The confetti's seed is a hash of the game's id.
+- `answerNotice` takes the game's scoring (`{right_points, wrong_points}`), so "Right! +1" on every right
+  answer, as the web: game-play's notice regex is `(Right! \+1|Not quite\.)`.
+- `JoinChoices` in a game of one-player teams: "Join the game" (`game-join-solo`, a login icon), alone.
+- The lobby's empty board reads "0 players · 0 of 10 teams" (the web's title with nobody yet).
+- Flows and scripts as designed: `quest-games-start.js` (`waitForStart`, setups `late`, `single`,
+  `knockout` in the Phase 47 request; the four Phase 46 setups keep the old one), `quest-game-act.js`
+  (`skip-all` waits up to 12 s for a question; `answer-wrong`), `quest-games-end.js` (deletes the four
+  people's favorites, each as themselves). Checked against the local Worker under Node with a
+  synchronous `http` (curl): every setup, the knockout ending "Alex 0, Sofia −3, knockout", the late
+  lookup `open: true`, the single lookup `open: false`, the favorites cleared. Flows changed:
+  `game-start` (the wizard, the doors), `game-join` (the new join line, no solo in a game of teams, the
+  board title), `game-play` (the notice, no doors on opening), `game-team` (Game status), `menu` (Beta);
+  new: `game-late-join`, `game-single`, `game-favorites`, `game-knockout`. Not yet run on a simulator.
+- `game-knockout`'s second onFlowStart script finds Alex's newest running game itself (no `GAME` env),
+  rather than relying on `${output.gameId}` inside the hooks.
+- Prettier was run over the touched files; it also reformatted `game-rules.test.ts` (whitespace only,
+  the Phase 47 tests unchanged and green).
+
+**Checks (2026-10-22):** `npm run mobile:typecheck` clean (tsc, rules, palettes, KaTeX, pdf.js,
+contrast); `npm run mobile:lint` 0 errors (26 warnings, all the existing `require()` kind; one new in
+`game-effects.test.tsx`'s reanimated mock, the pattern of the other view tests); `npm run mobile:test`
+119 suites, 822 tests green (new: `game-wizard-model`, `number-stepper`, `game-effects`,
+`start-game-flow`, `game-join-choices`; updated: `game-model`, `games-api`, `step-flow`, `nav-items`;
+`game-rules` kept). Flows pending: the tester runs `npm run e2e:mobile -- both
+apps/mobile/.maestro/flows/quest` and `npm run smoke -- mobile`, the iPad in dark mode, and the doors
+with each palette.

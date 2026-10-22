@@ -781,6 +781,22 @@ tables, so a typed code names one thing; the lookup still requires the organizat
 refuse a host, a team's creator or a player who is not a member, and a team or player in another
 organization than its game.
 
+Phase 47 (`docs/quest-games-g2-plan.md`) adds the start wizard's settings to `quest_games`:
+`level_scope` (`upward` is Random: the level and every one above it in its family), `right_points`
+and `wrong_points` (`negative_marking` stays, derived as `wrong_points < 0`), `knockout`, `players`
+(`single` or `multi`), `max_teams`, `late_join` and, at the end, `end_reason`. Each column's default
+describes a Phase 46 game as it was. The levels a Random game draws from are worked out when it is made
+and kept in the game's Durable Object, not here.
+
+### `quest_game_favorites` (Phase 47)
+
+A person's named settings for a game, saved from the wizard's review and offered on its first step.
+They are the person's own, in one organization: read and written only by them, so an admin is nobody
+special here, because a favorite is not a game. `name` is unique per person per organization, ignoring
+case, and saving under a name again replaces that favorite. `config` is the create request as JSON,
+checked again by `createGameSchema` on every read, so a favorite whose settings no longer parse is
+simply not offered. Trigger: the person must be a member.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application

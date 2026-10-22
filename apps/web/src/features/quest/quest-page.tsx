@@ -11,6 +11,7 @@ import {
 } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -37,6 +38,7 @@ export function QuestPage() {
       <PageHeader
         title="Question Quest"
         description="Answer the question bank’s new questions, one at a time, and earn points. Tutors check each answer and approve the question for everyone."
+        actions={<Badge variant="secondary">Beta</Badge>}
       />
       <div className="grid gap-6">
         {roles.plays && <PlayCard />}

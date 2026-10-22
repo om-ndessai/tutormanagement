@@ -1,14 +1,19 @@
 import { Hono } from 'hono';
 import {
   assessmentLevelCurriculum,
+  GAME_LIMITS,
   createGameSchema,
   gameAnswerSchema,
   gameCodeSchema,
+  gameFavoriteSchema,
+  gameLevelIds,
+  gameLevelLabel,
   joinGameSchema,
   levelLabel,
   makeGameCode,
   type ApiOk,
   type EngineGame,
+  type GameFavorite,
   type GameLevel,
   type GameLookup,
   type GameResults,
@@ -26,7 +31,16 @@ import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
 import { countDrawableQuestions } from '../repositories/canvas-assessments.js';
 import { listOrganizationCurricula } from '../repositories/curricula.js';
-import { codeInUse, findGameByCode, firstNameOf, insertGame, listGames } from '../repositories/quest-games.js';
+import {
+  codeInUse,
+  deleteFavorite,
+  findGameByCode,
+  firstNameOf,
+  insertGame,
+  listFavorites,
+  listGames,
+  saveFavorite,
+} from '../repositories/quest-games.js';
 
 // Quest Games (Phase 46, docs/quest-games-plan.md), under Quest's switch: any
 // member starts a game or joins one with a code. These routes check the person
@@ -50,30 +64,76 @@ function unwrap<T>(reply: GameReply<T>): T {
   throw ApiError.conflict(reply.message);
 }
 
-async function offeredLevel(db: D1Database, org: OrgId, levelId: string): Promise<boolean> {
-  const curriculum = assessmentLevelCurriculum(levelId);
-  if (curriculum === null) return true;
-  const offered = await listOrganizationCurricula(db, org);
-  return offered.some((c) => c.id === curriculum && !c.retired);
+/** The bank's levels this organization offers (its curricula), with how many questions each has to play. */
+async function playableLevels(db: D1Database, org: { id: OrgId; canvas_assessments_unreviewed: boolean }): Promise<GameLevel[]> {
+  const [levels, offered] = await Promise.all([
+    countDrawableQuestions(db, org.canvas_assessments_unreviewed),
+    listOrganizationCurricula(db, org.id),
+  ]);
+  const live = new Set(offered.filter((cur) => !cur.retired).map((cur) => cur.id));
+  return levels
+    .filter((level) => {
+      const curriculum = assessmentLevelCurriculum(level.level_id);
+      return curriculum === null || live.has(curriculum);
+    })
+    .map((level) => ({ level_id: level.level_id, label: level.label, available: level.available }));
+}
+
+/** "a G5 Quest game", "a G5-and-up Quest game", "a single-player G5 Quest game": for the log. */
+function gameWords(game: { level_id: string; level_scope?: 'level' | 'upward'; players?: 'single' | 'multi' }): string {
+  const level = game.level_scope === 'upward' ? `${levelLabel(game.level_id)}-and-up` : levelLabel(game.level_id);
+  return game.players === 'single' ? `a single-player ${level} Quest game` : `a ${level} Quest game`;
 }
 
 export const questGameRoutes = new Hono<AppEnv>()
   // The bank's levels this organization offers, with how many questions each has to play.
   .get('/levels', async (c) => {
+    const body: ApiOk<GameLevel[]> = { data: await playableLevels(c.env.DB, c.get('org')) };
+    return c.json(body);
+  })
+
+  // Phase 47: the person's own favorites here (a favorite is nobody else's; R20).
+  .get('/favorites', async (c) => {
+    const body: ApiOk<GameFavorite[]> = { data: await listFavorites(c.env.DB, c.get('org').id, c.get('user').id) };
+    return c.json(body);
+  })
+
+  // Saves settings under a name, replacing the person's favorite of that name.
+  .put('/favorites', zValidator('json', gameFavoriteSchema), async (c) => {
     const org = c.get('org');
-    const [levels, offered] = await Promise.all([
-      countDrawableQuestions(c.env.DB, org.canvas_assessments_unreviewed),
-      listOrganizationCurricula(c.env.DB, org.id),
-    ]);
-    const live = new Set(offered.filter((cur) => !cur.retired).map((cur) => cur.id));
-    const body: ApiOk<GameLevel[]> = {
-      data: levels
-        .filter((level) => {
-          const curriculum = assessmentLevelCurriculum(level.level_id);
-          return curriculum === null || live.has(curriculum);
-        })
-        .map((level) => ({ level_id: level.level_id, label: level.label, available: level.available })),
-    };
+    const user = c.get('user');
+    const input = c.req.valid('json');
+    const existing = await listFavorites(c.env.DB, org.id, user.id);
+    const replacing = existing.some((f) => f.name.toLowerCase() === input.name.toLowerCase());
+    if (!replacing && existing.length >= GAME_LIMITS.maxFavorites) {
+      throw ApiError.conflict(`You can keep ${GAME_LIMITS.maxFavorites} favorites. Delete one to save another.`);
+    }
+    const saved = await saveFavorite(c.env.DB, org.id, { userId: user.id, name: input.name, config: input.config });
+    await recordAudit(c.env.DB, user, org.id, {
+      action: 'quest.game_favorite_saved',
+      description: saved.created
+        ? `Saved the Quest game favorite "${saved.favorite.name}"`
+        : `Updated the Quest game favorite "${saved.favorite.name}"`,
+      entity_type: 'quest_game_favorite',
+      entity_id: saved.favorite.id,
+    });
+    const body: ApiOk<GameFavorite> = { data: saved.favorite };
+    return c.json(body, saved.created ? 201 : 200);
+  })
+
+  .delete('/favorites/:favoriteId', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    const id = c.req.param('favoriteId');
+    const name = await deleteFavorite(c.env.DB, org.id, user.id, id);
+    if (name === null) throw ApiError.notFound('That favorite was not found.');
+    await recordAudit(c.env.DB, user, org.id, {
+      action: 'quest.game_favorite_deleted',
+      description: `Deleted the Quest game favorite "${name}"`,
+      entity_type: 'quest_game_favorite',
+      entity_id: id,
+    });
+    const body: ApiOk<{ id: string }> = { data: { id } };
     return c.json(body);
   })
 
@@ -87,15 +147,21 @@ export const questGameRoutes = new Hono<AppEnv>()
     const org = c.get('org');
     const user = c.get('user');
     const input = c.req.valid('json');
-    if (!(await offeredLevel(c.env.DB, org.id, input.level_id))) {
+    const levels = await playableLevels(c.env.DB, org);
+    if (!levels.some((level) => level.level_id === input.level_id)) {
       throw ApiError.badRequest('This organization does not offer that level.');
     }
-    const available =
-      (await countDrawableQuestions(c.env.DB, org.canvas_assessments_unreviewed)).find((l) => l.level_id === input.level_id)
-        ?.available ?? 0;
-    if (available === 0) throw ApiError.conflict(`${levelLabel(input.level_id)} has no questions to play yet.`);
+    // Random draws from the level and those above it that have questions here.
+    const levelIds = gameLevelIds(
+      input.level_id,
+      input.level_scope,
+      levels.filter((level) => level.available > 0).map((level) => level.level_id),
+    );
+    const available = levels.filter((level) => levelIds.includes(level.level_id)).reduce((n, level) => n + level.available, 0);
+    const named = gameLevelLabel(input, levelLabel);
+    if (available === 0) throw ApiError.conflict(`${named} has no questions to play yet.`);
     if (input.mode === 'count' && available < input.question_count!) {
-      throw ApiError.conflict(`${levelLabel(input.level_id)} has only ${available} questions to play. Choose fewer.`);
+      throw ApiError.conflict(`${named} has only ${available} questions to play. Choose fewer.`);
     }
 
     let code: string | null = null;
@@ -113,11 +179,17 @@ export const questGameRoutes = new Hono<AppEnv>()
       code,
       hostId: user.id,
       levelId: input.level_id,
+      levelScope: input.level_scope,
       mode: input.mode,
       questionCount: input.mode === 'count' ? input.question_count! : null,
       durationSeconds,
-      negativeMarking: input.negative_marking,
+      rightPoints: input.right_points,
+      wrongPoints: input.wrong_points,
+      knockout: input.knockout,
+      players: input.players,
+      maxTeams: input.max_teams,
       maxTeamSize: input.max_team_size,
+      lateJoin: input.late_join,
     });
     const game: EngineGame = {
       id,
@@ -125,23 +197,34 @@ export const questGameRoutes = new Hono<AppEnv>()
       code,
       host: { user_id: user.id, first_name: firstNameOf(user.full_name) },
       level_id: input.level_id,
+      level_scope: input.level_scope,
+      level_ids: levelIds,
       mode: input.mode,
       question_count: input.mode === 'count' ? input.question_count! : null,
       duration_seconds: durationSeconds,
-      negative_marking: input.negative_marking,
+      right_points: input.right_points,
+      wrong_points: input.wrong_points,
+      negative_marking: input.wrong_points < 0,
+      knockout: input.knockout,
+      players: input.players,
+      max_teams: input.max_teams,
       max_team_size: input.max_team_size,
+      late_join: input.late_join,
       include_unreviewed: org.canvas_assessments_unreviewed,
       status: 'lobby',
       created_at: now,
       started_at: null,
       ended_at: null,
+      end_reason: null,
       series_length: 0,
       teams: [],
     };
-    const view = unwrap(await gameStub(c.env, org.id, id).create(game));
+    // A single player's game is begun as it is made (the object draws its series now).
+    const view = unwrap(await gameStub(c.env, org.id, id).create(game, org.canvas_assessments_unreviewed));
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_created',
-      description: `Started a ${levelLabel(input.level_id)} Quest game (code ${code})`,
+      description:
+        input.players === 'single' ? `Started ${gameWords(input)}` : `Started ${gameWords(input)} (code ${code})`,
       entity_type: 'quest_game',
       entity_id: id,
     });
@@ -176,14 +259,14 @@ export const questGameRoutes = new Hono<AppEnv>()
     const joined = unwrap(
       await gameStub(c.env, org.id, id).join({ id: user.id, first_name: firstNameOf(user.full_name) }, c.req.valid('json')),
     );
-    const level = levelLabel(joined.view.level_id);
+    const game = gameWords(joined.view);
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_joined',
       description: joined.team.solo
-        ? `Joined a ${level} Quest game on their own`
+        ? `Joined ${game} on their own`
         : joined.team.started
-          ? `Started the team ${joined.team.name} in a ${level} Quest game`
-          : `Joined the team ${joined.team.name} in a ${level} Quest game`,
+          ? `Started the team ${joined.team.name} in ${game}`
+          : `Joined the team ${joined.team.name} in ${game}`,
       entity_type: 'quest_game',
       entity_id: id,
     });
@@ -218,7 +301,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const view = unwrap(await gameStub(c.env, org.id, id).start(viewerOf(user), org.canvas_assessments_unreviewed));
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_started',
-      description: `Began a ${levelLabel(view.level_id)} Quest game with ${view.teams.length} ${view.teams.length === 1 ? 'team' : 'teams'}`,
+      description: `Began ${gameWords(view)} with ${view.teams.length} ${view.teams.length === 1 ? 'team' : 'teams'}`,
       entity_type: 'quest_game',
       entity_id: id,
     });
@@ -233,7 +316,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const view = unwrap(await gameStub(c.env, org.id, id).end(viewerOf(user)));
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_ended',
-      description: `Ended a ${levelLabel(view.level_id)} Quest game`,
+      description: `Ended ${gameWords(view)}`,
       entity_type: 'quest_game',
       entity_id: id,
     });

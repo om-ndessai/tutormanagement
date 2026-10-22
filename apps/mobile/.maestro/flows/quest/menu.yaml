@@ -1,7 +1,8 @@
 # Question Quest (Phase 42) follows the organization's switch. With it off (the seed), More lists no
 # Quest, for an admin or a student, and Sofia is not taken into Quest on signing in. Priya (admin,
-# chmi) turns it on in the Organization screen's Gamification card: Quest is in More. Off again: it is
-# gone. The script puts the switch off whatever happens.
+# chmi) turns it on in the Organization screen's Gamification card: Quest is in More, marked Beta
+# (Phase 47), and its screen says so too. Off again: it is gone. The script puts the switch off whatever
+# happens.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-end.js
@@ -84,6 +85,26 @@ tags:
 - assertVisible:
     id: more-nav-quest
     text: '.*Quest.*'
+# In beta (Phase 47): beside the menu item, and on the Quest screen.
+- assertVisible:
+    id: more-nav-quest-badge
+# The pill's word: on iOS the row reads it into its own label ("Quest, Beta"), the pill having no text
+# of its own there; Android labels the row the same way.
+- assertVisible:
+    id: more-nav-quest
+    text: 'Quest, Beta'
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-beta
+    timeout: 15000
+- takeScreenshot: quest-beta
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:

@@ -118,6 +118,8 @@ export const AUDIT_ACTIONS = [
   'quest.game_left',
   'quest.game_started',
   'quest.game_ended',
+  'quest.game_favorite_saved',
+  'quest.game_favorite_deleted',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -225,6 +227,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'quest.game_left': 'Quest game left',
   'quest.game_started': 'Quest game begun',
   'quest.game_ended': 'Quest game ended',
+  'quest.game_favorite_saved': 'Quest game favorite saved',
+  'quest.game_favorite_deleted': 'Quest game favorite deleted',
 };
 
 export interface AuditEvent {

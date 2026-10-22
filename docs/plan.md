@@ -465,3 +465,16 @@ start from approved questions (and checked ones while the organization includes 
 reviewed); a team's members are each served the next question no teammate has had. The most points
 wins. One Durable Object per game holds the series and the queues in memory (the free plan's in-memory
 state), so the next question reads nothing from D1; D1 keeps the game, the teams and the results.
+
+Phase 47: (requested 2026-10-22 by the owner, "Phase G2" in `docs/gamification.md`; building, web and the app)
+Quest Games, round two. Plan: `docs/quest-games-g2-plan.md`. Starting a game becomes a five-step
+wizard: level tiles (and Random, from a starting level upward), the length, the scoring (points for
+right and for wrong on − / + counters, and Knockout), the players (single player, or multiplayer with
+the most teams, everyone on their own or teams of a set size, and joining closed or open once it
+starts), and a review that saves the settings as a named favorite. Multiplayer ends in "Generate game
+code"; single player in "Start game". Teammates type the game's code, then their team's. "Start the
+Quest" counts every screen down together (doors opening), a finished player waits on the status page,
+a knockout game ends as soon as one team cannot be caught, winners get confetti and the others
+encouragement. The Quest menu wears a Beta badge. Additive schema: settings columns on `quest_games`,
+and `quest_game_favorites`. The test account's D1 was out of reads for the day, so the release goes to
+production after the local suite, and the demo follows when its limit resets.

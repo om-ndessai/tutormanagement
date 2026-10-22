@@ -1,21 +1,30 @@
 // Quest Games' pure rules for the app's screens (Phase 46, design 60), from
 // apps/web/src/features/quest/{games-api.ts, games-card.tsx, game-page.tsx} @ cd0378d (working
-// tree): when the game is polled, the lines and labels the screens show (the web's copy), what a
-// Create sends, the moment's notice after an answer, the clock on the server's time, and the native
-// line of each result. Pure: no React, no api client. The game's own rules live in @tmi/shared.
+// tree): when the game is polled, the lines and labels the screens show (the web's copy), the moment's
+// notice after an answer, the clock on the server's time, and the native line of each result. Phase 47
+// (design 61) @ 9eccdf2 (working tree): the settings' words (the level's scope, the points, who plays,
+// knockout, late joining), the lookup's single-player and late-joining lines, the lobby's label and
+// board, the waiting card once a team is done, the results' headline and encouragement, who is
+// celebrated, and the doors' countdown words. What a Create sends is game-wizard-model.ts now. Pure: no
+// React, no api client. The game's own rules live in @tmi/shared.
 import {
   GAME_CODE_LENGTH,
-  GAME_LIMITS,
   GAME_POLL_MS,
-  createGameSchema,
+  gameEncouragement,
   gameLengthLabel,
+  gameLevelLabel,
   gameMarkingLabel,
+  gamePlayersLabel,
   levelLabel,
   normalizeGameCode,
   placeLabel,
-  type CreateGameInput,
+  // Quest's own `pointsLabel` (quest-model.ts) means a count of points; this one is "+2" / "−3".
+  pointsLabel as signedPoints,
+  winnersLabel,
+  type GameLookup,
   type GameMode,
   type GameResultItem,
+  type GameScoring,
   type GameStatus,
   type GameSummary,
   type GameTeamView,
@@ -48,16 +57,20 @@ export function gameRowStatus(game: Pick<GameSummary, 'status' | 'place'>): stri
   return game.status === 'running' ? 'Playing now' : 'Waiting to start';
 }
 
-/** A games-list row's second line: "You host · 2 teams", "Priya hosts · 1 team". */
-export function gameRowHost(game: Pick<GameSummary, 'is_host' | 'host_first_name' | 'teams'>): string {
+/** A games-list row's second line: "You host · 2 teams", "Priya hosts · 1 team", "Single player". */
+export function gameRowHost(
+  game: Pick<GameSummary, 'is_host' | 'host_first_name' | 'teams'> & Partial<Pick<GameSummary, 'players'>>,
+): string {
+  if (game.players === 'single') return 'Single player';
   return `${game.is_host ? 'You host' : `${game.host_first_name} hosts`} · ${game.teams} ${game.teams === 1 ? 'team' : 'teams'}`;
 }
 
-/** A games-list row's title: "G6 · 2 questions". */
+/** A games-list row's title: "G6 · 2 questions", "G5 and up, at random · 5 minutes". */
 export function gameRowTitle(
-  game: Pick<GameSummary, 'level_id' | 'mode' | 'question_count' | 'duration_seconds'>,
+  game: Pick<GameSummary, 'level_id' | 'mode' | 'question_count' | 'duration_seconds'> &
+    Partial<Pick<GameSummary, 'level_scope'>>,
 ): string {
-  return `${levelLabel(game.level_id)} · ${gameLengthLabel(game)}`;
+  return `${gameLevelLabel(game, levelLabel)} · ${gameLengthLabel(game)}`;
 }
 
 /** The share sheet's text: the code and nothing else (no name, no organization). */
@@ -72,107 +85,75 @@ export function spelledCode(code: string): string {
 
 // --- The rules of a game ----------------------------------------------------------------------
 
-/** "teams of up to 4", or "everyone on their own". */
-export function teamsLabel(maxTeamSize: number): string {
-  return maxTeamSize === 1 ? 'everyone on their own' : `teams of up to ${maxTeamSize}`;
-}
-
-/** The team-size choice's label: "On their own", then the number. */
-export function teamSizeLabel(size: number): string {
-  return size === 1 ? 'On their own' : String(size);
-}
-
-/** The team-size choice read aloud: the web's option text. */
-export function teamSizeSpeech(size: number): string {
-  return size === 1 ? 'Everyone on their own' : `Up to ${size} a team`;
-}
-
-/** "G6 · 2 questions · Right +1, wrong 0 · teams of up to 2 · may include questions not yet reviewed". */
+/**
+ * The web's Rules: "G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout ·
+ * joining open while it runs · may include questions not yet reviewed".
+ */
 export function gameRulesLine(
   game: Pick<
     GameView,
     | 'level_id'
+    | 'level_scope'
     | 'mode'
     | 'question_count'
     | 'duration_seconds'
-    | 'negative_marking'
+    | 'right_points'
+    | 'wrong_points'
+    | 'players'
+    | 'max_teams'
     | 'max_team_size'
+    | 'knockout'
+    | 'late_join'
     | 'unreviewed'
   >,
 ): string {
   return (
-    `${levelLabel(game.level_id)} · ${gameLengthLabel(game)} · ${gameMarkingLabel(game.negative_marking)} · ` +
-    `${teamsLabel(game.max_team_size)}${game.unreviewed ? ' · may include questions not yet reviewed' : ''}`
+    `${gameLevelLabel(game, levelLabel)} · ${gameLengthLabel(game)} · ${gameMarkingLabel(game)} · ` +
+    `${gamePlayersLabel(game)}${game.knockout ? ' · knockout' : ''}` +
+    `${game.late_join ? ' · joining open while it runs' : ''}` +
+    `${game.unreviewed ? ' · may include questions not yet reviewed' : ''}`
   );
 }
 
-/** The join sheet's line: "Priya’s game · Right +1, wrong 0 · teams of up to 2". */
-export function lookupLine(lookup: {
-  host_first_name: string;
-  negative_marking: boolean;
-  max_team_size: number;
-}): string {
-  return `${lookup.host_first_name}’s game · ${gameMarkingLabel(lookup.negative_marking)} · ${teamsLabel(lookup.max_team_size)}`;
+/** The join sheet's line: "Priya’s game · Right +1, wrong 0 · Up to 20 teams of up to 2 · knockout". */
+export function lookupLine(
+  lookup: Pick<
+    GameLookup,
+    | 'host_first_name'
+    | 'right_points'
+    | 'wrong_points'
+    | 'players'
+    | 'max_teams'
+    | 'max_team_size'
+    | 'knockout'
+  >,
+): string {
+  return `${lookup.host_first_name}’s game · ${gameMarkingLabel(lookup)} · ${gamePlayersLabel(lookup)}${lookup.knockout ? ' · knockout' : ''}`;
 }
 
-/** A game the code found that has gone past its lobby. */
-export function notJoinableText(status: GameStatus): string {
-  return `This game has ${status === 'running' ? 'started' : 'ended'}, so it cannot be joined now.`;
-}
-
-// --- Starting a game --------------------------------------------------------------------------
-
-/** The range under the amount, the web's words: "questions (1-50)", "minutes (1-30)". */
-export function amountHint(mode: GameMode): string {
-  return mode === 'count'
-    ? `questions (${GAME_LIMITS.minQuestions}-${GAME_LIMITS.maxQuestions})`
-    : `minutes (${GAME_LIMITS.minMinutes}-${GAME_LIMITS.maxMinutes})`;
-}
-
-/** What is wrong with the amount as typed, in the shared schema's words; null when it will do. */
-export function amountProblem(mode: GameMode, text: string): string | null {
-  const trimmed = text.trim();
-  const amount = Number(trimmed);
-  const [min, max] =
-    mode === 'count'
-      ? [GAME_LIMITS.minQuestions, GAME_LIMITS.maxQuestions]
-      : [GAME_LIMITS.minMinutes, GAME_LIMITS.maxMinutes];
-  if (trimmed !== '' && /^\d+$/.test(trimmed) && Number.isInteger(amount) && amount >= min && amount <= max) {
-    return null;
+/**
+ * Why a code's game cannot be joined, or null when it can: a single player's game never, any other
+ * once it has started (with joining closed) or ended. The lookup's `open` decides it, not its status.
+ */
+export function joinClosedText(
+  lookup: Pick<GameLookup, 'players' | 'open' | 'status' | 'host_first_name'>,
+): string | null {
+  if (lookup.players === 'single') {
+    return `This is ${lookup.host_first_name}’s single-player game, so it cannot be joined.`;
   }
-  return mode === 'count'
-    ? `Choose how many questions (${min}-${max}).`
-    : `Choose how many minutes (${min}-${max}).`;
+  if (lookup.open) return null;
+  return `This game has ${lookup.status === 'finished' ? 'ended' : 'started'}, so it cannot be joined now.`;
 }
 
-export interface NewGameForm {
-  levelId: string;
-  mode: GameMode;
-  /** The amount as typed: questions for a count game, minutes for a timed one. */
-  amount: string;
-  negativeMarking: boolean;
-  teamSize: number;
-}
-
-/** What Create sends, checked with the shared schema; null while the form will not do. */
-export function createInput(form: NewGameForm): CreateGameInput | null {
-  if (amountProblem(form.mode, form.amount) !== null) return null;
-  const amount = Number(form.amount.trim());
-  const parsed = createGameSchema.safeParse({
-    level_id: form.levelId,
-    mode: form.mode,
-    negative_marking: form.negativeMarking,
-    max_team_size: form.teamSize,
-    ...(form.mode === 'count' ? { question_count: amount } : { duration_minutes: amount }),
-  });
-  return parsed.success ? parsed.data : null;
-}
+/** Over the join choices when a game left open is already under way. */
+export const JOIN_RUNNING_TEXT =
+  'This game is under way: you can still join, and start from its first question.';
 
 // --- In the game ------------------------------------------------------------------------------
 
-/** "Quest game · G6", or "Quest game" before it is read. */
-export function gameTitle(game: Pick<GameView, 'level_id'> | undefined): string {
-  return game ? `Quest game · ${levelLabel(game.level_id)}` : 'Quest game';
+/** "Quest game · G6", "Quest game · G5 and up, at random", or "Quest game" before it is read. */
+export function gameTitle(game: Pick<GameView, 'level_id' | 'level_scope'> | undefined): string {
+  return game ? `Quest game · ${gameLevelLabel(game, levelLabel)}` : 'Quest game';
 }
 
 /** "1 point", "3 points", "-1 points" (a score may go below zero with negative marking). */
@@ -188,6 +169,14 @@ export function playersLabel(game: Pick<GameView, 'teams'>): string {
 
 export function playerCount(game: Pick<GameView, 'teams'>): number {
   return game.teams.reduce((n, team) => n + team.players.length, 0);
+}
+
+/** Over the lobby's code: the web's label. */
+export const LOBBY_LABEL = 'Game status · waiting to start · game code';
+
+/** The lobby's scoreboard title: "1 player · 1 of 10 teams", or "places" when everyone is on their own. */
+export function lobbyBoardTitle(game: Pick<GameView, 'teams' | 'max_teams' | 'max_team_size'>): string {
+  return `${playersLabel(game)} · ${game.teams.length} of ${game.max_teams} ${game.max_team_size === 1 ? 'places' : 'teams'}`;
 }
 
 /**
@@ -243,20 +232,48 @@ export interface AnswerNotice {
   tone: 'success' | 'error' | 'info';
 }
 
-/** The moment's word after an answer: "Right!", "Not quite.", "Not quite. −1", "Skipped.". */
+/** The moment's word after an answer, with the game's points: "Right! +2", "Not quite. −3", "Not quite.", "Skipped.". */
 export function answerNotice(
   last: { correct: boolean; skipped: boolean } | null | undefined,
-  negativeMarking: boolean,
+  scoring: GameScoring,
 ): AnswerNotice {
   if (last?.skipped) return { text: 'Skipped.', tone: 'info' };
-  if (last?.correct) return { text: 'Right!', tone: 'success' };
-  return { text: negativeMarking ? 'Not quite. −1' : 'Not quite.', tone: 'error' };
+  if (last?.correct) return { text: `Right! ${signedPoints(scoring.right_points)}`, tone: 'success' };
+  return {
+    text: scoring.wrong_points < 0 ? `Not quite. ${signedPoints(scoring.wrong_points)}` : 'Not quite.',
+    tone: 'error',
+  };
 }
 
 export const HOSTING_TEXT = 'You are hosting. The scores update as the teams play.';
 export const MISSING_TEXT =
   'This game was not found, or you are not in it. Join it with its code from the Quest page.';
-export const WAITING_TITLE = 'Your team has no more questions to hand out.';
+/** The waiting card's label (Phase 47: it is the game's status page). */
+export const WAITING_LABEL = 'Game status';
+/** Under the doors while they count down. */
+export const GETTING_READY_TEXT = 'Get ready: the doors are opening…';
+
+/**
+ * The waiting card: once the team is done, its score and what it waits for (the others, the clock, a
+ * knockout); before that, the teammates answering the last ones.
+ */
+export function waitingCopy(
+  game: Pick<GameView, 'mode' | 'knockout'>,
+  mine: Pick<GameTeamView, 'finished_at' | 'solo' | 'score'> | undefined,
+): { title: string; body: string } {
+  if (mine?.finished_at) {
+    return {
+      title: `${mine.solo ? 'You are done' : 'Your team is done'}: ${scoreLabel(mine.score)}.`,
+      body:
+        `Waiting for the others to finish${game.mode === 'timed' ? ' or the time to run out' : ''}` +
+        `${game.knockout ? ', or for a knockout' : ''}. The scores update here as they play.`,
+    };
+  }
+  return {
+    title: 'Your team has no more questions to hand out.',
+    body: waitingText(game.mode),
+  };
+}
 
 export function waitingText(mode: GameMode): string {
   return `Your teammates are answering the last ones. The game ends when every team is done${mode === 'timed' ? ' or the time is up' : ''}.`;
@@ -324,8 +341,55 @@ export function reviewHeading(teamName: string | undefined): string {
   return teamName ? `${teamName}’s questions` : 'Questions';
 }
 
-/** Whether to celebrate: the game is finished and your team placed first. */
-export function wonGame(game: Pick<GameView, 'status' | 'teams' | 'me'>): boolean {
-  if (game.status !== 'finished' || game.me.team_id === null) return false;
-  return game.teams.some((team) => team.id === game.me.team_id && team.place === 1);
+/** The reader's own team, if they played. */
+export function myTeam(game: Pick<GameView, 'teams' | 'me'>): GameTeamView | undefined {
+  return game.teams.find((team) => team.id === game.me.team_id);
+}
+
+/**
+ * Whether to celebrate (confetti and the success haptic): the game is finished and the reader's team
+ * won -- or, a single player having nobody to beat, they got any answer right.
+ */
+export function celebrates(game: Pick<GameView, 'status' | 'teams' | 'me' | 'players'>): boolean {
+  if (game.status !== 'finished') return false;
+  const mine = myTeam(game);
+  if (!mine) return false;
+  return game.players === 'single' ? mine.correct > 0 : mine.place === 1;
+}
+
+/** The results' headline: a single player's "N right, M points", else the winners. */
+export function resultsHeadline(
+  game: Pick<GameView, 'players' | 'teams'>,
+  mine: Pick<GameTeamView, 'correct' | 'score'> | undefined,
+): string {
+  if (game.players === 'single' && mine) return `${mine.correct} right, ${scoreLabel(mine.score)}`;
+  return winnersLabel(game.teams);
+}
+
+/** Under the headline, for someone who played: "You won with N points. Fantastic!", or encouragement. */
+export function resultsLine(
+  game: Pick<GameView, 'status' | 'teams' | 'me' | 'players'>,
+  mine: GameTeamView,
+): string {
+  if (game.players !== 'single' && celebrates(game)) {
+    return `${mine.solo ? 'You won' : 'Your team won'} with ${scoreLabel(mine.score)}. Fantastic!`;
+  }
+  return gameEncouragement(mine);
+}
+
+// --- The doors' countdown (Phase 47) ----------------------------------------------------------
+
+/** 5 s: "Get ready", then 3, 2, 1, and "Go!" for the last second, as the doors open (the web's). */
+export function countdownLabel(ms: number): string {
+  const seconds = Math.ceil(ms / 1000);
+  if (seconds > 4) return 'Get ready';
+  if (ms <= 1000) return 'Go!';
+  return String(seconds - 1);
+}
+
+/** What a screen reader is told: "The Quest begins in 5 seconds" on showing, and "Go!" at the end. */
+export function countdownSpeech(ms: number): string {
+  if (ms <= 1000) return 'Go!';
+  const seconds = Math.ceil(ms / 1000);
+  return `The Quest begins in ${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
 }

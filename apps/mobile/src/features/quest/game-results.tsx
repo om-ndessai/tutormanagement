@@ -7,14 +7,20 @@
 // a native header carrying the outcome, who answered and the key (`reviewLine`), a strip of numbered
 // chips coloured by outcome, and Previous / Next. On an iPad the places sit beside the questions.
 // A first place is celebrated once, with the success haptic.
-import { winnersLabel, type GameResultItem, type GameView } from '@tmi/shared';
+// Phase 47 (design 61): why it ended (a knockout in the error colour), a single player's "N right, M
+// points", and for someone who played, the win or the web's encouragement. The celebration once per
+// game per run of the app: on a knockout the K.O. stamp first, then -- for the winners (a single
+// player: any right answer) -- the confetti and the success haptic once it fades. Reopening a finished
+// game from the hub shows the words only.
+import { gameEndLabel, type GameResultItem, type GameView } from '@tmi/shared';
 import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
-import { Button, Chip, Text } from 'react-native-paper';
+import { Button, Chip, Portal, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
 import { Panel } from '@/components/section';
 import { DetailSkeleton } from '@/components/skeletons';
+import { Confetti } from '@/features/home/confetti';
 import { MathBody } from '@/features/question-bank/math-body';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -22,7 +28,18 @@ import { withAlpha } from '@/theme/alpha';
 import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
 import { gameResultHtml, gameResultSpeech, gameResultText } from './game-html';
 import { GameRules } from './game-lobby';
-import { NO_ANSWERS_TEXT, isOverseer, outcomeLabel, reviewHeading, reviewLine, wonGame } from './game-model';
+import { KnockoutStamp } from './game-effects';
+import {
+  NO_ANSWERS_TEXT,
+  celebrates,
+  isOverseer,
+  myTeam,
+  outcomeLabel,
+  resultsHeadline,
+  resultsLine,
+  reviewHeading,
+  reviewLine,
+} from './game-model';
 import { Scoreboard } from './game-scoreboard';
 import { useGameResults } from './games-api';
 import { exitQuest } from './quest-frame';
@@ -31,21 +48,36 @@ import { questWide } from './quest-model';
 /** Games already celebrated in this run of the app: once per game. */
 const celebrated = new Set<string>();
 
+/** A stable number from a game's id, for the confetti's pattern. */
+function seedOf(id: string): number {
+  let seed = 7;
+  for (let i = 0; i < id.length; i += 1) seed = (seed * 31 + id.charCodeAt(i)) % 233280;
+  return seed;
+}
+
 export function GameResults({ game }: { game: GameView }) {
   const theme = useAppTheme();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const wide = questWide(width);
   const overseer = isOverseer(game);
   const [team, setTeam] = useState<string | null>(null);
   const results = useGameResults(game.id, team, true);
   const data = results.data?.data;
   const shownTeam = game.teams.find((t) => t.id === (data?.team_id ?? null));
+  const mine = myTeam(game);
+  const ending = gameEndLabel(game.end_reason);
+  const knockout = game.end_reason === 'knockout';
 
+  // The moment, once per game in this run of the app: the stamp (on a knockout), then the confetti.
+  const [moment] = useState(() => !celebrated.has(game.id));
+  const [stamped, setStamped] = useState(!knockout);
+  const party = moment && stamped && celebrates(game);
   useEffect(() => {
-    if (!wonGame(game) || celebrated.has(game.id)) return;
     celebrated.add(game.id);
-    haptics.success();
-  }, [game]);
+  }, [game.id]);
+  useEffect(() => {
+    if (party) haptics.success();
+  }, [party]);
 
   const summary = (
     <View style={{ gap: space.lg, ...(wide ? { flex: 2 } : null) }}>
@@ -57,14 +89,28 @@ export function GameResults({ game }: { game: GameView }) {
           >
             The game is over
           </Text>
+          {ending ? (
+            <Text
+              testID="game-end-reason"
+              variant="titleSmall"
+              style={{ fontWeight: '700', color: knockout ? theme.colors.error : theme.colors.onSurface }}
+            >
+              {ending}
+            </Text>
+          ) : null}
           <Text
             testID="game-winner"
             variant="headlineSmall"
             accessibilityRole="header"
             style={{ fontWeight: '700' }}
           >
-            {winnersLabel(game.teams)}
+            {resultsHeadline(game, mine)}
           </Text>
+          {mine ? (
+            <Text testID="game-encouragement" variant="bodyLarge">
+              {resultsLine(game, mine)}
+            </Text>
+          ) : null}
           <GameRules game={game} />
         </View>
       </OutlinedCard>
@@ -128,15 +174,32 @@ export function GameResults({ game }: { game: GameView }) {
     </View>
   );
 
+  const effects = (
+    <>
+      {moment && knockout && !stamped ? (
+        <Portal>
+          <KnockoutStamp onDone={() => setStamped(true)} />
+        </Portal>
+      ) : null}
+      {party ? (
+        <Portal>
+          <Confetti testID="game-confetti" seed={seedOf(game.id)} fall={height + 40} />
+        </Portal>
+      ) : null}
+    </>
+  );
+
   return wide ? (
     <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.xl }}>
       {summary}
       {review}
+      {effects}
     </View>
   ) : (
     <View style={{ gap: space.lg }}>
       {summary}
       {review}
+      {effects}
     </View>
   );
 }

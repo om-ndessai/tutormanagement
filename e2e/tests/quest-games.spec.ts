@@ -35,6 +35,12 @@ const view = async (page: Page, id: string) => unwrap<any>(await page.request.ge
 const answer = (page: Page, id: string, data: Record<string, unknown>) =>
   page.request.post(`/api/quest/games/${id}/answer`, { data });
 
+/** Phase 47: a started game counts down before its first question; wait it out, by the server's clock. */
+async function afterCountdown(game: { started_at: string; now: string }) {
+  const wait = Date.parse(game.started_at) - Date.parse(game.now);
+  if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait + 150));
+}
+
 test.describe('Quest Games (Phase 46)', () => {
   test('codes, teams, the shared queue, negative marking, places and R20', async ({ as }) => {
     const admin = await as('admin');
@@ -92,6 +98,9 @@ test.describe('Quest Games (Phase 46)', () => {
       const started = await unwrap<any>(await anita.request.post(`/api/quest/games/${game.id}/start`), 'start');
       expect(started).toMatchObject({ status: 'running', series_length: 2 });
       expect((await sofia.request.post(`/api/quest/games/${game.id}/join`, { data: { as: 'solo' } })).status()).toBe(409);
+      // The countdown (Phase 47): nothing is served before the first question's moment.
+      expect((await view(alex, game.id)).me).toMatchObject({ question: null, waiting: false });
+      await afterCountdown(started);
 
       // The team's queue: teammates never hold the same question; the solo player starts the same series.
       const a = (await view(alex, game.id)).me.question;
@@ -172,6 +181,7 @@ test.describe('Quest Games (Phase 46)', () => {
       const started = await unwrap<any>(await admin.request.post(`/api/quest/games/${game.id}/start`), 'start');
       expect(Date.parse(started.ends_at) - Date.parse(started.started_at)).toBe(120_000);
       expect(started.series_length).toBeGreaterThan(2);
+      await afterCountdown(started);
       expect((await view(alex, game.id)).me.question).not.toBeNull();
       expect((await alex.request.post(`/api/quest/games/${game.id}/end`)).status()).toBe(403);
       const ended = await unwrap<any>(await admin.request.post(`/api/quest/games/${game.id}/end`), 'end');
@@ -180,44 +190,76 @@ test.describe('Quest Games (Phase 46)', () => {
     });
   });
 
-  test('in the portal: host, join with codes, play as a team, the results', async ({ as }) => {
+  test('in the portal: the wizard, a favorite, two codes, the countdown, play as a team, the results', async ({ as }) => {
     const admin = await as('admin');
     const alex = await as('tutor');
     const sofia = await as('student');
     await withGames(admin, async () => {
-      // Priya starts a two-question game from the Quest page.
+      // Priya starts a game from the Quest page: the wizard, step by step.
       await admin.goto('/quest');
       await admin.getByTestId('game-new').click();
-      await admin.getByTestId('game-level').click();
-      await admin.getByRole('option', { name: /^G6/ }).click();
+      await expect(admin.getByTestId('game-wizard')).toBeVisible();
+      await expect(admin.getByTestId('game-next')).toBeDisabled();
+      await admin.getByTestId('game-tile-NC26.6').click();
+      await admin.getByTestId('game-next').click();
+      // Length: two questions, stepped down from ten with the counter and typed.
+      await admin.getByTestId('game-amount-minus').click();
+      await expect(admin.getByTestId('game-amount')).toHaveValue('9');
       await admin.getByTestId('game-amount').fill('2');
+      await admin.getByTestId('game-amount').blur();
+      await admin.getByTestId('game-next').click();
+      // Scoring: right +2, wrong 0.
+      await admin.getByTestId('game-right-plus').click();
+      await expect(admin.getByTestId('game-right')).toHaveValue('+2');
+      await admin.getByTestId('game-next').click();
+      // Players: teams of two, at most three teams.
+      await admin.getByTestId('game-players-multi').click();
+      await admin.getByTestId('game-team-size-minus').click();
+      await admin.getByTestId('game-team-size-minus').click();
+      await expect(admin.getByTestId('game-team-size')).toHaveValue('2');
+      await admin.getByTestId('game-max-teams').fill('3');
+      await admin.getByTestId('game-max-teams').blur();
+      await admin.getByTestId('game-next').click();
+      // The review, saved as a favorite.
+      await expect(admin.getByTestId('game-review-summary')).toContainText('2 questions');
+      await expect(admin.getByTestId('game-review-summary')).toContainText('Right +2, wrong 0');
+      await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams of up to 2');
+      await admin.getByTestId('game-fav-name').fill('Two-question duel');
+      await admin.getByTestId('game-fav-save').click();
+      await expect(admin.getByText('Saved “Two-question duel” to your favorites.')).toBeVisible();
+      await expect(admin.getByTestId('game-create')).toHaveText('Generate game code');
       await admin.getByTestId('game-create').click();
       await expect(admin.getByTestId('game-page')).toBeVisible();
       const code = (await admin.getByTestId('game-lobby-code').textContent())!.trim();
       expect(code).toMatch(/^[A-Z2-9]{6}$/);
 
-      // Alex types the code and starts a team.
+      // Alex types the game's code and starts a team: no "on my own" in a game of teams.
       await alex.goto('/quest');
       await alex.getByTestId('game-code').fill(code);
       await alex.getByTestId('game-join').click();
+      await expect(alex.getByTestId('game-join-solo')).toHaveCount(0);
       await alex.getByTestId('game-team-name').fill('Owls');
       await alex.getByTestId('game-join-new-team').click();
       const teamCode = (await alex.getByTestId('game-team-code-shown').textContent())!.trim();
 
-      // Sofia types the TEAM's code, and joins the team straight away.
+      // Sofia types two codes: the game's, then the team's.
       await sofia.goto('/quest');
-      await sofia.getByTestId('game-code').fill(teamCode);
+      await sofia.getByTestId('game-code').fill(code);
       await sofia.getByTestId('game-join').click();
-      await sofia.getByTestId('game-join-team-named').click();
+      await sofia.getByTestId('game-team-code').fill(teamCode);
+      await sofia.getByTestId('game-join-team').click();
       await expect(sofia.getByTestId('game-team-Owls')).toContainText('Alex, Sofia');
 
-      // The host sees them arrive, and begins.
+      // The status page: the host sees them arrive, and starts the Quest; every screen counts down.
       await expect(admin.getByTestId('game-team-Owls')).toBeVisible();
       await admin.getByTestId('game-start').click();
+      await expect(admin.getByTestId('game-start')).toHaveCount(0);
+      await expect(alex.getByTestId('game-countdown')).toBeVisible({ timeout: 4000 });
 
-      // Each holds a different question of the two.
-      await expect(alex.getByTestId('game-question')).toBeVisible();
-      await expect(sofia.getByTestId('game-question')).toBeVisible();
+      // Then each holds a different question of the two.
+      await expect(alex.getByTestId('game-question')).toBeVisible({ timeout: 10_000 });
+      await expect(sofia.getByTestId('game-question')).toBeVisible({ timeout: 10_000 });
+      await expect(alex.getByTestId('game-countdown')).toHaveCount(0);
       const one = await alex.getByTestId('game-question').textContent();
       const two = await sofia.getByTestId('game-question').textContent();
       expect(new Set([one!.match(/Question (\d)/)![1], two!.match(/Question (\d)/)![1]])).toEqual(new Set(['1', '2']));
@@ -226,10 +268,150 @@ test.describe('Quest Games (Phase 46)', () => {
       await expect(alex.getByTestId('game-waiting')).toBeVisible();
       await sofia.getByTestId('game-skip').click();
 
-      // Both done: the results, with the answers.
+      // Both done: the results, with the answers -- and the winners' confetti.
       await expect(sofia.getByTestId('game-winner')).toHaveText('Owls wins!');
+      await expect(sofia.getByTestId('game-encouragement')).toContainText('Your team won');
+      await expect(sofia.getByTestId('game-confetti')).toBeAttached();
       await expect(sofia.getByTestId('game-review-1')).toContainText('Answer:');
       await expect(admin.getByTestId('game-winner')).toHaveText('Owls wins!', { timeout: 10_000 });
+
+      // The favorite comes back on the first step, and one tap fills every step.
+      await admin.goto('/quest/games/new');
+      await admin.getByTestId('game-fav-Two-question duel').click();
+      await expect(admin.getByTestId('game-step-5')).toBeVisible();
+      await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams of up to 2');
+      await admin.getByTestId('game-back').click();
+      await admin.getByTestId('game-back').click();
+      await admin.getByTestId('game-back').click();
+      await admin.getByTestId('game-back').click();
+      await admin.getByTestId('game-fav-delete-Two-question duel').click();
+      await expect(admin.getByTestId('game-fav-Two-question duel')).toHaveCount(0);
+    });
+  });
+
+  test('a single player starts at once, alone; Random draws upward', async ({ as }) => {
+    const admin = await as('admin');
+    const sofia = await as('student');
+    const alex = await as('tutor');
+    await withGames(admin, async () => {
+      await sofia.goto('/quest/games/new');
+      await sofia.getByTestId('game-tile-random').click();
+      await expect(sofia.getByTestId('game-next')).toBeDisabled();
+      await sofia.getByTestId('game-random-start').click();
+      await sofia.getByRole('option', { name: 'G5' }).click();
+      await sofia.getByTestId('game-next').click();
+      await sofia.getByTestId('game-amount').fill('3');
+      await sofia.getByTestId('game-amount').blur();
+      await sofia.getByTestId('game-next').click();
+      await sofia.getByTestId('game-next').click();
+      await sofia.getByTestId('game-players-single').click();
+      await sofia.getByTestId('game-next').click();
+      await expect(sofia.getByTestId('game-review-summary')).toContainText('G5 and up, at random');
+      await expect(sofia.getByTestId('game-review-summary')).toContainText('Single player');
+      await expect(sofia.getByTestId('game-create')).toHaveText('Start game');
+      await sofia.getByTestId('game-create').click();
+
+      // No lobby: the doors, then the first question.
+      await expect(sofia.getByTestId('game-countdown')).toBeVisible();
+      await expect(sofia.getByTestId('game-lobby-code')).toHaveCount(0);
+      await expect(sofia.getByTestId('game-question')).toBeVisible({ timeout: 10_000 });
+      await expect(sofia.getByTestId('game-question')).toContainText('of 3');
+      // Back goes to Quest, never to the wizard of a made game.
+      const gameId = sofia.url().split('/').pop()!;
+      const game = await view(sofia, gameId);
+      expect(game).toMatchObject({ players: 'single', level_scope: 'upward', max_teams: 1, max_team_size: 1, knockout: false });
+
+      // Nobody else joins a single player's game.
+      const found = await unwrap<any>(await alex.request.post('/api/quest/games/lookup', { data: { code: game.code } }), 'lookup');
+      expect(found).toMatchObject({ players: 'single', open: false });
+      expect((await alex.request.post(`/api/quest/games/${gameId}/join`, { data: { as: 'solo' } })).status()).toBe(409);
+
+      for (let i = 0; i < 3; i += 1) await sofia.getByTestId('game-skip').click();
+      await expect(sofia.getByTestId('game-winner')).toHaveText('0 right, 0 points');
+      await expect(sofia.getByTestId('game-encouragement')).toContainText('Every question you try');
+    });
+  });
+});
+
+test.describe('Quest Games, round two (Phase 47)', () => {
+  test('custom points, knockout, the most teams, late joining, and favorites (R20)', async ({ as }) => {
+    const admin = await as('admin');
+    const alex = await as('tutor');
+    const sofia = await as('student');
+    const sanjay = await as('studentTutor');
+    await withGames(admin, async () => {
+      // The points' bounds.
+      const base = { level_id: 'NC26.5', mode: 'count', question_count: 2, max_team_size: 1 };
+      expect((await create(admin, { ...base, right_points: 0 })).status()).toBe(422);
+      expect((await create(admin, { ...base, wrong_points: 1 })).status()).toBe(422);
+      expect((await create(admin, { ...base, max_teams: 1 })).status()).toBe(422);
+
+      // Knockout, everyone on their own, at most two: wrong is −3.
+      const game = await unwrap<any>(
+        await create(admin, { ...base, wrong_points: -3, knockout: true, max_teams: 2 }),
+        'knockout game',
+      );
+      expect(game).toMatchObject({ right_points: 1, wrong_points: -3, negative_marking: true, knockout: true, max_teams: 2 });
+      await unwrap(await alex.request.post(`/api/quest/games/${game.id}/join`, { data: { as: 'solo' } }), 'alex');
+      await unwrap(await sofia.request.post(`/api/quest/games/${game.id}/join`, { data: { as: 'solo' } }), 'sofia');
+      // The most teams: a third is refused.
+      expect((await sanjay.request.post(`/api/quest/games/${game.id}/join`, { data: { as: 'solo' } })).status()).toBe(409);
+      const started = await unwrap<any>(await admin.request.post(`/api/quest/games/${game.id}/start`), 'start');
+      expect(Date.parse(started.started_at) - Date.parse(started.now)).toBeGreaterThan(3000);
+      // During the countdown an answer is refused.
+      expect((await answer(alex, game.id, { question_id: '00000000-0000-4000-8000-000000000000', skip: true })).status()).toBe(409);
+      await afterCountdown(started);
+
+      // Alex skips both: finished on 0. Sofia can still reach 2: no knockout yet.
+      for (let i = 0; i < 2; i += 1) {
+        const q = (await view(alex, game.id)).me.question;
+        await unwrap(await answer(alex, game.id, { question_id: q.id, skip: true }), 'alex skip');
+      }
+      expect((await view(sofia, game.id)).status).toBe('running');
+      // Sofia's wrong answer costs 3: at most −2 now, below Alex's 0 -- a knockout, with a question left.
+      const q = (await view(sofia, game.id)).me.question;
+      const ko = await unwrap<any>(await answer(sofia, game.id, { question_id: q.id, answer: WRONG }), 'sofia wrong');
+      expect(ko).toMatchObject({ status: 'finished', end_reason: 'knockout' });
+      expect(ko.teams.map((t: any) => [t.name, t.score, t.place])).toEqual([
+        ['Alex', 0, 1],
+        ['Sofia', -3, 2],
+      ]);
+
+      // Joining left open: a late player joins while it runs, and starts from the first question.
+      const open = await unwrap<any>(await create(admin, { ...base, late_join: true }), 'open game');
+      await unwrap(await alex.request.post(`/api/quest/games/${open.id}/join`, { data: { as: 'solo' } }), 'alex');
+      const running = await unwrap<any>(await admin.request.post(`/api/quest/games/${open.id}/start`), 'start open');
+      await afterCountdown(running);
+      const late = await unwrap<any>(await sofia.request.post('/api/quest/games/lookup', { data: { code: open.code } }), 'late lookup');
+      expect(late).toMatchObject({ status: 'running', open: true, late_join: true });
+      await unwrap(await sofia.request.post(`/api/quest/games/${open.id}/join`, { data: { as: 'solo' } }), 'late join');
+      expect((await view(sofia, open.id)).me.question.number).toBe(1);
+      await unwrap(await admin.request.post(`/api/quest/games/${open.id}/end`), 'end');
+      expect((await view(sofia, open.id)).end_reason).toBe('host');
+
+      // Favorites: a person's own. Saving a name again (any case) replaces it.
+      const config = { level_id: 'NC26.5', mode: 'timed', duration_minutes: 5, right_points: 2, wrong_points: -1, max_team_size: 3, max_teams: 4 };
+      const saved = await alex.request.put('/api/quest/games/favorites', { data: { name: 'Friday race', config } });
+      expect(saved.status()).toBe(201);
+      const replaced = await alex.request.put('/api/quest/games/favorites', {
+        data: { name: 'FRIDAY RACE', config: { ...config, duration_minutes: 10 } },
+      });
+      expect(replaced.status()).toBe(200);
+      const mine = await unwrap<any[]>(await alex.request.get('/api/quest/games/favorites'), 'favorites');
+      expect(mine).toHaveLength(1);
+      expect(mine[0]).toMatchObject({ name: 'FRIDAY RACE', config: { duration_minutes: 10, right_points: 2, players: 'multi' } });
+      expect((await alex.request.put('/api/quest/games/favorites', { data: { name: ' ', config } })).status()).toBe(422);
+      // R20: nobody else reads or deletes it.
+      expect(await unwrap<any[]>(await sofia.request.get('/api/quest/games/favorites'), 'sofia favorites')).toEqual([]);
+      expect((await sofia.request.delete(`/api/quest/games/favorites/${mine[0].id}`)).status()).toBe(404);
+      expect((await admin.request.delete(`/api/quest/games/favorites/${mine[0].id}`)).status()).toBe(404);
+      expect((await alex.request.delete(`/api/quest/games/favorites/${mine[0].id}`)).status()).toBe(200);
+
+      // The log names the favorite, never its settings.
+      const log = await unwrap<any[]>(await admin.request.get('/api/audit?limit=50'), 'audit');
+      const lines = log.filter((e) => e.entity_id === mine[0].id);
+      expect(lines.map((e) => e.action).sort()).toEqual(['quest.game_favorite_deleted', 'quest.game_favorite_saved', 'quest.game_favorite_saved']);
+      expect(lines.every((e) => !/minute|point|−|-1/.test(e.description))).toBe(true);
     });
   });
 });

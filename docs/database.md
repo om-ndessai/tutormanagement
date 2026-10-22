@@ -1138,6 +1138,56 @@ npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as p
 npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM sqlite_master WHERE name IN ('quest_games', 'quest_game_teams', 'quest_game_players', 'quest_games_code', 'quest_game_teams_code')"
 ```
 
+Phase 47 (Quest Games, round two; 2026-10-22, `docs/quest-games-g2-plan.md`) is additive: eight
+columns on `quest_games`, each with a default that describes a Phase 46 game as it was, and one new
+table for a person's favorite settings. Apply after the backup, before `npm run deploy`:
+
+```sql
+ALTER TABLE quest_games ADD COLUMN level_scope TEXT NOT NULL DEFAULT 'level' CHECK (level_scope IN ('level', 'upward'));
+ALTER TABLE quest_games ADD COLUMN right_points INTEGER NOT NULL DEFAULT 1 CHECK (right_points BETWEEN 1 AND 10);
+ALTER TABLE quest_games ADD COLUMN wrong_points INTEGER NOT NULL DEFAULT 0 CHECK (wrong_points BETWEEN -10 AND 0);
+ALTER TABLE quest_games ADD COLUMN knockout INTEGER NOT NULL DEFAULT 0 CHECK (knockout IN (0, 1));
+ALTER TABLE quest_games ADD COLUMN players TEXT NOT NULL DEFAULT 'multi' CHECK (players IN ('single', 'multi'));
+ALTER TABLE quest_games ADD COLUMN max_teams INTEGER CHECK (max_teams IS NULL OR max_teams BETWEEN 1 AND 20);
+ALTER TABLE quest_games ADD COLUMN late_join INTEGER NOT NULL DEFAULT 0 CHECK (late_join IN (0, 1));
+ALTER TABLE quest_games ADD COLUMN end_reason TEXT CHECK (end_reason IS NULL OR end_reason IN ('complete', 'time', 'knockout', 'host', 'expired'));
+-- A Phase 46 game's wrong answer was -1 under negative marking.
+UPDATE quest_games SET wrong_points = -1 WHERE negative_marking = 1;
+
+CREATE TABLE quest_game_favorites (
+  id              TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  name            TEXT NOT NULL COLLATE NOCASE CHECK (length(name) BETWEEN 1 AND 40),
+  config          TEXT NOT NULL,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE UNIQUE INDEX quest_game_favorites_name ON quest_game_favorites (organization_id, user_id, name);
+
+CREATE TRIGGER quest_game_favorites_same_organization
+BEFORE INSERT ON quest_game_favorites
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_favorites_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_favorites
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as phase47.sql>
+# read-only: the new columns and the table
+npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM pragma_table_info('quest_games') WHERE name IN ('level_scope', 'right_points', 'wrong_points', 'knockout', 'players', 'max_teams', 'late_join', 'end_reason')"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) AS favorites FROM quest_game_favorites"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

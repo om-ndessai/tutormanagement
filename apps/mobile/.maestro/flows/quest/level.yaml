@@ -56,12 +56,29 @@ tags:
 - assertVisible:
     id: quest-level-00000000-0000-4000-8000-000000000008
     text: 'Sofia Okafor’s level: BA3\. Change'
+# The same after the long scroll to her row: once it missed her field and the list never opened.
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: quest-level-00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: quest-level-00000000-0000-4000-8000-000000000008-none
+    timeout: 5000
+# Her list opens below her field (in the middle of the screen) and scrolls within itself. A swipe
+# from the middle starts INSIDE that list and scrolls it, not the page, carrying G5 (its sixth row)
+# up out of sight while the search went on down the page -- the flake of Phases 46-47 on both
+# platforms. So the page is moved with a swipe that starts above her field, outside the list, which
+# brings the list's first rows up into view; then G5 is found without another swipe.
+- swipe:
+    start: 50%, 40%
+    end: 50%, 15%
+    duration: 600
+- waitForAnimationToEnd:
+    timeout: 3000
 - scrollUntilVisible:
     element:
       id: quest-level-00000000-0000-4000-8000-000000000008-NC26.5
-    centerElement: true
 - takeScreenshot: quest-level-picker
 - tapOn:
     id: quest-level-00000000-0000-4000-8000-000000000008-NC26.5

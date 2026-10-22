@@ -64,18 +64,13 @@ export default function OrgLayout() {
             <Stack.Screen name="quest/play" options={QUEST_OPTIONS} />
             <Stack.Screen name="quest/review" options={QUEST_OPTIONS} />
             {/* A Quest game (Phase 46) is full screen too, and opens no sheet: its join choices are
-                inline and its confirms native. Starting one, or a code to join, is a sheet over the
-                hub, which gives way to the game. */}
+                inline and its confirms native. A code to join is a sheet over the hub, which gives way
+                to the game. Starting one (Phase 47) is a five-step wizard, rising like the step flows:
+                five steps do not fit a sheet, and as a card rather than a full-screen modal the app's
+                toast (a favorite saved or deleted) stays reachable to VoiceOver. Its last action
+                replaces it with the game. */}
             <Stack.Screen name="quest/games/[gameId]" options={QUEST_OPTIONS} />
-            <Stack.Screen
-              name="quest/new-game"
-              options={{
-                presentation: 'formSheet',
-                sheetAllowedDetents: [0.9, 1],
-                sheetGrabberVisible: true,
-                headerShown: false,
-              }}
-            />
+            <Stack.Screen name="quest/new-game" options={STEP_FLOW_OPTIONS} />
             <Stack.Screen
               name="quest/join-game"
               options={{

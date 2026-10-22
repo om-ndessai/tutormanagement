@@ -6,7 +6,9 @@
 // Mobile (design 60): the `quest/join-game?code=` form sheet, fitted to what it holds. It runs the
 // lookup itself on opening (one POST), so a refused code is said here (`game-join-error`, the
 // server's words). Someone already in the game goes straight to it; joining gives way to the game.
-import { gameCodeSchema, gameLengthLabel, levelLabel, type GameLookup } from '@tmi/shared';
+// Phase 47 (design 61): the lookup's `players` and `open` decide it -- a single player's game is never
+// joinable, a running one only while its host left joining open (said above the choices).
+import { gameCodeSchema, gameLengthLabel, gameLevelLabel, levelLabel, type GameLookup } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -17,7 +19,7 @@ import { DetailSkeleton } from '@/components/skeletons';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
-import { lookupLine, notJoinableText } from './game-model';
+import { JOIN_RUNNING_TEXT, joinClosedText, lookupLine } from './game-model';
 import { JoinChoices } from './game-join-choices';
 import { useLookupGame } from './games-api';
 
@@ -39,6 +41,7 @@ export function JoinGameSheet({ code }: { code: string }) {
     : (parsed.error.issues[0]?.message ?? 'A code is six letters and numbers.');
   const valid = parsed.success ? parsed.data.code : null;
   const problem = invalid ?? refusal;
+  const closed = found ? joinClosedText(found) : null;
 
   useEffect(() => {
     if (asked.current || valid === null) return;
@@ -94,7 +97,7 @@ export function JoinGameSheet({ code }: { code: string }) {
         <>
           <View style={{ gap: space.xs }}>
             <Text variant="titleLarge" accessibilityRole="header" testID="game-join-title">
-              {`${levelLabel(found.level_id)} · ${gameLengthLabel(found)}`}
+              {`${gameLevelLabel(found, levelLabel)} · ${gameLengthLabel(found)}`}
             </Text>
             <Text
               testID="game-join-line"
@@ -104,17 +107,24 @@ export function JoinGameSheet({ code }: { code: string }) {
               {lookupLine(found)}
             </Text>
           </View>
-          {found.status !== 'lobby' ? (
+          {closed ? (
             <Text testID="game-join-closed" variant="bodyMedium">
-              {notJoinableText(found.status)}
+              {closed}
             </Text>
           ) : (
-            <JoinChoices
-              gameId={found.game_id}
-              maxTeamSize={found.max_team_size}
-              team={found.team}
-              onJoined={openGame}
-            />
+            <>
+              {found.status === 'running' ? (
+                <Text testID="game-join-running" variant="bodyMedium">
+                  {JOIN_RUNNING_TEXT}
+                </Text>
+              ) : null}
+              <JoinChoices
+                gameId={found.game_id}
+                maxTeamSize={found.max_team_size}
+                team={found.team}
+                onJoined={openGame}
+              />
+            </>
           )}
         </>
       )}

@@ -1,0 +1,71 @@
+# Quest Games (Phase 47), a knockout. Priya hosts a two-question G6 game, everyone on their own, at most
+# two, a wrong answer −3, knockout on; Alex and Sofia have joined and it has started (through the local
+# API). Alex skips both: finished on 0. Sofia opens the game at Question 1 and her wrong answer (through
+# the API, the web spec's WRONG) costs 3: at most −2 now, below Alex's 0, so nobody can catch him --
+# a knockout, with a question still to play. By the poll: why it ended, in words, "Alex wins!", and for
+# her a line of encouragement, never how far behind. The stamp and the confetti are screenshots only
+# (hidden from accessibility). The switches are off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/quest-games-start.js
+      env:
+        SETUP: knockout
+  - runScript:
+      file: ../../scripts/quest-game-act.js
+      env:
+        AS: alex
+        ACTION: skip-all
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://quest/games/${output.gameId}
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 2'
+    timeout: 15000
+- runScript:
+    file: ../../scripts/quest-game-act.js
+    env:
+      AS: sofia
+      ACTION: answer-wrong
+      GAME: ${output.gameId}
+- extendedWaitUntil:
+    visible:
+      id: game-end-reason
+      text: 'Knockout! Nobody could catch the leader\.'
+    timeout: 15000
+- takeScreenshot: game-knockout-stamp
+- assertVisible:
+    id: game-winner
+    text: 'Alex wins!'
+- assertVisible:
+    id: game-encouragement
+    text: 'Every question you try makes the next one easier\. Go again!'
+- assertNotVisible:
+    id: game-question
+# The rules line sits on the results (and the lobby), as on the web; not on the question.
+- scrollUntilVisible:
+    element:
+      id: game-rules
+    centerElement: true
+- assertVisible:
+    id: game-rules
+    text: 'G6 · 2 questions · Right \+1, wrong −3 · Up to 2 players, each on their own · knockout.*'
+- takeScreenshot: game-knockout-results

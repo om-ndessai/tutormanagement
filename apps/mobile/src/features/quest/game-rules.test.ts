@@ -19,6 +19,17 @@ import {
   teamTotals,
   winnersLabel,
   createGameSchema,
+  GAME_COUNTDOWN_MS,
+  gameCountdownLeft,
+  gameEncouragement,
+  gameEndReason,
+  gameLevelIds,
+  gameMarkingLabel,
+  gameOpenToJoin,
+  gamePlayersLabel,
+  gameFavoriteSchema,
+  knockoutDecided,
+  normalizeEngineGame,
   type EngineGame,
   type EngineTeam,
   type SeriesQuestion,
@@ -61,16 +72,25 @@ function game(over: Partial<EngineGame> = {}): EngineGame {
     code: 'ABCDEF',
     host: { user_id: 'host', first_name: 'Host' },
     level_id: 'NC26.5',
+    level_scope: 'level',
+    level_ids: ['NC26.5'],
     mode: 'count',
     question_count: 4,
     duration_seconds: null,
+    right_points: 1,
+    wrong_points: 0,
     negative_marking: false,
+    knockout: false,
+    players: 'multi',
+    max_teams: 20,
     max_team_size: 4,
+    late_join: false,
     include_unreviewed: false,
     status: 'running',
     created_at: T0,
     started_at: T0,
     ended_at: null,
+    end_reason: null,
     series_length: 4,
     teams: [],
     ...over,
@@ -301,5 +321,175 @@ describe('codes and inputs', () => {
       'Owls, Pi and Cats share first place!',
     );
     expect(winnersLabel([])).toBe('Nobody played');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Phase 47 (docs/quest-games-g2-plan.md)
+// ---------------------------------------------------------------------------
+
+const done = (index: number, correct: boolean, skipped = false) => ({
+  index,
+  question_id: `q${index}`,
+  user_id: 'x',
+  answer: skipped ? null : 'x',
+  correct,
+  skipped,
+  at: T0 + index,
+});
+
+describe('Phase 47: points, the countdown, knockout, joining', () => {
+  it("scores by the game's points; the old switch still means +1 / -1", () => {
+    const answers = [done(0, true), done(1, false), done(2, false, true)];
+    expect(teamTotals(answers, { right_points: 3, wrong_points: -2 })).toMatchObject({ score: 1 });
+    expect(teamTotals(answers, true).score).toBe(0);
+    expect(gameMarkingLabel({ right_points: 2, wrong_points: -1 })).toBe('Right +2, wrong −1');
+    expect(gameMarkingLabel(false)).toBe('Right +1, wrong 0');
+  });
+
+  it('serves nothing and takes no answer before the countdown ends', () => {
+    const s = series(2);
+    const g = game({ started_at: T0 + GAME_COUNTDOWN_MS, series_length: 2 });
+    const solo = team('solo', ['c']);
+    g.teams = [solo];
+    expect(serveNext(g, solo, 'c', T0 + 1000)).toBeNull();
+    expect(
+      answerQuestion(g, solo, s, {
+        userId: 'c',
+        questionId: s[0]!.id,
+        answer: '1',
+        skip: false,
+        now: T0 + 1000,
+      }),
+    ).toEqual({
+      ok: false,
+      reason: 'not_started',
+    });
+    expect(serveNext(g, solo, 'c', T0 + GAME_COUNTDOWN_MS)).toBe(0);
+    const view = {
+      status: 'running' as const,
+      started_at: new Date(T0 + 5000).toISOString(),
+      now: new Date(T0 + 1500).toISOString(),
+    };
+    expect(gameCountdownLeft(view)).toBe(3500);
+    expect(gameCountdownLeft({ ...view, status: 'lobby' })).toBe(0);
+  });
+
+  it("knockout: the brief's example ends the game; a team that could still tie keeps it going", () => {
+    const g = game({ knockout: true, series_length: 25, question_count: 25 });
+    const leader = team('a', ['a']);
+    leader.answers = Array.from({ length: 25 }, (_, i) => done(i, i < 20));
+    leader.finished_at = T0 + 100;
+    const chaser = team('b', ['b']);
+    chaser.answers = Array.from({ length: 5 }, (_, i) => done(i, false));
+    g.teams = [leader, chaser];
+    // 20 final; the chaser can reach at most 0 + 20 = 20: a tie is still possible.
+    expect(knockoutDecided(g)).toBe(false);
+    chaser.answers.push(done(5, false));
+    // At question 6 on 0, at most 19: nobody can catch the leader.
+    expect(knockoutDecided(g)).toBe(true);
+    expect(gameEndReason(g, T0 + 200)).toBe('knockout');
+    // Off, or a single player's game: never.
+    expect(knockoutDecided({ ...g, knockout: false })).toBe(false);
+    expect(knockoutDecided({ ...g, players: 'single' })).toBe(false);
+  });
+
+  it('knockout counts what an unfinished leader could still lose', () => {
+    const g = game({ knockout: true, series_length: 4, wrong_points: -3 });
+    const a = team('a', ['a']);
+    a.answers = [done(0, true), done(1, true)]; // 2, two left: could fall to -4
+    const b = team('b', ['b']);
+    b.answers = [done(0, false, true), done(1, false, true), done(2, false, true)]; // 0, one left: at most 1
+    g.teams = [a, b];
+    expect(knockoutDecided(g)).toBe(false);
+    a.answers.push(done(2, true), done(3, true)); // 4, finished
+    a.finished_at = T0 + 10;
+    expect(knockoutDecided(g)).toBe(true);
+  });
+
+  it("joining: the lobby, a running game left open, never a single player's", () => {
+    const g = game({ status: 'lobby', started_at: null });
+    expect(gameOpenToJoin(g, T0)).toBe(true);
+    expect(gameOpenToJoin({ ...g, status: 'running', started_at: T0 }, T0)).toBe(false);
+    expect(gameOpenToJoin({ ...g, status: 'running', started_at: T0, late_join: true }, T0)).toBe(true);
+    expect(gameOpenToJoin({ ...g, players: 'single' }, T0)).toBe(false);
+  });
+
+  it('Random draws from the level and those above it in its family, never below', () => {
+    expect(gameLevelIds('NC26.7', 'level')).toEqual(['NC26.7']);
+    expect(gameLevelIds('NC26.7', 'upward').slice(0, 3)).toEqual(['NC26.7', 'NC26.8', 'NC26.M1']);
+    expect(gameLevelIds('NC26.7', 'upward')).not.toContain('NC26.6');
+    expect(gameLevelIds('BA4', 'upward', ['BA4', 'PRE'])).toEqual(['BA4', 'PRE']);
+  });
+
+  it("a Phase 46 game is read with the defaults; an old app's request still parses", () => {
+    const {
+      level_scope: _s,
+      level_ids: _l,
+      right_points: _r,
+      wrong_points: _w,
+      ...old
+    } = game({ negative_marking: true });
+    const filled = normalizeEngineGame(old as EngineGame);
+    expect(filled).toMatchObject({
+      level_scope: 'level',
+      level_ids: ['NC26.5'],
+      right_points: 1,
+      wrong_points: -1,
+    });
+    const parsed = createGameSchema.parse({
+      level_id: 'NC26.5',
+      mode: 'count',
+      question_count: 5,
+      negative_marking: true,
+      max_team_size: 2,
+    });
+    expect(parsed).toMatchObject({
+      right_points: 1,
+      wrong_points: -1,
+      players: 'multi',
+      late_join: false,
+      knockout: false,
+    });
+    const single = createGameSchema.parse({
+      level_id: 'NC26.5',
+      mode: 'timed',
+      duration_minutes: 3,
+      players: 'single',
+      max_team_size: 4,
+      knockout: true,
+    });
+    expect(single).toMatchObject({ max_teams: 1, max_team_size: 1, knockout: false, late_join: false });
+    expect(
+      createGameSchema.safeParse({
+        level_id: 'NC26.5',
+        mode: 'count',
+        question_count: 5,
+        max_team_size: 1,
+        wrong_points: 2,
+      }).success,
+    ).toBe(false);
+    expect(
+      gameFavoriteSchema.safeParse({
+        name: '',
+        config: { level_id: 'NC26.5', mode: 'count', question_count: 5, max_team_size: 1 },
+      }).success,
+    ).toBe(false);
+  });
+
+  it('says who plays, and encourages without comparing', () => {
+    expect(gamePlayersLabel({ players: 'single', max_teams: 1, max_team_size: 1 })).toBe('Single player');
+    expect(gamePlayersLabel({ players: 'multi', max_teams: 6, max_team_size: 1 })).toBe(
+      'Up to 6 players, each on their own',
+    );
+    expect(gamePlayersLabel({ players: 'multi', max_teams: 3, max_team_size: 2 })).toBe(
+      'Up to 3 teams of up to 2',
+    );
+    expect(gameEncouragement({ correct: 4, answered: 6, solo: true })).toBe(
+      'You got 4 right. Great effort, and every game makes you sharper!',
+    );
+    expect(gameEncouragement({ correct: 3, answered: 3, solo: false })).toBe(
+      'Your team got every one you answered right. Brilliant!',
+    );
   });
 });

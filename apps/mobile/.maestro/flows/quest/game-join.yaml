@@ -5,7 +5,9 @@
 # lobby shows Owls with her first name and the team's own code, no Begin (she does not host), and
 # "Waiting for Priya to begin…". Leave: back on the Quest page, "You left the game.". Then a new
 # game, where Alex has started Owls: Sofia types the TEAM's code and is offered that team alone
-# ("1 of 2 so far"); she joins, and Owls is Alex and Sofia. The switches are off again at the end.
+# ("1 of 2 so far"); she joins, and Owls is Alex and Sofia. Phase 47: the join line says the points and
+# who plays; a game of teams offers no "on my own" (the lobby asserts so, game-join-solo absent), and its
+# board counts the teams taken. The switches are off again at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -135,7 +137,10 @@ tags:
     timeout: 10000
 - assertVisible:
     id: game-join-line
-    text: 'Priya’s game · Right \+1, wrong 0 · teams of up to 2'
+    text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 teams of up to 2'
+# A game of teams: start one, or a team's code -- never on your own.
+- assertNotVisible:
+    id: game-join-solo
 - takeScreenshot: game-join-sheet
 - tapOn:
     id: game-team-name
@@ -245,5 +250,5 @@ tags:
       id: game-team-Owls
       text: '.*Owls.*Alex.*Sofia.*'
     timeout: 10000
-- assertVisible: '2 players'
+- assertVisible: '2 players · 1 of 20 teams'
 - takeScreenshot: game-lobby-team

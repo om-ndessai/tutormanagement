@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   GAME_POLL_MS,
   type ApiOk,
-  type CreateGameInput,
+  type CreateGameRequest,
   type GameAnswerInput,
+  type GameFavorite,
+  type GameFavoriteRequest,
   type GameLevel,
   type GameLookup,
   type GameResults,
@@ -14,12 +16,14 @@ import {
 
 import { apiClient } from '@/lib/api-client';
 
-// Phase 46: Quest Games. docs/quest-games-plan.md.
+// Phase 46: Quest Games. docs/quest-games-plan.md. Phase 47 (the start
+// wizard's favorites): docs/quest-games-g2-plan.md.
 
 export const gameKeys = {
   all: ['quest-games'] as const,
   list: ['quest-games', 'list'] as const,
   levels: ['quest-games', 'levels'] as const,
+  favorites: ['quest-games', 'favorites'] as const,
   game: (id: string) => ['quest-games', 'game', id] as const,
   results: (id: string, team: string | null) => ['quest-games', 'results', id, team] as const,
 };
@@ -44,11 +48,37 @@ export function useGameLevels(enabled = true) {
 export function useCreateGame() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (input: CreateGameInput) => apiClient.post<ApiOk<GameView>>('/quest/games', input),
+    mutationFn: (input: CreateGameRequest) => apiClient.post<ApiOk<GameView>>('/quest/games', input),
     onSuccess: (game) => {
       queryClient.setQueryData(gameKeys.game(game.data.id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
     },
+  });
+}
+
+/** The person's own named settings, for the wizard's first step. */
+export function useGameFavorites(enabled = true) {
+  return useQuery({
+    queryKey: gameKeys.favorites,
+    queryFn: () => apiClient.get<ApiOk<GameFavorite[]>>('/quest/games/favorites'),
+    enabled,
+  });
+}
+
+/** Saves under a name, replacing the person's favorite of that name. */
+export function useSaveGameFavorite() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: GameFavoriteRequest) => apiClient.put<ApiOk<GameFavorite>>('/quest/games/favorites', input),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: gameKeys.favorites }),
+  });
+}
+
+export function useDeleteGameFavorite() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => apiClient.delete<ApiOk<{ id: string }>>(`/quest/games/favorites/${id}`),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: gameKeys.favorites }),
   });
 }
 

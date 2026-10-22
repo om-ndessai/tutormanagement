@@ -1,0 +1,148 @@
+# Quest Games (Phase 47), joining late. Priya hosts a two-question G6 game, everyone on their own, with
+# joining left open; Alex has joined and Priya has started it (through the local API). Sofia types its
+# code: the sheet says the game is under way but she can still join, and offers one "Join the game" --
+# no team to start or join, everyone is on their own. She joins, and starts from its first question. Then
+# Priya's single-player game: its code is refused, in words, with nothing to join. The switches are off
+# again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/quest-games-start.js
+      env:
+        SETUP: late
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: game-code
+    centerElement: true
+- tapOn:
+    id: game-code
+- inputText: ${output.gameCode}
+# As in game-join: Go on iOS (a tap right after typing is swallowed there), the button on Android.
+- extendedWaitUntil:
+    visible:
+      id: game-join
+      enabled: true
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: game-join
+- extendedWaitUntil:
+    visible:
+      id: game-join-running
+      text: 'This game is under way: you can still join, and start from its first question\.'
+    timeout: 10000
+- assertVisible:
+    id: game-join-line
+    text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 players, each on their own'
+- assertVisible:
+    id: game-join-solo
+    text: '.*Join the game.*'
+- assertNotVisible:
+    id: game-team-name
+- assertNotVisible:
+    id: game-team-code
+- assertNotVisible:
+    id: game-join-closed
+- takeScreenshot: game-join-late
+- tapOn:
+    id: game-join-solo
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-game
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 2'
+    timeout: 15000
+# The rules line is the lobby's and the results' (as on the web), not the question's: joining open
+# was said by the sheet above (game-join-running).
+- assertNotVisible:
+    id: game-lobby-code
+- takeScreenshot: game-late-play
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+# A single player's game cannot be joined.
+- runScript:
+    file: ../../scripts/quest-games-start.js
+    env:
+      SETUP: single
+- scrollUntilVisible:
+    element:
+      id: game-code
+    centerElement: true
+- tapOn:
+    id: game-code
+- inputText: ${output.gameCode}
+- extendedWaitUntil:
+    visible:
+      id: game-join
+      enabled: true
+    timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: game-join
+- extendedWaitUntil:
+    visible:
+      id: game-join-closed
+      text: 'This is Priya’s single-player game, so it cannot be joined\.'
+    timeout: 10000
+- assertVisible:
+    id: game-join-line
+    text: 'Priya’s game · Right \+1, wrong 0 · Single player'
+- assertNotVisible:
+    id: game-join-solo
+- assertNotVisible:
+    id: game-team-name
+- takeScreenshot: game-join-single

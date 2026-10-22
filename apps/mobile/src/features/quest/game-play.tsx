@@ -9,7 +9,9 @@
 // keypad; the draft is keyed on the question, so a poll that hands over another question (a stale one
 // passed to a teammate) starts it afresh, and a 409 reads the game again. The question eases out and
 // the next in (stilled under reduce motion). The notices are Quest's own (quest-notice.tsx). On an
-// iPad the play sits beside the scoreboard. End the game asks first.
+// iPad the play sits beside the scoreboard. End the game asks first. Phase 47 (design 61): while the
+// doors count down, "Get ready" in place of the question; the waiting card is the game's status, with
+// the team's score once it is done; the notice carries the game's points ("Right! +2", "Not quite. −3").
 import { useQueryClient } from '@tanstack/react-query';
 import { gameAnswerSchema, type GameQuestion, type GameView } from '@tmi/shared';
 import { useMemo, useState } from 'react';
@@ -31,12 +33,14 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import {
+  GETTING_READY_TEXT,
   HOSTING_TEXT,
-  WAITING_TITLE,
+  WAITING_LABEL,
   answerNotice,
+  myTeam,
   questionHeading,
   seriesTotal,
-  waitingText,
+  waitingCopy,
 } from './game-model';
 import { Scoreboard } from './game-scoreboard';
 import { gameKeys, useGameAction } from './games-api';
@@ -69,7 +73,7 @@ export function confirmEnd({
   ]);
 }
 
-export function GamePlay({ game }: { game: GameView }) {
+export function GamePlay({ game, counting = false }: { game: GameView; counting?: boolean }) {
   const { width } = useWindowDimensions();
   const action = useGameAction(game.id);
   const notice = useQuestNotice();
@@ -95,6 +99,14 @@ export function GamePlay({ game }: { game: GameView }) {
         <OutlinedCard testID="game-hosting" style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg }}>
             <Text variant="bodyLarge">{HOSTING_TEXT}</Text>
+          </View>
+        </OutlinedCard>
+      ) : counting ? (
+        <OutlinedCard testID="game-getting-ready" style={{ borderRadius: radius.lg }}>
+          <View style={{ padding: space.lg }}>
+            <Text variant="bodyLarge" style={{ fontWeight: '600' }}>
+              {GETTING_READY_TEXT}
+            </Text>
           </View>
         </OutlinedCard>
       ) : game.me.question ? (
@@ -139,14 +151,27 @@ export function GamePlay({ game }: { game: GameView }) {
 
 function Waiting({ game }: { game: GameView }) {
   const theme = useAppTheme();
+  const mine = myTeam(game);
+  const copy = waitingCopy(game, mine);
+  const done = Boolean(mine?.finished_at);
   return (
     <OutlinedCard testID="game-waiting" style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.lg, gap: space.sm }}>
-        <Text variant="bodyLarge" style={{ fontWeight: '600' }}>
-          {WAITING_TITLE}
+        <Text
+          variant="labelMedium"
+          style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+        >
+          {WAITING_LABEL}
+        </Text>
+        <Text
+          variant={done ? 'titleLarge' : 'bodyLarge'}
+          accessibilityRole={done ? 'header' : undefined}
+          style={{ fontWeight: '600' }}
+        >
+          {copy.title}
         </Text>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-          {waitingText(game.mode)}
+          {copy.body}
         </Text>
       </View>
     </OutlinedCard>
@@ -201,7 +226,7 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
     }
     try {
       const reply = await action.mutateAsync({ kind: 'answer', ...parsed.data });
-      const said = answerNotice(reply.data?.me.last, reply.data?.negative_marking ?? game.negative_marking);
+      const said = answerNotice(reply.data?.me.last, reply.data ?? game);
       notice[said.tone](said.text);
       if (!reduced) {
         shift.set(32);

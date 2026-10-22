@@ -52,8 +52,8 @@ const NAV_ITEMS: (PaletteDestination & {
   { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, keywords: ['plans', 'assessments', 'goals'] },
   // Phase 38, in beta: answers written on a canvas. Only while the organization has it on.
   { to: '/assessments', label: 'Assessment', icon: PenLineIcon, end: false, feature: 'canvas_assessments', badge: 'Beta', keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'] },
-  // Phase 42: Question Quest (gamification). Only while the organization has it on.
-  { to: '/quest', label: 'Quest', icon: TrophyIcon, end: false, feature: 'gamify_question_quest', keywords: ['game', 'points', 'questions', 'approve', 'review'] },
+  // Phase 42: Question Quest (gamification). Only while the organization has it on. In beta (Phase 47).
+  { to: '/quest', label: 'Quest', icon: TrophyIcon, end: false, feature: 'gamify_question_quest', badge: 'Beta', keywords: ['game', 'points', 'questions', 'approve', 'review'] },
   { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, keywords: ['calendar', 'cancel', 'weekly'] },
   // Every tutor's and student's places (Phase 33): admins only.
   { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },

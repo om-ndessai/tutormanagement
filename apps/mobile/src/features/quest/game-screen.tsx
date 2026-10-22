@@ -7,16 +7,21 @@
 // Exit); polled only while it is focused (and the app in front), never once finished. The status
 // carries the clock of a timed game and your team's points once it has begun. A game you are not in
 // answers 404 and reads as not found, never forbidden (R20). It opens no sheet (U3).
+// Phase 47 (design 61): the doors' countdown over the whole frame, by the server's clock, while the
+// first question's moment is still ahead -- the timed game's clock hidden until it opens, the body
+// beneath hidden from a screen reader -- and, the moment it reaches 0, the game read at once rather than
+// at the next poll.
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsFocused } from 'expo-router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, Portal, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
 import { DetailSkeleton } from '@/components/skeletons';
 import { radius, space } from '@/theme/tokens';
 import { GameClock } from './game-clock';
+import { DoorsCountdown, useGameCountdown } from './game-effects';
 import { GameLobby } from './game-lobby';
 import { MISSING_TEXT, gameTitle, scoreLabel } from './game-model';
 import { GamePlay } from './game-play';
@@ -31,6 +36,10 @@ export function GameScreen({ gameId }: { gameId: string }) {
   const myTeam = game?.teams.find((team) => team.id === game.me.team_id);
   const status = game?.status;
   const queryClient = useQueryClient();
+  const refetch = query.refetch;
+  const opened = useCallback(() => void refetch(), [refetch]);
+  const countdown = useGameCountdown(game, query.dataUpdatedAt, opened);
+  const counting = countdown > 0;
 
   // The hub stays mounted under this modal, with its list of games: a game that begins or ends by
   // someone else's hand (seen here by the poll) would still read "Playing now" there on Exit.
@@ -45,7 +54,7 @@ export function GameScreen({ gameId }: { gameId: string }) {
       status={
         game ? (
           <>
-            {game.status === 'running' && game.ends_at ? (
+            {game.status === 'running' && game.ends_at && !counting ? (
               <GameClock endsAt={game.ends_at} serverNow={game.now} receivedAt={query.dataUpdatedAt} />
             ) : null}
             {myTeam && game.status !== 'lobby' ? (
@@ -74,13 +83,26 @@ export function GameScreen({ gameId }: { gameId: string }) {
             </Button>
           </View>
         </OutlinedCard>
-      ) : game.status === 'lobby' ? (
-        <GameLobby game={game} />
-      ) : game.status === 'running' ? (
-        <GamePlay game={game} />
       ) : (
-        <GameResults game={game} />
+        <View
+          // Under the doors, the screen beneath is not read out.
+          importantForAccessibility={counting ? 'no-hide-descendants' : 'auto'}
+          accessibilityElementsHidden={counting}
+        >
+          {game.status === 'lobby' ? (
+            <GameLobby game={game} />
+          ) : game.status === 'running' ? (
+            <GamePlay game={game} counting={counting} />
+          ) : (
+            <GameResults game={game} />
+          )}
+        </View>
       )}
+      {counting ? (
+        <Portal>
+          <DoorsCountdown msLeft={countdown} />
+        </Portal>
+      ) : null}
     </QuestFrame>
   );
 }

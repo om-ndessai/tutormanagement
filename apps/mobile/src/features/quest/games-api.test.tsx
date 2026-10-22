@@ -1,22 +1,36 @@
 // Quest Games' hooks (Phase 46, design 60), with the api client mocked at the network edge: the game
 // is polled only while its screen is focused and never once it is finished; an action's reply is
 // written into the game's cache. And Quest's choices keep their own testIDs unless a game asks.
+// Phase 47 (design 61): the favorites -- the person's own list under its key, read again after a save
+// or a delete -- and the wizard's request sent as it is.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, render, renderHook, screen } from '@testing-library/react-native';
 import { GAME_POLL_MS, type GameView } from '@tmi/shared';
 import type { ReactNode } from 'react';
 
 import { ThemeProvider } from '@/providers/theme-provider';
-import { gameKeys, useGame, useGameAction } from './games-api';
+import {
+  gameKeys,
+  useCreateGame,
+  useDeleteGameFavorite,
+  useGame,
+  useGameAction,
+  useGameFavorites,
+  useSaveGameFavorite,
+} from './games-api';
 import { QuestChoices } from './quest-choices';
 
 const mockGet = jest.fn();
 const mockPost = jest.fn();
+const mockPut = jest.fn();
+const mockDelete = jest.fn();
 jest.mock('@/lib/api-client', () => ({
   ...jest.requireActual('@/lib/api-client'),
   apiClient: {
     get: (path: string) => mockGet(path),
     post: (path: string, body?: unknown) => mockPost(path, body),
+    put: (path: string, body?: unknown) => mockPut(path, body),
+    delete: (path: string) => mockDelete(path),
   },
 }));
 // The page cannot draw under Jest: it says so at once, and the native rows stand in.
@@ -33,11 +47,18 @@ function aGame(over: Partial<GameView> = {}): GameView {
     id: 'g1',
     code: 'ABC234',
     level_id: 'NC26.6',
+    level_scope: 'level',
     mode: 'count',
     question_count: 2,
     duration_seconds: null,
+    right_points: 1,
+    wrong_points: 0,
     negative_marking: false,
+    knockout: false,
+    players: 'multi',
+    max_teams: 20,
     max_team_size: 2,
+    late_join: false,
     unreviewed: false,
     status: 'lobby',
     host: { user_id: 'p', first_name: 'Priya' },
@@ -46,6 +67,7 @@ function aGame(over: Partial<GameView> = {}): GameView {
     started_at: null,
     ends_at: null,
     ended_at: null,
+    end_reason: null,
     now: '2026-10-21T10:00:00.000Z',
     series_length: null,
     teams: [],
@@ -66,6 +88,8 @@ beforeEach(() => {
   jest.useFakeTimers();
   mockGet.mockReset();
   mockPost.mockReset();
+  mockPut.mockReset();
+  mockDelete.mockReset();
 });
 afterEach(() => {
   jest.useRealTimers();
@@ -139,6 +163,90 @@ describe('useGameAction', () => {
       await result.current.mutateAsync({ kind: 'answer', question_id: 'q', skip: true });
     });
     expect(mockPost).toHaveBeenLastCalledWith('/quest/games/g1/answer', { question_id: 'q', skip: true });
+    client.clear();
+  });
+});
+
+describe('favorites (Phase 47)', () => {
+  const favorite = {
+    id: 'f1',
+    name: 'Friday G6',
+    config: {
+      level_id: 'NC26.6' as const,
+      level_scope: 'level' as const,
+      mode: 'count' as const,
+      question_count: 10,
+      duration_minutes: undefined,
+      right_points: 1,
+      wrong_points: 0,
+      knockout: false,
+      players: 'multi' as const,
+      max_teams: 10,
+      max_team_size: 4,
+      late_join: false,
+    },
+    updated_at: '2026-10-22T10:00:00.000Z',
+  };
+
+  it('keeps the list under its own key', () => {
+    expect(gameKeys.favorites).toEqual(['quest-games', 'favorites']);
+  });
+
+  it('reads the list again after a save and after a delete', async () => {
+    const { wrapper, client } = setup();
+    mockGet.mockResolvedValue({ data: [favorite] });
+    const { result, unmount } = await renderHook(
+      () => ({ list: useGameFavorites(), save: useSaveGameFavorite(), remove: useDeleteGameFavorite() }),
+      { wrapper },
+    );
+    await flush(0);
+    const reads = () => mockGet.mock.calls.filter(([path]) => path === '/quest/games/favorites').length;
+    expect(reads()).toBe(1);
+    expect(result.current.list.data?.data[0]?.name).toBe('Friday G6');
+
+    mockPut.mockResolvedValueOnce({ data: favorite });
+    await act(async () => {
+      await result.current.save.mutateAsync({ name: 'Friday G6', config: favorite.config });
+    });
+    expect(mockPut).toHaveBeenCalledWith('/quest/games/favorites', {
+      name: 'Friday G6',
+      config: favorite.config,
+    });
+    await flush(0);
+    expect(reads()).toBe(2);
+
+    mockDelete.mockResolvedValueOnce({ data: { id: 'f1' } });
+    await act(async () => {
+      await result.current.remove.mutateAsync('f1');
+    });
+    expect(mockDelete).toHaveBeenCalledWith('/quest/games/favorites/f1');
+    await flush(0);
+    expect(reads()).toBe(3);
+    unmount();
+    client.clear();
+  });
+
+  it("sends the wizard's request as it is, and writes the game it returns into its cache", async () => {
+    const { wrapper, client } = setup();
+    mockPost.mockResolvedValueOnce({ data: aGame({ id: 'g9', status: 'running', players: 'single' }) });
+    const { result } = await renderHook(() => useCreateGame(), { wrapper });
+    const request = {
+      level_id: 'NC26.6' as const,
+      level_scope: 'upward' as const,
+      mode: 'count' as const,
+      question_count: 2,
+      right_points: 1,
+      wrong_points: 0,
+      knockout: false,
+      players: 'single' as const,
+      max_team_size: 1,
+      late_join: false,
+    };
+    await act(async () => {
+      await result.current.mutateAsync(request);
+    });
+    expect(mockPost).toHaveBeenCalledWith('/quest/games', request);
+    expect(client.getQueryData<{ data: GameView }>(gameKeys.game('g9'))?.data.players).toBe('single');
     client.clear();
   });
 });

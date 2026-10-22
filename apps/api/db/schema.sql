@@ -35,6 +35,7 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS quest_game_favorites;
 DROP TABLE IF EXISTS quest_game_players;
 DROP TABLE IF EXISTS quest_game_teams;
 DROP TABLE IF EXISTS quest_games;
@@ -2178,6 +2179,19 @@ CREATE TABLE quest_games (
   created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   started_at         TEXT,
   ended_at           TEXT,
+  -- Phase 47 (docs/quest-games-g2-plan.md), added to production with
+  -- ALTER TABLE ... ADD COLUMN, so each has a default that describes a Phase
+  -- 46 game as it was: one level, right +1, wrong by negative_marking (kept,
+  -- derived as wrong_points < 0), multiplayer, joining closed at the start.
+  -- 'upward': Random, the level and every one above it in its family.
+  level_scope        TEXT NOT NULL DEFAULT 'level' CHECK (level_scope IN ('level', 'upward')),
+  right_points       INTEGER NOT NULL DEFAULT 1 CHECK (right_points BETWEEN 1 AND 10),
+  wrong_points       INTEGER NOT NULL DEFAULT 0 CHECK (wrong_points BETWEEN -10 AND 0),
+  knockout           INTEGER NOT NULL DEFAULT 0 CHECK (knockout IN (0, 1)),
+  players            TEXT NOT NULL DEFAULT 'multi' CHECK (players IN ('single', 'multi')),
+  max_teams          INTEGER CHECK (max_teams IS NULL OR max_teams BETWEEN 1 AND 20),
+  late_join          INTEGER NOT NULL DEFAULT 0 CHECK (late_join IN (0, 1)),
+  end_reason         TEXT CHECK (end_reason IS NULL OR end_reason IN ('complete', 'time', 'knockout', 'host', 'expired')),
 
   CHECK ((mode = 'count') = (question_count IS NOT NULL)),
   CHECK ((mode = 'timed') = (duration_seconds IS NOT NULL)),
@@ -2270,6 +2284,37 @@ END;
 
 CREATE TRIGGER quest_game_players_organization_fixed
 BEFORE UPDATE OF organization_id ON quest_game_players
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Phase 47: a person's named settings for a game, saved from the start
+-- wizard's review and offered on its first step. Their own, in one
+-- organization; `config` is the create request's JSON (createGameSchema's
+-- output), parsed again by the shared schema on every read.
+CREATE TABLE quest_game_favorites (
+  id              TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  name            TEXT NOT NULL COLLATE NOCASE CHECK (length(name) BETWEEN 1 AND 40),
+  config          TEXT NOT NULL,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- One name per person per organization: saving under a name again replaces it.
+CREATE UNIQUE INDEX quest_game_favorites_name ON quest_game_favorites (organization_id, user_id, name);
+
+CREATE TRIGGER quest_game_favorites_same_organization
+BEFORE INSERT ON quest_game_favorites
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_favorites_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_favorites
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');

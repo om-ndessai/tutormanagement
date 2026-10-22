@@ -1,7 +1,8 @@
 // StepFlow (UI upgrades U2): steps move forward only when they validate, optional steps skip, the
-// Review step edits and comes back, and a server refusal opens the step that owns its field.
+// Review step edits and comes back, and a server refusal opens the step that owns its field. Design 61
+// added the final action's own testID and content after the Review's cards.
 import { fireEvent, screen } from '@testing-library/react-native';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Text, TextInput } from 'react-native';
 
 import { renderWithProviders } from '@/test/render';
@@ -41,11 +42,15 @@ function Harness({
   onSubmit = jest.fn(),
   refuse = null,
   review = true,
+  submitTestID,
+  trail,
 }: {
   onSubmit?: jest.Mock;
   /** What the "server" answers to a submit, as `details.fieldErrors`. */
   refuse?: Record<string, string[]> | null;
   review?: boolean;
+  submitTestID?: string;
+  trail?: (draft: Draft) => ReactNode;
 }) {
   const [draft, setDraft] = useState<Draft>({ name: '', note: '' });
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]> | null>(null);
@@ -69,8 +74,9 @@ function Harness({
       title="Add someone"
       steps={steps}
       draft={draft}
-      review={review ? {} : false}
+      review={review ? { trail } : false}
       submitLabel="Add"
+      submitTestID={submitTestID}
       onSubmit={(done) => {
         onSubmit(done);
         if (refuse) setFieldErrors(refuse);
@@ -185,4 +191,26 @@ test('stepForFields and firstMessages read the server shape', () => {
     notes: 'No',
   });
   expect(firstMessages(null)).toEqual({});
+});
+
+test('the final action takes its own testID, and the Review shows what follows its cards', async () => {
+  const onSubmit = jest.fn();
+  await renderWithProviders(
+    <Harness
+      onSubmit={onSubmit}
+      submitTestID="game-create"
+      trail={(draft) => <Text testID="trail">{`After ${draft.name}`}</Text>}
+    />,
+  );
+  // Not on an earlier step: there the primary is Next as ever.
+  expect(screen.queryByTestId('game-create')).toBeNull();
+  expect(screen.queryByTestId('trail')).toBeNull();
+  await fireEvent.changeText(screen.getByTestId('input-name'), 'Robin');
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  await fireEvent.press(screen.getByTestId('step-flow-skip'));
+  expect(screen.getByTestId('step-flow-review')).toBeTruthy();
+  expect(screen.getByTestId('trail')).toHaveTextContent('After Robin');
+  expect(screen.queryByTestId('step-flow-next')).toBeNull();
+  await fireEvent.press(screen.getByTestId('game-create'));
+  expect(onSubmit).toHaveBeenCalledTimes(1);
 });

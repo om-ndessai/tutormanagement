@@ -1,6 +1,6 @@
-import { NewGameSheet } from '@/features/quest/new-game-sheet';
+import { StartGameFlow } from '@/features/quest/start-game-flow';
 
-/** Start a Quest game (Phase 46): a form sheet over the Quest hub. */
+/** Start a Quest game (Phase 47): a five-step wizard, rising from the bottom over the Quest hub. */
 export default function NewGameRoute() {
-  return <NewGameSheet />;
+  return <StartGameFlow />;
 }

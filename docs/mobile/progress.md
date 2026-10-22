@@ -351,6 +351,29 @@ native rebuild of both dev builds, so build only while the devices are free.
   mobile` green on both; jest 770. Three app fixes from the flows (the amount's keypad, `OptionPicker`'s
   first tap, the hub's stale game status): build log, design 60.
 
+## Portal Phase 47 — Quest Games, round two (parity: the web half is built)
+
+- [ ] 61. Mobile: Quest Games, round two, at parity with the web (`docs/quest-games-g2-plan.md`) —
+  Start a game as a five-step wizard on `StepFlow` (the `quest/new-game` route, now a card rising from
+  the bottom): favorites first (a tap goes to the Review; the × asks, then deletes), level tiles with
+  their counts and Random with "Starting at"; count or timed on a − / + stepper; points for right and
+  wrong and Knockout; Single player or Multiplayer (most teams, on their own or teams of 2-6, joining
+  closed or open); the Review with Save as a favorite and Generate game code / Start game, which replaces
+  the wizard. Joining: "Join the game" alone in a game of one-player teams, no "on my own" in a game of
+  teams, the single-player and late-joining lookups. The game status page: "Start the Quest", the doors
+  countdown (5 s, the server's clock, Reanimated, words only under reduce motion), the "Game status"
+  waiting card, the results with the end reason, confetti for winners, the K.O. stamp and the
+  encouragement. Beta on Quest (More, Search, the Quest screen). Designed 2026-10-22 (design 61). New
+  pieces: `start-game-flow.tsx`, `game-wizard-model.ts`, `game-tile.tsx`, `game-effects.tsx`,
+  `components/number-stepper.tsx`; `StepFlow` gains `submitTestID` and `review.trail`; `new-game-sheet.tsx`
+  goes. Flows to change: `quest/{game-start,game-join,game-play,game-team,menu}`; to write:
+  `quest/{game-late-join,game-single,game-favorites,game-knockout}`; scripts: `waitForStart`, setups
+  `late` / `single` / `knockout`, `answer-wrong`, favorites cleared at the end. Built 2026-10-22 (build notes under
+  design 61): typecheck, lint (0 errors), Jest (119 suites, 822 tests; new `game-wizard-model`,
+  `number-stepper`, `game-effects`, `start-game-flow`, `game-join-choices` tests) and the export green; the
+  flows and scripts written (the scripts' setups checked against the local Worker). Left: the flows on
+  iOS and Android, the iPad in dark mode, and `smoke -- mobile`.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

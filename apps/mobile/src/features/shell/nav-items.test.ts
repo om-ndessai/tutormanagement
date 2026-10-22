@@ -24,7 +24,9 @@ describe('visibleNavItems', () => {
 
   it('lists Quest only while the organization has Question Quest on, for every role', () => {
     const quest = (roles: string[], on: boolean) =>
-      visibleNavItems(roles, { canvas_assessments: true, gamify_question_quest: on }).map((item) => item.label);
+      visibleNavItems(roles, { canvas_assessments: true, gamify_question_quest: on }).map(
+        (item) => item.label,
+      );
     for (const roles of [['admin'], ['tutor'], ['parent'], ['student']]) {
       expect(quest(roles, true)).toContain('Quest');
       expect(quest(roles, false)).not.toContain('Quest');
@@ -36,12 +38,11 @@ describe('visibleNavItems', () => {
     expect(questOnly).not.toContain('Assessment');
   });
 
-  it('places Quest after Assessment, as the web does, without a badge', () => {
+  it('places Quest after Assessment, as the web does, in beta (Phase 47)', () => {
     const items = visibleNavItems(['tutor'], { canvas_assessments: true, gamify_question_quest: true });
     const at = items.findIndex((item) => item.label === 'Quest');
     expect(items[at - 1]?.label).toBe('Assessment');
-    expect(items[at]).toMatchObject({ href: '/quest', tourId: 'nav-quest' });
-    expect(items[at]?.badge).toBeUndefined();
+    expect(items[at]).toMatchObject({ href: '/quest', tourId: 'nav-quest', badge: 'Beta' });
   });
 
   it('still leaves admin pages to admins', () => {
@@ -56,6 +57,8 @@ describe('visibleNavItems', () => {
     expect(dashboard(['tutor', 'parent'])[0]).toMatchObject({ href: '/analytics', tourId: 'nav-analytics' });
     expect(dashboard(['parent'])).toHaveLength(0);
     expect(dashboard(['student'])).toHaveLength(0);
-    expect(visibleNavItems(['parent'], null).find((item) => item.tourId === 'nav-dashboard')?.label).toBe('Home');
+    expect(visibleNavItems(['parent'], null).find((item) => item.tourId === 'nav-dashboard')?.label).toBe(
+      'Home',
+    );
   });
 });

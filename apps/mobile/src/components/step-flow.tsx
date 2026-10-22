@@ -88,11 +88,21 @@ export interface StepFlowProps<D> {
   draft: D;
   /**
    * Close with a Review step: a card per step that has a `summary`, each with Edit. `lead` goes
-   * above the cards (Schedule a lesson's sentence, U5).
+   * above the cards (Schedule a lesson's sentence, U5); `trail` after them (a Quest game's Save as a
+   * favorite, design 61).
    */
-  review?: { title?: string; description?: string; lead?: (draft: D) => ReactNode } | false;
+  review?:
+    | {
+        title?: string;
+        description?: string;
+        lead?: (draft: D) => ReactNode;
+        trail?: (draft: D) => ReactNode;
+      }
+    | false;
   /** The finishing action's label ("Add", "Schedule"). */
   submitLabel?: string;
+  /** The finishing action's testID on the last step (default `step-flow-next`, as on every other). */
+  submitTestID?: string;
   /** Runs on the last step's action, once every step validates. Close with `leave(close)` on success. */
   onSubmit: (done: { leave: (close?: () => void) => void }) => void | Promise<void>;
   submitting?: boolean;
@@ -144,6 +154,7 @@ export function StepFlow<D>({
   draft,
   review = false,
   submitLabel = 'Done',
+  submitTestID,
   onSubmit,
   submitting = false,
   fieldErrors,
@@ -336,6 +347,7 @@ export function StepFlow<D>({
     <>
       {review && review.lead ? review.lead(draft) : null}
       <ReviewCards steps={steps} draft={draft} onEdit={edit} />
+      {review && review.trail ? review.trail(draft) : null}
     </>
   ) : step ? (
     step.render({ draft, errors, goTo })
@@ -454,7 +466,7 @@ export function StepFlow<D>({
             </Button>
           ) : null}
           <Button
-            testID="step-flow-next"
+            testID={isLast && submitTestID ? submitTestID : 'step-flow-next'}
             mode="contained"
             onPress={next}
             loading={submitting && isLast}

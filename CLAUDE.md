@@ -653,6 +653,16 @@ query limit. A route checks the person and passes the call by RPC; the object an
 throws an `ApiError`. Keys reach a client only on the results, after the game, for the reader's own team
 (R20); names are first names; a game awards no Quest points; answers are never audit lines.
 
+**Phase 47 adds the start wizard, and a game begins with a countdown** (`docs/quest-games-g2-plan.md`). The
+wizard has five steps: level tiles or Random (a level and those above it in its family,
+`gameLevelIds`), the length, points for right and wrong plus Knockout, single player or multiplayer
+(the most teams, team size, joining open once it runs), and the review with a named favorite
+(`quest_game_favorites`, the person's own). The host's start sets `started_at` `GAME_COUNTDOWN_MS`
+ahead. Nothing is served or answered before it, and every screen counts to it by the server's `now`. A
+knockout game ends when one team's lowest possible score is above every other team's highest
+(`knockoutDecided`). `end_reason` records why a game ended. A single player's game is made and begun
+in one request. A create request without the new fields (an older app) means a Phase 46 game.
+
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the
 longest lesson that person does; the SHORTER of the two applies, and `DEFAULT_MAX_SESSION_MINUTES`
