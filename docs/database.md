@@ -1188,6 +1188,44 @@ npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM pragma_
 npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) AS favorites FROM quest_game_favorites"
 ```
 
+Phase 48 (Quest Games, round three; 2026-10-22, `docs/quest-games-g3-plan.md`) is additive: one new
+table, the questions each person has seen in this organization's games. Apply after the backup, before
+`npm run deploy`:
+
+```sql
+CREATE TABLE quest_game_seen (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  question_id     TEXT NOT NULL REFERENCES questions (id),
+  game_id         TEXT NOT NULL REFERENCES quest_games (id),
+  seen_at         TEXT NOT NULL,
+
+  PRIMARY KEY (organization_id, user_id, question_id)
+);
+
+CREATE TRIGGER quest_game_seen_same_organization
+BEFORE INSERT ON quest_game_seen
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+  OR NOT EXISTS (SELECT 1 FROM quest_games g WHERE g.id = NEW.game_id AND g.organization_id = NEW.organization_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_seen_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_seen
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --file=<the block above, saved as phase48.sql>
+# read-only: the table and its triggers
+npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM sqlite_master WHERE name LIKE 'quest_game_seen%' ORDER BY name"
+npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) AS seen FROM quest_game_seen"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

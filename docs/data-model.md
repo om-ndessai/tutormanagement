@@ -797,6 +797,20 @@ case, and saving under a name again replaces that favorite. `config` is the crea
 checked again by `createGameSchema` on every read, so a favorite whose settings no longer parse is
 simply not offered. Trigger: the person must be a member.
 
+### `quest_game_seen` (Phase 48)
+
+The questions a person has seen in this organization's games, so that the next game's series leaves them
+out (`docs/quest-games-g3-plan.md`).
+- **Key:** one row per `(organization_id, user_id, question_id)`. `game_id` and `seen_at` are those of the
+  latest game that showed it, so seeing a question again moves its row.
+- **Written once, at a game's end,** by its Durable Object, in the same batch as the results: every
+  question a team answered, skipped or held, for each of its players (the results show each teammate all
+  of them).
+- **Read only by the next series' draw,** one primary-key probe per player per candidate question. No
+  route reads it.
+- **Per organization,** like everything else about a person there. Triggers: the person must be a member,
+  and the game must belong to the organization; the organization never changes.
+
 ### `audit_events`
 
 Append-only activity log, added in Phase 3. Never updated, never deleted by the application

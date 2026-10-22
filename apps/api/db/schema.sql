@@ -35,6 +35,7 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS quest_game_seen;
 DROP TABLE IF EXISTS quest_game_favorites;
 DROP TABLE IF EXISTS quest_game_players;
 DROP TABLE IF EXISTS quest_game_teams;
@@ -2315,6 +2316,37 @@ END;
 
 CREATE TRIGGER quest_game_favorites_organization_fixed
 BEFORE UPDATE OF organization_id ON quest_game_favorites
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Phase 48 (docs/quest-games-g3-plan.md): which questions a person has seen in this organization's
+-- games, so the next game's series leaves them out. One row per person and question: seeing it
+-- again moves it to that game and moment. Written once, at a game's end, by its object -- never
+-- during play -- and read only by the next series' draw, never by a route.
+CREATE TABLE quest_game_seen (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  question_id     TEXT NOT NULL REFERENCES questions (id),
+  game_id         TEXT NOT NULL REFERENCES quest_games (id),
+  seen_at         TEXT NOT NULL,
+
+  -- The draw asks, per question, whether any of the game's players has seen it: one probe of this
+  -- key per player, so no second index is needed.
+  PRIMARY KEY (organization_id, user_id, question_id)
+);
+
+CREATE TRIGGER quest_game_seen_same_organization
+BEFORE INSERT ON quest_game_seen
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+  OR NOT EXISTS (SELECT 1 FROM quest_games g WHERE g.id = NEW.game_id AND g.organization_id = NEW.organization_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_seen_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_seen
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');

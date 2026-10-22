@@ -23,28 +23,74 @@ import type { OrgId } from '../lib/org.js';
 const iso = (ms: number | null) => (ms === null ? null : new Date(ms).toISOString());
 
 /**
- * The series: up to `count` questions at random from a game's levels (one, or
- * -- Random, Phase 47 -- a level and those above it), approved -- and, on the
- * organization's switch, checked ones too -- leaving out standards that need
- * a figure. Read once, when the game starts; the game's object keeps it.
+ * The series: up to `count` questions from a game's levels (one, or -- Random, Phase 47 -- a level
+ * and those above it), approved -- and, on the organization's switch, checked ones too -- leaving
+ * out standards that need a figure. Read once, when the game starts; the game's object keeps it.
+ *
+ * Phase 48 (docs/quest-games-g3-plan.md) curates it against what the players have seen
+ * (`quest_game_seen`, in this organization): first the game's levels' questions none of them has
+ * seen, at random; then, while it is short, the same from each level above in turn
+ * (`climbLevelIds`); last, if the bank is still short, ones they have seen, the least recently seen
+ * first. Each step reads only while the series is short.
  */
 export async function drawGameSeries(
   db: D1Database,
-  input: { levelIds: readonly string[]; count: number; includeUnreviewed: boolean },
+  org: OrgId,
+  input: {
+    levelIds: readonly string[];
+    climbLevelIds: readonly string[];
+    playerIds: readonly string[];
+    count: number;
+    includeUnreviewed: boolean;
+  },
+): Promise<SeriesQuestion[]> {
+  const series: SeriesQuestion[] = [];
+  const players = JSON.stringify([...new Set(input.playerIds)]);
+  const draw = async (levelIds: readonly string[], seen: boolean) => {
+    if (series.length >= input.count || levelIds.length === 0) return;
+    series.push(
+      ...(await drawLevelQuestions(db, org, {
+        levelIds,
+        players,
+        seen,
+        limit: input.count - series.length,
+        includeUnreviewed: input.includeUnreviewed,
+      })),
+    );
+  };
+  await draw(input.levelIds, false);
+  for (const levelId of input.climbLevelIds) await draw([levelId], false);
+  await draw([...input.levelIds, ...input.climbLevelIds], true);
+  return series;
+}
+
+/** One step of the draw: the levels' questions the players have not seen (at random), or have (oldest first). */
+async function drawLevelQuestions(
+  db: D1Database,
+  org: OrgId,
+  input: { levelIds: readonly string[]; players: string; seen: boolean; limit: number; includeUnreviewed: boolean },
 ): Promise<SeriesQuestion[]> {
   const statuses = input.includeUnreviewed ? ['approved', 'checked'] : ['approved'];
   // Every topic of a level sorts between 'NC26.5.' and 'NC26.5/' ('/' follows '.').
   const ranges = input.levelIds.map(() => '(q.topic_id >= ? AND q.topic_id < ?)').join(' OR ');
   const result = await db
     .prepare(
-      // org-scope: the platform bank's questions, drawn for a game; nothing of an organization's.
-      `SELECT q.id, q.kind, q.stem, q.choices, q.answer, q.solution FROM questions q
-       WHERE (${ranges}) AND q.status IN (${statuses.map(() => '?').join(', ')})
-         AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
-       ORDER BY random()
+      // org-scope: the platform bank's questions, drawn for a game, against what this organization's
+      // players have seen here (the subquery names the organization).
+      `SELECT * FROM (
+         SELECT q.id, q.kind, q.stem, q.choices, q.answer, q.solution,
+                (SELECT MAX(s.seen_at) FROM quest_game_seen s
+                  WHERE s.organization_id = ? AND s.question_id = q.id
+                    AND s.user_id IN (SELECT value FROM json_each(?))) AS last_seen
+         FROM questions q
+         WHERE (${ranges}) AND q.status IN (${statuses.map(() => '?').join(', ')})
+           AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
+       )
+       WHERE last_seen IS ${input.seen ? 'NOT NULL' : 'NULL'}
+       ORDER BY ${input.seen ? 'last_seen, random()' : 'random()'}
        LIMIT ?`,
     )
-    .bind(...input.levelIds.flatMap((id) => [`${id}.`, `${id}/`]), ...statuses, input.count)
+    .bind(org, input.players, ...input.levelIds.flatMap((id) => [`${id}.`, `${id}/`]), ...statuses, input.limit)
     .all<{ id: string; kind: QuestionKind; stem: string; choices: string; answer: string; solution: string }>();
   return (result.results ?? []).map((row) => ({
     id: row.id,
@@ -207,7 +253,18 @@ export async function markGameStarted(
  * answers -- one UPDATE for all the teams, from a JSON list, so a game of
  * sixty players is still two statements.
  */
-export async function writeGameResults(db: D1Database, org: OrgId, game: EngineGame): Promise<void> {
+/** What each team's players saw (Phase 48): their user ids and the question ids, for `quest_game_seen`. */
+export interface GameSeen {
+  users: string[];
+  questions: string[];
+}
+
+/**
+ * The end of a game: its row, every team's totals in one JSON UPDATE, and -- Phase 48 -- in one
+ * more statement, every player's questions into `quest_game_seen` (a question seen again moves to
+ * this game and this moment, so the next draw's "least recently seen" stays true).
+ */
+export async function writeGameResults(db: D1Database, org: OrgId, game: EngineGame, seen: readonly GameSeen[] = []): Promise<void> {
   const places = rankTeams(game);
   const teams = game.teams.map((team) => {
     const totals = teamTotals(team.answers, game);
@@ -219,7 +276,7 @@ export async function writeGameResults(db: D1Database, org: OrgId, game: EngineG
       answers: JSON.stringify(team.answers),
     };
   });
-  await db.batch([
+  const statements = [
     db
       .prepare(`UPDATE quest_games SET status = 'finished', ended_at = ?, end_reason = ? WHERE organization_id = ? AND id = ?`)
       .bind(iso(game.ended_at ?? Date.now()), game.end_reason, org, game.id),
@@ -237,7 +294,22 @@ export async function writeGameResults(db: D1Database, org: OrgId, game: EngineG
          WHERE t.organization_id = ? AND t.game_id = ? AND t.id = json_extract(j.value, '$.id')`,
       )
       .bind(JSON.stringify(teams), org, game.id),
-  ]);
+  ];
+  const seenRows = seen.filter((team) => team.users.length > 0 && team.questions.length > 0);
+  if (seenRows.length > 0) {
+    statements.push(
+      db
+        .prepare(
+          `INSERT INTO quest_game_seen (organization_id, user_id, question_id, game_id, seen_at)
+           SELECT ?1, u.value, q.value, ?2, ?3
+           FROM json_each(?4) AS t, json_each(t.value, '$.users') AS u, json_each(t.value, '$.questions') AS q
+           WHERE true
+           ON CONFLICT (organization_id, user_id, question_id) DO UPDATE SET game_id = excluded.game_id, seen_at = excluded.seen_at`,
+        )
+        .bind(org, game.id, iso(game.ended_at ?? Date.now()), JSON.stringify(seenRows)),
+    );
+  }
+  await db.batch(statements);
 }
 
 /** A person's games here, newest first: those they host or play -- an admin's, every one. */

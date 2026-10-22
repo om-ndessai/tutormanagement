@@ -396,6 +396,12 @@ export interface EngineGame {
   level_scope: GameLevelScope;
   /** The levels the series is drawn from: the level, or it and those above it the organization offers. */
   level_ids: string[];
+  /**
+   * Phase 48: the levels above `level_ids` in its family, in order, that the series climbs into when
+   * the players have already seen too much of its own (`gameClimbLevelIds`). Empty for Random, which
+   * already reaches the top of its family.
+   */
+  climb_level_ids: string[];
   mode: GameMode;
   question_count: number | null;
   duration_seconds: number | null;
@@ -424,11 +430,12 @@ export interface EngineGame {
  * multiplayer, joining closed at the start.
  */
 export function normalizeEngineGame(stored: EngineGame): EngineGame {
-  const game = stored as EngineGame & Partial<Pick<EngineGame, 'level_scope' | 'level_ids' | 'right_points'>>;
+  const game = stored as EngineGame & Partial<Pick<EngineGame, 'level_scope' | 'level_ids' | 'climb_level_ids' | 'right_points'>>;
   return {
     ...game,
     level_scope: game.level_scope ?? 'level',
     level_ids: game.level_ids ?? [game.level_id],
+    climb_level_ids: game.climb_level_ids ?? [],
     right_points: game.right_points ?? 1,
     wrong_points: game.wrong_points ?? (game.negative_marking ? -1 : 0),
     knockout: game.knockout ?? false,
@@ -450,6 +457,27 @@ export function gameLevelIds(levelId: string, scope: GameLevelScope, offered?: r
   const family = QUEST_LEVEL_FAMILIES.find((f) => (f as readonly string[]).includes(levelId)) as readonly string[] | undefined;
   const upward = family ? family.slice(family.indexOf(levelId)) : [levelId];
   return upward.filter((id) => id === levelId || !offered || offered.includes(id));
+}
+
+/**
+ * Phase 48 (docs/quest-games-g3-plan.md): the levels a game climbs into, in order, once its players
+ * have seen too much of its own levels -- those after the level in its family that the organization
+ * has questions in. None for Random, whose levels already run to the top of the family.
+ */
+export function gameClimbLevelIds(levelId: string, scope: GameLevelScope, offered?: readonly string[]): string[] {
+  if (scope === 'upward') return [];
+  return gameLevelIds(levelId, 'upward', offered).slice(1);
+}
+
+/**
+ * The series indices a team's players have seen by the end: every question the team answered or
+ * skipped, and any still in a player's hand. Each teammate counts as having seen them all, since
+ * the results show every one of the team's questions to each of them.
+ */
+export function teamSeenIndices(team: Pick<EngineTeam, 'answers' | 'hands'>): number[] {
+  const seen = new Set(team.answers.map((a) => a.index));
+  for (const hand of Object.values(team.hands)) seen.add(hand.index);
+  return [...seen].sort((a, b) => a - b);
 }
 
 export interface GameScoring {

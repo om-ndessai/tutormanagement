@@ -466,7 +466,7 @@ reviewed); a team's members are each served the next question no teammate has ha
 wins. One Durable Object per game holds the series and the queues in memory (the free plan's in-memory
 state), so the next question reads nothing from D1; D1 keeps the game, the teams and the results.
 
-Phase 47: (requested 2026-10-22 by the owner, "Phase G2" in `docs/gamification.md`; building, web and the app)
+Phase 47: (requested 2026-10-22 by the owner, "Phase G2" in `docs/gamification.md`; released 2026-10-22, web and the app)
 Quest Games, round two. Plan: `docs/quest-games-g2-plan.md`. Starting a game becomes a five-step
 wizard: level tiles (and Random, from a starting level upward), the length, the scoring (points for
 right and for wrong on − / + counters, and Knockout), the players (single player, or multiplayer with
@@ -478,3 +478,13 @@ a knockout game ends as soon as one team cannot be caught, winners get confetti 
 encouragement. The Quest menu wears a Beta badge. Additive schema: settings columns on `quest_games`,
 and `quest_game_favorites`. The test account's D1 was out of reads for the day, so the release goes to
 production after the local suite, and the demo follows when its limit resets.
+
+Phase 48: (requested 2026-10-22 by the owner, "Phase G3" in `docs/gamification.md`; the Worker only, both
+clients unchanged) Quest Games, round three: a curated series. Plan: `docs/quest-games-g3-plan.md`. The
+series is still drawn when the host starts the game, and now leaves out every question any of its players
+has seen in this organization's games (`quest_game_seen`, written once at each game's end). When the
+game's own level runs out of unseen questions, it climbs into the levels above it in the family, in order.
+Only when the whole family is used up does it reuse seen questions, the least recently seen first. A
+count game may ask for more than its level holds, counting the levels it can climb into. Additive schema:
+`quest_game_seen`. Released like Phase 47, straight to production after the local suite. The demo
+follows when the test account's limit resets.

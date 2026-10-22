@@ -6,6 +6,7 @@ import {
   gameAnswerSchema,
   gameCodeSchema,
   gameFavoriteSchema,
+  gameClimbLevelIds,
   gameLevelIds,
   gameLevelLabel,
   joinGameSchema,
@@ -152,12 +153,14 @@ export const questGameRoutes = new Hono<AppEnv>()
       throw ApiError.badRequest('This organization does not offer that level.');
     }
     // Random draws from the level and those above it that have questions here.
-    const levelIds = gameLevelIds(
-      input.level_id,
-      input.level_scope,
-      levels.filter((level) => level.available > 0).map((level) => level.level_id),
-    );
-    const available = levels.filter((level) => levelIds.includes(level.level_id)).reduce((n, level) => n + level.available, 0);
+    const playable = levels.filter((level) => level.available > 0).map((level) => level.level_id);
+    const levelIds = gameLevelIds(input.level_id, input.level_scope, playable);
+    // Phase 48: a level's game climbs into the ones above it once its players have seen too much of it,
+    // so those count towards what it can play.
+    const climbLevelIds = gameClimbLevelIds(input.level_id, input.level_scope, playable);
+    const available = levels
+      .filter((level) => levelIds.includes(level.level_id) || climbLevelIds.includes(level.level_id))
+      .reduce((n, level) => n + level.available, 0);
     const named = gameLevelLabel(input, levelLabel);
     if (available === 0) throw ApiError.conflict(`${named} has no questions to play yet.`);
     if (input.mode === 'count' && available < input.question_count!) {
@@ -199,6 +202,7 @@ export const questGameRoutes = new Hono<AppEnv>()
       level_id: input.level_id,
       level_scope: input.level_scope,
       level_ids: levelIds,
+      climb_level_ids: climbLevelIds,
       mode: input.mode,
       question_count: input.mode === 'count' ? input.question_count! : null,
       duration_seconds: durationSeconds,

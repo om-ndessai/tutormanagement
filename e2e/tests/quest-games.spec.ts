@@ -415,3 +415,91 @@ test.describe('Quest Games, round two (Phase 47)', () => {
     });
   });
 });
+
+test.describe('Quest Games, curated (Phase 48)', () => {
+  /** A finished game's questions, from the reader's own results. */
+  const seenIn = async (page: Page, id: string) =>
+    (await unwrap<any>(await page.request.get(`/api/quest/games/${id}/results`), 'results')).items.map((i: any) => i.question.id as string);
+
+  /** Skips every question the reader is served until the game ends. */
+  async function skipThrough(page: Page, id: string) {
+    for (let i = 0; i < 60; i += 1) {
+      const now = await view(page, id);
+      if (now.status === 'finished' || !now.me?.question) return;
+      await unwrap(await answer(page, id, { question_id: now.me.question.id, skip: true }), 'skip');
+    }
+  }
+
+  /** A single player's game: made, counted down and skipped through; its questions. */
+  async function playAlone(page: Page, data: Record<string, unknown>) {
+    const game = await unwrap<any>(await create(page, { mode: 'count', max_team_size: 1, players: 'single', ...data }), 'single');
+    await afterCountdown(game);
+    await skipThrough(page, game.id);
+    return seenIn(page, game.id);
+  }
+
+  test("a series leaves out what its players have seen, and climbs a level when its own runs out", async ({ as }) => {
+    const admin = await as('admin');
+    const maria = await as('parentTutor');
+    const sofia = await as('student');
+    const platform = await as('platformAdmin', { org: null });
+    // Approved questions only, so a level runs out: the seed approves 12 at G4 and none at G5.
+    const set = (on: boolean) =>
+      admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: on, canvas_assessments_unreviewed: false } });
+    expect((await set(true)).status()).toBe(200);
+    try {
+      // G5, the level above, gets three approved questions for the climb.
+      const approvedAt = async (level: string) =>
+        unwrap<any[]>(await platform.request.get(`/api/platform/questions?level_id=${level}&status=approved&limit=200`), 'approved');
+      if ((await approvedAt('NC26.5')).length < 3) {
+        const checked = await unwrap<any[]>(
+          await platform.request.get('/api/platform/questions?level_id=NC26.5&status=checked&limit=20'),
+          'checked',
+        );
+        let approved = (await approvedAt('NC26.5')).length;
+        for (const q of checked) {
+          if (approved >= 3) break;
+          if ((await platform.request.post(`/api/platform/questions/${q.id}/approve`)).ok()) approved += 1;
+        }
+      }
+      const g5 = new Set((await approvedAt('NC26.5')).map((q) => q.id));
+      expect(g5.size).toBeGreaterThanOrEqual(3);
+      const levels = await unwrap<any[]>(await maria.request.get('/api/quest/games/levels'), 'levels');
+      const atG4 = levels.find((l) => l.level_id === 'NC26.4').available as number;
+      expect(atG4).toBeGreaterThan(0);
+
+      // Every G4 question, once: none from G5 while G4 has unseen ones.
+      const first = await playAlone(maria, { level_id: 'NC26.4', question_count: atG4 });
+      expect(new Set(first).size).toBe(atG4);
+      expect(first.some((id) => g5.has(id))).toBe(false);
+
+      // G4 again: Maria has seen all of it, so the series climbs to G5 -- and repeats nothing.
+      const second = await playAlone(maria, { level_id: 'NC26.4', question_count: 3 });
+      expect(second).toHaveLength(3);
+      expect(second.every((id) => g5.has(id))).toBe(true);
+      expect(second.some((id) => first.includes(id))).toBe(false);
+
+      // The climb counts towards what a level can play: more than G4 holds is allowed.
+      const big = await unwrap<any>(await create(admin, { level_id: 'NC26.4', mode: 'count', question_count: atG4 + 1, max_team_size: 1 }), 'big');
+      await unwrap(await admin.request.post(`/api/quest/games/${big.id}/end`), 'end big');
+
+      // Together, nobody repeats what either has seen: Sofia's series leaves out Maria's most recent.
+      const game = await unwrap<any>(await create(maria, { level_id: 'NC26.4', mode: 'count', question_count: 2, max_team_size: 1 }), 'together');
+      await unwrap(await maria.request.post(`/api/quest/games/${game.id}/join`, { data: { as: 'solo' } }), 'maria joins');
+      await unwrap(await sofia.request.post(`/api/quest/games/${game.id}/join`, { data: { as: 'solo' } }), 'sofia joins');
+      const started = await unwrap<any>(await maria.request.post(`/api/quest/games/${game.id}/start`), 'start');
+      await afterCountdown(started);
+      await skipThrough(maria, game.id);
+      await skipThrough(sofia, game.id);
+      const together = await seenIn(sofia, game.id);
+      expect(together).toHaveLength(2);
+      expect(together.some((id) => second.includes(id))).toBe(false);
+
+      // And Sofia's next G4 game leaves out the two she has now seen.
+      const sofiaNext = await playAlone(sofia, { level_id: 'NC26.4', question_count: 3 });
+      expect(sofiaNext.some((id) => together.includes(id))).toBe(false);
+    } finally {
+      await set(false);
+    }
+  });
+});

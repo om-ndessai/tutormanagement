@@ -30,6 +30,8 @@ import {
   gameFavoriteSchema,
   knockoutDecided,
   normalizeEngineGame,
+  gameClimbLevelIds,
+  teamSeenIndices,
   type EngineGame,
   type EngineTeam,
   type SeriesQuestion,
@@ -74,6 +76,7 @@ function game(over: Partial<EngineGame> = {}): EngineGame {
     level_id: 'NC26.5',
     level_scope: 'level',
     level_ids: ['NC26.5'],
+    climb_level_ids: [],
     mode: 'count',
     question_count: 4,
     duration_seconds: null,
@@ -426,6 +429,7 @@ describe('Phase 47: points, the countdown, knockout, joining', () => {
     const {
       level_scope: _s,
       level_ids: _l,
+      climb_level_ids: _c,
       right_points: _r,
       wrong_points: _w,
       ...old
@@ -434,6 +438,7 @@ describe('Phase 47: points, the countdown, knockout, joining', () => {
     expect(filled).toMatchObject({
       level_scope: 'level',
       level_ids: ['NC26.5'],
+      climb_level_ids: [],
       right_points: 1,
       wrong_points: -1,
     });
@@ -491,5 +496,29 @@ describe('Phase 47: points, the countdown, knockout, joining', () => {
     expect(gameEncouragement({ correct: 3, answered: 3, solo: false })).toBe(
       'Your team got every one you answered right. Brilliant!',
     );
+  });
+});
+
+// Phase 48 (docs/quest-games-g3-plan.md): the series is curated against what the players have seen.
+describe('curating the series (Phase 48)', () => {
+  it('climbs into the levels above in the family, never below, and not at all for Random', () => {
+    expect(gameClimbLevelIds('NC26.7', 'level').slice(0, 2)).toEqual(['NC26.8', 'NC26.M1']);
+    expect(gameClimbLevelIds('NC26.7', 'level')).not.toContain('NC26.7');
+    expect(gameClimbLevelIds('NC26.7', 'level')).not.toContain('NC26.6');
+    expect(gameClimbLevelIds('BA4', 'level', ['BA4', 'PRE'])).toEqual(['PRE']);
+    expect(gameClimbLevelIds('GEO', 'level')).toEqual([]);
+    expect(gameClimbLevelIds('NC26.5', 'upward')).toEqual([]);
+  });
+
+  it("counts a team's answers, skips and the questions still in hand as seen, each once", () => {
+    const seen = teamSeenIndices({
+      answers: [
+        { index: 2, question_id: 'q2', user_id: 'a', answer: null, correct: false, skipped: true, at: T0 },
+        { index: 0, question_id: 'q0', user_id: 'b', answer: 'x', correct: true, skipped: false, at: T0 },
+      ],
+      hands: { a: { index: 3, served_at: T0 }, b: { index: 2, served_at: T0 } },
+    });
+    expect(seen).toEqual([0, 2, 3]);
+    expect(teamSeenIndices({ answers: [], hands: {} })).toEqual([]);
   });
 });

@@ -12,6 +12,7 @@ import {
   rankTeams,
   releaseHand,
   serveNext,
+  teamSeenIndices,
   teamTotals,
   type EngineGame,
   type EngineTeam,
@@ -36,6 +37,7 @@ import {
   markGameStarted,
   removePlayer,
   writeGameResults,
+  type GameSeen,
 } from '../repositories/quest-games.js';
 
 // Quest Games (Phase 46, docs/quest-games-plan.md): one Durable Object per
@@ -112,6 +114,12 @@ export class QuestGame extends DurableObject<Env> {
     // A timed game ends at its clock, even when the end is noticed later.
     const endsAt = gameEndsAt(game);
     game.ended_at = endsAt !== null ? Math.min(now, endsAt) : now;
+    // Phase 48: what every player saw, kept until D1 has it (the alarm retries with it).
+    const seen: GameSeen[] = game.teams.map((team) => ({
+      users: team.players.map((player) => player.user_id),
+      questions: teamSeenIndices(team).flatMap((index) => (this.series[index] ? [this.series[index].id] : [])),
+    }));
+    await this.ctx.storage.put('seen', seen);
     for (const team of game.teams) team.hands = {};
     await this.save();
     await this.ctx.storage.deleteAlarm();
@@ -121,9 +129,10 @@ export class QuestGame extends DurableObject<Env> {
   private async writeResults(): Promise<void> {
     if (!this.game) return;
     try {
-      await writeGameResults(this.env.DB, orgIdFromRow(this.game.organization_id), this.game);
+      const seen = (await this.ctx.storage.get<GameSeen[]>('seen')) ?? [];
+      await writeGameResults(this.env.DB, orgIdFromRow(this.game.organization_id), this.game, seen);
       this.unwritten = false;
-      await this.ctx.storage.delete('unwritten');
+      await this.ctx.storage.delete(['unwritten', 'seen']);
     } catch (error) {
       console.error('Quest game results not written yet', error);
       this.unwritten = true;
@@ -337,7 +346,14 @@ export class QuestGame extends DurableObject<Env> {
     this.busy = true;
     try {
       const wanted = game.mode === 'count' ? game.question_count! : GAME_LIMITS.timedSeries;
-      const series = await drawGameSeries(this.env.DB, { levelIds: game.level_ids, count: wanted, includeUnreviewed });
+      // Phase 48: curated against what these players have seen, climbing a level when short.
+      const series = await drawGameSeries(this.env.DB, orgIdFromRow(game.organization_id), {
+        levelIds: game.level_ids,
+        climbLevelIds: game.climb_level_ids,
+        playerIds: game.teams.flatMap((team) => team.players.map((player) => player.user_id)),
+        count: wanted,
+        includeUnreviewed,
+      });
       if (series.length === 0) return conflict('There are no questions to play at this level yet.');
       if (game.mode === 'count' && series.length < wanted) {
         return conflict(`This level has only ${series.length} question${series.length === 1 ? '' : 's'} to play. Choose fewer.`);

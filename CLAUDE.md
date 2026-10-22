@@ -663,6 +663,17 @@ knockout game ends when one team's lowest possible score is above every other te
 (`knockoutDecided`). `end_reason` records why a game ended. A single player's game is made and begun
 in one request. A create request without the new fields (an older app) means a Phase 46 game.
 
+**Phase 48 curates a game's series against what its players have seen** (`docs/quest-games-g3-plan.md`).
+`quest_game_seen` keeps one row per person and question in an organization. It is written once, when a game
+ends, in the results' batch: what each team answered, skipped or held, for each of its players. It is never
+written during play, which stays free of D1. The draw at the host's start takes, in order:
+1. the game's own levels' questions that none of its players has seen;
+2. then the same from each level above in the family (`gameClimbLevelIds`, kept on the game as
+   `climb_level_ids`);
+3. only then seen ones, the least recently seen first.
+
+A count game's size is checked against the level and the levels it can climb into. No route reads the table.
+
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the
 longest lesson that person does; the SHORTER of the two applies, and `DEFAULT_MAX_SESSION_MINUTES`
