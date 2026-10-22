@@ -353,7 +353,7 @@ native rebuild of both dev builds, so build only while the devices are free.
 
 ## Portal Phase 47 — Quest Games, round two (parity: the web half is built)
 
-- [ ] 61. Mobile: Quest Games, round two, at parity with the web (`docs/quest-games-g2-plan.md`) —
+- [x] 61. Mobile: Quest Games, round two, at parity with the web (`docs/quest-games-g2-plan.md`) —
   Start a game as a five-step wizard on `StepFlow` (the `quest/new-game` route, now a card rising from
   the bottom): favorites first (a tap goes to the Review; the × asks, then deletes), level tiles with
   their counts and Random with "Starting at"; count or timed on a − / + stepper; points for right and
@@ -371,8 +371,11 @@ native rebuild of both dev builds, so build only while the devices are free.
   `late` / `single` / `knockout`, `answer-wrong`, favorites cleared at the end. Built 2026-10-22 (build notes under
   design 61): typecheck, lint (0 errors), Jest (119 suites, 822 tests; new `game-wizard-model`,
   `number-stepper`, `game-effects`, `start-game-flow`, `game-join-choices` tests) and the export green; the
-  flows and scripts written (the scripts' setups checked against the local Worker). Left: the flows on
-  iOS and Android, the iPad in dark mode, and `smoke -- mobile`.
+  flows and scripts written (the scripts' setups checked against the local Worker). Tested 2026-10-22
+  (test notes and Verified under design 61): every `quest/*` flow green on iOS and Android (seven flow
+  faults fixed in the flows, no app defect), `smoke -- mobile` green on both, the game flows on the iPad
+  in dark mode 8/9 -- `game-join` red there at the lower-case code, Phase 46's known keystroke race in
+  `games-panel.tsx` (design 60), open.
 
 ## Phase 4 — Google sign-in
 

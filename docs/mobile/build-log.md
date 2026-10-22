@@ -2650,3 +2650,63 @@ contrast); `npm run mobile:lint` 0 errors (26 warnings, all the existing `requir
 `game-rules` kept). Flows pending: the tester runs `npm run e2e:mobile -- both
 apps/mobile/.maestro/flows/quest` and `npm run smoke -- mobile`, the iPad in dark mode, and the doors
 with each palette.
+
+**Test (2026-10-22), what the flows found, and what changed:** no app defect found; seven flow faults
+fixed in the flows (none untagged, no assertion dropped that the design asks for):
+- `game-late-join`, `game-knockout`: asserted `game-rules` on the question screen, but the rules line is
+  the lobby's and the results' only (as on the web's `Rules`). Late-join now checks the game opened
+  (no lobby code); knockout asserts its rules line on the results, where it is.
+- `game-start`, `game-single`: `game-tile-random` is the last tile, after every level (as on the web),
+  below the fold on a phone with the seeded bank (G3-G8, Math 1, BA1-5, two AoPS): scrolled to.
+- `game-start`, `game-single`: the Review's hint is part of StepFlow's one header element on iOS
+  ("Step 5 of 5. Ready?. Once you generate…"): asserted on `step-flow-title`, the pattern of the home and
+  schedule flows.
+- `game-single`: Skip moved under the tap. The question's web views mount as the doors open (under the
+  doors it is "Get ready", as on the web), so the panel grows from its 160 pt placeholder as KaTeX
+  reports, and a tap aimed at Skip landed on choice C. The flow waits for the choices' native targets
+  (`game-choice-A`, present once drawn; optional, so a number question waits its 5 s) before each Skip.
+- `game-play` (Android): Sofia's last Skip ends the game with her winning; the confetti kept the screen
+  moving and the tap's settle wait (6 s) outlasted the "Skipped." notice: `waitToSettleTimeoutMs: 500`,
+  as for the doors.
+- `game-favorites` (Android): with the keyboard up, Save as favorite sits under StepFlow's footer; the
+  flow scrolls the Review to it (it is reachable; Return also saves).
+- `level` (Phase 42, flaky since Phase 46 on both platforms): Sofia's level list opens mid-screen and
+  scrolls within itself, so `scrollUntilVisible` from the middle scrolled the INNER list, carrying G5 out
+  of sight, and once a tap read off a still-gliding page opened Sanjay's list instead. Now: wait for the
+  list (`-none`), one swipe that starts above her field (outside the list) to bring its first rows up,
+  let it settle, then find G5. `menu` gains the row's label `Quest, Beta` (the pill has no text of its
+  own on iOS; the row reads it).
+- Design risks: the wizard (a card) replacing itself with the full-screen game is clean on iOS -- the
+  first frame after Start game / Generate game code is the doors or the lobby, no flash; the doors' 3D
+  swing renders on Android (frames 73 ms apart show the panels narrowing on their outer edges and fading,
+  never flat or clipped), so the slide fallback is not needed; Maestro sees `more-nav-quest-badge` on
+  both, and the row's label carries "Beta". Confetti checked by frame capture on both phones (Android
+  73 ms Maestro shots; iOS a `simctl` screenshot loop) for a winner; the K.O. stamp in screenshots on
+  phone and iPad, light and dark. Doors with every palette: computed rather than shot (only `chmi`'s
+  indigo was on screen): `brand50` on `brand900` is 10.3:1 (teal) to 11.7:1 (indigo) and the handle's
+  `brand200` 8.2:1 to 9.2:1, the same in both schemes.
+- Seen, left as is (same as the web): the doors' handles sit under "Get ready" / the number at the
+  seam; a single player's results offer the team chip (host = overseer); "You won with 0 points.
+  Fantastic!" for a winner on 0.
+- Android, once: the dev client crashed natively at launch, before sign-in (SIGSEGV in
+  `MountingCoordinator::pullTransaction`, the same React Native crash as in design 52's notes, tombstone
+  read); `game-knockout` passed on its re-run and in the run before. Not this feature.
+- Open, not fixed (Phase 46's known race, design 60): on the iPad, typing the game code in lower case
+  drops a keystroke (`games-panel.tsx` rewrites "8s" to "8S" while "6" is in flight: "8S39D"). It
+  failed 3 of 3 on the iPad this time (the phones never); with the code typed in capitals the rest of
+  `game-join` is green on the iPad (a scratch copy, not committed). A person's keyboard is in capitals
+  there (`autoCapitalize="characters"`); a hardware keyboard on an iPad is the case that could meet it.
+
+**Verified (2026-10-22):** flows `quest/{game-start,game-join,game-play,game-team,game-late-join,
+game-single,game-favorites,game-knockout,menu}` and Phase 42's `quest/{level,play,play-number,review,
+finished}` green on iOS 27 (iPhone 17) and Android 37 (Medium Phone) (`npm run e2e:mobile -- both
+apps/mobile/.maestro/flows/quest`: iOS 14/14; Android 13/14 with `game-knockout` lost to the launch
+crash above and green on its re-run; `menu` re-run on both after its added assertion); the game flows on
+the iPad Pro 13-inch (M5) in dark mode 8/9 (`game-join` red at the lower-case code, above); `npm run
+smoke -- mobile` green on both (4/4 each); jest 822 passed; screenshots reviewed light (iPhone,
+Android) and dark (iPad): the wizard's five steps, the doors (Get ready, 3-2-1, Go!, the swing), the
+lobby, the "Game status" waiting card, the results with the end reason, confetti, the K.O. stamp and
+the encouragement, Beta in More and on the Quest screen; exposure checks: no money on any wizard step,
+game screen or effect; first names only (no surname on the lobby, join sheet or results); keys and
+solutions only on the results, never on the question; a game she is not in reads "not found", never
+forbidden; a single player's game refused in words; favorites the reader's own (cleared per person).
