@@ -18,7 +18,7 @@ import { Panel } from '@/components/section';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { CODE_FONT } from './game-style';
-import { gameCodeInput, gameCodeReady, gameRowHost, gameRowStatus, gameRowTitle } from './game-model';
+import { gameRowHost, gameRowStatus, gameRowTitle, typedGameCode } from './game-model';
 import { useGames } from './games-api';
 
 export function GamesPanel() {
@@ -26,11 +26,12 @@ export function GamesPanel() {
   const games = useGames();
   const [code, setCode] = useState('');
   const rows = games.data?.data ?? [];
-  const ready = gameCodeReady(code);
+  const typed = typedGameCode(code);
+  const ready = typed !== null;
 
   function join() {
-    if (!ready) return;
-    router.push({ pathname: '/quest/join-game', params: { code } });
+    if (!typed) return;
+    router.push({ pathname: '/quest/join-game', params: { code: typed } });
     setCode('');
   }
 
@@ -58,7 +59,7 @@ export function GamesPanel() {
             label="Game or team code"
             accessibilityLabel="Game or team code"
             value={code}
-            onChangeText={(text) => setCode(gameCodeInput(text))}
+            onChangeText={setCode}
             autoCapitalize="characters"
             autoCorrect={false}
             spellCheck={false}

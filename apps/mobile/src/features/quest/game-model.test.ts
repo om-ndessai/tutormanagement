@@ -14,14 +14,13 @@ import {
   clockSpeech,
   countdownLabel,
   countdownSpeech,
-  gameCodeInput,
-  gameCodeReady,
   gamePollInterval,
   gameRowHost,
   gameRowStatus,
   gameRowTitle,
   gameRulesLine,
   gameTitle,
+  typedGameCode,
   isOverseer,
   joinClosedText,
   lobbyBoardTitle,
@@ -110,11 +109,11 @@ describe('polling', () => {
 });
 
 describe('the hub', () => {
-  it('tidies a typed code to six readable characters', () => {
-    expect(gameCodeInput('ab c-12d')).toBe('ABC12D');
-    expect(gameCodeInput('abcdefgh')).toBe('ABCDEF');
-    expect(gameCodeReady('ABC12')).toBe(false);
-    expect(gameCodeReady('ABC12D')).toBe(true);
+  it('reads a typed code, in any case, once it is six readable characters', () => {
+    expect(typedGameCode('ab c-12d')).toBe('ABC12D');
+    expect(typedGameCode('8s639d')).toBe('8S639D');
+    expect(typedGameCode('ABC12')).toBeNull();
+    expect(typedGameCode('abcdefgh')).toBeNull();
   });
 
   it("says a game's row: its title, its host and teams, its status and place", () => {

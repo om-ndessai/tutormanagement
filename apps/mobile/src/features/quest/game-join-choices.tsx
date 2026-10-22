@@ -14,7 +14,7 @@ import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
 import { ApiRequestError } from '@/lib/api-client';
 import { space } from '@/theme/tokens';
-import { gameCodeInput, gameCodeReady } from './game-model';
+import { typedGameCode } from './game-model';
 import { useJoinGame } from './games-api';
 import { CODE_FONT } from './game-style';
 
@@ -34,6 +34,7 @@ export function JoinChoices({
   const join = useJoinGame();
   const [teamName, setTeamName] = useState('');
   const [teamCode, setTeamCode] = useState('');
+  const typedTeamCode = typedGameCode(teamCode);
   const [refusal, setRefusal] = useState<string | null>(null);
 
   async function go(raw: JoinGameInput) {
@@ -133,7 +134,7 @@ export function JoinChoices({
           label="Team code"
           accessibilityLabel="Team code"
           value={teamCode}
-          onChangeText={(text) => setTeamCode(gameCodeInput(text))}
+          onChangeText={setTeamCode}
           autoCapitalize="characters"
           autoCorrect={false}
           spellCheck={false}
@@ -142,15 +143,17 @@ export function JoinChoices({
           maxLength={GAME_CODE_LENGTH + 4}
           returnKeyType="go"
           onSubmitEditing={() => {
-            if (gameCodeReady(teamCode)) void go({ as: 'team', team_code: teamCode });
+            if (typedTeamCode) void go({ as: 'team', team_code: typedTeamCode });
           }}
           contentStyle={{ fontFamily: CODE_FONT, letterSpacing: 4 }}
         />
         <Button
           testID="game-join-team"
           mode="outlined"
-          disabled={!gameCodeReady(teamCode) || join.isPending}
-          onPress={() => void go({ as: 'team', team_code: teamCode })}
+          disabled={!typedTeamCode || join.isPending}
+          onPress={() => {
+            if (typedTeamCode) void go({ as: 'team', team_code: typedTeamCode });
+          }}
           contentStyle={{ minHeight: 48 }}
         >
           Join a team

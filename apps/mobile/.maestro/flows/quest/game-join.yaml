@@ -99,7 +99,8 @@ tags:
     notVisible:
       id: screen-quest-join-game
     timeout: 10000
-# The game's code, typed in lower case: tidied as it is typed.
+# The game's code, typed in lower case. The field keeps it as typed (rewriting it on each change
+# dropped a keystroke on the iPad); it is read as capitals, so Join still finds the game.
 - scrollUntilVisible:
     element:
       id: game-code
@@ -109,7 +110,7 @@ tags:
 - inputText: ${output.gameCodeLower}
 - assertVisible:
     id: game-code
-    text: ${output.gameCode}
+    text: ${output.gameCodeLower}
 # Join wakes at six characters. On iOS 27 a tap that comes within a moment of the last keystroke is
 # swallowed (checked: about a second after typing, the first tap on Join opens the sheet; Maestro taps
 # within 0.1 s, a person never does), so iOS sends the code with the keyboard's Go key, which joins

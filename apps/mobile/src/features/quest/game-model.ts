@@ -42,13 +42,15 @@ export function gamePollInterval(active: boolean, status: GameStatus | undefined
 
 // --- The hub ----------------------------------------------------------------------------------
 
-/** What a typed code becomes as it is typed: "ab c-12d" -> "ABC12D", at most six. */
-export function gameCodeInput(text: string): string {
-  return normalizeGameCode(text).slice(0, GAME_CODE_LENGTH);
-}
-
-export function gameCodeReady(code: string): boolean {
-  return code.length === GAME_CODE_LENGTH;
+/**
+ * The code a field holds, once it holds one: "ab c-12d" -> "ABC12D", else null. The field keeps
+ * what was typed (autoCapitalize offers capitals) and is read through this, never rewritten as it
+ * is typed: rewriting a controlled field on each change dropped a keystroke on the iPad when the
+ * case changed under it ("8s639d" arrived as "8S39D").
+ */
+export function typedGameCode(text: string): string | null {
+  const code = normalizeGameCode(text);
+  return code.length === GAME_CODE_LENGTH ? code : null;
 }
 
 /** A games-list row's trailing status: "Waiting to start", "Playing now", "Finished · 1st". */

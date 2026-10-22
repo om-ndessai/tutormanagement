@@ -2241,7 +2241,7 @@ notice (one per confirmation, `haptics.ts`), success when the game is finished a
   status, the team's code inside its sentence (nested `Text`) and the team-row score are not separate
   elements on iOS: asserted on the row's label / the sentence. `level.yaml` (Phase 42) scrolls to the
   review and students cards, which the Games panel now pushes down (an admin lists every game).
-- Known, not fixed: typing a code in lower case races the field's upper-casing (`games-panel.tsx`
+- Known, not fixed (fixed by design 61, 2026-10-22): typing a code in lower case races the field's upper-casing (`games-panel.tsx`
   `onChangeText` -> `gameCodeInput`): a controlled value that differs from the native text is written
   back while keystrokes are in flight, and once on the iPad a character was dropped ("CFXT3"). A person
   types uppercase there (`autoCapitalize="characters"`), so the value is never rewritten; the flow
@@ -2696,6 +2696,11 @@ fixed in the flows (none untagged, no assertion dropped that the design asks for
   failed 3 of 3 on the iPad this time (the phones never); with the code typed in capitals the rest of
   `game-join` is green on the iPad (a scratch copy, not committed). A person's keyboard is in capitals
   there (`autoCapitalize="characters"`); a hardware keyboard on an iPad is the case that could meet it.
+- **Fixed (owner, 2026-10-22):** the code fields (`games-panel.tsx`, the team code in
+  `game-join-choices.tsx`) keep what was typed and are read through `typedGameCode` (the code in
+  capitals once it has six readable characters, else null), never rewritten as they are typed; a
+  lower-case letter shows as typed. `game-join` asserts the field holds the lower-case text and still
+  joins: green on the iPhone 17 and the Medium Phone, and 3 of 3 on the iPad Pro 13-inch.
 
 **Verified (2026-10-22):** flows `quest/{game-start,game-join,game-play,game-team,game-late-join,
 game-single,game-favorites,game-knockout,menu}` and Phase 42's `quest/{level,play,play-number,review,

@@ -375,7 +375,8 @@ native rebuild of both dev builds, so build only while the devices are free.
   (test notes and Verified under design 61): every `quest/*` flow green on iOS and Android (seven flow
   faults fixed in the flows, no app defect), `smoke -- mobile` green on both, the game flows on the iPad
   in dark mode 8/9 -- `game-join` red there at the lower-case code, Phase 46's known keystroke race in
-  `games-panel.tsx` (design 60), open.
+  `games-panel.tsx` (design 60); fixed the same day (`typedGameCode`: a code field is no longer
+  rewritten as it is typed), `game-join` then green on both phones and 3/3 on the iPad.
 
 ## Phase 4 — Google sign-in
 
