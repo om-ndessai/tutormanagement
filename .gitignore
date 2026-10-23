@@ -20,3 +20,6 @@ coverage/
 
 # The institute's migration: exports of real records. Never committed.
 scripts/migrate-tmi/out/
+
+# Claude Code agents' working copies of the repo.
+.claude/worktrees/
