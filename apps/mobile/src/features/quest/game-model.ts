@@ -173,8 +173,8 @@ export function playerCount(game: Pick<GameView, 'teams'>): number {
   return game.teams.reduce((n, team) => n + team.players.length, 0);
 }
 
-/** Over the lobby's code: the web's label. */
-export const LOBBY_LABEL = 'Game status · waiting to start · game code';
+/** Over the lobby's code (owner, 2026-10-23: no "Game status" there). */
+export const LOBBY_LABEL = 'Game code';
 
 /** The lobby's scoreboard title: "1 player · 1 of 10 teams", or "places" when everyone is on their own. */
 export function lobbyBoardTitle(game: Pick<GameView, 'teams' | 'max_teams' | 'max_team_size'>): string {

@@ -5,7 +5,7 @@
 // Mobile (design 60): a Panel on the Quest hub. Start a game opens `quest/new-game`; a code
 // (tidied as it is typed, six readable characters) opens the `quest/join-game` sheet, which looks it
 // up itself, so a refused code is said there. The recent games are list rows into the game screen;
-// with none, no list (as on the web). Phase 47 (design 61): Start a game opens the five-step wizard
+// with none, no list (as on the web). Phase 47 (design 61): New Quest (owner, 2026-10-23) opens the wizard
 // (a card rising from the bottom); a row says a Random level's scope and "Single player".
 import { GAME_CODE_LENGTH } from '@tmi/shared';
 import { router } from 'expo-router';
@@ -50,7 +50,7 @@ export function GamesPanel() {
           contentStyle={{ minHeight: 48 }}
           style={{ alignSelf: 'flex-start' }}
         >
-          Start a game
+          New Quest
         </Button>
         <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
           <TextInput

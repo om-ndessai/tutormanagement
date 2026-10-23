@@ -1,9 +1,10 @@
 # Quest Games (Phase 46; the wizard, Phase 47), starting one. Anita, a parent, finds Quest under More
 # (chmi's switch on, through the local API): her Quest page is the Games panel alone -- no Your Quest, no
-# review. Start a game, the five-step wizard: G6's tile with its count; Length: 99 typed is held to 50,
-# then 2; Scoring: a wrong answer −1; Players: teams of 2; the Review in words and "Generate game code".
-# The lobby: its status label, a six-character code of the readable alphabet, the rules in words, nobody
-# yet, and Start the Quest waits for a player. Alex joins with that code (through the API, as a second
+# review. New Quest, the four-step wizard (owner, 2026-10-23): Select level, G6's tile its name alone;
+# Score Setup, one step: Game limit, 99 typed is held to 50, then 2; Points, a wrong answer −1; Players:
+# teams of 2; the Review in words and "Generate game code". The lobby: "Game code" over a six-character
+# code of the readable alphabet (no "Game status"), the rules in words, nobody yet, the host's own team
+# named for her with no tab bar, and Start the Quest waits for a player. Alex joins with that code (through the API, as a second
 # device would) and arrives by the poll. Start the Quest: the doors count down, then Anita hosts without
 # playing. Alex skips both questions: the results, "Alex wins!". Exit: the Quest page, the game listed as
 # finished. The switches are off again at the end, whatever happens.
@@ -46,21 +47,27 @@ tags:
 - assertNotVisible:
     id: quest-review-card
 - takeScreenshot: game-hub-parent
-# Start a game: the wizard.
+# New Quest: the wizard.
+- assertVisible:
+    id: game-new
+    text: '.*New Quest.*'
 - tapOn:
     id: game-new
 - extendedWaitUntil:
     visible:
       id: screen-quest-new-game
     timeout: 10000
-# Only levels with questions to draw have a tile; each says its count.
+# Only levels with questions to draw have a tile; each is its name alone, no count.
 - extendedWaitUntil:
     visible:
       id: game-tile-NC26.6
     timeout: 10000
 - assertVisible:
     id: game-tile-NC26.6
-    text: 'G6, \d+ questions'
+    text: 'G6'
+- assertVisible:
+    id: step-flow-title
+    text: '.*Select level.*'
 - takeScreenshot: game-wizard-questions
 # Random is the last tile, after every level (as on the web): below the fold on a phone.
 - scrollUntilVisible:
@@ -76,11 +83,15 @@ tags:
     id: game-tile-NC26.6
 - tapOn:
     id: step-flow-next
-# Length: a typed amount is held to its range on Done.
+# Score Setup: the game limit (a typed amount is held to its range on Done), then the points.
 - extendedWaitUntil:
     visible:
       id: game-step-2
     timeout: 5000
+- assertVisible:
+    id: step-flow-title
+    text: '.*Score Setup.*'
+- assertVisible: 'Game limit'
 - assertVisible:
     id: game-mode-count
 - tapOn:
@@ -107,13 +118,12 @@ tags:
       text: '2'
     timeout: 5000
 - takeScreenshot: game-wizard-length
-- tapOn:
-    id: step-flow-next
-# Scoring: one off for a wrong answer.
-- extendedWaitUntil:
-    visible:
-      id: game-step-3
-    timeout: 5000
+# Points: one off for a wrong answer, further down the same step.
+- scrollUntilVisible:
+    element:
+      id: game-wrong-minus
+    centerElement: true
+- assertVisible: 'Points'
 - assertVisible:
     id: game-wrong
     text: '0'
@@ -128,7 +138,7 @@ tags:
 # Players: multiplayer, teams of several, at most 2 a team.
 - extendedWaitUntil:
     visible:
-      id: game-step-4
+      id: game-step-3
     timeout: 5000
 - tapOn:
     id: game-players-multi
@@ -194,7 +204,16 @@ tags:
 - assertVisible:
     id: game-rules
     text: 'G6 · 2 questions · Right \+1, wrong −1 · Up to 10 teams, at most 2 players per team.*'
-- assertVisible: '(?i)Game status · waiting to start · game code'
+- assertVisible: '(?i)Game code'
+- assertNotVisible: '(?i)Game status.*'
+# The host joins only by starting a team, named for her: no tab bar, no team code.
+- assertNotVisible:
+    id: game-join-tabs
+- assertNotVisible:
+    id: game-team-code
+- assertVisible:
+    id: game-team-name
+    text: 'Team Anita'
 - assertVisible: '0 players · 0 of 10 teams'
 - assertVisible: 'Nobody has joined yet\. Share the code\.'
 - assertVisible:

@@ -2,9 +2,9 @@
 // Section, QuestionsStep and ReviewStep (Tile is game-tile.tsx, Stepper components/number-stepper.tsx,
 // the draft and its request game-wizard-model.ts).
 //
-// Phase 47 (docs/quest-games-g2-plan.md): starting a game is a wizard of five steps -- the questions
-// (level tiles, Random from a level upward, and the person's favorites), the length, the scoring, the
-// players, the review. Its last action replaces the wizard with the game, so there is no going back
+// Phase 47 (docs/quest-games-g2-plan.md): starting a game is a wizard -- since 2026-10-23 (owner) of four
+// steps: Select level (compact level tiles, Random from a level upward, and the person's favorites),
+// Score Setup (the game limit and the points, one step), the players, the review. Its last action replaces the wizard with the game, so there is no going back
 // once a code is made.
 // Mobile (design 61): the app's StepFlow on the `quest/new-game` route (a card rising from the bottom),
 // so the Review is its cards with Edit, and the favorite's name and Save follow them. A favorite's tap
@@ -127,7 +127,7 @@ export function StartGameFlow() {
   const steps: StepDef<WizardDraft>[] = [
     {
       key: 'questions',
-      title: 'Which questions?',
+      title: 'Select level',
       description: 'A level of the question bank, or Random from a starting level upward.',
       fields: ['level_id'],
       validate: (d) => {
@@ -152,61 +152,26 @@ export function StartGameFlow() {
     },
     {
       key: 'length',
-      title: 'How long is the game?',
-      description: 'A number of questions, or as many as you can in the time.',
-      fields: ['question_count', 'duration_minutes'],
+      title: 'Score Setup',
+      fields: ['question_count', 'duration_minutes', 'right_points', 'wrong_points'],
       render: () => (
         <StepBody n={2}>
-          <SegmentedTabs<GameMode>
-            tabs={MODE_TABS}
-            value={draft.mode}
-            onChange={(mode) => set({ mode })}
-            testID="game-mode"
-          />
-          {draft.mode === 'count' ? (
-            <NumberStepper
-              key="count"
-              label="Questions"
-              value={draft.question_count}
-              min={GAME_LIMITS.minQuestions}
-              max={GAME_LIMITS.maxQuestions}
-              onChange={(question_count) => set({ question_count })}
-              testID="game-amount"
-            />
-          ) : (
-            <NumberStepper
-              key="timed"
-              label="Minutes"
-              value={draft.duration_minutes}
-              min={GAME_LIMITS.minMinutes}
-              max={GAME_LIMITS.maxMinutes}
-              onChange={(duration_minutes) => set({ duration_minutes })}
-              testID="game-amount"
-            />
-          )}
+          <ScoreSetupStep draft={draft} set={set} />
         </StepBody>
       ),
-      summary: () => summary('length'),
-    },
-    {
-      key: 'scoring',
-      title: 'How is it scored?',
-      description:
-        'A skipped question always scores 0, so points off for a wrong answer make skipping a real choice.',
-      fields: ['right_points', 'wrong_points'],
-      render: () => (
-        <StepBody n={3}>
-          <ScoringStep draft={draft} set={set} />
-        </StepBody>
+      summary: () => (
+        <View style={{ gap: space.sm }}>
+          {summary('length')}
+          {summary('scoring')}
+        </View>
       ),
-      summary: () => summary('scoring'),
     },
     {
       key: 'players',
       title: 'Who plays?',
       fields: ['max_teams', 'max_team_size'],
       render: () => (
-        <StepBody n={4}>
+        <StepBody n={3}>
           <PlayersStep draft={draft} set={set} />
         </StepBody>
       ),
@@ -218,14 +183,14 @@ export function StartGameFlow() {
     <View testID="screen-quest-new-game" style={{ flex: 1 }}>
       <StepFlow
         ref={flow}
-        title="Start a Quest game"
+        title="New Quest"
         steps={steps}
         draft={draft}
         review={{
           title: 'Ready?',
           description: reviewHint(draft.players),
           trail: () => (
-            <StepBody n={5}>
+            <StepBody n={4}>
               <FavoriteSave request={request} />
             </StepBody>
           ),
@@ -283,12 +248,20 @@ function SubHeading({ title, hint }: { title: string; hint?: string }) {
   );
 }
 
-/** Tiles two to a row on a phone, four on an iPad, one at the largest text sizes. */
+/** Favorites two to a row on a phone, four on an iPad, one at the largest text sizes. */
 function useTileColumns(): number {
   const { width } = useWindowDimensions();
   const large = useLargeText();
   if (large) return 1;
   return questWide(width) ? 4 : 2;
+}
+
+/** A level's compact tile: three to a row on a phone, six on an iPad, two at the largest text sizes. */
+function useLevelColumns(): number {
+  const { width } = useWindowDimensions();
+  const large = useLargeText();
+  if (large) return 2;
+  return questWide(width) ? 6 : 3;
 }
 
 function QuestionsStep({
@@ -314,6 +287,7 @@ function QuestionsStep({
   const toast = useToast();
   const remove = useDeleteGameFavorite();
   const columns = useTileColumns();
+  const levelColumns = useLevelColumns();
 
   function confirmDelete(favorite: GameFavorite) {
     haptics.warning();
@@ -340,7 +314,7 @@ function QuestionsStep({
       key={level.level_id}
       testID={`game-tile-${level.level_id}`}
       title={level.label}
-      detail={`${level.available} questions`}
+      compact
       selected={!draft.random && draft.level_id === level.level_id}
       onPress={() => set({ level_id: level.level_id, random: false })}
     />
@@ -351,7 +325,7 @@ function QuestionsStep({
       testID="game-tile-random"
       icon="shuffle-variant"
       title="Random"
-      detail="Any level from a starting one up"
+      compact
       selected={draft.random}
       onPress={() => set({ random: true, level_id: draft.random ? draft.level_id : '' })}
     />,
@@ -392,13 +366,13 @@ function QuestionsStep({
       ) : null}
       <View accessibilityRole="radiogroup" accessibilityLabel="Level" style={{ gap: space.sm }}>
         {loading ? (
-          <Skeleton width="100%" height={176} />
+          <Skeleton width="100%" height={120} />
         ) : levels.length === 0 ? (
           <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
             No level has approved questions to play yet.
           </Text>
         ) : (
-          <TileGrid columns={columns}>{levelTiles}</TileGrid>
+          <TileGrid columns={levelColumns}>{levelTiles}</TileGrid>
         )}
         {error ? (
           <HelperText testID="game-level-error" type="error" padding="none">
@@ -427,12 +401,48 @@ function QuestionsStep({
   );
 }
 
-function ScoringStep({ draft, set }: { draft: WizardDraft; set: Patch }) {
+/** Score Setup: the game's limit (a number of questions or minutes), then its points and Knockout. */
+function ScoreSetupStep({ draft, set }: { draft: WizardDraft; set: Patch }) {
   const theme = useAppTheme();
   const { width } = useWindowDimensions();
   const side = questWide(width);
   return (
     <>
+      <View testID="game-limit" style={{ gap: space.md }}>
+        <SubHeading title="Game limit" hint="A number of questions, or as many as you can in the time." />
+        <SegmentedTabs<GameMode>
+          tabs={MODE_TABS}
+          value={draft.mode}
+          onChange={(mode) => set({ mode })}
+          testID="game-mode"
+        />
+        {draft.mode === 'count' ? (
+          <NumberStepper
+            key="count"
+            label="Questions"
+            value={draft.question_count}
+            min={GAME_LIMITS.minQuestions}
+            max={GAME_LIMITS.maxQuestions}
+            onChange={(question_count) => set({ question_count })}
+            testID="game-amount"
+          />
+        ) : (
+          <NumberStepper
+            key="timed"
+            label="Minutes"
+            value={draft.duration_minutes}
+            min={GAME_LIMITS.minMinutes}
+            max={GAME_LIMITS.maxMinutes}
+            onChange={(duration_minutes) => set({ duration_minutes })}
+            testID="game-amount"
+          />
+        )}
+      </View>
+      <Divider />
+      <SubHeading
+        title="Points"
+        hint="A skipped question always scores 0, so points off for a wrong answer make skipping a real choice."
+      />
       <View style={{ flexDirection: side ? 'row' : 'column', gap: space.lg }}>
         <View style={side ? { flex: 1 } : undefined}>
           <NumberStepper

@@ -236,7 +236,7 @@ describe('in the game', () => {
   });
 
   it('labels the lobby, and counts the places taken on its board', () => {
-    expect(LOBBY_LABEL).toBe('Game status · waiting to start · game code');
+    expect(LOBBY_LABEL).toBe('Game code');
     expect(lobbyBoardTitle(game({ max_teams: 10 }))).toBe('2 players · 1 of 10 teams');
     expect(
       lobbyBoardTitle(

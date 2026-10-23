@@ -1,5 +1,5 @@
 # Quest Games (Phase 47), favorites. Priya builds a G6 game through the wizard to its Review and saves it
-# as "Friday G6": the toast says so. Closed, then Start a game again: her favorites lead the first step,
+# as "Friday G6": the toast says so. Closed, then New Quest again: her favorites lead the first step,
 # "Friday G6" with its settings in words; one tap fills every step and opens the Review, and Back lands
 # on the last step. Then its × asks first (a native confirm), and Delete removes it: the toast says so
 # and the favorites are gone. A favorite is the person's own (R20): quest-games-end.js deletes the four
@@ -69,12 +69,6 @@ tags:
     id: step-flow-next
 - extendedWaitUntil:
     visible:
-      id: game-step-4
-    timeout: 5000
-- tapOn:
-    id: step-flow-next
-- extendedWaitUntil:
-    visible:
       id: step-flow-review
     timeout: 5000
 - scrollUntilVisible:
@@ -107,7 +101,7 @@ tags:
     notVisible:
       id: screen-quest-new-game
     timeout: 10000
-# Start a game again: the favorite leads.
+# New Quest again: the favorite leads.
 - scrollUntilVisible:
     element:
       id: game-new
@@ -141,7 +135,7 @@ tags:
     id: step-flow-back
 - extendedWaitUntil:
     visible:
-      id: game-step-4
+      id: game-step-3
     timeout: 5000
 - assertVisible:
     id: game-team-size

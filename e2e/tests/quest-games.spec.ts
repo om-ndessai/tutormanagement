@@ -197,18 +197,24 @@ test.describe('Quest Games (Phase 46)', () => {
     await withGames(admin, async () => {
       // Priya starts a game from the Quest page: the wizard, step by step.
       await admin.goto('/quest');
+      await expect(admin.getByTestId('game-new')).toHaveText('New Quest');
       await admin.getByTestId('game-new').click();
       await expect(admin.getByTestId('game-wizard')).toBeVisible();
+      await expect(admin.getByRole('heading', { name: 'Select level' })).toBeVisible();
       await expect(admin.getByTestId('game-next')).toBeDisabled();
+      // A level's tile is its name alone: no count of questions.
+      await expect(admin.getByTestId('game-tile-NC26.6')).toHaveText('G6');
       await admin.getByTestId('game-tile-NC26.6').click();
       await admin.getByTestId('game-next').click();
-      // Length: two questions, stepped down from ten with the counter and typed.
+      // Score Setup, one step: the game limit (two questions, stepped down from ten with the counter
+      // and typed), then the points (right +2, wrong 0).
+      await expect(admin.getByRole('heading', { name: 'Score Setup' })).toBeVisible();
+      await expect(admin.getByRole('heading', { name: 'Game limit' })).toBeVisible();
+      await expect(admin.getByRole('heading', { name: 'Points' })).toBeVisible();
       await admin.getByTestId('game-amount-minus').click();
       await expect(admin.getByTestId('game-amount')).toHaveValue('9');
       await admin.getByTestId('game-amount').fill('2');
       await admin.getByTestId('game-amount').blur();
-      await admin.getByTestId('game-next').click();
-      // Scoring: right +2, wrong 0.
       await admin.getByTestId('game-right-plus').click();
       await expect(admin.getByTestId('game-right')).toHaveValue('+2');
       await admin.getByTestId('game-next').click();
@@ -237,22 +243,35 @@ test.describe('Quest Games (Phase 46)', () => {
       await expect(admin.getByTestId('game-page')).toBeVisible();
       const code = (await admin.getByTestId('game-lobby-code').textContent())!.trim();
       expect(code).toMatch(/^[A-Z2-9]{6}$/);
+      // The lobby's label is the code's alone, and the host may only start a team, named for them.
+      await expect(admin.getByText('Game code', { exact: true })).toBeVisible();
+      await expect(admin.getByText(/Game status/i)).toHaveCount(0);
+      await expect(admin.getByTestId('game-join-tabs')).toHaveCount(0);
+      await expect(admin.getByTestId('game-team-code')).toHaveCount(0);
+      await expect(admin.getByTestId('game-team-name')).toHaveValue(/^Team \S+$/);
+      await expect(admin.getByTestId('game-join-go')).toHaveText('Join the game');
 
-      // Alex types the game's code and starts a team: no "on my own" in a game of teams.
+      // Alex types the game's code and starts a team: no "on my own" in a game of teams. With no team
+      // yet, New team opens, named for him; one action, Join the game.
       await alex.goto('/quest');
       await alex.getByTestId('game-code').fill(code);
       await alex.getByTestId('game-join').click();
       await expect(alex.getByTestId('game-join-solo')).toHaveCount(0);
+      await expect(alex.getByTestId('game-join-tab-new')).toHaveAttribute('aria-selected', 'true');
+      await expect(alex.getByTestId('game-team-name')).toHaveValue('Team Alex');
+      await expect(alex.getByRole('button', { name: /Start a team|Join a team/ })).toHaveCount(0);
       await alex.getByTestId('game-team-name').fill('Owls');
-      await alex.getByTestId('game-join-new-team').click();
+      await alex.getByTestId('game-join-go').click();
       const teamCode = (await alex.getByTestId('game-team-code-shown').textContent())!.trim();
 
-      // Sofia types two codes: the game's, then the team's.
+      // Sofia types two codes: the game's, then the team's (Join a team opens, the game having one).
       await sofia.goto('/quest');
       await sofia.getByTestId('game-code').fill(code);
       await sofia.getByTestId('game-join').click();
+      await expect(sofia.getByTestId('game-join-tab-team')).toHaveAttribute('aria-selected', 'true');
+      await expect(sofia.getByTestId('game-join-go')).toBeDisabled();
       await sofia.getByTestId('game-team-code').fill(teamCode);
-      await sofia.getByTestId('game-join-team').click();
+      await sofia.getByTestId('game-join-go').click();
       await expect(sofia.getByTestId('game-team-Owls')).toContainText('Alex, Sofia');
 
       // The status page: the host sees them arrive, and starts the Quest; every screen counts down.
@@ -283,9 +302,8 @@ test.describe('Quest Games (Phase 46)', () => {
       // The favorite comes back on the first step, and one tap fills every step.
       await admin.goto('/quest/games/new');
       await admin.getByTestId('game-fav-Two-question duel').click();
-      await expect(admin.getByTestId('game-step-5')).toBeVisible();
+      await expect(admin.getByTestId('game-step-4')).toBeVisible();
       await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams, at most 2 players per team');
-      await admin.getByTestId('game-back').click();
       await admin.getByTestId('game-back').click();
       await admin.getByTestId('game-back').click();
       await admin.getByTestId('game-back').click();
@@ -307,7 +325,6 @@ test.describe('Quest Games (Phase 46)', () => {
       await sofia.getByTestId('game-next').click();
       await sofia.getByTestId('game-amount').fill('3');
       await sofia.getByTestId('game-amount').blur();
-      await sofia.getByTestId('game-next').click();
       await sofia.getByTestId('game-next').click();
       await sofia.getByTestId('game-players-single').click();
       await sofia.getByTestId('game-next').click();

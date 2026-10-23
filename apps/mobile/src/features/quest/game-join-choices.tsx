@@ -7,32 +7,58 @@
 // team offers that team only. Each choice is checked with the shared joinGameSchema before it is
 // sent (a team name is refused if SSN-shaped); a refusal -- a full team, already in -- is the
 // server's message, shown inline.
-import { GAME_CODE_LENGTH, joinGameSchema, type GameLookup, type JoinGameInput } from '@tmi/shared';
+// Owner, 2026-10-23: one action, "Join the game". A player chooses Join a team or New team on a tab
+// bar (New team first while the game has no teams); the host only ever starts a team. A new team's
+// name is filled in as "Team <first name>".
+import {
+  GAME_CODE_LENGTH,
+  defaultTeamName,
+  joinGameSchema,
+  type GameLookup,
+  type JoinGameInput,
+} from '@tmi/shared';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 
+import { SegmentedTabs } from '@/components/segmented-tabs';
 import { ApiRequestError } from '@/lib/api-client';
+import { useAuth } from '@/providers/auth-provider';
 import { space } from '@/theme/tokens';
 import { typedGameCode } from './game-model';
 import { useJoinGame } from './games-api';
 import { CODE_FONT } from './game-style';
 
+type JoinTab = 'team' | 'new';
+
+const JOIN_TABS = [
+  { value: 'team', label: 'Join a team', icon: 'account-group-outline', testID: 'game-join-tab-team' },
+  { value: 'new', label: 'New team', icon: 'account-multiple-plus-outline', testID: 'game-join-tab-new' },
+] as const;
+
 export function JoinChoices({
   gameId,
   maxTeamSize,
   team,
+  host = false,
+  teamCount = 0,
   onJoined,
 }: {
   gameId: string;
   maxTeamSize: number;
   /** The team a team code named: joining joins it. */
   team?: GameLookup['team'];
+  /** The game's host: they start a team, never join one. */
+  host?: boolean;
+  /** Teams in the game so far: with none, New team is the tab that opens. */
+  teamCount?: number;
   /** After a join: the sheet gives way to the game; the lobby just carries on. */
   onJoined?: (gameId: string) => void;
 }) {
   const join = useJoinGame();
-  const [teamName, setTeamName] = useState('');
+  const { user } = useAuth();
+  const [tab, setTab] = useState<JoinTab>(host || teamCount === 0 ? 'new' : 'team');
+  const [teamName, setTeamName] = useState(() => defaultTeamName(user?.full_name));
   const [teamCode, setTeamCode] = useState('');
   const typedTeamCode = typedGameCode(teamCode);
   const [refusal, setRefusal] = useState<string | null>(null);
@@ -68,13 +94,13 @@ export function JoinChoices({
         <Button
           testID="game-join-team-named"
           mode="contained"
-          icon="account-group-outline"
+          icon="login"
           onPress={() => void go({ as: 'team', team_code: team.code })}
           disabled={join.isPending}
           loading={join.isPending}
           contentStyle={{ minHeight: 48 }}
         >
-          {`Join ${team.name}`}
+          Join the game
         </Button>
         {refused}
       </View>
@@ -100,10 +126,34 @@ export function JoinChoices({
     );
   }
 
+  const chosen: JoinGameInput | null =
+    tab === 'new'
+      ? teamName.trim()
+        ? { as: 'new_team', team_name: teamName }
+        : null
+      : typedTeamCode
+        ? { as: 'team', team_code: typedTeamCode }
+        : null;
+  const submit = () => {
+    if (chosen && !join.isPending) void go(chosen);
+  };
+
   return (
-    <View style={{ gap: space.lg }}>
-      <View style={{ gap: space.sm }}>
+    <View style={{ gap: space.md }}>
+      {host ? null : (
+        <SegmentedTabs<JoinTab>
+          tabs={JOIN_TABS}
+          value={tab}
+          onChange={(next) => {
+            setRefusal(null);
+            setTab(next);
+          }}
+          testID="game-join-tabs"
+        />
+      )}
+      {tab === 'new' ? (
         <TextInput
+          key="new"
           testID="game-team-name"
           mode="outlined"
           label="Team name"
@@ -112,23 +162,13 @@ export function JoinChoices({
           onChangeText={setTeamName}
           maxLength={30}
           autoCorrect={false}
+          selectTextOnFocus
           returnKeyType="go"
-          onSubmitEditing={() => {
-            if (teamName.trim()) void go({ as: 'new_team', team_name: teamName });
-          }}
+          onSubmitEditing={submit}
         />
-        <Button
-          testID="game-join-new-team"
-          mode="outlined"
-          disabled={!teamName.trim() || join.isPending}
-          onPress={() => void go({ as: 'new_team', team_name: teamName })}
-          contentStyle={{ minHeight: 48 }}
-        >
-          Start a team
-        </Button>
-      </View>
-      <View style={{ gap: space.sm }}>
+      ) : (
         <TextInput
+          key="team"
           testID="game-team-code"
           mode="outlined"
           label="Team code"
@@ -142,23 +182,21 @@ export function JoinChoices({
           keyboardType={Platform.OS === 'android' ? 'visible-password' : 'default'}
           maxLength={GAME_CODE_LENGTH + 4}
           returnKeyType="go"
-          onSubmitEditing={() => {
-            if (typedTeamCode) void go({ as: 'team', team_code: typedTeamCode });
-          }}
+          onSubmitEditing={submit}
           contentStyle={{ fontFamily: CODE_FONT, letterSpacing: 4 }}
         />
-        <Button
-          testID="game-join-team"
-          mode="outlined"
-          disabled={!typedTeamCode || join.isPending}
-          onPress={() => {
-            if (typedTeamCode) void go({ as: 'team', team_code: typedTeamCode });
-          }}
-          contentStyle={{ minHeight: 48 }}
-        >
-          Join a team
-        </Button>
-      </View>
+      )}
+      <Button
+        testID="game-join-go"
+        mode="contained"
+        icon="login"
+        disabled={!chosen || join.isPending}
+        loading={join.isPending}
+        onPress={submit}
+        contentStyle={{ minHeight: 48 }}
+      >
+        Join the game
+      </Button>
       {refused}
     </View>
   );

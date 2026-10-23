@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { Gamepad2Icon, LogInIcon, PlusIcon, UsersIcon } from 'lucide-react';
 import {
   GAME_CODE_LENGTH,
+  defaultTeamName,
   gameLengthLabel,
   gameLevelLabel,
   gameMarkingLabel,
@@ -19,8 +20,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/providers/auth-provider';
 import { useGames, useJoinGame, useLookupGame } from './games-api';
 
 // Phase 46: Quest Games on the Quest page -- for everyone in the organization.
@@ -61,7 +64,7 @@ export function GamesCard() {
           </div>
           <Button asChild data-testid="game-new">
             <Link to="/quest/games/new">
-              <PlusIcon /> Start a game
+              <PlusIcon /> New Quest
             </Link>
           </Button>
         </div>
@@ -187,7 +190,13 @@ function JoinDialog({ lookup, onClose }: { lookup: GameLookup | null; onClose: (
                 {lookup.status === 'running' && (
                   <p className="text-sm">This game is under way: you can still join, and start from its first question.</p>
                 )}
-                <JoinChoices gameId={lookup.game_id} maxTeamSize={lookup.max_team_size} team={lookup.team} onJoined={onClose} />
+                <JoinChoices
+                  gameId={lookup.game_id}
+                  maxTeamSize={lookup.max_team_size}
+                  team={lookup.team}
+                  teamCount={lookup.teams.filter((t) => !t.solo).length}
+                  onJoined={onClose}
+                />
               </>
             )}
           </>
@@ -201,22 +210,33 @@ function JoinDialog({ lookup, onClose }: { lookup: GameLookup | null; onClose: (
  * How to join, in the dialog and the lobby. Everyone on their own: one Join.
  * Teams (Phase 47): start a team -- which gets its own code to share -- or
  * type a team's code, so a teammate types two codes, the game's then the team's.
+ * Owner, 2026-10-23: one action, "Join the game". A player chooses Join a team
+ * or New team on a tab bar (New team first while the game has no teams); the
+ * host only ever starts a team. A new team is named "Team <first name>".
  */
 export function JoinChoices({
   gameId,
   maxTeamSize,
   team,
+  host = false,
+  teamCount = 0,
   onJoined,
 }: {
   gameId: string;
   maxTeamSize: number;
   /** The team a team code named: joining joins it. */
   team?: GameLookup['team'];
+  /** The game's host: they start a team, never join one. */
+  host?: boolean;
+  /** Teams in the game so far: with none, New team is the tab that opens. */
+  teamCount?: number;
   onJoined?: () => void;
 }) {
   const join = useJoinGame();
   const navigate = useNavigate();
-  const [teamName, setTeamName] = useState('');
+  const { user } = useAuth();
+  const [tab, setTab] = useState<'team' | 'new'>(host || teamCount === 0 ? 'new' : 'team');
+  const [teamName, setTeamName] = useState(() => defaultTeamName(user?.full_name));
   const [teamCode, setTeamCode] = useState('');
 
   async function go(input: JoinGameInput) {
@@ -240,7 +260,7 @@ export function JoinChoices({
           disabled={join.isPending}
           data-testid="game-join-team-named"
         >
-          <UsersIcon /> Join {team.name}
+          <LogInIcon /> Join the game
         </Button>
       </div>
     );
@@ -256,35 +276,49 @@ export function JoinChoices({
     );
   }
 
+  const chosen: JoinGameInput | null =
+    tab === 'new'
+      ? teamName.trim()
+        ? { as: 'new_team', team_name: teamName }
+        : null
+      : teamCode.length === GAME_CODE_LENGTH
+        ? { as: 'team', team_code: teamCode }
+        : null;
+
   return (
-    <div className="grid gap-4 text-sm">
-      <form
-        className="flex flex-col gap-2 sm:flex-row"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (teamName.trim()) void go({ as: 'new_team', team_name: teamName });
-        }}
-      >
+    <form
+      className="grid gap-3 text-sm"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (chosen && !join.isPending) void go(chosen);
+      }}
+    >
+      {!host && (
+        <Tabs value={tab} onValueChange={(value) => setTab(value as 'team' | 'new')}>
+          <TabsList className="w-full" data-testid="game-join-tabs">
+            <TabsTrigger value="team" data-testid="game-join-tab-team">
+              <UsersIcon /> Join a team
+            </TabsTrigger>
+            <TabsTrigger value="new" data-testid="game-join-tab-new">
+              <PlusIcon /> New team
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      )}
+      {tab === 'new' ? (
         <Input
+          key="new"
           value={teamName}
           onChange={(event) => setTeamName(event.target.value)}
+          onFocus={(event) => event.target.select()}
           placeholder="Team name"
           aria-label="Team name"
           maxLength={30}
           data-testid="game-team-name"
         />
-        <Button type="submit" variant="outline" disabled={!teamName.trim() || join.isPending} data-testid="game-join-new-team">
-          Start a team
-        </Button>
-      </form>
-      <form
-        className="flex flex-col gap-2 sm:flex-row"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (teamCode.length === GAME_CODE_LENGTH) void go({ as: 'team', team_code: teamCode });
-        }}
-      >
+      ) : (
         <Input
+          key="team"
           value={teamCode}
           onChange={(event) => setTeamCode(normalizeGameCode(event.target.value).slice(0, GAME_CODE_LENGTH))}
           placeholder="Team code"
@@ -293,15 +327,10 @@ export function JoinChoices({
           className="font-mono tracking-widest uppercase"
           data-testid="game-team-code"
         />
-        <Button
-          type="submit"
-          variant="outline"
-          disabled={teamCode.length !== GAME_CODE_LENGTH || join.isPending}
-          data-testid="game-join-team"
-        >
-          Join a team
-        </Button>
-      </form>
-    </div>
+      )}
+      <Button type="submit" disabled={!chosen || join.isPending} data-testid="game-join-go">
+        <LogInIcon /> Join the game
+      </Button>
+    </form>
   );
 }

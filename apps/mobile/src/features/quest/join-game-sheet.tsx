@@ -122,6 +122,7 @@ export function JoinGameSheet({ code }: { code: string }) {
                 gameId={found.game_id}
                 maxTeamSize={found.max_team_size}
                 team={found.team}
+                teamCount={found.teams.filter((t) => !t.solo).length}
                 onJoined={openGame}
               />
             </>

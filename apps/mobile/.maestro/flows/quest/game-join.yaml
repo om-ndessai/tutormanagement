@@ -7,7 +7,9 @@
 # game, where Alex has started Owls: Sofia types the TEAM's code and is offered that team alone
 # ("1 of 2 so far"); she joins, and Owls is Alex and Sofia. Phase 47: the join line says the points and
 # who plays; a game of teams offers no "on my own" (the lobby asserts so, game-join-solo absent), and its
-# board counts the teams taken. The switches are off again at the end.
+# board counts the teams taken. 2026-10-23 (owner): Join a team / New team is a tab bar, New team opens
+# while the game has no team, its name is filled in as "Team Sofia", and the one action is "Join the
+# game". The switches are off again at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -139,17 +141,31 @@ tags:
 - assertVisible:
     id: game-join-line
     text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 teams, at most 2 players per team'
-# A game of teams: start one, or a team's code -- never on your own.
+# A game of teams: a tab bar of Join a team and New team -- never on your own. Priya's game has no team
+# yet, so New team is open, named for Sofia, and the one action is Join the game.
 - assertNotVisible:
     id: game-join-solo
+- assertVisible:
+    id: game-join-tabs
+- assertVisible:
+    id: game-team-name
+    text: 'Team Sofia'
+- assertNotVisible:
+    id: game-team-code
+- assertVisible:
+    id: game-join-go
+    text: '.*Join the game.*'
+    enabled: true
+- assertNotVisible: 'Start a team'
 - takeScreenshot: game-join-sheet
 - tapOn:
     id: game-team-name
+- eraseText: 20
 - inputText: 'Owls'
 - extendedWaitUntil:
     visible:
-      id: game-join-new-team
-      enabled: true
+      id: game-team-name
+      text: 'Owls'
     timeout: 5000
 # As for Join above: Go on iOS (it starts the team), the button on Android.
 - runFlow:
@@ -162,7 +178,7 @@ tags:
       platform: Android
     commands:
       - tapOn:
-          id: game-join-new-team
+          id: game-join-go
 # The lobby, in her team.
 - extendedWaitUntil:
     visible:
@@ -233,7 +249,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-join-team-named
-      text: 'Join Owls'
+      text: '.*Join the game.*'
     timeout: 10000
 - assertVisible: '.*1 of 2 so far.*'
 - assertNotVisible:

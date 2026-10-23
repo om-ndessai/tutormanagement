@@ -195,3 +195,23 @@ Owner, 2026-10-22: the test account's D1 has used up its day.
     so, with **Try again**.
   - **Tests:** the web spec drops the connection mid-game, and the app's Jest suite covers a dropped
     connection and a real 404.
+
+## The wizard and joining, reworked (owner, 2026-10-23)
+
+- **New Quest.** The Quest page's button, and the wizard's title, say **New Quest** (it said "Start a game").
+- **Four steps, not five.**
+  - **Select level** (it was "Which questions?"). The tiles are smaller (three to a row on a phone, six on
+    a wide screen) and show the level's name alone: no count of questions. Random is a tile like the rest.
+  - **Score Setup** merges the old Length and Scoring steps, under two sub-headings: **Game limit** (a
+    number of questions or the minutes) and **Points** (right, wrong and Knockout).
+  - Then the players and the review, as before. The review keeps one card per setting.
+- **The lobby** says **Game code** over the code. The "Game status · waiting to start" label is gone.
+- **Joining a game of teams.**
+  - **The host** only starts a team. There is no team code field and no tab bar.
+  - **Everyone else** chooses on a tab bar: **Join a team** (a team's code) or **New team** (a name). New
+    team opens while the game has no team yet; otherwise Join a team does.
+  - **One action:** **Join the game**. The old "Start a team" and "Join a team" buttons are gone, and a team
+    code that names a team also says "Join the game".
+  - **A new team's name** is filled in as **Team <first name>** (`defaultTeamName` in shared), for the person
+    to keep or change.
+- **No server change.** The routes and the join request are as before.

@@ -29,13 +29,13 @@ import { QuestFrame } from './fullscreen-frame';
 import { Toggle } from './games-card';
 import { useCreateGame, useDeleteGameFavorite, useGameFavorites, useGameLevels, useSaveGameFavorite } from './games-api';
 
-// Phase 47 (docs/quest-games-g2-plan.md): starting a game is a wizard of five
-// steps -- the questions (level tiles, Random from a level upward, and the
-// person's favorites), the length, the scoring, the players, the review --
-// full screen like the game itself. Its last action replaces the wizard with
+// Phase 47 (docs/quest-games-g2-plan.md): starting a game is a wizard -- since
+// 2026-10-23 (owner) of four steps: Select level (compact level tiles, Random
+// from a level upward, and the person's favorites), Score Setup (the game limit
+// and the points), the players, the review -- full screen like the game itself. Its last action replaces the wizard with
 // the game, so there is no going back once a code is made.
 
-const STEPS = ['Questions', 'Length', 'Scoring', 'Players', 'Review'] as const;
+const STEPS = ['Level', 'Score Setup', 'Players', 'Review'] as const;
 const REVIEW = STEPS.length - 1;
 
 const message = (caught: unknown, fallback: string) => (caught instanceof ApiRequestError ? caught.message : fallback);
@@ -162,7 +162,7 @@ export function StartGamePage() {
   }
 
   return (
-    <QuestFrame title="Start a Quest game" shortTitle="New game" testId="game-wizard">
+    <QuestFrame title="New Quest" shortTitle="New Quest" testId="game-wizard">
       <ol className="flex flex-wrap gap-2 text-xs" aria-label="Steps">
         {STEPS.map((label, i) => (
           <li
@@ -197,80 +197,82 @@ export function StartGamePage() {
             />
           )}
           {step === 1 && (
-            <Section title="How long is the game?" hint="A number of questions, or as many as you can in the time.">
-              <Toggle
-                value={draft.mode}
-                onChange={(mode) => set({ mode })}
-                options={[
-                  { value: 'count', label: 'A number of questions' },
-                  { value: 'timed', label: 'Against the clock' },
-                ]}
-                testId="game-mode"
-              />
-              {draft.mode === 'count' ? (
-                <Stepper
-                  label="Questions"
-                  value={draft.question_count}
-                  min={GAME_LIMITS.minQuestions}
-                  max={GAME_LIMITS.maxQuestions}
-                  onChange={(question_count) => set({ question_count })}
-                  testId="game-amount"
+            <Section title="Score Setup">
+              <div className="grid gap-4" data-testid="game-limit">
+                <SubHeading title="Game limit" hint="A number of questions, or as many as you can in the time." />
+                <Toggle
+                  value={draft.mode}
+                  onChange={(mode) => set({ mode })}
+                  options={[
+                    { value: 'count', label: 'A number of questions' },
+                    { value: 'timed', label: 'Against the clock' },
+                  ]}
+                  testId="game-mode"
                 />
-              ) : (
-                <Stepper
-                  label="Minutes"
-                  value={draft.duration_minutes}
-                  min={GAME_LIMITS.minMinutes}
-                  max={GAME_LIMITS.maxMinutes}
-                  onChange={(duration_minutes) => set({ duration_minutes })}
-                  testId="game-amount"
+                {draft.mode === 'count' ? (
+                  <Stepper
+                    label="Questions"
+                    value={draft.question_count}
+                    min={GAME_LIMITS.minQuestions}
+                    max={GAME_LIMITS.maxQuestions}
+                    onChange={(question_count) => set({ question_count })}
+                    testId="game-amount"
+                  />
+                ) : (
+                  <Stepper
+                    label="Minutes"
+                    value={draft.duration_minutes}
+                    min={GAME_LIMITS.minMinutes}
+                    max={GAME_LIMITS.maxMinutes}
+                    onChange={(duration_minutes) => set({ duration_minutes })}
+                    testId="game-amount"
+                  />
+                )}
+              </div>
+              <div className="grid gap-4 border-t pt-5" data-testid="game-points">
+                <SubHeading
+                  title="Points"
+                  hint="A skipped question always scores 0, so points off for a wrong answer make skipping a real choice."
                 />
-              )}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Stepper
+                    label="A right answer"
+                    value={draft.right_points}
+                    min={GAME_LIMITS.minRightPoints}
+                    max={GAME_LIMITS.maxRightPoints}
+                    onChange={(right_points) => set({ right_points })}
+                    format={pointsLabel}
+                    testId="game-right"
+                  />
+                  <Stepper
+                    label="A wrong answer"
+                    value={draft.wrong_points}
+                    min={GAME_LIMITS.minWrongPoints}
+                    max={GAME_LIMITS.maxWrongPoints}
+                    onChange={(wrong_points) => set({ wrong_points })}
+                    format={pointsLabel}
+                    testId="game-wrong"
+                  />
+                </div>
+                <label className="hover:bg-muted flex cursor-pointer items-start gap-3 rounded-lg border p-4">
+                  <input
+                    type="checkbox"
+                    className="accent-primary mt-0.5 size-4"
+                    checked={draft.knockout}
+                    onChange={(event) => set({ knockout: event.target.checked })}
+                    data-testid="game-knockout"
+                  />
+                  <span className="grid gap-1 text-sm">
+                    <span className="font-medium">Knockout</span>
+                    <span className="text-muted-foreground">
+                      End the game as soon as nobody can catch the leader, even mid-play. For games with two teams or more.
+                    </span>
+                  </span>
+                </label>
+              </div>
             </Section>
           )}
           {step === 2 && (
-            <Section
-              title="How is it scored?"
-              hint="A skipped question always scores 0, so points off for a wrong answer make skipping a real choice."
-            >
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Stepper
-                  label="A right answer"
-                  value={draft.right_points}
-                  min={GAME_LIMITS.minRightPoints}
-                  max={GAME_LIMITS.maxRightPoints}
-                  onChange={(right_points) => set({ right_points })}
-                  format={pointsLabel}
-                  testId="game-right"
-                />
-                <Stepper
-                  label="A wrong answer"
-                  value={draft.wrong_points}
-                  min={GAME_LIMITS.minWrongPoints}
-                  max={GAME_LIMITS.maxWrongPoints}
-                  onChange={(wrong_points) => set({ wrong_points })}
-                  format={pointsLabel}
-                  testId="game-wrong"
-                />
-              </div>
-              <label className="hover:bg-muted flex cursor-pointer items-start gap-3 rounded-lg border p-4">
-                <input
-                  type="checkbox"
-                  className="accent-primary mt-0.5 size-4"
-                  checked={draft.knockout}
-                  onChange={(event) => set({ knockout: event.target.checked })}
-                  data-testid="game-knockout"
-                />
-                <span className="grid gap-1 text-sm">
-                  <span className="font-medium">Knockout</span>
-                  <span className="text-muted-foreground">
-                    End the game as soon as nobody can catch the leader, even mid-play. For games with two teams or more.
-                  </span>
-                </span>
-              </label>
-            </Section>
-          )}
-          {step === 3 && (
             <Section title="Who plays?">
               <div className="grid gap-3 sm:grid-cols-2">
                 <Tile
@@ -377,6 +379,15 @@ function Section({ title, hint, children }: { title: string; hint?: string; chil
   );
 }
 
+function SubHeading({ title, hint }: { title: string; hint?: string }) {
+  return (
+    <div className="grid gap-1">
+      <h3 className="text-base font-semibold">{title}</h3>
+      {hint && <p className="text-muted-foreground text-sm">{hint}</p>}
+    </div>
+  );
+}
+
 function Tile({
   selected,
   onClick,
@@ -384,6 +395,7 @@ function Tile({
   title,
   detail,
   testId,
+  compact = false,
 }: {
   selected: boolean;
   onClick: () => void;
@@ -391,6 +403,8 @@ function Tile({
   title: string;
   detail?: string;
   testId: string;
+  /** A level's tile: smaller, its name alone (owner, 2026-10-23). */
+  compact?: boolean;
 }) {
   return (
     <button
@@ -400,12 +414,13 @@ function Tile({
       onClick={onClick}
       data-testid={testId}
       className={cn(
-        'flex min-h-20 w-full flex-col items-start justify-center gap-1 rounded-xl border p-4 pr-9 text-left transition-all',
+        'flex w-full flex-col justify-center gap-1 border transition-all',
+        compact ? 'min-h-12 items-center rounded-lg px-2 py-2 text-center' : 'min-h-20 items-start rounded-xl p-4 pr-9 text-left',
         'focus-visible:ring-ring outline-none focus-visible:ring-2',
         selected ? 'border-primary bg-primary/10 ring-primary ring-1' : 'hover:bg-muted hover:-translate-y-0.5',
       )}
     >
-      <span className="flex items-center gap-2 text-base font-semibold [&_svg]:size-4">
+      <span className={cn('flex items-center gap-2 font-semibold [&_svg]:size-4', compact ? 'text-sm' : 'text-base')}>
         {icon}
         {title}
       </span>
@@ -468,21 +483,21 @@ function QuestionsStep({
           </div>
         </Section>
       )}
-      <Section title="Which questions?" hint="A level of the question bank, or Random from a starting level upward.">
+      <Section title="Select level" hint="A level of the question bank, or Random from a starting level upward.">
         {loading ? (
-          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-28 w-full" />
         ) : levels.length === 0 ? (
           <p className="text-muted-foreground text-sm">No level has approved questions to play yet.</p>
         ) : (
-          <div role="radiogroup" aria-label="Level" className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div role="radiogroup" aria-label="Level" className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
             {levels.map((level) => (
               <Tile
                 key={level.level_id}
                 selected={!draft.random && draft.level_id === level.level_id}
                 onClick={() => set({ level_id: level.level_id, random: false })}
                 title={level.label}
-                detail={`${level.available} questions`}
                 testId={`game-tile-${level.level_id}`}
+                compact
               />
             ))}
             <Tile
@@ -490,8 +505,8 @@ function QuestionsStep({
               onClick={() => set({ random: true, level_id: draft.random ? draft.level_id : '' })}
               icon={<ShuffleIcon />}
               title="Random"
-              detail="Any level from a starting one up"
               testId="game-tile-random"
+              compact
             />
           </div>
         )}

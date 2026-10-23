@@ -180,9 +180,7 @@ function Lobby({ game }: { game: GameView }) {
       <Card className="py-0">
         <CardContent className="grid gap-4 p-6">
           <div className="grid gap-1">
-            <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-              Game status · waiting to start · game code
-            </p>
+            <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Game code</p>
             <div className="flex items-center gap-3">
               <span className="font-mono text-5xl font-bold tracking-[0.2em]" data-testid="game-lobby-code">
                 {game.code}
@@ -203,7 +201,7 @@ function Lobby({ game }: { game: GameView }) {
           {!mine && (
             <div className="grid gap-2">
               <p className="text-sm font-medium">Join this game</p>
-              <JoinChoices gameId={game.id} maxTeamSize={game.max_team_size} />
+              <JoinChoices gameId={game.id} maxTeamSize={game.max_team_size} host={game.is_host} teamCount={game.teams.length} />
             </div>
           )}
           <div className="flex flex-wrap gap-2">

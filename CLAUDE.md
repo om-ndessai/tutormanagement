@@ -655,10 +655,12 @@ throws an `ApiError`. Keys reach a client only on the results, after the game, f
 (R20); names are first names; a game awards no Quest points; answers are never audit lines.
 
 **Phase 47 adds the start wizard, and a game begins with a countdown** (`docs/quest-games-g2-plan.md`). The
-wizard has five steps: level tiles or Random (a level and those above it in its family,
-`gameLevelIds`), the length, points for right and wrong plus Knockout, single player or multiplayer
-(the most teams, team size, joining open once it runs), and the review with a named favorite
-(`quest_game_favorites`, the person's own). The host's start sets `started_at` `GAME_COUNTDOWN_MS`
+wizard ("New Quest") has four steps since 2026-10-23: Select level (compact tiles, a level's name alone, or
+Random: a level and those above it in its family, `gameLevelIds`), Score Setup (the game limit, then the
+points for right and wrong plus Knockout), single player or multiplayer (the most teams, team size,
+joining open once it runs), and the review with a named favorite (`quest_game_favorites`, the person's
+own). Joining a game of teams is a tab bar, Join a team or New team, with one action, "Join the game"; the
+host only starts a team, and a new team is named "Team <first name>" (`defaultTeamName`). The host's start sets `started_at` `GAME_COUNTDOWN_MS`
 ahead. Nothing is served or answered before it, and every screen counts to it by the server's `now`. A
 knockout game ends when one team's lowest possible score is above every other team's highest
 (`knockoutDecided`). `end_reason` records why a game ended. A single player's game is made and begun

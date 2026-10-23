@@ -168,6 +168,12 @@ export interface GameFavorite {
 
 const teamName = refuseSsn(z.string().trim().min(1, 'Name your team.').max(30, 'Keep the name under 30 characters.'));
 
+/** A new team's name until its starter types another: "Team Sofia", from the person's full name. */
+export function defaultTeamName(fullName: string | null | undefined): string {
+  const first = (fullName ?? '').trim().split(/\s+/)[0];
+  return (first ? `Team ${first}` : 'My team').slice(0, 30);
+}
+
 /** How a player joins: on their own, by starting a team, or into a team by its code. */
 export const joinGameSchema = z.discriminatedUnion('as', [
   z.object({ as: z.literal('solo') }),

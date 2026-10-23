@@ -109,12 +109,6 @@ tags:
       id: game-step-3
     timeout: 5000
 - tapOn:
-    id: step-flow-next
-- extendedWaitUntil:
-    visible:
-      id: game-step-4
-    timeout: 5000
-- tapOn:
     id: game-players-single
 - assertNotVisible:
     id: game-max-teams

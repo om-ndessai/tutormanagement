@@ -2,7 +2,8 @@
 //
 // One choice of the start wizard (Phase 47, design 61): a level with its count, Random, Single player
 // or Multiplayer -- a radio -- or a favorite, a button. At least 80 pt tall, outlined; chosen, the
-// primary border over a wash of the primary. One accessible element ("G6, 412 questions, selected").
+// primary border over a wash of the primary. A level's tile is compact, 52 pt, its name alone
+// (owner, 2026-10-23). One accessible element ("G6, selected").
 // A corner slot holds a favorite's ×, beside the tile rather than inside it, so it stays its own
 // control to a screen reader.
 import type { ReactNode } from 'react';
@@ -23,6 +24,7 @@ export function GameTile({
   role = 'radio',
   onPress,
   corner,
+  compact = false,
 }: {
   testID: string;
   title: string;
@@ -35,6 +37,8 @@ export function GameTile({
   onPress: () => void;
   /** Top right, over the tile: a favorite's ×. */
   corner?: ReactNode;
+  /** A level's tile: shorter and narrower, its name alone (owner, 2026-10-23). */
+  compact?: boolean;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -51,12 +55,13 @@ export function GameTile({
         }}
         style={({ pressed }) => ({
           flex: 1,
-          minHeight: 80,
+          minHeight: compact ? 52 : 80,
           justifyContent: 'center',
+          alignItems: compact ? 'center' : undefined,
           gap: space.xs,
-          padding: space.lg,
-          paddingRight: corner ? space.xxl + space.lg : space.lg,
-          borderRadius: radius.lg,
+          padding: compact ? space.sm : space.lg,
+          paddingRight: corner ? space.xxl + space.lg : compact ? space.sm : space.lg,
+          borderRadius: compact ? radius.md : radius.lg,
           borderWidth: selected ? 2 : 1,
           borderColor: selected ? theme.colors.primary : theme.colors.outline,
           backgroundColor: selected
@@ -68,7 +73,10 @@ export function GameTile({
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
           {icon ? <Icon source={icon} size={18} color={theme.colors.primary} /> : null}
-          <Text variant="titleMedium" style={{ flexShrink: 1, fontWeight: '600' }}>
+          <Text
+            variant={compact ? 'titleSmall' : 'titleMedium'}
+            style={{ flexShrink: 1, fontWeight: '600', textAlign: compact ? 'center' : undefined }}
+          >
             {title}
           </Text>
         </View>

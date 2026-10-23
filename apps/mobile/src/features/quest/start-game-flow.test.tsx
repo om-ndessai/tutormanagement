@@ -1,5 +1,5 @@
 // The start wizard (Phase 47, design 61): Next is refused without a level; a game goes through the
-// five steps to "Generate game code" (or "Start game" for a single player), sends the wizard's request
+// four steps (Select level, Score Setup, players, the review) to "Generate game code" (or "Start game" for a single player), sends the wizard's request
 // and gives way to the game; a favorite fills every step and jumps to the Review; its × asks first.
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import { createGameSchema, type GameFavorite } from '@tmi/shared';
@@ -76,8 +76,10 @@ describe('StartGameFlow', () => {
     serve();
     await renderWithProviders(<StartGameFlow />);
     await screen.findByTestId('game-tile-NC26.6');
-    // Only levels with questions to draw.
+    // Only levels with questions to draw, and a tile is the level's name alone.
     expect(screen.queryByTestId('game-tile-NC26.8')).toBeNull();
+    expect(screen.getByTestId('game-tile-NC26.6').props.accessibilityLabel).toBe('G6');
+    expect(screen.getByText('Select level')).toBeTruthy();
     expect(screen.getByTestId('game-step-1')).toBeTruthy();
     await next();
     expect(await screen.findByTestId('game-level-error')).toHaveTextContent('Choose a level.');
@@ -94,14 +96,16 @@ describe('StartGameFlow', () => {
     await fireEvent.press(await screen.findByTestId('game-tile-NC26.6'));
     await next();
     expect(screen.getByTestId('game-step-2')).toBeTruthy();
+    // Score Setup: the game limit and the points, on one step.
+    expect(screen.getByText('Score Setup')).toBeTruthy();
+    expect(screen.getByText('Game limit')).toBeTruthy();
+    expect(screen.getByText('Points')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('game-amount-minus'));
-    await next();
-    expect(screen.getByTestId('game-step-3')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('game-wrong-minus'));
     expect(screen.getByTestId('game-wrong').props.value).toBe('−1');
     await fireEvent.press(screen.getByTestId('game-knockout'));
     await next();
-    expect(screen.getByTestId('game-step-4')).toBeTruthy();
+    expect(screen.getByTestId('game-step-3')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('game-late-join-open'));
     await next();
     expect(screen.getByTestId('step-flow-review')).toBeTruthy();
@@ -140,7 +144,6 @@ describe('StartGameFlow', () => {
     await fireEvent.press(await screen.findByTestId('game-tile-NC26.7'));
     await next();
     await next();
-    await next();
     await fireEvent.press(screen.getByTestId('game-players-single'));
     expect(screen.queryByTestId('game-max-teams')).toBeNull();
     await next();
@@ -165,7 +168,7 @@ describe('StartGameFlow', () => {
     );
     // Back lands on the last step, filled in.
     await fireEvent.press(screen.getByTestId('step-flow-back'));
-    expect(screen.getByTestId('game-step-4')).toBeTruthy();
+    expect(screen.getByTestId('game-step-3')).toBeTruthy();
     expect(screen.getByTestId('game-team-size').props.value).toBe('2');
   });
 
@@ -189,7 +192,6 @@ describe('StartGameFlow', () => {
     mockPut.mockResolvedValueOnce({ data: { ...FRIDAY, name: 'Friday G6' } });
     await renderWithProviders(<StartGameFlow />);
     await fireEvent.press(await screen.findByTestId('game-tile-NC26.6'));
-    await next();
     await next();
     await next();
     await next();

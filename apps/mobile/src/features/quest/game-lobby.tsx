@@ -7,7 +7,7 @@
 // sheet with the code and nothing else (no name); the join choices are inline (a full-screen game
 // opens no sheet, U3); Cancel asks first, natively. Leaving goes back to the hub with "You left the
 // game.". On an iPad the code and the choices sit beside the teams. Phase 47 (design 61): the label is
-// the game's status, the host's action is "Start the Quest", and the board counts the places taken.
+// "Game code" (owner, 2026-10-23), the host joins by starting a team, the host's action is "Start the Quest", and the board counts the places taken.
 import type { GameView } from '@tmi/shared';
 import { Share, View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
@@ -143,7 +143,12 @@ export function GameLobby({ game }: { game: GameView }) {
             <Text variant="titleSmall" accessibilityRole="header">
               Join this game
             </Text>
-            <JoinChoices gameId={game.id} maxTeamSize={game.max_team_size} />
+            <JoinChoices
+              gameId={game.id}
+              maxTeamSize={game.max_team_size}
+              host={game.is_host}
+              teamCount={game.teams.length}
+            />
           </View>
         ) : null}
 
