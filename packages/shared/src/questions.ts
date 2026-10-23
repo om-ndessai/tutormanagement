@@ -11,11 +11,15 @@ import { containsSsn, refuseSsn } from './tax.js';
 
 /**
  * The levels the bank covers, in the console's order: NC 2026, grades 3-8 and Math 1 (owner,
- * 2026-10-17), then Beast Academy's Levels 1-5 and the three AoPS books its catalog carries, one
- * chapter a topic (owner, 2026-10-18; the bank only -- the Assessment menu draws on
- * CANVAS_ASSESSMENT_LEVEL_IDS).
+ * 2026-10-17) and, since 2026-10-22, the rest of it -- Kindergarten to grade 2, Math 2 and the
+ * three fourth-year courses -- then Beast Academy's Levels 1-5 and the three AoPS books its catalog
+ * carries, one chapter a topic (owner, 2026-10-18). The Assessment menu draws on all of them
+ * (CANVAS_ASSESSMENT_LEVEL_IDS).
  */
 export const QUESTION_BANK_LEVEL_IDS = [
+  'NC26.K',
+  'NC26.1',
+  'NC26.2',
   'NC26.3',
   'NC26.4',
   'NC26.5',
@@ -23,6 +27,10 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'NC26.7',
   'NC26.8',
   'NC26.M1',
+  'NC26.M2',
+  'NC26.ALR',
+  'NC26.ASDS',
+  'NC26.MSM',
   'BA1',
   'BA2',
   'BA3',
@@ -287,6 +295,7 @@ export function lintQuestion(question: QuestionContent, others: readonly string[
   for (const [label, text] of [
     ['question', stem],
     ['solution', solution],
+    ...choices.map((choice) => ['choice', choice] as const),
   ] as const) {
     if ((text.match(/\$/g) ?? []).length % 2 !== 0) problems.push(`The ${label} has an unclosed $…$.`);
   }

@@ -1,6 +1,6 @@
 {
   "level_id": "BA5",
-  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
+  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Algebra 14-22 and Introduction to Geometry added 2026-10-22 by the same pipeline.",
   "notes": {
     "BA5.03": "All text, whole-number answers (two decimal/mixed items: one 6.6). Six skills: evaluating an expression, combining like terms, the distributive property, one-step equations, two-step equations, equations from stories. No exponents or equations with the unknown on both sides.",
     "BA5.04": "All text; data are written out as lists. Six skills: mean, median, mode, range, missing value from a mean, and how adding/changing a value changes the statistics. Some answers are decimals such as 5.5 or 12.5.",
@@ -15029,7 +15029,7 @@
       "difficulty": 3,
       "kind": "numeric",
       "skill": "Prime factorization",
-      "stem": "What is the smallest number you can multiply 360 by to get a perfect square?",
+      "stem": "What is the smallest positive whole number you can multiply 360 by to get a perfect square?",
       "choices": [],
       "answer": "10",
       "compute": "10",
@@ -15045,10 +15045,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Minor: strictly, multiplying by 0 (or a fraction) also gives a perfect square; \"smallest positive whole number\" would be tighter. Conventional reading gives 10.",
-          "work": "360 = 2^3 x 3^2 x 5; need one more 2 and one more 5: x10 gives 3600 = 60^2.",
+          "issues": "",
+          "work": "360 = 2^3 x 3^2 x 5. To make every exponent even, multiply by 2 x 5 = 10: 3600 = 60^2.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:35:32.467Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -37021,6 +37021,166 @@
           "work": "2^20*5^20=10^20 -> 0",
           "run_id": "claude-code",
           "at": "2026-10-19T01:39:00.577Z"
+        }
+      }
+    },
+    {
+      "id": "6d290659-6412-4748-857d-fe6565ff0735",
+      "topic_id": "BA5.02",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Adding and subtracting integers",
+      "stem": "A hiker is in a dry valley at an elevation of $-7$ meters. (Sea level is 0.) She climbs up 15 meters. What is her elevation now, in meters?",
+      "choices": [],
+      "answer": "8",
+      "compute": "-7+15",
+      "solution": "Climbing up means adding: $-7 + 15 = 8$. From $-7$, 7 meters bring her to sea level, and 8 more meters bring her to 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-7 + 15 = 8 meters.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "b7dbb5ab-53ac-4ee4-83c6-7877c69eeaa6",
+      "topic_id": "BA5.04",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Finding the mode",
+      "stem": "Which list has exactly one mode?",
+      "choices": [
+        "1, 4, 4, 4, 6, 6",
+        "1, 4, 4, 6, 6, 9",
+        "1, 4, 6, 9, 12, 15",
+        "2, 2, 5, 5, 9, 9"
+      ],
+      "answer": "1, 4, 4, 4, 6, 6",
+      "compute": null,
+      "solution": "The mode is the number that appears most often. In 1, 4, 4, 4, 6, 6 the number 4 appears 3 times and no number appears more often, so 4 is the only mode. In 1, 4, 4, 6, 6, 9 the numbers 4 and 6 both appear twice, so there are two modes. In the other two lists every number appears the same number of times, so no single number is the mode.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1, 4, 4, 4, 6, 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 4 and 6 twice each, two modes. B: no value repeats, no single mode. C: 4 appears three times, 6 twice, one mode (4). D: 2, 5, 9 twice each, three modes. Answer C.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "2395303c-c7ff-49f5-92d4-5301c092fc16",
+      "topic_id": "BA5.07",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Finding a term (the 10th, the 50th)",
+      "stem": "Rosa lays a garden path in sections. Section 1 uses 9 tiles, section 2 uses 13 tiles and section 3 uses 17 tiles. Each section uses 4 more tiles than the section before it. How many tiles does section 6 use?",
+      "choices": [],
+      "answer": "29",
+      "compute": "9+4*5",
+      "solution": "Keep adding 4: section 4 uses 21 tiles, section 5 uses 25 tiles and section 6 uses 29 tiles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9, 13, 17, 21, 25, 29. Section 6 = 9 + 5 x 4 = 29.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "012dc6c7-5399-4c8d-ba1f-55089c7208db",
+      "topic_id": "BA5.08",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Writing ratios (part-to-part and part-to-whole)",
+      "stem": "Red, blue and green are the only colors of the marbles in a bag. For every 2 red marbles there are 3 blue marbles and 5 green marbles. Which sentence is true?",
+      "choices": [
+        "3 out of every 10 marbles are green",
+        "5 out of every 7 marbles are green",
+        "2 out of every 5 marbles are red",
+        "5 out of every 10 marbles are green"
+      ],
+      "answer": "5 out of every 10 marbles are green",
+      "compute": null,
+      "solution": "In every group of 2 red, 3 blue and 5 green marbles there are 2 + 3 + 5 = 10 marbles, and 5 of them are green. The other sentences are false: 3 of the 10 are blue, green is not 5 out of 7, and red is 2 out of 10, not 2 out of 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 out of every 10 marbles are green",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red : blue : green = 2 : 3 : 5, total 10. Green is 5 of every 10 (true). Green 3 of 10 is false. Red is 2 of 10 = 1 of 5, not 2 of 5. Green to non-total 5 of 7 is false (5 of 10).",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "9cb0f02a-e465-4742-b098-c19291a034f8",
+      "topic_id": "BA5.10",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Percent as per hundred",
+      "stem": "On a test, Ann got 19 out of 20 right, Ben got 85 out of 100 right, Cy got 4 out of 5 right and Dee got 9 out of 10 right. Who got the greatest percent of the questions right?",
+      "choices": [
+        "Ben",
+        "Ann",
+        "Cy",
+        "Dee"
+      ],
+      "answer": "Ann",
+      "compute": null,
+      "solution": "Write each score out of 100. Ann: 19 out of 20 is 95 out of 100. Ben: 85 out of 100. Cy: 4 out of 5 is 80 out of 100. Dee: 9 out of 10 is 90 out of 100. The greatest is 95%, so Ann.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ann",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ann 19/20 = 95%; Ben 85%; Cy 4/5 = 80%; Dee 9/10 = 90%. Ann has the greatest.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
         }
       }
     }

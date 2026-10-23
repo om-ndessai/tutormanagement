@@ -38,7 +38,8 @@ const OUTPUT = join(here, 'questions.sql');
 const REVIEWER = '0c000000-0000-4000-8000-000000000001';
 /** packages/shared/src/questions.ts, QUESTION_BANK_LEVEL_IDS. */
 const LEVELS = new Set([
-  ...['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1'],
+  ...['NC26.K', 'NC26.1', 'NC26.2', 'NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1'],
+  ...['NC26.M2', 'NC26.ALR', 'NC26.ASDS', 'NC26.MSM'],
   ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
 ]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;

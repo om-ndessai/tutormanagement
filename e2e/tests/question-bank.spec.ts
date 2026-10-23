@@ -24,6 +24,12 @@ import { unwrap } from '../support/api.js';
  * always exercised. It costs nothing.
  */
 
+/** NC 2026's levels in the bank: every one since 2026-10-22, in catalog order. */
+const NC_LEVELS = [
+  ...['NC26.K', 'NC26.1', 'NC26.2', 'NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1'],
+  ...['NC26.M2', 'NC26.ALR', 'NC26.ASDS', 'NC26.MSM'],
+];
+
 const value = (expression: string) => {
   const result = evaluateExact(expression);
   return result ? formatFraction(result) : null;
@@ -136,10 +142,7 @@ test.describe('the question bank’s rules', () => {
       await platform.request.get('/api/platform/questions/coverage'),
       'coverage',
     );
-    expect(levels.map((l) => l.level_id)).toEqual([
-      ...['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1'],
-      ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
-    ]);
+    expect(levels.map((l) => l.level_id)).toEqual([...NC_LEVELS, ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO']]);
     expect(levels.find((l) => l.level_id === 'BA3')?.topics.map((t) => t.topic_id)).toContain('BA3.06');
     // A chapter is a standard the console can write for, like any other.
     const written = await unwrap<{ questions: { topic_id: string }[] }>(
@@ -180,7 +183,7 @@ test.describe('the question bank’s rules', () => {
     expect((await setB({ canvas_assessments: true })).status()).toBe(200);
     try {
       const offeredB = await unwrap<{ level_id: string }[]>(await adminB.request.get('/api/canvas-assessments/levels'), 'B levels');
-      expect(offeredB.map((l) => l.level_id)).toEqual(['NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1']);
+      expect(offeredB.map((l) => l.level_id)).toEqual(NC_LEVELS);
       const [lily] = await unwrap<{ id: string }[]>(await adminB.request.get('/api/users?search=Lily%20Chen'), 'Lily');
       const refused = await adminB.request.post('/api/canvas-assessments', { data: { student_user_id: lily.id, level_id: 'BA3' } });
       expect(refused.status()).toBe(422);

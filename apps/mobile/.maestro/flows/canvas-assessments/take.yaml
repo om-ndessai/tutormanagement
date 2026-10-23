@@ -62,8 +62,16 @@ tags:
     id: assessment-level
 - extendedWaitUntil:
     visible:
-      id: assessment-level-NC26.4
+      id: assessment-level-list
     timeout: 15000
+# NC 2026 starts at Kindergarten (2026-10-22): G4 is the fifth row, below the fold on a phone.
+- scrollUntilVisible:
+    element:
+      id: assessment-level-NC26.4
+    direction: DOWN
+    speed: 30
+    visibilityPercentage: 100
+    timeout: 20000
 - tapOn:
     id: assessment-level-NC26.4
 - tapOn:

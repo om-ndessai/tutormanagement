@@ -1,6 +1,6 @@
 {
   "level_id": "BA3",
-  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
+  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Algebra 14-22 and Introduction to Geometry added 2026-10-22 by the same pipeline.",
   "notes": {
     "BA3.01": "Text-only, so tested through polygon names, sides/vertices, diagonals (counts and definitions given in the stem), properties of quadrilaterals and lines of symmetry of named shapes. No figures are referred to.",
     "BA3.02": "All skip-counting lists go up (or down) by a whole number; no negative numbers or fractions.",
@@ -37010,7 +37010,7 @@
       "difficulty": 3,
       "kind": "numeric",
       "skill": "Area and perimeter compared",
-      "stem": "A rectangle has whole-number sides and a perimeter of 20 centimeters. What is the greatest area it could have, in square centimeters?",
+      "stem": "A rectangle has whole-number sides and a perimeter of 20 centimeters. What is the greatest area it could have, in square centimeters? (A square counts as a rectangle.)",
       "choices": [],
       "answer": "25",
       "compute": "5*5",
@@ -37026,10 +37026,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Minor: a child who thinks a square is not a rectangle answers 24; Q96 in this set says 'A square counts as a rectangle' and this one should too.",
-          "work": "L + W = 10: 1x9 = 9, 2x8 = 16, 3x7 = 21, 4x6 = 24, 5x5 = 25. Greatest 25 (a square is a rectangle).",
+          "issues": "",
+          "work": "Perimeter 20, so length + width = 10. Whole-number pairs: 1x9=9, 2x8=16, 3x7=21, 4x6=24, 5x5=25. Greatest area 25.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:27:09.181Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -37369,6 +37369,132 @@
           "work": "30 / 5 = 6 and 20 / 2 = 10: 60 spaces (also 600 / 10 = 60).",
           "run_id": "claude-code",
           "at": "2026-10-19T01:27:09.181Z"
+        }
+      }
+    },
+    {
+      "id": "2c8e7d1a-bc54-444a-aed9-19d5361c362e",
+      "topic_id": "BA3.01",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Lines of symmetry",
+      "stem": "A regular polygon has as many lines of symmetry as it has sides. A regular hexagon has 6 lines of symmetry. Zed draws a regular polygon with 2 fewer lines of symmetry than a regular hexagon. Then he draws a second regular polygon that has twice as many sides as the first one. How many lines of symmetry does the second polygon have?",
+      "choices": [
+        "8",
+        "4",
+        "10",
+        "12"
+      ],
+      "answer": "8",
+      "compute": "2*(6-2)",
+      "solution": "The first polygon has 6 - 2 = 4 lines of symmetry, so it has 4 sides (it is a square). The second polygon has twice as many sides: 2 x 4 = 8 sides. A regular polygon has as many lines of symmetry as sides, so the second polygon has 8 lines of symmetry.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hexagon has 6 lines; 2 fewer is 4 lines, so the first is a square (4 sides). Twice as many sides is 8 sides, a regular octagon, which has 8 lines of symmetry.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "0b46f198-dde8-4535-a67e-583d39d7021a",
+      "topic_id": "BA3.10",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit fractions",
+      "stem": "Mia cuts a ribbon into 6 equal pieces. Each piece is $\\frac{1}{6}$ of the whole ribbon. She uses 3 of the pieces. The 3 pieces she does not use are 18 centimeters long altogether. How many centimeters long is the whole ribbon?",
+      "choices": [],
+      "answer": "36",
+      "compute": "18/3*6",
+      "solution": "The 3 pieces left over are 18 centimeters long altogether, so one piece is 18 / 3 = 6 centimeters. One piece is $\\frac{1}{6}$ of the ribbon, so the whole ribbon is 6 x 6 = 36 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 unused pieces = 18 cm, so each piece is 18 / 3 = 6 cm. The whole ribbon is 6 pieces: 6 x 6 = 36 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "00f329b3-e6c0-4ca8-8969-c33d09d427b5",
+      "topic_id": "BA3.11",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Deciding whether an answer is reasonable",
+      "stem": "Tom has 700 dollars. A sofa costs 342 dollars, a table costs 251 dollars and a lamp costs 118 dollars. Tom rounds each price to the nearest 100 dollars and adds them to get 700 dollars. Can Tom buy all three things with his 700 dollars? Choose the sentence that is correct.",
+      "choices": [
+        "Yes, because the rounded prices add up to exactly 700 dollars, which is enough.",
+        "Yes, because the exact prices add up to 691 dollars, which is less than 700 dollars.",
+        "No, because the sofa and the table alone add up to more than 700 dollars.",
+        "No, because the exact prices add up to 711 dollars, which is more than 700 dollars."
+      ],
+      "answer": "No, because the exact prices add up to 711 dollars, which is more than 700 dollars.",
+      "compute": null,
+      "solution": "Rounding gives 300 + 300 + 100 = 700, but a rounded sum is only an estimate and it is exactly at the limit, so it cannot decide. Add the real prices: 342 + 251 + 118 = 711. That is more than 700 dollars, so Tom does not have enough.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, because the exact prices add up to 711 dollars, which is more than 700 dollars.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exact total: 342 + 251 + 118 = 711, which is more than 700, so Tom cannot buy all three. Option A is wrong (the estimate hides the overage), B has the wrong sum, D is false (342 + 251 = 593 < 700). C is correct.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "98e1ea9f-7bd8-48fa-a862-63f3d6850107",
+      "topic_id": "BA3.11",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Deciding whether an answer is reasonable",
+      "stem": "Four students added 596 + 405. Their answers are 901, 1,001, 1,011 and 9,951. To check, round each number to the nearest 100 and add: the estimate is 1,000. An answer is reasonable if it is no more than 50 away from the estimate. How many of the four answers are reasonable?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "596 rounds to 600 and 405 rounds to 400, so the estimate is 600 + 400 = 1,000. Now see how far each answer is from 1,000. 901 is 99 away. 1,001 is 1 away. 1,011 is 11 away. 9,951 is 8,951 away. Only 1,001 and 1,011 are within 50, so 2 answers are reasonable.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Estimate 600 + 400 = 1,000. Distances: 901 is 99 away (no), 1,001 is 1 away (yes), 1,011 is 11 away (yes), 9,951 is far away (no). So 2 answers are reasonable.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
         }
       }
     }

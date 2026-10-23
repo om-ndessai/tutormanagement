@@ -424,6 +424,13 @@ loaded as INSERTs, both Workers deployed). Every production organization offers 
 sees its levels once its Assessment menu is on; the questions are drawn only while "include questions
 not yet reviewed" is on, until they are approved in the console.
 
+Completed 2026-10-22, with the rest of NC 2026 (owner: "continue generating for the standards or topics not
+yet generated"): Algebra 14, 15 and 18-22 solved and kept, all 19 chapters of Introduction to Geometry
+written, and NC 2026's Kindergarten, grades 1-2, Math 2 and its three fourth-year courses (92 standards)
+added to the bank -- breadth first, then depth, so every topic had questions before any got more. The
+bank's level list, labels and Quest's level order widen to match (web and the app). Plan and results:
+`docs/question-bank-round-4.md`.
+
 Phases 42, 44 and 45: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
 day; Phase 42 released 2026-10-20, web and the app; 44 and 45 not started -- renumbered from 43 and 44
 when the owner put the tutor's Home first, 2026-10-20)

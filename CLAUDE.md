@@ -580,8 +580,9 @@ would inherit it), so no test spends money; `ANTHROPIC_API_KEY` is a secret on t
 Nothing a model writes reaches a family or a student without a person approving it.
 
 **A question reaches a test only by passing every check and a person** (Phase 36). The bank
-(`questions`, platform reference data on the NC 2026 standards, grades 3-8 and Math 1, and since Phase 41
-on Beast Academy's chapters, one chapter a topic, `docs/question-bank-beast-academy.md`) is written
+(`questions`, platform reference data on the NC 2026 standards -- grades 3-8 and Math 1, and since
+2026-10-22 every other NC 2026 level too, `docs/question-bank-round-4.md` -- and since Phase 41 on Beast
+Academy's chapters, one chapter a topic, `docs/question-bank-beast-academy.md`) is written
 by Claude Sonnet, checked by code (`lintQuestion` in shared: the form, four distinct choices with
 exactly one matching the key, the `compute` expression evaluated EXACTLY -- `evaluateExact`, big
 integer fractions, never floats -- equal to the key, no near-copy), then solved blind by Claude Opus
@@ -631,7 +632,7 @@ whatever its outcome, so approving never pays more than flagging (`QUEST_POINTS`
 append-only (a trigger refuses updates) and a balance is a sum, read from `activity_days`, the per-day
 rollup written in the same batch -- never store a balance. Answers are `quest_attempts` rows, never
 audit lines; reviews and level changes are logged. The next question is one seek on
-`questions_quest_idx` from the student's last answer: keep it so, the bank is 18,000 rows and D1's
+`questions_quest_idx` from the student's last answer: keep it so, the bank is 30,000 rows and D1's
 reads are metered. Quest runs full screen outside the portal's frame (`/quest/play`, `/quest/review`)
 and lands a student or tutor there once per tab after sign-in (`QuestLanding`; the e2e fixture marks
 every tab landed unless `questLanding: true`). Plan and later phases: `docs/gamification-plan.md`.

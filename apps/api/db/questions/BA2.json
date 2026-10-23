@@ -1,6 +1,6 @@
 {
   "level_id": "BA2",
-  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
+  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Algebra 14-22 and Introduction to Geometry added 2026-10-22 by the same pipeline.",
   "notes": {
     "BA2.01": "Place value to 999 (reading hundreds/tens/ones, expanded form, value of a digit, regrouping, zero as a placeholder, 10/100 more or less, puzzles). All text-only; no figures needed. 99 questions, 33 per difficulty.",
     "BA2.02": "Comparing and ordering three-digit numbers, distance between two numbers, greatest/least numbers from digits, missing digits and numbers in between, comparing amounts in hundreds/tens/ones. All text-only. 99 questions, 33 per difficulty.",
@@ -37449,6 +37449,132 @@
           "work": "13-3=10, 10/5=2.",
           "run_id": "claude-code",
           "at": "2026-10-19T01:36:32.391Z"
+        }
+      }
+    },
+    {
+      "id": "aee8e20f-b88b-439a-b451-5247dfb0e6ae",
+      "topic_id": "BA2.02",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Distance between two numbers",
+      "stem": "A trail has signs that show how far you are from the start. One sign says 300 meters and the next sign says 360 meters. How many meters is it from the first sign to the next sign?",
+      "choices": [],
+      "answer": "60",
+      "compute": "360-300",
+      "solution": "The distance between the signs is 360 - 300 = 60 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360-300=60 meters.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "1dc94aab-dc76-40b0-ad0f-bf5787921310",
+      "topic_id": "BA2.05",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Evaluating addition and subtraction expressions",
+      "stem": "A farm stand has 240 apples. On Monday it sells 65 apples and then gets 90 new apples. On Tuesday it sells 48 apples. How many apples does the stand have now?",
+      "choices": [
+        "217",
+        "265",
+        "133",
+        "37"
+      ],
+      "answer": "217",
+      "compute": "240-65+90-48",
+      "solution": "240 - 65 = 175. Then 175 + 90 = 265. On Tuesday 265 - 48 = 217 apples are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "217",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "240-65=175; 175+90=265; 265-48=217.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "1271747e-e7f5-4b40-bdb7-b6654a7d534a",
+      "topic_id": "BA2.06",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Organized lists",
+      "stem": "Jen has 6 marbles that all look exactly the same. She puts all of them into two cups, a red cup and a blue cup. The red cup must have more marbles than the blue cup. A cup may have no marbles. How many different ways can she do it? (A way is how many marbles are in each cup.)",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "List the red cup first. Red 6 and blue 0. Red 5 and blue 1. Red 4 and blue 2. Red 3 and blue 3 does not work, because red must have more. So there are 3 ways.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red must hold more than blue, all 6 marbles used, a cup may be empty. List (red, blue): (6,0), (5,1), (4,2). (3,3) is not allowed since red must have more. So 3 ways.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "4d5aa2c4-7d67-4e60-8b9a-6a218a5915e3",
+      "topic_id": "BA2.12",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Logic puzzles",
+      "stem": "Ned, Ola, Pia and Raj each have a different number of marbles. The numbers are 3, 5, 7 and 9. Ned has the most marbles. Pia has fewer marbles than Ola, but more than Raj. How many marbles does Ola have?",
+      "choices": [
+        "3",
+        "5",
+        "7",
+        "9"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Ned has the most, so Ned has 9. Pia has more than Raj and fewer than Ola. So from fewest to most the order is Raj, Pia, Ola, Ned. That gives Raj 3, Pia 5, Ola 7 and Ned 9. Ola has 7 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ned has the most, so Ned = 9. Raj < Pia < Ola using 3, 5, 7: Raj = 3, Pia = 5, Ola = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
         }
       }
     }

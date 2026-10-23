@@ -134,11 +134,25 @@ test.describe('Question Quest (Phase 42)', () => {
       const tutorAfter = (await unwrap<any>(await tutor.request.get('/api/quest/review'), 'queue after')).points;
       expect(tutorAfter - tutorBefore).toBeGreaterThanOrEqual(3);
 
-      // A level with nothing to serve, at the end of its family, is finished.
-      await unwrap(await tutor.request.put(`/api/quest/students/${sofia.user_id}/level`, { data: { level_id: 'GEO' } }), 'GEO');
-      const done = await unwrap<any>(await student.request.get('/api/quest/me'), 'me at GEO');
-      expect(done.finished).toBe(true);
-      expect(done.question).toBeNull();
+      // A level with nothing to serve, at the end of its family, is finished. Every bank level has questions
+      // since 2026-10-22, so Mathematical and Statistical Modeling (in no family) is emptied for the test by
+      // marking its standards "needs a figure", which Quest skips -- and restored after.
+      const coverage = await unwrap<{ level_id: string; topics: { topic_id: string }[] }[]>(
+        await platform.request.get('/api/platform/questions/coverage'),
+        'coverage',
+      );
+      const msm = coverage.find((l) => l.level_id === 'NC26.MSM')!.topics.map((t) => t.topic_id);
+      const mark = (needs_figure: boolean) =>
+        Promise.all(msm.map((id) => platform.request.patch(`/api/platform/questions/topics/${id}`, { data: { needs_figure } })));
+      try {
+        for (const response of await mark(true)) expect(response.status()).toBe(200);
+        await unwrap(await tutor.request.put(`/api/quest/students/${sofia.user_id}/level`, { data: { level_id: 'NC26.MSM' } }), 'MSM');
+        const done = await unwrap<any>(await student.request.get('/api/quest/me'), 'me at MSM');
+        expect(done.finished).toBe(true);
+        expect(done.question).toBeNull();
+      } finally {
+        await mark(false);
+      }
       await unwrap(await tutor.request.put(`/api/quest/students/${sofia.user_id}/level`, { data: { level_id: 'BA3' } }), 'back to BA3');
     });
   });

@@ -1,6 +1,6 @@
 {
   "level_id": "BA4",
-  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
+  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Algebra 14-22 and Introduction to Geometry added 2026-10-22 by the same pipeline.",
   "notes": {
     "BA4.01": "Text-only: no figures, so angle estimation and measuring with a protractor are not tested; clock-hand questions describe the hands in words. Quadrilaterals use the exclusive trapezoid definition only where \"exactly one pair of parallel sides\" is stated.",
     "BA4.02": "Multiplication of whole numbers only. Missing-factor questions use small friendly numbers (reasoning by multiplication, not long division).",
@@ -11374,7 +11374,7 @@
       "difficulty": 3,
       "kind": "numeric",
       "skill": "Organized lists",
-      "stem": "How many ways can you make 30 cents using nickels (5 cents), dimes (10 cents) and quarters (25 cents)? The order does not matter.",
+      "stem": "How many ways can you make 30 cents using nickels (5 cents), dimes (10 cents) and quarters (25 cents)? You do not have to use every kind of coin, and the order does not matter.",
       "choices": [],
       "answer": "5",
       "compute": "5",
@@ -11390,10 +11390,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Minor: 'using nickels, dimes and quarters' could be read as needing all three coins (then 0 ways); 'using any of' would be clearer.",
-          "work": "Quarter+nickel (1); no quarter: 3D, 2D+2N, 1D+4N, 6N (4). Total 5.",
+          "issues": "",
+          "work": "With 1 quarter: remaining 5 cents = 1 nickel (1 way). With 0 quarters: 30 cents from dimes and nickels: 0, 1, 2 or 3 dimes, the rest nickels (4 ways). Total 1 + 4 = 5.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:28:36.787Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -36966,6 +36966,355 @@
           "work": "1 - 1/2 - 1/6 = 1 - 3/6 - 1/6 = 2/6 = 1/3.",
           "run_id": "claude-code",
           "at": "2026-10-19T01:28:36.864Z"
+        }
+      }
+    },
+    {
+      "id": "35a383c2-2b7e-442a-8e06-062bdf69e08c",
+      "topic_id": "BA4.02",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimating products",
+      "stem": "A parking lot has 43 rows with 29 spaces in each row. Round both numbers to the nearest ten to estimate how many spaces the lot has.",
+      "choices": [],
+      "answer": "1200",
+      "compute": "40*30",
+      "solution": "43 rounds to 40 and 29 rounds to 30. Multiply the rounded numbers: 40 x 30 = 1,200. The estimate is 1,200 spaces.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "43 rounds to 40, 29 rounds to 30. Estimate 40 x 30 = 1,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "ee9ab857-5ebc-4d00-8556-145833ff0493",
+      "topic_id": "BA4.06",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Deciding what must be true",
+      "stem": "A coin is hidden in one of three boxes, numbered 1, 2 and 3. Each box has a sign. Box 1 says: \"The coin is in this box.\" Box 2 says: \"The coin is not in this box.\" Box 3 says: \"The coin is not in box 1.\" Exactly one of the three signs is true. In which box is the coin?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Try each box. If the coin is in box 1, the signs on box 1 and box 2 are both true, which is two true signs. If the coin is in box 3, the signs on box 2 and box 3 are both true, which is two true signs. If the coin is in box 2, only the sign on box 3 is true, which is exactly one. So the coin is in box 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Coin in 1: signs 1 T, 2 T, 3 F -> 2 true. Coin in 2: 1 F, 2 F, 3 T -> 1 true. Coin in 3: 1 F, 2 T, 3 T -> 2 true. Only box 2 gives exactly one true sign.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "eb19c1a2-140d-42b9-a70f-e9b44ded8aaa",
+      "topic_id": "BA4.06",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ordering people or things from clues",
+      "stem": "Four children, Hugo, Isla, Jude and Kali, stand in line for lunch. Isla is somewhere ahead of Hugo. Jude stands right behind Hugo. Kali is not last in the line. Who is third in the line?",
+      "choices": [
+        "Isla",
+        "Hugo",
+        "Jude",
+        "Kali"
+      ],
+      "answer": "Hugo",
+      "compute": null,
+      "solution": "Jude is right behind Hugo, so Hugo and Jude stand together with Hugo first. Isla is ahead of Hugo. Kali is not last, so Jude (right behind Hugo) must be last. Isla and Kali take the first two places, in either order, then Hugo, then Jude. Hugo is third.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Hugo",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Positions 1 (front) to 4. Jude is right behind Hugo, Isla is ahead of Hugo, so Hugo is 2 or 3. Hugo 2: Isla 1, Jude 3, Kali 4 = last, not allowed. Hugo 3: Jude 4, Isla and Kali in 1 and 2 (either order). Third in line is Hugo in every case.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "066134cb-b811-440d-85f6-19b89213ea38",
+      "topic_id": "BA4.06",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Truth-tellers and liars: several speakers",
+      "stem": "One of four friends broke a vase. Gus says: \"Hana broke it.\" Hana says: \"Ivy broke it.\" Ivy says: \"Hana is lying.\" Jo says: \"I did not break it.\" Exactly one of the four friends is lying. Who broke the vase?",
+      "choices": [
+        "Gus",
+        "Ivy",
+        "Hana",
+        "Jo"
+      ],
+      "answer": "Hana",
+      "compute": null,
+      "solution": "Try each friend as the one who broke the vase, and count how many of the four are lying. If Gus broke it, Gus and Hana both lie: 2 liars. If Ivy broke it, Gus and Ivy both lie: 2 liars. If Jo broke it, Gus, Hana and Jo all lie: 3 liars. If Hana broke it, only Hana lies, because she said Ivy did it; Gus, Ivy and Jo tell the truth. That is exactly 1 liar, so Hana broke the vase.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Hana",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Gus (Hana) and Hana (Ivy) cannot both be true, so the one liar is Gus or Hana. If Gus lies, Hana is truthful, so Ivy's 'Hana is lying' is false: two liars, impossible. So Hana lies, Gus is truthful: Hana broke it. Check: Ivy true, Jo true. Exactly one liar.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "f2c8ffb9-1ad4-40bd-9370-71325b8b0ff2",
+      "topic_id": "BA4.06",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Truth-tellers and liars: several speakers",
+      "stem": "Four friends, Ivo, Jess, Kai and Lena, play a game. Each one is either a truth-teller, who always tells the truth, or a liar, who always lies. Ivo says: \"Jess and Kai are both liars.\" Jess says: \"Kai is a truth-teller.\" Kai says: \"Lena is a liar.\" Lena says: \"Ivo and Jess are the same kind: both truth-tellers or both liars.\" How many of the four friends are liars?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Suppose Ivo tells the truth. Then Jess and Kai are both liars. Kai is a liar and says Lena is a liar, so Lena is a truth-teller. But Lena says Ivo and Jess are the same kind, and Ivo is a truth-teller while Jess is a liar, so Lena would be lying. That is a contradiction, so Ivo is a liar. Now, if Jess were a liar, the statement that Kai is a truth-teller would be false, so Kai would be a liar too, and Ivo's statement would be true. That contradicts Ivo being a liar. So Jess is a truth-teller, and so is Kai. Kai says Lena is a liar, so Lena is a liar. (Check: Ivo and Jess are different kinds, so Lena's statement is false, as it should be.) The liars are Ivo and Lena: 2 liars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Case Kai truthful: Jess's claim true, Jess truthful; Ivo's claim false, Ivo liar; Kai says Lena liar, so Lena liar; Lena's claim (Ivo, Jess same kind) is false, consistent. Liars: Ivo, Lena. Case Kai liar: Jess liar; Ivo's claim true, Ivo truthful; Lena truthful (Kai lied); but Lena says Ivo and Jess same kind, false: contradiction. So 2 liars.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "96d31dca-5e53-4e9c-b144-452d720e2815",
+      "topic_id": "BA4.06",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ordering people or things from clues",
+      "stem": "Five friends sit in a row of five seats numbered 1 to 5 from left to right. Quin sits right next to Tess. Pat does not sit in seat 1 or seat 5. There is exactly one seat between Quin and Rae. Tess sits somewhere to the left of Sam. Which seat number does Sam sit in?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Find who can sit in seat 5. Not Pat, who is not allowed at an end. Not Tess, because Sam sits to her right. If Quin were in seat 5, Tess would be in seat 4, and Sam would need a seat to the right of seat 4, but seat 5 is taken. If Rae were in seat 5, Quin would be in seat 3 and Tess in seat 2 or 4. Then Pat and Sam take the last two seats, and Pat cannot take seat 1, so Sam would be in seat 1, which is to the left of Tess. That is impossible too. So Sam sits in seat 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Enumerate Quin's seat with |Quin - Rae| = 2, Tess next to Quin, Pat in 2-4, Tess left of Sam. Valid: Q1 T2 R3 P4 S5; T1 Q2 P3 R4 S5; R1 T2 Q3 P4 S5; R1 P2 Q3 T4 S5. Q=3 with R=5, and Q=4 or 5, all force Sam to seat 1 left of Tess or Pat to an end: invalid. Sam is in seat 5 in every valid seating.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "491a921b-3731-4dba-8c01-e37bdec12e91",
+      "topic_id": "BA4.06",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Matching, elimination and counting cases",
+      "stem": "Raj, Sue, Tom and Uma each belong to a different club: art, band, chess or drama. At the club party each of them eats a different food: pizza, soup, salad or pasta. Sue does not eat soup. Raj does not eat soup. The child in the chess club eats soup. Tom is in the drama club. Raj is not in the art club. Who is in the art club?",
+      "choices": [
+        "Sue",
+        "Raj",
+        "Tom",
+        "Uma"
+      ],
+      "answer": "Sue",
+      "compute": null,
+      "solution": "The soup eater is in the chess club. It is not Sue or Raj, and it is not Tom, because Tom is in the drama club. So Uma eats soup and is in the chess club. Raj is not in the art club, and chess and drama are taken, so Raj is in the band club. The art club is left for Sue.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Sue",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each food is eaten by exactly one child, and the chess child eats soup. Sue and Raj do not eat soup, so neither is in chess; Tom is in drama. So Uma is in chess. Raj and Sue share art and band; Raj is not in art, so Raj is band and Sue is art.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "e88b0eb9-42dc-4302-b5cd-c386cf188e88",
+      "topic_id": "BA4.07",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Common factors and greatest common factor",
+      "stem": "The greatest common factor of 36 and a certain whole number is 12. That number is greater than 50 and less than 80. What is the number?",
+      "choices": [],
+      "answer": "60",
+      "compute": "60",
+      "solution": "The number must be a multiple of 12. The multiples of 12 that are greater than 50 and less than 80 are 60 and 72. 36 and 72 share the factor 36, so their greatest common factor is 36, not 12. 36 and 60 share 12 as their greatest common factor. The number is 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The number must be a multiple of 12 between 50 and 80: 60 or 72. GCF(36, 60) = 12; GCF(36, 72) = 36. So the number is 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "8e1b2018-b5a7-4c4b-a42b-159ac2884301",
+      "topic_id": "BA4.09",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Distance between integers",
+      "stem": "Which pair of numbers is exactly 7 apart on the number line?",
+      "choices": [
+        "$-5$ and $-2$",
+        "$-6$ and $2$",
+        "$-1$ and $5$",
+        "$-5$ and $2$"
+      ],
+      "answer": "$-5$ and $2$",
+      "compute": null,
+      "solution": "From $-5$ to 0 is 5 steps and from 0 to $2$ is 2 more steps, so $-5$ and $2$ are 7 apart. The other pairs are 3, 8 and 6 apart.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5$ and $2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distances: -6 to 2 is 8; -5 to -2 is 3; -1 to 5 is 6; -5 to 2 is 7. Only -5 and 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "78867b57-d17d-4b97-9e32-b04a4ed43942",
+      "topic_id": "BA4.09",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distance between integers",
+      "stem": "The numbers $-3$ and $2$ are 5 apart. Which pair of numbers is exactly twice as far apart as $-3$ and $2$?",
+      "choices": [
+        "$-6$ and $-1$",
+        "$-8$ and $2$",
+        "$-7$ and $5$",
+        "$-4$ and $3$"
+      ],
+      "answer": "$-8$ and $2$",
+      "compute": null,
+      "solution": "$-3$ and $2$ are 5 apart, and twice 5 is 10. $-8$ and $2$ are 8 + 2 = 10 apart. The other pairs are 5, 12 and 7 apart.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-8$ and $2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Twice 5 is 10. Distances: -6 to -1 is 5; -7 to 5 is 12; -4 to 3 is 7; -8 to 2 is 10. Only -8 and 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "1fc5589e-5b4d-4d3c-b7b6-58968273f90f",
+      "topic_id": "BA4.11",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtracting decimals",
+      "stem": "A bucket holds 5.4 liters of water. Mia pours out 2.75 liters. Then she pours 1.5 liters of water into the bucket. How many liters of water are in the bucket now?",
+      "choices": [
+        "$1.15$",
+        "$3.79$",
+        "$4.15$",
+        "$4.85$"
+      ],
+      "answer": "$4.15$",
+      "compute": "5.4-2.75+1.5",
+      "solution": "After pouring out: 5.40 - 2.75 = 2.65 liters. After pouring in: 2.65 + 1.50 = 4.15 liters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4.15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.4 - 2.75 = 2.65; 2.65 + 1.5 = 4.15 liters.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
         }
       }
     }

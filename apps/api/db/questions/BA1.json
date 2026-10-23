@@ -1,6 +1,6 @@
 {
   "level_id": "BA1",
-  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
+  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Algebra 14-22 and Introduction to Geometry added 2026-10-22 by the same pipeline.",
   "notes": {
     "BA1.01": "Counting is tested in words: the objects are described in a list or a story, never shown. \"Counting objects\" questions therefore use lists of items or letters in a word. All answers are whole numbers up to 100. Some questions about \"just before/after\" and \"how many numbers\" accept only one reading (both ends counted unless the stem says \"between\").",
     "BA1.02": "Shapes is mostly about pictures, so only what words can test is here: naming a shape from its sides and corners, counting sides and corners of one shape and of groups, comparing shapes, and shapes made with sticks. Not tested: recognising a shape in a picture, rotated or squashed shapes, telling a square from a rectangle by looking, and splitting or joining shapes. Many \"name the shape\" answers are words, so a little over half of the questions are choice. No questions ask how many sides a circle has, since a circle's edge is curved; only its corners (0) and its roundness are asked.",
@@ -18378,7 +18378,7 @@
       "difficulty": 1,
       "kind": "choice",
       "skill": "Fact families",
-      "stem": "$8 + 3 = 11$ is in a fact family. Which number goes in the box? $11 - 8 = ?$",
+      "stem": "$8 + 3 = 11$ is in a fact family. Which number goes in place of the ? $11 - 8 = ?$",
       "choices": [
         "8",
         "3",
@@ -18399,10 +18399,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Stem says 'goes in the box' but the sentence shows a question mark, not a box; minor wording mismatch.",
-          "work": "8+3=11 so 11-8=3.",
+          "issues": "",
+          "work": "Fact family of 8, 3, 11: 11 - 8 = 3.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:19:04.163Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -19531,7 +19531,7 @@
       "difficulty": 2,
       "kind": "choice",
       "skill": "Missing numbers in sentences",
-      "stem": "Which number goes in the box? $? - 28 = 46$",
+      "stem": "Which number goes in place of the ? $? - 28 = 46$",
       "choices": [
         "18",
         "84",
@@ -19552,10 +19552,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Stem says 'goes in the box' but shows a question mark; minor wording mismatch.",
-          "work": "46+28=74.",
+          "issues": "",
+          "work": "? - 28 = 46, so ? = 46 + 28 = 74. Check: 74 - 28 = 46.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:19:04.163Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -23418,7 +23418,7 @@
       "difficulty": 2,
       "kind": "choice",
       "skill": "Numbers that fit a comparison",
-      "stem": "Which is the smallest number that can go in the place of the question mark? $3 + ? > 15$",
+      "stem": "Which is the smallest whole number that can go in the place of the question mark? $3 + ? > 15$",
       "choices": [
         "12",
         "13",
@@ -23439,10 +23439,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Says 'smallest number' rather than 'smallest whole number'; options make the intent clear.",
-          "work": "?>12: 13.",
+          "issues": "",
+          "work": "3 + ? > 15 means ? > 12. Check 12: 3 + 12 = 15, not greater. 13: 3 + 13 = 16 > 15. Smallest whole number is 13.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:19:04.203Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -36632,6 +36632,650 @@
           "work": "4, 14, 24, 34 and 40-49 (10): 14.",
           "run_id": "claude-code",
           "at": "2026-10-19T01:34:15.503Z"
+        }
+      }
+    },
+    {
+      "id": "42392863-7c81-488c-8425-611751f28ad5",
+      "topic_id": "BA1.01",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Counting on and counting back",
+      "stem": "The squares on a path are numbered 1, 2, 3, and so on. Pia's token is on square 8. She moves back 3 squares. Which square is she on now?",
+      "choices": [
+        "5",
+        "11",
+        "6",
+        "4"
+      ],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "Count back from 8: 7, 6, 5. The token is on square 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Back 3 from 8: 7, 6, 5. Square 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "e932fe8f-1cda-4c95-af68-a6008113efa2",
+      "topic_id": "BA1.01",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "How many whole numbers in a range",
+      "stem": "On Monday, Kim reads from page 14 to page 18, with both pages included. On Tuesday, she reads from page 25 to page 27, with both pages included. How many pages does she read in all?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(18-14+1)+(27-25+1)",
+      "solution": "Pages 14, 15, 16, 17, 18 are 5 pages. Pages 25, 26, 27 are 3 pages. 5 + 3 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pages 14-18 inclusive: 14,15,16,17,18 = 5 pages. Pages 25-27 inclusive: 3 pages. Total 5+3=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "042d5e5a-526a-4b7e-9d69-d73ba1fc9435",
+      "topic_id": "BA1.02",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Describing squares, rectangles and circles",
+      "stem": "Lia draws one side of a square. How many more sides must she draw to finish the square?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4-1",
+      "solution": "A square has 4 sides. She has drawn 1, so she needs 4 - 1 = 3 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has 4 sides; 1 drawn, so 4-1=3 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "32f21a19-f1c6-4af4-8acb-53f0e8983f26",
+      "topic_id": "BA1.02",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Sides and corners of one shape",
+      "stem": "Rob puts 1 button on each corner of a pentagon. He also puts 1 button on each side of the pentagon. How many buttons does he use?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+5",
+      "solution": "A pentagon has 5 corners and 5 sides. 5 + 5 = 10 buttons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A pentagon has 5 corners and 5 sides. 5+5=10 buttons.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "b12d46f1-0140-4582-a9d4-bfb8381a3318",
+      "topic_id": "BA1.02",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Comparing the sides and corners of shapes",
+      "stem": "Which group of shapes has exactly 6 corners in all?",
+      "choices": [
+        "1 pentagon",
+        "2 triangles",
+        "2 squares",
+        "1 square and 1 triangle"
+      ],
+      "answer": "2 triangles",
+      "compute": null,
+      "solution": "A triangle has 3 corners, so 2 triangles have 3 + 3 = 6 corners. 1 pentagon has 5, 2 squares have 8, and a square with a triangle have 4 + 3 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 triangles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square+triangle: 4+3=7. Pentagon: 5. 2 squares: 8. 2 triangles: 3+3=6. Only 2 triangles.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "f8a843ff-863d-43b4-909d-89c1af394e5b",
+      "topic_id": "BA1.02",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Naming a shape from its sides and corners",
+      "stem": "A circle, a triangle and a hexagon are in a row. The first shape has no corners. The last shape has 6 sides. The middle shape has half as many sides as the last shape. Which list shows the shapes from first to last?",
+      "choices": [
+        "triangle, circle, hexagon",
+        "hexagon, triangle, circle",
+        "circle, hexagon, triangle",
+        "circle, triangle, hexagon"
+      ],
+      "answer": "circle, triangle, hexagon",
+      "compute": null,
+      "solution": "No corners means a circle, so the circle is first. Six sides means a hexagon, so the hexagon is last. Half of 6 is 3, so the middle shape has 3 sides. That is the triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "circle, triangle, hexagon",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First has no corners: circle. Last has 6 sides: hexagon. Middle has 3 sides (half of 6): triangle. circle, triangle, hexagon.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "4357a0c2-a45e-48ef-b083-8bbf5fd8a85b",
+      "topic_id": "BA1.02",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Comparing the sides and corners of shapes",
+      "stem": "Lee draws 4 triangles. Mia draws some squares. Lee's shapes and Mia's shapes have the same number of sides in all. How many squares does Mia draw?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4*3/4",
+      "solution": "4 triangles have 3 + 3 + 3 + 3 = 12 sides. Each square has 4 sides. 4 + 4 + 4 = 12, so Mia draws 3 squares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 triangles have 4*3=12 sides. Each square has 4 sides; 12/4=3 squares.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "d9d6f624-2b31-4f58-9a88-5128b59fa1a9",
+      "topic_id": "BA1.03",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "How many more or fewer",
+      "stem": "Kim has 25 stickers. Lou has 18 stickers. Kim gives 4 of her stickers to Lou. How many more stickers does Lou have than Kim now?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(18+4)-(25-4)",
+      "solution": "Kim has 25 - 4 = 21 stickers now. Lou has 18 + 4 = 22 stickers. 22 is 1 more than 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Kim: 25-4=21. Lou: 18+4=22. Lou has 22-21=1 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "0f52900b-efa4-4f1e-9808-043428cce2fd",
+      "topic_id": "BA1.03",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ordering numbers",
+      "stem": "Put these five numbers in order from greatest to least: 24, 42, 44, 14, 41. What is the third number in your list?",
+      "choices": [],
+      "answer": "41",
+      "compute": "41",
+      "solution": "From greatest to least the numbers are 44, 42, 41, 24, 14. The third number is 41.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest to least: 44, 42, 41, 24, 14. Third is 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "4ab0b06f-8ec7-4c70-8c83-c494dc0efabe",
+      "topic_id": "BA1.04",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Making ten",
+      "stem": "Ana has 9 cards. They are numbered 1, 2, 3, 4, 5, 6, 7, 8 and 9. She picks 2 cards that add up to 10. (Picking 3 and 7 is the same pair as picking 7 and 3.) How many different pairs of cards could she pick?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The pairs are 1 and 9, 2 and 8, 3 and 7, and 4 and 6. The 5 card has no partner, because there is only one 5 card. That makes 4 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs of different cards adding to 10: 1+9, 2+8, 3+7, 4+6. 5+5 needs two 5s, but there is only one card 5. So 4 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "8913bf1f-161d-4f8e-b1fd-301ea2546bb6",
+      "topic_id": "BA1.06",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "In neither group",
+      "stem": "Six dogs are at the park: Rex, Kit, Mo, Pip, Tag and Zed. Rex, Kit and Mo are brown. Mo and Zed are fluffy. How many of the six dogs are neither brown nor fluffy?",
+      "choices": [],
+      "answer": "2",
+      "compute": "6-(3+2-1)",
+      "solution": "The brown dogs are Rex, Kit and Mo. The fluffy dogs are Mo and Zed. Together that is Rex, Kit, Mo and Zed, which is 4 dogs. The other 6 - 4 = 2 dogs, Pip and Tag, are neither.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Brown: Rex, Kit, Mo. Fluffy: Mo, Zed. Brown or fluffy: Rex, Kit, Mo, Zed = 4. Neither: Pip, Tag = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "e0a6fc10-e939-49b3-adab-6bc8bf95c214",
+      "topic_id": "BA1.06",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Whole group with overlaps",
+      "stem": "A club has 20 children. 12 children play piano. 5 children play both piano and drums. 3 children play neither. How many children play drums?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20-3-12+5",
+      "solution": "20 - 3 = 17 children play piano or drums. 12 of them play piano, so 17 - 12 = 5 play only drums. Add the 5 who play both: 5 + 5 = 10 children play drums.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20-3=17 play at least one. Piano 12, so 17-12=5 play drums only. Drums = 5 only + 5 both = 10. Check: piano only 7, both 5, drums only 5, neither 3: 7+5+5+3=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "f5e79915-0d58-489b-8cec-dde828a497d9",
+      "topic_id": "BA1.09",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Growing pattern: a missing number",
+      "stem": "Nora counts by 3s: $3, 6, 9, ?, 15$. Which number is missing?",
+      "choices": [
+        "13",
+        "11",
+        "12",
+        "18"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Each number is 3 more than the one before: 3, 6, 9, 12, 15. The missing number is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 3s: 3, 6, 9, 12, 15. Missing 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "53c7dd71-6e28-4896-9b61-03c614119669",
+      "topic_id": "BA1.09",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Repeating pattern: the 10th or 20th item",
+      "stem": "Kids in a line wear hats in this order, over and over: red, red, blue, red, red, blue, and so on. There are 14 kids in the line. How many of them wear a blue hat?",
+      "choices": [],
+      "answer": "4",
+      "compute": "12/3",
+      "solution": "The hats come in groups of 3: red, red, blue. The first 12 kids make 4 groups, so 4 blue hats. Kids 13 and 14 are the start of a new group: red and red. So there are still 4 blue hats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Repeats every 3 kids; blue is 3rd, 6th, 9th, 12th. Kids 13 and 14 are red, red. So 4 blue hats.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "c5d445a1-ad23-4fcf-b78e-928f6f798c91",
+      "topic_id": "BA1.09",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pattern problems in stories",
+      "stem": "Ana has 2 stickers. Each day she gets 6 more stickers. After how many days will Ana first have more than 20 stickers?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(20-2)/6+1",
+      "solution": "After each day she has: 8, 14, 20, 26. After 3 days she has exactly 20, which is not more than 20. After 4 days she has 26. So the answer is 4 days.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 2. After day 1: 8, day 2: 14, day 3: 20 (not more than 20), day 4: 26. First more than 20 after 4 days.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "c0d88c94-56b0-48cc-b954-dc92884b7f54",
+      "topic_id": "BA1.09",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pattern problems in stories",
+      "stem": "Mia puts 2 cookies on the first plate, 4 cookies on the second plate and 6 cookies on the third plate. She keeps going this way. How many cookies are on the first 5 plates in all?",
+      "choices": [],
+      "answer": "30",
+      "compute": "2+4+6+8+10",
+      "solution": "Each plate has 2 more cookies than the plate before: 2, 4, 6, 8, 10. Add them: 2 + 8 = 10, 4 + 6 = 10, and then 10 more, so 10 + 10 + 10 = 30 cookies.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Plates: 2, 4, 6, 8, 10. Sum = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "2cdca110-fd1a-428a-9375-979cd6a9fd7c",
+      "topic_id": "BA1.10",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Place value: hundreds, tens and ones",
+      "stem": "Lia's number has 4 hundreds, 7 tens and 2 ones. Ben's number uses the same digits, but the hundreds digit and the ones digit have swapped places. What is Ben's number?",
+      "choices": [],
+      "answer": "274",
+      "compute": "274",
+      "solution": "Lia's number is 472. Swapping the 4 and the 2 gives a number with 2 hundreds, 7 tens and 4 ones. That is 274.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "274",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lia's number is 472. Swap hundreds digit (4) and ones digit (2): 274.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "b31aa80a-5362-4999-af76-0c827c0a498c",
+      "topic_id": "BA1.11",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Measure in objects (non-standard units)",
+      "stem": "Ella wants to measure a pencil in paper clips. She will lay paper clips next to the pencil. What is the best way to do it?",
+      "choices": [
+        "Leave a space between each clip",
+        "Pile them up on top of the pencil",
+        "Let each clip overlap the next",
+        "Put them end to end, with no gaps"
+      ],
+      "answer": "Put them end to end, with no gaps",
+      "compute": null,
+      "solution": "To count how many paper clips long the pencil is, the clips must touch end to end, with no spaces and no overlaps. Then every clip covers a new part of the pencil.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Put them end to end, with no gaps",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Measuring with units: lay them end to end with no gaps and no overlaps.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "de2316d2-f53b-4bf6-a2d3-191a31a288ea",
+      "topic_id": "BA1.12",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Making an organized list",
+      "stem": "Ann and Ben sit in a row of 3 seats. Each child sits in a different seat, and one seat stays empty. How many different ways can they sit?",
+      "choices": [],
+      "answer": "6",
+      "compute": "3*2",
+      "solution": "If Ann sits in seat 1, Ben can sit in seat 2 or seat 3: 2 ways. If Ann sits in seat 2, Ben can sit in seat 1 or seat 3: 2 ways. If Ann sits in seat 3, Ben can sit in seat 1 or seat 2: 2 ways. 2 + 2 + 2 = 6 ways.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Seats A, B, C. Ann has 3 choices, Ben then 2: 3*2=6. List: (Ann,Ben,empty) arrangements AB_, BA_, A_B, B_A, _AB, _BA = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
+        }
+      }
+    },
+    {
+      "id": "f40b2c70-650f-4c25-b94b-2ddb4de17f39",
+      "topic_id": "BA1.12",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Logic puzzle: putting in order",
+      "stem": "A dog, a cat, a bird and a fish live in four cages that stand in a row, numbered 1, 2, 3 and 4 in order, one pet in each cage. The dog is in cage 1. The cat is not next to the dog. The fish is not next to the cat. Which pet is in cage 3?",
+      "choices": [
+        "bird",
+        "fish",
+        "cat",
+        "dog"
+      ],
+      "answer": "bird",
+      "compute": null,
+      "solution": "The cat is not next to the dog, so the cat is in cage 3 or cage 4. If the cat were in cage 3, the fish would have to be in cage 2 or 4, which are both next to it, and the fish has nowhere to go. So the cat is in cage 4. The fish cannot be in cage 3, because that is next to the cat, so the fish is in cage 2. The bird is in cage 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "bird",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dog in 1. Cat not next to dog, so cat not in 2: cat in 3 or 4. If cat in 3, fish cannot be in 2 or 4, and 1 is taken: impossible. So cat in 4; fish not in 3, so fish in 2; bird in 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T13:00:58.953Z"
+        }
+      }
+    },
+    {
+      "id": "29ab5a29-c2f1-4fb7-8a92-70625e572894",
+      "topic_id": "BA1.12",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Guess and check",
+      "stem": "Three numbers that come one after another, like 4, 5 and 6, add up to 24. What is the smallest of the three numbers?",
+      "choices": [
+        "8",
+        "7",
+        "9",
+        "6"
+      ],
+      "answer": "7",
+      "compute": "24/3-1",
+      "solution": "Try 7, 8, 9: 7 + 8 + 9 = 24. It works, so the smallest number is 7. (Trying 6, 7, 8 gives 21, which is too small, and 8, 9, 10 gives 27, which is too big.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n+(n+1)+(n+2)=24, 3n+3=24, n=7. Check 7+8+9=24.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:47:52.813Z"
         }
       }
     }

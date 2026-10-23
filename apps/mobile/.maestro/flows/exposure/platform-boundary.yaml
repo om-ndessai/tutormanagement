@@ -77,6 +77,10 @@ tags:
       id: question-bank-review
     timeout: 20000
 - runFlow: ../../subflows/exposure/no-org-records.yaml
+- scrollUntilVisible:
+    element:
+      id: question-bank-level-NC26.4
+    centerElement: true
 - tapOn:
     id: question-bank-level-NC26.4
 - scrollUntilVisible:

@@ -1,6 +1,6 @@
 {
   "level_id": "PRE",
-  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
+  "source": "Phase 41 (2026-10-18): original questions on the chapters of Beast Academy Levels 1-5 and the AoPS books, written by Claude Sonnet from our own chapter summaries (docs/question-bank-beast-academy.md) and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin. Algebra 14-22 and Introduction to Geometry added 2026-10-22 by the same pipeline.",
   "notes": {
     "PRE.01": "All text; no figures needed. Fractions and decimals are used (reciprocals, a few clever products) as the chapter covers reciprocals.",
     "PRE.02": "All text; no figures needed. Skills named by the summary are covered; product and quotient laws are one skill (19 questions, deliberately the chapter's core).",
@@ -33207,7 +33207,7 @@
       "difficulty": 3,
       "kind": "choice",
       "skill": "Perimeter and area of a rectangle",
-      "stem": "A rectangle has an area of 36 square units, and both of its sides are whole numbers. How many different perimeters can such a rectangle have?",
+      "stem": "A rectangle has an area of 36 square units, and both of its sides are whole numbers. How many different perimeters can such a rectangle have? (A square counts as a rectangle.)",
       "choices": [
         "5",
         "4",
@@ -33228,10 +33228,10 @@
           "aligned": true,
           "grade_appropriate": true,
           "error_free": true,
-          "issues": "Answer 5 relies on counting the 6x6 square as a rectangle; a student who excludes squares gets 4, which is an option. Correct by definition, but worth noting.",
-          "work": "Factor pairs of 36: 1x36 (P74), 2x18 (40), 3x12 (30), 4x9 (26), 6x6 (24). Five distinct perimeters (a square counts as a rectangle).",
+          "issues": "",
+          "work": "Whole-number side pairs with product 36: 1x36 (P=74), 2x18 (P=40), 3x12 (P=30), 4x9 (P=26), 6x6 (P=24). Five different perimeters.",
           "run_id": "claude-code",
-          "at": "2026-10-19T01:40:17.852Z"
+          "at": "2026-10-22T13:00:58.953Z"
         }
       }
     },
@@ -46602,6 +46602,93 @@
           "work": "If A truthful: B liar, so C truthful, but C says A is a liar: contradiction. So A lies: B truthful, so C lies; C's claim 'A and B both liars' is indeed false. Only B.",
           "run_id": "claude-code",
           "at": "2026-10-19T07:04:01.134Z"
+        }
+      }
+    },
+    {
+      "id": "0e80f256-a24a-4cb3-8a18-453f855fd395",
+      "topic_id": "PRE.03",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Prime factorization",
+      "stem": "Write $90$ as a product of prime numbers. What is the sum of those primes? (If a prime appears twice in the product, add it twice.)",
+      "choices": [],
+      "answer": "13",
+      "compute": "2+3+3+5",
+      "solution": "$90 = 2 \\times 45 = 2 \\times 3 \\times 15 = 2 \\times 3 \\times 3 \\times 5$. The primes are 2, 3, 3 and 5, and $2 + 3 + 3 + 5 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 = 2 x 3 x 3 x 5. Sum = 2 + 3 + 3 + 5 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "29fb8b78-2702-419d-b737-fa55391c19d8",
+      "topic_id": "PRE.10",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Vertical angles",
+      "stem": "Two straight lines cross and make four angles. Two of the angles do not share a side, and they add up to 100 degrees. How many degrees is the largest of the four angles?",
+      "choices": [],
+      "answer": "130",
+      "compute": "180-100/2",
+      "solution": "Two angles that do not share a side at a crossing are vertical angles, so they are equal. Each is 100 / 2 = 50 degrees. Each of the other two angles is next to a 50 degree angle on a straight line, so it is 180 - 50 = 130 degrees. The largest angle is 130 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "130",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Angles that do not share a side are vertical angles, so they are equal: 100 / 2 = 50 each. The other two angles are 180 - 50 = 130 each. Largest is 130.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
+        }
+      }
+    },
+    {
+      "id": "7c36d7c1-267a-4a4e-a69d-30eb8e2d7178",
+      "topic_id": "PRE.13",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Mode of a list",
+      "stem": "The list 5, 6, 6, 7, 7, 7, 8, 8, 8, 9 has more than one mode. What is the sum of all its modes?",
+      "choices": [],
+      "answer": "15",
+      "compute": "7+8",
+      "solution": "Count each number. 6 appears 2 times, 7 appears 3 times, 8 appears 3 times and 5 and 9 appear once. The most any number appears is 3 times, so the modes are 7 and 8. Their sum is 7 + 8 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counts: 5 once, 6 twice, 7 three times, 8 three times, 9 once. Modes are 7 and 8. Sum = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-22T12:51:48.907Z"
         }
       }
     }

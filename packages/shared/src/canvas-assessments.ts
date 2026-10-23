@@ -33,6 +33,9 @@ export type CanvasAssessmentLevelId = (typeof CANVAS_ASSESSMENT_LEVEL_IDS)[numbe
  * levels in one list share a name.
  */
 export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string> = {
+  'NC26.K': 'K',
+  'NC26.1': 'G1',
+  'NC26.2': 'G2',
   'NC26.3': 'G3',
   'NC26.4': 'G4',
   'NC26.5': 'G5',
@@ -40,6 +43,10 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
   'NC26.7': 'G7',
   'NC26.8': 'G8',
   'NC26.M1': 'Math 1',
+  'NC26.M2': 'Math 2',
+  'NC26.ALR': 'Applied Logic',
+  'NC26.ASDS': 'Stats & Data Science',
+  'NC26.MSM': 'Math Modeling',
   BA1: 'BA1',
   BA2: 'BA2',
   BA3: 'BA3',
@@ -315,6 +322,15 @@ const LATEX_SYMBOLS: Record<string, string> = {
   cdots: '...',
   Delta: 'Delta ',
   infty: 'infinity',
+  cup: ' union ',
+  cap: ' intersect ',
+  lfloor: 'floor(',
+  rfloor: ')',
+  lceil: 'ceil(',
+  rceil: ')',
+  sum: 'sum ',
+  perp: ' perpendicular to ',
+  sim: ' ~ ',
   degree: '°',
   ',': ' ',
   ';': ' ',
@@ -365,7 +381,7 @@ export function latexToPlain(latex: string): string {
       const match = /^\\([a-zA-Z]+|.)/.exec(latex.slice(i));
       const name = match?.[1] ?? '';
       i += 1 + name.length;
-      if (name === 'frac' || name === 'dfrac' || name === 'tfrac') {
+      if (name === 'frac' || name === 'dfrac' || name === 'tfrac' || name === 'cfrac') {
         const top = readGroup(latex, i);
         const bottom = readGroup(latex, top.end);
         // A mixed number, 1\frac{1}{4}: "1 1/4", never "11/4".
