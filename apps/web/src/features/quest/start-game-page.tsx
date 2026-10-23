@@ -292,29 +292,31 @@ export function StartGamePage() {
               </div>
               {multi && (
                 <div className="grid gap-5 rounded-lg border p-4">
+                  <div className="grid gap-2">
+                    <Label>How do people play?</Label>
+                    <Toggle
+                      value={draft.teams ? 'teams' : 'solo'}
+                      onChange={(value) => set({ teams: value === 'teams' })}
+                      options={[
+                        { value: 'solo', label: 'Each on their own' },
+                        { value: 'teams', label: 'In teams' },
+                      ]}
+                      testId="game-team-style"
+                    />
+                  </div>
                   <Stepper
-                    label={draft.teams ? 'Most teams' : 'Most players'}
+                    label={draft.teams ? 'Teams, at most' : 'Players, at most'}
+                    hint={draft.teams ? 'Each team plays together and shares one score.' : 'Everyone plays alone, with their own score.'}
                     value={draft.max_teams}
                     min={GAME_LIMITS.minTeams}
                     max={GAME_LIMITS.maxTeams}
                     onChange={(max_teams) => set({ max_teams })}
                     testId="game-max-teams"
                   />
-                  <div className="grid gap-2">
-                    <Label>Teams</Label>
-                    <Toggle
-                      value={draft.teams ? 'teams' : 'solo'}
-                      onChange={(value) => set({ teams: value === 'teams' })}
-                      options={[
-                        { value: 'solo', label: 'Everyone on their own' },
-                        { value: 'teams', label: 'Teams of several' },
-                      ]}
-                      testId="game-team-style"
-                    />
-                  </div>
                   {draft.teams && (
                     <Stepper
-                      label="Players in a team, at most"
+                      label="Players per team, at most"
+                      hint="Once a team is full, nobody else can join it."
                       value={draft.max_team_size}
                       min={2}
                       max={GAME_LIMITS.maxTeamSize}
@@ -587,6 +589,7 @@ function ReviewStep({ request, multi }: { request: CreateGameRequest; multi: boo
 /** A number counter with − and +: typed or stepped, kept within its bounds. */
 function Stepper({
   label,
+  hint,
   value,
   min,
   max,
@@ -595,6 +598,8 @@ function Stepper({
   testId,
 }: {
   label: string;
+  /** A line under the label: what the number means. */
+  hint?: string;
   value: number;
   min: number;
   max: number;
@@ -606,7 +611,10 @@ function Stepper({
   const clamp = (n: number) => Math.min(max, Math.max(min, n));
   return (
     <div className="grid gap-2">
-      <Label htmlFor={testId}>{label}</Label>
+      <div className="grid gap-0.5">
+        <Label htmlFor={testId}>{label}</Label>
+        {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+      </div>
       <div className="flex items-center gap-2">
         <Button
           type="button"

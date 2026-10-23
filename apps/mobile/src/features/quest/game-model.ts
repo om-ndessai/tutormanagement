@@ -88,7 +88,7 @@ export function spelledCode(code: string): string {
 // --- The rules of a game ----------------------------------------------------------------------
 
 /**
- * The web's Rules: "G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout ·
+ * The web's Rules: "G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout ·
  * joining open while it runs · may include questions not yet reviewed".
  */
 export function gameRulesLine(
@@ -117,7 +117,7 @@ export function gameRulesLine(
   );
 }
 
-/** The join sheet's line: "Priya’s game · Right +1, wrong 0 · Up to 20 teams of up to 2 · knockout". */
+/** The join sheet's line: "Priya’s game · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team · knockout". */
 export function lookupLine(
   lookup: Pick<
     GameLookup,
@@ -250,6 +250,10 @@ export function answerNotice(
 export const HOSTING_TEXT = 'You are hosting. The scores update as the teams play.';
 export const MISSING_TEXT =
   'This game was not found, or you are not in it. Join it with its code from the Quest page.';
+/** No game yet and the server not reached: a connection, not a missing game. */
+export const UNREACHABLE_TEXT = 'Could not reach the game just now. Check your connection, then try again.';
+/** While a poll is failing: the game stays as it was. */
+export const RECONNECTING_TEXT = 'Reconnecting to the game…';
 /** The waiting card's label (Phase 47: it is the game's status page). */
 export const WAITING_LABEL = 'Game status';
 /** Under the doors while they count down. */

@@ -21,7 +21,7 @@ import {
 const g6: WizardDraft = { ...WIZARD_START, level_id: 'NC26.6' };
 
 describe('toRequest', () => {
-  it('starts as the web does: 10 questions, right +1, wrong 0, up to 10 teams of up to 4, joining closed', () => {
+  it('starts as the web does: 10 questions, right +1, wrong 0, up to 10 teams, at most 4 players per team, joining closed', () => {
     expect(toRequest(g6)).toEqual({
       level_id: 'NC26.6',
       level_scope: 'level',
@@ -116,7 +116,7 @@ describe('the words', () => {
       questions: ['G6'],
       length: ['10 questions'],
       scoring: ['Right +1, wrong 0', 'Knockout: On'],
-      players: ['Up to 10 teams of up to 4', 'Joining: Open while it runs'],
+      players: ['Up to 10 teams, at most 4 players per team', 'Joining: Open while it runs'],
     });
     expect(reviewLines(toRequest({ ...g6, wrong_points: -1 })).scoring).toEqual([
       'Right +1, wrong −1',
@@ -138,14 +138,14 @@ describe('the words', () => {
       level: 'G6',
       length: '10 questions',
       scoring: 'Right +1, wrong 0',
-      players: 'Up to 10 teams of up to 4',
+      players: 'Up to 10 teams, at most 4 players per team',
     });
   });
 
   const favorite: Pick<GameFavorite, 'config'> = { config: createGameSchema.parse(toRequest(g6)) };
 
   it("says a favorite's tile, and whether its level can be played here", () => {
-    expect(favoriteDetail(favorite)).toBe('G6 · 10 questions · Up to 10 teams of up to 4');
+    expect(favoriteDetail(favorite)).toBe('G6 · 10 questions · Up to 10 teams, at most 4 players per team');
     const levels: GameLevel[] = [
       { level_id: 'NC26.6', label: 'G6', available: 412 },
       { level_id: 'NC26.7', label: 'G7', available: 0 },

@@ -167,7 +167,7 @@ tags:
     text: 'Right \+1, wrong −1\. Knockout: Off'
 - assertVisible:
     id: game-summary-players
-    text: 'Up to 10 teams of up to 2\. Joining: Closed once it starts'
+    text: 'Up to 10 teams, at most 2 players per team\. Joining: Closed once it starts'
 # The step's title, question and hint are one header element (StepFlow's step-flow-title).
 - assertVisible:
     id: step-flow-title
@@ -193,7 +193,7 @@ tags:
     text: '([A-HJKMNP-Z2-9]{6}|Game code: [A-HJKMNP-Z2-9]( [A-HJKMNP-Z2-9]){5})'
 - assertVisible:
     id: game-rules
-    text: 'G6 · 2 questions · Right \+1, wrong −1 · Up to 10 teams of up to 2.*'
+    text: 'G6 · 2 questions · Right \+1, wrong −1 · Up to 10 teams, at most 2 players per team.*'
 - assertVisible: '(?i)Game status · waiting to start · game code'
 - assertVisible: '0 players · 0 of 10 teams'
 - assertVisible: 'Nobody has joined yet\. Share the code\.'

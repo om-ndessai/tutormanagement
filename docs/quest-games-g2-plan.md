@@ -174,3 +174,24 @@ Owner, 2026-10-22: the test account's D1 has used up its day.
   apply this phase's SQL, then `npm run deploy`.
 - The demo (`deploy:test` and `db:reset:test` on `tutoring-test`) waits until the test account's limit
   resets.
+
+## Fixes after the release (owner, 2026-10-22)
+
+- **The Players step's wording.**
+  - It now asks **How do people play?** first: **Each on their own**, or **In teams**.
+  - Then it gives the numbers, each with a line saying what it counts:
+    - **Players, at most**, or **Teams, at most**;
+    - **Players per team, at most**: "Once a team is full, nobody else can join it."
+  - The summary reads "Up to 3 teams, at most 2 players per team" (`gamePlayersLabel`). It used to read
+    "Up to 3 teams of up to 2".
+- **"This game was not found, or you are not in it" in the middle of a game.**
+  - **The cause:** both clients showed that message on *any* failed poll, so a single dropped connection
+    or server hiccup replaced a live game. The app was worse: it stopped polling after one failure, so the
+    message stayed until the game was reopened. The game itself was never lost on the server.
+  - **The fix:** only a 404 or 403 means the game is missing (`gameIsMissing`). Any other failure is
+    retried three times, a second apart, and polling carries on. The game stays on screen with a
+    "Reconnecting to the game…" line until a poll gets through.
+  - **Before the first read:** if a game cannot be reached before it has loaded at all, the screen says
+    so, with **Try again**.
+  - **Tests:** the web spec drops the connection mid-game, and the app's Jest suite covers a dropped
+    connection and a real 404.

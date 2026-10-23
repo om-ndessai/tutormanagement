@@ -62,13 +62,29 @@ tags:
       id: game-level-error
       text: 'Choose the lowest level\.'
     timeout: 5000
-# Its list is open while no level is chosen.
+# Its list is open while no level is chosen. The bank has about 20 levels since round four (2026-10-22),
+# so the flow searches for G6 rather than swiping the list, which a swipe could carry past it.
+- scrollUntilVisible:
+    element:
+      id: game-random-start-search
+    centerElement: true
+- tapOn:
+    id: game-random-start-search
+- inputText: 'G6'
+# The one match sits under the keyboard: the search key puts it away (hideKeyboard does not on iOS 27),
+# then the match is brought into view.
+- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: game-random-start-NC26.6
     centerElement: true
 - tapOn:
     id: game-random-start-NC26.6
+- extendedWaitUntil:
+    visible:
+      id: game-random-start
+      text: '.*G6.*'
+    timeout: 5000
 - assertVisible: 'Questions come at random from this level and the ones above it, never below\.'
 - tapOn:
     id: step-flow-next
@@ -154,26 +170,34 @@ tags:
       id: game-choice-A
     timeout: 5000
     optional: true
-- tapOn:
-    id: game-skip
-- extendedWaitUntil:
-    visible:
-      id: game-question-number
-      text: '(?i)Question 2 of 2'
-    timeout: 10000
+# A tap that lands while the maths is still settling can miss: if the next question has not come, the
+# tap is tried again (a tap that took is never repeated: the wait passes and the retry ends).
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: game-skip
+      - extendedWaitUntil:
+          visible:
+            id: game-question-number
+            text: '(?i)Question 2 of 2'
+          timeout: 6000
 # The same web views take the second question in place: its height settles as it is drawn.
 - extendedWaitUntil:
     visible:
       id: game-choice-A
     timeout: 5000
     optional: true
-- tapOn:
-    id: game-skip
-- extendedWaitUntil:
-    visible:
-      id: game-winner
-      text: '0 right, 0 points'
-    timeout: 15000
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: game-skip
+      - extendedWaitUntil:
+          visible:
+            id: game-winner
+            text: '0 right, 0 points'
+          timeout: 8000
 - assertVisible:
     id: game-encouragement
     text: 'Every question you try makes the next one easier\. Go again!'

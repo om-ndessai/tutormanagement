@@ -30,7 +30,7 @@ import { MathText } from '@/features/question-bank/math-text';
 import { QuestFrame } from './fullscreen-frame';
 import { Confetti, DoorsCountdown, KnockoutBurst, useCountdown } from './game-effects';
 import { JoinChoices } from './games-card';
-import { useGame, useGameAction, useGameResults } from './games-api';
+import { gameIsMissing, useGame, useGameAction, useGameResults } from './games-api';
 
 // Phase 46: one Quest game, full screen -- the lobby while players join, the
 // play with the scoreboard beside it, then the results. Polled every couple of
@@ -57,6 +57,20 @@ function useTimeLeft(game: GameView | undefined): number | null {
   }, [running]);
   if (!game?.ends_at || game.status !== 'running') return null;
   return Date.parse(game.ends_at) - (tick + offset);
+}
+
+/** While a poll is failing: the game stays as it was, and this says it is catching up. */
+function Reconnecting({ show }: { show: boolean }) {
+  if (!show) return null;
+  return (
+    <p
+      role="status"
+      className="bg-muted text-muted-foreground mb-3 rounded-md px-3 py-2 text-center text-sm"
+      data-testid="game-reconnecting"
+    >
+      Reconnecting to the game…
+    </p>
+  );
 }
 
 export function GamePage() {
@@ -101,7 +115,16 @@ export function GamePage() {
     >
       {query.isPending ? (
         <Skeleton className="h-80 w-full" />
-      ) : query.isError || !game ? (
+      ) : !game && !gameIsMissing(query.error) ? (
+        <Card className="py-0" data-testid="game-unreachable">
+          <CardContent className="grid gap-4 p-6 text-sm">
+            <p>Could not reach the game just now. Check your connection, then try again.</p>
+            <Button variant="outline" className="w-fit" onClick={() => void query.refetch()} disabled={query.isFetching}>
+              Try again
+            </Button>
+          </CardContent>
+        </Card>
+      ) : !game || gameIsMissing(query.error) ? (
         <Card className="py-0" data-testid="game-missing">
           <CardContent className="grid gap-4 p-6 text-sm">
             <p>This game was not found, or you are not in it. Join it with its code from the Quest page.</p>
@@ -111,10 +134,14 @@ export function GamePage() {
           </CardContent>
         </Card>
       ) : game.status === 'lobby' ? (
-        <Lobby game={game} />
+        <>
+          <Reconnecting show={query.isError} />
+          <Lobby game={game} />
+        </>
       ) : game.status === 'running' ? (
         <>
           {counting && <DoorsCountdown msLeft={countdown} />}
+          <Reconnecting show={query.isError} />
           <Play game={game} counting={counting} />
         </>
       ) : (

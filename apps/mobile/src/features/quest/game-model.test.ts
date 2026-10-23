@@ -155,7 +155,7 @@ describe('the hub', () => {
 
 describe('the rules of a game', () => {
   it('says the level, the length, the points, who plays, knockout, late joining and the unreviewed note', () => {
-    expect(gameRulesLine(game())).toBe('G6 · 2 questions · Right +1, wrong 0 · Up to 20 teams of up to 2');
+    expect(gameRulesLine(game())).toBe('G6 · 2 questions · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team');
     expect(
       gameRulesLine(
         game({
@@ -171,10 +171,10 @@ describe('the rules of a game', () => {
       'G6 · 5 minutes · Right +1, wrong −1 · Up to 10 players, each on their own · may include questions not yet reviewed',
     );
     expect(gameRulesLine(game({ wrong_points: -1, knockout: true, late_join: true, unreviewed: true }))).toBe(
-      'G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout · joining open while it runs · may include questions not yet reviewed',
+      'G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout · joining open while it runs · may include questions not yet reviewed',
     );
     expect(gameRulesLine(game({ level_scope: 'upward', right_points: 2, wrong_points: -3 }))).toBe(
-      'G6 and up, at random · 2 questions · Right +2, wrong −3 · Up to 20 teams of up to 2',
+      'G6 and up, at random · 2 questions · Right +2, wrong −3 · Up to 20 teams, at most 2 players per team',
     );
     expect(gameRulesLine(game({ players: 'single', max_teams: 1, max_team_size: 1 }))).toBe(
       'G6 · 2 questions · Right +1, wrong 0 · Single player',
@@ -191,9 +191,9 @@ describe('the rules of a game', () => {
       max_team_size: 2,
       knockout: false,
     };
-    expect(lookupLine(lookup)).toBe('Priya’s game · Right +1, wrong 0 · Up to 20 teams of up to 2');
+    expect(lookupLine(lookup)).toBe('Priya’s game · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team');
     expect(lookupLine({ ...lookup, wrong_points: -1, knockout: true })).toBe(
-      'Priya’s game · Right +1, wrong −1 · Up to 20 teams of up to 2 · knockout',
+      'Priya’s game · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout',
     );
   });
 

@@ -9,7 +9,9 @@ import { GAME_POLL_MS, type GameView } from '@tmi/shared';
 import type { ReactNode } from 'react';
 
 import { ThemeProvider } from '@/providers/theme-provider';
+import { ApiRequestError } from '@/lib/api-client';
 import {
+  gameIsMissing,
   gameKeys,
   useCreateGame,
   useDeleteGameFavorite,
@@ -123,6 +125,40 @@ describe('useGame', () => {
     await rerender({ active: false });
     await flush(GAME_POLL_MS * 3);
     expect(gameReads()).toBe(2);
+    unmount();
+    client.clear();
+  });
+
+  it('keeps a live game through a dropped connection, and carries on polling', async () => {
+    mockGet.mockResolvedValueOnce({ data: aGame({ status: 'running' }) });
+    const { wrapper, client } = setup();
+    const { result, unmount } = await renderHook(() => useGame('g1', true), { wrapper });
+    await flush(0);
+    expect(result.current.data?.data.status).toBe('running');
+    // The connection drops: every try fails (the first and its three retries, a second apart).
+    mockGet.mockRejectedValue(new TypeError('Network request failed'));
+    for (let i = 0; i < 10 && !result.current.isError; i += 1) await flush(1000);
+    expect(result.current.isError).toBe(true);
+    expect(gameIsMissing(result.current.error)).toBe(false);
+    expect(result.current.data?.data.status).toBe('running');
+    // Back again: the next poll succeeds and the error clears.
+    mockGet.mockResolvedValue({ data: aGame({ status: 'running' }) });
+    await flush(GAME_POLL_MS + 1000);
+    expect(result.current.isError).toBe(false);
+    unmount();
+    client.clear();
+  });
+
+  it('stops polling a game that is not there for you (404)', async () => {
+    mockGet.mockRejectedValue(new ApiRequestError(404, 'not_found', 'That game was not found.'));
+    const { wrapper, client } = setup();
+    const { result, unmount } = await renderHook(() => useGame('g1', true), { wrapper });
+    await flush(0);
+    expect(gameIsMissing(result.current.error)).toBe(true);
+    const reads = gameReads();
+    expect(reads).toBe(1);
+    await flush(GAME_POLL_MS * 3);
+    expect(gameReads()).toBe(reads);
     unmount();
     client.clear();
   });

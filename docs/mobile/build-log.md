@@ -2702,6 +2702,16 @@ fixed in the flows (none untagged, no assertion dropped that the design asks for
   lower-case letter shows as typed. `game-join` asserts the field holds the lower-case text and still
   joins: green on the iPhone 17 and the Medium Phone, and 3 of 3 on the iPad Pro 13-inch.
 
+- **Fixed (owner, 2026-10-22, after the release):** a failed poll no longer reads as a missing game.
+  `useGame` stopped polling after any error (`retry: false`), and the screen showed "not found" for it,
+  so one dropped connection mid-game lost the game until it was reopened. Now `gameIsMissing` (a 404 or
+  403) alone does that. Other errors are retried three times, a second apart, and polling carries on,
+  with "Reconnecting to the game…" over the game (`game-reconnecting`). Before the first read the screen
+  shows `game-unreachable` with Try again. Separately, the Players step asks how people play before the
+  numbers ("Each on their own" / "In teams", then "Players, at most" or "Teams, at most" and "Players per
+  team, at most", each with a hint under its label: `NumberStepper`'s `hint`). The summary reads "Up to
+  N teams, at most M players per team".
+
 **Verified (2026-10-22):** flows `quest/{game-start,game-join,game-play,game-team,game-late-join,
 game-single,game-favorites,game-knockout,menu}` and Phase 42's `quest/{level,play,play-number,review,
 finished}` green on iOS 27 (iPhone 17) and Android 37 (Medium Phone) (`npm run e2e:mobile -- both

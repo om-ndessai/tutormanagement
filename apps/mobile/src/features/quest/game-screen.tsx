@@ -19,17 +19,19 @@ import { Button, Portal, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
 import { DetailSkeleton } from '@/components/skeletons';
+import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { GameClock } from './game-clock';
 import { DoorsCountdown, useGameCountdown } from './game-effects';
 import { GameLobby } from './game-lobby';
-import { MISSING_TEXT, gameTitle, scoreLabel } from './game-model';
+import { MISSING_TEXT, RECONNECTING_TEXT, UNREACHABLE_TEXT, gameTitle, scoreLabel } from './game-model';
 import { GamePlay } from './game-play';
 import { GameResults } from './game-results';
-import { gameKeys, useGame } from './games-api';
+import { gameIsMissing, gameKeys, useGame } from './games-api';
 import { QuestFrame, QuestStatus, exitQuest } from './quest-frame';
 
 export function GameScreen({ gameId }: { gameId: string }) {
+  const theme = useAppTheme();
   const focused = useIsFocused();
   const query = useGame(gameId, focused);
   const game = query.data?.data;
@@ -68,7 +70,23 @@ export function GameScreen({ gameId }: { gameId: string }) {
     >
       {query.isPending ? (
         <DetailSkeleton label="Loading the game…" rows={4} />
-      ) : query.isError || !game ? (
+      ) : !game && !gameIsMissing(query.error) ? (
+        <OutlinedCard testID="game-unreachable" style={{ borderRadius: radius.lg }}>
+          <View style={{ padding: space.lg, gap: space.lg }}>
+            <Text variant="bodyLarge">{UNREACHABLE_TEXT}</Text>
+            <Button
+              testID="game-unreachable-retry"
+              mode="outlined"
+              onPress={() => void query.refetch()}
+              disabled={query.isFetching}
+              style={{ alignSelf: 'flex-start' }}
+              contentStyle={{ minHeight: 48 }}
+            >
+              Try again
+            </Button>
+          </View>
+        </OutlinedCard>
+      ) : !game || gameIsMissing(query.error) ? (
         <OutlinedCard testID="game-missing" style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg, gap: space.lg }}>
             <Text variant="bodyLarge">{MISSING_TEXT}</Text>
@@ -89,6 +107,23 @@ export function GameScreen({ gameId }: { gameId: string }) {
           importantForAccessibility={counting ? 'no-hide-descendants' : 'auto'}
           accessibilityElementsHidden={counting}
         >
+          {query.isError && game.status !== 'finished' ? (
+            <View
+              testID="game-reconnecting"
+              accessibilityRole="alert"
+              style={{
+                marginBottom: space.md,
+                paddingVertical: space.sm,
+                paddingHorizontal: space.md,
+                borderRadius: radius.md,
+                backgroundColor: theme.colors.surfaceVariant,
+              }}
+            >
+              <Text variant="bodyMedium" style={{ textAlign: 'center', color: theme.tokens.mutedForeground }}>
+                {RECONNECTING_TEXT}
+              </Text>
+            </View>
+          ) : null}
           {game.status === 'lobby' ? (
             <GameLobby game={game} />
           ) : game.status === 'running' ? (

@@ -109,7 +109,7 @@ describe('StartGameFlow', () => {
       'Right +1, wrong −1. Knockout: On',
     );
     expect(screen.getByTestId('game-summary-players').props.accessibilityLabel).toBe(
-      'Up to 10 teams of up to 4. Joining: Open while it runs',
+      'Up to 10 teams, at most 4 players per team. Joining: Open while it runs',
     );
     expect(screen.getByTestId('game-create')).toHaveTextContent(/Generate game code/);
     await fireEvent.press(screen.getByTestId('game-create'));
@@ -154,7 +154,7 @@ describe('StartGameFlow', () => {
     await renderWithProviders(<StartGameFlow />);
     expect(await screen.findByTestId('game-favorites')).toBeTruthy();
     expect(screen.getByTestId('game-fav-Friday G6').props.accessibilityLabel).toBe(
-      'Friday G6, G6 · 2 questions · Up to 6 teams of up to 2',
+      'Friday G6, G6 · 2 questions · Up to 6 teams, at most 2 players per team',
     );
     await fireEvent.press(screen.getByTestId('game-fav-Friday G6'));
     expect(await screen.findByTestId('step-flow-review')).toBeTruthy();

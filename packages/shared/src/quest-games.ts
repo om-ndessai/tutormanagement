@@ -716,11 +716,11 @@ export function gameLevelLabel(game: { level_id: string; level_scope?: GameLevel
   return game.level_scope === 'upward' ? `${label(game.level_id)} and up, at random` : label(game.level_id);
 }
 
-/** Who plays, in words: "Single player", "Up to 10 players on their own", "Up to 10 teams of up to 4". */
+/** Who plays, in words: "Single player", "Up to 10 players, each on their own", "Up to 10 teams, at most 4 players per team". */
 export function gamePlayersLabel(game: Pick<GameSettings, 'players' | 'max_teams' | 'max_team_size'>): string {
   if (game.players === 'single') return 'Single player';
   if (game.max_team_size === 1) return `Up to ${game.max_teams} players, each on their own`;
-  return `Up to ${game.max_teams} teams of up to ${game.max_team_size}`;
+  return `Up to ${game.max_teams} teams, at most ${game.max_team_size} players per team`;
 }
 
 /** The ending's headline beside the winners: why it ended, when it ended early. */

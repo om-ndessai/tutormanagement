@@ -14,7 +14,7 @@ import {
   type JoinGameInput,
 } from '@tmi/shared';
 
-import { apiClient } from '@/lib/api-client';
+import { ApiRequestError, apiClient } from '@/lib/api-client';
 
 // Phase 46: Quest Games. docs/quest-games-plan.md. Phase 47 (the start
 // wizard's favorites): docs/quest-games-g2-plan.md.
@@ -101,12 +101,24 @@ export function useJoinGame() {
 }
 
 /** The game now, polled while it is open: the lobby filling, the scores, the clock. */
+/**
+ * Only a 404 or 403 means the game is not there for this reader. Anything else -- a dropped
+ * connection, a server hiccup -- is passing: the game stays on screen and the poll carries on.
+ */
+export function gameIsMissing(error: unknown): boolean {
+  return error instanceof ApiRequestError && (error.status === 404 || error.status === 403);
+}
+
 export function useGame(id: string) {
   return useQuery({
     queryKey: gameKeys.game(id),
     queryFn: () => apiClient.get<ApiOk<GameView>>(`/quest/games/${id}`),
-    refetchInterval: (query) => (query.state.data?.data.status === 'finished' ? false : GAME_POLL_MS),
+    refetchInterval: (query) =>
+      query.state.data?.data.status === 'finished' || gameIsMissing(query.state.error) ? false : GAME_POLL_MS,
     refetchOnWindowFocus: true,
+    // A game you are not in says so at once; a hiccup is tried again, a second apart.
+    retry: (failures, error) => !gameIsMissing(error) && failures < 3,
+    retryDelay: 1000,
   });
 }
 

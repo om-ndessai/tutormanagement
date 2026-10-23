@@ -22,7 +22,7 @@ import type {
   JoinGameInput,
 } from '@tmi/shared';
 
-import { apiClient } from '@/lib/api-client';
+import { ApiRequestError, apiClient } from '@/lib/api-client';
 import { gamePollInterval } from './game-model';
 
 // Phase 46: Quest Games. docs/quest-games-plan.md. Phase 47 (the start
@@ -114,16 +114,26 @@ export function useJoinGame() {
  * The game now, polled while it is open: the lobby filling, the scores, the clock. Mobile: only while
  * `active` (the screen is focused), never once it is finished.
  */
+/**
+ * Only a 404 or 403 means the game is not there for this reader. Anything else -- a dropped
+ * connection, the phone waking, a server hiccup -- is passing: the game stays on screen and the
+ * poll carries on (a single failed poll used to replace a live game with "not found" for good).
+ */
+export function gameIsMissing(error: unknown): boolean {
+  return error instanceof ApiRequestError && (error.status === 404 || error.status === 403);
+}
+
 export function useGame(id: string, active: boolean) {
   return useQuery({
     queryKey: gameKeys.game(id),
     queryFn: () => apiClient.get<ApiOk<GameView>>(`/quest/games/${id}`),
     // A game not found (404) is not asked about again until the screen is opened again.
     refetchInterval: (query) =>
-      query.state.status === 'error' ? false : gamePollInterval(active, query.state.data?.data.status),
+      gameIsMissing(query.state.error) ? false : gamePollInterval(active, query.state.data?.data.status),
     refetchOnWindowFocus: true,
-    // A game you are not in is a 404: say so at once rather than after three retries.
-    retry: false,
+    // A game you are not in says so at once; a hiccup is tried again, a second apart.
+    retry: (failures, error) => !gameIsMissing(error) && failures < 3,
+    retryDelay: 1000,
   });
 }
 

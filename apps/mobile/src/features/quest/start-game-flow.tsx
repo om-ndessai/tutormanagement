@@ -524,38 +524,44 @@ function PlayersStep({ draft, set }: { draft: WizardDraft; set: Patch }) {
       {multi ? (
         <OutlinedCard style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg, gap: space.lg }}>
-            <NumberStepper
-              label={draft.teams ? 'Most teams' : 'Most players'}
-              value={draft.max_teams}
-              min={GAME_LIMITS.minTeams}
-              max={GAME_LIMITS.maxTeams}
-              onChange={(max_teams) => set({ max_teams })}
-              testID="game-max-teams"
-            />
-            <Field label="Teams">
+            <Field label="How do people play?">
               <View
                 accessibilityRole="radiogroup"
                 style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
               >
                 <Choice
                   testID="game-team-style-solo"
-                  label="Everyone on their own"
+                  label="Each on their own"
                   selected={!draft.teams}
                   onPress={() => set({ teams: false })}
                   wide
                 />
                 <Choice
                   testID="game-team-style-teams"
-                  label="Teams of several"
+                  label="In teams"
                   selected={draft.teams}
                   onPress={() => set({ teams: true })}
                   wide
                 />
               </View>
             </Field>
+            <NumberStepper
+              label={draft.teams ? 'Teams, at most' : 'Players, at most'}
+              hint={
+                draft.teams
+                  ? 'Each team plays together and shares one score.'
+                  : 'Everyone plays alone, with their own score.'
+              }
+              value={draft.max_teams}
+              min={GAME_LIMITS.minTeams}
+              max={GAME_LIMITS.maxTeams}
+              onChange={(max_teams) => set({ max_teams })}
+              testID="game-max-teams"
+            />
             {draft.teams ? (
               <NumberStepper
-                label="Players in a team, at most"
+                label="Players per team, at most"
+                hint="Once a team is full, nobody else can join it."
                 value={draft.max_team_size}
                 min={2}
                 max={GAME_LIMITS.maxTeamSize}

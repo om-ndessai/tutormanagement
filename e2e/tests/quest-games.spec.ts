@@ -212,8 +212,13 @@ test.describe('Quest Games (Phase 46)', () => {
       await admin.getByTestId('game-right-plus').click();
       await expect(admin.getByTestId('game-right')).toHaveValue('+2');
       await admin.getByTestId('game-next').click();
-      // Players: teams of two, at most three teams.
+      // Players: teams of two, at most three teams. How people play comes first, then the numbers,
+      // each saying what it counts.
       await admin.getByTestId('game-players-multi').click();
+      await expect(admin.getByText('How do people play?')).toBeVisible();
+      await expect(admin.getByText('Teams, at most')).toBeVisible();
+      await expect(admin.getByText('Players per team, at most')).toBeVisible();
+      await expect(admin.getByText('Once a team is full, nobody else can join it.')).toBeVisible();
       await admin.getByTestId('game-team-size-minus').click();
       await admin.getByTestId('game-team-size-minus').click();
       await expect(admin.getByTestId('game-team-size')).toHaveValue('2');
@@ -223,7 +228,7 @@ test.describe('Quest Games (Phase 46)', () => {
       // The review, saved as a favorite.
       await expect(admin.getByTestId('game-review-summary')).toContainText('2 questions');
       await expect(admin.getByTestId('game-review-summary')).toContainText('Right +2, wrong 0');
-      await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams of up to 2');
+      await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams, at most 2 players per team');
       await admin.getByTestId('game-fav-name').fill('Two-question duel');
       await admin.getByTestId('game-fav-save').click();
       await expect(admin.getByText('Saved “Two-question duel” to your favorites.')).toBeVisible();
@@ -279,7 +284,7 @@ test.describe('Quest Games (Phase 46)', () => {
       await admin.goto('/quest/games/new');
       await admin.getByTestId('game-fav-Two-question duel').click();
       await expect(admin.getByTestId('game-step-5')).toBeVisible();
-      await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams of up to 2');
+      await expect(admin.getByTestId('game-review-summary')).toContainText('Up to 3 teams, at most 2 players per team');
       await admin.getByTestId('game-back').click();
       await admin.getByTestId('game-back').click();
       await admin.getByTestId('game-back').click();
@@ -325,6 +330,16 @@ test.describe('Quest Games (Phase 46)', () => {
       const found = await unwrap<any>(await alex.request.post('/api/quest/games/lookup', { data: { code: game.code } }), 'lookup');
       expect(found).toMatchObject({ players: 'single', open: false });
       expect((await alex.request.post(`/api/quest/games/${gameId}/join`, { data: { as: 'solo' } })).status()).toBe(409);
+
+      // The connection drops mid-game: the game stays on screen, says it is reconnecting -- never "not
+      // found" -- and carries on once the connection is back.
+      const poll = new RegExp(`/api/quest/games/${gameId}$`);
+      await sofia.route(poll, (route) => route.abort('internetdisconnected'));
+      await expect(sofia.getByTestId('game-reconnecting')).toBeVisible({ timeout: 15_000 });
+      await expect(sofia.getByTestId('game-question')).toBeVisible();
+      await expect(sofia.getByTestId('game-missing')).toHaveCount(0);
+      await sofia.unroute(poll);
+      await expect(sofia.getByTestId('game-reconnecting')).toHaveCount(0, { timeout: 15_000 });
 
       for (let i = 0; i < 3; i += 1) await sofia.getByTestId('game-skip').click();
       await expect(sofia.getByTestId('game-winner')).toHaveText('0 right, 0 points');

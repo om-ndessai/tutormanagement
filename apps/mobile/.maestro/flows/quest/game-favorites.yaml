@@ -120,7 +120,7 @@ tags:
     timeout: 10000
 - assertVisible:
     id: 'game-fav-Friday G6'
-    text: 'Friday G6, G6 · 10 questions · Up to 10 teams of up to 4'
+    text: 'Friday G6, G6 · 10 questions · Up to 10 teams, at most 4 players per team'
 - takeScreenshot: game-favorites
 - tapOn:
     id: 'game-fav-Friday G6'
@@ -136,7 +136,7 @@ tags:
     text: '10 questions'
 - assertVisible:
     id: game-summary-players
-    text: 'Up to 10 teams of up to 4\. Joining: Closed once it starts'
+    text: 'Up to 10 teams, at most 4 players per team\. Joining: Closed once it starts'
 - tapOn:
     id: step-flow-back
 - extendedWaitUntil:

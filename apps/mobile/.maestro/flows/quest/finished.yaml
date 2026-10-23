@@ -1,17 +1,23 @@
-# Question Quest (Phase 42), a level with nothing left. Sofia is set to AoPS Geometry (through the
-# local API), the end of its family, which has no question waiting locally. With nothing to answer
+# Question Quest (Phase 42), a level with nothing left. Sofia is set to Math Modeling (through the
+# local API), in no family, emptied for the flow (quest-empty-level.js: every bank level has questions
+# since 2026-10-22, so its standards are marked "needs a figure", and restored after). With nothing to answer
 # she is not taken into Quest on signing in; from More, her Quest page names the level, and her Quest
 # says she has answered everything there is for now, with Back to the Quest page. The switch is off
 # again at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-end.js
+  - runScript: ../../scripts/quest-empty-level.js
   - runScript:
       file: ../../scripts/quest-start.js
       env:
-        LEVEL: GEO
+        LEVEL: NC26.MSM
 onFlowComplete:
   - runScript: ../../scripts/quest-end.js
+  - runScript:
+      file: ../../scripts/quest-empty-level.js
+      env:
+        MARK: 'false'
 tags:
   - feature
 ---
@@ -36,7 +42,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: quest-play-summary
-      text: 'AoPS Geometry · .*'
+      text: 'Math Modeling · .*'
     timeout: 15000
 - assertNotVisible:
     id: quest-review-card

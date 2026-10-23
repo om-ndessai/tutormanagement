@@ -488,7 +488,7 @@ describe('Phase 47: points, the countdown, knockout, joining', () => {
       'Up to 6 players, each on their own',
     );
     expect(gamePlayersLabel({ players: 'multi', max_teams: 3, max_team_size: 2 })).toBe(
-      'Up to 3 teams of up to 2',
+      'Up to 3 teams, at most 2 players per team',
     );
     expect(gameEncouragement({ correct: 4, answered: 6, solo: true })).toBe(
       'You got 4 right. Great effort, and every game makes you sharper!',

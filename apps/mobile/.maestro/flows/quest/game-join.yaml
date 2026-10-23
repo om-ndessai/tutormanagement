@@ -1,4 +1,4 @@
-# Quest Games (Phase 46), joining with a code. Priya hosts a G6 game, teams of up to 2 (through the
+# Quest Games (Phase 46), joining with a code. Priya hosts a G6 game, teams, at most 2 players per team (through the
 # local API). Sofia, a student, opens its link before joining: not found -- never "forbidden" (R20,
 # the server answers 404). A code nobody has is refused in the join sheet, in the server's words. The
 # game's code typed in lower case is tidied and found: Priya's game; Sofia starts the team Owls -- the
@@ -138,7 +138,7 @@ tags:
     timeout: 10000
 - assertVisible:
     id: game-join-line
-    text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 teams of up to 2'
+    text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 teams, at most 2 players per team'
 # A game of teams: start one, or a team's code -- never on your own.
 - assertNotVisible:
     id: game-join-solo

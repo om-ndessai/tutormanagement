@@ -47,6 +47,7 @@ export function stepperRange(min: number, max: number, format?: (value: number) 
 
 export function NumberStepper({
   label,
+  hint,
   value,
   min,
   max,
@@ -55,6 +56,8 @@ export function NumberStepper({
   testID,
 }: {
   label: string;
+  /** A line under the label: what the number means. */
+  hint?: string;
   value: number;
   min: number;
   max: number;
@@ -142,6 +145,11 @@ export function NumberStepper({
       <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
         {label}
       </Text>
+      {hint ? (
+        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+          {hint}
+        </Text>
+      ) : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
         {button(-1)}
         <TextInput

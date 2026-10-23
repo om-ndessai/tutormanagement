@@ -134,7 +134,7 @@ export function reviewLines(request: CreateGameRequest): Record<WizardStepKey, s
   };
 }
 
-/** A favorite's tile, under its name: "G6 · 10 questions · Up to 10 teams of up to 4". */
+/** A favorite's tile, under its name: "G6 · 10 questions · Up to 10 teams, at most 4 players per team". */
 export function favoriteDetail(favorite: Pick<GameFavorite, 'config'>): string {
   const words = summaryOf(favorite.config);
   return `${words.level} · ${words.length} · ${words.players}`;
