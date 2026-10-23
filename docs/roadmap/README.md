@@ -10,6 +10,7 @@ Nothing here is scheduled. Features are chosen by ID and become phases in
 | [canvas-gap-analysis.md](canvas-gap-analysis.md) | How the portal compares with Canvas, capability by capability, and a staged plan for compatibility with it: 9 more features (C1–C9) |
 | [future-ai.md](future-ai.md) | Automated homework evaluation, live handwriting recognition, the think-aloud canvas, and 10 other AI features, with architectures, costs, safeguards, and what running them on Cloudflare takes |
 | [think-aloud-canvas.md](think-aloud-canvas.md) | The research behind AI-13 (2026-10-18): a canvas where the student's working is their thinking aloud, answered on the canvas with approved hints. No audio. |
+| [open-to-public.md](open-to-public.md) | Opening sign-in to anyone (2026-10-23): where a stranger lands (join codes, family and tutor spaces), the blockers to fix first, Apple, Microsoft and email sign-in, and sharing Quest results on social media. Stages O0–O5 |
 
 ---
 
