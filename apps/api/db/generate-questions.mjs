@@ -23,8 +23,15 @@
  * missing what the table requires. The code checks (lintQuestion) run on every
  * file in e2e/tests/question-bank.spec.ts, since they live in TypeScript.
  *
- *   node db/generate-questions.mjs           write db/questions.sql
- *   node db/generate-questions.mjs --check   fail if questions.sql is stale (npm run typecheck)
+ * Phase 49: it also writes db/questions-sample.sql, which `db:reset` and the demo load instead.
+ * All 30,000 questions are about 150,000 rows written (the primary key and three indexes), over
+ * the free plan's 100,000 a day, so the demo could not be reseeded in a day. The sample keeps
+ * every approved question and up to SAMPLE_PER_TOPIC checked ones per standard, spread over the
+ * difficulties, sorted by id so it is the same every time, and refuses a level left with fewer
+ * than SAMPLE_LEVEL_MIN. `db:reset:full` loads the whole bank.
+ *
+ *   node db/generate-questions.mjs           write db/questions.sql and db/questions-sample.sql
+ *   node db/generate-questions.mjs --check   fail if either is stale (npm run typecheck)
  *   node db/generate-questions.mjs --production=<file>
  */
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -34,6 +41,15 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const SOURCES = join(here, 'questions');
 const OUTPUT = join(here, 'questions.sql');
+const SAMPLE_OUTPUT = join(here, 'questions-sample.sql');
+/** Checked questions kept per standard in the sample, round robin over difficulties 1-3. */
+const SAMPLE_PER_TOPIC = 8;
+/**
+ * The fewest questions a level may hold in the sample. The suite's needs: a 25-question assessment,
+ * Quest Games' count games and their climb into the level above, Phase 48's curated series running
+ * out of unseen questions, and a level Quest can move a student through.
+ */
+const SAMPLE_LEVEL_MIN = 50;
 /** db/platform-admin.sql's platform admin. */
 const REVIEWER = '0c000000-0000-4000-8000-000000000001';
 /** packages/shared/src/questions.ts, QUESTION_BANK_LEVEL_IDS. */
@@ -53,6 +69,8 @@ const sql = (value) => (value === null || value === undefined ? 'NULL' : `'${Str
 
 const files = existsSync(SOURCES) ? readdirSync(SOURCES).filter((f) => f.endsWith('.json')).sort() : [];
 const statements = [];
+/** Per question: its statement, level, topic, difficulty, status and id, for the sample. */
+const entries = [];
 for (const file of files) {
   const source = JSON.parse(readFileSync(join(SOURCES, file), 'utf8'));
   if (!LEVELS.has(source.level_id)) problems.push(`${file}: ${source.level_id} is not a level the bank covers.`);
@@ -70,7 +88,7 @@ for (const file of files) {
     }
     const approved = q.status === 'approved';
     if (production && approved) continue;
-    statements.push(
+    const statement =
       `INSERT INTO questions (id, topic_id, difficulty, kind, skill, stem, choices, answer, compute, solution, status, checks, source, reviewed_by, reviewed_at)
 VALUES (${[
         sql(q.id),
@@ -89,10 +107,45 @@ VALUES (${[
         approved ? sql(REVIEWER) : 'NULL',
         approved ? sql(q.reviewed_at ?? '2026-10-17T00:00:00.000Z') : 'NULL',
       ].join(', ')})
-ON CONFLICT (id) DO NOTHING;`,
-    );
+ON CONFLICT (id) DO NOTHING;`;
+    statements.push(statement);
+    entries.push({ statement, level: source.level_id, topic: q.topic_id, difficulty: q.difficulty, status: q.status, id: q.id });
   }
 }
+
+/** The sample: every approved question, and up to SAMPLE_PER_TOPIC checked ones per standard. */
+function sampleOf(all) {
+  const byTopic = new Map();
+  for (const e of all) {
+    if (!byTopic.has(e.topic)) byTopic.set(e.topic, []);
+    byTopic.get(e.topic).push(e);
+  }
+  const kept = new Set();
+  for (const list of byTopic.values()) {
+    for (const e of list) if (e.status === 'approved') kept.add(e);
+    const queues = [1, 2, 3].map((d) =>
+      list.filter((e) => e.status === 'checked' && e.difficulty === d).sort((a, b) => (a.id < b.id ? -1 : 1)),
+    );
+    let taken = 0;
+    while (taken < SAMPLE_PER_TOPIC && queues.some((qq) => qq.length > 0)) {
+      for (const qq of queues) {
+        if (taken >= SAMPLE_PER_TOPIC) break;
+        const next = qq.shift();
+        if (next) { kept.add(next); taken += 1; }
+      }
+    }
+  }
+  // In the full file's order, so the two files read alike.
+  const sample = all.filter((e) => kept.has(e));
+  const perLevel = new Map();
+  for (const e of sample) perLevel.set(e.level, (perLevel.get(e.level) ?? 0) + 1);
+  for (const level of new Set(all.map((e) => e.level))) {
+    const n = perLevel.get(level) ?? 0;
+    if (n < SAMPLE_LEVEL_MIN) problems.push(`the sample holds ${n} questions at ${level}, fewer than ${SAMPLE_LEVEL_MIN}.`);
+  }
+  return sample;
+}
+const sample = production ? [] : sampleOf(entries);
 
 if (problems.length > 0) {
   console.error('generate-questions: refusing --');
@@ -104,6 +157,12 @@ const output = `-- GENERATED by db/generate-questions.mjs from db/questions/*.js
 -- The question bank's approved questions for local and demo builds; never run on
 -- production, whose console is the source. Load after db/platform-admin.sql.
 ${statements.join('\n')}
+`;
+const sampleOutput = `-- GENERATED by db/generate-questions.mjs from db/questions/*.json. Do not edit.
+-- A SAMPLE of the question bank for local and demo builds (Phase 49): every approved question and up
+-- to ${SAMPLE_PER_TOPIC} checked ones per standard. db/questions.sql is the whole bank (db:reset:full).
+-- Never run on production. Load after db/platform-admin.sql.
+${sample.map((e) => e.statement).join('\n')}
 `;
 
 if (production) {
@@ -117,12 +176,16 @@ ${statements.join('\n')}
   console.log(`generate-questions: wrote ${statements.length} checked questions to ${production}.`);
 } else if (checkOnly) {
   const current = existsSync(OUTPUT) ? readFileSync(OUTPUT, 'utf8') : '';
-  if (current !== output) {
-    console.error('generate-questions: db/questions.sql is stale. Run `npm run db:questions:generate --workspace @tmi/api`.');
+  const currentSample = existsSync(SAMPLE_OUTPUT) ? readFileSync(SAMPLE_OUTPUT, 'utf8') : '';
+  if (current !== output || currentSample !== sampleOutput) {
+    console.error(
+      'generate-questions: db/questions.sql or db/questions-sample.sql is stale. Run `npm run db:questions:generate --workspace @tmi/api`.',
+    );
     process.exit(1);
   }
-  console.log(`generate-questions: questions.sql is current (${statements.length} questions).`);
+  console.log(`generate-questions: questions.sql (${statements.length}) and the sample (${sample.length}) are current.`);
 } else {
   writeFileSync(OUTPUT, output);
-  console.log(`generate-questions: wrote ${statements.length} questions to db/questions.sql.`);
+  writeFileSync(SAMPLE_OUTPUT, sampleOutput);
+  console.log(`generate-questions: wrote ${statements.length} questions to db/questions.sql, ${sample.length} to db/questions-sample.sql.`);
 }

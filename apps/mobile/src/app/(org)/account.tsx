@@ -6,6 +6,7 @@ import { Divider, List, Text } from 'react-native-paper';
 
 import { ListItem } from '@/components/list-item';
 import { IconButton } from '@/components/icon-button';
+import { ReleasePhase } from '@/components/release-phase';
 import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';
 import { chooseHomeRole, useHomeRole } from '@/features/dashboard/home-role';
@@ -182,6 +183,7 @@ export default function AccountSheet() {
           style={{ paddingHorizontal: 0 }}
         />
       </View>
+      <ReleasePhase />
     </Screen>
   );
 }

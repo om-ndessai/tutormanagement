@@ -21,3 +21,4 @@ export * from './canvas-assessments.js';
 export * from './quest.js';
 export * from './quest-games.js';
 export * from './home.js';
+export * from './release.js';

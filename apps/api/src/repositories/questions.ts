@@ -6,6 +6,7 @@ import {
   type QuestionDifficulty,
   type QuestionKind,
   type QuestionStatus,
+  type QuestionApprovedVia,
 } from '@tmi/shared';
 
 import type { BankStandard } from '../lib/ai/question-bank.js';
@@ -37,7 +38,7 @@ interface QuestionRow {
   checks: string;
   source: 'ai' | 'manual';
   reviewed_by_name: string | null;
-  approved_via: 'console' | 'quest' | null;
+  approved_via: QuestionApprovedVia | null;
   reviewed_at: string | null;
   times_used: number;
   times_correct: number;

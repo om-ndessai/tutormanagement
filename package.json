@@ -40,7 +40,10 @@
     "mobile:export": "npm --prefix apps/mobile run export",
     "e2e:mobile": "bash scripts/e2e-mobile.sh",
     "smoke": "bash scripts/smoke.sh",
-    "questions:export": "node scripts/export-questions.mjs"
+    "questions:export": "node scripts/export-questions.mjs",
+    "db:reset:full": "npm run db:reset:full --workspace @tmi/api",
+    "seed:scenarios": "node scripts/seed-scenarios.mjs",
+    "test:compat": "bash scripts/compat.sh"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

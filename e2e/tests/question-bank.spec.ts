@@ -171,7 +171,14 @@ test.describe('the question bank’s rules', () => {
         await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofia.id, level_id: 'BA3' } }),
         'starting a BA3 assessment',
       );
-      expect(started.unreviewed_questions).toBe(started.question_count);
+      // Every question drawn is unreviewed, except any a Quest review approved earlier in the run
+      // (the bank is a sample since Phase 49, so an approved BA3 question is likely to be drawn).
+      const approvedBa3 = await unwrap<unknown[]>(
+        await platform.request.get('/api/platform/questions?level_id=BA3&status=approved&limit=200'),
+        'approved at BA3',
+      );
+      expect(started.unreviewed_questions).toBeGreaterThan(0);
+      expect(started.unreviewed_questions).toBeGreaterThanOrEqual(started.question_count - approvedBa3.length);
       await unwrap(await admin.request.post(`/api/canvas-assessments/${started.id}/discard`, { data: {} }), 'discarding');
     } finally {
       await setA({ canvas_assessments_unreviewed: false });

@@ -51,7 +51,7 @@ and every test for no change in behaviour.
 ### 1. A sample of the bank instead of all of it
 
 - **The sample.** `generate-questions.mjs --sample` writes `db/questions-sample.sql`: up to 8
-  questions per topic (306 topics), spread over difficulties 1-5. It keeps both `approved` and
+  questions per topic (306 topics), spread over difficulties 1-3. It keeps both `approved` and
   `checked` questions, so Quest, unreviewed assessments and games all have something to draw, and
   makes sure every level holds at least 50. That is about 2,400 questions and 12,000 rows written,
   under a tenth of the full bank. It is deterministic (sorted by id), so the diff is reviewable.

@@ -48,6 +48,15 @@ export const QUEST_POINTS = {
   tutor_review: 1,
 } as const;
 export type PointsReason = keyof typeof QUEST_POINTS;
+
+/**
+ * How many DIFFERENT people must answer a checked question correctly in Question Quest for it to
+ * be approved for every organization by itself (owner, 2026-10-24: the bank had grown past what
+ * tutors could review one by one). A question also waits with up to this many students of one
+ * organization at once, so the second answer can arrive before anyone reviews the first. A tutor's
+ * review still approves or flags it, and a flag outranks an approval made this way.
+ */
+export const QUEST_CONSENSUS_CORRECT = 2;
 export const POINTS_REASONS = Object.keys(QUEST_POINTS) as PointsReason[];
 
 export const POINTS_REASON_LABELS: Record<PointsReason, string> = {

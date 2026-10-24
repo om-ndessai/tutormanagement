@@ -206,6 +206,24 @@ browser carries the `tmi_tour_seen` cookie (`support/fixtures.ts`) and every see
 been through the wizard, so none of them meets it; `as(who, { fresh: true, email })` is how a
 spec meets it on purpose.
 
+## The seed and backward compatibility (Phase 49)
+
+- **The bank is a sample.** `npm run db:reset` loads `db/questions-sample.sql`: every approved
+  question and up to 8 checked ones per standard (about 2,500, every level at least 50), not the
+  whole 30,000 (`db:reset:full`). The demo's reset refuses above 40,000 rows written
+  (`scripts/seed-budget.mjs`), under half the free plan's daily 100,000.
+- **The newer features through the API.** `npm run seed:scenarios`, with the Worker running, makes
+  assessments (in progress, submitted with their PDF, reviewed), Quest answers and reviews at Beast
+  Academy Level 1, and two finished Quest Games, as the bulk families -- never the named cast, so no
+  spec's assertion moves. It puts the organization's switches back as they were (`--demo` leaves
+  them on). The release gate runs it after `db:reset`, before the suite.
+- **`npm run test:compat`** builds the last release's database (the newest `release-*` tag), applies
+  the production SQL still owed (`docs/database.md`'s labelled blocks), checks it against
+  `schema.sql`, then runs the last release's Worker with its own `@smoke` tests and today's Worker
+  with today's `@smoke` and `@compat` tests on it (ports 8788/8789, 5175/5176). A test tagged
+  `@compat` checks that rows written before a change, or a request an older app sends
+  (`compat-clients.spec.ts`), still work. Such a test must rely only on the seed of the last release.
+
 ## Notes
 
 - `workers: 1`, no parallelism. Every spec assumes the seeded roster against one shared

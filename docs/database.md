@@ -1226,6 +1226,24 @@ npx wrangler d1 execute tutoring-db --remote --command="SELECT name FROM sqlite_
 npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) AS seen FROM quest_game_seen"
 ```
 
+### From Phase 49: labelled blocks, and the compatibility test
+
+Every block of production SQL from Phase 50 on is fenced with its release label, so the
+backward-compatibility test (`npm run test:compat`, `scripts/compat.sh`) can find what production
+still owes:
+
+    ```sql release=phase-50
+    ALTER TABLE ...;
+    ```
+
+The test builds the last release's database (the newest `release-*` git tag: its own `schema.sql`,
+catalog, seed and bank sample), applies the labelled blocks that tag's copy of this file does not
+have, compares the result with a fresh `schema.sql` (tables, columns as sets, indexes, triggers), and
+runs the last release's Worker and today's on it. A label is used once; a block is never edited after
+its release, as production already ran it. A difference that cannot be avoided is listed, with its
+reason, in `scripts/compat-known.json`. Phase 49 itself changes no schema: its block is empty, and its
+release tags the commit production ran before it (`release-20261023`, 62382f9).
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

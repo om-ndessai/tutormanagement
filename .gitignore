@@ -23,3 +23,6 @@ scripts/migrate-tmi/out/
 
 # Claude Code agents' working copies of the repo.
 .claude/worktrees/
+
+# The backward-compatibility test's databases and logs (scripts/compat.sh).
+.compat/

@@ -146,7 +146,10 @@ Run from the repo root.
 | `npm run dev` | Worker on :8787 and Vite on :5173 together. **Use http://localhost:5173** — Vite proxies `/api` to the Worker. |
 | `npm run db:rebuild` | **Drops and recreates** every local table from `apps/api/db/schema.sql`, then loads the curriculum catalog (`db/catalog.sql`) |
 | `npm run db:seed` | Reload local data from `apps/api/db/seed.sql` |
-| `npm run db:reset` | Rebuild, then seed, the platform admin and the question bank's approved questions (`db/questions.sql`) |
+| `npm run db:reset` | Rebuild, then seed, the platform admin and a SAMPLE of the question bank (`db/questions-sample.sql`, Phase 49: every approved question and 8 checked per standard, ~2,500) |
+| `npm run db:reset:full` | The same with the whole bank (`db/questions.sql`, ~30,000), for work on the bank itself |
+| `npm run seed:scenarios` | With the local Worker running: the newer features' seed, made through the API as the bulk families (assessments with PDFs, Quest answers and reviews, Quest Games). `-- --base=<demo> --demo` on the demo |
+| `npm run test:compat` | The backward-compatibility test (Phase 49), local: the last release's database (`release-*` tag) with the pending SQL from `docs/database.md`, compared with `schema.sql`, then the last release's Worker and today's run on it |
 | `npm run questions:export` | Copy production's APPROVED questions into `apps/api/db/questions/*.json` and regenerate `db/questions.sql` (one read-only SELECT on `tutoring-db`) |
 | `npm run db:studio` | Dump the users table from local D1 |
 | `npm run typecheck` | Typecheck all three packages — run this before declaring work done |
@@ -164,13 +167,20 @@ asking —
    `E2E_BASE_URL=http://localhost:5173 npm run e2e:test`) -- since 2026-10-07 the local suite is
    the gate: it spends no Cloudflare quota; and, when the release changes the API, the shared
    contract or the schema, `npm run smoke -- mobile` green on both platforms (the full web suite
-   already holds the web half);
-2. commit and push to `main`;
+   already holds the web half), and `npm run test:compat` green against the last `release-*` tag
+   (Phase 49);
+2. commit and push to `main`, and tag the release `release-YYYYMMDD` (`git push --tags`): the
+   compatibility test's next base. Raise `RELEASE_PHASE` (`packages/shared/src/release.ts`) with the
+   phase's code: the app prints it;
 3. refresh the demo: `npm run deploy:test`, and `npm run db:reset:test` when the schema changed.
    `tutoring-test` is an open **feature demo** now, not a test target: `npm run e2e` (which wipes
-   it and reads ~2.3 M rows) runs only when the owner asks;
+   it and reads ~2.3 M rows) runs only when the owner asks. `db:reset:test` refuses above a write
+   budget of 40,000 rows (`scripts/seed-budget.mjs`; the free plan writes 100,000 a day), then
+   `npm run seed:scenarios -- --base=https://tutoring-test.tmi-api.workers.dev --demo`;
 4. back up production (`wrangler d1 export tutoring-db --remote`), unless the owner waives it;
-5. apply the phase's additive schema block and check the new queries read-only against production;
+5. apply the phase's additive schema block and check the new queries read-only against production.
+   Since Phase 49 every such block in `docs/database.md` is fenced ```` ```sql release=phase-NN ````:
+   that label is how `test:compat` finds what production still owes;
 6. `npm run deploy` (both production Workers), then smoke-test both addresses.
 
 Stop and report if any step fails. Outside an approved release, ask first.
@@ -626,7 +636,10 @@ answers the bank's `checked` questions one at a time from their level (`student_
 set by their tutor or an admin), with no going back; code marks each answer (`checkAnswer`); their
 current tutor (or an admin) reviews it, and "Question is right" approves the question **for every
 organization** (`approved_via = 'quest'`, owner, 2026-10-20) while a flag sends it, with its reason, to
-the console. A level used up moves the student to the next of its family by itself (`nextQuestLevel`).
+the console. **Two right answers approve it too** (owner, 2026-10-24): once `QUEST_CONSENSUS_CORRECT` (2)
+different people have answered a checked question correctly, marked by code, it is approved by itself
+(`approved_via = 'quest_consensus'`, `recordQuestAnswer`); so a question waits with up to two students of
+an organization at once, and a tutor's flag still takes such an approval back. A level used up moves the student to the next of its family by itself (`nextQuestLevel`).
 A student's points are separate for the attempt and for correctness; a tutor earns one per review,
 whatever its outcome, so approving never pays more than flagging (`QUEST_POINTS`): `points_ledger` is
 append-only (a trigger refuses updates) and a balance is a sum, read from `activity_days`, the per-day

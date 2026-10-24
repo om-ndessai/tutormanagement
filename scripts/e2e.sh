@@ -7,7 +7,7 @@
 #      on 2026-10-06)
 #   3. wipe and rebuild that database from db/schema.sql + db/catalog.sql +
 #      db/seed.sql, and add the platform admin (db/platform-admin.sql) and the
-#      question bank's approved questions (db/questions.sql)
+#      question bank sample (db/questions-sample.sql)
 #   4. run the Playwright suite against it
 #
 # Never a production Worker or tutoring-db.
@@ -86,7 +86,7 @@ echo "==> Rebuilding $TEST_DB (destructive, test data only)"
   && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/catalog.sql >/dev/null \
   && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/seed.sql >/dev/null \
   && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/platform-admin.sql >/dev/null \
-  && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/questions.sql >/dev/null )
+  && npx wrangler d1 execute "$TEST_DB" --env "$TEST_ENV" --remote --file=./db/questions-sample.sql >/dev/null )
 
 # A deploy and a remote D1 rebuild are both eventually consistent, and the
 # suite starts the instant they return. Twice now the first run after a deploy

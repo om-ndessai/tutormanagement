@@ -1,4 +1,5 @@
 import {
+  QUEST_CONSENSUS_CORRECT,
   QUEST_LEFT_CAP,
   QUEST_POINTS,
   checkAnswer,
@@ -66,8 +67,9 @@ export async function setQuestLevel(
  * The next question of a level for a student: the bank's checked questions,
  * chapter by chapter and easier first, from just after the last one they
  * answered in this level (so the read never walks back over what they have
- * done), skipping any they answered, any waiting for a review here already
- * (one answer per question at a time) and standards that need a figure.
+ * done), skipping any they answered, any already waiting with
+ * QUEST_CONSENSUS_CORRECT students here (so a second answer can arrive before the
+ * first is reviewed, and no more) and standards that need a figure.
  */
 export async function nextQuestQuestion(
   db: D1Database,
@@ -95,8 +97,9 @@ export async function nextQuestQuestion(
               OR (q.topic_id = ?3 AND (q.difficulty > ?4 OR (q.difficulty = ?4 AND q.rowid > ?5))))
          AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
          AND NOT EXISTS (SELECT 1 FROM quest_attempts a
-                         WHERE a.question_id = q.id AND a.organization_id = ?6
-                           AND (a.student_user_id = ?7 OR a.reviewed_at IS NULL))
+                         WHERE a.question_id = q.id AND a.organization_id = ?6 AND a.student_user_id = ?7)
+         AND (SELECT COUNT(*) FROM quest_attempts a
+              WHERE a.question_id = q.id AND a.organization_id = ?6 AND a.reviewed_at IS NULL) < ?8
        ORDER BY q.topic_id, q.difficulty, q.rowid
        LIMIT 1`,
     )
@@ -108,6 +111,7 @@ export async function nextQuestQuestion(
       cursor?.rid ?? 0,
       org,
       studentId,
+      QUEST_CONSENSUS_CORRECT,
     )
     .first<{ id: string; kind: QuestionKind; stem: string; choices: string }>();
   if (!row) return null;
@@ -156,12 +160,19 @@ function award(
   ];
 }
 
-/** Records a student's answer, marked by code, with its attempt point. */
+/**
+ * Records a student's answer, marked by code, with its attempt point. A correct answer to a
+ * question still `checked` then counts the different people who have answered it correctly, in
+ * every organization; at QUEST_CONSENSUS_CORRECT the question is approved for the whole platform
+ * (`approved_via = 'quest_consensus'`, reviewed_by the person whose answer made the count). It is
+ * the code's marking that approves it, never a person's word, so no audit line is written; the
+ * console shows how each question was approved. `approvedByConsensus` says whether this answer did it.
+ */
 export async function recordQuestAnswer(
   db: D1Database,
   org: OrgId,
   input: { studentId: string; question: { id: string; kind: QuestionKind; key: string }; levelId: string; answer: string; timeZone: string },
-): Promise<{ attemptId: string; correct: boolean }> {
+): Promise<{ attemptId: string; correct: boolean; approvedByConsensus: boolean }> {
   const attemptId = crypto.randomUUID();
   const correct = checkAnswer({ kind: input.question.kind, answer: input.question.key }, input.answer);
   const day = zonedClockParts(new Date().toISOString(), input.timeZone).day;
@@ -174,7 +185,38 @@ export async function recordQuestAnswer(
       .bind(attemptId, org, input.studentId, input.question.id, input.levelId, input.answer, correct ? 1 : 0),
     ...award(db, org, { userId: input.studentId, reason: 'student_attempt', attemptId, day, answers: 1 }),
   ]);
-  return { attemptId, correct };
+  if (!correct) return { attemptId, correct, approvedByConsensus: false };
+  try {
+    return { attemptId, correct, approvedByConsensus: await approveByConsensus(db, input.question.id, input.studentId) };
+  } catch (error) {
+    // The answer is recorded either way; the count is tried again on the next correct answer.
+    console.error('Quest consensus check failed', error);
+    return { attemptId, correct, approvedByConsensus: false };
+  }
+}
+
+/** Approves a checked question once QUEST_CONSENSUS_CORRECT different people have answered it correctly. */
+async function approveByConsensus(db: D1Database, questionId: string, lastId: string): Promise<boolean> {
+  const row = await db
+    .prepare(
+      // org-scope: counts correct answers to one platform question across organizations, by the
+      // owner's rule (2026-10-24); it returns a number, never an organization's row.
+      `SELECT COUNT(DISTINCT a.student_user_id) AS n FROM quest_attempts a
+       WHERE a.question_id = ? AND a.correct = 1`,
+    )
+    .bind(questionId)
+    .first<{ n: number }>();
+  if ((row?.n ?? 0) < QUEST_CONSENSUS_CORRECT) return false;
+  const result = await db
+    .prepare(
+      // org-scope: approving a platform question, by the owner's two-correct-answers rule.
+      `UPDATE questions SET status = 'approved', reviewed_by = ?, reviewed_at = ${NOW},
+              approved_via = 'quest_consensus', updated_at = ${NOW}
+       WHERE id = ? AND status = 'checked'`,
+    )
+    .bind(lastId, questionId)
+    .run();
+  return (result.meta.changes ?? 0) > 0;
 }
 
 /** The key a student's answer is marked against: a checked question, never shown to them. */
@@ -303,7 +345,8 @@ export async function getQuestAttempt(
 /**
  * Applies a tutor's review in one batch: the attempt's review; the question
  * approved for the whole platform (approved_via 'quest') or flagged with the
- * reason, only while it is still checked; and the points -- the review point
+ * reason, while it is still checked (a flag also takes back an approval made by two correct
+ * answers: a tutor's judgement outranks the count); and the points -- the review point
  * to the tutor whatever the outcome, and when the student was right and the
  * question approved, a correctness point to the student. False when somebody
  * reviewed it first.
@@ -346,8 +389,9 @@ export async function applyQuestReview(
             // org-scope: flagging a platform question, with the tutor's reason for the console.
             `UPDATE questions SET status = 'flagged',
                     checks = json_set(checks, '$.quest_flag', json_object('note', ?, 'by', ?, 'at', ${NOW})),
+                    reviewed_by = NULL, reviewed_at = NULL, approved_via = NULL,
                     updated_at = ${NOW}
-             WHERE id = ? AND status = 'checked'`,
+             WHERE id = ? AND (status = 'checked' OR (status = 'approved' AND approved_via = 'quest_consensus'))`,
           )
           .bind(input.note ?? '', input.reviewerName, attempt.question.id),
     ...award(db, org, { userId: input.reviewerId, reason: 'tutor_review', attemptId: attempt.attempt_id, day, reviews: 1 }),

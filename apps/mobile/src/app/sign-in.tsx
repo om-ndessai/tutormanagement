@@ -6,6 +6,7 @@ import { ActivityIndicator, Button, Chip, List, Surface, Text, TextInput } from 
 import { ListItem } from '@/components/list-item';
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
+import { ReleasePhase } from '@/components/release-phase';
 import { PERSONAS } from '@/dev/personas';
 import { SignInError } from '@/features/auth/sign-in-error';
 import { Welcome } from '@/features/auth/welcome';
@@ -59,6 +60,7 @@ export default function SignInScreen() {
       <Screen testID="screen-sign-in" edges={['top', 'bottom']} scroll={false}>
         <Welcome busy={busy === 'google'} onSignIn={() => void signInGoogle()} />
         {error ? <SignInError code={error.code} message={error.message} /> : null}
+        <ReleasePhase />
       </Screen>
     );
   }
@@ -208,6 +210,7 @@ export default function SignInScreen() {
       )}
 
       {error ? <SignInError code={error.code} message={error.message} /> : null}
+      <ReleasePhase />
     </Screen>
   );
 }

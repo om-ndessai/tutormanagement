@@ -204,6 +204,63 @@ test.describe('Question Quest (Phase 42)', () => {
     });
   });
 
+  test('two right answers approve a question; a third student waits; a flag takes it back (2026-10-24)', async ({ as }) => {
+    const admin = await as('admin');
+    const platform = await as('platformAdmin', { org: null });
+    await withQuest(admin, async () => {
+      const students = await unwrap<any[]>(await admin.request.get('/api/quest/students'), 'students');
+      const sofiaRow = students.find((s) => s.full_name === 'Sofia Okafor')!;
+      const sanjayRow = students.find((s) => s.full_name === 'Sanjay Patel')!;
+      const people = await unwrap<any[]>(await admin.request.get('/api/users?role=student&limit=100'), 'students with addresses');
+      const third = people.find((u) => u.email && /\d@gmail\.com$/.test(u.email) && students.some((s) => s.user_id === u.id))!;
+      const level = 'BA2';
+      for (const id of [sofiaRow.user_id, sanjayRow.user_id, third.id]) {
+        await unwrap(await admin.request.put(`/api/quest/students/${id}/level`, { data: { level_id: level } }), 'level');
+      }
+      const keys = new Map(
+        (await unwrap<any[]>(await platform.request.get(`/api/platform/questions?level_id=${level}&limit=200`), 'keys')).map((q) => [q.id, q]),
+      );
+      const sofia = await as('student');
+      const sanjay = await as('studentTutor');
+      const thirdPage = await as('student', { email: third.email });
+
+      // The same question waits with two students at once, so both are served it.
+      const q1 = (await unwrap<any>(await sofia.request.get('/api/quest/me'), 'sofia')).question;
+      expect((await unwrap<any>(await sanjay.request.get('/api/quest/me'), 'sanjay')).question.id).toBe(q1.id);
+      await unwrap(await sofia.request.post('/api/quest/answers', { data: { question_id: q1.id, answer: keys.get(q1.id).answer } }), 'sofia right');
+      expect(keys.get(q1.id).status).toBe('checked');
+      await unwrap(await sanjay.request.post('/api/quest/answers', { data: { question_id: q1.id, answer: keys.get(q1.id).answer } }), 'sanjay right');
+      const approved = (await unwrap<any[]>(await platform.request.get(`/api/platform/questions?level_id=${level}&status=approved&limit=200`), 'approved')).find(
+        (q) => q.id === q1.id,
+      );
+      expect(approved).toMatchObject({ status: 'approved', approved_via: 'quest_consensus' });
+
+      // Two wrong answers: the question stays checked, and a third student is not served it.
+      const q2 = (await unwrap<any>(await sofia.request.get('/api/quest/me'), 'sofia next')).question;
+      expect((await unwrap<any>(await sanjay.request.get('/api/quest/me'), 'sanjay next')).question.id).toBe(q2.id);
+      await unwrap(await sofia.request.post('/api/quest/answers', { data: { question_id: q2.id, answer: 'not this' } }), 'sofia wrong');
+      await unwrap(await sanjay.request.post('/api/quest/answers', { data: { question_id: q2.id, answer: 'not this' } }), 'sanjay wrong');
+      const servedThird = (await unwrap<any>(await thirdPage.request.get('/api/quest/me'), 'third')).question;
+      expect(servedThird.id).not.toBe(q2.id);
+      expect(servedThird.id).not.toBe(q1.id);
+
+      // A tutor's flag outranks the count: the approved question goes back to the console, flagged.
+      let flagged = false;
+      for (let i = 0; i < 40 && !flagged; i += 1) {
+        const queue = await unwrap<any>(await admin.request.get('/api/quest/review'), 'queue');
+        if (!queue.item) break;
+        const decision = queue.item.question.id === q1.id ? { decision: 'flag', note: 'Checking the two-answer rule.' } : { decision: 'approve' };
+        await unwrap(await admin.request.post(`/api/quest/review/${queue.item.attempt_id}`, { data: decision }), 'review');
+        flagged = queue.item.question.id === q1.id;
+      }
+      expect(flagged).toBe(true);
+      const after = (await unwrap<any[]>(await platform.request.get(`/api/platform/questions?level_id=${level}&status=flagged&limit=200`), 'flagged')).find(
+        (q) => q.id === q1.id,
+      );
+      expect(after).toMatchObject({ status: 'flagged', approved_via: null });
+    });
+  });
+
   test('the welcome’s streak and words', () => {
     // Today and the two days before: a 3-day streak, safe today.
     expect(questStreak(['2026-10-21', '2026-10-20', '2026-10-19', '2026-10-10'], '2026-10-21')).toEqual({ current: 3, atRisk: false, best: 3 });

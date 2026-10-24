@@ -41,8 +41,12 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'GEO',
 ] as const;
 
-/** Phase 42: how a question came to be approved. */
-export const QUESTION_APPROVED_VIA = ['console', 'quest'] as const;
+/**
+ * How a question came to be approved: 'console' (a platform admin), 'quest' (a tutor confirming a
+ * student's answer, Phase 42) or 'quest_consensus' (2026-10-24: two or more different people answered
+ * it correctly in Question Quest, marked by code; `QUEST_CONSENSUS_CORRECT`).
+ */
+export const QUESTION_APPROVED_VIA = ['console', 'quest', 'quest_consensus'] as const;
 export type QuestionApprovedVia = (typeof QUESTION_APPROVED_VIA)[number];
 
 export const QUESTION_KINDS = ['choice', 'numeric'] as const;
@@ -475,7 +479,7 @@ export interface Question {
   checks: QuestionChecks;
   source: 'ai' | 'manual';
   reviewed_by_name: string | null;
-  /** Phase 42: 'console' (a platform admin) or 'quest' (a tutor in Question Quest); null before. */
+  /** 'console', 'quest' (a tutor in Question Quest) or 'quest_consensus' (two correct answers); null before. */
   approved_via: QuestionApprovedVia | null;
   reviewed_at: string | null;
   times_used: number;
