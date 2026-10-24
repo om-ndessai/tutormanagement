@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlusIcon } from 'lucide-react';
+import { featureOn } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -16,6 +17,7 @@ import { PlanDialog } from '@/features/progress/plan-dialog';
 import { AssignmentDialog } from '@/features/teaching/assignment-dialog';
 import { useUsers } from '@/features/users/api';
 import { UserFormDialog } from '@/features/users/user-form-dialog';
+import { useAuth } from '@/providers/auth-provider';
 import { FlowSteps, StepPanel } from './flow-steps';
 
 type Step = 'family' | 'student' | 'assessment' | 'plan' | 'pairing' | 'done';
@@ -49,6 +51,10 @@ export function StudentFlow({
   /** Back to the wizard's welcome. */
   onBack: () => void;
 }) {
+  // Phase 50: without Tutoring the flow is the family and the student, then an assessment.
+  const { organization } = useAuth();
+  const tutoring = featureOn(organization, 'tutoring');
+  const steps = tutoring ? STEPS : STEPS.filter((s) => s.key === 'family' || s.key === 'student');
   const [step, setStep] = useState<Step>('family');
   const [done, setDone] = useState(new Set<string>());
   const [parent, setParent] = useState<Person | null>(null);
@@ -59,7 +65,7 @@ export function StudentFlow({
   );
 
   const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' });
-  const progress = useStudentProgress(student?.id);
+  const progress = useStudentProgress(tutoring ? student?.id : undefined);
   const assessment = progress.data?.data.assessments[0] ?? null;
 
   function complete(key: Step, next: Step) {
@@ -77,7 +83,7 @@ export function StudentFlow({
 
   return (
     <div className="grid gap-4">
-      <FlowSteps steps={STEPS} current={step} done={done} />
+      <FlowSteps steps={steps} current={step} done={done} />
 
       {step === 'family' && (
         <StepPanel
@@ -146,8 +152,9 @@ export function StudentFlow({
           }
         >
           <p>
-            Linked to {parent.name}. Their school, course, goal for the year and what the family is
-            charged per hour. A child with no email of their own needs none.
+            {tutoring
+              ? `Linked to ${parent.name}. Their school, course, goal for the year and what the family is charged per hour. A child with no email of their own needs none.`
+              : `Linked to ${parent.name}. Their school, course and goal for the year. A child with no email of their own needs none.`}
           </p>
         </StepPanel>
       )}
@@ -211,10 +218,13 @@ export function StudentFlow({
           title={student ? `${student.name} is set up` : 'Nothing added yet'}
           actions={
             <>
-              {student && (
+              {student && tutoring && (
                 <Button variant="outline" onClick={() => onNavigate(`/progress/${student.id}`)}>
                   Open their progress
                 </Button>
+              )}
+              {student && featureOn(organization, 'assessment') && (
+                <Button onClick={() => onNavigate(`/assessments?student=${student.id}`)}>Start an assessment</Button>
               )}
               <Button variant="outline" onClick={() => onNavigate('/users')}>
                 Go to Users
@@ -230,7 +240,9 @@ export function StudentFlow({
         >
           {student ? (
             <p>
-              Anything you skipped can be done from their record, their progress page or Pairings.
+              {tutoring
+                ? 'Anything you skipped can be done from their record, their progress page or Pairings.'
+                : 'Their record is on the Users page.'}
             </p>
           ) : (
             <p>You can add a family and a student from Users at any time.</p>
@@ -244,9 +256,13 @@ export function StudentFlow({
         onOpenChange={(next) => !next && setOpen(null)}
         userId={null}
         preset={{ roles: ['parent'] }}
-        sections={['identity', 'payment-handles']}
+        sections={tutoring ? ['identity', 'payment-handles'] : ['identity']}
         title="New family account"
-        description="The parent or guardian: they sign in with this Google address, and are billed for the lessons."
+        description={
+          tutoring
+            ? 'The parent or guardian: they sign in with this Google address, and are billed for the lessons.'
+            : 'The parent or guardian: they sign in with this Google address.'
+        }
         onSaved={(user) => {
           setParent({ id: user.id, name: user.full_name });
           complete('family', 'student');
@@ -261,12 +277,12 @@ export function StudentFlow({
             roles: ['student'],
             guardians: [{ guardian_user_id: parent.id, relationship: 'guardian', is_primary: true }],
           }}
-          sections={['identity', 'student', 'guardians', 'availability']}
+          sections={tutoring ? ['identity', 'student', 'guardians', 'availability'] : ['identity', 'student', 'guardians']}
           title="New student"
           description={`Linked to ${parent.name}. Change the relationship below if they are the mother or father.`}
           onSaved={(user) => {
             setStudent({ id: user.id, name: user.full_name });
-            complete('student', 'assessment');
+            complete('student', tutoring ? 'assessment' : 'done');
           }}
         />
       )}

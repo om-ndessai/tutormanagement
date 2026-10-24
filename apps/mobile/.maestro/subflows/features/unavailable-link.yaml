@@ -1,0 +1,21 @@
+# Phase 50: open LINK, a screen of a set that is off here, see the calm state (never an error), and
+# go back Home with Go to Home.
+appId: ${APP_ID}
+---
+- runFlow:
+    file: ../open-link.yaml
+    env:
+      LINK: ${LINK}
+- extendedWaitUntil:
+    visible:
+      id: feature-unavailable
+    timeout: 15000
+- assertVisible: 'Not part of this space'
+- assertNotVisible:
+    id: state-error
+- tapOn:
+    id: feature-unavailable-home
+- extendedWaitUntil:
+    visible:
+      id: space-home
+    timeout: 15000

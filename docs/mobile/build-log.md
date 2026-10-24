@@ -2725,3 +2725,575 @@ the encouragement, Beta in More and on the Quest screen; exposure checks: no mon
 game screen or effect; first names only (no surname on the lobby, join sheet or results); keys and
 solutions only on the results, never on the question; a game she is not in reads "not found", never
 forbidden; a single player's game refused in words; favorites the reader's own (cleared per person).
+
+## 62. Phase 50: feature sets — design (2026-10-24)
+**Scope:** the app's half of Phase 50 (`docs/open-signup-plan.md`, "Phase 50: feature sets"; R23). A
+space is ALLOWED some of three sets by platform admins: **Tutoring** (pairings, sessions, schedules,
+locations, payments, Phase 16 progress, comments, the tutor's Home, the dashboard's Tutoring and Finance
+tabs, the tutor role and its sections), **Assessment** (Phases 38-41) and **Quest** (42, 46-48). A set is
+ON when allowed and, for Assessment and Quest, switched on by the space's admins (`canvas_assessments`,
+`gamify_question_quest`); Tutoring has no switch, so allowed means on. Always present: Home, Users, Activity,
+My profile, Organization, curricula, the welcome wizard, Search and sign-in. In the app this work:
+- **The menu and the tab bar** follow the sets. Without Tutoring the bar is Home and More (with the
+  "+" between them for an admin).
+- **Home** in a space without Tutoring is a new **space home**. When Assessment is on, that is the
+  Assessment home. It never calls `/dashboard`.
+- **A screen of a set that is off** (by deep link, an old notification or a stale tab) shows a calm "Not
+  part of this space" state, never a raw error.
+- **The welcome wizard, the tour, the create button, the quick actions and the person form** drop what
+  belongs to Tutoring where it is not allowed.
+- **The Organization screen** shows only the allowed cards.
+- **The console** shows and toggles the three sets per organization.
+
+Left out: renaming "Organization" to "Space" anywhere in the app's labels (Phase 52's copy, with the
+web). The word "space" appears only in the new unavailable state, as the lead asked. No change to what a
+space with all three sets sees: every existing organization is allowed all three, so chmi looks exactly
+as it does today.
+
+**Web sources:** none are built yet. The lead's contract is in `packages/shared/src/features.ts`:
+- `FEATURE_SETS`, `FeatureSet`, `FEATURE_SET_LABELS`;
+- `featureAllowed(org, set)` and `featureOn(org, set)`, both false for a null org;
+- the destinations each set owns, and `TUTORING_ROLES`;
+- `Organization` / `OrganizationListItem` gain `feature_tutoring`, `feature_assessment` and `feature_quest`;
+- `organizationFeaturesSchema`.
+
+The web's menu, Assessment home, wizard, user form, Organization page and console (as the lead describes
+them) are the pattern. The developer re-reads the web files once they land and ports anything that
+differs, with the `@ <sha>` comment.
+
+**The one rule for the app:** every decision reads `featureAllowed` / `featureOn` from `@tmi/shared`, never
+a `feature_*` or switch column directly. Today's direct reads move onto the helpers:
+`organization?.gamify_question_quest` in `quest/quest-landing.tsx`, the `feature: NavFeature` filter in
+`nav-items.ts`, and `organization?.canvas_assessments` wherever it gates a screen. Reading
+`canvas_assessments_unreviewed` and `canvas_assessment_questions` as settings stays.
+
+**Endpoints:**
+- **No new read in an organization.** The Assessment home is built from two reads the app already makes:
+  - `GET /canvas-assessments`, `useCanvasAssessments` (key `['canvas-assessments','list']`): up to 100 rows,
+    newest first, scoped by the server (an admin: all; a parent: their children; a student: their own).
+  - `GET /users?role=student&limit=100&sort=full_name&order=asc`, `useUsers` with the same params as
+    `StartCard`, so the two share one cache entry. It is not enabled for a reader who is only a student.
+- `GET /canvas-assessments/levels` (`useCanvasAssessmentLevels`) is read only by the Assessment screen, as
+  now, not by Home: counting the bank is the heavy read.
+- `PUT /platform/organizations/:id/features {feature_tutoring, feature_assessment, feature_quest}`, the new
+  `useUpdateOrganizationFeatures(id)` in `features/platform/api.ts`. It always sends all three. It
+  invalidates `platformKeys.organizations`. Platform admins only.
+- `POST /platform/organizations`: the existing `useCreateOrganization`, whose body gains the three
+  booleans (`formToInput`).
+- **Refusals:**
+  - Every route of an off set answers 403 `feature_unavailable`: Tutoring's `/assignments /sessions
+    /schedules /locations /payments /progress /comments /home /dashboard`, Assessment's
+    `/canvas-assessments`, Quest's `/quest`.
+  - `/users` answers 400 `feature_unavailable` for the tutor role or tutor sections.
+  - `/organization/settings` refuses a switch for a set that is not allowed.
+  - The app treats all of these as below (Exposure, and "The calm state").
+- **Stopped where Tutoring is off,** so the app does not fire requests the server will refuse:
+  - `useActiveSession` (`teaching/api.ts`, polled every 30 s by `LiveSessionHost` on every screen) gains
+    `enabled: featureOn(organization, 'tutoring')` inside the hook, so every caller is covered.
+  - The create sheet's `useAssignments({ tutor_user_id })` is enabled only with Tutoring.
+  - `useDashboard`, `useNowState`, `LessonReminderSheet` and `useToday` are never mounted there: the space
+    home replaces `DashboardScreen`.
+  - `QuestLanding` reads `/quest/*` only while Quest is on (it already checks; it moves onto `featureOn`).
+
+**Screens & routes:**
+- **`src/features/shell/nav-items.ts`.**
+  - `NavItem.feature?: NavFeature` becomes `set?: FeatureSet`: `/sessions`, `/schedule`, `/progress`,
+    `/analytics`, `/pairings`, `/locations`, `/billing` and `/comments` are `'tutoring'`; `/assessments`
+    is `'assessment'`; `/quest` is `'quest'`. Home, Users, Activity, My profile and Organization have
+    none.
+  - `visibleNavItems(roles, organization)` keeps an item when `!item.set || featureOn(organization,
+    item.set)`.
+  - A jest test checks each item's `set` against the shared helper's list of what each set owns, so the
+    two menus cannot drift.
+  - Search takes its pages from `useNavItems`, so it follows with no change of its own.
+- **The tab bar.**
+  - New `visibleTabs(organization): TabName[]` (exported from `app-tab-bar.tsx`): `['dashboard',
+    'sessions', 'progress', 'more']` with Tutoring on, `['dashboard', 'more']` without it.
+  - `AppTabBar` filters `state.routes` by it, in place of `route.name in TAB_ITEMS`. The tabs layout
+    keeps declaring all five routes: expo-router needs them for deep links, and the gate below answers
+    them.
+  - `CREATE_SLOT` becomes `createSlot(count) = Math.floor(count / 2)`. That is 2 with four tabs, as today,
+    and 1 with two, so the "+" stays centred.
+  - Assessment and Quest stay under More in every combination, so no route moves and the take and review
+    screens keep their full-screen presentation. In an Assessment-only space Home IS the Assessment
+    home, so an Assessment tab would repeat it.
+- **What each combination shows** (A = Assessment, Q = Quest; "on" is the effective rule):
+
+  | Tutoring | A | Q | Tabs | Home | More (beyond Users, Activity, My profile, Organization*) |
+  | --- | --- | --- | --- | --- | --- |
+  | on | any | any | Home, Sessions, Progress, More | today's `DashboardScreen`, unchanged | as today, Assessment / Quest when on |
+  | not allowed | on | off | Home, More | Assessment home | Assessment |
+  | not allowed | on | on | Home, More | Assessment home, then the Quest card | Assessment, Quest |
+  | not allowed | off | on | Home, More | the Quest card | Quest |
+  | not allowed | allowed, switched off | any | Home, More | the "switched off" card (+ Quest card if on) | as the switches say |
+  | not allowed | not allowed / off | off | Home, More | the empty space home | — |
+
+  \* Organization is admin-only, as now. The bar's "+" appears for anyone `hasCreateActions` says (below).
+- **`app/(org)/(tabs)/dashboard/index.tsx`** renders `<QuestLanding />` and then
+  `featureOn(organization, 'tutoring') ? <DashboardScreen /> : <SpaceHomeScreen />`.
+- **New `src/features/dashboard/space-home-screen.tsx`, `SpaceHomeScreen`.**
+  - `Screen testID="screen-home"`, as today, so every flow that waits for Home still works, with
+    pull-to-refresh invalidating `['canvas-assessments']` and `['users']`.
+  - Header: `SearchButton` and `AccountButton`. No "view as": that reads `/dashboard`.
+  - `<Greeting />`, then the sections below.
+  - It calls `publishHomeRole(null)`, because there are no role chips: the space home is the same for
+    every role.
+  - It calls `reportDashboard({ role: primaryRole(user.roles), viewingAs: false })`, so the wizard and
+    the tour start as they do on the dashboard.
+  - Root view `testID="space-home"`.
+- **New `src/features/dashboard/assessment-home.tsx`, `AssessmentHome`.** Three `Panel`s, most important
+  first:
+  1. **Students** (`testID="assess-home-students"`, `tourId="dash-assess-students"`).
+     - The title is "Students" for an admin, "Your children" for a parent, and "Your assessments" for a
+       reader who is only a student.
+     - One row per student (`assess-home-student-<id>`): the name, then a status line (`assess-home-status-<id>`)
+       from that student's latest non-discarded row:
+       - "In progress, started Oct 22" (the reader can Continue: the button becomes **Continue**,
+         `assess-home-continue-<id>`, to `/assessments/[id]`);
+       - "Submitted Oct 22, waiting for review";
+       - "Review in progress" (`review_draft`, reviewers only);
+       - "Reviewed Oct 23";
+       - or "No assessment yet".
+     - Each row has **Start an assessment** (`assess-home-start-<id>`), which pushes
+       `{ pathname: '/assessments', params: { student: id } }`.
+     - A student-only reader gets one row, their own.
+     - More than 10 students: the first 10, then "Show all N" (`assess-home-students-more`), in place.
+     - No students: "No students yet.", plus **Add a student** (`/add-student`) for an admin.
+  2. **Waiting for review** (`assess-home-waiting`, `tourId="dash-assess-waiting"`).
+     - Shown only when the reader is an admin or any row has `can_review`; a parent never sees it.
+     - Rows: `can_review && status === 'submitted' && !reviewed_at`, oldest submitted first, at most 5.
+     - Each row: student, `levelLabel(level_id)`, "submitted 2 days ago", and the `rowActions` review
+       label (Review / Continue review), `assess-home-review-<rowId>`, to `/assessments/review/[id]`.
+     - Empty: "Nothing waiting for review."
+  3. **Recent assessments** (`assess-home-recent`, `tourId="dash-assess-recent"`).
+     - The 5 newest non-discarded rows, drawn by `AssessmentRow`, which `assessments-screen.tsx` now exports
+       unchanged. Its buttons are already the server's (`can_continue`, `can_review`, `reviewed_at`).
+     - Then **All assessments** (`assess-home-all`) to `/assessments`.
+     - Empty: "No assessments yet."
+- **The other space-home cards** (`space-home-screen.tsx`):
+  - **Quest card** (`space-home-quest`), while Quest is on: "Question Quest" with one line and **Open
+    Quest** (`space-home-quest-open`) to `/quest`.
+  - **Switched-off card** (`space-home-assessment-off`), when Assessment is allowed but its switch is
+    off. It reads "Assessment isn't switched on yet." An admin also gets **Open Organization**
+    (`space-home-organization`); anyone else gets "The office can switch it on."
+  - **Empty space home** (`space-home-empty`), an `EmptyState`: "Nothing is switched on in
+    {brand.short} yet." An admin gets **Open Organization** when anything is allowed but off.
+- **New `src/features/dashboard/assessment-home-model.ts`** (pure, tested):
+  - `latestByStudent(rows)`: a map from student id to their newest row by `started_at`, discarded rows
+    skipped;
+  - `studentStatusLine(row | undefined, timeZone, now)`;
+  - `waitingForReview(rows)`;
+  - `recentAssessments(rows, 5)`.
+- **The Assessment screen** (`assessments-screen.tsx`) takes `?student=`.
+  - `AssessmentsScreen` reads `useLocalSearchParams<{ student?: string }>()` and passes it to `StartCard`
+    as `initialStudentId`.
+  - `StartCard` seeds `studentId` with it, but only once it is among `studentList`; otherwise it is
+    ignored, never trusted.
+  - With a student chosen, the level picker opens by itself (`defaultOpen`).
+- **New `src/features/shell/feature-gate.tsx`.**
+  - **`FeatureGate`**: `<FeatureGate set="tutoring" | "assessment" | "quest" presentation="screen" |
+    "sheet">{children}</FeatureGate>`. It renders its children while `featureOn(organization, set)`;
+    otherwise `FeatureUnavailable`.
+  - **`FeatureUnavailable`** is a `Screen testID="screen-feature-unavailable"` holding an `EmptyState
+    testID="feature-unavailable"`, icon `puzzle-outline`, title **"Not part of this space"**. The body
+    depends on why:
+    - not allowed: "{FEATURE_SET_LABELS[set]} isn't part of {brand.short}.";
+    - allowed but switched off: "{label} is switched off in {brand.short}." An admin also gets **Open
+      Organization** (`feature-unavailable-organization`).
+  - Its action:
+    - on a screen: **Go to Home** (`feature-unavailable-home`), `router.navigate('/dashboard')`;
+    - in a sheet (`presentation="sheet"`): **Close** (`feature-unavailable-close`), `router.back()`.
+  - No haptic, no toast, no error colour.
+  - It never renders its children first, so a gated screen's queries never fire.
+- **The route files wrapped in `FeatureGate`** (the route files stay thin; the gate is one line around
+  what each renders):
+  - **Tutoring, screens:**
+    - `(tabs)/sessions/index.tsx`, `(tabs)/sessions/[id].tsx`, `(tabs)/schedule/index.tsx`,
+      `(tabs)/progress/index.tsx`, `(tabs)/progress/[studentId].tsx`;
+    - `analytics.tsx`, `billing.tsx`, `pairings.tsx`, `locations.tsx`, `comments.tsx`;
+    - the step flows `record-lesson.tsx`, `schedule-lesson.tsx` and `add-tutor.tsx`;
+    - `onboarding/tutor.tsx` and `onboarding/add-tutor.tsx`.
+  - **Tutoring, sheets** (`presentation="sheet"`): `record-session.tsx`, `record-as-planned.tsx`,
+    `start-lesson.tsx`, `stop-lesson.tsx`, `cancel-lesson.tsx`, `schedule-form.tsx`, `assignment-form.tsx`,
+    `location-form.tsx`, `payment-form.tsx`, `form-1099.tsx`, `assessment-form.tsx` (Phase 16's),
+    `plan-form.tsx`, `assess-session.tsx`, `reflection.tsx`, `comments-thread.tsx` and `view-as.tsx`.
+  - **Assessment:** `assessments/index.tsx`, `assessments/[id].tsx`, `assessments/review/[id].tsx` and
+    `assessments/pdf/[id].tsx`.
+  - **Quest:** `quest/index.tsx`, `quest/play.tsx`, `quest/review.tsx`, `quest/games/[gameId].tsx` and
+    `quest/new-game.tsx`, plus `quest/join-game.tsx` as a sheet. Play, review and the game are
+    full-screen modals with no tab bar, so their Go to Home also dismisses them: `router.dismissAll()`,
+    then navigate.
+  - A jest test walks `src/app/(org)` and fails on a route file named in the set lists (kept as a table
+    in `feature-gate.tsx`: `GATED_ROUTES`) that does not render `FeatureGate`. A new route then has to
+    choose.
+- **A set switched off while the app is open** (a platform admin disallows it, or the space's admins
+  switch it off). The session's organization is stale, so the gate still lets a screen through, and its
+  query answers 403 `feature_unavailable`.
+  - `src/lib/events.ts` gains `'feature-unavailable'`.
+  - `api-client.ts` emits it on that code, beside `organization-required`.
+  - `AuthProvider` handles it with `refreshSession()`, at most once every 10 s. The menu, the bar and
+    every gate then follow, and the open screen turns into the calm state.
+  - **`ErrorState`**, for any `ApiRequestError` with code `feature_unavailable`, renders the same calm
+    words ("Not part of this space", `testID="state-feature-unavailable"`) with no Try again. No screen
+    ever shows "forbidden" for a set.
+  - `ERROR_CODES` needs `'feature_unavailable'`, which is the lead's to add in shared.
+- **The create button** (`create-actions.ts`).
+  - `createActions(roles, ctx, sets)` and `hasCreateActions(roles, sets)` take `sets: { tutoring: boolean;
+    assessment: boolean }`, computed by the callers from `featureOn`. The sets are fixed per session, so
+    the bar still never flickers.
+  - Without Tutoring, `record-session`, `start-lesson`, `schedule-lesson`, `add-tutor` and
+    `record-payment` are gone.
+  - A new **`start-assessment`** action ("Start an assessment", "Handwritten, one question a page.",
+    icon `draw-pen`, href `/assessments`) is offered to an admin only when Tutoring is off and Assessment
+    is on.
+  - A Tutoring-off admin's sheet is therefore Start an assessment, Add a student, Add someone else (or
+    the last two without Assessment).
+  - Parents and students still get no "+", and so a flat bar. They start an assessment from Home's rows.
+  - `useTabBarHump` passes the sets.
+  - The rows keep their testIDs, `create-action-<id>`.
+- **The quick actions** (`quick-actions.ts`). `quickActionItems(roles, organization)` and
+  `quickActionRoute(id, roles, organization)` return `[]` / `null` without Tutoring. `OrgLayout` passes
+  the organization, so a tutor who enters an Assessment-only space has the icon's actions cleared.
+- **The welcome wizard and the tour.**
+  - **`wizard-screens.tsx` `WelcomeScreen`:**
+    - "Add a tutor" shows only where Tutoring is allowed.
+    - Without Tutoring, "Add a student" reads "Create or pick the family, add the student, then start
+      their first assessment." (Assessment on) or "Create or pick the family, then add the student."
+      (off).
+    - The admin's description drops "or tutor".
+  - **`student-flow.tsx`:** `STEPS` becomes `studentFlowSteps(sets)`:
+    - with Tutoring: unchanged (Family and student, Assessment, Learning plan, Tutor);
+    - without Tutoring, with Assessment on: Family and student, then **Start an assessment** (step key
+      `start`, panel `student-flow-start`, button `student-flow-start-assessment`), which leaves the
+      wizard for `/assessments?student=<id>` (`leaveFor`);
+    - without either: Family and student alone.
+    - The done panel offers **Open their progress** only with Tutoring. Without it, **Open their
+      assessments** (`student-flow-open-assessments`) when Assessment is on.
+  - **`tour-steps.ts`:**
+    - New `tourStepsFor(role, organization)` replaces `TOUR_STEPS[role]` in `onboarding-provider.tsx`.
+    - With Tutoring, it is today's steps less any `nav-*` step whose item is not in `visibleNavItems`.
+    - Without Tutoring, it is new `SPACE_TOUR_STEPS[role]`, filtered the same way:
+      - admin: `dash-assess-students`, `dash-assess-waiting`, `nav-assessments`, `nav-quest`, `nav-users`,
+        `nav-activity`, `nav-organization`, `getting-started`;
+      - parent: `dash-assess-students` ("Your children"), `dash-assess-recent`, `nav-assessments`,
+        `nav-profile`;
+      - student: `dash-assess-students`, `nav-assessments`, `nav-quest`, `nav-profile`;
+      - a tutor (a held role in a disallowed space): the student's list with the admin's wording.
+    - Copy speaks of "the office", never a name.
+  - **Tour placement:** `placementOf(target, tabs)` and `tabRect(index, count, …)` take the visible tabs
+    (`visibleTabs(organization)`): More is `tabs.indexOf('more')`, and `TAB_COUNT` becomes
+    `tabs.length`.
+- **The person form and the record.**
+  - **`role-selector.tsx`:** `RoleSelector` gets `roles = USER_ROLES` filtered by `featureAllowed(org,
+    'tutoring')`, so there is no `person-role-tutor` without Tutoring.
+  - **`people-filters.tsx`:** the Tutor chip is dropped the same way.
+  - **`person-form.tsx`:** hides the tutor blocks, the student's Lessons and price (charge rates, max
+    session length, virtual), Availability and Payment handles where Tutoring is not allowed.
+  - **`person-form-model.ts` `toRequest(form, today, { tutoring })`:** without Tutoring it OMITS the
+    `tutor_profile`, `payment_handles` and `availability` keys, never sending `null` or `[]`, which would
+    delete what is kept.
+    - It keeps the student profile's hidden charge and limit fields at their loaded values (a create
+      sends them empty).
+    - It keeps a held `tutor` role in `roles` unchanged, so an edit never drops a kept tutor's role or
+      profile (see the questions below).
+  - **`add-student-flow.tsx`:** without Tutoring the steps are `family`, `student`, `school`, then the
+    review; `availability`, `lessons` and `price` are left out.
+  - **`add-person-done.tsx`:** `nextSteps('student', id, sets)` without Tutoring is one step, **Start an
+    assessment** (`add-person-done-start-assessment`). That is a navigation to `/assessments?student=<id>`
+    after closing the flow, not a form-bridge sheet. It is none when Assessment is off.
+  - **`record-sections.ts`:** `recordSections(person, reader, { tutoring })` drops `availability`,
+    `teaching`, `lessons`, `pay` and `payment` without Tutoring.
+  - **`user-detail-view.tsx`:** the Locations and Comments sections need Tutoring.
+  - **`user-detail-screen.tsx`:** the menu's Record a payment items need Tutoring.
+  - **`search-model.ts`:** `personHref(person, isAdmin, tutoring)` opens a student's record, not
+    `/progress/[studentId]`, without Tutoring.
+- **The Organization screen** (`organization-settings-screen.tsx`):
+  - The 1099 payer form (`org-payer`) shows only with Tutoring allowed. So does its `SecureMoney` tag,
+    since there is no money on the screen without it.
+  - `CanvasAssessmentsCard` (`org-assessments`) shows only with Assessment allowed, and
+    `GamificationCard` (`org-gamification`) only with Quest allowed.
+  - Notifications and Curricula always show.
+  - "Set by the platform" gains `Fact label="Feature sets"` (`org-features`): the allowed sets'
+    labels, joined ("Assessment", or "Tutoring, Assessment and Quest").
+- **The console.**
+  - **`organizations-screen.tsx`:** `orgSummary` appends " · " and the allowed sets ("Tutoring,
+    Assessment", or "No feature sets").
+  - **`organization-detail-screen.tsx`:** a new **Feature sets** section (`features/platform/features-section.tsx`,
+    `testID="platform-org-features"`) between the details card and `LogoSection`.
+    - Three rows, each the set's label, one plain line of what it holds, and a `Switch`
+      (`platform-org-feature-<set>`, `accessibilityLabel` "Allow <label>").
+    - Allowing saves at once.
+    - Disallowing first asks with a native `Alert`: "Disallow Tutoring in <short_name>? Everyone there
+      stops seeing it, admins included. Nothing is deleted; allowing it again brings it back."
+    - Each save sends all three, through `useUpdateOrganizationFeatures`. The switch moves at once and
+      settles on the reply, as `GamificationCard` does.
+    - It toasts "Allowed Quest." / "Disallowed Tutoring.", or the server's message.
+    - On an archived organization the switches are disabled.
+  - **`organization-form-sheet.tsx`, creating only:** three `CheckRow`s, all ticked by default
+    (`org-form-feature-<set>`). `OrgFormState` gains `features: Record<FeatureSet, boolean>`, and
+    `formToInput` sends them on create only. Editing leaves them to the section.
+
+**Components:**
+- **New:** `shell/feature-gate.tsx` (`FeatureGate`, `FeatureUnavailable`, `GATED_ROUTES`);
+  `dashboard/space-home-screen.tsx`; `dashboard/assessment-home.tsx`; `dashboard/assessment-home-model.ts`;
+  `platform/features-section.tsx`.
+- **Reused:** `Screen`, `Panel`, `EmptyState`, `OutlinedCard`, `ListItem`, `BadgePill` (Beta on the
+  Assessment home's title, as on its screen), `AssessmentRow` (newly exported), `Greeting`,
+  `SearchButton`, `AccountButton`, `useCanvasAssessments`, `useUsers`, `rowActions` / `statusLabel`
+  (`review-model.ts`), `levelLabel` (shared).
+- Nothing is copied from the Assessment screen: the home links into it.
+
+**Interaction & motion:**
+- No new motion. The space home enters as every tab screen does, and its panels replace a
+  `DashboardSkeleton` as Home's do now.
+- Haptics: `selection` on Start / Continue / Review / Open Quest, as the rows elsewhere. None on the
+  unavailable state.
+- Reduce motion changes nothing here.
+- Large text: the status line wraps under the name, and the row's button drops below it (`AdaptiveRow`).
+- Targets stay ≥ 44 pt / 48 dp.
+
+**Exposure checks:**
+- **R23.** A set that is not allowed is invisible to every reader, admins included:
+  - no menu item, tab, create action, quick action, tour step, wizard step, Organization card, role card
+    or person-form block;
+  - its screens show the calm state and never fire their queries;
+  - a 403 from a stale session shows the same words, never "forbidden".
+- **The app only hides; the server decides.** `featureOn` and `featureAllowed` narrow, never widen. Who
+  reviews, continues or opens a PDF on the Assessment home is still `can_review` / `can_continue`
+  (R17). A parent sees their children's rows and the reviewed PDF only once it exists, and never the
+  Waiting panel.
+- **Money.** None on the space home, the Assessment home or the unavailable state. Without Tutoring the
+  Organization screen has no payer card, so there is no `SecureMoney` there. The 1099 sheet is gated, and
+  the SSN path is unchanged.
+- **No SSN** in any new field, param or log: the new params are a student id and a set name.
+- **Organization.** Both reads already carry `X-Organization`. `?student=` is checked against the
+  reader's own student list before use. The cache is cleared on a switch, as now. The console's toggle
+  reads nothing inside the organization (R14): it writes three booleans and reads back the list it
+  already shows.
+- **Names.** `brand.short` in every new sentence; no organization's name in code. Colours only from
+  `useAppTheme()`.
+- **System surfaces.** The quick actions are cleared without Tutoring. Nothing new reaches a
+  notification, widget or the app switcher.
+
+**testIDs:**
+- Space home: `screen-home`, `space-home`, `space-home-quest`, `space-home-quest-open`,
+  `space-home-assessment-off`, `space-home-organization`, `space-home-empty`.
+- Assessment home:
+  - `assess-home-students`, `assess-home-student-<id>`, `assess-home-status-<id>`,
+    `assess-home-start-<id>`, `assess-home-continue-<id>`, `assess-home-students-more`;
+  - `assess-home-waiting`, `assess-home-review-<rowId>`;
+  - `assess-home-recent`, `assess-home-all`.
+- The calm state: `screen-feature-unavailable`, `feature-unavailable`, `feature-unavailable-home`,
+  `feature-unavailable-close`, `feature-unavailable-organization`, `state-feature-unavailable`.
+- Create and wizard: `create-action-start-assessment`; `student-flow-start`,
+  `student-flow-start-assessment`, `student-flow-open-assessments`, `flow-step-start`;
+  `add-person-done-start-assessment`.
+- Organization screen: `org-features`.
+- Console: `platform-org-features`, `platform-org-feature-tutoring|assessment|quest`,
+  `org-form-feature-tutoring|assessment|quest`.
+- Existing IDs the flows assert absent: `tab-sessions`, `tab-progress`, `more-nav-billing`,
+  `more-nav-assignments`, `more-nav-comments`, `more-nav-analytics`, `more-nav-locations`,
+  `more-nav-quest`, `person-role-tutor`, `org-payer`, `org-gamification`, `onboarding-choice-tutor`,
+  `create-action-record-session`.
+
+**Tests:**
+- **The seed** (the lead's) adds organization `assess`: allowed Assessment alone, `canvas_assessments`
+  on, admin `ines.ferreira.assess@gmail.com`, parent `omar.haddad.assess@gmail.com`, and their child with
+  no email. Riverside is allowed Tutoring and Assessment, not Quest.
+- **New Maestro scripts:**
+  - `.maestro/scripts/reset-features.js`, run on flow start and complete by every `features/*` flow. As
+    Nav (`ndessai@gmail.com`), it PUTs the seeded sets back: chmi all three, riverside Tutoring +
+    Assessment, assess Assessment. As Ines it PATCHes assess's `canvas_assessments: true` and discards
+    assess's in-progress assessments. Localhost only, errors tolerated, like `clean-platform.js`.
+  - `seed-canvas-assessment.js` gains optional env (`ORG`, `ADMIN`, `STUDENT_ID`). Without `STUDENT_ID`,
+    it takes the first student from `GET /users?role=student`. The defaults stay chmi/Priya/Sofia, so
+    the existing review flows are untouched.
+- **Flows in `apps/mobile/.maestro/flows/features/`,** each signing in through `subflows/sign-in-as.yaml`
+  (`ORG: assess` unless said):
+  - **`assess-home.yaml`** (tags `smoke`, `feature`; the main path, a few seconds). Ines:
+    - waits for `screen-home` and `space-home`; asserts `assess-home-students`, one
+      `id: 'assess-home-student-.*'`, `assess-home-waiting` and `assess-home-recent`;
+    - the bar: asserts `tab-dashboard` and `tab-more`, and asserts not visible `tab-sessions` and
+      `tab-progress`;
+    - **More:** `more-nav-assessments`, `more-nav-users`, `more-nav-activity` and `more-nav-organization`
+      present; `more-nav-billing`, `more-nav-assignments`, `more-nav-comments`, `more-nav-analytics`,
+      `more-nav-locations` and `more-nav-quest` absent;
+    - taps `create-button` and asserts `create-action-start-assessment`, `create-action-add-student` and
+      `create-action-add-person`, with `create-action-record-session` absent; dismisses.
+    - Changes nothing.
+  - **`assess-start.yaml`.**
+    - Omar (parent): Home shows his child's row with "No assessment yet" (the status id by regex) and no
+      `assess-home-waiting`.
+    - Taps `id: 'assess-home-start-.*'`, lands on `screen-assessments` with the student chosen and the
+      level list open, picks a level the sample bank covers for assess's curricula (NC26.4 if assess
+      offers NC 2026), taps `assessment-begin`, and reaches `screen-assessment-take`.
+    - Closes it; Home's status reads "In progress…" and offers Continue.
+    - `reset-features.js` discards it afterwards.
+  - **`assess-review.yaml`.** `seed-canvas-assessment.js` (env `ORG=assess`, `ADMIN=ines…`) submits
+    one. Ines's `assess-home-waiting` lists it, and `id: 'assess-home-review-.*'` opens
+    `screen-assessment-review`. Back on Home, Recent shows it as "Submitted". She does not save the
+    review.
+  - **`deep-link.yaml`.** Ines opens links through `subflows/open-link.yaml`:
+    - `aimtrue://sessions`, `aimtrue://billing`, `aimtrue://pairings` and `aimtrue://quest` each show
+      `feature-unavailable` with "Not part of this space", then `feature-unavailable-home` returns to
+      `space-home`;
+    - `aimtrue://record-lesson` shows the calm state in its step flow; `aimtrue://start-lesson` shows it
+      in the sheet, and `feature-unavailable-close` closes it;
+    - no `state-error` appears at any point.
+  - **`wizard.yaml`** (`FRESH=1`). Ines:
+    - the welcome shows `onboarding-choice-student`, with `onboarding-choice-tutor` absent;
+    - the student flow shows `flow-step-student` and `flow-step-start`, with `flow-step-assessment`
+      absent;
+    - Add the student opens the add-student step flow, whose steps are family, student, school, then
+      review (no availability, lessons or price);
+    - she closes it unsaved.
+  - **`person-form.yaml`.** Ines, through More → Users → the "+" → Add someone else:
+    - no `person-role-tutor`;
+    - ticking Student shows no charge-rate or session-limit field (`person-student-limit` absent);
+    - the Users filter has no Tutor chip.
+    - Unsaved.
+  - **`organization.yaml`.** Ines, at `aimtrue://organization`:
+    - `org-assessments` present; `org-gamification` and `org-payer` absent;
+    - `org-features` reads "Assessment".
+    - Then Rosa (riverside admin): `org-payer` and `org-assessments` present, `org-gamification`
+      absent, and More has no `more-nav-quest`.
+  - **`console.yaml`.** Nav, in the console:
+    - riverside's row summary ends "Tutoring, Assessment";
+    - its detail shows `platform-org-features`, with `platform-org-feature-quest` off;
+    - switching it on toasts "Allowed Quest.";
+    - switching it off asks, then confirming toasts "Disallowed Quest.".
+    - The create form shows three ticked `org-form-feature-*` (not saved; `platform/organizations.yaml`
+      owns creating).
+    - `reset-features.js` around it.
+  - **`unchanged.yaml`.** Priya (chmi) still has `tab-sessions` and `tab-progress`, and Home is
+    `DashboardScreen` (`dashboard-heading` or the tutoring tab), not `space-home`. This guards the
+    default.
+- **Existing flows to touch:** none should need it, since chmi and riverside keep Tutoring. Two need
+  checking:
+  - `shell/navigation`: its tab count;
+  - `onboarding/*`: the tour's step count on riverside, where the Quest step is now dropped.
+- **Jest:**
+  - `nav-items.test.ts`:
+    - each item's `set` matches the shared helper;
+    - an Assessment-only admin gets Home, Assessment, Users, Activity, My profile and Organization;
+    - a parent there gets Home, Assessment, Users, Activity and My profile;
+    - fixtures gain the `feature_*` fields, because the old partial `{ canvas_assessments: true }` would
+      now be off.
+  - `app-tab-bar.test.tsx`: `visibleTabs` is four with Tutoring and two without; `createSlot(2) === 1`;
+    no `tab-sessions` without Tutoring.
+  - `create-actions.test.ts`:
+    - without Tutoring: an admin gets start-assessment, add-student and add-person; without Assessment
+      as well, add-student and add-person;
+    - a parent gets none;
+    - `hasCreateActions` agrees with `createActions`.
+  - `quick-actions.test.ts`: empty without Tutoring.
+  - `tour-steps.test.ts` (new):
+    - `tourStepsFor` drops a disallowed set's `nav-*` steps;
+    - without Tutoring it uses the space steps;
+    - `placementOf('nav-assessments', ['dashboard','more'])` is the More tab at index 1.
+  - `assessment-home-model.test.ts` (new):
+    - `latestByStudent` skips discarded rows and picks the newest;
+    - each `studentStatusLine` wording;
+    - `waitingForReview` takes `can_review` and submitted rows, not reviewed ones, oldest first, at
+      most 5;
+    - `recentAssessments` takes the 5 newest non-discarded.
+  - `space-home.test.tsx` (new):
+    - an Assessment-only admin sees the three panels, and the mocked `apiClient` never sees a
+      `/dashboard`, `/sessions` or `/home` path;
+    - a parent sees no Waiting panel;
+    - Assessment allowed but off shows `space-home-assessment-off`, with the Organization button for an
+      admin only;
+    - nothing on shows `space-home-empty`;
+    - Quest on shows `space-home-quest`.
+  - `feature-gate.test.tsx` (new):
+    - children render when the set is on;
+    - when it is off, the calm state renders with `brand.short`, the children never mount, and a sheet
+      gets Close;
+    - allowed-but-off wording, and the admin's Organization button;
+    - a route-table test: every file in `GATED_ROUTES` imports `FeatureGate`.
+  - `state-views` (in `feature-gate.test.tsx`): `ErrorState` with a `feature_unavailable` error shows
+    `state-feature-unavailable` and no Try again.
+  - `api-client.test.ts`: a 403 `feature_unavailable` emits `'feature-unavailable'`.
+  - `auth-provider.test.tsx`: that event refreshes the session, at most once in 10 s.
+  - `person-form-model.test.ts`: without Tutoring, `toRequest` has no `tutor_profile`, `payment_handles`
+    or `availability` key and keeps a held tutor role.
+  - `person-form.test.tsx`: no tutor role card and no student price fields.
+  - `add-student-flow.test.tsx`: three steps without Tutoring.
+  - `flow-steps.test.tsx` / a new `student-flow` test: `studentFlowSteps` for the three cases.
+  - `record-sections.test.ts`: the Tutoring sections dropped.
+  - `organization-views.test.tsx`: cards per allowed set, and `org-features`.
+  - `platform-model.test.ts`: `orgSummary` with the sets.
+  - `platform-views.test.tsx`: the switches; disallowing asks first; the PUT body carries all three.
+- **Then:** `npm run mobile:typecheck`, `mobile:lint`, `mobile:test`, `mobile:export`, the `features/`
+  flows on iOS and Android, and `npm run smoke -- mobile` on both, since Phase 50 changes the API and the
+  shared contract.
+
+**Risks / open questions:**
+1. **An app against a server without the columns.** `featureAllowed` must treat a missing `feature_*`
+   as allowed (`!== false`), with only a null organization false. Otherwise a new build reading a Worker
+   from before Phase 50 (the demo between deploys, or a compat run) hides Tutoring from everyone. This is
+   the lead's helper; the app does not work around it.
+2. **A held tutor role in a space without Tutoring.** The design keeps the role in the PATCH's `roles`
+   and omits `tutor_profile`, `payment_handles` and `availability`. That is safe only if `/users`
+   refuses ADDING the tutor role, not an unchanged one already held. If it refuses any `tutor` in
+   `roles`, every edit of such a person fails. If the app dropped the role instead, the server's profile
+   cleanup would delete the kept tutor profile, against "Disallowing keeps the data". The lead to
+   confirm which.
+3. **Does `requireOrg` still report `tutor` in `c.get('user').roles` there,** and do `/users` reads
+   still list it? If so, the app shows it on badges. The design hides the Tutor chip and role card but
+   does not rewrite badges. The lead to say whether the server strips it (preferred, as R23 says
+   "invisible").
+4. **A kept tutor's students.** `studentScopeSql` reads `assignments` directly, so a kept tutor in a
+   disallowed space would still see "their" students on the Assessment home and could open their
+   submitted PDFs (`can_review`). R23 says kept data reaches nobody. Probably the server should not count
+   pairings where Tutoring is not allowed. This is the lead's call; the app follows `can_review`
+   whatever it is.
+5. **The level for `assess-start`.** It needs a level with questions in the sample bank, on a
+   curriculum `assess` offers. The flows assume NC 2026 G4 (`NC26.4`). Change the flow if the seed's
+   offering differs.
+6. **Assessment as a tab.** It is deliberately not one: Home is the Assessment home. If the owner wants
+   one in an Assessment-only space, `assessments/` must move under `(tabs)`, and the take and review
+   screens must keep their full-screen presentation outside it. That is a larger change, so it is left
+   out.
+
+**Build note (2026-10-24).** Built in the p50 worktree from this entry, with the lead's server and shared
+contract (`packages/shared/src/features.ts`) as final; the web's working-tree files were the wording's
+source.
+- **As designed:** `nav-items.ts` (`set`), `visibleTabs` / `createSlot`, `createActions(…, sets)` with
+  `start-assessment`, `quickActionItems(roles, organization)`, `tourStepsFor` / `SPACE_TOUR_STEPS` and
+  `placementOf(target, tabs)`, `FeatureGate` / `FeatureUnavailable` / `GATED_ROUTES` (a fourth
+  presentation, `modal`, for Quest's full-screen routes: Go to Home dismisses first), the
+  `feature-unavailable` event (api-client → `AuthProvider`, 10 s), `ErrorState`'s calm words, the space
+  home and the Assessment home with its pure model, `?student=` on the Assessment screen, the person form,
+  record, add-student and wizard changes, the Organization screen's cards and `org-features`, and the
+  console's Feature sets section and create ticks.
+- **Differences from the design:**
+  - `useActiveSession` reads the session through a new `useOptionalAuth()`, so tests that render without
+    the provider still poll;
+  - `useUpdateOrganizationFeatures()` takes `{ id, input }` per call, as the web's does;
+  - the create form's ticks are Paper `Checkbox.Item`s;
+  - the role card stays for someone who already holds the tutor role, as on the web;
+  - `useBalances` takes `enabled`, so the add-student Family step does not read `/payments/balances`
+    without Tutoring;
+  - the Beta pill sits on Recent assessments;
+  - "Add a student" in an empty Students panel is `assess-home-add-student`;
+  - `seed-canvas-assessment.js` takes `ORG_SLUG` / `ADMIN_EMAIL` / `STUDENT_ID`, because `ORG` would clash
+    with the flow's own `ORG`.
+- **Checks:**
+  - `npm run mobile:typecheck` clean, `mobile:lint` 0 errors, `mobile:test` 124 suites / 890 tests,
+    `mobile:export` bundled.
+  - **Flows.** `features/*` (nine flows) plus the other smoke flows (`canvas-assessments/open`,
+    `shell/navigation`, `smoke/diagnostics`, `smoke/sign-in`) ran by hand with Maestro against the e2e
+    Release build and the p50 Worker on 8787, on a freshly reset database:
+    - **iOS:** all green.
+    - **Android:** all green except `smoke/diagnostics`, which fails on a cold start in that Release
+      build (the link lands before the router; the same screen opens once the app is up). It touches
+      nothing in this phase.
+  - **Why by hand, not `npm run smoke -- mobile`:** port 8081 was held by a Metro from the open-signup
+    worktree, so the dev build would have loaded other code.
+  - **Fixes in the flows during the run** (none in the app):
+    - Users is pushed over the tabs, so `person-form` reaches the "+" from More;
+    - the Organization screen's foot is "Questions in an assessment";
+    - Android reports the Assessment card by its switch.
+  - **Cleanup.** The e2e build was uninstalled from both devices afterwards. On Android the dev app was
+    disabled for the run, because both apps answer `aimtrue://`, then re-enabled.

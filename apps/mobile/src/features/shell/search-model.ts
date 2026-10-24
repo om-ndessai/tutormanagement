@@ -24,9 +24,12 @@ export function filterRows<T extends { value: string }>(rows: T[], query: string
   return rows.filter((row) => matches(row.value, query));
 }
 
-/** Where a person found by search opens: a student's progress for a non-admin, else their record. */
-export function personHref(person: Pick<User, 'id' | 'roles'>, isAdmin: boolean): Href {
-  return person.roles.includes('student') && !isAdmin
+/**
+ * Where a person found by search opens: a student's progress for a non-admin, else their record.
+ * Phase 50: progress is Tutoring's, so without it a student opens their record too.
+ */
+export function personHref(person: Pick<User, 'id' | 'roles'>, isAdmin: boolean, tutoring = true): Href {
+  return person.roles.includes('student') && !isAdmin && tutoring
     ? { pathname: '/progress/[studentId]', params: { studentId: person.id } }
     : { pathname: '/people/[id]', params: { id: person.id } };
 }

@@ -6,6 +6,8 @@ import {
   addOrganizationAdminSchema,
   addPlatformAdminSchema,
   createOrganizationSchema,
+  describeFeatureChange,
+  organizationFeaturesSchema,
   platformPersonLookupSchema,
   platformPersonUpdateSchema,
   updateOrganizationSchema,
@@ -35,6 +37,7 @@ import {
   removeRole,
   setOrganizationArchived,
   updateOrganization,
+  updateOrganizationFeatures,
 } from '../repositories/organizations.js';
 import {
   addPlatformAdmin,
@@ -166,6 +169,32 @@ export const platformRoutes = new Hono<AppEnv>()
         entity_id: id,
       });
 
+      const body: ApiOk<Organization> = { data: org };
+      return c.json(body);
+    },
+  )
+
+  /**
+   * Phase 50: which feature sets an organization is allowed (Tutoring, Assessment, Quest). Only a
+   * platform admin decides; logged in that organization's own log, and listed on the console's
+   * activity with the other `organization.*` actions.
+   */
+  .put(
+    '/organizations/:id/features',
+    zValidator('param', orgParamSchema),
+    zValidator('json', organizationFeaturesSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const before = await requireOrganization(c.env, id);
+      const input = c.req.valid('json');
+      const org = await updateOrganizationFeatures(c.env.DB, id, input);
+      if (!org) throw ApiError.notFound('That organization does not exist.');
+      await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
+        action: 'organization.features_updated',
+        description: `Feature sets of ${before.name}: ${describeFeatureChange(before, input)}`,
+        entity_type: 'organization',
+        entity_id: id,
+      });
       const body: ApiOk<Organization> = { data: org };
       return c.json(body);
     },

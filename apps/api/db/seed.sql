@@ -57,9 +57,10 @@ DELETE FROM users;
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain) VALUES
-  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid'),
-  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid');
+INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1),
+  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1),
+  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0);
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
@@ -69,7 +70,8 @@ INSERT INTO organization_curricula (organization_id, curriculum_id, is_default, 
   ('0a000000-0000-4000-8000-000000000001', 'ba', 1, NULL),
   ('0b000000-0000-4000-8000-000000000001', 'nc-2017', 1, NULL),
   ('0b000000-0000-4000-8000-000000000001', 'nc-2026', 0, NULL),
-  ('0b000000-0000-4000-8000-000000000001', 'ba', 0, '2026-09-15T12:00:00.000Z');
+  ('0b000000-0000-4000-8000-000000000001', 'ba', 0, '2026-09-15T12:00:00.000Z'),
+  ('0d000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL);
 
 -- --- people ----------------------------------------------------------------
 INSERT INTO users (id, email, full_name, phone) VALUES
@@ -168,7 +170,10 @@ INSERT INTO users (id, email, full_name, phone) VALUES
   ('0b100000-0000-4000-8000-000000000001', 'rosa.delgado.tutoring@gmail.com', 'Rosa Delgado', '(919) 555-0310'),
   ('0b100000-0000-4000-8000-000000000002', 'kwame.mensah.math@gmail.com', 'Kwame Mensah', '(984) 555-0322'),
   ('0b100000-0000-4000-8000-000000000003', NULL, 'Lily Chen', NULL),
-  ('0b100000-0000-4000-8000-000000000004', NULL, 'Arjun Patel', NULL);
+  ('0b100000-0000-4000-8000-000000000004', NULL, 'Arjun Patel', NULL),
+  ('0d100000-0000-4000-8000-000000000001', 'ines.ferreira.assess@gmail.com', 'Ines Ferreira', NULL),
+  ('0d100000-0000-4000-8000-000000000002', 'omar.haddad.assess@gmail.com', 'Omar Haddad', NULL),
+  ('0d100000-0000-4000-8000-000000000003', NULL, 'Noor Haddad', NULL);
 
 -- --- who belongs where, and what they do there -----------------------------
 INSERT INTO org_members (organization_id, user_id, status, first_entered_at) VALUES
@@ -269,7 +274,10 @@ INSERT INTO org_members (organization_id, user_id, status, first_entered_at) VAL
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'active', '2026-09-01T12:00:00.000Z'),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', 'active', '2026-09-01T12:00:00.000Z'),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', 'active', '2026-09-01T12:00:00.000Z'),
-  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'active', '2026-09-01T12:00:00.000Z');
+  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'active', '2026-09-01T12:00:00.000Z');
 
 INSERT INTO user_roles (organization_id, user_id, role) VALUES
   ('0a000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'admin'),
@@ -373,7 +381,11 @@ INSERT INTO user_roles (organization_id, user_id, role) VALUES
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'tutor'),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', 'parent'),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', 'parent'),
-  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'student');
+  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'student'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', 'admin'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', 'parent'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', 'parent'),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'student');
 
 -- --- everyone here has been through the welcome wizard (Phase 26) ----------
 INSERT INTO user_onboarding (user_id, tour_finished_at, tour_outcome) VALUES
@@ -470,7 +482,10 @@ INSERT INTO user_onboarding (user_id, tour_finished_at, tour_outcome) VALUES
   ('0b100000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0b100000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0b100000-0000-4000-8000-000000000003', '2026-09-01T12:00:00.000Z', 'completed'),
-  ('0b100000-0000-4000-8000-000000000004', '2026-09-01T12:00:00.000Z', 'completed');
+  ('0b100000-0000-4000-8000-000000000004', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0d100000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0d100000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0d100000-0000-4000-8000-000000000003', '2026-09-01T12:00:00.000Z', 'completed');
 
 -- --- tutor-only data -------------------------------------------------------
 INSERT INTO tutor_profiles (organization_id, user_id, highest_education, school, area, availability_notes, virtual_available, default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes, topup_amount_cents, ssn_received_on, address_line1, address_line2, city, state, postal_code) VALUES
@@ -543,7 +558,8 @@ INSERT INTO student_profiles (organization_id, user_id, school, current_math_cou
   ('0a000000-0000-4000-8000-000000000001', '33333333-0000-4000-8000-000000000077', 'East Chapel Hill High', 'Pre-Algebra', 'Ready for Beast Academy 5 by June', 1, 6500, 6000, 60),
   ('0b000000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000003', 'Durham School of the Arts', 'Grade 5 Mathematics', 'Fractions with confidence.', 0, 8500, 7500, 60),
   ('0b000000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000004', 'Riverside High', 'Algebra I', 'Ready for Geometry by spring.', 1, 9000, 8000, 90),
-  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'East Chapel Hill High', 'AP Calculus BC', 'A 5 on the AP exam.', 1, 11000, 10000, 120);
+  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'East Chapel Hill High', 'AP Calculus BC', 'A 5 on the AP exam.', 1, 11000, 10000, 120),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'Carrboro Elementary', 'Grade 4 Mathematics', 'Multiplication facts by heart.', 0, NULL, NULL, NULL);
 
 -- --- who is responsible for whom -------------------------------------------
 INSERT INTO guardianships (organization_id, guardian_user_id, dependent_user_id, relationship, is_primary) VALUES
@@ -622,7 +638,9 @@ INSERT INTO guardianships (organization_id, guardian_user_id, dependent_user_id,
   ('0a000000-0000-4000-8000-000000000001', '22222222-0000-4000-8000-000000000009', '33333333-0000-4000-8000-000000000077', 'other', 0),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000003', '0b100000-0000-4000-8000-000000000003', 'father', 1),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', '0b100000-0000-4000-8000-000000000004', 'mother', 1),
-  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', 'mother', 1);
+  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', 'mother', 1),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'mother', 1),
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', '0d100000-0000-4000-8000-000000000003', 'father', 0);
 
 -- --- how money moves -------------------------------------------------------
 INSERT INTO payment_handles (organization_id, user_id, method, handle) VALUES

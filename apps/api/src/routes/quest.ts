@@ -1,4 +1,4 @@
-import { Hono, type MiddlewareHandler } from 'hono';
+import { Hono } from 'hono';
 import {
   hasRole,
   levelLabel,
@@ -41,13 +41,6 @@ import { questGameRoutes } from './quest-games.js';
 // answer the bank's unapproved questions; their tutors approve or flag them;
 // points for the attempt and for correctness. Behind the organization's
 // `gamify_question_quest`.
-
-const requireQuest: MiddlewareHandler<AppEnv> = async (c, next) => {
-  if (!c.get('org').gamify_question_quest) {
-    throw new ApiError(403, 'forbidden', 'Question Quest is switched off for this organization.');
-  }
-  await next();
-};
 
 function requireStudent(user: User): void {
   if (!hasRole(user, 'student')) throw new ApiError(403, 'forbidden', 'Question Quest is for students.');
@@ -100,7 +93,6 @@ async function reviewQueue(db: D1Database, org: OrgId, reviewer: { id: string; a
 }
 
 export const questRoutes = new Hono<AppEnv>()
-  .use('*', requireQuest)
 
   // Phase 46: Quest Games, for every member (docs/quest-games-plan.md).
   .route('/games', questGameRoutes)

@@ -136,7 +136,19 @@ type Person = Pick<
 >;
 
 /** The record's sections for this reader, in order, and which of them they may edit. */
-export function recordSections(person: Person, reader: RecordReader | null, { compact = false } = {}): ShownSection[] {
+/** Phase 50: the sections that belong to Tutoring, left out where the space has no Tutoring (R23). */
+export const TUTORING_RECORD_SECTIONS: readonly RecordSectionKey[] = ['availability', 'teaching', 'lessons', 'pay', 'payment'];
+
+export function recordSections(
+  person: Person,
+  reader: RecordReader | null,
+  { compact = false, tutoring = true }: { compact?: boolean; tutoring?: boolean } = {},
+): ShownSection[] {
+  const shown = allSections(person, reader, compact);
+  return tutoring ? shown : shown.filter((section) => !TUTORING_RECORD_SECTIONS.includes(section.key));
+}
+
+function allSections(person: Person, reader: RecordReader | null, compact: boolean): ShownSection[] {
   const isAdmin = reader?.roles.includes('admin') ?? false;
   // Pay is between a tutor and the office; the server blanks it for anyone else (R4).
   const seesPay = seesTutorPay(reader, person.id);

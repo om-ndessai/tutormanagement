@@ -1,0 +1,91 @@
+# Phase 50: the console shows and toggles each organization's feature sets. Nav (a platform admin):
+# riverside's row ends "Tutoring, Assessment"; its detail shows the three switches, Quest off;
+# allowing Quest saves at once, disallowing asks first. The create form ticks all three (not saved:
+# platform/organizations.yaml owns creating). reset-features.js puts riverside back.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: platform-org-riverside
+    centerElement: true
+- assertVisible: '.*Tutoring, Assessment'
+- tapOn:
+    id: platform-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-feature-quest
+    centerElement: true
+- assertVisible:
+    id: platform-org-features
+- takeScreenshot: features-console
+- tapOn:
+    id: platform-org-feature-quest
+- extendedWaitUntil:
+    visible: 'Allowed Quest.'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible: 'Allowed Quest.'
+    timeout: 15000
+- tapOn:
+    id: platform-org-feature-quest
+- extendedWaitUntil:
+    visible: 'Disallow Quest in .*'
+    timeout: 5000
+- takeScreenshot: features-console-confirm
+- tapOn: 'Disallow|DISALLOW'
+- extendedWaitUntil:
+    visible: 'Disallowed Quest.'
+    timeout: 10000
+# The create form ticks all three.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-new
+    direction: UP
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: org-form-feature-quest
+    centerElement: true
+- assertVisible:
+    id: org-form-feature-tutoring
+- assertVisible:
+    id: org-form-feature-assessment
+- takeScreenshot: features-console-create
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-organization-form
+- runFlow:
+    when:
+      visible: 'Discard changes\?'
+    commands:
+      - tapOn: 'Discard'

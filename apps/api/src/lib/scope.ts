@@ -58,7 +58,7 @@ export async function visibleUserIds(
          AND (m.user_id = ?2
           OR EXISTS (
                SELECT 1 FROM assignments a
-               WHERE a.organization_id = ?1 AND a.is_active = 1
+               WHERE a.organization_id = ?1 AND ${pairingInForce('a')}
                  AND ((a.tutor_user_id = ?2 AND a.student_user_id = m.user_id)
                    OR (a.student_user_id = ?2 AND a.tutor_user_id = m.user_id))
              )
@@ -73,7 +73,7 @@ export async function visibleUserIds(
                SELECT 1 FROM guardianships g
                JOIN assignments a ON a.organization_id = g.organization_id
                                  AND a.student_user_id = g.dependent_user_id
-               WHERE g.organization_id = ?1 AND a.tutor_user_id = ?2 AND a.is_active = 1
+               WHERE g.organization_id = ?1 AND a.tutor_user_id = ?2 AND ${pairingInForce('a')}
                  AND g.guardian_user_id = m.user_id
              )
           OR EXISTS (
@@ -81,7 +81,7 @@ export async function visibleUserIds(
                SELECT 1 FROM assignments a
                JOIN guardianships g ON g.organization_id = a.organization_id
                                    AND g.dependent_user_id = a.student_user_id
-               WHERE a.organization_id = ?1 AND g.guardian_user_id = ?2 AND a.is_active = 1
+               WHERE a.organization_id = ?1 AND g.guardian_user_id = ?2 AND ${pairingInForce('a')}
                  AND a.tutor_user_id = m.user_id
              ))`,
     )
@@ -130,6 +130,15 @@ export function teachingScopeSql(
  * `column` is the SQL expression naming the student, e.g. "p.student_user_id".
  * Returns null for an admin.
  */
+/**
+ * Phase 50: a pairing gives a tutor sight of a student only where the space allows Tutoring.
+ * A pairing kept from before Tutoring was disallowed reaches nobody (R23). Append to a WHERE
+ * over `assignments` aliased `alias`.
+ */
+export function pairingInForce(alias: string): string {
+  return `${alias}.is_active = 1 AND EXISTS (SELECT 1 FROM organizations fo WHERE fo.id = ${alias}.organization_id AND fo.feature_tutoring = 1)`;
+}
+
 export function studentScopeSql(
   viewer: User,
   column: string,
@@ -145,7 +154,7 @@ export function studentScopeSql(
       ` OR ${column} IN (SELECT g.dependent_user_id FROM guardianships g` +
       ` WHERE g.organization_id = ? AND g.guardian_user_id = ?)` +
       ` OR ${column} IN (SELECT a.student_user_id FROM assignments a` +
-      ` WHERE a.organization_id = ? AND a.tutor_user_id = ? AND a.is_active = 1)))`,
+      ` WHERE a.organization_id = ? AND a.tutor_user_id = ? AND ${pairingInForce('a')})))`,
     values: [org, viewer.id, org, viewer.id, org, viewer.id],
   };
 }

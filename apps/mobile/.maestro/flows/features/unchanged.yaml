@@ -1,0 +1,23 @@
+# Phase 50: a space allowed every set looks as it did. Priya (chmi) still has Sessions and Progress
+# in the bar, and Home is the dashboard, not the space home.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible:
+    id: tab-sessions
+- assertVisible:
+    id: tab-progress
+- assertNotVisible:
+    id: space-home
+- assertVisible:
+    id: create-button

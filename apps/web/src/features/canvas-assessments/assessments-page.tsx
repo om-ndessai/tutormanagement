@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { FileTextIcon } from 'lucide-react';
 import {
@@ -55,7 +55,7 @@ export function AssessmentsPage() {
   );
 }
 
-function StartCard() {
+export function StartCard() {
   const { user, organization } = useAuth();
   const navigate = useNavigate();
   const onlyStudent = Boolean(user && user.roles.length > 0 && user.roles.every((role) => role === 'student'));
@@ -64,7 +64,9 @@ function StartCard() {
   const levels = useCanvasAssessmentLevels();
   const start = useStartCanvasAssessment();
 
-  const [studentId, setStudentId] = useState('');
+  // Phase 50: "Start an assessment" elsewhere (the welcome wizard, the Assessment home) names the student.
+  const [params] = useSearchParams();
+  const [studentId, setStudentId] = useState(params.get('student') ?? '');
   const [levelId, setLevelId] = useState('');
 
   const chosenStudent = onlyStudent ? (user?.id ?? '') : studentId;
@@ -141,7 +143,7 @@ function StartCard() {
   );
 }
 
-function AssessmentList() {
+export function AssessmentList() {
   const list = useCanvasAssessments();
   const discard = useDiscardCanvasAssessment();
   const [discarding, setDiscarding] = useState<CanvasAssessment | null>(null);

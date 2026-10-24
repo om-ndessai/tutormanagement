@@ -112,6 +112,18 @@ describe('api client', () => {
     offB();
   });
 
+  it('raises feature-unavailable on a 403 feature_unavailable (Phase 50)', async () => {
+    const featureUnavailable = jest.fn();
+    const off = on('feature-unavailable', featureUnavailable);
+    fetchMock.mockReturnValueOnce(
+      respond(403, { error: { code: 'feature_unavailable', message: 'Tutoring is not part of this space.' } }),
+    );
+    const error = (await apiClient.get('/sessions').catch((caught: unknown) => caught)) as ApiRequestError;
+    expect(error.code).toBe('feature_unavailable');
+    expect(featureUnavailable).toHaveBeenCalledTimes(1);
+    off();
+  });
+
   it('reports an unreachable server plainly', async () => {
     fetchMock.mockRejectedValue(new TypeError('Network request failed'));
     const error = (await apiClient.get('/health').catch((caught: unknown) => caught)) as ApiRequestError;

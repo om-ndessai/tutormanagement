@@ -5,11 +5,15 @@ import { logoAttempts, logoContentType, logoProblem } from './logo-bytes';
 import {
   EMPTY_ORG_FORM,
   formFromOrganization,
+  featuresBody,
   formToInput,
   palettesOnOffer,
   slugFrom,
   validateOrgForm,
 } from './org-form';
+import { orgSummary } from './organizations-screen';
+
+jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
 
 const bytes = (...values: number[]) => new Uint8Array(values);
 const ascii = (text: string) => Array.from(text, (c) => c.charCodeAt(0));
@@ -64,6 +68,9 @@ const ORG: OrganizationListItem = {
   canvas_assessments_unreviewed: false,
   canvas_assessment_questions: 10,
   gamify_question_quest: false,
+  feature_tutoring: true,
+  feature_assessment: true,
+  feature_quest: false,
   calendar_domain: 'lakeside.invalid',
   archived_at: null,
   created_at: '2026-10-01T00:00:00Z',
@@ -95,6 +102,13 @@ describe('organization form', () => {
       builtin_logo: 'institute',
     });
     expect(formToInput({ ...form, builtin_institute: false }).builtin_logo).toBeNull();
+    // Phase 50: the feature sets go on a create only.
+    expect(formToInput({ ...form, features: { tutoring: false, assessment: true, quest: true } }, true)).toMatchObject({
+      feature_tutoring: false,
+      feature_assessment: true,
+      feature_quest: true,
+    });
+    expect(EMPTY_ORG_FORM.features).toEqual({ tutoring: true, assessment: true, quest: true });
     expect(formFromOrganization(null)).toBe(EMPTY_ORG_FORM);
   });
 
@@ -122,5 +136,27 @@ describe('organization form', () => {
         { path: [], message: 'whole' },
       ]),
     ).toEqual({ email: 'first', form: 'whole' });
+  });
+});
+
+describe('feature sets (Phase 50)', () => {
+  it('names the allowed sets at the end of the console row', () => {
+    expect(orgSummary(ORG)).toBe('lakeside · Plum · 1 admin · 3 members · Tutoring, Assessment');
+    expect(
+      orgSummary({ ...ORG, feature_tutoring: false, feature_assessment: false, feature_quest: false }),
+    ).toMatch(/· No feature sets$/);
+  });
+
+  it('sends all three, with the one switched changed', () => {
+    expect(featuresBody(ORG, 'quest', true)).toEqual({
+      feature_tutoring: true,
+      feature_assessment: true,
+      feature_quest: true,
+    });
+    expect(featuresBody(ORG, 'tutoring', false)).toEqual({
+      feature_tutoring: false,
+      feature_assessment: true,
+      feature_quest: false,
+    });
   });
 });

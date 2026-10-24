@@ -1,8 +1,11 @@
+import type { OrganizationListItem } from '@tmi/shared';
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
+import { Alert } from 'react-native';
 
 import { ApiRequestError } from '@/lib/api-client';
 import { renderWithProviders } from '@/test/render';
-import { PaletteSwatches } from './organization-form-sheet';
+import { FeaturesSection } from './features-section';
+import { OrganizationFormSheet, PaletteSwatches } from './organization-form-sheet';
 import { PlatformPeopleScreen } from './platform-people-screen';
 
 jest.mock('expo-router', () => ({
@@ -16,6 +19,7 @@ jest.mock('./logo-pipeline', () => ({ pickLogo: jest.fn(), LogoError: class exte
 
 const mockLookup = jest.fn();
 const mockUpdate = jest.fn();
+const mockFeatures = jest.fn();
 jest.mock('./api', () => ({
   useLookupPerson: () => ({ mutateAsync: mockLookup, isPending: false }),
   useUpdatePerson: () => ({ mutateAsync: mockUpdate, isPending: false }),
@@ -23,6 +27,7 @@ jest.mock('./api', () => ({
   useOrganizations: () => ({ data: { data: [] }, isPending: false }),
   useCreateOrganization: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useUpdateOrganization: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useUpdateOrganizationFeatures: () => ({ mutateAsync: mockFeatures, isPending: false }),
 }));
 
 const ALEX = {
@@ -84,5 +89,74 @@ describe('PaletteSwatches', () => {
     expect(screen.getByText('Slate')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('org-form-palette-platform'));
     expect(onChange).toHaveBeenCalledWith('platform');
+  });
+});
+
+const RIVERSIDE = {
+  id: 'o2',
+  short_name: 'Riverside',
+  archived_at: null,
+  feature_tutoring: true,
+  feature_assessment: true,
+  feature_quest: false,
+} as unknown as OrganizationListItem;
+
+describe('FeaturesSection (Phase 50)', () => {
+  beforeEach(() => mockFeatures.mockReset().mockResolvedValue({}));
+
+  it('shows each set’s switch as allowed or not', async () => {
+    await renderWithProviders(<FeaturesSection organization={RIVERSIDE} />);
+    expect(screen.getByTestId('platform-org-feature-tutoring').props.value).toBe(true);
+    expect(screen.getByTestId('platform-org-feature-quest').props.value).toBe(false);
+    expect(screen.getByLabelText('Allow Quest')).toBeTruthy();
+  });
+
+  it('allows at once, sending all three', async () => {
+    await renderWithProviders(<FeaturesSection organization={RIVERSIDE} />);
+    await fireEvent(screen.getByTestId('platform-org-feature-quest'), 'valueChange', true);
+    await waitFor(() =>
+      expect(mockFeatures).toHaveBeenCalledWith({
+        id: 'o2',
+        input: { feature_tutoring: true, feature_assessment: true, feature_quest: true },
+      }),
+    );
+  });
+
+  it('asks before disallowing, and saves only on confirming', async () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    await renderWithProviders(<FeaturesSection organization={RIVERSIDE} />);
+    await fireEvent(screen.getByTestId('platform-org-feature-tutoring'), 'valueChange', false);
+    expect(alert).toHaveBeenCalledWith(
+      'Disallow Tutoring in Riverside?',
+      'Everyone there stops seeing it, admins included. Nothing is deleted; allowing it again brings it back.',
+      expect.any(Array),
+    );
+    expect(mockFeatures).not.toHaveBeenCalled();
+    const buttons = alert.mock.calls[0]![2] as { text: string; onPress?: () => void }[];
+    buttons.find((button) => button.text === 'Disallow')!.onPress!();
+    await waitFor(() =>
+      expect(mockFeatures).toHaveBeenCalledWith({
+        id: 'o2',
+        input: { feature_tutoring: false, feature_assessment: true, feature_quest: false },
+      }),
+    );
+    alert.mockRestore();
+  });
+
+  it('is read-only on an archived organization', async () => {
+    await renderWithProviders(
+      <FeaturesSection organization={{ ...RIVERSIDE, archived_at: '2026-10-01T00:00:00Z' }} />,
+    );
+    expect(screen.getByTestId('platform-org-feature-quest').props.disabled).toBe(true);
+  });
+});
+
+describe('OrganizationFormSheet (Phase 50)', () => {
+  it('ticks all three feature sets when creating', async () => {
+    await renderWithProviders(<OrganizationFormSheet />);
+    for (const set of ['tutoring', 'assessment', 'quest']) {
+      expect(screen.getByTestId(`org-form-feature-${set}`)).toBeTruthy();
+    }
+    expect(screen.getAllByRole('checkbox', { checked: true }).length).toBeGreaterThanOrEqual(3);
   });
 });

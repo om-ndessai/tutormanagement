@@ -2,13 +2,14 @@ import { SESSION_MODES } from '@tmi/shared';
 import { useLocalSearchParams } from 'expo-router';
 
 import { RecordAsPlannedSheet } from '@/features/teaching/session-form/record-as-planned-sheet';
+import { FeatureGate } from '@/features/shell/feature-gate';
 
 /**
  * Record the lesson at hand from Home's Next up card (UI upgrades U4), or a finished one from the
  * tutor's Now card (Phase 43): a quick sheet filled from the scheduled lesson
  * (`?student&tutor&date&start&end&mode&place`, and `homework`, the Homework review's first line).
  */
-export default function RecordAsPlannedRoute() {
+function RecordAsPlannedRouteContent() {
   const { student, tutor, date, start, end, mode, place, homework } = useLocalSearchParams<{
     student?: string;
     tutor?: string;
@@ -32,5 +33,14 @@ export default function RecordAsPlannedRoute() {
       }}
       place={place || undefined}
     />
+  );
+}
+
+/** Phase 50: only where Tutoring is on here; otherwise the calm "Not part of this space". */
+export default function RecordAsPlannedRoute() {
+  return (
+    <FeatureGate set="tutoring" presentation="sheet">
+      <RecordAsPlannedRouteContent />
+    </FeatureGate>
   );
 }

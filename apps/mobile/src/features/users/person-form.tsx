@@ -8,6 +8,7 @@ import {
   USER_STATUSES,
   USER_STATUS_LABELS,
   createUserRequestSchema,
+  featureAllowed,
   requiresEmail,
   updateUserRequestSchema,
   type UserDetail,
@@ -26,7 +27,7 @@ import { useStudentProgress } from '@/features/progress/api';
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
-import { useOrgTimeZone } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useCreateUser, useUpdateUser } from './api';
@@ -83,10 +84,15 @@ export function PersonForm({
   const toast = useToast();
   const timeZone = useOrgTimeZone();
   const isEdit = Boolean(detail);
+  // Phase 50: the tutor role and Tutoring's blocks (a tutor's details, a student's lessons and price,
+  // availability, payment ids) only where the space has Tutoring (R23). Hidden, they keep their
+  // values, and the request leaves their sections out.
+  const { organization } = useAuth();
+  const tutoring = featureAllowed(organization, 'tutoring');
   const sharedLocked = Boolean(detail?.shared_fields_locked);
   // A student's goal is also their active learning plan's goal, kept in step by the API.
   const isStudentRecord = detail?.roles.includes('student') ?? false;
-  const { data: progress } = useStudentProgress(isStudentRecord ? detail?.id : undefined);
+  const { data: progress } = useStudentProgress(isStudentRecord && tutoring ? detail?.id : undefined);
   const activePlan = progress?.data.plan ?? null;
 
   const [form, setForm] = useState<FormState>(() =>
@@ -122,7 +128,7 @@ export function PersonForm({
   const showTutorLessons = show('tutor-availability') || show('tutor-lessons');
   const showTutorNotes = show('tutor-availability') || show('availability');
   const showStudentSchool = show('student') || show('student-school');
-  const showStudentLessons = show('student') || show('student-lessons');
+  const showStudentLessons = tutoring && (show('student') || show('student-lessons'));
   const anyTutorBlock =
     show('tutor-background') || show('tutor-financials') || show('tutor-tax') || showTutorLessons || showTutorNotes;
   const isTutor = form.roles.includes('tutor');
@@ -144,7 +150,7 @@ export function PersonForm({
 
   async function handleSave() {
     setFormError(null);
-    const request = toRequest(form, todayIso(timeZone));
+    const request = toRequest(form, todayIso(timeZone), { tutoring });
     const schema = isEdit ? updateUserRequestSchema : createUserRequestSchema;
     const parsed = schema.safeParse(request);
     if (!parsed.success) {
@@ -273,11 +279,16 @@ export function PersonForm({
       {show('roles') ? (
         <>
           <Divider />
-          <RoleSelector value={form.roles} onChange={(roles) => set('roles', roles)} error={errors.roles} />
+          <RoleSelector
+            value={form.roles}
+            onChange={(roles) => set('roles', roles)}
+            error={errors.roles}
+            hidden={tutoring ? [] : ['tutor']}
+          />
         </>
       ) : null}
 
-      {isTutor && anyTutorBlock ? (
+      {tutoring && isTutor && anyTutorBlock ? (
         <Block title="Tutor details">
           {show('tutor-background') ? (
             <>
@@ -486,14 +497,14 @@ export function PersonForm({
         </Block>
       ) : null}
 
-      {(isTutor || isStudent) && (show('availability') || show('tutor-availability')) ? (
+      {tutoring && (isTutor || isStudent) && (show('availability') || show('tutor-availability')) ? (
         <>
           <Divider />
           <AvailabilityPicker value={form.availability} onChange={(slots) => set('availability', slots)} />
         </>
       ) : null}
 
-      {(isTutor || isParent) && show('payment-handles') ? (
+      {tutoring && (isTutor || isParent) && show('payment-handles') ? (
         <>
           <Divider />
           <PaymentHandlesField

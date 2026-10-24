@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/users/role-selector.tsx @ 1132322.
+// Ported from apps/web/src/features/users/role-selector.tsx @ 1132322 (Phase 50 @ 2471d84, working
+// tree: `hidden`).
 //
 // Roles are a set, not a choice: one person can be a parent who tutors, or a senior student who
 // teaches younger children. Checkable cards rather than a single choice make that obvious.
@@ -17,10 +18,13 @@ export function RoleSelector({
   value,
   onChange,
   error,
+  hidden = [],
 }: {
   value: UserRole[];
   onChange: (roles: UserRole[]) => void;
   error?: string;
+  /** Phase 50: roles this space does not offer, shown only to someone who already holds them. */
+  hidden?: readonly UserRole[];
 }) {
   const theme = useAppTheme();
   const toggle = (role: UserRole) => {
@@ -33,7 +37,7 @@ export function RoleSelector({
       <Text variant="titleSmall" style={{ color: error ? theme.colors.error : undefined }}>
         Roles
       </Text>
-      {USER_ROLES.map((role) => {
+      {USER_ROLES.filter((role) => !hidden.includes(role) || value.includes(role)).map((role) => {
         const checked = value.includes(role);
         return (
           <Pressable

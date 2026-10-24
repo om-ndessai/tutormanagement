@@ -186,7 +186,31 @@ export function todayIso(timeZone: string, now: Date = new Date()): string {
  * which is what tells the API to drop that profile row -- the schema's rule is that a profile
  * exists only while its role does.
  */
-export function toRequest(form: FormState, today: string) {
+type FullRequest = ReturnType<typeof buildRequest>;
+type TutoringKeys = 'tutor_profile' | 'payment_handles' | 'availability';
+/** The body; Tutoring's keys are absent where the space has no Tutoring. */
+export type PersonRequest = Omit<FullRequest, TutoringKeys> & Partial<Pick<FullRequest, TutoringKeys>>;
+
+export function toRequest(
+  form: FormState,
+  today: string,
+  { tutoring = true }: { tutoring?: boolean } = {},
+): PersonRequest {
+  const request = buildRequest(form, today);
+  if (tutoring) return request;
+  // Phase 50 (ported from toSpaceRequest in apps/web/src/features/users/user-form-dialog.tsx, working
+  // tree): where the space has no Tutoring, its sections are left OUT of the request -- not sent as
+  // null or empty, which would delete what is kept while Tutoring is off (R23). A held tutor role
+  // stays in `roles`, so an edit never drops it (the server refuses only ADDING it). The student's
+  // hidden price and limit fields go as loaded (a create sends them empty).
+  const rest: PersonRequest = { ...request };
+  delete rest.tutor_profile;
+  delete rest.payment_handles;
+  delete rest.availability;
+  return rest;
+}
+
+function buildRequest(form: FormState, today: string) {
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
 

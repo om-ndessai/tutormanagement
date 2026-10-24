@@ -5,6 +5,7 @@
 // parent and hands them back chosen); the student and their guardians are still ONE request at the
 // end. The draft is the person form's `FormState`; each step's checks are the shared schema's.
 import {
+  featureAllowed,
   studentProfileSchema,
   formatDuration,
   type AvailabilitySlot,
@@ -48,6 +49,14 @@ import { EMPTY, addGuardian, toRequest, updateGuardian, removeGuardian, type For
 import { SessionLimitField } from './session-limit-field';
 import { useAddPerson, type AddedPerson } from './use-add-person';
 import { StudentPrices } from './user-rates';
+
+/** Phase 50: the steps that belong to Tutoring, left out where the space has no Tutoring (R23). */
+export const TUTORING_STUDENT_STEPS: readonly string[] = ['availability', 'lessons', 'price'];
+
+/** The add-student steps for this space: family, student, school, then (with Tutoring) the rest. */
+export function studentSteps<T extends { key: string }>(steps: T[], tutoring: boolean): T[] {
+  return tutoring ? steps : steps.filter((step) => !TUTORING_STUDENT_STEPS.includes(step.key));
+}
 
 const INITIAL: FormState = { ...EMPTY, roles: ['student'] };
 
@@ -118,6 +127,9 @@ function StudentSteps({
   const [names, setNames] = useState<Record<string, string>>({});
   const dirty = useDirty(form);
   const { submit, submitting, fieldErrors, formError, clearErrors, today } = useAddPerson();
+  // Phase 50: when they learn, their lessons and the price are Tutoring's.
+  const { organization } = useAuth();
+  const tutoring = featureAllowed(organization, 'tutoring');
 
   const update = (patch: Partial<FormState>) => {
     setForm((was) => ({ ...was, ...patch }));
@@ -136,7 +148,7 @@ function StudentSteps({
     [clearErrors],
   );
 
-  const steps: StepDef<FormState>[] = [
+  const allSteps: StepDef<FormState>[] = [
     {
       key: 'family',
       title: 'Who is their family?',
@@ -311,6 +323,7 @@ function StudentSteps({
       summary: (draft) => <PriceSummary form={draft} today={today} />,
     },
   ];
+  const steps = studentSteps(allSteps, tutoring);
 
   return (
     <StepFlow
@@ -350,7 +363,8 @@ function FamilyStep({
   const search = useDebouncedValue(query.trim(), 250);
   const parents = useUsers({ role: 'parent', ...(search ? { search } : {}), limit: 100, sort: 'full_name' });
   // Names only: the parent rows carry no children, the balances do. No amount is kept or shown.
-  const balances = useBalances();
+  const { organization } = useAuth();
+  const balances = useBalances({ enabled: featureAllowed(organization, 'tutoring') });
   const children = useMemo(() => childrenByParent(balances.data?.data.students ?? []), [balances.data]);
 
   const rows = useMemo(() => parents.data?.data ?? [], [parents.data]);

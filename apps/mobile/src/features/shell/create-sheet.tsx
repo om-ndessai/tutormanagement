@@ -19,15 +19,17 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments } from '@/features/teaching/api';
-import { createActions, type CreateAction } from './create-actions';
+import { createActions, createSetsOf, type CreateAction } from './create-actions';
 
 export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal | null> }) {
   const theme = useAppTheme();
   const reduced = useReducedMotion();
   const insets = useSafeAreaInsets();
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const [open, setOpen] = useState(false);
-  const isTutor = user?.roles.includes('tutor') ?? false;
+  const sets = createSetsOf(organization);
+  // Phase 50: without Tutoring nobody is asked about pairings or a running lesson.
+  const isTutor = sets.tutoring && (user?.roles.includes('tutor') ?? false);
 
   // Android's back closes the sheet before it leaves the screen.
   useEffect(() => {
@@ -84,7 +86,7 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
         {isTutor && user ? (
           <TutorActions userId={user.id} onChoose={choose} />
         ) : (
-          <ActionList actions={createActions(user?.roles)} onChoose={choose} />
+          <ActionList actions={createActions(user?.roles, {}, sets)} onChoose={choose} />
         )}
       </BottomSheetScrollView>
     </BottomSheetModal>

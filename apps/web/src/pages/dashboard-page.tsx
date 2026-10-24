@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CompassIcon, EyeIcon, Loader2Icon, XIcon } from 'lucide-react';
-import { DASHBOARD_ROLE_LABELS, type UserRole } from '@tmi/shared';
+import { DASHBOARD_ROLE_LABELS, featureOn, type UserRole } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import {
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useDashboard } from '@/features/dashboard/api';
+import { AssessmentHome } from '@/features/dashboard/assessment-home';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { UserPicker } from '@/features/dashboard/user-picker';
 import { RoleIcons } from '@/features/users/role-icon';
@@ -33,7 +34,16 @@ import {
  * can be linked to and survives a refresh -- which is what makes the admin's
  * "show me what this tutor sees" useful rather than a dead end.
  */
+/**
+ * Phase 50: the dashboard belongs to Tutoring. A space without it gets the Assessment home, and
+ * never calls /dashboard (which answers 403 there).
+ */
 export function DashboardPage() {
+  const { organization } = useAuth();
+  return featureOn(organization, 'tutoring') ? <TutoringDashboard /> : <AssessmentHome />;
+}
+
+function TutoringDashboard() {
   const brand = useBrand();
   const { user } = useAuth();
   const [params, setParams] = useSearchParams();

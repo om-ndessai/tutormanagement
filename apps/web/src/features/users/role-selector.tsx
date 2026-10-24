@@ -16,10 +16,13 @@ export function RoleSelector({
   value,
   onChange,
   error,
+  hidden = [],
 }: {
   value: UserRole[];
   onChange: (roles: UserRole[]) => void;
   error?: string;
+  /** Phase 50: roles this space does not offer, shown only to someone who already holds them. */
+  hidden?: UserRole[];
 }) {
   function toggle(role: UserRole) {
     onChange(value.includes(role) ? value.filter((r) => r !== role) : [...value, role]);
@@ -30,7 +33,7 @@ export function RoleSelector({
       <span className={cn('text-sm font-medium', error && 'text-destructive')}>Roles</span>
 
       <div className="grid gap-2 sm:grid-cols-2">
-        {USER_ROLES.map((role) => {
+        {USER_ROLES.filter((role) => !hidden.includes(role) || value.includes(role)).map((role) => {
           const checked = value.includes(role);
 
           return (

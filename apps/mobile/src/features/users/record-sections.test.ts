@@ -106,3 +106,14 @@ describe('personPaymentPrefills', () => {
     ).toEqual([]);
   });
 });
+
+describe('recordSections without Tutoring (Phase 50)', () => {
+  it("drops availability, teaching, lessons, pay and a parent's payment", () => {
+    const tutor = { ...base, roles: ['tutor' as const, 'parent' as const], tutor_profile: tutorProfile };
+    expect(keys(recordSections(tutor, ADMIN, { tutoring: false }))).toEqual(['contact', 'background']);
+    const student = { ...base, roles: ['student' as const], student_profile: studentProfile };
+    expect(keys(recordSections(student, ADMIN, { tutoring: false }))).toEqual(['contact', 'school', 'family']);
+    const parent = { ...base, roles: ['parent' as const] };
+    expect(keys(recordSections(parent, ADMIN, { tutoring: false }))).toEqual(['contact']);
+  });
+});

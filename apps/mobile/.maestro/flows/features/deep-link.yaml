@@ -1,0 +1,65 @@
+# Phase 50: a link into a set that is off here (a deep link, an old notification) gets the calm
+# "Not part of this space", never an error. Ines (`assess`, Assessment alone): Sessions, Billing,
+# Pairings and Quest each show it and Go to Home returns to the space home; the record step flow
+# shows it too, and the Start a lesson sheet offers Close.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: space-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/features/unavailable-link.yaml
+    env:
+      LINK: aimtrue://sessions
+- runFlow:
+    file: ../../subflows/features/unavailable-link.yaml
+    env:
+      LINK: aimtrue://billing
+- runFlow:
+    file: ../../subflows/features/unavailable-link.yaml
+    env:
+      LINK: aimtrue://pairings
+- runFlow:
+    file: ../../subflows/features/unavailable-link.yaml
+    env:
+      LINK: aimtrue://quest
+# The record step flow.
+- runFlow:
+    file: ../../subflows/features/unavailable-link.yaml
+    env:
+      LINK: aimtrue://record-lesson
+# A sheet: Close, not Go to Home.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://start-lesson
+- extendedWaitUntil:
+    visible:
+      id: feature-unavailable
+    timeout: 15000
+- assertVisible: 'Not part of this space'
+- assertNotVisible:
+    id: feature-unavailable-home
+- assertNotVisible:
+    id: state-error
+- takeScreenshot: features-unavailable-sheet
+- tapOn:
+    id: feature-unavailable-close
+- extendedWaitUntil:
+    visible:
+      id: space-home
+    timeout: 15000
+- assertNotVisible:
+    id: state-error

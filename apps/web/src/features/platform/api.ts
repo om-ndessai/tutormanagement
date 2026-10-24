@@ -3,6 +3,7 @@ import type {
   AddOrganizationAdminInput,
   ApiOk,
   CreateOrganizationInput,
+  OrganizationFeaturesInput,
   LogoKind,
   Organization,
   OrganizationAdmin,
@@ -43,6 +44,16 @@ export function useUpdateOrganization() {
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: UpdateOrganizationInput }) =>
       apiClient.patch<ApiOk<Organization>>(`/platform/organizations/${id}`, input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.organizations }),
+  });
+}
+
+/** Phase 50: which feature sets an organization is allowed. */
+export function useUpdateOrganizationFeatures() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: OrganizationFeaturesInput }) =>
+      apiClient.put<ApiOk<Organization>>(`/platform/organizations/${id}/features`, input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.organizations }),
   });
 }

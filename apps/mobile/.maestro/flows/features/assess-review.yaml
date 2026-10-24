@@ -1,0 +1,49 @@
+# Phase 50: the office reviews from the Assessment home. One assessment is submitted in `assess`
+# (seed-canvas-assessment.js, as Ines); her Waiting for review lists it, and Review opens the review
+# screen. Back on Home, Recent shows it submitted. She does not save the review.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runScript:
+    file: ../../scripts/seed-canvas-assessment.js
+    env:
+      ORG_SLUG: assess
+      ADMIN_EMAIL: ines.ferreira.assess@gmail.com
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: assess-home-students
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: assess-home-review-${output.assessmentId}
+    centerElement: true
+- assertVisible:
+    id: assess-home-waiting
+- takeScreenshot: features-waiting
+- tapOn:
+    id: assess-home-review-${output.assessmentId}
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-review
+    timeout: 30000
+- takeScreenshot: features-review
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: space-home
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assess-home-recent
+    centerElement: true
+- assertVisible: 'Submitted.*'

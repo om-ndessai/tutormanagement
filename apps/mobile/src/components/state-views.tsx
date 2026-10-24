@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import { ActivityIndicator, Button, Icon, Text } from 'react-native-paper';
 
+import { FEATURE_UNAVAILABLE } from '@tmi/shared';
+
 import { ApiRequestError } from '@/lib/api-client';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
@@ -22,6 +24,18 @@ export function LoadingState({ label = 'Loading…', testID }: { label?: string;
 /** What went wrong, in the server's own words, and a way to try again. */
 export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
   const theme = useAppTheme();
+  // Phase 50: a feature set switched off while the app was open is not an error: the calm words,
+  // and no Try again (the session is being re-read, and the gate takes over).
+  if (error instanceof ApiRequestError && error.code === FEATURE_UNAVAILABLE) {
+    return (
+      <View testID="state-feature-unavailable" style={{ padding: space.xl, alignItems: 'center', gap: space.sm }}>
+        <Icon source="puzzle-outline" size={32} color={theme.colors.onSurfaceVariant} />
+        <Text variant="titleMedium" style={{ textAlign: 'center' }}>
+          Not part of this space
+        </Text>
+      </View>
+    );
+  }
   const message =
     error instanceof ApiRequestError
       ? error.status === 404

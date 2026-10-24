@@ -92,7 +92,7 @@ it('never makes an absent email a link', async () => {
 });
 
 it('shows another tutor none of their pay or paperwork', async () => {
-  mockAuth.mockReturnValue({ user: { id: 'alex', roles: ['tutor'] } });
+  mockAuth.mockReturnValue({ organization: {}, user: { id: 'alex', roles: ['tutor'] } });
   await renderWithProviders(<UserDetailView user={mariaForAlex} />);
   for (const id of PRIVATE_ROWS) expect(screen.queryByTestId(id)).toBeNull();
   expect(screen.queryByText(/\$\d/)).toBeNull();
@@ -102,7 +102,7 @@ it('shows another tutor none of their pay or paperwork', async () => {
 });
 
 it('shows a tutor their own pay, address and SSN status, with no control to change it', async () => {
-  mockAuth.mockReturnValue({ user: { id: 'maria', roles: ['tutor', 'parent'] } });
+  mockAuth.mockReturnValue({ organization: {}, user: { id: 'maria', roles: ['tutor', 'parent'] } });
   await renderWithProviders(<UserDetailView user={maria} />);
   for (const id of PRIVATE_ROWS) expect(screen.getByTestId(id)).toBeTruthy();
   expect(screen.getByText('$70.00 / hr')).toBeTruthy();
@@ -113,7 +113,7 @@ it('shows a tutor their own pay, address and SSN status, with no control to chan
 });
 
 it('offers no call or email for a child with neither', async () => {
-  mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+  mockAuth.mockReturnValue({ organization: {}, user: { id: 'admin', roles: ['admin'] } });
   await renderWithProviders(
     <UserDetailView
       user={{
@@ -136,7 +136,7 @@ describe('the record in sections (UI upgrades U5)', () => {
   it('gives the office an Edit on each section, opening only that section', async () => {
     const { router } = jest.requireMock('expo-router') as { router: { push: jest.Mock } };
     router.push.mockClear();
-    mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+    mockAuth.mockReturnValue({ organization: {}, user: { id: 'admin', roles: ['admin'] } });
     await renderWithProviders(<UserDetailView user={maria} />);
     for (const key of ['contact', 'background', 'availability', 'teaching', 'pay', 'family']) {
       expect(screen.getByTestId(`person-section-${key}`)).toBeTruthy();
@@ -152,7 +152,7 @@ describe('the record in sections (UI upgrades U5)', () => {
   });
 
   it('gives anyone else no Edit, and another tutor no Pay and tax', async () => {
-    mockAuth.mockReturnValue({ user: { id: 'alex', roles: ['tutor'] } });
+    mockAuth.mockReturnValue({ organization: {}, user: { id: 'alex', roles: ['tutor'] } });
     await renderWithProviders(<UserDetailView user={mariaForAlex} />);
     expect(screen.getByTestId('person-section-teaching')).toBeTruthy();
     expect(screen.queryByTestId('person-section-pay')).toBeNull();
@@ -160,7 +160,7 @@ describe('the record in sections (UI upgrades U5)', () => {
   });
 
   it('shows the person their own pay, and still no Edit', async () => {
-    mockAuth.mockReturnValue({ user: { id: 'maria', roles: ['tutor', 'parent'] } });
+    mockAuth.mockReturnValue({ organization: {}, user: { id: 'maria', roles: ['tutor', 'parent'] } });
     await renderWithProviders(<UserDetailView user={maria} />);
     expect(screen.getByTestId('person-section-pay')).toBeTruthy();
     expect(screen.queryByTestId('person-edit-pay')).toBeNull();
@@ -189,7 +189,7 @@ it('gives the office a row menu, and nobody else one', async () => {
 // RNTL 14's `fireEvent.press` and `unmount` are async: un-awaited, the press's act() overlapped the
 // next render's, and every later render in this file came out null (the row-menu test above did).
 it('renders normally after the row-menu test', async () => {
-  mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin'] } });
+  mockAuth.mockReturnValue({ organization: {}, user: { id: 'admin', roles: ['admin'] } });
   await renderWithProviders(<EmailOrNone email="maria.okafor@gmail.com" testID="email" />);
   expect(screen.toJSON()).not.toBeNull();
   expect(screen.getByText('maria.okafor@gmail.com')).toBeTruthy();

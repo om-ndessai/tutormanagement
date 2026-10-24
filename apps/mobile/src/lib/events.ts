@@ -7,6 +7,8 @@ type EventMap = {
   unauthenticated: void;
   /** The API says the active organization may not be entered: none chosen, archived, removed. */
   'organization-required': void;
+  /** Phase 50: a feature set is off here now (the session's organization is stale). */
+  'feature-unavailable': void;
 };
 
 type Listener = () => void;

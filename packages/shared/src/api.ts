@@ -57,6 +57,9 @@ export const ERROR_CODES = [
   'ai_budget_exhausted',
   'ai_refused',
   'ai_failed',
+
+  // Phase 50: a feature set (Tutoring, Assessment, Quest) that is off in this space.
+  'feature_unavailable',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

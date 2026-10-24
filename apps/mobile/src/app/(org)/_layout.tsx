@@ -36,8 +36,9 @@ export default function OrgLayout() {
   const { organization, user } = useAuth();
   const options = useStackOptions({ large: false });
   // Home-screen quick actions follow the roles held in THIS organization (#43).
-  useQuickActionItems(user?.roles);
-  useQuickActionHandler(user?.roles);
+  // Phase 50: and the feature sets, so a space without Tutoring clears them.
+  useQuickActionItems(user?.roles, organization);
+  useQuickActionHandler(user?.roles, organization);
   return (
     <LiveSessionHost key={organization?.slug ?? 'none'}>
       {/* One dictation at a time (P3); remounted with the organization, which aborts it. */}

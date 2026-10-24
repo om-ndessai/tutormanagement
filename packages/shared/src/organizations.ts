@@ -133,6 +133,10 @@ export const createOrganizationSchema = organizationFieldsSchema.extend({
   // Off until somebody chooses: an organization never starts emailing people
   // on its own.
   email_notifications: z.boolean().default(false),
+  // Phase 50: the console ticks all three unless a platform admin unticks one.
+  feature_tutoring: z.boolean().default(true),
+  feature_assessment: z.boolean().default(true),
+  feature_quest: z.boolean().default(true),
 });
 export type CreateOrganizationInput = z.input<typeof createOrganizationSchema>;
 export type CreateOrganizationPayload = z.output<typeof createOrganizationSchema>;
@@ -222,6 +226,10 @@ export interface Organization extends OrganizationBrand {
   canvas_assessment_questions: number;
   /** Phase 42: whether Question Quest (gamification) is on. */
   gamify_question_quest: boolean;
+  /** Phase 50: the feature sets platform admins allow here (`featureAllowed`, `featureOn`). */
+  feature_tutoring: boolean;
+  feature_assessment: boolean;
+  feature_quest: boolean;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;

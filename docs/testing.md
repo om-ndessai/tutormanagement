@@ -220,7 +220,7 @@ spec meets it on purpose.
 - **`npm run test:compat`** builds the last release's database (the newest `release-*` tag), applies
   the production SQL still owed (`docs/database.md`'s labelled blocks), checks it against
   `schema.sql`, then runs the last release's Worker with its own `@smoke` tests and today's Worker
-  with today's `@smoke` and `@compat` tests on it (ports 8788/8789, 5175/5176). A test tagged
+  with today's `@smoke` and `@compat` tests on it (ports 8798/8799, 5195/5196; it refuses if one is taken). A test tagged
   `@compat` checks that rows written before a change, or a request an older app sends
   (`compat-clients.spec.ts`), still work. Such a test must rely only on the seed of the last release.
 

@@ -1,11 +1,16 @@
 // The organization form's state and its translation to the API, from
 // apps/web/src/features/platform/organization-dialog.tsx @ 1132322 (FormState, EMPTY, slugFrom, save).
-// Validated with the shared schemas, as the server will.
+// Validated with the shared schemas, as the server will. Phase 50 @ 2471d84 (working tree): the
+// feature sets an organization is allowed, chosen when it is created (the detail screen's Feature
+// sets section changes them after that).
 import {
   ORG_PALETTES,
   createOrganizationSchema,
   updateOrganizationSchema,
+  featureAllowed,
   type CreateOrganizationInput,
+  type OrganizationFeaturesInput,
+  type FeatureSet,
   type OrgPalette,
   type OrgTimeZone,
   type OrganizationListItem,
@@ -25,7 +30,11 @@ export interface OrgFormState {
   time_zone: OrgTimeZone;
   builtin_institute: boolean;
   email_notifications: boolean;
+  /** Phase 50: the feature sets it is allowed; sent on create only. */
+  features: Record<FeatureSet, boolean>;
 }
+
+const ALL_FEATURES: Record<FeatureSet, boolean> = { tutoring: true, assessment: true, quest: true };
 
 export const EMPTY_ORG_FORM: OrgFormState = {
   name: '',
@@ -38,6 +47,7 @@ export const EMPTY_ORG_FORM: OrgFormState = {
   time_zone: 'America/New_York',
   builtin_institute: false,
   email_notifications: false,
+  features: ALL_FEATURES,
 };
 
 /** "Lakeside Learning" -> "lakeside-learning", as a first suggestion. */
@@ -63,12 +73,27 @@ export function formFromOrganization(org: OrganizationListItem | null): OrgFormS
     time_zone: org.time_zone,
     builtin_institute: org.builtin_logo === 'institute',
     email_notifications: org.email_notifications,
+    features: ALL_FEATURES,
   };
 }
 
-/** The body both create and update send: every field, as the web dialog does. */
-export function formToInput(form: OrgFormState): CreateOrganizationInput & UpdateOrganizationInput {
+/**
+ * The body both create and update send: every field, as the web dialog does. Creating also sends
+ * the three feature sets; editing leaves them to the Feature sets section.
+ */
+export function formToInput(
+  form: OrgFormState,
+  creating = false,
+): CreateOrganizationInput & UpdateOrganizationInput {
+  const features = creating
+    ? {
+        feature_tutoring: form.features.tutoring,
+        feature_assessment: form.features.assessment,
+        feature_quest: form.features.quest,
+      }
+    : {};
   return {
+    ...features,
     name: form.name,
     short_name: form.short_name,
     slug: form.slug,
@@ -98,8 +123,23 @@ export type OrgFormVerdict =
 
 /** The shared schema's verdict on the form, field by field. */
 export function validateOrgForm(form: OrgFormState, creating: boolean): OrgFormVerdict {
-  const input = formToInput(form);
+  const input = formToInput(form, creating);
   const result = (creating ? createOrganizationSchema : updateOrganizationSchema).safeParse(input);
   if (result.success) return { ok: true, input };
   return { ok: false, errors: firstErrors(result.error.issues) };
+}
+
+/** The body a change sends: all three, with one set changed. */
+export function featuresBody(
+  org: Pick<OrganizationListItem, 'feature_tutoring' | 'feature_assessment' | 'feature_quest'>,
+  set: FeatureSet,
+  allowed: boolean,
+): OrganizationFeaturesInput {
+  const body: OrganizationFeaturesInput = {
+    feature_tutoring: featureAllowed(org, 'tutoring'),
+    feature_assessment: featureAllowed(org, 'assessment'),
+    feature_quest: featureAllowed(org, 'quest'),
+  };
+  body[`feature_${set}`] = allowed;
+  return body;
 }

@@ -1,8 +1,10 @@
 // Starts and submits one Grade 4 assessment for Sofia as Priya (chmi), through the LOCAL Worker
 // only (sign-in off, X-Dev-User), for the review flow: page 1 carries one stroke, every
 // multiple-choice question has choice A. Sets output.assessmentId.
-var ORG = 'chmi';
-var ADMIN = 'priya.raghavan@gmail.com';
+// Phase 50: optional env ORG, ADMIN and STUDENT_ID (the features/* flows submit one in `assess`);
+// without STUDENT_ID in another organization, the first student of GET /users?role=student.
+var ORG = typeof ORG_SLUG !== 'undefined' && ORG_SLUG ? ORG_SLUG : 'chmi';
+var ADMIN = typeof ADMIN_EMAIL !== 'undefined' && ADMIN_EMAIL ? ADMIN_EMAIL : 'priya.raghavan@gmail.com';
 var SOFIA_ID = '00000000-0000-4000-8000-000000000008';
 
 function call(method, path, body) {
@@ -15,7 +17,10 @@ function call(method, path, body) {
   return json(response.body);
 }
 
-var started = call('POST', '/canvas-assessments', { student_user_id: SOFIA_ID, level_id: 'NC26.4' });
+var studentId = typeof STUDENT_ID !== 'undefined' && STUDENT_ID ? STUDENT_ID : null;
+if (!studentId && ORG === 'chmi') studentId = SOFIA_ID;
+if (!studentId) studentId = call('GET', '/users?role=student&limit=1').data[0].id;
+var started = call('POST', '/canvas-assessments', { student_user_id: studentId, level_id: 'NC26.4' });
 var id = started.data.id;
 var detail = call('GET', '/canvas-assessments/' + id);
 var pages = detail.data.questions.map(function (question, index) {

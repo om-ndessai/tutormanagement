@@ -270,6 +270,20 @@ in-app reminder sheet (`dueReminder` in shared; `LessonReminderSheet` on the web
 in the app); push is later (`docs/roadmap/push-notifications.md`). The log names a location, never
 its address.
 
+**The product is three feature sets, and a space may be allowed some of them** (Phase 50,
+`docs/open-signup-plan.md`). **Tutoring** (pairings, sessions, schedules, locations, payments and
+1099s, progress, comments, the tutor's Home, the dashboard, the tutor role), **Assessment** (the
+Assessment menu) and **Quest** (Question Quest and Quest Games). Platform admins allow them per
+organization (`feature_tutoring`, `feature_assessment`, `feature_quest`; `PUT
+/api/platform/organizations/:id/features`); Assessment and Quest keep their admins' own switch, so a
+set is on when it is allowed and switched on (`featureOn` in shared -- never read the columns
+directly). A set that is off is gone for every reader there: its menu items, its dashboard sections,
+and its routes, which answer 403 `feature_unavailable` (`requireFeature`, mounted per route group in
+`index.ts`; a new route of a set goes under its group). Its data is kept, and reaches nobody until it
+is allowed again -- a kept pairing gives a tutor nothing where Tutoring is not allowed
+(`pairingInForce`). A space without Tutoring has the Assessment home, no tutor role and no tutoring
+fields; an edit there leaves Tutoring's sections out of the request rather than sending them empty (R23).
+
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
 adds their admins by email; it never reads an organization's people, lessons or money. Its

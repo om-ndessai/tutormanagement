@@ -1,0 +1,115 @@
+# Phase 50, the main path: a space allowed Assessment alone. Ines (admin and parent, `assess`) lands
+# on the space home -- the Assessment home -- with Home and More alone in the bar, a menu without
+# anything of Tutoring's or Quest's, and a create sheet of Start an assessment and adding people.
+# Changes nothing.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - smoke
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: space-home
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: assess-home-students
+    timeout: 15000
+- assertVisible:
+    id: 'assess-home-student-.*'
+- scrollUntilVisible:
+    element:
+      id: assess-home-waiting
+    centerElement: true
+- scrollUntilVisible:
+    element:
+      id: assess-home-recent
+    centerElement: true
+- takeScreenshot: features-assess-home
+# The bar: Home and More, the "+" between them.
+- assertVisible:
+    id: tab-dashboard
+- assertVisible:
+    id: tab-more
+- assertNotVisible:
+    id: tab-sessions
+- assertNotVisible:
+    id: tab-progress
+# The create sheet.
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-sheet
+    timeout: 10000
+- assertVisible:
+    id: create-action-start-assessment
+- assertVisible:
+    id: create-action-add-student
+- assertVisible:
+    id: create-action-add-person
+- assertNotVisible:
+    id: create-action-record-session
+- assertNotVisible:
+    id: create-action-add-tutor
+- takeScreenshot: features-create-sheet
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - swipe:
+          start: 50%, 45%
+          end: 50%, 95%
+          duration: 400
+- extendedWaitUntil:
+    notVisible:
+      id: create-sheet
+    timeout: 10000
+# More: the menu follows the sets.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-assessments
+- assertVisible:
+    id: more-nav-users
+- scrollUntilVisible:
+    element:
+      id: more-nav-organization
+    centerElement: true
+- assertVisible:
+    id: more-nav-activity
+- assertNotVisible:
+    id: more-nav-billing
+- assertNotVisible:
+    id: more-nav-assignments
+- assertNotVisible:
+    id: more-nav-comments
+- assertNotVisible:
+    id: more-nav-analytics
+- assertNotVisible:
+    id: more-nav-locations
+- assertNotVisible:
+    id: more-nav-quest
+- takeScreenshot: features-more

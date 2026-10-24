@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/onboarding/student-flow.tsx @ 1132322.
+// Ported from apps/web/src/features/onboarding/student-flow.tsx @ 1132322 (Phase 50 @ 2471d84, working
+// tree: the steps follow the space's feature sets).
 //
 // Adding a student, in the order that works (Phase 26): the family first -- a student cannot exist
 // without a parent on file -- then the student, their assessment, their plan, and a tutor. Every
@@ -7,24 +8,40 @@
 // the family and adds a new parent inside it (`/onboarding/add-student`, in the wizard's own stack).
 // The sheets say what they saved (`form-bridge`), which moves the flow on. Any step may be
 // skipped, and whatever was already added stays.
+import { featureAllowed, featureOn } from '@tmi/shared';
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
 import { onFormSaved, type SavedForm } from '@/lib/form-bridge';
+import { useAuth } from '@/providers/auth-provider';
 import { FlowSteps, StepPanel, StepText } from './flow-steps';
 import { useWizardFrame } from './wizard-layout';
 import { WizardHeading } from './wizard-screens';
 
-type Step = 'student' | 'assessment' | 'plan' | 'pairing' | 'done';
+type Step = 'student' | 'assessment' | 'plan' | 'pairing' | 'start' | 'done';
 
-const STEPS: { key: Step; label: string }[] = [
-  { key: 'student', label: 'Family and student' },
-  { key: 'assessment', label: 'Assessment' },
-  { key: 'plan', label: 'Learning plan' },
-  { key: 'pairing', label: 'Tutor' },
-];
+/**
+ * The flow's steps for this space (Phase 50): with Tutoring, the assessment, the plan and a tutor
+ * follow the student; without it, their first canvas assessment where Assessment is on, else nothing.
+ */
+export function studentFlowSteps(sets: { tutoring: boolean; assessment: boolean }): { key: Step; label: string }[] {
+  if (sets.tutoring) {
+    return [
+      { key: 'student', label: 'Family and student' },
+      { key: 'assessment', label: 'Assessment' },
+      { key: 'plan', label: 'Learning plan' },
+      { key: 'pairing', label: 'Tutor' },
+    ];
+  }
+  return sets.assessment
+    ? [
+        { key: 'student', label: 'Family and student' },
+        { key: 'start', label: 'Start an assessment' },
+      ]
+    : [{ key: 'student', label: 'Family and student' }];
+}
 
 interface Person {
   id: string;
@@ -62,6 +79,11 @@ export function useAwaitedSheet() {
 export function StudentFlow() {
   const { leaveFor } = useWizardFrame();
   const openSheet = useAwaitedSheet();
+  const { organization } = useAuth();
+  const tutoring = featureAllowed(organization, 'tutoring');
+  const assessment = featureOn(organization, 'assessment');
+  const steps = studentFlowSteps({ tutoring, assessment });
+  const afterStudent: Step = tutoring ? 'assessment' : assessment ? 'start' : 'done';
 
   const [step, setStep] = useState<Step>('student');
   const [done, setDone] = useState(new Set<string>());
@@ -89,9 +111,15 @@ export function StudentFlow() {
       <Stack.Screen options={{ title: 'Add a student' }} />
       <WizardHeading
         title="Add a student"
-        description="The family first, then the student, their assessment, their plan and a tutor."
+        description={
+          tutoring
+            ? 'The family first, then the student, their assessment, their plan and a tutor.'
+            : assessment
+              ? 'The family first, then the student and their first assessment.'
+              : 'The family first, then the student.'
+        }
       />
-      <FlowSteps steps={STEPS} current={step} done={done} />
+      <FlowSteps steps={steps} current={step} done={done} />
 
       {step === 'student' ? (
         <StepPanel
@@ -106,7 +134,7 @@ export function StudentFlow() {
                 onPress={() =>
                   openSheet('/onboarding/add-student', 'person', (id, name) => {
                     setStudent({ id, name });
-                    complete('student', 'assessment');
+                    complete('student', afterStudent);
                   })
                 }
               >
@@ -117,9 +145,9 @@ export function StudentFlow() {
           }
         >
           <StepText>
-            Every student needs a parent or guardian on file, who is billed and kept informed: choose an
-            existing family or add a new parent, then the student — their school, goal, when they can learn
-            and what the family is charged per hour. A child with no email of their own needs none.
+            {tutoring
+              ? 'Every student needs a parent or guardian on file, who is billed and kept informed: choose an existing family or add a new parent, then the student — their school, goal, when they can learn and what the family is charged per hour. A child with no email of their own needs none.'
+              : 'Every student needs a parent or guardian on file, who is kept informed: choose an existing family or add a new parent, then the student — their school, course and goal for the year. A child with no email of their own needs none.'}
           </StepText>
         </StepPanel>
       ) : null}
@@ -211,19 +239,54 @@ export function StudentFlow() {
         </StepPanel>
       ) : null}
 
+      {step === 'start' && student ? (
+        <StepPanel
+          testID="student-flow-start"
+          title={`${student.name}’s first assessment`}
+          actions={
+            <>
+              <Button
+                testID="student-flow-start-assessment"
+                mode="contained"
+                icon="draw-pen"
+                onPress={() =>
+                  leaveFor({ pathname: '/assessments', params: { student: student.id } })
+                }
+              >
+                Start an assessment
+              </Button>
+              {skip('done')}
+            </>
+          }
+        >
+          <StepText>
+            Handwritten, one question a page: choose the level, then hand them the phone or tablet.
+          </StepText>
+        </StepPanel>
+      ) : null}
+
       {step === 'done' ? (
         <StepPanel
           testID="student-flow-done"
           title={student ? `${student.name} is set up` : 'Nothing added yet'}
           actions={
             <>
-              {student ? (
+              {student && tutoring ? (
                 <Button
                   testID="student-flow-open-progress"
                   mode="outlined"
                   onPress={() => leaveFor(`/progress/${student.id}`)}
                 >
                   Open their progress
+                </Button>
+              ) : null}
+              {student && !tutoring && assessment ? (
+                <Button
+                  testID="student-flow-open-assessments"
+                  mode="outlined"
+                  onPress={() => leaveFor({ pathname: '/assessments', params: { student: student.id } })}
+                >
+                  Open their assessments
                 </Button>
               ) : null}
               <Button testID="student-flow-users" mode="outlined" onPress={() => leaveFor('/people')}>
@@ -240,7 +303,9 @@ export function StudentFlow() {
         >
           <StepText>
             {student
-              ? 'Anything you skipped can be done from their record, their progress page or Pairings.'
+              ? tutoring
+                ? 'Anything you skipped can be done from their record, their progress page or Pairings.'
+                : 'Their record is on the Users page.'
               : 'You can add a family and a student from Users at any time.'}
           </StepText>
         </StepPanel>

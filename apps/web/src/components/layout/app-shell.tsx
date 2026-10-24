@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { featureOn, type FeatureSet } from '@tmi/shared';
 import {
   ActivityIcon,
   BookOpenIcon,
@@ -40,25 +41,25 @@ import { useBrand } from '@/providers/brand-provider';
 const NAV_ITEMS: (PaletteDestination & {
   end: boolean;
   admin?: boolean;
-  /** Shown only while the organization has this switched on. */
-  feature?: 'canvas_assessments' | 'gamify_question_quest';
+  /** Phase 50: the feature set it belongs to; shown only while that set is on here. */
+  set?: FeatureSet;
   /** A small label beside it, such as "Beta". */
   badge?: string;
 })[] = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true, keywords: ['home', 'overview'] },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false, keywords: ['people', 'students', 'tutors', 'parents', 'family'] },
-  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, keywords: ['assignments', 'tutor', 'student'] },
-  { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, keywords: ['lessons', 'record', 'notes', 'drafts'] },
-  { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, keywords: ['plans', 'assessments', 'goals'] },
+  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, set: 'tutoring', keywords: ['assignments', 'tutor', 'student'] },
+  { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, set: 'tutoring', keywords: ['lessons', 'record', 'notes', 'drafts'] },
+  { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, set: 'tutoring', keywords: ['plans', 'assessments', 'goals'] },
   // Phase 38, in beta: answers written on a canvas. Only while the organization has it on.
-  { to: '/assessments', label: 'Assessment', icon: PenLineIcon, end: false, feature: 'canvas_assessments', badge: 'Beta', keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'] },
+  { to: '/assessments', label: 'Assessment', icon: PenLineIcon, end: false, set: 'assessment', badge: 'Beta', keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'] },
   // Phase 42: Question Quest (gamification). Only while the organization has it on. In beta (Phase 47).
-  { to: '/quest', label: 'Quest', icon: TrophyIcon, end: false, feature: 'gamify_question_quest', badge: 'Beta', keywords: ['game', 'points', 'questions', 'approve', 'review'] },
-  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, keywords: ['calendar', 'cancel', 'weekly'] },
+  { to: '/quest', label: 'Quest', icon: TrophyIcon, end: false, set: 'quest', badge: 'Beta', keywords: ['game', 'points', 'questions', 'approve', 'review'] },
+  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, set: 'tutoring', keywords: ['calendar', 'cancel', 'weekly'] },
   // Every tutor's and student's places (Phase 33): admins only.
-  { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },
-  { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
-  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, keywords: ['notes', 'messages'] },
+  { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, set: 'tutoring', keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },
+  { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, set: 'tutoring', keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
+  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, set: 'tutoring', keywords: ['notes', 'messages'] },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false, keywords: ['me', 'account'] },
   // The organization's own settings (its 1099 payer details): admins only.
@@ -70,7 +71,7 @@ function useNavItems() {
   const { user, organization } = useAuth();
   const admin = Boolean(user?.roles.includes('admin'));
   return NAV_ITEMS.filter(
-    (item) => (!item.admin || admin) && (!item.feature || Boolean(organization?.[item.feature])),
+    (item) => (!item.admin || admin) && (!item.set || featureOn(organization, item.set)),
   );
 }
 
@@ -166,6 +167,7 @@ function PaletteLayer({ children }: { children: React.ReactNode }) {
 function Shell() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { organization } = useAuth();
 
   return (
     <div className="surface-mesh flex min-h-full">
@@ -213,7 +215,7 @@ function Shell() {
 
         {/* A running lesson follows the tutor wherever they navigate, so it
             cannot be left ticking on a screen they have moved away from. */}
-        <LiveSessionBar />
+        {featureOn(organization, 'tutoring') && <LiveSessionBar />}
 
         <main className="flex-1 px-4 py-6 lg:px-8 lg:py-8">
           {/* Each page arrives, rather than appearing: a short rise and fade,

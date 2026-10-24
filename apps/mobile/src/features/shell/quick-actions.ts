@@ -2,8 +2,8 @@
 // "Record a lesson". A system surface, so generic verbs only: no student, no organization, no money
 // (immersive-design.md §0.4). Set per organization from the roles held THERE, and cleared on
 // sign-out (§0.7). An action is only a route: the role is checked again on arrival, and the
-// server checks again after that.
-import type { UserRole as Role } from '@tmi/shared';
+// server checks again after that. Phase 50: lessons are Tutoring's, so a space without it offers none.
+import { featureOn, type FeatureState, type UserRole as Role } from '@tmi/shared';
 import { router } from 'expo-router';
 import * as QuickActions from 'expo-quick-actions';
 import { useEffect, useRef } from 'react';
@@ -22,9 +22,11 @@ const ITEMS: Record<QuickActionId, QuickActionItem> = {
   'record-session': { id: 'record-session', title: 'Record a lesson', icon: 'symbol:square.and.pencil' },
 };
 
-/** Only someone who teaches in this organization gets them. */
-export function quickActionItems(roles: readonly Role[] | undefined): QuickActionItem[] {
-  if (!roles?.includes('tutor')) return [];
+type Org = Partial<FeatureState> | null | undefined;
+
+/** Only someone who teaches in this organization gets them, and only where Tutoring is on. */
+export function quickActionItems(roles: readonly Role[] | undefined, organization: Org): QuickActionItem[] {
+  if (!roles?.includes('tutor') || !featureOn(organization, 'tutoring')) return [];
   return [ITEMS['start-lesson'], ITEMS['record-session']];
 }
 
@@ -32,8 +34,9 @@ export function quickActionItems(roles: readonly Role[] | undefined): QuickActio
 export function quickActionRoute(
   id: string | undefined,
   roles: readonly Role[] | undefined,
+  organization: Org,
 ): '/start-lesson' | '/record-lesson' | null {
-  if (!roles?.includes('tutor')) return null;
+  if (!roles?.includes('tutor') || !featureOn(organization, 'tutoring')) return null;
   if (id === 'start-lesson') return '/start-lesson';
   // The record step flow (UI upgrades U4); the action's id stays, as phones have it set.
   if (id === 'record-session') return '/record-lesson';
@@ -58,12 +61,11 @@ export function clearQuickActions() {
 }
 
 /** In the organization's layout: the items follow the roles held in this organization. */
-export function useQuickActionItems(roles: readonly Role[] | undefined) {
-  const key = quickActionItems(roles)
-    .map((item) => item.id)
-    .join(',');
+export function useQuickActionItems(roles: readonly Role[] | undefined, organization: Org) {
+  const items = quickActionItems(roles, organization);
+  const key = items.map((item) => item.id).join(',');
   useEffect(() => {
-    setItems(quickActionItems(roles));
+    setItems(items);
     // `key` is what matters; the roles array is a new one on every session read.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
@@ -91,15 +93,17 @@ function takeLaunchAction(): { id?: string } | null {
 }
 
 /** In the organization's layout: opens the sheet an action names, if the reader may use it here. */
-export function useQuickActionHandler(roles: readonly Role[] | undefined) {
+export function useQuickActionHandler(roles: readonly Role[] | undefined, organization: Org) {
   const rolesRef = useRef(roles);
+  const orgRef = useRef(organization);
   useEffect(() => {
     rolesRef.current = roles;
-  }, [roles]);
+    orgRef.current = organization;
+  }, [roles, organization]);
 
   useEffect(() => {
     const open = (action: { id?: string } | null | undefined) => {
-      const route = quickActionRoute(action?.id, rolesRef.current);
+      const route = quickActionRoute(action?.id, rolesRef.current, orgRef.current);
       // After the layout's first frame, so the stack is there to push onto.
       if (route) setTimeout(() => router.navigate(route), 0);
     };

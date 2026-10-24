@@ -1,10 +1,19 @@
 // Ported from apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322 (the
-// Assessment card, Phase 38, @ 22b9701; the Gamification card, Phase 42, @ 82397b8).
+// Assessment card, Phase 38, @ 22b9701; the Gamification card, Phase 42, @ 82397b8; Phase 50's
+// feature sets @ 2471d84, working tree: each card shows only where its set is allowed, and the
+// platform's facts name the allowed sets).
 //
 // The organization's own settings, for its admins: the payer box on every 1099 it issues. Its name,
 // look and clock are set by the platform, and shown here for reference. The organization's name on
 // screen is data, never written into code.
-import { ORG_PALETTE_LABELS, ORG_TIME_ZONE_LABELS } from '@tmi/shared';
+import {
+  FEATURE_SET_LABELS,
+  ORG_PALETTE_LABELS,
+  ORG_TIME_ZONE_LABELS,
+  allowedFeatureSets,
+  featureAllowed,
+  type FeatureSet,
+} from '@tmi/shared';
 import { Stack } from 'expo-router';
 import { useState, type ComponentProps } from 'react';
 import { View } from 'react-native';
@@ -55,6 +64,7 @@ export function OrganizationSettingsScreen() {
   }
 
   if (!organization) return null;
+  const tutoring = featureAllowed(organization, 'tutoring');
 
   if (!isAdmin) {
     return (
@@ -70,20 +80,23 @@ export function OrganizationSettingsScreen() {
   return (
     <Screen testID="screen-organization" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ title: 'Organization' }} />
-      {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). */}
-      <SecureMoney tag="organization" />
+      {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). Tutoring's alone (Phase 50). */}
+      {tutoring ? <SecureMoney tag="organization" /> : null}
       <PageIntro>
-        {`What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`}
+        {tutoring
+          ? `What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`
+          : `What ${organization.name} teaches from, and how the portal presents it.`}
       </PageIntro>
 
       {settings.isPending ? (
         <DetailSkeleton label="Loading the settings…" rows={5} />
       ) : settings.isError || !settings.data ? (
         <ErrorState error={settings.error} onRetry={() => void settings.refetch()} />
-      ) : (
-        // Keyed on the load, so the form starts from the server's values once.
+      ) : tutoring ? (
+        // Keyed on the load, so the form starts from the server's values once. The 1099 payer
+        // belongs to Tutoring (payments and tax), Phase 50.
         <PayerForm key={settings.dataUpdatedAt} initial={formFromSettings(settings.data.data)} />
-      )}
+      ) : null}
 
       <Panel title="Set by the platform" testID="org-platform">
         <View style={{ gap: space.md }}>
@@ -99,8 +112,11 @@ export function OrganizationSettingsScreen() {
             label="Lessons are recorded on"
             value={`${ORG_TIME_ZONE_LABELS[organization.time_zone]} time`}
           />
+          <View testID="org-features">
+            <Fact label="Feature sets" value={featureSetsLabel(allowedFeatureSets(organization))} />
+          </View>
           <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-            To change the name, logo, palette or clock, ask the platform administrator.
+            To change the name, logo, palette, clock or feature sets, ask the platform administrator.
           </Text>
         </View>
       </Panel>
@@ -109,15 +125,27 @@ export function OrganizationSettingsScreen() {
 
       <CurriculaCard />
 
-      <CanvasAssessmentsCard
-        enabled={settings.data?.data.canvas_assessments ?? false}
-        unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
-        questions={settings.data?.data.canvas_assessment_questions ?? 10}
-      />
+      {featureAllowed(organization, 'assessment') ? (
+        <CanvasAssessmentsCard
+          enabled={settings.data?.data.canvas_assessments ?? false}
+          unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
+          questions={settings.data?.data.canvas_assessment_questions ?? 10}
+        />
+      ) : null}
 
-      <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
+      {featureAllowed(organization, 'quest') ? (
+        <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
+      ) : null}
     </Screen>
   );
+}
+
+/** "Assessment", "Tutoring and Assessment", "Tutoring, Assessment and Quest", or "None yet". */
+export function featureSetsLabel(sets: readonly FeatureSet[]): string {
+  const labels = sets.map((set) => FEATURE_SET_LABELS[set]);
+  if (labels.length === 0) return 'None yet';
+  if (labels.length === 1) return labels[0]!;
+  return `${labels.slice(0, -1).join(', ')} and ${labels[labels.length - 1]}`;
 }
 
 function Fact({ label, value }: { label: string; value: string }) {

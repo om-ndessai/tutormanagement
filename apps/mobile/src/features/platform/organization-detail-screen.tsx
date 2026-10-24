@@ -20,6 +20,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { AdminsSection } from './admins-section';
 import { useArchiveOrganization, useOrganizations } from './api';
+import { FeaturesSection } from './features-section';
 import { LogoSection } from './logo-section';
 
 export function OrganizationDetailScreen({ id }: { id: string }) {
@@ -142,6 +143,8 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
         </View>
       </OutlinedCard>
 
+      {/* Phase 50: which feature sets it may use. */}
+      <FeaturesSection organization={org} />
       <LogoSection organization={org} />
       <AdminsSection organization={org} />
 

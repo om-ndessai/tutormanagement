@@ -378,6 +378,21 @@ native rebuild of both dev builds, so build only while the devices are free.
   `games-panel.tsx` (design 60); fixed the same day (`typedGameCode`: a code field is no longer
   rewritten as it is typed), `game-join` then green on both phones and 3/3 on the iPad.
 
+## Portal Phase 50 — feature sets (parity: the web half is built by the lead)
+
+- [x] 62. Mobile: feature sets (Tutoring, Assessment, Quest), at parity with the web
+  (`docs/open-signup-plan.md`, R23) — the menu, Search, the tab bar (Home and More without Tutoring, the
+  "+" centred), the create sheet (Start an assessment for an admin without Tutoring), the quick actions
+  and the tour follow `featureOn`; Home without Tutoring is the space home (the Assessment home, a Quest
+  card, a switched-off or empty state), never reading `/dashboard`; every route of a set is wrapped in
+  `FeatureGate` ("Not part of this space"; `GATED_ROUTES`, checked by a test); a 403
+  `feature_unavailable` re-reads the session (at most once in 10 s) and `ErrorState` shows the calm words;
+  the wizard, the person form (the tutor role and Tutoring's fields hidden and omitted from the request),
+  the record and the Organization screen follow the allowed sets; the console shows and toggles them and
+  creates with them. Built and tested 2026-10-24 (build note under design 62): typecheck, lint, Jest
+  (124 suites, 890 tests) and the export green; `features/*` (nine flows, `assess-home` tagged smoke) and
+  the other smoke flows green on iOS and Android against the e2e Release build.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

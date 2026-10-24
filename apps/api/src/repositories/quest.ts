@@ -17,6 +17,7 @@ import {
 } from '@tmi/shared';
 
 import type { OrgId } from '../lib/org.js';
+import { pairingInForce } from '../lib/scope.js';
 
 // Question Quest (Phase 42, docs/gamification-plan.md). Every query names the
 // organization; the bank itself is platform reference data, read here only for
@@ -29,7 +30,7 @@ function reviewerScope(org: OrgId, reviewer: { id: string; admin: boolean }): { 
   if (reviewer.admin) return { sql: '1 = 1', values: [] };
   return {
     sql: `a.student_user_id IN (SELECT s.student_user_id FROM assignments s
-                                WHERE s.organization_id = ? AND s.tutor_user_id = ? AND s.is_active = 1)`,
+                                WHERE s.organization_id = ? AND s.tutor_user_id = ? AND ${pairingInForce('s')})`,
     values: [org, reviewer.id],
   };
 }
@@ -419,7 +420,7 @@ export async function listQuestStudents(
     ? { sql: '1 = 1', values: [] as unknown[] }
     : {
         sql: `p.user_id IN (SELECT s.student_user_id FROM assignments s
-                            WHERE s.organization_id = ? AND s.tutor_user_id = ? AND s.is_active = 1)`,
+                            WHERE s.organization_id = ? AND s.tutor_user_id = ? AND ${pairingInForce('s')})`,
         values: [org, reviewer.id] as unknown[],
       };
   const result = await db
@@ -462,7 +463,7 @@ export async function managesQuestStudent(
        WHERE p.organization_id = ?1 AND p.user_id = ?2
          AND (?3 = 1 OR EXISTS (SELECT 1 FROM assignments s
                                 WHERE s.organization_id = ?1 AND s.student_user_id = ?2
-                                  AND s.tutor_user_id = ?4 AND s.is_active = 1))`,
+                                  AND s.tutor_user_id = ?4 AND ${pairingInForce('s')}))`,
     )
     .bind(org, studentId, reviewer.admin ? 1 : 0, reviewer.id)
     .first();

@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { RequireFeature } from '@/components/layout/require-feature';
 import { AppShell } from '@/components/layout/app-shell';
 import { LoginPage } from '@/features/auth/login-page';
 import { RequireAuth } from '@/features/auth/require-auth';
@@ -63,10 +64,12 @@ export function App() {
         {/* The portal itself runs inside the organization this tab chose. */}
         <Route element={<RequireOrg />}>
         {/* Phase 42: Question Quest runs full screen, outside the portal's frame. */}
-        <Route path="quest/play" element={<QuestPlayPage />} />
-        <Route path="quest/review" element={<QuestReviewPage />} />
-        <Route path="quest/games/new" element={<StartGamePage />} />
-        <Route path="quest/games/:gameId" element={<GamePage />} />
+        <Route element={<RequireFeature set="quest" />}>
+          <Route path="quest/play" element={<QuestPlayPage />} />
+          <Route path="quest/review" element={<QuestReviewPage />} />
+          <Route path="quest/games/new" element={<StartGamePage />} />
+          <Route path="quest/games/:gameId" element={<GamePage />} />
+        </Route>
         <Route element={<AppShell />}>
           <Route
             index
@@ -80,19 +83,26 @@ export function App() {
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="users" element={<UsersPage />} />
-          <Route path="assignments" element={<AssignmentsPage />} />
-          <Route path="sessions" element={<SessionsPage />} />
-          <Route path="progress" element={<ProgressPage />} />
-          <Route path="progress/:studentId" element={<StudentProgressPage />} />
-          <Route path="assessments" element={<AssessmentsPage />} />
-          <Route path="assessments/:id" element={<TakeAssessmentPage />} />
-          <Route path="assessments/:id/review" element={<ReviewAssessmentPage />} />
-          <Route path="assessments/:id/pdf" element={<AssessmentPdfPage />} />
-          <Route path="quest" element={<QuestPage />} />
-          <Route path="schedule" element={<SchedulesPage />} />
-          <Route path="locations" element={<LocationsPage />} />
-          <Route path="billing" element={<BillingPage />} />
-          <Route path="comments" element={<CommentsPage />} />
+          {/* Phase 50: each feature set's pages open only where the set is on (R23). */}
+          <Route element={<RequireFeature set="tutoring" />}>
+            <Route path="assignments" element={<AssignmentsPage />} />
+            <Route path="sessions" element={<SessionsPage />} />
+            <Route path="progress" element={<ProgressPage />} />
+            <Route path="progress/:studentId" element={<StudentProgressPage />} />
+            <Route path="schedule" element={<SchedulesPage />} />
+            <Route path="locations" element={<LocationsPage />} />
+            <Route path="billing" element={<BillingPage />} />
+            <Route path="comments" element={<CommentsPage />} />
+          </Route>
+          <Route element={<RequireFeature set="assessment" />}>
+            <Route path="assessments" element={<AssessmentsPage />} />
+            <Route path="assessments/:id" element={<TakeAssessmentPage />} />
+            <Route path="assessments/:id/review" element={<ReviewAssessmentPage />} />
+            <Route path="assessments/:id/pdf" element={<AssessmentPdfPage />} />
+          </Route>
+          <Route element={<RequireFeature set="quest" />}>
+            <Route path="quest" element={<QuestPage />} />
+          </Route>
           <Route path="activity" element={<ActivityPage />} />
           <Route path="organization" element={<OrganizationSettingsPage />} />
           <Route path="*" element={<NotFoundPage />} />

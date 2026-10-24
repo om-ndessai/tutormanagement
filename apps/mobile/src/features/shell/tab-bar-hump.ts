@@ -5,7 +5,7 @@
 // Here it is computed from the bar's real width, so the hump stays centred on every phone.
 import { useAuth } from '@/providers/auth-provider';
 import { TAB_BAR_HUMP } from '@/features/teaching/live-session';
-import { hasCreateActions } from './create-actions';
+import { createSetsOf, hasCreateActions } from './create-actions';
 
 /** The hump's circle. */
 export const HUMP_RADIUS = 42;
@@ -55,6 +55,6 @@ export function humpFillPath(width: number, height: number, edge: number = TAB_B
 
 /** Whether the reader's bar has a "+", and so the hump: anyone with something to create. */
 export function useTabBarHump(): boolean {
-  const { user } = useAuth();
-  return hasCreateActions(user?.roles);
+  const { user, organization } = useAuth();
+  return hasCreateActions(user?.roles, createSetsOf(organization));
 }

@@ -6,6 +6,7 @@ import {
   USER_ROLE_LABELS,
   USER_STATUSES,
   USER_STATUS_LABELS,
+  featureAllowed,
   type UserRole,
   type UserSortField,
   type UserStatus,
@@ -16,6 +17,7 @@ import { Button, Chip, Menu, Searchbar } from 'react-native-paper';
 
 import { useLargeText } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
+import { useAuth } from '@/providers/auth-provider';
 import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import { SORT_OPTIONS, sortLabel } from './people-model';
 
@@ -38,6 +40,9 @@ export function PeopleFilters({
   isAdmin: boolean;
 }) {
   const large = useLargeText();
+  // Phase 50: no Tutor chip where the space has no Tutoring (R23).
+  const { organization } = useAuth();
+  const roles = featureAllowed(organization, 'tutoring') ? USER_ROLES : USER_ROLES.filter((role) => role !== 'tutor');
   const [statusOpen, setStatusOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
 
@@ -78,7 +83,7 @@ export function PeopleFilters({
         >
           All roles
         </Chip>
-        {USER_ROLES.map((role) => (
+        {roles.map((role) => (
           <Chip
             hitSlop={CHIP_HIT_SLOP}
             key={role}

@@ -24,6 +24,11 @@ export const PEOPLE = {
   orgBAdmin: { email: 'rosa.delgado.tutoring@gmail.com', name: 'Rosa Delgado' },
   /** Riverside's own tutor. */
   orgBTutor: { email: 'kwame.mensah.math@gmail.com', name: 'Kwame Mensah' },
+  // --- organization C, an Assessment-only space (Phase 50) --------------------
+  /** C's admin, and the parent of its one student, Noor (no address). */
+  assessAdmin: { email: 'ines.ferreira.assess@gmail.com', name: 'Ines Ferreira' },
+  /** C's second parent. */
+  assessParent: { email: 'omar.haddad.assess@gmail.com', name: 'Omar Haddad' },
   /** Creates organizations and their admins; belongs to neither. */
   platformAdmin: { email: 'ndessai@gmail.com', name: 'Nav Dessai' },
 } as const;
@@ -35,6 +40,8 @@ export const PEOPLE = {
 export const ORGS = {
   a: { slug: 'chmi', name: 'Chapel Hill Math Institute', short: 'CHMI' },
   b: { slug: 'riverside', name: 'Riverside Tutoring', short: 'Riverside' },
+  /** Phase 50: allowed the Assessment set alone, as every self-serve space will be. */
+  c: { slug: 'assess', name: 'Ferreira Family Practice', short: 'Ferreira' },
 } as const;
 
 export type PersonKey = keyof typeof PEOPLE;

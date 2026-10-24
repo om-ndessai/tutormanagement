@@ -1244,6 +1244,23 @@ its release, as production already ran it. A difference that cannot be avoided i
 reason, in `scripts/compat-known.json`. Phase 49 itself changes no schema: its block is empty, and its
 release tags the commit production ran before it (`release-20261023`, 62382f9).
 
+Phase 50 (feature sets, 2026-10-24, `docs/open-signup-plan.md`) is additive: three columns saying
+which feature sets platform admins allow an organization. Their defaults of 1 keep every existing
+organization exactly as it is; the old Worker never reads them. Apply after the backup, before
+`npm run deploy`:
+
+```sql release=phase-50
+ALTER TABLE organizations ADD COLUMN feature_tutoring   INTEGER NOT NULL DEFAULT 1 CHECK (feature_tutoring IN (0, 1));
+ALTER TABLE organizations ADD COLUMN feature_assessment INTEGER NOT NULL DEFAULT 1 CHECK (feature_assessment IN (0, 1));
+ALTER TABLE organizations ADD COLUMN feature_quest      INTEGER NOT NULL DEFAULT 1 CHECK (feature_quest IN (0, 1));
+```
+
+Check, read-only:
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --command="SELECT slug, feature_tutoring, feature_assessment, feature_quest FROM organizations"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

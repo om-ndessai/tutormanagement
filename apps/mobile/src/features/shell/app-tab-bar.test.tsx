@@ -6,7 +6,7 @@ import { fireEvent, screen } from '@testing-library/react-native';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 
 import { renderWithProviders } from '@/test/render';
-import { AppTabBar } from './app-tab-bar';
+import { AppTabBar, createSlot, visibleTabs } from './app-tab-bar';
 
 const mockPush = jest.fn();
 jest.mock('expo-router', () => ({ router: { push: (href: unknown) => mockPush(href) } }));
@@ -56,8 +56,17 @@ function props(index = 0) {
   };
 }
 
-function as(roles: string[]) {
-  mockAuth.mockReturnValue({ user: { id: 'me', roles } });
+const ALL_SETS = { canvas_assessments: true };
+const ASSESS_ONLY = {
+  feature_tutoring: false,
+  feature_assessment: true,
+  feature_quest: false,
+  canvas_assessments: true,
+  gamify_question_quest: false,
+};
+
+function as(roles: string[], organization: object = ALL_SETS) {
+  mockAuth.mockReturnValue({ user: { id: 'me', roles }, organization });
 }
 
 beforeEach(() => {
@@ -166,4 +175,34 @@ test('a tutor who teaches nobody here is not offered Start', async () => {
   await renderWithProviders(<AppTabBar {...props().props} />);
   expect(screen.queryByTestId('create-action-start-lesson')).toBeNull();
   expect(screen.getByTestId('create-action-record-session')).toBeTruthy();
+});
+
+describe('Phase 50: the bar follows the feature sets', () => {
+  test('four tabs with Tutoring, Home and More without it', () => {
+    expect(visibleTabs(ALL_SETS)).toEqual(['dashboard', 'sessions', 'progress', 'more']);
+    expect(visibleTabs(ASSESS_ONLY)).toEqual(['dashboard', 'more']);
+  });
+
+  test('the "+" stays in the middle', () => {
+    expect(createSlot(4)).toBe(2);
+    expect(createSlot(2)).toBe(1);
+  });
+
+  test("an Assessment-only admin's bar: Home, the +, More; the sheet offers Start an assessment", async () => {
+    as(['admin'], ASSESS_ONLY);
+    await renderWithProviders(<AppTabBar {...props().props} />);
+    expect(slots()).toEqual(['tab-dashboard', 'create-button', 'tab-more']);
+    expect(screen.queryByTestId('tab-sessions')).toBeNull();
+    expect(screen.getByTestId('create-action-start-assessment')).toBeTruthy();
+    expect(screen.getByTestId('create-action-add-student')).toBeTruthy();
+    expect(screen.getByTestId('create-action-add-person')).toBeTruthy();
+    expect(screen.queryByTestId('create-action-record-session')).toBeNull();
+    expect(screen.queryByTestId('create-action-add-tutor')).toBeNull();
+  });
+
+  test('a parent there gets a flat bar of two', async () => {
+    as(['parent'], ASSESS_ONLY);
+    await renderWithProviders(<AppTabBar {...props().props} />);
+    expect(slots()).toEqual(['tab-dashboard', 'tab-more']);
+  });
 });

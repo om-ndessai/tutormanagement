@@ -1,0 +1,103 @@
+# Phase 50: the Organization screen shows only the allowed sets' cards. Ines (`assess`, Assessment
+# alone): the Assessment card, no Gamification and no 1099 payer form, and "Feature sets" reads
+# Assessment. Rosa (riverside, Tutoring and Assessment): the payer form and the Assessment card, no
+# Gamification, and More has no Quest.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: space-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: screen-organization
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: org-features
+    timeout: 15000
+- assertVisible: 'Assessment'
+- assertNotVisible:
+    id: org-payer
+- scrollUntilVisible:
+    element:
+      id: org-assessments-switch
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: features-organization-assess
+- assertNotVisible:
+    id: org-gamification
+# The foot of the screen (the Assessment card's last row): nothing below it.
+- scrollUntilVisible:
+    element:
+      text: 'Questions in an assessment'
+    direction: DOWN
+- assertNotVisible:
+    id: org-gamification
+- assertNotVisible:
+    id: org-payer
+# Riverside: Tutoring and Assessment.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: rosa.delgado.tutoring@gmail.com
+      ORG: riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible:
+    id: tab-sessions
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: screen-organization
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-payer
+    direction: DOWN
+    centerElement: true
+- scrollUntilVisible:
+    element:
+      id: org-assessments-switch
+    direction: DOWN
+    centerElement: true
+# The foot of the screen (the Assessment card's last row): nothing below it.
+- scrollUntilVisible:
+    element:
+      text: 'Questions in an assessment'
+    direction: DOWN
+- assertNotVisible:
+    id: org-gamification
+- runFlow: ../../subflows/go-back.yaml
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-organization
+    centerElement: true
+- assertNotVisible:
+    id: more-nav-quest

@@ -892,8 +892,11 @@ for (const plan of plans) {
 // The platform admin (db/platform-admin.sql) belongs to neither.
 const ORG_A = '0a000000-0000-4000-8000-000000000001';
 const ORG_B = '0b000000-0000-4000-8000-000000000001';
+const ORG_C = '0d000000-0000-4000-8000-000000000001';
 const A = q(ORG_A);
 const B = q(ORG_B);
+const C = q(ORG_C);
+const ENTERED_C = q('2026-09-01T12:00:00.000Z');
 const inOrg = (org, rows) => rows.map((row) => [org, ...row]);
 
 const organizations = [
@@ -904,12 +907,40 @@ const organizations = [
    // Notifications ON in A, so the demo shows the switch and its log of
    // what would have been sent (the demo has no mail binding: sent to nobody).
    // The Assessment menu (beta, Phase 38) ON in A too, so the demo shows it.
-   q('America/New_York'), '1', '1', '0', q('chmi.tutor-portal.invalid')],
+   q('America/New_York'), '1', '1', '0', q('chmi.tutor-portal.invalid'), 1, 1, 1],
   [B, q('riverside'), q('Riverside Tutoring'), q('Riverside'), q('Small groups, big steps'),
    q('Neighbourhood tutoring along the river, for families who want a tutor who knows the school.'),
    q('Durham, North Carolina'), q('teal'), 'NULL', q('56-7788990'),
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
-   q('America/New_York'), '0', '0', '0', q('riverside.tutor-portal.invalid')],
+   q('America/New_York'), '0', '0', '0', q('riverside.tutor-portal.invalid'), 1, 1, 1],
+  // C (Phase 50): a small space allowed the Assessment set alone -- the shape every self-serve
+  // space of Phase 52 takes. No tutoring, no Quest; Assessment switched on.
+  [C, q('assess'), q('Ferreira Family Practice'), q('Ferreira'), 'NULL', 'NULL', 'NULL', q('platform'), 'NULL', 'NULL',
+   'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
+   q('America/New_York'), '0', '1', '0', q('assess.tutor-portal.invalid'), 0, 1, 0],
+];
+
+// The people only C has: an admin who is also the parent, a second parent, and their child.
+const UC = (k) => id('0d100000', k);
+const C_CAST = { ines: UC(1), omar: UC(2), noor: UC(3) };
+const cUsers = [
+  [q(C_CAST.ines), q('ines.ferreira.assess@gmail.com'), q('Ines Ferreira'), 'NULL'],
+  [q(C_CAST.omar), q('omar.haddad.assess@gmail.com'), q('Omar Haddad'), 'NULL'],
+  // A child with no address, as most students are.
+  [q(C_CAST.noor), 'NULL', q('Noor Haddad'), 'NULL'],
+];
+const membersC = [
+  [C, q(C_CAST.ines), q('active'), ENTERED_C],
+  [C, q(C_CAST.omar), q('active'), ENTERED_C],
+  [C, q(C_CAST.noor), q('active'), ENTERED_C],
+];
+const rolesC = [
+  [C_CAST.ines, 'admin'], [C_CAST.ines, 'parent'], [C_CAST.omar, 'parent'], [C_CAST.noor, 'student'],
+].map(([u, r]) => [C, q(u), q(r)]);
+const studentProfilesC = [[C, q(C_CAST.noor), q('Carrboro Elementary'), q('Grade 4 Mathematics'), q('Multiplication facts by heart.'), 0, 'NULL', 'NULL', 'NULL']];
+const guardianshipsC = [
+  [C, q(C_CAST.ines), q(C_CAST.noor), q('mother'), 1],
+  [C, q(C_CAST.omar), q(C_CAST.noor), q('father'), 0],
 ];
 
 // The people only B has.
@@ -1134,33 +1165,33 @@ DELETE FROM users;
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain'], organizations)}
+${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest'], organizations)}
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
 -- North Carolina's standards, 2017 by default, and has retired Beast Academy.
 -- The catalog itself is db/catalog.sql, loaded before this file.
-${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB])}
+${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB, [C, q('nc-2026'), 1, 'NULL']])}
 
 -- --- people ----------------------------------------------------------------
-${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers])}
+${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers, ...cUsers])}
 
 -- --- who belongs where, and what they do there -----------------------------
-${insert('org_members', ['organization_id', 'user_id', 'status', 'first_entered_at'], [...membersA, ...membersB], 80)}
+${insert('org_members', ['organization_id', 'user_id', 'status', 'first_entered_at'], [...membersA, ...membersB, ...membersC], 80)}
 
-${insert('user_roles', ['organization_id', 'user_id', 'role'], [...inOrg(A, roles), ...rolesB], 80)}
+${insert('user_roles', ['organization_id', 'user_id', 'role'], [...inOrg(A, roles), ...rolesB, ...rolesC], 80)}
 
 -- --- everyone here has been through the welcome wizard (Phase 26) ----------
-${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], [...users, ...bUsers].map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
+${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], [...users, ...bUsers, ...cUsers].map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
 
 -- --- tutor-only data -------------------------------------------------------
 ${insert('tutor_profiles', ['organization_id', 'user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on', 'address_line1', 'address_line2', 'city', 'state', 'postal_code'], [...inOrg(A, tutorProfiles), ...tutorProfilesB])}
 
 -- --- student-only data -----------------------------------------------------
-${insert('student_profiles', ['organization_id', 'user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], [...inOrg(A, studentProfiles), ...studentProfilesB])}
+${insert('student_profiles', ['organization_id', 'user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], [...inOrg(A, studentProfiles), ...studentProfilesB, ...studentProfilesC])}
 
 -- --- who is responsible for whom -------------------------------------------
-${insert('guardianships', ['organization_id', 'guardian_user_id', 'dependent_user_id', 'relationship', 'is_primary'], [...inOrg(A, guardianships), ...guardianshipsB])}
+${insert('guardianships', ['organization_id', 'guardian_user_id', 'dependent_user_id', 'relationship', 'is_primary'], [...inOrg(A, guardianships), ...guardianshipsB, ...guardianshipsC])}
 
 -- --- how money moves -------------------------------------------------------
 ${insert('payment_handles', ['organization_id', 'user_id', 'method', 'handle'], [...inOrg(A, handles), ...handlesB])}

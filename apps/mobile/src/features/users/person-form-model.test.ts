@@ -151,3 +151,32 @@ it('dates on the organization clock', () => {
   // 03:00 UTC is still the previous evening in New York.
   expect(todayIso('America/New_York', new Date('2026-10-09T03:00:00Z'))).toBe('2026-10-08');
 });
+
+it('without Tutoring, leaves its sections out of the request and keeps a held tutor role (Phase 50)', () => {
+  const form: FormState = {
+    ...EMPTY,
+    full_name: 'Ravi',
+    email: 'ravi@example.com',
+    roles: ['tutor', 'parent'],
+    payment_handles: [{ method: 'zelle', handle: 'ravi' }],
+    availability: [{ day_of_week: 2, hour: 16 }],
+  };
+  const body = toRequest(form, TODAY, { tutoring: false });
+  expect('tutor_profile' in body).toBe(false);
+  expect('payment_handles' in body).toBe(false);
+  expect('availability' in body).toBe(false);
+  expect(body.roles).toEqual(['tutor', 'parent']);
+  expect(body.student_profile).toBeNull();
+  // With Tutoring, as before.
+  expect('tutor_profile' in toRequest(form, TODAY)).toBe(true);
+});
+
+it("without Tutoring, sends a student's hidden price and limit as loaded", () => {
+  const body = toRequest(
+    { ...EMPTY, full_name: 'Mila', roles: ['student'], student: { ...EMPTY.student, charge_in_person: '80', max_minutes: '90' } },
+    TODAY,
+    { tutoring: false },
+  );
+  expect(body.student_profile?.charge_rate_in_person_cents).toBe(8000);
+  expect(body.student_profile?.max_session_minutes).toBe(90);
+});

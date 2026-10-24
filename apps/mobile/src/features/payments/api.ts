@@ -49,10 +49,12 @@ export function usePayments(params: Partial<ListPaymentsParams> = {}) {
   });
 }
 
-export function useBalances() {
+export function useBalances({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: ['balances'],
     queryFn: () => apiClient.get<ApiOk<BalancesResponse>>('/payments/balances'),
+    // Phase 50: Billing is Tutoring's; a space without it answers 403, so it is not asked.
+    enabled,
   });
 }
 

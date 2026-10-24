@@ -5,6 +5,7 @@ import { act, render, waitFor } from '@testing-library/react-native';
 import { useEffect } from 'react';
 
 import { apiClient } from '@/lib/api-client';
+import { emit } from '@/lib/events';
 import { clearActiveOrg, getActiveOrg } from '@/lib/organization';
 import { setDevUser } from '@/lib/server';
 
@@ -293,5 +294,30 @@ describe('auth provider: Google sign-in', () => {
     expect(auth.status).toBe('unauthenticated');
     expect(auth.user).toBeNull();
     expect(auth.organization).toBeNull();
+  });
+});
+
+describe('auth provider: feature sets (Phase 50)', () => {
+  it('re-reads the session on a feature_unavailable refusal, at most once in 10 s', async () => {
+    server.cookie = true;
+    await mount();
+    const before = calls('/auth/session').length;
+    const now = jest.spyOn(Date, 'now');
+    try {
+      now.mockReturnValue(1_000_000);
+      await act(async () => emit('feature-unavailable'));
+      await waitFor(() => expect(calls('/auth/session').length).toBeGreaterThan(before));
+      const after = calls('/auth/session').length;
+      // Again within 10 s: nothing more.
+      now.mockReturnValue(1_005_000);
+      await act(async () => emit('feature-unavailable'));
+      expect(calls('/auth/session').length).toBe(after);
+      // After 10 s: once more.
+      now.mockReturnValue(1_011_000);
+      await act(async () => emit('feature-unavailable'));
+      await waitFor(() => expect(calls('/auth/session').length).toBeGreaterThan(after));
+    } finally {
+      now.mockRestore();
+    }
   });
 });

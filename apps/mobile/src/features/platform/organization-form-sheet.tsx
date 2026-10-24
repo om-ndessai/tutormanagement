@@ -1,8 +1,10 @@
 // Ported from apps/web/src/features/platform/organization-dialog.tsx @ 1132322 (the form).
 // Creating or editing an organization: its name and address name, its look (palette, the built-in
 // logo), its clock and its email notifications. Logos and admins live on the organization's screen
-// (they need it to exist). The swatch colours are each palette's own (ORG_PALETTE_HEX), as data.
+// (they need it to exist). Phase 50: creating also picks its feature sets. The swatch colours are each palette's own (ORG_PALETTE_HEX), as data.
 import {
+  FEATURE_SETS,
+  FEATURE_SET_LABELS,
   ORG_PALETTE_HEX,
   ORG_PALETTE_LABELS,
   ORG_TIME_ZONES,
@@ -200,6 +202,31 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
           }}
         />
       </View>
+
+      {existing ? null : (
+        // Phase 50: what it may use, all ticked unless unticked. Editing leaves them to the
+        // organization screen's Feature sets section.
+        <Field label="Feature sets">
+          <View>
+            {FEATURE_SETS.map((feature) => (
+              <Checkbox.Item
+                key={feature}
+                testID={`org-form-feature-${feature}`}
+                label={FEATURE_SET_LABELS[feature]}
+                status={form.features[feature] ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  haptics.selection();
+                  set('features', { ...form.features, [feature]: !form.features[feature] });
+                }}
+                position="leading"
+                mode="android"
+                labelStyle={{ textAlign: 'left' }}
+                style={{ paddingHorizontal: 0 }}
+              />
+            ))}
+          </View>
+        </Field>
+      )}
 
       <Field label="Palette" error={errors.palette}>
         <PaletteSwatches

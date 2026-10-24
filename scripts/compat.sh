@@ -10,7 +10,7 @@
 #   3. that database compared with a fresh build of today's schema.sql (compat-schema.mjs);
 #   4. the last release's Worker on it, with ITS own @smoke tests (the window before the deploy);
 #   5. today's Worker on it, with today's @smoke and @compat tests (rows written before the change).
-# Steps 4-5 use ports 8788/8789 and 5175/5176, so a dev server on 8787/5173 is left alone.
+# Steps 4-5 use ports 8798/8799 and 5195/5196, so a dev server on 8787/5173 is left alone.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT=$PWD
@@ -21,7 +21,11 @@ git rev-parse --verify -q "$BASE^{commit}" >/dev/null || { echo "✗ $BASE is no
 echo "› backward compatibility against $BASE ($(git rev-parse --short "$BASE"))"
 
 PIDS=()
-cleanup() { for p in "${PIDS[@]:-}"; do [[ -n "$p" ]] && kill "$p" 2>/dev/null || true; done; }
+cleanup() {
+  for p in "${PIDS[@]:-}"; do [[ -n "$p" ]] && { pkill -P "$p" 2>/dev/null; kill "$p" 2>/dev/null; } || true; done
+  # And anything still listening on this test's ports (a server's own children).
+  for port in 8798 8799 5195 5196; do lsof -nP -iTCP:$port -sTCP:LISTEN -t 2>/dev/null | xargs -r kill 2>/dev/null || true; done
+}
 trap cleanup EXIT
 
 rm -rf "$WORK/migrated" "$WORK/fresh" "$WORK/files" && mkdir -p "$WORK/files" "$WORK/logs"
@@ -47,6 +51,13 @@ wr "$WORK/fresh" "$ROOT/apps/api/db/catalog.sql"
 node scripts/compat-schema.mjs "$WORK/migrated" "$WORK/fresh"
 
 up() { curl -sf -o /dev/null --max-time 5 "$1"; }
+# A server already on one of these ports would answer in place of the one this test starts, and the
+# test would quietly run against the wrong code and database. Refuse instead.
+for port in 8798 8799 5195 5196; do
+  if lsof -nP -iTCP:$port -sTCP:LISTEN >/dev/null 2>&1; then
+    echo "✗ port $port is in use (lsof -nP -iTCP:$port); stop that server first"; exit 1
+  fi
+done
 wait_for() { for _ in $(seq 1 90); do up "$1" && return 0; sleep 2; done; echo "✗ $1 did not come up"; return 1; }
 
 # --- 4. The last release's Worker on the new schema --------------------------------------------
@@ -58,20 +69,20 @@ if [[ "$(git -C "$OLD" rev-parse HEAD 2>/dev/null || true)" != "$(git rev-parse 
 fi
 cp apps/api/.dev.vars "$OLD/apps/api/.dev.vars"
 mkdir -p "$OLD/apps/web/dist"
-(cd "$OLD/apps/api" && exec npx wrangler dev --port 8789 --persist-to "$WORK/migrated" >"$WORK/logs/base-worker.log" 2>&1) & PIDS+=($!)
-(cd "$OLD/apps/web" && VITE_DEV_API_ORIGIN=http://127.0.0.1:8789 exec npx vite --port 5176 --strictPort >"$WORK/logs/base-vite.log" 2>&1) & PIDS+=($!)
-wait_for http://localhost:8789/api/health && wait_for http://localhost:5176
+(cd "$OLD/apps/api" && exec npx wrangler dev --port 8799 --persist-to "$WORK/migrated" >"$WORK/logs/base-worker.log" 2>&1) & PIDS+=($!)
+(cd "$OLD/apps/web" && VITE_DEV_API_ORIGIN=http://127.0.0.1:8799 exec npx vite --port 5196 --strictPort >"$WORK/logs/base-vite.log" 2>&1) & PIDS+=($!)
+wait_for http://localhost:8799/api/health && wait_for http://localhost:5196
 echo "› $BASE's Worker on the migrated database: its own @smoke tests"
-(cd "$OLD" && E2E_BASE_URL=http://localhost:5176 npm run test --workspace @tmi/e2e -- --grep @smoke --reporter=line)
+(cd "$OLD" && E2E_BASE_URL=http://localhost:5196 npm run test --workspace @tmi/e2e -- --grep @smoke --reporter=line)
 cleanup; PIDS=()
 sleep 2
 
 # --- 5. Today's Worker on the old rows ------------------------------------------------------------
 mkdir -p apps/web/dist
-(cd apps/api && exec npx wrangler dev --port 8788 --persist-to "$WORK/migrated" >"$WORK/logs/worker.log" 2>&1) & PIDS+=($!)
-(cd apps/web && VITE_DEV_API_ORIGIN=http://127.0.0.1:8788 exec npx vite --port 5175 --strictPort >"$WORK/logs/vite.log" 2>&1) & PIDS+=($!)
-wait_for http://localhost:8788/api/health && wait_for http://localhost:5175
+(cd apps/api && exec npx wrangler dev --port 8798 --persist-to "$WORK/migrated" >"$WORK/logs/worker.log" 2>&1) & PIDS+=($!)
+(cd apps/web && VITE_DEV_API_ORIGIN=http://127.0.0.1:8798 exec npx vite --port 5195 --strictPort >"$WORK/logs/vite.log" 2>&1) & PIDS+=($!)
+wait_for http://localhost:8798/api/health && wait_for http://localhost:5195
 echo "› today's Worker on the migrated database: @smoke and @compat"
-E2E_BASE_URL=http://localhost:5175 npm run test --workspace @tmi/e2e -- --grep "@smoke|@compat" --reporter=line
+E2E_BASE_URL=http://localhost:5195 npm run test --workspace @tmi/e2e -- --grep "@smoke|@compat" --reporter=line
 
 echo "compat: passed against $BASE"

@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/canvas-assessments/assessments-page.tsx @ 37bdad1, with Phase 40
 // (the organization's question count; Reviewed, Review in progress, and the review's buttons).
+// Phase 50 (build-log entry 62): `?student=` from the Assessment home, and `AssessmentRow` exported.
 //
 // Phase 38: the Assessment menu (beta), docs/canvas-assessment-plan.md. Starting one for a student,
 // and the list of those the reader may see. Who sees which row, who may continue or discard one and
@@ -10,7 +11,7 @@ import {
   type CanvasAssessment,
   type CanvasAssessmentLevelId,
 } from '@tmi/shared';
-import { router, Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
@@ -42,6 +43,8 @@ import { levelOptionDetail, rowSummary, startNote } from './assessment-model';
 import { rowActions, statusLabel } from './review-model';
 
 export function AssessmentsScreen() {
+  // Phase 50: the Assessment home's "Start an assessment" names the student; StartCard checks it.
+  const { student } = useLocalSearchParams<{ student?: string }>();
   const list = useCanvasAssessments();
   const levels = useCanvasAssessmentLevels();
   const [refreshing, setRefreshing] = useState(false);
@@ -67,13 +70,13 @@ export function AssessmentsScreen() {
         </View>
         <BadgePill testID="assessment-beta" />
       </View>
-      <StartCard />
+      <StartCard initialStudentId={typeof student === 'string' ? student : undefined} />
       <AssessmentList />
     </Screen>
   );
 }
 
-function StartCard() {
+function StartCard({ initialStudentId }: { initialStudentId?: string }) {
   const { user, organization } = useAuth();
   const theme = useAppTheme();
   const toast = useToast();
@@ -89,9 +92,15 @@ function StartCard() {
   const [studentId, setStudentId] = useState('');
   const [levelId, setLevelId] = useState('');
 
-  const chosenStudent = onlyStudent ? (user?.id ?? '') : studentId;
   const studentList = students.data?.data ?? [];
   const levelList = levels.data?.data ?? [];
+
+  // Phase 50: a student named by the link is taken only once they are among the reader's own
+  // students; anything else is ignored, never trusted.
+  const seeded = Boolean(initialStudentId && studentList.some((student) => student.id === initialStudentId));
+  const pickedStudent = studentId || (seeded && initialStudentId ? initialStudentId : '');
+  const chosenStudent = onlyStudent ? (user?.id ?? '') : pickedStudent;
+  const studentChosen = Boolean(initialStudentId && (seeded || (onlyStudent && initialStudentId === user?.id)));
 
   async function begin() {
     try {
@@ -114,7 +123,7 @@ function StartCard() {
             label="Student"
             placeholder={students.isPending ? 'Loading…' : 'Choose a student'}
             options={studentList.map((student) => ({ id: student.id, label: student.full_name }))}
-            value={studentId}
+            value={pickedStudent}
             onChange={setStudentId}
             emptyText={students.isPending ? undefined : 'No students to choose from.'}
             searchPlaceholder="Search students"
@@ -133,7 +142,9 @@ function StartCard() {
           }))}
           value={levelId}
           onChange={setLevelId}
-          defaultOpen={false}
+          // Phase 50: with the student chosen by the link, the levels open by themselves.
+          key={studentChosen ? 'levels-open' : 'levels'}
+          defaultOpen={studentChosen}
           searchPlaceholder="Search levels"
           scroll
         />
@@ -228,7 +239,8 @@ function DraftPill({ row }: { row: CanvasAssessment }) {
   );
 }
 
-function AssessmentRow({ row }: { row: CanvasAssessment }) {
+/** One assessment, with the buttons its reader may use. Also the Assessment home's Recent list. */
+export function AssessmentRow({ row }: { row: CanvasAssessment }) {
   const theme = useAppTheme();
   const toast = useToast();
   const discard = useDiscardCanvasAssessment();

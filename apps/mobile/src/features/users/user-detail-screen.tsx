@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/users/user-detail-dialog.tsx @ 1132322 -- the dialog becomes a
 // pushed screen, with the directory's row actions in its header for an admin.
+import { featureAllowed } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Divider, Menu } from 'react-native-paper';
@@ -17,7 +18,9 @@ import { UserDetailView } from './user-detail-view';
 
 export function UserDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { user: viewer } = useAuth();
+  const { user: viewer, organization } = useAuth();
+  // Phase 50: recording a payment is Tutoring's.
+  const tutoring = featureAllowed(organization, 'tutoring');
   const theme = useAppTheme();
   const { data, isPending, error, refetch } = useUserDetail(id ?? null);
   const [refreshing, setRefreshing] = useState(false);
@@ -78,7 +81,7 @@ export function UserDetailScreen() {
                       />
                     ) : null}
                     {/* Finance: who it is to or from comes with the sheet (U5). */}
-                    {!isDeleted
+                    {!isDeleted && tutoring
                       ? personPaymentPrefills(person).map((prefill) => (
                           <Menu.Item
                             key={prefill.key}

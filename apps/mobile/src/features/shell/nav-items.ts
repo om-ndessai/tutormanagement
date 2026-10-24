@@ -1,10 +1,11 @@
 // Ported from NAV_ITEMS in apps/web/src/components/layout/app-shell.tsx @ 22b9701 (Phase 38 added
 // `feature` and `badge`: the Assessment menu, in beta, only while the organization has it on; Phase 42
 // @ 82397b8, working tree, added Quest, only while the organization has Question Quest on; Phase 47
-// @ 9eccdf2, working tree, gave Quest the Beta badge).
+// @ 9eccdf2, working tree, gave Quest the Beta badge; Phase 50 @ 2471d84, working tree, replaced
+// `feature` with `set`: each item of a feature set shows only while that set is on here).
 import type { Href } from 'expo-router';
 
-import type { Organization } from '@tmi/shared';
+import { featureOn, type FeatureSet, type FeatureState } from '@tmi/shared';
 
 import { useAuth } from '@/providers/auth-provider';
 
@@ -15,9 +16,6 @@ import { useAuth } from '@/providers/auth-provider';
  * and the search screen. The server decides what each page shows the
  * reader -- the menu only leaves out what their roles cannot open at all (Locations, Organization).
  */
-/** The organization's switches a menu item can follow. */
-export type NavFeature = 'canvas_assessments' | 'gamify_question_quest';
-
 export interface NavItem {
   href: Href;
   label: string;
@@ -34,8 +32,8 @@ export interface NavItem {
   tab?: boolean;
   /** The feature tour points at this (the web's data-tour="nav-…"). */
   tourId: string;
-  /** Shown only while the organization has this switched on. */
-  feature?: NavFeature;
+  /** Phase 50: the feature set it belongs to; shown only while that set is on here (`featureOn`). */
+  set?: FeatureSet;
   /** A small label beside it, such as "Beta". */
   badge?: string;
 }
@@ -52,6 +50,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/sessions',
+    set: 'tutoring',
     label: 'Sessions',
     icon: 'book-open-variant',
     keywords: ['lessons', 'record', 'notes', 'drafts'],
@@ -60,6 +59,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/schedule',
+    set: 'tutoring',
     label: 'Schedule',
     icon: 'calendar-month-outline',
     keywords: ['calendar', 'cancel', 'weekly'],
@@ -68,6 +68,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/progress',
+    set: 'tutoring',
     label: 'Progress',
     icon: 'trending-up',
     keywords: ['plans', 'assessments', 'goals'],
@@ -80,7 +81,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Assessment',
     icon: 'draw-pen',
     keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'],
-    feature: 'canvas_assessments',
+    set: 'assessment',
     badge: 'Beta',
     tourId: 'nav-assessments',
   },
@@ -91,7 +92,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Quest',
     icon: 'trophy-outline',
     keywords: ['game', 'points', 'questions', 'approve', 'review'],
-    feature: 'gamify_question_quest',
+    set: 'quest',
     badge: 'Beta',
     tourId: 'nav-quest',
   },
@@ -99,6 +100,7 @@ export const NAV_ITEMS: NavItem[] = [
     // Phase 43 (the owner, 2026-10-20): the Analytics figures, which left Home. For the roles that
     // had them on Home: tutors and the office.
     href: '/analytics',
+    set: 'tutoring',
     label: 'Dashboard',
     icon: 'view-dashboard-outline',
     keywords: ['analytics', 'figures', 'counts', 'stats', 'overview'],
@@ -114,6 +116,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/pairings',
+    set: 'tutoring',
     label: 'Pairings',
     icon: 'link-variant',
     keywords: ['assignments', 'tutor', 'student'],
@@ -122,6 +125,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     // Every tutor's and student's places (Phase 33): admins only.
     href: '/locations',
+    set: 'tutoring',
     label: 'Locations',
     icon: 'map-marker-outline',
     keywords: ['places', 'rooms', 'address', 'online', 'reminder'],
@@ -130,6 +134,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/billing',
+    set: 'tutoring',
     label: 'Billing',
     icon: 'wallet-outline',
     keywords: ['payments', 'money', 'balances', '1099', 'tax'],
@@ -137,6 +142,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/comments',
+    set: 'tutoring',
     label: 'Comments',
     icon: 'message-text-outline',
     keywords: ['notes', 'messages'],
@@ -169,14 +175,14 @@ export const NAV_ITEMS: NavItem[] = [
 /** The menu, less what this reader's roles do not reach and what the organization has off. */
 export function visibleNavItems(
   roles: readonly string[] | undefined,
-  organization: Partial<Pick<Organization, NavFeature>> | null | undefined,
+  organization: Partial<FeatureState> | null | undefined,
 ): NavItem[] {
   const admin = Boolean(roles?.includes('admin'));
   return NAV_ITEMS.filter(
     (item) =>
       (!item.admin || admin) &&
       (!item.roles || item.roles.some((role) => roles?.includes(role))) &&
-      (!item.feature || Boolean(organization?.[item.feature])),
+      (!item.set || featureOn(organization, item.set)),
   );
 }
 

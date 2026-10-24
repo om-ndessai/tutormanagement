@@ -5,7 +5,13 @@
 // Phase 43 (app-first, 2026-10-20): Home lost Analytics and Recent Activity, so the figures' step
 // lights the Dashboard page under More and the Recent Activity step is gone; the web's tour follows
 // when its half of the phase is built.
-import type { UserRole } from '@tmi/shared';
+// Phase 50: the tour follows the feature sets (`tourStepsFor`): a menu step whose page is not on
+// here is dropped, a space without Tutoring gets the space home's own steps, and the tab a step
+// points at is found among the tabs the bar shows here.
+import { featureOn, type FeatureState, type UserRole } from '@tmi/shared';
+
+import { visibleNavItems } from '@/features/shell/nav-items';
+import type { TabName } from '@/features/shell/app-tab-bar';
 
 /**
  * One stop on the feature tour: what it points at (a `data-tour` attribute)
@@ -236,21 +242,110 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
 };
 
 /**
- * The tab bar, in its order (`features/shell/app-tab-bar.tsx`): Home, Sessions, Progress, More,
- * the "+" not counted. Schedule is no tab since the bar was revised (2026-10-15): it lives inside
- * Sessions, so its step lights Sessions and says so.
+ * Phase 50: the tour of a space without Tutoring, for its home (the Assessment home) and its menu.
+ * Steps whose page is not on here are dropped by `tourStepsFor`, as are panels not on screen.
  */
-export const TAB_COUNT = 4;
-const TAB_INDEX: Record<string, number> = {
-  'nav-dashboard': 0,
-  'nav-sessions': 1,
-  'nav-progress': 2,
+const ASSESS_STUDENTS_STEP: TourStep = {
+  target: 'dash-assess-students',
+  title: 'Students',
+  body: 'Each student and their latest assessment. Start one, or continue one in progress, from here.',
 };
-const SESSIONS_TAB = 1;
-const MORE_TAB = 3;
+const NAV_ASSESSMENTS_STEP: TourStep = {
+  target: 'nav-assessments',
+  title: 'Assessment',
+  body: 'Assessments answered by hand, one question a page, with a PDF for whoever reviews them.',
+};
+const NAV_QUEST_STEP: TourStep = {
+  target: 'nav-quest',
+  title: 'Quest',
+  body: 'Question Quest and Quest Games: questions one at a time, for points.',
+};
+const NAV_PROFILE_STEP: TourStep = {
+  target: 'nav-profile',
+  title: 'Your profile',
+  body: 'How the office has you on file. Only the office can change it.',
+};
+
+export const SPACE_TOUR_STEPS: Record<UserRole, TourStep[]> = {
+  admin: [
+    ASSESS_STUDENTS_STEP,
+    {
+      target: 'dash-assess-waiting',
+      title: 'Waiting for review',
+      body: 'Submitted assessments nobody has reviewed yet, oldest first.',
+    },
+    NAV_ASSESSMENTS_STEP,
+    NAV_QUEST_STEP,
+    {
+      target: 'nav-users',
+      title: 'Users',
+      body: 'Everyone, once: one person can be a parent and an admin. Add families here.',
+    },
+    { target: 'nav-activity', title: 'Activity', body: 'The audit log: who did what, and when.' },
+    {
+      target: 'nav-organization',
+      title: 'Organization',
+      body: 'What is switched on here, the curricula offered, and email notifications.',
+    },
+    {
+      target: 'getting-started',
+      title: 'Come back any time',
+      body: 'Take the tour, in your account menu, reopens this tour and the guided setup for a new student.',
+    },
+  ],
+  parent: [
+    {
+      target: 'dash-assess-students',
+      title: 'Your children',
+      body: 'Each child and their latest assessment. Start one, or continue one in progress, from here.',
+    },
+    {
+      target: 'dash-assess-recent',
+      title: 'Recent assessments',
+      body: 'The latest assessments. A reviewed one opens as a PDF.',
+    },
+    NAV_ASSESSMENTS_STEP,
+    NAV_PROFILE_STEP,
+  ],
+  student: [
+    {
+      target: 'dash-assess-students',
+      title: 'Your assessments',
+      body: 'Your latest assessment. Start one, or continue one in progress, from here.',
+    },
+    NAV_ASSESSMENTS_STEP,
+    NAV_QUEST_STEP,
+    NAV_PROFILE_STEP,
+  ],
+  // A tutor role kept in a space without Tutoring: the students' list, with the office's wording.
+  tutor: [ASSESS_STUDENTS_STEP, NAV_ASSESSMENTS_STEP, NAV_QUEST_STEP, NAV_PROFILE_STEP],
+};
+
+/**
+ * The tour for this role here: the Tutoring tour where Tutoring is on, the space's own otherwise,
+ * less any menu step whose page is not in the menu here.
+ */
+export function tourStepsFor(role: UserRole, organization: Partial<FeatureState> | null | undefined): TourStep[] {
+  const steps = featureOn(organization, 'tutoring') ? TOUR_STEPS[role] : SPACE_TOUR_STEPS[role];
+  const menu = new Set(visibleNavItems([role], organization).map((item) => item.tourId));
+  return steps.filter((step) => !step.target.startsWith('nav-') || menu.has(step.target));
+}
+
+/**
+ * The tab bar, in its order (`features/shell/app-tab-bar.tsx`): Home, Sessions, Progress, More,
+ * the "+" not counted -- or Home and More where Tutoring is off (`visibleTabs`). Schedule is no
+ * tab since the bar was revised (2026-10-15): it lives inside Sessions, so its step lights Sessions
+ * and says so.
+ */
+const FULL_TABS: readonly TabName[] = ['dashboard', 'sessions', 'progress', 'more'];
+const TAB_OF: Record<string, TabName> = {
+  'nav-dashboard': 'dashboard',
+  'nav-sessions': 'sessions',
+  'nav-progress': 'progress',
+};
 /** Pages reached from inside a tab rather than from More. */
-const INSIDE_TAB: Record<string, { index: number; within: 'Sessions' }> = {
-  'nav-schedule': { index: SESSIONS_TAB, within: 'Sessions' },
+const INSIDE_TAB: Record<string, { tab: TabName; within: 'Sessions' }> = {
+  'nav-schedule': { tab: 'sessions', within: 'Sessions' },
 };
 
 /**
@@ -263,13 +358,15 @@ export type TourPlacement =
   | { kind: 'view'; id: string }
   | { kind: 'tab'; index: number; within: 'More' | 'Sessions' | null };
 
-export function placementOf(target: string): TourPlacement {
+export function placementOf(target: string, tabs: readonly TabName[] = FULL_TABS): TourPlacement {
   if (target.startsWith('nav-')) {
-    const index = TAB_INDEX[target];
-    if (index !== undefined) return { kind: 'tab', index, within: null };
+    const own = TAB_OF[target];
+    const index = own ? tabs.indexOf(own) : -1;
+    if (index >= 0) return { kind: 'tab', index, within: null };
     const inside = INSIDE_TAB[target];
-    if (inside) return { kind: 'tab', index: inside.index, within: inside.within };
-    return { kind: 'tab', index: MORE_TAB, within: 'More' };
+    const insideIndex = inside ? tabs.indexOf(inside.tab) : -1;
+    if (inside && insideIndex >= 0) return { kind: 'tab', index: insideIndex, within: inside.within };
+    return { kind: 'tab', index: tabs.indexOf('more'), within: 'More' };
   }
   return { kind: 'view', id: target };
 }

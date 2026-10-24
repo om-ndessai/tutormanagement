@@ -1,0 +1,75 @@
+# Phase 50: the welcome wizard in a space without Tutoring. Ines (`assess`, a fresh device): the
+# welcome offers Add a student and no Add a tutor; the student flow's steps are the family and the
+# student, then Start an assessment (no Assessment, plan or tutor steps); Add the student opens the
+# add-student flow with four steps -- family, student, school, the review. Closed unsaved.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 20000
+    optional: true
+# Someone already through the wizard: open it from its link.
+- runFlow:
+    when:
+      notVisible:
+        id: screen-onboarding
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 20000
+      - runFlow:
+          file: ../../subflows/open-link.yaml
+          env:
+            LINK: aimtrue://onboarding
+      - extendedWaitUntil:
+          visible:
+            id: screen-onboarding
+          timeout: 15000
+- assertVisible:
+    id: onboarding-choice-student
+- assertNotVisible:
+    id: onboarding-choice-tutor
+- takeScreenshot: features-wizard-welcome
+- tapOn:
+    id: onboarding-choice-student
+- extendedWaitUntil:
+    visible:
+      id: student-flow-student
+    timeout: 10000
+- assertVisible:
+    id: flow-step-student
+- assertVisible:
+    id: flow-step-start
+- assertNotVisible:
+    id: flow-step-assessment
+- takeScreenshot: features-wizard-student
+- tapOn:
+    id: student-flow-add-student
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
+    timeout: 15000
+- assertVisible: 'Step 1 of 4'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: student-flow-student
+    timeout: 10000

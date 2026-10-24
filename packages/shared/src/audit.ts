@@ -77,6 +77,7 @@ export const AUDIT_ACTIONS = [
 
   'organization.created',
   'organization.updated',
+  'organization.features_updated',
   'organization.archived',
   'organization.restored',
   'organization.logo_updated',
@@ -195,6 +196,7 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
 
   'organization.created': 'Organization created',
   'organization.updated': 'Organization updated',
+  'organization.features_updated': 'Feature sets changed',
   'organization.archived': 'Organization archived',
   'organization.restored': 'Organization restored',
   'organization.logo_updated': 'Logo updated',

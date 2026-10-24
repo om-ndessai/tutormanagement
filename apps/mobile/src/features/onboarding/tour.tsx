@@ -3,7 +3,7 @@
 // `data-tour` elements are views registered with `useTourTarget`, the tabs among them
 // (`tab-<index>`, registered by the app's tab bar).
 import type { TourOutcome } from '@tmi/shared';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Button, Surface, Text } from 'react-native-paper';
 import Animated, {
@@ -19,7 +19,9 @@ import { withAlpha } from '@/theme/alpha';
 import { useAppTheme } from '@/providers/theme-provider';
 import { motion, radius, space } from '@/theme/tokens';
 import { TAB_BAR_ABOVE_INSET } from '@/features/teaching/live-session';
-import { placementOf, TAB_COUNT, type TourStep } from './tour-steps';
+import { useAuth } from '@/providers/auth-provider';
+import { visibleTabs } from '@/features/shell/app-tab-bar';
+import { placementOf, type TourStep } from './tour-steps';
 import {
   measureView,
   resolveTarget,
@@ -39,9 +41,15 @@ const BOTTOM_CLEAR = 300;
  * when its view cannot be measured: an approximation that ignores the create button's slot, close
  * enough to say "this one". The registered tab view (`tab-<index>`) is used whenever it is there.
  */
-export function tabRect(index: number, width: number, height: number, insets: EdgeInsets): WindowRect {
+export function tabRect(
+  index: number,
+  count: number,
+  width: number,
+  height: number,
+  insets: EdgeInsets,
+): WindowRect {
   const barHeight = TAB_BAR_ABOVE_INSET[Platform.OS === 'ios' ? 'ios' : 'android'];
-  const tab = width / TAB_COUNT;
+  const tab = width / count;
   return { x: tab * index, y: height - insets.bottom - barHeight, width: tab, height: barHeight };
 }
 
@@ -64,8 +72,12 @@ async function settledRect(view: View): Promise<WindowRect | null> {
 }
 
 /** Whether a step has something to point at now. */
-async function hasTarget(registry: TourRegistry, step: TourStep): Promise<boolean> {
-  const placement = placementOf(step.target);
+async function hasTarget(
+  registry: TourRegistry,
+  step: TourStep,
+  tabs: ReturnType<typeof visibleTabs>,
+): Promise<boolean> {
+  const placement = placementOf(step.target, tabs);
   if (placement.kind === 'tab') return true;
   return (await resolveTarget(registry, placement.id)) !== null;
 }
@@ -83,6 +95,10 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
   const { width, height } = useWindowDimensions();
   const overlayRef = useRef<View>(null);
   const placed = useRef(false);
+  // Phase 50: the tabs the bar shows here, so a step lights the right one.
+  const { organization } = useAuth();
+  const tabsKey = visibleTabs(organization).join(',');
+  const tabs = useMemo(() => tabsKey.split(',') as ReturnType<typeof visibleTabs>, [tabsKey]);
 
   const [available, setAvailable] = useState<TourStep[] | null>(null);
   const [index, setIndex] = useState(0);
@@ -103,7 +119,7 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
       if (cancelled) return;
       if (registry.has('dash-') || attempts >= 25) {
         const keep: TourStep[] = [];
-        for (const step of steps) if (await hasTarget(registry, step)) keep.push(step);
+        for (const step of steps) if (await hasTarget(registry, step, tabs)) keep.push(step);
         if (!cancelled) setAvailable(keep);
         return;
       }
@@ -116,10 +132,10 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [registry, steps]);
+  }, [registry, steps, tabs]);
 
   const step = available?.[index] ?? null;
-  const placement = step ? placementOf(step.target) : null;
+  const placement = step ? placementOf(step.target, tabs) : null;
 
   // Point at the current step's target: scrolled into the clear band first when it is below the
   // fold, then measured where it landed.
@@ -127,14 +143,14 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
     if (!step) return;
     let cancelled = false;
     const point = async () => {
-      const where = placementOf(step.target);
+      const where = placementOf(step.target, tabs);
       let rect: WindowRect | null = null;
       if (where.kind === 'tab') {
         // The app draws the tab bar (U2) and registers each tab as `tab-<index>`; the computed
         // rect is the fallback while it is not laid out.
         rect =
           (await resolveTarget(registry, `tab-${where.index}`))?.rect ??
-          tabRect(where.index, width, height, insets);
+          tabRect(where.index, tabs.length, width, height, insets);
       } else {
         const found = await resolveTarget(registry, where.id);
         if (found) {
@@ -178,7 +194,7 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
     };
     // The shared values are stable; re-point when the step or the screen changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step, registry, width, height, reduceMotion]);
+  }, [step, registry, width, height, reduceMotion, tabs]);
 
   const finish = useCallback(
     (outcome: TourOutcome) => {

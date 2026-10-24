@@ -35,8 +35,9 @@ export function useCanvasAssessmentLevels() {
   });
 }
 
-export function useCanvasAssessments() {
+export function useCanvasAssessments(options: { enabled?: boolean } = {}) {
   return useQuery({
+    enabled: options.enabled ?? true,
     queryKey: canvasAssessmentKeys.list,
     queryFn: () => apiClient.get<ApiOk<CanvasAssessment[]>>('/canvas-assessments'),
   });

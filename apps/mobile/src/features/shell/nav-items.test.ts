@@ -1,7 +1,9 @@
 // The menu follows the organization's switches as the web's does (Phase 38): the Assessment item,
 // with its Beta badge, only while the organization has it on -- for every role; and (Phase 42) Quest,
 // only while the organization has Question Quest on.
-import { visibleNavItems } from './nav-items';
+import { featureSetOfPath } from '@tmi/shared';
+
+import { NAV_ITEMS, visibleNavItems } from './nav-items';
 
 describe('visibleNavItems', () => {
   const labels = (roles: string[], on: boolean) =>
@@ -52,13 +54,67 @@ describe('visibleNavItems', () => {
 
   it('lists the Dashboard (the Analytics figures, Phase 43) for tutors and admins only; Home is the tab', () => {
     const dashboard = (roles: string[]) =>
-      visibleNavItems(roles, null).filter((item) => item.label === 'Dashboard' && !item.tab);
+      visibleNavItems(roles, {}).filter((item) => item.label === 'Dashboard' && !item.tab);
     expect(dashboard(['admin'])).toHaveLength(1);
     expect(dashboard(['tutor', 'parent'])[0]).toMatchObject({ href: '/analytics', tourId: 'nav-analytics' });
     expect(dashboard(['parent'])).toHaveLength(0);
     expect(dashboard(['student'])).toHaveLength(0);
-    expect(visibleNavItems(['parent'], null).find((item) => item.tourId === 'nav-dashboard')?.label).toBe(
+    expect(visibleNavItems(['parent'], {}).find((item) => item.tourId === 'nav-dashboard')?.label).toBe(
       'Home',
     );
+  });
+
+  // Phase 50: the menu follows the feature sets.
+  describe('feature sets', () => {
+    const ASSESS_ONLY = {
+      feature_tutoring: false,
+      feature_assessment: true,
+      feature_quest: false,
+      canvas_assessments: true,
+      gamify_question_quest: false,
+    };
+
+    it("gives each item the set the shared helper says owns its page", () => {
+      // The app's own names for two of the web's pages.
+      const WEB_PATH: Record<string, string> = { '/pairings': '/assignments', '/analytics': '/sessions' };
+      for (const item of NAV_ITEMS) {
+        const href = String(item.href);
+        expect([href, item.set ?? null]).toEqual([href, featureSetOfPath(WEB_PATH[href] ?? href)]);
+      }
+    });
+
+    it('gives an Assessment-only admin Home, Assessment, Users, Activity, My profile and Organization', () => {
+      expect(visibleNavItems(['admin'], ASSESS_ONLY).map((item) => item.label)).toEqual([
+        'Home',
+        'Assessment',
+        'Users',
+        'Activity',
+        'My profile',
+        'Organization',
+      ]);
+    });
+
+    it('gives a parent there Home, Assessment, Users, Activity and My profile', () => {
+      expect(visibleNavItems(['parent'], ASSESS_ONLY).map((item) => item.label)).toEqual([
+        'Home',
+        'Assessment',
+        'Users',
+        'Activity',
+        'My profile',
+      ]);
+    });
+
+    it('treats an organization from before Phase 50 (no feature_* columns) as allowed everything', () => {
+      expect(visibleNavItems(['admin'], { canvas_assessments: true }).map((item) => item.label)).toContain(
+        'Sessions',
+      );
+    });
+
+    it('hides a set that is allowed but switched off', () => {
+      const labels = visibleNavItems(['admin'], { ...ASSESS_ONLY, canvas_assessments: false }).map(
+        (item) => item.label,
+      );
+      expect(labels).not.toContain('Assessment');
+    });
   });
 });

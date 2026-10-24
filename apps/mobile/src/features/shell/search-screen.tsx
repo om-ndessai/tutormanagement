@@ -1,7 +1,7 @@
 // Ported from apps/web/src/components/layout/command-palette.tsx @ 1132322: navigation becomes
 // search -- type a few letters of a page, a person or an action. Only ever offers what the reader
 // may do; the API decides the rest.
-import { USER_ROLE_LABELS } from '@tmi/shared';
+import { USER_ROLE_LABELS, featureOn } from '@tmi/shared';
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -217,7 +217,7 @@ export function SearchScreen() {
               description={person.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
               accessibilityLabel={`${person.full_name}, ${person.roles.map((role) => USER_ROLE_LABELS[role]).join(', ')}`}
               left={(props) => <List.Icon {...props} icon="account-outline" />}
-              onPress={() => go(personHref(person, isAdmin))}
+              onPress={() => go(personHref(person, isAdmin, featureOn(organization, 'tutoring')))}
             />
           ))}
           {found.length === 0 ? (

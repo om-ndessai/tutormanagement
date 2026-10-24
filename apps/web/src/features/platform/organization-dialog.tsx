@@ -13,6 +13,10 @@ import {
   type OrganizationListItem,
   type OrgPalette,
   type OrgTimeZone,
+  FEATURE_SETS,
+  FEATURE_SET_DESCRIPTIONS,
+  FEATURE_SET_LABELS,
+  featureAllowed,
 } from '@tmi/shared';
 
 import { Badge } from '@/components/ui/badge';
@@ -45,6 +49,7 @@ import {
   useRemoveLogo,
   useRemoveOrganizationAdmin,
   useUpdateOrganization,
+  useUpdateOrganizationFeatures,
   useUploadLogo,
 } from './api';
 import { FormField } from './form-field';
@@ -60,6 +65,10 @@ interface FormState {
   time_zone: OrgTimeZone;
   builtin_institute: boolean;
   email_notifications: boolean;
+  /** Phase 50: the feature sets it is allowed. */
+  feature_tutoring: boolean;
+  feature_assessment: boolean;
+  feature_quest: boolean;
 }
 
 const EMPTY: FormState = {
@@ -73,6 +82,9 @@ const EMPTY: FormState = {
   time_zone: 'America/New_York',
   builtin_institute: false,
   email_notifications: false,
+  feature_tutoring: true,
+  feature_assessment: true,
+  feature_quest: true,
 };
 
 /** "Riverside Tutoring" -> "riverside-tutoring", as a first suggestion. */
@@ -103,6 +115,7 @@ export function OrganizationDialog({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const create = useCreateOrganization();
   const update = useUpdateOrganization();
+  const updateFeatures = useUpdateOrganizationFeatures();
 
   useEffect(() => {
     if (!open) return;
@@ -121,6 +134,9 @@ export function OrganizationDialog({
             time_zone: existing.time_zone,
             builtin_institute: existing.builtin_logo === 'institute',
             email_notifications: existing.email_notifications,
+            feature_tutoring: featureAllowed(existing, 'tutoring'),
+            feature_assessment: featureAllowed(existing, 'assessment'),
+            feature_quest: featureAllowed(existing, 'quest'),
           }
         : EMPTY,
     );
@@ -128,6 +144,7 @@ export function OrganizationDialog({
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((previous) => ({ ...previous, [key]: value }));
+  const set_ = set;
 
   async function save(event: React.FormEvent) {
     event.preventDefault();
@@ -145,11 +162,19 @@ export function OrganizationDialog({
       builtin_logo: form.builtin_institute ? ('institute' as const) : null,
     };
     try {
+      const features = {
+        feature_tutoring: form.feature_tutoring,
+        feature_assessment: form.feature_assessment,
+        feature_quest: form.feature_quest,
+      };
       if (existing) {
         await update.mutateAsync({ id: existing.id, input });
+        if (FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])) {
+          await updateFeatures.mutateAsync({ id: existing.id, input: features });
+        }
         toast.success(`${form.name} saved.`);
       } else {
-        await create.mutateAsync(input);
+        await create.mutateAsync({ ...input, ...features });
         toast.success(`${form.name} created. Add its first admin next.`);
       }
       onOpenChange(false);
@@ -227,6 +252,26 @@ export function OrganizationDialog({
               </Select>
             </FormField>
           </div>
+
+          {/* Phase 50: what the organization may use. Its own admins switch Assessment and Quest on. */}
+          <fieldset className="grid gap-2 rounded-lg border p-3" data-testid="org-feature-sets">
+            <legend className="px-1 text-sm font-medium">Feature sets</legend>
+            {FEATURE_SETS.map((set) => (
+              <div key={set} className="flex items-start gap-3">
+                <div className="grid flex-1 gap-0.5">
+                  <label htmlFor={`org-feature-${set}`} className="text-sm">
+                    {FEATURE_SET_LABELS[set]}
+                  </label>
+                  <p className="text-muted-foreground text-xs">{FEATURE_SET_DESCRIPTIONS[set]}</p>
+                </div>
+                <NotificationsSwitch
+                  id={`org-feature-${set}`}
+                  checked={form[`feature_${set}`]}
+                  onCheckedChange={(checked) => set_(`feature_${set}`, checked)}
+                />
+              </div>
+            ))}
+          </fieldset>
 
           <div className="flex items-start gap-3 rounded-lg border p-3">
             <div className="grid flex-1 gap-0.5">

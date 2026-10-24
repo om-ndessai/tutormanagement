@@ -17,7 +17,9 @@ import {
   type UserDetail,
   type UserRole,
   type UserStatus,
+  featureAllowed,
 } from '@tmi/shared';
+import { useAuth } from '@/providers/auth-provider';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -267,6 +269,20 @@ function toRequest(form: FormState) {
 }
 
 /**
+ * Phase 50: where the space has no Tutoring, its sections are left OUT of the request -- not sent
+ * as null or empty, which would delete what is kept while Tutoring is off (R23).
+ */
+function toSpaceRequest(form: FormState, tutoring: boolean) {
+  const request: Partial<ReturnType<typeof toRequest>> = toRequest(form);
+  if (!tutoring) {
+    delete request.tutor_profile;
+    delete request.payment_handles;
+    delete request.availability;
+  }
+  return request;
+}
+
+/**
  * One dialog for both create and edit. Passing a `userId` switches it to edit
  * mode, where the full record is loaded before the form is populated.
  */
@@ -329,6 +345,9 @@ export function UserFormDialog({
   const anyTutorBlock =
     show('tutor-background') || show('tutor-financials') || show('tutor-availability');
 
+  // Phase 50: the tutor role and Tutoring's fields only where the space has Tutoring.
+  const { organization } = useAuth();
+  const tutoring = featureAllowed(organization, 'tutoring');
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
   // Everyone but a student-only person signs in, and sign-in needs an address.
@@ -347,7 +366,7 @@ export function UserFormDialog({
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const request = toRequest(form);
+    const request = toSpaceRequest(form, tutoring);
     const schema = isEdit ? updateUserRequestSchema : createUserRequestSchema;
     const parsed = schema.safeParse(request);
 
@@ -388,7 +407,12 @@ export function UserFormDialog({
   const familyFirst = !isEdit && isStudent && show('guardians');
 
   const rolesBlock = (
-    <RoleSelector value={form.roles} onChange={(roles) => set('roles', roles)} error={errors.roles} />
+    <RoleSelector
+      value={form.roles}
+      onChange={(roles) => set('roles', roles)}
+      error={errors.roles}
+      hidden={tutoring ? [] : ['tutor']}
+    />
   );
   const guardiansBlock = (
     <GuardianPicker
@@ -524,7 +548,7 @@ export function UserFormDialog({
                 </>
               )}
 
-              {isTutor && anyTutorBlock && (
+              {tutoring && isTutor && anyTutorBlock && (
                 <>
                   <Separator />
                   <SectionHeading title="Tutor details" />
@@ -818,6 +842,8 @@ export function UserFormDialog({
                     }
                   />
 
+                  {tutoring && (
+                  <>
                   {/* What the FAMILY is charged. Priced on the student, so it
                       does not change with whoever happens to teach them; the
                       institute keeps the difference from the tutor's rate. */}
@@ -856,10 +882,12 @@ export function UserFormDialog({
                     onChange={(value) => set('student', { ...form.student, max_minutes: value })}
                     hint="The shorter of this and the tutor's limit is the one that applies."
                   />
+                  </>
+                  )}
                 </>
               )}
 
-              {(isTutor || isStudent) && (show('availability') || show('tutor-availability')) && (
+              {tutoring && (isTutor || isStudent) && (show('availability') || show('tutor-availability')) && (
                 <>
                   <Separator />
                   <AvailabilityPicker
@@ -869,7 +897,7 @@ export function UserFormDialog({
                 </>
               )}
 
-              {(isTutor || isParent) && show('payment-handles') && (
+              {tutoring && (isTutor || isParent) && show('payment-handles') && (
                 <>
                   <Separator />
                   <PaymentHandlesField

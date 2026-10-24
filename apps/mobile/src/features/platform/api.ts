@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/platform/api.ts @ 1132322
+// Ported from apps/web/src/features/platform/api.ts @ 1132322 (Phase 50's useUpdateOrganizationFeatures
+// @ 2471d84, working tree)
 // Mobile: the logo upload takes the picked image's bytes (apiClient.putBytes) instead of a DOM File.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
@@ -9,6 +10,7 @@ import type {
   LogoKind,
   Organization,
   OrganizationAdmin,
+  OrganizationFeaturesInput,
   OrganizationListItem,
   PlatformAdmin,
   PlatformPerson,
@@ -46,6 +48,16 @@ export function useUpdateOrganization() {
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: UpdateOrganizationInput }) =>
       apiClient.patch<ApiOk<Organization>>(`/platform/organizations/${id}`, input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.organizations }),
+  });
+}
+
+/** Phase 50: which feature sets an organization is allowed. Always sends all three. */
+export function useUpdateOrganizationFeatures() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: OrganizationFeaturesInput }) =>
+      apiClient.put<ApiOk<Organization>>(`/platform/organizations/${id}/features`, input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.organizations }),
   });
 }

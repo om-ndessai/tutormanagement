@@ -6,6 +6,7 @@ import {
   UserPlusIcon,
 } from 'lucide-react';
 
+import { featureOn } from '@tmi/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -65,7 +66,8 @@ export function OnboardingWizard({
   onNavigate: (path: string) => void;
 }) {
   const brand = useBrand();
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
+  const tutoring = featureOn(organization, 'tutoring');
   const firstName = user?.full_name.split(' ')[0] ?? '';
 
   const heading =
@@ -73,7 +75,9 @@ export function OnboardingWizard({
       ? {
           title: `Welcome to ${brand.short}${firstName ? `, ${firstName}` : ''}`,
           description: isAdmin
-            ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
+            ? tutoring
+              ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
+              : 'A quick tour of the portal, and guided setup for a new student.'
             : 'A quick tour of the portal, then a check that the office has your details right.',
         }
       : HEADINGS[screen];
@@ -109,17 +113,21 @@ export function OnboardingWizard({
                 <Choice
                   icon={GraduationCapIcon}
                   title="Add a student"
-                  description="Create or pick the family, add the student, then their assessment, learning plan and tutor."
+                  description={
+                    tutoring
+                      ? 'Create or pick the family, add the student, then their assessment, learning plan and tutor.'
+                      : 'Create or pick the family, then add the student.'
+                  }
                   action="Add a student"
                   onClick={() => onScreen('student')}
                 />
-                <Choice
+                {tutoring && <Choice
                   icon={UserPlusIcon}
                   title="Add a tutor"
                   description="Their details, then how they are paid, when they can teach, and their students."
                   action="Add a tutor"
                   onClick={() => onScreen('tutor')}
-                />
+                />}
               </>
             )}
 
@@ -139,7 +147,7 @@ export function OnboardingWizard({
         {screen === 'student' && isAdmin && (
           <StudentFlow onNavigate={onNavigate} onBack={() => onScreen('welcome')} />
         )}
-        {screen === 'tutor' && isAdmin && (
+        {screen === 'tutor' && isAdmin && tutoring && (
           <TutorFlow onNavigate={onNavigate} onBack={() => onScreen('welcome')} />
         )}
         {screen === 'confirm' && <ConfirmDetails onDone={() => onScreen('done')} />}

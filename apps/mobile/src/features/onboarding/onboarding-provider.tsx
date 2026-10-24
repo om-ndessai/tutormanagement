@@ -24,7 +24,7 @@ import { useFinishTour } from './api';
 import { decideOnboarding, primaryRole, screenAfterTour } from './onboarding-model';
 import { Tour } from './tour';
 import { TourTargetsProvider } from './tour-targets';
-import { TOUR_STEPS } from './tour-steps';
+import { tourStepsFor } from './tour-steps';
 
 export type WizardScreen = 'welcome' | 'student' | 'tutor' | 'confirm' | 'done';
 
@@ -185,8 +185,8 @@ function OnboardingHost({ children }: { children: ReactNode }) {
   }, []);
 
   const steps = useMemo(
-    () => (user ? TOUR_STEPS[dashboard?.role ?? primaryRole(user.roles)] : []),
-    [user, dashboard?.role],
+    () => (user ? tourStepsFor(dashboard?.role ?? primaryRole(user.roles), organization) : []),
+    [user, dashboard?.role, organization],
   );
 
   const value = useMemo(

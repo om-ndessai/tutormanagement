@@ -37,6 +37,9 @@ interface OrgRow {
   canvas_assessments_unreviewed: number;
   gamify_question_quest: number;
   canvas_assessment_questions: number;
+  feature_tutoring: number;
+  feature_assessment: number;
+  feature_quest: number;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -47,7 +50,7 @@ interface OrgRow {
 
 /** Every organization column, plus the logo versions that make its URLs. */
 const SELECT_ORG = `SELECT o.id, o.slug, o.name, o.short_name, o.tagline, o.blurb, o.place,
-       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions, o.gamify_question_quest, o.calendar_domain, o.archived_at,
+       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions, o.gamify_question_quest, o.feature_tutoring, o.feature_assessment, o.feature_quest, o.calendar_domain, o.archived_at,
        o.created_at, o.updated_at,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'mark') AS mark_sha,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'full') AS full_sha
@@ -82,6 +85,9 @@ function toOrganization(row: OrgRow): Organization {
     canvas_assessments_unreviewed: row.canvas_assessments_unreviewed === 1,
     gamify_question_quest: row.gamify_question_quest === 1,
     canvas_assessment_questions: row.canvas_assessment_questions,
+    feature_tutoring: row.feature_tutoring === 1,
+    feature_assessment: row.feature_assessment === 1,
+    feature_quest: row.feature_quest === 1,
     calendar_domain: row.calendar_domain,
     archived_at: row.archived_at,
     created_at: row.created_at,
@@ -405,8 +411,8 @@ export async function createOrganization(
       .prepare(
         `INSERT INTO organizations
            (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone,
-            email_notifications, calendar_domain)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            email_notifications, calendar_domain, feature_tutoring, feature_assessment, feature_quest)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         id,
@@ -421,6 +427,9 @@ export async function createOrganization(
         input.time_zone,
         input.email_notifications ? 1 : 0,
         calendarDomain,
+        input.feature_tutoring ? 1 : 0,
+        input.feature_assessment ? 1 : 0,
+        input.feature_quest ? 1 : 0,
       ),
     db
       .prepare(
@@ -600,4 +609,21 @@ export async function getFirstOrganization(db: D1Database): Promise<Organization
     .prepare(`${SELECT_ORG} WHERE o.archived_at IS NULL ORDER BY o.created_at, o.id LIMIT 1`)
     .first<OrgRow>();
   return row ? toOrganization(row) : null;
+}
+
+/** Phase 50: which feature sets an organization is allowed. A platform admin's act; null when it does not exist. */
+export async function updateOrganizationFeatures(
+  db: D1Database,
+  id: string,
+  input: { feature_tutoring: boolean; feature_assessment: boolean; feature_quest: boolean },
+): Promise<Organization | null> {
+  await db
+    .prepare(
+      `UPDATE organizations SET feature_tutoring = ?, feature_assessment = ?, feature_quest = ?,
+              updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+       WHERE id = ?`,
+    )
+    .bind(input.feature_tutoring ? 1 : 0, input.feature_assessment ? 1 : 0, input.feature_quest ? 1 : 0, id)
+    .run();
+  return getOrganizationById(db, id);
 }

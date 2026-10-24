@@ -1,9 +1,9 @@
 import { SSN_REJECTED_MESSAGE, type CurriculumOffering, type NotificationLogEntry } from '@tmi/shared';
-import { fireEvent, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react-native';
 
 import { ApiRequestError } from '@/lib/api-client';
 import { renderWithProviders } from '@/test/render';
-import { OrganizationSettingsScreen } from './organization-settings-screen';
+import { featureSetsLabel, OrganizationSettingsScreen } from './organization-settings-screen';
 import { validateForm } from './settings-form';
 
 jest.mock('expo-router', () => ({ Stack: { Screen: () => null } }));
@@ -85,9 +85,9 @@ const LOG: NotificationLogEntry[] = [
   },
 ];
 
-function asAdmin(isAdmin = true) {
+function asAdmin(isAdmin = true, organization: Record<string, unknown> = ORGANIZATION) {
   mockAuth.mockReturnValue({
-    organization: ORGANIZATION,
+    organization,
     user: { id: 'p', roles: isAdmin ? ['admin', 'tutor'] : ['tutor'] },
   });
   mockSettings.mockReturnValue({
@@ -172,6 +172,27 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.queryByText(/Added to the organization · Ben Whitfield/)).toBeNull();
   });
 
+  it('shows every card, and every set, where all three are allowed', async () => {
+    asAdmin(true, { ...ORGANIZATION, feature_tutoring: true, feature_assessment: true, feature_quest: true });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.getByTestId('org-payer')).toBeTruthy();
+    expect(screen.getByTestId('org-assessments')).toBeTruthy();
+    expect(screen.getByTestId('org-gamification')).toBeTruthy();
+    expect(within(screen.getByTestId('org-features')).getByText('Tutoring, Assessment and Quest')).toBeTruthy();
+  });
+
+  it('shows only the allowed sets’ cards: Assessment alone has no payer and no money', async () => {
+    asAdmin(true, { ...ORGANIZATION, feature_tutoring: false, feature_assessment: true, feature_quest: false });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.queryByTestId('org-payer')).toBeNull();
+    expect(screen.queryByTestId('org-tin')).toBeNull();
+    expect(screen.queryByTestId('org-gamification')).toBeNull();
+    expect(screen.getByTestId('org-assessments')).toBeTruthy();
+    expect(screen.getByTestId('org-notifications')).toBeTruthy();
+    expect(screen.getByTestId('org-curricula')).toBeTruthy();
+    expect(within(screen.getByTestId('org-features')).getByText('Assessment')).toBeTruthy();
+  });
+
   it('says so when nothing has been sent yet', async () => {
     asAdmin();
     mockNotifications.mockReturnValue({ data: { data: [] }, refetch: jest.fn() });
@@ -244,5 +265,14 @@ describe('validateForm', () => {
     });
     expect(verdict.ok).toBe(false);
     expect(!verdict.ok && verdict.errors.payer_postal_code).toBe('Use a 5-digit ZIP code.');
+  });
+});
+
+describe('featureSetsLabel', () => {
+  it('joins the allowed sets in words', () => {
+    expect(featureSetsLabel([])).toBe('None yet');
+    expect(featureSetsLabel(['assessment'])).toBe('Assessment');
+    expect(featureSetsLabel(['tutoring', 'assessment'])).toBe('Tutoring and Assessment');
+    expect(featureSetsLabel(['tutoring', 'assessment', 'quest'])).toBe('Tutoring, Assessment and Quest');
   });
 });

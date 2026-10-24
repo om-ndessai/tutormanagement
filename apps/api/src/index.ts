@@ -7,6 +7,7 @@ import { autoStopExpired } from './lib/live-sessions.js';
 import { onError, onNotFound } from './middleware/error.js';
 import { requireAuth } from './middleware/auth.js';
 import { requireOrg } from './middleware/require-org.js';
+import { requireFeature } from './middleware/require-feature.js';
 import { requirePlatformAdmin } from './middleware/require-platform-admin.js';
 import { authRoutes } from './routes/auth.js';
 import { assignmentsRoutes } from './routes/assignments.js';
@@ -112,6 +113,32 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/organization', organizationRoutes)
   .route('/users', usersRoutes)
   .route('/audit', auditRoutes)
+  .route('/curriculum', curriculumRoutes)
+  .route('/curricula', curriculaRoutes)
+  .route('/onboarding', onboardingRoutes)
+  // Phase 50: each feature set's routes answer 403 feature_unavailable where the set is off (R23).
+  .use('/comments', requireFeature('tutoring'))
+  .use('/comments/*', requireFeature('tutoring'))
+  .use('/dashboard', requireFeature('tutoring'))
+  .use('/dashboard/*', requireFeature('tutoring'))
+  .use('/assignments', requireFeature('tutoring'))
+  .use('/assignments/*', requireFeature('tutoring'))
+  .use('/sessions', requireFeature('tutoring'))
+  .use('/sessions/*', requireFeature('tutoring'))
+  .use('/schedules', requireFeature('tutoring'))
+  .use('/schedules/*', requireFeature('tutoring'))
+  .use('/locations', requireFeature('tutoring'))
+  .use('/locations/*', requireFeature('tutoring'))
+  .use('/payments', requireFeature('tutoring'))
+  .use('/payments/*', requireFeature('tutoring'))
+  .use('/progress', requireFeature('tutoring'))
+  .use('/progress/*', requireFeature('tutoring'))
+  .use('/home', requireFeature('tutoring'))
+  .use('/home/*', requireFeature('tutoring'))
+  .use('/canvas-assessments', requireFeature('assessment'))
+  .use('/canvas-assessments/*', requireFeature('assessment'))
+  .use('/quest', requireFeature('quest'))
+  .use('/quest/*', requireFeature('quest'))
   .route('/comments', commentsRoutes)
   .route('/dashboard', dashboardRoutes)
   .route('/assignments', assignmentsRoutes)
@@ -119,10 +146,7 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/schedules', schedulesRoutes)
   .route('/locations', locationsRoutes)
   .route('/payments', paymentsRoutes)
-  .route('/curriculum', curriculumRoutes)
-  .route('/curricula', curriculaRoutes)
   .route('/progress', progressRoutes)
-  .route('/onboarding', onboardingRoutes)
   .route('/canvas-assessments', canvasAssessmentRoutes)
   .route('/quest', questRoutes)
   .route('/home', homeRoutes);

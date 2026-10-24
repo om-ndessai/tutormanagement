@@ -194,6 +194,13 @@ CREATE TABLE organizations (
   -- Off until its admins choose (docs/gamification-plan.md).
   gamify_question_quest INTEGER NOT NULL DEFAULT 0 CHECK (gamify_question_quest IN (0, 1)),
 
+  -- Phase 50: which feature sets platform admins ALLOW this organization
+  -- (docs/open-signup-plan.md). Assessment and Quest keep the switches above
+  -- for the organization's own admins; a set is on when allowed and switched on.
+  feature_tutoring   INTEGER NOT NULL DEFAULT 1 CHECK (feature_tutoring IN (0, 1)),
+  feature_assessment INTEGER NOT NULL DEFAULT 1 CHECK (feature_assessment IN (0, 1)),
+  feature_quest      INTEGER NOT NULL DEFAULT 1 CHECK (feature_quest IN (0, 1)),
+
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
   calendar_domain TEXT NOT NULL,

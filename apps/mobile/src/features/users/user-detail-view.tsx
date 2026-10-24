@@ -12,6 +12,7 @@ import {
   RELATIONSHIP_LABELS,
   formatDuration,
   formatMailingAddress,
+  featureAllowed,
   formatTimeRange,
   groupSlotsByDay,
   type GuardianLink,
@@ -54,7 +55,9 @@ export function UserDetailView({
 }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
-  const { user: viewer } = useAuth();
+  const { user: viewer, organization } = useAuth();
+  // Phase 50: Tutoring's sections, locations, comments and tax setup only where the space has it.
+  const tutoring = featureAllowed(organization, 'tutoring');
   const tutor = user.tutor_profile;
   const student = user.student_profile;
   const isAdmin = viewer?.roles.includes('admin') ?? false;
@@ -69,7 +72,7 @@ export function UserDetailView({
       <Muted>{`${formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)`}</Muted>
     );
 
-  const sections = recordSections(user, viewer, { compact });
+  const sections = recordSections(user, viewer, { compact, tutoring });
   const editSection = (key: RecordSectionKey) =>
     router.push({ pathname: '/person-form', params: { id: user.id, section: key } });
 
@@ -275,7 +278,7 @@ export function UserDetailView({
 
       {/* Adding a tutor leaves the tax details for later (UI upgrades U3): the office is reminded
           here until the 1099's address and the SSN fact are both on file. */}
-      {tutor && isAdmin && !compact && !user.deleted_at && needsTaxSetup(tutor) ? (
+      {tutoring && tutor && isAdmin && !compact && !user.deleted_at && needsTaxSetup(tutor) ? (
         <TaxSetupCard userId={user.id} tutor={tutor} />
       ) : null}
 
@@ -299,6 +302,7 @@ export function UserDetailView({
       {/* Phase 33: where they like to have lessons -- for the office, the person, and a student's
           parents (R16; the server answers anyone else with an empty list). */}
       {!compact &&
+      tutoring &&
       (user.roles.includes('tutor') || user.roles.includes('student')) &&
       (isAdmin ||
         viewer?.id === user.id ||
@@ -311,7 +315,7 @@ export function UserDetailView({
       {/* Above the activity on purpose: what people have SAID about someone matters more on their
           record than what the system logged. The audience is narrower than a lesson's: admins, the
           author, the person and their parents -- the server's to decide. */}
-      {!compact ? (
+      {!compact && tutoring ? (
         <Section title="Comments" icon="message-outline" testID="person-section-comments">
           <CommentsRow
             testID="person-comments"

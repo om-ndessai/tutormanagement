@@ -2,13 +2,13 @@
 // -- a student with their guardians, so the guardian rule holds -- checked first against the shared
 // schema, so an SSN typed into a note never leaves the phone. Refusals come back by field, and the
 // step flow opens the step that owns the first of them.
-import { createUserRequestSchema } from '@tmi/shared';
+import { createUserRequestSchema, featureAllowed } from '@tmi/shared';
 import { useCallback, useState } from 'react';
 
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { ApiRequestError } from '@/lib/api-client';
 import { announceFormSaved } from '@/lib/form-bridge';
-import { useOrgTimeZone } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useCreateUser } from './api';
 import { toRequest, todayIso, type FormState } from './person-form-model';
 
@@ -21,6 +21,9 @@ export function useAddPerson() {
   const timeZone = useOrgTimeZone();
   const today = todayIso(timeZone);
   const createUser = useCreateUser();
+  // Phase 50: Tutoring's sections are left out of the request where the space has no Tutoring.
+  const { organization } = useAuth();
+  const tutoring = featureAllowed(organization, 'tutoring');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string> | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -34,7 +37,7 @@ export function useAddPerson() {
   const submit = useCallback(
     async (form: FormState): Promise<AddedPerson | null> => {
       setFormError(null);
-      const parsed = createUserRequestSchema.safeParse(toRequest(form, today));
+      const parsed = createUserRequestSchema.safeParse(toRequest(form, today, { tutoring }));
       if (!parsed.success) {
         setFieldErrors(issuesToErrors(parsed.error.issues));
         return null;
@@ -56,7 +59,7 @@ export function useAddPerson() {
         return null;
       }
     },
-    [createUser, today],
+    [createUser, today, tutoring],
   );
 
   return { submit, submitting: createUser.isPending, fieldErrors, formError, clearErrors, today };

@@ -10,7 +10,7 @@ import {
 } from '@tmi/shared';
 
 import type { OrgId } from '../lib/org.js';
-import { isAdmin, studentScopeSql } from '../lib/scope.js';
+import { isAdmin, pairingInForce, studentScopeSql } from '../lib/scope.js';
 
 // Phase 38: the Assessment menu (beta). Who reads what is R17
 // (docs/data-exposure.md): the rows reach the student's audience
@@ -71,7 +71,7 @@ const SELECT_ROWS = `
          r.full_name AS reviewed_by_name, v.status AS review_status,
          EXISTS (SELECT 1 FROM assignments a
                  WHERE a.organization_id = c.organization_id AND a.student_user_id = c.student_user_id
-                   AND a.tutor_user_id = ? AND a.is_active = 1) AS tutors_student
+                   AND a.tutor_user_id = ? AND ${pairingInForce('a')}) AS tutors_student
   FROM canvas_assessments c
   JOIN users s ON s.id = c.student_user_id
   JOIN users b ON b.id = c.started_by_user_id

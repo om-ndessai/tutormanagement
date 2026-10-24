@@ -1,6 +1,7 @@
 // What next, once Add a student or Add a tutor has saved (UI upgrades U3): the steps the welcome
 // wizard offers after its own add -- the assessment, the plan, a pairing; for a tutor the tax setup
 // and a pairing -- each the app's existing sheet, ticked here once it saves (`form-bridge`).
+import { featureAllowed, featureOn } from '@tmi/shared';
 import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
@@ -11,6 +12,7 @@ import { OutlinedCard } from '@/components/outlined-card';
 import { useAwaitedSheet } from '@/features/onboarding/student-flow';
 import type { SavedForm } from '@/lib/form-bridge';
 import { haptics } from '@/lib/haptics';
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 
@@ -20,10 +22,38 @@ interface NextStep {
   description: string;
   icon: string;
   href: Href;
-  form: SavedForm;
+  /** A sheet that saves and is ticked here; absent for a step that leaves the flow (`leave`). */
+  form?: SavedForm;
+  /** Phase 50: close the flow, then go here (Start an assessment). */
+  leave?: boolean;
 }
 
-function nextSteps(kind: 'student' | 'tutor', id: string): NextStep[] {
+/** Which feature sets are on here, for the next steps (Phase 50). */
+export interface NextStepSets {
+  tutoring: boolean;
+  assessment: boolean;
+}
+
+export function nextSteps(
+  kind: 'student' | 'tutor',
+  id: string,
+  sets: NextStepSets = { tutoring: true, assessment: false },
+): NextStep[] {
+  if (kind === 'student' && !sets.tutoring) {
+    // Phase 50: without Tutoring the one step is their first assessment, where it is on.
+    return sets.assessment
+      ? [
+          {
+            key: 'start-assessment',
+            title: 'Start an assessment',
+            description: 'Handwritten, one question a page.',
+            icon: 'draw-pen',
+            href: { pathname: '/assessments', params: { student: id } },
+            leave: true,
+          },
+        ]
+      : [];
+  }
   if (kind === 'student') {
     return [
       {
@@ -86,7 +116,11 @@ export function AddPersonDone({
   const insets = useSafeAreaInsets();
   const openSheet = useAwaitedSheet();
   const [done, setDone] = useState<ReadonlySet<string>>(new Set());
-  const steps = nextSteps(kind, person.id);
+  const { organization } = useAuth();
+  const steps = nextSteps(kind, person.id, {
+    tutoring: featureAllowed(organization, 'tutoring'),
+    assessment: featureOn(organization, 'assessment'),
+  });
 
   const close = () => {
     if (router.canGoBack()) router.back();
@@ -145,6 +179,11 @@ export function AddPersonDone({
                 accessibilityHint={step.description}
                 onPress={() => {
                   haptics.selection();
+                  if (step.leave || !step.form) {
+                    close();
+                    router.navigate(step.href);
+                    return;
+                  }
                   openSheet(step.href, step.form, () => setDone((was) => new Set(was).add(step.key)));
                 }}
                 style={({ pressed }) => ({

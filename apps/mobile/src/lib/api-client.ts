@@ -1,5 +1,5 @@
 // Ported from apps/web/src/lib/api-client.ts @ 1132322
-import { ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
+import { FEATURE_UNAVAILABLE, ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
 
 import { emit } from './events';
 import { getActiveOrg } from './organization';
@@ -141,6 +141,10 @@ async function request<T>(path: string, init: RequestInit = {}, retried = false)
     }
     if (isApiErrorBody(payload) && payload.error.code === 'organization_required') {
       emit('organization-required');
+    }
+    if (isApiErrorBody(payload) && payload.error.code === FEATURE_UNAVAILABLE) {
+      // Phase 50: a set was switched off while the app was open; the session is re-read.
+      emit('feature-unavailable');
     }
     if (isApiErrorBody(payload)) {
       throw new ApiRequestError(

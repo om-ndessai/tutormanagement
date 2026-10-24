@@ -14,6 +14,7 @@ import {
   type User,
   type UserDetail,
   type UserRole,
+  featureAllowed,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -78,6 +79,29 @@ const SHARED_FIELDS_LOCKED =
  * guardianship can point at it, so no CHECK or foreign key can express it. It
  * lives here instead, and is checked on every write that could break it.
  */
+/**
+ * Phase 50: the tutor role and a tutor's own sections belong to the Tutoring set. Where a space is
+ * not allowed Tutoring, nobody may be GIVEN the role or have those sections written -- but a role
+ * someone already holds is kept (R23: data is kept while a set is disallowed), so an edit that
+ * sends it back unchanged still saves.
+ */
+function assertTutoringAllowed(
+  org: Parameters<typeof featureAllowed>[0],
+  rolesBefore: UserRole[],
+  rolesAfter: UserRole[],
+  sections: { tutor_profile?: unknown; payment_handles?: unknown[] | null; availability?: unknown[] | null },
+) {
+  if (featureAllowed(org, 'tutoring')) return;
+  const problems: Record<string, string[]> = {};
+  if (rolesAfter.includes('tutor') && !rolesBefore.includes('tutor')) {
+    problems.roles = ['The tutor role is part of Tutoring, which this space does not have.'];
+  }
+  if (sections.tutor_profile) problems.tutor_profile = ['A tutor’s profile is part of Tutoring, which this space does not have.'];
+  if (sections.payment_handles?.length) problems.payment_handles = ['Payment handles are part of Tutoring, which this space does not have.'];
+  if (sections.availability?.length) problems.availability = ['Availability is part of Tutoring, which this space does not have.'];
+  if (Object.keys(problems).length > 0) throw ApiError.validation('Please correct the highlighted fields.', problems);
+}
+
 function assertStudentHasGuardian(roles: UserRole[], guardianCount: number) {
   if (roles.includes('student') && guardianCount === 0) {
     throw ApiError.validation('Please correct the highlighted fields.', {
@@ -168,6 +192,7 @@ export const usersRoutes = new Hono<AppEnv>()
     const { user: fields, sections } = splitUserRequest(c.req.valid('json'));
     const org = c.get('org').id;
 
+    assertTutoringAllowed(c.get('org'), [], fields.roles, sections);
     assertStudentHasGuardian(fields.roles, sections.guardians?.length ?? 0);
     await assertGuardiansExist(c.env.DB, org, null, sections.guardians);
 
@@ -326,6 +351,12 @@ export const usersRoutes = new Hono<AppEnv>()
         ? sections.guardians.length
         : await countGuardians(c.env.DB, org, id);
 
+      assertTutoringAllowed(
+        c.get('org'),
+        existing.roles,
+        finalRoles,
+        existing.roles.includes('tutor') ? { ...sections, tutor_profile: undefined } : sections,
+      );
       assertStudentHasGuardian(finalRoles, guardianCount);
       assertEmailPresentIfNeeded(finalRoles, finalEmail);
       await assertGuardiansExist(c.env.DB, org, id, sections.guardians);

@@ -546,3 +546,13 @@ Added to the release by the owner, 2026-10-24:
   `approved` for every organization by itself (`approved_via = 'quest_consensus'`), with no review
   needed; a tutor's review still approves or flags it as before. Answers count only from trusted
   organizations (Phase 51's `quest_trusted`), so a self-serve space cannot approve the bank.
+
+Phase 49 released 2026-10-24 (commit 2471d84, tag `release-20261024`; production backed up to
+`~/tmi-portal-backups/tutoring-db-20261024-113725-pre-phase49.sql`, no schema change, both Workers
+deployed; the demo reseeded within its new budget, 22,025 rows written, and seeded through the API).
+
+Phase 50 released 2026-10-24 (tag `release-20261024-p50`): feature sets on the web and in the app; the
+Phase 50 SQL applied to production after the backup; both Workers deployed. Every existing organization
+keeps all three sets. The compatibility test now refuses to start when one of its ports is taken (an old
+dev server on its port had stood in for "today's Worker" in Phase 49's run; the schema check and the old
+Worker's run were sound).

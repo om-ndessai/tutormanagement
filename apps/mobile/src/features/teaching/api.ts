@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/teaching/api.ts @ 1132322
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { featureOn } from '@tmi/shared';
 import type {
   ActiveSession,
   ApiList,
@@ -22,6 +23,7 @@ import type {
   SessionReflectionInput,
 } from '@tmi/shared';
 
+import { useOptionalAuth } from '@/providers/auth-provider';
 import { apiClient, toQueryString } from '@/lib/api-client';
 import { auditKeys } from '@/features/audit/api';
 
@@ -64,8 +66,11 @@ interface ActiveSessionResponse {
  * laptop. Polling keeps those views honest with each other.
  */
 export function useActiveSession() {
+  // Phase 50: polled from every screen, so stopped where Tutoring is off (it answers 403 there).
+  const auth = useOptionalAuth();
   return useQuery({
     queryKey: ['active-session'],
+    enabled: !auth || featureOn(auth.organization, 'tutoring'),
     queryFn: () => apiClient.get<ApiOk<ActiveSessionResponse>>('/sessions/active'),
     refetchInterval: 30_000,
     refetchOnWindowFocus: true,

@@ -131,6 +131,9 @@ async function resolveBypassPerson(env: AppEnv['Bindings'], requestedEmail?: str
         builtin_logo: null,
         time_zone: 'America/New_York',
         email_notifications: false,
+        feature_tutoring: true,
+        feature_assessment: true,
+        feature_quest: true,
       },
       'local.invalid',
     ));

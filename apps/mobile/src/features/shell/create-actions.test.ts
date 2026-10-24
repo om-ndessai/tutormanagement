@@ -75,3 +75,42 @@ test('Record opens the Tutoring step flow, never the money; each action routes t
   expect(all.find((action) => action.id === 'add-tutor')?.href).toBe('/add-tutor');
   expect(all.find((action) => action.id === 'add-person')?.href).toBe('/person-form');
 });
+
+describe('Phase 50: without Tutoring', () => {
+  const ASSESS = { tutoring: false, assessment: true };
+  const NONE = { tutoring: false, assessment: false };
+
+  test('an admin starts an assessment, adds a student or someone else', () => {
+    expect(ids(['admin'], { teaches: true }, ASSESS)).toEqual(['start-assessment', 'add-student', 'add-person']);
+    expect(ids(['admin', 'tutor'], { teaches: true }, ASSESS)).toEqual([
+      'start-assessment',
+      'add-student',
+      'add-person',
+    ]);
+  });
+
+  test('without Assessment as well, only adding people', () => {
+    expect(ids(['admin'], {}, NONE)).toEqual(['add-student', 'add-person']);
+  });
+
+  test('a parent, a student and a kept tutor get none', () => {
+    for (const roles of [['parent'], ['student'], ['tutor']] as const) {
+      expect(ids([...roles], { teaches: true }, ASSESS)).toEqual([]);
+      expect(hasCreateActions([...roles], ASSESS)).toBe(false);
+    }
+  });
+
+  test('hasCreateActions agrees with createActions', () => {
+    for (const sets of [ASSESS, NONE, { tutoring: true, assessment: true }]) {
+      for (const roles of [['admin'], ['tutor'], ['parent'], ['student'], ['admin', 'parent']] as const) {
+        expect(hasCreateActions([...roles], sets)).toBe(ids([...roles], { teaches: true }, sets).length > 0);
+      }
+    }
+  });
+
+  test('Start an assessment is never offered with Tutoring on', () => {
+    expect(ids(['admin'], { teaches: true }, { tutoring: true, assessment: true })).not.toContain(
+      'start-assessment',
+    );
+  });
+});

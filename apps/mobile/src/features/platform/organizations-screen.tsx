@@ -1,7 +1,12 @@
 // Ported from apps/web/src/features/platform/organizations-page.tsx @ 1132322.
 // Every organization on the platform, and the way in to creating the next. Archiving moved to the
 // organization's own screen, behind a confirm: a list row is too easy to tap by accident.
-import { ORG_PALETTE_LABELS, type OrganizationListItem } from '@tmi/shared';
+import {
+  FEATURE_SET_LABELS,
+  ORG_PALETTE_LABELS,
+  allowedFeatureSets,
+  type OrganizationListItem,
+} from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -24,7 +29,9 @@ export function orgSummary(org: OrganizationListItem): string {
   return (
     `${org.slug} · ${ORG_PALETTE_LABELS[org.palette]} · ${org.admin_count} ` +
     `${org.admin_count === 1 ? 'admin' : 'admins'} · ${org.member_count} ` +
-    `${org.member_count === 1 ? 'member' : 'members'}`
+    `${org.member_count === 1 ? 'member' : 'members'} · ` +
+    // Phase 50: the feature sets it is allowed.
+    (allowedFeatureSets(org).map((set) => FEATURE_SET_LABELS[set]).join(', ') || 'No feature sets')
   );
 }
 

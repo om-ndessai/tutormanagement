@@ -5,8 +5,10 @@
 // left. Mobile: mounted by Home; "once" is per person and organization for as long as they stay
 // signed in, kept in memory only (quest-model.ts) -- the web keeps it per tab in sessionStorage. It
 // waits for Home to be in front, and gives way to the welcome wizard, which opens first.
+// Phase 50: whether Quest is on here is `featureOn` (allowed, and switched on).
 import { router, useIsFocused } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { featureOn } from '@tmi/shared';
 
 import { useAuth } from '@/providers/auth-provider';
 import { useQuestReview, useQuestState } from './api';
@@ -15,7 +17,7 @@ import { decideQuestLanding, hasLanded, landingKey, markLanded, questLandingKind
 export function QuestLanding() {
   const { user, organization, onboarding } = useAuth();
   const focused = useIsFocused();
-  const on = Boolean(organization?.gamify_question_quest);
+  const on = featureOn(organization, 'quest');
   const kind = questLandingKind(user?.roles);
   const key = user && organization ? landingKey(user.id, organization.slug) : null;
   const [settled, setSettled] = useState(false);

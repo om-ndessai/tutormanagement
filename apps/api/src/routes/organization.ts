@@ -7,6 +7,7 @@ import {
   type CurriculumOffering,
   type NotificationLogEntry,
   type OrganizationSettings,
+  featureAllowed,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -70,6 +71,14 @@ export const organizationRoutes = new Hono<AppEnv>()
     async (c) => {
       const org = c.get('org');
       const input = c.req.valid('json');
+      // Phase 50: a set the platform does not allow here cannot be switched on by the space.
+      const assessmentKeys = ['canvas_assessments', 'canvas_assessments_unreviewed', 'canvas_assessment_questions'] as const;
+      if (!featureAllowed(org, 'assessment') && assessmentKeys.some((key) => input[key] !== undefined)) {
+        throw new ApiError(403, 'feature_unavailable', 'Assessment is not part of this space.');
+      }
+      if (!featureAllowed(org, 'quest') && input.gamify_question_quest !== undefined) {
+        throw new ApiError(403, 'feature_unavailable', 'Quest is not part of this space.');
+      }
       const settings = await updateOrganizationSettings(c.env.DB, org.id, input);
 
       // Names what changed, never the TIN itself: the log is read widely.

@@ -5,7 +5,15 @@ import { renderWithProviders } from '@/test/render';
 import { AvailabilityPicker, toggleSlot } from './availability-picker';
 import { PersonForm } from './person-form';
 
-jest.mock('@/providers/auth-provider', () => ({ useOrgTimeZone: () => 'America/New_York' }));
+// Phase 50: a space reads `feature_tutoring`; an organization without the column allows everything.
+let mockOrganization: Record<string, unknown> = {};
+jest.mock('@/providers/auth-provider', () => ({
+  useOrgTimeZone: () => 'America/New_York',
+  useAuth: () => ({ organization: mockOrganization }),
+}));
+beforeEach(() => {
+  mockOrganization = {};
+});
 jest.mock('expo-router', () => ({ router: { push: jest.fn(), back: jest.fn(), canGoBack: () => true } }));
 jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
@@ -113,4 +121,22 @@ it("scoped to the tax setup, shows the 1099's address and the SSN tick, and noth
   expect(screen.queryByTestId('person-tutor-topup')).toBeNull();
   expect(screen.queryByTestId('person-form-name')).toBeNull();
   expect(screen.queryByTestId('availability-count')).toBeNull();
+});
+
+it('without Tutoring, offers no tutor role and no student lessons, price or availability (Phase 50)', async () => {
+  mockOrganization = { feature_tutoring: false, feature_assessment: true, canvas_assessments: true };
+  await renderWithProviders(<PersonForm preset={{ roles: ['student'] }} onSaved={noop} onCancel={noop} />);
+  expect(screen.queryByTestId('person-role-tutor')).toBeNull();
+  expect(screen.getByTestId('person-role-student')).toBeTruthy();
+  expect(screen.getByTestId('person-student-school')).toBeTruthy();
+  expect(screen.queryByTestId('person-student-limit')).toBeNull();
+  expect(screen.queryByTestId('person-student-virtual')).toBeNull();
+  expect(screen.queryByTestId('availability-count')).toBeNull();
+});
+
+it('without Tutoring, still shows a tutor role someone already holds, but none of its blocks', async () => {
+  mockOrganization = { feature_tutoring: false };
+  await renderWithProviders(<PersonForm detail={alex} onSaved={noop} onCancel={noop} />);
+  expect(screen.getByTestId('person-role-tutor')).toBeTruthy();
+  expect(screen.queryByTestId('person-tutor-education')).toBeNull();
 });

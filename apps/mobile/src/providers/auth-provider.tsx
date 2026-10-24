@@ -27,6 +27,9 @@ import {
 import { clearActiveOrg, getActiveOrg, lastOrg, setActiveOrg } from '@/lib/organization';
 import { APP_VARIANT, devUser, loadServerPrefs, setDevUser, setServerAuthEnabled } from '@/lib/server';
 
+/** Phase 50: how often a feature_unavailable refusal may re-read the session. */
+export const FEATURE_REFRESH_MS = 10_000;
+
 /** The organization the app is in, with its payer details for its admins. */
 export type ActiveOrganization = NonNullable<SessionResponse['organization']>;
 
@@ -263,6 +266,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [leaveOrganization],
   );
 
+  // Phase 50: a feature set switched off while the app is open answers 403 feature_unavailable. The
+  // session is re-read (at most once in 10 s), so the menu, the bar and every gate follow.
+  const lastFeatureRefresh = useRef(0);
+  useEffect(
+    () =>
+      on('feature-unavailable', () => {
+        const now = Date.now();
+        if (now - lastFeatureRefresh.current < FEATURE_REFRESH_MS) return;
+        lastFeatureRefresh.current = now;
+        void loadSession().catch(() => undefined);
+      }),
+    [loadSession],
+  );
+
   // Any 401 from anywhere drops the app back to signed out (after the one silent renewal).
   useEffect(() => on('unauthenticated', () => resetSignedOut()), [resetSignedOut]);
 
@@ -411,4 +428,12 @@ export function useAuth(): AuthContextValue {
   const context = use(AuthContext);
   if (!context) throw new Error('useAuth must be used inside <AuthProvider>.');
   return context;
+}
+
+/**
+ * The auth context where there may be none (a query hook also used by tests that render without
+ * the provider): null outside it.
+ */
+export function useOptionalAuth(): AuthContextValue | null {
+  return use(AuthContext);
 }

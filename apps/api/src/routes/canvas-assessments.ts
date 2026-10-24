@@ -1,4 +1,4 @@
-import { Hono, type MiddlewareHandler } from 'hono';
+import { Hono } from 'hono';
 import {
   CANVAS_LIMITS,
   assessmentLevelCurriculum,
@@ -50,14 +50,6 @@ import { getLiveUserById } from '../repositories/users.js';
 // Phase 38: the Assessment menu (beta), docs/canvas-assessment-plan.md. A
 // student answers approved bank questions by hand; on submitting, the Worker
 // writes a PDF for the tutor. Who reads what is R17 in docs/data-exposure.md.
-
-/** Every route refuses while the organization has the menu switched off. */
-const requireCanvasAssessments: MiddlewareHandler<AppEnv> = async (c, next) => {
-  if (!c.get('org').canvas_assessments) {
-    throw new ApiError(403, 'forbidden', 'The Assessment menu is switched off for this organization.');
-  }
-  await next();
-};
 
 const encoder = new TextEncoder();
 
@@ -138,7 +130,6 @@ function levelOffered(levelId: string, offered: Set<string>): boolean {
 }
 
 export const canvasAssessmentRoutes = new Hono<AppEnv>()
-  .use('*', requireCanvasAssessments)
 
   .get('/levels', async (c) => {
     const org = c.get('org');

@@ -24,5 +24,7 @@ describe('search model', () => {
     });
     expect(personHref(sofia, true)).toEqual({ pathname: '/people/[id]', params: { id: 's1' } });
     expect(personHref(maria, false)).toEqual({ pathname: '/people/[id]', params: { id: 'm1' } });
+    // Phase 50: progress is Tutoring's; without it a student opens their record.
+    expect(personHref(sofia, false, false)).toEqual({ pathname: '/people/[id]', params: { id: 's1' } });
   });
 });

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import {
+  FEATURE_SET_LABELS,
   NOTIFICATION_KIND_LABELS,
+  allowedFeatureSets,
+  featureAllowed,
   ORG_PALETTE_LABELS,
   ORG_TIME_ZONE_LABELS,
   formatRelativeTime,
@@ -71,6 +74,7 @@ export function OrganizationSettingsPage() {
       canvas_assessments: _assessments,
       canvas_assessments_unreviewed: _unreviewed,
       canvas_assessment_questions: _questions,
+      gamify_question_quest: _quest,
       ...payer
     } = loaded;
     setForm(
@@ -128,6 +132,8 @@ export function OrganizationSettingsPage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
+        {/* Phase 50: the 1099 payer belongs to Tutoring (payments and tax). */}
+        {featureAllowed(organization, 'tutoring') && (
         <Card className="py-0">
           <CardContent className="p-5">
             <form className="grid gap-4" onSubmit={save} aria-label="1099 payer details">
@@ -157,6 +163,7 @@ export function OrganizationSettingsPage() {
             </form>
           </CardContent>
         </Card>
+        )}
 
         <Card className="py-0 lg:row-span-2">
           <CardContent className="grid gap-3 p-5 text-sm">
@@ -177,9 +184,15 @@ export function OrganizationSettingsPage() {
                 <dt className="text-muted-foreground text-xs">Lessons are recorded on</dt>
                 <dd>{ORG_TIME_ZONE_LABELS[organization.time_zone]} time</dd>
               </div>
+              <div>
+                <dt className="text-muted-foreground text-xs">Feature sets</dt>
+                <dd data-testid="org-feature-sets">
+                  {allowedFeatureSets(organization).map((set) => FEATURE_SET_LABELS[set]).join(', ') || 'None yet'}
+                </dd>
+              </div>
             </dl>
             <p className="text-muted-foreground text-xs">
-              To change the name, logo, palette or clock, ask the platform administrator.
+              To change the name, logo, palette, clock or feature sets, ask the platform administrator.
             </p>
           </CardContent>
         </Card>
@@ -188,13 +201,17 @@ export function OrganizationSettingsPage() {
 
         <CurriculaCard />
 
-        <CanvasAssessmentsCard
-          enabled={settings.data?.data.canvas_assessments ?? false}
-          unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
-          questions={settings.data?.data.canvas_assessment_questions ?? 10}
-        />
+        {featureAllowed(organization, 'assessment') && (
+          <CanvasAssessmentsCard
+            enabled={settings.data?.data.canvas_assessments ?? false}
+            unreviewed={settings.data?.data.canvas_assessments_unreviewed ?? false}
+            questions={settings.data?.data.canvas_assessment_questions ?? 10}
+          />
+        )}
 
-        <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
+        {featureAllowed(organization, 'quest') && (
+          <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
+        )}
       </div>
     </>
   );

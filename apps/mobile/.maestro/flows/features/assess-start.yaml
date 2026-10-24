@@ -1,0 +1,78 @@
+# Phase 50: a parent starts an assessment from the Assessment home. Omar (parent, `assess`) sees his
+# child's row, "No assessment yet", and no Waiting panel; Start an assessment opens the Assessment
+# screen with her chosen and the levels open; Grade 4 (the sample bank's level) begins. Back on
+# Home, the row is "In progress" with Continue. reset-features.js discards it afterwards.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: omar.haddad.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: assess-home-students
+    timeout: 30000
+- assertVisible:
+    id: 'assess-home-status-.*'
+    # "No assessment yet" on a fresh database; assess-review.yaml may have submitted one before.
+    text: 'No assessment yet|Submitted.*'
+- assertNotVisible:
+    id: assess-home-waiting
+- takeScreenshot: features-parent-home
+- tapOn:
+    id: 'assess-home-start-.*'
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: assessment-level-list
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-level-NC26.4
+    direction: DOWN
+    speed: 30
+    visibilityPercentage: 100
+    timeout: 20000
+- tapOn:
+    id: assessment-level-NC26.4
+- scrollUntilVisible:
+    element:
+      id: assessment-begin
+    centerElement: true
+- tapOn:
+    id: assessment-begin
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-take
+    timeout: 20000
+- extendedWaitUntil:
+    visible: 'Question 1 of .*'
+    timeout: 15000
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 10000
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: assess-home-students
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'assess-home-status-.*'
+      text: 'In progress.*'
+    timeout: 15000
+- assertVisible:
+    id: 'assess-home-continue-.*'
+- takeScreenshot: features-parent-in-progress

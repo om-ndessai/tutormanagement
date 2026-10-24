@@ -17,7 +17,10 @@ import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 import Svg, { Path } from 'react-native-svg';
 
+import { featureOn, type FeatureState } from '@tmi/shared';
+
 import { haptics } from '@/lib/haptics';
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { AIM_AMBER, AIM_AMBER_INK } from '@/theme/brand-art';
 import { radius } from '@/theme/tokens';
@@ -48,8 +51,21 @@ export const TAB_ITEMS: Record<string, { label: string; icon: string; focusedIco
 /** A route that lives inside another tab: while it is in front, that tab shows as chosen. */
 export const TAB_HOME: Record<string, string> = { schedule: 'sessions' };
 
-/** The create button goes after this many tabs: between Sessions and Progress. */
-export const CREATE_SLOT = 2;
+export type TabName = 'dashboard' | 'sessions' | 'progress' | 'more';
+
+/**
+ * Phase 50: the tabs the bar shows here. Sessions and Progress are Tutoring's, so a space without it
+ * has Home and More (Assessment and Quest stay under More: in an Assessment-only space Home is the
+ * Assessment home). The tabs layout still declares every route, for deep links; the gates answer them.
+ */
+export function visibleTabs(organization: Partial<FeatureState> | null | undefined): TabName[] {
+  return featureOn(organization, 'tutoring') ? ['dashboard', 'sessions', 'progress', 'more'] : ['dashboard', 'more'];
+}
+
+/** The create button goes after this many tabs: the middle (2 of 4, between Sessions and Progress; 1 of 2). */
+export function createSlot(count: number): number {
+  return Math.floor(count / 2);
+}
 
 const BAR_HEIGHT = Platform.OS === 'android' ? TAB_BAR_ABOVE_INSET.android : TAB_BAR_ABOVE_INSET.ios;
 const ANDROID = Platform.OS === 'android';
@@ -65,6 +81,8 @@ export function AppTabBar({ state, descriptors, navigation, insets }: BottomTabB
   const theme = useAppTheme();
   const sheet = useRef<BottomSheetModal>(null);
   const showCreate = useTabBarHump();
+  const { organization } = useAuth();
+  const shown: readonly string[] = visibleTabs(organization);
   const [width, setWidth] = useState(0);
 
   const focusedName = state.routes[state.index]?.name ?? '';
@@ -72,7 +90,7 @@ export function AppTabBar({ state, descriptors, navigation, insets }: BottomTabB
 
   const tabs = state.routes
     .map((route, routeIndex) => ({ route, routeIndex }))
-    .filter(({ route }) => route.name in TAB_ITEMS)
+    .filter(({ route }) => shown.includes(route.name))
     .map(({ route, routeIndex }, index) => {
       const item = TAB_ITEMS[route.name];
       const selected = route.name === chosen;
@@ -103,7 +121,7 @@ export function AppTabBar({ state, descriptors, navigation, insets }: BottomTabB
 
   if (showCreate) {
     tabs.splice(
-      CREATE_SLOT,
+      createSlot(tabs.length),
       0,
       <CreateButton
         key="create"

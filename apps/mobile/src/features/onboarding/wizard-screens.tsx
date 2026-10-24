@@ -2,6 +2,7 @@
 // done screens. An admin chooses: the tour, adding a student, adding a tutor. Everyone else takes
 // the tour and then confirms the details the office keeps on them. Closing it at any point is
 // fine -- whatever was added stays.
+import { featureAllowed, featureOn } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { View } from 'react-native';
 import { Button, Chip, Icon, Surface, Text } from 'react-native-paper';
@@ -32,8 +33,12 @@ export function WizardHeading({ title, description }: { title: string; descripti
 
 export function WelcomeScreen() {
   const brand = useBrand();
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const { startTour, tourDone } = useOnboarding();
+  // Phase 50 (onboarding-wizard.tsx @ 2471d84, working tree): adding a tutor, and a student's plan
+  // and tutor, are Tutoring's.
+  const tutoring = featureAllowed(organization, 'tutoring');
+  const assessment = featureOn(organization, 'assessment');
   const { close } = useWizardFrame();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const firstName = user?.full_name.split(' ')[0] ?? '';
@@ -45,7 +50,9 @@ export function WelcomeScreen() {
         title={`Welcome to ${brand.short}${firstName ? `, ${firstName}` : ''}`}
         description={
           isAdmin
-            ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
+            ? tutoring
+              ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
+              : 'A quick tour of the portal, and guided setup for a new student.'
             : 'A quick tour of the portal, then a check that the office has your details right.'
         }
       />
@@ -70,10 +77,17 @@ export function WelcomeScreen() {
               testID="onboarding-choice-student"
               icon="school-outline"
               title="Add a student"
-              description="Create or pick the family, add the student, then their assessment, learning plan and tutor."
+              description={
+                tutoring
+                  ? 'Create or pick the family, add the student, then their assessment, learning plan and tutor.'
+                  : assessment
+                    ? 'Create or pick the family, add the student, then start their first assessment.'
+                    : 'Create or pick the family, then add the student.'
+              }
               action="Add a student"
               onPress={() => router.push('/onboarding/student')}
             />
+            {tutoring ? (
             <Choice
               testID="onboarding-choice-tutor"
               icon="account-plus-outline"
@@ -82,6 +96,7 @@ export function WelcomeScreen() {
               action="Add a tutor"
               onPress={() => router.push('/onboarding/tutor')}
             />
+            ) : null}
           </>
         ) : null}
       </View>
