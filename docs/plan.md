@@ -495,3 +495,54 @@ Only when the whole family is used up does it reuse seen questions, the least re
 count game may ask for more than its level holds, counting the levels it can climb into. Additive schema:
 `quest_game_seen`. Released like Phase 47, straight to production after the local suite. The demo
 follows when the test account's limit resets.
+
+Phases 49-52: (requested 2026-10-24 by the owner: stages O0 and O1 of `docs/roadmap/open-to-public.md`,
+changed as below; plan approved and release requested 2026-10-24; built and released in order, web
+and the app) Opening sign-in to anyone. Plan: `docs/open-signup-plan.md`. No Workers Paid for now (the
+portal is not advertised). From now on an organization is called a **space** on screen; the code keeps
+`organization`.
+
+Phase 49: seeding for the newer features, and a backward-compatibility test. The demo and local builds
+load a sample of the question bank (about 8 questions per topic, every level at least 50) instead of all
+30,298, whose ~150,000 rows written exceed the demo's daily 100,000; a write budget refuses a demo reset
+over 40,000. The seed gains Quest (levels, attempts, points, a review queue) and Quest Games history in
+SQL, and assessments (submitted, reviewed, with their PDFs) and a live game through the API
+(`seed:scenarios`), on top of the unchanged cast. `npm run test:compat` builds the last release's
+database (a `release-*` tag), applies the pending SQL blocks from `docs/database.md`, checks it matches
+today's `schema.sql`, and runs today's Worker on it (`@smoke`, `@compat`), the last release's Worker on
+it (its own `@smoke`), and older clients' request shapes. It joins every release that changes the schema
+or the API. No production change.
+
+Phase 50: feature sets. The product is three sets, Tutoring, Assessment and Quest, which platform admins
+allow per space (three columns on `organizations`, every existing one allowed all three). A set that is
+not allowed is gone for every reader there: no menu item, no dashboard section, 403 `feature_unavailable`
+on its routes (`requireFeature`), its data kept (R23). Assessment and Quest keep their own switches for
+the space's admins; Tutoring has none. A space without Tutoring gets an Assessment home and no tutor
+role. The console sets them (web and the app).
+
+Phase 51: groundwork for open sign-in. A first sign-in no longer joins a self-serve space by itself
+(`created_via`); an invitation shows the inviting space only what it typed until the person accepts, and
+never locks their details (every space); Quest approvals from an untrusted space become suggestions for
+the console (`quest_trusted`, `question_suggestions`); self-serve spaces get no email and no AI; rate
+limits and daily caps on sign-in, invitations and the Phase 52 routes; public Terms and Privacy pages
+(drafted, approved by the owner before Phase 52's release).
+
+Phase 52: open sign-in and spaces. An unknown Google account is no longer refused: it gives its birth
+month and year and accepts the terms (nothing is stored for an under-13), then is asked for a space
+code. With one, it asks to join, and the space's admins let it in (choosing roles in the existing form)
+or decline. Without one, an adult names a new space -- names may repeat -- and gets a unique space code
+(`K7QM-9XDA`) to share; the space is allowed Assessment only, with approved questions, and its maker is
+its admin, adding a student with the parent's consent recorded (`consents`, F7's first slice). Admins
+copy, share, renew or switch off their code; members leave; a self-serve space's maker deletes it; a
+person with no space left deletes their account. Older app builds keep today's answer until reinstalled.
+New rule R21.
+
+Added to the release by the owner, 2026-10-24:
+- **The app shows its phase.** Small text on the app's sign-in screen and its Account screen says
+  which phase the build includes ("Phase 52"), from one shared constant bumped by each phase. The
+  app only, on the owner's word (recorded in `docs/mobile/parity.md`).
+- **Two right answers approve a question.** Once two or more different people have answered a
+  `checked` question correctly in Question Quest (marked by code, `checkAnswer`), the question becomes
+  `approved` for every organization by itself (`approved_via = 'quest_consensus'`), with no review
+  needed; a tutor's review still approves or flags it as before. Answers count only from trusted
+  organizations (Phase 51's `quest_trusted`), so a self-serve space cannot approve the bank.

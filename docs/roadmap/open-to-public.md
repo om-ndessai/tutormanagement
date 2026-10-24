@@ -6,6 +6,10 @@ everything in `docs/roadmap/`, a stage below is built only once the owner writes
 relying on them. Nothing here is legal advice: the children's-privacy points need a lawyer's read
 before the door opens.
 
+**Scheduled 2026-10-24:** stages O0 and O1 became Phases 49-52, with the owner's changes (no Workers
+Paid yet; feature sets; space codes; Assessment alone in a new space). See
+[`docs/open-signup-plan.md`](../open-signup-plan.md).
+
 ---
 
 ## The short answer
