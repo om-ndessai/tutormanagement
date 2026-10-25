@@ -328,3 +328,19 @@ No JavaScript origin or redirect URI is needed for the app. The production build
 `apps/api/.dev.vars`, restart `npm run dev:api`, sign in on the simulator or emulator, then put
 `.dev.vars` back (the mobile e2e runner refuses a Worker with sign-in on).
 
+
+
+## The test portal and AimTrue-Test (Phase 53)
+
+`tutoring-test` has Google sign-in on since Phase 53 (`docs/test-environment-plan.md`), and admits only
+the people on its invited list. Two things in Google Cloud (the same project and web client):
+
+1. **Web:** add `https://tutoring-test.tmi-api.workers.dev` to the web client's **Authorised JavaScript
+   origins** (Google Auth Platform -> Clients -> the web client).
+2. **The test app on iPhone:** create an **iOS** OAuth client for the bundle id `com.aimtrue.app.test`,
+   and put its client ID in `apps/mobile/.env.local` as `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_TEST`. Without
+   it the test app builds, but hides the Google button on iOS.
+3. **Optional, Android:** an **Android** OAuth client for the package `com.aimtrue.app.test` and the
+   signing key's SHA-1 (the emulator's debug key: see "The mobile app" above).
+
+Then add people: `npm run test:invite -- add you@example.com` (or `'*@yourdomain.com'`).

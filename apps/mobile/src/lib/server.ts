@@ -12,7 +12,8 @@ export { APP_VARIANT };
  * - local: `wrangler dev` on this Mac with the local seeded D1. The iOS simulator shares the
  *   Mac's localhost; the Android emulator reaches it through `adb reverse tcp:8787 tcp:8787`
  *   (run by the scripts), falling back to 10.0.2.2 if the reverse is missing.
- * - demo: the open feature demo (`tutoring-test`, TEST account). For browsing by hand only:
+ * - demo: the test portal (`tutoring-test`, TEST account): Google sign-in and invited people only
+ *   since Phase 53, so the developer sign-in does not work there. For browsing by hand only:
  *   tests never use it.
  * - custom: any URL, e.g. this Mac's LAN address for a real device (Phase 5).
  * - production: the `tutoring` Worker (EXPO_PUBLIC_PRODUCTION_API_URL), never `tmi-portal`

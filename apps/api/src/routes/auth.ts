@@ -18,6 +18,7 @@ import {
 import { recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { verifyGoogleIdToken } from '../lib/google.js';
+import { allowlistOn, assertInvited } from '../lib/invited.js';
 import { createSignupToken, readSignupToken } from '../lib/signup-token.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { clientAddress, rateLimit } from '../lib/rate-limit.js';
@@ -186,6 +187,9 @@ export const authRoutes = new Hono<AppEnv>()
     // Phase 52: sign-up is offered only to a client that can show it, and only while it is open.
     const canSignUp = Boolean(asked) && c.env.SIGNUP_OPEN !== 'false';
     const identity = await verifyGoogleIdToken(credential, c.env.GOOGLE_CLIENT_ID);
+    // Phase 53: the test portal admits only invited people -- checked before the person is looked
+    // up, before sign-up, and before any log line names them.
+    if (allowlistOn(c.env)) await assertInvited(c.env, { email: identity.email, googleSub: identity.sub });
 
     const { person: found, pinnedToAnother } = await resolveSignIn(c.env.DB, identity);
 
@@ -444,6 +448,7 @@ export const authRoutes = new Hono<AppEnv>()
     if (input.token) {
       const read = await readSignupToken(input.token, c.env.SESSION_SECRET);
       claims = { sub: read.sub, email: read.email.toLowerCase(), name: read.name };
+      if (allowlistOn(c.env)) await assertInvited(c.env, { email: claims.email, googleSub: claims.sub });
     } else if (!isAuthEnabled(c.env) && input.dev_email) {
       claims = { sub: null, email: input.dev_email.toLowerCase(), name: input.dev_name?.trim() || input.dev_email };
     } else {

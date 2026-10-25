@@ -66,6 +66,9 @@ export const ERROR_CODES = [
 
   // Phase 52: a newcomer under 13 (nothing is stored).
   'too_young',
+
+  // Phase 53: the test portal lets in only the people on its invited list.
+  'not_invited',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

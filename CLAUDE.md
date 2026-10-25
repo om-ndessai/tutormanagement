@@ -69,7 +69,7 @@ is the one test Worker (`tmi-portal-test` was retired on 2026-10-06: not deploye
 | --- | --- | --- | --- | --- | --- |
 | `tmi-portal` (the institute's address) | production | `tutoring-db` | on | `tmi` | no |
 | `tutoring` | production | `tutoring-db` | on | choose | yes |
-| `tutoring-test` (`tutoring-test.tmi-api.workers.dev`) | TEST | `tutoring-test-db` | off | choose | yes |
+| `tutoring-test` (`tutoring-test.tmi-api.workers.dev`) | TEST | `tutoring-test-db` | on, invited only | choose | yes |
 
 **The test side lives in the TEST account, and must stay there.** D1's free limits (5 million rows
 read a day) are per ACCOUNT, and one suite run reads about 2.3 million. While `tutoring-test-db`
@@ -82,8 +82,8 @@ checks, which spends no quota at all.
 
 - `npm run deploy` deploys BOTH production Workers.
 - `npm run deploy:test` deploys `tutoring-test`.
-- `npm run e2e` deploys `tutoring-test`, rebuilds `tutoring-test-db` from the schema and the
-  seed, and runs the suite there.
+- `npm run db:reset:test` rebuilds `tutoring-test-db` (schema, catalog, seed, platform admin, bank
+  sample, then `db/test-only.sql`). The remote suite (`npm run e2e`) is retired since Phase 53.
 - **Never deploy one production Worker alone:** the two would serve different code against one
   database.
 - **Only one Worker per database may run the cron:** two sweeps of one database could close the
@@ -152,6 +152,7 @@ Run from the repo root.
 | `npm run test:compat` | The backward-compatibility test (Phase 49), local: the last release's database (`release-*` tag) with the pending SQL from `docs/database.md`, compared with `schema.sql`, then the last release's Worker and today's run on it |
 | `npm run questions:export` | Copy production's APPROVED questions into `apps/api/db/questions/*.json` and regenerate `db/questions.sql` (one read-only SELECT on `tutoring-db`) |
 | `npm run db:studio` | Dump the users table from local D1 |
+| `npm run test:invite -- list\|add <email or pattern>\|add-google <sub>\|remove <…>` | Who may sign in to the test portal (`invited_users` in `tutoring-test-db`, TEST account only) |
 | `npm run typecheck` | Typecheck all three packages — run this before declaring work done |
 | `npm run smoke` | The smoke test on BOTH clients, locally: the web tests tagged `@smoke`, then the mobile flows tagged `smoke` on the iOS simulator and the Android emulator. `-- web\|mobile\|ios\|android` runs one side. **Run it after any change to the API, the shared contract or the schema** |
 | `npm run build` | Build the SPA into `apps/web/dist` |
@@ -543,11 +544,17 @@ never SVG, which can carry script), at most 256 KB, served at a versioned public
 `nosniff` and `default-src 'none'`; `builtin_logo: 'institute'` (platform admins only) wears the
 institute's shipped artwork. Never hardcode an organization's name: say `brand.short`.
 
-**The test Worker is open.** `AUTH_ENABLED` is `"false"` on `tutoring-test`, so a visitor walks
-straight in. It reads `tutoring-test-db`, which is seeded fiction
-and is wiped by every `npm run e2e`; `scripts/e2e.sh` checks `/api/auth/config` and refuses
-before touching anything if sign-in has been turned back on. Sign-in stays configured (origin,
-client id), so turning it back on is one value.
+**The test Worker behaves like production, and lets in only invited people** (Phase 53,
+`docs/test-environment-plan.md`). `tutoring-test` has Google sign-in on, the same sign-in and sign-up
+as production, and `SIGNIN_ALLOWLIST` "true": a verified Google sign-in is checked against
+`invited_users` (an email, a pattern with `*` and `?`, or a Google id) before anything else, and again
+on every request. That table exists in `tutoring-test-db` ALONE: it lives in `db/test-only.sql`, never
+in `schema.sql` or a production SQL block (`scripts/check-test-only.mjs` fails otherwise), and survives
+`db:reset:test`. The owner maintains it with SQL or `npm run test:invite`. The test Worker's seed
+scripts act as seeded people with `X-Automation-Key`, a secret (`TEST_AUTOMATION_KEY`) set on the TEST
+Worker only and never honoured in production. The app's `test` variant, "AimTrue-Test"
+(`com.aimtrue.app.test`), is the production app pointed at it. Local development and the local suites
+keep sign-in off; `tutoring-test-db` is seeded fiction.
 
 **Motion explains a change, and the theme is the only view transition.** The ⌘K command palette
 (`command-palette.tsx`) takes its pages from the sidebar's `NAV_ITEMS` and finds people through
@@ -770,10 +777,9 @@ can see whom.
 
 ## End-to-end tests
 
-`npm run e2e` deploys `tutoring-test` (in the TEST account), wipes and reseeds `tutoring-test-db`
-(schema, seed, platform admin) and tests it; its authentication is permanently off.
-**It never touches production.** `npm run e2e:test` runs the suite without deploying or wiping;
-`npm run db:reset:test` reseeds without testing.
+The suites run locally (`npm run e2e:test` against `npm run dev`; `npm run smoke`): since Phase 53
+the test Worker has sign-in on and is not a test target, and `npm run e2e` (the old remote suite) only
+says so. **Nothing touches production.**
 
 The suite acts as different people with an `X-Dev-User` header, honoured only while
 `AUTH_ENABLED` is `"false"`. Set it on the browser context, never per request — two values

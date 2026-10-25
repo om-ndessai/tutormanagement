@@ -304,3 +304,9 @@ export async function deleteOwnAccount(db: D1Database, userId: string): Promise<
     db.prepare('DELETE FROM platform_accounts WHERE user_id = ?').bind(userId),
   ]);
 }
+
+/** Phase 53 (the test portal only): the pinned Google id, for re-checking the invited list. */
+export async function getGoogleSub(db: D1Database, userId: string): Promise<string | null> {
+  const row = await db.prepare('SELECT google_sub FROM users WHERE id = ?').bind(userId).first<{ google_sub: string | null }>();
+  return row?.google_sub ?? null;
+}

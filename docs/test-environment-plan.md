@@ -9,7 +9,13 @@ Requested by the owner on 2026-10-25:
 > whitelisted email/login will not be allowed to get into the test portal. This table should not be in
 > production. Similarly create test app called AimTrue-Test that will point to the test worker.
 
-A plan, awaiting the owner's approval and the decisions at the end. Nothing here is built yet.
+**Decided by the owner (2026-10-25):**
+1. **Matching:** an email or a Google id, either one, with **wildcards**: `*` stands for any run of
+   characters, so `*@trianglemathinstitute.com` lets a whole domain in.
+2. **Managing the list:** a command-line script, plus the owner's own SQL straight on the table. No
+   screen.
+3. **Seeding:** a test-only automation key.
+4. **The test app:** on the simulators and on the owner's own devices too.
 
 ---
 
@@ -34,7 +40,7 @@ A plan, awaiting the owner's approval and the decisions at the end. Nothing here
 CREATE TABLE invited_users (
   id          TEXT PRIMARY KEY,
   -- One of the two, or both: a verified email (lower-cased), or a social login's permanent id.
-  email       TEXT,
+  email       TEXT,                      -- an address, or a pattern: '*@example.com', 'jane.*@gmail.com'
   provider    TEXT CHECK (provider IN ('google')),
   subject     TEXT,
   note        TEXT,                      -- who and why, free text for the owner
@@ -42,6 +48,8 @@ CREATE TABLE invited_users (
   CHECK (email IS NOT NULL OR (provider IS NOT NULL AND subject IS NOT NULL))
 );
 CREATE UNIQUE INDEX invited_users_email ON invited_users (lower(email)) WHERE email IS NOT NULL;
+-- Matching: lower(<verified email>) GLOB lower(email) -- an exact address matches itself, and `*` (any
+-- run) and `?` (one character) are wildcards. The list is small, so it is read whole.
 CREATE UNIQUE INDEX invited_users_login ON invited_users (provider, subject) WHERE subject IS NOT NULL;
 ```
 

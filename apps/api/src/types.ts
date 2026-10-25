@@ -35,6 +35,13 @@ export interface Env {
   DEFAULT_ORGANIZATION?: string;
   /** Phase 52: "false" keeps sign-up closed (production, until the owner approves the terms). */
   SIGNUP_OPEN?: string;
+  /** Phase 53: "true" on the test Worker only -- sign-in admits only the people on invited_users. */
+  SIGNIN_ALLOWLIST?: string;
+  /**
+   * Phase 53: a secret on the TEST Worker only. With sign-in on, a request carrying it in
+   * X-Automation-Key may act as X-Dev-User -- the seed scripts' way in. Never set in production.
+   */
+  TEST_AUTOMATION_KEY?: string;
   /** Identity used by every request while AUTH_ENABLED is "false". */
   DEV_USER_EMAIL: string;
   /** Comma-separated emails that become platform admins while there is none. */

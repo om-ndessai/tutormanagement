@@ -566,10 +566,15 @@ codes, and everything else in both phases is live. Rate limits use a Durable Obj
 rate-limiting binding's free-plan availability is undocumented) and are twenty times looser away from
 production. The app shows its phase ("Phase 52").
 
-Phase 53: (requested 2026-10-25 by the owner; planned, awaiting the owner's approval and decisions)
+Phase 53: (requested 2026-10-25 by the owner, decisions the same day: email or Google id with wildcards, a script and direct SQL, a test-only automation key, the test app on the owner's devices too; building)
 A test environment that behaves like production. Plan: `docs/test-environment-plan.md`. `tutoring-test`
 turns Google sign-in on, with the same sign-in experience as production, and lets in only the people on
 an `invited_users` list (an email or a Google login) -- a table that exists in the test database alone,
 never in `schema.sql` or production. The app gains a test variant, "AimTrue-Test"
 (`com.aimtrue.app.test`), production in every way but its server, which is `tutoring-test`. Local
 development and the local suites keep sign-in off.
+
+Phase 53 built 2026-10-25 (web suite 265 passed; mobile smoke 7/7 on iOS and Android): the test Worker
+deployed with sign-in on and the invited list; production unchanged (it carries the code, switched off,
+at its next release). Owed by the owner: the test origin on the Google web client, and an iOS OAuth
+client for `com.aimtrue.app.test` before AimTrue-Test can sign in on a phone.

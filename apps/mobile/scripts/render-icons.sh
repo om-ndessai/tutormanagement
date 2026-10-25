@@ -22,10 +22,13 @@ render android-background.svg "$OUT/android-icon-background.png" 1024
 render android-foreground.svg "$OUT/android-icon-monochrome.png" 1024
 # The splash: the mark alone, shown on the platform primary.
 render splash.svg "$OUT/splash-icon.png" 1024
+# AimTrue-Test (Phase 53): the same art with a TEST band, for APP_VARIANT=test.
+render icon-test.svg "$OUT/icon-test.png" 1024
+render android-foreground-test.svg "$OUT/android-icon-foreground-test.png" 1024
 # The Icon Composer layer (iOS 26+; Xcode renders the older sizes from it).
 cp "$SRC/aimtrue-mark.svg" "$ICON/aimtrue-mark.svg"
 
-if file "$OUT/icon.png" | grep -q RGBA; then
+if file "$OUT/icon.png" "$OUT/icon-test.png" | grep -q RGBA; then
   echo "icon.png has an alpha channel; the App Store refuses it" >&2
   exit 1
 fi

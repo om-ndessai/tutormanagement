@@ -22,6 +22,8 @@
 const args = process.argv.slice(2);
 const BASE = (args.find((a) => a.startsWith('--base='))?.slice(7) ?? 'http://localhost:8787').replace(/\/$/, '');
 const DEMO = args.includes('--demo');
+/** Phase 53: the test Worker has sign-in on; its secret lets this script act as seeded people. */
+const AUTOMATION_KEY = process.env.TEST_AUTOMATION_KEY?.trim() || null;
 const ORG = 'chmi';
 const ADMIN = 'priya.raghavan@gmail.com';
 const PLATFORM = 'ndessai@gmail.com';
@@ -34,6 +36,7 @@ async function call(who, method, path, body, org = ORG) {
     method,
     headers: {
       'X-Dev-User': who,
+      ...(AUTOMATION_KEY ? { 'X-Automation-Key': AUTOMATION_KEY } : {}),
       ...(org ? { 'X-Organization': org } : {}),
       ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
     },
@@ -55,7 +58,9 @@ async function main() {
   const health = await fetch(`${BASE}/api/health`).catch(() => null);
   if (!health?.ok) throw new Error(`No Worker answers at ${BASE}. Start it with npm run dev:api.`);
   const config = await (await fetch(`${BASE}/api/auth/config`)).json();
-  if (config.data.auth_enabled) throw new Error('Sign-in is on at that address; scenarios act through X-Dev-User. Refusing.');
+  if (config.data.auth_enabled && !AUTOMATION_KEY) {
+    throw new Error('Sign-in is on at that address: set TEST_AUTOMATION_KEY (the test Worker\'s secret) to act as seeded people.');
+  }
 
   const before = await call(ADMIN, 'GET', '/organization/settings');
   await call(ADMIN, 'PATCH', '/organization/settings', {

@@ -224,6 +224,13 @@ spec meets it on purpose.
   `@compat` checks that rows written before a change, or a request an older app sends
   (`compat-clients.spec.ts`), still work. Such a test must rely only on the seed of the last release.
 
+## The test portal (Phase 53)
+
+`tutoring-test` is no longer a test target: it has Google sign-in on and admits only invited people
+(`docs/test-environment-plan.md`). The suites run locally. Its database is reset with
+`npm run db:reset:test` (the invited list survives) and its newer features are seeded with
+`TEST_AUTOMATION_KEY=$(cat ~/.aimtrue/test-automation-key) npm run seed:scenarios -- --base=https://tutoring-test.tmi-api.workers.dev --demo`.
+
 ## Notes
 
 - `workers: 1`, no parallelism. Every spec assumes the seeded roster against one shared

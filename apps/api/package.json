@@ -27,7 +27,8 @@
     "db:questions:test": "wrangler d1 execute tutoring-test-db --env tutoring-test --remote --file=./db/questions-sample.sql",
     "db:questions:full": "wrangler d1 execute tutoring-db --local --file=./db/questions.sql",
     "db:reset:full": "npm run db:rebuild && npm run db:seed && npm run db:platform-admin && npm run db:questions:full",
-    "db:budget:test": "node ../../scripts/seed-budget.mjs --max=40000 db/catalog.sql db/seed.sql db/platform-admin.sql db/questions-sample.sql"
+    "db:budget:test": "node ../../scripts/seed-budget.mjs --max=40000 db/catalog.sql db/seed.sql db/platform-admin.sql db/questions-sample.sql",
+    "db:test-only:test": "wrangler d1 execute tutoring-test-db --env tutoring-test --remote --file=./db/test-only.sql"
   },
   "dependencies": {
     "@tmi/shared": "*",

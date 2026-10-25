@@ -11,12 +11,15 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
  *   (docs/mobile/real-devices.md). The app runs as production; the build has its own bundle id,
  *   so the free team never claims the real one, and leaves out the Live Activity extension, whose
  *   App Group and push entitlement a free team cannot sign.
+ * - test (Phase 53, docs/test-environment-plan.md): "AimTrue-Test", production in every way but
+ *   its server -- the test Worker, `tutoring-test`, which has Google sign-in on and admits only
+ *   invited people. Its own bundle id, URL scheme and TEST icon; signed like the personal build.
  *
  * Each variant has its own bundle id, so all three can sit on one device. The name is the
  * platform's ("Aimtrue"): the app is not any one organization's, and wears an
  * organization's brand only once one is chosen.
  */
-type Variant = 'development' | 'e2e' | 'production' | 'personal';
+type Variant = 'development' | 'e2e' | 'production' | 'personal' | 'test';
 
 const variant = (process.env.APP_VARIANT ?? 'development') as Variant;
 const BASE_ID = 'com.aimtrue.app';
@@ -25,15 +28,19 @@ const SUFFIX: Record<Variant, string> = {
   e2e: '.e2e',
   production: '',
   personal: '.personal',
+  test: '.test',
 };
 /** What the app itself sees: the personal build is production in every way that matters at runtime. */
-const RUNTIME_VARIANT = variant === 'personal' ? 'production' : variant;
+const RUNTIME_VARIANT = variant === 'personal' || variant === 'test' ? 'production' : variant;
+/** Built for a free Apple team (no App Group, no Live Activity): the personal and test builds. */
+const freeTeamBuild = variant === 'personal' || variant === 'test';
 const productionLike = RUNTIME_VARIANT === 'production';
 const NAME: Record<Variant, string> = {
   development: 'Aimtrue (dev)',
   e2e: 'Aimtrue (e2e)',
   production: 'Aimtrue',
   personal: 'Aimtrue',
+  test: 'AimTrue-Test',
 };
 // The platform palette's primary (ORG_PALETTE_HEX.platform): the icon and the splash are shown
 // before any organization is known, so they wear the platform's colour. The art in assets/ carries
@@ -56,6 +63,7 @@ const GOOGLE_IOS_CLIENT_ID: Record<Variant, string | undefined> = {
   e2e: undefined,
   production: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
   personal: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_PERSONAL,
+  test: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID_TEST,
 };
 const googleIosClientId = GOOGLE_IOS_CLIENT_ID[variant]?.trim() || null;
 const GOOGLE_WEB_CLIENT_ID =
@@ -69,7 +77,10 @@ function reversedClientId(clientId: string): string {
 
 // The multi-organization address, never `tmi-portal` (which lands everyone in one organization).
 const PRODUCTION_API_URL =
-  process.env.EXPO_PUBLIC_PRODUCTION_API_URL?.trim() || 'https://tutoring.om-ndessai.workers.dev';
+  variant === 'test'
+    ? // Phase 53: the test app's only server is the test Worker.
+      process.env.EXPO_PUBLIC_TEST_API_URL?.trim() || 'https://tutoring-test.tmi-api.workers.dev'
+    : process.env.EXPO_PUBLIC_PRODUCTION_API_URL?.trim() || 'https://tutoring.om-ndessai.workers.dev';
 
 /**
  * App Transport Security: plain http to this Mac's Worker is allowed (local networking only) in
@@ -143,8 +154,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   // The version testers and the store see; the build number is EAS's (eas.json, remote).
   version: '0.1.0',
   orientation: 'portrait',
-  icon: './assets/images/icon.png',
-  scheme: 'aimtrue',
+  icon: variant === 'test' ? './assets/images/icon-test.png' : './assets/images/icon.png',
+  // The test app answers its own links, never the real app's.
+  scheme: variant === 'test' ? 'aimtrue-test' : 'aimtrue',
   userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: BASE_ID + SUFFIX[variant],
@@ -152,7 +164,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     // Icon Composer (iOS 26+: Liquid Glass, with the system's dark, clear and tinted looks);
     // Xcode renders the flat icon for older iOS from it. Source: assets/source/aimtrue-mark.svg.
-    icon: './assets/Aimtrue.icon',
+    icon: variant === 'test' ? './assets/images/icon-test.png' : './assets/Aimtrue.icon',
     // HTTPS only: ITSAppUsesNonExemptEncryption = false, so no export-compliance question per build.
     config: { usesNonExemptEncryption: false },
     privacyManifests: PRIVACY_MANIFEST,
@@ -171,7 +183,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     package: (BASE_ID + SUFFIX[variant]).replace(/-/g, '_'),
     adaptiveIcon: {
       backgroundColor: PLATFORM_PRIMARY,
-      foregroundImage: './assets/images/android-icon-foreground.png',
+      foregroundImage:
+        variant === 'test' ? './assets/images/android-icon-foreground-test.png' : './assets/images/android-icon-foreground.png',
       backgroundImage: './assets/images/android-icon-background.png',
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
@@ -232,7 +245,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // Left out of the personal build: a free Apple ID cannot sign the App Group or the push
     // entitlement. The module stays linked, so starting an activity there simply fails, quietly
     // (live-surface.ts swallows driver errors); the in-app banner is unaffected.
-    ...(variant === 'personal'
+    ...(freeTeamBuild
       ? []
       : [
           [

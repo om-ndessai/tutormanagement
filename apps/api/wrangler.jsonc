@@ -271,7 +271,9 @@
 				"ENVIRONMENT": "development",
 				"GOOGLE_CLIENT_ID": "866980945062-aoh0gotj6fld07cd9gtkeo7p0hdu9gsa.apps.googleusercontent.com",
 				// Sign-in OFF: the suite names who it acts as with X-Dev-User.
-				"AUTH_ENABLED": "false",
+				"AUTH_ENABLED": "true",
+				// Phase 53: only the people on invited_users (a table the test database alone has) get in.
+				"SIGNIN_ALLOWLIST": "true",
 				"DEV_USER_EMAIL": "",
 				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
 				"DEFAULT_ORGANIZATION": "",

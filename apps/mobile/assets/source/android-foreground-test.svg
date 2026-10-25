@@ -1,0 +1,11 @@
+<!-- AimTrue-Test (Phase 53): the adaptive foreground with TEST under the mark, inside the 66dp
+     safe zone. Rendered by scripts/render-icons.sh. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="-12 -12 72 72">
+  <g fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" transform="translate(24 20) scale(0.85) translate(-23.65 -24.15)">
+    <circle cx="22.5" cy="24.4" r="9.4"/>
+    <path d="M34.2 13.9v20.5"/>
+    <circle cx="22.5" cy="24.4" r="3.4" fill="#F6B740" stroke="none"/>
+  </g>
+  <rect x="7" y="32" width="34" height="9" rx="2" fill="#F6B740"/>
+  <text x="24" y="39" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="6.6" letter-spacing="1" fill="#1F2A37">TEST</text>
+</svg>
