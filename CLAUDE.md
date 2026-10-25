@@ -284,6 +284,17 @@ is allowed again -- a kept pairing gives a tutor nothing where Tutoring is not a
 (`pairingInForce`). A space without Tutoring has the Assessment home, no tutor role and no tutoring
 fields; an edit there leaves Tutoring's sections out of the request rather than sending them empty (R23).
 
+**Before strangers can sign in, three things are closed** (Phase 51). An invitation shows the
+inviting organization only the name it typed and no phone until the person accepts
+(`org_members.invited_name`), and locks none of their shared details elsewhere; a first sign-in accepts
+only a console organization's invitations by itself (`created_via`). A self-serve space's Quest approval
+is a suggestion for the console (`quest_trusted`, `question_suggestions`), and only trusted spaces count
+towards two right answers. Sign-in and adding people are rate-limited per minute by a Durable Object per
+key (`RateLimiter`, `lib/rate-limit.ts` -- never D1, whose writes are metered) and capped per space per
+day from the log (`DAILY_CAPS`). A self-serve space runs no AI task and sends no email. `/terms` and
+`/privacy` are public pages (`packages/shared/src/legal.ts`): a wording change is a new version, and
+`LEGAL_DRAFT` must be false before sign-up opens.
+
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
 adds their admins by email; it never reads an organization's people, lessons or money. Its

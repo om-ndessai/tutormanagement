@@ -31,6 +31,7 @@ import { homeRoutes } from './routes/home.js';
 
 // Phase 46: each Quest game's Durable Object, bound as QUEST_GAMES in wrangler.jsonc.
 export { QuestGame } from './durable/quest-game.js';
+export { RateLimiter } from './durable/rate-limiter.js';
 
 const app = new Hono<AppEnv>();
 

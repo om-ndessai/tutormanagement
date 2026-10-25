@@ -457,6 +457,11 @@ export const questionListQuerySchema = z.object({
   topic_id: z.string().max(64).optional(),
   status: z.enum(QUESTION_STATUSES).optional(),
   level_id: z.string().max(64).optional(),
+  /** Phase 51: only questions a space the platform does not trust for Quest suggested approving. */
+  suggested: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform((value) => value === 'true'),
   limit: z.coerce.number().int().min(1).max(200).default(100),
 });
 
@@ -482,6 +487,8 @@ export interface Question {
   /** 'console', 'quest' (a tutor in Question Quest) or 'quest_consensus' (two correct answers); null before. */
   approved_via: QuestionApprovedVia | null;
   reviewed_at: string | null;
+  /** Phase 51: how many spaces suggested approving it (their Quest reviews are not trusted). */
+  suggestions: number;
   times_used: number;
   times_correct: number;
   created_at: string;

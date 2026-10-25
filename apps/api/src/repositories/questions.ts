@@ -39,6 +39,7 @@ interface QuestionRow {
   source: 'ai' | 'manual';
   reviewed_by_name: string | null;
   approved_via: QuestionApprovedVia | null;
+  suggestions: number;
   reviewed_at: string | null;
   times_used: number;
   times_correct: number;
@@ -51,7 +52,8 @@ const SELECT_QUESTION = `
          t.level_id, l.name AS level_name, q.difficulty, q.kind, q.skill, q.stem, q.choices,
          q.answer, q.compute, q.solution, q.status, q.checks, q.source,
          u.full_name AS reviewed_by_name, q.approved_via, q.reviewed_at, q.times_used, q.times_correct,
-         q.created_at, q.updated_at
+         q.created_at, q.updated_at,
+         (SELECT COUNT(*) FROM question_suggestions s WHERE s.question_id = q.id) AS suggestions
   FROM questions q
   JOIN curriculum_topics t ON t.id = q.topic_id
   JOIN curriculum_levels l ON l.id = t.level_id
@@ -81,7 +83,7 @@ export async function getBankStandard(db: D1Database, topicId: string): Promise<
 
 export async function listQuestions(
   db: D1Database,
-  filter: { topic_id?: string; status?: QuestionStatus; level_id?: string; limit: number },
+  filter: { topic_id?: string; status?: QuestionStatus; level_id?: string; suggested?: boolean; limit: number },
 ): Promise<Question[]> {
   const where: string[] = [];
   const binds: unknown[] = [];
@@ -96,6 +98,9 @@ export async function listQuestions(
   if (filter.level_id) {
     where.push('t.level_id = ?');
     binds.push(filter.level_id);
+  }
+  if (filter.suggested) {
+    where.push('EXISTS (SELECT 1 FROM question_suggestions s WHERE s.question_id = q.id)');
   }
   // A status alone (the review queue) walks questions_status_idx oldest first, so D1 reads only the
   // page asked for; catalog order would read and sort every question of that status on each call.

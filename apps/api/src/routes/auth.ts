@@ -14,6 +14,7 @@ import { recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { verifyGoogleIdToken } from '../lib/google.js';
 import { orgIdFromRow } from '../lib/org.js';
+import { clientAddress, rateLimit } from '../lib/rate-limit.js';
 import {
   SESSION_COOKIE,
   clearedSessionCookie,
@@ -162,6 +163,8 @@ export const authRoutes = new Hono<AppEnv>()
       throw ApiError.badRequest('Authentication is disabled on this deployment.');
     }
 
+    // Phase 51: a burst of sign-in attempts from one address is slowed down.
+    await rateLimit(c, 'sign_in', clientAddress(c));
     const { credential } = c.req.valid('json');
     const identity = await verifyGoogleIdToken(credential, c.env.GOOGLE_CLIENT_ID);
 

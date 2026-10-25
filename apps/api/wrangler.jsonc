@@ -74,6 +74,10 @@
 			{
 				"name": "QUEST_GAMES",
 				"class_name": "QuestGame"
+			},
+			{
+				"name": "RATE_LIMITS",
+				"class_name": "RateLimiter"
 			}
 		]
 	},
@@ -82,6 +86,13 @@
 			"tag": "v1-quest-games",
 			"new_sqlite_classes": [
 				"QuestGame"
+			]
+		},
+		{
+			// Phase 51: request limits on sign-in and the open routes (durable/rate-limiter.ts).
+			"tag": "v2-rate-limiter",
+			"new_sqlite_classes": [
+				"RateLimiter"
 			]
 		}
 	],
@@ -176,6 +187,10 @@
 					{
 						"name": "QUEST_GAMES",
 						"class_name": "QuestGame"
+					},
+					{
+						"name": "RATE_LIMITS",
+						"class_name": "RateLimiter"
 					}
 				]
 			},
@@ -184,6 +199,13 @@
 					"tag": "v1-quest-games",
 					"new_sqlite_classes": [
 						"QuestGame"
+					]
+				},
+				{
+					// Phase 51: request limits on sign-in and the open routes (durable/rate-limiter.ts).
+					"tag": "v2-rate-limiter",
+					"new_sqlite_classes": [
+						"RateLimiter"
 					]
 				}
 			],
@@ -266,6 +288,10 @@
 					{
 						"name": "QUEST_GAMES",
 						"class_name": "QuestGame"
+					},
+					{
+						"name": "RATE_LIMITS",
+						"class_name": "RateLimiter"
 					}
 				]
 			},
@@ -274,6 +300,13 @@
 					"tag": "v1-quest-games",
 					"new_sqlite_classes": [
 						"QuestGame"
+					]
+				},
+				{
+					// Phase 51: request limits on sign-in and the open routes (durable/rate-limiter.ts).
+					"tag": "v2-rate-limiter",
+					"new_sqlite_classes": [
+						"RateLimiter"
 					]
 				}
 			],

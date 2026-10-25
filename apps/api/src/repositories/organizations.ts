@@ -40,6 +40,8 @@ interface OrgRow {
   feature_tutoring: number;
   feature_assessment: number;
   feature_quest: number;
+  created_via: string;
+  quest_trusted: number;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
@@ -50,7 +52,7 @@ interface OrgRow {
 
 /** Every organization column, plus the logo versions that make its URLs. */
 const SELECT_ORG = `SELECT o.id, o.slug, o.name, o.short_name, o.tagline, o.blurb, o.place,
-       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions, o.gamify_question_quest, o.feature_tutoring, o.feature_assessment, o.feature_quest, o.calendar_domain, o.archived_at,
+       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions, o.gamify_question_quest, o.feature_tutoring, o.feature_assessment, o.feature_quest, o.created_via, o.quest_trusted, o.calendar_domain, o.archived_at,
        o.created_at, o.updated_at,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'mark') AS mark_sha,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'full') AS full_sha
@@ -88,6 +90,8 @@ function toOrganization(row: OrgRow): Organization {
     feature_tutoring: row.feature_tutoring === 1,
     feature_assessment: row.feature_assessment === 1,
     feature_quest: row.feature_quest === 1,
+    created_via: row.created_via === 'self_serve' ? 'self_serve' : 'console',
+    quest_trusted: row.quest_trusted === 1,
     calendar_domain: row.calendar_domain,
     archived_at: row.archived_at,
     created_at: row.created_at,
@@ -258,7 +262,7 @@ export async function answerInvitation(
   const result = await db
     .prepare(
       accept
-        ? `UPDATE org_members SET status = 'active', updated_at = ${NOW}
+        ? `UPDATE org_members SET status = 'active', invited_name = NULL, updated_at = ${NOW}
            WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`
         : `UPDATE org_members SET removed_at = ${NOW}, updated_at = ${NOW}
            WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`,
@@ -615,15 +619,22 @@ export async function getFirstOrganization(db: D1Database): Promise<Organization
 export async function updateOrganizationFeatures(
   db: D1Database,
   id: string,
-  input: { feature_tutoring: boolean; feature_assessment: boolean; feature_quest: boolean },
+  input: { feature_tutoring: boolean; feature_assessment: boolean; feature_quest: boolean; quest_trusted?: boolean },
 ): Promise<Organization | null> {
   await db
     .prepare(
       `UPDATE organizations SET feature_tutoring = ?, feature_assessment = ?, feature_quest = ?,
+              quest_trusted = COALESCE(?, quest_trusted),
               updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
        WHERE id = ?`,
     )
-    .bind(input.feature_tutoring ? 1 : 0, input.feature_assessment ? 1 : 0, input.feature_quest ? 1 : 0, id)
+    .bind(
+      input.feature_tutoring ? 1 : 0,
+      input.feature_assessment ? 1 : 0,
+      input.feature_quest ? 1 : 0,
+      input.quest_trusted === undefined ? null : input.quest_trusted ? 1 : 0,
+      id,
+    )
     .run();
   return getOrganizationById(db, id);
 }

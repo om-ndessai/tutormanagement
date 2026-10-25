@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeftIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -13,7 +13,10 @@ import { QuestionCard, errorMessage } from './question-card';
  * a correction deserves the mouse and a second look.
  */
 export function ReviewPage() {
-  const queue = useQuestions({ status: 'checked' });
+  // Phase 51: ?suggested=1 reviews only what untrusted spaces suggested approving.
+  const [params] = useSearchParams();
+  const suggested = params.get('suggested') === '1';
+  const queue = useQuestions(suggested ? { status: 'checked', suggested: 'true' } : { status: 'checked' });
   const coverage = useQuestionCoverage();
   const items = queue.data?.data ?? [];
   const [skipped, setSkipped] = useState<string[]>([]);

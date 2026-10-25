@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { AlertTriangleIcon, Loader2Icon, SettingsIcon } from 'lucide-react';
 import { AUTH_ERROR_CODES } from '@tmi/shared';
 
@@ -147,6 +147,17 @@ export function LoginPage() {
               Access is granted by an administrator.
               <br />
               Can&apos;t sign in? Ask them to add your Google address.
+            </p>
+            <p className="text-muted-foreground mt-3 text-center text-xs" data-testid="login-legal">
+              By continuing you agree to the{' '}
+              <Link to="/terms" className="underline">
+                Terms
+              </Link>{' '}
+              and the{' '}
+              <Link to="/privacy" className="underline">
+                Privacy notice
+              </Link>
+              .
             </p>
           </div>
         </div>

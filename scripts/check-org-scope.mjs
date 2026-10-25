@@ -31,6 +31,8 @@ const ORG_TABLES = [
   'canvas_assessments', 'canvas_assessment_files', 'canvas_assessment_reviews',
   'quest_attempts', 'points_ledger', 'activity_days',
   'quest_games', 'quest_game_teams', 'quest_game_players', 'quest_game_favorites', 'quest_game_seen',
+  // Phase 51: a space's suggested approvals of bank questions.
+  'question_suggestions',
   // The catalog (Phase 34): read only through an organization's list, so an
   // unjoined query on levels or topics would hand out curricula it does not offer.
   'curricula', 'organization_curricula', 'curriculum_levels', 'curriculum_topics',

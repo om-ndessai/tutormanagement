@@ -89,8 +89,11 @@ test.describe('people in several organizations', () => {
     expect(fresh.status()).toBe(201);
     expect((await fresh.json()).data.status).toBe('active');
 
-    // Her shared name was not overwritten by what Riverside typed.
-    expect(invited.full_name).toBe('Grace Lee');
+    // Phase 51: until she accepts, Riverside sees only what it typed -- and her own record, in A,
+    // is untouched by it.
+    expect(invited).toMatchObject({ full_name: 'Typed by Riverside', phone: null });
+    const inA = await unwrap<any[]>(await (await as('admin')).request.get('/api/users?search=grace.lee'), 'Grace in A');
+    expect(inA[0].full_name).toBe('Grace Lee');
 
     // Until she accepts she cannot enter Riverside, and A is untouched.
     const grace = await as('parent', { email: 'grace.lee.nc@gmail.com', org: null });

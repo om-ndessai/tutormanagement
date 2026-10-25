@@ -171,6 +171,17 @@ export async function runAi<T>(env: Env, options: RunAiOptions<T>): Promise<RunA
     await record('refused_disabled', null);
     throw new ApiError(503, 'ai_disabled', `“${task.label}” is switched off.`);
   }
+  // Phase 51: a self-serve space runs no AI task -- every call costs money, and the platform has
+  // not agreed to it with them. Read from the row, so no caller can forget it.
+  if (options.organizationId) {
+    const origin = await env.DB.prepare('SELECT created_via FROM organizations WHERE id = ?')
+      .bind(options.organizationId)
+      .first<{ created_via: string }>();
+    if (origin?.created_via === 'self_serve') {
+      await record('refused_disabled', 'self-serve space');
+      throw new ApiError(503, 'ai_disabled', `“${task.label}” is not available in this space.`);
+    }
+  }
   // AG1. No consent can be on file until F7 is built, so every such task is refused.
   if (task.child_input && options.consent !== true) {
     await record('refused_consent', null);

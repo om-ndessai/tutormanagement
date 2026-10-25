@@ -213,6 +213,9 @@ export interface OrganizationBrand {
   logo_full_url: string | null;
 }
 
+export const ORG_CREATED_VIA = ['console', 'self_serve'] as const;
+export type OrgCreatedVia = (typeof ORG_CREATED_VIA)[number];
+
 /** The organization a request runs in, as its members see it. */
 export interface Organization extends OrganizationBrand {
   time_zone: OrgTimeZone;
@@ -230,6 +233,10 @@ export interface Organization extends OrganizationBrand {
   feature_tutoring: boolean;
   feature_assessment: boolean;
   feature_quest: boolean;
+  /** Phase 51: made by a platform admin ('console') or by a newcomer ('self_serve', Phase 52). */
+  created_via: OrgCreatedVia;
+  /** Phase 51: whether its Quest reviews approve bank questions for every organization. */
+  quest_trusted: boolean;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;

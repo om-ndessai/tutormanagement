@@ -23,3 +23,5 @@ export * from './quest-games.js';
 export * from './home.js';
 export * from './release.js';
 export * from './features.js';
+export * from './limits.js';
+export * from './legal.js';

@@ -76,6 +76,11 @@ export const organizationRoutes = new Hono<AppEnv>()
       if (!featureAllowed(org, 'assessment') && assessmentKeys.some((key) => input[key] !== undefined)) {
         throw new ApiError(403, 'feature_unavailable', 'Assessment is not part of this space.');
       }
+      // Phase 51: a self-serve space cannot send email under the platform's sender; a platform
+      // admin may switch it on from the console.
+      if (org.created_via === 'self_serve' && input.email_notifications === true) {
+        throw new ApiError(403, 'feature_unavailable', 'Email notifications are not available in this space.');
+      }
       if (!featureAllowed(org, 'quest') && input.gamify_question_quest !== undefined) {
         throw new ApiError(403, 'feature_unavailable', 'Quest is not part of this space.');
       }

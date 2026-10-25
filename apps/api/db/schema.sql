@@ -35,6 +35,7 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS question_suggestions;
 DROP TABLE IF EXISTS quest_game_seen;
 DROP TABLE IF EXISTS quest_game_favorites;
 DROP TABLE IF EXISTS quest_game_players;
@@ -201,6 +202,15 @@ CREATE TABLE organizations (
   feature_assessment INTEGER NOT NULL DEFAULT 1 CHECK (feature_assessment IN (0, 1)),
   feature_quest      INTEGER NOT NULL DEFAULT 1 CHECK (feature_quest IN (0, 1)),
 
+  -- Phase 51: how it came to exist. 'console' (a platform admin) or
+  -- 'self_serve' (Phase 52: a newcomer named it). A first sign-in accepts
+  -- only a console organization's invitation by itself.
+  created_via        TEXT NOT NULL DEFAULT 'console' CHECK (created_via IN ('console', 'self_serve')),
+  -- Phase 51: whether its Quest reviews approve bank questions for everybody.
+  -- A self-serve space starts untrusted (its approvals are suggestions for the
+  -- console); a platform admin may trust it. Trigger: organizations_self_serve_untrusted.
+  quest_trusted      INTEGER NOT NULL DEFAULT 1 CHECK (quest_trusted IN (0, 1)),
+
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
   calendar_domain TEXT NOT NULL,
@@ -211,6 +221,15 @@ CREATE TABLE organizations (
 
   CHECK (slug = lower(slug) AND length(slug) BETWEEN 2 AND 40)
 );
+
+-- Phase 51: a self-serve space never starts trusted for Quest approvals (a
+-- platform admin may trust it later, by an UPDATE).
+CREATE TRIGGER organizations_self_serve_untrusted
+BEFORE INSERT ON organizations
+WHEN NEW.created_via = 'self_serve' AND NEW.quest_trusted = 1
+BEGIN
+  SELECT RAISE(ABORT, 'self_serve_untrusted');
+END;
 
 -- An organization's own artwork: a square mark and a full lockup. PNG or WebP
 -- only (SVG can carry script), at most 256 KB, checked by the API. Bound as a
@@ -270,6 +289,11 @@ CREATE TABLE org_members (
   -- chosen one. At most one per person (org_members_one_default); a default
   -- they may no longer enter is simply passed over.
   is_default           INTEGER NOT NULL DEFAULT 0 CHECK (is_default IN (0, 1)),
+
+  -- Phase 51: the name this organization typed when it invited somebody who
+  -- already had an account. Until they accept, every read here shows this and
+  -- no phone, so adding an address never reveals whose it is. NULL otherwise.
+  invited_name         TEXT,
 
   created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
@@ -2086,6 +2110,34 @@ CREATE INDEX quest_attempts_queue_idx ON quest_attempts (organization_id, review
 CREATE INDEX quest_attempts_question_idx ON quest_attempts (question_id, organization_id);
 -- A student's own answers, newest first (where Quest resumes).
 CREATE INDEX quest_attempts_student_idx ON quest_attempts (organization_id, student_user_id, submitted_at);
+
+-- Phase 51: "Question is right" from a space the platform does not trust for
+-- Quest (organizations.quest_trusted = 0, every self-serve space to begin
+-- with) suggests the approval to the console instead of making it. One row
+-- per question and space; a platform admin approves it in the console.
+CREATE TABLE question_suggestions (
+  question_id      TEXT NOT NULL REFERENCES questions (id),
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  reviewer_user_id TEXT NOT NULL REFERENCES users (id),
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (question_id, organization_id)
+);
+CREATE INDEX question_suggestions_created_idx ON question_suggestions (created_at);
+
+CREATE TRIGGER question_suggestions_same_organization
+BEFORE INSERT ON question_suggestions
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.reviewer_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER question_suggestions_organization_fixed
+BEFORE UPDATE OF organization_id ON question_suggestions
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
 
 CREATE TRIGGER quest_attempts_same_organization
 BEFORE INSERT ON quest_attempts

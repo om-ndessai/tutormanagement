@@ -95,10 +95,11 @@ export async function resolveSignIn(
 /**
  * Records a sign-in and pins the Google `sub` the first time it is seen.
  *
- * Someone who had never signed in before accepts every organization that
- * invited them, by signing in: there is nothing of theirs elsewhere to
- * protect. Anyone who has signed in before answers each new invitation
- * themselves.
+ * Someone who had never signed in before accepts every organization a
+ * platform admin made that invited them, by signing in: there is nothing of
+ * theirs elsewhere to protect. A self-serve space's invitation (Phase 51), and
+ * any invitation to someone who has signed in before, is answered by the
+ * person themselves.
  */
 export async function recordSignIn(db: D1Database, id: string, googleSub: string): Promise<void> {
   const before = await db
@@ -119,9 +120,11 @@ export async function recordSignIn(db: D1Database, id: string, googleSub: string
     statements.push(
       db
         .prepare(
-          // org-scope: a first sign-in accepts every organization that invited them.
-          `UPDATE org_members SET status = 'active', updated_at = ${NOW}
-           WHERE user_id = ? AND status = 'invited' AND removed_at IS NULL`,
+          // org-scope: a first sign-in accepts every CONSOLE organization that invited them.
+          // Phase 51: a self-serve space's invitation is always answered by the person.
+          `UPDATE org_members SET status = 'active', invited_name = NULL, updated_at = ${NOW}
+           WHERE user_id = ? AND status = 'invited' AND removed_at IS NULL
+             AND organization_id IN (SELECT o.id FROM organizations o WHERE o.created_via = 'console')`,
         )
         .bind(id),
     );

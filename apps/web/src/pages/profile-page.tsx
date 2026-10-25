@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Loader2Icon, TriangleAlertIcon } from 'lucide-react';
 
 import { PageHeader } from '@/components/layout/page-header';
@@ -58,6 +59,15 @@ export function ProfilePage() {
 
       <p className="text-muted-foreground mt-4 text-center text-xs">
         Something wrong here? Ask an administrator to update your record.
+      </p>
+      <p className="text-muted-foreground mt-2 text-center text-xs" data-testid="profile-legal">
+        <Link to="/terms" className="underline">
+          Terms of use
+        </Link>
+        {' · '}
+        <Link to="/privacy" className="underline">
+          Privacy notice
+        </Link>
       </p>
     </div>
   );

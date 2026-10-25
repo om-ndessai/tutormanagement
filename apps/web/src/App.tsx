@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RequireFeature } from '@/components/layout/require-feature';
+import { LegalPage } from '@/pages/legal-page';
 import { AppShell } from '@/components/layout/app-shell';
 import { LoginPage } from '@/features/auth/login-page';
 import { RequireAuth } from '@/features/auth/require-auth';
@@ -43,6 +44,9 @@ export function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      {/* Phase 51: readable signed out. */}
+      <Route path="/terms" element={<LegalPage kind="terms" />} />
+      <Route path="/privacy" element={<LegalPage kind="privacy" />} />
 
       {/* Everything below requires a session. The Worker enforces the same
           rule on the API, so this guard is about UX, not security. */}

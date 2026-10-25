@@ -41,7 +41,10 @@ export function useQuestionCoverage() {
 /** How many a list loads at once; the review queue asks for more as it runs low. */
 export const QUESTION_PAGE = 200;
 
-export function useQuestions(filter: { topic_id?: string; status?: QuestionStatus }, enabled = true) {
+export function useQuestions(
+  filter: { topic_id?: string; status?: QuestionStatus; suggested?: 'true' },
+  enabled = true,
+) {
   return useQuery({
     queryKey: bankKeys.list(filter),
     queryFn: () =>

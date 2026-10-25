@@ -1261,6 +1261,54 @@ Check, read-only:
 npx wrangler d1 execute tutoring-db --remote --command="SELECT slug, feature_tutoring, feature_assessment, feature_quest FROM organizations"
 ```
 
+Phase 51 (groundwork for open sign-in, 2026-10-24, `docs/open-signup-plan.md`) is additive: two
+organization columns (how it was made, whether its Quest reviews approve for everybody), the name an
+inviting organization typed, the suggestions table and two triggers. Every existing organization
+stays `console` and trusted; existing invitations carry no typed name and read as before. The old
+Worker never reads any of it. Apply after the backup, before `npm run deploy`:
+
+```sql release=phase-51
+ALTER TABLE organizations ADD COLUMN created_via TEXT NOT NULL DEFAULT 'console'
+  CHECK (created_via IN ('console', 'self_serve'));
+ALTER TABLE organizations ADD COLUMN quest_trusted INTEGER NOT NULL DEFAULT 1
+  CHECK (quest_trusted IN (0, 1));
+ALTER TABLE org_members ADD COLUMN invited_name TEXT;
+
+CREATE TRIGGER organizations_self_serve_untrusted
+BEFORE INSERT ON organizations
+WHEN NEW.created_via = 'self_serve' AND NEW.quest_trusted = 1
+BEGIN
+  SELECT RAISE(ABORT, 'self_serve_untrusted');
+END;
+
+CREATE TABLE question_suggestions (
+  question_id      TEXT NOT NULL REFERENCES questions (id),
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  reviewer_user_id TEXT NOT NULL REFERENCES users (id),
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (question_id, organization_id)
+);
+CREATE INDEX question_suggestions_created_idx ON question_suggestions (created_at);
+
+CREATE TRIGGER question_suggestions_same_organization
+BEFORE INSERT ON question_suggestions
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.reviewer_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER question_suggestions_organization_fixed
+BEFORE UPDATE OF organization_id ON question_suggestions
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
+The Workers also gain a Durable Object class, `RateLimiter` (migration `v2-rate-limiter`), applied by
+`npm run deploy` itself.
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

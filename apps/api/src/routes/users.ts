@@ -14,11 +14,13 @@ import {
   type User,
   type UserDetail,
   type UserRole,
+  DAILY_CAPS,
   featureAllowed,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
 import { describeChangedFields, recordAudit } from '../lib/audit.js';
+import { rateLimit } from '../lib/rate-limit.js';
 import { mailerFor, notify } from '../lib/email.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
@@ -34,6 +36,7 @@ import {
 import { requireAdmin } from '../middleware/require-admin.js';
 import {
   belongsElsewhere,
+  countPeopleAddedToday,
   countGuardians,
   createUser,
   deactivateUser,
@@ -192,6 +195,12 @@ export const usersRoutes = new Hono<AppEnv>()
     const { user: fields, sections } = splitUserRequest(c.req.valid('json'));
     const org = c.get('org').id;
 
+    // Phase 51: adding people is limited per admin per minute, and per space per day.
+    await rateLimit(c, 'add_person', c.get('user').id);
+    const cap = c.get('org').created_via === 'self_serve' ? DAILY_CAPS.people_added_self_serve : DAILY_CAPS.people_added_console;
+    if ((await countPeopleAddedToday(c.env.DB, org)) >= cap) {
+      throw new ApiError(429, 'rate_limited', `This space has added ${cap} people today. Try again tomorrow.`);
+    }
     assertTutoringAllowed(c.get('org'), [], fields.roles, sections);
     assertStudentHasGuardian(fields.roles, sections.guardians?.length ?? 0);
     await assertGuardiansExist(c.env.DB, org, null, sections.guardians);

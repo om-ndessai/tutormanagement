@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useAuth } from '@/providers/auth-provider';
 import { CheckIcon, FlagIcon, TrophyIcon, XIcon } from 'lucide-react';
 import { QUESTION_DIFFICULTY_LABELS, questLevelLabel, type QuestReviewItem } from '@tmi/shared';
 
@@ -71,6 +72,8 @@ export function QuestReviewPage() {
 
 function ReviewCard({ item }: { item: QuestReviewItem }) {
   const review = useReviewQuest();
+  // Phase 51: a space the platform does not trust for Quest suggests approvals instead of making them.
+  const trusted = useAuth().organization?.quest_trusted !== false;
   const [flagging, setFlagging] = useState(false);
   const [note, setNote] = useState('');
   const q = item.question;
@@ -84,7 +87,13 @@ function ReviewCard({ item }: { item: QuestReviewItem }) {
         ...(decision === 'flag' ? { note: note.trim() } : {}),
       });
       setFlagging(false);
-      toast.success(decision === 'approve' ? 'Approved. The question is in the bank.' : 'Flagged for the platform.');
+      toast.success(
+        decision === 'approve'
+          ? trusted
+            ? 'Approved. The question is in the bank.'
+            : 'Sent to the platform to approve.'
+          : 'Flagged for the platform.',
+      );
     } catch (caught) {
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not save the review.');
     }

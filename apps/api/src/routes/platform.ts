@@ -191,7 +191,13 @@ export const platformRoutes = new Hono<AppEnv>()
       if (!org) throw ApiError.notFound('That organization does not exist.');
       await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
         action: 'organization.features_updated',
-        description: `Feature sets of ${before.name}: ${describeFeatureChange(before, input)}`,
+        description:
+          `Feature sets of ${before.name}: ${describeFeatureChange(before, input)}` +
+          (input.quest_trusted === undefined || input.quest_trusted === before.quest_trusted
+            ? ''
+            : input.quest_trusted
+              ? '; its Quest reviews now approve questions'
+              : '; its Quest reviews now suggest approvals'),
         entity_type: 'organization',
         entity_id: id,
       });

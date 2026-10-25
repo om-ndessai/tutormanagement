@@ -2,6 +2,7 @@ import type { User } from '@tmi/shared';
 import type { OrgContext } from './lib/org.js';
 import type { Person } from './repositories/people.js';
 import type { QuestGame } from './durable/quest-game.js';
+import type { RateLimiter } from './durable/rate-limiter.js';
 
 /**
  * Bindings declared in wrangler.jsonc, plus secrets set with `wrangler secret`.
@@ -16,6 +17,8 @@ export interface Env {
    * `<organization>:<game id>` (durable/quest-game.ts). Bound on every Worker.
    */
   QUEST_GAMES: DurableObjectNamespace<QuestGame>;
+  /** Phase 51: request limits, one object per key (durable/rate-limiter.ts). */
+  RATE_LIMITS: DurableObjectNamespace<RateLimiter>;
   /** Static assets for the built React SPA. Bound in production deploys. */
   ASSETS: Fetcher;
   ENVIRONMENT: string;

@@ -202,7 +202,9 @@ async function approveByConsensus(db: D1Database, questionId: string, lastId: st
     .prepare(
       // org-scope: counts correct answers to one platform question across organizations, by the
       // owner's rule (2026-10-24); it returns a number, never an organization's row.
+      // Phase 51: only spaces the platform trusts for Quest count towards it.
       `SELECT COUNT(DISTINCT a.student_user_id) AS n FROM quest_attempts a
+       JOIN organizations o ON o.id = a.organization_id AND o.quest_trusted = 1
        WHERE a.question_id = ? AND a.correct = 1`,
     )
     .bind(questionId)
@@ -362,6 +364,8 @@ export async function applyQuestReview(
     decision: QuestReviewDecision;
     note: string | null;
     timeZone: string;
+    /** Phase 51: whether this space's approvals approve for everybody (organizations.quest_trusted). */
+    trusted: boolean;
   },
 ): Promise<boolean> {
   const { attempt } = input;
@@ -376,7 +380,16 @@ export async function applyQuestReview(
 
   const day = zonedClockParts(new Date().toISOString(), input.timeZone).day;
   const statements: D1PreparedStatement[] = [
-    input.decision === 'approve'
+    input.decision === 'approve' && !input.trusted
+      ? db
+          .prepare(
+            // Phase 51: an untrusted space's approval is a suggestion for the console.
+            `INSERT INTO question_suggestions (question_id, organization_id, reviewer_user_id)
+             SELECT ?1, ?2, ?3 WHERE EXISTS (SELECT 1 FROM questions q WHERE q.id = ?1 AND q.status = 'checked')
+             ON CONFLICT (question_id, organization_id) DO NOTHING`,
+          )
+          .bind(attempt.question.id, org, input.reviewerId)
+      : input.decision === 'approve'
       ? db
           .prepare(
             // org-scope: approving a platform question is the platform's act, done here by the owner's rule (Phase 42).

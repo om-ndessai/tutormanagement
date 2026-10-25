@@ -171,13 +171,14 @@ export const questRoutes = new Hono<AppEnv>()
       decision: input.decision,
       note: input.note?.length ? input.note : null,
       timeZone: org.time_zone,
+      trusted: org.quest_trusted,
     });
     if (!applied) throw ApiError.conflict('That answer has already been reviewed.');
 
     // Names the person and the level, never the reason for a flag or the answer.
     await recordAudit(c.env.DB, user, orgId, {
       action: input.decision === 'approve' ? 'quest.question_approved' : 'quest.question_flagged',
-      description: `${input.decision === 'approve' ? 'Approved' : 'Flagged'} a ${levelLabel(attempt.question.level_id)} question ${attempt.student_name} answered in Question Quest`,
+      description: `${input.decision === 'approve' ? (org.quest_trusted ? 'Approved' : 'Suggested approving') : 'Flagged'} a ${levelLabel(attempt.question.level_id)} question ${attempt.student_name} answered in Question Quest`,
       entity_type: 'user',
       entity_id: attempt.student_user_id,
     });

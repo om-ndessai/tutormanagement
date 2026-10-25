@@ -140,11 +140,19 @@ export function QuestionBankPage() {
         title="Question bank"
         description={`Claude writes each question; code checks it and a second model solves it blind; a person approves it. The target is ${TARGET} approved per standard, ${QUESTIONS_PER_DIFFICULTY_TARGET} at each difficulty.`}
         actions={
-          <Button asChild disabled={toReview === 0}>
-            <Link to="/platform/questions/review">
-              <ClipboardCheckIcon /> Review {toReview} checked
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            {/* Phase 51: approvals suggested by spaces whose Quest reviews are not trusted. */}
+            <Button asChild variant="outline">
+              <Link to="/platform/questions/review?suggested=1" data-testid="bank-suggested">
+                Suggested by spaces
+              </Link>
+            </Button>
+            <Button asChild disabled={toReview === 0}>
+              <Link to="/platform/questions/review">
+                <ClipboardCheckIcon /> Review {toReview} checked
+              </Link>
+            </Button>
+          </div>
         }
       />
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="bank-totals">

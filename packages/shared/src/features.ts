@@ -88,6 +88,8 @@ export const organizationFeaturesSchema = z.object({
   feature_tutoring: z.boolean(),
   feature_assessment: z.boolean(),
   feature_quest: z.boolean(),
+  /** Phase 51: whether its Quest reviews approve bank questions for everybody. Left alone when absent. */
+  quest_trusted: z.boolean().optional(),
 });
 export type OrganizationFeaturesInput = z.infer<typeof organizationFeaturesSchema>;
 

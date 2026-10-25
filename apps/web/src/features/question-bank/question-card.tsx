@@ -113,6 +113,11 @@ export function QuestionCard({ question, autoFocus }: { question: Question; auto
           <StatusBadge status={question.status} />
           <Badge variant="secondary">{QUESTION_DIFFICULTY_LABELS[question.difficulty]}</Badge>
           <Badge variant="secondary">{question.kind === 'choice' ? 'Multiple choice' : 'Number answer'}</Badge>
+          {question.suggestions > 0 && (
+            <Badge variant="outline" data-testid="question-suggested">
+              Suggested by {question.suggestions} space{question.suggestions === 1 ? '' : 's'}
+            </Badge>
+          )}
           {question.skill && <span className="text-muted-foreground">{question.skill}</span>}
           {question.status === 'flagged' && problems.length > 0 && (
             <span className="text-destructive">{problems.length === 1 ? '1 problem' : `${problems.length} problems`}</span>

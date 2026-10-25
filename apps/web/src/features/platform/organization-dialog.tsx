@@ -69,6 +69,8 @@ interface FormState {
   feature_tutoring: boolean;
   feature_assessment: boolean;
   feature_quest: boolean;
+  /** Phase 51: whether its Quest reviews approve bank questions for every organization. */
+  quest_trusted: boolean;
 }
 
 const EMPTY: FormState = {
@@ -85,6 +87,7 @@ const EMPTY: FormState = {
   feature_tutoring: true,
   feature_assessment: true,
   feature_quest: true,
+  quest_trusted: true,
 };
 
 /** "Riverside Tutoring" -> "riverside-tutoring", as a first suggestion. */
@@ -137,6 +140,7 @@ export function OrganizationDialog({
             feature_tutoring: featureAllowed(existing, 'tutoring'),
             feature_assessment: featureAllowed(existing, 'assessment'),
             feature_quest: featureAllowed(existing, 'quest'),
+            quest_trusted: existing.quest_trusted !== false,
           }
         : EMPTY,
     );
@@ -169,8 +173,9 @@ export function OrganizationDialog({
       };
       if (existing) {
         await update.mutateAsync({ id: existing.id, input });
-        if (FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])) {
-          await updateFeatures.mutateAsync({ id: existing.id, input: features });
+        const trustChanged = (existing.quest_trusted !== false) !== form.quest_trusted;
+        if (trustChanged || FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])) {
+          await updateFeatures.mutateAsync({ id: existing.id, input: { ...features, quest_trusted: form.quest_trusted } });
         }
         toast.success(`${form.name} saved.`);
       } else {
@@ -271,6 +276,23 @@ export function OrganizationDialog({
                 />
               </div>
             ))}
+            {existing && (
+              <div className="flex items-start gap-3 border-t pt-2">
+                <div className="grid flex-1 gap-0.5">
+                  <label htmlFor="org-quest-trusted" className="text-sm">
+                    Quest reviews approve questions
+                  </label>
+                  <p className="text-muted-foreground text-xs">
+                    Off: its tutors’ “Question is right” only suggests the approval here, in the console.
+                  </p>
+                </div>
+                <NotificationsSwitch
+                  id="org-quest-trusted"
+                  checked={form.quest_trusted}
+                  onCheckedChange={(checked) => set('quest_trusted', checked)}
+                />
+              </div>
+            )}
           </fieldset>
 
           <div className="flex items-start gap-3 rounded-lg border p-3">

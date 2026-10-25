@@ -31,11 +31,17 @@ import type { OrgId } from '../lib/org.js';
  *
  * `google_sub` is never exposed.
  */
+/**
+ * Phase 51: an existing account invited here reads, until it accepts, as the name this
+ * organization typed and with no phone -- never the account's own details (R6).
+ */
+const INVITED = "m.status = 'invited' AND m.invited_name IS NOT NULL";
+
 const COLUMNS = [
   'u.id',
   'u.email',
-  'u.full_name',
-  'u.phone',
+  `CASE WHEN ${INVITED} THEN m.invited_name ELSE u.full_name END AS full_name`,
+  `CASE WHEN ${INVITED} THEN NULL ELSE u.phone END AS phone`,
   'm.status',
   'm.created_at',
   'u.updated_at',
@@ -233,7 +239,10 @@ export async function getLiveUserByEmail(
 /** Whether this person belongs to any OTHER organization; their shared fields are then locked. */
 export async function belongsElsewhere(db: D1Database, org: OrgId, id: string): Promise<boolean> {
   const row = await db
-    .prepare('SELECT 1 AS ok FROM org_members WHERE user_id = ? AND organization_id <> ? LIMIT 1')
+    // Phase 51: an invitation elsewhere locks nothing -- only a membership the person accepted.
+    .prepare(
+      "SELECT 1 AS ok FROM org_members WHERE user_id = ? AND organization_id <> ? AND status <> 'invited' LIMIT 1",
+    )
     .bind(id, org)
     .first<{ ok: number }>();
   return row?.ok === 1;
@@ -262,7 +271,9 @@ export async function getUserDetail(
     await db.batch<Record<string, unknown>>([
       db.prepare(`${SELECT_USER} WHERE m.organization_id = ? AND u.id = ?`).bind(org, id),
       db
-        .prepare('SELECT COUNT(*) AS total FROM org_members WHERE user_id = ? AND organization_id <> ?')
+        .prepare(
+          "SELECT COUNT(*) AS total FROM org_members WHERE user_id = ? AND organization_id <> ? AND status <> 'invited'",
+        )
         .bind(id, org),
       db
         .prepare(
@@ -500,9 +511,9 @@ export async function createUser(
       await db.batch([
         db
           .prepare(
-            "INSERT INTO org_members (organization_id, user_id, status) VALUES (?, ?, 'invited')",
+            "INSERT INTO org_members (organization_id, user_id, status, invited_name) VALUES (?, ?, 'invited', ?)",
           )
-          .bind(org, existing.id),
+          .bind(org, existing.id, input.full_name),
         ...roleStatements(db, org, existing.id, input.roles),
       ]);
 
@@ -1037,4 +1048,18 @@ export async function getSsnReceivedOn(
     .first<{ ssn_received_on: string | null }>();
 
   return row?.ssn_received_on ?? null;
+}
+
+/** Phase 51: how many people this organization added (or invited) since midnight UTC -- its daily cap. */
+export async function countPeopleAddedToday(db: D1Database, org: OrgId): Promise<number> {
+  const row = await db
+    .prepare(
+      // From the log (every add and invitation writes one line, the seed none): a count, never a name.
+      `SELECT COUNT(*) AS n FROM audit_events
+       WHERE organization_id = ? AND created_at >= strftime('%Y-%m-%dT00:00:00.000Z', 'now')
+         AND action IN ('user.created', 'membership.invited')`,
+    )
+    .bind(org)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
 }
