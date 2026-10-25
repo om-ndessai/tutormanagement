@@ -565,3 +565,11 @@ then an unknown Google account is refused as before; existing members may make a
 codes, and everything else in both phases is live. Rate limits use a Durable Object per key (the
 rate-limiting binding's free-plan availability is undocumented) and are twenty times looser away from
 production. The app shows its phase ("Phase 52").
+
+Phase 53: (requested 2026-10-25 by the owner; planned, awaiting the owner's approval and decisions)
+A test environment that behaves like production. Plan: `docs/test-environment-plan.md`. `tutoring-test`
+turns Google sign-in on, with the same sign-in experience as production, and lets in only the people on
+an `invited_users` list (an email or a Google login) -- a table that exists in the test database alone,
+never in `schema.sql` or production. The app gains a test variant, "AimTrue-Test"
+(`com.aimtrue.app.test`), production in every way but its server, which is `tutoring-test`. Local
+development and the local suites keep sign-in off.
