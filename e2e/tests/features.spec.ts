@@ -66,6 +66,8 @@ test.describe('feature sets (Phase 50) @smoke', () => {
           roles: ['student'],
           status: 'active',
           guardians: [{ guardian_user_id: me[0].id, relationship: 'mother', is_primary: true }],
+          // Phase 52: the seeded Assessment-only space is a self-serve one, so a parent's consent.
+          parent_consent: true,
         },
       }),
       'a student',

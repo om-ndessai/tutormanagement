@@ -93,7 +93,7 @@ export function setReauthenticator(fn: Reauthenticator | null): void {
 }
 
 /** The sign-in routes themselves never trigger a renewal. */
-const NO_REAUTH_PATHS = new Set(['/auth/google', '/auth/logout']);
+const NO_REAUTH_PATHS = new Set(['/auth/google', '/auth/logout', '/auth/signup']);
 
 /** One renewal at a time: every request that hit the same 401 waits on the same attempt. */
 function reauthenticate(): Promise<boolean> {
@@ -174,7 +174,8 @@ export const apiClient = {
       body: bytes as unknown as BodyInit,
       headers: { 'Content-Type': contentType },
     }),
-  delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+  delete: <T>(path: string, body?: unknown) =>
+    request<T>(path, { method: 'DELETE', body: body === undefined ? undefined : JSON.stringify(body) }),
 };
 
 export { toQueryString } from './query-string';

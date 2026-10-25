@@ -82,7 +82,7 @@ describe('FeatureGate', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
   });
 
-  it('says a set allowed but switched off is switched off, with Open Organization for an admin', async () => {
+  it('says a set allowed but switched off is switched off, with Open Space for an admin', async () => {
     as(['admin'], { ...ASSESS_ONLY, canvas_assessments: false });
     await renderWithProviders(
       <FeatureGate set="assessment">

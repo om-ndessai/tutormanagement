@@ -57,7 +57,7 @@ tags:
 - tapOn: 'More'
 - assertVisible:
     id: screen-more
-- assertVisible: 'Organization'
+- assertVisible: 'Space'
 - takeScreenshot: shell-more
 - tapOn:
     id: more-nav-billing

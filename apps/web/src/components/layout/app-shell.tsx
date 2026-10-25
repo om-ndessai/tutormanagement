@@ -63,7 +63,7 @@ const NAV_ITEMS: (PaletteDestination & {
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false, keywords: ['me', 'account'] },
   // The organization's own settings (its 1099 payer details): admins only.
-  { to: '/organization', label: 'Organization', icon: Building2Icon, end: false, admin: true, keywords: ['settings', 'tin', 'payer'] },
+  { to: '/organization', label: 'Space', icon: Building2Icon, end: false, admin: true, keywords: ['settings', 'tin', 'payer', 'organization', 'code', 'join'] },
 ];
 
 /** The menu, less what this reader's roles do not reach. */

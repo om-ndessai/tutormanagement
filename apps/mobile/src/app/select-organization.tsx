@@ -1,5 +1,5 @@
-// Ported from apps/web/src/features/organizations/select-organization-page.tsx @ 1132322
-import { USER_ROLE_LABELS } from '@tmi/shared';
+// Ported from apps/web/src/features/organizations/select-organization-page.tsx @ 9485a8e
+import { PLATFORM_BRAND, USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -13,15 +13,17 @@ import { Screen } from '@/components/screen';
 import { useToast } from '@/components/toast';
 import { useAnswerInvitation, useSetDefaultOrganization } from '@/features/organizations/api';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
+import { SpaceWelcome } from '@/features/organizations/space-welcome';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 /**
- * Where someone who belongs to several organizations -- or has been invited to one -- chooses
- * where to go. The choice is remembered on this device for the next launch; a starred default
- * outranks it.
+ * Where someone who belongs to several spaces -- or has been invited to one -- chooses where to
+ * go. The choice is remembered on this device for the next launch; a starred default outranks it.
+ * Phase 52: a newcomer (nowhere to go yet) gets the Welcome here; everyone else a row to join or
+ * make another space.
  */
 export default function SelectOrganizationScreen() {
   const { user, memberships, invitations, platformAdmin, chooseOrganization, refreshSession, signOut } =
@@ -37,6 +39,8 @@ export default function SelectOrganizationScreen() {
 
   const active = memberships.filter((m) => m.status === 'active');
   const suspended = memberships.filter((m) => m.status === 'suspended');
+  // Phase 52: nowhere to go yet -- the Welcome.
+  const newcomer = active.length === 0 && invitations.length === 0 && !platformAdmin;
 
   async function enter(slug: string) {
     setEntering(slug);
@@ -45,7 +49,7 @@ export default function SelectOrganizationScreen() {
       await chooseOrganization(slug);
       router.replace('/dashboard');
     } catch {
-      toast.error('That organization could not be opened. Try again.');
+      toast.error('That space could not be opened. Try again.');
     } finally {
       setEntering(null);
     }
@@ -62,7 +66,7 @@ export default function SelectOrganizationScreen() {
           : `You will land in ${name} when you sign in.`,
       );
     } catch {
-      toast.error('Your default organization could not be changed. Try again.');
+      toast.error('Your default space could not be changed. Try again.');
     }
   }
 
@@ -86,12 +90,17 @@ export default function SelectOrganizationScreen() {
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
         <LogoMark size={36} />
         <View style={{ flex: 1 }}>
-          <Text variant="headlineSmall" accessibilityRole="header">
-            Choose an organization
+          <Text variant="headlineSmall" accessibilityRole="header" testID={newcomer ? 'welcome-title' : undefined}>
+            {newcomer ? `Welcome to ${PLATFORM_BRAND.name}` : 'Choose a space'}
           </Text>
           {user ? (
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               Signed in as {user.email ?? user.full_name}
+            </Text>
+          ) : null}
+          {newcomer ? (
+            <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+              Join a space with its code, or make your own.
             </Text>
           ) : null}
         </View>
@@ -142,7 +151,9 @@ export default function SelectOrganizationScreen() {
         </View>
       ) : null}
 
-      <View style={{ gap: space.sm }} accessibilityLabel="Your organizations">
+      {newcomer ? <SpaceWelcome firstTime /> : null}
+
+      <View style={{ gap: space.sm }} accessibilityLabel="Your spaces">
         {active.map((org) => (
           <Surface key={org.slug} elevation={1} style={{ borderRadius: radius.lg, overflow: 'hidden' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -235,7 +246,7 @@ export default function SelectOrganizationScreen() {
             <ListItem
               testID="select-platform-console"
               title="Platform console"
-              description="Organizations and their admins"
+              description="Spaces and their admins"
               left={(props) => <List.Icon {...props} icon="shield-check-outline" />}
               right={(props) => <List.Icon {...props} icon="chevron-right" />}
               onPress={() => router.push('/platform')}
@@ -243,11 +254,16 @@ export default function SelectOrganizationScreen() {
           </Surface>
         ) : null}
 
-        {active.length === 0 && invitations.length === 0 && !platformAdmin ? (
-          <Surface elevation={1} style={{ borderRadius: radius.lg, padding: space.lg }}>
-            <Text variant="bodyMedium">
-              You do not belong to any organization yet. Ask an administrator to add you.
-            </Text>
+        {!newcomer && !platformAdmin ? (
+          <Surface elevation={1} style={{ borderRadius: radius.lg, overflow: 'hidden' }}>
+            <ListItem
+              testID="select-join-space"
+              title="Join or make another space"
+              description="With a space code, or one of your own"
+              left={(props) => <List.Icon {...props} icon="key-plus" />}
+              right={(props) => <List.Icon {...props} icon="chevron-right" />}
+              onPress={() => router.push('/join-space')}
+            />
           </Surface>
         ) : null}
       </View>

@@ -58,7 +58,7 @@ export default function AccountSheet() {
           : `You will land in ${name} when you sign in.`,
       );
     } catch {
-      toast.error('Your default organization could not be changed. Try again.');
+      toast.error('Your default space could not be changed. Try again.');
     }
   }
 
@@ -88,7 +88,7 @@ export default function AccountSheet() {
 
       {organization && active.length > 0 ? (
         <View>
-          <List.Subheader style={{ paddingHorizontal: 0 }}>Organizations</List.Subheader>
+          <List.Subheader style={{ paddingHorizontal: 0 }}>Spaces</List.Subheader>
           {[organization.slug, ...others.map((o) => o.slug)].map((slug) => {
             const m = active.find((x) => x.slug === slug);
             if (!m) return null;
@@ -121,12 +121,24 @@ export default function AccountSheet() {
           {invitations.length > 0 || others.length > 0 ? (
             <ListItem
               testID="account-all-organizations"
-              title="All organizations…"
+              title="All spaces…"
               left={(props) => <List.Icon {...props} icon="swap-horizontal" />}
               onPress={() => {
                 router.dismissAll();
                 leaveOrganization();
                 router.replace('/select-organization');
+              }}
+              style={{ paddingHorizontal: 0 }}
+            />
+          ) : null}
+          {!platformAdmin ? (
+            <ListItem
+              testID="account-join-space"
+              title="Join or make another space"
+              left={(props) => <List.Icon {...props} icon="key-plus" />}
+              onPress={() => {
+                router.back();
+                router.push('/join-space');
               }}
               style={{ paddingHorizontal: 0 }}
             />

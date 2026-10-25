@@ -65,7 +65,7 @@ export function PlatformPeopleScreen() {
     try {
       const updated = (await update.mutateAsync({ id: person.id, input: form })).data;
       setPerson(updated);
-      toast.success('Shared details saved, in every organization.');
+      toast.success('Shared details saved, in every space.');
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         // "Another person already has that email address" is a 409 with no field: it is the email's.
@@ -151,7 +151,7 @@ export function PlatformPeopleScreen() {
           <View style={{ gap: space.md, paddingVertical: space.sm }}>
             <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
               Belongs to {person.organization_count}{' '}
-              {person.organization_count === 1 ? 'organization' : 'organizations'}.
+              {person.organization_count === 1 ? 'space' : 'spaces'}.
             </Text>
             {field('full_name', 'Name')}
             {field('email', 'Email', { keyboardType: 'email-address', autoCapitalize: 'none' })}

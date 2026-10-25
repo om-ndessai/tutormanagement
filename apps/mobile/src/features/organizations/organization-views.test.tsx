@@ -6,7 +6,16 @@ import { renderWithProviders } from '@/test/render';
 import { featureSetsLabel, OrganizationSettingsScreen } from './organization-settings-screen';
 import { validateForm } from './settings-form';
 
-jest.mock('expo-router', () => ({ Stack: { Screen: () => null } }));
+const mockTitles: string[] = [];
+jest.mock('expo-router', () => ({
+  Stack: {
+    Screen: ({ options }: { options?: { title?: string } }) => {
+      if (options?.title) mockTitles.push(options.title);
+      return null;
+    },
+  },
+  router: { replace: jest.fn(), dismissAll: jest.fn(), canDismiss: () => false },
+}));
 jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));
@@ -25,7 +34,14 @@ jest.mock('./api', () => ({
   useUpdateOrganizationSettings: () => ({ mutateAsync: mockPatch, isPending: false }),
   useCurriculumOfferings: (enabled: boolean) => mockOfferings(enabled),
   useUpdateCurriculumOffering: () => ({ mutateAsync: mockPut, isPending: false }),
+  // Phase 52: the space code and the danger panel.
+  useSpaceCode: (enabled: boolean) => mockCode(enabled),
+  useRenewSpaceCode: () => ({ mutate: jest.fn(), isPending: false }),
+  useSetJoinByCode: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useLeaveSpace: () => ({ mutate: jest.fn(), isPending: false }),
+  useDeleteSpace: () => ({ mutate: jest.fn(), isPending: false }),
 }));
+const mockCode = jest.fn();
 
 const offering = (id: string, name: string, flags: Partial<CurriculumOffering>): CurriculumOffering => ({
   id,
@@ -86,7 +102,15 @@ const LOG: NotificationLogEntry[] = [
 ];
 
 function asAdmin(isAdmin = true, organization: Record<string, unknown> = ORGANIZATION) {
+  mockCode.mockReturnValue({
+    data: { data: { code: 'FMXY-2345', join_by_code: true } },
+    isPending: false,
+    isError: false,
+    refetch: jest.fn(),
+  });
   mockAuth.mockReturnValue({
+    leaveOrganization: jest.fn(),
+    refreshSession: jest.fn(),
     organization,
     user: { id: 'p', roles: isAdmin ? ['admin', 'tutor'] : ['tutor'] },
   });
@@ -107,6 +131,8 @@ function asAdmin(isAdmin = true, organization: Record<string, unknown> = ORGANIZ
 }
 
 beforeEach(() => {
+  mockTitles.length = 0;
+  mockCode.mockReset();
   mockPatch.mockReset();
   mockPut.mockReset();
   mockOfferings.mockReset();
@@ -118,7 +144,10 @@ describe('OrganizationSettingsScreen', () => {
   it('shows a non-admin the stub, and asks for nothing', async () => {
     asAdmin(false);
     await renderWithProviders(<OrganizationSettingsScreen />);
-    expect(screen.getByText('Only an administrator can see the organization’s settings.')).toBeTruthy();
+    expect(screen.getByText('Only an administrator can see the space’s settings.')).toBeTruthy();
+    expect(mockTitles).toContain('Space');
+    expect(mockCode).toHaveBeenCalledWith(false);
+    expect(screen.queryByTestId('space-code')).toBeNull();
     expect(mockSettings).toHaveBeenCalledWith(false);
     expect(mockNotifications).toHaveBeenCalledWith(false);
     expect(mockOfferings).toHaveBeenCalledWith(false);
@@ -276,3 +305,26 @@ describe('featureSetsLabel', () => {
     expect(featureSetsLabel(['tutoring', 'assessment', 'quest'])).toBe('Tutoring, Assessment and Quest');
   });
 });
+
+describe('OrganizationSettingsScreen: spaces (Phase 52)', () => {
+  it('is titled Space, and leads with the code, ends with leaving', async () => {
+    asAdmin();
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(mockTitles).toContain('Space');
+    expect(screen.getByTestId('space-code-value')).toHaveTextContent('FMXY-2345');
+    expect(screen.getByTestId('space-code-value').props.accessibilityLabel).toBe('Code F M X Y, 2 3 4 5');
+    expect(screen.getByTestId('space-leave')).toBeTruthy();
+    // A console-made space: no delete, and its email card.
+    expect(screen.queryByTestId('space-delete')).toBeNull();
+    expect(screen.getByTestId('org-notifications')).toBeTruthy();
+  });
+
+  it('has no email card in a self-serve space, and does not ask for its log; its admin may delete it', async () => {
+    asAdmin(true, { ...ORGANIZATION, created_via: 'self_serve', feature_tutoring: false, feature_assessment: true });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.queryByTestId('org-notifications')).toBeNull();
+    expect(mockNotifications).toHaveBeenCalledWith(false);
+    expect(screen.getByTestId('space-delete')).toBeTruthy();
+  });
+});
+

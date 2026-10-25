@@ -29,8 +29,11 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, space } from '@/theme/tokens';
 import { RELATIONSHIP_LABELS } from '@tmi/shared';
 import {
+  CONSENT_LABEL,
   STUDENT_STEP_FIELDS,
   childrenByParent,
+  consentIssue,
+  consentNeeded,
   familyIssues,
   parentLine,
   reconcileGuardians,
@@ -60,8 +63,17 @@ export function studentSteps<T extends { key: string }>(steps: T[], tutoring: bo
 
 const INITIAL: FormState = { ...EMPTY, roles: ['student'] };
 
-/** The route's body: admins only, as the API (`requireAdmin`). */
-export function AddStudentFlow({ fromWizard }: { fromWizard: boolean }) {
+/** Who the flow starts with as the family: nobody, or (`guardian=me`, Phase 52) the reader. */
+export interface PresetGuardian {
+  id: string;
+  name: string;
+}
+
+/**
+ * The route's body: admins only, as the API (`requireAdmin`). `guardian: 'me'` (Phase 52, "This is
+ * my child" in the welcome wizard) chooses the reader on the Family step.
+ */
+export function AddStudentFlow({ fromWizard, guardian }: { fromWizard: boolean; guardian?: string }) {
   const { user } = useAuth();
   if (!user?.roles.includes('admin')) {
     return (
@@ -79,10 +91,11 @@ export function AddStudentFlow({ fromWizard }: { fromWizard: boolean }) {
       </ScrollView>
     );
   }
-  return <AddStudentSteps fromWizard={fromWizard} />;
+  const preset = guardian === 'me' ? { id: user.id, name: user.full_name } : null;
+  return <AddStudentSteps fromWizard={fromWizard} preset={preset} />;
 }
 
-function AddStudentSteps({ fromWizard }: { fromWizard: boolean }) {
+function AddStudentSteps({ fromWizard, preset }: { fromWizard: boolean; preset: PresetGuardian | null }) {
   const toast = useToast();
   const [round, setRound] = useState(0);
   const [added, setAdded] = useState<AddedPerson | null>(null);
@@ -102,6 +115,7 @@ function AddStudentSteps({ fromWizard }: { fromWizard: boolean }) {
   return (
     <StudentSteps
       key={round}
+      preset={preset}
       onAdded={(person, leave) => {
         // Back in the wizard, a toast says so; otherwise the next screen says it, in its title (a
         // toast there would sit over its buttons).
@@ -119,17 +133,28 @@ function AddStudentSteps({ fromWizard }: { fromWizard: boolean }) {
 
 function StudentSteps({
   onAdded,
+  preset,
 }: {
   onAdded: (person: AddedPerson, leave: (close?: () => void) => void) => void;
+  preset: PresetGuardian | null;
 }) {
-  const [form, setForm] = useState<FormState>(INITIAL);
+  const [form, setForm] = useState<FormState>(() =>
+    preset ? { ...INITIAL, guardians: addGuardian([], preset.id) } : INITIAL,
+  );
   // Names of the guardians chosen, so a card can say who they are whatever the list now holds.
-  const [names, setNames] = useState<Record<string, string>>({});
+  const [names, setNames] = useState<Record<string, string>>(() =>
+    preset ? { [preset.id]: preset.name } : {},
+  );
+  // Phase 52: in a self-serve space the student is added with the adult's consent, ticked on Review.
+  const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState<string | null>(null);
   const dirty = useDirty(form);
   const { submit, submitting, fieldErrors, formError, clearErrors, today } = useAddPerson();
   // Phase 50: when they learn, their lessons and the price are Tutoring's.
   const { organization } = useAuth();
   const tutoring = featureAllowed(organization, 'tutoring');
+  const needsConsent = consentNeeded(form, organization);
+  const shownConsentError = consentError ?? fieldErrors?.parent_consent ?? null;
 
   const update = (patch: Partial<FormState>) => {
     setForm((was) => ({ ...was, ...patch }));
@@ -330,14 +355,42 @@ function StudentSteps({
       title="Add a student"
       steps={steps}
       draft={form}
-      review={{ description: 'Check the details, then add the student.' }}
+      review={{
+        description: 'Check the details, then add the student.',
+        trail: needsConsent
+          ? () => (
+              <View style={{ gap: space.xs }}>
+                <CheckRow
+                  testID="add-student-consent"
+                  label={CONSENT_LABEL}
+                  checked={consent}
+                  onChange={(checked) => {
+                    setConsent(checked);
+                    setConsentError(null);
+                    clearErrors();
+                  }}
+                />
+                {shownConsentError ? (
+                  <FieldError testID="add-student-consent-error">{shownConsentError}</FieldError>
+                ) : null}
+              </View>
+            )
+          : undefined,
+      }}
       submitLabel="Add student"
       dirty={dirty}
       submitting={submitting}
       fieldErrors={fieldErrors}
       formError={formError}
       onSubmit={async ({ leave }) => {
-        const person = await submit(form);
+        // Checked before sending: the server would refuse it in the same words.
+        const issue = consentIssue(form, organization, consent);
+        if (issue) {
+          setConsentError(issue);
+          haptics.error();
+          return;
+        }
+        const person = await submit(form, needsConsent ? { parent_consent: consent } : {});
         if (person) onAdded(person, leave);
       }}
     />

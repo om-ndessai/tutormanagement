@@ -28,6 +28,7 @@ import {
   useUpdateOrganizationSettings,
 } from './api';
 import { CurriculaCard } from './curricula-card';
+import { SpaceCodeCard, SpaceDangerCard } from './space-code-card';
 import { NotificationsSwitch } from './notifications-switch';
 
 /** The payer box, as the form holds it. The switches and the question count save on their own. */
@@ -86,7 +87,7 @@ export function OrganizationSettingsPage() {
 
   if (!isAdmin) {
     return (
-      <PageHeader title="Organization" description="Only an administrator can see the organization’s settings." />
+      <PageHeader title="Space" description="Only an administrator can see the space’s settings." />
     );
   }
 
@@ -95,7 +96,7 @@ export function OrganizationSettingsPage() {
     setErrors({});
     try {
       await update.mutateAsync(form);
-      toast.success('Organization settings saved.');
+      toast.success('Space settings saved.');
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
@@ -127,8 +128,12 @@ export function OrganizationSettingsPage() {
   return (
     <>
       <PageHeader
-        title="Organization"
-        description={`What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`}
+        title="Space"
+        description={
+          featureAllowed(organization, 'tutoring')
+            ? `What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`
+            : `${organization.name}: its code, what it teaches from, and how it is set up.`
+        }
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
@@ -143,7 +148,7 @@ export function OrganizationSettingsPage() {
               {field(
                 'tin',
                 'Payer TIN',
-                'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+                'The EIN the space files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
                 '12-3456789',
               )}
               <div className="grid gap-4 sm:grid-cols-2">
@@ -197,7 +202,13 @@ export function OrganizationSettingsPage() {
           </CardContent>
         </Card>
 
-        <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+        {/* Phase 52: how people join. */}
+        <SpaceCodeCard />
+
+        {/* Phase 51: a self-serve space sends no email under the platform's sender. */}
+        {organization.created_via !== 'self_serve' && (
+          <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+        )}
 
         <CurriculaCard />
 
@@ -212,6 +223,8 @@ export function OrganizationSettingsPage() {
         {featureAllowed(organization, 'quest') && (
           <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
         )}
+
+        <SpaceDangerCard />
       </div>
     </>
   );
@@ -359,7 +372,7 @@ function GamificationCard({ questQuest }: { questQuest: boolean }) {
             <p className="text-muted-foreground text-xs">
               When on, a student who signs in answers the question bank’s questions that no person has approved yet,
               one at a time from the level their tutor sets, with no going back. Their tutor reviews each answer and
-              approves the question for every organization on the platform, or flags it. A student earns a point for
+              approves the question for every space on the platform, or flags it. A student earns a point for
               each answer and another when a correct answer is approved; a tutor earns a point for each review.
             </p>
           </div>

@@ -1,0 +1,161 @@
+# Phase 52 (design 63): a newcomer makes a space of their own. A reserved word is refused on the
+# device; a good name makes the space and enters it, where the welcome wizard opens by itself;
+# "This is my child" makes the maker the family, and adding the child in a self-serve space needs
+# the parent's consent. Then the space is deleted, and the account.
+# Self-cleaning: Mia is put back to nothing before and after (her space goes with her).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.creator@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.creator@example.com, NAME: Mia Creator }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.creator@example.com }
+tags:
+  - feature
+---
+# A fresh device, so the wizard is not pre-empted.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.creator@example.com
+      ORG: ''
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: welcome-space-name
+- tapOn:
+    id: welcome-space-name
+- inputText: 'Aimtrue official'
+- hideKeyboard
+- tapOn:
+    id: welcome-make-submit
+- extendedWaitUntil:
+    visible:
+      id: welcome-make-error
+      text: 'A space’s name cannot use the word “aimtrue”.'
+    timeout: 5000
+- tapOn:
+    id: welcome-space-name
+- eraseText: 30
+- inputText: 'The Creator family'
+- hideKeyboard
+- tapOn:
+    id: welcome-make-submit
+- extendedWaitUntil:
+    visible: 'The Creator family is ready.'
+    timeout: 15000
+# In it, the welcome wizard opens by itself.
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 30000
+- tapOn:
+    id: onboarding-choice-student
+- extendedWaitUntil:
+    visible:
+      id: student-flow-student
+    timeout: 10000
+- tapOn:
+    id: student-flow-my-child
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
+    timeout: 15000
+- assertVisible: '.*Mia Creator.*'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the student\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-name
+- inputText: 'Kit Creator'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+# Without the parent's word, nothing is sent.
+- scrollUntilVisible:
+    element:
+      id: add-student-consent
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: add-student-consent-error
+    timeout: 5000
+- tapOn:
+    id: add-student-consent
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: student-flow-start
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
+# The space goes, by its name.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: screen-organization
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: space-delete-name
+- tapOn:
+    id: space-delete-name
+- inputText: 'The Creator family'
+# Return deletes once the name matches (the button is under the keyboard on a phone).
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

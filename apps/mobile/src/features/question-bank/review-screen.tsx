@@ -30,11 +30,15 @@ import { confirmRetire } from './retire-confirm';
 /** How long a new card shows before its actions wake. */
 export const ARM_DELAY_MS = 350;
 
-export function ReviewScreen() {
+/**
+ * `suggested` (Phase 51, the web's `?suggested=1`): only what untrusted spaces suggested approving.
+ * Its count is the list's own, since the bank's coverage counts every checked question.
+ */
+export function ReviewScreen({ suggested = false }: { suggested?: boolean }) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
   const large = useLargeText();
-  const queue = useQuestions({ status: 'checked' });
+  const queue = useQuestions(suggested ? { status: 'checked', suggested: 'true' } : { status: 'checked' });
   const coverage = useQuestionCoverage();
   const action = useQuestionAction();
   const items = useMemo(() => queue.data?.data ?? [], [queue.data]);
@@ -52,7 +56,7 @@ export function ReviewScreen() {
   const position = useRef<View>(null);
 
   // The queue loads a page at a time; the count is the whole bank's.
-  const waiting = waitingCount(coverage.data?.data);
+  const waiting = suggested ? undefined : waitingCount(coverage.data?.data);
   const left = leftCount(waiting ?? items.length, skipped.length);
   const ready = currentId !== null && rendered === currentId && armed === currentId && !action.isPending;
 
@@ -147,6 +151,20 @@ export function ReviewScreen() {
               }}
             >
               Go through them again
+            </Button>
+          }
+        />
+      ) : suggested ? (
+        <EmptyState
+          testID="question-review-none-suggested"
+          icon="check-all"
+          title="No space has suggested approving a question."
+          action={
+            <Button
+              mode="outlined"
+              onPress={() => (router.canGoBack() ? router.back() : router.replace('/platform/questions'))}
+            >
+              Back to the question bank
             </Button>
           }
         />

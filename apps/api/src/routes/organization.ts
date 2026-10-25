@@ -7,8 +7,13 @@ import {
   type CurriculumOffering,
   type NotificationLogEntry,
   type OrganizationSettings,
+  deleteSpaceSchema,
   featureAllowed,
+  formatSpaceCode,
+  type JoinRequest,
+  type SpaceCode,
 } from '@tmi/shared';
+import { z } from 'zod';
 
 import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
@@ -20,8 +25,16 @@ import {
   getOrganizationBySlug,
   getOrganizationSettings,
   updateOrganizationSettings,
+  answerJoinRequest,
+  getSpaceCode,
+  listJoinRequests,
+  openJoinRequest,
+  renewSpaceCode,
+  setJoinByCode,
 } from '../repositories/organizations.js';
 import { listNotifications } from '../repositories/notifications.js';
+import { purgeSpace } from '../repositories/purge.js';
+import { countAdmins, deactivateUser } from '../repositories/users.js';
 import { listCurriculumOfferings, setCurriculumOffering } from '../repositories/curricula.js';
 
 /** "A", "A and B", "A, B and C". */
@@ -187,7 +200,117 @@ export const organizationRoutes = new Hono<AppEnv>()
       data: await listNotifications(c.env.DB, c.get('org').id),
     };
     return c.json(body);
+  })
+  // -------------------------------------------------------------------------
+  // Phase 52: a space's code, its requests to join, leaving and deleting it
+  // -------------------------------------------------------------------------
+
+  /** The space's code and whether joining by it is on. Its admins only (R21). */
+  .get('/code', requireAdmin, async (c) => {
+    const code = await getSpaceCode(c.env.DB, c.get('org').id);
+    const body: ApiOk<SpaceCode> = {
+      data: { code: code.code ? formatSpaceCode(code.code) : null, join_by_code: code.join_by_code },
+    };
+    return c.json(body);
+  })
+
+  /** A new code: the old one stops working at once. Also how an existing organization gets its first. */
+  .post('/code', requireAdmin, async (c) => {
+    const org = c.get('org');
+    const fresh = await renewSpaceCode(c.env.DB, org.id);
+    await recordAudit(c.env.DB, c.get('user'), org.id, {
+      action: 'organization.code_changed',
+      description: `Made a new space code for ${org.name}`,
+      entity_type: 'organization',
+      entity_id: org.id,
+    });
+    const now = await getSpaceCode(c.env.DB, org.id);
+    const body: ApiOk<SpaceCode> = { data: { code: formatSpaceCode(fresh), join_by_code: now.join_by_code } };
+    return c.json(body);
+  })
+
+  /** Joining by code on or off. Off, the code opens nothing (a lookup is 404). */
+  .put('/code', requireAdmin, zValidator('json', z.object({ join_by_code: z.boolean() })), async (c) => {
+    const org = c.get('org');
+    const { join_by_code: on } = c.req.valid('json');
+    let code = (await getSpaceCode(c.env.DB, org.id)).code;
+    if (on && !code) code = await renewSpaceCode(c.env.DB, org.id);
+    await setJoinByCode(c.env.DB, org.id, on);
+    await recordAudit(c.env.DB, c.get('user'), org.id, {
+      action: 'organization.joining_set',
+      description: `Turned joining ${org.name} by code ${on ? 'on' : 'off'}`,
+      entity_type: 'organization',
+      entity_id: org.id,
+    });
+    const body: ApiOk<SpaceCode> = { data: { code: code ? formatSpaceCode(code) : null, join_by_code: on } };
+    return c.json(body);
+  })
+
+  /** Open requests to join, oldest first, with who Google says each person is. Its admins only. */
+  .get('/join-requests', requireAdmin, async (c) => {
+    const body: ApiOk<JoinRequest[]> = { data: await listJoinRequests(c.env.DB, c.get('org').id) };
+    return c.json(body);
+  })
+
+  /** Declines a request. Letting someone in is POST /api/users with their request's id. */
+  .post('/join-requests/:userId/decline', requireAdmin, async (c) => {
+    const org = c.get('org');
+    const userId = c.req.param('userId');
+    const who = await openJoinRequest(c.env.DB, org.id, userId);
+    if (!who || !(await answerJoinRequest(c.env.DB, org.id, userId, 'declined', c.get('user').id))) {
+      throw ApiError.notFound('Request not found.');
+    }
+    await recordAudit(c.env.DB, c.get('user'), org.id, {
+      action: 'membership.request_declined',
+      description: `Declined ${who.full_name}'s request to join ${org.name}`,
+      subject: { id: userId, full_name: who.full_name },
+      entity_type: 'user',
+      entity_id: userId,
+    });
+    return c.json({ data: { declined: true } });
+  })
+
+  /** A member leaves the space. Its last admin cannot (delete the space, or make another admin first). */
+  .post('/leave', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    if (user.roles.includes('admin') && (await countAdmins(c.env.DB, org.id)) <= 1) {
+      throw ApiError.conflict(`You are ${org.name}'s only administrator. Make someone else an administrator first, or delete the space.`);
+    }
+    await deactivateUser(c.env.DB, org.id, user.id);
+    await recordAudit(c.env.DB, user, org.id, {
+      action: 'membership.left',
+      description: `${user.full_name} left ${org.name}`,
+      subject: { id: user.id, full_name: user.full_name },
+      entity_type: 'user',
+      entity_id: user.id,
+    });
+    return c.json({ data: { left: true } });
+  })
+
+  /**
+   * Deletes a self-serve space and everything in it, at its maker's request: an admin of it types
+   * its name. A platform-made organization is never deleted this way. The platform log keeps only
+   * that a space was deleted.
+   */
+  .delete('/', requireAdmin, zValidator('json', deleteSpaceSchema), async (c) => {
+    const org = c.get('org');
+    if (org.created_via !== 'self_serve') {
+      throw new ApiError(403, 'forbidden', 'Only a space made on Aimtrue by one of its members can be deleted here.');
+    }
+    if (c.req.valid('json').confirm_name.toLowerCase() !== org.name.trim().toLowerCase()) {
+      throw ApiError.validation('Please correct the highlighted fields.', { confirm_name: ['Type the space’s name exactly.'] });
+    }
+    await purgeSpace(c.env.DB, org.id);
+    await recordAudit(c.env.DB, null, 'platform', {
+      action: 'space.deleted',
+      description: 'A space was deleted by its owner',
+      entity_type: 'organization',
+      entity_id: org.id,
+    });
+    return c.body(null, 204);
   });
+
 
 /**
  * Public: an organization's logo, for the sign-in page as much as anywhere.

@@ -18,6 +18,8 @@ import {
 export interface QuestionFilter {
   topic_id?: string;
   status?: QuestionStatus;
+  /** Phase 51: only what untrusted spaces suggested approving. */
+  suggested?: 'true';
 }
 
 export const approvedOf = (topic: QuestionCoverageTopic) => topic.approved.reduce((a, b) => a + b, 0);

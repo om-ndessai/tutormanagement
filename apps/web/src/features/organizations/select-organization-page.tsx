@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ArrowRightIcon, BuildingIcon, CheckIcon, ShieldCheckIcon, StarIcon, XIcon } from 'lucide-react';
+import { ArrowRightIcon, CheckIcon, ShieldCheckIcon, StarIcon, XIcon } from 'lucide-react';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/providers/auth-provider';
 import { useAnswerInvitation, useSetDefaultOrganization } from './api';
 import { OrgAvatar } from './org-avatar';
+import { Welcome } from './welcome';
 
 /**
  * Where someone who belongs to several organizations -- or has been invited
@@ -19,7 +20,7 @@ import { OrgAvatar } from './org-avatar';
  * remembered for the next visit.
  */
 export function SelectOrganizationPage() {
-  const { user, memberships, invitations, platformAdmin, chooseOrganization, refreshSession, signOut, impersonated } =
+  const { user, memberships, invitations, platformAdmin, chooseOrganization, refreshSession, signOut, impersonated, joinRequests } =
     useAuth();
   const answer = useAnswerInvitation();
   const setDefault = useSetDefaultOrganization();
@@ -27,8 +28,11 @@ export function SelectOrganizationPage() {
   const active = memberships.filter((m) => m.status === 'active');
   const suspended = memberships.filter((m) => m.status === 'suspended');
 
-  // One organization and nothing to answer: no choice to make.
-  const only = active.length === 1 && invitations.length === 0 && !platformAdmin ? active[0]!.slug : null;
+  // One space and nothing to answer or wait for: no choice to make.
+  const only =
+    active.length === 1 && invitations.length === 0 && joinRequests.length === 0 && !platformAdmin ? active[0]!.slug : null;
+  // Phase 52: nowhere to go yet -- the Welcome page.
+  const newcomer = active.length === 0 && invitations.length === 0 && !platformAdmin;
   useEffect(() => {
     if (only) chooseOrganization(only);
   }, [only, chooseOrganization]);
@@ -46,7 +50,7 @@ export function SelectOrganizationPage() {
         isDefault ? `You will choose where to go when you sign in.` : `You will land in ${name} when you sign in.`,
       );
     } catch {
-      toast.error('Your default organization could not be changed. Try again.');
+      toast.error('Your default space could not be changed. Try again.');
     }
   }
 
@@ -69,10 +73,12 @@ export function SelectOrganizationPage() {
 
       <main className="mx-auto grid max-w-xl gap-6 px-4 pb-12">
         <div>
-          <h1 className="text-2xl font-semibold">Choose an organization</h1>
+          <h1 className="text-2xl font-semibold">{newcomer ? 'Welcome to Aimtrue' : 'Choose a space'}</h1>
           <p className="text-muted-foreground mt-1 text-sm">
-            {user ? `Signed in as ${user.email ?? user.full_name}. ` : ''}Each tab can be in a different
-            one, and you can switch at any time from the menu.
+            {user ? `Signed in as ${user.email ?? user.full_name}. ` : ''}
+            {newcomer
+              ? 'Join a space with its code, or make your own.'
+              : 'Each tab can be in a different one, and you can switch at any time from the menu.'}
           </p>
         </div>
 
@@ -107,7 +113,9 @@ export function SelectOrganizationPage() {
           </section>
         )}
 
-        <section className="grid gap-3" aria-label="Your organizations">
+        {newcomer && <Welcome firstTime />}
+
+        <section className="grid gap-3" aria-label="Your spaces">
           {active.map((org) => (
             <div key={org.slug} className="bg-card flex items-stretch rounded-xl border" data-testid={`org-${org.slug}`}>
               <button
@@ -171,21 +179,22 @@ export function SelectOrganizationPage() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block font-medium">Platform console</span>
-                <span className="text-muted-foreground block text-xs">Organizations and their admins</span>
+                <span className="text-muted-foreground block text-xs">Spaces and their admins</span>
               </span>
               <ArrowRightIcon className="text-muted-foreground size-4" />
             </a>
           )}
 
-          {active.length === 0 && invitations.length === 0 && !platformAdmin && (
-            <Card className="py-0">
-              <CardContent className="flex items-center gap-3 p-4 text-sm">
-                <BuildingIcon className="text-muted-foreground size-4" />
-                You do not belong to any organization yet. Ask an administrator to add you.
-              </CardContent>
-            </Card>
-          )}
         </section>
+
+        {!newcomer && !platformAdmin && (
+          <details className="group" data-testid="welcome-more">
+            <summary className="text-muted-foreground cursor-pointer text-sm">Join or make another space</summary>
+            <div className="mt-3">
+              <Welcome firstTime={false} />
+            </div>
+          </details>
+        )}
 
         {!impersonated && (
           <div>

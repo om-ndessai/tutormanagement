@@ -492,6 +492,7 @@ export async function createUser(
   db: D1Database,
   org: OrgId,
   input: CreateUserPayload,
+  options: { acceptRequest?: boolean } = {},
 ): Promise<CreateUserOutcome> {
   if (input.email) {
     const existing = await db
@@ -509,11 +510,17 @@ export async function createUser(
       // Their shared fields are theirs: the name and phone typed here do not
       // overwrite what they already have.
       await db.batch([
-        db
-          .prepare(
-            "INSERT INTO org_members (organization_id, user_id, status, invited_name) VALUES (?, ?, 'invited', ?)",
-          )
-          .bind(org, existing.id, input.full_name),
+        // Phase 52: someone who asked to join is let in, not invited: they are active at once,
+        // with their own record.
+        options.acceptRequest
+          ? db
+              .prepare("INSERT INTO org_members (organization_id, user_id, status) VALUES (?, ?, 'active')")
+              .bind(org, existing.id)
+          : db
+              .prepare(
+                "INSERT INTO org_members (organization_id, user_id, status, invited_name) VALUES (?, ?, 'invited', ?)",
+              )
+              .bind(org, existing.id, input.full_name),
         ...roleStatements(db, org, existing.id, input.roles),
       ]);
 
@@ -1062,4 +1069,32 @@ export async function countPeopleAddedToday(db: D1Database, org: OrgId): Promise
     .bind(org)
     .first<{ n: number }>();
   return row?.n ?? 0;
+}
+
+/** Phase 52: how many live admins an organization has (its last cannot leave). */
+export async function countAdmins(db: D1Database, org: OrgId): Promise<number> {
+  const row = await db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM user_roles r
+       JOIN org_members m ON m.organization_id = r.organization_id AND m.user_id = r.user_id
+       WHERE r.organization_id = ? AND r.role = 'admin' AND m.removed_at IS NULL AND m.status = 'active'`,
+    )
+    .bind(org)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
+}
+
+/** Phase 52: a parent's consent for a child to take part (roadmap F7's first slice). */
+export async function recordConsent(
+  db: D1Database,
+  org: OrgId,
+  input: { studentId: string; guardianId: string; version: string },
+): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO consents (organization_id, student_user_id, guardian_user_id, purpose, method, version)
+       VALUES (?, ?, ?, 'child_account', 'account_holder_attestation', ?)`,
+    )
+    .bind(org, input.studentId, input.guardianId, input.version)
+    .run();
 }

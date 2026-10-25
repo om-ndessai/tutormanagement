@@ -20,7 +20,10 @@ jest.mock('@/hooks/use-unsaved-changes', () => ({
 }));
 let mockOrganization: Record<string, unknown> = {};
 jest.mock('@/providers/auth-provider', () => ({
-  useAuth: () => ({ user: { id: 'priya', roles: ['admin'] }, organization: mockOrganization }),
+  useAuth: () => ({
+    user: { id: '33333333-3333-4333-8333-333333333333', full_name: 'Ines Ferreira', roles: ['admin', 'parent'] },
+    organization: mockOrganization,
+  }),
   useOrgTimeZone: () => 'America/New_York',
 }));
 jest.mock('@/components/toast', () => ({
@@ -155,4 +158,60 @@ it('lists only the Tutoring-free steps without Tutoring', () => {
   const steps = [{ key: 'family' }, { key: 'student' }, { key: 'school' }, { key: 'availability' }, { key: 'lessons' }, { key: 'price' }];
   expect(studentSteps(steps, false).map((s) => s.key)).toEqual(['family', 'student', 'school']);
   expect(studentSteps(steps, true)).toHaveLength(6);
+});
+
+// Phase 52 ------------------------------------------------------------------------------------
+
+const INES = '33333333-3333-4333-8333-333333333333';
+
+async function toReview(withFamily: boolean) {
+  if (withFamily) await fireEvent.press(screen.getByTestId(`add-student-parents-row-${ANITA}`));
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  await fireEvent.changeText(screen.getByTestId('add-student-name'), 'Kit Creator');
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  await fireEvent.press(screen.getByTestId('step-flow-skip'));
+}
+
+it('in a self-serve space, asks for consent on the Review, refuses before sending, then sends it', async () => {
+  mockOrganization = { feature_tutoring: false, feature_assessment: true, created_via: 'self_serve' };
+  mockCreate.mockResolvedValue({ data: { id: 'kit', full_name: 'Kit Creator' } });
+  await renderWithProviders(<AddStudentFlow fromWizard={false} />);
+  await toReview(true);
+
+  expect(screen.getByTestId('add-student-consent')).toBeTruthy();
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  expect(mockCreate).not.toHaveBeenCalled();
+  expect(screen.getByTestId('add-student-consent-error')).toHaveTextContent(
+    'Confirm you are their parent or guardian, or have their permission.',
+  );
+
+  await fireEvent.press(screen.getByTestId('add-student-consent'));
+  expect(screen.queryByTestId('add-student-consent-error')).toBeNull();
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  expect(mockCreate).toHaveBeenCalledTimes(1);
+  expect(mockCreate.mock.calls[0][0]).toMatchObject({ parent_consent: true, full_name: 'Kit Creator' });
+});
+
+it('asks for no consent outside a self-serve space', async () => {
+  mockOrganization = { feature_tutoring: false, feature_assessment: true, created_via: 'console' };
+  mockCreate.mockResolvedValue({ data: { id: 'kit', full_name: 'Kit Creator' } });
+  await renderWithProviders(<AddStudentFlow fromWizard={false} />);
+  await toReview(true);
+  expect(screen.queryByTestId('add-student-consent')).toBeNull();
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  expect('parent_consent' in mockCreate.mock.calls[0][0]).toBe(false);
+});
+
+it('with guardian=me, starts with the reader chosen as the family', async () => {
+  mockOrganization = { feature_tutoring: false, feature_assessment: true, created_via: 'self_serve' };
+  mockCreate.mockResolvedValue({ data: { id: 'kit', full_name: 'Kit Creator' } });
+  await renderWithProviders(<AddStudentFlow fromWizard={false} guardian="me" />);
+  expect(screen.getByTestId(`guardian-${INES}`)).toBeTruthy();
+  expect(screen.getByText('Ines Ferreira')).toBeTruthy();
+  await toReview(false);
+  await fireEvent.press(screen.getByTestId('add-student-consent'));
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  expect(mockCreate.mock.calls[0][0].guardians).toEqual([
+    { guardian_user_id: INES, relationship: 'guardian', is_primary: true },
+  ]);
 });

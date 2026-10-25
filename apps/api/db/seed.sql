@@ -49,18 +49,22 @@ DELETE FROM user_roles;
 DELETE FROM org_members;
 DELETE FROM organization_logos;
 DELETE FROM platform_admins;
+DELETE FROM join_requests;
+DELETE FROM consents;
+DELETE FROM question_suggestions;
 DELETE FROM organization_curricula;
 DELETE FROM organizations;
 DELETE FROM user_onboarding;
+DELETE FROM platform_accounts;
 DELETE FROM users;
 
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest) VALUES
-  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1),
-  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1),
-  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0);
+INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest, created_via, quest_trusted, join_code, join_by_code) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'CHMX2345', 0),
+  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'RVRS2345', 1),
+  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0, 'self_serve', 0, 'FMXY2345', 1);
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
@@ -173,7 +177,9 @@ INSERT INTO users (id, email, full_name, phone) VALUES
   ('0b100000-0000-4000-8000-000000000004', NULL, 'Arjun Patel', NULL),
   ('0d100000-0000-4000-8000-000000000001', 'ines.ferreira.assess@gmail.com', 'Ines Ferreira', NULL),
   ('0d100000-0000-4000-8000-000000000002', 'omar.haddad.assess@gmail.com', 'Omar Haddad', NULL),
-  ('0d100000-0000-4000-8000-000000000003', NULL, 'Noor Haddad', NULL);
+  ('0d100000-0000-4000-8000-000000000003', NULL, 'Noor Haddad', NULL),
+  ('0d200000-0000-4000-8000-000000000001', 'nina.newcomer@example.com', 'Nina Newcomer', NULL),
+  ('0d200000-0000-4000-8000-000000000002', 'theo.teen@example.com', 'Theo Teen', NULL);
 
 -- --- who belongs where, and what they do there -----------------------------
 INSERT INTO org_members (organization_id, user_id, status, first_entered_at) VALUES
@@ -387,6 +393,15 @@ INSERT INTO user_roles (organization_id, user_id, role) VALUES
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', 'parent'),
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'student');
 
+UPDATE organizations SET created_by_user_id = '0d100000-0000-4000-8000-000000000001' WHERE id = '0d000000-0000-4000-8000-000000000001';
+
+-- --- people who signed themselves up, and asked to join (Phase 52) --------
+INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at) VALUES
+  ('0d200000-0000-4000-8000-000000000001', 'adult', '2026-10-24T12:00:00.000Z', '2026-10-24', '2026-10-24', '2026-10-24T12:00:00.000Z'),
+  ('0d200000-0000-4000-8000-000000000002', '13-17', '2026-10-24T12:00:00.000Z', '2026-10-24', '2026-10-24', '2026-10-24T12:00:00.000Z');
+INSERT INTO join_requests (organization_id, user_id, requested_at) VALUES
+  ('0b000000-0000-4000-8000-000000000001', '0d200000-0000-4000-8000-000000000002', '2026-10-24T12:30:00.000Z');
+
 -- --- everyone here has been through the welcome wizard (Phase 26) ----------
 INSERT INTO user_onboarding (user_id, tour_finished_at, tour_outcome) VALUES
   ('00000000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
@@ -485,7 +500,9 @@ INSERT INTO user_onboarding (user_id, tour_finished_at, tour_outcome) VALUES
   ('0b100000-0000-4000-8000-000000000004', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0d100000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0d100000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed'),
-  ('0d100000-0000-4000-8000-000000000003', '2026-09-01T12:00:00.000Z', 'completed');
+  ('0d100000-0000-4000-8000-000000000003', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0d200000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0d200000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed');
 
 -- --- tutor-only data -------------------------------------------------------
 INSERT INTO tutor_profiles (organization_id, user_id, highest_education, school, area, availability_notes, virtual_available, default_rate_in_person_cents, default_rate_virtual_cents, max_session_minutes, topup_amount_cents, ssn_received_on, address_line1, address_line2, city, state, postal_code) VALUES

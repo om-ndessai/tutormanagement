@@ -1,4 +1,4 @@
-// Ported from apps/web/src/features/users/users-page.tsx @ 1132322.
+// Ported from apps/web/src/features/users/users-page.tsx @ 1132322 (Phase 52 @ 9485a8e).
 //
 // The directory. The list is the server's, scoped to the reader: an admin sees everyone, anyone
 // else the people they work with (`visibleUserIds`), and only an admin may ask for the deactivated.
@@ -21,6 +21,8 @@ import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { useJoinRequests } from '@/features/organizations/api';
+import { JoinRequestsSection } from './join-requests-section';
 import { PeopleFilters, type PeopleFilterState } from './people-filters';
 import { useUserActions } from './use-user-actions';
 import { useUserPages } from './use-user-pages';
@@ -83,6 +85,9 @@ export function PeopleScreen() {
   const users = useMemo(() => data?.pages.flatMap((page) => page.data) ?? [], [data]);
   const total = data?.pages[0]?.meta.total ?? 0;
 
+  // Phase 52: the requests to join (admins only) are refreshed with the list.
+  const joinRequests = useJoinRequests(isAdmin);
+
   const { deactivate, deactivateNow, restore, hardDelete, dialog } = useUserActions();
   const actions: RowActions = {
     onView: (user: User) => router.push({ pathname: '/people/[id]', params: { id: user.id } }),
@@ -102,7 +107,7 @@ export function PeopleScreen() {
   async function onRefresh() {
     setRefreshing(true);
     try {
-      await refetch();
+      await Promise.all([refetch(), isAdmin ? joinRequests.refetch() : Promise.resolve()]);
     } finally {
       setRefreshing(false);
     }
@@ -123,6 +128,8 @@ export function PeopleScreen() {
       <PageIntro testID="people-description">
         {`Everyone at ${brand.name}. A person can hold more than one role.`}
       </PageIntro>
+      {/* Phase 52: people who asked to join with the space's code. */}
+      <JoinRequestsSection enabled={isAdmin} />
       {/* Adding is the tab bar's create button (UI upgrades U2); the in-page button is the empty
           directory's next step only (ux-audit F-15). */}
       <PeopleFilters

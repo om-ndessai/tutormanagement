@@ -63,6 +63,9 @@ export const ERROR_CODES = [
 
   // Phase 51: too many tries this minute, or a space's daily cap reached.
   'rate_limited',
+
+  // Phase 52: a newcomer under 13 (nothing is stored).
+  'too_young',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

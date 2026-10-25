@@ -1,6 +1,8 @@
 // Fixtures shaped like the API's responses. Money fields are deliberately filled in, so a test
 // can prove a Tutoring view never renders them.
 import type {
+  Organization,
+  SessionResponse,
   AdminDashboard,
   AuditEvent,
   ReflectionDigest,
@@ -11,6 +13,57 @@ import type {
 } from '@tmi/shared';
 
 export const TODAY = '2026-10-07';
+
+/** An organization as the session carries it (Phase 50's feature sets, Phase 51's fields). */
+export function anOrganization<T extends object = object>(
+  overrides: Partial<Organization> & T = {} as Partial<Organization> & T,
+): Organization & T {
+  return {
+    id: 'org-1',
+    slug: 'chmi',
+    name: 'Chapel Hill Math Institute',
+    short_name: 'CHMI',
+    tagline: null,
+    blurb: null,
+    place: null,
+    palette: 'plum',
+    builtin_logo: null,
+    logo_mark_url: null,
+    logo_full_url: null,
+    time_zone: 'America/New_York',
+    email_notifications: false,
+    canvas_assessments: false,
+    canvas_assessments_unreviewed: false,
+    canvas_assessment_questions: 10,
+    gamify_question_quest: false,
+    feature_tutoring: true,
+    feature_assessment: true,
+    feature_quest: true,
+    created_via: 'console',
+    quest_trusted: true,
+    calendar_domain: 'chmi.invalid',
+    archived_at: null,
+    created_at: '2026-10-01T00:00:00Z',
+    updated_at: '2026-10-01T00:00:00Z',
+    ...overrides,
+  } as Organization & T;
+}
+
+/** A session answer with nothing in it: signed in, in no space (Phase 52's fields included). */
+export function aSession(overrides: Partial<SessionResponse> = {}): SessionResponse {
+  return {
+    user: null,
+    impersonated: true,
+    onboarding: null,
+    organization: null,
+    memberships: [],
+    invitations: [],
+    platform_admin: false,
+    account: null,
+    join_requests: [],
+    ...overrides,
+  } as unknown as SessionResponse;
+}
 
 export function session(overrides: Partial<TutoringSession> = {}): TutoringSession {
   return {

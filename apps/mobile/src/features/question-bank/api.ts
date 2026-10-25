@@ -17,7 +17,7 @@ import { applyActionToCoverage, applyActionToList, type QuestionFilter } from '.
 export const bankKeys = {
   all: ['platform', 'questions'] as const,
   coverage: ['platform', 'questions', 'coverage'] as const,
-  list: (filter: { topic_id?: string; status?: QuestionStatus }) =>
+  list: (filter: { topic_id?: string; status?: QuestionStatus; suggested?: 'true' }) =>
     ['platform', 'questions', 'list', filter] as const,
   aiTasks: ['platform', 'ai', 'tasks'] as const,
   aiRuns: ['platform', 'ai', 'runs'] as const,
@@ -32,7 +32,7 @@ export function useQuestionCoverage(enabled = true) {
   });
 }
 
-export function useQuestions(filter: { topic_id?: string; status?: QuestionStatus }, enabled = true) {
+export function useQuestions(filter: { topic_id?: string; status?: QuestionStatus; suggested?: 'true' }, enabled = true) {
   return useQuery({
     queryKey: bankKeys.list(filter),
     queryFn: () =>

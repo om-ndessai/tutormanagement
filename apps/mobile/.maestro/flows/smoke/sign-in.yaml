@@ -9,8 +9,13 @@ tags:
     visible:
       id: screen-sign-in
     timeout: 30000
-- assertVisible: 'Aimtrue'
-- assertVisible: 'Developer sign-in'
+# The screen may open scrolled (Android keeps a long list's place): look from the top.
+- scrollUntilVisible:
+    element: 'Aimtrue'
+    direction: UP
+- scrollUntilVisible:
+    element: 'Developer sign-in'
+    direction: UP
 # Someone the server does not know is refused, in its words.
 - scrollUntilVisible:
     element:
@@ -19,8 +24,9 @@ tags:
     id: sign-in-email
 - inputText: 'nobody@example.com'
 - pressKey: Enter
-- extendedWaitUntil:
-    visible:
+# Below the personas (three more since Phase 52): scrolled to, not waited for in place.
+- scrollUntilVisible:
+    element:
       id: sign-in-error
     timeout: 15000
 - assertVisible:

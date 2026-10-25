@@ -46,7 +46,7 @@ export function PlatformPeoplePage() {
     try {
       const updated = (await update.mutateAsync({ id: person.id, input: form })).data;
       setPerson(updated);
-      toast.success('Shared details saved, in every organization.');
+      toast.success('Shared details saved, in every space.');
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
@@ -74,7 +74,7 @@ export function PlatformPeoplePage() {
           <CardContent className="grid gap-4 p-5">
             <p className="text-muted-foreground text-sm">
               Belongs to {person.organization_count}{' '}
-              {person.organization_count === 1 ? 'organization' : 'organizations'}.
+              {person.organization_count === 1 ? 'space' : 'spaces'}.
             </p>
             <form className="grid gap-4 sm:grid-cols-2" onSubmit={save} aria-label="Shared details">
               <FormField id="pp-name" label="Name" error={errors.full_name}>

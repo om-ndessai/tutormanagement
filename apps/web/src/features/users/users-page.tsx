@@ -38,7 +38,9 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { ApiRequestError } from '@/lib/api-client';
 import { useDeleteUser, useRestoreUser, useUsers } from './api';
 import { UserDetailDialog } from './user-detail-dialog';
+import { useAuth } from '@/providers/auth-provider';
 import { UserFormDialog } from './user-form-dialog';
+import { JoinRequestsPanel } from './join-requests-panel';
 import { UsersTable } from './users-table';
 import { useBrand } from '@/providers/brand-provider';
 
@@ -52,6 +54,7 @@ type PendingAction =
   | null;
 
 export function UsersPage() {
+  const isAdminViewer = Boolean(useAuth().user?.roles.includes('admin'));
   const brand = useBrand();
   const [search, setSearch] = useState('');
   const [role, setRole] = useState<UserRole | typeof ANY>(ANY);
@@ -170,6 +173,9 @@ export function UsersPage() {
           </Button>
         }
       />
+
+      {/* Phase 52: people who asked to join with the space's code. */}
+      {isAdminViewer && <JoinRequestsPanel />}
 
       {/*
         Explicit layout rather than flex-wrap: the controls have minimum widths

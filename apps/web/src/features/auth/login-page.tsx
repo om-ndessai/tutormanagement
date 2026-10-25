@@ -23,7 +23,7 @@ function isPlaceholderClientId(clientId: string | null): boolean {
 export function LoginPage() {
   const brand = useBrand();
   const brandReady = useBrandReady();
-  const { status, config, error, signInWithGoogle, clearError } = useAuth();
+  const { status, config, error, signInWithGoogle, clearError, pendingSignup } = useAuth();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
 
@@ -32,6 +32,8 @@ export function LoginPage() {
   if (status === 'authenticated') {
     return <Navigate to={from ?? '/profile'} replace />;
   }
+  // Phase 52: a newcomer Google vouched for answers the age question next.
+  if (pendingSignup) return <Navigate to="/signup" replace />;
 
   async function handleCredential(credential: string) {
     setSubmitting(true);
@@ -109,7 +111,9 @@ export function LoginPage() {
             <div className="mb-8">
               <h2 className="text-2xl font-semibold tracking-tight">Staff portal</h2>
               <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                Sign in with the Google account your administrator added.
+                {config?.signup_open
+                  ? 'Sign in with your Google account. New here? You can join a space with its code, or make your own.'
+                  : 'Sign in with the Google account your administrator added.'}
               </p>
             </div>
 
@@ -144,9 +148,7 @@ export function LoginPage() {
             )}
 
             <p className="text-muted-foreground mt-10 border-t pt-6 text-center text-xs leading-relaxed">
-              Access is granted by an administrator.
-              <br />
-              Can&apos;t sign in? Ask them to add your Google address.
+              Already in a space? Use the Google address its administrators added.
             </p>
             <p className="text-muted-foreground mt-3 text-center text-xs" data-testid="login-legal">
               By continuing you agree to the{' '}

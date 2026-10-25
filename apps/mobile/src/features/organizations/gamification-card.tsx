@@ -46,7 +46,7 @@ export function GamificationCard({ questQuest }: { questQuest: boolean }) {
           <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
             When on, a student who signs in answers the question bank’s questions that no person has approved
             yet, one at a time from the level their tutor sets, with no going back. Their tutor reviews each
-            answer and approves the question for every organization on the platform, or flags it. A student
+            answer and approves the question for every space on the platform, or flags it. A student
             earns a point for each answer and another when a correct answer is approved; a tutor earns a point
             for each review.
           </Text>

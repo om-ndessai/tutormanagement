@@ -32,6 +32,8 @@ export interface OrgFormState {
   email_notifications: boolean;
   /** Phase 50: the feature sets it is allowed; sent on create only. */
   features: Record<FeatureSet, boolean>;
+  /** Phase 51: whether its Quest reviews approve bank questions for everybody (edit only). */
+  quest_trusted: boolean;
 }
 
 const ALL_FEATURES: Record<FeatureSet, boolean> = { tutoring: true, assessment: true, quest: true };
@@ -48,6 +50,7 @@ export const EMPTY_ORG_FORM: OrgFormState = {
   builtin_institute: false,
   email_notifications: false,
   features: ALL_FEATURES,
+  quest_trusted: true,
 };
 
 /** "Lakeside Learning" -> "lakeside-learning", as a first suggestion. */
@@ -74,6 +77,7 @@ export function formFromOrganization(org: OrganizationListItem | null): OrgFormS
     builtin_institute: org.builtin_logo === 'institute',
     email_notifications: org.email_notifications,
     features: ALL_FEATURES,
+    quest_trusted: org.quest_trusted !== false,
   };
 }
 
@@ -142,4 +146,22 @@ export function featuresBody(
   };
   body[`feature_${set}`] = allowed;
   return body;
+}
+
+/**
+ * Phase 51 (the web's organization-dialog.tsx @ 9485a8e): after an edit, the features PUT to send
+ * when the Quest trust changed -- the three sets as they stand, with `quest_trusted` -- else null.
+ * (The sets themselves change on the organization screen's Feature sets section.)
+ */
+export function trustBody(
+  org: Pick<OrganizationListItem, 'feature_tutoring' | 'feature_assessment' | 'feature_quest' | 'quest_trusted'>,
+  trusted: boolean,
+): OrganizationFeaturesInput | null {
+  if ((org.quest_trusted !== false) === trusted) return null;
+  return {
+    feature_tutoring: featureAllowed(org, 'tutoring'),
+    feature_assessment: featureAllowed(org, 'assessment'),
+    feature_quest: featureAllowed(org, 'quest'),
+    quest_trusted: trusted,
+  };
 }

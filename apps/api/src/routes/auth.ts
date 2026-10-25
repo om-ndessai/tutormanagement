@@ -8,11 +8,17 @@ import {
   type AuthConfig,
   type SessionResponse,
   defaultOrganizationSchema,
+  PRIVACY_VERSION,
+  TERMS_VERSION,
+  ageBandFor,
+  signupSchema,
+  type SignupStart,
 } from '@tmi/shared';
 
 import { recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { verifyGoogleIdToken } from '../lib/google.js';
+import { createSignupToken, readSignupToken } from '../lib/signup-token.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { clientAddress, rateLimit } from '../lib/rate-limit.js';
 import {
@@ -35,12 +41,18 @@ import {
   getPublicBrand,
   listInvitations,
   listMemberships,
+  listMyJoinRequests,
   setDefaultOrganization,
   recordEntry,
 } from '../repositories/organizations.js';
 import {
+  accountDeletable,
   addPlatformAdmin,
   countPlatformAdmins,
+  createSignedUpPerson,
+  deleteOwnAccount,
+  getPersonByEmail,
+  getPlatformAccount,
   createPerson,
   getPersonById,
   isPlatformAdmin,
@@ -72,9 +84,11 @@ async function sessionPayload(
   impersonated: boolean,
   slug: string | undefined,
 ): Promise<SessionResponse> {
-  const [memberships, invitations] = await Promise.all([
+  const [memberships, invitations, account, joinRequests] = await Promise.all([
     listMemberships(env.DB, person.id),
     listInvitations(env.DB, person.id),
+    getPlatformAccount(env.DB, person.id),
+    listMyJoinRequests(env.DB, person.id),
   ]);
 
   let organization: SessionResponse['organization'] = null;
@@ -120,6 +134,8 @@ async function sessionPayload(
     memberships,
     invitations,
     platform_admin: platformAdmin,
+    account,
+    join_requests: joinRequests,
   };
 }
 
@@ -146,6 +162,7 @@ export const authRoutes = new Hono<AppEnv>()
       data: {
         google_client_id: enabled ? c.env.GOOGLE_CLIENT_ID : null,
         auth_enabled: enabled,
+        signup_open: c.env.SIGNUP_OPEN !== 'false',
         brand: brandOrg ? brandFromOrganization(brandOrg) : PLATFORM_BRAND,
       },
     };
@@ -165,7 +182,9 @@ export const authRoutes = new Hono<AppEnv>()
 
     // Phase 51: a burst of sign-in attempts from one address is slowed down.
     await rateLimit(c, 'sign_in', clientAddress(c));
-    const { credential } = c.req.valid('json');
+    const { credential, signup: asked } = c.req.valid('json');
+    // Phase 52: sign-up is offered only to a client that can show it, and only while it is open.
+    const canSignUp = Boolean(asked) && c.env.SIGNUP_OPEN !== 'false';
     const identity = await verifyGoogleIdToken(credential, c.env.GOOGLE_CLIENT_ID);
 
     const { person: found, pinnedToAnother } = await resolveSignIn(c.env.DB, identity);
@@ -201,6 +220,24 @@ export const authRoutes = new Hono<AppEnv>()
       }
     }
 
+    if (!person && canSignUp) {
+      // Phase 52: a newcomer. Nothing is written and nothing logged until they answer the age
+      // question; the token carries who Google says they are, for 15 minutes.
+      const body: ApiOk<SignupStart> = {
+        data: {
+          signup: {
+            token: await createSignupToken(
+              { sub: identity.sub, email: identity.email, name: identity.name?.trim() || identity.email },
+              c.env.SESSION_SECRET,
+            ),
+            email: identity.email,
+            name: identity.name?.trim() || identity.email,
+          },
+        },
+      };
+      return c.json(body);
+    }
+
     if (!person) {
       await recordAudit(c.env.DB, null, 'platform', {
         action: 'auth.denied',
@@ -227,8 +264,9 @@ export const authRoutes = new Hono<AppEnv>()
       listInvitations(c.env.DB, person.id),
     ]);
 
-    // Somebody with nowhere to go and nothing to answer has no business here.
-    if (!platformAdmin && memberships.length === 0 && invitations.length === 0) {
+    // Somebody with nowhere to go and nothing to answer has no business here -- unless this client
+    // can show them the Welcome page (Phase 52: join a space with its code, or make one).
+    if (!platformAdmin && memberships.length === 0 && invitations.length === 0 && !canSignUp) {
       await recordAudit(c.env.DB, null, 'platform', {
         action: 'auth.denied',
         description: `Sign-in refused for ${identity.email}: no organization`,
@@ -389,6 +427,88 @@ export const authRoutes = new Hono<AppEnv>()
       ),
     };
     return c.json(body);
+  })
+
+  /**
+   * Phase 52: a newcomer's age and their acceptance of the terms. Under 13: refused, and nothing
+   * is stored -- no row, no log line naming them. Otherwise the person is made and signed in.
+   * With sign-in off (local, the demo) a `dev_email` stands in for the token.
+   */
+  .post('/signup', zValidator('json', signupSchema), async (c) => {
+    if (c.env.SIGNUP_OPEN === 'false') {
+      throw new ApiError(403, 'forbidden', 'Sign-up is not open yet.');
+    }
+    const input = c.req.valid('json');
+    await rateLimit(c, 'space_write', clientAddress(c));
+    let claims: { sub: string | null; email: string; name: string };
+    if (input.token) {
+      const read = await readSignupToken(input.token, c.env.SESSION_SECRET);
+      claims = { sub: read.sub, email: read.email.toLowerCase(), name: read.name };
+    } else if (!isAuthEnabled(c.env) && input.dev_email) {
+      claims = { sub: null, email: input.dev_email.toLowerCase(), name: input.dev_name?.trim() || input.dev_email };
+    } else {
+      throw ApiError.badRequest('Sign in with Google first.');
+    }
+
+    const band = ageBandFor(input.birth_year, input.birth_month, new Date());
+    if (band === 'under13') {
+      throw new ApiError(403, 'too_young', 'You need to be 13 or older to have an account. Ask a parent to add you to their space.');
+    }
+    if (input.terms_version !== TERMS_VERSION || input.privacy_version !== PRIVACY_VERSION) {
+      throw ApiError.validation('Please correct the highlighted fields.', { terms_version: ['Read and accept the current terms.'] });
+    }
+    if (await getPersonByEmail(c.env.DB, claims.email)) {
+      throw ApiError.conflict('That address already has an account. Sign in instead.');
+    }
+
+    let person: Person;
+    try {
+      person = await createSignedUpPerson(c.env.DB, {
+        email: claims.email,
+        fullName: claims.name,
+        googleSub: claims.sub,
+        ageBand: band,
+        termsVersion: input.terms_version,
+        privacyVersion: input.privacy_version,
+      });
+    } catch (error) {
+      if (isUniqueConstraintError(error)) throw ApiError.conflict('That address already has an account. Sign in instead.');
+      throw error;
+    }
+    // On the platform log: the account was made. Never the age, never a birth date.
+    await recordAudit(c.env.DB, person, 'platform', {
+      action: 'account.created',
+      description: `${person.full_name} signed up`,
+      entity_type: 'user',
+      entity_id: person.id,
+    });
+
+    if (isAuthEnabled(c.env)) {
+      const token = await createSessionToken(person.id, c.env.SESSION_SECRET);
+      c.header('Set-Cookie', sessionCookie(token, isProduction(c.env)));
+    }
+    const body: ApiOk<SessionResponse> = { data: await sessionPayload(c.env, person, false, !isAuthEnabled(c.env), undefined) };
+    return c.json(body, 201);
+  })
+
+  /**
+   * Phase 52: a person deletes their own account, once they belong to no space and have no open
+   * request. Their name, address, phone and Google id go; the platform log keeps that it happened.
+   */
+  .delete('/account', requireAuth, async (c) => {
+    const person = c.get('person');
+    if (!(await accountDeletable(c.env.DB, person.id))) {
+      throw ApiError.conflict('Leave every space (or ask its administrators to remove you) before deleting your account.');
+    }
+    await deleteOwnAccount(c.env.DB, person.id);
+    await recordAudit(c.env.DB, null, 'platform', {
+      action: 'account.deleted',
+      description: 'An account was deleted by its owner',
+      entity_type: 'user',
+      entity_id: person.id,
+    });
+    c.header('Set-Cookie', clearedSessionCookie(isProduction(c.env)));
+    return c.body(null, 204);
   })
 
   .post('/logout', async (c) => {

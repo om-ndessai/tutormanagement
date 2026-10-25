@@ -4,6 +4,8 @@ import {
   STUDENT_STEP_FIELDS,
   TUTOR_STEP_FIELDS,
   childrenByParent,
+  consentIssue,
+  consentNeeded,
   familyIssues,
   parentLine,
   pickErrors,
@@ -84,4 +86,22 @@ test("a parent's row names their children, else shows their email", () => {
   expect(parentLine(children[RAJ], 'raj@example.com')).toBe('raj@example.com');
   expect(parentLine(['Sofia Patel'], null)).toBe('Parent of Sofia');
   expect(parentLine(undefined, null)).toBeUndefined();
+});
+
+describe('consent in a self-serve space (Phase 52)', () => {
+  const selfServe = { created_via: 'self_serve' as const };
+  const console_ = { created_via: 'console' as const };
+  it('is needed for a student added to a self-serve space only', () => {
+    expect(consentNeeded({ roles: ['student'] }, selfServe)).toBe(true);
+    expect(consentNeeded({ roles: ['parent'] }, selfServe)).toBe(false);
+    expect(consentNeeded({ roles: ['student'] }, console_)).toBe(false);
+    expect(consentNeeded({ roles: ['student'] }, null)).toBe(false);
+  });
+  it('is the server’s sentence until ticked', () => {
+    expect(consentIssue({ roles: ['student'] }, selfServe, false)).toBe(
+      'Confirm you are their parent or guardian, or have their permission.',
+    );
+    expect(consentIssue({ roles: ['student'] }, selfServe, true)).toBeNull();
+    expect(consentIssue({ roles: ['student'] }, console_, false)).toBeNull();
+  });
 });

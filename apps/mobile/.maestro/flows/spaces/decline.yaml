@@ -1,0 +1,82 @@
+# Phase 52 (design 63): an admin declines a request to join, behind a confirm; the person who asked
+# sees the decline once, on the Welcome, and as a 13-17 has no way to make a space of their own.
+# Self-cleaning: any old decline is marked seen, and Theo's request to Riverside (the seed's) is
+# asked again, before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: seen, EMAIL: theo.teen@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: ask, EMAIL: theo.teen@example.com, CODE: RVRS2345 }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: seen, EMAIL: theo.teen@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: ask, EMAIL: theo.teen@example.com, CODE: RVRS2345 }
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: rosa.delgado.tutoring@gmail.com
+      ORG: riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: join-requests
+    timeout: 20000
+- assertVisible:
+    id: join-requests-count
+- assertVisible: 'Theo Teen'
+- takeScreenshot: spaces-people-request
+- tapOn:
+    id: join-request-decline-.*
+- extendedWaitUntil:
+    visible: 'Decline Theo Teen’s request?'
+    timeout: 5000
+- tapOn: 'Decline request'
+- extendedWaitUntil:
+    visible: 'Theo Teen’s request declined.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: join-requests
+    timeout: 15000
+# Theo sees it, once.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: theo.teen@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-declined-riverside
+    timeout: 30000
+- assertVisible: 'Riverside Tutoring didn’t accept your request to join.'
+- assertVisible:
+    id: welcome-make-adults
+- assertNotVisible:
+    id: welcome-make
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: theo.teen@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-join
+    timeout: 30000
+- assertNotVisible:
+    id: welcome-declined-riverside

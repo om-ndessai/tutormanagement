@@ -37,12 +37,12 @@ export function OrganizationsPage() {
   return (
     <>
       <PageHeader
-        title="Organizations"
+        title="Spaces"
         description="Each one has its own people, records and look. Create one, then add its first admin."
         actions={
           <Button onClick={() => openFor(null)}>
             <PlusIcon />
-            New organization
+            New space
           </Button>
         }
       />
@@ -55,11 +55,11 @@ export function OrganizationsPage() {
       ) : rows.length === 0 ? (
         <Card className="py-0">
           <CardContent className="p-6 text-sm">
-            No organizations yet. Create the first, then add its admin -- they take it from there.
+            No spaces yet. Create the first, then add its admin -- they take it from there.
           </CardContent>
         </Card>
       ) : (
-        <ul className="grid gap-3" aria-label="Organizations">
+        <ul className="grid gap-3" aria-label="Spaces">
           {rows.map((org) => (
             <li key={org.id}>
               <Card className={org.archived_at ? 'py-0 opacity-70' : 'py-0'}>

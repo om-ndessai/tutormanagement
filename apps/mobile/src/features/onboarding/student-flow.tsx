@@ -7,13 +7,17 @@
 // UI upgrades U3 the family and the student are one step: the Add a student flow, which starts with
 // the family and adds a new parent inside it (`/onboarding/add-student`, in the wizard's own stack).
 // The sheets say what they saved (`form-bridge`), which moves the flow on. Any step may be
-// skipped, and whatever was already added stays.
-import { featureAllowed, featureOn } from '@tmi/shared';
+// skipped, and whatever was already added stays. Phase 52 (@ 9485a8e): "This is my child" makes the
+// reader the family -- gaining the parent role if need be -- and opens the flow with them chosen.
+import { featureAllowed, featureOn, type User, type UserRole } from '@tmi/shared';
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-native-paper';
 
 import { Screen } from '@/components/screen';
+import { useToast } from '@/components/toast';
+import { useUpdateUser } from '@/features/users/api';
+import { problemMessage } from '@/lib/api-errors';
 import { onFormSaved, type SavedForm } from '@/lib/form-bridge';
 import { useAuth } from '@/providers/auth-provider';
 import { FlowSteps, StepPanel, StepText } from './flow-steps';
@@ -76,10 +80,27 @@ export function useAwaitedSheet() {
   };
 }
 
+/**
+ * Phase 52: "This is my child". The reader becomes the family: without the parent role it is added
+ * to the roles they hold (a PATCH of the roles alone), and the session re-read so the role shows.
+ */
+export async function becomeParent(
+  user: Pick<User, 'id' | 'roles'>,
+  update: (input: { id: string; input: { roles: UserRole[] } }) => Promise<unknown>,
+  refreshSession: () => Promise<void>,
+): Promise<void> {
+  if (user.roles.includes('parent')) return;
+  await update({ id: user.id, input: { roles: [...user.roles, 'parent'] } });
+  await refreshSession();
+}
+
 export function StudentFlow() {
   const { leaveFor } = useWizardFrame();
   const openSheet = useAwaitedSheet();
-  const { organization } = useAuth();
+  const { organization, user, refreshSession } = useAuth();
+  const updateUser = useUpdateUser();
+  const toast = useToast();
+  const [claiming, setClaiming] = useState(false);
   const tutoring = featureAllowed(organization, 'tutoring');
   const assessment = featureOn(organization, 'assessment');
   const steps = studentFlowSteps({ tutoring, assessment });
@@ -98,6 +119,25 @@ export function StudentFlow() {
     setStep('student');
     setDone(new Set());
     setStudent(null);
+  }
+
+  const openAddStudent = (href: Href) =>
+    openSheet(href, 'person', (id, name) => {
+      setStudent({ id, name });
+      complete('student', afterStudent);
+    });
+
+  async function myChild() {
+    if (!user) return;
+    setClaiming(true);
+    try {
+      await becomeParent(user, (input) => updateUser.mutateAsync(input as never), refreshSession);
+      openAddStudent({ pathname: '/onboarding/add-student', params: { guardian: 'me' } });
+    } catch (caught) {
+      toast.error(problemMessage(caught, 'Could not make you their parent. Try again.'));
+    } finally {
+      setClaiming(false);
+    }
   }
 
   const skip = (next: Step) => (
@@ -131,14 +171,19 @@ export function StudentFlow() {
                 testID="student-flow-add-student"
                 mode="contained"
                 icon="plus"
-                onPress={() =>
-                  openSheet('/onboarding/add-student', 'person', (id, name) => {
-                    setStudent({ id, name });
-                    complete('student', afterStudent);
-                  })
-                }
+                onPress={() => openAddStudent('/onboarding/add-student')}
               >
                 Add the student
+              </Button>
+              <Button
+                testID="student-flow-my-child"
+                mode="outlined"
+                icon="account-child-outline"
+                loading={claiming}
+                disabled={claiming}
+                onPress={() => void myChild()}
+              >
+                This is my child
               </Button>
               {skip('done')}
             </>

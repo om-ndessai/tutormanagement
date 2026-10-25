@@ -7,6 +7,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { AIM_AMBER, AIM_AMBER_INK, AIM_AMBER_TEXT, GOOGLE_G } from '@/theme/brand-art';
 import { radius, space } from '@/theme/tokens';
 
+import { LegalLine } from './legal-links';
 import {
   WORDMARK_AIM,
   WORDMARK_ARROW_HEAD,
@@ -195,9 +196,8 @@ export function Welcome({ busy, onSignIn }: { busy: boolean; onSignIn: () => voi
             Sign in with Google
           </Text>
         </Pressable>
-        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-          Access granted by admin
-        </Text>
+        {/* Phase 51: anyone may sign in now; continuing accepts the terms. */}
+        <LegalLine testID="sign-in-legal" ids={{ terms: 'sign-in-terms', privacy: 'sign-in-privacy' }} />
       </View>
 
       <Pressable

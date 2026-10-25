@@ -13,6 +13,10 @@ tags:
     visible:
       id: screen-select-organization
     timeout: 20000
+# Phase 52: on screen it is a space, and there is a way to join or make another.
+- assertVisible: 'Choose a space'
+- assertVisible:
+    id: select-join-space
 - assertVisible:
     id: org-chmi
 - assertVisible:

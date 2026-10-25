@@ -242,7 +242,7 @@ export function Form1099Body({ tutor, year }: { tutor: TutorTaxStatus; year: num
         <TextInput
           testID="form-1099-payer-tin"
           mode="outlined"
-          label={`Payer’s TIN ${settingsTin ? '(from the organization settings)' : '(optional)'}`}
+          label={`Payer’s TIN ${settingsTin ? '(from the Space settings)' : '(optional)'}`}
           value={payerTin}
           onChangeText={setPayerTin}
           placeholder="The organization’s EIN"
@@ -262,7 +262,7 @@ export function Form1099Body({ tutor, year }: { tutor: TutorTaxStatus; year: num
         />
         {!settingsTin ? (
           <HelperText type="info" padding="none">
-            Add the TIN on the Organization settings page and it will fill the payer box for you.
+            Add the TIN on the Space page and it will fill the payer box for you.
           </HelperText>
         ) : null}
       </View>

@@ -31,11 +31,12 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
-import { useCreateOrganization, useOrganizations, useUpdateOrganization } from './api';
+import { useCreateOrganization, useOrganizations, useUpdateOrganization, useUpdateOrganizationFeatures } from './api';
 import {
   formFromOrganization,
   palettesOnOffer,
   slugFrom,
+  trustBody,
   validateOrgForm,
   type OrgFormState,
 } from './org-form';
@@ -49,7 +50,7 @@ export function OrganizationFormSheet({ id }: { id?: string }) {
   const existing = id ? (organizations.data?.data.find((row) => row.id === id) ?? null) : null;
 
   let body;
-  if (id && organizations.isPending) body = <FormSkeleton label="Loading the organization…" fields={5} />;
+  if (id && organizations.isPending) body = <FormSkeleton label="Loading the space…" fields={5} />;
   else if (id && (organizations.isError || !existing))
     body = (
       <ErrorState
@@ -72,6 +73,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   const muted = theme.tokens.mutedForeground;
   const create = useCreateOrganization();
   const update = useUpdateOrganization();
+  const updateFeatures = useUpdateOrganizationFeatures();
   const [form, setForm] = useState<OrgFormState>(() => formFromOrganization(existing));
   const [slugTouched, setSlugTouched] = useState(Boolean(existing));
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -79,7 +81,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   // What was typed is not lost to a swipe or Back (ux-audit F-3).
   const dirty = useDirty(form);
   const { leave } = useUnsavedChangesGuard(dirty);
-  const pending = create.isPending || update.isPending;
+  const pending = create.isPending || update.isPending || updateFeatures.isPending;
 
   function set<K extends keyof OrgFormState>(key: K, value: OrgFormState[K]) {
     setForm((previous) => ({ ...previous, [key]: value }));
@@ -98,6 +100,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
     try {
       if (existing) {
         await update.mutateAsync({ id: existing.id, input: verdict.input });
+        const trust = trustBody(existing, form.quest_trusted);
+        if (trust) await updateFeatures.mutateAsync({ id: existing.id, input: trust });
         toast.success(`${form.name} saved.`);
       } else {
         await create.mutateAsync(verdict.input);
@@ -109,7 +113,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         setErrors(caught.status === 409 ? { slug: caught.message } : caught.fieldErrors);
         toast.error(caught.message);
       } else {
-        toast.error('Could not save the organization.');
+        toast.error('Could not save the space.');
       }
     }
   }
@@ -141,7 +145,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
     <View style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          {existing ? existing.name : 'New organization'}
+          {existing ? existing.name : 'New space'}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {existing
@@ -203,7 +207,36 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         />
       </View>
 
-      {existing ? null : (
+      {existing ? (
+        // Phase 51: a space whose Quest reviews only suggest approvals, for the console to decide.
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            gap: space.md,
+            borderWidth: 1,
+            borderColor: theme.colors.outlineVariant,
+            borderRadius: radius.md,
+            padding: space.md,
+          }}
+        >
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text variant="bodyMedium">Quest reviews approve questions</Text>
+            <Text variant="bodySmall" style={{ color: muted }}>
+              Off: its tutors’ “Question is right” only suggests the approval here, in the console.
+            </Text>
+          </View>
+          <Switch
+            testID="org-form-quest-trusted"
+            accessibilityLabel="Quest reviews approve questions"
+            value={form.quest_trusted}
+            onValueChange={(value) => {
+              haptics.selection();
+              set('quest_trusted', value);
+            }}
+          />
+        </View>
+      ) : (
         // Phase 50: what it may use, all ticked unless unticked. Editing leaves them to the
         // organization screen's Feature sets section.
         <Field label="Feature sets">
@@ -280,7 +313,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
           loading={pending}
           disabled={pending}
         >
-          {existing ? 'Save' : 'Create organization'}
+          {existing ? 'Save' : 'Create space'}
         </Button>
       </View>
     </View>

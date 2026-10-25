@@ -122,7 +122,7 @@ export function SearchScreen() {
       key: `org-${membership.slug}`,
       testID: `search-action-org-${membership.slug}`,
       label: `Switch to ${membership.name}`,
-      value: `switch organization ${membership.name}`,
+      value: `switch space ${membership.name} organization`,
       icon: 'swap-horizontal',
       run: () => {
         haptics.selection();
@@ -136,7 +136,7 @@ export function SearchScreen() {
             key: 'platform',
             testID: 'search-action-platform',
             label: 'Platform console',
-            value: 'platform console organizations',
+            value: 'platform console spaces organizations',
             icon: 'shield-check-outline',
             run: () => {
               haptics.selection();

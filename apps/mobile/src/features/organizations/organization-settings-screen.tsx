@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322 (the
 // Assessment card, Phase 38, @ 22b9701; the Gamification card, Phase 42, @ 82397b8; Phase 50's
 // feature sets @ 2471d84, working tree: each card shows only where its set is allowed, and the
-// platform's facts name the allowed sets).
+// platform's facts name the allowed sets; Phase 52's space code, danger panel and words @ 9485a8e).
 //
 // The organization's own settings, for its admins: the payer box on every 1099 it issues. Its name,
 // look and clock are set by the platform, and shown here for reference. The organization's name on
@@ -37,12 +37,14 @@ import {
   useCurriculumOfferings,
   useOrganizationNotifications,
   useOrganizationSettings,
+  useSpaceCode,
   useUpdateOrganizationSettings,
 } from './api';
 import { CanvasAssessmentsCard } from './canvas-assessments-card';
 import { CurriculaCard } from './curricula-card';
 import { GamificationCard } from './gamification-card';
 import { EmailNotificationsCard } from './notifications-card';
+import { SpaceCodePanel, SpaceDangerPanel } from './space-code-card';
 import { formFromSettings, validateForm, type PayerField, type SettingsForm } from './settings-form';
 
 export function OrganizationSettingsScreen() {
@@ -50,14 +52,21 @@ export function OrganizationSettingsScreen() {
   const theme = useAppTheme();
   const isAdmin = Boolean(user?.roles.includes('admin'));
   const settings = useOrganizationSettings(isAdmin);
-  const notifications = useOrganizationNotifications(isAdmin);
+  // A self-serve space has no email card (Phase 51), so its log is not asked for.
+  const notifications = useOrganizationNotifications(isAdmin && organization?.created_via !== 'self_serve');
   const offerings = useCurriculumOfferings(isAdmin);
+  const code = useSpaceCode(isAdmin);
   const [refreshing, setRefreshing] = useState(false);
 
   async function onRefresh() {
     setRefreshing(true);
     try {
-      await Promise.all([settings.refetch(), notifications.refetch(), offerings.refetch()]);
+      await Promise.all([
+        settings.refetch(),
+        organization?.created_via !== 'self_serve' ? notifications.refetch() : null,
+        offerings.refetch(),
+        code.refetch(),
+      ]);
     } finally {
       setRefreshing(false);
     }
@@ -69,9 +78,9 @@ export function OrganizationSettingsScreen() {
   if (!isAdmin) {
     return (
       <Screen testID="screen-organization">
-        <Stack.Screen options={{ title: 'Organization' }} />
+        <Stack.Screen options={{ title: 'Space' }} />
         <Text testID="organization-stub" variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-          Only an administrator can see the organization’s settings.
+          Only an administrator can see the space’s settings.
         </Text>
       </Screen>
     );
@@ -79,14 +88,17 @@ export function OrganizationSettingsScreen() {
 
   return (
     <Screen testID="screen-organization" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <Stack.Screen options={{ title: 'Organization' }} />
+      <Stack.Screen options={{ title: 'Space' }} />
       {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). Tutoring's alone (Phase 50). */}
       {tutoring ? <SecureMoney tag="organization" /> : null}
       <PageIntro>
         {tutoring
           ? `What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`
-          : `What ${organization.name} teaches from, and how the portal presents it.`}
+          : `${organization.name}: its code, what it teaches from, and how it is set up.`}
       </PageIntro>
+
+      {/* Phase 52: on a phone the code is what a new space's admin came for, so it leads. */}
+      <SpaceCodePanel />
 
       {settings.isPending ? (
         <DetailSkeleton label="Loading the settings…" rows={5} />
@@ -121,7 +133,10 @@ export function OrganizationSettingsScreen() {
         </View>
       </Panel>
 
-      <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+      {/* Phase 51: a self-serve space sends no email under the platform's sender. */}
+      {organization.created_via !== 'self_serve' ? (
+        <EmailNotificationsCard enabled={settings.data?.data.email_notifications ?? false} />
+      ) : null}
 
       <CurriculaCard />
 
@@ -136,6 +151,8 @@ export function OrganizationSettingsScreen() {
       {featureAllowed(organization, 'quest') ? (
         <GamificationCard questQuest={settings.data?.data.gamify_question_quest ?? false} />
       ) : null}
+
+      <SpaceDangerPanel />
     </Screen>
   );
 }
@@ -176,7 +193,7 @@ function PayerForm({ initial }: { initial: SettingsForm }) {
     }
     try {
       await update.mutateAsync(verdict.payload);
-      toast.success('Organization settings saved.');
+      toast.success('Space settings saved.');
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
@@ -210,7 +227,7 @@ function PayerForm({ initial }: { initial: SettingsForm }) {
     <Panel title="1099 payer" testID="org-payer">
       <View style={{ gap: space.md }}>
         {field('tin', 'Payer TIN', {
-          hint: 'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+          hint: 'The EIN the space files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
           placeholder: '12-3456789',
           autoComplete: 'off',
           autoCapitalize: 'none',

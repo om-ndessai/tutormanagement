@@ -33,6 +33,8 @@ const ORG_TABLES = [
   'quest_games', 'quest_game_teams', 'quest_game_players', 'quest_game_favorites', 'quest_game_seen',
   // Phase 51: a space's suggested approvals of bank questions.
   'question_suggestions',
+  // Phase 52: a space's join requests and parents' consents.
+  'join_requests', 'consents',
   // The catalog (Phase 34): read only through an organization's list, so an
   // unjoined query on levels or topics would hand out curricula it does not offer.
   'curricula', 'organization_curricula', 'curriculum_levels', 'curriculum_topics',

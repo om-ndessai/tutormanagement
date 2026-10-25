@@ -24,7 +24,7 @@ tags:
     timeout: 15000
 - assertNotVisible:
     id: screen-platform
-- assertNotVisible: 'New organization'
+- assertNotVisible: 'New space'
 # The question bank (#54): its tab and its Review, by link, land on Home too.
 - runFlow:
     file: ../../subflows/open-link.yaml

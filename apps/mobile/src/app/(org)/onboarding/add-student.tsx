@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { AddStudentFlow } from '@/features/users/add-student-flow';
 
@@ -7,10 +7,12 @@ import { AddStudentFlow } from '@/features/users/add-student-flow';
  * rather than beneath its full-screen modal, and closed back to the wizard on success.
  */
 export default function OnboardingAddStudent() {
+  // `?guardian=me` (Phase 52, "This is my child"): the reader is the family, chosen on the first step.
+  const { guardian } = useLocalSearchParams<{ guardian?: string }>();
   return (
     <>
       <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} />
-      <AddStudentFlow fromWizard />
+      <AddStudentFlow fromWizard guardian={guardian} />
     </>
   );
 }

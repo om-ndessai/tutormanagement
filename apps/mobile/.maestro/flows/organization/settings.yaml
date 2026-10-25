@@ -49,7 +49,7 @@ tags:
 - tapOn:
     id: org-save
 - extendedWaitUntil:
-    visible: 'Organization settings saved.'
+    visible: 'Space settings saved.'
     timeout: 10000
 # Pulled to refresh, the page reads it back from the server.
 - scrollUntilVisible:
@@ -86,4 +86,4 @@ tags:
     direction: UP
     timeout: 10000
 - takeScreenshot: organization-ssn-refused
-- assertNotVisible: 'Organization settings saved.'
+- assertNotVisible: 'Space settings saved.'

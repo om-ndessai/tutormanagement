@@ -8,6 +8,7 @@ import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
 import { ReleasePhase } from '@/components/release-phase';
 import { PERSONAS } from '@/dev/personas';
+import { LegalLine } from '@/features/auth/legal-links';
 import { SignInError } from '@/features/auth/sign-in-error';
 import { Welcome } from '@/features/auth/welcome';
 import { GoogleButton } from '@/lib/google-sign-in';
@@ -28,17 +29,35 @@ import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
  * - otherwise a plain message saying why there is no way in from this build.
  */
 export default function SignInScreen() {
-  const { config, googleAvailable, signInWithGoogle, signInAsDevUser, error, clearError } = useAuth();
+  const { config, googleAvailable, signInWithGoogle, signInAsDevUser, error, clearError, pendingSignup, startDevSignup } =
+    useAuth();
   const brand = useBrand();
   const theme = useAppTheme();
   const [email, setEmail] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
+  // The address last tried with developer sign-in: an unknown one may be signed up (Phase 52).
+  const [tried, setTried] = useState<string | null>(null);
   const devSignIn = DEV_TOOLS && config?.auth_enabled === false;
 
-  // A refusal is felt as well as read; a cancelled Google sheet sets no error, so says nothing.
+  // A refusal is felt as well as read; a cancelled Google sheet sets no error, so says nothing. A
+  // rate limit is not the person's fault: no error haptic (Phase 51).
   useEffect(() => {
-    if (error) haptics.error();
+    if (error && error.code !== 'rate_limited') haptics.error();
   }, [error]);
+
+  // Phase 52: a newcomer answers the age question next.
+  useEffect(() => {
+    if (pendingSignup) router.replace('/sign-up');
+  }, [pendingSignup]);
+
+  const errorView = error ? (
+    <SignInError
+      code={error.code}
+      message={error.message}
+      signUpEmail={devSignIn ? tried : null}
+      onSignUp={tried ? () => startDevSignup(tried) : undefined}
+    />
+  ) : null;
 
   async function signInGoogle() {
     setBusy('google');
@@ -49,6 +68,7 @@ export default function SignInScreen() {
 
   async function signIn(address: string) {
     setBusy(address);
+    setTried(address.trim());
     clearError();
     await signInAsDevUser(address);
     setBusy(null);
@@ -59,7 +79,7 @@ export default function SignInScreen() {
     return (
       <Screen testID="screen-sign-in" edges={['top', 'bottom']} scroll={false}>
         <Welcome busy={busy === 'google'} onSignIn={() => void signInGoogle()} />
-        {error ? <SignInError code={error.code} message={error.message} /> : null}
+        {errorView}
         <ReleasePhase />
       </Screen>
     );
@@ -156,7 +176,7 @@ export default function SignInScreen() {
             Staff portal
           </Text>
           <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-            Sign in with the Google account your administrator added.
+            Sign in with your Google account. New here? You can join a space with its code, or make your own.
           </Text>
           {/* Google's own button: its "G" mark and "Sign in with Google", as its branding asks. */}
           <View style={{ alignItems: 'center' }}>
@@ -181,8 +201,9 @@ export default function SignInScreen() {
             ) : null}
           </View>
           <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>
-            Access is granted by an administrator.{'\n'}Can’t sign in? Ask them to add your Google address.
+            Already in a space? Use the Google address its administrators added.
           </Text>
+          <LegalLine testID="sign-in-legal" ids={{ terms: 'sign-in-terms', privacy: 'sign-in-privacy' }} />
         </Surface>
       ) : config?.auth_enabled ? (
         <Surface
@@ -209,7 +230,10 @@ export default function SignInScreen() {
         </Surface>
       )}
 
-      {error ? <SignInError code={error.code} message={error.message} /> : null}
+      {errorView}
+      {devSignIn ? (
+        <LegalLine testID="sign-in-legal" ids={{ terms: 'sign-in-terms', privacy: 'sign-in-privacy' }} />
+      ) : null}
       <ReleasePhase />
     </Screen>
   );

@@ -196,7 +196,7 @@ export function OrganizationDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{existing ? existing.name : 'New organization'}</DialogTitle>
+          <DialogTitle>{existing ? existing.name : 'New space'}</DialogTitle>
           <DialogDescription>
             {existing
               ? 'Its identity and look. Its own admins keep its payer details.'
@@ -270,6 +270,7 @@ export function OrganizationDialog({
                   <p className="text-muted-foreground text-xs">{FEATURE_SET_DESCRIPTIONS[set]}</p>
                 </div>
                 <NotificationsSwitch
+                  label={FEATURE_SET_LABELS[set]}
                   id={`org-feature-${set}`}
                   checked={form[`feature_${set}`]}
                   onCheckedChange={(checked) => set_(`feature_${set}`, checked)}
@@ -287,6 +288,7 @@ export function OrganizationDialog({
                   </p>
                 </div>
                 <NotificationsSwitch
+                  label="Quest reviews approve questions"
                   id="org-quest-trusted"
                   checked={form.quest_trusted}
                   onCheckedChange={(checked) => set('quest_trusted', checked)}
@@ -368,7 +370,7 @@ export function OrganizationDialog({
             {existing ? 'Close' : 'Cancel'}
           </Button>
           <Button type="submit" form="organization-form" disabled={create.isPending || update.isPending}>
-            {existing ? 'Save' : 'Create organization'}
+            {existing ? 'Save' : 'Create space'}
           </Button>
         </DialogFooter>
       </DialogContent>

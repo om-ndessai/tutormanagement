@@ -3297,3 +3297,513 @@ source.
     - Android reports the Assessment card by its switch.
   - **Cleanup.** The e2e build was uninstalled from both devices afterwards. On Android the dev app was
     disabled for the run, because both apps answer `aimtrue://`, then re-enabled.
+## 63. Phases 51 and 52: groundwork and spaces, in the app — design (2026-10-24)
+**Scope:** the web's Phases 51 and 52 at parity (`docs/open-signup-plan.md`; R6 and R21 in
+`docs/data-exposure.md`). Builds on entry 62 (Phase 50: `featureAllowed` / `featureOn`, `FeatureGate`, the
+Assessment home, the tab bar without Tutoring, the console's feature-set switches), which is assumed built.
+The API, the shared contract, the seed and the web are done on `p52`: **no change to `apps/api`,
+`packages/shared` or `apps/web` comes from this work** except where noted as a question below.
+1. **Signing up.** Google sign-in sends `signup: true`; an unknown account's `{ signup: { token, email,
+   name } }` opens an About-you screen (birth month and year, the terms). Under 13: "Ask a parent to add
+   you", nothing kept. Then the Welcome screen. With sign-in off, a typed email the server does not know
+   (today a 404 `not_found`) offers "Sign up as …", which signs up with `dev_email` / `dev_name`, so Maestro
+   can walk the whole path.
+2. **The Welcome screen** (a person in no space): join with a code (look up, then Ask to join), requests
+   waiting with Withdraw, a decline shown once (then `POST …/seen`), make a space (adults), delete my
+   account. The same body, minus Delete, as "Join or make another space" from the picker and the account sheet.
+3. **The Space screen** (was Organization): the code card (Copy, Share, Make a new code, joining on/off),
+   Leave, Delete the space (a self-serve space's admin, typing its name), the email card hidden in a
+   self-serve space. My profile: Leave (a non-admin), the terms and privacy links.
+4. **People:** Requests to join (admins): Let in opens the person form prefilled; Decline. The parent's
+   consent in the add-student paths of a self-serve space. "This is my child" in the welcome wizard.
+5. **Phase 51:** terms and privacy links (sign-in, sign-up, profile); the Quest review's untrusted toast;
+   the console's "Suggested by spaces" queue and badge, and its Quest trust switch; the new fields in the
+   test fixtures; a 429 `rate_limited` shown calmly. The invitation fix (R6: the typed name, no phone, no
+   lock until accepted) and auto-accept are server-side: the app renders what it is given, and needs no
+   change (its person detail already shows a missing phone as none).
+6. **"Space" for "Organization"** in everything the app shows (the list is below).
+
+Mobile-only additions, each because a phone differs: a native confirm before Decline, Make a new code,
+Leave and Delete my account (the web acts on the click; a mis-tap on a phone is easy and two of them are
+final); the request's email read-only in the Let-in form (the server refuses any other address); a
+"Delete my account" row on My profile that explains the order (Apple asks for deletion to be findable in
+the app); the code read out character by character to a screen reader.
+
+**Web sources:** `apps/web/src/providers/auth-provider.tsx` (`pendingSignup`, `completeSignup`,
+`account`, `joinRequests`, `signup: true`), `features/auth/{login-page.tsx (the new copy and the legal
+line), signup-page.tsx}`, `features/organizations/{api.ts (the Phase 52 block), welcome.tsx (Welcome,
+OpenRequests, JoinWithCode, MakeSpace, DeleteAccount), space-code-card.tsx (SpaceCodeCard,
+SpaceDangerCard), select-organization-page.tsx, organization-settings-page.tsx, org-avatar.tsx,
+org-switcher.tsx}`, `features/users/{join-requests-panel.tsx, user-form-dialog.tsx (preset name/email,
+joinRequestUserId, parentConsent), users-page.tsx}`, `features/onboarding/student-flow.tsx
+(iAmTheParent)`, `features/quest/quest-review-page.tsx`, `features/question-bank/{api.ts,
+question-bank-page.tsx, question-card.tsx, review-page.tsx}`, `features/platform/{organization-dialog.tsx,
+organizations-page.tsx, platform-*-page.tsx, platform-shell.tsx}`, `pages/{legal-page.tsx,
+profile-page.tsx}`, `components/layout/{app-shell.tsx, user-menu.tsx}`, `lib/api-client.ts` (delete with a
+body). The wording: `git -C .claude/worktrees/p52 log -p -3 -- apps/web`. Behaviour: `e2e/tests/{spaces,
+groundwork,exposure-spaces}.spec.ts`. Shared: `spaces.ts`, `legal.ts`, `limits.ts`, `auth.ts`,
+`organizations.ts` (`created_via`, `quest_trusted`), `features.ts` (`quest_trusted`), `profiles.ts`
+(`join_request_user_id`, `parent_consent`), `questions.ts` (`suggested`, `suggestions`), `api.ts`
+(`rate_limited`, `too_young`).
+
+**Endpoints:** (`src/features/organizations/api.ts` gains the web's Phase 52 block, line for line, the
+same keys: `['organization','code']`, `['organization','join-requests']`; `src/lib/api-client.ts`'s
+`delete(path, body?)` as the web's)
+- `POST /auth/google` `{ credential, signup: true }` — `signInWithGoogle` (AuthProvider) — anyone.
+  `SessionResponse | SignupStart`; a `signup` answer is held in memory, never stored. The silent renewal
+  (`renewWithGoogle`) sends no `signup`, so a deleted account fails renewal (403) rather than starting one.
+- `POST /auth/signup` `{ token | dev_email, dev_name?, birth_year, birth_month, terms_version,
+  privacy_version }` — `completeSignup` (AuthProvider) — public. 201 `SessionResponse`; 403 `too_young`;
+  409 (the address has an account); 429.
+- `DELETE /auth/account` — `useDeleteAccount()` — the person, with no space and no open request (else 409,
+  the server's sentence).
+- `GET /auth/session` — `account` and `join_requests` read into AuthProvider.
+- `POST /spaces/lookup {code}` — `useLookupSpace()` — signed in (no organization); 404 for no code, or
+  joining off; 429.
+- `POST /spaces/join-requests {code}` — `useAskToJoin()` (then `refreshSession`); 409 already a member /
+  asked; 429 (5 open).
+- `DELETE /spaces/join-requests/:slug` — `useWithdrawRequest()` (then `refreshSession`); 404.
+- `POST /spaces/join-requests/seen` — `useMarkDeclinesSeen()`.
+- `POST /spaces {name, time_zone?}` — `useMakeSpace()` (then `refreshSession`); 403 under 18; 422
+  `name`; 429 (3 spaces).
+- `GET /organization/code` — `useSpaceCode(isAdmin)`; `POST /organization/code` — `useRenewSpaceCode()`;
+  `PUT /organization/code {join_by_code}` — `useSetJoinByCode()`; both `setQueryData(codeKey)` — admins.
+- `GET /organization/join-requests` — `useJoinRequests(isAdmin)`; `POST
+  /organization/join-requests/:userId/decline` — `useDeclineJoinRequest()` (invalidates the requests);
+  `useRefreshJoinRequests()` after a let-in — admins.
+- `POST /users` with `join_request_user_id` / `parent_consent` — the existing create hook (`useCreateUser`
+  / `useAddPerson`) — admins.
+- `PATCH /users/:id {roles}` — the existing update hook, for "This is my child" — admins.
+- `POST /organization/leave` — `useLeaveSpace()` — any member (409 for the last admin).
+- `DELETE /organization {confirm_name}` — `useDeleteSpace()` — an admin of a self-serve space (403
+  otherwise; 422 a wrong name).
+- `POST /quest/review…` — unchanged; the toast reads `organization.quest_trusted`.
+- `GET /platform/questions?status=checked&suggested=true` — `useQuestions({status, suggested: 'true'})`
+  (`bank-model`'s filter type widened, as the web's) — platform admins.
+- `PUT /platform/organizations/:id/features` with `quest_trusted` — entry 62's `useUpdateFeatures` —
+  platform admins.
+- `${serverOrigin()}/terms`, `/privacy` — opened in the system browser (`Linking.openURL`), public.
+
+**Screens & routes:**
+- `app/sign-up.tsx` (new; inside `Stack.Protected guard={!signedIn}` in `app/_layout.tsx`) →
+  `SignUpScreen`. `app/index.tsx`: signed out with a pending sign-up redirects here, else to `/sign-in`.
+  `sign-in.tsx` replaces itself with `/sign-up` as soon as `pendingSignup` is set.
+- `app/select-organization.tsx` (path kept: flows and links use it): "Choose a space"; for a newcomer (no
+  active membership, no invitation, not a platform admin) it is "Welcome to Aimtrue" over `SpaceWelcome
+  firstTime`, as the web's picker. Others get a row "Join or make another space" (`select-join-space`).
+- `app/join-space.tsx` (new; root stack, inside `guard={signedIn}`, `presentation: 'modal'`, title "Join or
+  make a space") → `SpaceWelcome firstTime={false}`. Pushed from the picker and from the account sheet's
+  new row `account-join-space` ("Join or make another space", under the Spaces list).
+- `app/(org)/organization.tsx`: unchanged path (`aimtrue://organization`), title "Space".
+- `app/(org)/person-form.tsx`: a new param `?request=<userId>` (the Let-in form); the request's name and
+  email are read from the cached `['organization','join-requests']`, never passed in the link.
+- `app/(org)/add-student.tsx` and `onboarding/add-student.tsx`: a new param `?guardian=me` (the reader,
+  chosen on the Family step).
+- `app/(platform)/question-review.tsx`: a new param `?suggested=1`.
+- Landing (`features/auth/landing.ts`): a single membership is entered only while there is no
+  invitation AND no join request (the web's `only`); a newcomer gets `choose`, hence the Welcome.
+
+**Components:**
+- `src/features/auth/`:
+  - `sign-up-model.ts` (pure, Jest): `MONTHS` (the web's twelve names), `birthYears(now)` (this year back
+    100), `signupRequest(form, pending)` (the exact body: `TERMS_VERSION`, `PRIVACY_VERSION`, the token or
+    `dev_email` / `dev_name`), `firstNameOf(name)`, `legalUrl(kind, origin)`.
+  - `sign-up-screen.tsx`: `SignUpScreen` — `LogoMark`, "Welcome, <first name>", the email under it;
+    with sign-in off a "Your name" field (`signup-dev-name`, placeholder from the email's local part). "When
+    were you born?": two `OptionPicker`s side by side (one column at the largest text sizes): Month
+    (`signup-month`, 12, `scroll`) and Year (`signup-year`, searchable, the device's year back 100); under
+    them the web's "Only whether you are over 18 is kept, never the date." A `CheckRow` (`signup-accept`) "I
+    agree to the Terms and the Privacy notice", then two link buttons "Read the Terms" (`signup-terms`) and
+    "Read the Privacy notice" (`signup-privacy`) — separate elements, so the box and the links never share
+    a tap target. Continue (`signup-submit`, disabled until month, year and the tick; busy while posting);
+    the server's sentence in `signup-error`; Cancel (`signup-cancel`: `cancelSignup()`, back to sign-in).
+    `too_young` replaces the form with `signup-too-young`: "Ask a parent to add you" and the web's
+    paragraph ("… Nothing about you has been kept."), and "Back to sign-in" (`signup-too-young-back`). An
+    expired token (the server's 400/401 after 15 minutes) shows its sentence with "Start again".
+  - `welcome.tsx` (the production sign-in face): the legal line under the button, "By continuing you agree
+    to the Terms and the Privacy notice." with the two links (`sign-in-terms`, `sign-in-privacy`; the line
+    `sign-in-legal`). `app/sign-in.tsx`'s developer and Google cards get the same line and the web's new
+    copy ("Sign in with your Google account. New here? You can join a space with its code, or make your
+    own." / "Already in a space? Use the Google address its administrators added.").
+  - `sign-in-error.tsx`: `rate_limited` is calm — the `surfaceVariant` card with a clock icon, not the error
+    colours, polite rather than an alert, no error haptic, guidance "Wait a minute, then try again."; with
+    developer sign-in, a `not_found` for the typed email adds "Sign up as <email>" (`sign-in-signup`), which
+    calls `startDevSignup(email)`.
+- `src/providers/auth-provider.tsx`: `account`, `joinRequests` (from the session); `pendingSignup:
+  { token: string | null; email; name; dev: boolean } | null` (memory only); `startDevSignup(email,
+  name?)`; `completeSignup({ birth_year, birth_month, dev_name? })` — posts `signupRequest`, then, with sign-in
+  off, `setDevUser(email)` (only after the 201: a refused under-13 leaves no persona behind), `arrivingRef
+  = true`, `loadSession()`, `authenticated`; `cancelSignup()` (clears it, `googleSignOut()`).
+  `signInWithGoogle` sends `signup: true` and sets `pendingSignup` on a `signup` answer, staying
+  `unauthenticated`.
+- `src/features/organizations/`:
+  - `space-model.ts` (pure, Jest): `codeReady(text)` (`normalizeSpaceCode` ≠ null), `spokenCode("FMXY-2345")`
+    → "F M X Y, 2 3 4 5", `shareText(name, code)` → "Join Ferreira Family Practice on Aimtrue with the code
+    FMXY-2345." (the web's words; `PLATFORM_BRAND.name`, never a literal), `deviceTimeZone(calendars)` (the
+    device's zone from `expo-localization`'s `getCalendars()` when it is one of `ORG_TIME_ZONES`, else
+    undefined), `makeProblem(name)` (`createSpaceSchema` then `spaceNameProblem(name)` — reserved words
+    refused before sending; the server still decides a taken name), `splitRequests(joinRequests)`
+    (`{ open, declined }`), `canMake(account)` (`!account || account.age_band === 'adult'`),
+    `standingLine(standing)` ("You already belong here." / "You have asked already."),
+    `deleteNameMatches(typed, name)` (trimmed, case-insensitive, the server's rule), `mayDeleteSpace(org,
+    user)` (`created_via === 'self_serve'` and an admin).
+  - `space-welcome.tsx`: `SpaceWelcome({ firstTime })` — the web's `Welcome` in four parts:
+    - the declines, one line each (`welcome-declined-<slug>`, "<space> didn’t accept your request to
+      join."), with `markSeen` posted once per mount (a ref, so a re-render never posts twice; the session
+      is not re-read, so the line stays for this visit);
+    - "Waiting to be let in": a card per open request (`welcome-request-<slug>`: `OrgAvatar`, the name,
+      "Asked <relative>. Its administrators will let you in.") with Withdraw (`welcome-withdraw-<slug>`;
+      no confirm, asking again undoes it; toast "Request to <space> withdrawn.");
+    - "Have a space code?" (`welcome-join`): the field (`welcome-code`, placeholder "K7QM-9XDA",
+      `autoCapitalize="characters"`, no autocorrect, `maxLength` 12, Return = Find; the text is kept as
+      typed and read through `normalizeSpaceCode`, never rewritten while typing — design 61's lesson), Find
+      (`welcome-find`, enabled when `codeReady`); the server's 404 sentence in `welcome-code-error`; found:
+      `welcome-found` (`OrgAvatar` in the space's own palette and mark, its name) with Ask to join
+      (`welcome-ask`) or `welcome-found-standing`; asking toasts "Asked to join <space>. Its administrators
+      will let you in." and clears the field;
+    - "No code? Make your own space" (`welcome-make`, adults only; else `welcome-make-adults`: "To make a
+      space of your own you need to be 18 or older."): the web's paragraph, "Name your space"
+      (`welcome-space-name`, placeholder "The Patel family"), Make the space (`welcome-make-submit`);
+      `makeProblem` or the server's `name` message in `welcome-make-error`; success: toast "<name> is
+      ready.", `haptics.success()`, `chooseOrganization(slug)`, `router.replace('/dashboard')` (from
+      `/join-space`, `router.dismissAll()` first). The welcome wizard then opens on its own (a new person has
+      no `tour_finished_at`), in entry 62's Assessment form.
+    - with `firstTime`: Delete my account (`welcome-delete-account`, a text button) → native Alert
+      "Delete your account?" / "Your name, address and sign-in are removed. This cannot be undone." /
+      Delete (destructive) / Keep → `DELETE /auth/account` → `signOut()` (its logout call tolerates the
+      cleared cookie) → sign-in. `haptics.warning()` on opening the confirm.
+  - `space-code-card.tsx`:
+    - `SpaceCodePanel` (`Panel` "Space code", `space-code`): the code (`space-code-value`, headlineMedium,
+      letter-spaced, `selectable`, labelled `spokenCode`); else "No code yet. Make one to let people ask to
+      join." Copy (`space-code-copy`, `expo-clipboard` `setStringAsync(code)`, toast "Code copied."), Share
+      (`space-code-share`, `Share.share({ message: shareText })`, a closed sheet says nothing), Make a new
+      code / Make a code (`space-code-renew`; with a code, a native confirm "Make a new code?" / "The old
+      code stops working at once." first; toasts as the web's), and the row "Let people ask to join with the
+      code" with "You decide who comes in, on the People page." and a Paper `Switch`
+      (`space-code-joining`, one accessible element, role switch; toasts "Joining by code is on." / "…
+      off."). A skeleton while loading; `ErrorState` with Try again.
+    - `SpaceDangerPanel` (`space-danger`): "Leave" — "You stop being a member of <space>. Its records of you
+      stay." and Leave <short> (`space-leave`) → confirm "Leave <space>?" / Leave / Stay → `POST /leave` →
+      `router.dismissAll()`, `leaveOrganization()`, `await refreshSession()`, `router.replace('/')` (the
+      picker, or the Welcome); a 409 (the last admin) is the server's sentence in a toast and nothing moves.
+      With `mayDeleteSpace`: "Delete the space" in `error`, the web's paragraph, the name field
+      (`space-delete-name`, placeholder the space's name) and Delete <short> (`space-delete`, error colours,
+      enabled once `deleteNameMatches`) → `DELETE /organization` → toast "<space> deleted." and the same
+      leave-and-land as Leave.
+  - `organization-settings-screen.tsx`: title "Space"; the stub "Only an administrator can see the space’s
+    settings."; toast "Space settings saved."; the intro per entry 62 (with Tutoring the web's sentence,
+    without it "<space>: its code, what it teaches from, and how it is set up."); `SpaceCodePanel` directly
+    under the intro (on a phone the code is what a new space's admin came for; the web has it after the payer
+    card); `EmailNotificationsCard` only when `created_via !== 'self_serve'`; `SpaceDangerPanel` last.
+  - `org-avatar.tsx`: its prop widened to the web's `Pick<OrganizationBrand, 'logo_mark_url' | 'short_name' |
+    'palette'> & { builtin_logo? }`, so a `SpaceLookup` and a `MyJoinRequest` wear their own face.
+- `src/features/users/`:
+  - `join-requests-section.tsx`: `JoinRequestsSection` at the head of the People list for admins, only
+    with rows: "Requests to join" and a count pill (`join-requests-count`); a row per request
+    (`join-request-<userId>`: the name, "<email> · asked <relative>"), Let in (`join-request-let-in-<id>` →
+    `/person-form?request=<id>`) and Decline (`join-request-decline-<id>` → confirm "Decline <name>’s
+    request?" / "They will see that <space> didn’t accept." / Decline / Keep → toast "<name>’s request
+    declined."). Pull to refresh on People refetches it.
+  - `person-form-sheet.tsx` / `person-form.tsx`: `request` → `preset` gains `full_name`, `email`, and
+    `joinRequestUserId`; title "Let <name> in", the web's description "Choose what they do here. They are a
+    member as soon as you save."; roles start empty; the email field read-only with the hint "The address
+    they asked to join with." A request no longer listed (answered on another device) shows `EmptyState`
+    "That request was not found." On save: `join_request_user_id`, then `useRefreshJoinRequests()`. The
+    consent (`person-parent-consent`, a `CheckRow`, the web's sentence "I am this student’s parent or
+    guardian, or have their permission, for them to take part here — including answers they write on the
+    canvas.") shows in create mode for a student in a self-serve space; `parent_consent` is sent then; the
+    server's message in `person-parent-consent-error`. "another organization" → "another space" in the
+    locked note.
+  - `add-person-model.ts`: `consentNeeded(form, org)` and `consentIssue(form, org, consent)` (the server's
+    sentence "Confirm you are their parent or guardian, or have their permission.").
+  - `add-student-flow.tsx`: `guardian` (`'me'` → the reader, named, chosen on Family); in a self-serve
+    space the Review's `review.trail` carries the consent box (`add-student-consent`), checked before
+    sending (`add-student-consent-error`, the error haptic, no request) and sent as `parent_consent`.
+- `src/features/onboarding/student-flow.tsx`: "This is my child" (`student-flow-my-child`, beside "Add a
+  student"): without the parent role, `PATCH /users/:me {roles: [...roles, 'parent']}` (entry 62's update,
+  which leaves Tutoring's sections out), `refreshSession()`; then `/onboarding/add-student?guardian=me`.
+  Busy while patching; a refusal is the server's sentence.
+- `src/features/users/profile-screen.tsx`: for a non-admin, `SpaceDangerPanel` (Leave only, testID `profile-danger`);
+  "Delete my account" (`profile-delete-account`) → an Alert that says how (leave every space — or, an
+  admin of a space they made, delete it — then Delete my account is on the Welcome screen); the links
+  "Terms of use · Privacy notice" (`profile-legal`, `profile-terms`, `profile-privacy`).
+- `src/features/quest/quest-model.ts`: `reviewToast(decision, trusted)` → "Sent to the platform to
+  approve." for an approval where `organization.quest_trusted === false`; `quest-review-screen.tsx` passes it.
+- `src/features/question-bank/`: `question-bank-screen.tsx` gains "Suggested by spaces" (`bank-suggested`,
+  outlined, beside Review) → `/question-review?suggested=1`; `review-screen.tsx` takes `suggested`, titles
+  itself "Suggested by spaces", reads `{status:'checked', suggested:'true'}` and has its own empty state
+  (`question-review-none-suggested`, "No space has suggested approving a question."); the existing
+  cache-writing approval (`useQuestionAction`, every loaded list) covers the new list's key, so reviewing
+  still never re-reads the bank; `question-card.tsx`: a pill "Suggested by N space(s)"
+  (`question-suggested-<id>`) when `suggestions > 0`.
+- `src/features/platform/`: the organization form (entry 62's feature switches) gains, in edit mode, "Quest
+  reviews approve questions" (`org-form-quest-trusted`) with the web's hint ("Off: its tutors’ “Question is
+  right” only suggests the approval here, in the console."); `org-form.ts` sends the features PUT when a set
+  or the trust changed, with `quest_trusted`.
+- `src/lib/api-errors.ts` (new): `isRateLimited(e)`, `showProblem(toast, e, fallback)` — `rate_limited` is
+  `toast.info` with the server's sentence ("Too many tries. Try again in 42 seconds."), no error haptic;
+  anything else `toast.error`. Every new screen uses it.
+- `src/test/fixtures.ts`: `anOrganization()` (`created_via: 'console'`, `quest_trusted: true`, entry 62's
+  feature fields) and `aSession()` (`account: null`, `join_requests: []`), used by the auth, landing,
+  platform and organization tests instead of their local casts; `src/test/question-bank.ts` already has
+  `suggestions: 0`.
+- Dependency: `npx expo install expo-clipboard` (native: the dev and e2e clients are rebuilt), then `npm run
+  doctor`.
+- Reused: `Screen`, `Panel`, `OptionPicker`, `CheckRow`, `FormTextField`, `OrgAvatar`, `LogoMark`,
+  `StepFlow` (`review.trail`), `EmptyState`, `ErrorState`, `Skeleton`, `useToast`, `haptics`, `ListItem`.
+
+**Wording ("space" for "organization", on screen only; routes, keys, codes, testIDs and API paths keep
+`organization`):**
+- `app/select-organization.tsx`: "Choose an organization" → "Choose a space"; "That organization could not be
+  opened. Try again." → "That space …"; "Your default organization could not be changed. Try again." →
+  "Your default space …"; the group label "Your organizations" → "Your spaces"; "Organizations and their
+  admins" → "Spaces and their admins"; "You do not belong to any organization yet…" goes (the Welcome).
+- `app/(org)/account.tsx`: the toast as above; "Organizations" → "Spaces"; "All organizations…" → "All spaces…".
+- `features/shell/nav-items.ts`: "Organization" → "Space" (keywords `settings`, `tin`, `payer`,
+  `organization`, `code`, `join`); `search-screen.tsx`: the search values "switch space … organization",
+  "platform console spaces organizations" (both words still find it).
+- `features/organizations/organization-settings-screen.tsx`: as above, and the EIN hint "The EIN the
+  space files under. …".
+- `features/users/person-form.tsx`: "belongs to another space too".
+- `features/canvas-assessments/assessment-model.ts`: "(your space is trying them out)".
+- `features/dashboard/year-end-finance.tsx`: "… filled from the Space settings (…)" / "Add the TIN on the
+  Space page …"; `form-1099-sheet.tsx`: "(from the Space settings)" and "Add the TIN on the Space page …";
+  the placeholder "The organization’s EIN" stays, as on the web (the payer on a 1099 is an organization).
+- Console: `app/(platform)/platform/_layout.tsx` tab "Organizations" → "Spaces";
+  `(organizations)/_layout.tsx` title → "Spaces"; `organizations-screen.tsx` "New organization" → "New
+  space", "Loading organizations…" → "Loading spaces…", "No organizations yet. …" → "No spaces yet. …", the
+  label "Organizations" → "Spaces"; `organization-detail-screen.tsx` title "Organization" → "Space",
+  "Loading the organization…" → "Loading the space…", "Restore/Archive organization" → "Restore/Archive
+  space" (and its confirm text); `organization-form-sheet.tsx` "New organization" → "New space", "Create
+  organization" → "Create space", "Loading the organization…", "Could not save the organization." → "…
+  space."; `console-header.tsx` "My organizations" → "My spaces"; `platform-activity-screen.tsx` "affected
+  space’s own log"; `platform-admins-screen.tsx` "They create spaces and their admins. They see nothing inside
+  a space unless it makes them a member."; `platform-people-screen.tsx` "Belongs to N space(s)." and "Shared
+  details saved, in every space." (the web still says "organization" there: carried back as a web fix, its
+  half of parity).
+- `dev/personas.ts` hints: "two spaces", "Admin of another space", "Tutor of another space", "Platform admin
+  · no space"; new personas: Nina Newcomer ("Adult · no space"), Theo Teen ("13-17 · asked to join
+  Riverside"), Ines Ferreira ("Admin and parent · a self-serve space"). 
+- Guard: `src/test/wording.test.ts` scans `src/**/*.ts(x)` (not tests) for `\b[Oo]rganizations?\b` inside
+  string literals and JSX text, with an allowlist (route names, query keys, API paths, `organization_required`
+  / `organization-required`, search `value` keywords, the 1099 placeholder), so a new screen cannot bring
+  the word back.
+- Flows that read the old words change with them (below).
+
+**Interaction & motion:** forms on the app's surfaces (`Screen`, `Panel`); nothing new animates. The code
+in large letter-spaced type, selectable. Haptics: selection on a picker and a switch; success on asking,
+making and letting in; warning on opening a destructive confirm; error on a refused Continue / Find / Make;
+none for a rate limit (it is not the person's fault). Reduce motion: nothing to still. Keyboard: the code
+and name fields ride the keyboard (`Screen`'s inset); Return submits each.
+
+**Exposure checks:**
+- **R21, decided by the server:** the code is read only on the Space screen, which is admin-only
+  (`useSpaceCode(isAdmin)`, a stub for anyone else); requests to join only for admins
+  (`useJoinRequests(isAdmin)`); a lookup shows the name and mark it returns and nothing more; an unknown
+  code and a code with joining off read the same ("No space has that code."), never "forbidden"; a
+  newcomer reads only `/auth/session` and `/spaces/*` (the `(org)` tree is not mounted without an
+  organization). The share text is the admin's own act (the name and the code, nothing else).
+- **Ages:** the birth month and year live in the sign-up screen's state only — never stored, logged, put
+  in a route param or a toast; the sign-up token in AuthProvider memory only, never AsyncStorage; a refused
+  under-13 sets no developer persona and leaves nothing on the device.
+- **R6:** the app shows an invited person as the server sends them (the typed name, no phone).
+- **Organization:** `X-Organization` on every request as before; the code and requests keys are cleared
+  with the cache on a switch, a leave and a delete; making a space enters it through `chooseOrganization`
+  (cache cleared).
+- **Money:** none on any new screen; Tutoring's rules unchanged. **SSN:** the space's name through
+  `createSpaceSchema` (`refuseSsn`) before sending; no new free-text field reaches a log; no dictation on these fields.
+- **Brand / colours:** no organization's name in code (`PLATFORM_BRAND.name` for "Aimtrue", space names
+  are data); tokens only; the found space wears its own palette through `OrgAvatar`.
+- **System surfaces:** none touched; the clipboard holds the code only, on the admin's tap.
+- **The app hides only what the server refuses:** Make for 13-17 (403), Delete my account outside the
+  Welcome (409), Delete the space outside a self-serve admin (403), the email card in a self-serve space
+  (403); Leave is offered to the last admin and refused in the server's words.
+
+**testIDs:** new — `screen-sign-up`, `signup-dev-name`, `signup-month` (+ `-<1..12>`), `signup-year` (+
+`-<yyyy>`, `-search`), `signup-accept`, `signup-terms`, `signup-privacy`, `signup-submit`, `signup-error`,
+`signup-cancel`, `signup-too-young`, `signup-too-young-back`; `sign-in-legal`, `sign-in-terms`,
+`sign-in-privacy`, `sign-in-signup`; `welcome`, `welcome-title`, `welcome-declined-<slug>`,
+`welcome-request-<slug>`, `welcome-withdraw-<slug>`, `welcome-join`, `welcome-code`, `welcome-find`,
+`welcome-code-error`, `welcome-found`, `welcome-found-name`, `welcome-ask`, `welcome-found-standing`,
+`welcome-make`, `welcome-space-name`, `welcome-make-submit`, `welcome-make-error`, `welcome-make-adults`,
+`welcome-delete-account`; `select-join-space`, `account-join-space`, `screen-join-space`; `space-code`,
+`space-code-value`, `space-code-copy`, `space-code-share`, `space-code-renew`, `space-code-joining`,
+`space-danger`, `space-leave`, `space-delete-name`, `space-delete`; `join-requests`, `join-requests-count`,
+`join-request-<userId>`, `join-request-let-in-<userId>`, `join-request-decline-<userId>`;
+`person-parent-consent`, `person-parent-consent-error`, `add-student-consent`, `add-student-consent-error`,
+`student-flow-my-child`; `profile-legal`, `profile-terms`, `profile-privacy`, `profile-danger` (the
+`SpaceDangerPanel` on My profile; its button is `space-leave` there too), `profile-delete-account`; `bank-suggested`,
+`question-review-none-suggested`, `question-suggested-<id>`; `org-form-quest-trusted`. Kept: `screen-sign-in`,
+`sign-in-email`, `sign-in-email-submit`, `sign-in-error`, `screen-select-organization`, `org-<slug>`,
+`account-all-organizations`, `screen-organization`, `organization-stub`, `org-notifications` (the email
+card's), `screen-person-form`, `person-form-title`, `person-form-name`, `person-form-email`,
+`person-role-<role>`, `person-form-save`, `screen-platform-questions`, `question-bank-review`.
+
+**Tests:**
+- **Jest** (per file): `features/auth/sign-up-model.test.ts` (`signupRequest` with a token and with
+  `dev_email` / `dev_name`, the versions equal `TERMS_VERSION` / `PRIVACY_VERSION`; `birthYears` 100 from
+  the given year; `firstNameOf`; `legalUrl`); `features/auth/sign-up-screen.test.tsx` (Continue disabled
+  until month, year and tick; `too_young` shows the card and Back clears the pending sign-up; another
+  refusal shows `signup-error`; the links open `<origin>/terms` and `/privacy`; the dev name field only for a
+  dev sign-up); `features/auth/sign-in-error.test.tsx` (new: `rate_limited` is calm, no alert role, its
+  guidance; `not_found` with developer sign-in offers `sign-in-signup`); `features/auth/welcome.test.tsx`
+  (the legal line and its links); `features/auth/landing.test.ts` (an open request stops the single-space
+  auto-entry; a newcomer chooses); `providers/auth-provider.test.tsx` (Google sends `signup: true`; a
+  `signup` answer leaves the app unauthenticated with `pendingSignup`; `completeSignup` posts the token and
+  versions, then reads the session; the developer path sets `X-Dev-User` only after the 201; `cancelSignup`;
+  the silent renewal sends no `signup`; `account` and `joinRequests` read from the session);
+  `lib/api-client.test.ts` (`delete` with a JSON body); `lib/api-errors.test.ts` (`rate_limited` → info, no
+  haptic; others → error); `features/organizations/space-model.test.ts` (`codeReady` for "fmxy2345",
+  "FMXY-2345", " fmxy 2345 ", "FMXY-234O" (an O) and seven characters; `spokenCode`; `shareText`;
+  `deviceTimeZone` in and out of `ORG_TIME_ZONES`; `makeProblem` for "A", an SSN-shaped name, "Aimtrue
+  official", a fine name; `splitRequests`; `canMake`; `deleteNameMatches`; `mayDeleteSpace`);
+  `features/organizations/space-welcome.test.tsx` (declines post `seen` once across re-renders; withdraw;
+  lookup → found → ask → toast and refresh; a 404 shows its sentence; standing lines; a 13-17 sees no Make;
+  Delete only with `firstTime`, behind the confirm; making enters the space with the device's zone);
+  `features/organizations/api.test.tsx` (keys; renew and joining write the code cache; decline invalidates
+  the requests; delete sends `confirm_name`); `features/organizations/space-code-card.test.tsx` (copy calls
+  the clipboard with the code alone; share's message; renew asks first when a code exists; the switch;
+  Leave's confirm and the 409 toast; Delete only for a self-serve admin and only once the name matches);
+  `features/organizations/organization-views.test.tsx` (updated: title Space; no email card in a self-serve
+  space; the code panel first); `features/users/join-requests-section.test.tsx` (nothing when empty; the
+  count; Let in pushes `request`; Decline asks first); `features/users/person-form.test.tsx` (updated: the
+  request preset, email read-only, `join_request_user_id` sent; consent only in create mode for a student in
+  a self-serve space, `parent_consent` sent, the server's field error shown);
+  `features/users/add-person-model.test.ts` (`consentNeeded`, `consentIssue`);
+  `features/users/add-student-flow.test.tsx` (the consent in the Review's trail, refused before sending;
+  `guardian=me` chooses the reader); `features/onboarding/flow-steps.test.tsx` or a new
+  `student-flow.test.tsx` ("This is my child" patches the roles only when parent is missing, then opens the
+  flow with `guardian=me`); `features/quest/quest-model.test.ts` (`reviewToast` trusted and untrusted);
+  `features/question-bank/question-bank-views.test.tsx` (the suggested pill, singular and plural; the button's
+  route; the review screen's suggested filter and empty state); `features/platform/platform-model.test.ts`
+  (a trust change alone sends the features PUT with `quest_trusted`; fixtures carry `created_via` /
+  `quest_trusted`); `features/shell/nav-items.test.ts` (Space, its keywords); `src/test/wording.test.ts`;
+  `src/test/maestro-scripts.test.ts` (the versions hard-coded in `.maestro/scripts/spaces.js` equal
+  `TERMS_VERSION` / `PRIVACY_VERSION`, so a new wording date fails here, not on a simulator).
+- **Maestro** (`apps/mobile/.maestro/flows/spaces/`, tag `feature`; local Worker only). One script,
+  `.maestro/scripts/spaces.js` (`local-api.js`'s pattern, `X-Organization` only when given; errors
+  tolerated where it cleans), `ACTION`:
+  - `reset-newcomer EMAIL`: as that address, `GET /auth/session` (a 404: nothing to do); for each active
+    membership, a self-serve space it administers is deleted (`DELETE /organization {confirm_name}`), any
+    other left; open requests withdrawn; then `DELETE /auth/account`. Every flow that signs someone up runs
+    it in `onFlowStart` AND `onFlowComplete`, on its own fixed address, so a rerun, a failure half-way or
+    another order leaves nothing behind.
+  - `signup EMAIL NAME [YEAR]`: `POST /auth/signup` with `dev_email` (adult by default); on a 429 it polls
+    `/api/health` until the window passes (up to 65 s; Maestro's JS has no sleep).
+  - `make-space EMAIL NAME`: `POST /spaces`; outputs `slug` and `code` (`GET /organization/code`).
+  - `ask EMAIL CODE`: `POST /spaces/join-requests`, a 409 tolerated; `seen EMAIL`: `POST …/seen`.
+  - `withdraw EMAIL SLUG`: `DELETE /spaces/join-requests/:slug`, a 404 tolerated.
+  - `trust ORG_SLUG ON`: as the platform admin, `PUT /platform/organizations/:id/features` with the
+    organization's own feature sets and `quest_trusted`.
+  Flows:
+  - `sign-up.yaml` (**smoke**; `spaces.signup@example.com`): `aimtrue://dev/link?tour=seen` (no `as`: it
+    only marks the tour) → sign-in, `sign-in-legal` with both links → type the address → `sign-in-error`
+    with `sign-in-signup` "Sign up as spaces.signup@example.com" → `screen-sign-up`: name "Sam Signup", June,
+    2020 (`signup-year-search`), tick, Continue → `signup-too-young` "Ask a parent to add you" → Back → the
+    same address still offers sign-up (nothing was kept) → June 1990 → `screen-select-organization` with
+    `welcome-title` "Welcome to Aimtrue", `welcome-join`, `welcome-make` → `welcome-delete-account` → Delete
+    → `screen-sign-in`. Screenshots: About you, too young, Welcome.
+  - `join.yaml` (**smoke**; Nina; `withdraw nina assess` before and after): signs in → the Welcome →
+    `welcome-code` "CHMX-2345" (the institute: joining off) → `welcome-code-error` "No space has that code."
+    → "fmxy2345" → `welcome-found-name` "Ferreira Family Practice" → Ask to join → the toast →
+    `welcome-request-assess` → Withdraw → gone. Two lookups, well inside the minute's ten.
+  - `decline.yaml` (Rosa, then Theo; `ask theo RVRS2345` before and after): Rosa → People →
+    `join-requests-count` "1", "Theo Teen" → Decline → confirm → "Theo Teen’s request declined.", the section
+    gone; Theo signs in → `welcome-declined-riverside` "Riverside Tutoring didn’t accept your request to
+    join.", `welcome-make-adults`, no `welcome-make` → relaunch as Theo → no declined line (seen).
+  - `let-in.yaml` (`spaces.joiner@example.com`, "Jo Joiner": `reset-newcomer`, `signup`, `ask … FMXY2345`):
+    Ines → People → Jo's request → Let in → `person-form-title` "Let Jo Joiner in", the name and the email
+    filled, the email not editable → choosing Student shows `person-parent-consent` → back to Parent → Save
+    → Jo in the directory as Parent, the section gone. Ines → Space → Leave → confirm → the server's "You are
+    Ferreira Family Practice's only administrator…" and still on the Space screen. Jo signs in → straight
+    into Ferreira (one space) → Profile: `profile-legal`, `space-leave` → confirm → the Welcome →
+    `welcome-delete-account` → sign-in.
+  - `space-code.yaml` (`spaces.maker@example.com`, "Max Maker": `reset-newcomer`, `signup`, `make-space
+    "Maker Test Space"` → its code; never the seeded codes, which other flows need): Max → More → Space:
+    `space-code-value` the code, no `org-notifications`; Copy → "Code copied."; Share → the system sheet
+    (screenshot; closed with Back on Android, a swipe on iOS); Make a new code → confirm → "New code made.
+    The old one no longer works." and the old code gone; `space-code-joining` off → "Joining by code is
+    off." → on; `space-delete` disabled → `space-delete-name` "maker test space" → Delete → the Welcome →
+    delete the account.
+  - `make-space.yaml` (`spaces.creator@example.com`, "Mia Creator": `reset-newcomer`, `signup`; FRESH, so the
+    wizard is not pre-empted): the Welcome → "Aimtrue official" → `welcome-make-error` "A space’s name cannot
+    use the word “aimtrue”." → "The Creator family" → "The Creator family is ready." → the welcome wizard →
+    the student step → `student-flow-my-child` → the Add a student flow with Mia chosen → "Kit Creator", no
+    email → … → the Review → Add without the consent → `add-student-consent-error` → tick → added → close the
+    wizard → Space → delete "The Creator family" → the Welcome → delete the account.
+  - `console.yaml` (the platform admin; `trust riverside true` after): the tab "Spaces" → Riverside → edit
+    → `org-form-quest-trusted` off → Save → reopened: off → on → Save. Question bank → `bank-suggested` →
+    "Suggested by spaces" with `question-review-none-suggested` (the seed has no suggestion; the badge is
+    Jest's).
+  - Changed for the words: `organization/{settings,non-admin,notifications,curricula}.yaml` ("Space
+    settings saved.", "Only an administrator can see the space’s settings.", no "Space" item for Alex),
+    `exposure/student-controls.yaml` (no "Space"), `organizations/picker.yaml` ("Choose a space", and Priya's
+    "Join or make another space" row present), `canvas-assessments/{menu,question-count}.yaml` and the
+    platform flows ("Spaces" tab), wherever they assert the old text.
+  - Rate limits on a shared local bucket (`CF-Connecting-IP` is absent locally, so every client is
+    "local"): a full `spaces/` run signs up five times (two in `sign-up`, one each in `let-in`,
+    `space-code`, `make-space`) against `space_write`'s 5 a minute — the `signup` script waits out a 429,
+    and the UI sign-up comes first in its flow. The 429 itself is Jest's, never a flow's (a flow that spends
+    the bucket would fail the next).
+  - Then `npm run e2e:mobile -- both apps/mobile/.maestro/flows/spaces`, the changed folders above, and
+    `npm run smoke -- mobile` (the session payload changed shape). Screenshots in light and dark, phone and
+    iPad: About you, Welcome (newcomer, with a request, with a decline), the Space screen with the code,
+    People with a request.
+
+**Risks / open questions:**
+- **Copy needs `expo-clipboard`, a native module:** the dev and e2e clients must be rebuilt before the
+  flows run (another agent is testing devices now). If a rebuild is unwelcome, Copy can wait and Share
+  (whose sheet offers Copy on both systems) stands alone — the owner's call.
+- **"Its code shown first, then the wizard"** (the plan): the web lands on the dashboard with a toast and
+  the wizard; the code is on the Space page. The app does the same. Showing the code before the wizard
+  (a "Your space is ready" card) would need the onboarding host to wait for it — proposed for both clients
+  together, not done here.
+- **The share text has no address** (the web's native share adds the page's origin). The app's origin is
+  the API's; in production that is the portal's address and would help a newcomer. Add
+  `serverOrigin()` to the message? Owner's call; the flows assert the code either way.
+- **Local rate limits:** five sign-ups a minute across every local client is tight for the suite; a local
+  override (a `.dev.vars` multiplier) would be a server change, so the script waits instead.
+- **Per-membership "may leave"** is in the plan's session payload but not in the contract: the app offers
+  Leave to every member and shows the server's refusal for the last admin, as the web does.
+- **Phase 51's invitation fix** has no app flow: a Maestro check would add a seeded person to a second
+  space and could not put the membership back without the API's hard delete, which removes the person
+  everywhere. The web's `groundwork.spec.ts` covers it; the app renders what it is given.
+- **The untrusted Quest toast** is Jest only: no seeded space has both Quest allowed and trust off (a
+  self-serve space has no Quest), and making one for a flow means the whole Quest setup in another space.
+- Entry 62 must land first: the Assessment home, the feature switches on the console's form (the trust
+  switch sits beneath them) and the Phase 50 user request (`toSpaceRequest`) that "This is my child" uses.
+- Web parity fixes found while listing the words: the web still says "organization" in "Shared details
+  saved, in every organization." and the EIN hint; carried back in the same release.
+
+**Lead's answers (2026-10-24), before building:** (1) no `expo-clipboard`: drop Copy, Share stands
+alone (its sheet offers Copy on both systems), so no native rebuild; (2) mirror the web: the dashboard
+and the wizard, no separate "space ready" card; (3) the share text adds the server's address
+(`serverOrigin()`), as the web's adds its origin; (4) the server now loosens every request limit twenty
+times away from production (`lib/rate-limit.ts`), so the flows need no waiting; keep the script's 429
+retry only as a fallback; (5)-(6) as written; (7) the web strings are fixed in the same change.
+
+**Build note (2026-10-24).** Built in the p52 worktree from this entry and the lead's answers, with the
+lead's server, shared contract and web; nothing under `apps/api`, `apps/web`, `packages/shared` or `e2e/`
+changed.
+- **As designed, with the answers:** no `expo-clipboard` and no Copy (Share alone, its message ending with
+  `serverOrigin()`); making a space mirrors the web (a toast, the space entered, the dashboard, and the
+  wizard opening by itself); the `spaces.js` script keeps a 429 retry for sign-up only as a fallback.
+- **Changed while building, and why:**
+  - The alert buttons do not repeat a label on the screen beneath them: "Make it" (not "Make a new code")
+    confirms a new code, "Decline request" (not "Decline") a decline, and the danger panel's heading is
+    "Leave the space" (the web's is "Leave"). On iOS the screen under an alert stays in the accessibility
+    tree, so a test (or VoiceOver's search) found the same words twice.
+  - `CheckRow` moved to `src/components/check-row.tsx` (re-exported by `person-form.tsx`): the sign-up
+    screen uses it without importing the person form and its router.
+  - The developer sign-in's legal line sits under the card, so the line is on every way in.
+  - `OrgAvatar` is generic over the face it is given (a lookup or a request has no slug or artwork).
+  - The Organization screen does not ask a self-serve space for its email log (the card is not shown).
+  - `/auth/signup` never triggers the silent Google renewal (an expired sign-up token is a 401).
+- **Flows:** a new admin or member meets the welcome wizard and a first visit's tour offer floats over
+  every screen; `space-code` and `let-in` mark the wizard done through the API (`tour-done`) and dismiss the
+  offer, as they are not about it. The space code is read out on iOS (its label is its text), so the flow
+  matches either form (`codeShown`). A tick's state is not readable on iOS (its label is its text), so
+  `sign-up` checks Continue is enabled instead.
+- **Seen, not changed (Phase 26/50 behaviour):** on a parent's first visit, the floating tour offer can take
+  a tap meant for the screen under it (a flow tapping Leave on My profile started the tour instead).
+- **Ran (local Worker and seed only):** typecheck, lint (0 errors) and Jest (135 suites, 978 tests) green, the export bundles; `spaces/*` (7 flows) green on the iOS simulator and the Android emulator; the changed `organization/*`, `organizations/*`, `platform/{organizations,admins-people,org-admin-denied}`, `exposure/student-controls`, `shell/navigation`, `canvas-assessments/{menu,question-count}`, `features/{organization,person-form}`, `people/create-student`, `onboarding/wizard-admin` and `search/admin` green on both; `features/console` green on Android and red on iOS (the console row's label is the name alone, so the flow's `.*Tutoring, Assessment` is not found; the row is unchanged), `people/directory-admin` green on iOS and red on Android (a guardian below the fold; the person detail is unchanged); `npm run smoke -- mobile` green on both (7/7 each), on the development build. The web suite was not run (the lead's).

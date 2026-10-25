@@ -15,12 +15,14 @@ import {
   type UserDetail,
   type UserRole,
   DAILY_CAPS,
+  PRIVACY_VERSION,
   featureAllowed,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
 import { describeChangedFields, recordAudit } from '../lib/audit.js';
 import { rateLimit } from '../lib/rate-limit.js';
+import { answerJoinRequest, openJoinRequest } from '../repositories/organizations.js';
 import { mailerFor, notify } from '../lib/email.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
@@ -37,6 +39,7 @@ import { requireAdmin } from '../middleware/require-admin.js';
 import {
   belongsElsewhere,
   countPeopleAddedToday,
+  recordConsent,
   countGuardians,
   createUser,
   deactivateUser,
@@ -192,8 +195,31 @@ export const usersRoutes = new Hono<AppEnv>()
    * briefly parentless -- see assertStudentHasGuardian.
    */
   .post('/', requireAdmin, zValidator('json', createUserRequestSchema), async (c) => {
-    const { user: fields, sections } = splitUserRequest(c.req.valid('json'));
+    const {
+      user: { join_request_user_id: requestUserId, parent_consent: parentConsent, ...fields },
+      sections,
+    } = splitUserRequest(c.req.valid('json'));
     const org = c.get('org').id;
+    const space = c.get('org');
+
+    // Phase 52: letting in someone who asked. The form is prefilled from their request; the address
+    // must be the one they asked with, so a request cannot be turned into somebody else's membership.
+    let request: { email: string | null; full_name: string } | null = null;
+    if (requestUserId) {
+      request = await openJoinRequest(c.env.DB, org, requestUserId);
+      if (!request) throw ApiError.notFound('That request was not found.');
+      if ((request.email ?? '').toLowerCase() !== (fields.email ?? '').toLowerCase()) {
+        throw ApiError.validation('Please correct the highlighted fields.', {
+          email: ['Keep the address they asked to join with.'],
+        });
+      }
+    }
+    // Phase 52: in a self-serve space, a student is added with a parent's consent.
+    if (space.created_via === 'self_serve' && fields.roles.includes('student') && parentConsent !== true) {
+      throw ApiError.validation('Please correct the highlighted fields.', {
+        parent_consent: ['Confirm you are their parent or guardian, or have their permission.'],
+      });
+    }
 
     // Phase 51: adding people is limited per admin per minute, and per space per day.
     await rateLimit(c, 'add_person', c.get('user').id);
@@ -208,7 +234,7 @@ export const usersRoutes = new Hono<AppEnv>()
     let outcome: Awaited<ReturnType<typeof createUser>>;
 
     try {
-      outcome = await createUser(c.env.DB, org, fields);
+      outcome = await createUser(c.env.DB, org, fields, { acceptRequest: Boolean(request) });
     } catch (error) {
       if (isUniqueConstraintError(error)) throw ApiError.conflict(EMAIL_TAKEN);
       throw error;
@@ -218,6 +244,35 @@ export const usersRoutes = new Hono<AppEnv>()
     const created = outcome.user;
 
     await updateUserSections(c.env.DB, org, created.id, sections);
+
+    if (requestUserId && request) {
+      await answerJoinRequest(c.env.DB, org, requestUserId, 'approved', c.get('user').id);
+      await recordAudit(c.env.DB, c.get('user'), org, {
+        action: 'membership.request_approved',
+        description: `Let ${created.full_name} in as ${created.roles.join(' and ')}`,
+        subject: created,
+        entity_type: 'user',
+        entity_id: created.id,
+      });
+      const detail = await getUserDetail(c.env.DB, org, created.id);
+      return c.json({ data: detail! } satisfies ApiOk<UserDetail>, 201);
+    }
+
+    if (space.created_via === 'self_serve' && created.roles.includes('student')) {
+      const guardians = sections.guardians ?? [];
+      const actor = c.get('user').id;
+      const guardian = guardians.find((g) => g.guardian_user_id === actor)?.guardian_user_id ?? guardians[0]?.guardian_user_id;
+      if (guardian) {
+        await recordConsent(c.env.DB, org, { studentId: created.id, guardianId: guardian, version: PRIVACY_VERSION });
+        await recordAudit(c.env.DB, c.get('user'), org, {
+          action: 'consent.recorded',
+          description: `Recorded a parent’s consent for ${created.full_name} to take part`,
+          subject: created,
+          entity_type: 'user',
+          entity_id: created.id,
+        });
+      }
+    }
 
     // Someone who already had an account is INVITED: they accept when they
     // next sign in. The answer to the caller is the same either way, so it

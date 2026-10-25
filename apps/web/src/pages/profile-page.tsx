@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/layout/page-header';
 import { Card, CardContent } from '@/components/ui/card';
 import { useUserDetail } from '@/features/users/api';
 import { UserDetailView } from '@/features/users/user-detail-view';
+import { SpaceDangerCard } from '@/features/organizations/space-code-card';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 
@@ -60,6 +61,13 @@ export function ProfilePage() {
       <p className="text-muted-foreground mt-4 text-center text-xs">
         Something wrong here? Ask an administrator to update your record.
       </p>
+      {/* Phase 52: a member who is not an admin leaves from here (admins, on the Space page). */}
+      {!user.roles.includes('admin') && (
+        <div className="mt-6">
+          <SpaceDangerCard />
+        </div>
+      )}
+
       <p className="text-muted-foreground mt-2 text-center text-xs" data-testid="profile-legal">
         <Link to="/terms" className="underline">
           Terms of use

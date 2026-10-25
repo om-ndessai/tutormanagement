@@ -15,7 +15,7 @@ import { useStudentProgress } from '@/features/progress/api';
 import { AssessmentDialog } from '@/features/progress/assessment-dialog';
 import { PlanDialog } from '@/features/progress/plan-dialog';
 import { AssignmentDialog } from '@/features/teaching/assignment-dialog';
-import { useUsers } from '@/features/users/api';
+import { useUpdateUser, useUsers } from '@/features/users/api';
 import { UserFormDialog } from '@/features/users/user-form-dialog';
 import { useAuth } from '@/providers/auth-provider';
 import { FlowSteps, StepPanel } from './flow-steps';
@@ -52,8 +52,20 @@ export function StudentFlow({
   onBack: () => void;
 }) {
   // Phase 50: without Tutoring the flow is the family and the student, then an assessment.
-  const { organization } = useAuth();
+  const { organization, user, refreshSession } = useAuth();
   const tutoring = featureOn(organization, 'tutoring');
+  const updateUser = useUpdateUser();
+
+  /** Phase 52: "This is my child" -- the admin becomes the family, gaining the parent role if need be. */
+  async function iAmTheParent() {
+    if (!user) return;
+    if (!user.roles.includes('parent')) {
+      await updateUser.mutateAsync({ id: user.id, input: { roles: [...user.roles, 'parent'] } });
+      await refreshSession();
+    }
+    setParent({ id: user.id, name: user.full_name });
+    complete('family', 'student');
+  }
   const steps = tutoring ? STEPS : STEPS.filter((s) => s.key === 'family' || s.key === 'student');
   const [step, setStep] = useState<Step>('family');
   const [done, setDone] = useState(new Set<string>());
@@ -90,7 +102,10 @@ export function StudentFlow({
           title="First, the family"
           actions={
             <>
-              <Button onClick={() => setOpen('parent')}>
+              <Button onClick={() => void iAmTheParent()} disabled={updateUser.isPending} data-testid="onboarding-i-am-parent">
+                This is my child
+              </Button>
+              <Button variant="outline" onClick={() => setOpen('parent')}>
                 <PlusIcon />
                 Create a family account
               </Button>

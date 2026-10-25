@@ -64,7 +64,7 @@ onFlowComplete:
     visible:
       id: platform-person-card
     timeout: 10000
-- assertVisible: 'Belongs to 2 organizations.'
+- assertVisible: 'Belongs to 2 spaces.'
 - scrollUntilVisible:
     element:
       id: platform-person-phone
@@ -80,13 +80,13 @@ onFlowComplete:
 - tapOn:
     id: platform-person-save
 - extendedWaitUntil:
-    visible: 'Shared details saved, in every organization.'
+    visible: 'Shared details saved, in every space.'
     timeout: 10000
 - assertVisible: '\(984\) 555-0199'
 - takeScreenshot: platform-people
 # What the platform did is in its log.
 - extendedWaitUntil:
-    notVisible: 'Shared details saved, in every organization.'
+    notVisible: 'Shared details saved, in every space.'
     timeout: 10000
 - tapOn: 'Activity'
 - extendedWaitUntil:

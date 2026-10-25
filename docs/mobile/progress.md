@@ -393,6 +393,21 @@ native rebuild of both dev builds, so build only while the devices are free.
   (124 suites, 890 tests) and the export green; `features/*` (nine flows, `assess-home` tagged smoke) and
   the other smoke flows green on iOS and Android against the e2e Release build.
 
+## Portal Phases 51 and 52 — groundwork for open sign-in, and spaces (parity: the web half is built by the lead)
+
+- [x] 63. Mobile: signing up and spaces, at parity with the web (`docs/open-signup-plan.md`, R6, R21) —
+  Google sign-in sends `signup: true` and a newcomer answers About you (birth month and year, the terms;
+  under 13 nothing is kept); with sign-in off, an unknown address offers "Sign up as …". The Welcome (a
+  person in no space): join with a code, requests waiting with Withdraw, a decline shown once, make a space
+  (adults), Delete my account; "Join or make another space" from the picker and the account sheet. The
+  Space screen (was Organization): the code with Share (the portal's address in the message), Make a new
+  code, joining on/off; Leave; Delete the space (a self-serve admin, typing its name); no email card in a
+  self-serve space. People: Requests to join (Let in opens the person form prefilled, Decline); the
+  parent's consent for a student in a self-serve space; "This is my child" in the wizard. Phase 51: the
+  terms and privacy links, the calm rate limit, the untrusted Quest toast, the console's "Suggested by
+  spaces" and its Quest trust switch. "Space" for "organization" on screen, guarded by
+  `src/test/wording.test.ts`. Built and tested 2026-10-24 (build note under design 63): typecheck, lint (0 errors) and Jest (135 suites, 978 tests) green, the export bundles; `spaces/*` (7 flows) green on the iOS simulator and the Android emulator; the changed `organization/*`, `organizations/*`, `platform/{organizations,admins-people,org-admin-denied}`, `exposure/student-controls`, `shell/navigation`, `canvas-assessments/{menu,question-count}`, `features/{organization,person-form}`, `people/create-student`, `onboarding/wizard-admin` and `search/admin` green on both; `features/console` green on Android and red on iOS (the console row's label is the name alone, so the flow's `.*Tutoring, Assessment` is not found; the row is unchanged), `people/directory-admin` green on iOS and red on Android (a guardian below the fold; the person detail is unchanged); `npm run smoke -- mobile` green on both (7/7 each), on the development build.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

@@ -69,19 +69,19 @@ export function OrganizationsScreen() {
         }}
         style={{ alignSelf: 'flex-start' }}
       >
-        New organization
+        New space
       </Button>
 
       {organizations.isPending ? (
-        <ListSkeleton label="Loading organizations…" count={3} height={72} />
+        <ListSkeleton label="Loading spaces…" count={3} height={72} />
       ) : organizations.isError ? (
         <ErrorState error={organizations.error} onRetry={() => void organizations.refetch()} />
       ) : rows.length === 0 ? (
         <EmptyNote>
-          No organizations yet. Create the first, then add its admin — they take it from there.
+          No spaces yet. Create the first, then add its admin — they take it from there.
         </EmptyNote>
       ) : (
-        <View style={{ gap: space.sm }} accessibilityLabel="Organizations">
+        <View style={{ gap: space.sm }} accessibilityLabel="Spaces">
           {rows.map((org) => (
             <OutlinedCard
               key={org.id}
@@ -90,7 +90,7 @@ export function OrganizationsScreen() {
               <TouchableRipple
                 testID={`platform-org-${org.slug}`}
                 accessibilityRole="button"
-                accessibilityLabel={`${org.name}${org.archived_at ? ', archived' : ''}`}
+                accessibilityLabel={`${org.name}${org.archived_at ? ', archived' : ''}, ${orgSummary(org)}`}
                 borderless
                 style={{ borderRadius: radius.lg }}
                 onPress={() => {

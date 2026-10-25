@@ -556,3 +556,12 @@ Phase 50 SQL applied to production after the backup; both Workers deployed. Ever
 keeps all three sets. The compatibility test now refuses to start when one of its ports is taken (an old
 dev server on its port had stood in for "today's Worker" in Phase 49's run; the schema check and the old
 Worker's run were sound).
+
+Phases 51 and 52 released together 2026-10-24 (tags `release-20261024-p51` and `release-20261024-p52`;
+production backed up first, both SQL blocks applied, both Workers deployed), web and the app. Sign-up
+itself stays CLOSED in production (`SIGNUP_OPEN` "false" on the production pair): the owner approves
+the terms and privacy wording first, then `SIGNUP_OPEN` goes "true" and `LEGAL_DRAFT` false. Until
+then an unknown Google account is refused as before; existing members may make and join spaces with
+codes, and everything else in both phases is live. Rate limits use a Durable Object per key (the
+rate-limiting binding's free-plan availability is undocumented) and are twenty times looser away from
+production. The app shows its phase ("Phase 52").

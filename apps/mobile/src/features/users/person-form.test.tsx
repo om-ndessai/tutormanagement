@@ -19,8 +19,9 @@ jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));
 jest.mock('@/features/progress/api', () => ({ useStudentProgress: () => ({ data: undefined }) }));
+const mockCreate = jest.fn();
 jest.mock('./api', () => ({
-  useCreateUser: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useCreateUser: () => ({ mutateAsync: mockCreate, isPending: false }),
   useUpdateUser: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useUsers: () => ({ data: undefined, isFetching: false }),
   useUserDetail: () => ({ data: undefined }),
@@ -139,4 +140,89 @@ it('without Tutoring, still shows a tutor role someone already holds, but none o
   await renderWithProviders(<PersonForm detail={alex} onSaved={noop} onCancel={noop} />);
   expect(screen.getByTestId('person-role-tutor')).toBeTruthy();
   expect(screen.queryByTestId('person-tutor-education')).toBeNull();
+});
+
+// Phase 52 ------------------------------------------------------------------------------------
+
+it('lets in a request: the name and email filled, the email held, and the request sent with it', async () => {
+  mockCreate.mockReset();
+  mockCreate.mockResolvedValue({ data: { ...alex, id: 'jo', full_name: 'Jo Joiner', roles: ['parent'] } });
+  const onSaved = jest.fn();
+  await renderWithProviders(
+    <PersonForm
+      preset={{ roles: [], full_name: 'Jo Joiner', email: 'jo@example.com' }}
+      joinRequestUserId="11111111-1111-4111-8111-111111111111"
+      title="Let Jo Joiner in"
+      onSaved={onSaved}
+      onCancel={noop}
+    />,
+  );
+  expect(screen.getByTestId('person-form-title')).toHaveTextContent('Let Jo Joiner in');
+  expect(screen.getByTestId('person-form-name').props.value).toBe('Jo Joiner');
+  expect(screen.getByTestId('person-form-email').props.value).toBe('jo@example.com');
+  expect(screen.getByTestId('person-form-email').props.editable).toBe(false);
+  expect(screen.getByText('The address they asked to join with.')).toBeTruthy();
+  await fireEvent.press(screen.getByTestId('person-role-parent'));
+  await fireEvent.press(screen.getByTestId('person-form-save'));
+  expect(mockCreate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      full_name: 'Jo Joiner',
+      email: 'jo@example.com',
+      roles: ['parent'],
+      join_request_user_id: '11111111-1111-4111-8111-111111111111',
+    }),
+  );
+  expect(mockCreate.mock.calls[0][0]).not.toHaveProperty('parent_consent');
+  expect(onSaved).toHaveBeenCalled();
+});
+
+it('asks a self-serve space for a parent’s consent for a new student only, and sends it', async () => {
+  mockOrganization = { created_via: 'self_serve' };
+  mockCreate.mockReset();
+  mockCreate.mockResolvedValue({ data: { ...alex, id: 'kit', full_name: 'Kit', roles: ['student'] } });
+  await renderWithProviders(<PersonForm onSaved={noop} onCancel={noop} />);
+  expect(screen.queryByTestId('person-parent-consent')).toBeNull();
+  await fireEvent.press(screen.getByTestId('person-role-student'));
+  const box = screen.getByTestId('person-parent-consent');
+  expect(box.props.accessibilityState).toEqual({ checked: false });
+  await fireEvent.press(box);
+  expect(screen.getByTestId('person-parent-consent').props.accessibilityState).toEqual({ checked: true });
+});
+
+it('shows the server’s consent refusal under the box', async () => {
+  mockOrganization = { created_via: 'self_serve' };
+  const { ApiRequestError } = jest.requireActual('@/lib/api-client');
+  mockCreate.mockReset();
+  mockCreate.mockRejectedValue(
+    new ApiRequestError(422, 'validation_failed', 'Please correct the highlighted fields.', {
+      parent_consent: ['Confirm you are their parent or guardian, or have their permission.'],
+    }),
+  );
+  await renderWithProviders(
+    <PersonForm
+      preset={{
+        roles: ['student'],
+        guardians: [{ guardian_user_id: '22222222-2222-4222-8222-222222222222', relationship: 'mother', is_primary: true }],
+      }}
+      onSaved={noop}
+      onCancel={noop}
+    />,
+  );
+  await fireEvent.changeText(screen.getByTestId('person-form-name'), 'Kit Creator');
+  await fireEvent.press(screen.getByTestId('person-form-save'));
+  expect(mockCreate.mock.calls[0][0]).toMatchObject({ parent_consent: false });
+  expect(screen.getByTestId('person-parent-consent-error')).toHaveTextContent(
+    'Confirm you are their parent or guardian, or have their permission.',
+  );
+});
+
+it('never asks for consent outside a self-serve space, nor on an edit', async () => {
+  mockOrganization = { created_via: 'console' };
+  await renderWithProviders(<PersonForm preset={{ roles: ['student'] }} onSaved={noop} onCancel={noop} />);
+  expect(screen.queryByTestId('person-parent-consent')).toBeNull();
+  mockOrganization = { created_via: 'self_serve' };
+  await renderWithProviders(
+    <PersonForm detail={{ ...alex, roles: ['student'], shared_fields_locked: false }} onSaved={noop} onCancel={noop} />,
+  );
+  expect(screen.queryByTestId('person-parent-consent')).toBeNull();
 });

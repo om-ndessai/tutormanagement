@@ -11,6 +11,10 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { DEFAULT_ORG_TIME_ZONE } from '@tmi/shared';
 import type {
+  MyJoinRequest,
+  PlatformAccount,
+  SignupInput,
+  SignupStart,
   ApiOk,
   AuthConfig,
   Invitation,
@@ -45,6 +49,17 @@ interface AuthContextValue {
   invitations: Invitation[];
   /** Whether the person may use the platform console. */
   platformAdmin: boolean;
+  /** Phase 52: a self-registered person's age band; null for anyone a space added. */
+  account: PlatformAccount | null;
+  /** Phase 52: their own open (or just declined) requests to join a space. */
+  joinRequests: MyJoinRequest[];
+  /**
+   * Phase 52: a newcomer between their Google sign-in and the age question -- who Google says they
+   * are, and the short-lived token that stands for it. Held in memory only.
+   */
+  pendingSignup: SignupStart['signup'] | null;
+  /** Phase 52: answers the age question and the terms, and signs the newcomer in. */
+  completeSignup: (input: Omit<SignupInput, 'token'>) => Promise<void>;
   /** True the first time this person has ever opened this organization. */
   firstVisit: boolean;
   /** Enters an organization in this tab: everything reloads in it. */
@@ -90,6 +105,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [memberships, setMemberships] = useState<Membership[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [platformAdmin, setPlatformAdmin] = useState(false);
+  const [account, setAccount] = useState<PlatformAccount | null>(null);
+  const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
+  const [pendingSignup, setPendingSignup] = useState<SignupStart['signup'] | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
 
   /**
@@ -122,6 +140,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setMemberships(session.memberships);
     setInvitations(session.invitations);
     setPlatformAdmin(session.platform_admin);
+    setAccount(session.account ?? null);
+    setJoinRequests(session.join_requests ?? []);
 
     const preferred = session.memberships.find((m) => m.is_default && m.status === 'active');
     if (arrivingRef.current && preferred && session.organization?.slug !== preferred.slug) {
@@ -273,9 +293,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(null);
 
       try {
-        await apiClient.post<ApiOk<SessionResponse>>('/auth/google', {
+        // Phase 52: this client can sign a newcomer up, so an unknown account is not refused.
+        const answer = await apiClient.post<ApiOk<SessionResponse | SignupStart>>('/auth/google', {
           credential,
+          signup: true,
         });
+        if ('signup' in answer.data) {
+          setPendingSignup(answer.data.signup);
+          setStatus('unauthenticated');
+          return;
+        }
 
         // Read the session again, inside the organization this browser last
         // used when the person may still enter it.
@@ -291,6 +318,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     },
     [loadSession],
+  );
+
+  const completeSignup = useCallback(
+    async (input: Omit<SignupInput, 'token'>) => {
+      await apiClient.post<ApiOk<SessionResponse>>('/auth/signup', {
+        ...input,
+        ...(pendingSignup ? { token: pendingSignup.token } : {}),
+      });
+      setPendingSignup(null);
+      await loadSession();
+      setStatus('authenticated');
+    },
+    [pendingSignup, loadSession],
   );
 
   const signOut = useCallback(async () => {
@@ -323,6 +363,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       memberships,
       invitations,
       platformAdmin,
+      account,
+      joinRequests,
+      pendingSignup,
+      completeSignup,
       firstVisit,
       chooseOrganization,
       refreshSession,
@@ -343,6 +387,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       memberships,
       invitations,
       platformAdmin,
+      account,
+      joinRequests,
+      pendingSignup,
+      completeSignup,
       firstVisit,
       chooseOrganization,
       refreshSession,

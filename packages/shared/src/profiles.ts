@@ -389,6 +389,15 @@ const sectionShape = updateUserSectionsSchema.shape;
 export const createUserRequestSchema = userFieldsSchema
   .extend({ status: z.enum(USER_STATUSES).default('active') })
   .extend(sectionShape)
+  .extend({
+    /** Phase 52: letting in the person who asked to join (their open request, by their id). */
+    join_request_user_id: z.uuid().optional(),
+    /**
+     * Phase 52: adding a student in a self-serve space, the adult confirms they are the child's
+     * parent or guardian, or have their permission (recorded as a `consents` row).
+     */
+    parent_consent: z.boolean().optional(),
+  })
   // The same rule the standalone createUserSchema carries: this is the shape
   // the route actually validates, and the form checks before submitting.
   .superRefine(refineEmailForRoles);

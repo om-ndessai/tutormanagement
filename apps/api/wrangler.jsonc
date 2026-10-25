@@ -125,6 +125,8 @@
 		// member of it lands in it without choosing. Membership is still checked
 		// on every request -- this picks, it never grants.
 		"DEFAULT_ORGANIZATION": "tmi",
+		// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
+		"SIGNUP_OPEN": "false",
 
 		// Phase 32: the address notifications come from, and this Worker's own
 		// address for the link in each one. Cloudflare sends only from a domain
@@ -219,6 +221,8 @@
 				// No organization of its own: the sign-in page wears the neutral
 				// platform brand.
 				"DEFAULT_ORGANIZATION": "",
+				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
+				"SIGNUP_OPEN": "false",
 				"EMAIL_FROM": "no-reply@tutoring.om-ndessai.workers.dev",
 				"PUBLIC_URL": "https://tutoring.om-ndessai.workers.dev",
 				"AI_ENABLED": "true",
@@ -271,6 +275,8 @@
 				"DEV_USER_EMAIL": "",
 				"BOOTSTRAP_ADMIN_EMAILS": "ndessai@gmail.com",
 				"DEFAULT_ORGANIZATION": "",
+				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
+				"SIGNUP_OPEN": "true",
 				// No mail binding here (`send_email` is empty below): the demo never
 				// emails anyone, and logs each notification as skipped.
 				"EMAIL_FROM": "",

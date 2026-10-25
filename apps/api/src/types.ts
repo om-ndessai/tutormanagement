@@ -33,6 +33,8 @@ export interface Env {
    * membership check still decides.
    */
   DEFAULT_ORGANIZATION?: string;
+  /** Phase 52: "false" keeps sign-up closed (production, until the owner approves the terms). */
+  SIGNUP_OPEN?: string;
   /** Identity used by every request while AUTH_ENABLED is "false". */
   DEV_USER_EMAIL: string;
   /** Comma-separated emails that become platform admins while there is none. */

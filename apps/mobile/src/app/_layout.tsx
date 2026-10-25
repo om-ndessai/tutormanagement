@@ -90,9 +90,15 @@ function RootNavigator() {
         <Stack.Screen name="index" />
         <Stack.Protected guard={!signedIn}>
           <Stack.Screen name="sign-in" />
+          <Stack.Screen name="sign-up" />
         </Stack.Protected>
         <Stack.Protected guard={signedIn}>
           <Stack.Screen name="select-organization" />
+          {/* Phase 52: joining or making another space, from the picker or the account sheet. */}
+          <Stack.Screen
+            name="join-space"
+            options={{ presentation: 'modal', headerShown: true, title: 'Join or make a space' }}
+          />
           <Stack.Protected guard={organization !== null}>
             <Stack.Screen name="(org)" />
           </Stack.Protected>

@@ -18,13 +18,13 @@ test.describe('the platform console', () => {
     await expect(platform).toHaveURL(/\/platform$/);
     await expect(platform.getByText('Platform console')).toBeVisible();
 
-    await platform.getByRole('button', { name: 'New organization' }).click();
+    await platform.getByRole('button', { name: 'New space' }).click();
     const dialog = platform.getByRole('dialog');
     await dialog.getByLabel('Name', { exact: true }).fill('Lakeside Learning');
     await expect(dialog.getByLabel('Address name')).toHaveValue('lakeside-learning');
     await dialog.getByLabel('Short name').fill('Lakeside');
     await dialog.getByRole('radio', { name: 'Forest' }).click();
-    await dialog.getByRole('button', { name: 'Create organization' }).click();
+    await dialog.getByRole('button', { name: 'Create space' }).click();
     await expect(platform.getByText('Lakeside Learning created.')).toBeVisible();
 
     await platform.getByRole('button', { name: 'Edit Lakeside Learning' }).click();

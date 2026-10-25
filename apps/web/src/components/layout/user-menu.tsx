@@ -75,7 +75,7 @@ export function UserMenu() {
         {hasOtherPlaces && (
           <DropdownMenuItem onSelect={() => window.location.assign('/select-organization')}>
             <ArrowLeftRightIcon className="size-4" />
-            Switch organization
+            Switch space
           </DropdownMenuItem>
         )}
         {platformAdmin && (

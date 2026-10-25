@@ -2,7 +2,7 @@ import type { Context } from 'hono';
 import { RATE_LIMITS, type RateLimitKind } from '@tmi/shared';
 
 import { ApiError } from './errors.js';
-import type { AppEnv } from '../types.js';
+import { isProduction, type AppEnv } from '../types.js';
 
 /** The caller's address as Cloudflare saw it; locally, one shared bucket. */
 export function clientAddress(c: Context<AppEnv>): string {
@@ -14,7 +14,10 @@ export function clientAddress(c: Context<AppEnv>): string {
  * `who` is a person's id or a client address. Counted in a Durable Object, never in D1.
  */
 export async function rateLimit(c: Context<AppEnv>, kind: RateLimitKind, who: string): Promise<void> {
-  const { limit, windowMs } = RATE_LIMITS[kind];
+  const { limit: base, windowMs } = RATE_LIMITS[kind];
+  // Away from production (local, the demo) the suites sign many people up from one address in a
+  // minute: the limits are twenty times looser there. Production keeps them as written.
+  const limit = isProduction(c.env) ? base : base * 20;
   const stub = c.env.RATE_LIMITS.get(c.env.RATE_LIMITS.idFromName(`${kind}:${who}`));
   const result = await stub.hit(limit, windowMs);
   if (!result.ok) {

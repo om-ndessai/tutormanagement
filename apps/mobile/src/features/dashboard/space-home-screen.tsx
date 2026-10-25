@@ -95,7 +95,7 @@ function OpenOrganization({ testID }: { testID: string }) {
       onPress={() => router.navigate('/organization')}
       style={{ alignSelf: 'flex-start' }}
     >
-      Open Organization
+      Open Space
     </Button>
   );
 }

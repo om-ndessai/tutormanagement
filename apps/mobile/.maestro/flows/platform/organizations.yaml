@@ -19,7 +19,7 @@ onFlowComplete:
     visible:
       id: screen-platform
     timeout: 20000
-- assertVisible: 'Organizations'
+- assertVisible: 'Spaces'
 - assertVisible:
     id: platform-org-riverside
 - takeScreenshot: platform-organizations

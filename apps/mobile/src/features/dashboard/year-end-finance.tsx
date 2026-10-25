@@ -129,8 +129,8 @@ export function YearEndFinance() {
           The SSN is typed when the form is printed and is never stored. The recipient’s address comes from
           the tutor’s record.{' '}
           {instituteTin
-            ? `The payer box is filled from the organization settings (${instituteTin}).`
-            : 'Add the TIN on the Organization settings page and it will fill the payer box for you.'}
+            ? `The payer box is filled from the Space settings (${instituteTin}).`
+            : 'Add the TIN on the Space page and it will fill the payer box for you.'}
         </Text>
       </View>
     </Panel>

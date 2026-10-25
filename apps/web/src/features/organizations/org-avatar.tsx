@@ -7,7 +7,13 @@ import { cn } from '@/lib/utils';
  * artwork for the one organization that wears it, or its initials on its
  * palette colour. Never another organization's look.
  */
-export function OrgAvatar({ org, className }: { org: OrganizationBrand; className?: string }) {
+export function OrgAvatar({
+  org,
+  className,
+}: {
+  org: Pick<OrganizationBrand, 'logo_mark_url' | 'short_name' | 'palette'> & { builtin_logo?: OrganizationBrand['builtin_logo'] };
+  className?: string;
+}) {
   const src = org.logo_mark_url ?? (org.builtin_logo === 'institute' ? '/logo-mark.png' : null);
 
   if (src) {

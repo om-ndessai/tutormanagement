@@ -907,22 +907,41 @@ const organizations = [
    // Notifications ON in A, so the demo shows the switch and its log of
    // what would have been sent (the demo has no mail binding: sent to nobody).
    // The Assessment menu (beta, Phase 38) ON in A too, so the demo shows it.
-   q('America/New_York'), '1', '1', '0', q('chmi.tutor-portal.invalid'), 1, 1, 1],
+   q('America/New_York'), '1', '1', '0', q('chmi.tutor-portal.invalid'), 1, 1, 1,
+   // Phase 52: the institute has a code, with joining by code off until its admins switch it on.
+   q('console'), 1, q('CHMX2345'), 0],
   [B, q('riverside'), q('Riverside Tutoring'), q('Riverside'), q('Small groups, big steps'),
    q('Neighbourhood tutoring along the river, for families who want a tutor who knows the school.'),
    q('Durham, North Carolina'), q('teal'), 'NULL', q('56-7788990'),
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
-   q('America/New_York'), '0', '0', '0', q('riverside.tutor-portal.invalid'), 1, 1, 1],
+   q('America/New_York'), '0', '0', '0', q('riverside.tutor-portal.invalid'), 1, 1, 1,
+   // Riverside lets people ask to join with its code.
+   q('console'), 1, q('RVRS2345'), 1],
   // C (Phase 50): a small space allowed the Assessment set alone -- the shape every self-serve
   // space of Phase 52 takes. No tutoring, no Quest; Assessment switched on.
   [C, q('assess'), q('Ferreira Family Practice'), q('Ferreira'), 'NULL', 'NULL', 'NULL', q('platform'), 'NULL', 'NULL',
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
-   q('America/New_York'), '0', '1', '0', q('assess.tutor-portal.invalid'), 0, 1, 0],
+   q('America/New_York'), '0', '1', '0', q('assess.tutor-portal.invalid'), 0, 1, 0,
+   // Phase 52: a space a member made herself, joined with its code; untrusted for Quest approvals.
+   q('self_serve'), 0, q('FMXY2345'), 1],
 ];
 
 // The people only C has: an admin who is also the parent, a second parent, and their child.
 const UC = (k) => id('0d100000', k);
 const C_CAST = { ines: UC(1), omar: UC(2), noor: UC(3) };
+// Phase 52: people who signed themselves up. Nina belongs nowhere yet; Theo, 15, asked to join Riverside.
+const UN = (k) => id('0d200000', k);
+const NEWCOMERS = { nina: UN(1), theo: UN(2) };
+const newcomerUsers = [
+  [q(NEWCOMERS.nina), q('nina.newcomer@example.com'), q('Nina Newcomer'), 'NULL'],
+  [q(NEWCOMERS.theo), q('theo.teen@example.com'), q('Theo Teen'), 'NULL'],
+];
+const platformAccounts = [
+  [q(NEWCOMERS.nina), q('adult'), q('2026-10-24T12:00:00.000Z'), q('2026-10-24'), q('2026-10-24'), q('2026-10-24T12:00:00.000Z')],
+  [q(NEWCOMERS.theo), q('13-17'), q('2026-10-24T12:00:00.000Z'), q('2026-10-24'), q('2026-10-24'), q('2026-10-24T12:00:00.000Z')],
+];
+const joinRequests = [[B, q(NEWCOMERS.theo), q('2026-10-24T12:30:00.000Z')]];
+
 const cUsers = [
   [q(C_CAST.ines), q('ines.ferreira.assess@gmail.com'), q('Ines Ferreira'), 'NULL'],
   [q(C_CAST.omar), q('omar.haddad.assess@gmail.com'), q('Omar Haddad'), 'NULL'],
@@ -1157,15 +1176,19 @@ DELETE FROM user_roles;
 DELETE FROM org_members;
 DELETE FROM organization_logos;
 DELETE FROM platform_admins;
+DELETE FROM join_requests;
+DELETE FROM consents;
+DELETE FROM question_suggestions;
 DELETE FROM organization_curricula;
 DELETE FROM organizations;
 DELETE FROM user_onboarding;
+DELETE FROM platform_accounts;
 DELETE FROM users;
 
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest'], organizations)}
+${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest', 'created_via', 'quest_trusted', 'join_code', 'join_by_code'], organizations)}
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
@@ -1174,15 +1197,21 @@ ${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb
 ${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB, [C, q('nc-2026'), 1, 'NULL']])}
 
 -- --- people ----------------------------------------------------------------
-${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers, ...cUsers])}
+${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers, ...cUsers, ...newcomerUsers])}
 
 -- --- who belongs where, and what they do there -----------------------------
 ${insert('org_members', ['organization_id', 'user_id', 'status', 'first_entered_at'], [...membersA, ...membersB, ...membersC], 80)}
 
 ${insert('user_roles', ['organization_id', 'user_id', 'role'], [...inOrg(A, roles), ...rolesB, ...rolesC], 80)}
 
+UPDATE organizations SET created_by_user_id = ${q(C_CAST.ines)} WHERE id = ${C};
+
+-- --- people who signed themselves up, and asked to join (Phase 52) --------
+${insert('platform_accounts', ['user_id', 'age_band', 'age_confirmed_at', 'terms_version', 'privacy_version', 'accepted_at'], platformAccounts)}
+${insert('join_requests', ['organization_id', 'user_id', 'requested_at'], joinRequests)}
+
 -- --- everyone here has been through the welcome wizard (Phase 26) ----------
-${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], [...users, ...bUsers, ...cUsers].map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
+${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], [...users, ...bUsers, ...cUsers, ...newcomerUsers].map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
 
 -- --- tutor-only data -------------------------------------------------------
 ${insert('tutor_profiles', ['organization_id', 'user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on', 'address_line1', 'address_line2', 'city', 'state', 'postal_code'], [...inOrg(A, tutorProfiles), ...tutorProfilesB])}

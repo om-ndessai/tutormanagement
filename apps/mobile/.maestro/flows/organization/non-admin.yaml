@@ -22,7 +22,7 @@ tags:
     id: more-nav-organization
 - assertNotVisible:
     id: more-nav-locations
-- assertNotVisible: 'Organization'
+- assertNotVisible: 'Space'
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
@@ -31,7 +31,7 @@ tags:
     visible:
       id: organization-stub
     timeout: 20000
-- assertVisible: 'Only an administrator can see the organization’s settings.'
+- assertVisible: 'Only an administrator can see the space’s settings.'
 - assertNotVisible:
     id: org-tin
 - assertNotVisible: '47-2019388'

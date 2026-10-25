@@ -135,6 +135,25 @@ describe('api client', () => {
     fetchMock.mockReturnValue(respond(204, null));
     await expect(apiClient.delete('/comments/1')).resolves.toBeUndefined();
   });
+
+  it('sends a DELETE with a JSON body when given one (Phase 52)', async () => {
+    fetchMock.mockReturnValue(respond(204, null));
+    await apiClient.delete('/organization', { confirm_name: 'Maker Test Space' });
+    const [, init] = fetchMock.mock.calls[0];
+    expect(init.method).toBe('DELETE');
+    expect(init.body).toBe(JSON.stringify({ confirm_name: 'Maker Test Space' }));
+    expect(init.headers['Content-Type']).toBe('application/json');
+    await apiClient.delete('/comments/1');
+    expect(fetchMock.mock.calls[1][1].body).toBeUndefined();
+  });
+
+  it('never renews on a refused sign-up (an expired sign-up token is a 401)', async () => {
+    const renew = jest.fn(async () => true);
+    setReauthenticator(renew);
+    fetchMock.mockReturnValue(respond(401, { error: { code: 'unauthenticated', message: 'That sign-up has expired.' } }));
+    await expect(apiClient.post('/auth/signup', {})).rejects.toMatchObject({ code: 'unauthenticated' });
+    expect(renew).not.toHaveBeenCalled();
+  });
 });
 
 describe('toQueryString', () => {

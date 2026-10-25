@@ -113,7 +113,7 @@ describe('SpaceHomeScreen', () => {
     await waitFor(() => expect(screen.queryByTestId('assess-home-waiting')).toBeNull());
   });
 
-  it('says Assessment is switched off, with Open Organization for an admin', async () => {
+  it('says Assessment is switched off, with Open Space for an admin', async () => {
     serve([]);
     signIn(['admin'], { ...ASSESS, canvas_assessments: false });
     await renderWithProviders(<SpaceHomeScreen />);

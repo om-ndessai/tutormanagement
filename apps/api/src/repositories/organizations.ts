@@ -1,5 +1,10 @@
 import {
   DEFAULT_CURRICULUM_ID,
+  SPACE_CODE_ALPHABET,
+  SPACE_CODE_LENGTH,
+  spaceSlugFor,
+  type JoinRequest,
+  type MyJoinRequest,
   USER_ROLES,
   type CreateOrganizationPayload,
   type Invitation,
@@ -637,4 +642,244 @@ export async function updateOrganizationFeatures(
     )
     .run();
   return getOrganizationById(db, id);
+}
+
+// ---------------------------------------------------------------------------
+// Phase 52: spaces -- their codes, requests to join, and making one
+// ---------------------------------------------------------------------------
+
+/** A fresh space code from SPACE_CODE_ALPHABET, by rejection sampling (no bias). */
+export function newSpaceCode(): string {
+  const out: string[] = [];
+  const bytes = new Uint8Array(32);
+  while (out.length < SPACE_CODE_LENGTH) {
+    crypto.getRandomValues(bytes);
+    for (const b of bytes) {
+      if (b < 240 && out.length < SPACE_CODE_LENGTH) out.push(SPACE_CODE_ALPHABET[b % 30]!);
+    }
+  }
+  return out.join('');
+}
+
+/** The space a code opens, while joining by code is on and it is not archived; null otherwise. */
+export async function findSpaceByCode(db: D1Database, code: string): Promise<Organization | null> {
+  const row = await db
+    .prepare(`${SELECT_ORG} WHERE o.join_code = ? AND o.join_by_code = 1 AND o.archived_at IS NULL`)
+    .bind(code)
+    .first<OrgRow>();
+  return row ? toOrganization(row) : null;
+}
+
+/** The space's code and switch, for its admins. */
+export async function getSpaceCode(db: D1Database, org: OrgId): Promise<{ code: string | null; join_by_code: boolean }> {
+  const row = await db
+    .prepare('SELECT join_code, join_by_code FROM organizations WHERE id = ?')
+    .bind(org)
+    .first<{ join_code: string | null; join_by_code: number }>();
+  return { code: row?.join_code ?? null, join_by_code: row?.join_by_code === 1 };
+}
+
+/** Gives the space a new code (the old one stops working at once). Retries a clash. */
+export async function renewSpaceCode(db: D1Database, org: OrgId): Promise<string> {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const code = newSpaceCode();
+    try {
+      await db
+        .prepare(`UPDATE organizations SET join_code = ?, updated_at = ${NOW} WHERE id = ?`)
+        .bind(code, org)
+        .run();
+      return code;
+    } catch (error) {
+      if (attempt === 4) throw error;
+    }
+  }
+  throw new Error('No space code could be made.');
+}
+
+export async function setJoinByCode(db: D1Database, org: OrgId, on: boolean): Promise<void> {
+  await db
+    .prepare(`UPDATE organizations SET join_by_code = ?, updated_at = ${NOW} WHERE id = ?`)
+    .bind(on ? 1 : 0, org)
+    .run();
+}
+
+/** The person's standing in a space: a member (any status but removed), an open request, or nothing. */
+export async function spaceStanding(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+): Promise<'member' | 'requested' | null> {
+  const [member, request] = await db.batch<{ ok: number }>([
+    db.prepare('SELECT 1 AS ok FROM org_members WHERE organization_id = ? AND user_id = ? AND removed_at IS NULL').bind(org, userId),
+    db
+      .prepare('SELECT 1 AS ok FROM join_requests WHERE organization_id = ? AND user_id = ? AND outcome IS NULL')
+      .bind(org, userId),
+  ]);
+  if ((member?.results ?? []).length > 0) return 'member';
+  if ((request?.results ?? []).length > 0) return 'requested';
+  return null;
+}
+
+/** How many open requests the person has, anywhere (their daily cap). */
+export async function countOpenRequests(db: D1Database, userId: string): Promise<number> {
+  const row = await db
+    .prepare(
+      // org-scope: a person's own requests across spaces, a count only.
+      'SELECT COUNT(*) AS n FROM join_requests WHERE user_id = ? AND outcome IS NULL',
+    )
+    .bind(userId)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
+}
+
+export async function createJoinRequest(db: D1Database, org: OrgId, userId: string): Promise<void> {
+  await db.prepare('INSERT INTO join_requests (organization_id, user_id) VALUES (?, ?)').bind(org, userId).run();
+}
+
+/** The person's own requests: open ones, and declined ones not yet seen. */
+export async function listMyJoinRequests(db: D1Database, userId: string): Promise<MyJoinRequest[]> {
+  const result = await db
+    .prepare(
+      // org-scope: the person's own requests across spaces, with each space's public face.
+      `${SELECT_ORG.replace('FROM organizations o', ', j.requested_at, j.outcome FROM organizations o JOIN join_requests j ON j.organization_id = o.id')}
+       WHERE j.user_id = ? AND (j.outcome IS NULL OR (j.outcome = 'declined' AND j.seen_at IS NULL))
+       ORDER BY j.requested_at DESC`,
+    )
+    .bind(userId)
+    .all<OrgRow & { requested_at: string; outcome: string | null }>();
+  return (result.results ?? []).map((row) => {
+    const brand = toBrand(row);
+    return {
+      slug: brand.slug,
+      name: brand.name,
+      short_name: brand.short_name,
+      palette: brand.palette,
+      logo_mark_url: brand.logo_mark_url,
+      requested_at: row.requested_at,
+      outcome: row.outcome === 'declined' ? 'declined' : null,
+    };
+  });
+}
+
+/** Marks the person's declined requests as seen (they were shown once). */
+export async function markDeclinesSeen(db: D1Database, userId: string): Promise<void> {
+  await db
+    .prepare(
+      // org-scope: the person's own requests across spaces.
+      `UPDATE join_requests SET seen_at = ${NOW} WHERE user_id = ? AND outcome = 'declined' AND seen_at IS NULL`,
+    )
+    .bind(userId)
+    .run();
+}
+
+/** Closes the person's open request to this space. False when there was none. */
+export async function answerJoinRequest(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+  outcome: 'approved' | 'declined' | 'withdrawn',
+  answeredBy: string,
+): Promise<boolean> {
+  const result = await db
+    .prepare(
+      `UPDATE join_requests SET outcome = ?, answered_by = ?, answered_at = ${NOW}
+       WHERE organization_id = ? AND user_id = ? AND outcome IS NULL`,
+    )
+    .bind(outcome, answeredBy, org, userId)
+    .run();
+  return (result.meta.changes ?? 0) > 0;
+}
+
+/** A space's open requests, oldest first, with who Google says each person is. */
+export async function listJoinRequests(db: D1Database, org: OrgId): Promise<JoinRequest[]> {
+  const result = await db
+    .prepare(
+      `SELECT j.user_id, u.full_name, u.email, j.requested_at
+       FROM join_requests j JOIN users u ON u.id = j.user_id AND u.deleted_at IS NULL
+       WHERE j.organization_id = ? AND j.outcome IS NULL
+       ORDER BY j.requested_at`,
+    )
+    .bind(org)
+    .all<JoinRequest>();
+  return result.results ?? [];
+}
+
+/** Whether this person has an open request here, and the address it was made with. */
+export async function openJoinRequest(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+): Promise<{ email: string | null; full_name: string } | null> {
+  return db
+    .prepare(
+      `SELECT u.email, u.full_name FROM join_requests j JOIN users u ON u.id = j.user_id
+       WHERE j.organization_id = ? AND j.user_id = ? AND j.outcome IS NULL`,
+    )
+    .bind(org, userId)
+    .first();
+}
+
+/** How many self-serve spaces the person made (their lifetime cap counts the live ones). */
+export async function countSpacesMadeBy(db: D1Database, userId: string): Promise<number> {
+  const row = await db
+    .prepare('SELECT COUNT(*) AS n FROM organizations WHERE created_by_user_id = ? AND archived_at IS NULL')
+    .bind(userId)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
+}
+
+/** The names of the organizations the platform made: a space may not take one. */
+export async function consoleOrganizationNames(db: D1Database): Promise<string[]> {
+  const result = await db
+    .prepare("SELECT name FROM organizations WHERE created_via = 'console'")
+    .all<{ name: string }>();
+  return (result.results ?? []).map((row) => row.name);
+}
+
+/**
+ * Makes a self-serve space in one batch: the organization (Assessment alone, on, approved
+ * questions only; untrusted for Quest; no email), its default curriculum, its code with joining
+ * on, and its maker as its active admin.
+ */
+export async function createSpace(
+  db: D1Database,
+  input: { name: string; timeZone: string; makerId: string; requestHost: string },
+): Promise<Organization> {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const id = crypto.randomUUID();
+    const code = newSpaceCode();
+    const slug = spaceSlugFor(code);
+    const shortName = input.name.length > 40 ? `${input.name.slice(0, 39)}…` : input.name;
+    try {
+      await db.batch([
+        db
+          .prepare(
+            `INSERT INTO organizations
+               (id, slug, name, short_name, palette, time_zone, email_notifications, calendar_domain,
+                canvas_assessments, canvas_assessments_unreviewed,
+                feature_tutoring, feature_assessment, feature_quest,
+                created_via, quest_trusted, join_code, join_by_code, created_by_user_id)
+             VALUES (?, ?, ?, ?, 'platform', ?, 0, ?, 1, 0, 0, 1, 0, 'self_serve', 0, ?, 1, ?)`,
+          )
+          .bind(id, slug, input.name, shortName, input.timeZone, `${slug}.${input.requestHost}`, code, input.makerId),
+        db
+          .prepare('INSERT INTO organization_curricula (organization_id, curriculum_id, is_default) VALUES (?, ?, 1)')
+          .bind(id, DEFAULT_CURRICULUM_ID),
+        db
+          .prepare(
+            `INSERT INTO org_members (organization_id, user_id, status, first_entered_at, last_entered_at)
+             VALUES (?, ?, 'active', ${NOW}, ${NOW})`,
+          )
+          .bind(id, input.makerId),
+        db.prepare("INSERT INTO user_roles (organization_id, user_id, role) VALUES (?, ?, 'admin')").bind(id, input.makerId),
+      ]);
+      const org = await getOrganizationById(db, id);
+      if (!org) throw new Error('Insert into organizations returned no row.');
+      return org;
+    } catch (error) {
+      // A clash of code or slug (one in a few hundred billion) tries again; anything else is real.
+      if (attempt === 4 || !String(error).includes('UNIQUE')) throw error;
+    }
+  }
+  throw new Error('No space could be made.');
 }

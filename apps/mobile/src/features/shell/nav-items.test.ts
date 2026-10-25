@@ -47,9 +47,15 @@ describe('visibleNavItems', () => {
     expect(items[at]).toMatchObject({ href: '/quest', tourId: 'nav-quest', badge: 'Beta' });
   });
 
+  it('calls the organization a Space, and still finds it by the old word (Phase 52)', () => {
+    const item = visibleNavItems(['admin'], {}).find((entry) => entry.href === '/organization');
+    expect(item?.label).toBe('Space');
+    expect(item?.keywords).toEqual(expect.arrayContaining(['settings', 'tin', 'payer', 'organization', 'code', 'join']));
+  });
+
   it('still leaves admin pages to admins', () => {
-    expect(labels(['tutor'], true)).not.toContain('Organization');
-    expect(labels(['admin'], true)).toContain('Organization');
+    expect(labels(['tutor'], true)).not.toContain('Space');
+    expect(labels(['admin'], true)).toContain('Space');
   });
 
   it('lists the Dashboard (the Analytics figures, Phase 43) for tutors and admins only; Home is the tab', () => {
@@ -83,14 +89,14 @@ describe('visibleNavItems', () => {
       }
     });
 
-    it('gives an Assessment-only admin Home, Assessment, Users, Activity, My profile and Organization', () => {
+    it('gives an Assessment-only admin Home, Assessment, Users, Activity, My profile and Space', () => {
       expect(visibleNavItems(['admin'], ASSESS_ONLY).map((item) => item.label)).toEqual([
         'Home',
         'Assessment',
         'Users',
         'Activity',
         'My profile',
-        'Organization',
+        'Space',
       ]);
     });
 

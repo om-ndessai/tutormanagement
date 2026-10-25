@@ -15,6 +15,8 @@ function session(over: Partial<SessionResponse>): SessionResponse {
     memberships: [],
     invitations: [],
     platform_admin: false,
+    account: null,
+    join_requests: [],
     ...over,
   } as unknown as SessionResponse;
 }
@@ -61,5 +63,14 @@ describe('decideLanding (ported from the web applySession)', () => {
     expect(decideLanding(session({ memberships: [membership('a')], platform_admin: true }), true)).toEqual({
       kind: 'choose',
     });
+  });
+
+  it('waits on an open request to join rather than entering the one space (Phase 52)', () => {
+    const s = session({ memberships: [membership('chmi')], join_requests: [{ slug: 'assess' }] as never });
+    expect(decideLanding(s, true)).toEqual({ kind: 'choose' });
+  });
+
+  it('lets a newcomer (no space at all) choose: the Welcome', () => {
+    expect(decideLanding(session({}), true)).toEqual({ kind: 'choose' });
   });
 });

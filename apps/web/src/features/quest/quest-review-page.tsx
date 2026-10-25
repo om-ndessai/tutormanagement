@@ -173,7 +173,7 @@ function ReviewCard({ item }: { item: QuestReviewItem }) {
         </Card>
         <p className="text-muted-foreground text-xs">
           Judge the question, not only the answer: is the key right, is there exactly one defensible answer, is it
-          clear and fit for the level? Approving puts it in the bank for every organization.
+          clear and fit for the level? Approving puts it in the bank for every space.
         </p>
         <div className="grid gap-2 sm:grid-cols-2">
           <Button

@@ -28,6 +28,7 @@ import { questionBankRoutes } from './routes/question-bank.js';
 import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 import { questRoutes } from './routes/quest.js';
 import { homeRoutes } from './routes/home.js';
+import { spacesRoutes } from './routes/spaces.js';
 
 // Phase 46: each Quest game's Durable Object, bound as QUEST_GAMES in wrangler.jsonc.
 export { QuestGame } from './durable/quest-game.js';
@@ -152,9 +153,13 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/quest', questRoutes)
   .route('/home', homeRoutes);
 
+/** Phase 52: signed in, but before (or beside) any space -- outside requireOrg. */
+const spacesApi = new Hono<AppEnv>().use('*', requireAuth).route('/', spacesRoutes);
+
 const api = new Hono<AppEnv>()
   .route('/', publicRoutes)
   .route('/platform', platformApi)
+  .route('/spaces', spacesApi)
   .route('/', guardedRoutes);
 
 app.route('/api', api);

@@ -264,6 +264,19 @@ export function QuestionBankScreen() {
           >
             {totals.toReview === 0 ? 'Nothing to review' : `Review ${totals.toReview} checked`}
           </Button>
+          {/* Phase 51: approvals suggested by spaces whose Quest reviews are not trusted. */}
+          <Button
+            testID="bank-suggested"
+            mode="outlined"
+            icon="account-group-outline"
+            onPress={() => {
+              haptics.selection();
+              router.push('/question-review?suggested=1');
+            }}
+            contentStyle={{ minHeight: 48 }}
+          >
+            Suggested by spaces
+          </Button>
 
           <FigureRow
             testID="question-bank-totals"

@@ -117,8 +117,13 @@ export function savedToast(points: number = QUEST_POINTS.student_attempt): strin
   return `Saved. +${points} point${points === 1 ? '' : 's'}`;
 }
 
-export function reviewToast(decision: QuestReviewDecision): string {
-  return decision === 'approve' ? 'Approved. The question is in the bank.' : 'Flagged for the platform.';
+/**
+ * Phase 51 (ported from apps/web/src/features/quest/quest-review-page.tsx @ 9485a8e): a space the
+ * platform does not trust for Quest suggests an approval rather than making it.
+ */
+export function reviewToast(decision: QuestReviewDecision, trusted = true): string {
+  if (decision !== 'approve') return 'Flagged for the platform.';
+  return trusted ? 'Approved. The question is in the bank.' : 'Sent to the platform to approve.';
 }
 
 /** The hub's student line: "BA3 · 4 answered". The points follow it, with their trophy. */

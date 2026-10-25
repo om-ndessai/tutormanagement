@@ -28,6 +28,11 @@ import { mathToText } from './math-text';
 import { bodySpeech, bodyText, questionBodyHtml } from './question-html';
 import { confirmRetire } from './retire-confirm';
 
+/** Phase 51: how many spaces (whose Quest reviews are not trusted) suggested approving it. */
+export function suggestedLabel(count: number): string {
+  return `Suggested by ${count} space${count === 1 ? '' : 's'}`;
+}
+
 export function errorMessage(error: unknown): string {
   return error instanceof ApiRequestError ? error.message : 'Something went wrong. Try again.';
 }
@@ -216,6 +221,14 @@ export function QuestionCard({
         <StatusBadge status={question.status} testID={`question-bank-status-${question.id}`} />
         <Pill label={QUESTION_DIFFICULTY_LABELS[question.difficulty]} {...secondary} />
         <Pill label={question.kind === 'choice' ? 'Multiple choice' : 'Number answer'} {...secondary} />
+        {question.suggestions > 0 ? (
+          <Pill
+            testID={`question-suggested-${question.id}`}
+            label={suggestedLabel(question.suggestions)}
+            color={theme.colors.onTertiaryContainer}
+            background={theme.colors.tertiaryContainer}
+          />
+        ) : null}
         {question.skill ? (
           <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground, flexShrink: 1 }}>
             {question.skill}

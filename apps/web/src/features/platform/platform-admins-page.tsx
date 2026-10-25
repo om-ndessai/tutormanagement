@@ -39,7 +39,7 @@ export function PlatformAdminsPage() {
     <>
       <PageHeader
         title="Platform admins"
-        description="They create organizations and their admins. They see nothing inside an organization unless it makes them a member."
+        description="They create spaces and their admins. They see nothing inside a space unless it makes them a member."
       />
       <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
         <Card className="py-0">

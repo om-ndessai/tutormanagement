@@ -12,7 +12,7 @@ export function PlatformActivityPage() {
     <>
       <PageHeader
         title="Activity"
-        description="What the platform did. Each line is also in the affected organization’s own log."
+        description="What the platform did. Each line is also in the affected space’s own log."
       />
       <Card className="py-0">
         <CardContent className="p-0">

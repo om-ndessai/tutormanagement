@@ -51,6 +51,6 @@ test.describe('command palette', () => {
     await expect(tutor.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
     await tutor.keyboard.press('ControlOrMeta+k');
     await expect(palette(tutor).getByRole('option', { name: 'Sessions', exact: true })).toBeVisible();
-    await expect(palette(tutor).getByRole('option', { name: 'Organization', exact: true })).toHaveCount(0);
+    await expect(palette(tutor).getByRole('option', { name: 'Space', exact: true })).toHaveCount(0);
   });
 });

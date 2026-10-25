@@ -9,6 +9,7 @@ import {
   formToInput,
   palettesOnOffer,
   slugFrom,
+  trustBody,
   validateOrgForm,
 } from './org-form';
 import { orgSummary } from './organizations-screen';
@@ -71,6 +72,8 @@ const ORG: OrganizationListItem = {
   feature_tutoring: true,
   feature_assessment: true,
   feature_quest: false,
+  created_via: 'console',
+  quest_trusted: true,
   calendar_domain: 'lakeside.invalid',
   archived_at: null,
   created_at: '2026-10-01T00:00:00Z',
@@ -158,5 +161,27 @@ describe('feature sets (Phase 50)', () => {
       feature_assessment: true,
       feature_quest: false,
     });
+  });
+});
+
+describe('Quest trust (Phase 51)', () => {
+  it('reads the trust into the form, on unless switched off', () => {
+    expect(formFromOrganization(ORG).quest_trusted).toBe(true);
+    expect(formFromOrganization({ ...ORG, quest_trusted: false }).quest_trusted).toBe(false);
+  });
+
+  it('sends the features PUT, with the sets as they stand, only when the trust changed', () => {
+    expect(trustBody(ORG, true)).toBeNull();
+    expect(trustBody(ORG, false)).toEqual({
+      feature_tutoring: true,
+      feature_assessment: true,
+      feature_quest: false,
+      quest_trusted: false,
+    });
+    expect(trustBody({ ...ORG, quest_trusted: false }, true)).toMatchObject({ quest_trusted: true });
+  });
+
+  it('never sends the trust in the identity body', () => {
+    expect(formToInput(formFromOrganization(ORG))).not.toHaveProperty('quest_trusted');
   });
 });

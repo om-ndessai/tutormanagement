@@ -35,6 +35,9 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS consents;
+DROP TABLE IF EXISTS join_requests;
+DROP TABLE IF EXISTS platform_accounts;
 DROP TABLE IF EXISTS question_suggestions;
 DROP TABLE IF EXISTS quest_game_seen;
 DROP TABLE IF EXISTS quest_game_favorites;
@@ -211,6 +214,12 @@ CREATE TABLE organizations (
   -- console); a platform admin may trust it. Trigger: organizations_self_serve_untrusted.
   quest_trusted      INTEGER NOT NULL DEFAULT 1 CHECK (quest_trusted IN (0, 1)),
 
+  -- Phase 52: the space code people join with ("K7QM9XDA", shown K7QM-9XDA),
+  -- whether joining by it is on, and who made a self-serve space.
+  join_code          TEXT,
+  join_by_code       INTEGER NOT NULL DEFAULT 0 CHECK (join_by_code IN (0, 1)),
+  created_by_user_id TEXT REFERENCES users (id),
+
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
   calendar_domain TEXT NOT NULL,
@@ -221,6 +230,9 @@ CREATE TABLE organizations (
 
   CHECK (slug = lower(slug) AND length(slug) BETWEEN 2 AND 40)
 );
+
+CREATE UNIQUE INDEX organizations_join_code_unique ON organizations (join_code) WHERE join_code IS NOT NULL;
+CREATE INDEX organizations_created_by_idx ON organizations (created_by_user_id) WHERE created_by_user_id IS NOT NULL;
 
 -- Phase 51: a self-serve space never starts trusted for Quest approvals (a
 -- platform admin may trust it later, by an UPDATE).
@@ -2406,6 +2418,80 @@ END;
 
 CREATE TRIGGER quest_game_seen_organization_fixed
 BEFORE UPDATE OF organization_id ON quest_game_seen
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+
+-- ---------------------------------------------------------------------------
+-- Phase 52: open sign-up and spaces (docs/open-signup-plan.md)
+-- ---------------------------------------------------------------------------
+-- Phase 52: a self-registered person's standing on the platform -- their age
+-- band and the terms they accepted. Never a birth date. Nobody under 13 gets a
+-- row (or anything else). A person a space added has none.
+CREATE TABLE platform_accounts (
+  user_id           TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  age_band          TEXT NOT NULL CHECK (age_band IN ('13-17', 'adult')),
+  age_confirmed_at  TEXT NOT NULL,
+  terms_version     TEXT NOT NULL,
+  privacy_version   TEXT NOT NULL,
+  accepted_at       TEXT NOT NULL
+);
+
+-- Phase 52: asking to join a space with its code. The one root table that
+-- names somebody who is NOT a member of the organization -- that is what a
+-- request is -- so it has no membership trigger; it holds only the person's id,
+-- and the space's admins read their name and email only while it is open.
+CREATE TABLE join_requests (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  requested_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  outcome         TEXT CHECK (outcome IN ('approved', 'declined', 'withdrawn')),
+  answered_by     TEXT REFERENCES users (id),
+  answered_at     TEXT,
+  -- Whether the person has seen the outcome (a decline is shown once).
+  seen_at         TEXT,
+
+  PRIMARY KEY (organization_id, user_id, requested_at)
+);
+CREATE INDEX join_requests_open_idx ON join_requests (organization_id, outcome, requested_at);
+CREATE INDEX join_requests_person_idx ON join_requests (user_id, outcome);
+
+CREATE TRIGGER join_requests_organization_fixed
+BEFORE UPDATE OF organization_id ON join_requests
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Phase 52 (roadmap F7's first slice): a parent's consent for a child to take
+-- part. In a self-serve space, adding a student records the adding adult's
+-- confirmation that they are the child's parent or guardian, or have their
+-- permission. Withdrawn, never deleted.
+CREATE TABLE consents (
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  student_user_id  TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  guardian_user_id TEXT NOT NULL REFERENCES users (id),
+  purpose          TEXT NOT NULL CHECK (purpose IN ('child_account')),
+  method           TEXT NOT NULL CHECK (method IN ('account_holder_attestation', 'signed_form')),
+  version          TEXT NOT NULL,
+  given_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  withdrawn_at     TEXT,
+
+  PRIMARY KEY (organization_id, student_user_id, purpose, given_at)
+);
+
+CREATE TRIGGER consents_same_organization
+BEFORE INSERT ON consents
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.student_user_id)
+  OR NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.guardian_user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER consents_organization_fixed
+BEFORE UPDATE OF organization_id ON consents
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');

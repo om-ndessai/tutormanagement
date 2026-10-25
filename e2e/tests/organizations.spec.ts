@@ -12,7 +12,7 @@ test.describe('people in several organizations', () => {
     await priya.goto('/');
 
     await expect(priya).toHaveURL(/\/select-organization$/);
-    await expect(priya.getByRole('heading', { name: 'Choose an organization' })).toBeVisible();
+    await expect(priya.getByRole('heading', { name: 'Choose a space' })).toBeVisible();
     await expect(priya.getByRole('button', { name: /^Chapel Hill Math Institute.*Admin · Tutor/ })).toBeVisible();
     await expect(priya.getByRole('button', { name: /^Riverside Tutoring.*Tutor/ })).toBeVisible();
 
@@ -22,7 +22,7 @@ test.describe('people in several organizations', () => {
     await expect(priya).toHaveTitle(/Riverside/);
 
     // A tutor here: no Users-wide admin powers, no Organization page.
-    await expect(priya.getByRole('link', { name: 'Organization' })).toHaveCount(0);
+    await expect(priya.getByRole('link', { name: 'Space' })).toHaveCount(0);
     const session = await unwrap<any>(await priya.request.get('/api/auth/session', {
       headers: { 'X-Organization': ORGS.b.slug },
     }), 'session in B');
@@ -41,7 +41,7 @@ test.describe('people in several organizations', () => {
     // Signed in but not yet in one: still the platform's look.
     const choosing = await as('admin', { org: null });
     await choosing.goto('/select-organization');
-    await expect(choosing.getByRole('heading', { name: 'Choose an organization' })).toBeVisible();
+    await expect(choosing.getByRole('heading', { name: 'Choose a space' })).toBeVisible();
     await expect(choosing.locator('html')).toHaveAttribute('data-palette', 'platform');
   });
 

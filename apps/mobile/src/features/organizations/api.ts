@@ -1,8 +1,12 @@
-// Ported from apps/web/src/features/organizations/api.ts @ 1132322
+// Ported from apps/web/src/features/organizations/api.ts @ 1132322 (the Phase 52 block @ 9485a8e)
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
+  CreateSpaceInput,
   CurriculumOffering,
+  JoinRequest,
+  SpaceCode,
+  SpaceLookup,
   CurriculumOfferingInput,
   NotificationLogEntry,
   OrganizationSettings,
@@ -87,5 +91,110 @@ export function useSetDefaultOrganization() {
     mutationFn: (slug: string | null) =>
       apiClient.put<ApiOk<{ default_organization: string | null }>>('/auth/default-organization', { slug }),
     onSuccess: () => refreshSession(),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Phase 52: spaces -- joining with a code, making one, and its admins' side
+// ---------------------------------------------------------------------------
+
+/** What a code opens (404 for no space, or one with joining by code off). */
+export function useLookupSpace() {
+  return useMutation({
+    mutationFn: (code: string) => apiClient.post<ApiOk<SpaceLookup>>('/spaces/lookup', { code }),
+  });
+}
+
+export function useAskToJoin() {
+  const { refreshSession } = useAuth();
+  return useMutation({
+    mutationFn: (code: string) =>
+      apiClient.post<ApiOk<{ requested: true; slug: string }>>('/spaces/join-requests', { code }),
+    onSuccess: () => refreshSession(),
+  });
+}
+
+export function useWithdrawRequest() {
+  const { refreshSession } = useAuth();
+  return useMutation({
+    mutationFn: (slug: string) => apiClient.delete(`/spaces/join-requests/${encodeURIComponent(slug)}`),
+    onSuccess: () => refreshSession(),
+  });
+}
+
+export function useMarkDeclinesSeen() {
+  return useMutation({ mutationFn: () => apiClient.post('/spaces/join-requests/seen') });
+}
+
+export function useMakeSpace() {
+  const { refreshSession } = useAuth();
+  return useMutation({
+    mutationFn: (input: CreateSpaceInput) => apiClient.post<ApiOk<{ slug: string; name: string }>>('/spaces', input),
+    onSuccess: () => refreshSession(),
+  });
+}
+
+export function useDeleteAccount() {
+  return useMutation({ mutationFn: () => apiClient.delete('/auth/account') });
+}
+
+export const codeKey = ['organization', 'code'] as const;
+export const requestsKey = ['organization', 'join-requests'] as const;
+
+/** The space's code and switch. Its admins only. */
+export function useSpaceCode(enabled: boolean) {
+  return useQuery({
+    queryKey: codeKey,
+    queryFn: () => apiClient.get<ApiOk<SpaceCode>>('/organization/code'),
+    enabled,
+  });
+}
+
+export function useRenewSpaceCode() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<ApiOk<SpaceCode>>('/organization/code'),
+    onSuccess: (response) => queryClient.setQueryData(codeKey, response),
+  });
+}
+
+export function useSetJoinByCode() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (on: boolean) => apiClient.put<ApiOk<SpaceCode>>('/organization/code', { join_by_code: on }),
+    onSuccess: (response) => queryClient.setQueryData(codeKey, response),
+  });
+}
+
+/** Open requests to join. Its admins only. */
+export function useJoinRequests(enabled: boolean) {
+  return useQuery({
+    queryKey: requestsKey,
+    queryFn: () => apiClient.get<ApiOk<JoinRequest[]>>('/organization/join-requests'),
+    enabled,
+  });
+}
+
+export function useDeclineJoinRequest() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (userId: string) => apiClient.post(`/organization/join-requests/${encodeURIComponent(userId)}/decline`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: requestsKey }),
+  });
+}
+
+/** After letting someone in through the person form. */
+export function useRefreshJoinRequests() {
+  const queryClient = useQueryClient();
+  return () => queryClient.invalidateQueries({ queryKey: requestsKey });
+}
+
+export function useLeaveSpace() {
+  return useMutation({ mutationFn: () => apiClient.post('/organization/leave') });
+}
+
+export function useDeleteSpace() {
+  return useMutation({
+    mutationFn: (confirmName: string) => apiClient.delete('/organization', { confirm_name: confirmName }),
   });
 }

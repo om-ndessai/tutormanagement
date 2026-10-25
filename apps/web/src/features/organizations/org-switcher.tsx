@@ -48,7 +48,7 @@ export function OrgSwitcher({ className }: { className?: string }) {
             ? 'You will choose where to go when you sign in.'
             : `You will land in ${current.name} when you sign in.`,
         ),
-      onError: () => toast.error('Your default organization could not be changed. Try again.'),
+      onError: () => toast.error('Your default space could not be changed. Try again.'),
     });
   }
 
@@ -59,7 +59,7 @@ export function OrgSwitcher({ className }: { className?: string }) {
           'hover:bg-sidebar-accent/60 focus-visible:ring-sidebar-ring flex w-full items-center gap-2 rounded-lg text-left outline-none focus-visible:ring-2',
           className,
         )}
-        aria-label="Switch organization"
+        aria-label="Switch space"
         data-testid="org-switcher"
       >
         <LogoLockup className="min-w-0 flex-1" />
@@ -67,7 +67,7 @@ export function OrgSwitcher({ className }: { className?: string }) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="w-72">
-        <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">Organizations</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">Spaces</DropdownMenuLabel>
         {active.map((org) => (
           <DropdownMenuItem key={org.slug} onSelect={() => org.slug !== organization?.slug && chooseOrganization(org.slug)}>
             <OrgAvatar org={org} className="size-7" />

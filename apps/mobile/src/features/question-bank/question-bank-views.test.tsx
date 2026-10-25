@@ -11,6 +11,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { aLevel, aQuestion, aTopic } from '@/test/question-bank';
+import { suggestedLabel } from './question-card';
 import { QuestionBankScreen } from './question-bank-screen';
 import { ReviewScreen } from './review-screen';
 import { StandardScreen } from './standard-screen';
@@ -156,6 +157,13 @@ describe('QuestionBankScreen', () => {
     expect(mockPush).toHaveBeenCalledWith('/question-review');
   });
 
+  it('offers what spaces suggested, whatever the count (Phase 51)', async () => {
+    serve({ cover: coverage(0) });
+    await show(<QuestionBankScreen />);
+    await fireEvent.press(await screen.findByTestId('bank-suggested'));
+    expect(mockPush).toHaveBeenCalledWith('/question-review?suggested=1');
+  });
+
   it('says there is nothing to review, and does not offer it, at 0', async () => {
     serve({ cover: coverage(0) });
     await show(<QuestionBankScreen />);
@@ -276,6 +284,29 @@ describe('ReviewScreen', () => {
     expect(screen.getByTestId('question-bank-card-q1')).toBeTruthy();
     expect(mockHaptics.error).toHaveBeenCalled();
     await waitFor(() => expect(gets('status=checked')).toBe(2));
+  });
+
+  it('reads only what spaces suggested, and says when none did (Phase 51)', async () => {
+    serve({ queue: [] });
+    await show(<ReviewScreen suggested />);
+    expect(await screen.findByTestId('question-review-none-suggested')).toBeTruthy();
+    expect(screen.getByText('No space has suggested approving a question.')).toBeTruthy();
+    expect(gets('suggested=true')).toBe(1);
+  });
+
+  it('marks a question spaces suggested, in the singular and the plural (Phase 51)', async () => {
+    serve({ queue: [{ ...Q1, suggestions: 2 }] });
+    await show(<ReviewScreen suggested />);
+    expect(await screen.findByTestId('question-suggested-q1')).toBeTruthy();
+    expect(screen.getByText('Suggested by 2 spaces')).toBeTruthy();
+    expect(suggestedLabel(1)).toBe('Suggested by 1 space');
+  });
+
+  it('shows no suggestion pill for a question nobody suggested', async () => {
+    serve({});
+    await show(<ReviewScreen />);
+    await screen.findByTestId('question-bank-card-q1');
+    expect(screen.queryByTestId('question-suggested-q1')).toBeNull();
   });
 
   it('says when nothing waits', async () => {

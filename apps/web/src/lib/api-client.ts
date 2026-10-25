@@ -122,7 +122,8 @@ export const apiClient = {
   /** Sends a file as the raw request body -- a logo upload. */
   putFile: <T>(path: string, file: Blob) =>
     request<T>(path, { method: 'PUT', body: file, headers: { 'Content-Type': file.type || 'application/octet-stream' } }),
-  delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+  delete: <T>(path: string, body?: unknown) =>
+    request<T>(path, { method: 'DELETE', body: body === undefined ? undefined : JSON.stringify(body) }),
 };
 
 /** Builds a query string, skipping empty/undefined values. */

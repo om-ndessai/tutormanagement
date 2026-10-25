@@ -1,0 +1,207 @@
+# Phase 52 (design 63): signing up with developer sign-in. The legal line on sign-in; an address the
+# server does not know offers "Sign up as"; About you refuses a child (nothing kept, so the same
+# address still offers sign-up), then an adult lands on the Welcome and deletes the account.
+# Self-cleaning: the address is put back to nothing before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.signup@example.com }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.signup@example.com }
+tags:
+  - feature
+  - smoke
+---
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
+# Only marks the tour as seen (no `as`): the wizard is not this flow's subject.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://dev/link?tour=seen'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: sign-in-legal
+- assertVisible:
+    id: sign-in-terms
+- assertVisible:
+    id: sign-in-privacy
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+- tapOn:
+    id: sign-in-email
+- inputText: 'spaces.signup@example.com'
+- pressKey: Enter
+# The refusal is under the form: brought into view.
+- scrollUntilVisible:
+    element:
+      id: sign-in-signup
+    timeout: 20000
+- assertVisible: 'Sign up as spaces.signup@example.com'
+- tapOn:
+    id: sign-in-signup
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 15000
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Sam Signup'
+- hideKeyboard
+- assertVisible: 'Welcome, Sam'
+# A child: June 2020.
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-6
+- tapOn:
+    id: signup-year
+- tapOn:
+    id: signup-year-search
+- inputText: '2020'
+- hideKeyboard
+- tapOn:
+    id: signup-year-2020
+# The year's list closes: let the form settle before the tick is tapped.
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: signup-accept
+- tapOn:
+    id: signup-accept
+# Ticked: Continue is enabled (a tick's state is not readable on iOS, Continue's is). The first tap
+# after the year's list closes is sometimes taken by the form settling: then once more.
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- assertVisible:
+    id: signup-submit
+    enabled: true
+- scrollUntilVisible:
+    element:
+      id: signup-submit
+- tapOn:
+    id: signup-submit
+- extendedWaitUntil:
+    visible:
+      id: signup-too-young
+    timeout: 15000
+- assertVisible: 'Ask a parent to add you'
+- takeScreenshot: spaces-too-young
+- tapOn:
+    id: signup-too-young-back
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+# Nothing was kept: the same address is still unknown.
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+- tapOn:
+    id: sign-in-email
+- eraseText: 40
+- inputText: 'spaces.signup@example.com'
+- pressKey: Enter
+# The refusal is under the form: brought into view.
+- scrollUntilVisible:
+    element:
+      id: sign-in-signup
+    timeout: 20000
+- tapOn:
+    id: sign-in-signup
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 15000
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Sam Signup'
+- hideKeyboard
+# An adult: June 1990.
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-6
+- tapOn:
+    id: signup-year
+- tapOn:
+    id: signup-year-search
+- inputText: '1990'
+- hideKeyboard
+- tapOn:
+    id: signup-year-1990
+# The year's list closes: let the form settle before the tick is tapped.
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: signup-accept
+- tapOn:
+    id: signup-accept
+# Ticked: Continue is enabled (a tick's state is not readable on iOS, Continue's is). The first tap
+# after the year's list closes is sometimes taken by the form settling: then once more.
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- assertVisible:
+    id: signup-submit
+    enabled: true
+- takeScreenshot: spaces-about-you
+- scrollUntilVisible:
+    element:
+      id: signup-submit
+- tapOn:
+    id: signup-submit
+# In no space: the Welcome.
+- extendedWaitUntil:
+    visible:
+      id: screen-select-organization
+    timeout: 20000
+- assertVisible:
+    id: welcome-title
+    text: 'Welcome to Aimtrue'
+- assertVisible:
+    id: welcome-join
+- assertVisible:
+    id: welcome-make
+- takeScreenshot: spaces-welcome
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

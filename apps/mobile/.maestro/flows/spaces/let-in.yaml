@@ -1,0 +1,168 @@
+# Phase 52 (design 63): an admin lets in someone who asked to join -- the person form opens with
+# their name and the address they asked with (not editable), roles to choose; a student in a
+# self-serve space would need the parent's consent. The last admin cannot leave. The person let in
+# lands straight in the space, leaves it from My profile, and deletes their account.
+# Self-cleaning: Jo is put back to nothing, signed up and asking, before; nothing, after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.joiner@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.joiner@example.com, NAME: Jo Joiner }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: ask, EMAIL: spaces.joiner@example.com, CODE: FMXY2345 }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.joiner@example.com }
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: join-requests
+    timeout: 20000
+- assertVisible: 'Jo Joiner'
+- tapOn:
+    id: join-request-let-in-.*
+- extendedWaitUntil:
+    visible:
+      id: person-form-title
+      text: 'Let Jo Joiner in'
+    timeout: 15000
+- assertVisible:
+    id: person-form-name
+    text: 'Jo Joiner'
+- assertVisible:
+    id: person-form-email
+    text: 'spaces.joiner@example.com'
+# A student here would need the parent's word.
+- tapOn:
+    id: person-role-student
+- scrollUntilVisible:
+    element:
+      id: person-parent-consent
+- scrollUntilVisible:
+    element:
+      id: person-role-student
+    direction: UP
+- tapOn:
+    id: person-role-student
+- tapOn:
+    id: person-role-parent
+- scrollUntilVisible:
+    element:
+      id: person-form-save
+- tapOn:
+    id: person-form-save
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 20000
+- extendedWaitUntil:
+    notVisible:
+      id: join-requests
+    timeout: 15000
+- assertVisible: 'Jo Joiner'
+# The only admin cannot leave: the server's words, and nothing moves.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: screen-organization
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: space-leave
+- tapOn:
+    id: space-leave
+- extendedWaitUntil:
+    visible: 'Leave Ferreira Family Practice?'
+    timeout: 5000
+- tapOn: 'Leave'
+- extendedWaitUntil:
+    visible: '.*only administrator.*'
+    timeout: 15000
+- assertVisible:
+    id: screen-organization
+# Jo: straight into the one space (through the welcome wizard already: it is not this flow's
+# subject); leaves from My profile.
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: spaces.joiner@example.com, ORG: assess }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.joiner@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# A first visit to the space offers the tour, floating over every screen: not now.
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 10000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://profile
+- extendedWaitUntil:
+    visible:
+      id: screen-profile
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: profile-legal
+- assertVisible:
+    id: profile-terms
+- tapOn:
+    id: space-leave
+- extendedWaitUntil:
+    visible: 'Leave Ferreira Family Practice?'
+    timeout: 5000
+- tapOn: 'Leave'
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

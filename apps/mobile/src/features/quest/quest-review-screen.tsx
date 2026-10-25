@@ -41,6 +41,7 @@ import { DetailSkeleton } from '@/components/skeletons';
 import { MathBody } from '@/features/question-bank/math-body';
 import { mathToText } from '@/features/question-bank/math-text';
 import { ApiRequestError } from '@/lib/api-client';
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
@@ -106,6 +107,8 @@ function ReviewItem({ item, scroller }: { item: QuestReviewItem; scroller: RefOb
   const { width } = useWindowDimensions();
   const review = useReviewQuest();
   const queue = useQuestReview();
+  // Phase 51: a space the platform does not trust for Quest suggests approvals instead of making them.
+  const trusted = useAuth().organization?.quest_trusted !== false;
   const q = item.question;
   const who = firstName(item.student_name);
   const id = item.attempt_id;
@@ -138,7 +141,7 @@ function ReviewItem({ item, scroller }: { item: QuestReviewItem; scroller: RefOb
   async function decide(decision: QuestReviewDecision, note?: string): Promise<string | null> {
     try {
       await review.mutateAsync({ attemptId: id, decision, ...(decision === 'flag' ? { note } : {}) });
-      notice.success(reviewToast(decision));
+      notice.success(reviewToast(decision, trusted));
       return null;
     } catch (caught) {
       // Reviewed elsewhere already, or no longer theirs: the queue has moved on, so catch up.
@@ -210,7 +213,7 @@ function ReviewItem({ item, scroller }: { item: QuestReviewItem; scroller: RefOb
       </OutlinedCard>
       <Text variant="bodySmall" style={{ color: muted }}>
         Judge the question, not only the answer: is the key right, is there exactly one defensible answer, is
-        it clear and fit for the level? Approving puts it in the bank for every organization.
+        it clear and fit for the level? Approving puts it in the bank for every space.
       </Text>
       <View style={{ gap: space.sm }}>
         <Button

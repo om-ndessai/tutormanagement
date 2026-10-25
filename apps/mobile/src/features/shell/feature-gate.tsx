@@ -85,7 +85,7 @@ export function FeatureUnavailable({
                   router.navigate('/organization');
                 }}
               >
-                Open Organization
+                Open Space
               </Button>
             ) : null}
           </View>

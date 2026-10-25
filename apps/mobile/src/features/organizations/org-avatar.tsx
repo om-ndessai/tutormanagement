@@ -1,5 +1,5 @@
-// Ported from apps/web/src/features/organizations/org-avatar.tsx @ 1132322
-import { ORG_PALETTE_HEX, brandFromOrganization, type OrganizationBrand } from '@tmi/shared';
+// Ported from apps/web/src/features/organizations/org-avatar.tsx @ 9485a8e
+import { ORG_PALETTE_HEX, PLATFORM_BRAND, type OrganizationBrand } from '@tmi/shared';
 import { Image } from 'expo-image';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -13,8 +13,17 @@ import { radius } from '@/theme/tokens';
  * organization's data (ORG_PALETTE_HEX): a list shows several organizations at once, so the
  * screen's own tokens cannot stand in for each.
  */
-export function OrgAvatar({ org, size = 40 }: { org: OrganizationBrand; size?: number }) {
-  const url = brandLogoUrl(brandFromOrganization(org));
+/** Phase 52: a code's lookup and a request to join wear their own face too (no slug, no artwork). */
+type OrgFace = Pick<OrganizationBrand, 'logo_mark_url' | 'short_name' | 'palette'> &
+  Partial<Pick<OrganizationBrand, 'slug' | 'builtin_logo'>>;
+
+export function OrgAvatar<T extends OrgFace>({ org, size = 40 }: { org: T; size?: number }) {
+  const url = brandLogoUrl({
+    ...PLATFORM_BRAND,
+    slug: org.slug ?? null,
+    builtin_logo: org.builtin_logo ?? null,
+    logo_mark_url: org.logo_mark_url,
+  });
   if (url) {
     return (
       <Image

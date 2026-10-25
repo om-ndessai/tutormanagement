@@ -1,0 +1,82 @@
+# Phase 51 (design 63): the console's Quest trust switch on a space's form, and the question bank's
+# "Suggested by spaces" queue (the seed has no suggestion, so it says so; the badge is Jest's).
+# Self-cleaning: Riverside is trusted again after.
+appId: ${APP_ID}
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: trust, ORG_SLUG: riverside, ON: 'true' }
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: platform-org-riverside
+    timeout: 30000
+- assertVisible: 'Spaces'
+- tapOn:
+    id: platform-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: platform-org-edit
+    timeout: 15000
+- tapOn:
+    id: platform-org-edit
+- scrollUntilVisible:
+    element:
+      id: org-form-quest-trusted
+- assertVisible:
+    id: org-form-quest-trusted
+    checked: true
+- tapOn:
+    id: org-form-quest-trusted
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible:
+      id: platform-org-edit
+    timeout: 15000
+# Reopened: off.
+- tapOn:
+    id: platform-org-edit
+- scrollUntilVisible:
+    element:
+      id: org-form-quest-trusted
+- assertVisible:
+    id: org-form-quest-trusted
+    checked: false
+- tapOn:
+    id: org-form-quest-trusted
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible:
+      id: platform-org-edit
+    timeout: 15000
+# The question bank's queue of suggestions.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform/questions
+- extendedWaitUntil:
+    visible:
+      id: bank-suggested
+    timeout: 20000
+- tapOn:
+    id: bank-suggested
+- extendedWaitUntil:
+    visible:
+      id: question-review-none-suggested
+    timeout: 20000
+- assertVisible: 'No space has suggested approving a question.'

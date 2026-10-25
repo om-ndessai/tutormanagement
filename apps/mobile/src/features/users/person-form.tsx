@@ -1,9 +1,10 @@
-// Ported from apps/web/src/features/users/user-form-dialog.tsx @ 1132322.
+// Ported from apps/web/src/features/users/user-form-dialog.tsx @ 1132322 (Phase 52 @ 9485a8e).
 //
 // One form for both create and edit: one person, one record, every role they hold. The blocks
 // follow the roles, and a caller may show only some of them (`sections`, for the welcome wizard);
 // hidden blocks keep their values, because the request is always built from the whole form.
 // Validation is the shared schema's, run here first so an SSN in a note never leaves the phone.
+import { CheckRow } from '@/components/check-row';
 import {
   USER_STATUSES,
   USER_STATUS_LABELS,
@@ -15,8 +16,8 @@ import {
   type UserRole,
 } from '@tmi/shared';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Pressable, View } from 'react-native';
-import { Button, Divider, Icon, Text } from 'react-native-paper';
+import { View } from 'react-native';
+import { Button, Divider, Text } from 'react-native-paper';
 
 import { OfflineSaveNote, useOffline } from '@/components/connectivity';
 import { useDirty } from '@/hooks/use-unsaved-changes';
@@ -29,7 +30,8 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { radius, space } from '@/theme/tokens';
+import { CONSENT_LABEL, consentNeeded } from './add-person-model';
 import { useCreateUser, useUpdateUser } from './api';
 import { AvailabilityPicker } from './availability-picker';
 import { FormTextField } from './form-text-field';
@@ -55,6 +57,7 @@ const DEFAULT_DESCRIPTION =
 export function PersonForm({
   detail,
   preset,
+  joinRequestUserId,
   sections,
   title,
   description,
@@ -66,7 +69,12 @@ export function PersonForm({
   /** The record being edited; absent to add someone. */
   detail?: UserDetail;
   /** A new person's roles and guardians, chosen already. Create mode only. */
-  preset?: { roles: UserRole[]; guardians?: GuardianValue[] };
+  preset?: { roles: UserRole[]; guardians?: GuardianValue[]; full_name?: string; email?: string };
+  /**
+   * Phase 52: saving lets in the person who asked to join (their request, by their id). Their email
+   * is the one they asked with, so it cannot be changed here (the server refuses any other).
+   */
+  joinRequestUserId?: string;
   /** Show only these blocks; every block when absent. */
   sections?: UserFormSection[];
   title?: string;
@@ -98,8 +106,16 @@ export function PersonForm({
   const [form, setForm] = useState<FormState>(() =>
     detail
       ? fromDetail(detail)
-      : { ...EMPTY, roles: preset?.roles ?? [], guardians: preset?.guardians ?? [] },
+      : {
+          ...EMPTY,
+          roles: preset?.roles ?? [],
+          guardians: preset?.guardians ?? [],
+          full_name: preset?.full_name ?? '',
+          email: preset?.email ?? '',
+        },
   );
+  // Phase 52: in a self-serve space a new student is added with a parent's consent.
+  const [parentConsent, setParentConsent] = useState(false);
   const dirty = useDirty(form);
   useEffect(() => {
     onDirtyChange?.(dirty);
@@ -136,6 +152,8 @@ export function PersonForm({
   const isParent = form.roles.includes('parent');
   // Everyone but a student-only person signs in, and sign-in needs an address.
   const emailRequired = requiresEmail(form.roles);
+  const needsConsent = !isEdit && consentNeeded(form, organization);
+  const letIn = !isEdit && Boolean(joinRequestUserId);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((previous) => ({ ...previous, [key]: value }));
@@ -150,7 +168,11 @@ export function PersonForm({
 
   async function handleSave() {
     setFormError(null);
-    const request = toRequest(form, todayIso(timeZone), { tutoring });
+    const request = {
+      ...toRequest(form, todayIso(timeZone), { tutoring }),
+      ...(letIn ? { join_request_user_id: joinRequestUserId } : {}),
+      ...(needsConsent ? { parent_consent: parentConsent } : {}),
+    };
     const schema = isEdit ? updateUserRequestSchema : createUserRequestSchema;
     const parsed = schema.safeParse(request);
     if (!parsed.success) {
@@ -199,7 +221,7 @@ export function PersonForm({
 
       {showContact ? (
         <View style={{ gap: space.md }}>
-          {/* Someone who belongs to another organization too shares their name, email and phone
+          {/* Someone who belongs to another space too shares their name, email and phone
               with it; only the platform changes those. */}
           {sharedLocked ? (
             <Text
@@ -212,7 +234,7 @@ export function PersonForm({
                 padding: space.md,
               }}
             >
-              This person belongs to another organization too, so their name, email and phone are shared. A
+              This person belongs to another space too, so their name, email and phone are shared. A
               platform administrator changes them.
             </Text>
           ) : null}
@@ -232,11 +254,13 @@ export function PersonForm({
             label="Email"
             optional={!emailRequired}
             hint={
-              emailRequired
-                ? 'They sign in with this Google address.'
-                : 'Leave blank if this child has no address of their own.'
+              letIn
+                ? 'The address they asked to join with.'
+                : emailRequired
+                  ? 'They sign in with this Google address.'
+                  : 'Leave blank if this child has no address of their own.'
             }
-            disabled={sharedLocked}
+            disabled={sharedLocked || letIn}
             value={form.email}
             onChangeText={(value) => set('email', value)}
             placeholder={emailRequired ? 'alex@gmail.com' : 'No email'}
@@ -531,6 +555,36 @@ export function PersonForm({
         </>
       ) : null}
 
+      {needsConsent ? (
+        <>
+          <Divider />
+          <View style={{ gap: space.xs }}>
+            <CheckRow
+              testID="person-parent-consent"
+              label={CONSENT_LABEL}
+              checked={parentConsent}
+              onChange={(checked) => {
+                setParentConsent(checked);
+                setErrors((previous) => {
+                  if (!('parent_consent' in previous)) return previous;
+                  const { parent_consent: _removed, ...rest } = previous;
+                  return rest;
+                });
+              }}
+            />
+            {errors.parent_consent ? (
+              <Text
+                testID="person-parent-consent-error"
+                variant="bodySmall"
+                style={{ color: theme.colors.error }}
+              >
+                {errors.parent_consent}
+              </Text>
+            ) : null}
+          </View>
+        </>
+      ) : null}
+
       {footErrors.length > 0 ? (
         <View testID="person-form-error" accessibilityRole="alert" style={{ gap: 2 }}>
           {footErrors.map((message) => (
@@ -582,37 +636,4 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/** A labelled tick at a full touch target; also the step flows' (U3). */
-export function CheckRow({
-  testID,
-  label,
-  checked,
-  onChange,
-}: {
-  testID: string;
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  const theme = useAppTheme();
-  return (
-    <Pressable
-      testID={testID}
-      accessibilityRole="checkbox"
-      accessibilityState={{ checked }}
-      accessibilityLabel={label}
-      onPress={() => {
-        haptics.selection();
-        onChange(!checked);
-      }}
-      style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: MIN_TARGET }}
-    >
-      <Icon
-        source={checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
-        size={22}
-        color={checked ? theme.colors.primary : theme.tokens.mutedForeground}
-      />
-      <Text variant="bodyMedium">{label}</Text>
-    </Pressable>
-  );
-}
+export { CheckRow };

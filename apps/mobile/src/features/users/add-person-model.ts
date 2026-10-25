@@ -1,7 +1,7 @@
 // The pure half of the Add a student and Add a tutor step flows (UI upgrades U3; build log #48).
 // The draft is the person form's own `FormState`, and the request is its `toRequest`: the flows ask
 // the same things in a different order, so validation is the shared schema's, cut per step.
-import { createUserRequestSchema, type StudentBalance } from '@tmi/shared';
+import { createUserRequestSchema, type Organization, type StudentBalance } from '@tmi/shared';
 
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { addGuardian, removeGuardian, toRequest, type FormState, type GuardianValue } from './person-form-model';
@@ -108,4 +108,31 @@ export function parentLine(children: readonly string[] | undefined, email: strin
 export function listNames(names: readonly string[]): string {
   if (names.length <= 1) return names[0] ?? '';
   return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
+/** Phase 52: the server's sentence when a student is added to a self-serve space without consent. */
+export const CONSENT_MESSAGE = 'Confirm you are their parent or guardian, or have their permission.';
+
+/** Phase 52: the consent's words, as the web's person form has them. */
+export const CONSENT_LABEL =
+  'I am this student’s parent or guardian, or have their permission, for them to take part here — including answers they write on the canvas.';
+
+/**
+ * Phase 52: whether adding this person needs a parent's consent -- a student, in a space a newcomer
+ * made (`self_serve`). The server decides; this asks before it does.
+ */
+export function consentNeeded(
+  form: Pick<FormState, 'roles'>,
+  org: Pick<Organization, 'created_via'> | null | undefined,
+): boolean {
+  return org?.created_via === 'self_serve' && form.roles.includes('student');
+}
+
+/** The consent's problem, in the server's words, or null when there is none. */
+export function consentIssue(
+  form: Pick<FormState, 'roles'>,
+  org: Pick<Organization, 'created_via'> | null | undefined,
+  consent: boolean,
+): string | null {
+  return consentNeeded(form, org) && !consent ? CONSENT_MESSAGE : null;
 }

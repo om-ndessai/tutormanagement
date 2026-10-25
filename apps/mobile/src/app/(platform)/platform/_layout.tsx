@@ -22,7 +22,7 @@ export default function PlatformTabsLayout() {
       }}
     >
       <NativeTabs.Trigger name="(organizations)">
-        <NativeTabs.Trigger.Label>Organizations</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Label>Spaces</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf={{ default: 'building.2', selected: 'building.2.fill' }} md="domain" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="questions">

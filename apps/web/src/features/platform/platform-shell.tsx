@@ -10,7 +10,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { usePlatformBrand } from '@/providers/brand-provider';
 
 const TABS = [
-  { to: '/platform', label: 'Organizations', end: true },
+  { to: '/platform', label: 'Spaces', end: true },
   { to: '/platform/admins', label: 'Platform admins', end: false },
   { to: '/platform/people', label: 'People', end: false },
   { to: '/platform/questions', label: 'Question bank', end: false },
@@ -42,7 +42,7 @@ export function PlatformShell() {
           {hasOrganizations && (
             <Button variant="ghost" size="sm" onClick={() => window.location.assign('/select-organization')}>
               <ArrowLeftRightIcon />
-              <span className="hidden sm:inline">My organizations</span>
+              <span className="hidden sm:inline">My spaces</span>
             </Button>
           )}
           <ThemeToggle />

@@ -35,9 +35,10 @@ export function useAddPerson() {
 
   /** Sends the draft; the added person, or null when it was refused (the messages are then set). */
   const submit = useCallback(
-    async (form: FormState): Promise<AddedPerson | null> => {
+    async (form: FormState, extra: { parent_consent?: boolean } = {}): Promise<AddedPerson | null> => {
       setFormError(null);
-      const parsed = createUserRequestSchema.safeParse(toRequest(form, today, { tutoring }));
+      // Phase 52: a student added to a self-serve space carries the adult's consent.
+      const parsed = createUserRequestSchema.safeParse({ ...toRequest(form, today, { tutoring }), ...extra });
       if (!parsed.success) {
         setFieldErrors(issuesToErrors(parsed.error.issues));
         return null;

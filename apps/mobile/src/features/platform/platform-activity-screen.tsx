@@ -42,7 +42,7 @@ export function PlatformActivityScreen() {
 
   return (
     <Screen testID="screen-platform-activity" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <PageIntro>What the platform did. Each line is also in the affected organization’s own log.</PageIntro>
+      <PageIntro>What the platform did. Each line is also in the affected space’s own log.</PageIntro>
       {audit.isPending ? (
         <ListSkeleton label="Loading the activity…" count={5} height={56} />
       ) : audit.isError ? (

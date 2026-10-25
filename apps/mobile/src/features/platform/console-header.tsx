@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/platform/platform-shell.tsx @ 1132322 (the header's actions):
-// back to My organizations for a platform admin who belongs to any, and Sign out.
+// back to My spaces for a platform admin who belongs to any, and Sign out.
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
@@ -19,7 +19,7 @@ export function ConsoleHeaderButtons() {
           testID="platform-my-orgs"
           icon="swap-horizontal"
           iconColor={theme.colors.primary}
-          accessibilityLabel="My organizations"
+          accessibilityLabel="My spaces"
           onPress={() => {
             haptics.selection();
             router.replace('/select-organization');

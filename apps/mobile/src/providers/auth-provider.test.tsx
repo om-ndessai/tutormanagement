@@ -59,6 +59,13 @@ const PERSON = { id: 'u1', email: 'priya.raghavan@gmail.com', full_name: 'Priya 
 const server = {
   cookie: false,
   noAccount: false,
+  /** Phase 52: Google vouches for someone the platform does not know, and the client asked. */
+  newcomer: false,
+  authEnabled: true,
+  /** Sign-in off: the addresses the server knows (X-Dev-User). */
+  known: new Set<string>(),
+  signupRefusal: null as null | { status: number; code: string; message: string },
+  withRequest: false,
   calls: [] as { method: string; path: string; init: RequestInit }[],
 };
 
@@ -79,11 +86,21 @@ function fakeFetch(url: string, init: RequestInit = {}) {
   const headers = (init.headers ?? {}) as Record<string, string>;
   if (path === '/auth/config') {
     return json(200, {
-      data: { auth_enabled: true, google_client_id: 'web-id.apps.googleusercontent.com', brand: null },
+      data: {
+        auth_enabled: server.authEnabled,
+        google_client_id: 'web-id.apps.googleusercontent.com',
+        brand: null,
+      },
     });
   }
   if (path === '/auth/google') {
-    if (server.noAccount) {
+    const body = JSON.parse((init.body as string | undefined) ?? '{}') as { signup?: boolean };
+    if (server.newcomer && body.signup) {
+      return json(200, {
+        data: { signup: { token: 'signup-token', email: 'nina@example.com', name: 'Nina Newcomer' } },
+      });
+    }
+    if (server.noAccount || server.newcomer) {
       return json(403, {
         error: {
           code: 'no_account',
@@ -94,11 +111,25 @@ function fakeFetch(url: string, init: RequestInit = {}) {
     server.cookie = true;
     return json(200, { data: {} });
   }
+  if (path === '/auth/signup') {
+    if (server.signupRefusal) {
+      const r = server.signupRefusal;
+      return json(r.status, { error: { code: r.code, message: r.message } });
+    }
+    const body = JSON.parse(init.body as string) as { dev_email?: string };
+    if (body.dev_email) server.known.add(body.dev_email);
+    else server.cookie = true;
+    return json(201, { data: {} });
+  }
   if (path === '/auth/logout') {
     server.cookie = false;
     return Promise.resolve({ status: 204, ok: true, json: () => Promise.resolve(null) } as Response);
   }
-  if (!server.cookie) return unauthenticated();
+  const devUser = headers['X-Dev-User'];
+  if (!server.authEnabled) {
+    if (!devUser || !server.known.has(devUser))
+      return json(404, { error: { code: 'not_found', message: 'No such person.' } });
+  } else if (!server.cookie) return unauthenticated();
   if (path === '/auth/session') {
     const inOrg = headers['X-Organization'] === 'chmi';
     return json(200, {
@@ -110,6 +141,20 @@ function fakeFetch(url: string, init: RequestInit = {}) {
         memberships: [{ slug: 'chmi', name: 'Org', status: 'active', is_default: false }],
         invitations: [],
         platform_admin: false,
+        account: { age_band: 'adult' },
+        join_requests: !server.withRequest
+          ? []
+          : [
+              {
+                slug: 'assess',
+                name: 'Ferreira Family Practice',
+                short_name: 'Ferreira',
+                palette: 'teal',
+                logo_mark_url: null,
+                requested_at: '2026-10-24T12:00:00Z',
+                outcome: null,
+              },
+            ],
       },
     });
   }
@@ -146,6 +191,11 @@ const calls = (path: string) => server.calls.filter((call) => call.path === path
 beforeEach(async () => {
   server.cookie = false;
   server.noAccount = false;
+  server.newcomer = false;
+  server.authEnabled = true;
+  server.known = new Set();
+  server.signupRefusal = null;
+  server.withRequest = false;
   server.calls = [];
   globalThis.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
   Object.values(GoogleSignin).forEach((mock) => mock.mockClear());
@@ -180,7 +230,11 @@ describe('auth provider: Google sign-in', () => {
 
     await act(() => auth.signInWithGoogle());
 
-    expect(JSON.parse(calls('/auth/google')[0]!.init.body as string)).toEqual({ credential: 'id-token-1' });
+    // Phase 52: this client can sign a newcomer up.
+    expect(JSON.parse(calls('/auth/google')[0]!.init.body as string)).toEqual({
+      credential: 'id-token-1',
+      signup: true,
+    });
     expect(auth.status).toBe('authenticated');
     expect(auth.organization?.slug).toBe('chmi');
     expect(auth.error).toBeNull();
@@ -319,5 +373,98 @@ describe('auth provider: feature sets (Phase 50)', () => {
     } finally {
       now.mockRestore();
     }
+  });
+});
+
+describe('auth provider: signing up (Phase 52)', () => {
+  it('holds a newcomer Google vouched for, unauthenticated, until the age question', async () => {
+    server.newcomer = true;
+    GoogleSignin.signIn.mockResolvedValue({ type: 'success', data: { idToken: 'id-token-1' } });
+    await mount();
+
+    await act(() => auth.signInWithGoogle());
+
+    expect(auth.status).toBe('unauthenticated');
+    expect(auth.error).toBeNull();
+    expect(auth.pendingSignup).toEqual({
+      token: 'signup-token',
+      email: 'nina@example.com',
+      name: 'Nina Newcomer',
+      dev: false,
+    });
+  });
+
+  it('completes the sign-up with the token and the versions, then reads the session', async () => {
+    server.newcomer = true;
+    GoogleSignin.signIn.mockResolvedValue({ type: 'success', data: { idToken: 'id-token-1' } });
+    await mount();
+    await act(() => auth.signInWithGoogle());
+    server.withRequest = true;
+
+    await act(() => auth.completeSignup({ birth_year: 1990, birth_month: 6 }));
+
+    const body = JSON.parse(calls('/auth/signup')[0]!.init.body as string);
+    expect(body).toEqual({
+      token: 'signup-token',
+      birth_year: 1990,
+      birth_month: 6,
+      terms_version: expect.any(String),
+      privacy_version: expect.any(String),
+    });
+    expect(auth.status).toBe('authenticated');
+    expect(auth.pendingSignup).toBeNull();
+    expect(auth.account).toEqual({ age_band: 'adult' });
+    expect(auth.joinRequests.map((r) => r.slug)).toEqual(['assess']);
+  });
+
+  it('with sign-in off, acts as the new person only after the 201', async () => {
+    server.authEnabled = false;
+    await mount();
+    await act(async () => auth.startDevSignup('Sam.Signup@example.com'));
+    expect(auth.pendingSignup).toMatchObject({ token: null, email: 'sam.signup@example.com', dev: true });
+
+    server.signupRefusal = { status: 403, code: 'too_young', message: 'You need to be 13 or older.' };
+    await act(async () => {
+      await expect(auth.completeSignup({ birth_year: 2020, birth_month: 6 })).rejects.toMatchObject({
+        code: 'too_young',
+      });
+    });
+    // Nothing kept: no persona, still pending, nobody signed in.
+    expect(calls('/auth/session')).toHaveLength(0);
+    expect(auth.status).toBe('unauthenticated');
+
+    server.signupRefusal = null;
+    await act(() => auth.completeSignup({ birth_year: 1990, birth_month: 6, dev_name: 'Sam Signup' }));
+    const body = JSON.parse(calls('/auth/signup')[1]!.init.body as string);
+    expect(body).toMatchObject({ dev_email: 'sam.signup@example.com', dev_name: 'Sam Signup' });
+    expect(body.token).toBeUndefined();
+    const session = calls('/auth/session').at(-1)!;
+    expect((session.init.headers as Record<string, string>)['X-Dev-User']).toBe('sam.signup@example.com');
+    expect(auth.status).toBe('authenticated');
+  });
+
+  it('cancels: the pending sign-up goes, and so does the Google account', async () => {
+    server.newcomer = true;
+    GoogleSignin.signIn.mockResolvedValue({ type: 'success', data: { idToken: 'id-token-1' } });
+    await mount();
+    await act(() => auth.signInWithGoogle());
+    GoogleSignin.signOut.mockClear();
+
+    await act(() => auth.cancelSignup());
+
+    expect(auth.pendingSignup).toBeNull();
+    expect(GoogleSignin.signOut).toHaveBeenCalled();
+  });
+
+  it('never asks to sign up while renewing silently', async () => {
+    server.cookie = true;
+    await mount();
+    server.cookie = false;
+    GoogleSignin.hasPreviousSignIn.mockReturnValue(true);
+    GoogleSignin.signInSilently.mockResolvedValue({ type: 'success', data: { idToken: 'id-token-2' } });
+    await act(async () => {
+      await apiClient.get('/dashboard');
+    });
+    expect(JSON.parse(calls('/auth/google')[0]!.init.body as string)).toEqual({ credential: 'id-token-2' });
   });
 });

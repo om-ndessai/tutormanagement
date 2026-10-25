@@ -133,7 +133,7 @@ export function StartCard() {
         <p className="text-muted-foreground text-xs">
           Up to {organization?.canvas_assessment_questions ?? 10} questions of the level, chosen at random
           {organization?.canvas_assessments_unreviewed
-            ? ', including questions not yet reviewed in the bank (your organization is trying them out)'
+            ? ', including questions not yet reviewed in the bank (your space is trying them out)'
             : ' from the approved ones'}
           . Multiple-choice questions are answered by choosing; the canvas is there for working. Work can be revisited and
           changed until it is submitted.

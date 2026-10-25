@@ -20,13 +20,15 @@ jest.mock('./logo-pipeline', () => ({ pickLogo: jest.fn(), LogoError: class exte
 const mockLookup = jest.fn();
 const mockUpdate = jest.fn();
 const mockFeatures = jest.fn();
+const mockSave = jest.fn();
+let mockOrganizations: OrganizationListItem[] = [];
 jest.mock('./api', () => ({
   useLookupPerson: () => ({ mutateAsync: mockLookup, isPending: false }),
   useUpdatePerson: () => ({ mutateAsync: mockUpdate, isPending: false }),
   useUnpinPerson: () => ({ mutate: jest.fn(), isPending: false }),
-  useOrganizations: () => ({ data: { data: [] }, isPending: false }),
+  useOrganizations: () => ({ data: { data: mockOrganizations }, isPending: false }),
   useCreateOrganization: () => ({ mutateAsync: jest.fn(), isPending: false }),
-  useUpdateOrganization: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useUpdateOrganization: () => ({ mutateAsync: mockSave, isPending: false }),
   useUpdateOrganizationFeatures: () => ({ mutateAsync: mockFeatures, isPending: false }),
 }));
 
@@ -61,7 +63,7 @@ describe('PlatformPeopleScreen', () => {
     await renderWithProviders(<PlatformPeopleScreen />);
     await fireEvent.changeText(screen.getByTestId('platform-people-query'), 'alex.chen.math@gmail.com');
     await fireEvent.press(screen.getByTestId('platform-people-find'));
-    expect(await screen.findByText('Belongs to 2 organizations.')).toBeTruthy();
+    expect(await screen.findByText('Belongs to 2 spaces.')).toBeTruthy();
     expect(mockLookup).toHaveBeenCalledWith('alex.chen.math@gmail.com');
     expect(screen.getByTestId('platform-person-unpin')).toBeTruthy();
     await fireEvent.changeText(screen.getByTestId('platform-person-email'), 'priya.raghavan@gmail.com');
@@ -158,5 +160,41 @@ describe('OrganizationFormSheet (Phase 50)', () => {
       expect(screen.getByTestId(`org-form-feature-${set}`)).toBeTruthy();
     }
     expect(screen.getAllByRole('checkbox', { checked: true }).length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('offers the Quest trust only when editing, and sends it with the sets as they stand (Phase 51)', async () => {
+    await renderWithProviders(<OrganizationFormSheet />);
+    expect(screen.queryByTestId('org-form-quest-trusted')).toBeNull();
+    mockOrganizations = [RIVERSIDE];
+    mockSave.mockResolvedValue({ data: RIVERSIDE });
+    mockFeatures.mockReset();
+    mockFeatures.mockResolvedValue({ data: RIVERSIDE });
+    await renderWithProviders(<OrganizationFormSheet id={RIVERSIDE.id} />);
+    expect(screen.queryByTestId('org-form-feature-quest')).toBeNull();
+    await fireEvent(screen.getByTestId('org-form-quest-trusted'), 'valueChange', false);
+    await fireEvent.press(screen.getByTestId('org-form-save'));
+    await waitFor(() =>
+      expect(mockFeatures).toHaveBeenCalledWith({
+        id: RIVERSIDE.id,
+        input: {
+          feature_tutoring: RIVERSIDE.feature_tutoring,
+          feature_assessment: RIVERSIDE.feature_assessment,
+          feature_quest: RIVERSIDE.feature_quest,
+          quest_trusted: false,
+        },
+      }),
+    );
+    mockOrganizations = [];
+  });
+
+  it('sends no features PUT when the trust did not change', async () => {
+    mockOrganizations = [RIVERSIDE];
+    mockSave.mockResolvedValue({ data: RIVERSIDE });
+    mockFeatures.mockReset();
+    await renderWithProviders(<OrganizationFormSheet id={RIVERSIDE.id} />);
+    await fireEvent.press(screen.getByTestId('org-form-save'));
+    await waitFor(() => expect(mockSave).toHaveBeenCalled());
+    expect(mockFeatures).not.toHaveBeenCalled();
+    mockOrganizations = [];
   });
 });

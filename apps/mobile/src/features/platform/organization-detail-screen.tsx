@@ -43,15 +43,15 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
   if (organizations.isPending) {
     return (
       <Screen testID="screen-platform-organization">
-        <Stack.Screen options={{ title: 'Organization' }} />
-        <DetailSkeleton label="Loading the organization…" />
+        <Stack.Screen options={{ title: 'Space' }} />
+        <DetailSkeleton label="Loading the space…" />
       </Screen>
     );
   }
   if (organizations.isError || !org) {
     return (
       <Screen testID="screen-platform-organization">
-        <Stack.Screen options={{ title: 'Organization' }} />
+        <Stack.Screen options={{ title: 'Space' }} />
         <ErrorState
           error={organizations.error ?? new ApiRequestError(404, 'not_found', 'Not found.')}
           onRetry={() => void organizations.refetch()}
@@ -156,7 +156,7 @@ export function OrganizationDetailScreen({ id }: { id: string }) {
         disabled={archive.isPending}
         onPress={confirmArchive}
       >
-        {archived ? 'Restore organization' : 'Archive organization'}
+        {archived ? 'Restore space' : 'Archive space'}
       </Button>
     </Screen>
   );

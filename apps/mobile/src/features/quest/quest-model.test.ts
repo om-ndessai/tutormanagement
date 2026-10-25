@@ -132,6 +132,9 @@ describe('words', () => {
   it("says the web's sentences", () => {
     expect(reviewToast('approve')).toBe('Approved. The question is in the bank.');
     expect(reviewToast('flag')).toBe('Flagged for the platform.');
+    expect(reviewToast('approve', true)).toBe('Approved. The question is in the bank.');
+    expect(reviewToast('approve', false)).toBe('Sent to the platform to approve.');
+    expect(reviewToast('flag', false)).toBe('Flagged for the platform.');
     expect(playSummary(STATE)).toBe('BA3 · 3 answered');
     expect(playSummary(undefined)).toBe('No level yet · 0 answered');
     expect(startLabel(0)).toBe('Start');

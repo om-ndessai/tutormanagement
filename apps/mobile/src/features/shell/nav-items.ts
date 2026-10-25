@@ -164,9 +164,9 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/organization',
-    label: 'Organization',
+    label: 'Space',
     icon: 'domain',
-    keywords: ['settings', 'tin', 'payer'],
+    keywords: ['settings', 'tin', 'payer', 'organization', 'code', 'join'],
     admin: true,
     tourId: 'nav-organization',
   },

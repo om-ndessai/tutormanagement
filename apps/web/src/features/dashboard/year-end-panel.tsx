@@ -125,10 +125,10 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
         The SSN is typed when the form is printed and is never stored. The recipient’s address
         comes from the tutor’s record.{' '}
         {instituteTin ? (
-          <>The payer box is filled from the organization settings ({instituteTin}).</>
+          <>The payer box is filled from the Space settings ({instituteTin}).</>
         ) : (
           <>
-            Add the TIN on the Organization settings page and it will fill the payer box for you.
+            Add the TIN on the Space page and it will fill the payer box for you.
           </>
         )}
       </p>

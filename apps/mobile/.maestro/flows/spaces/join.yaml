@@ -1,0 +1,64 @@
+# Phase 52 (design 63): a newcomer joins with a code. The institute's code (joining off) opens
+# nothing, in the same words as no code at all; the self-serve space's code, typed any old way, finds
+# it; asking shows the request waiting, and withdrawing takes it away.
+# Self-cleaning: Nina's request to the self-serve space is withdrawn before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: withdraw, EMAIL: nina.newcomer@example.com, SLUG: assess }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: withdraw, EMAIL: nina.newcomer@example.com, SLUG: assess }
+tags:
+  - feature
+  - smoke
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: nina.newcomer@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertVisible: 'Welcome to Aimtrue'
+- tapOn:
+    id: welcome-code
+- inputText: 'CHMX-2345'
+# Return is Find.
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: welcome-code-error
+      text: 'No space has that code.'
+    timeout: 15000
+- tapOn:
+    id: welcome-code
+- eraseText: 20
+- inputText: 'fmxy2345'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: welcome-found-name
+      text: 'Ferreira Family Practice'
+    timeout: 15000
+- tapOn:
+    id: welcome-ask
+- extendedWaitUntil:
+    visible: 'Asked to join Ferreira Family Practice. Its administrators will let you in.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: welcome-request-assess
+    timeout: 15000
+- takeScreenshot: spaces-welcome-request
+- tapOn:
+    id: welcome-withdraw-assess
+- extendedWaitUntil:
+    notVisible:
+      id: welcome-request-assess
+    timeout: 15000
+- assertVisible: 'Request to Ferreira Family Practice withdrawn.'

@@ -17,3 +17,6 @@ SESSION_SECRET=replace-with-at-least-32-random-characters-please
 # AI_PROVIDER=anthropic
 # ANTHROPIC_API_KEY=sk-ant-...
 AI_PROVIDER=fake
+
+# Phase 52: sign-up is open locally (production keeps it closed until the terms are approved).
+SIGNUP_OPEN=true

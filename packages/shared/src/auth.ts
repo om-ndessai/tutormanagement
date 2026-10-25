@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { MyJoinRequest, PlatformAccount } from './spaces.js';
 import type { ApiErrorCode } from './api.js';
 import type { Brand } from './brand.js';
 import type { Invitation, Membership, Organization, OrganizationSettings } from './organizations.js';
@@ -15,6 +16,8 @@ export interface AuthConfig {
   google_client_id: string | null;
   /** False while AUTH_ENABLED is "false"; the SPA then skips the login screen. */
   auth_enabled: boolean;
+  /** Phase 52: whether a newcomer may sign up here (absent from older Workers: treat as false). */
+  signup_open?: boolean;
   /**
    * The identity the sign-in page wears: the organization this browser last
    * chose (the tmi_last_org cookie), or the neutral platform brand.
@@ -47,11 +50,20 @@ export interface SessionResponse {
   invitations: Invitation[];
   /** Whether the person may use the platform console. */
   platform_admin: boolean;
+  /** Phase 52: a self-registered person's age band; null for anyone a space added. */
+  account: PlatformAccount | null;
+  /** Phase 52: their own requests to join a space, open or just declined. */
+  join_requests: MyJoinRequest[];
 }
 
 /** Body of POST /api/auth/google — the ID token from Google Identity Services. */
 export const googleSignInSchema = z.object({
   credential: z.string().min(1, 'Missing Google credential.').max(4096),
+  /**
+   * Phase 52: this client can sign a newcomer up. An unknown account then gets a `signup` answer
+   * (200) instead of 403 `no_account`; an older app, which does not send it, gets the 403 as before.
+   */
+  signup: z.boolean().optional(),
 });
 
 export type GoogleSignInInput = z.infer<typeof googleSignInSchema>;

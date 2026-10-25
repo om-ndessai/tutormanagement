@@ -1,3 +1,4 @@
+import type { AgeBand, PlatformAccount } from '@tmi/shared';
 /**
  * The PERSON, across every organization: their sign-in identity and how to
  * reach them. Nothing an organization records about someone is read here --
@@ -237,4 +238,69 @@ export async function getFirstPerson(db: D1Database): Promise<Person | null> {
     .prepare(`${SELECT_PERSON} WHERE deleted_at IS NULL ORDER BY created_at, id LIMIT 1`)
     .first<PersonRow>();
   return row ? toPerson(row) : null;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 52: people who signed themselves up
+// ---------------------------------------------------------------------------
+
+export async function getPlatformAccount(db: D1Database, userId: string): Promise<PlatformAccount | null> {
+  const row = await db
+    .prepare('SELECT age_band FROM platform_accounts WHERE user_id = ?')
+    .bind(userId)
+    .first<{ age_band: AgeBand }>();
+  return row ? { age_band: row.age_band } : null;
+}
+
+/** A newcomer who answered the age question (13 or over) and accepted the terms: the person, in one batch. */
+export async function createSignedUpPerson(
+  db: D1Database,
+  input: { email: string; fullName: string; googleSub: string | null; ageBand: AgeBand; termsVersion: string; privacyVersion: string },
+): Promise<Person> {
+  const id = crypto.randomUUID();
+  await db.batch([
+    db
+      .prepare(`INSERT INTO users (id, email, full_name, google_sub, last_login_at) VALUES (?, ?, ?, ?, ${NOW})`)
+      .bind(id, input.email, input.fullName, input.googleSub),
+    db
+      .prepare(
+        `INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at)
+         VALUES (?, ?, ${NOW}, ?, ?, ${NOW})`,
+      )
+      .bind(id, input.ageBand, input.termsVersion, input.privacyVersion),
+  ]);
+  const person = await getPersonById(db, id);
+  if (!person) throw new Error('Insert into users returned no row.');
+  return person;
+}
+
+/**
+ * Whether the person may delete their account themselves: they belong to no space (removed from
+ * every one), have no open request, and are not a platform admin.
+ */
+export async function accountDeletable(db: D1Database, userId: string): Promise<boolean> {
+  const row = await db
+    .prepare(
+      // org-scope: a person's own memberships and requests across spaces, as counts.
+      `SELECT (SELECT COUNT(*) FROM org_members WHERE user_id = ?1 AND removed_at IS NULL)
+            + (SELECT COUNT(*) FROM join_requests WHERE user_id = ?1 AND outcome IS NULL)
+            + (SELECT COUNT(*) FROM platform_admins WHERE user_id = ?1) AS n`,
+    )
+    .bind(userId)
+    .first<{ n: number }>();
+  return (row?.n ?? 1) === 0;
+}
+
+/** Deletes the account: the name, address, phone and Google id go; the row stays for history. */
+export async function deleteOwnAccount(db: D1Database, userId: string): Promise<void> {
+  await db.batch([
+    db
+      .prepare(
+        `UPDATE users SET full_name = 'Deleted account', email = NULL, phone = NULL, google_sub = NULL,
+                deleted_at = ${NOW}, updated_at = ${NOW}
+         WHERE id = ?`,
+      )
+      .bind(userId),
+    db.prepare('DELETE FROM platform_accounts WHERE user_id = ?').bind(userId),
+  ]);
 }

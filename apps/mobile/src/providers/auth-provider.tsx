@@ -1,4 +1,4 @@
-// Ported from apps/web/src/providers/auth-provider.tsx @ 1132322
+// Ported from apps/web/src/providers/auth-provider.tsx @ 1132322 (Phase 52's sign-up @ 9485a8e)
 import { useQueryClient } from '@tanstack/react-query';
 import {
   DEFAULT_ORG_TIME_ZONE,
@@ -6,13 +6,17 @@ import {
   type AuthConfig,
   type Invitation,
   type Membership,
+  type MyJoinRequest,
   type OnboardingState,
+  type PlatformAccount,
   type SessionResponse,
+  type SignupStart,
   type User,
 } from '@tmi/shared';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { decideLanding } from '@/features/auth/landing';
+import { signupRequest, type PendingSignup, type SignupForm } from '@/features/auth/sign-up-model';
 import { ApiRequestError, apiClient, setReauthenticator } from '@/lib/api-client';
 import { on } from '@/lib/events';
 import {
@@ -44,6 +48,21 @@ interface AuthContextValue {
   memberships: Membership[];
   invitations: Invitation[];
   platformAdmin: boolean;
+  /** Phase 52: a self-registered person's age band; null for anyone a space added. */
+  account: PlatformAccount | null;
+  /** Phase 52: their own open (or just declined) requests to join a space. */
+  joinRequests: MyJoinRequest[];
+  /**
+   * Phase 52: a newcomer between their Google sign-in (or the developer's "Sign up as") and the
+   * age question. Held in memory only -- never stored.
+   */
+  pendingSignup: PendingSignup | null;
+  /** Phase 52, sign-in off: signs up a typed address the server does not know. */
+  startDevSignup: (email: string, name?: string) => void;
+  /** Phase 52: answers the age question and the terms, and signs the newcomer in. Throws the refusal. */
+  completeSignup: (form: SignupForm) => Promise<void>;
+  /** Phase 52: abandons the sign-up (back to sign-in, Google forgotten). */
+  cancelSignup: () => Promise<void>;
   /** True the first time this person has ever opened this organization. */
   firstVisit: boolean;
   /** Enters an organization: caches cleared, the session re-read inside it. */
@@ -120,6 +139,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [memberships, setMemberships] = useState<Membership[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [platformAdmin, setPlatformAdmin] = useState(false);
+  const [account, setAccount] = useState<PlatformAccount | null>(null);
+  const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
+  const [pendingSignup, setPendingSignup] = useState<PendingSignup | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
   const [config, setConfig] = useState<AuthConfig | null>(null);
   const [impersonated, setImpersonated] = useState(false);
@@ -136,6 +158,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setMemberships(session.memberships);
     setInvitations(session.invitations);
     setPlatformAdmin(session.platform_admin);
+    setAccount(session.account ?? null);
+    setJoinRequests(session.join_requests ?? []);
 
     const landing = decideLanding(session, arrivingRef.current);
     if (landing.kind === 'enter') {
@@ -175,6 +199,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setMemberships([]);
     setInvitations([]);
     setPlatformAdmin(false);
+    setAccount(null);
+    setJoinRequests([]);
     setImpersonated(false);
     setStatus('unauthenticated');
   }, [queryClient]);
@@ -310,7 +336,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const result = await googleIdToken();
       // The person closed Google's sheet: nothing happened, so nothing is said.
       if (result.kind === 'cancelled') return;
-      await apiClient.post<ApiOk<SessionResponse>>('/auth/google', { credential: result.idToken });
+      // Phase 52: this client can sign a newcomer up, so an unknown account is not refused: it
+      // answers who Google says they are, and the age question comes next.
+      const answer = await apiClient.post<ApiOk<SessionResponse | SignupStart>>('/auth/google', {
+        credential: result.idToken,
+        signup: true,
+      });
+      if ('signup' in answer.data) {
+        setPendingSignup({ ...answer.data.signup, dev: false });
+        setStatus('unauthenticated');
+        return;
+      }
       // Arriving: the person's default organization decides where they land, as on the web.
       queryClient.clear();
       arrivingRef.current = true;
@@ -348,6 +384,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [loadSession, queryClient, resetSignedOut],
   );
 
+  const startDevSignup = useCallback((email: string, name?: string) => {
+    if (APP_VARIANT === 'production') return;
+    setError(null);
+    const address = email.trim().toLowerCase();
+    setPendingSignup({ token: null, email: address, name: name?.trim() || address, dev: true });
+  }, []);
+
+  const completeSignup = useCallback(
+    async (form: SignupForm) => {
+      if (!pendingSignup) return;
+      await apiClient.post<ApiOk<SessionResponse>>('/auth/signup', signupRequest(form, pendingSignup));
+      // Sign-in off: act as the new person -- only now, after the 201, so a refused under-13
+      // leaves no persona behind on the device.
+      if (pendingSignup.dev) await setDevUser(pendingSignup.email);
+      setPendingSignup(null);
+      queryClient.clear();
+      arrivingRef.current = true;
+      await loadSession();
+      setStatus('authenticated');
+    },
+    [pendingSignup, loadSession, queryClient],
+  );
+
+  const cancelSignup = useCallback(async () => {
+    const wasGoogle = pendingSignup !== null && !pendingSignup.dev;
+    setPendingSignup(null);
+    if (wasGoogle) await googleSignOut();
+  }, [pendingSignup]);
+
   const signOut = useCallback(async () => {
     try {
       // Clears the session cookie (the server answers with an expired one).
@@ -373,6 +438,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       memberships,
       invitations,
       platformAdmin,
+      account,
+      joinRequests,
+      pendingSignup,
+      startDevSignup,
+      completeSignup,
+      cancelSignup,
       firstVisit,
       chooseOrganization,
       leaveOrganization,
@@ -397,6 +468,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       memberships,
       invitations,
       platformAdmin,
+      account,
+      joinRequests,
+      pendingSignup,
+      startDevSignup,
+      completeSignup,
+      cancelSignup,
       firstVisit,
       chooseOrganization,
       leaveOrganization,

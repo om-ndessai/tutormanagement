@@ -294,6 +294,23 @@ key (`RateLimiter`, `lib/rate-limit.ts` -- never D1, whose writes are metered) a
 day from the log (`DAILY_CAPS`). A self-serve space runs no AI task and sends no email. `/terms` and
 `/privacy` are public pages (`packages/shared/src/legal.ts`): a wording change is a new version, and
 `LEGAL_DRAFT` must be false before sign-up opens.
+**Anyone with a Google account may sign up, and a space is how they take part** (Phase 52,
+`docs/open-signup-plan.md`). "Space" is the word on screen; the code says organization. An unknown
+Google account gets a signed 15-minute `signup` token (only from a client that sends `signup: true`, so
+older apps keep the 403); `POST /api/auth/signup` takes the birth month and year and the accepted terms
+-- under 13 is refused and nothing is stored; only the band is kept (`platform_accounts`). A newcomer
+joins a space by asking with its code (`POST /api/spaces/join-requests`; the space's admins let them in
+through the ordinary user form, `join_request_user_id`, or decline), or an adult makes one
+(`POST /api/spaces`): self-serve, Assessment alone and on, untrusted, no email, its maker its admin, its
+slug from its code. Codes are 8 characters of `SPACE_CODE_ALPHABET`, unique, found only while joining by
+code is on. A student added in a self-serve space needs the adult's consent (`parent_consent`, a
+`consents` row). A self-serve space's admin may delete it -- `purgeSpace` removes every row it holds
+(`scripts/check-purge.mjs` fails on a table the purge misses) -- and a person in no space may delete their
+account. Routes before a space sit outside `requireOrg` (`routes/spaces.ts`), like the invitation routes (R21).
+**Sign-up is behind a switch:** `SIGNUP_OPEN` in each Worker's `vars` -- "false" on the production pair
+until the owner approves the terms and privacy wording (then `LEGAL_DRAFT` goes false too), "true" on
+the demo and in `.dev.vars`. Closed, an unknown Google account is refused as before and
+`POST /api/auth/signup` answers 403; `/api/auth/config` reports `signup_open`.
 
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and

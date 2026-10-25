@@ -291,6 +291,7 @@ export function UserFormDialog({
   onOpenChange,
   userId,
   preset,
+  joinRequestUserId,
   sections,
   title,
   description,
@@ -300,7 +301,9 @@ export function UserFormDialog({
   onOpenChange: (open: boolean) => void;
   userId: string | null;
   /** A new person's roles and guardians, chosen already. Create mode only. */
-  preset?: { roles: UserRole[]; guardians?: GuardianValue[] };
+  preset?: { roles: UserRole[]; guardians?: GuardianValue[]; full_name?: string; email?: string };
+  /** Phase 52: saving lets in the person who asked to join (their request, by their id). */
+  joinRequestUserId?: string;
   /** Show only these blocks; every block when absent. */
   sections?: UserFormSection[];
   title?: string;
@@ -334,7 +337,13 @@ export function UserFormDialog({
         ? detail
           ? fromDetail(detail.data)
           : EMPTY
-        : { ...EMPTY, roles: preset?.roles ?? [], guardians: preset?.guardians ?? [] },
+        : {
+            ...EMPTY,
+            roles: preset?.roles ?? [],
+            guardians: preset?.guardians ?? [],
+            full_name: preset?.full_name ?? '',
+            email: preset?.email ?? '',
+          },
     );
     // The preset is read when the dialog opens, not on every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -347,9 +356,12 @@ export function UserFormDialog({
 
   // Phase 50: the tutor role and Tutoring's fields only where the space has Tutoring.
   const { organization } = useAuth();
+  // Phase 52: in a self-serve space a new student is added with a parent's consent.
+  const [parentConsent, setParentConsent] = useState(false);
   const tutoring = featureAllowed(organization, 'tutoring');
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
+  const needsConsent = !isEdit && isStudent && organization?.created_via === 'self_serve';
   // Everyone but a student-only person signs in, and sign-in needs an address.
   const emailRequired = requiresEmail(form.roles);
   const isParent = form.roles.includes('parent');
@@ -366,7 +378,11 @@ export function UserFormDialog({
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const request = toSpaceRequest(form, tutoring);
+    const request = {
+      ...toSpaceRequest(form, tutoring),
+      ...(!isEdit && joinRequestUserId ? { join_request_user_id: joinRequestUserId } : {}),
+      ...(!isEdit && needsConsent ? { parent_consent: parentConsent } : {}),
+    };
     const schema = isEdit ? updateUserRequestSchema : createUserRequestSchema;
     const parsed = schema.safeParse(request);
 
@@ -467,7 +483,7 @@ export function UserFormDialog({
                   which stops one organization taking over another's member. */}
               {sharedLocked && (
                 <p className="bg-muted text-muted-foreground rounded-md px-3 py-2 text-xs" data-testid="shared-fields-locked">
-                  This person belongs to another organization too, so their name, email and phone are
+                  This person belongs to another space too, so their name, email and phone are
                   shared. A platform administrator changes them.
                 </p>
               )}
@@ -925,6 +941,22 @@ export function UserFormDialog({
                 <p role="alert" className="text-destructive text-xs">
                   {errors._}
                 </p>
+              )}
+
+              {needsConsent && (
+                <label className="flex items-start gap-2 rounded-md border p-3 text-sm" data-testid="user-parent-consent">
+                  <input
+                    type="checkbox"
+                    className="accent-primary mt-0.5 size-4"
+                    checked={parentConsent}
+                    onChange={(event) => setParentConsent(event.target.checked)}
+                  />
+                  <span>
+                    I am this student’s parent or guardian, or have their permission, for them to take part here --
+                    including answers they write on the canvas.{' '}
+                    {errors.parent_consent && <span className="text-destructive block text-xs">{errors.parent_consent}</span>}
+                  </span>
+                </label>
               )}
 
               {/* A scoped form can fail on a field it is not showing; say what,

@@ -66,8 +66,8 @@ export function PlatformAdminsScreen() {
   return (
     <Screen testID="screen-platform-admins" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <PageIntro>
-        They create organizations and their admins. They see nothing inside an organization unless it makes
-        them a member.
+        They create spaces and their admins. They see nothing inside a space unless it makes them a
+        member.
       </PageIntro>
 
       <Panel testID="platform-admins-list">
