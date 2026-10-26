@@ -1,6 +1,7 @@
 import {
   CANVAS_ASSESSMENT_LEVEL_IDS,
   QUESTION_BANK_LEVEL_LABELS,
+  bankLevelOffered,
   drawableStatuses,
   type CanvasAssessment,
   type CanvasAssessmentLevel,
@@ -163,36 +164,59 @@ export async function getVisibleCanvasAssessment(
 }
 
 /**
- * How many approved questions each bank level can draw on. Standards marked
- * "needs a figure" are left out, as from every test. The bank is platform
- * reference data; the approved few are read through `questions_status_idx`.
+ * The topic ranges holding the questions of the given levels: one per run of
+ * them in sorted order, since a level's topics sort in [level + '.', level + '/').
  */
 const SORTED_LEVELS = [...CANVAS_ASSESSMENT_LEVEL_IDS].sort();
-/** Every topic of every Assessment level sorts in [first level + '.', last level + '/'). */
-const ASSESSMENT_TOPICS_FROM = `${SORTED_LEVELS[0]}.`;
-const ASSESSMENT_TOPICS_TO = `${SORTED_LEVELS.at(-1)}/`;
+function topicRanges(levels: ReadonlySet<string>): [string, string][] {
+  const ranges: [string, string][] = [];
+  let first: string | null = null;
+  let last: string | null = null;
+  for (const level of [...SORTED_LEVELS, null]) {
+    if (level !== null && levels.has(level)) {
+      first ??= level;
+      last = level;
+    } else if (first !== null && last !== null) {
+      ranges.push([`${first}.`, `${last}/`]);
+      first = null;
+      last = null;
+    }
+  }
+  return ranges;
+}
 
+/**
+ * How many questions each bank level the organization offers (`offered`, its
+ * live curricula) can draw on, approved and -- on its trial flag -- checked.
+ * Standards marked "needs a figure" are left out, as from every test. Only the
+ * offered levels' topics are read, one statement per run of them in a batch:
+ * each seeks `questions_quest_idx` (status, topic) by its range, so it reads one
+ * row per question counted. Ranges joined by OR in one statement were measured
+ * reading every checked question in the bank (30,301 rows to count 2,673,
+ * 2026-10-23), and the bank is 60,000 rows, most of them in curricula a given
+ * organization does not offer.
+ */
 export async function countDrawableQuestions(
   db: D1Database,
   includeUnreviewed: boolean,
+  offered: ReadonlySet<string>,
 ): Promise<CanvasAssessmentLevel[]> {
+  const levels = CANVAS_ASSESSMENT_LEVEL_IDS.filter((id) => bankLevelOffered(id, offered));
+  const ranges = topicRanges(new Set(levels));
   const statuses = drawableStatuses(includeUnreviewed);
-  // One row per standard and status: about 100 standards, so the grouping is
-  // small even when the 9,700 checked questions are counted. Only the
-  // Assessment's levels, by topic range: Beast Academy's chapters are in the
-  // bank too, and are not read here.
-  const result = await db
-    .prepare(
-      `SELECT q.topic_id, q.status, COUNT(*) AS n FROM questions q
-       WHERE q.topic_id >= ? AND q.topic_id < ?
-         AND q.status IN (${statuses.map(() => '?').join(', ')})
-         AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
-       GROUP BY q.topic_id, q.status`,
-    )
-    .bind(ASSESSMENT_TOPICS_FROM, ASSESSMENT_TOPICS_TO, ...statuses)
-    .all<{ topic_id: string; status: string; n: number }>();
+  // One row per standard and status, so the grouping stays small.
+  const count = db.prepare(
+    `SELECT q.topic_id, q.status, COUNT(*) AS n FROM questions q
+     WHERE q.topic_id >= ? AND q.topic_id < ?
+       AND q.status IN (${statuses.map(() => '?').join(', ')})
+       AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
+     GROUP BY q.topic_id, q.status`,
+  );
+  const results = await db.batch<{ topic_id: string; status: string; n: number }>(
+    ranges.map(([from, to]) => count.bind(from, to, ...statuses)),
+  );
   const counts = new Map<string, { available: number; unreviewed: number }>();
-  for (const row of result.results ?? []) {
+  for (const row of results.flatMap((result) => result.results ?? [])) {
     const level = CANVAS_ASSESSMENT_LEVEL_IDS.find((id) => row.topic_id.startsWith(`${id}.`));
     if (!level) continue;
     const entry = counts.get(level) ?? { available: 0, unreviewed: 0 };
@@ -200,7 +224,7 @@ export async function countDrawableQuestions(
     if (row.status !== 'approved') entry.unreviewed += row.n;
     counts.set(level, entry);
   }
-  return CANVAS_ASSESSMENT_LEVEL_IDS.map((level_id: CanvasAssessmentLevelId) => ({
+  return levels.map((level_id: CanvasAssessmentLevelId) => ({
     level_id,
     label: QUESTION_BANK_LEVEL_LABELS[level_id],
     available: counts.get(level_id)?.available ?? 0,

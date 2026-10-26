@@ -64,7 +64,7 @@ test.describe('groundwork for open sign-in (Phase 51)', () => {
       const priya = await as('admin', { org: ORGS.b.slug });
       const students = await unwrap<any[]>(await priya.request.get('/api/quest/students'), 'students');
       const sanjayRow = students.find((s) => s.full_name === 'Sanjay Patel')!;
-      await unwrap(await priya.request.put(`/api/quest/students/${sanjayRow.user_id}/level`, { data: { level_id: 'BA4' } }), 'level');
+      await unwrap(await priya.request.put(`/api/quest/students/${sanjayRow.user_id}/level`, { data: { level_id: 'NC26.4' } }), 'level');
       const sanjay = await as('studentTutor', { org: ORGS.b.slug });
       const q = (await unwrap<any>(await sanjay.request.get('/api/quest/me'), 'me')).question;
       await unwrap(await sanjay.request.post('/api/quest/answers', { data: { question_id: q.id, answer: 'not this' } }), 'answer');

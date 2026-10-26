@@ -1,6 +1,5 @@
 import { Hono } from 'hono';
 import {
-  assessmentLevelCurriculum,
   GAME_LIMITS,
   createGameSchema,
   gameAnswerSchema,
@@ -67,17 +66,10 @@ function unwrap<T>(reply: GameReply<T>): T {
 
 /** The bank's levels this organization offers (its curricula), with how many questions each has to play. */
 async function playableLevels(db: D1Database, org: { id: OrgId; canvas_assessments_unreviewed: boolean }): Promise<GameLevel[]> {
-  const [levels, offered] = await Promise.all([
-    countDrawableQuestions(db, org.canvas_assessments_unreviewed),
-    listOrganizationCurricula(db, org.id),
-  ]);
+  const offered = await listOrganizationCurricula(db, org.id);
   const live = new Set(offered.filter((cur) => !cur.retired).map((cur) => cur.id));
-  return levels
-    .filter((level) => {
-      const curriculum = assessmentLevelCurriculum(level.level_id);
-      return curriculum === null || live.has(curriculum);
-    })
-    .map((level) => ({ level_id: level.level_id, label: level.label, available: level.available }));
+  const levels = await countDrawableQuestions(db, org.canvas_assessments_unreviewed, live);
+  return levels.map((level) => ({ level_id: level.level_id, label: level.label, available: level.available }));
 }
 
 /** "a G5 Quest game", "a G5-and-up Quest game", "a single-player G5 Quest game": for the log. */

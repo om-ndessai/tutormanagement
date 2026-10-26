@@ -16,12 +16,14 @@ import { refuseSsn } from './tax.js';
 
 /**
  * The order a student's level moves up in once its questions are used up:
- * NC 2026's grades from Kindergarten to Math 2, then Beast Academy's levels
- * into the AoPS books. A level never moves from one family into the other,
- * and NC's three fourth-year courses, which no course follows, move nowhere.
+ * NC 2026's grades from Kindergarten to Math 2, NC 2017's from Kindergarten
+ * to Math 3, and Beast Academy's levels into the AoPS books. A level never
+ * moves from one family into another, and the fourth-year courses (NC 2026's
+ * three, NC 2017's Math 4 and Precalculus), which no course follows, move nowhere.
  */
 export const QUEST_LEVEL_FAMILIES: readonly (readonly (typeof QUESTION_BANK_LEVEL_IDS)[number][])[] = [
   ['NC26.K', 'NC26.1', 'NC26.2', 'NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1', 'NC26.M2'],
+  ['NC17.K', 'NC17.1', 'NC17.2', 'NC17.3', 'NC17.4', 'NC17.5', 'NC17.6', 'NC17.7', 'NC17.8', 'NC17.M1', 'NC17.M2', 'NC17.M3'],
   ['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
 ];
 

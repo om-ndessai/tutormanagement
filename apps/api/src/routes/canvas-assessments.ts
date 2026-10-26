@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import {
   CANVAS_LIMITS,
-  assessmentLevelCurriculum,
+  bankLevelOffered,
   REVIEW_LIMITS,
   REVIEW_PAGE,
   checkAnswer,
@@ -124,20 +124,14 @@ async function offeredCurricula(db: D1Database, org: OrgId): Promise<Set<string>
   return new Set((await listOrganizationCurricula(db, org)).filter((c) => !c.retired).map((c) => c.id));
 }
 
-function levelOffered(levelId: string, offered: Set<string>): boolean {
-  const curriculum = assessmentLevelCurriculum(levelId);
-  return curriculum === null || offered.has(curriculum);
-}
-
 export const canvasAssessmentRoutes = new Hono<AppEnv>()
 
   .get('/levels', async (c) => {
     const org = c.get('org');
-    const [levels, offered] = await Promise.all([
-      countDrawableQuestions(c.env.DB, org.canvas_assessments_unreviewed),
-      offeredCurricula(c.env.DB, org.id),
-    ]);
-    const body: ApiOk<CanvasAssessmentLevel[]> = { data: levels.filter((l) => levelOffered(l.level_id, offered)) };
+    const offered = await offeredCurricula(c.env.DB, org.id);
+    const body: ApiOk<CanvasAssessmentLevel[]> = {
+      data: await countDrawableQuestions(c.env.DB, org.canvas_assessments_unreviewed, offered),
+    };
     return c.json(body);
   })
 
@@ -159,9 +153,9 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     if (!(await canViewStudentProgress(c.env.DB, org.id, user, input.student_user_id))) {
       throw ApiError.notFound('That student was not found.');
     }
-    if (!levelOffered(input.level_id, await offeredCurricula(c.env.DB, org.id))) {
+    if (!bankLevelOffered(input.level_id, await offeredCurricula(c.env.DB, org.id))) {
       throw ApiError.validation('That level is not offered here.', {
-        level_id: ['Beast Academy levels need Beast Academy on the organization’s curriculum list.'],
+        level_id: ['A level needs its curriculum on the organization’s curriculum list.'],
       });
     }
     const drawn = await drawQuestionIds(

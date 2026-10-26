@@ -431,6 +431,11 @@ added to the bank -- breadth first, then depth, so every topic had questions bef
 bank's level list, labels and Quest's level order widen to match (web and the app). Plan and results:
 `docs/question-bank-round-4.md`.
 
+NC 2017 followed (owner, 2026-10-23: "Build the NC 2017 questions into question bank"): its first pass, 30
+questions a standard, released 2026-10-25 on 340 of its 361 standards (10,440 questions), with the second
+pass to about 99 a standard begun. Its 14 levels reach only organizations that offer NC 2017, in the
+Assessment menu, Quest and Quest Games. Plan and results: `docs/question-bank-nc-2017.md`.
+
 Phases 42, 44 and 45: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
 day; Phase 42 released 2026-10-20, web and the app; 44 and 45 not started -- renumbered from 43 and 44
 when the owner put the tutor's Home first, 2026-10-20)

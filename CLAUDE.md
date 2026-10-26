@@ -147,7 +147,7 @@ Run from the repo root.
 | `npm run db:rebuild` | **Drops and recreates** every local table from `apps/api/db/schema.sql`, then loads the curriculum catalog (`db/catalog.sql`) |
 | `npm run db:seed` | Reload local data from `apps/api/db/seed.sql` |
 | `npm run db:reset` | Rebuild, then seed, the platform admin and a SAMPLE of the question bank (`db/questions-sample.sql`, Phase 49: every approved question and 8 checked per standard, ~2,500) |
-| `npm run db:reset:full` | The same with the whole bank (`db/questions.sql`, ~30,000), for work on the bank itself |
+| `npm run db:reset:full` | The same with the whole bank (`db/questions.sql`, ~40,000), for work on the bank itself |
 | `npm run seed:scenarios` | With the local Worker running: the newer features' seed, made through the API as the bulk families (assessments with PDFs, Quest answers and reviews, Quest Games). `-- --base=<demo> --demo` on the demo |
 | `npm run test:compat` | The backward-compatibility test (Phase 49), local: the last release's database (`release-*` tag) with the pending SQL from `docs/database.md`, compared with `schema.sql`, then the last release's Worker and today's run on it |
 | `npm run questions:export` | Copy production's APPROVED questions into `apps/api/db/questions/*.json` and regenerate `db/questions.sql` (one read-only SELECT on `tutoring-db`) |
@@ -640,7 +640,8 @@ Nothing a model writes reaches a family or a student without a person approving 
 
 **A question reaches a test only by passing every check and a person** (Phase 36). The bank
 (`questions`, platform reference data on the NC 2026 standards -- grades 3-8 and Math 1, and since
-2026-10-22 every other NC 2026 level too, `docs/question-bank-round-4.md` -- and since Phase 41 on Beast
+2026-10-22 every other NC 2026 level too, `docs/question-bank-round-4.md`; since 2026-10-25 NC 2017 as well,
+offered only where an organization offers NC 2017, `docs/question-bank-nc-2017.md` -- and since Phase 41 on Beast
 Academy's chapters, one chapter a topic, `docs/question-bank-beast-academy.md`) is written
 by Claude Sonnet, checked by code (`lintQuestion` in shared: the form, four distinct choices with
 exactly one matching the key, the `compute` expression evaluated EXACTLY -- `evaluateExact`, big
@@ -694,7 +695,7 @@ whatever its outcome, so approving never pays more than flagging (`QUEST_POINTS`
 append-only (a trigger refuses updates) and a balance is a sum, read from `activity_days`, the per-day
 rollup written in the same batch -- never store a balance. Answers are `quest_attempts` rows, never
 audit lines; reviews and level changes are logged. The next question is one seek on
-`questions_quest_idx` from the student's last answer: keep it so, the bank is 30,000 rows and D1's
+`questions_quest_idx` from the student's last answer: keep it so, the bank is 40,000 rows and D1's
 reads are metered. Quest runs full screen outside the portal's frame (`/quest/play`, `/quest/review`)
 and lands a student or tutor there once per tab after sign-in (`QuestLanding`; the e2e fixture marks
 every tab landed unless `questLanding: true`). Plan and later phases: `docs/gamification-plan.md`.

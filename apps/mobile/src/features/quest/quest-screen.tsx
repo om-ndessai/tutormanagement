@@ -27,6 +27,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
+import { useCurricula } from '../progress/api';
 import { useQuestReview, useQuestState, useQuestStudents, useSetQuestLevel } from './api';
 import {
   NOT_SET,
@@ -41,8 +42,6 @@ import {
 import { QuestPoints } from './quest-points';
 import { useGames } from './games-api';
 import { GamesPanel } from './games-panel';
-
-const LEVEL_OPTIONS = levelOptions();
 
 export function QuestScreen() {
   const { user } = useAuth();
@@ -188,6 +187,11 @@ function StudentRow({ row }: { row: QuestStudent }) {
   const theme = useAppTheme();
   const toast = useToast();
   const setLevel = useSetQuestLevel();
+  const curricula = useCurricula();
+  const options = levelOptions(
+    new Set((curricula.data?.data ?? []).filter((c) => !c.retired).map((c) => c.id)),
+    row.level_id,
+  );
   // The choice shows at once and holds until the students' list is read again with it (or goes back,
   // if it was refused), so the picker never flicks back to the old level in between.
   const current = row.level_id ?? NOT_SET;
@@ -213,7 +217,7 @@ function StudentRow({ row }: { row: QuestStudent }) {
         testID={`quest-level-${row.user_id}`}
         label={`${row.full_name}’s level`}
         placeholder="Not set"
-        options={LEVEL_OPTIONS}
+        options={options}
         value={shown}
         onChange={(value) => void change(value)}
         searchPlaceholder="Search levels"

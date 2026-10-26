@@ -163,11 +163,22 @@ describe('words', () => {
 
 describe('the level picker', () => {
   it('offers Not set, then every level of the bank in order, by its short name', () => {
-    const options = levelOptions();
+    const options = levelOptions(new Set(['ba', 'nc-2017']));
     expect(options[0]).toEqual({ id: NOT_SET, label: 'Not set' });
     expect(options.slice(1).map((option) => option.id)).toEqual([...QUESTION_BANK_LEVEL_IDS]);
     expect(options.find((option) => option.id === 'NC26.4')?.label).toBe('G4');
+    expect(options.find((option) => option.id === 'NC17.4')?.label).toBe('G4 (2017)');
     expect(options.find((option) => option.id === 'PRE')?.label).toBe('AoPS Prealgebra');
+  });
+
+  it('offers only the levels of the curricula the organization offers, and keeps the chosen one', () => {
+    const ids = (offered: string[], keep?: string) => levelOptions(new Set(offered), keep).slice(1).map((o) => o.id);
+    // NC 2026 is everyone's; Beast Academy's and NC 2017's levels need their curriculum.
+    expect(ids([])).toEqual(QUESTION_BANK_LEVEL_IDS.filter((id) => id.startsWith('NC26.')));
+    expect(ids(['nc-2017'])).toContain('NC17.PC');
+    expect(ids(['nc-2017'])).not.toContain('BA1');
+    expect(ids(['ba'])).not.toContain('NC17.4');
+    expect(ids(['ba'], 'NC17.4')).toContain('NC17.4');
   });
 
   it('sends null for Not set, and says what changed', () => {

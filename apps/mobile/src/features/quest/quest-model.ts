@@ -6,6 +6,7 @@ import {
   QUESTION_BANK_LEVEL_IDS,
   QUEST_POINTS,
   levelLabel,
+  offeredBankLevelIds,
   questLevelLabel,
   type QuestReviewDecision,
   type QuestReviewQueue,
@@ -166,11 +167,15 @@ export interface LevelOption {
   label: string;
 }
 
-/** "Not set", then every level of the bank, in the bank's order. */
-export function levelOptions(): LevelOption[] {
+/**
+ * "Not set", then the bank's levels the organization offers (`offered`, the ids of its curricula
+ * that are not retired: Beast Academy's and NC 2017's only where it offers them), and the student's
+ * own level (`keep`) even if its curriculum has since been retired, in the bank's order.
+ */
+export function levelOptions(offered: ReadonlySet<string>, keep?: string | null): LevelOption[] {
   return [
     { id: NOT_SET, label: 'Not set' },
-    ...QUESTION_BANK_LEVEL_IDS.map((id) => ({ id, label: levelLabel(id) })),
+    ...offeredBankLevelIds(offered, keep).map((id) => ({ id, label: levelLabel(id) })),
   ];
 }
 

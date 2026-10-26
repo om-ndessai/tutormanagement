@@ -30,6 +30,12 @@ const NC_LEVELS = [
   ...['NC26.M2', 'NC26.ALR', 'NC26.ASDS', 'NC26.MSM'],
 ];
 
+/** NC 2017's levels in the bank, since 2026-10-23 (docs/question-bank-nc-2017.md), after NC 2026's. */
+const NC17_LEVELS = [
+  ...['NC17.K', 'NC17.1', 'NC17.2', 'NC17.3', 'NC17.4', 'NC17.5', 'NC17.6', 'NC17.7', 'NC17.8'],
+  ...['NC17.M1', 'NC17.M2', 'NC17.M3', 'NC17.M4', 'NC17.PC'],
+];
+
 const value = (expression: string) => {
   const result = evaluateExact(expression);
   return result ? formatFraction(result) : null;
@@ -142,7 +148,11 @@ test.describe('the question bank’s rules', () => {
       await platform.request.get('/api/platform/questions/coverage'),
       'coverage',
     );
-    expect(levels.map((l) => l.level_id)).toEqual([...NC_LEVELS, ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO']]);
+    expect(levels.map((l) => l.level_id)).toEqual([
+      ...NC_LEVELS,
+      ...NC17_LEVELS,
+      ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
+    ]);
     expect(levels.find((l) => l.level_id === 'BA3')?.topics.map((t) => t.topic_id)).toContain('BA3.06');
     // A chapter is a standard the console can write for, like any other.
     const written = await unwrap<{ questions: { topic_id: string }[] }>(
@@ -162,7 +172,8 @@ test.describe('the question bank’s rules', () => {
         await admin.request.get('/api/canvas-assessments/levels'),
         'assessment levels',
       );
-      expect(offered.map((l) => l.level_id)).toEqual(levels.map((l) => l.level_id));
+      // A offers Beast Academy, not NC 2017: every level but NC 2017's.
+      expect(offered.map((l) => l.level_id)).toEqual(levels.map((l) => l.level_id).filter((id) => !id.startsWith('NC17.')));
       const ba3 = offered.find((l) => l.level_id === 'BA3')!;
       expect(ba3.label).toBe('BA3');
       expect(ba3.available).toBeGreaterThan(0);
@@ -184,18 +195,59 @@ test.describe('the question bank’s rules', () => {
       await setA({ canvas_assessments_unreviewed: false });
     }
 
-    // B offers NC's standards only: no Beast Academy level, and asking for one is refused.
+    // B offers NC's standards only, both editions: no Beast Academy level, and asking for one is refused.
     const adminB = await as('orgBAdmin', { org: 'riverside' });
     const setB = (data: Record<string, boolean>) => adminB.request.patch('/api/organization/settings', { data });
     expect((await setB({ canvas_assessments: true })).status()).toBe(200);
     try {
-      const offeredB = await unwrap<{ level_id: string }[]>(await adminB.request.get('/api/canvas-assessments/levels'), 'B levels');
-      expect(offeredB.map((l) => l.level_id)).toEqual(NC_LEVELS);
+      const offeredB = await unwrap<{ level_id: string; label: string }[]>(
+        await adminB.request.get('/api/canvas-assessments/levels'),
+        'B levels',
+      );
+      expect(offeredB.map((l) => l.level_id)).toEqual([...NC_LEVELS, ...NC17_LEVELS]);
+      expect(offeredB.find((l) => l.level_id === 'NC17.4')?.label).toBe('G4 (2017)');
       const [lily] = await unwrap<{ id: string }[]>(await adminB.request.get('/api/users?search=Lily%20Chen'), 'Lily');
       const refused = await adminB.request.post('/api/canvas-assessments', { data: { student_user_id: lily.id, level_id: 'BA3' } });
       expect(refused.status()).toBe(422);
     } finally {
       await setB({ canvas_assessments: false });
+    }
+  });
+
+  test('NC 2017: its levels reach only an organization that offers it, in the Assessment menu, Quest and Quest Games', async ({ as }) => {
+    // A offers Beast Academy only: no NC 2017 level anywhere, and setting one as a Quest level is refused.
+    const admin = await as('admin');
+    const setA = (data: Record<string, boolean>) => admin.request.patch('/api/organization/settings', { data });
+    expect((await setA({ canvas_assessments: true, gamify_question_quest: true })).status()).toBe(200);
+    try {
+      const games = await unwrap<{ level_id: string }[]>(await admin.request.get('/api/quest/games/levels'), 'A game levels');
+      expect(games.some((l) => l.level_id.startsWith('NC17.'))).toBe(false);
+      expect(games.some((l) => l.level_id === 'BA3')).toBe(true);
+      const [sofia] = await unwrap<{ id: string }[]>(await admin.request.get('/api/users?search=Sofia'), 'Sofia');
+      const refused = await admin.request.put(`/api/quest/students/${sofia.id}/level`, { data: { level_id: 'NC17.4' } });
+      expect(refused.status()).toBe(422);
+      const started = await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofia.id, level_id: 'NC17.4' } });
+      expect(started.status()).toBe(422);
+    } finally {
+      await setA({ canvas_assessments: false, gamify_question_quest: false });
+    }
+
+    // B offers both NC editions: NC 2017's levels are its to play and to set.
+    const adminB = await as('orgBAdmin', { org: 'riverside' });
+    const setB = (data: Record<string, boolean>) => adminB.request.patch('/api/organization/settings', { data });
+    expect((await setB({ gamify_question_quest: true })).status()).toBe(200);
+    try {
+      const games = await unwrap<{ level_id: string; label: string }[]>(await adminB.request.get('/api/quest/games/levels'), 'B game levels');
+      expect(games.map((l) => l.level_id)).toEqual([...NC_LEVELS, ...NC17_LEVELS]);
+      const [lily] = await unwrap<{ id: string }[]>(await adminB.request.get('/api/users?search=Lily%20Chen'), 'Lily');
+      const set = await unwrap<{ level_id: string | null } | null>(
+        await adminB.request.put(`/api/quest/students/${lily.id}/level`, { data: { level_id: 'NC17.4' } }),
+        'setting an NC 2017 level',
+      );
+      expect(set?.level_id).toBe('NC17.4');
+      await unwrap(await adminB.request.put(`/api/quest/students/${lily.id}/level`, { data: { level_id: null } }), 'clearing it');
+    } finally {
+      await setB({ gamify_question_quest: false });
     }
   });
 

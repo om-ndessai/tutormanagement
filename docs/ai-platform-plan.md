@@ -34,7 +34,8 @@ cannot forget it.
   which the 10 ms CPU limit does not count, and each request makes one call. AI Gateway is free and
   optional (`AI_GATEWAY` var); without it, calls go straight to Anthropic.
 - **Grades 3-8 and Math 1 on NC 2026** (98 standards) are the bank's scope. (Widened 2026-10-22 to every
-  NC 2026 level -- Kindergarten to Math 2 and the three fourth-year courses: `docs/question-bank-round-4.md`.)
+  NC 2026 level -- Kindergarten to Math 2 and the three fourth-year courses: `docs/question-bank-round-4.md`. And 2026-10-25 to NC 2017, for the
+  organizations that offer it: `docs/question-bank-nc-2017.md`.)
 - Approvers are platform admins; caps start at $5 a day and $25 a month, editable in the console.
 - Phase 37's other questions wait. **The goal of this phase is a reliable question bank.**
 

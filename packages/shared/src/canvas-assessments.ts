@@ -19,9 +19,10 @@ export const CANVAS_ASSESSMENT_STATUS_LABELS: Record<CanvasAssessmentStatus, str
 };
 
 /**
- * The bank levels an Assessment may draw on: every level of the bank, NC 2026's and (owner,
- * 2026-10-19) Beast Academy's. A Beast Academy level is offered only to an organization whose
- * curriculum list includes Beast Academy (`assessmentLevelCurriculum`).
+ * The bank levels an Assessment may draw on: every level of the bank, NC 2026's, (owner,
+ * 2026-10-19) Beast Academy's and (2026-10-23) NC 2017's. A Beast Academy or NC 2017 level is
+ * offered only to an organization whose curriculum list includes that curriculum
+ * (`assessmentLevelCurriculum`, `bankLevelOffered`).
  */
 export const CANVAS_ASSESSMENT_LEVEL_IDS = QUESTION_BANK_LEVEL_IDS;
 
@@ -29,8 +30,8 @@ export type CanvasAssessmentLevelId = (typeof CANVAS_ASSESSMENT_LEVEL_IDS)[numbe
 
 /**
  * What people read for an Assessment level, kept short for a picker on a phone (owner, 2026-10-19):
- * "G5", "Math 1", "BA3", "AoPS Algebra". NC's grades are G, Beast Academy's levels BA, so no two
- * levels in one list share a name.
+ * "G5", "Math 1", "BA3", "AoPS Algebra". NC's grades are G, Beast Academy's levels BA, and NC 2017's
+ * carry their year ("G5 (2017)"), so no two levels in one list share a name.
  */
 export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string> = {
   'NC26.K': 'K',
@@ -47,6 +48,20 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
   'NC26.ALR': 'Applied Logic',
   'NC26.ASDS': 'Stats & Data Science',
   'NC26.MSM': 'Math Modeling',
+  'NC17.K': 'K (2017)',
+  'NC17.1': 'G1 (2017)',
+  'NC17.2': 'G2 (2017)',
+  'NC17.3': 'G3 (2017)',
+  'NC17.4': 'G4 (2017)',
+  'NC17.5': 'G5 (2017)',
+  'NC17.6': 'G6 (2017)',
+  'NC17.7': 'G7 (2017)',
+  'NC17.8': 'G8 (2017)',
+  'NC17.M1': 'Math 1 (2017)',
+  'NC17.M2': 'Math 2 (2017)',
+  'NC17.M3': 'Math 3 (2017)',
+  'NC17.M4': 'Math 4 (2017)',
+  'NC17.PC': 'Precalculus (2017)',
   BA1: 'BA1',
   BA2: 'BA2',
   BA3: 'BA3',
@@ -58,11 +73,31 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
 };
 
 /**
- * The curriculum an organization must offer for a level to appear in its Assessment menu, or
- * null for one every organization sees (NC 2026's grades, as since Phase 38).
+ * The curriculum an organization must offer for a level to appear in its Assessment menu, Quest
+ * and Quest Games, or null for one every organization sees (NC 2026's grades, as since Phase 38).
  */
 export function assessmentLevelCurriculum(levelId: string): string | null {
-  return levelId.startsWith('NC26.') ? null : 'ba';
+  if (levelId.startsWith('NC26.')) return null;
+  if (levelId.startsWith('NC17.')) return 'nc-2017';
+  return 'ba';
+}
+
+/** Whether a bank level is offered, given the curricula an organization offers now (not retired). */
+export function bankLevelOffered(levelId: string, offered: ReadonlySet<string>): boolean {
+  const curriculum = assessmentLevelCurriculum(levelId);
+  return curriculum === null || offered.has(curriculum);
+}
+
+/**
+ * The bank levels a picker lists, in the bank's order: those the organization offers (`offered`,
+ * the ids of its curricula that are not retired), and the one already chosen (`keep`) even if its
+ * curriculum has since been retired, so a picker never shows a blank.
+ */
+export function offeredBankLevelIds(
+  offered: ReadonlySet<string>,
+  keep?: string | null,
+): (typeof QUESTION_BANK_LEVEL_IDS)[number][] {
+  return QUESTION_BANK_LEVEL_IDS.filter((id) => id === keep || bankLevelOffered(id, offered));
 }
 
 export function levelLabel(levelId: string): string {

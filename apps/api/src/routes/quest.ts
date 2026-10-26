@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import {
+  bankLevelOffered,
   hasRole,
   levelLabel,
   nextQuestLevel,
@@ -21,6 +22,7 @@ import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
 import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
+import { listOrganizationCurricula } from '../repositories/curricula.js';
 import {
   applyQuestReview,
   getQuestAttempt,
@@ -205,6 +207,16 @@ export const questRoutes = new Hono<AppEnv>()
       throw ApiError.notFound('That student was not found.');
     }
     const { level_id: levelId } = c.req.valid('json');
+    // A level is offered only where its curriculum is (Beast Academy's, NC 2017's), as in the
+    // Assessment menu and Quest Games.
+    if (levelId) {
+      const live = (await listOrganizationCurricula(c.env.DB, orgId)).filter((cur) => !cur.retired).map((cur) => cur.id);
+      if (!bankLevelOffered(levelId, new Set(live))) {
+        throw ApiError.validation('That level is not offered here.', {
+          level_id: ['A level needs its curriculum on the organization’s curriculum list.'],
+        });
+      }
+    }
     await setQuestLevel(c.env.DB, orgId, studentId, levelId);
     const student = (await listQuestStudents(c.env.DB, orgId, reviewer)).find((s) => s.user_id === studentId);
     await recordAudit(c.env.DB, user, orgId, {

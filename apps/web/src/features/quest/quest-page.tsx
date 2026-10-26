@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ClipboardCheckIcon, PlayIcon, TrophyIcon } from 'lucide-react';
 import {
-  QUESTION_BANK_LEVEL_IDS,
   levelLabel,
+  offeredBankLevelIds,
   questLevelLabel,
   type QuestLevelInput,
   type QuestStudent,
@@ -19,6 +19,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
+import { useCurricula } from '@/features/progress/api';
 import { questRoles, useQuestReview, useQuestState, useQuestStudents, useSetQuestLevel } from './api';
 import { GamesCard } from './games-card';
 
@@ -150,6 +151,11 @@ function StudentsCard() {
 
 function StudentRow({ row }: { row: QuestStudent }) {
   const setLevel = useSetQuestLevel();
+  // The levels of the curricula this organization offers (Beast Academy's and NC 2017's only where
+  // it offers them), and the student's own even if its curriculum has since been retired.
+  const curricula = useCurricula();
+  const offered = new Set((curricula.data?.data ?? []).filter((c) => !c.retired).map((c) => c.id));
+  const levels = offeredBankLevelIds(offered, row.level_id);
   async function change(value: string) {
     try {
       await setLevel.mutateAsync({ studentId: row.user_id, level_id: value === NOT_SET ? null : (value as QuestLevelInput['level_id']) });
@@ -168,7 +174,7 @@ function StudentRow({ row }: { row: QuestStudent }) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={NOT_SET}>Not set</SelectItem>
-            {QUESTION_BANK_LEVEL_IDS.map((id) => (
+            {levels.map((id) => (
               <SelectItem key={id} value={id}>
                 {levelLabel(id)}
               </SelectItem>
