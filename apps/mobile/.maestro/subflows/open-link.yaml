@@ -1,7 +1,45 @@
-# Open a deep link, accepting iOS's "Open in …?" confirmation when it appears.
+# Open a deep link, accepting iOS's "Open in …?" confirmation when it appears -- and, on Android with
+# both the development and the e2e build installed (both answer aimtrue://), the system's chooser:
+# this run's own build, just once. The chooser comes in two shapes: "Open with" and a list, or (once
+# one was picked) "Open with <that app>" with Just once / Always and the other below.
 appId: ${APP_ID}
 ---
 - openLink: ${LINK}
+- runFlow:
+    when:
+      platform: Android
+    env:
+      MINE: "${APP_ID.endsWith('.e2e') ? 'Aimtrue .e2e.' : 'Aimtrue .dev.'}"
+      MINE_OFFERED: "${APP_ID.endsWith('.e2e') ? 'Open with Aimtrue .e2e.' : 'Open with Aimtrue .dev.'}"
+    commands:
+      - extendedWaitUntil:
+          visible: 'Just once|Open with'
+          timeout: 2000
+          optional: true
+      # The list: choose ours, then Just once.
+      - runFlow:
+          when:
+            visible: 'Open with'
+          commands:
+            - tapOn: ${MINE}
+            - tapOn: 'Just once'
+      # Ours offered first: Just once.
+      - runFlow:
+          when:
+            visible: ${MINE_OFFERED}
+          commands:
+            - tapOn: 'Just once'
+      # The other build offered first: ours from "Use a different app", then Just once if asked.
+      - runFlow:
+          when:
+            visible: 'Use a different app'
+          commands:
+            - tapOn: ${MINE}
+            - runFlow:
+                when:
+                  visible: 'Just once'
+                commands:
+                  - tapOn: 'Just once'
 - extendedWaitUntil:
     visible: 'Open'
     timeout: 3000

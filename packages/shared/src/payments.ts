@@ -40,6 +40,12 @@ export interface Payment {
   paid_at: string;
   reference: string | null;
   notes: string | null;
+  /**
+   * Phase 54: the tutor a family paid directly, in a space with no organization.
+   * Null for a payment to (or from) the organization.
+   */
+  payee_user_id: string | null;
+  payee_name: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -57,6 +63,11 @@ export const paymentInputSchema = z
     paid_at: z.string().min(1, 'Enter when it was paid.'),
     reference: optionalText(z.string().trim().max(80)),
     notes: optionalText(z.string().trim().max(1000)),
+    /**
+     * Phase 54, a space paid directly: the tutor the family paid. Required there,
+     * refused in a space run by an organization (the API checks which).
+     */
+    payee_user_id: z.uuid().nullish(),
   })
   .refine((value) => value.direction !== 'from_parent' || Boolean(value.student_user_id), {
     // Mirrors the CHECK constraint: a family payment with no student would
@@ -91,10 +102,17 @@ export const monthlyFinanceQuerySchema = z.object({
   user_id: z.uuid().optional(),
 });
 
+/** Phase 54: a tutor's year-end summary of what families paid them directly. */
+export const directSummaryQuerySchema = z.object({
+  year: z.coerce.number().int().min(2000).max(2100),
+});
+
 export const listPaymentsQuerySchema = z.object({
   direction: z.enum(PAYMENT_DIRECTIONS).optional(),
   party_user_id: z.uuid().optional(),
   student_user_id: z.uuid().optional(),
+  /** Phase 54: payments a family made directly to this tutor. */
+  payee_user_id: z.uuid().optional(),
   from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   limit: z.coerce.number().int().min(1).max(200).default(50),
@@ -275,10 +293,33 @@ export interface StudentBalance {
   session_count: number;
 }
 
+/**
+ * Phase 54: a family's balance with one tutor, in a space paid directly -- the
+ * tutor's paid-directly lessons for the student, less what the family paid that
+ * tutor. Nobody else is party to it.
+ */
+export interface DirectBalance {
+  student_user_id: string;
+  student_name: string;
+  tutor_user_id: string;
+  tutor_name: string;
+  guardians: { user_id: string; full_name: string; is_primary: boolean }[];
+  charged_cents: number;
+  paid_cents: number;
+  balance_cents: number;
+  session_count: number;
+}
+
 export interface BalancesResponse {
+  /** Phase 54: whether the space is paid directly now (it decides which screens show). */
+  paid_directly: boolean;
+  /** Phase 54: families' balances with each tutor, from lessons paid directly. */
+  direct: DirectBalance[];
   tutors: TutorBalance[];
   students: StudentBalance[];
   totals: {
+    /** Phase 54: what families owe tutors directly, over the rows the reader sees. */
+    owed_directly_cents: number;
     owed_to_tutors_cents: number;
     owed_by_families_cents: number;
     /**

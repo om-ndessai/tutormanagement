@@ -467,10 +467,27 @@ sections above until its half follows.
 silently grows by 48px. Stat grids use `items-start`: a grid row sizes every card to the
 tallest, so one card with a hint line lifts empty space into all the others.
 
-**An organization's TIN lives on `organizations`, and is not an SSN.** With its payer address,
-edited by its admins on the Organization page (`/organization`, `routes/organization.ts`) and
-prefilled into the 1099's payer box. It runs through `optionalText`, so the SSN guard applies — a
-sole proprietor filing under their own number is exactly the case that must still be refused.
+**A space's TIN is its organization's -- a `businesses` row -- and is not an SSN** (Phase 54). With
+its payer address, edited by a linked space's admins on the Space page (`/organization`,
+`routes/organization.ts`, written to the business) and by platform admins in the console's
+Organizations, and prefilled into the 1099's payer box. It runs through `optionalText`, so the SSN
+guard applies — a sole proprietor filing under their own number is exactly the case that must still be
+refused. The six payer columns left on `organizations` are no longer read.
+
+**A space is run by an organization, or paid directly** (Phase 54, `docs/tutor-spaces-plan.md`, R24).
+"Organization" on screen is `businesses` in the code (name, TIN, payer address; several spaces may
+share one), linked by `organizations.business_id`; platform admins make, link and archive them
+(`/api/platform/businesses`, `PUT /api/platform/organizations/:id/business`, logged
+`organization.business_set` / `business_cleared` in the space). With one, everything is as before.
+With none (`paidDirectly(org)`), families pay each lesson's tutor: a lesson is recorded with ONE price
+-- the pairing's rate on both columns (`resolveSessionRates`; the student's price is not read) -- and
+`sessions.paid_directly = 1`; a family's payment names the tutor it went to (`payments.payee_user_id`),
+a tutor records the payments made to them (admins any, a family none), and there are no `to_tutor`
+payments, advances, top-ups, margins or 1099s (409 `paid_directly`); the tutor's year-end summary is
+`GET /payments/direct-summary.csv`. Both flags are frozen when written, so a switch applies going
+forward -- never restate a recorded row. Balances keep a third ledger per family and tutor
+(`BalancesResponse.direct`), out of the organization's two. Triggers keep a direct lesson one price and
+refuse a payment that does not fit the space's model at insert. Newcomer spaces have no organization.
 
 **A tutor's mailing address is for their 1099, and only they and the office see it.** Five
 columns on `tutor_profiles` (`address_line1` … `postal_code`), formatted by

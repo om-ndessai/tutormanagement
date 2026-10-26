@@ -92,6 +92,7 @@ DROP TABLE IF EXISTS org_members;
 DROP TABLE IF EXISTS platform_admins;
 DROP TABLE IF EXISTS organization_logos;
 DROP TABLE IF EXISTS organizations;
+DROP TABLE IF EXISTS businesses;
 DROP TABLE IF EXISTS user_onboarding;
 DROP TABLE IF EXISTS users;
 
@@ -141,6 +142,31 @@ CREATE INDEX users_full_name_idx ON users (full_name) WHERE deleted_at IS NULL;
 
 
 -- ---------------------------------------------------------------------------
+-- businesses - an organization in the money sense (Phase 54)
+-- ---------------------------------------------------------------------------
+-- "Organization" on screen: who families pay and who files the 1099s, with its
+-- name, TIN and payer address (docs/tutor-spaces-plan.md). Several spaces may
+-- point at one. A space with none is PAID DIRECTLY: families pay each lesson's
+-- tutor, one price, nobody's cut. Platform admins make and link them; the
+-- admins of a linked space edit its payer details. Archived, never deleted.
+CREATE TABLE businesses (
+  id                  TEXT PRIMARY KEY,
+  name                TEXT NOT NULL,
+  -- NOT an SSN: the API's `containsSsn` guard applies, as on every free-text field.
+  tin                 TEXT,
+  payer_address_line1 TEXT,
+  payer_address_line2 TEXT,
+  payer_city          TEXT,
+  payer_state         TEXT CHECK (payer_state IS NULL
+                                  OR (length(payer_state) = 2 AND payer_state = upper(payer_state))),
+  payer_postal_code   TEXT,
+  archived_at         TEXT,
+  created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+
+-- ---------------------------------------------------------------------------
 -- organizations - a tutoring business on the platform
 -- ---------------------------------------------------------------------------
 -- Created and branded by platform admins. Never deleted -- archived -- so no
@@ -167,6 +193,8 @@ CREATE TABLE organizations (
 
   -- The payer on every 1099 this organization issues. NOT an SSN: the API's
   -- `containsSsn` guard applies, as on every free-text field.
+  -- Since Phase 54 these six are NOT READ: the payer is the space's business
+  -- (business_id). Kept because production's columns cannot be dropped additively.
   tin             TEXT,
   payer_address_line1 TEXT,
   payer_address_line2 TEXT,
@@ -219,6 +247,11 @@ CREATE TABLE organizations (
   join_code          TEXT,
   join_by_code       INTEGER NOT NULL DEFAULT 0 CHECK (join_by_code IN (0, 1)),
   created_by_user_id TEXT REFERENCES users (id),
+
+  -- Phase 54: the organization that runs this space's money, or NULL: paid
+  -- directly, families paying each lesson's tutor. A change applies going
+  -- forward (sessions.paid_directly and payments.payee_user_id are frozen).
+  business_id        TEXT REFERENCES businesses (id),
 
   -- The domain in every calendar UID. Never changed once set: a new UID
   -- duplicates every event in every subscriber's calendar.
@@ -606,6 +639,12 @@ CREATE TABLE sessions (
 
   created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  -- Phase 54: recorded while the space had no organization. The family pays the
+  -- tutor directly, so the two rates are one price (sessions_paid_directly_one_price)
+  -- and there is no margin. Frozen: a later switch never restates it.
+  -- Last, as production's ALTER TABLE ... ADD COLUMN puts it.
+  paid_directly      INTEGER NOT NULL DEFAULT 0 CHECK (paid_directly IN (0, 1)),
 
   CHECK (ended_at > started_at)
 );
@@ -1054,6 +1093,10 @@ CREATE TABLE payments (
   created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
+  -- Phase 54: in a space paid directly, the tutor the family paid. NULL for a
+  -- payment to or from the organization. Rules in payments_paid_directly.
+  payee_user_id       TEXT REFERENCES users (id) ON DELETE CASCADE,
+
   -- A family payment with no student would belong to no balance at all.
   CHECK (direction <> 'from_parent' OR student_user_id IS NOT NULL)
 );
@@ -1061,6 +1104,8 @@ CREATE TABLE payments (
 CREATE INDEX payments_party_idx   ON payments (organization_id, party_user_id, paid_at DESC);
 CREATE INDEX payments_student_idx ON payments (organization_id, student_user_id, paid_at DESC);
 CREATE INDEX payments_recent_idx  ON payments (organization_id, paid_at DESC);
+CREATE INDEX payments_payee_idx   ON payments (organization_id, payee_user_id, paid_at DESC)
+  WHERE payee_user_id IS NOT NULL;
 
 
 -- audit_events - who did what, and when
@@ -1778,6 +1823,37 @@ BEFORE UPDATE OF organization_id ON payments
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Phase 54 (docs/tutor-spaces-plan.md). A lesson paid directly is one price.
+CREATE TRIGGER sessions_paid_directly_one_price
+BEFORE INSERT ON sessions
+WHEN NEW.paid_directly = 1 AND NEW.tutor_rate_cents <> NEW.charge_rate_cents
+BEGIN
+  SELECT RAISE(ABORT, 'paid_directly_one_price');
+END;
+
+CREATE TRIGGER sessions_paid_directly_one_price_update
+BEFORE UPDATE OF tutor_rate_cents, charge_rate_cents, paid_directly ON sessions
+WHEN NEW.paid_directly = 1 AND NEW.tutor_rate_cents <> NEW.charge_rate_cents
+BEGIN
+  SELECT RAISE(ABORT, 'paid_directly_one_price');
+END;
+
+-- A payment in a space paid directly is a family paying a tutor who is a member
+-- there; a payment naming a payee is always that; nobody "pays a tutor" in a
+-- space with no organization. Checked at insert, from the space's model then.
+CREATE TRIGGER payments_paid_directly
+BEFORE INSERT ON payments
+WHEN (NEW.payee_user_id IS NOT NULL
+      AND (NEW.direction <> 'from_parent'
+           OR NOT EXISTS (SELECT 1 FROM org_members m
+                          WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.payee_user_id)
+           OR (SELECT o.business_id FROM organizations o WHERE o.id = NEW.organization_id) IS NOT NULL))
+  OR (NEW.payee_user_id IS NULL
+      AND (SELECT o.business_id FROM organizations o WHERE o.id = NEW.organization_id) IS NULL)
+BEGIN
+  SELECT RAISE(ABORT, 'paid_directly_payment');
 END;
 
 CREATE TRIGGER comments_same_organization

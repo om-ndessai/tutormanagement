@@ -408,6 +408,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   spaces" and its Quest trust switch. "Space" for "organization" on screen, guarded by
   `src/test/wording.test.ts`. Built and tested 2026-10-24 (build note under design 63): typecheck, lint (0 errors) and Jest (135 suites, 978 tests) green, the export bundles; `spaces/*` (7 flows) green on the iOS simulator and the Android emulator; the changed `organization/*`, `organizations/*`, `platform/{organizations,admins-people,org-admin-denied}`, `exposure/student-controls`, `shell/navigation`, `canvas-assessments/{menu,question-count}`, `features/{organization,person-form}`, `people/create-student`, `onboarding/wizard-admin` and `search/admin` green on both; `features/console` green on Android and red on iOS (the console row's label is the name alone, so the flow's `.*Tutoring, Assessment` is not found; the row is unchanged), `people/directory-admin` green on iOS and red on Android (a guardian below the fold; the person detail is unchanged); `npm run smoke -- mobile` green on both (7/7 each), on the development build.
 
+## Portal Phase 54 — tutor spaces and organizations (parity: the web half is built by the lead)
+
+- [x] 64. Mobile: a space run by an organization or paid directly, at parity with the web
+  (`docs/tutor-spaces-plan.md`, R24) — lesson money labels with no cut on a lesson paid directly; Billing's
+  "Families and tutors", a tutor recording payments they received (the payee), an admin choosing the tutor,
+  the Year-end summary; the dashboard's Finance (admin, tutor) and the parent's "What you owe each tutor";
+  the Space screen's paid-directly card or "Run by <organization>"; the console's Organizations (list,
+  form, archive) and a space's Organization choice. Built and tested 2026-10-26 (build note under design 64): the e2e Release build from this worktree, local Worker only; `tutor-spaces/*` (4) green on the iOS simulator and the Android emulator; the touched `billing/*`, `dashboard/{finance-admin,finance-tutor,finance-ssn-receipt,parent}`, `platform/{organizations,admins-people,org-admin-denied,logo}`, `organization/*` and `quest/play-number` (fixed: `UNTIL_NUMBER`) green on both; `features/console` green on Android, red on iOS (after a toast or a native alert in the console, the next form sheet does not present on iOS: not this phase's code; reported); the smoke flows 7/7 on both (iOS `spaces/sign-up` flaky on Maestro's hideKeyboard: 2 of 4 runs); typecheck, lint (0 errors), Jest 138 suites / 1010 tests, export green
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

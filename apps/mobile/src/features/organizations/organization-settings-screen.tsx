@@ -1,7 +1,9 @@
 // Ported from apps/web/src/features/organizations/organization-settings-page.tsx @ 1132322 (the
 // Assessment card, Phase 38, @ 22b9701; the Gamification card, Phase 42, @ 82397b8; Phase 50's
 // feature sets @ 2471d84, working tree: each card shows only where its set is allowed, and the
-// platform's facts name the allowed sets; Phase 52's space code, danger panel and words @ 9485a8e).
+// platform's facts name the allowed sets; Phase 52's space code, danger panel and words @ 9485a8e;
+// Phase 54 @ 24066d9, working tree: the payer is the space's organization's, "Run by <name>" above
+// it, and a space paid directly has none -- "Families pay each tutor directly").
 //
 // The organization's own settings, for its admins: the payer box on every 1099 it issues. Its name,
 // look and clock are set by the platform, and shown here for reference. The organization's name on
@@ -92,9 +94,11 @@ export function OrganizationSettingsScreen() {
       {/* The payer TIN: a sole proprietor's is their SSN (ux-audit F-1). Tutoring's alone (Phase 50). */}
       {tutoring ? <SecureMoney tag="organization" /> : null}
       <PageIntro>
-        {tutoring
+        {tutoring && organization.business
           ? `What ${organization.name} files its 1099s under, teaches from, and how the portal presents it.`
-          : `${organization.name}: its code, what it teaches from, and how it is set up.`}
+          : tutoring
+            ? `${organization.name}: how it is paid, what it teaches from, and how the portal presents it.`
+            : `${organization.name}: its code, what it teaches from, and how it is set up.`}
       </PageIntro>
 
       {/* Phase 52: on a phone the code is what a new space's admin came for, so it leads. */}
@@ -104,10 +108,17 @@ export function OrganizationSettingsScreen() {
         <DetailSkeleton label="Loading the settings…" rows={5} />
       ) : settings.isError || !settings.data ? (
         <ErrorState error={settings.error} onRetry={() => void settings.refetch()} />
-      ) : tutoring ? (
+      ) : tutoring && !organization.business ? (
+        // Phase 54: no organization runs this space's money, so there is no payer to edit.
+        <PaidDirectlyCard />
+      ) : tutoring && organization.business ? (
         // Keyed on the load, so the form starts from the server's values once. The 1099 payer
-        // belongs to Tutoring (payments and tax), Phase 50.
-        <PayerForm key={settings.dataUpdatedAt} initial={formFromSettings(settings.data.data)} />
+        // belongs to Tutoring (payments and tax), Phase 50; since Phase 54 it is the organization's.
+        <PayerForm
+          key={settings.dataUpdatedAt}
+          businessName={organization.business.name}
+          initial={formFromSettings(settings.data.data)}
+        />
       ) : null}
 
       <Panel title="Set by the platform" testID="org-platform">
@@ -177,7 +188,28 @@ function Fact({ label, value }: { label: string; value: string }) {
   );
 }
 
-function PayerForm({ initial }: { initial: SettingsForm }) {
+/** Phase 54: a space with no organization -- what that means, in place of the payer form. */
+function PaidDirectlyCard() {
+  const theme = useAppTheme();
+  return (
+    <Panel title="Payments" testID="org-paid-directly">
+      <View style={{ gap: space.sm }}>
+        <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
+          Families pay each tutor directly
+        </Text>
+        <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+          No organization runs this space’s money: a lesson has one price, the family pays the tutor who
+          taught it, and nobody takes a cut. Tutors record the payments they receive, and each gets a year-end
+          summary of them; the space files no 1099s. To have an organization run it, ask the platform
+          administrator.
+        </Text>
+      </View>
+    </Panel>
+  );
+}
+
+function PayerForm({ initial, businessName }: { initial: SettingsForm; businessName: string }) {
+  const theme = useAppTheme();
   const toast = useToast();
   const update = useUpdateOrganizationSettings();
   const [form, setForm] = useState<SettingsForm>(initial);
@@ -226,8 +258,15 @@ function PayerForm({ initial }: { initial: SettingsForm }) {
   return (
     <Panel title="1099 payer" testID="org-payer">
       <View style={{ gap: space.md }}>
+        <Text testID="org-business-name" variant="bodyMedium">
+          Run by <Text style={{ fontWeight: '600' }}>{businessName}</Text>
+          <Text style={{ color: theme.tokens.mutedForeground }}>
+            {' '}
+            — families pay it, and it files the 1099s. Its details are shared by every space it runs.
+          </Text>
+        </Text>
         {field('tin', 'Payer TIN', {
-          hint: 'The EIN the space files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+          hint: 'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
           placeholder: '12-3456789',
           autoComplete: 'off',
           autoCapitalize: 'none',

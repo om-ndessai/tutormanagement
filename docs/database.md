@@ -1393,6 +1393,76 @@ BEGIN
 END;
 ```
 
+Phase 54 (tutor spaces and organizations, 2026-10-25, `docs/tutor-spaces-plan.md`) is additive: the
+`businesses` table ("Organization" on screen: name, TIN, payer address), each space's `business_id`,
+`sessions.paid_directly`, `payments.payee_user_id` and three triggers. The backfill gives every
+existing space a business of its own, with the space's id, name and today's TIN and payer address,
+and links it: every space keeps working exactly as today. A space with no business is paid directly,
+so the backfill must run before the deploy. The old Worker never reads any of it. Its recorded
+payments carry no payee, and the triggers check new rows only. Apply after the backup, before
+`npm run deploy`:
+
+```sql release=phase-54
+CREATE TABLE businesses (
+  id                  TEXT PRIMARY KEY,
+  name                TEXT NOT NULL,
+  tin                 TEXT,
+  payer_address_line1 TEXT,
+  payer_address_line2 TEXT,
+  payer_city          TEXT,
+  payer_state         TEXT CHECK (payer_state IS NULL
+                                  OR (length(payer_state) = 2 AND payer_state = upper(payer_state))),
+  payer_postal_code   TEXT,
+  archived_at         TEXT,
+  created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+ALTER TABLE organizations ADD COLUMN business_id TEXT REFERENCES businesses (id);
+ALTER TABLE sessions ADD COLUMN paid_directly INTEGER NOT NULL DEFAULT 0 CHECK (paid_directly IN (0, 1));
+ALTER TABLE payments ADD COLUMN payee_user_id TEXT REFERENCES users (id) ON DELETE CASCADE;
+CREATE INDEX payments_payee_idx ON payments (organization_id, payee_user_id, paid_at DESC)
+  WHERE payee_user_id IS NOT NULL;
+
+-- The backfill: one business per existing space, with the space's id, linked.
+INSERT INTO businesses (id, name, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code)
+  SELECT id, name, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code
+  FROM organizations;
+UPDATE organizations SET business_id = id WHERE business_id IS NULL;
+
+CREATE TRIGGER sessions_paid_directly_one_price
+BEFORE INSERT ON sessions
+WHEN NEW.paid_directly = 1 AND NEW.tutor_rate_cents <> NEW.charge_rate_cents
+BEGIN
+  SELECT RAISE(ABORT, 'paid_directly_one_price');
+END;
+
+CREATE TRIGGER sessions_paid_directly_one_price_update
+BEFORE UPDATE OF tutor_rate_cents, charge_rate_cents, paid_directly ON sessions
+WHEN NEW.paid_directly = 1 AND NEW.tutor_rate_cents <> NEW.charge_rate_cents
+BEGIN
+  SELECT RAISE(ABORT, 'paid_directly_one_price');
+END;
+
+CREATE TRIGGER payments_paid_directly
+BEFORE INSERT ON payments
+WHEN (NEW.payee_user_id IS NOT NULL
+      AND (NEW.direction <> 'from_parent'
+           OR NOT EXISTS (SELECT 1 FROM org_members m
+                          WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.payee_user_id)
+           OR (SELECT o.business_id FROM organizations o WHERE o.id = NEW.organization_id) IS NOT NULL))
+  OR (NEW.payee_user_id IS NULL
+      AND (SELECT o.business_id FROM organizations o WHERE o.id = NEW.organization_id) IS NULL)
+BEGIN
+  SELECT RAISE(ABORT, 'paid_directly_payment');
+END;
+```
+
+Check, read-only:
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --command="SELECT o.slug, b.name, b.tin IS NOT NULL AS has_tin FROM organizations o LEFT JOIN businesses b ON b.id = o.business_id"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

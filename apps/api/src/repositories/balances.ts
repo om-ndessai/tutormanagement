@@ -13,6 +13,7 @@ import {
 } from '@tmi/shared';
 import type {
   BalancesResponse,
+  DirectBalance,
   MonthlyFinanceResponse,
   MonthlyFinanceRow,
   StudentBalance,
@@ -49,6 +50,8 @@ export async function computeBalances(
   db: D1Database,
   org: OrgId,
   viewer: User,
+  /** Phase 54: whether the space is paid directly now (paidDirectly(org)). */
+  paidDirectlyNow = false,
 ): Promise<BalancesResponse> {
   const admin = isAdmin(viewer);
   const id = viewer.id;
@@ -67,15 +70,28 @@ export async function computeBalances(
        ))`;
   const studentValues = admin ? [] : [id, id];
 
-  const [tutorResult, studentResult, guardianResult] = await db.batch<Record<string, unknown>>([
+  // Phase 54: a family's balance with each tutor, from lessons paid directly and
+  // what the family paid that tutor. A tutor reads their own pairs, a family
+  // its children's; nobody another tutor's (R24).
+  const directFilter = admin
+    ? ''
+    : `AND (x.tutor_user_id = ? OR x.student_user_id = ? OR x.student_user_id IN (
+         SELECT g.dependent_user_id FROM guardianships g
+         WHERE g.organization_id = ? AND g.guardian_user_id = ?
+       ))`;
+  const directValues = admin ? [] : [id, id, org, id];
+
+  const [tutorResult, studentResult, guardianResult, directResult] = await db.batch<Record<string, unknown>>([
     db
       .prepare(
         `SELECT u.id AS user_id, u.full_name,
                 tp.topup_amount_cents,
                 COALESCE((SELECT SUM(s.tutor_amount_cents) FROM sessions s
-                          WHERE s.organization_id = m.organization_id AND s.tutor_user_id = u.id), 0) AS earned_cents,
+                          WHERE s.organization_id = m.organization_id AND s.tutor_user_id = u.id
+                            AND s.paid_directly = 0), 0) AS earned_cents,
                 COALESCE((SELECT COUNT(*) FROM sessions s
-                          WHERE s.organization_id = m.organization_id AND s.tutor_user_id = u.id), 0) AS session_count,
+                          WHERE s.organization_id = m.organization_id AND s.tutor_user_id = u.id
+                            AND s.paid_directly = 0), 0) AS session_count,
                 COALESCE((SELECT SUM(p.amount_cents) FROM payments p
                           WHERE p.organization_id = m.organization_id AND p.party_user_id = u.id
                             AND p.direction = 'to_tutor'), 0) AS paid_cents
@@ -94,12 +110,14 @@ export async function computeBalances(
       .prepare(
         `SELECT u.id AS student_user_id, u.full_name AS student_name,
                 COALESCE((SELECT SUM(s.charge_amount_cents) FROM sessions s
-                          WHERE s.organization_id = m.organization_id AND s.student_user_id = u.id), 0) AS charged_cents,
+                          WHERE s.organization_id = m.organization_id AND s.student_user_id = u.id
+                            AND s.paid_directly = 0), 0) AS charged_cents,
                 COALESCE((SELECT COUNT(*) FROM sessions s
-                          WHERE s.organization_id = m.organization_id AND s.student_user_id = u.id), 0) AS session_count,
+                          WHERE s.organization_id = m.organization_id AND s.student_user_id = u.id
+                            AND s.paid_directly = 0), 0) AS session_count,
                 COALESCE((SELECT SUM(p.amount_cents) FROM payments p
                           WHERE p.organization_id = m.organization_id AND p.student_user_id = u.id
-                            AND p.direction = 'from_parent'), 0) AS paid_cents
+                            AND p.direction = 'from_parent' AND p.payee_user_id IS NULL), 0) AS paid_cents
          FROM org_members m
          JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
          JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
@@ -116,6 +134,32 @@ export async function computeBalances(
          ORDER BY g.is_primary DESC, p.full_name`,
       )
       .bind(org),
+    db
+      .prepare(
+        `WITH lessons AS (
+           SELECT student_user_id, tutor_user_id, SUM(charge_amount_cents) AS charged, COUNT(*) AS n
+           FROM sessions WHERE organization_id = ? AND paid_directly = 1
+           GROUP BY student_user_id, tutor_user_id
+         ), paid AS (
+           SELECT student_user_id, payee_user_id AS tutor_user_id, SUM(amount_cents) AS paid
+           FROM payments WHERE organization_id = ? AND payee_user_id IS NOT NULL
+           GROUP BY student_user_id, payee_user_id
+         ), x AS (
+           SELECT student_user_id, tutor_user_id FROM lessons
+           UNION SELECT student_user_id, tutor_user_id FROM paid
+         )
+         SELECT x.student_user_id, st.full_name AS student_name, x.tutor_user_id, t.full_name AS tutor_name,
+                COALESCE(l.charged, 0) AS charged_cents, COALESCE(l.n, 0) AS session_count,
+                COALESCE(p.paid, 0) AS paid_cents
+         FROM x
+         JOIN users st ON st.id = x.student_user_id
+         JOIN users t ON t.id = x.tutor_user_id
+         LEFT JOIN lessons l ON l.student_user_id = x.student_user_id AND l.tutor_user_id = x.tutor_user_id
+         LEFT JOIN paid p ON p.student_user_id = x.student_user_id AND p.tutor_user_id = x.tutor_user_id
+         WHERE 1 = 1 ${directFilter}
+         ORDER BY st.full_name, t.full_name`,
+      )
+      .bind(org, org, ...directValues),
   ]);
 
   const tutors: TutorBalance[] = ((tutorResult?.results ?? []) as Record<string, unknown>[]).map(
@@ -167,10 +211,30 @@ export async function computeBalances(
     };
   });
 
+  const direct: DirectBalance[] = ((directResult?.results ?? []) as Record<string, unknown>[]).map((row) => {
+    const charged = Number(row.charged_cents ?? 0);
+    const paid = Number(row.paid_cents ?? 0);
+    const studentId = String(row.student_user_id);
+    return {
+      student_user_id: studentId,
+      student_name: String(row.student_name),
+      tutor_user_id: String(row.tutor_user_id),
+      tutor_name: String(row.tutor_name),
+      guardians: guardiansByStudent.get(studentId) ?? [],
+      charged_cents: charged,
+      paid_cents: paid,
+      balance_cents: charged - paid,
+      session_count: Number(row.session_count ?? 0),
+    };
+  });
+
   return {
+    paid_directly: paidDirectlyNow,
+    direct,
     tutors,
     students,
     totals: {
+      owed_directly_cents: direct.reduce((sum, d) => sum + Math.max(0, d.balance_cents), 0),
       // Only outstanding amounts; an overpaid tutor should not offset someone
       // else's unpaid balance in the headline figure.
       owed_to_tutors_cents: tutors.reduce((sum, t) => sum + Math.max(0, t.balance_cents), 0),
@@ -383,13 +447,15 @@ export async function computeMonthlyFinance(
         `SELECT substr(p.paid_at, 1, 7) AS month,
                 COALESCE(SUM(CASE WHEN p.direction = 'from_parent' THEN p.amount_cents END), 0)
                   AS received_from_families_cents,
-                COALESCE(SUM(CASE WHEN p.direction = 'to_tutor' ${admin ? '' : 'AND p.party_user_id = ?'}
+                COALESCE(SUM(CASE WHEN (p.direction = 'to_tutor' ${admin ? '' : 'AND p.party_user_id = ?'})
+                                    -- Phase 54: what families paid tutors directly reached them too.
+                                    OR (p.payee_user_id IS NOT NULL ${admin ? '' : 'AND p.payee_user_id = ?'})
                              THEN p.amount_cents END), 0) AS paid_to_tutors_cents
          FROM payments p
          WHERE p.organization_id = ? AND p.paid_at >= ? AND p.paid_at < ?
          GROUP BY month`,
       )
-      .bind(...(admin ? [] : [viewer.id]), org, from, to),
+      .bind(...(admin ? [] : [viewer.id, viewer.id]), org, from, to),
   ]);
 
   const sessions = new Map<string, Record<string, unknown>>();

@@ -63,7 +63,13 @@ const OFFERINGS: CurriculumOffering[] = [
   offering('nc-2026', 'NC Math (2026)', { retired: true }),
 ];
 
-const ORGANIZATION = { name: 'Chapel Hill Math', palette: 'indigo', time_zone: 'America/New_York' };
+const ORGANIZATION = {
+  name: 'Chapel Hill Math',
+  palette: 'indigo',
+  time_zone: 'America/New_York',
+  // Phase 54: run by an organization, so the 1099 payer is shown.
+  business: { id: 'b-1', name: 'Chapel Hill Math LLC' },
+};
 const SETTINGS = {
   tin: '47-2019388',
   payer_address_line1: '100 Franklin Street',
@@ -230,6 +236,25 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.getByTestId('org-notifications-empty')).toBeTruthy();
     expect(screen.getByText('Nothing sent yet.')).toBeTruthy();
     expect(screen.queryByText('Maria Okafor')).toBeNull();
+  });
+});
+
+describe('OrganizationSettingsScreen: who runs the money (Phase 54)', () => {
+  it('names the organization above the payer form', async () => {
+    asAdmin();
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.getByTestId('org-business-name')).toHaveTextContent(/Run by Chapel Hill Math LLC/);
+    expect(screen.getByTestId('org-tin')).toBeTruthy();
+    expect(screen.queryByTestId('org-paid-directly')).toBeNull();
+  });
+
+  it('a space paid directly has no payer form: families pay each tutor', async () => {
+    asAdmin(true, { ...ORGANIZATION, business: null });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    expect(screen.getByTestId('org-paid-directly')).toBeTruthy();
+    expect(screen.getByText('Families pay each tutor directly')).toBeTruthy();
+    expect(screen.queryByTestId('org-tin')).toBeNull();
+    expect(screen.queryByTestId('org-payer')).toBeNull();
   });
 });
 

@@ -1,4 +1,5 @@
 import {
+  paidDirectly,
   REFLECTION_PROMPT_DAYS,
   zonedClockParts,
   type AdminDashboard,
@@ -165,7 +166,7 @@ async function buildAdmin(db: D1Database, org: OrgContext, subject: User): Promi
   const counts = (countsResult?.results?.[0] ?? {}) as Record<string, number>;
   const totals = (totalsResult?.results?.[0] ?? {}) as Record<string, number>;
 
-  const balances = await computeBalances(db, org.id, subject);
+  const balances = await computeBalances(db, org.id, subject, paidDirectly(org));
   const missingSsn = await listTutorsMissingSsn(db, org.id);
   const sessions = await listSessions(db, org.id, subject, { limit: 5, offset: 0 } as never);
 
@@ -197,6 +198,8 @@ async function buildAdmin(db: D1Database, org: OrgContext, subject: User): Promi
     ),
     tutors_missing_ssn: missingSsn,
     student_balances: [...balances.students].sort((a, b) => b.balance_cents - a.balance_cents),
+    paid_directly: paidDirectly(org),
+    direct_balances: [...balances.direct].sort((a, b) => b.balance_cents - a.balance_cents),
     recent_activity: await teachingActivity(db, org),
     recent_sessions: sessions.sessions,
     progress_spotlight: await progressSpotlight(
@@ -233,7 +236,7 @@ async function buildTutor(db: D1Database, org: OrgContext, subject: User): Promi
     .bind(org.id, subject.id)
     .all<Record<string, unknown>>();
 
-  const balances = await computeBalances(db, org.id, subject);
+  const balances = await computeBalances(db, org.id, subject, paidDirectly(org));
   // Only lessons they TAUGHT. Someone who also parents (or is taught) would
   // otherwise see their family's lessons here, priced, under "Your recent
   // sessions" -- and have them counted as students they teach.
@@ -242,12 +245,15 @@ async function buildTutor(db: D1Database, org: OrgContext, subject: User): Promi
     offset: 0,
     tutor_user_id: subject.id,
   } as never);
-  const payments = await listPayments(db, org.id, subject, {
-    limit: 5,
-    offset: 0,
-    direction: 'to_tutor',
-    party_user_id: subject.id,
-  } as never);
+  // Paid to them: by the organization, or (Phase 54) by families directly.
+  const payments = paidDirectly(org)
+    ? await listPayments(db, org.id, subject, { limit: 5, offset: 0, payee_user_id: subject.id } as never)
+    : await listPayments(db, org.id, subject, {
+        limit: 5,
+        offset: 0,
+        direction: 'to_tutor',
+        party_user_id: subject.id,
+      } as never);
   const live = await db
     .prepare('SELECT COUNT(*) AS n FROM active_sessions WHERE organization_id = ? AND tutor_user_id = ?')
     .bind(org.id, subject.id)
@@ -279,6 +285,8 @@ async function buildTutor(db: D1Database, org: OrgContext, subject: User): Promi
     live_sessions: Number(live?.n ?? 0),
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
+    paid_directly: paidDirectly(org),
+    direct_balances: balances.direct.filter((row) => row.tutor_user_id === subject.id),
     recent_activity: await teachingActivity(db, org, subject.id),
     // Only the students they teach: someone who also parents sees their own
     // children on the parent dashboard, not here.
@@ -294,7 +302,7 @@ async function buildTutor(db: D1Database, org: OrgContext, subject: User): Promi
 }
 
 async function buildParent(db: D1Database, org: OrgContext, subject: User): Promise<ParentDashboard> {
-  const balances = await computeBalances(db, org.id, subject);
+  const balances = await computeBalances(db, org.id, subject, paidDirectly(org));
   // Their children here: guardianships are each organization's own.
   const children_sql =
     's.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g' +
@@ -328,6 +336,11 @@ async function buildParent(db: D1Database, org: OrgContext, subject: User): Prom
     },
     recent_sessions: sessions.sessions,
     recent_payments: payments.payments as Payment[],
+    paid_directly: paidDirectly(org),
+    // Their children's, not lessons they taught as a tutor (that is the tutor view).
+    direct_balances: balances.direct.filter(
+      (row) => row.tutor_user_id !== subject.id && children.some((c) => c.student_user_id === row.student_user_id),
+    ),
     progress: await (async () => {
       // Built for the dashboard's subject, once for all their children.
       const reader = await progressReader(db, org, subject);

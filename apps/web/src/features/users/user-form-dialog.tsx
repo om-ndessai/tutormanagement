@@ -18,6 +18,7 @@ import {
   type UserRole,
   type UserStatus,
   featureAllowed,
+  paidDirectly,
 } from '@tmi/shared';
 import { useAuth } from '@/providers/auth-provider';
 
@@ -359,6 +360,8 @@ export function UserFormDialog({
   // Phase 52: in a self-serve space a new student is added with a parent's consent.
   const [parentConsent, setParentConsent] = useState(false);
   const tutoring = featureAllowed(organization, 'tutoring');
+  // Phase 54: families pay each tutor directly here, at the pairing's rate.
+  const direct = organization ? paidDirectly(organization) : false;
   const isTutor = form.roles.includes('tutor');
   const isStudent = form.roles.includes('student');
   const needsConsent = !isEdit && isStudent && organization?.created_via === 'self_serve';
@@ -862,7 +865,10 @@ export function UserFormDialog({
                   <>
                   {/* What the FAMILY is charged. Priced on the student, so it
                       does not change with whoever happens to teach them; the
-                      institute keeps the difference from the tutor's rate. */}
+                      institute keeps the difference from the tutor's rate.
+                      Phase 54: not in a space paid directly, where the pairing's
+                      rate is the price the family pays the tutor. */}
+                  {!direct && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Field
                       id="s_charge_ip"
@@ -891,6 +897,7 @@ export function UserFormDialog({
                       />
                     </Field>
                   </div>
+                  )}
 
                   <SessionLimitField
                     id="s_max_session"

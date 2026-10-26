@@ -22,6 +22,7 @@ import { OrganizationSettingsPage } from '@/features/organizations/organization-
 import { RequireOrg } from '@/features/organizations/require-org';
 import { SelectOrganizationPage } from '@/features/organizations/select-organization-page';
 import { OrganizationsPage } from '@/features/platform/organizations-page';
+import { BusinessesPage } from '@/features/platform/businesses-page';
 import { PlatformActivityPage } from '@/features/platform/platform-activity-page';
 import { PlatformAdminsPage } from '@/features/platform/platform-admins-page';
 import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
@@ -59,6 +60,7 @@ export function App() {
         <Route path="select-organization" element={<SelectOrganizationPage />} />
         <Route path="platform" element={<PlatformShell />}>
           <Route index element={<OrganizationsPage />} />
+          <Route path="organizations" element={<BusinessesPage />} />
           <Route path="admins" element={<PlatformAdminsPage />} />
           <Route path="people" element={<PlatformPeoplePage />} />
           <Route path="activity" element={<PlatformActivityPage />} />

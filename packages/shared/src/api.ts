@@ -69,6 +69,11 @@ export const ERROR_CODES = [
 
   // Phase 53: the test portal lets in only the people on its invited list.
   'not_invited',
+
+  // Phase 54: a space paid directly has no organization -- no payer, no
+  // payments to tutors; and a lesson keeps the model it was recorded under.
+  'paid_directly',
+  'model_changed',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

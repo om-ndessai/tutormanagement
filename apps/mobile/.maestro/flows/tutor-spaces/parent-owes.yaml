@@ -1,0 +1,62 @@
+# Phase 54, a space paid directly (`solo`): Sam Okafor's daughter Zoe is taught by Hannah and Diego,
+# and he pays each of them himself. Home's "What you owe each tutor" has a row per tutor (Diego
+# $50.00, Hannah settled); Billing has the same "Families and tutors" rows and nothing to record; a
+# lesson opened from Finance reads "You pay the tutor", with no cut anywhere.
+appId: ${APP_ID}
+tags:
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sam.okafor.family@gmail.com
+      ORG: solo
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: direct-balances
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'What you owe each tutor'
+- assertVisible:
+    id: direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+- assertVisible: 'Diego Ramos'
+- assertVisible: 'Hannah Brooks'
+- assertVisible: 'for Zoe Okafor · 1 lesson · \$0\.00 paid'
+- takeScreenshot: tutor-spaces-parent-home
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-direct
+    timeout: 20000
+- assertVisible: 'Families and tutors'
+- assertVisible:
+    id: billing-direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+    text: '\$50\.00'
+- assertVisible: 'Diego Ramos · 1 lesson · \$50\.00 · \$0\.00 paid'
+- assertNotVisible:
+    id: billing-record
+- assertNotVisible:
+    id: billing-year-end
+- assertNotVisible:
+    id: billing-tax-summary
+- takeScreenshot: tutor-spaces-parent-billing
+# Diego's lesson with Zoe, from the family's side.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://sessions/0e300000-0000-4000-8000-000000000004?tab=finance
+- extendedWaitUntil:
+    visible:
+      id: session-money
+    timeout: 20000
+- assertVisible: 'You pay the tutor'
+- assertNotVisible: 'You pay'
+- assertNotVisible: 'Your pay'
+- assertNotVisible: 'Charged'

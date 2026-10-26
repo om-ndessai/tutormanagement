@@ -1,6 +1,12 @@
 import type { Payment, StudentBalance, TutorBalance } from '@tmi/shared';
 
-import { familyLedgerSummary, paymentDirectionText, tutorLedgerSummary } from './payment-format';
+import {
+  familyLedgerSummary,
+  mayChangePayment,
+  paymentDirectionText,
+  paymentPayeeText,
+  tutorLedgerSummary,
+} from './payment-format';
 
 const ME = 'u-me';
 
@@ -19,6 +25,8 @@ function payment(overrides: Partial<Payment>): Payment {
     notes: null,
     created_at: '2026-09-11T00:00:00Z',
     updated_at: '2026-09-11T00:00:00Z',
+    payee_user_id: null,
+    payee_name: null,
     ...overrides,
   };
 }
@@ -84,5 +92,25 @@ describe('ledger summaries', () => {
     expect(familyLedgerSummary({ ...student, guardians: [] })).toBe(
       'No guardian · $180.00 charged · $100.00 paid',
     );
+  });
+});
+
+describe('a payment made to a tutor directly (Phase 54)', () => {
+  const direct = payment({ payee_user_id: 'diego', payee_name: 'Diego Ramos' });
+
+  it('reads "Paid to you" to the tutor paid, and names them to everyone else', () => {
+    expect(paymentDirectionText(direct, 'diego', false)).toBe('Paid to you');
+    expect(paymentPayeeText(direct, 'diego')).toBe('');
+    expect(paymentPayeeText(direct, 'sam')).toBe(' · to Diego Ramos');
+    // The office reads "Received", so the payee is named even when it is them.
+    expect(paymentPayeeText(direct, 'diego', true)).toBe(' · to Diego Ramos');
+    expect(paymentPayeeText(payment({}), 'diego')).toBe('');
+  });
+
+  it('lets the office or the tutor paid change it, and nobody else', () => {
+    expect(mayChangePayment(direct, 'diego', false)).toBe(true);
+    expect(mayChangePayment(direct, 'hannah', false)).toBe(false);
+    expect(mayChangePayment(direct, 'hannah', true)).toBe(true);
+    expect(mayChangePayment(payment({}), 'diego', false)).toBe(false);
   });
 });

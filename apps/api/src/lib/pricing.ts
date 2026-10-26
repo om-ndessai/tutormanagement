@@ -22,6 +22,22 @@ import type { OrgId } from './org.js';
 export interface SessionRates {
   tutorRateCents: number;
   chargeRateCents: number;
+  /** Phase 54: the space has no organization now, so the family pays the tutor one price. */
+  paidDirectly: boolean;
+}
+
+/**
+ * Phase 54: whether the space is paid directly at this moment -- no organization
+ * runs its money. Read at recording time on every path (typed, live, the sweep,
+ * a draft posted), so a switch applies going forward and recorded lessons keep
+ * the model they were recorded under.
+ */
+export async function spacePaidDirectly(db: D1Database, org: OrgId): Promise<boolean> {
+  const row = await db
+    .prepare('SELECT business_id FROM organizations WHERE id = ?')
+    .bind(org)
+    .first<{ business_id: string | null }>();
+  return !row?.business_id;
 }
 
 /**
@@ -67,6 +83,12 @@ export async function resolveSessionRates(
     });
   }
 
+  // Phase 54: paid directly, the pairing's rate IS the price -- what the family
+  // pays the tutor. The student's price belongs to the organization model.
+  if (await spacePaidDirectly(db, org)) {
+    return { tutorRateCents, chargeRateCents: tutorRateCents, paidDirectly: true };
+  }
+
   // What the family is charged. Priced on the student, so it does not depend
   // on who teaches them.
   const studentRates = await getStudentChargeRates(db, org, studentUserId);
@@ -81,7 +103,7 @@ export async function resolveSessionRates(
     });
   }
 
-  return { tutorRateCents, chargeRateCents };
+  return { tutorRateCents, chargeRateCents, paidDirectly: false };
 }
 
 /** Rates plus the money they produce over a typed-in pair of clock times. */
@@ -94,7 +116,7 @@ export async function priceSession(
   startedAt: string,
   endedAt: string,
 ) {
-  const { tutorRateCents, chargeRateCents } = await resolveSessionRates(
+  const { tutorRateCents, chargeRateCents, paidDirectly } = await resolveSessionRates(
     db,
     org,
     tutorUserId,
@@ -113,6 +135,7 @@ export async function priceSession(
 
   return {
     durationMinutes,
+    paidDirectly,
     tutorRateCents,
     chargeRateCents,
     tutorAmountCents: computeAmountCents(durationMinutes, tutorRateCents),

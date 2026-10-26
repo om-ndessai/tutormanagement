@@ -26,6 +26,15 @@ export default function PlatformLayout() {
           sheetGrabberVisible: true,
         }}
       />
+      {/* Phase 54: an organization (a business) of the console's Organizations. */}
+      <Stack.Screen
+        name="business-form"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.9, 1],
+          sheetGrabberVisible: true,
+        }}
+      />
     </Stack>
   );
 }

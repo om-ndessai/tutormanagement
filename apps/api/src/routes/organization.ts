@@ -24,6 +24,7 @@ import {
   getLogo,
   getOrganizationBySlug,
   getOrganizationSettings,
+  PAYER_FIELDS,
   updateOrganizationSettings,
   answerJoinRequest,
   getSpaceCode,
@@ -97,6 +98,12 @@ export const organizationRoutes = new Hono<AppEnv>()
       if (!featureAllowed(org, 'quest') && input.gamify_question_quest !== undefined) {
         throw new ApiError(403, 'feature_unavailable', 'Quest is not part of this space.');
       }
+      // Phase 54: the payer details are the space's organization's. A space paid
+      // directly has none to edit -- families pay each tutor, and nobody files a 1099.
+      if (PAYER_FIELDS.some((key) => input[key] !== undefined) && !org.business) {
+        throw new ApiError(409, 'paid_directly',
+          'This space is paid directly: it has no organization, so there is no payer to edit.');
+      }
       const settings = await updateOrganizationSettings(c.env.DB, org.id, input);
 
       // Names what changed, never the TIN itself: the log is read widely.
@@ -114,7 +121,8 @@ export const organizationRoutes = new Hono<AppEnv>()
       await recordAudit(c.env.DB, c.get('user'), org.id, {
         action: 'organization.settings_updated',
         description: [
-          changes.length > 0 ? `Updated ${org.name}'s ${changes.join(', ')}` : null,
+          // Phase 54: the payer details are the space's organization's, so name it.
+          changes.length > 0 ? `Updated ${org.business?.name ?? org.name}'s ${changes.join(', ')}` : null,
           notifications === undefined
             ? null
             : `Turned ${org.name}'s email notifications ${notifications ? 'on' : 'off'}`,

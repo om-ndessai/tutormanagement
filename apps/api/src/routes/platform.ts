@@ -5,8 +5,13 @@ import {
   MAX_LOGO_BYTES,
   addOrganizationAdminSchema,
   addPlatformAdminSchema,
+  createBusinessSchema,
   createOrganizationSchema,
   describeFeatureChange,
+  setSpaceBusinessSchema,
+  updateBusinessSchema,
+  type Business,
+  type BusinessListItem,
   organizationFeaturesSchema,
   platformPersonLookupSchema,
   platformPersonUpdateSchema,
@@ -26,8 +31,13 @@ import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { zValidator } from '../lib/validate.js';
 import {
+  createBusiness,
   createOrganization,
   deleteLogo,
+  getBusiness,
+  listBusinesses,
+  setSpaceBusiness,
+  updateBusiness,
   ensureMembershipWithRoles,
   getOrganizationById,
   listOrganizationAdmins,
@@ -60,6 +70,23 @@ const logoParamSchema = z.object({
   kind: z.enum(LOGO_KINDS),
 });
 const personParamSchema = z.object({ id: z.uuid({ message: 'Not a valid user id.' }) });
+const businessParamSchema = z.object({ id: z.string().min(1).max(64) });
+
+/** Phase 54: a business a space may be linked to -- it exists and is not archived. */
+async function requireLinkableBusiness(env: Env, id: string): Promise<Business> {
+  const business = await getBusiness(env.DB, id);
+  if (!business) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      business_id: ['That organization does not exist.'],
+    });
+  }
+  if (business.archived_at) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      business_id: [`${business.name} is archived.`],
+    });
+  }
+  return business;
+}
 
 const SLUG_TAKEN = 'Another organization already uses that address name.';
 
@@ -93,6 +120,30 @@ async function sha256Hex(bytes: ArrayBuffer): Promise<string> {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
+/** "TIN, city": the payer fields a change touched, never their values. */
+function describeBusinessFields(keys: string[]): string {
+  return keys
+    .map((key) => (key === 'tin' ? 'TIN' : key.replace(/^payer_/, '').replace(/_/g, ' ')))
+    .join(', ');
+}
+
+/**
+ * A business change goes in the platform's log and in the log of every space it
+ * runs, so those spaces' admins see what changed their payer box.
+ */
+async function logBusinessChange(
+  db: D1Database,
+  actor: { id: string; full_name: string },
+  business: Business,
+  action: 'business.updated' | 'business.archived' | 'business.restored',
+  description: string,
+): Promise<void> {
+  const spaces = (await listBusinesses(db)).find((b) => b.id === business.id)?.spaces ?? [];
+  const entry = { action, description, entity_type: 'business', entity_id: business.id } as const;
+  await recordAudit(db, actor, 'platform', entry);
+  for (const space of spaces) await recordAudit(db, actor, orgIdFromRow(space.id), entry);
+}
+
 async function requireOrganization(env: Env, id: string): Promise<Organization> {
   const org = await getOrganizationById(env.DB, id);
   if (!org) throw ApiError.notFound('That organization does not exist.');
@@ -121,6 +172,7 @@ export const platformRoutes = new Hono<AppEnv>()
   .post('/organizations', zValidator('json', createOrganizationSchema), async (c) => {
     const input = c.req.valid('json');
     let org: Organization;
+    if (input.business_id) await requireLinkableBusiness(c.env, input.business_id);
 
     try {
       org = await createOrganization(c.env.DB, input, calendarDomainFor(input.slug, c.req.url));
@@ -131,7 +183,9 @@ export const platformRoutes = new Hono<AppEnv>()
 
     await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(org.id), {
       action: 'organization.created',
-      description: `Created the organization ${org.name}`,
+      description: org.business
+        ? `Created the organization ${org.name}, run by ${org.business.name}`
+        : `Created the organization ${org.name}, paid directly`,
       entity_type: 'organization',
       entity_id: org.id,
     });
@@ -205,6 +259,104 @@ export const platformRoutes = new Hono<AppEnv>()
       return c.json(body);
     },
   )
+
+  /**
+   * Phase 54: the organization that runs a space's money from now on, or none
+   * (paid directly). Recorded lessons and payments keep the model they were
+   * recorded under; only what is recorded next follows the change.
+   */
+  .put(
+    '/organizations/:id/business',
+    zValidator('param', orgParamSchema),
+    zValidator('json', setSpaceBusinessSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const { business_id } = c.req.valid('json');
+      const before = await requireOrganization(c.env, id);
+      const business = business_id ? await requireLinkableBusiness(c.env, business_id) : null;
+
+      if ((before.business?.id ?? null) !== (business?.id ?? null)) {
+        await setSpaceBusiness(c.env.DB, id, business?.id ?? null);
+        await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), business
+          ? {
+              action: 'organization.business_set',
+              description: `Set ${before.name} to be run by ${business.name} from now on`,
+              entity_type: 'organization',
+              entity_id: id,
+            }
+          : {
+              action: 'organization.business_cleared',
+              description: `Set ${before.name} to be paid directly from now on: families pay each tutor`,
+              entity_type: 'organization',
+              entity_id: id,
+            });
+      }
+
+      const body: ApiOk<Organization> = { data: (await getOrganizationById(c.env.DB, id))! };
+      return c.json(body);
+    },
+  )
+
+  .get('/businesses', async (c) => {
+    const body: ApiOk<BusinessListItem[]> = { data: await listBusinesses(c.env.DB) };
+    return c.json(body);
+  })
+
+  .post('/businesses', zValidator('json', createBusinessSchema), async (c) => {
+    const business = await createBusiness(c.env.DB, c.req.valid('json'));
+    // Names the business, never its TIN: the log is read widely.
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'business.created',
+      description: `Created the organization ${business.name}`,
+      entity_type: 'business',
+      entity_id: business.id,
+    });
+    const body: ApiOk<Business> = { data: business };
+    return c.json(body, 201);
+  })
+
+  .patch(
+    '/businesses/:id',
+    zValidator('param', businessParamSchema),
+    zValidator('json', updateBusinessSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const input = c.req.valid('json');
+      const updated = await updateBusiness(c.env.DB, id, input);
+      if (!updated) throw ApiError.notFound('That organization does not exist.');
+      await logBusinessChange(c.env.DB, c.get('person'), updated, 'business.updated',
+        `Updated ${updated.name}'s ${describeBusinessFields(Object.keys(input))}`);
+      const body: ApiOk<Business> = { data: updated };
+      return c.json(body);
+    },
+  )
+
+  .post('/businesses/:id/archive', zValidator('param', businessParamSchema), async (c) => {
+    const { id } = c.req.valid('param');
+    const before = await getBusiness(c.env.DB, id);
+    if (!before) throw ApiError.notFound('That organization does not exist.');
+    // An organization still running a space cannot be archived: the space would
+    // be run by nobody, which is "paid directly" -- a choice made on the space.
+    const runs = (await listBusinesses(c.env.DB)).find((b) => b.id === id)?.spaces ?? [];
+    if (runs.length > 0) {
+      throw ApiError.conflict(
+        `${before.name} still runs ${runs.map((space) => space.name).join(', ')}. Choose another organization for it first.`,
+      );
+    }
+    const updated = await updateBusiness(c.env.DB, id, { archived_at: new Date().toISOString() });
+    await logBusinessChange(c.env.DB, c.get('person'), updated!, 'business.archived', `Archived the organization ${before.name}`);
+    const body: ApiOk<Business> = { data: updated! };
+    return c.json(body);
+  })
+
+  .post('/businesses/:id/restore', zValidator('param', businessParamSchema), async (c) => {
+    const { id } = c.req.valid('param');
+    const updated = await updateBusiness(c.env.DB, id, { archived_at: null });
+    if (!updated) throw ApiError.notFound('That organization does not exist.');
+    await logBusinessChange(c.env.DB, c.get('person'), updated, 'business.restored', `Restored the organization ${updated.name}`);
+    const body: ApiOk<Business> = { data: updated };
+    return c.json(body);
+  })
 
   .post('/organizations/:id/archive', zValidator('param', orgParamSchema), async (c) => {
     const { id } = c.req.valid('param');

@@ -2,7 +2,8 @@
 // apps/web/src/features/platform/organization-dialog.tsx @ 1132322 (FormState, EMPTY, slugFrom, save).
 // Validated with the shared schemas, as the server will. Phase 50 @ 2471d84 (working tree): the
 // feature sets an organization is allowed, chosen when it is created (the detail screen's Feature
-// sets section changes them after that).
+// sets section changes them after that). Phase 54 @ 24066d9 (working tree): the organization that runs
+// its money, or "paid directly" (DIRECT); sent on create, and on edit by its own PUT (`businessChange`).
 import {
   ORG_PALETTES,
   createOrganizationSchema,
@@ -34,7 +35,12 @@ export interface OrgFormState {
   features: Record<FeatureSet, boolean>;
   /** Phase 51: whether its Quest reviews approve bank questions for everybody (edit only). */
   quest_trusted: boolean;
+  /** Phase 54: the organization (a business) that runs its money, or DIRECT: paid directly. */
+  business_id: string;
 }
+
+/** The form's value for "no organization": the space is paid directly. */
+export const DIRECT = 'direct';
 
 const ALL_FEATURES: Record<FeatureSet, boolean> = { tutoring: true, assessment: true, quest: true };
 
@@ -51,6 +57,7 @@ export const EMPTY_ORG_FORM: OrgFormState = {
   email_notifications: false,
   features: ALL_FEATURES,
   quest_trusted: true,
+  business_id: DIRECT,
 };
 
 /** "Lakeside Learning" -> "lakeside-learning", as a first suggestion. */
@@ -78,7 +85,22 @@ export function formFromOrganization(org: OrganizationListItem | null): OrgFormS
     email_notifications: org.email_notifications,
     features: ALL_FEATURES,
     quest_trusted: org.quest_trusted !== false,
+    business_id: org.business?.id ?? DIRECT,
   };
+}
+
+/** Phase 54: the business id to send, null for paid directly. */
+export function businessIdOf(form: Pick<OrgFormState, 'business_id'>): string | null {
+  return form.business_id === DIRECT ? null : form.business_id;
+}
+
+/** Phase 54: after an edit, the `PUT …/business` body when the organization changed, else null. */
+export function businessChange(
+  org: Pick<OrganizationListItem, 'business'>,
+  form: Pick<OrgFormState, 'business_id'>,
+): { business_id: string | null } | null {
+  const next = businessIdOf(form);
+  return (org.business?.id ?? null) === next ? null : { business_id: next };
 }
 
 /**
@@ -94,6 +116,8 @@ export function formToInput(
         feature_tutoring: form.features.tutoring,
         feature_assessment: form.features.assessment,
         feature_quest: form.features.quest,
+        // Phase 54: who families pay; null is paid directly.
+        business_id: businessIdOf(form),
       }
     : {};
   return {
@@ -154,7 +178,10 @@ export function featuresBody(
  * (The sets themselves change on the organization screen's Feature sets section.)
  */
 export function trustBody(
-  org: Pick<OrganizationListItem, 'feature_tutoring' | 'feature_assessment' | 'feature_quest' | 'quest_trusted'>,
+  org: Pick<
+    OrganizationListItem,
+    'feature_tutoring' | 'feature_assessment' | 'feature_quest' | 'quest_trusted'
+  >,
   trusted: boolean,
 ): OrganizationFeaturesInput | null {
   if ((org.quest_trusted !== false) === trusted) return null;

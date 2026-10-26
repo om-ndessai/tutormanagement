@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/platform/organizations-page.tsx @ 1132322.
+// Ported from apps/web/src/features/platform/organizations-page.tsx @ 1132322 (Phase 54's "run by" /
+// "paid directly" and the way to Organizations @ 24066d9, working tree).
 // Every organization on the platform, and the way in to creating the next. Archiving moved to the
 // organization's own screen, behind a confirm: a list row is too easy to tap by accident.
 import {
@@ -31,7 +32,11 @@ export function orgSummary(org: OrganizationListItem): string {
     `${org.admin_count === 1 ? 'admin' : 'admins'} · ${org.member_count} ` +
     `${org.member_count === 1 ? 'member' : 'members'} · ` +
     // Phase 50: the feature sets it is allowed.
-    (allowedFeatureSets(org).map((set) => FEATURE_SET_LABELS[set]).join(', ') || 'No feature sets')
+    (allowedFeatureSets(org)
+      .map((set) => FEATURE_SET_LABELS[set])
+      .join(', ') || 'No feature sets') +
+    // Phase 54: who families pay.
+    ` · ${org.business ? `run by ${org.business.name}` : 'paid directly'}`
   );
 }
 
@@ -71,15 +76,26 @@ export function OrganizationsScreen() {
       >
         New space
       </Button>
+      {/* Phase 54: organizations in the money sense; the console's tab bar holds five already. */}
+      <Button
+        testID="platform-businesses"
+        mode="outlined"
+        icon="domain"
+        onPress={() => {
+          haptics.selection();
+          router.push('/platform/businesses');
+        }}
+        style={{ alignSelf: 'flex-start' }}
+      >
+        Organizations
+      </Button>
 
       {organizations.isPending ? (
         <ListSkeleton label="Loading spaces…" count={3} height={72} />
       ) : organizations.isError ? (
         <ErrorState error={organizations.error} onRetry={() => void organizations.refetch()} />
       ) : rows.length === 0 ? (
-        <EmptyNote>
-          No spaces yet. Create the first, then add its admin — they take it from there.
-        </EmptyNote>
+        <EmptyNote>No spaces yet. Create the first, then add its admin — they take it from there.</EmptyNote>
       ) : (
         <View style={{ gap: space.sm }} accessibilityLabel="Spaces">
           {rows.map((org) => (

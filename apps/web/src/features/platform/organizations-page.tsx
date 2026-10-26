@@ -73,7 +73,9 @@ export function OrganizationsPage() {
                     <p className="text-muted-foreground text-xs">
                       {org.slug} · {ORG_PALETTE_LABELS[org.palette]} · {org.admin_count}{' '}
                       {org.admin_count === 1 ? 'admin' : 'admins'} · {org.member_count}{' '}
-                      {org.member_count === 1 ? 'member' : 'members'}
+                      {org.member_count === 1 ? 'member' : 'members'} ·{' '}
+                      {/* Phase 54: who families pay. */}
+                      {org.business ? `run by ${org.business.name}` : 'paid directly'}
                     </p>
                   </div>
                   <div className="flex gap-1">

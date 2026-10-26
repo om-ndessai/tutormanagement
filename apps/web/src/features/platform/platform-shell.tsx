@@ -11,6 +11,7 @@ import { usePlatformBrand } from '@/providers/brand-provider';
 
 const TABS = [
   { to: '/platform', label: 'Spaces', end: true },
+  { to: '/platform/organizations', label: 'Organizations', end: false },
   { to: '/platform/admins', label: 'Platform admins', end: false },
   { to: '/platform/people', label: 'People', end: false },
   { to: '/platform/questions', label: 'Question bank', end: false },

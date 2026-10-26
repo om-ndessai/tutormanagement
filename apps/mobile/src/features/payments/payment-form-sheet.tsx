@@ -10,6 +10,11 @@
 // attach to students and that is what the balance is computed against. Money to a tutor does not.
 // Once recorded, who and which way are fixed (`paymentUpdateSchema`): a correction changes the
 // amount, the form, when and the notes. Finance only: an admin's, as the API.
+//
+// Phase 54 (@ 24066d9, working tree): in a space paid directly every payment is a family paying a
+// tutor, so there is no direction to choose. A tutor records what a family paid them (the payee is
+// themselves, "Record a payment you received"); an admin chooses the tutor ("Paid to (tutor)"). The
+// payee tutor may also correct their own.
 import {
   PAYMENT_DIRECTIONS,
   PAYMENT_DIRECTION_LABELS,
@@ -20,6 +25,7 @@ import {
   parseCentsInput,
   paymentInputSchema,
   paymentUpdateSchema,
+  paidDirectly,
   type Payment,
   type PaymentDirection,
   type PaymentForm,
@@ -50,6 +56,7 @@ import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, space } from '@/theme/tokens';
 import { usePayments, useRecordPayment, useUpdatePayment } from './api';
+import { mayChangePayment } from './payment-format';
 import { instantToOrgClock, orgClockToInstant, orgNow } from './payment-time';
 
 function close() {
@@ -64,6 +71,8 @@ export interface PaymentPrefill {
   direction?: PaymentDirection;
   party?: string;
   student?: string;
+  /** Phase 54: the tutor a family paid directly (an admin's choice, from a direct ledger row). */
+  payee?: string;
 }
 
 /** Reads the route's params into a prefill; anything unrecognised is dropped. */
@@ -71,6 +80,7 @@ export function paymentPrefill(params: {
   direction?: string;
   party?: string;
   student?: string;
+  payee?: string;
 }): PaymentPrefill {
   const direction = (PAYMENT_DIRECTIONS as readonly string[]).includes(params.direction ?? '')
     ? (params.direction as PaymentDirection)
@@ -79,13 +89,25 @@ export function paymentPrefill(params: {
     direction,
     party: direction && params.party ? params.party : undefined,
     student: direction === 'from_parent' && params.party && params.student ? params.student : undefined,
+    payee: direction === 'from_parent' && params.payee ? params.payee : undefined,
   };
 }
 
-/** "From Anita Patel, for Sanjay Patel" / "To Alex Chen". */
-export function paymentWhoText(direction: PaymentDirection, party: string, student?: string | null): string {
+/** "From Anita Patel, for Sanjay Patel" / "To Alex Chen" / (Phase 54) "…, to Diego Ramos". */
+export function paymentWhoText(
+  direction: PaymentDirection,
+  party: string,
+  student?: string | null,
+  payee?: string | null,
+): string {
   if (direction === 'to_tutor') return `To ${party}`;
-  return student ? `From ${party}, for ${student}` : `From ${party}`;
+  const from = student ? `From ${party}, for ${student}` : `From ${party}`;
+  return payee ? `${from}, to ${payee}` : from;
+}
+
+/** Phase 54: the sheet's title -- a tutor in a space paid directly records what they received. */
+export function paymentSheetTitle(direct: boolean, isAdmin: boolean): string {
+  return direct && !isAdmin ? 'Record a payment you received' : 'Record a payment';
 }
 
 /** The states before the form: a fitted sheet's root is a ScrollView too. */
@@ -109,12 +131,15 @@ export function PaymentFormSheet({
   paymentId: string | undefined;
   prefill?: PaymentPrefill;
 }) {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
+  // Phase 54: paid directly, a tutor records (and corrects) the payments families made to them.
+  const direct = organization ? paidDirectly(organization) : false;
+  const mayRecord = isAdmin || (direct && Boolean(user?.roles.includes('tutor')));
   // The list the payment was opened from: the edit sheet is reached only from it.
   const list = usePayments({ limit: 50 });
 
-  if (!isAdmin) {
+  if (!mayRecord) {
     // The API refuses anyone else; the sheet says so rather than offering a form that cannot save.
     return (
       <SheetState>
@@ -137,7 +162,9 @@ export function PaymentFormSheet({
       </SheetState>
     );
   }
-  const existing = list.data.data.find((row) => row.id === paymentId);
+  const found = list.data.data.find((row) => row.id === paymentId);
+  // Only the office, or the tutor a family paid directly, may correct one (the API's rule).
+  const existing = found && mayChangePayment(found, user?.id, isAdmin) ? found : undefined;
   return existing ? (
     <PaymentFormBody key={existing.id} existing={existing} />
   ) : (
@@ -157,14 +184,22 @@ export function PaymentFormBody({
   const theme = useAppTheme();
   const toast = useToast();
   const timeZone = useOrgTimeZone();
+  const { user, organization } = useAuth();
   const muted = theme.tokens.mutedForeground;
   const isEdit = existing !== null;
+  const isAdmin = user?.roles.includes('admin') ?? false;
+  // Phase 54: a family paying a tutor directly is the only payment there is in such a space.
+  const direct = organization ? paidDirectly(organization) : false;
 
   const [initialWhen] = useState(() =>
     existing ? instantToOrgClock(existing.paid_at, timeZone) : orgNow(timeZone),
   );
   const [direction, setDirection] = useState<PaymentDirection>(
-    existing?.direction ?? prefill.direction ?? 'from_parent',
+    existing?.direction ?? (direct ? 'from_parent' : (prefill.direction ?? 'from_parent')),
+  );
+  // The tutor the family paid: the reader themselves unless they are the office, who choose.
+  const [payeeId, setPayeeId] = useState(
+    existing?.payee_user_id ?? (direct ? (isAdmin ? (prefill.payee ?? '') : (user?.id ?? '')) : ''),
   );
   const [partyId, setPartyId] = useState(existing?.party_user_id ?? prefill.party ?? '');
   const [studentId, setStudentId] = useState(existing?.student_user_id ?? prefill.student ?? '');
@@ -181,11 +216,26 @@ export function PaymentFormBody({
   // The details open themselves when they hold something (an edit with a reference) or a refusal.
   const [moreOpen, setMoreOpen] = useState(Boolean(existing?.reference || existing?.notes));
   // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
-  const dirty = useDirty({ direction, partyId, studentId, amount, method, day, clock, reference, notes });
+  const dirty = useDirty({
+    direction,
+    payeeId,
+    partyId,
+    studentId,
+    amount,
+    method,
+    day,
+    clock,
+    reference,
+    notes,
+  });
   const offline = useOffline();
 
   const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
-  const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' }, { enabled: !isEdit });
+  const tutors = useUsers(
+    { role: 'tutor', limit: 100, sort: 'full_name' },
+    // A tutor recording what they received chooses nobody from this list.
+    { enabled: !isEdit && (!direct || isAdmin) },
+  );
   // A parent's own children are the only students their payment can be for; a prefilled person's
   // record also gives their name.
   const party = useUserDetail(!isEdit && partyId ? partyId : null);
@@ -209,6 +259,8 @@ export function PaymentFormBody({
   const studentName =
     existing?.student_name ?? children.find((child) => child.user_id === studentId)?.full_name ?? null;
 
+  const payeeName = (tutors.data?.data ?? []).find((person) => person.id === payeeId)?.full_name ?? null;
+
   function chooseDirection(value: PaymentDirection) {
     setDirection(value);
     setPartyId('');
@@ -230,7 +282,7 @@ export function PaymentFormBody({
     setErrors(found);
     if (DETAIL_FIELDS.some((field) => found[field])) setMoreOpen(true);
     // A refusal about who opens the pickers, so the field at fault is on screen.
-    if (found.party_user_id || found.student_user_id) setChoosing(true);
+    if (found.party_user_id || found.student_user_id || found.payee_user_id) setChoosing(true);
     haptics.error();
   }
 
@@ -241,6 +293,7 @@ export function PaymentFormBody({
 
     const local: Record<string, string> = {};
     if (!isEdit && !partyId) local.party_user_id = 'Choose a person.';
+    if (!isEdit && direct && !payeeId) local.payee_user_id = 'Choose the tutor the family paid.';
     if (cents == null || cents <= 0) local.amount_cents = 'Enter an amount.';
     if (!isEdit && direction === 'from_parent' && !studentId) {
       local.student_user_id = 'Choose which student this is for.';
@@ -273,6 +326,7 @@ export function PaymentFormBody({
           direction,
           party_user_id: partyId,
           student_user_id: direction === 'from_parent' ? studentId : null,
+          ...(direct ? { payee_user_id: payeeId } : {}),
           ...common,
         });
         if (!parsed.success) {
@@ -300,11 +354,13 @@ export function PaymentFormBody({
     <QuickSheet
       testID="screen-payment-form"
       actionTestID="payment"
-      title={isEdit ? 'Edit payment' : 'Record a payment'}
+      title={isEdit ? 'Edit payment' : paymentSheetTitle(direct, isAdmin)}
       description={
         isEdit
-          ? `${paymentWhoText(existing.direction, existing.party_name, existing.student_name)}. Recorded as ${formatCents(existing.amount_cents)}.`
-          : 'A record of money that moved outside the portal.'
+          ? `${paymentWhoText(existing.direction, existing.party_name, existing.student_name, existing.payee_name)}. Recorded as ${formatCents(existing.amount_cents)}.`
+          : direct
+            ? 'Families here pay each tutor directly. A record of money that moved outside the portal.'
+            : 'A record of money that moved outside the portal.'
       }
       primaryLabel={isEdit ? 'Save changes' : 'Record payment'}
       primaryIcon={isEdit ? undefined : 'cash-check'}
@@ -339,19 +395,40 @@ export function PaymentFormBody({
 
       {isEdit ? null : choosing ? (
         <>
-          <Field label="Direction">
-            <View style={{ flexDirection: 'row', gap: space.sm }}>
-              {PAYMENT_DIRECTIONS.map((value) => (
-                <Choice
-                  key={value}
-                  testID={`payment-direction-${value}`}
-                  label={PAYMENT_DIRECTION_LABELS[value]}
-                  selected={direction === value}
-                  onPress={() => chooseDirection(value)}
-                />
-              ))}
-            </View>
-          </Field>
+          {direct && isAdmin ? (
+            <OptionPicker
+              testID="payment-payee"
+              label="Paid to (tutor)"
+              placeholder="Choose the tutor"
+              searchPlaceholder="Search tutors"
+              options={(tutors.data?.data ?? []).map((person) => ({
+                id: person.id,
+                label: person.full_name,
+              }))}
+              value={payeeId}
+              onChange={setPayeeId}
+              error={errors.payee_user_id}
+              defaultOpen={false}
+            />
+          ) : null}
+          {direct && !isAdmin && errors.payee_user_id ? (
+            <FieldError>{errors.payee_user_id}</FieldError>
+          ) : null}
+          {direct ? null : (
+            <Field label="Direction">
+              <View style={{ flexDirection: 'row', gap: space.sm }}>
+                {PAYMENT_DIRECTIONS.map((value) => (
+                  <Choice
+                    key={value}
+                    testID={`payment-direction-${value}`}
+                    label={PAYMENT_DIRECTION_LABELS[value]}
+                    selected={direction === value}
+                    onPress={() => chooseDirection(value)}
+                  />
+                ))}
+              </View>
+            </Field>
+          )}
           <OptionPicker
             key={direction}
             testID="payment-party"
@@ -368,7 +445,11 @@ export function PaymentFormBody({
         </>
       ) : (
         <WhoCard
-          text={partyName ? paymentWhoText(direction, partyName, studentName) : 'Loading…'}
+          text={
+            partyName
+              ? paymentWhoText(direction, partyName, studentName, direct && isAdmin ? payeeName : null)
+              : 'Loading…'
+          }
           onChange={() => {
             haptics.selection();
             setChoosing(true);
@@ -444,7 +525,13 @@ export function PaymentFormBody({
                 maximumDate={today > day ? today : day}
                 error={Boolean(errors.paid_at)}
               />
-              <DateTimeField testID="payment-time" mode="time" label="Time" value={clock} onChange={setClock} />
+              <DateTimeField
+                testID="payment-time"
+                mode="time"
+                label="Time"
+                value={clock}
+                onChange={setClock}
+              />
               {errors.paid_at ? <FieldError>{errors.paid_at}</FieldError> : null}
             </View>
             <View>
@@ -489,7 +576,13 @@ function WhoCard({ text, onChange }: { text: string; onChange: () => void }) {
   return (
     <OutlinedCard>
       <View
-        style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingLeft: space.lg, paddingVertical: space.sm }}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: space.md,
+          paddingLeft: space.lg,
+          paddingVertical: space.sm,
+        }}
       >
         <Icon source="account-cash-outline" size={24} color={theme.tokens.mutedForeground} />
         <Text testID="payment-who" variant="bodyLarge" style={{ flex: 1 }}>

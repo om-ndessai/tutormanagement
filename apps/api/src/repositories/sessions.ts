@@ -32,6 +32,7 @@ const SELECT_SESSION = `
          s.charge_amount_cents,
          s.notes,
          s.auto_stopped,
+         s.paid_directly,
          sp.session_id AS progress_session_id,
          sp.goal_rating,
          (SELECT json_group_array(json_object('topic_id', r.topic_id, 'rating', r.rating))
@@ -104,11 +105,12 @@ type ReflectionColumns = {
 
 type SessionRow = Omit<
   StoredSession,
-  'auto_stopped' | 'progress' | 'write_up' | 'assessments' | 'reflection'
+  'auto_stopped' | 'paid_directly' | 'progress' | 'write_up' | 'assessments' | 'reflection'
 > &
   SessionWriteUp &
   ReflectionColumns & {
     auto_stopped: number;
+    paid_directly: number;
     progress_session_id: string | null;
     goal_rating: SessionProgress['goal_rating'];
     topic_ratings_json: string | null;
@@ -150,6 +152,7 @@ function toSession({
   return {
     ...row,
     auto_stopped: Number(row.auto_stopped) === 1,
+    paid_directly: Number(row.paid_directly) === 1,
     progress: progress_session_id
       ? { goal_rating, topic_ratings: JSON.parse(topic_ratings_json ?? '[]') }
       : null,
@@ -362,6 +365,8 @@ export interface CreateSessionRow {
   notes: string | null;
   /** True when the limit ended the lesson rather than a person. */
   auto_stopped: boolean;
+  /** Phase 54: recorded in a space with no organization (one price, no margin). */
+  paid_directly: boolean;
   /** NULL when the sweep recorded it: nobody pressed stop. */
   recorded_by_user_id: string | null;
 }
@@ -379,8 +384,8 @@ export async function createSession(
          (id, organization_id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at,
           duration_minutes, mode, tutor_rate_cents, tutor_amount_cents,
           charge_rate_cents, charge_amount_cents, notes, auto_stopped,
-          recorded_by_user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          recorded_by_user_id, paid_directly)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -399,6 +404,7 @@ export async function createSession(
       row.notes,
       row.auto_stopped ? 1 : 0,
       row.recorded_by_user_id,
+      row.paid_directly ? 1 : 0,
     )
     .run();
 

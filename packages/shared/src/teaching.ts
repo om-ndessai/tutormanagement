@@ -485,6 +485,12 @@ export interface TutoringSession {
    */
   auto_stopped: boolean;
   /**
+   * Phase 54: recorded in a space with no organization -- the family pays the
+   * tutor directly, so the two rates are one price and there is no margin.
+   * Frozen when recorded, like the rates.
+   */
+  paid_directly: boolean;
+  /**
    * How the lesson was scored against the student's plan, or null when it was
    * not. Carries no money, so it is shown to everyone who may see the lesson.
    */
@@ -532,6 +538,19 @@ export const SESSION_MONEY_LABELS: Record<SessionMoneyView, string> = {
   none: '',
 };
 
+/**
+ * Phase 54: the label for a lesson paid directly -- the family pays the tutor,
+ * so the tutor reads it as paid to them and the family as paid to the tutor.
+ */
+export function sessionMoneyLabel(session: { money_view: SessionMoneyView; paid_directly?: boolean }): string {
+  if (session.paid_directly) {
+    if (session.money_view === 'tutor') return 'Family pays you';
+    if (session.money_view === 'family') return 'You pay the tutor';
+    if (session.money_view === 'admin') return 'Paid to the tutor';
+  }
+  return SESSION_MONEY_LABELS[session.money_view];
+}
+
 /** The headline money for a session, from the reader's side of it. */
 export function shownAmountCents(session: {
   money_view: SessionMoneyView;
@@ -561,7 +580,10 @@ export function shownRateCents(session: {
 export function marginCents(session: {
   tutor_amount_cents: number | null;
   charge_amount_cents: number | null;
+  /** Phase 54: a lesson paid directly has no margin; nobody takes a cut. */
+  paid_directly?: boolean;
 }): number | null {
+  if (session.paid_directly) return null;
   const { tutor_amount_cents: paid, charge_amount_cents: charged } = session;
   return paid == null || charged == null ? null : charged - paid;
 }

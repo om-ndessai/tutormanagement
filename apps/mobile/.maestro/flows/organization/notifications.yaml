@@ -53,10 +53,12 @@ tags:
       TUTOR_ID: 00000000-0000-4000-8000-000000000003
       STUDENT_ID: 00000000-0000-4000-8000-000000000008
       ORG: chmi
-# Pulled to refresh, the page reads it back from the server.
+# Pulled to refresh, the page reads it back from the server. From the very top: the space code leads
+# the screen, and (since Phase 54's "Run by" line) the TIN can count as visible while the page is still
+# scrolled, so the pull would only scroll.
 - scrollUntilVisible:
     element:
-      id: org-tin
+      id: space-code
     direction: UP
 - swipe:
     start: 50%, 35%

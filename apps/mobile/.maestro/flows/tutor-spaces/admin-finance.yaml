@@ -1,0 +1,73 @@
+# Phase 54, a space paid directly (`solo`): Hannah runs it and tutors there. Her dashboard's Finance
+# tab has what families owe tutors, "Families and tutors" with each family's row per tutor, and no
+# tutor payments, cut, SSN or year-end documents; the Space screen says "Families pay each tutor
+# directly" where a payer form would be. Billing names the payee on each payment.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: hannah.brooks.tutor@gmail.com
+      ORG: solo
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 30000
+- tapOn:
+    id: tabs-finance
+- extendedWaitUntil:
+    visible:
+      id: dashboard-finance-admin
+    timeout: 30000
+- assertVisible:
+    id: stat-owed-to-tutors-by-families
+    text: 'Owed to tutors by families: \$110\.00'
+- assertVisible: 'Paid to tutors'
+- scrollUntilVisible:
+    element:
+      id: direct-balances
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'Families and tutors'
+- assertVisible: 'with Hannah Brooks · 2 lessons · \$60\.00 paid'
+- assertNotVisible: 'Tutor payments'
+- assertNotVisible: 'Year-end documents'
+- assertNotVisible:
+    id: ssn-panel
+- takeScreenshot: tutor-spaces-admin-finance
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: screen-organization
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-paid-directly
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'Families pay each tutor directly'
+- assertNotVisible:
+    id: org-tin
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+      text: 'Record a payment'
+    timeout: 20000
+- assertVisible:
+    id: billing-year-end
+- assertNotVisible:
+    id: billing-tax-summary
+- assertVisible: 'Owed by families to tutors'
+- scrollUntilVisible:
+    element: 'Received · for Zoe Okafor · to Hannah Brooks'
+    direction: DOWN
+    timeout: 30000

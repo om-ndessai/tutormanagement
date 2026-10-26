@@ -11,6 +11,7 @@ export * from './locations.js';
 export * from './payments.js';
 export * from './dashboard.js';
 export * from './organizations.js';
+export * from './businesses.js';
 export * from './brand.js';
 export * from './auth.js';
 export * from './onboarding.js';

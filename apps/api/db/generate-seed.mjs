@@ -896,6 +896,8 @@ const ORG_C = '0d000000-0000-4000-8000-000000000001';
 const A = q(ORG_A);
 const B = q(ORG_B);
 const C = q(ORG_C);
+const ORG_D = '0e000000-0000-4000-8000-000000000001';
+const D = q(ORG_D);
 const ENTERED_C = q('2026-09-01T12:00:00.000Z');
 const inOrg = (org, rows) => rows.map((row) => [org, ...row]);
 
@@ -909,21 +911,34 @@ const organizations = [
    // The Assessment menu (beta, Phase 38) ON in A too, so the demo shows it.
    q('America/New_York'), '1', '1', '0', q('chmi.tutor-portal.invalid'), 1, 1, 1,
    // Phase 52: the institute has a code, with joining by code off until its admins switch it on.
-   q('console'), 1, q('CHMX2345'), 0],
+   q('console'), 1, q('CHMX2345'), 0, A],
   [B, q('riverside'), q('Riverside Tutoring'), q('Riverside'), q('Small groups, big steps'),
    q('Neighbourhood tutoring along the river, for families who want a tutor who knows the school.'),
    q('Durham, North Carolina'), q('teal'), 'NULL', q('56-7788990'),
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
    q('America/New_York'), '0', '0', '0', q('riverside.tutor-portal.invalid'), 1, 1, 1,
    // Riverside lets people ask to join with its code.
-   q('console'), 1, q('RVRS2345'), 1],
+   q('console'), 1, q('RVRS2345'), 1, B],
   // C (Phase 50): a small space allowed the Assessment set alone -- the shape every self-serve
   // space of Phase 52 takes. No tutoring, no Quest; Assessment switched on.
   [C, q('assess'), q('Ferreira Family Practice'), q('Ferreira'), 'NULL', 'NULL', 'NULL', q('platform'), 'NULL', 'NULL',
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
    q('America/New_York'), '0', '1', '0', q('assess.tutor-portal.invalid'), 0, 1, 0,
    // Phase 52: a space a member made herself, joined with its code; untrusted for Quest approvals.
-   q('self_serve'), 0, q('FMXY2345'), 1],
+   q('self_serve'), 0, q('FMXY2345'), 1, 'NULL'],
+  // D (Phase 54): a tutor space PAID DIRECTLY -- no organization runs its money. Two tutors,
+  // three families; each family pays the tutor of each lesson. Tutoring and Assessment.
+  [D, q('solo'), q('Brooks & Ramos Tutoring'), q('Brooks & Ramos'), 'NULL', 'NULL', q('Raleigh, North Carolina'), q('platform'), 'NULL', 'NULL',
+   'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
+   q('America/New_York'), '0', '0', '0', q('solo.tutor-portal.invalid'), 1, 1, 0,
+   q('console'), 1, q('SQRT2345'), 0, 'NULL'],
+];
+
+// Phase 54: the organizations in the money sense. A and B each have their own, with the space's
+// id, as production's backfill gives every space that existed before; C and D have none.
+const businesses = [
+  [A, q('Chapel Hill Math Institute'), q('47-2019388'), q('100 Franklin Street'), 'NULL', q('Chapel Hill'), q('NC'), q('27514')],
+  [B, q('Riverside Tutoring'), q('56-7788990'), 'NULL', 'NULL', 'NULL', 'NULL', 'NULL'],
 ];
 
 // The people only C has: an admin who is also the parent, a second parent, and their child.
@@ -1084,6 +1099,73 @@ planTopics.push([q(id('0b800000', 2)), q(NC17_TOPIC), 0], [q(id('0b800000', 2)),
 sessionProgress.push([q(SB(1)), q(id('0b800000', 2)), 3]);
 sessionRatings.push([q(SB(1)), q(NC17_TOPIC), 3]);
 
+
+// --- D, a tutor space paid directly (Phase 54, docs/tutor-spaces-plan.md) ------
+// Hannah runs it and tutors; Diego tutors. Zoe has both, so her family keeps two balances.
+// One price per lesson (the pairing's rate, tutor = charge), and every payment names its tutor.
+const UD = (k) => id('0e100000', k);
+const D_CAST = {
+  hannah: UD(1), diego: UD(2), grace: UD(3), ella: UD(4), sam: UD(5), zoe: UD(6), laura: UD(7), max: UD(8),
+};
+const dUsers = [
+  [q(D_CAST.hannah), q('hannah.brooks.tutor@gmail.com'), q('Hannah Brooks'), q('(919) 555-0410')],
+  [q(D_CAST.diego), q('diego.ramos.tutor@gmail.com'), q('Diego Ramos'), q('(919) 555-0420')],
+  [q(D_CAST.grace), q('grace.kim.family@gmail.com'), q('Grace Kim'), 'NULL'],
+  [q(D_CAST.ella), 'NULL', q('Ella Kim'), 'NULL'],
+  [q(D_CAST.sam), q('sam.okafor.family@gmail.com'), q('Sam Okafor'), 'NULL'],
+  [q(D_CAST.zoe), 'NULL', q('Zoe Okafor'), 'NULL'],
+  [q(D_CAST.laura), q('laura.novak.family@gmail.com'), q('Laura Novak'), 'NULL'],
+  [q(D_CAST.max), 'NULL', q('Max Novak'), 'NULL'],
+];
+const membersD = dUsers.map((row) => [D, row[0], q('active'), ENTERED_C]);
+const rolesD = [
+  [D_CAST.hannah, 'admin'], [D_CAST.hannah, 'tutor'], [D_CAST.diego, 'tutor'],
+  [D_CAST.grace, 'parent'], [D_CAST.sam, 'parent'], [D_CAST.laura, 'parent'],
+  [D_CAST.ella, 'student'], [D_CAST.zoe, 'student'], [D_CAST.max, 'student'],
+].map(([u, r]) => [D, q(u), q(r)]);
+const tutorProfilesD = [
+  [D, q(D_CAST.hannah), q('MEd, Mathematics'), 'NULL', q('Raleigh'), 'NULL', 1, 6000, 5500, 90, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL'],
+  [D, q(D_CAST.diego), q('BS, Mathematics'), 'NULL', q('Cary'), 'NULL', 1, 5000, 4500, 90, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL'],
+];
+// No family price: in a space paid directly the pairing's rate is the price.
+const studentProfilesD = [
+  [D, q(D_CAST.ella), q('Lacy Elementary'), q('Grade 4 Mathematics'), q('Long division without tears.'), 0, 'NULL', 'NULL', 60],
+  [D, q(D_CAST.zoe), q('Broughton High'), q('Math 1'), q('Ready for Math 2.'), 1, 'NULL', 'NULL', 90],
+  [D, q(D_CAST.max), q('Martin Middle'), q('Grade 7 Mathematics'), q('Proportions and percents.'), 1, 'NULL', 'NULL', 60],
+];
+const guardianshipsD = [
+  [D, q(D_CAST.grace), q(D_CAST.ella), q('mother'), 1],
+  [D, q(D_CAST.sam), q(D_CAST.zoe), q('father'), 1],
+  [D, q(D_CAST.laura), q(D_CAST.max), q('mother'), 1],
+];
+const AD = (k) => id('0e200000', k);
+const assignmentsD = [
+  [D, q(AD(1)), q(D_CAST.hannah), q(D_CAST.ella), 'NULL', 'NULL', 'NULL'],
+  [D, q(AD(2)), q(D_CAST.hannah), q(D_CAST.zoe), 6500, 'NULL', q('Zoe: Math 1, Saturdays.')],
+  [D, q(AD(3)), q(D_CAST.diego), q(D_CAST.zoe), 'NULL', 'NULL', q('Zoe: test prep, Wednesdays.')],
+  [D, q(AD(4)), q(D_CAST.diego), q(D_CAST.max), 'NULL', 'NULL', 'NULL'],
+];
+const SD = (k) => id('0e300000', k);
+const sessionD = (k, tutor, student, day, start, end, mins, rate, notes) => [
+  D, q(SD(k)), q(tutor), q(student), q(isoDay(day)), q(start), q(end), mins, q('in_person'),
+  rate, Math.round((rate * mins) / 60), rate, Math.round((rate * mins) / 60), q(notes), q(tutor), 1,
+];
+const sessionsD = [
+  sessionD(1, D_CAST.hannah, D_CAST.ella, 3, '16:00', '17:00', 60, 6000, 'Long division, two-digit divisors.'),
+  sessionD(2, D_CAST.hannah, D_CAST.ella, 10, '16:00', '17:00', 60, 6000, 'Remainders and checking work.'),
+  sessionD(3, D_CAST.hannah, D_CAST.zoe, 4, '10:00', '11:30', 90, 6500, 'Linear functions.'),
+  sessionD(4, D_CAST.diego, D_CAST.zoe, 2, '17:00', '18:00', 60, 5000, 'Test prep: systems of equations.'),
+  sessionD(5, D_CAST.diego, D_CAST.max, 5, '15:30', '16:30', 60, 5000, 'Ratios and unit rates.'),
+];
+const PD = (k) => id('0e400000', k);
+// org, id, direction, party (the parent), student, amount, method, paid_at, reference, notes, recorded_by, payee.
+const paymentsD = [
+  [D, q(PD(1)), q('from_parent'), q(D_CAST.grace), q(D_CAST.ella), 6000, q('venmo'), q(`${isoDay(9)}T20:00:00.000Z`), 'NULL', 'NULL', q(D_CAST.hannah), q(D_CAST.hannah)],
+  [D, q(PD(2)), q('from_parent'), q(D_CAST.sam), q(D_CAST.zoe), 9750, q('zelle'), q(`${isoDay(3)}T20:00:00.000Z`), q('ZEL-551'), 'NULL', q(D_CAST.hannah), q(D_CAST.hannah)],
+  [D, q(PD(3)), q('from_parent'), q(D_CAST.laura), q(D_CAST.max), 5000, q('cash'), q(`${isoDay(5)}T21:00:00.000Z`), 'NULL', 'NULL', q(D_CAST.diego), q(D_CAST.diego)],
+];
+const curriculaD = [[D, q('nc-2026'), 1, 'NULL']];
+
 // --- locations (Phase 33) ----------------------------------------------------
 // Every tutor has an in-person place and an online room; every student a home. Each pairing
 // allows its tutor's two and its student's home; each schedule uses its tutor's place of the
@@ -1115,6 +1197,7 @@ function allowLocations(org, assignmentId, tutor, student, studio) {
 }
 for (const a of assignments) allowLocations(A, a.id, a.tutor, a.student, 'Institute, room 2');
 for (const row of assignmentsB) allowLocations(row[0], unq(row[1]), unq(row[2]), unq(row[3]), 'Riverside library');
+for (const row of assignmentsD) allowLocations(row[0], unq(row[1]), unq(row[2]), unq(row[3]), 'Home studio');
 const scheduleLocations = [];
 for (const [org, row] of [...schedules.map((r) => [A, r]), ...schedulesB.map((r) => [r[0], r.slice(1)])]) {
   const tutor = unq(row[1]);
@@ -1181,28 +1264,33 @@ DELETE FROM consents;
 DELETE FROM question_suggestions;
 DELETE FROM organization_curricula;
 DELETE FROM organizations;
+DELETE FROM businesses;
 DELETE FROM user_onboarding;
 DELETE FROM platform_accounts;
 DELETE FROM users;
 
+-- --- who runs each space's money (Phase 54) -------------------------------
+-- C (Assessment only) and D (a tutor space) have no organization: D is paid directly.
+${insert('businesses', ['id', 'name', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code'], businesses)}
+
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest', 'created_via', 'quest_trusted', 'join_code', 'join_by_code'], organizations)}
+${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest', 'created_via', 'quest_trusted', 'join_code', 'join_by_code', 'business_id'], organizations)}
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
 -- North Carolina's standards, 2017 by default, and has retired Beast Academy.
 -- The catalog itself is db/catalog.sql, loaded before this file.
-${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB, [C, q('nc-2026'), 1, 'NULL']])}
+${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB, [C, q('nc-2026'), 1, 'NULL'], ...curriculaD])}
 
 -- --- people ----------------------------------------------------------------
-${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers, ...cUsers, ...newcomerUsers])}
+${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers, ...cUsers, ...dUsers, ...newcomerUsers])}
 
 -- --- who belongs where, and what they do there -----------------------------
-${insert('org_members', ['organization_id', 'user_id', 'status', 'first_entered_at'], [...membersA, ...membersB, ...membersC], 80)}
+${insert('org_members', ['organization_id', 'user_id', 'status', 'first_entered_at'], [...membersA, ...membersB, ...membersC, ...membersD], 80)}
 
-${insert('user_roles', ['organization_id', 'user_id', 'role'], [...inOrg(A, roles), ...rolesB, ...rolesC], 80)}
+${insert('user_roles', ['organization_id', 'user_id', 'role'], [...inOrg(A, roles), ...rolesB, ...rolesC, ...rolesD], 80)}
 
 UPDATE organizations SET created_by_user_id = ${q(C_CAST.ines)} WHERE id = ${C};
 
@@ -1211,16 +1299,16 @@ ${insert('platform_accounts', ['user_id', 'age_band', 'age_confirmed_at', 'terms
 ${insert('join_requests', ['organization_id', 'user_id', 'requested_at'], joinRequests)}
 
 -- --- everyone here has been through the welcome wizard (Phase 26) ----------
-${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], [...users, ...bUsers, ...cUsers, ...newcomerUsers].map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
+${insert('user_onboarding', ['user_id', 'tour_finished_at', 'tour_outcome'], [...users, ...bUsers, ...cUsers, ...dUsers, ...newcomerUsers].map((row) => [row[0], q('2026-09-01T12:00:00.000Z'), q('completed')]), 80)}
 
 -- --- tutor-only data -------------------------------------------------------
-${insert('tutor_profiles', ['organization_id', 'user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on', 'address_line1', 'address_line2', 'city', 'state', 'postal_code'], [...inOrg(A, tutorProfiles), ...tutorProfilesB])}
+${insert('tutor_profiles', ['organization_id', 'user_id', 'highest_education', 'school', 'area', 'availability_notes', 'virtual_available', 'default_rate_in_person_cents', 'default_rate_virtual_cents', 'max_session_minutes', 'topup_amount_cents', 'ssn_received_on', 'address_line1', 'address_line2', 'city', 'state', 'postal_code'], [...inOrg(A, tutorProfiles), ...tutorProfilesB, ...tutorProfilesD])}
 
 -- --- student-only data -----------------------------------------------------
-${insert('student_profiles', ['organization_id', 'user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], [...inOrg(A, studentProfiles), ...studentProfilesB, ...studentProfilesC])}
+${insert('student_profiles', ['organization_id', 'user_id', 'school', 'current_math_course', 'academic_year_goal', 'virtual_available', 'charge_rate_in_person_cents', 'charge_rate_virtual_cents', 'max_session_minutes'], [...inOrg(A, studentProfiles), ...studentProfilesB, ...studentProfilesC, ...studentProfilesD])}
 
 -- --- who is responsible for whom -------------------------------------------
-${insert('guardianships', ['organization_id', 'guardian_user_id', 'dependent_user_id', 'relationship', 'is_primary'], [...inOrg(A, guardianships), ...guardianshipsB, ...guardianshipsC])}
+${insert('guardianships', ['organization_id', 'guardian_user_id', 'dependent_user_id', 'relationship', 'is_primary'], [...inOrg(A, guardianships), ...guardianshipsB, ...guardianshipsC, ...guardianshipsD])}
 
 -- --- how money moves -------------------------------------------------------
 ${insert('payment_handles', ['organization_id', 'user_id', 'method', 'handle'], [...inOrg(A, handles), ...handlesB])}
@@ -1230,15 +1318,21 @@ ${insert('availability_slots', ['organization_id', 'user_id', 'day_of_week', 'ho
 
 -- --- who teaches whom, and at what price -----------------------------------
 ${insert('assignments', ['organization_id', 'id', 'tutor_user_id', 'student_user_id', 'rate_in_person_cents', 'rate_virtual_cents', 'notes'],
-  [...inOrg(A, assignments.map((a) => [q(a.id), q(a.tutor), q(a.student), n(a.inPerson), n(a.virtual), a.notes ? q(a.notes) : 'NULL'])), ...assignmentsB])}
+  [...inOrg(A, assignments.map((a) => [q(a.id), q(a.tutor), q(a.student), n(a.inPerson), n(a.virtual), a.notes ? q(a.notes) : 'NULL'])), ...assignmentsB, ...assignmentsD])}
 
 -- --- lessons that happened -------------------------------------------------
 -- each amount = its rate x duration_minutes / 60, rounded, exactly as the
 -- API computes it.
 ${insert('sessions', ['organization_id', 'id', 'tutor_user_id', 'student_user_id', 'occurred_on', 'started_at', 'ended_at', 'duration_minutes', 'mode', 'tutor_rate_cents', 'tutor_amount_cents', 'charge_rate_cents', 'charge_amount_cents', 'notes', 'recorded_by_user_id'], [...inOrg(A, sessions), ...sessionsB], 30)}
 
+-- D's lessons, paid directly: one price (tutor = charge), no margin (Phase 54).
+${insert('sessions', ['organization_id', 'id', 'tutor_user_id', 'student_user_id', 'occurred_on', 'started_at', 'ended_at', 'duration_minutes', 'mode', 'tutor_rate_cents', 'tutor_amount_cents', 'charge_rate_cents', 'charge_amount_cents', 'notes', 'recorded_by_user_id', 'paid_directly'], sessionsD)}
+
 -- --- money that changed hands ----------------------------------------------
 ${insert('payments', ['organization_id', 'id', 'direction', 'party_user_id', 'student_user_id', 'amount_cents', 'method', 'paid_at', 'reference', 'notes', 'recorded_by_user_id'], [...inOrg(A, payments), ...paymentsB], 30)}
+
+-- D's payments, each a family paying a tutor directly (Phase 54).
+${insert('payments', ['organization_id', 'id', 'direction', 'party_user_id', 'student_user_id', 'amount_cents', 'method', 'paid_at', 'reference', 'notes', 'recorded_by_user_id', 'payee_user_id'], paymentsD)}
 
 -- --- standing weekly lessons -----------------------------------------------
 ${insert('scheduled_sessions', ['organization_id', 'id', 'tutor_user_id', 'student_user_id', 'day_of_week', 'start_time', 'duration_minutes', 'mode', 'starts_on', 'ends_on', 'location', 'notes'], [...inOrg(A, schedules), ...schedulesB])}

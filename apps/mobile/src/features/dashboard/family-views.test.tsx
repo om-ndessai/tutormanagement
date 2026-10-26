@@ -42,6 +42,8 @@ const studentDashboard: StudentDashboard = {
 
 const parentDashboard: ParentDashboard = {
   kind: 'parent',
+  paid_directly: false,
+  direct_balances: [],
   children: [
     {
       student_user_id: 'student-1',
@@ -93,5 +95,51 @@ describe('family dashboards', () => {
     expect(text).toContain('You pay');
     expect(text).not.toMatch(/Your pay(?!ments)/);
     expect(text.replace(/ \| /g, '')).toContain('2 sessions · $180.00 charged');
+  });
+});
+
+describe("a parent's dashboard in a space paid directly (Phase 54)", () => {
+  const direct = (tutor: string, name: string, charged: number, paid: number) => ({
+    student_user_id: 'student-1',
+    student_name: 'Sofia Okafor',
+    tutor_user_id: tutor,
+    tutor_name: name,
+    guardians: [],
+    charged_cents: charged,
+    paid_cents: paid,
+    balance_cents: charged - paid,
+    session_count: 1,
+  });
+
+  it('lists what they owe each tutor, and counts it in their figures and the child', async () => {
+    const data: ParentDashboard = {
+      ...parentDashboard,
+      paid_directly: true,
+      children: [
+        {
+          ...parentDashboard.children[0]!,
+          charged_cents: 0,
+          paid_cents: 0,
+          balance_cents: 0,
+          session_count: 0,
+        },
+      ],
+      totals: { charged_cents: 0, paid_cents: 0, balance_cents: 0 },
+      direct_balances: [
+        direct('hannah', 'Hannah Brooks', 6_000, 6_000),
+        direct('diego', 'Diego Ramos', 5_000, 0),
+      ],
+    };
+    await renderWithProviders(<ParentView data={data} />);
+    expect(screen.getByText('What you owe each tutor')).toBeTruthy();
+    expect(screen.getByTestId('direct-balance-student-1-diego')).toBeTruthy();
+    expect(screen.getByText(/^for Sofia Okafor · 1 lesson · \$0\.00 paid$/)).toBeTruthy();
+    expect(screen.getByTestId('stat-outstanding-value')).toHaveTextContent('$50.00');
+    expect(allText().replace(/ \| /g, '')).toContain('2 sessions · $110.00 charged');
+  });
+
+  it('shows no such panel in a space run by an organization', async () => {
+    await renderWithProviders(<ParentView data={parentDashboard} />);
+    expect(screen.queryByText('What you owe each tutor')).toBeNull();
   });
 });

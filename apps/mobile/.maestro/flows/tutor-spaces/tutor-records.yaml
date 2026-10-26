@@ -1,0 +1,121 @@
+# Phase 54, a space paid directly (`solo`): Diego, a tutor there, keeps the payments families make to
+# him. Billing says so: "Record a payment you received", the Year-end summary and never the Tax
+# summary, and "Families and tutors" with his own rows (Zoe owes him $50.00). He records $25.00 from
+# Sam Okafor (Zoe, his only child, chosen for him) with no direction to choose and no tutor to pick:
+# the payee is Diego. Zoe's balance falls to $25.00, the log says "Paid to you · for Zoe Okafor", and
+# he deletes it again (his own to delete), putting the balance back.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: diego.ramos.tutor@gmail.com
+      ORG: solo
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://billing
+- extendedWaitUntil:
+    visible:
+      id: billing-record
+      text: 'Record a payment you received'
+    timeout: 20000
+- assertVisible: 'Families pay each tutor directly\. No money moves through the portal.*'
+- assertVisible:
+    id: billing-year-end
+- assertNotVisible:
+    id: billing-tax-summary
+- assertVisible: 'Families and tutors'
+- assertNotVisible: 'Your pay'
+- extendedWaitUntil:
+    visible:
+      id: billing-direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+      text: '\$50\.00'
+    timeout: 15000
+- takeScreenshot: tutor-spaces-tutor-billing
+- tapOn:
+    id: billing-record
+- extendedWaitUntil:
+    visible:
+      id: payment-party
+    timeout: 20000
+- assertVisible: 'Record a payment you received'
+- assertNotVisible:
+    id: payment-direction-to_tutor
+- assertNotVisible:
+    id: payment-payee
+- tapOn:
+    id: payment-party
+- extendedWaitUntil:
+    visible:
+      id: payment-party-0e100000-0000-4000-8000-000000000005
+    timeout: 10000
+- tapOn:
+    id: payment-party-0e100000-0000-4000-8000-000000000005
+- extendedWaitUntil:
+    visible:
+      id: payment-student
+      text: 'For which student: Zoe Okafor.*'
+    timeout: 10000
+- tapOn:
+    id: payment-amount
+- inputText: '25'
+- pressKey: Enter
+- tapOn:
+    id: payment-method-cash
+- takeScreenshot: tutor-spaces-tutor-form
+- scrollUntilVisible:
+    element:
+      id: payment-save
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: payment-save
+- extendedWaitUntil:
+    visible: 'Payment recorded.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-billing
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: billing-direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+    direction: UP
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: billing-direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+      text: '\$25\.00'
+    timeout: 15000
+- scrollUntilVisible:
+    element: 'Paid to you · for Zoe Okafor'
+    direction: DOWN
+    timeout: 30000
+    centerElement: true
+- tapOn:
+    text: 'Delete the payment involving Sam Okafor'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Delete this payment\?'
+    timeout: 10000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible: 'Payment deleted.'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: billing-direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+    direction: UP
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: billing-direct-balance-0e100000-0000-4000-8000-000000000006-0e100000-0000-4000-8000-000000000002
+      text: '\$50\.00'
+    timeout: 15000

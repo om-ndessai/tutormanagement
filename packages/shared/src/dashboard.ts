@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { AuditEvent } from './audit.js';
-import type { Payment, StudentBalance, TutorBalance, TutorPaymentOutlook } from './payments.js';
+import type { DirectBalance, Payment, StudentBalance, TutorBalance, TutorPaymentOutlook } from './payments.js';
 import type { StudentProgress } from './progress.js';
 import type { SessionReflection } from './session-notes.js';
 import type { TutoringSession } from './teaching.js';
@@ -66,6 +66,12 @@ export interface AdminDashboard {
    */
   tutors_missing_ssn: { user_id: string; full_name: string }[];
   student_balances: StudentBalance[];
+  /**
+   * Phase 54: whether the space is paid directly now, and every family's balance
+   * with each tutor from lessons paid directly. Most owed first.
+   */
+  paid_directly: boolean;
+  direct_balances: DirectBalance[];
   /** The last 5 events, newest first, less payments (their lines name amounts). */
   recent_activity: AuditEvent[];
   /** The last 5 lessons, for the past half of the sessions carousel. */
@@ -128,7 +134,11 @@ export interface TutorDashboard {
   live_sessions: number;
   /** The last 5 lessons they taught. */
   recent_sessions: TutoringSession[];
+  /** Paid to them: by the organization, or (Phase 54) by families directly. */
   recent_payments: Payment[];
+  /** Phase 54: whether the space is paid directly now, and their families' balances with them. */
+  paid_directly: boolean;
+  direct_balances: DirectBalance[];
   /** The last 5 events they acted in or were the subject of, less payments. */
   recent_activity: AuditEvent[];
   /** Up to 5 of the students they teach, at random, with timelines. */
@@ -141,6 +151,12 @@ export interface ParentDashboard {
   kind: 'parent';
   children: StudentBalance[];
   totals: { charged_cents: number; paid_cents: number; balance_cents: number };
+  /**
+   * Phase 54: whether the space is paid directly now, and their children's
+   * balances with each tutor they pay directly. `totals` covers the organization's.
+   */
+  paid_directly: boolean;
+  direct_balances: DirectBalance[];
   recent_sessions: TutoringSession[];
   recent_payments: Payment[];
   /** Each child's plan and progress in full, so the dashboard can chart it. */

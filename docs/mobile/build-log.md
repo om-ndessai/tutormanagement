@@ -3807,3 +3807,114 @@ changed.
 - **Seen, not changed (Phase 26/50 behaviour):** on a parent's first visit, the floating tour offer can take
   a tap meant for the screen under it (a flow tapping Leave on My profile started the tour instead).
 - **Ran (local Worker and seed only):** typecheck, lint (0 errors) and Jest (135 suites, 978 tests) green, the export bundles; `spaces/*` (7 flows) green on the iOS simulator and the Android emulator; the changed `organization/*`, `organizations/*`, `platform/{organizations,admins-people,org-admin-denied}`, `exposure/student-controls`, `shell/navigation`, `canvas-assessments/{menu,question-count}`, `features/{organization,person-form}`, `people/create-student`, `onboarding/wizard-admin` and `search/admin` green on both; `features/console` green on Android and red on iOS (the console row's label is the name alone, so the flow's `.*Tutoring, Assessment` is not found; the row is unchanged), `people/directory-admin` green on iOS and red on Android (a guardian below the fold; the person detail is unchanged); `npm run smoke -- mobile` green on both (7/7 each), on the development build. The web suite was not run (the lead's).
+
+## 64. Phase 54: tutor spaces and organizations, in the app — design (2026-10-26)
+**Scope:** the web's Phase 54 half at parity (`docs/tutor-spaces-plan.md`, R24). A space is either run
+by an organization (a `businesses` row: today's model) or **paid directly** (`paidDirectly(org)`, no
+organization): one price per lesson, families pay each lesson's tutor, no tutor pay, advances, top-ups or
+1099s. The API, shared contract, seed and web are the lead's (uncommitted on `open-signup`); **no change
+to `apps/api`, `packages/shared` or `apps/web` comes from this work.**
+1. **Lesson money:** `SessionMoney` says "Paid to the tutor" (admin) / "Family pays you" (tutor) / "You pay
+   the tutor" (family) on a `paid_directly` lesson, with no margin line (the web's words, not the shared
+   `sessionMoneyLabel`'s "Pay the tutor", so the two clients read the same).
+2. **Billing, paid directly:** the description; "Record a payment" (admin) or "Record a payment you
+   received" (tutor); "Year-end summary" (`/payments/direct-summary.csv?year=`, admin and tutor) instead of
+   "Tax summary"; the admin's one tile "Owed by families to tutors"; the "Families and tutors" ledger
+   (`direct`, one row per family × tutor; also shown as "Paid directly" in an organization-run space
+   that has such rows from before a switch); the Tutors / Families ledgers only when a row has activity;
+   a payment's line adds "· to <tutor>"; the payee tutor may edit and delete their own.
+3. **The payment sheet, paid directly:** no direction (always `from_parent`); an admin chooses "Paid to
+   (tutor)" (`payee_user_id`); a tutor's payee is themselves (title "Record a payment you received"). A
+   direct ledger row opens it prefilled (`?direction=from_parent&party=&student=&payee=`). Organization-run:
+   unchanged, admins only, no payee sent.
+4. **Dashboard, Finance:** admin: Owed to tutors by families / Paid to tutors / Lessons all time, the
+   "Families and tutors" panel, the month-by-month (no tutor payments, year-end, SSN panel). Tutor: Lessons
+   / Families paid you / Owed to you, "Your families", the month-by-month, "Payments to you" (no SSN notice,
+   no advance). Parent: figures add the direct rows; "What you owe each tutor" panel; each child's balance
+   adds theirs.
+5. **The Space screen:** paid directly, a "Payments" card ("Families pay each tutor directly") in place of
+   the 1099 payer form; run by an organization, "Run by <name>" above the payer form.
+6. **The console:** "Organizations" (businesses) — a list reached from the Spaces tab (the bar holds five
+   tabs), each row with "TIN on file" / "No TIN yet" and "runs <spaces>", New, Edit (a form sheet:
+   name, TIN, address), Archive / Restore (a native confirm before archiving; the server's 409 while it
+   runs a space is said in its words). The space form gains "Organization" (Paid directly, or one not
+   archived); on edit a change calls `PUT /platform/organizations/:id/business`. A space row says "run by
+   X" or "paid directly".
+**Web sources:** `features/teaching/session-money.tsx`, `features/payments/{billing-page,payment-dialog}.tsx`,
+`features/dashboard/role-dashboards.tsx`, `features/organizations/organization-settings-page.tsx`,
+`features/platform/{api,businesses-page,organization-dialog,organizations-page,platform-shell}.ts(x)`.
+**Endpoints:** GET `/payments/balances` — `useBalances` — all (direct rows scoped); POST/PATCH/DELETE
+`/payments` — `useRecordPayment`/`useUpdatePayment`/`useDeletePayment` — admins, and in a paid-directly space
+the payee tutor; GET `/payments/direct-summary.csv?year=` — download — admin, tutor; GET `/dashboard` —
+`useDashboard` — `paid_directly`, `direct_balances`; GET `/organization/settings` — `business`; GET/POST
+`/platform/businesses`, PATCH `/platform/businesses/:id`, POST `…/:id/archive|restore` — `useBusinesses`,
+`useCreateBusiness`, `useUpdateBusiness`, `useArchiveBusiness` — platform admins; PUT
+`/platform/organizations/:id/business` — `useSetSpaceBusiness`; POST `/platform/organizations` with
+`business_id`.
+**Screens & routes:** `(platform)/platform/(organizations)/businesses` (stack screen, "Organizations");
+`(platform)/business-form?id=` (form sheet). Everything else is the existing billing, payment-form,
+dashboard, organization and organization-form routes.
+**Components:** new `features/payments/direct-ledger.tsx` (`DirectLedger`, `BillingDirectTiles`),
+`features/dashboard/direct-balances.tsx` (`DirectBalancesPanel`, `directTotals`),
+`features/platform/{businesses-screen,business-form-sheet,business-form}.ts(x)`; reused `Panel`,
+`StatCard`, `QuickSheet`, `OptionPicker`, `FormTextField`, `SwipeRow`.
+**Interaction & motion:** as the existing finance screens; selection haptics on choices, success/error on
+save; nothing animated beyond what the reused components do.
+**Exposure checks:** money only through `SessionMoney` and the finance components (`formatCents` stays in
+them); every new figure is on Finance, Billing, the parent's dashboard or the console — never a Tutoring
+tab; the payment sheet stays `SecureMoney`; the server scopes `direct` (a tutor gets their rows, a parent
+their children's) and the app shows what it is sent; the app shows Record / Edit / Delete only where the
+API allows (admin, or the payee tutor in a paid-directly space) — it never widens; the TIN reaches only
+the Space screen's admins and the console; no organization's name in code (`brand.short`, data).
+**testIDs:** `billing-record`, `billing-year-end`, `billing-tax-summary`, `billing-direct`,
+`billing-direct-<student>-<tutor>`, `billing-direct-balance-<student>-<tutor>`, `billing-direct-owed`;
+`payment-payee`, `payment-direction-*` (absent when direct); `direct-balances`,
+`direct-balance-<student>-<tutor>`, `dashboard-finance-admin`, `dashboard-finance-tutor`;
+`org-paid-directly`, `org-business-name`; `platform-businesses`, `screen-platform-businesses`,
+`platform-business-new`, `platform-business-<id>`, `platform-business-edit-<id>`,
+`platform-business-archive-<id>`, `screen-business-form`, `business-form-<field>`, `business-form-save`,
+`org-form-business`.
+**Tests:** Maestro `tutor-spaces/` — `tutor-records` (Diego in `solo`: Billing says Year-end summary and
+"Record a payment you received", records $25 from Sam for Zoe, sees it "Paid to you" and the Zoe row move,
+deletes it; no Tax summary, no direction); `parent-owes` (Sam in `solo`: Home's "What you owe each tutor"
+with Hannah and Diego, Billing's "Families and tutors", "You pay the tutor" on a lesson's Finance tab);
+`admin-finance` (Hannah: dashboard Finance "Families and tutors", no SSN panel, the Space screen's
+"Families pay each tutor directly"); `console-organizations` (the platform admin: Organizations lists the
+institute's with "runs …", creates one, edits it, the space form shows the Organization choice, a row says
+"paid directly"). Jest: the direct ledger and the payment sheet's direct mode, `SessionMoney`'s labels,
+`DirectBalancesPanel`, the parent's totals, the businesses form model, the org-form's `business_id`.
+**Risks / open questions:** a tutor's payment sheet lists the parents `/users?role=parent` gives a tutor
+(their own families) and reads the parent's dependents — checked against the local Worker, both answer.
+
+**Build notes (2026-10-26):**
+- The design's `billing-direct-owed` became the StatCard's own id, `stat-owed-by-families-to-tutors`
+  (StatCard takes no testID); the space form's hint is `org-form-business-hint`.
+- A payment's payee is named for the office even when the office is the payee (it reads "Received", not
+  "Paid to you"); a tutor reading their own sees "Paid to you" and no payee.
+- `src/test/wording.test.ts` allows "Organization(s)" where Phase 54 makes it the word for the record
+  that runs a space's money (the console's Organizations, the space form's choice, the Space screen's
+  paid-directly card and payer hint), by file and exact text, so the guard still catches anything else.
+- Flows: `subflows/open-link.yaml` now answers Android's "Open with" chooser (both the dev and the e2e
+  build installed answer `aimtrue://`), choosing this run's build, just once. `smoke/diagnostics` waits
+  for the sign-in screen before its link (the Android Release cold-start race of build note 62).
+  `organization/notifications` pulls to refresh from the very top (`space-code`): the "Run by" line made
+  the TIN count as visible while the page was still scrolled, so the pull only scrolled (iOS).
+  `features/console` matches the row's text with a trailing `.*` (the row now ends with who runs it).
+  `quest/play-number` (red since Phase 49's sample) answers the choice questions G5 serves first through
+  the API (`quest-start.js`'s `UNTIL_NUMBER`, at most 25, same level), then tests the number field as before.
+- **Found, not fixed (iOS, the console):** after a toast or a native alert in the console (a save in a
+  form sheet, Discard, Archive, Disallow), the next form sheet (New space) does not present: the tap
+  lands, nothing opens. Reproduced with New space -> type -> Cancel -> Discard -> New space, so it is not
+  Phase 54's code; `features/console` hits it on iOS. `tutor-spaces/console-organizations` checks the
+  space form before anything that toasts.
+
+**Verified (2026-10-26):** against the local Worker and seed only, with the e2e Release build of this
+worktree (`APP_VARIANT=e2e`, JS embedded; the Metro on :8081 serves another checkout, so the
+development build was not used): `tutor-spaces/{tutor-records,parent-owes,admin-finance,
+console-organizations}` green on iOS 27 (iPhone 17) and Android 37 (Medium Phone); `billing/*`,
+`dashboard/{finance-admin,finance-tutor,finance-ssn-receipt,parent}`, `platform/{organizations,
+admins-people,org-admin-denied,logo}`, `organization/*`, `quest/play-number` green on both;
+`features/console` green on Android, red on iOS (above); the flows tagged smoke 7/7 on both (iOS
+`spaces/sign-up` failed 2 of 4 runs on Maestro's hideKeyboard, green on the others; its screen is
+unchanged); Jest 138 suites / 1010 tests; typecheck, lint (0 errors), export green; screenshots reviewed
+in light (Billing, a parent's Home, the console's Organizations), not in dark.

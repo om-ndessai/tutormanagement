@@ -1,4 +1,4 @@
-// Ported from apps/web/src/features/payments/api.ts @ 1132322
+// Ported from apps/web/src/features/payments/api.ts @ 1132322 (Phase 54's payee filter, working tree)
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiList,
@@ -39,6 +39,7 @@ export function usePayments(params: Partial<ListPaymentsParams> = {}) {
           direction: params.direction,
           party_user_id: params.party_user_id,
           student_user_id: params.student_user_id,
+          payee_user_id: params.payee_user_id,
           from: params.from,
           to: params.to,
           limit: params.limit,

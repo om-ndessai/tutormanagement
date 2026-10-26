@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/teaching/session-money.tsx @ 1132322
+// Ported from apps/web/src/features/teaching/session-money.tsx @ 1132322 (Phase 54's paid-directly
+// labels @ 24066d9, working tree)
 import { formatCents, marginCents, type TutoringSession } from '@tmi/shared';
 import { View, type ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -9,7 +10,8 @@ import { useAppTheme } from '@/providers/theme-provider';
 type Money = Pick<
   TutoringSession,
   'money_view' | 'tutor_rate_cents' | 'tutor_amount_cents' | 'charge_rate_cents' | 'charge_amount_cents'
->;
+> &
+  Partial<Pick<TutoringSession, 'paid_directly'>>;
 
 /**
  * A lesson's money, said from the reader's side of it (Phase 17).
@@ -39,7 +41,20 @@ export function SessionMoney({
   const tutor = session.money_view === 'tutor';
   const amount = tutor ? session.tutor_amount_cents : session.charge_amount_cents;
   const rate = tutor ? session.tutor_rate_cents : session.charge_rate_cents;
-  const label = admin ? 'Charged' : tutor ? 'Your pay' : 'You pay';
+  // Phase 54: a lesson paid directly is one price the family pays the tutor; there is no cut, so
+  // nobody is shown one.
+  const direct = Boolean(session.paid_directly);
+  const label = direct
+    ? admin
+      ? 'Paid to the tutor'
+      : tutor
+        ? 'Family pays you'
+        : 'You pay the tutor'
+    : admin
+      ? 'Charged'
+      : tutor
+        ? 'Your pay'
+        : 'You pay';
   const muted = theme.tokens.mutedForeground;
 
   if (compact) {
@@ -49,7 +64,7 @@ export function SessionMoney({
           {formatCents(amount)}
         </Text>
         <Text style={{ fontSize: 12, lineHeight: 16, color: muted }}>
-          {admin ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
+          {admin && !direct ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
         </Text>
       </View>
     );
@@ -70,7 +85,7 @@ export function SessionMoney({
         {formatCents(amount)}
       </Text>
       <Text style={{ fontSize: 12, color: muted }}>{formatCents(rate)}/hr</Text>
-      {admin ? (
+      {admin && !direct ? (
         <Text style={{ fontSize: 12, color: muted, fontVariant: ['tabular-nums'] }}>
           Tutor {formatCents(session.tutor_amount_cents)} · {brand.short}{' '}
           <Text style={{ fontSize: 12, fontWeight: '500', color: theme.colors.onSurface }}>
@@ -86,6 +101,7 @@ export function SessionMoney({
 export function describeSessionMoney(session: Money): string {
   switch (session.money_view) {
     case 'admin':
+      if (session.paid_directly) return `its ${formatCents(session.charge_amount_cents)} price`;
       return `its ${formatCents(session.charge_amount_cents)} charge and ${formatCents(session.tutor_amount_cents)} tutor pay`;
     case 'tutor':
       return `your ${formatCents(session.tutor_amount_cents)} pay for it`;

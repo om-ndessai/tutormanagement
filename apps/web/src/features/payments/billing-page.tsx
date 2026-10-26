@@ -5,6 +5,7 @@ import {
   PAYMENT_DIRECTION_LABELS,
   PAYMENT_FORM_LABELS,
   formatCents,
+  paidDirectly,
   topupDueCents,
   tutorAdvanceCents,
   type Payment,
@@ -46,8 +47,12 @@ import { withOrg } from '@/lib/organization';
  * meaningful as the explanation of the balances above it.
  */
 export function BillingPage() {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
+  // Phase 54: families pay each tutor directly here; no organization in between.
+  const direct = organization ? paidDirectly(organization) : false;
+  const isTutor = user?.roles.includes('tutor') ?? false;
+  const year = new Date().getFullYear();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [removing, setRemoving] = useState<Payment | null>(null);
@@ -77,7 +82,11 @@ export function BillingPage() {
     <div className="mx-auto max-w-5xl">
       <PageHeader
         title="Billing"
-        description="No money moves through the portal. This tracks what is owed and what has been paid."
+        description={
+          direct
+            ? 'Families pay each tutor directly. No money moves through the portal: this tracks what each family owes each tutor, and what has been paid.'
+            : 'No money moves through the portal. This tracks what is owed and what has been paid.'
+        }
         actions={
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" asChild>
@@ -91,10 +100,10 @@ export function BillingPage() {
                 holds their SSN -- the two things a year-end tax document
                 needs. The number itself is in neither this file nor the
                 database it comes from. */}
-            {isAdmin && (
+            {isAdmin && !direct && (
               <Button variant="outline" asChild>
                 <a
-                  href={withOrg(`/api/payments/tax-summary.csv?year=${new Date().getFullYear()}`)}
+                  href={withOrg(`/api/payments/tax-summary.csv?year=${year}`)}
                   download
                 >
                   <DownloadIcon />
@@ -102,17 +111,57 @@ export function BillingPage() {
                 </a>
               </Button>
             )}
-            {isAdmin && (
+            {/* Phase 54: no 1099 for money families paid a tutor directly -- the
+                tutor's own year-end summary of it (every tutor's, for an admin). */}
+            {direct && (isAdmin || isTutor) && (
+              <Button variant="outline" asChild>
+                <a href={withOrg(`/api/payments/direct-summary.csv?year=${year}`)} download>
+                  <DownloadIcon />
+                  Year-end summary
+                </a>
+              </Button>
+            )}
+            {(isAdmin || (direct && isTutor)) && (
               <Button onClick={() => setDialogOpen(true)}>
                 <PlusIcon />
-                Record a payment
+                {direct && !isAdmin ? 'Record a payment you received' : 'Record a payment'}
               </Button>
             )}
           </div>
         }
       />
 
-      {isAdmin && (
+      {isAdmin && direct && (
+        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <HeadlineTile
+            label="Owed by families to tutors"
+            cents={data?.totals.owed_directly_cents}
+            tone="brand"
+          />
+        </div>
+      )}
+
+      {(data?.direct.length ?? 0) > 0 && (
+        <LedgerTable
+          title={direct ? 'Families and tutors' : 'Paid directly'}
+          caption="Each family pays the tutor of each lesson: one balance per family and tutor."
+          columns={['Student', 'Tutor', 'Lessons', 'Paid', 'Outstanding']}
+          rows={(data?.direct ?? []).map((row) => ({
+            key: `${row.student_user_id}|${row.tutor_user_id}`,
+            cells: [
+              row.student_name,
+              row.tutor_name,
+              formatCents(row.charged_cents),
+              formatCents(row.paid_cents),
+            ],
+            summary: `${row.tutor_name} · ${row.session_count} lessons · ${formatCents(row.charged_cents)} · ${formatCents(row.paid_cents)} paid`,
+            balance: row.balance_cents,
+          }))}
+          isLoading={balances.isPending}
+        />
+      )}
+
+      {isAdmin && !direct && (
         <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <HeadlineTile
             label="Owed to tutors"
@@ -135,7 +184,7 @@ export function BillingPage() {
         </div>
       )}
 
-      {(data?.tutors.length ?? 0) > 0 && (
+      {(data?.tutors ?? []).some((t) => !direct || t.session_count > 0 || t.paid_cents > 0) && (
         <LedgerTable
           title="Tutors"
           caption="What each tutor has earned, and what they have been paid."
@@ -167,7 +216,7 @@ export function BillingPage() {
         />
       )}
 
-      {(data?.students.length ?? 0) > 0 && (
+      {(data?.students ?? []).some((st) => !direct || st.session_count > 0 || st.paid_cents > 0) && (
         <LedgerTable
           title="Families"
           caption="Charges follow the student; any of their guardians may pay."
@@ -198,6 +247,7 @@ export function BillingPage() {
               <span className="text-muted-foreground block truncate text-xs">
                 {payment.direction === 'from_parent' ? 'Received' : 'Paid out'}
                 {payment.student_name ? ` · for ${payment.student_name}` : ''}
+                {payment.payee_name ? ` · to ${payment.payee_name}` : ''}
               </span>
               <span className="text-muted-foreground block text-xs">
                 {new Date(payment.paid_at).toLocaleDateString(undefined, { dateStyle: 'medium' })} ·{' '}
@@ -207,7 +257,7 @@ export function BillingPage() {
             <span className="shrink-0 text-sm font-semibold tabular-nums">
               {formatCents(payment.amount_cents)}
             </span>
-            {isAdmin && (
+            {(isAdmin || (payment.payee_user_id !== null && payment.payee_user_id === user?.id)) && (
               <Button
                 variant="ghost"
                 size="icon"
@@ -236,7 +286,7 @@ export function BillingPage() {
               <TableHead>For</TableHead>
               <TableHead>Form</TableHead>
               <TableHead className="text-right">Amount</TableHead>
-              {isAdmin && <TableHead className="w-12" />}
+              {(isAdmin || (direct && isTutor)) && <TableHead className="w-12" />}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -279,13 +329,15 @@ export function BillingPage() {
                 <TableCell className="font-medium">{payment.party_name}</TableCell>
                 <TableCell className="text-muted-foreground">
                   {payment.student_name ?? '—'}
+                  {payment.payee_name ? ` · to ${payment.payee_name}` : ''}
                 </TableCell>
                 <TableCell>{PAYMENT_FORM_LABELS[payment.method]}</TableCell>
                 <TableCell className="text-right tabular-nums">
                   {formatCents(payment.amount_cents)}
                 </TableCell>
-                {isAdmin && (
+                {(isAdmin || (direct && isTutor)) && (
                   <TableCell>
+                    {(isAdmin || (payment.payee_user_id !== null && payment.payee_user_id === user?.id)) && (
                     <Button
                       variant="ghost"
                       size="icon"
@@ -294,6 +346,7 @@ export function BillingPage() {
                     >
                       <Trash2Icon />
                     </Button>
+                    )}
                   </TableCell>
                 )}
               </TableRow>

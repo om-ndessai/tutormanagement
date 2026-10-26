@@ -15,6 +15,7 @@ import {
   formatDuration,
   tutorAdvanceCents,
   type AdminDashboard,
+  type DirectBalance,
   type ParentDashboard,
   type Payment,
   type StudentDashboard,
@@ -158,6 +159,53 @@ function BalanceRow({
   );
 }
 
+/**
+ * Phase 54: in a space paid directly, what each family owes each tutor. `of`
+ * says which side the reader is on: a tutor reads their families, a family its
+ * tutors, an admin both.
+ */
+function DirectBalancesPanel({
+  rows,
+  index,
+  title,
+  of,
+}: {
+  rows: DirectBalance[];
+  index: number;
+  title: string;
+  of: 'tutor' | 'family' | 'admin';
+}) {
+  return (
+    <Panel index={index} title={title} action={{ label: 'Billing', to: '/billing' }}>
+      {rows.length === 0 ? (
+        <EmptyNote>No lessons paid directly yet.</EmptyNote>
+      ) : (
+        <ul className="divide-border divide-y" data-testid="direct-balances">
+          {rows.slice(0, 8).map((row) => (
+            <BalanceRow
+              key={`${row.student_user_id}|${row.tutor_user_id}`}
+              name={of === 'family' ? row.tutor_name : row.student_name}
+              detail={
+                (of === 'admin' ? `with ${row.tutor_name} · ` : of === 'family' ? `for ${row.student_name} · ` : '') +
+                `${row.session_count} lessons · ${formatCents(row.paid_cents)} paid`
+              }
+              balance={row.balance_cents}
+            />
+          ))}
+        </ul>
+      )}
+    </Panel>
+  );
+}
+
+function directTotals(rows: DirectBalance[]) {
+  return {
+    charged: rows.reduce((sum, row) => sum + row.charged_cents, 0),
+    paid: rows.reduce((sum, row) => sum + row.paid_cents, 0),
+    owed: rows.reduce((sum, row) => sum + Math.max(0, row.balance_cents), 0),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Admin
 // ---------------------------------------------------------------------------
@@ -205,6 +253,41 @@ export function AdminView({ data }: { data: AdminDashboard }) {
         </div>
       }
       finance={
+        data.paid_directly ? (
+          // Phase 54: families pay each tutor directly -- no tutor pay, no cut, no 1099s.
+          <>
+            <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <StatCard
+                index={0}
+                label="Owed to tutors by families"
+                value={directTotals(data.direct_balances).owed}
+                money
+                icon={WalletPlusIcon}
+                tone="brand"
+                to="/billing"
+              />
+              <StatCard
+                index={1}
+                label="Paid to tutors"
+                value={directTotals(data.direct_balances).paid}
+                money
+                icon={WalletIcon}
+                to="/billing"
+              />
+              <StatCard
+                index={2}
+                label="Lessons all time"
+                value={data.totals.billed_all_time_cents}
+                money
+                icon={BookOpenIcon}
+                hint={`${data.totals.session_count} sessions`}
+                to="/sessions?tab=finance"
+              />
+            </div>
+            <DirectBalancesPanel index={3} title="Families and tutors" rows={data.direct_balances} of="admin" />
+            <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={4} />
+          </>
+        ) : (
         <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
@@ -272,6 +355,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
             </Panel>
           </div>
         </>
+        )
       }
     />
   );
@@ -395,6 +479,29 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
         </div>
       }
       finance={
+        data.paid_directly ? (
+          // Phase 54: families pay this tutor directly; nobody issues them a 1099.
+          <>
+            <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <StatCard index={1} label="Lessons" value={directTotals(data.direct_balances).charged} money icon={WalletIcon} to="/sessions?tab=finance" />
+              <StatCard index={2} label="Families paid you" value={directTotals(data.direct_balances).paid} money icon={WalletMinusIcon} to="/billing" />
+              <StatCard
+                index={3}
+                label="Owed to you"
+                value={directTotals(data.direct_balances).owed}
+                money
+                icon={WalletPlusIcon}
+                tone={directTotals(data.direct_balances).owed > 0 ? 'warning' : 'default'}
+                to="/billing"
+              />
+            </div>
+            <DirectBalancesPanel index={4} title="Your families" rows={data.direct_balances} of="tutor" />
+            <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} index={5} />
+            <Panel index={6} title="Payments to you" action={{ label: 'Billing', to: '/billing' }}>
+              <PaymentList payments={data.recent_payments} />
+            </Panel>
+          </>
+        ) : (
         <>
           {/* The tax notice leads the finance tab, because it is the one thing
               here the tutor has to act on rather than read. */}
@@ -466,6 +573,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
             <PaymentList payments={data.recent_payments} />
           </Panel>
         </>
+        )
       }
     />
   );
@@ -476,36 +584,54 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
 // ---------------------------------------------------------------------------
 
 export function ParentView({ data }: { data: ParentDashboard }) {
+  // Phase 54: what is owed to tutors directly counts beside what is owed to the organization.
+  const direct = directTotals(data.direct_balances);
+  const charged = data.totals.charged_cents + direct.charged;
+  const paid = data.totals.paid_cents + direct.paid;
+  const outstanding = data.totals.balance_cents + (direct.charged - direct.paid);
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard index={0} label="Children" value={data.children.length} icon={ROLE_ICONS.student} />
-        <StatCard index={1} label="Charged" value={data.totals.charged_cents} money icon={BookOpenIcon} to="/sessions?tab=finance" />
+        <StatCard index={1} label="Charged" value={charged} money icon={BookOpenIcon} to="/sessions?tab=finance" />
         <StatCard
           index={2}
           label="Outstanding"
-          value={data.totals.balance_cents}
+          value={outstanding}
           money
           icon={WalletMinusIcon}
-          tone={data.totals.balance_cents > 0 ? 'brand' : 'success'}
-          hint={`${formatCents(data.totals.paid_cents)} paid`}
+          tone={outstanding > 0 ? 'brand' : 'success'}
+          hint={`${formatCents(paid)} paid`}
           to="/billing"
         />
       </div>
+
+      {(data.paid_directly || data.direct_balances.length > 0) && (
+        <DirectBalancesPanel index={3} title="What you owe each tutor" rows={data.direct_balances} of="family" />
+      )}
 
       <Panel index={3} tourId="dash-children" title="Your children">
         {data.children.length === 0 ? (
           <EmptyNote>No students are linked to you yet.</EmptyNote>
         ) : (
           <ul className="divide-border divide-y">
-            {data.children.map((child) => (
-              <BalanceRow
-                key={child.student_user_id}
-                name={child.student_name}
-                detail={`${child.session_count} sessions · ${formatCents(child.charged_cents)} charged`}
-                balance={child.balance_cents}
-              />
-            ))}
+            {data.children.map((child) => {
+              // Phase 54: lessons paid directly to tutors count beside the organization's.
+              const mine = directTotals(data.direct_balances.filter((row) => row.student_user_id === child.student_user_id));
+              const lessons =
+                child.session_count +
+                data.direct_balances
+                  .filter((row) => row.student_user_id === child.student_user_id)
+                  .reduce((sum, row) => sum + row.session_count, 0);
+              return (
+                <BalanceRow
+                  key={child.student_user_id}
+                  name={child.student_name}
+                  detail={`${lessons} sessions · ${formatCents(child.charged_cents + mine.charged)} charged`}
+                  balance={child.balance_cents + (mine.charged - mine.paid)}
+                />
+              );
+            })}
           </ul>
         )}
       </Panel>

@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/payments/billing-page.tsx @ 1132322 -- the Payments list (the
 // phone's stacked cards) and the delete AlertDialog, as a native confirmation. The office may open
 // a payment to correct it and delete it; everybody else reads the payments the server scoped to
-// them (the party, or one of their children).
+// them (the party, or one of their children). Phase 54: in a space paid directly a payment names the
+// tutor the family paid ("· to Diego Ramos"), and that tutor may correct and delete it too.
 import { PAYMENT_FORM_LABELS, formatCents, type Payment } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Alert, Pressable, View } from 'react-native';
@@ -19,7 +20,7 @@ import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useDeletePayment } from './api';
-import { paymentDirectionText } from './payment-format';
+import { mayChangePayment, paymentDirectionText, paymentPayeeText } from './payment-format';
 
 function openEdit(payment: Payment) {
   router.push({ pathname: '/payment-form', params: { id: payment.id } });
@@ -100,6 +101,7 @@ export function PaymentLog({
               <Text variant="bodySmall" numberOfLines={1} style={{ color: muted }}>
                 {direction}
                 {payment.student_name ? ` · for ${payment.student_name}` : ''}
+                {paymentPayeeText(payment, user?.id, isAdmin)}
               </Text>
               <Text variant="bodySmall" style={{ color: muted }}>
                 {formatPaidOn(payment.paid_at, timeZone, today, true)} · {PAYMENT_FORM_LABELS[payment.method]}
@@ -117,7 +119,7 @@ export function PaymentLog({
         return (
           <View key={payment.id}>
             {index > 0 ? <Divider /> : null}
-            {isAdmin ? (
+            {mayChangePayment(payment, user?.id, isAdmin) ? (
               <SwipeRow
                 testID={`billing-payment-${payment.id}`}
                 background={theme.colors.surface}

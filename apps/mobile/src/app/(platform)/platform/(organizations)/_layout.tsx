@@ -8,11 +8,9 @@ export default function OrganizationsStack() {
   const detail = useStackOptions({ large: false });
   return (
     <Stack screenOptions={options}>
-      <Stack.Screen
-        name="index"
-        options={{ title: 'Spaces', headerRight: () => <ConsoleHeaderButtons /> }}
-      />
+      <Stack.Screen name="index" options={{ title: 'Spaces', headerRight: () => <ConsoleHeaderButtons /> }} />
       <Stack.Screen name="organizations/[id]" options={{ ...detail, title: '' }} />
+      <Stack.Screen name="businesses" options={{ ...detail, title: 'Organizations' }} />
     </Stack>
   );
 }

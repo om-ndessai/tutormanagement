@@ -95,6 +95,13 @@ export const AUDIT_ACTIONS = [
   'organization.settings_updated',
   'organization.admin_added',
   'organization.admin_removed',
+  // Phase 54: the organization that runs a space's money, and its payer details.
+  'organization.business_set',
+  'organization.business_cleared',
+  'business.created',
+  'business.updated',
+  'business.archived',
+  'business.restored',
 
   'platform_admin.added',
   'person.updated_by_platform',
@@ -225,6 +232,12 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'organization.settings_updated': 'Organization settings updated',
   'organization.admin_added': 'Admin added by the platform',
   'organization.admin_removed': 'Admin removed by the platform',
+  'organization.business_set': 'Organization chosen for the space',
+  'organization.business_cleared': 'Space now paid directly',
+  'business.created': 'Organization created',
+  'business.updated': 'Organization details updated',
+  'business.archived': 'Organization archived',
+  'business.restored': 'Organization restored',
 
   'platform_admin.added': 'Platform admin added',
   'person.updated_by_platform': 'Shared details updated by the platform',

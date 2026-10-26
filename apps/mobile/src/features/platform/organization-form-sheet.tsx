@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/platform/organization-dialog.tsx @ 1132322 (the form).
 // Creating or editing an organization: its name and address name, its look (palette, the built-in
 // logo), its clock and its email notifications. Logos and admins live on the organization's screen
-// (they need it to exist). Phase 50: creating also picks its feature sets. The swatch colours are each palette's own (ORG_PALETTE_HEX), as data.
+// (they need it to exist). Phase 50: creating also picks its feature sets. Phase 54 (@ 24066d9, working
+// tree): the Organization that runs its money, or Paid directly; a change applies from now on. The swatch colours are each palette's own (ORG_PALETTE_HEX), as data.
 import {
   FEATURE_SETS,
   FEATURE_SET_LABELS,
@@ -9,6 +10,7 @@ import {
   ORG_PALETTE_LABELS,
   ORG_TIME_ZONES,
   ORG_TIME_ZONE_LABELS,
+  PAID_DIRECTLY_LABEL,
   type OrgPalette,
   type OrgTimeZone,
   type OrganizationListItem,
@@ -31,8 +33,17 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
-import { useCreateOrganization, useOrganizations, useUpdateOrganization, useUpdateOrganizationFeatures } from './api';
 import {
+  useBusinesses,
+  useCreateOrganization,
+  useOrganizations,
+  useSetSpaceBusiness,
+  useUpdateOrganization,
+  useUpdateOrganizationFeatures,
+} from './api';
+import {
+  DIRECT,
+  businessChange,
   formFromOrganization,
   palettesOnOffer,
   slugFrom,
@@ -74,6 +85,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   const create = useCreateOrganization();
   const update = useUpdateOrganization();
   const updateFeatures = useUpdateOrganizationFeatures();
+  const businesses = useBusinesses();
+  const setBusiness = useSetSpaceBusiness();
   const [form, setForm] = useState<OrgFormState>(() => formFromOrganization(existing));
   const [slugTouched, setSlugTouched] = useState(Boolean(existing));
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -81,7 +94,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   // What was typed is not lost to a swipe or Back (ux-audit F-3).
   const dirty = useDirty(form);
   const { leave } = useUnsavedChangesGuard(dirty);
-  const pending = create.isPending || update.isPending || updateFeatures.isPending;
+  const pending = create.isPending || update.isPending || updateFeatures.isPending || setBusiness.isPending;
 
   function set<K extends keyof OrgFormState>(key: K, value: OrgFormState[K]) {
     setForm((previous) => ({ ...previous, [key]: value }));
@@ -102,6 +115,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         await update.mutateAsync({ id: existing.id, input: verdict.input });
         const trust = trustBody(existing, form.quest_trusted);
         if (trust) await updateFeatures.mutateAsync({ id: existing.id, input: trust });
+        const business = businessChange(existing, form);
+        if (business) await setBusiness.mutateAsync({ id: existing.id, ...business });
         toast.success(`${form.name} saved.`);
       } else {
         await create.mutateAsync(verdict.input);
@@ -177,6 +192,33 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         onChange={(zone) => set('time_zone', zone as OrgTimeZone)}
         error={errors.time_zone}
       />
+
+      {/* Phase 54: who families pay. An organization (its TIN, its 1099s, its cut), or nobody: paid
+          directly, each family paying the tutor of each lesson. Applies going forward. */}
+      <View style={{ gap: space.xs }}>
+        <OptionPicker
+          testID="org-form-business"
+          label="Organization"
+          placeholder={PAID_DIRECTLY_LABEL}
+          options={[
+            { id: DIRECT, label: PAID_DIRECTLY_LABEL },
+            ...(businesses.data?.data ?? [])
+              .filter((b) => !b.archived_at || b.id === existing?.business?.id)
+              .map((b) => ({ id: b.id, label: b.name })),
+          ]}
+          value={form.business_id}
+          onChange={(value) => set('business_id', value)}
+          error={errors.business_id}
+          defaultOpen={false}
+          scroll
+        />
+        <Text testID="org-form-business-hint" variant="bodySmall" style={{ color: muted }}>
+          {form.business_id === DIRECT
+            ? 'Families pay each tutor directly: one price per lesson, nobody’s cut, no 1099s from the space.'
+            : 'Families pay the organization, which pays the tutors and files their 1099s.'}
+          {existing ? ' A change applies from now on; recorded lessons and payments keep theirs.' : ''}
+        </Text>
+      </View>
 
       <View
         style={{

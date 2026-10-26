@@ -1,5 +1,7 @@
-# Question Quest (Phase 42), a question answered with a number. Sofia, started at G5 (whose first
-# question locally asks for a number), lands in Quest: no choices, a number field whose keypad has the
+# Question Quest (Phase 42), a question answered with a number. Sofia, started at G5, has first
+# answered (through the local API) the choice questions the sample bank serves ahead of G5's first
+# number question (UNTIL_NUMBER; since Phase 49's sample the level leads with choices), so she lands in
+# Quest on a number question: no choices, a number field whose keypad has the
 # fraction bar and the minus sign. She types a fraction; Return only puts the keyboard away -- nothing
 # is sent until Submit, as nothing can be taken back. Then "Saved. +1 point", and her points up by one.
 # The switch is off again at the end.
@@ -10,6 +12,7 @@ onFlowStart:
       file: ../../scripts/quest-start.js
       env:
         LEVEL: NC26.5
+        UNTIL_NUMBER: '1'
 onFlowComplete:
   - runScript: ../../scripts/quest-end.js
 tags:

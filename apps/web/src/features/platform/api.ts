@@ -2,6 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   AddOrganizationAdminInput,
   ApiOk,
+  Business,
+  BusinessListItem,
+  CreateBusinessInput,
+  UpdateBusinessInput,
   CreateOrganizationInput,
   OrganizationFeaturesInput,
   LogoKind,
@@ -21,7 +25,58 @@ export const platformKeys = {
   admins: (id: string) => ['platform', 'organizations', id, 'admins'] as const,
   platformAdmins: ['platform', 'admins'] as const,
   audit: ['platform', 'audit'] as const,
+  businesses: ['platform', 'businesses'] as const,
 };
+
+// ---------------------------------------------------------------------------
+// Phase 54: organizations in the money sense ("businesses" in the code)
+// ---------------------------------------------------------------------------
+
+export function useBusinesses() {
+  return useQuery({
+    queryKey: platformKeys.businesses,
+    queryFn: () => apiClient.get<ApiOk<BusinessListItem[]>>('/platform/businesses'),
+  });
+}
+
+export function useCreateBusiness() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: CreateBusinessInput) => apiClient.post<ApiOk<Business>>('/platform/businesses', input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.businesses }),
+  });
+}
+
+export function useUpdateBusiness() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: UpdateBusinessInput }) =>
+      apiClient.patch<ApiOk<Business>>(`/platform/businesses/${id}`, input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.businesses }),
+  });
+}
+
+export function useArchiveBusiness() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, archived }: { id: string; archived: boolean }) =>
+      apiClient.post<ApiOk<Business>>(`/platform/businesses/${id}/${archived ? 'archive' : 'restore'}`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: platformKeys.businesses }),
+  });
+}
+
+/** Which organization runs a space's money from now on; null is "paid directly". */
+export function useSetSpaceBusiness() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, business_id }: { id: string; business_id: string | null }) =>
+      apiClient.put<ApiOk<Organization>>(`/platform/organizations/${id}/business`, { business_id }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: platformKeys.organizations });
+      void queryClient.invalidateQueries({ queryKey: platformKeys.businesses });
+    },
+  });
+}
 
 export function useOrganizations() {
   return useQuery({

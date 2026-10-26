@@ -1,0 +1,113 @@
+# Phase 54, the console's Organizations (Nav, a platform admin). The Spaces list says who runs each
+# space's money: `solo` is "paid directly", `chmi` is run by its own organization. A new space's form
+# offers the Organization choice (paid directly, or one), and is left unsaved. Then Organizations, from
+# the Spaces tab: who runs what ("runs Chapel Hill Math Institute"); he makes one, gives it a TIN, sees
+# it "runs no space" and archives it, after which a space's form no longer offers it.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: platform-org-solo
+    centerElement: true
+- assertVisible: '.*paid directly'
+- assertVisible: '.*run by Chapel Hill Math Institute'
+- scrollUntilVisible:
+    element:
+      id: platform-org-new
+    direction: UP
+# The space form offers the choice; nothing is saved (the form stays untouched, so Cancel closes it).
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: org-form-business
+    centerElement: true
+- assertVisible:
+    id: org-form-business
+    text: 'Organization: Paid directly \(no organization\)\. Change'
+- assertVisible: 'Families pay each tutor directly: one price per lesson.*'
+- tapOn:
+    id: org-form-business
+- extendedWaitUntil:
+    visible:
+      id: org-form-business-0a000000-0000-4000-8000-000000000001
+    timeout: 5000
+- assertVisible:
+    id: org-form-business-0b000000-0000-4000-8000-000000000001
+- takeScreenshot: tutor-spaces-console-space-form
+- tapOn:
+    id: org-form-business
+- scrollUntilVisible:
+    element: 'Cancel'
+- tapOn: 'Cancel'
+- extendedWaitUntil:
+    notVisible:
+      id: screen-organization-form
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+# Organizations.
+- tapOn:
+    id: platform-businesses
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-businesses
+    timeout: 10000
+- assertVisible:
+    id: platform-business-0a000000-0000-4000-8000-000000000001
+- assertVisible: 'TIN on file · runs Chapel Hill Math Institute'
+- takeScreenshot: tutor-spaces-console-list
+- tapOn:
+    id: platform-business-new
+- extendedWaitUntil:
+    visible:
+      id: screen-business-form
+    timeout: 10000
+- tapOn:
+    id: business-form-name
+- inputText: 'Mobile Flow Holdings'
+- tapOn:
+    id: business-form-tin
+- inputText: '12-3456789'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: business-form-save
+- tapOn:
+    id: business-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Flow Holdings saved.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-businesses
+    timeout: 10000
+- scrollUntilVisible:
+    element: 'Mobile Flow Holdings'
+- assertVisible: 'TIN on file · runs no space'
+- tapOn:
+    text: 'Archive Mobile Flow Holdings'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Archive Mobile Flow Holdings\?'
+    timeout: 10000
+- tapOn: 'Archive'
+- extendedWaitUntil:
+    visible: 'Mobile Flow Holdings archived.'
+    timeout: 10000
+- assertVisible: 'Archived'

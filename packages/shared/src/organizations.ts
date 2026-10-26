@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { refuseSsn } from './tax.js';
 import { USER_ROLES, type UserRole, optionalText } from './users.js';
+import { businessIdSchema, type SpaceBusiness } from './businesses.js';
 
 // ---------------------------------------------------------------------------
 // Organizations (docs/multi-organization.md)
@@ -126,7 +127,14 @@ export const organizationFieldsSchema = z.object({
   email_notifications: z.boolean(),
 });
 
+/** Phase 54: a space with no organization is paid directly. Shared by the reads and the screens. */
+export function paidDirectly(org: { business: SpaceBusiness | null }): boolean {
+  return org.business === null;
+}
+
 export const createOrganizationSchema = organizationFieldsSchema.extend({
+  /** Phase 54: the organization that runs its money; null (the default) is paid directly. */
+  business_id: businessIdSchema.nullable().default(null),
   palette: z.enum(ORG_PALETTES).default('platform'),
   builtin_logo: z.enum(BUILTIN_LOGOS).nullable().default(null),
   time_zone: z.enum(ORG_TIME_ZONES).default(DEFAULT_ORG_TIME_ZONE),
@@ -237,14 +245,24 @@ export interface Organization extends OrganizationBrand {
   created_via: OrgCreatedVia;
   /** Phase 51: whether its Quest reviews approve bank questions for every organization. */
   quest_trusted: boolean;
+  /**
+   * Phase 54: the organization (a `businesses` row) that runs this space's money,
+   * or null: PAID DIRECTLY, families paying each lesson's tutor (`paidDirectly`).
+   */
+  business: SpaceBusiness | null;
   calendar_domain: string;
   archived_at: string | null;
   created_at: string;
   updated_at: string;
 }
 
-/** The payer details, readable by the organization's admins only. */
+/**
+ * The payer details, readable by the organization's admins only. Since Phase 54
+ * they are the space's organization's (`business`), and all null in a space
+ * paid directly, which has no payer.
+ */
 export interface OrganizationSettings {
+  business: SpaceBusiness | null;
   tin: string | null;
   payer_address_line1: string | null;
   payer_address_line2: string | null;

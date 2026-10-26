@@ -60,6 +60,7 @@ export async function recordRunningSession(
     charge_amount_cents: computeAmountCents(times.duration_minutes, rates.chargeRateCents),
     notes,
     auto_stopped: times.auto_stopped,
+    paid_directly: rates.paidDirectly,
     recorded_by_user_id: actor?.id ?? null,
   });
 

@@ -161,6 +161,8 @@ describe('the child card', () => {
 describe("a parent's Home", () => {
   const parent: ParentDashboard = {
     kind: 'parent',
+    paid_directly: false,
+    direct_balances: [],
     children: [
       {
         student_user_id: 'student-1',

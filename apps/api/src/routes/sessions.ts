@@ -337,6 +337,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       notes: input.notes,
       // A person is asserting what happened, so the end is observed, not imposed.
       auto_stopped: false,
+      paid_directly: priced.paidDirectly,
       recorded_by_user_id: viewer.id,
     });
 
@@ -513,6 +514,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       notes: draft.notes,
       // A person is asserting what happened, so the end is observed.
       auto_stopped: false,
+      paid_directly: priced.paidDirectly,
       recorded_by_user_id: viewer.id,
     });
 
@@ -840,9 +842,18 @@ export const sessionsRoutes = new Hono<AppEnv>()
         // Correcting the times re-derives both amounts, but the rates stay
         // frozen at what applied when the lesson was recorded -- unless the
         // mode changed, which is what decides WHICH rate applies.
+        // Phase 54: a lesson keeps the model it was recorded under. One paid
+        // directly stays one price; one recorded under an organization cannot be
+        // re-priced once the space is paid directly, because its family price is
+        // the organization's.
+        if (mode !== existing.mode && !existing.paid_directly && priced.paidDirectly) {
+          throw new ApiError(409, 'model_changed',
+            'This lesson was recorded while an organization ran the space; its mode cannot be changed now.');
+        }
         const tutorRate = mode === existing.mode ? existing.tutor_rate_cents : priced.tutorRateCents;
-        const chargeRate =
-          mode === existing.mode ? existing.charge_rate_cents : priced.chargeRateCents;
+        const chargeRate = existing.paid_directly
+          ? tutorRate
+          : mode === existing.mode ? existing.charge_rate_cents : priced.chargeRateCents;
 
         derived = {
           duration_minutes: priced.durationMinutes,

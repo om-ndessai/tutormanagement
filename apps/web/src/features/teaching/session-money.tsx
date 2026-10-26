@@ -10,7 +10,8 @@ type Money = Pick<
   | 'tutor_amount_cents'
   | 'charge_rate_cents'
   | 'charge_amount_cents'
->;
+> &
+  Partial<Pick<TutoringSession, 'paid_directly'>>;
 
 /**
  * A lesson's money, said from the reader's side of it (Phase 17).
@@ -42,14 +43,27 @@ export function SessionMoney({
   const tutor = session.money_view === 'tutor';
   const amount = tutor ? session.tutor_amount_cents : session.charge_amount_cents;
   const rate = tutor ? session.tutor_rate_cents : session.charge_rate_cents;
-  const label = admin ? 'Charged' : tutor ? 'Your pay' : 'You pay';
+  // Phase 54: a lesson paid directly is one price the family pays the tutor;
+  // there is no cut, so nobody is shown one.
+  const direct = Boolean(session.paid_directly);
+  const label = direct
+    ? admin
+      ? 'Paid to the tutor'
+      : tutor
+        ? 'Family pays you'
+        : 'You pay the tutor'
+    : admin
+      ? 'Charged'
+      : tutor
+        ? 'Your pay'
+        : 'You pay';
 
   if (compact) {
     return (
       <span className={cn('text-right', className)}>
         <span className="block text-sm font-medium tabular-nums">{formatCents(amount)}</span>
         <span className="text-muted-foreground block text-[10px] leading-tight">
-          {admin ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
+          {admin && !direct ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
         </span>
       </span>
     );
@@ -60,7 +74,7 @@ export function SessionMoney({
       <p className="text-muted-foreground text-[10px] font-medium tracking-wide uppercase">{label}</p>
       <p className="font-display font-semibold tabular-nums">{formatCents(amount)}</p>
       <p className="text-muted-foreground text-[11px]">{formatCents(rate)}/hr</p>
-      {admin && (
+      {admin && !direct && (
         <p className="text-muted-foreground text-[11px] tabular-nums">
           Tutor {formatCents(session.tutor_amount_cents)} · {brand.short}{' '}
           <span className="text-foreground font-medium">{formatCents(marginCents(session))}</span>
@@ -74,7 +88,9 @@ export function SessionMoney({
 export function describeSessionMoney(session: Money): string {
   switch (session.money_view) {
     case 'admin':
-      return `its ${formatCents(session.charge_amount_cents)} charge and ${formatCents(session.tutor_amount_cents)} tutor pay`;
+      return session.paid_directly
+        ? `its ${formatCents(session.charge_amount_cents)} price`
+        : `its ${formatCents(session.charge_amount_cents)} charge and ${formatCents(session.tutor_amount_cents)} tutor pay`;
     case 'tutor':
       return `your ${formatCents(session.tutor_amount_cents)} pay for it`;
     case 'family':

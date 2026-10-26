@@ -14,10 +14,36 @@ const WORD = /\b[Oo]rganizations?\b/;
 const ALLOWED_TEXT = new Set([
   // The payer on a 1099 is an organization, as on the web.
   'The organization’s EIN',
+  // Phase 54 (docs/tutor-spaces-plan.md): "Organization" is the word on screen for the record that
+  // runs a space's money (a business in the code) -- the owner's choice, as on the web.
+  'Families pay the organization, which pays the tutors and files their 1099s.',
+  'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+  'No organization runs this space’s money: a lesson has one price, the family pays the tutor who taught it, and nobody takes a cut. Tutors record the payments they receive, and each gets a year-end summary of them; the space files no 1099s. To have an organization run it, ask the platform administrator.',
+]);
+
+/** Phase 54: the console's Organizations (businesses), where the word is the record itself. */
+const ALLOWED_FILES = new Set([
+  'features/platform/business-form-sheet.tsx',
+  'features/platform/businesses-screen.tsx',
+]);
+/** Phase 54: the record's name alone, where a file shows it (`<file>:<text>`). */
+const ALLOWED_AT = new Set([
+  'app/(platform)/platform/(organizations)/_layout.tsx:Organizations',
+  'features/platform/organizations-screen.tsx:Organizations',
+  'features/platform/organization-form-sheet.tsx:Organization',
 ]);
 
 /** Props and keys whose strings are never shown as words. */
-const NON_TEXT_PROPS = new Set(['testID', 'nativeID', 'name', 'href', 'pathname', 'queryKey', 'code', 'kind']);
+const NON_TEXT_PROPS = new Set([
+  'testID',
+  'nativeID',
+  'name',
+  'href',
+  'pathname',
+  'queryKey',
+  'code',
+  'kind',
+]);
 /** Search keywords: matched against what is typed, never shown, so both words still find it. */
 const KEYWORD_PROPS = new Set(['value', 'keywords']);
 
@@ -25,7 +51,11 @@ function sourceFiles(dir: string): string[] {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) return entry.name === 'test' ? [] : sourceFiles(full);
-    if (!/\.tsx?$/.test(entry.name) || /\.test\.tsx?$/.test(entry.name) || /\.generated\.ts$/.test(entry.name))
+    if (
+      !/\.tsx?$/.test(entry.name) ||
+      /\.test\.tsx?$/.test(entry.name) ||
+      /\.generated\.ts$/.test(entry.name)
+    )
       return [];
     return [full];
   });
@@ -41,10 +71,14 @@ function isJsxChild(node: ts.Node): boolean {
   let current = node.parent;
   while (
     current &&
-    (ts.isConditionalExpression(current) || ts.isParenthesizedExpression(current) || ts.isBinaryExpression(current))
+    (ts.isConditionalExpression(current) ||
+      ts.isParenthesizedExpression(current) ||
+      ts.isBinaryExpression(current))
   )
     current = current.parent;
-  return Boolean(current && ts.isJsxExpression(current) && current.parent && !ts.isJsxAttribute(current.parent));
+  return Boolean(
+    current && ts.isJsxExpression(current) && current.parent && !ts.isJsxAttribute(current.parent),
+  );
 }
 
 function propertyNameOf(node: ts.Node): string | null {
@@ -77,7 +111,15 @@ export function findOrganizationWords(file: string): string[] {
   const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   const hits: string[] = [];
   const check = (node: ts.Node, value: string) => {
-    if (!WORD.test(value) || (isToken(value) && !isJsxChild(node)) || ALLOWED_TEXT.has(value.trim()) || skipped(node)) return;
+    if (
+      !WORD.test(value) ||
+      (isToken(value) && !isJsxChild(node)) ||
+      ALLOWED_TEXT.has(value.trim().replace(/\s+/g, ' ')) ||
+      ALLOWED_FILES.has(path.relative(SRC, file)) ||
+      ALLOWED_AT.has(`${path.relative(SRC, file)}:${value.trim()}`) ||
+      skipped(node)
+    )
+      return;
     const { line } = source.getLineAndCharacterOfPosition(node.getStart());
     hits.push(`${path.relative(SRC, file)}:${line + 1}: ${value.trim()}`);
   };
@@ -108,9 +150,9 @@ describe('the word "space" on screen (Phase 52)', () => {
         "const key = ['organization', 'code'];",
         "const route = '/organization';",
         "const action = { value: 'switch space organization' };",
-        "const a = <Text testID=\"organization-stub\">Only an administrator can see the organization’s settings.</Text>;",
+        'const a = <Text testID="organization-stub">Only an administrator can see the organization’s settings.</Text>;',
         "const b = { title: 'Organization' };",
-        "const c = `Belongs to ${n} organizations.`;",
+        'const c = `Belongs to ${n} organizations.`;',
         "const d = <Text>{n === 1 ? 'organization' : 'spaces'}</Text>;",
       ].join('\n'),
     );

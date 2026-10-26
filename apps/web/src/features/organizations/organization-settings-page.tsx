@@ -40,6 +40,7 @@ type SettingsForm = Record<
     | 'canvas_assessments_unreviewed'
     | 'canvas_assessment_questions'
     | 'gamify_question_quest'
+    | 'business'
   >,
   string
 >;
@@ -76,6 +77,7 @@ export function OrganizationSettingsPage() {
       canvas_assessments_unreviewed: _unreviewed,
       canvas_assessment_questions: _questions,
       gamify_question_quest: _quest,
+      business: _business,
       ...payer
     } = loaded;
     setForm(
@@ -137,18 +139,41 @@ export function OrganizationSettingsPage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
-        {/* Phase 50: the 1099 payer belongs to Tutoring (payments and tax). */}
-        {featureAllowed(organization, 'tutoring') && (
+        {/* Phase 50: the 1099 payer belongs to Tutoring (payments and tax). Phase 54: it is the
+            space's organization's; a space paid directly has none. */}
+        {featureAllowed(organization, 'tutoring') && !organization.business && (
+          <Card className="py-0" data-testid="paid-directly-card">
+            <CardContent className="grid gap-2 p-5 text-sm">
+              <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+                Payments
+              </h2>
+              <p className="font-medium">Families pay each tutor directly</p>
+              <p className="text-muted-foreground">
+                No organization runs this space’s money: a lesson has one price, the family pays the
+                tutor who taught it, and nobody takes a cut. Tutors record the payments they receive, and
+                each gets a year-end summary of them; the space files no 1099s. To have an organization
+                run it, ask the platform administrator.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+        {featureAllowed(organization, 'tutoring') && organization.business && (
         <Card className="py-0">
           <CardContent className="p-5">
             <form className="grid gap-4" onSubmit={save} aria-label="1099 payer details">
               <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
                 1099 payer
               </h2>
+              <p className="text-sm" data-testid="space-business-name">
+                Run by <span className="font-medium">{organization.business.name}</span>
+                <span className="text-muted-foreground">
+                  {' '}— families pay it, and it files the 1099s. Its details are shared by every space it runs.
+                </span>
+              </p>
               {field(
                 'tin',
                 'Payer TIN',
-                'The EIN the space files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+                'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
                 '12-3456789',
               )}
               <div className="grid gap-4 sm:grid-cols-2">

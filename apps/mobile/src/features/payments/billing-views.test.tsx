@@ -76,6 +76,8 @@ const paid: Payment = {
   notes: null,
   created_at: '2026-09-11T16:00:00Z',
   updated_at: '2026-09-11T16:00:00Z',
+  payee_user_id: null,
+  payee_name: null,
 };
 
 function serve(balances: BalancesResponse, payments: Payment[]) {
@@ -98,9 +100,11 @@ describe('Billing per reader', () => {
     mockAuth.mockReturnValue({ user: { id: 'admin', roles: ['admin', 'tutor'] } });
     serve(
       {
+        paid_directly: false,
+        direct: [],
         tutors: [tutorRow],
         students: [familyRow],
-        totals: { owed_to_tutors_cents: 396274, owed_by_families_cents: 505975, topups_due_cents: 23250 },
+        totals: { owed_directly_cents: 0, owed_to_tutors_cents: 396274, owed_by_families_cents: 505975, topups_due_cents: 23250 },
       },
       [paid],
     );
@@ -120,9 +124,11 @@ describe('Billing per reader', () => {
     mockAuth.mockReturnValue({ user: { id: TUTOR, roles: ['tutor'] } });
     serve(
       {
+        paid_directly: false,
+        direct: [],
         tutors: [tutorRow],
         students: [],
-        totals: { owed_to_tutors_cents: 0, owed_by_families_cents: 0, topups_due_cents: null },
+        totals: { owed_directly_cents: 0, owed_to_tutors_cents: 0, owed_by_families_cents: 0, topups_due_cents: null },
       },
       [
         {
@@ -152,9 +158,11 @@ describe('Billing per reader', () => {
     mockAuth.mockReturnValue({ user: { id: PARENT, roles: ['parent'] } });
     serve(
       {
+        paid_directly: false,
+        direct: [],
         tutors: [],
         students: [familyRow],
-        totals: { owed_to_tutors_cents: 0, owed_by_families_cents: 8000, topups_due_cents: null },
+        totals: { owed_directly_cents: 0, owed_to_tutors_cents: 0, owed_by_families_cents: 8000, topups_due_cents: null },
       },
       [paid],
     );
@@ -172,9 +180,11 @@ describe('the payment sheet', () => {
     mockAuth.mockReturnValue({ user: { id: PARENT, roles: ['parent'] } });
     serve(
       {
+        paid_directly: false,
+        direct: [],
         tutors: [],
         students: [],
-        totals: { owed_to_tutors_cents: 0, owed_by_families_cents: 0, topups_due_cents: null },
+        totals: { owed_directly_cents: 0, owed_to_tutors_cents: 0, owed_by_families_cents: 0, topups_due_cents: null },
       },
       [],
     );

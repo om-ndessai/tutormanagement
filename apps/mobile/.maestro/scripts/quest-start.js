@@ -44,6 +44,20 @@ for (var i = 0; i < answers; i++) {
   });
 }
 
+// With env UNTIL_NUMBER, Sofia answers the choice questions served first (the first choice) until
+// the next one asks for a number, so a flow can test the number field. The seed's sample bank leads
+// some levels with choices (G5 since Phase 49); a few answers, on the same level, never more.
+if (typeof UNTIL_NUMBER !== 'undefined' && UNTIL_NUMBER) {
+  var level = call(SOFIA, 'GET', '/quest/me').data.level_id;
+  for (var tries = 0; ; tries++) {
+    var served = call(SOFIA, 'GET', '/quest/me').data;
+    if (!served.question || served.level_id !== level) throw new Error('No number question at ' + level);
+    if (served.question.kind !== 'choice') break;
+    if (tries >= 25) throw new Error('No number question in the first 25 at ' + level);
+    call(SOFIA, 'POST', '/quest/answers', { question_id: served.question.id, answer: served.question.choices[0] });
+  }
+}
+
 var me = call(SOFIA, 'GET', '/quest/me').data;
 output.questPointsNow = points(me.points);
 output.questPointsNext = points(me.points + 1);

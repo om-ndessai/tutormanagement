@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { createMiddleware } from 'hono/factory';
 import { z } from 'zod';
 import {
   listPaymentsQuerySchema,
@@ -11,6 +12,10 @@ import {
   type BalancesResponse,
   type Payment,
   taxSummaryQuerySchema,
+  directSummaryQuerySchema,
+  paidDirectly,
+  type PaymentPayload,
+  type User,
   monthlyFinanceQuerySchema,
   type MonthlyFinanceResponse,
   type TutorTaxStatus,
@@ -27,9 +32,10 @@ import { requireAdmin } from '../middleware/require-admin.js';
 import { computeBalances, computeMonthlyFinance } from '../repositories/balances.js';
 import { listTutorTaxStatus } from '../repositories/users.js';
 import {
+  everPaired,
+  listDirectPayments,
   createPayment,
   deletePayment,
-  getPayment,
   getVisiblePayment,
   listPayments,
   updatePayment,
@@ -78,6 +84,82 @@ async function assertParties(
   }
 }
 
+/**
+ * Phase 54: the two ways a space is paid. Run by an organization, only its
+ * admins record money, in either direction, with no payee. Paid directly, a
+ * payment is a family paying a tutor: it names the tutor (the payee), who must
+ * have taught the student here; the tutor records what they received, and the
+ * space's admins may record any. Nobody "pays a tutor" there (409).
+ */
+async function assertPaymentModel(
+  db: D1Database,
+  org: OrgId,
+  direct: boolean,
+  viewer: User,
+  input: PaymentPayload,
+) {
+  if (!direct) {
+    if (!isAdmin(viewer)) {
+      throw new ApiError(403, 'forbidden', 'Only an administrator can record payments.');
+    }
+    if (input.payee_user_id) {
+      throw ApiError.validation('Please correct the highlighted fields.', {
+        payee_user_id: ['Families pay the organization here, not a tutor.'],
+      });
+    }
+    return;
+  }
+
+  if (input.direction !== 'from_parent') {
+    throw new ApiError(409, 'paid_directly',
+      'This space is paid directly: families pay each tutor, so nobody records a payment to a tutor.');
+  }
+  if (!input.payee_user_id) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      payee_user_id: ['Choose the tutor the family paid.'],
+    });
+  }
+  if (!isAdmin(viewer) && input.payee_user_id !== viewer.id) {
+    throw new ApiError(403, 'forbidden', 'You can only record payments made to you.');
+  }
+  const payee = await getLiveUserById(db, org, input.payee_user_id);
+  if (!payee || !payee.roles.includes('tutor')) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      payee_user_id: ['That person is not a tutor here.'],
+    });
+  }
+  if (input.student_user_id && !(await everPaired(db, org, payee.id, input.student_user_id))) {
+    throw ApiError.validation('Please correct the highlighted fields.', {
+      student_user_id: [`${payee.full_name} has not taught that student here.`],
+    });
+  }
+}
+
+/**
+ * Who may change or delete a recorded payment: the space's admins, and (Phase
+ * 54) the tutor a family paid directly, for payments made to them.
+ */
+async function mayChangePayment(db: D1Database, org: OrgId, viewer: User, id: string): Promise<Payment> {
+  const payment = await getVisiblePayment(db, org, viewer, id);
+  if (!payment) throw ApiError.notFound('That payment does not exist.');
+  if (!isAdmin(viewer) && payment.payee_user_id !== viewer.id) {
+    throw new ApiError(403, 'forbidden', 'Only an administrator can change this payment.');
+  }
+  return payment;
+}
+
+/**
+ * Before validation, as requireAdmin was: in a space run by an organization only
+ * its admins record or change money. Paid directly, the handler decides
+ * (assertPaymentModel, mayChangePayment).
+ */
+const requireAdminUnlessPaidDirectly = createMiddleware<AppEnv>(async (c, next) => {
+  if (!paidDirectly(c.get('org')) && !isAdmin(c.get('user'))) {
+    throw new ApiError(403, 'forbidden', 'Only an administrator can record payments.');
+  }
+  await next();
+});
+
 export const paymentsRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listPaymentsQuerySchema), async (c) => {
@@ -104,7 +186,8 @@ export const paymentsRoutes = new Hono<AppEnv>()
     });
 
     const body = buildCsv(
-      ['Date', 'Direction', 'Person', 'For student', 'Form', 'Amount (USD)', 'Reference', 'Notes'],
+      // Phase 54's column last, so existing spreadsheets keep their layout.
+      ['Date', 'Direction', 'Person', 'For student', 'Form', 'Amount (USD)', 'Reference', 'Notes', 'Paid to tutor'],
       payments.map((payment) => [
         payment.paid_at.slice(0, 10),
         PAYMENT_DIRECTION_LABELS[payment.direction],
@@ -114,6 +197,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
         csvMoney(payment.amount_cents),
         payment.reference ?? '',
         payment.notes ?? '',
+        payment.payee_name ?? '',
       ]),
     );
 
@@ -184,6 +268,32 @@ export const paymentsRoutes = new Hono<AppEnv>()
   })
 
   /**
+   * Phase 54: what families paid tutors directly in a year -- the tutor's own
+   * year-end summary (no 1099 is issued for it), or every tutor's for an admin.
+   * Anyone else gets a file with no rows: nobody is paid directly to them.
+   */
+  .get('/direct-summary.csv', zValidator('query', directSummaryQuerySchema), async (c) => {
+    const { year } = c.req.valid('query');
+    const viewer = c.get('user');
+    const rows = await listDirectPayments(c.env.DB, c.get('org').id, year,
+      isAdmin(viewer) ? null : viewer.id);
+
+    const body = buildCsv(
+      ['Tutor', 'Date', 'From', 'For student', 'Form', 'Amount (USD)', 'Reference'],
+      rows.map((row) => [
+        row.tutor_name,
+        row.paid_at.slice(0, 10),
+        row.party_name,
+        row.student_name,
+        PAYMENT_FORM_LABELS[row.method as keyof typeof PAYMENT_FORM_LABELS] ?? row.method,
+        csvMoney(row.amount_cents),
+        row.reference ?? '',
+      ]),
+    );
+    return csvResponse(`${c.get('org').slug}-paid-directly-${year}.csv`, body);
+  })
+
+  /**
    * The month-by-month rundown of a financial year.
    *
    * Scoped by who is asking, in the repository rather than here: an admin gets
@@ -213,26 +323,34 @@ export const paymentsRoutes = new Hono<AppEnv>()
 
   .get('/balances', async (c) => {
     const body: ApiOk<BalancesResponse> = {
-      data: await computeBalances(c.env.DB, c.get('org').id, c.get('user')),
+      data: await computeBalances(c.env.DB, c.get('org').id, c.get('user'), paidDirectly(c.get('org'))),
     };
     return c.json(body);
   })
 
-  /** Only an admin records money: this is the institute's own ledger. */
-  .post('/', requireAdmin, zValidator('json', paymentInputSchema), async (c) => {
+  /**
+   * Run by an organization, only its admins record money: it is the
+   * organization's own ledger. Paid directly (Phase 54), a tutor records what a
+   * family paid them, and admins any payment (assertPaymentModel).
+   */
+  .post('/', requireAdminUnlessPaidDirectly, zValidator('json', paymentInputSchema), async (c) => {
     const input = c.req.valid('json');
-    await assertParties(c.env.DB, c.get('org').id, input.direction, input.party_user_id, input.student_user_id);
+    const org = c.get('org');
+    const viewer = c.get('user');
+    await assertPaymentModel(c.env.DB, org.id, paidDirectly(org), viewer, input);
+    await assertParties(c.env.DB, org.id, input.direction, input.party_user_id, input.student_user_id);
 
-    const payment = await createPayment(c.env.DB, c.get('org').id, input, c.get('user').id);
+    const payment = await createPayment(c.env.DB, org.id, input, viewer.id);
 
-    await recordAudit(c.env.DB, c.get('user'), c.get('org').id, {
+    await recordAudit(c.env.DB, viewer, org.id, {
       action: 'payment.recorded',
       // No amount: the tutor or parent it concerns reads their own log (R8).
       // The figure is on the payment itself, which the log links to.
       description:
         input.direction === 'from_parent'
           ? `Recorded a ${PAYMENT_FORM_LABELS[payment.method]} payment from ${payment.party_name}` +
-            ` for ${payment.student_name}`
+            ` for ${payment.student_name}` +
+            (payment.payee_name ? ` to ${payment.payee_name}` : '')
           : `Recorded a ${PAYMENT_FORM_LABELS[payment.method]} payment to ${payment.party_name}`,
       subject: { id: payment.party_user_id, full_name: payment.party_name },
       entity_type: 'payment',
@@ -255,11 +373,12 @@ export const paymentsRoutes = new Hono<AppEnv>()
 
   .patch(
     '/:id',
-    requireAdmin,
+    requireAdminUnlessPaidDirectly,
     zValidator('param', idParamSchema),
     zValidator('json', paymentUpdateSchema),
     async (c) => {
       const { id } = c.req.valid('param');
+      await mayChangePayment(c.env.DB, c.get('org').id, c.get('user'), id);
       const updated = await updatePayment(c.env.DB, c.get('org').id, id, c.req.valid('json'));
 
       if (!updated) throw ApiError.notFound('That payment does not exist.');
@@ -277,9 +396,9 @@ export const paymentsRoutes = new Hono<AppEnv>()
     },
   )
 
-  .delete('/:id', requireAdmin, zValidator('param', idParamSchema), async (c) => {
+  .delete('/:id', requireAdminUnlessPaidDirectly, zValidator('param', idParamSchema), async (c) => {
     const { id } = c.req.valid('param');
-    const doomed = await getPayment(c.env.DB, c.get('org').id, id);
+    const doomed = await mayChangePayment(c.env.DB, c.get('org').id, c.get('user'), id);
 
     if (!(await deletePayment(c.env.DB, c.get('org').id, id))) {
       throw ApiError.notFound('That payment does not exist.');

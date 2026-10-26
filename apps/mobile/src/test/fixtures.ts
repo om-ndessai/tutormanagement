@@ -41,6 +41,7 @@ export function anOrganization<T extends object = object>(
     feature_quest: true,
     created_via: 'console',
     quest_trusted: true,
+    business: { id: 'b-1', name: 'Fixture Organization' },
     calendar_domain: 'chmi.invalid',
     archived_at: null,
     created_at: '2026-10-01T00:00:00Z',
@@ -84,6 +85,7 @@ export function session(overrides: Partial<TutoringSession> = {}): TutoringSessi
     money_view: 'admin',
     notes: 'Fractions and word problems.',
     auto_stopped: false,
+    paid_directly: false,
     progress: null,
     ...overrides,
   } as TutoringSession;
@@ -201,6 +203,8 @@ const reflection: ReflectionDigest = {
 
 export const adminDashboard: AdminDashboard = {
   kind: 'admin',
+  paid_directly: false,
+  direct_balances: [],
   counts: { students: 50, parents: 30, tutors: 10, live_sessions: 1 },
   totals: {
     owed_to_tutors_cents: 123_400,
@@ -220,6 +224,8 @@ export const adminDashboard: AdminDashboard = {
 
 export const tutorDashboard: TutorDashboard = {
   kind: 'tutor',
+  paid_directly: false,
+  direct_balances: [],
   students: [],
   earnings: {
     user_id: 'tutor-1',

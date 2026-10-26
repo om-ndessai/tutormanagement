@@ -9,15 +9,19 @@ const SELECT_PAYMENT = `
   SELECT p.id, p.direction, p.party_user_id, party.full_name AS party_name,
          p.student_user_id, student.full_name AS student_name,
          p.amount_cents, p.method, p.paid_at, p.reference, p.notes,
+         p.payee_user_id, payee.full_name AS payee_name,
          p.created_at, p.updated_at
   FROM payments p
   JOIN users party ON party.id = p.party_user_id
   LEFT JOIN users student ON student.id = p.student_user_id
+  LEFT JOIN users payee ON payee.id = p.payee_user_id
 `;
 
 /**
- * You see a payment if you are the party to it, or if it concerns one of your
- * children. Tutors see what they were paid; parents see what they paid.
+ * You see a payment if you are the party to it, if it concerns one of your
+ * children, or (Phase 54, a space paid directly) if it was paid to you. Tutors
+ * see what they were paid; parents see what they paid. No tutor sees another
+ * tutor's (R24).
  */
 function scopeFor(org: OrgId, viewer: User): { sql: string; values: unknown[] } {
   // The organization first, for everyone: an admin's view is exactly this.
@@ -26,10 +30,11 @@ function scopeFor(org: OrgId, viewer: User): { sql: string; values: unknown[] } 
   return {
     sql:
       '(p.organization_id = ? AND (p.party_user_id = ?' +
+      ' OR p.payee_user_id = ?' +
       ' OR p.student_user_id = ?' +
       ' OR p.student_user_id IN (SELECT g.dependent_user_id FROM guardianships g' +
       ' WHERE g.organization_id = ? AND g.guardian_user_id = ?)))',
-    values: [org, viewer.id, viewer.id, org, viewer.id],
+    values: [org, viewer.id, viewer.id, viewer.id, org, viewer.id],
   };
 }
 
@@ -59,6 +64,10 @@ export async function listPayments(
   if (params.student_user_id) {
     where.push('p.student_user_id = ?');
     values.push(params.student_user_id);
+  }
+  if (params.payee_user_id) {
+    where.push('p.payee_user_id = ?');
+    values.push(params.payee_user_id);
   }
   if (params.from) {
     where.push('p.paid_at >= ?');
@@ -133,8 +142,8 @@ export async function createPayment(
     .prepare(
       `INSERT INTO payments
          (id, organization_id, direction, party_user_id, student_user_id, amount_cents, method,
-          paid_at, reference, notes, recorded_by_user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          paid_at, reference, notes, recorded_by_user_id, payee_user_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -149,6 +158,7 @@ export async function createPayment(
       input.reference,
       input.notes,
       recordedBy,
+      input.payee_user_id ?? null,
     )
     .run();
 
@@ -193,4 +203,61 @@ export async function deletePayment(db: D1Database, org: OrgId, id: string): Pro
     .bind(org, id)
     .run();
   return Boolean(result.meta.changes);
+}
+
+/** Phase 54: whether this tutor has ever been paired with this student here. */
+export async function everPaired(
+  db: D1Database,
+  org: OrgId,
+  tutorUserId: string,
+  studentUserId: string,
+): Promise<boolean> {
+  const row = await db
+    .prepare(
+      `SELECT 1 AS hit FROM assignments
+       WHERE organization_id = ? AND tutor_user_id = ? AND student_user_id = ? LIMIT 1`,
+    )
+    .bind(org, tutorUserId, studentUserId)
+    .first<{ hit: number }>();
+  return Boolean(row);
+}
+
+export interface DirectSummaryRow {
+  tutor_user_id: string;
+  tutor_name: string;
+  student_name: string;
+  party_name: string;
+  paid_at: string;
+  method: string;
+  amount_cents: number;
+  reference: string | null;
+}
+
+/**
+ * Phase 54: what families paid tutors directly in a calendar year -- one tutor's
+ * (a tutor reading their own), or every tutor's (an admin). The year-end summary
+ * a tutor works their own taxes from; nobody issues them a 1099 for it.
+ */
+export async function listDirectPayments(
+  db: D1Database,
+  org: OrgId,
+  year: number,
+  tutorUserId: string | null,
+): Promise<DirectSummaryRow[]> {
+  const result = await db
+    .prepare(
+      `SELECT p.payee_user_id AS tutor_user_id, payee.full_name AS tutor_name,
+              student.full_name AS student_name, party.full_name AS party_name,
+              p.paid_at, p.method, p.amount_cents, p.reference
+       FROM payments p
+       JOIN users payee ON payee.id = p.payee_user_id
+       JOIN users party ON party.id = p.party_user_id
+       LEFT JOIN users student ON student.id = p.student_user_id
+       WHERE p.organization_id = ? AND p.payee_user_id IS NOT NULL
+         AND p.paid_at >= ? AND p.paid_at < ? ${tutorUserId ? 'AND p.payee_user_id = ?' : ''}
+       ORDER BY payee.full_name, p.paid_at`,
+    )
+    .bind(org, `${year}-01-01`, `${year + 1}-01-01`, ...(tutorUserId ? [tutorUserId] : []))
+    .all<DirectSummaryRow>();
+  return result.results ?? [];
 }

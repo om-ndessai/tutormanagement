@@ -6,6 +6,10 @@ import {
   type JoinRequest,
   type MyJoinRequest,
   USER_ROLES,
+  type Business,
+  type BusinessListItem,
+  type CreateBusinessPayload,
+  type UpdateBusinessPayload,
   type CreateOrganizationPayload,
   type Invitation,
   type LogoContentType,
@@ -48,6 +52,8 @@ interface OrgRow {
   created_via: string;
   quest_trusted: number;
   calendar_domain: string;
+  business_id: string | null;
+  business_name: string | null;
   archived_at: string | null;
   created_at: string;
   updated_at: string;
@@ -58,7 +64,8 @@ interface OrgRow {
 /** Every organization column, plus the logo versions that make its URLs. */
 const SELECT_ORG = `SELECT o.id, o.slug, o.name, o.short_name, o.tagline, o.blurb, o.place,
        o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions, o.gamify_question_quest, o.feature_tutoring, o.feature_assessment, o.feature_quest, o.created_via, o.quest_trusted, o.calendar_domain, o.archived_at,
-       o.created_at, o.updated_at,
+       o.created_at, o.updated_at, o.business_id,
+       (SELECT b.name FROM businesses b WHERE b.id = o.business_id) AS business_name,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'mark') AS mark_sha,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'full') AS full_sha
   FROM organizations o`;
@@ -97,6 +104,7 @@ function toOrganization(row: OrgRow): Organization {
     feature_quest: row.feature_quest === 1,
     created_via: row.created_via === 'self_serve' ? 'self_serve' : 'console',
     quest_trusted: row.quest_trusted === 1,
+    business: row.business_id ? { id: row.business_id, name: row.business_name ?? '' } : null,
     calendar_domain: row.calendar_domain,
     archived_at: row.archived_at,
     created_at: row.created_at,
@@ -316,27 +324,36 @@ export async function getOrganizationSettings(
   db: D1Database,
   org: OrgId,
 ): Promise<OrganizationSettings> {
+  // Phase 54: the payer is the space's organization (its business); a space paid
+  // directly has none, and every payer field reads null.
   const row = await db
     .prepare(
-      `SELECT tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code,
-              email_notifications, canvas_assessments, canvas_assessments_unreviewed, canvas_assessment_questions,
-              gamify_question_quest
-       FROM organizations WHERE id = ?`,
+      `SELECT o.business_id, b.name AS business_name,
+              b.tin, b.payer_address_line1, b.payer_address_line2, b.payer_city, b.payer_state, b.payer_postal_code,
+              o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions,
+              o.gamify_question_quest
+       FROM organizations o LEFT JOIN businesses b ON b.id = o.business_id
+       WHERE o.id = ?`,
     )
     .bind(org)
-    .first<
-      Omit<
-        OrganizationSettings,
-        'email_notifications' | 'canvas_assessments' | 'canvas_assessments_unreviewed' | 'gamify_question_quest'
-      > & {
-        email_notifications: number;
-        canvas_assessments: number;
-        canvas_assessments_unreviewed: number;
-        gamify_question_quest: number;
-      }
-    >();
+    .first<{
+      business_id: string | null;
+      business_name: string | null;
+      tin: string | null;
+      payer_address_line1: string | null;
+      payer_address_line2: string | null;
+      payer_city: string | null;
+      payer_state: string | null;
+      payer_postal_code: string | null;
+      email_notifications: number;
+      canvas_assessments: number;
+      canvas_assessments_unreviewed: number;
+      canvas_assessment_questions: number;
+      gamify_question_quest: number;
+    }>();
   if (!row) {
     return {
+      business: null,
       tin: null,
       payer_address_line1: null,
       payer_address_line2: null,
@@ -350,8 +367,10 @@ export async function getOrganizationSettings(
       gamify_question_quest: false,
     };
   }
+  const { business_id, business_name, ...rest } = row;
   return {
-    ...row,
+    ...rest,
+    business: business_id ? { id: business_id, name: business_name ?? '' } : null,
     email_notifications: row.email_notifications === 1,
     canvas_assessments: row.canvas_assessments === 1,
     canvas_assessments_unreviewed: row.canvas_assessments_unreviewed === 1,
@@ -359,24 +378,138 @@ export async function getOrganizationSettings(
   };
 }
 
+/** The payer fields, which since Phase 54 live on the space's business. */
+export const PAYER_FIELDS = [
+  'tin',
+  'payer_address_line1',
+  'payer_address_line2',
+  'payer_city',
+  'payer_state',
+  'payer_postal_code',
+] as const;
+
 export async function updateOrganizationSettings(
   db: D1Database,
   org: OrgId,
   input: UpdateOrganizationSettingsPayload,
 ): Promise<OrganizationSettings> {
+  const orgSets: string[] = [];
+  const orgValues: unknown[] = [];
+  const bizSets: string[] = [];
+  const bizValues: unknown[] = [];
+  for (const [key, value] of Object.entries(input)) {
+    // Keys come from a Zod object, never from the request directly.
+    const payer = (PAYER_FIELDS as readonly string[]).includes(key);
+    (payer ? bizSets : orgSets).push(`${key} = ?`);
+    // SQLite has no boolean: the flags are stored 0/1.
+    (payer ? bizValues : orgValues).push(typeof value === 'boolean' ? (value ? 1 : 0) : (value ?? null));
+  }
+  const statements: D1PreparedStatement[] = [];
+  if (orgSets.length > 0) {
+    orgSets.push(`updated_at = ${NOW}`);
+    statements.push(
+      db.prepare(`UPDATE organizations SET ${orgSets.join(', ')} WHERE id = ?`).bind(...orgValues, org),
+    );
+  }
+  if (bizSets.length > 0) {
+    // The caller has checked the space has a business; the subquery finds it.
+    bizSets.push(`updated_at = ${NOW}`);
+    statements.push(
+      db
+        .prepare(
+          `UPDATE businesses SET ${bizSets.join(', ')}
+           WHERE id = (SELECT business_id FROM organizations WHERE id = ?)`,
+        )
+        .bind(...bizValues, org),
+    );
+  }
+  if (statements.length > 0) await db.batch(statements);
+  return getOrganizationSettings(db, org);
+}
+
+// ---------------------------------------------------------------------------
+// Businesses: organizations in the money sense (Phase 54, the console)
+// ---------------------------------------------------------------------------
+
+const SELECT_BUSINESS = `SELECT b.id, b.name, b.tin, b.payer_address_line1, b.payer_address_line2, b.payer_city,
+       b.payer_state, b.payer_postal_code, b.archived_at, b.created_at, b.updated_at
+  FROM businesses b`;
+
+export async function listBusinesses(db: D1Database): Promise<BusinessListItem[]> {
+  const [businesses, spaces] = await db.batch<Record<string, unknown>>([
+    db.prepare(`${SELECT_BUSINESS} ORDER BY b.archived_at IS NOT NULL, b.name COLLATE NOCASE`),
+    db.prepare(
+      // org-scope: the console lists which spaces each business runs, across organizations.
+      `SELECT o.id, o.slug, o.name, o.business_id FROM organizations o
+       WHERE o.business_id IS NOT NULL ORDER BY o.name COLLATE NOCASE`,
+    ),
+  ]);
+  const bySpace = new Map<string, BusinessListItem['spaces']>();
+  for (const row of (spaces?.results ?? []) as Record<string, unknown>[]) {
+    const key = String(row.business_id);
+    const list = bySpace.get(key) ?? [];
+    list.push({ id: String(row.id), slug: String(row.slug), name: String(row.name) });
+    bySpace.set(key, list);
+  }
+  return ((businesses?.results ?? []) as unknown as Business[]).map((b) => ({
+    ...b,
+    spaces: bySpace.get(b.id) ?? [],
+  }));
+}
+
+export async function getBusiness(db: D1Database, id: string): Promise<Business | null> {
+  return (await db.prepare(`${SELECT_BUSINESS} WHERE b.id = ?`).bind(id).first<Business>()) ?? null;
+}
+
+export async function createBusiness(db: D1Database, input: CreateBusinessPayload): Promise<Business> {
+  const id = crypto.randomUUID();
+  await db
+    .prepare(
+      `INSERT INTO businesses (id, name, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .bind(
+      id,
+      input.name,
+      input.tin ?? null,
+      input.payer_address_line1 ?? null,
+      input.payer_address_line2 ?? null,
+      input.payer_city ?? null,
+      input.payer_state ?? null,
+      input.payer_postal_code ?? null,
+    )
+    .run();
+  const created = await getBusiness(db, id);
+  if (!created) throw new Error('Insert into businesses returned no row.');
+  return created;
+}
+
+export async function updateBusiness(
+  db: D1Database,
+  id: string,
+  input: UpdateBusinessPayload | { archived_at: string | null },
+): Promise<Business | null> {
   const sets: string[] = [];
   const values: unknown[] = [];
   for (const [key, value] of Object.entries(input)) {
-    // Keys come from a Zod object, never from the request directly.
+    if (value === undefined) continue;
     sets.push(`${key} = ?`);
-    // SQLite has no boolean: the one flag is stored 0/1.
-    values.push(typeof value === 'boolean' ? (value ? 1 : 0) : (value ?? null));
+    values.push(value ?? null);
   }
   if (sets.length > 0) {
     sets.push(`updated_at = ${NOW}`);
-    await db.prepare(`UPDATE organizations SET ${sets.join(', ')} WHERE id = ?`).bind(...values, org).run();
+    const result = await db.prepare(`UPDATE businesses SET ${sets.join(', ')} WHERE id = ?`).bind(...values, id).run();
+    if (!result.meta.changes) return null;
   }
-  return getOrganizationSettings(db, org);
+  return getBusiness(db, id);
+}
+
+/** Phase 54: the organization that runs a space's money from now on, or null (paid directly). */
+export async function setSpaceBusiness(db: D1Database, orgId: string, businessId: string | null): Promise<void> {
+  await db
+    .prepare(`UPDATE organizations SET business_id = ?, updated_at = ${NOW} WHERE id = ?`)
+    .bind(businessId, orgId)
+    .run();
 }
 
 // ---------------------------------------------------------------------------
@@ -420,8 +553,9 @@ export async function createOrganization(
       .prepare(
         `INSERT INTO organizations
            (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone,
-            email_notifications, calendar_domain, feature_tutoring, feature_assessment, feature_quest)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            email_notifications, calendar_domain, feature_tutoring, feature_assessment, feature_quest,
+            business_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         id,
@@ -439,6 +573,7 @@ export async function createOrganization(
         input.feature_tutoring ? 1 : 0,
         input.feature_assessment ? 1 : 0,
         input.feature_quest ? 1 : 0,
+        input.business_id ?? null,
       ),
     db
       .prepare(
@@ -604,6 +739,8 @@ export async function listPlatformAudit(db: D1Database, limit: number) {
        WHERE a.action LIKE 'organization.%' OR a.action LIKE 'platform_admin.%'
           OR a.action LIKE 'person.%' OR a.action LIKE 'ai.%'
           OR a.action LIKE 'question.%' OR a.action LIKE 'question_bank.%'
+          -- Phase 54: an organization's own line; its copies in the spaces it runs are theirs.
+          OR (a.action LIKE 'business.%' AND a.organization_id IS NULL)
        ORDER BY a.created_at DESC
        LIMIT ?`,
     )

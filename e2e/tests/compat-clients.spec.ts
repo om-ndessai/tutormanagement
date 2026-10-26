@@ -11,6 +11,34 @@ import { unwrap } from '../support/api.js';
  */
 
 test.describe('older clients @compat', () => {
+  test('Phase 54: a space from before has an organization of its own, and takes payments as before', async ({ as }) => {
+    const admin = await as('admin');
+    // The backfill gave every existing space a business with its own name and TIN.
+    const settings = await unwrap<any>(await admin.request.get('/api/organization/settings'), 'settings');
+    expect(settings.business?.name).toBe('Chapel Hill Math Institute');
+    expect(settings.tin).toBe('47-2019388');
+    // Exactly what a Phase 53 app sends: no payee.
+    const balances = await unwrap<any>(await admin.request.get('/api/payments/balances'), 'balances');
+    const family = balances.students.find((row: any) => row.guardians.length > 0);
+    const payment = await unwrap<any>(
+      await admin.request.post('/api/payments', {
+        data: {
+          direction: 'from_parent',
+          party_user_id: family.guardians[0].user_id,
+          student_user_id: family.student_user_id,
+          amount_cents: 100,
+          method: 'cash',
+          paid_at: '2026-10-21T18:00:00.000Z',
+        },
+      }),
+      'a payment without a payee',
+    );
+    expect(payment.payee_user_id).toBeNull();
+    expect((await admin.request.delete(`/api/payments/${payment.id}`)).status()).toBe(204);
+    const lessons = await unwrap<any[]>(await admin.request.get('/api/sessions?limit=5'), 'lessons');
+    expect(lessons.every((s: any) => s.paid_directly === false)).toBe(true);
+  });
+
   test('Phase 46: a game made without the Phase 47 fields is a Phase 46 game', async ({ as }) => {
     const admin = await as('admin');
     const set = (on: boolean) =>

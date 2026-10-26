@@ -29,6 +29,15 @@ export const PEOPLE = {
   assessAdmin: { email: 'ines.ferreira.assess@gmail.com', name: 'Ines Ferreira' },
   /** C's second parent. */
   assessParent: { email: 'omar.haddad.assess@gmail.com', name: 'Omar Haddad' },
+  // --- space D, a tutor space paid directly (Phase 54) -------------------------
+  /** Runs D and tutors there: Ella, and Zoe on Saturdays. */
+  soloAdmin: { email: 'hannah.brooks.tutor@gmail.com', name: 'Hannah Brooks' },
+  /** D's second tutor: Zoe on Wednesdays, and Max. */
+  soloTutor: { email: 'diego.ramos.tutor@gmail.com', name: 'Diego Ramos' },
+  /** Ella's mother; pays Hannah. */
+  soloParent: { email: 'grace.kim.family@gmail.com', name: 'Grace Kim' },
+  /** Zoe's father; pays both tutors. */
+  soloParentTwo: { email: 'sam.okafor.family@gmail.com', name: 'Sam Okafor' },
   /** Creates organizations and their admins; belongs to neither. */
   platformAdmin: { email: 'ndessai@gmail.com', name: 'Nav Dessai' },
 } as const;
@@ -42,6 +51,8 @@ export const ORGS = {
   b: { slug: 'riverside', name: 'Riverside Tutoring', short: 'Riverside' },
   /** Phase 50: allowed the Assessment set alone, as every self-serve space will be. */
   c: { slug: 'assess', name: 'Ferreira Family Practice', short: 'Ferreira' },
+  /** Phase 54: a tutor space with no organization -- families pay each tutor directly. */
+  d: { slug: 'solo', name: 'Brooks & Ramos Tutoring', short: 'Brooks & Ramos' },
 } as const;
 
 export type PersonKey = keyof typeof PEOPLE;

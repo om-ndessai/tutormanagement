@@ -213,3 +213,71 @@ describe('derivations', () => {
     });
   });
 });
+
+// Phase 54: a space paid directly -- each family's balance with each tutor, and no organization money.
+const zoeWithDiego = {
+  student_user_id: 'zoe',
+  student_name: 'Zoe Okafor',
+  tutor_user_id: 'diego',
+  tutor_name: 'Diego Ramos',
+  guardians: [{ user_id: 'sam', full_name: 'Sam Okafor', is_primary: true }],
+  charged_cents: 10_000,
+  paid_cents: 2_500,
+  balance_cents: 7_500,
+  session_count: 2,
+};
+const maxWithDiego = {
+  ...zoeWithDiego,
+  student_user_id: 'max',
+  student_name: 'Max Novak',
+  charged_cents: 5_000,
+  paid_cents: 6_000,
+  balance_cents: -1_000,
+  session_count: 1,
+};
+
+describe('Finance tab in a space paid directly (Phase 54)', () => {
+  it("the admin's shows families and tutors, and no tutor pay, cut, SSN or year-end", async () => {
+    mockMonthly.mockReturnValue({ data: { data: instituteMonthly }, isPending: false });
+    await renderWithProviders(
+      <AdminFinance
+        data={{
+          ...adminDashboard,
+          paid_directly: true,
+          direct_balances: [zoeWithDiego, maxWithDiego],
+          tutors_missing_ssn: [{ user_id: 'tutor-1', full_name: 'Alex Chen' }],
+        }}
+      />,
+    );
+    // Credit is not owed: only Zoe's $75.00.
+    expect(screen.getByTestId('stat-owed-to-tutors-by-families-value')).toHaveTextContent('$75.00');
+    expect(screen.getByTestId('stat-paid-to-tutors-value')).toHaveTextContent('$85.00');
+    expect(screen.getByTestId('direct-balance-zoe-diego')).toBeTruthy();
+    expect(screen.getByText(/^with Diego Ramos · 2 lessons · \$25\.00 paid$/)).toBeTruthy();
+    const text = allText();
+    for (const label of [/Kept by/, /Tutor payments/, /Year-end documents/, /Families with a balance/]) {
+      expect(text).not.toMatch(label);
+    }
+    expect(screen.queryByTestId('ssn-panel')).toBeNull();
+  });
+
+  it("the tutor's shows their families and what they were paid, with no SSN notice", async () => {
+    mockMonthly.mockReturnValue({ data: { data: tutorMonthly }, isPending: false });
+    await renderWithProviders(
+      <TutorFinance
+        data={{
+          ...tutorDashboard,
+          paid_directly: true,
+          direct_balances: [zoeWithDiego],
+          ssn_received_on: null,
+        }}
+      />,
+    );
+    expect(screen.getByTestId('stat-families-paid-you-value')).toHaveTextContent('$25.00');
+    expect(screen.getByTestId('stat-owed-to-you-value')).toHaveTextContent('$75.00');
+    expect(screen.getByText('Your families')).toBeTruthy();
+    expect(screen.getByText(/^2 lessons · \$25\.00 paid$/)).toBeTruthy();
+    expect(screen.queryByTestId('tutor-ssn-notice')).toBeNull();
+    expect(screen.queryByTestId('stat-earned')).toBeNull();
+  });
+});

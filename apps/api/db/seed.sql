@@ -54,17 +54,25 @@ DELETE FROM consents;
 DELETE FROM question_suggestions;
 DELETE FROM organization_curricula;
 DELETE FROM organizations;
+DELETE FROM businesses;
 DELETE FROM user_onboarding;
 DELETE FROM platform_accounts;
 DELETE FROM users;
 
+-- --- who runs each space's money (Phase 54) -------------------------------
+-- C (Assessment only) and D (a tutor space) have no organization: D is paid directly.
+INSERT INTO businesses (id, name, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'Chapel Hill Math Institute', '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514'),
+  ('0b000000-0000-4000-8000-000000000001', 'Riverside Tutoring', '56-7788990', NULL, NULL, NULL, NULL, NULL);
+
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest, created_via, quest_trusted, join_code, join_by_code) VALUES
-  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'CHMX2345', 0),
-  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'RVRS2345', 1),
-  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0, 'self_serve', 0, 'FMXY2345', 1);
+INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest, created_via, quest_trusted, join_code, join_by_code, business_id) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'CHMX2345', 0, '0a000000-0000-4000-8000-000000000001'),
+  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'RVRS2345', 1, '0b000000-0000-4000-8000-000000000001'),
+  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0, 'self_serve', 0, 'FMXY2345', 1, NULL),
+  ('0e000000-0000-4000-8000-000000000001', 'solo', 'Brooks & Ramos Tutoring', 'Brooks & Ramos', NULL, NULL, 'Raleigh, North Carolina', 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'solo.tutor-portal.invalid', 1, 1, 0, 'console', 1, 'SQRT2345', 0, NULL);
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
@@ -75,7 +83,8 @@ INSERT INTO organization_curricula (organization_id, curriculum_id, is_default, 
   ('0b000000-0000-4000-8000-000000000001', 'nc-2017', 1, NULL),
   ('0b000000-0000-4000-8000-000000000001', 'nc-2026', 0, NULL),
   ('0b000000-0000-4000-8000-000000000001', 'ba', 0, '2026-09-15T12:00:00.000Z'),
-  ('0d000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL);
+  ('0d000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL),
+  ('0e000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL);
 
 -- --- people ----------------------------------------------------------------
 INSERT INTO users (id, email, full_name, phone) VALUES
@@ -178,6 +187,14 @@ INSERT INTO users (id, email, full_name, phone) VALUES
   ('0d100000-0000-4000-8000-000000000001', 'ines.ferreira.assess@gmail.com', 'Ines Ferreira', NULL),
   ('0d100000-0000-4000-8000-000000000002', 'omar.haddad.assess@gmail.com', 'Omar Haddad', NULL),
   ('0d100000-0000-4000-8000-000000000003', NULL, 'Noor Haddad', NULL),
+  ('0e100000-0000-4000-8000-000000000001', 'hannah.brooks.tutor@gmail.com', 'Hannah Brooks', '(919) 555-0410'),
+  ('0e100000-0000-4000-8000-000000000002', 'diego.ramos.tutor@gmail.com', 'Diego Ramos', '(919) 555-0420'),
+  ('0e100000-0000-4000-8000-000000000003', 'grace.kim.family@gmail.com', 'Grace Kim', NULL),
+  ('0e100000-0000-4000-8000-000000000004', NULL, 'Ella Kim', NULL),
+  ('0e100000-0000-4000-8000-000000000005', 'sam.okafor.family@gmail.com', 'Sam Okafor', NULL),
+  ('0e100000-0000-4000-8000-000000000006', NULL, 'Zoe Okafor', NULL),
+  ('0e100000-0000-4000-8000-000000000007', 'laura.novak.family@gmail.com', 'Laura Novak', NULL),
+  ('0e100000-0000-4000-8000-000000000008', NULL, 'Max Novak', NULL),
   ('0d200000-0000-4000-8000-000000000001', 'nina.newcomer@example.com', 'Nina Newcomer', NULL),
   ('0d200000-0000-4000-8000-000000000002', 'theo.teen@example.com', 'Theo Teen', NULL);
 
@@ -283,7 +300,15 @@ INSERT INTO org_members (organization_id, user_id, status, first_entered_at) VAL
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'active', '2026-09-01T12:00:00.000Z'),
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', 'active', '2026-09-01T12:00:00.000Z'),
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', 'active', '2026-09-01T12:00:00.000Z'),
-  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'active', '2026-09-01T12:00:00.000Z');
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000002', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000003', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000004', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000005', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000006', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000007', 'active', '2026-09-01T12:00:00.000Z'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000008', 'active', '2026-09-01T12:00:00.000Z');
 
 INSERT INTO user_roles (organization_id, user_id, role) VALUES
   ('0a000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'admin'),
@@ -391,7 +416,16 @@ INSERT INTO user_roles (organization_id, user_id, role) VALUES
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', 'admin'),
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', 'parent'),
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', 'parent'),
-  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'student');
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'student'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001', 'admin'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001', 'tutor'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000002', 'tutor'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000003', 'parent'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000005', 'parent'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000007', 'parent'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000004', 'student'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000006', 'student'),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000008', 'student');
 
 UPDATE organizations SET created_by_user_id = '0d100000-0000-4000-8000-000000000001' WHERE id = '0d000000-0000-4000-8000-000000000001';
 
@@ -501,6 +535,14 @@ INSERT INTO user_onboarding (user_id, tour_finished_at, tour_outcome) VALUES
   ('0d100000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0d100000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0d100000-0000-4000-8000-000000000003', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000003', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000004', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000005', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000006', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000007', '2026-09-01T12:00:00.000Z', 'completed'),
+  ('0e100000-0000-4000-8000-000000000008', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0d200000-0000-4000-8000-000000000001', '2026-09-01T12:00:00.000Z', 'completed'),
   ('0d200000-0000-4000-8000-000000000002', '2026-09-01T12:00:00.000Z', 'completed');
 
@@ -517,7 +559,9 @@ INSERT INTO tutor_profiles (organization_id, user_id, highest_education, school,
   ('0a000000-0000-4000-8000-000000000001', '11111111-0000-4000-8000-000000000004', 'BS, Physics', 'Phillips Middle', 'Carrboro', NULL, 0, 8100, 7000, 180, NULL, '2026-01-15', '396 Maple Street', NULL, 'Carrboro', 'NC', '27510'),
   ('0a000000-0000-4000-8000-000000000001', '11111111-0000-4000-8000-000000000005', 'PhD, Mathematics', 'Culbreth Middle', 'Carrboro', NULL, 1, 9100, 7600, NULL, NULL, '2026-01-15', '433 Oak Avenue', NULL, 'Carrboro', 'NC', '27510'),
   ('0b000000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000002', 'MS, Mathematics Education', 'NC Central University', 'Durham', NULL, 1, 6500, 6000, 120, 20000, '2026-08-15', '12 Riverside Drive', NULL, 'Durham', 'NC', '27701'),
-  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'PhD, Mathematics', NULL, 'Durham', NULL, 1, 8000, 7000, 120, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001', 'PhD, Mathematics', NULL, 'Durham', NULL, 1, 8000, 7000, 120, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001', 'MEd, Mathematics', NULL, 'Raleigh', NULL, 1, 6000, 5500, 90, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000002', 'BS, Mathematics', NULL, 'Cary', NULL, 1, 5000, 4500, 90, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --- student-only data -----------------------------------------------------
 INSERT INTO student_profiles (organization_id, user_id, school, current_math_course, academic_year_goal, virtual_available, charge_rate_in_person_cents, charge_rate_virtual_cents, max_session_minutes) VALUES
@@ -576,7 +620,10 @@ INSERT INTO student_profiles (organization_id, user_id, school, current_math_cou
   ('0b000000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000003', 'Durham School of the Arts', 'Grade 5 Mathematics', 'Fractions with confidence.', 0, 8500, 7500, 60),
   ('0b000000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000004', 'Riverside High', 'Algebra I', 'Ready for Geometry by spring.', 1, 9000, 8000, 90),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', 'East Chapel Hill High', 'AP Calculus BC', 'A 5 on the AP exam.', 1, 11000, 10000, 120),
-  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'Carrboro Elementary', 'Grade 4 Mathematics', 'Multiplication facts by heart.', 0, NULL, NULL, NULL);
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'Carrboro Elementary', 'Grade 4 Mathematics', 'Multiplication facts by heart.', 0, NULL, NULL, NULL),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000004', 'Lacy Elementary', 'Grade 4 Mathematics', 'Long division without tears.', 0, NULL, NULL, 60),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000006', 'Broughton High', 'Math 1', 'Ready for Math 2.', 1, NULL, NULL, 90),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000008', 'Martin Middle', 'Grade 7 Mathematics', 'Proportions and percents.', 1, NULL, NULL, 60);
 
 -- --- who is responsible for whom -------------------------------------------
 INSERT INTO guardianships (organization_id, guardian_user_id, dependent_user_id, relationship, is_primary) VALUES
@@ -657,7 +704,10 @@ INSERT INTO guardianships (organization_id, guardian_user_id, dependent_user_id,
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', '0b100000-0000-4000-8000-000000000004', 'mother', 1),
   ('0b000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000006', 'mother', 1),
   ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000003', 'mother', 1),
-  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', '0d100000-0000-4000-8000-000000000003', 'father', 0);
+  ('0d000000-0000-4000-8000-000000000001', '0d100000-0000-4000-8000-000000000002', '0d100000-0000-4000-8000-000000000003', 'father', 0),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000003', '0e100000-0000-4000-8000-000000000004', 'mother', 1),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000005', '0e100000-0000-4000-8000-000000000006', 'father', 1),
+  ('0e000000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000007', '0e100000-0000-4000-8000-000000000008', 'mother', 1);
 
 -- --- how money moves -------------------------------------------------------
 INSERT INTO payment_handles (organization_id, user_id, method, handle) VALUES
@@ -948,7 +998,11 @@ INSERT INTO assignments (organization_id, id, tutor_user_id, student_user_id, ra
   ('0a000000-0000-4000-8000-000000000001', 'a1111111-0000-4000-8000-000000000047', '11111111-0000-4000-8000-000000000002', '33333333-0000-4000-8000-000000000077', 4800, NULL, NULL),
   ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000001', '0b100000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000003', NULL, NULL, 'Riverside: Lily, Tuesdays.'),
   ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000004', NULL, NULL, NULL),
-  ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', NULL, NULL, 'Riverside: Sanjay, weekend review.');
+  ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', NULL, NULL, 'Riverside: Sanjay, weekend review.'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000004', NULL, NULL, NULL),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000006', 6500, NULL, 'Zoe: Math 1, Saturdays.'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000003', '0e100000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000006', NULL, NULL, 'Zoe: test prep, Wednesdays.'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000004', '0e100000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000008', NULL, NULL, NULL);
 
 -- --- lessons that happened -------------------------------------------------
 -- each amount = its rate x duration_minutes / 60, rounded, exactly as the
@@ -1187,6 +1241,14 @@ INSERT INTO sessions (organization_id, id, tutor_user_id, student_user_id, occur
   ('0b000000-0000-4000-8000-000000000001', '0b300000-0000-4000-8000-000000000003', '0b100000-0000-4000-8000-000000000002', '0b100000-0000-4000-8000-000000000004', '2026-09-17', '16:00', '17:30', 90, 'in_person', 6500, 9750, 9000, 13500, 'Riverside: linear equations.', '0b100000-0000-4000-8000-000000000001'),
   ('0b000000-0000-4000-8000-000000000001', '0b300000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000006', '2026-09-15', '10:00', '12:00', 120, 'in_person', 8000, 16000, 11000, 22000, 'Riverside: series convergence review.', '0b100000-0000-4000-8000-000000000001');
 
+-- D's lessons, paid directly: one price (tutor = charge), no margin (Phase 54).
+INSERT INTO sessions (organization_id, id, tutor_user_id, student_user_id, occurred_on, started_at, ended_at, duration_minutes, mode, tutor_rate_cents, tutor_amount_cents, charge_rate_cents, charge_amount_cents, notes, recorded_by_user_id, paid_directly) VALUES
+  ('0e000000-0000-4000-8000-000000000001', '0e300000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000004', '2026-09-17', '16:00', '17:00', 60, 'in_person', 6000, 6000, 6000, 6000, 'Long division, two-digit divisors.', '0e100000-0000-4000-8000-000000000001', 1),
+  ('0e000000-0000-4000-8000-000000000001', '0e300000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000004', '2026-09-10', '16:00', '17:00', 60, 'in_person', 6000, 6000, 6000, 6000, 'Remainders and checking work.', '0e100000-0000-4000-8000-000000000001', 1),
+  ('0e000000-0000-4000-8000-000000000001', '0e300000-0000-4000-8000-000000000003', '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000006', '2026-09-16', '10:00', '11:30', 90, 'in_person', 6500, 9750, 6500, 9750, 'Linear functions.', '0e100000-0000-4000-8000-000000000001', 1),
+  ('0e000000-0000-4000-8000-000000000001', '0e300000-0000-4000-8000-000000000004', '0e100000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000006', '2026-09-18', '17:00', '18:00', 60, 'in_person', 5000, 5000, 5000, 5000, 'Test prep: systems of equations.', '0e100000-0000-4000-8000-000000000002', 1),
+  ('0e000000-0000-4000-8000-000000000001', '0e300000-0000-4000-8000-000000000005', '0e100000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000008', '2026-09-15', '15:30', '16:30', 60, 'in_person', 5000, 5000, 5000, 5000, 'Ratios and unit rates.', '0e100000-0000-4000-8000-000000000002', 1);
+
 -- --- money that changed hands ----------------------------------------------
 INSERT INTO payments (organization_id, id, direction, party_user_id, student_user_id, amount_cents, method, paid_at, reference, notes, recorded_by_user_id) VALUES
   ('0a000000-0000-4000-8000-000000000001', '60000000-0000-4000-8000-000000000001', 'from_parent', '00000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000008', 7500, 'zelle', '2026-09-09T18:30:00.000Z', NULL, 'For the 8 Sept lesson.', '00000000-0000-4000-8000-000000000001'),
@@ -1256,6 +1318,12 @@ INSERT INTO payments (organization_id, id, direction, party_user_id, student_use
   ('0b000000-0000-4000-8000-000000000001', '0b400000-0000-4000-8000-000000000001', 'from_parent', '00000000-0000-4000-8000-000000000003', '0b100000-0000-4000-8000-000000000003', 8500, 'venmo', '2026-09-12T15:00:00.000Z', 'RIV-1', NULL, '0b100000-0000-4000-8000-000000000001'),
   ('0b000000-0000-4000-8000-000000000001', '0b400000-0000-4000-8000-000000000002', 'from_parent', '00000000-0000-4000-8000-000000000007', '0b100000-0000-4000-8000-000000000004', 13500, 'zelle', '2026-09-18T15:00:00.000Z', 'RIV-2', NULL, '0b100000-0000-4000-8000-000000000001'),
   ('0b000000-0000-4000-8000-000000000001', '0b400000-0000-4000-8000-000000000003', 'to_tutor', '0b100000-0000-4000-8000-000000000002', NULL, 25000, 'zelle', '2026-09-10T15:00:00.000Z', 'RIV-3', 'Riverside advance', '0b100000-0000-4000-8000-000000000001');
+
+-- D's payments, each a family paying a tutor directly (Phase 54).
+INSERT INTO payments (organization_id, id, direction, party_user_id, student_user_id, amount_cents, method, paid_at, reference, notes, recorded_by_user_id, payee_user_id) VALUES
+  ('0e000000-0000-4000-8000-000000000001', '0e400000-0000-4000-8000-000000000001', 'from_parent', '0e100000-0000-4000-8000-000000000003', '0e100000-0000-4000-8000-000000000004', 6000, 'venmo', '2026-09-11T20:00:00.000Z', NULL, NULL, '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001'),
+  ('0e000000-0000-4000-8000-000000000001', '0e400000-0000-4000-8000-000000000002', 'from_parent', '0e100000-0000-4000-8000-000000000005', '0e100000-0000-4000-8000-000000000006', 9750, 'zelle', '2026-09-17T20:00:00.000Z', 'ZEL-551', NULL, '0e100000-0000-4000-8000-000000000001', '0e100000-0000-4000-8000-000000000001'),
+  ('0e000000-0000-4000-8000-000000000001', '0e400000-0000-4000-8000-000000000003', 'from_parent', '0e100000-0000-4000-8000-000000000007', '0e100000-0000-4000-8000-000000000008', 5000, 'cash', '2026-09-15T21:00:00.000Z', NULL, NULL, '0e100000-0000-4000-8000-000000000002', '0e100000-0000-4000-8000-000000000002');
 
 -- --- standing weekly lessons -----------------------------------------------
 INSERT INTO scheduled_sessions (organization_id, id, tutor_user_id, student_user_id, day_of_week, start_time, duration_minutes, mode, starts_on, ends_on, location, notes) VALUES
@@ -1361,7 +1429,14 @@ INSERT INTO locations (organization_id, id, owner_user_id, name, kind, address, 
   ('0b000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000069', '0b100000-0000-4000-8000-000000000004', 'Home', 'physical', NULL, 0),
   ('0b000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000070', '00000000-0000-4000-8000-000000000001', 'Riverside library', 'physical', 'Riverside library', 0),
   ('0b000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000071', '00000000-0000-4000-8000-000000000001', 'Online room', 'virtual', 'https://meet.example.com/lessons', 0),
-  ('0b000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000072', '00000000-0000-4000-8000-000000000006', 'Home', 'physical', NULL, 0);
+  ('0b000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000072', '00000000-0000-4000-8000-000000000006', 'Home', 'physical', NULL, 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000073', '0e100000-0000-4000-8000-000000000001', 'Home studio', 'physical', 'Home studio', 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000074', '0e100000-0000-4000-8000-000000000001', 'Online room', 'virtual', 'https://meet.example.com/lessons', 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000075', '0e100000-0000-4000-8000-000000000004', 'Home', 'physical', NULL, 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000076', '0e100000-0000-4000-8000-000000000006', 'Home', 'physical', NULL, 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000077', '0e100000-0000-4000-8000-000000000002', 'Home studio', 'physical', 'Home studio', 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000078', '0e100000-0000-4000-8000-000000000002', 'Online room', 'virtual', 'https://meet.example.com/lessons', 0),
+  ('0e000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000079', '0e100000-0000-4000-8000-000000000008', 'Home', 'physical', NULL, 0);
 INSERT INTO assignment_locations (organization_id, assignment_id, location_id) VALUES
   ('0a000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000001'),
   ('0a000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000002'),
@@ -1532,7 +1607,19 @@ INSERT INTO assignment_locations (organization_id, assignment_id, location_id) V
 
 INSERT INTO assignment_locations (organization_id, assignment_id, location_id) VALUES
   ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000003', '0c100000-0000-4000-8000-000000000071'),
-  ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000003', '0c100000-0000-4000-8000-000000000072');
+  ('0b000000-0000-4000-8000-000000000001', '0b200000-0000-4000-8000-000000000003', '0c100000-0000-4000-8000-000000000072'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000073'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000074'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000075'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000002', '0c100000-0000-4000-8000-000000000073'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000002', '0c100000-0000-4000-8000-000000000074'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000002', '0c100000-0000-4000-8000-000000000076'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000003', '0c100000-0000-4000-8000-000000000077'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000003', '0c100000-0000-4000-8000-000000000078'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000003', '0c100000-0000-4000-8000-000000000076'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000004', '0c100000-0000-4000-8000-000000000077'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000004', '0c100000-0000-4000-8000-000000000078'),
+  ('0e000000-0000-4000-8000-000000000001', '0e200000-0000-4000-8000-000000000004', '0c100000-0000-4000-8000-000000000079');
 INSERT INTO schedule_locations (organization_id, schedule_id, location_id, kind) VALUES
   ('0a000000-0000-4000-8000-000000000001', '70000000-0000-4000-8000-000000000001', '0c100000-0000-4000-8000-000000000001', 'physical'),
   ('0a000000-0000-4000-8000-000000000001', '70000000-0000-4000-8000-000000000002', '0c100000-0000-4000-8000-000000000001', 'physical'),

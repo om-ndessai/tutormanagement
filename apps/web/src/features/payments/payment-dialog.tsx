@@ -6,6 +6,7 @@ import {
   PAYMENT_DIRECTION_LABELS,
   PAYMENT_FORMS,
   PAYMENT_FORM_LABELS,
+  paidDirectly,
   parseCentsInput,
   type PaymentDirection,
   type PaymentForm,
@@ -31,6 +32,7 @@ import {
 } from '@/components/ui/select';
 import { useUserDetail, useUsers } from '@/features/users/api';
 import { ApiRequestError } from '@/lib/api-client';
+import { useAuth } from '@/providers/auth-provider';
 import { useRecordPayment } from './api';
 
 /** `datetime-local` wants "YYYY-MM-DDTHH:MM" in local time. */
@@ -56,7 +58,13 @@ export function PaymentDialog({
   onOpenChange: (open: boolean) => void;
   defaultDirection?: PaymentDirection;
 }) {
+  const { organization, user } = useAuth();
+  // Phase 54: in a space paid directly, every payment is a family paying a
+  // tutor. A tutor records what they received; an admin chooses the tutor.
+  const direct = organization ? paidDirectly(organization) : false;
+  const isAdmin = Boolean(user?.roles.includes('admin'));
   const [direction, setDirection] = useState<PaymentDirection>(defaultDirection);
+  const [payeeId, setPayeeId] = useState('');
   const [partyId, setPartyId] = useState('');
   const [studentId, setStudentId] = useState('');
   const [amount, setAmount] = useState('');
@@ -76,7 +84,8 @@ export function PaymentDialog({
   useEffect(() => {
     if (!open) return;
     setErrors({});
-    setDirection(defaultDirection);
+    setDirection(direct ? 'from_parent' : defaultDirection);
+    setPayeeId(direct && !isAdmin ? (user?.id ?? '') : '');
     setPartyId('');
     setStudentId('');
     setAmount('');
@@ -84,7 +93,7 @@ export function PaymentDialog({
     setPaidAt(nowLocal());
     setReference('');
     setNotes('');
-  }, [open, defaultDirection]);
+  }, [open, defaultDirection, direct, isAdmin, user?.id]);
 
   const parties = direction === 'from_parent' ? parents : tutors;
 
@@ -103,6 +112,7 @@ export function PaymentDialog({
     const problems: Record<string, string> = {};
 
     if (!partyId) problems.party_user_id = 'Choose a person.';
+    if (direct && !payeeId) problems.payee_user_id = 'Choose the tutor the family paid.';
     if (cents == null || cents <= 0) problems.amount_cents = 'Enter an amount.';
     if (direction === 'from_parent' && !studentId) {
       problems.student_user_id = 'Choose which student this is for.';
@@ -124,6 +134,7 @@ export function PaymentDialog({
         paid_at: new Date(paidAt).toISOString(),
         reference: reference.trim() || null,
         notes: notes.trim() || null,
+        ...(direct ? { payee_user_id: payeeId } : {}),
       } as never);
 
       toast.success('Payment recorded.');
@@ -143,13 +154,36 @@ export function PaymentDialog({
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-lg">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
-            <DialogTitle>Record a payment</DialogTitle>
+            <DialogTitle>{direct && !isAdmin ? 'Record a payment you received' : 'Record a payment'}</DialogTitle>
             <DialogDescription>
-              No money moves through the portal. This is a record of a payment made elsewhere.
+              {direct
+                ? 'Families here pay each tutor directly. No money moves through the portal: this records a payment made elsewhere.'
+                : 'No money moves through the portal. This is a record of a payment made elsewhere.'}
             </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
+            {direct && isAdmin && (
+              <Field id="payee" label="Paid to (tutor)" error={errors.payee_user_id}>
+                <Select value={payeeId} onValueChange={setPayeeId}>
+                  <SelectTrigger id="payee" className="w-full">
+                    <SelectValue placeholder="Choose the tutor" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(tutors.data?.data ?? []).map((person) => (
+                      <SelectItem key={person.id} value={person.id}>
+                        {person.full_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            )}
+            {direct && !isAdmin && errors.payee_user_id && (
+              <p role="alert" className="text-destructive text-xs">{errors.payee_user_id}</p>
+            )}
+
+            {!direct && (
             <div className="grid gap-2">
               <Label>Direction</Label>
               <div className="grid gap-2 sm:grid-cols-2">
@@ -176,6 +210,7 @@ export function PaymentDialog({
                 ))}
               </div>
             </div>
+            )}
 
             <Field
               id="party"

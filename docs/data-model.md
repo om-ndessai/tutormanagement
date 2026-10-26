@@ -710,6 +710,30 @@ Storing them would mean two sources of truth that drift the first time a session
 The headline totals sum only *positive* balances, so one overpaid tutor cannot mask another's
 unpaid one.
 
+**Phase 54: a space paid directly** (`docs/tutor-spaces-plan.md`). A space whose
+`organizations.business_id` is NULL has no organization running its money: families pay each
+lesson's tutor. A lesson recorded then carries `sessions.paid_directly = 1` and ONE price (its two
+rates equal, from the pairing; a trigger keeps them equal), and a family's payment names the tutor
+who received it (`payments.payee_user_id`). Those rows form a third ledger, kept per family and
+tutor and left out of the two above:
+
+```
+direct balance (student, tutor) = sum(their paid-directly lessons) - sum(payments from_parent for the student to that payee)
+```
+
+Both flags are frozen when a row is written, so a space that gains or loses its organization
+changes only what is recorded next.
+
+### `businesses` (Phase 54)
+
+"Organization" on screen: who families pay and who files the 1099s -- a name, a TIN (never an SSN:
+`optionalText`'s guard) and a payer address. Platform-level reference data, not an organization's
+own row (it has no `organization_id`): several spaces may point at one through
+`organizations.business_id`. Platform admins create, edit, link and archive them; the admins of a
+linked space edit the payer details from its Space page, which is why a change is logged in the log
+of every space it runs. One that runs a space cannot be archived. The six payer columns on
+`organizations` are kept (additive) but no longer read.
+
 ### `comments`
 
 Phase 12. A remark somebody wants on the record, against a person, a lesson, a pairing or a
@@ -858,6 +882,8 @@ The schema carries every rule it is capable of carrying:
 | Deleting a lesson removes its comments | `ON DELETE CASCADE` on each target |
 | One decision per date of a series | `PRIMARY KEY (schedule_id, occurs_on)` on `schedule_cancellations` |
 | The capacity somebody cancelled in is one of three | `CHECK` on `schedule_cancellations.cancelled_as` |
+| A lesson paid directly is one price | `sessions_paid_directly_one_price` triggers (insert and update) |
+| A paid-directly payment is a family paying a member of the space, and only a space with no organization takes one; such a space takes no other | `payments_paid_directly` trigger (at insert, from the space's model then) |
 | Removing a schedule removes its cancellations | `ON DELETE CASCADE` |
 | One reflection per lesson | `PRIMARY KEY (session_id)` on `session_reflections` |
 | Reflection answers are 1–5, and something is answered | `CHECK` constraints |

@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 -- the Finance halves
 // of AdminView and TutorView, with SsnPanel, PaymentList and BalanceRow. A family row opens that
 // student's dashboard (view-as), as on the web; names that link to a person's record are plain
-// until feature 25.
+// until feature 25. Phase 54 (@ 24066d9, working tree): in a space paid directly the admin and the
+// tutor read families' balances with each tutor, and no tutor pay, cut, SSN or 1099.
 import {
   PAYMENT_FORM_LABELS,
   formatCents,
@@ -25,6 +26,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useMonthlyFinance } from './api';
+import { DirectBalancesPanel, directTotals } from './direct-balances';
 import { viewAs } from './view-as';
 import { formatMoneyValue, formatPaidOn, orgToday, orgYear } from './finance-format';
 import { walletMinusIcon, walletPlusIcon } from './money-icon';
@@ -56,6 +58,10 @@ export function PaymentList({ payments }: { payments: Payment[] }) {
                 <Text style={{ fontWeight: '500' }}>{payment.party_name}</Text>
                 {payment.student_name ? (
                   <Text style={{ color: theme.tokens.mutedForeground }}> for {payment.student_name}</Text>
+                ) : null}
+                {/* Phase 54: the tutor a family paid directly. */}
+                {payment.payee_name ? (
+                  <Text style={{ color: theme.tokens.mutedForeground }}> to {payment.payee_name}</Text>
                 ) : null}
               </Text>
               <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
@@ -165,6 +171,51 @@ export function AdminFinance({ data }: { data: AdminDashboard }) {
   const year = orgYear(useOrgTimeZone());
   const monthly = useMonthlyFinance(year);
 
+  if (data.paid_directly) {
+    // Phase 54: families pay each tutor directly -- no tutor pay, no cut, no 1099s.
+    const totals = directTotals(data.direct_balances);
+    return (
+      <View testID="dashboard-finance-admin" style={{ gap: space.lg }}>
+        <SecureMoney />
+        <StatGrid>
+          {[
+            <StatCard
+              key="owed-directly"
+              label="Owed to tutors by families"
+              value={totals.owed}
+              formatValue={formatMoneyValue}
+              animate={false}
+              icon={walletPlusIcon}
+              tone="brand"
+              to="/billing"
+            />,
+            <StatCard
+              key="paid-directly"
+              label="Paid to tutors"
+              value={totals.paid}
+              formatValue={formatMoneyValue}
+              animate={false}
+              icon="wallet-outline"
+              to="/billing"
+            />,
+            <StatCard
+              key="billed"
+              label="Lessons all time"
+              value={data.totals.billed_all_time_cents}
+              formatValue={formatMoneyValue}
+              animate={false}
+              icon="book-open-variant"
+              hint={countOf(data.totals.session_count, 'session')}
+              to="/sessions?tab=finance"
+            />,
+          ]}
+        </StatGrid>
+        <DirectBalancesPanel title="Families and tutors" rows={data.direct_balances} of="admin" />
+        <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} />
+      </View>
+    );
+  }
+
   return (
     <View testID="dashboard-finance-admin" style={{ gap: space.lg }}>
       <SecureMoney />
@@ -263,6 +314,57 @@ export function TutorFinance({ data, subjectId }: { data: TutorDashboard; subjec
   const advance = data.earnings.topup_amount_cents == null ? null : data.earnings;
   const year = orgYear(useOrgTimeZone());
   const monthly = useMonthlyFinance(year, subjectId);
+
+  if (data.paid_directly) {
+    // Phase 54: families pay this tutor directly; nobody issues them a 1099, so no SSN notice.
+    const totals = directTotals(data.direct_balances);
+    return (
+      <View testID="dashboard-finance-tutor" style={{ gap: space.lg }}>
+        <SecureMoney />
+        <StatGrid>
+          {[
+            <StatCard
+              key="lessons"
+              label="Lessons"
+              value={totals.charged}
+              formatValue={formatMoneyValue}
+              animate={false}
+              icon="wallet-outline"
+              to="/sessions?tab=finance"
+            />,
+            <StatCard
+              key="families-paid"
+              label="Families paid you"
+              value={totals.paid}
+              formatValue={formatMoneyValue}
+              animate={false}
+              icon={walletMinusIcon}
+              to="/billing"
+            />,
+            <StatCard
+              key="owed"
+              label="Owed to you"
+              value={totals.owed}
+              formatValue={formatMoneyValue}
+              animate={false}
+              icon={walletPlusIcon}
+              tone={totals.owed > 0 ? 'warning' : 'default'}
+              to="/billing"
+            />,
+          ]}
+        </StatGrid>
+        <DirectBalancesPanel title="Your families" rows={data.direct_balances} of="tutor" />
+        <MonthlyFinance data={monthly.data?.data} isLoading={monthly.isPending} />
+        <Panel
+          testID="tutor-payments-to-you"
+          title="Payments to you"
+          action={{ label: 'Billing', to: '/billing' }}
+        >
+          <PaymentList payments={data.recent_payments} />
+        </Panel>
+      </View>
+    );
+  }
 
   const cards = [
     <StatCard

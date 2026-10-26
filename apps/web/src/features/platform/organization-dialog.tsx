@@ -17,6 +17,7 @@ import {
   FEATURE_SET_DESCRIPTIONS,
   FEATURE_SET_LABELS,
   featureAllowed,
+  PAID_DIRECTLY_LABEL,
 } from '@tmi/shared';
 
 import { Badge } from '@/components/ui/badge';
@@ -50,6 +51,8 @@ import {
   useRemoveOrganizationAdmin,
   useUpdateOrganization,
   useUpdateOrganizationFeatures,
+  useBusinesses,
+  useSetSpaceBusiness,
   useUploadLogo,
 } from './api';
 import { FormField } from './form-field';
@@ -71,7 +74,12 @@ interface FormState {
   feature_quest: boolean;
   /** Phase 51: whether its Quest reviews approve bank questions for every organization. */
   quest_trusted: boolean;
+  /** Phase 54: the organization that runs its money, or DIRECT (paid directly). */
+  business_id: string;
 }
+
+/** The select's value for "no organization": Radix gives an empty value no item. */
+const DIRECT = 'direct';
 
 const EMPTY: FormState = {
   name: '',
@@ -88,6 +96,7 @@ const EMPTY: FormState = {
   feature_assessment: true,
   feature_quest: true,
   quest_trusted: true,
+  business_id: DIRECT,
 };
 
 /** "Riverside Tutoring" -> "riverside-tutoring", as a first suggestion. */
@@ -119,6 +128,8 @@ export function OrganizationDialog({
   const create = useCreateOrganization();
   const update = useUpdateOrganization();
   const updateFeatures = useUpdateOrganizationFeatures();
+  const businesses = useBusinesses();
+  const setBusiness = useSetSpaceBusiness();
 
   useEffect(() => {
     if (!open) return;
@@ -141,6 +152,7 @@ export function OrganizationDialog({
             feature_assessment: featureAllowed(existing, 'assessment'),
             feature_quest: featureAllowed(existing, 'quest'),
             quest_trusted: existing.quest_trusted !== false,
+            business_id: existing.business?.id ?? DIRECT,
           }
         : EMPTY,
     );
@@ -177,9 +189,17 @@ export function OrganizationDialog({
         if (trustChanged || FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])) {
           await updateFeatures.mutateAsync({ id: existing.id, input: { ...features, quest_trusted: form.quest_trusted } });
         }
+        const businessId = form.business_id === DIRECT ? null : form.business_id;
+        if ((existing.business?.id ?? null) !== businessId) {
+          await setBusiness.mutateAsync({ id: existing.id, business_id: businessId });
+        }
         toast.success(`${form.name} saved.`);
       } else {
-        await create.mutateAsync({ ...input, ...features });
+        await create.mutateAsync({
+          ...input,
+          ...features,
+          business_id: form.business_id === DIRECT ? null : form.business_id,
+        });
         toast.success(`${form.name} created. Add its first admin next.`);
       }
       onOpenChange(false);
@@ -257,6 +277,32 @@ export function OrganizationDialog({
               </Select>
             </FormField>
           </div>
+
+          {/* Phase 54: who families pay. An organization (its TIN, its 1099s, its cut), or nobody:
+              paid directly, each family paying the tutor of each lesson. Applies going forward. */}
+          <FormField id="org-business" label="Organization" error={errors.business_id}>
+            <Select value={form.business_id} onValueChange={(value) => set('business_id', value)}>
+              <SelectTrigger id="org-business" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={DIRECT}>{PAID_DIRECTLY_LABEL}</SelectItem>
+                {(businesses.data?.data ?? [])
+                  .filter((b) => !b.archived_at || b.id === existing?.business?.id)
+                  .map((b) => (
+                    <SelectItem key={b.id} value={b.id}>
+                      {b.name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <p className="text-muted-foreground text-xs">
+              {form.business_id === DIRECT
+                ? 'Families pay each tutor directly: one price per lesson, nobody’s cut, no 1099s from the space.'
+                : 'Families pay the organization, which pays the tutors and files their 1099s.'}
+              {existing ? ' A change applies from now on; recorded lessons and payments keep theirs.' : ''}
+            </p>
+          </FormField>
 
           {/* Phase 50: what the organization may use. Its own admins switch Assessment and Quest on. */}
           <fieldset className="grid gap-2 rounded-lg border p-3" data-testid="org-feature-sets">

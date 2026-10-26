@@ -4,6 +4,8 @@ import { firstErrors } from './form-errors';
 import { logoAttempts, logoContentType, logoProblem } from './logo-bytes';
 import {
   EMPTY_ORG_FORM,
+  DIRECT,
+  businessChange,
   formFromOrganization,
   featuresBody,
   formToInput,
@@ -74,6 +76,7 @@ const ORG: OrganizationListItem = {
   feature_quest: false,
   created_via: 'console',
   quest_trusted: true,
+  business: { id: 'b-1', name: 'Fixture Organization' },
   calendar_domain: 'lakeside.invalid',
   archived_at: null,
   created_at: '2026-10-01T00:00:00Z',
@@ -106,7 +109,9 @@ describe('organization form', () => {
     });
     expect(formToInput({ ...form, builtin_institute: false }).builtin_logo).toBeNull();
     // Phase 50: the feature sets go on a create only.
-    expect(formToInput({ ...form, features: { tutoring: false, assessment: true, quest: true } }, true)).toMatchObject({
+    expect(
+      formToInput({ ...form, features: { tutoring: false, assessment: true, quest: true } }, true),
+    ).toMatchObject({
       feature_tutoring: false,
       feature_assessment: true,
       feature_quest: true,
@@ -144,10 +149,12 @@ describe('organization form', () => {
 
 describe('feature sets (Phase 50)', () => {
   it('names the allowed sets at the end of the console row', () => {
-    expect(orgSummary(ORG)).toBe('lakeside · Plum · 1 admin · 3 members · Tutoring, Assessment');
+    expect(orgSummary(ORG)).toBe(
+      'lakeside · Plum · 1 admin · 3 members · Tutoring, Assessment · run by Fixture Organization',
+    );
     expect(
       orgSummary({ ...ORG, feature_tutoring: false, feature_assessment: false, feature_quest: false }),
-    ).toMatch(/· No feature sets$/);
+    ).toMatch(/· No feature sets · run by/);
   });
 
   it('sends all three, with the one switched changed', () => {
@@ -183,5 +190,30 @@ describe('Quest trust (Phase 51)', () => {
 
   it('never sends the trust in the identity body', () => {
     expect(formToInput(formFromOrganization(ORG))).not.toHaveProperty('quest_trusted');
+  });
+});
+
+describe('the organization that runs a space (Phase 54)', () => {
+  it('says who families pay at the end of the row', () => {
+    expect(orgSummary({ ...ORG, business: null })).toMatch(/· paid directly$/);
+  });
+
+  it('reads the organization into the form, or paid directly', () => {
+    expect(formFromOrganization(ORG).business_id).toBe('b-1');
+    expect(formFromOrganization({ ...ORG, business: null }).business_id).toBe(DIRECT);
+    expect(formFromOrganization(null).business_id).toBe(DIRECT);
+  });
+
+  it('sends business_id on create, null for paid directly, and never in the edit body', () => {
+    const fresh = { ...formFromOrganization(null), name: 'New', short_name: 'New', slug: 'new' };
+    expect(formToInput(fresh, true)).toMatchObject({ business_id: null });
+    expect(formToInput({ ...fresh, business_id: 'b-2' }, true)).toMatchObject({ business_id: 'b-2' });
+    expect(formToInput(formFromOrganization(ORG))).not.toHaveProperty('business_id');
+  });
+
+  it('puts the new organization only when it changed', () => {
+    expect(businessChange(ORG, { business_id: 'b-1' })).toBeNull();
+    expect(businessChange(ORG, { business_id: DIRECT })).toEqual({ business_id: null });
+    expect(businessChange({ business: null }, { business_id: 'b-2' })).toEqual({ business_id: 'b-2' });
   });
 });

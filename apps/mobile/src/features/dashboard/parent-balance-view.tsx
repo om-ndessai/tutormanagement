@@ -1,6 +1,8 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 (ParentView). Named for
-// the money rule: a parent's dashboard carries the family's balances.
-import { formatCents, type ParentDashboard, type StudentBalance } from '@tmi/shared';
+// the money rule: a parent's dashboard carries the family's balances. Phase 54 (@ 24066d9, working
+// tree): what is owed to tutors directly counts beside what is owed to the organization, and "What you
+// owe each tutor" lists it.
+import { formatCents, type DirectBalance, type ParentDashboard, type StudentBalance } from '@tmi/shared';
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
@@ -15,10 +17,37 @@ import { space } from '@/theme/tokens';
 import { formatMoneyValue } from './finance-format';
 import { PaymentList } from './finance-views';
 import { ChildCard } from './child-card';
+import { DirectBalancesPanel, directTotals } from './direct-balances';
 import { CHILD_HORIZON_DAYS, nextLessonFor } from './home-model';
 import { TodayCard, useToday } from './home-top';
 import { ReflectionPrompts } from './reflections';
 import { SessionList } from './session-list';
+
+/**
+ * Phase 54: a child's balance with the organization plus their lessons paid directly to tutors, as one
+ * row reads it.
+ */
+export function childWithDirect(child: StudentBalance, direct: readonly DirectBalance[]): StudentBalance {
+  const mine = direct.filter((row) => row.student_user_id === child.student_user_id);
+  const totals = directTotals(mine);
+  return {
+    ...child,
+    session_count: child.session_count + mine.reduce((sum, row) => sum + row.session_count, 0),
+    charged_cents: child.charged_cents + totals.charged,
+    paid_cents: child.paid_cents + totals.paid,
+    balance_cents: child.balance_cents + (totals.charged - totals.paid),
+  };
+}
+
+/** Phase 54: the family's figures, the organization's and the tutors' paid directly together. */
+export function parentTotals(data: ParentDashboard): { charged: number; paid: number; outstanding: number } {
+  const direct = directTotals(data.direct_balances);
+  return {
+    charged: data.totals.charged_cents + direct.charged,
+    paid: data.totals.paid_cents + direct.paid,
+    outstanding: data.totals.balance_cents + (direct.charged - direct.paid),
+  };
+}
 
 /** One child's balance: emphasised only when there is something outstanding. */
 function ChildBalanceRow({ child }: { child: StudentBalance }) {
@@ -62,6 +91,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
     studentIds: data.children.map((child) => child.student_user_id),
     horizonDays: CHILD_HORIZON_DAYS,
   });
+  const totals = parentTotals(data);
   return (
     <View testID="dashboard-parent" style={{ gap: space.lg }}>
       {/* The family's balances, with no Tutoring/Finance split to keep them off screen (ux-audit F-1). */}
@@ -72,18 +102,18 @@ export function ParentView({ data }: { data: ParentDashboard }) {
           { label: 'Children', value: data.children.length },
           {
             label: 'Charged',
-            value: data.totals.charged_cents,
+            value: totals.charged,
             formatValue: formatMoneyValue,
             animate: false,
             to: '/sessions?tab=finance',
           },
           {
             label: 'Outstanding',
-            value: data.totals.balance_cents,
+            value: totals.outstanding,
             formatValue: formatMoneyValue,
             animate: false,
-            tone: data.totals.balance_cents > 0 ? 'brand' : 'success',
-            hint: `${formatCents(data.totals.paid_cents)} paid`,
+            tone: totals.outstanding > 0 ? 'brand' : 'success',
+            hint: `${formatCents(totals.paid)} paid`,
             to: '/billing',
           },
         ]}
@@ -109,6 +139,10 @@ export function ParentView({ data }: { data: ParentDashboard }) {
           children never sign in, so it is answered together. */}
       <ReflectionPrompts prompts={data.awaiting_reflection} forChildren />
 
+      {data.paid_directly || data.direct_balances.length > 0 ? (
+        <DirectBalancesPanel title="What you owe each tutor" rows={data.direct_balances} of="family" />
+      ) : null}
+
       <Panel testID="parent-children" title="Balances">
         {data.children.length === 0 ? (
           <EmptyNote>No students are linked to you yet.</EmptyNote>
@@ -116,7 +150,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
           data.children.map((child, index) => (
             <View key={child.student_user_id}>
               {index > 0 ? <Divider /> : null}
-              <ChildBalanceRow child={child} />
+              <ChildBalanceRow child={childWithDirect(child, data.direct_balances)} />
             </View>
           ))
         )}
