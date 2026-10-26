@@ -583,3 +583,20 @@ Phase 53 built 2026-10-25 (web suite 265 passed; mobile smoke 7/7 on iOS and And
 deployed with sign-in on and the invited list; production unchanged (it carries the code, switched off,
 at its next release). Owed by the owner: the test origin on the Google web client, and an iOS OAuth
 client for `com.aimtrue.app.test` before AimTrue-Test can sign in on a phone.
+
+Phases 54-56: (requested 2026-10-25 by the owner, in this order, after the NC 2017 release; decisions the
+same day; web and the app)
+- **Phase 54 — tutor spaces and organizations.** Plan: `docs/tutor-spaces-plan.md`. A space is either run
+  by an organization -- a new shared record (`businesses`: name, TIN, payer address; several spaces may
+  point at one) that families pay and that pays its tutors, as today -- or paid directly: no
+  organization, families pay each lesson's tutor, one price, nobody's cut, no 1099 from the space.
+  Platform admins make tutor spaces and choose the organization in the console; a space may gain or lose
+  its organization going forward (recorded lessons and payments keep their model). Every existing space
+  gets an organization of its own and works as today.
+- **Phase 55 — more ways to sign in.** Plan: `docs/social-login-plan.md`. Microsoft, Apple and Facebook
+  (Instagram's consumer login no longer exists; Facebook Login stands for Meta), each configured and
+  switched on per Worker (`AUTH_PROVIDERS`, default "google"); Apple built but off until the paid Apple
+  account. One person, several ways in (`user_identities`, linking on My profile). No magic links.
+- **Phase 56 — sharing Quest.** Plan: `docs/sharing-plan.md`. Result cards and "Can you solve this?"
+  links with previews, as text and images, with no child's or other player's name; withdrawable;
+  Turnstile on the public answer.
