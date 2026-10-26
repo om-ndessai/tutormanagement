@@ -39,6 +39,7 @@ DROP TABLE IF EXISTS consents;
 DROP TABLE IF EXISTS join_requests;
 DROP TABLE IF EXISTS platform_accounts;
 DROP TABLE IF EXISTS question_suggestions;
+DROP TABLE IF EXISTS shares;
 DROP TABLE IF EXISTS quest_game_seen;
 DROP TABLE IF EXISTS quest_game_favorites;
 DROP TABLE IF EXISTS quest_game_players;
@@ -94,6 +95,7 @@ DROP TABLE IF EXISTS organization_logos;
 DROP TABLE IF EXISTS organizations;
 DROP TABLE IF EXISTS businesses;
 DROP TABLE IF EXISTS user_onboarding;
+DROP TABLE IF EXISTS user_identities;
 DROP TABLE IF EXISTS users;
 
 
@@ -139,6 +141,33 @@ CREATE UNIQUE INDEX users_google_sub_unique
   ON users (google_sub) WHERE google_sub IS NOT NULL AND deleted_at IS NULL;
 
 CREATE INDEX users_full_name_idx ON users (full_name) WHERE deleted_at IS NULL;
+
+-- ---------------------------------------------------------------------------
+-- user_identities - one person, several ways in (Phase 55)
+-- ---------------------------------------------------------------------------
+-- A provider account that signs this person in (docs/social-login-plan.md). Sign-in looks up
+-- (provider, subject) first; a new account joins an existing person by email only when the
+-- provider says the address is verified, it is not an Apple relay address, and the person has no
+-- account from that provider yet (`mayLinkByEmail` in shared). users.google_sub stays, written
+-- beside the google row, for the Workers that read it.
+CREATE TABLE user_identities (
+  provider      TEXT NOT NULL CHECK (provider IN ('google', 'microsoft', 'apple', 'facebook')),
+  -- google: sub; microsoft: tid:oid; apple: sub; facebook: the app-scoped id.
+  subject       TEXT NOT NULL,
+  user_id       TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  -- The address the provider gave when it was linked (may be an Apple relay address, or none).
+  email_at_link TEXT,
+  -- Apple only: its refresh token, encrypted with the session secret, kept solely so it can be
+  -- revoked when the person deletes their account (Apple's rule). Never read back to a client.
+  revoke_token  TEXT,
+  created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  last_used_at  TEXT,
+
+  PRIMARY KEY (provider, subject)
+);
+CREATE INDEX user_identities_user_idx ON user_identities (user_id);
+-- One account per provider per person: a second Google account is a second person.
+CREATE UNIQUE INDEX user_identities_one_per_provider ON user_identities (user_id, provider);
 
 
 -- ---------------------------------------------------------------------------
@@ -2494,6 +2523,42 @@ END;
 
 CREATE TRIGGER quest_game_seen_organization_fixed
 BEFORE UPDATE OF organization_id ON quest_game_seen
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+
+-- Phase 56 (docs/sharing-plan.md, R22): a public link to a card built on the server from the
+-- maker's own Quest result -- a game's result, a level finished, or "Can you solve this?" with one
+-- approved question. `card` is a JSON snapshot of the numbers shown: no names but the first name
+-- the maker chose (first_name), no free text, no space name. Withdrawn, never deleted by the maker;
+-- read by its id alone (the public page), one primary-key read.
+CREATE TABLE shares (
+  id               TEXT PRIMARY KEY,
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  user_id          TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  kind             TEXT NOT NULL CHECK (kind IN ('game_result', 'level_finished', 'challenge')),
+  card             TEXT NOT NULL,
+  first_name       TEXT,
+  question_id      TEXT REFERENCES questions (id),
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  expires_at       TEXT NOT NULL,
+  withdrawn_at     TEXT,
+
+  CHECK ((kind = 'challenge') = (question_id IS NOT NULL))
+);
+CREATE INDEX shares_user_idx ON shares (organization_id, user_id, created_at);
+
+CREATE TRIGGER shares_same_organization
+BEFORE INSERT ON shares
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER shares_organization_fixed
+BEFORE UPDATE OF organization_id ON shares
 WHEN NEW.organization_id IS NOT OLD.organization_id
 BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');

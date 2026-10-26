@@ -3,7 +3,7 @@
  * sign-in and Account screens (owner, 2026-10-24), so a phone's build can be matched to the plan.
  * Raised by every phase's release, with the phase's own code.
  */
-export const RELEASE_PHASE = 54;
+export const RELEASE_PHASE = 56;
 
 /** "Phase 49": what the app prints. */
 export function releaseLabel(phase: number = RELEASE_PHASE): string {

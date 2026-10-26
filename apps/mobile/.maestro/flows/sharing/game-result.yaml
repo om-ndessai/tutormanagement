@@ -1,0 +1,171 @@
+# Sharing Quest (Phase 56, R22). Anita (a parent: an adult, so she may show her first name) has played a
+# single-player game on G4 through the API -- the first question right, the second wrong. She opens it
+# from the Quest screen: "Share the result" makes a link with her first name; the card and the text
+# carry her first name, the level and "1/2" with its marks, and the link on this server; Picture hands
+# the card to the share sheet. She withdraws it. Then the question she got right offers "Challenge a
+# friend"; that link is listed under Your shares on the Quest screen, and withdrawn from there.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/share-game.js
+      env:
+        PLAYER: anita.patel.nc@gmail.com
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/share-end.js
+      env:
+        PLAYER: anita.patel.nc@gmail.com
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+# Nothing shared yet: no Your shares.
+- assertNotVisible:
+    id: my-shares
+- scrollUntilVisible:
+    element:
+      id: game-row-${output.gameCode}
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: game-row-${output.gameCode}
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      text: '1 right, 1 points?'
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: share-result
+    centerElement: true
+- tapOn:
+    id: share-result
+- extendedWaitUntil:
+    visible:
+      id: share-dialog
+    timeout: 10000
+- assertVisible: '.*no other player’s name, no space’s name.*'
+- tapOn:
+    id: share-show-name
+- tapOn:
+    id: share-make
+- extendedWaitUntil:
+    visible:
+      id: share-card
+    timeout: 15000
+- assertVisible:
+    id: share-text
+    text: '(?s)Aimtrue Quest · Anita · G4 · 1/2 🟩🟥.*localhost:8787/s/[A-Za-z0-9]+'
+- takeScreenshot: sharing-result-card
+# The picture, through the share sheet; the sheet is closed again without sharing.
+- tapOn:
+    id: share-picture
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: share-dialog
+          timeout: 10000
+          optional: true
+      - pressKey: back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible: 'Close|Copy|Save Image'
+          timeout: 10000
+          optional: true
+      - takeScreenshot: sharing-picture-sheet
+      # Swiped down from its top edge: a tap above it would land on the dialog's backdrop and close that too.
+      - swipe:
+          start: '50%,61%'
+          end: '50%,98%'
+          duration: 400
+- extendedWaitUntil:
+    visible:
+      id: share-withdraw
+    timeout: 10000
+- tapOn:
+    id: share-withdraw
+- extendedWaitUntil:
+    visible: 'Withdrawn: the link now says it is no longer available\.'
+    timeout: 10000
+- assertNotVisible:
+    id: share-dialog
+# The question she got right: Challenge a friend.
+- scrollUntilVisible:
+    element:
+      id: game-review-chip-1
+    centerElement: true
+- tapOn:
+    id: game-review-chip-1
+- scrollUntilVisible:
+    element:
+      id: share-challenge-1
+    centerElement: true
+- tapOn:
+    id: share-challenge-1
+- extendedWaitUntil:
+    visible:
+      id: share-make
+    timeout: 10000
+- tapOn:
+    id: share-make
+- extendedWaitUntil:
+    visible:
+      id: share-text
+      text: '(?s)Aimtrue Quest · G4 · Can you solve this\?.*localhost:8787/s/[A-Za-z0-9]+'
+    timeout: 15000
+- takeScreenshot: sharing-challenge-card
+- tapOn:
+    id: share-done
+# The wrong one offers no challenge.
+- tapOn:
+    id: game-review-chip-2
+- assertNotVisible:
+    id: share-challenge-2
+# Your shares on the Quest screen: the challenge, withdrawn from there.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: my-shares
+    centerElement: true
+    timeout: 15000
+- assertVisible: 'G4 · Can you solve this\?'
+- takeScreenshot: sharing-your-shares
+- tapOn: 'Withdraw'
+- extendedWaitUntil:
+    notVisible:
+      id: my-shares
+    timeout: 10000

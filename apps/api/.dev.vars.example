@@ -20,3 +20,6 @@ AI_PROVIDER=fake
 
 # Phase 52: sign-up is open locally (production keeps it closed until the terms are approved).
 SIGNUP_OPEN=true
+# Phase 55: every provider offered locally, through the suite's fake tokens (never in production).
+AUTH_PROVIDERS=google,microsoft,apple,facebook
+AUTH_FAKE_PROVIDERS=true

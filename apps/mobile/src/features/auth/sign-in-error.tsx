@@ -33,7 +33,7 @@ export function SignInError({
     code === AUTH_ERROR_CODES.ACCOUNT_SUSPENDED
       ? 'Contact an administrator to have your access restored.'
       : code === AUTH_ERROR_CODES.EMAIL_UNVERIFIED
-        ? 'Verify your email address with Google, then try again.'
+        ? 'Verify your email address with your account’s provider, then try again.'
         : calm
           ? 'Wait a minute, then try again.'
           : null;

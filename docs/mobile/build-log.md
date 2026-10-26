@@ -3918,3 +3918,114 @@ admins-people,org-admin-denied,logo}`, `organization/*`, `quest/play-number` gre
 `spaces/sign-up` failed 2 of 4 runs on Maestro's hideKeyboard, green on the others; its screen is
 unchanged); Jest 138 suites / 1010 tests; typecheck, lint (0 errors), export green; screenshots reviewed
 in light (Billing, a parent's Home, the console's Organizations), not in dark.
+
+## 65. Phases 55 and 56: more ways to sign in, and sharing Quest, in the app — design (2026-10-26)
+**Scope:** the web's halves at parity (`docs/social-login-plan.md`, `docs/sign-in-providers-setup.md`,
+`docs/sharing-plan.md`, R22). The API, shared contract and web are the lead's (WIP commits on `sharing`);
+**no change to `apps/api`, `packages/shared` or `apps/web` comes from this work.**
+1. **Sign-in (55):** the sign-in screen (the Welcome of the production app, and the dev build's card
+   when the server has sign-in on) shows Google's button first, then one "Continue with <label>" per
+   other provider the server offers in `/auth/config` `providers` (an older Worker sends none = Google
+   alone) AND this build can use (`signInProviders`): Microsoft when it has a `client_id`; Facebook when
+   it has one and the build registered its `fb<app id>` scheme (`EXPO_PUBLIC_FACEBOOK_APP_ID` equal to
+   it — Android's custom tab cannot return without the scheme); Apple on iOS only, only when the build
+   has `EXPO_PUBLIC_APPLE_SIGN_IN=true` (off: no paid Apple team; the entitlement plugin is added only
+   then) and the device offers it. Each posts the provider's token to `POST /auth/<provider>` with
+   `signup: true` and is answered as Google is (a session, or the Phase 52 `signup` start → `/sign-up`).
+   Microsoft: `expo-auth-session` (code + PKCE in the system browser, redirect `<scheme>://auth/microsoft`,
+   the code exchanged at Microsoft's token endpoint as a public client for the ID token). Facebook:
+   `expo-auth-session` with Facebook's web OAuth dialog (`response_type=token`, redirect
+   `fb<app id>://authorize`), posting `access_token` — no native FB SDK (no Meta app yet; its config
+   plugin needs an app id). Apple: `expo-apple-authentication`, posting `id_token`, `authorization_code`
+   and the name given the first time. A cancelled browser says nothing; refusals (`no_account`,
+   `email_unverified`, rate limit) are the server's words in `SignInError` ("…with your account's
+   provider" for unverified, as on the web). The 401 renewal stays Google's (a session signed in another
+   way ends after its 12 hours, as on the web).
+2. **My profile → "Ways to sign in" (55):** while the server has sign-in on and this is not the
+   developer sign-in: `GET /auth/identities` lists each linked provider (label, the address at linking,
+   "Last used …" / "Not used yet") with Remove (disabled while it is the last; the server's 409 said in
+   its words); "Add another" offers each offered, unlinked provider this build can use, through the same
+   token flows, posted to `POST /auth/identities/<provider>` (Google: the native Google sign-in's ID token
+   as `{ id_token }`). Toasts as the web's.
+3. **Sharing (56):** a `ShareButton` where the web has one — the game results ("Share the result", for a
+   reader whose team played; "Challenge a friend" on a question the reader's own team got right, in the
+   results pager), and the moved-up banner in Quest play (Share, the level just finished). Hidden for a
+   student with no platform account (a child a space added; the API refuses too). It opens a dialog: the
+   web's description, "Show my first name" for an adult only (`account.age_band === 'adult'`, or no
+   account and not a student), "Make the link" (`POST /shares`); then the card drawn natively
+   (`ShareCardView`: the brand, the headline from `shareHeadline`, the marks for a game, the first name
+   if chosen), the text (`shareText` with `shareUrl(serverOrigin(), id)`), **Share…** (the system share
+   sheet with the text and link: `Share.share`), **Picture** (`react-native-view-shot` captures the card
+   to a PNG in the cache, `expo-sharing` offers it, the file is deleted after), and **Withdraw the link**.
+   The Quest screen gains "Your shares" (live ones: headline, "Shared <when>", Withdraw), hidden while
+   there are none. **Mobile differences:** no Copy text and no direct X/Facebook/… links (the system
+   share sheet offers Copy and every installed app, as Phase 52's Share code does); the public page
+   `/s/<id>` is the web's (a link, opened in a browser).
+**Web sources:** `features/auth/{login-page,provider-buttons,sign-in-methods-card}.tsx`,
+`providers/auth-provider.tsx`, `pages/profile-page.tsx`; `features/sharing/{api,share-button,my-shares-card,card-image}.ts(x)`,
+`features/quest/{game-page,quest-play-page,quest-page}.tsx`.
+**Endpoints:** GET `/auth/config` (`providers`); POST `/auth/microsoft|apple|facebook` — `signInWithProvider` —
+public; GET `/auth/identities` — `useIdentities` (`['auth','identities']`) — signed in; POST/DELETE
+`/auth/identities/:provider` — `useLinkIdentity`/`useRemoveIdentity` (invalidate that key); GET `/shares` —
+`useMyShares` (`['shares']`); POST `/shares` — `useCreateShare`; DELETE `/shares/:id` — `useWithdrawShare`
+(both invalidate `['shares']`) — members where Quest is on.
+**Screens & routes:** no new routes: `app/sign-in.tsx`, `ProfileScreen`, the Quest screen, Quest play and
+the game screen's results.
+**Components:** new `src/lib/provider-sign-in.ts` (the three token flows; nothing logged or stored),
+`src/features/auth/{provider-model.ts,provider-buttons.tsx,sign-in-methods-card.tsx}`,
+`src/features/sharing/{api.ts,share-button.tsx,share-card-view.tsx,my-shares-panel.tsx,share-model.ts}`;
+reused `Welcome` (a slot below Google's button), `SignInError`, `Panel`, `OutlinedCard`, `CheckRow`, the toast.
+**Interaction & motion:** the share dialog is a Paper `Dialog` in a `Portal` (Quest's frame has its own
+host); selection haptics on the checkbox, success on making a link, nothing animated.
+**Exposure checks:** no token, code or email logged or stored (the cookie is the platform's); no money
+anywhere; R22: the card is the server's (`share.card`), never built from client data — the app draws
+only its fields and the maker's chosen first name; no other player, no space name, no free text; Share
+hidden for a child; the first-name choice only for an adult (the server re-decides); the PNG lives in the
+cache only until the share sheet closes; a share or identity is the reader's own (the server scopes).
+**testIDs:** `sign-in-providers`, `sign-in-provider-<id>`; `sign-in-methods`, `sign-in-method-<provider>`,
+`sign-in-method-remove-<provider>`, `sign-in-method-add-<provider>`; `share-button` (or the caller's:
+`share-result`, `share-challenge-<n>`, `share-level`), `share-dialog`, `share-show-name`, `share-make`,
+`share-card`, `share-text`, `share-system`, `share-picture`, `share-withdraw`; `my-shares`,
+`my-share-<id>`, `my-share-withdraw-<id>`.
+**Tests:** Jest — `signInProviders` (per `providers`, client ids, the Facebook scheme, Apple's flag and
+platform), the buttons, the methods card's states (hidden with sign-in off, list, last one not removable,
+add), `shareAllowed`/`mayShowName`, the share dialog (make → text with the link, withdraw) and the shares
+panel. Maestro `sharing/` — `game-result` (a seeded adult plays a single-player game set up through the
+API, shares the result, sees the card and text, withdraws it; Your shares on the Quest screen),
+`student-no-share` (a space-added student's results show no Share). `sign-in-providers/` needs a server
+with sign-in on, which the e2e runner refuses: checked by Jest, by hand later.
+**Risks / open questions:** Microsoft's token endpoint must accept the app's redirect as a "Mobile and
+desktop" platform (setup doc step 2); Facebook's web dialog with a `fb<id>://` redirect is what the
+setup doc registers; the Apple button cannot be run until the paid team.
+
+**Build notes (2026-10-26):**
+- **R22, the card's brand:** the card and the text name the platform (`PLATFORM_BRAND.short`, "Aimtrue
+  Quest"), never `useBrand().short`: in a space that is the space's short name ("CHMI Quest"), which R22
+  forbids on a public card. **The web does use `brand.short`** (`share-button.tsx`'s `shareText(…,
+  brand.short)` and `drawShareCard(…, brand.short)`): reported to the lead, not changed here.
+- The share dialog is a Paper `Dialog` with its own `ScrollView` capped at 60% of the height (Paper's
+  `Dialog.ScrollArea` let the actions overlap the text); Share… and Picture sit under the text, Withdraw
+  the link and Done are the actions. `Dialog.Actions` passes props to each direct child, so no fragments.
+- The card's picture colours are artwork, kept in `src/theme/brand-art.ts` (`SHARE_CARD`), the web's.
+- Facebook's `fb<app id>` scheme is added to `scheme` (as an array) only when the build has
+  `EXPO_PUBLIC_FACEBOOK_APP_ID`; otherwise `scheme` stays the plain string the deep links and
+  `app-config-test-variant.test.ts` expect. `expo-apple-authentication`'s plugin (the entitlement) only
+  with `EXPO_PUBLIC_APPLE_SIGN_IN=true`. `expo-constants` raised to 57.0.22 by `expo install` (the new
+  modules brought a second copy; expo-doctor's duplicate check is green again).
+- Flows: `scripts/share-game.js` plays PLAYER's single-player G4 game through the API (first right, second
+  wrong) with the twelve approved NC26.4 keys written in (Maestro's JS cannot read the JSON), with
+  "questions not yet reviewed" off so the game draws approved ones only; `scripts/share-end.js` withdraws
+  the shares and switches Quest off. `expo run:ios` leaves an "Open in Aimtrue (e2e)?" alert on the
+  simulator after installing, which blocks the next flow's launch: dismissed before running.
+- Not run: the provider sign-in on a device (the local Worker has sign-in off, and the e2e runner refuses
+  one with it on; the fake tokens are API-side only); the Apple button (no paid team); the level-finished
+  Share (only a student with a platform account sees it, and Quest play is a student's; covered by Jest).
+
+**Verified (2026-10-26):** against the local Worker and seed only, with the e2e Release build of this
+worktree (`APP_VARIANT=e2e`, rebuilt with the new native modules) on iOS 27 (iPhone 17) and Android 37
+(Medium Phone): `sharing/{game-result,student-no-share}` green on both; `quest/{game-single,game-play,play,
+menu,finished}` green on both; the flows tagged smoke 7/7 on Android and 6/7 on iOS (`features/assess-home`
+failed once on `create-sheet is not visible`, green on three reruns; its screen is unchanged); Jest 144
+suites / 1036 tests; root typecheck, lint (0 errors), export green. Screenshots reviewed in light (the
+share dialog, the picture in the iOS share sheet, Your shares). Not run: provider sign-in and Ways to sign
+in on a device (sign-in is off locally), the Apple button, the level-finished Share.

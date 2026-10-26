@@ -1,0 +1,66 @@
+# Sharing Quest (Phase 56, R22): no child is named on a public page, so a child a space added has no
+# Share. Sofia (a student with no platform account) has played a single-player game on G4 through the
+# API; her results show her game, and neither "Share the result" nor "Challenge a friend".
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/share-game.js
+      env:
+        PLAYER: sofia.okafor@gmail.com
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: game-row-${output.gameCode}
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: game-row-${output.gameCode}
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      text: '1 right, 1 points?'
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: game-back
+    centerElement: true
+- assertNotVisible:
+    id: share-result
+- scrollUntilVisible:
+    element:
+      id: game-review-chip-1
+    centerElement: true
+- tapOn:
+    id: game-review-chip-1
+- assertNotVisible:
+    id: share-challenge-1
+- takeScreenshot: sharing-student-results

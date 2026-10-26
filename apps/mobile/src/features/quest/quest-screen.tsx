@@ -42,6 +42,7 @@ import {
 import { QuestPoints } from './quest-points';
 import { useGames } from './games-api';
 import { GamesPanel } from './games-panel';
+import { MySharesPanel } from '../sharing/my-shares-panel';
 
 export function QuestScreen() {
   const { user } = useAuth();
@@ -80,6 +81,8 @@ export function QuestScreen() {
       <GamesPanel />
       {roles.reviews ? <ReviewCard /> : null}
       {roles.reviews ? <StudentsCard /> : null}
+      {/* Phase 56: the links the reader has shared, to withdraw. */}
+      <MySharesPanel />
     </Screen>
   );
 }

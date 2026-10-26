@@ -31,6 +31,7 @@ import { QuestFrame } from './fullscreen-frame';
 import { Confetti, DoorsCountdown, KnockoutBurst, useCountdown } from './game-effects';
 import { JoinChoices } from './games-card';
 import { gameIsMissing, useGame, useGameAction, useGameResults } from './games-api';
+import { ShareButton } from '@/features/sharing/share-button';
 
 // Phase 46: one Quest game, full screen -- the lobby while players join, the
 // play with the scoreboard beside it, then the results. Polled every couple of
@@ -562,9 +563,13 @@ function Results({ game }: { game: GameView }) {
           </CardContent>
         </Card>
         <Scoreboard game={game} title="Final places" />
-        <Button asChild variant="outline" className="w-fit">
-          <Link to="/quest">Back to Quest</Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline" className="w-fit">
+            <Link to="/quest">Back to Quest</Link>
+          </Button>
+          {/* Phase 56: the reader's own team's result, as a public card. */}
+          {mine && <ShareButton input={{ kind: 'game_result', game_id: game.id }} label="Share the result" size="default" />}
+        </div>
       </div>
       <Card className="py-0" data-testid="game-review">
         <CardContent className="grid gap-4 p-5 text-sm">
@@ -604,6 +609,14 @@ function Results({ game }: { game: GameView }) {
                       </Badge>
                     )}
                     {item.answered_by && <span className="text-muted-foreground ml-auto text-xs">{item.answered_by}</span>}
+                    {/* Phase 56: a question the reader's own team got right, as "Can you solve this?". */}
+                    {item.correct && !item.skipped && data?.team_id === game.me.team_id && (
+                      <ShareButton
+                        input={{ kind: 'challenge', game_id: game.id, question_id: item.question.id }}
+                        label="Challenge a friend"
+                        testId={`share-challenge-${item.number}`}
+                      />
+                    )}
                   </div>
                   <MathText text={item.question.stem} />
                   {!item.skipped && item.answer !== null && (

@@ -1463,6 +1463,74 @@ Check, read-only:
 npx wrangler d1 execute tutoring-db --remote --command="SELECT o.slug, b.name, b.tin IS NOT NULL AS has_tin FROM organizations o LEFT JOIN businesses b ON b.id = o.business_id"
 ```
 
+Phase 55 (more ways to sign in, 2026-10-26, `docs/social-login-plan.md`) is additive: the
+`user_identities` table, one row per provider account that signs a person in, and its backfill from
+every pinned Google account. `users.google_sub` stays and is still written for Google, so the old
+Worker reads what it always did. `AUTH_PROVIDERS` stays unset ("google") until the owner configures
+and switches on each provider. Apply after the backup, before `npm run deploy`:
+
+```sql release=phase-55
+CREATE TABLE user_identities (
+  provider      TEXT NOT NULL CHECK (provider IN ('google', 'microsoft', 'apple', 'facebook')),
+  subject       TEXT NOT NULL,
+  user_id       TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  email_at_link TEXT,
+  revoke_token  TEXT,
+  created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  last_used_at  TEXT,
+
+  PRIMARY KEY (provider, subject)
+);
+CREATE INDEX user_identities_user_idx ON user_identities (user_id);
+CREATE UNIQUE INDEX user_identities_one_per_provider ON user_identities (user_id, provider);
+
+-- The backfill: every pinned Google account, with its address as it is now.
+INSERT INTO user_identities (provider, subject, user_id, email_at_link, last_used_at)
+  SELECT 'google', google_sub, id, email, last_login_at FROM users WHERE google_sub IS NOT NULL AND deleted_at IS NULL;
+```
+
+Check, read-only:
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --command="SELECT provider, COUNT(*) AS n FROM user_identities GROUP BY provider"
+```
+
+Phase 56 (sharing Quest, 2026-10-26, `docs/sharing-plan.md`) is additive: the `shares` table, its
+index and two triggers. Nothing existing changes, and the old Worker never reads it. Apply after the
+backup, before `npm run deploy`:
+
+```sql release=phase-56
+CREATE TABLE shares (
+  id               TEXT PRIMARY KEY,
+  organization_id  TEXT NOT NULL REFERENCES organizations (id),
+  user_id          TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  kind             TEXT NOT NULL CHECK (kind IN ('game_result', 'level_finished', 'challenge')),
+  card             TEXT NOT NULL,
+  first_name       TEXT,
+  question_id      TEXT REFERENCES questions (id),
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  expires_at       TEXT NOT NULL,
+  withdrawn_at     TEXT,
+
+  CHECK ((kind = 'challenge') = (question_id IS NOT NULL))
+);
+CREATE INDEX shares_user_idx ON shares (organization_id, user_id, created_at);
+
+CREATE TRIGGER shares_same_organization
+BEFORE INSERT ON shares
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER shares_organization_fixed
+BEFORE UPDATE OF organization_id ON shares
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

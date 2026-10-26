@@ -39,6 +39,10 @@ export const RATE_LIMITS = {
   space_write: { limit: 5, windowMs: 60_000 },
   /** Adding people to a space, per admin. */
   add_person: { limit: 60, windowMs: 60_000 },
+  /** Phase 56: making a share, per person. */
+  share_create: { limit: 10, windowMs: 60_000 },
+  /** Phase 56: answering a public "Can you solve this?", per client address. */
+  challenge_answer: { limit: 10, windowMs: 60_000 },
 } as const;
 export type RateLimitKind = keyof typeof RATE_LIMITS;
 

@@ -9,6 +9,8 @@ import { Screen } from '@/components/screen';
 import { ReleasePhase } from '@/components/release-phase';
 import { PERSONAS } from '@/dev/personas';
 import { LegalLine } from '@/features/auth/legal-links';
+import { ProviderButtons } from '@/features/auth/provider-buttons';
+import { offersGoogle, signInHow, type UsableProvider } from '@/features/auth/provider-model';
 import { SignInError } from '@/features/auth/sign-in-error';
 import { Welcome } from '@/features/auth/welcome';
 import { GoogleButton } from '@/lib/google-sign-in';
@@ -29,8 +31,18 @@ import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
  * - otherwise a plain message saying why there is no way in from this build.
  */
 export default function SignInScreen() {
-  const { config, googleAvailable, signInWithGoogle, signInAsDevUser, error, clearError, pendingSignup, startDevSignup } =
-    useAuth();
+  const {
+    config,
+    googleAvailable,
+    signInWithGoogle,
+    providers,
+    signInWithProvider,
+    signInAsDevUser,
+    error,
+    clearError,
+    pendingSignup,
+    startDevSignup,
+  } = useAuth();
   const brand = useBrand();
   const theme = useAppTheme();
   const [email, setEmail] = useState('');
@@ -66,6 +78,19 @@ export default function SignInScreen() {
     setBusy(null);
   }
 
+  // Phase 55: Microsoft, Apple or Facebook, answered as Google is.
+  async function signInOther(provider: UsableProvider) {
+    setBusy(provider.id);
+    clearError();
+    await signInWithProvider(provider);
+    setBusy(null);
+  }
+
+  const providerButtons = (
+    <ProviderButtons providers={providers} busy={busy} onSignIn={(provider) => void signInOther(provider)} />
+  );
+  const anyWayIn = googleAvailable || providers.length > 0;
+
   async function signIn(address: string) {
     setBusy(address);
     setTried(address.trim());
@@ -75,10 +100,15 @@ export default function SignInScreen() {
   }
 
   // The production app, signing in with Google: the welcome screen, and nothing a developer needs.
-  if (!DEV_TOOLS && googleAvailable) {
+  if (!DEV_TOOLS && anyWayIn) {
     return (
       <Screen testID="screen-sign-in" edges={['top', 'bottom']} scroll={false}>
-        <Welcome busy={busy === 'google'} onSignIn={() => void signInGoogle()} />
+        <Welcome
+          busy={busy === 'google'}
+          onSignIn={() => void signInGoogle()}
+          google={googleAvailable}
+          others={providerButtons}
+        />
         {errorView}
         <ReleasePhase />
       </Screen>
@@ -170,15 +200,20 @@ export default function SignInScreen() {
             </Button>
           </View>
         </Surface>
-      ) : googleAvailable && GoogleButton ? (
+      ) : anyWayIn && (GoogleButton || !googleAvailable) ? (
         <Surface style={{ borderRadius: radius.lg, padding: space.lg, gap: space.md }} elevation={1}>
           <Text variant="titleMedium" accessibilityRole="header">
             Staff portal
           </Text>
           <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-            Sign in with your Google account. New here? You can join a space with its code, or make your own.
+            {config?.signup_open
+              ? `Sign in with ${signInHow(googleAvailable, providers)}. New here? You can join a space with its code, or make your own.`
+              : providers.length > 0
+                ? 'Sign in the way your administrator set you up, or with an account you have added.'
+                : 'Sign in with the Google account your administrator added.'}
           </Text>
           {/* Google's own button: its "G" mark and "Sign in with Google", as its branding asks. */}
+          {googleAvailable && GoogleButton ? (
           <View style={{ alignItems: 'center' }}>
             <GoogleButton
               testID="sign-in-google"
@@ -190,6 +225,8 @@ export default function SignInScreen() {
               style={{ width: 312, height: 48 }}
             />
           </View>
+          ) : null}
+          {providerButtons}
           <View style={{ minHeight: 20, alignItems: 'center' }}>
             {busy === 'google' ? (
               <View testID="sign-in-google-busy" style={{ flexDirection: 'row', gap: space.sm }}>
@@ -201,7 +238,9 @@ export default function SignInScreen() {
             ) : null}
           </View>
           <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>
-            Already in a space? Use the Google address its administrators added.
+            {offersGoogle(config) && providers.length === 0
+              ? 'Already in a space? Use the Google address its administrators added.'
+              : 'Already in a space? Use the address its administrators added.'}
           </Text>
           <LegalLine testID="sign-in-legal" ids={{ terms: 'sign-in-terms', privacy: 'sign-in-privacy' }} />
         </Surface>

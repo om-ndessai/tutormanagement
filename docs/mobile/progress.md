@@ -417,6 +417,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   the Space screen's paid-directly card or "Run by <organization>"; the console's Organizations (list,
   form, archive) and a space's Organization choice. Built and tested 2026-10-26 (build note under design 64): the e2e Release build from this worktree, local Worker only; `tutor-spaces/*` (4) green on the iOS simulator and the Android emulator; the touched `billing/*`, `dashboard/{finance-admin,finance-tutor,finance-ssn-receipt,parent}`, `platform/{organizations,admins-people,org-admin-denied,logo}`, `organization/*` and `quest/play-number` (fixed: `UNTIL_NUMBER`) green on both; `features/console` green on Android, red on iOS (after a toast or a native alert in the console, the next form sheet does not present on iOS: not this phase's code; reported); the smoke flows 7/7 on both (iOS `spaces/sign-up` flaky on Maestro's hideKeyboard: 2 of 4 runs); typecheck, lint (0 errors), Jest 138 suites / 1010 tests, export green
 
+## Portal Phases 55 and 56 — more ways to sign in, sharing Quest (parity: the web half is built by the lead)
+
+- [x] 65. Mobile: Microsoft, Apple (off, behind `EXPO_PUBLIC_APPLE_SIGN_IN`) and Facebook sign-in beside
+  Google, and My profile's "Ways to sign in" (`docs/social-login-plan.md`); Share on Quest's game results,
+  "Challenge a friend", the level-finished banner, and Your shares (`docs/sharing-plan.md`, R22). New native
+  modules: `expo-auth-session` (with `expo-crypto`, `expo-web-browser`), `expo-apple-authentication`,
+  `react-native-view-shot` -- the development, e2e, personal and test builds are rebuilt. Built 2026-10-26
+  (build note under design 65).
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

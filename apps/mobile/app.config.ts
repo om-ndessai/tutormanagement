@@ -142,6 +142,17 @@ const PRIVACY_MANIFEST = {
   })),
 };
 
+/**
+ * Phase 55 (docs/sign-in-providers-setup.md): more ways to sign in. Microsoft needs nothing at build
+ * time (its client id comes from the server; it returns to `<scheme>://auth/microsoft`). Facebook's web
+ * dialog returns to `fb<app id>://authorize`, so the build registers that scheme when it is given the
+ * app id. Apple needs the paid Apple team's capability: off unless `EXPO_PUBLIC_APPLE_SIGN_IN=true`, and
+ * only then is the entitlement plugin added (a free team cannot sign it; never the company team).
+ */
+const FACEBOOK_APP_ID = process.env.EXPO_PUBLIC_FACEBOOK_APP_ID?.trim() || null;
+const APP_SCHEME = variant === 'test' ? 'aimtrue-test' : 'aimtrue';
+const APPLE_SIGN_IN = process.env.EXPO_PUBLIC_APPLE_SIGN_IN?.trim() === 'true';
+
 /** Dictation's permission copy (P3): neutral, and true on every path (the audio is never kept). */
 const MICROPHONE_COPY =
   'Used only while you dictate lesson notes. What you say is turned into text and the audio is never kept.';
@@ -156,7 +167,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: variant === 'test' ? './assets/images/icon-test.png' : './assets/images/icon.png',
   // The test app answers its own links, never the real app's.
-  scheme: variant === 'test' ? 'aimtrue-test' : 'aimtrue',
+  // Phase 55: with a Facebook app id, its `fb<id>` scheme too (the app's own stays first).
+  scheme: FACEBOOK_APP_ID ? [APP_SCHEME, `fb${FACEBOOK_APP_ID}`] : APP_SCHEME,
   userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: BASE_ID + SUFFIX[variant],
@@ -260,6 +272,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // iOS 27 requires the scene life cycle; see the plugin.
     './plugins/with-scene-lifecycle.js',
     ...(variant === 'development' ? ['./plugins/with-quiet-dev-menu.js'] : []),
+    ...(APPLE_SIGN_IN ? ['expo-apple-authentication'] : []),
     ...(googleIosClientId
       ? [
           [
@@ -277,5 +290,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // Left out when absent: a null here reaches the app's manifest as {}.
     ...(googleIosClientId ? { googleIosClientId } : {}),
     googleWebClientId: GOOGLE_WEB_CLIENT_ID,
+    // Phase 55: Apple's button (iOS, the paid team) and the Facebook app whose scheme this build registered.
+    appleSignIn: APPLE_SIGN_IN,
+    ...(FACEBOOK_APP_ID ? { facebookAppId: FACEBOOK_APP_ID } : {}),
   },
 });

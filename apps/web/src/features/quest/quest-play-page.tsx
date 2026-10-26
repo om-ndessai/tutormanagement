@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { SparklesIcon, TrophyIcon } from 'lucide-react';
 import { QUEST_POINTS, questLevelLabel, type QuestQuestion } from '@tmi/shared';
+import { ShareButton } from '@/features/sharing/share-button';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -98,6 +99,10 @@ export function QuestPlayPage() {
             >
               <SparklesIcon className="size-4" /> You finished {questLevelLabel(data.moved_up_from)}. On to{' '}
               {questLevelLabel(data.level_id)}!
+              {/* Phase 56: the level finished, as a public card. */}
+              <span className="ml-auto">
+                <ShareButton input={{ kind: 'level_finished', level_id: data.moved_up_from }} testId="share-level" />
+              </span>
             </p>
           )}
           <div key={data.question.id} className="quest-enter">

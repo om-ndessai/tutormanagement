@@ -741,6 +741,8 @@ export async function listPlatformAudit(db: D1Database, limit: number) {
           OR a.action LIKE 'question.%' OR a.action LIKE 'question_bank.%'
           -- Phase 54: an organization's own line; its copies in the spaces it runs are theirs.
           OR (a.action LIKE 'business.%' AND a.organization_id IS NULL)
+          -- Phase 55: a person's ways to sign in.
+          OR a.action LIKE 'identity.%'
        ORDER BY a.created_at DESC
        LIMIT ?`,
     )

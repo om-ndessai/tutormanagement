@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RequireFeature } from '@/components/layout/require-feature';
 import { LegalPage } from '@/pages/legal-page';
+import { PublicSharePage } from '@/features/sharing/public-share-page';
 import { SignupPage } from '@/features/auth/signup-page';
 import { AppShell } from '@/components/layout/app-shell';
 import { LoginPage } from '@/features/auth/login-page';
@@ -48,6 +49,8 @@ export function App() {
       <Route path="/login" element={<LoginPage />} />
       {/* Phase 51: readable signed out. */}
       <Route path="/terms" element={<LegalPage kind="terms" />} />
+      {/* Phase 56: a shared Quest card, open to anyone signed out. */}
+      <Route path="/s/:id" element={<PublicSharePage />} />
       <Route path="/privacy" element={<LegalPage kind="privacy" />} />
       {/* Phase 52: a newcomer's age question and the terms, before they have an account. */}
       <Route path="/signup" element={<SignupPage />} />

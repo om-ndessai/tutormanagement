@@ -600,3 +600,11 @@ same day; web and the app)
 - **Phase 56 — sharing Quest.** Plan: `docs/sharing-plan.md`. Result cards and "Can you solve this?"
   links with previews, as text and images, with no child's or other player's name; withdrawable;
   Turnstile on the public answer.
+
+Phases 54-56 built 2026-10-26, web and the app (local web suite 290 passed; `test:compat` green against
+release-20261025; the app's new flows green on iOS and Android, smoke 7/7 on Android and 6-7/7 on iOS with
+the known flaky flows): tutor spaces paid directly with organizations (`businesses`) in the console;
+Microsoft, Apple and Facebook sign-in built and switched off (`AUTH_PROVIDERS` "google" until the owner
+sets each up, `docs/sign-in-providers-setup.md`); sharing Quest (public `/s/<id>` cards, Turnstile and
+`TURNSTILE_SECRET` owed before production takes challenge answers). Not yet released to production.
+

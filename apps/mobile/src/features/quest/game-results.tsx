@@ -42,6 +42,7 @@ import {
 } from './game-model';
 import { Scoreboard } from './game-scoreboard';
 import { useGameResults } from './games-api';
+import { ShareButton } from '../sharing/share-button';
 import { exitQuest } from './quest-frame';
 import { questWide } from './quest-model';
 
@@ -115,15 +116,15 @@ export function GameResults({ game }: { game: GameView }) {
         </View>
       </OutlinedCard>
       <Scoreboard game={game} title="Final places" />
-      <Button
-        testID="game-back"
-        mode="outlined"
-        onPress={exitQuest}
-        style={{ alignSelf: 'flex-start' }}
-        contentStyle={{ minHeight: 48 }}
-      >
-        Back to Quest
-      </Button>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        <Button testID="game-back" mode="outlined" onPress={exitQuest} contentStyle={{ minHeight: 48 }}>
+          Back to Quest
+        </Button>
+        {/* Phase 56: the reader's own team's result, as a public card. */}
+        {mine ? (
+          <ShareButton testID="share-result" input={{ kind: 'game_result', game_id: game.id }} label="Share the result" />
+        ) : null}
+      </View>
     </View>
   );
 
@@ -167,7 +168,12 @@ export function GameResults({ game }: { game: GameView }) {
               {NO_ANSWERS_TEXT}
             </Text>
           ) : (
-            <ResultPager key={data.team_id ?? 'none'} items={data.items} />
+            <ResultPager
+              key={data.team_id ?? 'none'}
+              items={data.items}
+              gameId={game.id}
+              ownTeam={Boolean(mine) && data.team_id === game.me.team_id}
+            />
           )}
         </View>
       </Panel>
@@ -205,7 +211,7 @@ export function GameResults({ game }: { game: GameView }) {
 }
 
 /** One result at a time, in one web view: a native header, the chips, the page, Previous / Next. */
-function ResultPager({ items }: { items: GameResultItem[] }) {
+function ResultPager({ items, gameId, ownTeam }: { items: GameResultItem[]; gameId: string; ownTeam: boolean }) {
   const theme = useAppTheme();
   const [index, setIndex] = useState(0);
   const item = items[Math.min(index, items.length - 1)]!;
@@ -279,6 +285,18 @@ function ResultPager({ items }: { items: GameResultItem[] }) {
             .join(' · ')}
         </Text>
       </View>
+      {/* Phase 56: a question the reader's own team got right, as "Can you solve this?". */}
+      {ownTeam && item.correct && !item.skipped ? (
+        <View style={{ alignItems: 'flex-start' }}>
+          <ShareButton
+            key={item.number}
+            testID={`share-challenge-${item.number}`}
+            input={{ kind: 'challenge', game_id: gameId, question_id: item.question.id }}
+            label="Challenge a friend"
+            compact
+          />
+        </View>
+      ) : null}
       <MathBody
         testID="game-review-body"
         html={html}

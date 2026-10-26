@@ -41,7 +41,8 @@
 		// Without this, a request to /api/users would be answered by the SPA
 		// fallback instead of reaching the Worker.
 		"run_worker_first": [
-			"/api/*"
+			"/api/*",
+			"/s/*"
 		]
 	},
 	// No sweep here: `tutoring` runs it against the same database. Two Workers
@@ -128,6 +129,21 @@
 		// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 		"SIGNUP_OPEN": "false",
 
+		// Phase 55 (docs/social-login-plan.md): the ways to sign in, a comma list of google,
+		// microsoft, apple, facebook. A provider is offered only while listed AND configured below
+		// (its secrets with `wrangler secret put`: APPLE_PRIVATE_KEY, FACEBOOK_APP_SECRET). Google
+		// alone until the owner sets each one up; Apple waits for the paid Apple Developer account.
+		"AUTH_PROVIDERS": "google",
+		"MICROSOFT_CLIENT_ID": "",
+		"APPLE_SERVICES_ID": "",
+		"APPLE_BUNDLE_IDS": "",
+		"APPLE_TEAM_ID": "",
+		"APPLE_KEY_ID": "",
+		"FACEBOOK_APP_ID": "",
+		// Phase 56: Cloudflare Turnstile's site key for the public "Can you solve this?" page (its
+		// secret: `wrangler secret put TURNSTILE_SECRET`). Production refuses answers until both exist.
+		"TURNSTILE_SITE_KEY": "",
+
 		// Phase 32: the address notifications come from, and this Worker's own
 		// address for the link in each one. Cloudflare sends only from a domain
 		// with Email Routing on this account; a sender it refuses shows as "not
@@ -159,7 +175,8 @@
 				"binding": "ASSETS",
 				"not_found_handling": "single-page-application",
 				"run_worker_first": [
-					"/api/*"
+					"/api/*",
+					"/s/*"
 				]
 			},
 			// The ONE sweep of tutoring-db. Ends lessons whose timer was left
@@ -223,6 +240,15 @@
 				"DEFAULT_ORGANIZATION": "",
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "false",
+				// Phase 55: restated; see the top-level block.
+				"AUTH_PROVIDERS": "google",
+				"MICROSOFT_CLIENT_ID": "",
+				"APPLE_SERVICES_ID": "",
+				"APPLE_BUNDLE_IDS": "",
+				"APPLE_TEAM_ID": "",
+				"APPLE_KEY_ID": "",
+				"FACEBOOK_APP_ID": "",
+				"TURNSTILE_SITE_KEY": "",
 				"EMAIL_FROM": "no-reply@tutoring.om-ndessai.workers.dev",
 				"PUBLIC_URL": "https://tutoring.om-ndessai.workers.dev",
 				"AI_ENABLED": "true",
@@ -250,7 +276,8 @@
 				"binding": "ASSETS",
 				"not_found_handling": "single-page-application",
 				"run_worker_first": [
-					"/api/*"
+					"/api/*",
+					"/s/*"
 				]
 			},
 			// The ONE sweep of tutoring-test-db.
@@ -279,6 +306,15 @@
 				"DEFAULT_ORGANIZATION": "",
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "true",
+				// Phase 55: restated. The test portal may switch a provider on before production does.
+				"AUTH_PROVIDERS": "google",
+				"MICROSOFT_CLIENT_ID": "",
+				"APPLE_SERVICES_ID": "",
+				"APPLE_BUNDLE_IDS": "",
+				"APPLE_TEAM_ID": "",
+				"APPLE_KEY_ID": "",
+				"FACEBOOK_APP_ID": "",
+				"TURNSTILE_SITE_KEY": "",
 				// No mail binding here (`send_email` is empty below): the demo never
 				// emails anyone, and logs each notification as skipped.
 				"EMAIL_FROM": "",

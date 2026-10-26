@@ -9,6 +9,7 @@ import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand, useBrandReady } from '@/providers/brand-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
+import { ProviderButtons } from './provider-buttons';
 
 /** Where the router stashes the page the user was trying to reach. */
 interface LocationState {
@@ -44,6 +45,14 @@ export function LoginPage() {
 
   const clientId = config?.google_client_id ?? null;
   const needsSetup = status !== 'loading' && isPlaceholderClientId(clientId);
+  // Phase 55: Google first, then any others this address offers (an older Worker sends none).
+  const providers = config?.providers ?? [];
+  const others = providers.filter((provider) => provider.id !== 'google');
+  const offersGoogle = providers.length === 0 || providers.some((provider) => provider.id === 'google');
+  // "your Google account", or "Google, Microsoft or Facebook".
+  const labels = [...(offersGoogle ? ['Google'] : []), ...others.map((provider) => provider.label)];
+  const how =
+    labels.length <= 1 ? `your ${labels[0] ?? 'Google'} account` : `${labels.slice(0, -1).join(', ')} or ${labels.at(-1)}`;
 
   return (
     <div className="bg-background min-h-dvh lg:grid lg:grid-cols-[1.05fr_1fr]">
@@ -112,8 +121,10 @@ export function LoginPage() {
               <h2 className="text-2xl font-semibold tracking-tight">Staff portal</h2>
               <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                 {config?.signup_open
-                  ? 'Sign in with your Google account. New here? You can join a space with its code, or make your own.'
-                  : 'Sign in with the Google account your administrator added.'}
+                  ? `Sign in with ${how}. New here? You can join a space with its code, or make your own.`
+                  : others.length > 0
+                    ? 'Sign in the way your administrator set you up, or with an account you have added.'
+                    : 'Sign in with the Google account your administrator added.'}
               </p>
             </div>
 
@@ -130,11 +141,18 @@ export function LoginPage() {
 
             {status !== 'loading' && !needsSetup && clientId && (
               <>
-                <GoogleSignInButton
-                  clientId={clientId}
-                  onCredential={handleCredential}
-                  disabled={submitting}
-                />
+                {offersGoogle && (
+                  <GoogleSignInButton
+                    clientId={clientId}
+                    onCredential={handleCredential}
+                    disabled={submitting}
+                  />
+                )}
+                {others.length > 0 && (
+                  <div className="mt-3">
+                    <ProviderButtons providers={providers} signup={Boolean(config?.signup_open)} returnTo={from} />
+                  </div>
+                )}
 
                 <div className="mt-4 flex min-h-5 justify-center">
                   {submitting && (
@@ -148,7 +166,7 @@ export function LoginPage() {
             )}
 
             <p className="text-muted-foreground mt-10 border-t pt-6 text-center text-xs leading-relaxed">
-              Already in a space? Use the Google address its administrators added.
+              Already in a space? Use the address its administrators added.
             </p>
             <p className="text-muted-foreground mt-3 text-center text-xs" data-testid="login-legal">
               By continuing you agree to the{' '}
@@ -184,7 +202,7 @@ function SignInError({ code, message }: { code: string; message: string }) {
     code === AUTH_ERROR_CODES.ACCOUNT_SUSPENDED
         ? 'Contact an administrator to have your access restored.'
         : code === AUTH_ERROR_CODES.EMAIL_UNVERIFIED
-          ? 'Verify your email address with Google, then try again.'
+          ? 'Verify your email address with your account’s provider, then try again.'
           : null;
 
   return (

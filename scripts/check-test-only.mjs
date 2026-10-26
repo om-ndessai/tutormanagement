@@ -14,7 +14,8 @@ for (const [, label, sql] of read('docs/database.md').matchAll(/^```sql release=
   if (/\binvited_users\b/.test(sql)) problems.push(`docs/database.md block ${label} names invited_users`);
 }
 const tables = [...read('apps/api/db/test-only.sql').matchAll(/CREATE TABLE (?:IF NOT EXISTS )?(\w+)/g)].map((m) => m[1]);
-for (const t of tables) if (t !== 'invited_users') problems.push(`db/test-only.sql creates ${t}, which is not test-only`);
+// invited_users_next is the Phase 55 rebuild's scratch copy, renamed to invited_users at once.
+for (const t of tables) if (t !== 'invited_users' && t !== 'invited_users_next') problems.push(`db/test-only.sql creates ${t}, which is not test-only`);
 if (problems.length) {
   console.error(`check-test-only: the test database's invited list would reach production:\n  ${problems.join('\n  ')}`);
   process.exit(1);

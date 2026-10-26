@@ -15,6 +15,7 @@ export const PURGE_ORDER: { table: string; where: string }[] = [
   { table: 'canvas_assessment_files', where: 'organization_id = ?' },
   { table: 'canvas_assessments', where: 'organization_id = ?' },
   // Quest
+  { table: 'shares', where: 'organization_id = ?' },
   { table: 'quest_game_seen', where: 'organization_id = ?' },
   { table: 'quest_game_players', where: 'organization_id = ?' },
   { table: 'quest_game_teams', where: 'organization_id = ?' },
@@ -82,6 +83,7 @@ export async function purgeSpace(db: D1Database, org: OrgId): Promise<{ peopleRe
       // org-scope: who belongs ONLY to this space, read before its memberships go.
       `SELECT u.id FROM org_members m JOIN users u ON u.id = m.user_id
        WHERE m.organization_id = ? AND u.google_sub IS NULL
+         AND NOT EXISTS (SELECT 1 FROM user_identities i WHERE i.user_id = u.id)
          AND NOT EXISTS (SELECT 1 FROM org_members o WHERE o.user_id = u.id AND o.organization_id <> m.organization_id)
          AND NOT EXISTS (SELECT 1 FROM platform_accounts p WHERE p.user_id = u.id)
          AND NOT EXISTS (SELECT 1 FROM platform_admins a WHERE a.user_id = u.id)`,

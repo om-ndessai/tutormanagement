@@ -1,14 +1,14 @@
 import { getCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
 import { ApiError } from '../lib/errors.js';
-import { allowlistOn, assertInvited, sameSecret } from '../lib/invited.js';
+import { allowlistOn, assertPersonInvited, sameSecret } from '../lib/invited.js';
 import { SESSION_COOKIE, readSessionToken } from '../lib/session.js';
 import {
   addPlatformAdmin,
   createPerson,
   getFirstPerson,
   getPersonByEmail,
-  getGoogleSub,
+  listIdentitySubjects,
   getPersonById,
   type Person,
 } from '../repositories/people.js';
@@ -73,7 +73,7 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
   // Phase 53: on the test portal, taking someone off the invited list ends their access on their
   // next request, as suspending them does.
   if (allowlistOn(c.env)) {
-    await assertInvited(c.env, { email: person.email, googleSub: await getGoogleSub(c.env.DB, person.id) });
+    await assertPersonInvited(c.env, person, await listIdentitySubjects(c.env.DB, person.id));
   }
 
   c.set('person', person);

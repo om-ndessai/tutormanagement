@@ -5,6 +5,7 @@ import type { Brand } from './brand.js';
 import type { Invitation, Membership, Organization, OrganizationSettings } from './organizations.js';
 import type { OnboardingState } from './onboarding.js';
 import type { User } from './users.js';
+import type { AuthProviderInfo } from './identities.js';
 
 /**
  * Public configuration the SPA needs before it can render a sign-in button.
@@ -18,6 +19,11 @@ export interface AuthConfig {
   auth_enabled: boolean;
   /** Phase 52: whether a newcomer may sign up here (absent from older Workers: treat as false). */
   signup_open?: boolean;
+  /**
+   * Phase 55: the ways to sign in this Worker offers, Google first. Absent from older Workers:
+   * treat as Google alone. Empty while sign-in is off.
+   */
+  providers?: AuthProviderInfo[];
   /**
    * The identity the sign-in page wears: the organization this browser last
    * chose (the tmi_last_org cookie), or the neutral platform brand.

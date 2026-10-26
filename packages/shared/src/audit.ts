@@ -11,6 +11,9 @@ export const AUDIT_ACTIONS = [
   'auth.signed_in',
   'auth.signed_out',
   'auth.denied',
+  // Phase 55: one person, several ways in.
+  'identity.linked',
+  'identity.removed',
   'auth.entered',
 
   'user.created',
@@ -103,6 +106,10 @@ export const AUDIT_ACTIONS = [
   'business.archived',
   'business.restored',
 
+  // Phase 56: sharing Quest.
+  'share.created',
+  'share.withdrawn',
+
   'platform_admin.added',
   'person.updated_by_platform',
   'person.sign_in_unpinned',
@@ -152,6 +159,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'auth.signed_in': 'Signed in',
   'auth.signed_out': 'Signed out',
   'auth.denied': 'Sign-in denied',
+  'identity.linked': 'Way to sign in added',
+  'identity.removed': 'Way to sign in removed',
   'auth.entered': 'Entered the organization',
 
   'user.created': 'User created',
@@ -239,6 +248,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'business.archived': 'Organization archived',
   'business.restored': 'Organization restored',
 
+  'share.created': 'Shared a Quest card',
+  'share.withdrawn': 'Withdrew a Quest card',
   'platform_admin.added': 'Platform admin added',
   'person.updated_by_platform': 'Shared details updated by the platform',
   'person.sign_in_unpinned': 'Google sign-in unpinned',

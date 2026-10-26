@@ -29,6 +29,8 @@ import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 import { questRoutes } from './routes/quest.js';
 import { homeRoutes } from './routes/home.js';
 import { spacesRoutes } from './routes/spaces.js';
+import { publicShareRoutes, sharesRoutes } from './routes/shares.js';
+import { sharePage } from './lib/share-page.js';
 
 // Phase 46: each Quest game's Durable Object, bound as QUEST_GAMES in wrangler.jsonc.
 export { QuestGame } from './durable/quest-game.js';
@@ -88,7 +90,10 @@ const publicRoutes = new Hono<AppEnv>()
   // out, /session applies requireAuth on its own.
   .route('/auth', authRoutes)
   // An organization's logo is shown on the sign-in page, before anyone is.
-  .route('/organizations', logoRoutes);
+  .route('/organizations', logoRoutes)
+  // Phase 56: a share is a public link -- its card, and answering its challenge. Deliberately
+  // signed out; nothing in them names an organization, a child or another player (R22).
+  .route('/public', publicShareRoutes);
 
 /**
  * The platform console: signed in and a platform admin, and NOT inside an
@@ -141,6 +146,8 @@ const guardedRoutes = new Hono<AppEnv>()
   .use('/canvas-assessments/*', requireFeature('assessment'))
   .use('/quest', requireFeature('quest'))
   .use('/quest/*', requireFeature('quest'))
+  .use('/shares', requireFeature('quest'))
+  .use('/shares/*', requireFeature('quest'))
   .route('/comments', commentsRoutes)
   .route('/dashboard', dashboardRoutes)
   .route('/assignments', assignmentsRoutes)
@@ -151,6 +158,7 @@ const guardedRoutes = new Hono<AppEnv>()
   .route('/progress', progressRoutes)
   .route('/canvas-assessments', canvasAssessmentRoutes)
   .route('/quest', questRoutes)
+  .route('/shares', sharesRoutes)
   .route('/home', homeRoutes);
 
 /** Phase 52: signed in, but before (or beside) any space -- outside requireOrg. */
@@ -163,6 +171,10 @@ const api = new Hono<AppEnv>()
   .route('/', guardedRoutes);
 
 app.route('/api', api);
+
+// Phase 56: a share's public page -- the SPA, with its preview tags written in for the sites that
+// unfurl links. The one page outside /api the Worker answers (`run_worker_first` lists it).
+app.get('/s/:id', sharePage);
 
 app.notFound(onNotFound);
 app.onError(onError);

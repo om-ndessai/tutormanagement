@@ -428,9 +428,25 @@ inherits the gate. A route that must be reachable signed-out goes in `publicRout
 that is a deliberate decision, not a default. Inside a guarded handler, `c.get('user')` is
 always the live, re-checked user.
 
-**Never trust an email that did not come out of `verifyGoogleIdToken`.** The browser supplies
-an opaque Google ID token; `apps/api/src/lib/google.ts` is the only place it becomes an
-identity, and it is the whole security boundary of sign-in.
+**Never trust an email that did not come out of a provider's verifier.** The browser (or the app)
+supplies an opaque token; `lib/google.ts`, `lib/microsoft.ts`, `lib/apple.ts` and `lib/facebook.ts`
+are the only places one becomes an identity (`VerifiedIdentity`), and they are the whole security
+boundary of sign-in. Microsoft's person is `tid:oid`, never the email a tenant's admins can set;
+Facebook's access token counts only once Graph's `debug_token` says it is ours.
+
+**Several ways in, one person** (Phase 55, `docs/social-login-plan.md`, R25). Google, Microsoft, Apple
+and Facebook; each Worker offers the ones listed in `AUTH_PROVIDERS` (default "google") AND configured
+(`offeredProviders`), with setup in `docs/sign-in-providers-setup.md`. Apple is built and off until
+the paid Apple account (the app's button behind `EXPO_PUBLIC_APPLE_SIGN_IN`). No magic links. Every
+provider ends in `completeSignIn` (routes/auth.ts): sign-in looks up `user_identities (provider,
+subject)` first, and joins a new account to an existing person by email only under `mayLinkByEmail`
+(verified, not an Apple relay address, no account from that provider yet) -- never loosen it, it is
+the account-takeover boundary. `users.google_sub` is still written beside the Google row for older
+Workers. The web uses Google's button and redirect flows for the rest (`/api/auth/<p>/start` and
+`/callback`, state in a signed SameSite=None cookie, the outcome in the URL fragment); the app posts
+the provider's token to `POST /api/auth/<p>`. Locally `AUTH_FAKE_PROVIDERS` takes the suite's
+`fake:<provider>:<subject>:<email>:<verified>` tokens -- never in production. My profile's "Ways to
+sign in" adds and removes them (never the last); Apple's tokens are revoked when an account is deleted.
 
 **The dashboard and the sessions page are two tabs: Tutoring and Finance.**
 `TutoringFinanceTabs` in `components/layout/tutoring-finance-tabs.tsx` holds both halves and
@@ -756,6 +772,19 @@ written during play, which stays free of D1. The draw at the host's start takes,
 3. only then seen ones, the least recently seen first.
 
 A count game's size is checked against the level and the levels it can climb into. No route reads the table.
+
+**Sharing Quest is a public link to a card the server built** (Phase 56, `docs/sharing-plan.md`, R22).
+`POST /api/shares` (behind Quest's set) makes a `shares` row from the maker's own result -- a finished
+game's team (`game_result`), a level they moved on from (`level_finished`), or a question their team
+got right that is approved (`challenge`) -- never from anything a client describes. `/s/<id>` is the
+one page outside `/api` the Worker answers (`run_worker_first`): the SPA with `og:` tags written in by
+HTMLRewriter (`lib/share-page.ts`) and a static picture per kind (`apps/web/public/og/`, regenerated
+by `apps/web/og/make-og.mjs`). The public reads are `/api/public/shares/:id` (one primary-key read,
+a minute at the edge) and `/api/public/challenge/:id/answer` (rate-limited, Turnstile in production --
+no `TURNSTILE_SECRET` there refuses rather than opens). A card names nobody but an adult maker's
+chosen first name; a child a space added cannot share; no points, no leaderboard; withdrawn, never
+deleted; a year's life. Views go to Analytics Engine (`SHARE_VIEWS`, optional), never D1. The web
+draws the posted picture on a canvas (`features/sharing/card-image.ts`); the app uses the share sheet.
 
 **A live lesson has a maximum length, and the API enforces it.**
 `tutor_profiles.max_session_minutes` and `student_profiles.max_session_minutes` each hold the

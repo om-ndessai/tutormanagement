@@ -37,6 +37,7 @@ import { useAnswerQuest, useQuestState, useQuestSummary } from './api';
 import { useQuestBurst } from './quest-burst';
 import { QuestChoices } from './quest-choices';
 import { QuestFrame, QuestStatus, exitQuest } from './quest-frame';
+import { ShareButton } from '../sharing/share-button';
 import { questStemHtml, questStemSpeech, questStemText } from './quest-html';
 import { useQuestNotice } from './quest-notice';
 import {
@@ -136,6 +137,8 @@ function MovedUp({ from, to }: { from: string; to: string | null }) {
       <Text variant="bodyMedium" style={{ flex: 1, color: theme.colors.primary, fontWeight: '600' }}>
         {movedUpText(from, to)}
       </Text>
+      {/* Phase 56: the level finished, as a public card. */}
+      <ShareButton testID="share-level" input={{ kind: 'level_finished', level_id: from }} compact />
     </View>
   );
 }

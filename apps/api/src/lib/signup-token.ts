@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
+import { AUTH_PROVIDERS, type AuthProvider } from '@tmi/shared';
 
 import { ApiError } from './errors.js';
 
@@ -14,6 +15,8 @@ export interface SignupClaims {
   sub: string;
   email: string;
   name: string;
+  /** Phase 55: which provider `sub` belongs to. A token from before names none: Google. */
+  provider?: AuthProvider;
 }
 
 function key(secret: string): Uint8Array {
@@ -22,7 +25,7 @@ function key(secret: string): Uint8Array {
 }
 
 export async function createSignupToken(claims: SignupClaims, secret: string): Promise<string> {
-  return new SignJWT({ email: claims.email, name: claims.name })
+  return new SignJWT({ email: claims.email, name: claims.name, provider: claims.provider ?? 'google' })
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(claims.sub)
     .setIssuer(ISSUER)
@@ -36,8 +39,16 @@ export async function readSignupToken(token: string, secret: string): Promise<Si
   try {
     const { payload } = await jwtVerify(token, secretKey, { issuer: ISSUER });
     if (typeof payload.sub !== 'string' || typeof payload.email !== 'string') throw new Error('incomplete');
-    return { sub: payload.sub, email: payload.email, name: typeof payload.name === 'string' ? payload.name : payload.email };
+    const provider = (AUTH_PROVIDERS as readonly string[]).includes(String(payload.provider))
+      ? (payload.provider as AuthProvider)
+      : 'google';
+    return {
+      sub: payload.sub,
+      email: payload.email,
+      name: typeof payload.name === 'string' ? payload.name : payload.email,
+      provider,
+    };
   } catch {
-    throw new ApiError(401, 'unauthenticated', 'That sign-up has expired. Sign in with Google again.');
+    throw new ApiError(401, 'unauthenticated', 'That sign-up has expired. Sign in again.');
   }
 }

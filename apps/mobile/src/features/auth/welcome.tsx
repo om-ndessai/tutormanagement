@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Linking, Pressable, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import Svg, { Circle, Defs, G, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
@@ -111,7 +112,19 @@ const STEPS = ['Goals', 'Assess', 'Plan', 'Track'] as const;
  * card, no server, nothing a developer needs. An organization's own address shows its name and
  * tagline as text instead of the platform's drawn name.
  */
-export function Welcome({ busy, onSignIn }: { busy: boolean; onSignIn: () => void }) {
+export function Welcome({
+  busy,
+  onSignIn,
+  google = true,
+  others,
+}: {
+  busy: boolean;
+  onSignIn: () => void;
+  /** Phase 55: whether Google's button shows (a server may offer only others). */
+  google?: boolean;
+  /** Phase 55: the other providers' buttons, below Google's. */
+  others?: ReactNode;
+}) {
   const brand = useBrand();
   const theme = useAppTheme();
   const platform = brand.slug === null;
@@ -172,6 +185,7 @@ export function Welcome({ busy, onSignIn }: { busy: boolean; onSignIn: () => voi
       </View>
 
       <View style={{ alignItems: 'center', gap: space.sm, paddingTop: space.lg, paddingBottom: space.xl }}>
+        {google ? (
         <Pressable
           testID="sign-in-google"
           accessibilityRole="button"
@@ -196,6 +210,8 @@ export function Welcome({ busy, onSignIn }: { busy: boolean; onSignIn: () => voi
             Sign in with Google
           </Text>
         </Pressable>
+        ) : null}
+        {others}
         {/* Phase 51: anyone may sign in now; continuing accepts the terms. */}
         <LegalLine testID="sign-in-legal" ids={{ terms: 'sign-in-terms', privacy: 'sign-in-privacy' }} />
       </View>

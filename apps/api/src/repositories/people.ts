@@ -1,4 +1,6 @@
-import type { AgeBand, PlatformAccount } from '@tmi/shared';
+import { mayLinkByEmail, type AgeBand, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
+
+import type { VerifiedIdentity } from '../lib/identity.js';
 /**
  * The PERSON, across every organization: their sign-in identity and how to
  * reach them. Nothing an organization records about someone is read here --
@@ -63,34 +65,155 @@ export async function getPersonByEmail(db: D1Database, email: string): Promise<P
   return row ? toPerson(row) : null;
 }
 
-/**
- * Who a verified Google identity is.
- *
- * The pinned `sub` is looked up FIRST, so an account survives a change of
- * address. An email match is refused when that row is already pinned to a
- * DIFFERENT Google account: otherwise whoever could edit someone's email in
- * one organization could sign in as them in every other.
- */
-export async function resolveSignIn(
-  db: D1Database,
-  identity: { sub: string; email: string },
-): Promise<{ person: Person | null; pinnedToAnother: boolean }> {
-  const bySub = await db
-    .prepare(`${SELECT_PERSON} WHERE google_sub = ? AND deleted_at IS NULL`)
-    .bind(identity.sub)
-    .first<PersonRow>();
-  if (bySub) return { person: toPerson(bySub), pinnedToAnother: false };
+// ---------------------------------------------------------------------------
+// Phase 55: one person, several ways in (user_identities)
+// ---------------------------------------------------------------------------
 
+export type IdentityRefusal = 'pinned' | 'unverified';
+
+/**
+ * Who a verified provider account is (docs/social-login-plan.md).
+ *
+ * The account itself first -- `(provider, subject)`, or for Google a pinned
+ * `users.google_sub` an older Worker wrote -- so a person survives a change of
+ * address. Otherwise their email may join it to an existing person only under
+ * `mayLinkByEmail`'s three rules: verified by the provider, not an Apple relay
+ * address, and no account from that provider on the person yet. A person who
+ * HAS one from that provider is refused ('pinned', today's rule); an address
+ * the provider does not vouch for is refused ('unverified') rather than made
+ * into a second person with the same email.
+ */
+export async function resolveIdentity(
+  db: D1Database,
+  identity: VerifiedIdentity,
+): Promise<{ person: Person | null; refusal: IdentityRefusal | null }> {
+  const linked = await db
+    .prepare(
+      `${SELECT_PERSON} WHERE deleted_at IS NULL AND (
+         id = (SELECT i.user_id FROM user_identities i WHERE i.provider = ? AND i.subject = ?)
+         ${identity.provider === 'google' ? 'OR google_sub = ?' : ''})
+       LIMIT 1`,
+    )
+    .bind(identity.provider, identity.subject, ...(identity.provider === 'google' ? [identity.subject] : []))
+    .first<PersonRow>();
+  if (linked) return { person: toPerson(linked), refusal: null };
+
+  if (!identity.email) return { person: null, refusal: null };
   const byEmail = await db
     .prepare(`${SELECT_PERSON} WHERE lower(email) = ? AND deleted_at IS NULL`)
-    .bind(identity.email.trim().toLowerCase())
+    .bind(identity.email)
     .first<PersonRow>();
-  if (!byEmail) return { person: null, pinnedToAnother: false };
+  if (!byEmail) return { person: null, refusal: null };
 
-  if (byEmail.google_sub !== null && byEmail.google_sub !== identity.sub) {
-    return { person: null, pinnedToAnother: true };
+  const has = await db
+    .prepare('SELECT 1 AS hit FROM user_identities WHERE user_id = ? AND provider = ?')
+    .bind(byEmail.id, identity.provider)
+    .first<{ hit: number }>();
+  const personHasProvider = Boolean(has) || (identity.provider === 'google' && byEmail.google_sub !== null);
+  if (personHasProvider) return { person: null, refusal: 'pinned' };
+  if (!mayLinkByEmail({ emailVerified: identity.emailVerified, email: identity.email, personHasProvider })) {
+    return { person: null, refusal: 'unverified' };
   }
-  return { person: toPerson(byEmail), pinnedToAnother: false };
+  return { person: toPerson(byEmail), refusal: null };
+}
+
+/**
+ * The statements that record a provider account on a person: its row (made, or
+ * its last use stamped) and, for Google, `users.google_sub`, which older Workers
+ * read. A second account from the same provider on one person fails the
+ * `user_identities_one_per_provider` index (a unique-constraint error).
+ */
+export function identityStatements(
+  db: D1Database,
+  userId: string,
+  identity: Pick<VerifiedIdentity, 'provider' | 'subject' | 'email'>,
+  revokeToken: string | null = null,
+): D1PreparedStatement[] {
+  const statements = [
+    db
+      .prepare(
+        `INSERT INTO user_identities (provider, subject, user_id, email_at_link, revoke_token, last_used_at)
+         VALUES (?, ?, ?, ?, ?, ${NOW})
+         ON CONFLICT (provider, subject) DO UPDATE SET last_used_at = ${NOW},
+           revoke_token = COALESCE(excluded.revoke_token, user_identities.revoke_token)
+         WHERE user_identities.user_id = excluded.user_id`,
+      )
+      .bind(identity.provider, identity.subject, userId, identity.email, revokeToken),
+  ];
+  if (identity.provider === 'google') {
+    statements.push(
+      db
+        .prepare(`UPDATE users SET google_sub = COALESCE(google_sub, ?) WHERE id = ?`)
+        .bind(identity.subject, userId),
+    );
+  }
+  return statements;
+}
+
+/** The person's own ways in, for My profile. Never the subject or the revoke token. */
+export async function listIdentities(db: D1Database, userId: string): Promise<UserIdentity[]> {
+  const result = await db
+    .prepare(
+      `SELECT provider, email_at_link, created_at, last_used_at FROM user_identities
+       WHERE user_id = ? ORDER BY created_at`,
+    )
+    .bind(userId)
+    .all<UserIdentity>();
+  return result.results ?? [];
+}
+
+/**
+ * Removes one way in. The last one cannot go (the caller checks). Removing
+ * Google also unpins `users.google_sub`, so an older Worker forgets it too.
+ * Returns Apple's revoke token, when there was one, for the caller to revoke.
+ */
+export async function removeIdentity(
+  db: D1Database,
+  userId: string,
+  provider: AuthProvider,
+): Promise<{ removed: boolean; revokeToken: string | null }> {
+  const row = await db
+    .prepare('SELECT revoke_token FROM user_identities WHERE user_id = ? AND provider = ?')
+    .bind(userId, provider)
+    .first<{ revoke_token: string | null }>();
+  if (!row) return { removed: false, revokeToken: null };
+  await db.batch([
+    db.prepare('DELETE FROM user_identities WHERE user_id = ? AND provider = ?').bind(userId, provider),
+    ...(provider === 'google'
+      ? [db.prepare(`UPDATE users SET google_sub = NULL, updated_at = ${NOW} WHERE id = ?`).bind(userId)]
+      : []),
+  ]);
+  return { removed: true, revokeToken: row.revoke_token };
+}
+
+/** Every Apple revoke token a person holds, for account deletion. */
+export async function appleRevokeTokens(db: D1Database, userId: string): Promise<string[]> {
+  const result = await db
+    .prepare("SELECT revoke_token FROM user_identities WHERE user_id = ? AND provider = 'apple' AND revoke_token IS NOT NULL")
+    .bind(userId)
+    .all<{ revoke_token: string }>();
+  return (result.results ?? []).map((row) => row.revoke_token);
+}
+
+/** Apple's notice that a person withdrew consent or deleted their Apple account: that way in is gone. */
+export async function forgetIdentity(db: D1Database, provider: AuthProvider, subject: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM user_identities WHERE provider = ? AND subject = ?')
+    .bind(provider, subject)
+    .run();
+  return Boolean(result.meta.changes);
+}
+
+/** Phase 53/55 (the test portal): the person's provider accounts, for re-checking the invited list. */
+export async function listIdentitySubjects(
+  db: D1Database,
+  userId: string,
+): Promise<{ provider: string; subject: string }[]> {
+  const result = await db
+    .prepare('SELECT provider, subject FROM user_identities WHERE user_id = ?')
+    .bind(userId)
+    .all<{ provider: string; subject: string }>();
+  return result.results ?? [];
 }
 
 /**
@@ -102,7 +225,12 @@ export async function resolveSignIn(
  * any invitation to someone who has signed in before, is answered by the
  * person themselves.
  */
-export async function recordSignIn(db: D1Database, id: string, googleSub: string): Promise<void> {
+export async function recordSignIn(
+  db: D1Database,
+  id: string,
+  identity: Pick<VerifiedIdentity, 'provider' | 'subject' | 'email'>,
+  revokeToken: string | null = null,
+): Promise<void> {
   const before = await db
     .prepare('SELECT last_login_at FROM users WHERE id = ?')
     .bind(id)
@@ -111,11 +239,10 @@ export async function recordSignIn(db: D1Database, id: string, googleSub: string
   const statements = [
     db
       .prepare(
-        `UPDATE users SET last_login_at = ${NOW}, updated_at = ${NOW},
-           google_sub = COALESCE(google_sub, ?)
-         WHERE id = ? AND deleted_at IS NULL`,
+        `UPDATE users SET last_login_at = ${NOW}, updated_at = ${NOW} WHERE id = ? AND deleted_at IS NULL`,
       )
-      .bind(googleSub, id),
+      .bind(id),
+    ...identityStatements(db, id, identity, revokeToken),
   ];
   if (before && before.last_login_at === null) {
     statements.push(
@@ -187,11 +314,12 @@ export async function updatePersonFields(
 
 /** Lets a recreated Google account sign in again. Platform admins only. */
 export async function unpinGoogleSub(db: D1Database, id: string): Promise<boolean> {
-  const result = await db
-    .prepare(`UPDATE users SET google_sub = NULL, updated_at = ${NOW} WHERE id = ? AND deleted_at IS NULL`)
-    .bind(id)
-    .run();
-  return Boolean(result.meta.changes);
+  const [result] = await db.batch([
+    db.prepare(`UPDATE users SET google_sub = NULL, updated_at = ${NOW} WHERE id = ? AND deleted_at IS NULL`).bind(id),
+    // Phase 55: the Google way in goes with the pin.
+    db.prepare("DELETE FROM user_identities WHERE user_id = ? AND provider = 'google'").bind(id),
+  ]);
+  return Boolean(result?.meta.changes);
 }
 
 // ---------------------------------------------------------------------------
@@ -255,13 +383,22 @@ export async function getPlatformAccount(db: D1Database, userId: string): Promis
 /** A newcomer who answered the age question (13 or over) and accepted the terms: the person, in one batch. */
 export async function createSignedUpPerson(
   db: D1Database,
-  input: { email: string; fullName: string; googleSub: string | null; ageBand: AgeBand; termsVersion: string; privacyVersion: string },
+  input: {
+    email: string;
+    fullName: string;
+    /** Phase 55: the provider account they signed up with; null with sign-in off (local, the demo). */
+    identity: Pick<VerifiedIdentity, 'provider' | 'subject' | 'email'> | null;
+    ageBand: AgeBand;
+    termsVersion: string;
+    privacyVersion: string;
+  },
 ): Promise<Person> {
   const id = crypto.randomUUID();
   await db.batch([
     db
-      .prepare(`INSERT INTO users (id, email, full_name, google_sub, last_login_at) VALUES (?, ?, ?, ?, ${NOW})`)
-      .bind(id, input.email, input.fullName, input.googleSub),
+      .prepare(`INSERT INTO users (id, email, full_name, last_login_at) VALUES (?, ?, ?, ${NOW})`)
+      .bind(id, input.email, input.fullName),
+    ...(input.identity ? identityStatements(db, id, input.identity) : []),
     db
       .prepare(
         `INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at)
@@ -301,12 +438,12 @@ export async function deleteOwnAccount(db: D1Database, userId: string): Promise<
          WHERE id = ?`,
       )
       .bind(userId),
+    // Phase 55: every way in goes with it (the caller revoked Apple's tokens first).
+    db.prepare('DELETE FROM user_identities WHERE user_id = ?').bind(userId),
+    // Phase 56: their public links read "no longer available".
+    // org-scope: a person's own shares, in every space, as their account goes.
+    db.prepare(`UPDATE shares SET withdrawn_at = COALESCE(withdrawn_at, ${NOW}) WHERE user_id = ?`).bind(userId),
     db.prepare('DELETE FROM platform_accounts WHERE user_id = ?').bind(userId),
   ]);
 }
 
-/** Phase 53 (the test portal only): the pinned Google id, for re-checking the invited list. */
-export async function getGoogleSub(db: D1Database, userId: string): Promise<string | null> {
-  const row = await db.prepare('SELECT google_sub FROM users WHERE id = ?').bind(userId).first<{ google_sub: string | null }>();
-  return row?.google_sub ?? null;
-}

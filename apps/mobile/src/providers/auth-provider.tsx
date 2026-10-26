@@ -16,6 +16,7 @@ import {
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { decideLanding } from '@/features/auth/landing';
+import { offersGoogle, signInProviders, type UsableProvider } from '@/features/auth/provider-model';
 import { signupRequest, type PendingSignup, type SignupForm } from '@/features/auth/sign-up-model';
 import { ApiRequestError, apiClient, setReauthenticator } from '@/lib/api-client';
 import { on } from '@/lib/events';
@@ -28,6 +29,7 @@ import {
   googleSignOut,
   silentIdToken,
 } from '@/lib/google-sign-in';
+import { appleAvailable, PROVIDER_BUILD, ProviderSignInError, providerToken } from '@/lib/provider-sign-in';
 import { clearActiveOrg, getActiveOrg, lastOrg, setActiveOrg } from '@/lib/organization';
 import { APP_VARIANT, devUser, loadServerPrefs, setDevUser, setServerAuthEnabled } from '@/lib/server';
 
@@ -85,6 +87,13 @@ interface AuthContextValue {
    * POST /auth/google for the session cookie, then read the session. Cancelling says nothing.
    */
   signInWithGoogle: () => Promise<void>;
+  /**
+   * Phase 55: the providers besides Google that the server offers and this build can use, in the
+   * server's order (Microsoft, Apple, Facebook).
+   */
+  providers: UsableProvider[];
+  /** Phase 55: signs in with one of `providers`, answered as Google is (a session or the sign-up start). */
+  signInWithProvider: (provider: UsableProvider) => Promise<void>;
   /** Developer sign-in: act as a seeded person on a server with sign-in off. */
   /** `org`: a linked organization, entered ahead of the person's default (as a web link does). */
   signInAsDevUser: (email: string, org?: string | null) => Promise<void>;
@@ -102,7 +111,7 @@ function toError(caught: unknown): ApiRequestError {
   return new ApiRequestError(
     0,
     'internal_error',
-    caught instanceof GoogleSignInError ? caught.message : 'Sign-in failed. Please try again.',
+    caught instanceof GoogleSignInError || caught instanceof ProviderSignInError ? caught.message : 'Sign-in failed. Please try again.',
   );
 }
 
@@ -148,6 +157,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [onboarding, setOnboarding] = useState<OnboardingState | null>(null);
   const [error, setError] = useState<ApiRequestError | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  // Phase 55: whether this device offers Sign in with Apple (asked once; false unless the build's flag is on).
+  const [appleReady, setAppleReady] = useState(false);
+  useEffect(() => {
+    let live = true;
+    void appleAvailable().then((ready) => {
+      if (live) setAppleReady(ready);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
 
   // Arriving: a fresh launch or a fresh sign-in, when a default organization decides.
   const arrivingRef = useRef(true);
@@ -311,8 +331,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const googleAvailable =
     config?.auth_enabled === true &&
+    offersGoogle(config) &&
     Boolean(config.google_client_id ?? FALLBACK_WEB_CLIENT_ID) &&
     googleSignInAvailable();
+
+  const providers = useMemo(
+    () => (config?.auth_enabled ? signInProviders(config.providers, PROVIDER_BUILD, appleReady) : []),
+    [config, appleReady],
+  );
 
   const chooseOrganization = useCallback(
     async (slug: string) => {
@@ -359,6 +385,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(toError(caught));
     }
   }, [loadSession, queryClient, resetSignedOut]);
+
+  const signInWithProvider = useCallback(
+    async (provider: UsableProvider) => {
+      setError(null);
+      try {
+        const result = await providerToken(provider);
+        // The person closed the browser or the sheet: nothing happened, so nothing is said.
+        if (result.kind === 'cancelled') return;
+        const answer = await apiClient.post<ApiOk<SessionResponse | SignupStart>>(`/auth/${provider.id}`, {
+          ...result.body,
+          signup: true,
+        });
+        if ('signup' in answer.data) {
+          setPendingSignup({ ...answer.data.signup, dev: false });
+          setStatus('unauthenticated');
+          return;
+        }
+        queryClient.clear();
+        arrivingRef.current = true;
+        await loadSession();
+        setStatus('authenticated');
+      } catch (caught) {
+        // The server's refusal (no_account says to sign in the way they did before), or the provider's.
+        resetSignedOut();
+        setError(toError(caught));
+      }
+    },
+    [loadSession, queryClient, resetSignedOut],
+  );
 
   const signInAsDevUser = useCallback(
     async (email: string, org?: string | null) => {
@@ -456,6 +511,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       statusMessage,
       googleAvailable,
       signInWithGoogle,
+      providers,
+      signInWithProvider,
       signInAsDevUser,
       signOut,
       reboot,
@@ -485,6 +542,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       statusMessage,
       googleAvailable,
       signInWithGoogle,
+      providers,
+      signInWithProvider,
       signInAsDevUser,
       signOut,
       reboot,

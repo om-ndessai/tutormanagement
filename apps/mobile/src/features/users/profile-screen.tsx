@@ -11,6 +11,7 @@ import { ErrorState } from '@/components/state-views';
 import { DetailSkeleton } from '@/components/skeletons';
 import { Screen } from '@/components/screen';
 import { LegalLine } from '@/features/auth/legal-links';
+import { SignInMethodsCard } from '@/features/auth/sign-in-methods-card';
 import { DictationControl } from '@/features/dictation/dictation-control';
 import { SpaceDangerPanel } from '@/features/organizations/space-code-card';
 import { AppearanceControl } from '@/features/shell/appearance-control';
@@ -58,6 +59,8 @@ export function ProfileScreen() {
       <Text testID="profile-footer" variant="bodySmall" style={{ color: muted, textAlign: 'center' }}>
         Something wrong here? Ask an administrator to update your record.
       </Text>
+      {/* Phase 55: the accounts that sign this person in. */}
+      <SignInMethodsCard />
       <OutlinedCard style={{ borderRadius: radius.lg }} contentStyle={{ padding: space.lg }}>
         <View style={{ gap: space.lg }}>
           <AppearanceControl testID="profile-appearance" describe />

@@ -96,6 +96,26 @@ const AuthContext = createContext<AuthContextValue | null>(null);
  * The session itself is an HttpOnly cookie the browser never sees — this only
  * tracks who the server says we are.
  */
+/**
+ * Phase 55: reads (and clears) what a redirect sign-in left in the address's
+ * fragment: `signup=<token>&email&name`, `auth_error=<code>&message`, or
+ * `linked=<provider>`.
+ */
+function takeRedirectOutcome(): { signup?: SignupStart['signup']; error?: ApiRequestError } | null {
+  if (typeof window === 'undefined' || window.location.hash.length < 2) return null;
+  const values = new URLSearchParams(window.location.hash.slice(1));
+  const token = values.get('signup');
+  const code = values.get('auth_error');
+  if (!token && !code && !values.get('linked')) return null;
+  window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  return {
+    ...(token ? { signup: { token, email: values.get('email') ?? '', name: values.get('name') ?? '' } } : {}),
+    ...(code
+      ? { error: new ApiRequestError(401, code as never, values.get('message') ?? 'Sign-in failed. Please try again.') }
+      : {}),
+  };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
 
@@ -191,6 +211,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
 
     async function boot() {
+      // Phase 55: a redirect sign-in (Microsoft, Apple, Facebook) comes back with its outcome in
+      // the fragment, which never reaches a server: a newcomer's sign-up, or a refusal to show.
+      const landed = takeRedirectOutcome();
+      if (landed?.signup) setPendingSignup(landed.signup);
+      if (landed?.error) setError(landed.error);
+
       const [configResult, sessionResult] = await Promise.allSettled([
         apiClient.get<ApiOk<AuthConfig>>('/auth/config'),
         loadSession(),

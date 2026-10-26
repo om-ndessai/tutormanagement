@@ -21,11 +21,21 @@ function patternRegExp(pattern: string): RegExp {
   return new RegExp(`^${body}$`);
 }
 
-/** Whether a verified sign-in (its email, and its Google `sub`) is on the list. */
-export function invitedMatch(entries: readonly InvitedEntry[], who: { email: string | null; googleSub: string | null }): boolean {
-  const email = who.email?.trim().toLowerCase() ?? null;
+/**
+ * Whether a verified sign-in is on the list: its provider account's permanent id, or its email.
+ * `googleSub` is the Phase 53 shape, kept for the callers that pass it. An Apple relay address is
+ * never matched by email (Phase 55): it says nothing about who the person is.
+ */
+export function invitedMatch(
+  entries: readonly InvitedEntry[],
+  who: { email: string | null; googleSub?: string | null; provider?: string | null; subject?: string | null },
+): boolean {
+  const relay = Boolean(who.email && /@privaterelay\.appleid\.com$/i.test(who.email.trim()));
+  const email = relay ? null : (who.email?.trim().toLowerCase() ?? null);
+  const provider = who.provider ?? (who.googleSub ? 'google' : null);
+  const subject = who.subject ?? who.googleSub ?? null;
   return entries.some((entry) => {
-    if (entry.provider === 'google' && entry.subject && who.googleSub && entry.subject === who.googleSub) return true;
+    if (entry.provider && entry.subject && provider === entry.provider && subject === entry.subject) return true;
     return Boolean(entry.email && email && patternRegExp(entry.email).test(email));
   });
 }

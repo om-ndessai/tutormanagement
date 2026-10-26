@@ -155,6 +155,17 @@ because SQLite's default collation is case-sensitive. Any Google-backed address 
 the plan's "gmail based userids" is satisfied by Google sign-in itself, and hard-coding
 `@gmail.com` would shut out the institute's own Workspace addresses later.
 
+### `user_identities` (Phase 55)
+
+One person, several ways in: a row per provider account (Google, Microsoft, Apple, Facebook) that
+signs this person in, keyed `(provider, subject)` -- Google's `sub`, Microsoft's `tid:oid`, Apple's
+`sub`, Facebook's app-scoped id -- and at most one per provider per person. Sign-in looks the account
+up here first; the email is only a way to JOIN a new account to someone, under three rules (the
+provider vouches for it, it is not an Apple relay address, the person has no account from that
+provider yet). Not an organization's record: a person's own, like `users`. `revoke_token` (Apple only,
+sealed with the session secret) exists solely so Apple's token can be revoked when the account is
+deleted. `users.google_sub` predates it and is still written for Google.
+
 ### `user_roles`
 
 `(user_id, role)` primary key. `admin`, `tutor`, `student`, `parent`, enforced by a CHECK.
@@ -834,6 +845,14 @@ out (`docs/quest-games-g3-plan.md`).
   route reads it.
 - **Per organization,** like everything else about a person there. Triggers: the person must be a member,
   and the game must belong to the organization; the organization never changes.
+
+### `shares` (Phase 56)
+
+A public link to a Quest card (`docs/sharing-plan.md`, R22). `card` is a JSON snapshot of the numbers
+the card shows, built on the server from the maker's own result; `first_name` is set only when an
+adult maker chose to show it; `question_id` only for a challenge (a CHECK). Read by its random id
+alone, signed out. Withdrawn (`withdrawn_at`), never deleted by the maker; it expires after a year;
+deleting an account withdraws its shares. Views are not counted here (Analytics Engine).
 
 ### `audit_events`
 

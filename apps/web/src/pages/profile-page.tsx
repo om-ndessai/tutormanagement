@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useUserDetail } from '@/features/users/api';
 import { UserDetailView } from '@/features/users/user-detail-view';
 import { SpaceDangerCard } from '@/features/organizations/space-code-card';
+import { SignInMethodsCard } from '@/features/auth/sign-in-methods-card';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 
@@ -57,6 +58,9 @@ export function ProfilePage() {
           {data && <UserDetailView user={data.data} />}
         </CardContent>
       </Card>
+
+      {/* Phase 55: the accounts that sign this person in. */}
+      <SignInMethodsCard />
 
       <p className="text-muted-foreground mt-4 text-center text-xs">
         Something wrong here? Ask an administrator to update your record.

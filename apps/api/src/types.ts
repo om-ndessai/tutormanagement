@@ -42,6 +42,38 @@ export interface Env {
    * X-Automation-Key may act as X-Dev-User -- the seed scripts' way in. Never set in production.
    */
   TEST_AUTOMATION_KEY?: string;
+  /**
+   * Phase 55 (docs/social-login-plan.md): the ways to sign in this Worker offers, a comma list of
+   * google, microsoft, apple, facebook. Unset is "google". A provider is offered only while listed
+   * AND configured (lib/identity.ts `offeredProviders`).
+   */
+  AUTH_PROVIDERS?: string;
+  /** Phase 55: Microsoft's application (client) id: an Entra app for personal and work/school accounts. Public. */
+  MICROSOFT_CLIENT_ID?: string;
+  /** Phase 55: Apple's Services ID (the web's audience). Public. */
+  APPLE_SERVICES_ID?: string;
+  /** Phase 55: the app's bundle ids Apple's native sign-in may name as audience, comma-separated. Public. */
+  APPLE_BUNDLE_IDS?: string;
+  /** Phase 55: the paid Apple team id and the Sign in with Apple key's id, for the client secret. */
+  APPLE_TEAM_ID?: string;
+  APPLE_KEY_ID?: string;
+  /** SECRET. Phase 55: the Sign in with Apple private key (PKCS#8 PEM), for exchanging and revoking tokens. */
+  APPLE_PRIVATE_KEY?: string;
+  /** Phase 55: the Meta app id with Facebook Login. Public. */
+  FACEBOOK_APP_ID?: string;
+  /** SECRET. Phase 55: the Meta app secret, for checking access tokens and exchanging codes. */
+  FACEBOOK_APP_SECRET?: string;
+  /**
+   * Phase 55, LOCAL ONLY: "true" lets the suite sign in "with" any provider using a fake token
+   * (`fake:<provider>:<subject>:<email>:<verified>`). Never honoured while ENVIRONMENT is production.
+   */
+  AUTH_FAKE_PROVIDERS?: string;
+  /** Phase 56: Cloudflare Turnstile's site key for the public challenge page. Public. */
+  TURNSTILE_SITE_KEY?: string;
+  /** SECRET. Phase 56: Turnstile's secret, for Siteverify. Production refuses answers without it. */
+  TURNSTILE_SECRET?: string;
+  /** Phase 56: Workers Analytics Engine, counting public share views (never D1). Optional. */
+  SHARE_VIEWS?: AnalyticsEngineDataset;
   /** Identity used by every request while AUTH_ENABLED is "false". */
   DEV_USER_EMAIL: string;
   /** Comma-separated emails that become platform admins while there is none. */

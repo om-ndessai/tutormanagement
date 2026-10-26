@@ -17,3 +17,16 @@ export const GOOGLE_G = {
   green: '#34A853',
   plate: '#FFFFFF',
 } as const;
+
+/**
+ * Phase 56: the share card's picture (apps/web/src/features/sharing/card-image.ts). An image, not the
+ * app: its colours are the picture's own, fixed so it reads the same wherever it is posted.
+ */
+export const SHARE_CARD = {
+  from: '#3b2a7a',
+  to: '#6d4fd6',
+  text: '#ffffff',
+  right: '#22a06b',
+  wrong: '#e5484d',
+  skipped: '#d0d4dc',
+} as const;

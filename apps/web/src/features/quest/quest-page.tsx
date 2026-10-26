@@ -22,6 +22,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useCurricula } from '@/features/progress/api';
 import { questRoles, useQuestReview, useQuestState, useQuestStudents, useSetQuestLevel } from './api';
 import { GamesCard } from './games-card';
+import { MySharesCard } from '@/features/sharing/my-shares-card';
 
 // Phase 42: Question Quest's page in the portal. A student starts their Quest
 // here; a tutor or admin sees what waits for review, starts reviewing, and
@@ -47,6 +48,8 @@ export function QuestPage() {
         <GamesCard />
         {roles.reviews && <ReviewCard />}
         {roles.reviews && <StudentsCard />}
+        {/* Phase 56: the links the reader has shared, to withdraw. */}
+        <MySharesCard />
       </div>
     </>
   );
