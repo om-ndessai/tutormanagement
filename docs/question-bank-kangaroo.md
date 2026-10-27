@@ -106,3 +106,29 @@ it goes out the usual way:
 5. Deploy both Workers.
 
 ## Results
+
+### Grades 1-2 (2026-10-27)
+
+240 questions, all `checked`, none approved: 30 a topic, 10 per difficulty, 160 choice and 80 numeric. The bank
+goes from 40,738 to 40,978.
+
+- **Written:** 240 by four Sonnet writers (two topics each), clean on the code checks first time round,
+  except a few options that carried units ("21 cm"), which the writers moved into the stem.
+- **The blind solve:** four Opus solvers agreed with every key (240 of 240). They marked 4 down for wording,
+  each with the right answer:
+  - "with no number skipped" while counting in 2s;
+  - "up to 20 seconds", which could leave out the 20th;
+  - "turns right round" in a question about left and right;
+  - a corner cut that could run from a neighbouring corner.
+  All four were reworded and solved blind again, and all passed.
+- **Giveaways:** the key is strictly the longest option in 2 of the 160 choice questions and strictly the
+  shortest in none. Number options are in increasing order, as in the contest.
+- **Notes per topic** are in `db/questions/MK12.json`. The briefs and scripts are in
+  `docs/question-bank-kangaroo/`, and `ids-MK12.json` keeps each draft's id stable across repairs.
+
+**What it cost** (the subagents' own tokens, besides the coordinating session):
+- writing: about 476,000 Sonnet tokens;
+- the blind solve and the re-solve: about 452,000 Opus tokens.
+
+Next: grades 3-4 (Ecolier), once the owner has reviewed this level.
+

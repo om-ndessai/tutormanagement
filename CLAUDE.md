@@ -642,7 +642,8 @@ Nothing a model writes reaches a family or a student without a person approving 
 (`questions`, platform reference data on the NC 2026 standards -- grades 3-8 and Math 1, and since
 2026-10-22 every other NC 2026 level too, `docs/question-bank-round-4.md`; since 2026-10-25 NC 2017 as well,
 offered only where an organization offers NC 2017, `docs/question-bank-nc-2017.md` -- and since Phase 41 on Beast
-Academy's chapters, one chapter a topic, `docs/question-bank-beast-academy.md`) is written
+Academy's chapters, one chapter a topic, `docs/question-bank-beast-academy.md`; since 2026-10-27 Math Kangaroo,
+one level per pair of grades, built a level at a time, `docs/question-bank-kangaroo.md`) is written
 by Claude Sonnet, checked by code (`lintQuestion` in shared: the form, four distinct choices with
 exactly one matching the key, the `compute` expression evaluated EXACTLY -- `evaluateExact`, big
 integer fractions, never floats -- equal to the key, no near-copy), then solved blind by Claude Opus
