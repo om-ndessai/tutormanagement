@@ -60,6 +60,7 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'MK56',
   'MK78',
   'MK910',
+  'MK1112',
 ] as const;
 
 /**

@@ -46,7 +46,7 @@ One catalog curriculum, `mk` ("Math Kangaroo"), stages 3001 onwards, one level p
 | `MK56` | 5-6 | Benjamin | built |
 | `MK78` | 7-8 | Kadett | built |
 | `MK910` | 9-10 | Junior | built |
-| `MK1112` | 11-12 | Student | not yet |
+| `MK1112` | 11-12 | Student | built |
 
 Each level is added to the catalog when it is built (adding a level or a topic is additive; removing one
 never is). A topic is a kind of contest problem. The contest's 3-, 4- and 5-point questions are the bank's
@@ -124,6 +124,21 @@ Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK910.md
 | MK910.06 | Areas, Lengths and Ratios of Figures | Areas and perimeters of rectangles, triangles, trapezia and circles given in words, a figure cut by midpoints or by lines into parts and the fraction of the whole, similar figures and scaling of area, the length of a segment through Pythagoras, and a square or rectangle with stated sides. |
 | MK910.07 | Angles, Circles and Coordinates in Words | Angles in triangles, polygons and parallel lines, isosceles and equilateral triangles, the inscribed angle and the angle in a semicircle, tangents and chords with a stated radius, the triangle inequality, and points and lines given by coordinates (distance, a square on the grid, the triangle a line cuts off the axes). |
 | MK910.08 | Cubes, Solids and Nets in Words | A cube cut from small cubes and painted (how many faces painted), dice and opposite faces, vertices, edges and faces of solids, surface area and volume of cuboids, the shortest route on a box, the way a net folds (with the net described by its squares), and flat figures folded or mirrored described in words. |
+
+### Grades 11-12 (`MK1112`)
+
+Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK1112.md`.
+
+| Topic | Name | Covers |
+| --- | --- | --- |
+| MK1112.01 | Digits and Divisibility | Questions about the digits of numbers: last digits of long products and powers, digit sums and what they tell about divisibility by 3, 9 and 11, numbers with a stated digit property (reversed digits, digit product, a digit deleted), counting multiples in a range, smallest or largest number with a given digit sum, and divisibility of a sum or difference that can be reasoned about without a calculator. |
+| MK1112.02 | Factors, Primes and Powers | Divisors of a number (how many, their sum or product, which are odd or square), prime factorisation and gcd of large numbers written as powers, the highest power of a prime that divides a product, factorial or sum of powers, numbers with exactly a given number of divisors, comparing sizes of numbers written as powers, and when a root or an expression is a whole number. |
+| MK1112.03 | Equations and Roots | Solving or reasoning about equations without a calculator: quadratics with sum and product of roots, expressions like x plus its reciprocal, absolute-value equations (how many solutions), exponent equations with a variable exponent, systems of two or three equations from a story, and a parameter that decides how many solutions an equation has. |
+| MK1112.04 | Functions, Sequences and Rates | Linear and quadratic functions described in words (intercepts, signs, intersections, the largest value on an interval), recursive sequences and number patterns of dots or squares, functional rules such as f(x+y) = f(x)f(y), and word problems on percent change, averages, scale, speed, work and mixing that reduce to one or two equations. |
+| MK1112.05 | Counting and Probability | Counting arrangements, selections, colourings, digit strings and paths described in words, "at least one" by complement, dice, coins, balls and boxes, tournaments with random pairings, a winning probability in a repeated game, and the pigeonhole idea of how many draws make a result certain. |
+| MK1112.06 | Logic, Games and Puzzles | Knights and liars on a line, in a circle or at a table, statements of which a stated number are true, who-has-the-prize deduction, games where players alternately remove or add numbers, flipping a fixed number of coins or cells per move and asking which end states are possible, invariants (parity, remainders), and number placements in a row, ring or table with equal sums or a stated rule on neighbours. |
+| MK1112.07 | Plane Geometry in Words | Triangles, rectangles, squares and circles described in words: areas of a figure made of squares and circle parts, angles with tangents, chords and inscribed angles, right triangles with bisectors or an incircle, similar triangles and ratios of areas, regular hexagons and octagons, coordinates and midpoints, folding a strip of paper, a shortest route through a point on a line, and lattice points on a circle. |
+| MK1112.08 | Solids and Measurement | Cubes, cuboids, cylinders, pyramids and tetrahedra in words: surface area and volume, a cuboid painted and cut into unit cubes, a cylinder made by rolling a sheet, cutting corners off a solid, equal-volume solids with different dimensions, the shortest path on a surface by unfolding, and counting faces, edges and vertices of a polyhedron. |
 
 ## How a question is written and checked
 
@@ -281,3 +296,31 @@ Next: grades 3-4 (Ecolier), once the owner has reviewed this level.
   - review: about 137,000 Sonnet tokens;
   - writing: about 550,000 Sonnet (estimated: the writers' counts were lost in a container restart);
   - blind solve and re-solve: about 455,000 Opus.
+
+### Grades 11-12 (2026-10-27)
+
+240 questions, all `checked`: 30 a topic, 10 per difficulty, 160 choice and 80 numeric.
+
+- **Blind solve:** the solvers agreed with every key but one, and marked 2 down:
+  - **An impossible premise.** Eleven numbers whose any three neighbours add to 7 and any five add to 11
+    cannot exist: the conditions force every neighbouring pair to add to 4. It was rebuilt around the same
+    idea with a consistent premise (any three add to 7, the first two add to 4) and solved again.
+  - **A miscount in the wording.** Tunnels through a 5 by 5 by 5 cube were described with four cubes, not
+    two, between the centre and each face. Reworded and solved again.
+- **Notation:** the PDF converter prints `\binom` and `\equiv` as words. They appeared only in solutions
+  (nine of them) and were rewritten as C(n, k) and ≡. One `\sum` was written out term by term.
+- **Originality:** no stem shares a 10-word run with any paper.
+- **Giveaways:** the key is strictly the longest option in 6 of the 160 choice questions and strictly the
+  shortest in 1.
+- **Cost:**
+  - review: about 138,000 Sonnet tokens;
+  - writing: about 567,000 Sonnet;
+  - blind solve and re-solve: about 493,000 Opus.
+
+### All six levels
+
+1,440 questions on 48 topics, all `checked`. The bank goes from 40,738 to 42,178. Across the six levels:
+- **Keys:** the blind solvers disagreed with exactly one key, the impossible premise above. Every other
+  flag was wording (17) or a topic read by its name alone (4), each fixed and solved again.
+- **Cost:** about 6 million tokens in all: about 3.9 million Sonnet for the reviews and the writing, and
+  about 2.7 million Opus for the blind solves.

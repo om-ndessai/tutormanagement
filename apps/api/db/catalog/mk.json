@@ -376,6 +376,80 @@
           "description": "A cube cut from small cubes and painted (how many faces painted), dice and opposite faces, vertices, edges and faces of solids, surface area and volume of cuboids, the shortest route on a box, the way a net folds (with the net described by its squares), and flat figures folded or mirrored described in words."
         }
       ]
+    },
+    {
+      "id": "MK1112",
+      "code": null,
+      "name": "Math Kangaroo Grades 11-12",
+      "stage": 3006,
+      "grade_band": "Grades 11-12",
+      "description": "The contest's Student level.",
+      "topics": [
+        {
+          "id": "MK1112.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Digits and Divisibility",
+          "description": "Questions about the digits of numbers: last digits of long products and powers, digit sums and what they tell about divisibility by 3, 9 and 11, numbers with a stated digit property (reversed digits, digit product, a digit deleted), counting multiples in a range, smallest or largest number with a given digit sum, and divisibility of a sum or difference that can be reasoned about without a calculator."
+        },
+        {
+          "id": "MK1112.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Factors, Primes and Powers",
+          "description": "Divisors of a number (how many, their sum or product, which are odd or square), prime factorisation and gcd of large numbers written as powers, the highest power of a prime that divides a product, factorial or sum of powers, numbers with exactly a given number of divisors, comparing sizes of numbers written as powers, and when a root or an expression is a whole number."
+        },
+        {
+          "id": "MK1112.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Equations and Roots",
+          "description": "Solving or reasoning about equations without a calculator: quadratics with sum and product of roots, expressions like x plus its reciprocal, absolute-value equations (how many solutions), exponent equations with a variable exponent, systems of two or three equations from a story, and a parameter that decides how many solutions an equation has."
+        },
+        {
+          "id": "MK1112.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Functions, Sequences and Rates",
+          "description": "Linear and quadratic functions described in words (intercepts, signs, intersections, the largest value on an interval), recursive sequences and number patterns of dots or squares, functional rules such as f(x+y) = f(x)f(y), and word problems on percent change, averages, scale, speed, work and mixing that reduce to one or two equations."
+        },
+        {
+          "id": "MK1112.05",
+          "code": null,
+          "number": 5,
+          "unit": "Combinatorics",
+          "name": "Counting and Probability",
+          "description": "Counting arrangements, selections, colourings, digit strings and paths described in words, \"at least one\" by complement, dice, coins, balls and boxes, tournaments with random pairings, a winning probability in a repeated game, and the pigeonhole idea of how many draws make a result certain."
+        },
+        {
+          "id": "MK1112.06",
+          "code": null,
+          "number": 6,
+          "unit": "Reasoning",
+          "name": "Logic, Games and Puzzles",
+          "description": "Knights and liars on a line, in a circle or at a table, statements of which a stated number are true, who-has-the-prize deduction, games where players alternately remove or add numbers, flipping a fixed number of coins or cells per move and asking which end states are possible, invariants (parity, remainders), and number placements in a row, ring or table with equal sums or a stated rule on neighbours."
+        },
+        {
+          "id": "MK1112.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Plane Geometry in Words",
+          "description": "Triangles, rectangles, squares and circles described in words: areas of a figure made of squares and circle parts, angles with tangents, chords and inscribed angles, right triangles with bisectors or an incircle, similar triangles and ratios of areas, regular hexagons and octagons, coordinates and midpoints, folding a strip of paper, a shortest route through a point on a line, and lattice points on a circle."
+        },
+        {
+          "id": "MK1112.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Solids and Measurement",
+          "description": "Cubes, cuboids, cylinders, pyramids and tetrahedra in words: surface area and volume, a cuboid painted and cut into unit cubes, a cylinder made by rolling a sheet, cutting corners off a solid, equal-volume solids with different dimensions, the shortest path on a surface by unfolding, and counting faces, edges and vertices of a polyhedron."
+        }
+      ]
     }
   ]
 }
