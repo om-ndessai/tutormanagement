@@ -43,7 +43,7 @@ One catalog curriculum, `mk` ("Math Kangaroo"), stages 3001 onwards, one level p
 | --- | --- | --- | --- |
 | `MK12` | 1-2 | Felix | built (this round) |
 | `MK34` | 3-4 | Ecolier | built |
-| `MK56` | 5-6 | Benjamin | not yet |
+| `MK56` | 5-6 | Benjamin | built |
 | `MK78` | 7-8 | Kadett | not yet |
 | `MK910` | 9-10 | Junior | not yet |
 | `MK1112` | 11-12 | Student | not yet |
@@ -79,6 +79,21 @@ Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK34.md`
 | MK34.06 | Counting Ways and Orders | How many orders for a few people to line up, how many ordered pairs from a short list, ways to build a tower from some of the discs, ways to colour with restrictions, different figures from a small set of parts, and listing all cases systematically. |
 | MK34.07 | Shapes, Folds and Moves | Naming and counting plane shapes in a described figure, symmetry and mirror lines of a shape, turning by quarter and half turns, folding a strip or a sheet once or twice and punching a hole (where do the holes land), and a path on a grid given as a list of direction moves. |
 | MK34.08 | Solids, Lengths and Areas | Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces. |
+
+### Grades 5-6 (`MK56`)
+
+Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK56.md`.
+
+| Topic | Name | Covers |
+| --- | --- | --- |
+| MK56.01 | Digits and Number Puzzles | Forming the largest or smallest number from given digits or by deleting digits, cutting a long digit string into parts and adding them, letters standing for digits in a sum, divisibility by 2, 3, 5, 9 and 18, place value and digit sums, and the numbers in a patterned product. |
+| MK56.02 | Fractions and Parts of a Whole | Fractions of a quantity, a length or a group in words, cutting a rope or a cake into equal pieces and then cutting again, ratios and mixtures (parts of one to parts of another), chance as a fraction of equal parts, and comparing which part is bigger or which mixture is strongest. |
+| MK56.03 | Word Problems with Totals | Ages and their sums, money and prices, packages and change-free payments, a total split into unequal parts, speeds and times, "twice as many" and "half as many", two situations of chairs short and chairs left over, and unknowns found by guess-and-check or reasoning. |
+| MK56.04 | Sums and Patterns of Numbers | Numbers placed on a ring or a shape so every line has the same sum, an arithmetic sequence (a distance growing by the same amount), the middle value as a mean, balance scales and equal weights, chain calculations with hidden steps, and which numbers can sit where. |
+| MK56.05 | Truth-tellers and Clues | Knights and liars, who may say which statement, exactly one true note or exactly one lie, people lying only on certain days, ranking people from clues about who is ahead of whom, seating at a table, and what must be true whatever happens. |
+| MK56.06 | Counting Ways | How many whole numbers or numbers with a property, arrangements of digits larger than a given number, ways to choose 3 of 7, colouring a row so neighbours differ, ordering cards or discs, bouquets of a fixed total from three prices, and counting with overlap or on both sides. |
+| MK56.07 | Geometry in Words | Rectangles and squares with stated sides, area and perimeter, a square joined at midpoints, a rectangle cut at fractions, cubes made of unit cubes and how many faces are painted, a box and the height of water in it, a cube's opposite faces, a sheet folded and cut into pieces, and a clock seen in a mirror or a figure turned a quarter. |
+| MK56.08 | Moves, Games and Extremes | Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, "how many must you take to be sure" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps. |
 
 ## How a question is written and checked
 
@@ -165,3 +180,20 @@ Next: grades 3-4 (Ecolier), once the owner has reviewed this level.
   - writing: about 520,000 Sonnet;
   - blind solve and re-solve: about 440,000 Opus. One solver's count was lost in a container restart and
     is estimated.
+
+### Grades 5-6 (2026-10-27)
+
+240 questions, all `checked`: 30 a topic, 10 per difficulty, 160 choice and 80 numeric.
+
+- **Blind solve:** the solvers agreed with every key. They marked one down for wording: "the numbers of
+  the form 2a5b are divisible by 18", which reads as a claim about all of them. It was reworded and
+  passed a second blind solve.
+- **Giveaways:** the key is strictly the longest option in 5 of the 160 choice questions and strictly the
+  shortest in 7.
+- **Originality:** two stems share a 10-word run with a paper, both stock phrasing ("what is the sum of
+  the digits of the largest ...", "... must have different colours. What is the smallest number of ...").
+  The problems themselves differ.
+- **Cost:**
+  - review: about 124,000 Sonnet tokens;
+  - writing: about 545,000 Sonnet (one writer's count was lost in a container restart and is estimated);
+  - blind solve: about 420,000 Opus.

@@ -8,7 +8,7 @@
 --  database, and on its own against a live one (docs/database.md). It never
 --  deletes, and never writes an organization's own curriculum.
 --
---  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 2/16
+--  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 3/24
 -- ===========================================================================
 
 -- Beast Academy (ba): 8 levels, 116 topics
@@ -936,7 +936,7 @@ ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;
 
--- Math Kangaroo (mk): 2 levels, 16 topics
+-- Math Kangaroo (mk): 3 levels, 24 topics
 
 INSERT INTO curricula (id, name, source, edition, description, source_url, sort) VALUES
   ('mk', 'Math Kangaroo', 'Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)', NULL, 'Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest''s 3-, 4- and 5-point questions are the bank''s three difficulties.', NULL, 4)
@@ -947,7 +947,8 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO curriculum_levels (id, curriculum_id, code, name, stage, grade_band, description) VALUES
   ('MK12', 'mk', NULL, 'Math Kangaroo Grades 1-2', 3001, 'Grades 1-2', 'The contest''s youngest level (Felix, or Pre-Ecolier).'),
-  ('MK34', 'mk', NULL, 'Math Kangaroo Grades 3-4', 3002, 'Grades 3-4', 'The contest''s Ecolier level.')
+  ('MK34', 'mk', NULL, 'Math Kangaroo Grades 3-4', 3002, 'Grades 3-4', 'The contest''s Ecolier level.'),
+  ('MK56', 'mk', NULL, 'Math Kangaroo Grades 5-6', 3003, 'Grades 5-6', 'The contest''s Benjamin level.')
 ON CONFLICT (id) DO UPDATE SET
   curriculum_id = excluded.curriculum_id, code = excluded.code, name = excluded.name,
   stage = excluded.stage, grade_band = excluded.grade_band, description = excluded.description;
@@ -974,6 +975,19 @@ INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, descripti
   ('MK34.06', 'MK34', 6, NULL, 'Combinatorics', 'Counting Ways and Orders', 'How many orders for a few people to line up, how many ordered pairs from a short list, ways to build a tower from some of the discs, ways to colour with restrictions, different figures from a small set of parts, and listing all cases systematically.'),
   ('MK34.07', 'MK34', 7, NULL, 'Geometry', 'Shapes, Folds and Moves', 'Naming and counting plane shapes in a described figure, symmetry and mirror lines of a shape, turning by quarter and half turns, folding a strip or a sheet once or twice and punching a hole (where do the holes land), and a path on a grid given as a list of direction moves.'),
   ('MK34.08', 'MK34', 8, NULL, 'Geometry', 'Solids, Lengths and Areas', 'Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces.')
+ON CONFLICT (id) DO UPDATE SET
+  level_id = excluded.level_id, number = excluded.number, code = excluded.code,
+  unit = excluded.unit, name = excluded.name, description = excluded.description;
+
+INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, description) VALUES
+  ('MK56.01', 'MK56', 1, NULL, 'Number', 'Digits and Number Puzzles', 'Forming the largest or smallest number from given digits or by deleting digits, cutting a long digit string into parts and adding them, letters standing for digits in a sum, divisibility by 2, 3, 5, 9 and 18, place value and digit sums, and the numbers in a patterned product.'),
+  ('MK56.02', 'MK56', 2, NULL, 'Number', 'Fractions and Parts of a Whole', 'Fractions of a quantity, a length or a group in words, cutting a rope or a cake into equal pieces and then cutting again, ratios and mixtures (parts of one to parts of another), chance as a fraction of equal parts, and comparing which part is bigger or which mixture is strongest.'),
+  ('MK56.03', 'MK56', 3, NULL, 'Algebra', 'Word Problems with Totals', 'Ages and their sums, money and prices, packages and change-free payments, a total split into unequal parts, speeds and times, "twice as many" and "half as many", two situations of chairs short and chairs left over, and unknowns found by guess-and-check or reasoning.'),
+  ('MK56.04', 'MK56', 4, NULL, 'Algebra', 'Sums and Patterns of Numbers', 'Numbers placed on a ring or a shape so every line has the same sum, an arithmetic sequence (a distance growing by the same amount), the middle value as a mean, balance scales and equal weights, chain calculations with hidden steps, and which numbers can sit where.'),
+  ('MK56.05', 'MK56', 5, NULL, 'Reasoning', 'Truth-tellers and Clues', 'Knights and liars, who may say which statement, exactly one true note or exactly one lie, people lying only on certain days, ranking people from clues about who is ahead of whom, seating at a table, and what must be true whatever happens.'),
+  ('MK56.06', 'MK56', 6, NULL, 'Combinatorics', 'Counting Ways', 'How many whole numbers or numbers with a property, arrangements of digits larger than a given number, ways to choose 3 of 7, colouring a row so neighbours differ, ordering cards or discs, bouquets of a fixed total from three prices, and counting with overlap or on both sides.'),
+  ('MK56.07', 'MK56', 7, NULL, 'Geometry', 'Geometry in Words', 'Rectangles and squares with stated sides, area and perimeter, a square joined at midpoints, a rectangle cut at fractions, cubes made of unit cubes and how many faces are painted, a box and the height of water in it, a cube''s opposite faces, a sheet folded and cut into pieces, and a clock seen in a mirror or a figure turned a quarter.'),
+  ('MK56.08', 'MK56', 8, NULL, 'Reasoning', 'Moves, Games and Extremes', 'Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, "how many must you take to be sure" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps.')
 ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;

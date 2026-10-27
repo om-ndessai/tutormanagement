@@ -7,7 +7,9 @@ import { randomUUID } from 'node:crypto';
 import { lintQuestion, checkAnswer } from './shared.mjs';
 const [level, draftsDir, solveDir, bankFile, mapFile, source, notesFile] = process.argv.slice(2);
 const verdicts = new Map();
-for (const f of readdirSync(solveDir).filter((f) => f.endsWith('.json'))) {
+// Repair verdicts load last, in order, so a re-solve always outranks the first solve.
+const rank = (f) => (f.includes('repair') ? 1 : 0);
+for (const f of readdirSync(solveDir).filter((f) => f.endsWith('.json')).sort((a, b) => rank(a) - rank(b) || (a < b ? -1 : 1))) {
   for (const v of JSON.parse(readFileSync(join(solveDir, f), 'utf8'))) verdicts.set(v.id, v); // later files win (re-solves)
 }
 const idMap = existsSync(mapFile) ? JSON.parse(readFileSync(mapFile, 'utf8')) : {};

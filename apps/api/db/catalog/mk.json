@@ -154,6 +154,80 @@
           "description": "Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces."
         }
       ]
+    },
+    {
+      "id": "MK56",
+      "code": null,
+      "name": "Math Kangaroo Grades 5-6",
+      "stage": 3003,
+      "grade_band": "Grades 5-6",
+      "description": "The contest's Benjamin level.",
+      "topics": [
+        {
+          "id": "MK56.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Digits and Number Puzzles",
+          "description": "Forming the largest or smallest number from given digits or by deleting digits, cutting a long digit string into parts and adding them, letters standing for digits in a sum, divisibility by 2, 3, 5, 9 and 18, place value and digit sums, and the numbers in a patterned product."
+        },
+        {
+          "id": "MK56.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Fractions and Parts of a Whole",
+          "description": "Fractions of a quantity, a length or a group in words, cutting a rope or a cake into equal pieces and then cutting again, ratios and mixtures (parts of one to parts of another), chance as a fraction of equal parts, and comparing which part is bigger or which mixture is strongest."
+        },
+        {
+          "id": "MK56.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Word Problems with Totals",
+          "description": "Ages and their sums, money and prices, packages and change-free payments, a total split into unequal parts, speeds and times, \"twice as many\" and \"half as many\", two situations of chairs short and chairs left over, and unknowns found by guess-and-check or reasoning."
+        },
+        {
+          "id": "MK56.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Sums and Patterns of Numbers",
+          "description": "Numbers placed on a ring or a shape so every line has the same sum, an arithmetic sequence (a distance growing by the same amount), the middle value as a mean, balance scales and equal weights, chain calculations with hidden steps, and which numbers can sit where."
+        },
+        {
+          "id": "MK56.05",
+          "code": null,
+          "number": 5,
+          "unit": "Reasoning",
+          "name": "Truth-tellers and Clues",
+          "description": "Knights and liars, who may say which statement, exactly one true note or exactly one lie, people lying only on certain days, ranking people from clues about who is ahead of whom, seating at a table, and what must be true whatever happens."
+        },
+        {
+          "id": "MK56.06",
+          "code": null,
+          "number": 6,
+          "unit": "Combinatorics",
+          "name": "Counting Ways",
+          "description": "How many whole numbers or numbers with a property, arrangements of digits larger than a given number, ways to choose 3 of 7, colouring a row so neighbours differ, ordering cards or discs, bouquets of a fixed total from three prices, and counting with overlap or on both sides."
+        },
+        {
+          "id": "MK56.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Geometry in Words",
+          "description": "Rectangles and squares with stated sides, area and perimeter, a square joined at midpoints, a rectangle cut at fractions, cubes made of unit cubes and how many faces are painted, a box and the height of water in it, a cube's opposite faces, a sheet folded and cut into pieces, and a clock seen in a mirror or a figure turned a quarter."
+        },
+        {
+          "id": "MK56.08",
+          "code": null,
+          "number": 8,
+          "unit": "Reasoning",
+          "name": "Moves, Games and Extremes",
+          "description": "Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, \"how many must you take to be sure\" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps."
+        }
+      ]
     }
   ]
 }

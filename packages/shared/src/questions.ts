@@ -57,6 +57,7 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'GEO',
   'MK12',
   'MK34',
+  'MK56',
 ] as const;
 
 /**
