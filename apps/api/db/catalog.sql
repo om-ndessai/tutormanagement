@@ -8,7 +8,7 @@
 --  database, and on its own against a live one (docs/database.md). It never
 --  deletes, and never writes an organization's own curriculum.
 --
---  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 3/24
+--  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 4/32
 -- ===========================================================================
 
 -- Beast Academy (ba): 8 levels, 116 topics
@@ -936,7 +936,7 @@ ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;
 
--- Math Kangaroo (mk): 3 levels, 24 topics
+-- Math Kangaroo (mk): 4 levels, 32 topics
 
 INSERT INTO curricula (id, name, source, edition, description, source_url, sort) VALUES
   ('mk', 'Math Kangaroo', 'Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)', NULL, 'Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest''s 3-, 4- and 5-point questions are the bank''s three difficulties.', NULL, 4)
@@ -948,7 +948,8 @@ ON CONFLICT (id) DO UPDATE SET
 INSERT INTO curriculum_levels (id, curriculum_id, code, name, stage, grade_band, description) VALUES
   ('MK12', 'mk', NULL, 'Math Kangaroo Grades 1-2', 3001, 'Grades 1-2', 'The contest''s youngest level (Felix, or Pre-Ecolier).'),
   ('MK34', 'mk', NULL, 'Math Kangaroo Grades 3-4', 3002, 'Grades 3-4', 'The contest''s Ecolier level.'),
-  ('MK56', 'mk', NULL, 'Math Kangaroo Grades 5-6', 3003, 'Grades 5-6', 'The contest''s Benjamin level.')
+  ('MK56', 'mk', NULL, 'Math Kangaroo Grades 5-6', 3003, 'Grades 5-6', 'The contest''s Benjamin level.'),
+  ('MK78', 'mk', NULL, 'Math Kangaroo Grades 7-8', 3004, 'Grades 7-8', 'The contest''s Kadett level.')
 ON CONFLICT (id) DO UPDATE SET
   curriculum_id = excluded.curriculum_id, code = excluded.code, name = excluded.name,
   stage = excluded.stage, grade_band = excluded.grade_band, description = excluded.description;
@@ -988,6 +989,19 @@ INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, descripti
   ('MK56.06', 'MK56', 6, NULL, 'Combinatorics', 'Counting Ways', 'How many whole numbers or numbers with a property, arrangements of digits larger than a given number, ways to choose 3 of 7, colouring a row so neighbours differ, ordering cards or discs, bouquets of a fixed total from three prices, and counting with overlap or on both sides.'),
   ('MK56.07', 'MK56', 7, NULL, 'Geometry', 'Geometry in Words', 'Rectangles and squares with stated sides, area and perimeter, a square joined at midpoints, a rectangle cut at fractions, cubes made of unit cubes and how many faces are painted, a box and the height of water in it, a cube''s opposite faces, a sheet folded and cut into pieces, and a clock seen in a mirror or a figure turned a quarter.'),
   ('MK56.08', 'MK56', 8, NULL, 'Reasoning', 'Moves, Games and Extremes', 'Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, "how many must you take to be sure" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps.')
+ON CONFLICT (id) DO UPDATE SET
+  level_id = excluded.level_id, number = excluded.number, code = excluded.code,
+  unit = excluded.unit, name = excluded.name, description = excluded.description;
+
+INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, description) VALUES
+  ('MK78.01', 'MK78', 1, NULL, 'Number', 'Whole Numbers and Digits', 'Place value and digits written in words (the largest or smallest number from given digit cards, last digit of a sum or product, digit sums), primes and divisibility rules, order of operations with brackets and negative numbers, consecutive integers, and number puzzles in which each letter or hidden digit stands for one digit.'),
+  ('MK78.02', 'MK78', 2, NULL, 'Number', 'Fractions, Percents, Ratios', 'Fractions and percentages of a quantity, percentage increase and decrease and the reversal of a percentage change, fraction of a fraction, ratios of two amounts before and after a change, mixtures and concentrations (water in fresh and dried fruit, a paint blend), and comparing fractions by size.'),
+  ('MK78.03', 'MK78', 3, NULL, 'Algebra', 'Equations in Stories', 'Ages, money and shares described in words, totals and differences of two unknowns, working backwards from a final amount, equal sharing and transfers between people, the same quantity said in two ways (a jar part full and nearly full), and grids or rows of numbers where neighbours obey a sum rule given in words.'),
+  ('MK78.04', 'MK78', 4, NULL, 'Algebra', 'Speed, Time and Averages', 'Constant speed with distance, time and meeting or catching up (including the second meeting), laps on a circular track, clocks that run fast or slow, journeys on foot and by bike compared, and the mean of a list and how adding or removing a value changes it.'),
+  ('MK78.05', 'MK78', 5, NULL, 'Combinatorics', 'Counting and Arrangements', 'Counting things described in words, how many whole numbers are in a range, numbers with only certain digits, lists of ways to arrange three to five objects with a restriction, routes on a grid moving only right or down, pairs and handshakes in a group, tournament matches, and the fewest picks that guarantee a result.'),
+  ('MK78.06', 'MK78', 6, NULL, 'Reasoning', 'Logic and Patterns', 'Liars and truth-tellers, ordering people from comparisons, eliminating cases from clues, deducing a hidden code or an unknown from true-or-false statements, parity and remainder arguments, repeating patterns and cycles (a digit sequence, a clock, jumps along a line), and the position of an item in a very long sequence.'),
+  ('MK78.07', 'MK78', 7, NULL, 'Geometry', 'Geometry in Words', 'Areas and perimeters of rectangles, squares and triangles built up or cut apart as described in words, composite shapes made of equal rectangles, fractions of a shape, angles in triangles and polygons (isosceles, equilateral, straight line, right angle), circles touching sides or each other, midpoints, and paper folded in two.'),
+  ('MK78.08', 'MK78', 8, NULL, 'Geometry', 'Solids and Symmetry', 'Cubes and cuboids built from unit cubes (how many remain, are painted, are hidden), dice with opposite faces summing to 7, faces, edges and vertices of solids, surface area and volume of a cuboid, nets in words, and axes and rotational symmetry of letters, digits, polygons and simple figures given in text.')
 ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;

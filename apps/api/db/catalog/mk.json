@@ -228,6 +228,80 @@
           "description": "Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, \"how many must you take to be sure\" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps."
         }
       ]
+    },
+    {
+      "id": "MK78",
+      "code": null,
+      "name": "Math Kangaroo Grades 7-8",
+      "stage": 3004,
+      "grade_band": "Grades 7-8",
+      "description": "The contest's Kadett level.",
+      "topics": [
+        {
+          "id": "MK78.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Whole Numbers and Digits",
+          "description": "Place value and digits written in words (the largest or smallest number from given digit cards, last digit of a sum or product, digit sums), primes and divisibility rules, order of operations with brackets and negative numbers, consecutive integers, and number puzzles in which each letter or hidden digit stands for one digit."
+        },
+        {
+          "id": "MK78.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Fractions, Percents, Ratios",
+          "description": "Fractions and percentages of a quantity, percentage increase and decrease and the reversal of a percentage change, fraction of a fraction, ratios of two amounts before and after a change, mixtures and concentrations (water in fresh and dried fruit, a paint blend), and comparing fractions by size."
+        },
+        {
+          "id": "MK78.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Equations in Stories",
+          "description": "Ages, money and shares described in words, totals and differences of two unknowns, working backwards from a final amount, equal sharing and transfers between people, the same quantity said in two ways (a jar part full and nearly full), and grids or rows of numbers where neighbours obey a sum rule given in words."
+        },
+        {
+          "id": "MK78.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Speed, Time and Averages",
+          "description": "Constant speed with distance, time and meeting or catching up (including the second meeting), laps on a circular track, clocks that run fast or slow, journeys on foot and by bike compared, and the mean of a list and how adding or removing a value changes it."
+        },
+        {
+          "id": "MK78.05",
+          "code": null,
+          "number": 5,
+          "unit": "Combinatorics",
+          "name": "Counting and Arrangements",
+          "description": "Counting things described in words, how many whole numbers are in a range, numbers with only certain digits, lists of ways to arrange three to five objects with a restriction, routes on a grid moving only right or down, pairs and handshakes in a group, tournament matches, and the fewest picks that guarantee a result."
+        },
+        {
+          "id": "MK78.06",
+          "code": null,
+          "number": 6,
+          "unit": "Reasoning",
+          "name": "Logic and Patterns",
+          "description": "Liars and truth-tellers, ordering people from comparisons, eliminating cases from clues, deducing a hidden code or an unknown from true-or-false statements, parity and remainder arguments, repeating patterns and cycles (a digit sequence, a clock, jumps along a line), and the position of an item in a very long sequence."
+        },
+        {
+          "id": "MK78.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Geometry in Words",
+          "description": "Areas and perimeters of rectangles, squares and triangles built up or cut apart as described in words, composite shapes made of equal rectangles, fractions of a shape, angles in triangles and polygons (isosceles, equilateral, straight line, right angle), circles touching sides or each other, midpoints, and paper folded in two."
+        },
+        {
+          "id": "MK78.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Solids and Symmetry",
+          "description": "Cubes and cuboids built from unit cubes (how many remain, are painted, are hidden), dice with opposite faces summing to 7, faces, edges and vertices of solids, surface area and volume of a cuboid, nets in words, and axes and rotational symmetry of letters, digits, polygons and simple figures given in text."
+        }
+      ]
     }
   ]
 }

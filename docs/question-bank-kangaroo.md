@@ -44,7 +44,7 @@ One catalog curriculum, `mk` ("Math Kangaroo"), stages 3001 onwards, one level p
 | `MK12` | 1-2 | Felix | built (this round) |
 | `MK34` | 3-4 | Ecolier | built |
 | `MK56` | 5-6 | Benjamin | built |
-| `MK78` | 7-8 | Kadett | not yet |
+| `MK78` | 7-8 | Kadett | built |
 | `MK910` | 9-10 | Junior | not yet |
 | `MK1112` | 11-12 | Student | not yet |
 
@@ -94,6 +94,21 @@ Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK56.md`
 | MK56.06 | Counting Ways | How many whole numbers or numbers with a property, arrangements of digits larger than a given number, ways to choose 3 of 7, colouring a row so neighbours differ, ordering cards or discs, bouquets of a fixed total from three prices, and counting with overlap or on both sides. |
 | MK56.07 | Geometry in Words | Rectangles and squares with stated sides, area and perimeter, a square joined at midpoints, a rectangle cut at fractions, cubes made of unit cubes and how many faces are painted, a box and the height of water in it, a cube's opposite faces, a sheet folded and cut into pieces, and a clock seen in a mirror or a figure turned a quarter. |
 | MK56.08 | Moves, Games and Extremes | Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, "how many must you take to be sure" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps. |
+
+### Grades 7-8 (`MK78`)
+
+Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK78.md`.
+
+| Topic | Name | Covers |
+| --- | --- | --- |
+| MK78.01 | Whole Numbers and Digits | Place value and digits written in words (the largest or smallest number from given digit cards, last digit of a sum or product, digit sums), primes and divisibility rules, order of operations with brackets and negative numbers, consecutive integers, and number puzzles in which each letter or hidden digit stands for one digit. |
+| MK78.02 | Fractions, Percents, Ratios | Fractions and percentages of a quantity, percentage increase and decrease and the reversal of a percentage change, fraction of a fraction, ratios of two amounts before and after a change, mixtures and concentrations (water in fresh and dried fruit, a paint blend), and comparing fractions by size. |
+| MK78.03 | Equations in Stories | Ages, money and shares described in words, totals and differences of two unknowns, working backwards from a final amount, equal sharing and transfers between people, the same quantity said in two ways (a jar part full and nearly full), and grids or rows of numbers where neighbours obey a sum rule given in words. |
+| MK78.04 | Speed, Time and Averages | Constant speed with distance, time and meeting or catching up (including the second meeting), laps on a circular track, clocks that run fast or slow, journeys on foot and by bike compared, and the mean of a list and how adding or removing a value changes it. |
+| MK78.05 | Counting and Arrangements | Counting things described in words, how many whole numbers are in a range, numbers with only certain digits, lists of ways to arrange three to five objects with a restriction, routes on a grid moving only right or down, pairs and handshakes in a group, tournament matches, and the fewest picks that guarantee a result. |
+| MK78.06 | Logic and Patterns | Liars and truth-tellers, ordering people from comparisons, eliminating cases from clues, deducing a hidden code or an unknown from true-or-false statements, parity and remainder arguments, repeating patterns and cycles (a digit sequence, a clock, jumps along a line), and the position of an item in a very long sequence. |
+| MK78.07 | Geometry in Words | Areas and perimeters of rectangles, squares and triangles built up or cut apart as described in words, composite shapes made of equal rectangles, fractions of a shape, angles in triangles and polygons (isosceles, equilateral, straight line, right angle), circles touching sides or each other, midpoints, and paper folded in two. |
+| MK78.08 | Solids and Symmetry | Cubes and cuboids built from unit cubes (how many remain, are painted, are hidden), dice with opposite faces summing to 7, faces, edges and vertices of solids, surface area and volume of a cuboid, nets in words, and axes and rotational symmetry of letters, digits, polygons and simple figures given in text. |
 
 ## How a question is written and checked
 
@@ -196,4 +211,19 @@ Next: grades 3-4 (Ecolier), once the owner has reviewed this level.
 - **Cost:**
   - review: about 124,000 Sonnet tokens;
   - writing: about 545,000 Sonnet (one writer's count was lost in a container restart and is estimated);
+  - blind solve: about 420,000 Opus.
+
+### Grades 7-8 (2026-10-27)
+
+240 questions, all `checked`: 30 a topic, 10 per difficulty, 159 choice and 81 numeric.
+
+- **Blind solve:** the solvers agreed with every key. They marked one down for wording: a strip "folded in
+  half across its length", which can halve the length or the width. It was reworded and passed a second
+  blind solve.
+- **Giveaways:** the key is strictly the longest option in 2 of the 159 choice questions and strictly the
+  shortest in 1.
+- **Originality:** no stem shares a 10-word run with any paper.
+- **Cost:**
+  - review: about 137,000 Sonnet tokens;
+  - writing: about 550,000 Sonnet (estimated: the writers' counts were lost in a container restart);
   - blind solve: about 420,000 Opus.

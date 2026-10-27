@@ -26,7 +26,7 @@ export const QUEST_LEVEL_FAMILIES: readonly (readonly (typeof QUESTION_BANK_LEVE
   ['NC26.K', 'NC26.1', 'NC26.2', 'NC26.3', 'NC26.4', 'NC26.5', 'NC26.6', 'NC26.7', 'NC26.8', 'NC26.M1', 'NC26.M2'],
   ['NC17.K', 'NC17.1', 'NC17.2', 'NC17.3', 'NC17.4', 'NC17.5', 'NC17.6', 'NC17.7', 'NC17.8', 'NC17.M1', 'NC17.M2', 'NC17.M3'],
   ['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
-  ['MK12', 'MK34', 'MK56'],
+  ['MK12', 'MK34', 'MK56', 'MK78'],
 ];
 
 /** The level after this one in its family, or null at the end of it. */
