@@ -152,7 +152,7 @@ test.describe('the question bank’s rules', () => {
       ...NC_LEVELS,
       ...NC17_LEVELS,
       ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
-      ...['MK12', 'MK34', 'MK56', 'MK78'],
+      ...['MK12', 'MK34', 'MK56', 'MK78', 'MK910'],
     ]);
     expect(levels.find((l) => l.level_id === 'BA3')?.topics.map((t) => t.topic_id)).toContain('BA3.06');
     // A chapter is a standard the console can write for, like any other.

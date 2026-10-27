@@ -8,7 +8,7 @@
 --  database, and on its own against a live one (docs/database.md). It never
 --  deletes, and never writes an organization's own curriculum.
 --
---  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 4/32
+--  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 5/40
 -- ===========================================================================
 
 -- Beast Academy (ba): 8 levels, 116 topics
@@ -936,7 +936,7 @@ ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;
 
--- Math Kangaroo (mk): 4 levels, 32 topics
+-- Math Kangaroo (mk): 5 levels, 40 topics
 
 INSERT INTO curricula (id, name, source, edition, description, source_url, sort) VALUES
   ('mk', 'Math Kangaroo', 'Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)', NULL, 'Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest''s 3-, 4- and 5-point questions are the bank''s three difficulties.', NULL, 4)
@@ -949,7 +949,8 @@ INSERT INTO curriculum_levels (id, curriculum_id, code, name, stage, grade_band,
   ('MK12', 'mk', NULL, 'Math Kangaroo Grades 1-2', 3001, 'Grades 1-2', 'The contest''s youngest level (Felix, or Pre-Ecolier).'),
   ('MK34', 'mk', NULL, 'Math Kangaroo Grades 3-4', 3002, 'Grades 3-4', 'The contest''s Ecolier level.'),
   ('MK56', 'mk', NULL, 'Math Kangaroo Grades 5-6', 3003, 'Grades 5-6', 'The contest''s Benjamin level.'),
-  ('MK78', 'mk', NULL, 'Math Kangaroo Grades 7-8', 3004, 'Grades 7-8', 'The contest''s Kadett level.')
+  ('MK78', 'mk', NULL, 'Math Kangaroo Grades 7-8', 3004, 'Grades 7-8', 'The contest''s Kadett level.'),
+  ('MK910', 'mk', NULL, 'Math Kangaroo Grades 9-10', 3005, 'Grades 9-10', 'The contest''s Junior level.')
 ON CONFLICT (id) DO UPDATE SET
   curriculum_id = excluded.curriculum_id, code = excluded.code, name = excluded.name,
   stage = excluded.stage, grade_band = excluded.grade_band, description = excluded.description;
@@ -1002,6 +1003,19 @@ INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, descripti
   ('MK78.06', 'MK78', 6, NULL, 'Reasoning', 'Logic and Patterns', 'Liars and truth-tellers, ordering people from comparisons, eliminating cases from clues, deducing a hidden code or an unknown from true-or-false statements, parity and remainder arguments, repeating patterns and cycles (a digit sequence, a clock, jumps along a line), and the position of an item in a very long sequence.'),
   ('MK78.07', 'MK78', 7, NULL, 'Geometry', 'Geometry in Words', 'Areas and perimeters of rectangles, squares and triangles built up or cut apart as described in words, composite shapes made of equal rectangles, fractions of a shape, angles in triangles and polygons (isosceles, equilateral, straight line, right angle), circles touching sides or each other, midpoints, and paper folded in two.'),
   ('MK78.08', 'MK78', 8, NULL, 'Geometry', 'Solids and Symmetry', 'Cubes and cuboids built from unit cubes (how many remain, are painted, are hidden), dice with opposite faces summing to 7, faces, edges and vertices of solids, surface area and volume of a cuboid, nets in words, and axes and rotational symmetry of letters, digits, polygons and simple figures given in text.')
+ON CONFLICT (id) DO UPDATE SET
+  level_id = excluded.level_id, number = excluded.number, code = excluded.code,
+  unit = excluded.unit, name = excluded.name, description = excluded.description;
+
+INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, description) VALUES
+  ('MK910.01', 'MK910', 1, NULL, 'Number', 'Percentages, Ratios and Rates', 'Percentages and percentage change, ratios and proportion, means of a list and how they move when a value is added or removed, fractions of a quantity in a story (a share of a journey or a recipe), unit conversion, and speed, time, work and mixing with constant rates (two walkers on a track, a boat with and without a current).'),
+  ('MK910.02', 'MK910', 2, NULL, 'Number', 'Divisibility, Primes and Digits', 'Divisibility rules and remainders, primes and prime factors, gcd and lcm, parity, digit sums and products, numbers built from digits with a condition (a palindrome, a number divisible by 6 or 9, a digit deleted), how many digits a number has, and the day of the week after a long time.'),
+  ('MK910.03', 'MK910', 3, NULL, 'Algebra', 'Equations, Sequences and Patterns', 'Setting up and solving equations from words (ages, money, consecutive numbers), sums of squares and of consecutive numbers, a rule that builds a sequence and the term far along, a repeating cycle, the equation of a line and where it meets the axes, and expressions whose value can be found without finding each unknown.'),
+  ('MK910.04', 'MK910', 4, NULL, 'Combinatorics', 'Counting and Probability', 'Counting arrangements, paths, routes, passwords and codes, choosing a few from many, dice sums and tickets, counting with a forbidden item, complementary counting, tilings and fills of a small table described in words, and a probability of equally likely outcomes.'),
+  ('MK910.05', 'MK910', 5, NULL, 'Reasoning', 'Logic and Extremal Puzzles', 'Truth-tellers and liars, who-is-who from clues, seating and rankings, handshakes and tournaments, the pigeonhole ("how many must be taken to be sure of three alike"), smallest and largest possible under a rule, and number-placement puzzles where sums or products must agree.'),
+  ('MK910.06', 'MK910', 6, NULL, 'Geometry', 'Areas, Lengths and Ratios of Figures', 'Areas and perimeters of rectangles, triangles, trapezia and circles given in words, a figure cut by midpoints or by lines into parts and the fraction of the whole, similar figures and scaling of area, the length of a segment through Pythagoras, and a square or rectangle with stated sides.'),
+  ('MK910.07', 'MK910', 7, NULL, 'Geometry', 'Angles, Circles and Coordinates in Words', 'Angles in triangles, polygons and parallel lines, isosceles and equilateral triangles, the inscribed angle and the angle in a semicircle, tangents and chords with a stated radius, the triangle inequality, and points and lines given by coordinates (distance, a square on the grid, the triangle a line cuts off the axes).'),
+  ('MK910.08', 'MK910', 8, NULL, 'Geometry', 'Cubes, Solids and Nets in Words', 'A cube cut from small cubes and painted (how many faces painted), dice and opposite faces, vertices, edges and faces of solids, surface area and volume of cuboids, the shortest route on a box, the way a net folds (with the net described by its squares), and flat figures folded or mirrored described in words.')
 ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;

@@ -74,6 +74,7 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
   MK34: 'Kangaroo 3-4',
   MK56: 'Kangaroo 5-6',
   MK78: 'Kangaroo 7-8',
+  MK910: 'Kangaroo 9-10',
 };
 
 /**

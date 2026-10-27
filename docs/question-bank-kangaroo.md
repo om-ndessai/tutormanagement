@@ -45,7 +45,7 @@ One catalog curriculum, `mk` ("Math Kangaroo"), stages 3001 onwards, one level p
 | `MK34` | 3-4 | Ecolier | built |
 | `MK56` | 5-6 | Benjamin | built |
 | `MK78` | 7-8 | Kadett | built |
-| `MK910` | 9-10 | Junior | not yet |
+| `MK910` | 9-10 | Junior | built |
 | `MK1112` | 11-12 | Student | not yet |
 
 Each level is added to the catalog when it is built (adding a level or a topic is additive; removing one
@@ -110,6 +110,21 @@ Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK78.md`
 | MK78.07 | Geometry in Words | Areas and perimeters of rectangles, squares and triangles built up or cut apart as described in words, composite shapes made of equal rectangles, fractions of a shape, angles in triangles and polygons (isosceles, equilateral, straight line, right angle), circles touching sides or each other, midpoints, and paper folded in two. |
 | MK78.08 | Solids and Symmetry | Cubes and cuboids built from unit cubes (how many remain, are painted, are hidden), dice with opposite faces summing to 7, faces, edges and vertices of solids, surface area and volume of a cuboid, nets in words, and axes and rotational symmetry of letters, digits, polygons and simple figures given in text. |
 
+### Grades 9-10 (`MK910`)
+
+Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK910.md`.
+
+| Topic | Name | Covers |
+| --- | --- | --- |
+| MK910.01 | Percentages, Ratios and Rates | Percentages and percentage change, ratios and proportion, means of a list and how they move when a value is added or removed, fractions of a quantity in a story (a share of a journey or a recipe), unit conversion, and speed, time, work and mixing with constant rates (two walkers on a track, a boat with and without a current). |
+| MK910.02 | Divisibility, Primes and Digits | Divisibility rules and remainders, primes and prime factors, gcd and lcm, parity, digit sums and products, numbers built from digits with a condition (a palindrome, a number divisible by 6 or 9, a digit deleted), how many digits a number has, and the day of the week after a long time. |
+| MK910.03 | Equations, Sequences and Patterns | Setting up and solving equations from words (ages, money, consecutive numbers), sums of squares and of consecutive numbers, a rule that builds a sequence and the term far along, a repeating cycle, the equation of a line and where it meets the axes, and expressions whose value can be found without finding each unknown. |
+| MK910.04 | Counting and Probability | Counting arrangements, paths, routes, passwords and codes, choosing a few from many, dice sums and tickets, counting with a forbidden item, complementary counting, tilings and fills of a small table described in words, and a probability of equally likely outcomes. |
+| MK910.05 | Logic and Extremal Puzzles | Truth-tellers and liars, who-is-who from clues, seating and rankings, handshakes and tournaments, the pigeonhole ("how many must be taken to be sure of three alike"), smallest and largest possible under a rule, and number-placement puzzles where sums or products must agree. |
+| MK910.06 | Areas, Lengths and Ratios of Figures | Areas and perimeters of rectangles, triangles, trapezia and circles given in words, a figure cut by midpoints or by lines into parts and the fraction of the whole, similar figures and scaling of area, the length of a segment through Pythagoras, and a square or rectangle with stated sides. |
+| MK910.07 | Angles, Circles and Coordinates in Words | Angles in triangles, polygons and parallel lines, isosceles and equilateral triangles, the inscribed angle and the angle in a semicircle, tangents and chords with a stated radius, the triangle inequality, and points and lines given by coordinates (distance, a square on the grid, the triangle a line cuts off the axes). |
+| MK910.08 | Cubes, Solids and Nets in Words | A cube cut from small cubes and painted (how many faces painted), dice and opposite faces, vertices, edges and faces of solids, surface area and volume of cuboids, the shortest route on a box, the way a net folds (with the net described by its squares), and flat figures folded or mirrored described in words. |
+
 ## How a question is written and checked
 
 The same pipeline as the earlier rounds, run by Claude Code agents outside the Worker (no `ai_runs` rows):
@@ -130,25 +145,41 @@ The contest has five options; the bank has four, as every question in it does.
 
 ## Code
 
-- `db/catalog/mk.json`: the curriculum and, for now, its `MK12` level.
-- `QUESTION_BANK_LEVEL_IDS` adds `MK12`, after the AoPS books, labelled "Kangaroo 1-2".
-- `assessmentLevelCurriculum` names `mk` for it. Like Beast Academy and NC 2017, the level appears in the
+- `db/catalog/mk.json`: the curriculum and its levels, `MK12` ... `MK1112` (stages 3001-3006), each added
+  when it was built.
+- `QUESTION_BANK_LEVEL_IDS` adds them after the AoPS books, labelled "Kangaroo 1-2" ... "Kangaroo 11-12".
+- `assessmentLevelCurriculum` names `mk` for them. Like Beast Academy and NC 2017, they appear in the
   Assessment menu, Quest and Quest Games only where the organization offers Math Kangaroo on its Curricula
   card.
-- `QUEST_LEVEL_FAMILIES` gains a Math Kangaroo family, which grows level by level.
-- `db/questions/MK12.json` holds the questions; `generate-questions.mjs` accepts the level.
+- `QUEST_LEVEL_FAMILIES` gains a Math Kangaroo family, grades 1-2 up to 11-12. A student whose level is used
+  up moves to the next pair of grades.
+- `db/questions/MK*.json` hold the questions; `generate-questions.mjs` accepts the levels and, for
+  production files, `--levels=MK12,MK34` or `--levels=MK*`.
+- `npm run questions:seed:production` (`scripts/seed-production-questions.mjs`) seeds production; see
+  Release.
 - No schema change.
 
 ## Release
 
-Not released. The work is on its branch; production and the demo are untouched. When the owner releases it,
-it goes out the usual way:
+Not released. The work is on its branch; production and the demo are untouched. After the branch is merged
+into `main`:
+
 1. The local suite and `npm run smoke` green.
-2. Back up production.
-3. Run `db/catalog.sql` there (upserts; it adds the `mk` rows).
-4. Load the new questions as `checked` with `generate-questions.mjs --production` (INSERTs only,
-   `ON CONFLICT DO NOTHING`).
-5. Deploy both Workers.
+2. From a clean checkout of `main`, with `npx wrangler login` on the production account:
+   `npm run questions:seed:production`. It runs the whole data side, asking you to type the database name
+   first:
+   - it backs production up into `~/tmi-portal-backups/`;
+   - it runs `db/catalog.sql` (upserts: the `mk` curriculum, levels and topics);
+   - it loads the Math Kangaroo levels' checked questions (INSERT ... ON CONFLICT DO NOTHING, under a
+     60,000-row write budget);
+   - it prints a read-only count of what production holds at those levels.
+
+   Options: `--levels=MK12,MK34` (default `MK*`), `--dry-run` (writes the files and prints the plan, sends
+   nothing), `--skip-backup`, `--yes`. Re-running is safe: a question already there, approved or edited in
+   the console, is left alone.
+3. `npm run deploy` (both production Workers), so the code that knows the new levels serves them.
+4. The demo: `npm run deploy:test`, then `npm run db:reset:test` (the reset loads the catalog and the bank's
+   sample).
 
 ## Results
 
@@ -227,3 +258,26 @@ Next: grades 3-4 (Ecolier), once the owner has reviewed this level.
   - review: about 137,000 Sonnet tokens;
   - writing: about 550,000 Sonnet (estimated: the writers' counts were lost in a container restart);
   - blind solve: about 420,000 Opus.
+
+### Grades 9-10 (2026-10-27)
+
+240 questions, all `checked`: 30 a topic, 10 per difficulty, 158 choice and 82 numeric.
+
+- **Blind solve:** the solvers agreed with every key. They marked 4 down, none for the maths. Each was
+  "not on topic", because the solver saw only the topic's name:
+  - three questions on means, which "Percentages, Ratios and Rates" covers;
+  - a mirrored clock, which "Cubes, Solids and Nets in Words" covers ("flat figures folded or mirrored").
+
+  Solved again with the topic's description, all four passed. Since then the solver's input carries each
+  topic's description as well as its name.
+- **Originality:** one question set up a liar who alternates days and states things about a number, in
+  nearly the words of a 2024 Junior question, though with different maths. It was rewritten in its own
+  terms (a quiz machine whose answers are alternately right and wrong) and solved blind again. Two stems
+  still share a 10-word run with a paper, both stock phrasing ("what is the sum of the digits of the
+  number", "the points A and B lie on a circle with centre ...").
+- **Giveaways:** the key is strictly the longest option in 2 of the 158 choice questions and strictly the
+  shortest in 2.
+- **Cost:**
+  - review: about 137,000 Sonnet tokens;
+  - writing: about 550,000 Sonnet (estimated: the writers' counts were lost in a container restart);
+  - blind solve and re-solve: about 455,000 Opus.
