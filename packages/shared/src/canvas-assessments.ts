@@ -71,6 +71,7 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
   ALG: 'AoPS Algebra',
   GEO: 'AoPS Geometry',
   MK12: 'Kangaroo 1-2',
+  MK34: 'Kangaroo 3-4',
 };
 
 /**

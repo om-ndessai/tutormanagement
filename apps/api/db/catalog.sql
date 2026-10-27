@@ -8,7 +8,7 @@
 --  database, and on its own against a live one (docs/database.md). It never
 --  deletes, and never writes an organization's own curriculum.
 --
---  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 1/8
+--  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 2/16
 -- ===========================================================================
 
 -- Beast Academy (ba): 8 levels, 116 topics
@@ -936,7 +936,7 @@ ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;
 
--- Math Kangaroo (mk): 1 levels, 8 topics
+-- Math Kangaroo (mk): 2 levels, 16 topics
 
 INSERT INTO curricula (id, name, source, edition, description, source_url, sort) VALUES
   ('mk', 'Math Kangaroo', 'Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)', NULL, 'Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest''s 3-, 4- and 5-point questions are the bank''s three difficulties.', NULL, 4)
@@ -946,7 +946,8 @@ ON CONFLICT (id) DO UPDATE SET
   WHERE curricula.organization_id IS NULL;
 
 INSERT INTO curriculum_levels (id, curriculum_id, code, name, stage, grade_band, description) VALUES
-  ('MK12', 'mk', NULL, 'Math Kangaroo Grades 1-2', 3001, 'Grades 1-2', 'The contest''s youngest level (Felix, or Pre-Ecolier).')
+  ('MK12', 'mk', NULL, 'Math Kangaroo Grades 1-2', 3001, 'Grades 1-2', 'The contest''s youngest level (Felix, or Pre-Ecolier).'),
+  ('MK34', 'mk', NULL, 'Math Kangaroo Grades 3-4', 3002, 'Grades 3-4', 'The contest''s Ecolier level.')
 ON CONFLICT (id) DO UPDATE SET
   curriculum_id = excluded.curriculum_id, code = excluded.code, name = excluded.name,
   stage = excluded.stage, grade_band = excluded.grade_band, description = excluded.description;
@@ -960,6 +961,19 @@ INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, descripti
   ('MK12.06', 'MK12', 6, NULL, 'Number', 'Measuring, Time and Money', 'Weights from two weighings, lengths of sticks laid end to end or overlapping, prices from two purchases, days of the week and ages, and how long an activity with breaks takes.'),
   ('MK12.07', 'MK12', 7, NULL, 'Reasoning', 'Story Problems', 'Legs, wheels or humps of mixed animals and things, rooms and windows, points won and lost in a game, turns taken over several nights, working backwards, and guess and check.'),
   ('MK12.08', 'MK12', 8, NULL, 'Combinatorics', 'Counting Ways', 'Making numbers from given digits, pairs and dances, the sums possible when two numbers are chosen, paths on a small grid described in words, the most or fewest possible, and how many to take to be sure.')
+ON CONFLICT (id) DO UPDATE SET
+  level_id = excluded.level_id, number = excluded.number, code = excluded.code,
+  unit = excluded.unit, name = excluded.name, description = excluded.description;
+
+INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, description) VALUES
+  ('MK34.01', 'MK34', 1, NULL, 'Number', 'Digits and Number Puzzles', 'Digits and place value in numbers up to four digits, digit sums of a year or a page number, the largest or smallest number from given digits, a missing digit in an addition written in a line, numbers filling a ring or a short chain so that sums match, and sorting numbers by a rule.'),
+  ('MK34.02', 'MK34', 2, NULL, 'Number', 'Everyday Arithmetic Stories', 'Shopping, packages of several sizes and the fewest needed, leftovers and sharing with remainders, halves, thirds and quarters of a small group, change after buying, totals gathered over several days, and "how many more are needed" questions.'),
+  ('MK34.03', 'MK34', 3, NULL, 'Algebra', 'Balances, Weights and Ages', 'Items that weigh the same, what balances on a scale described in words, two kinds of object with a known total, sharing a total so one share is twice or three times another, ages that differ by fixed amounts, and finding the one unknown by guess-and-check or working backwards.'),
+  ('MK34.04', 'MK34', 4, NULL, 'Algebra', 'Patterns, Cycles and Calendars', 'Sequences that step by a constant or follow a repeating rule, a pattern that repeats every few places and which place falls where, days of the week from "yesterday" and "the day after tomorrow", weeks and days, timetables and clocks, and a bouncing back-and-forth journey between two ends.'),
+  ('MK34.05', 'MK34', 5, NULL, 'Reasoning', 'Logic and Deduction', 'Who-is-who from clues, one child lying among several statements, ordering people or things by height, weight or rank, a small table where each row and column uses each symbol once, matching people to objects, and finding what must be true when some cases are excluded.'),
+  ('MK34.06', 'MK34', 6, NULL, 'Combinatorics', 'Counting Ways and Orders', 'How many orders for a few people to line up, how many ordered pairs from a short list, ways to build a tower from some of the discs, ways to colour with restrictions, different figures from a small set of parts, and listing all cases systematically.'),
+  ('MK34.07', 'MK34', 7, NULL, 'Geometry', 'Shapes, Folds and Moves', 'Naming and counting plane shapes in a described figure, symmetry and mirror lines of a shape, turning by quarter and half turns, folding a strip or a sheet once or twice and punching a hole (where do the holes land), and a path on a grid given as a list of direction moves.'),
+  ('MK34.08', 'MK34', 8, NULL, 'Geometry', 'Solids, Lengths and Areas', 'Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces.')
 ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;

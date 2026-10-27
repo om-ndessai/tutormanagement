@@ -80,6 +80,80 @@
           "description": "Making numbers from given digits, pairs and dances, the sums possible when two numbers are chosen, paths on a small grid described in words, the most or fewest possible, and how many to take to be sure."
         }
       ]
+    },
+    {
+      "id": "MK34",
+      "code": null,
+      "name": "Math Kangaroo Grades 3-4",
+      "stage": 3002,
+      "grade_band": "Grades 3-4",
+      "description": "The contest's Ecolier level.",
+      "topics": [
+        {
+          "id": "MK34.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Digits and Number Puzzles",
+          "description": "Digits and place value in numbers up to four digits, digit sums of a year or a page number, the largest or smallest number from given digits, a missing digit in an addition written in a line, numbers filling a ring or a short chain so that sums match, and sorting numbers by a rule."
+        },
+        {
+          "id": "MK34.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Everyday Arithmetic Stories",
+          "description": "Shopping, packages of several sizes and the fewest needed, leftovers and sharing with remainders, halves, thirds and quarters of a small group, change after buying, totals gathered over several days, and \"how many more are needed\" questions."
+        },
+        {
+          "id": "MK34.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Balances, Weights and Ages",
+          "description": "Items that weigh the same, what balances on a scale described in words, two kinds of object with a known total, sharing a total so one share is twice or three times another, ages that differ by fixed amounts, and finding the one unknown by guess-and-check or working backwards."
+        },
+        {
+          "id": "MK34.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Patterns, Cycles and Calendars",
+          "description": "Sequences that step by a constant or follow a repeating rule, a pattern that repeats every few places and which place falls where, days of the week from \"yesterday\" and \"the day after tomorrow\", weeks and days, timetables and clocks, and a bouncing back-and-forth journey between two ends."
+        },
+        {
+          "id": "MK34.05",
+          "code": null,
+          "number": 5,
+          "unit": "Reasoning",
+          "name": "Logic and Deduction",
+          "description": "Who-is-who from clues, one child lying among several statements, ordering people or things by height, weight or rank, a small table where each row and column uses each symbol once, matching people to objects, and finding what must be true when some cases are excluded."
+        },
+        {
+          "id": "MK34.06",
+          "code": null,
+          "number": 6,
+          "unit": "Combinatorics",
+          "name": "Counting Ways and Orders",
+          "description": "How many orders for a few people to line up, how many ordered pairs from a short list, ways to build a tower from some of the discs, ways to colour with restrictions, different figures from a small set of parts, and listing all cases systematically."
+        },
+        {
+          "id": "MK34.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Shapes, Folds and Moves",
+          "description": "Naming and counting plane shapes in a described figure, symmetry and mirror lines of a shape, turning by quarter and half turns, folding a strip or a sheet once or twice and punching a hole (where do the holes land), and a path on a grid given as a list of direction moves."
+        },
+        {
+          "id": "MK34.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Solids, Lengths and Areas",
+          "description": "Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces."
+        }
+      ]
     }
   ]
 }

@@ -42,7 +42,7 @@ One catalog curriculum, `mk` ("Math Kangaroo"), stages 3001 onwards, one level p
 | Level | Grades | Contest level | State |
 | --- | --- | --- | --- |
 | `MK12` | 1-2 | Felix | built (this round) |
-| `MK34` | 3-4 | Ecolier | not yet |
+| `MK34` | 3-4 | Ecolier | built |
 | `MK56` | 5-6 | Benjamin | not yet |
 | `MK78` | 7-8 | Kadett | not yet |
 | `MK910` | 9-10 | Junior | not yet |
@@ -64,6 +64,21 @@ difficulties 1, 2 and 3.
 | MK12.06 | Measuring, Time and Money | Weights from two weighings, lengths of sticks laid end to end or overlapping, prices from two purchases, days of the week and ages, and how long an activity with breaks takes. |
 | MK12.07 | Story Problems | Legs, wheels or humps of mixed animals and things, rooms and windows, points won and lost in a game, turns taken over several nights, working backwards, and guess and check. |
 | MK12.08 | Counting Ways | Making numbers from given digits, pairs and dances, the sums possible when two numbers are chosen, paths on a small grid described in words, the most or fewest possible, and how many to take to be sure. |
+
+### Grades 3-4 (`MK34`)
+
+Topics proposed from the review in `docs/question-bank-kangaroo/profile-MK34.md`.
+
+| Topic | Name | Covers |
+| --- | --- | --- |
+| MK34.01 | Digits and Number Puzzles | Digits and place value in numbers up to four digits, digit sums of a year or a page number, the largest or smallest number from given digits, a missing digit in an addition written in a line, numbers filling a ring or a short chain so that sums match, and sorting numbers by a rule. |
+| MK34.02 | Everyday Arithmetic Stories | Shopping, packages of several sizes and the fewest needed, leftovers and sharing with remainders, halves, thirds and quarters of a small group, change after buying, totals gathered over several days, and "how many more are needed" questions. |
+| MK34.03 | Balances, Weights and Ages | Items that weigh the same, what balances on a scale described in words, two kinds of object with a known total, sharing a total so one share is twice or three times another, ages that differ by fixed amounts, and finding the one unknown by guess-and-check or working backwards. |
+| MK34.04 | Patterns, Cycles and Calendars | Sequences that step by a constant or follow a repeating rule, a pattern that repeats every few places and which place falls where, days of the week from "yesterday" and "the day after tomorrow", weeks and days, timetables and clocks, and a bouncing back-and-forth journey between two ends. |
+| MK34.05 | Logic and Deduction | Who-is-who from clues, one child lying among several statements, ordering people or things by height, weight or rank, a small table where each row and column uses each symbol once, matching people to objects, and finding what must be true when some cases are excluded. |
+| MK34.06 | Counting Ways and Orders | How many orders for a few people to line up, how many ordered pairs from a short list, ways to build a tower from some of the discs, ways to colour with restrictions, different figures from a small set of parts, and listing all cases systematically. |
+| MK34.07 | Shapes, Folds and Moves | Naming and counting plane shapes in a described figure, symmetry and mirror lines of a shape, turning by quarter and half turns, folding a strip or a sheet once or twice and punching a hole (where do the holes land), and a path on a grid given as a list of direction moves. |
+| MK34.08 | Solids, Lengths and Areas | Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces. |
 
 ## How a question is written and checked
 
@@ -132,3 +147,21 @@ goes from 40,738 to 40,978.
 
 Next: grades 3-4 (Ecolier), once the owner has reviewed this level.
 
+### Grades 3-4 (2026-10-27)
+
+240 questions, all `checked`: 30 a topic, 10 per difficulty, 160 choice and 80 numeric.
+
+- **Blind solve:** the solvers agreed with every key (240 of 240). They marked 4 down for wording:
+  - "every 4th bulb is also blue", which can be read as also red;
+  - when a lift's turn at the bottom floor counts as a stop;
+  - twice, "a border goes all the way round", which could be the mat's own outer ring.
+  All four were reworded and passed a second blind solve.
+- **Giveaways:** the key is strictly the longest option in 4 of the 160 choice questions and strictly the
+  shortest in 7.
+- **Originality:** one stem shares a 10-word run with a paper: the number pattern "1, 2, 2, 3, 3, 3, 4, ...",
+  written out, which is not a problem's wording.
+- **Cost:**
+  - review of the papers: about 125,000 Sonnet tokens;
+  - writing: about 520,000 Sonnet;
+  - blind solve and re-solve: about 440,000 Opus. One solver's count was lost in a container restart and
+    is estimated.
