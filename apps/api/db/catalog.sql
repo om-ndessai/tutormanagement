@@ -8,7 +8,7 @@
 --  database, and on its own against a live one (docs/database.md). It never
 --  deletes, and never writes an organization's own curriculum.
 --
---  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361
+--  Levels/topics: ba 8/116, nc-2026 14/190, nc-2017 14/361, mk 1/8
 -- ===========================================================================
 
 -- Beast Academy (ba): 8 levels, 116 topics
@@ -932,6 +932,34 @@ INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, descripti
   ('NC17.PC.F.5', 'NC17.PC', 10, 'PC.F.5', 'Functions', 'Composition and inverse functions', 'Build new functions by composition. Covers composing and evaluating composites, domains of composites, composition models, decomposing functions, finding inverses, and checking inverses by composition.'),
   ('NC17.PC.F.6', 'NC17.PC', 11, 'PC.F.6', 'Functions', 'Recursive functions', 'Build recursive functions to solve problems. Covers recursive functions from algebraic rules and from numerical sequences.'),
   ('NC17.PC.F.7', 'NC17.PC', 12, 'PC.F.7', 'Functions', 'Parametric functions', 'Build parametric functions to solve problems. Covers representing situations with parametric equations and solving contextual problems with technology.')
+ON CONFLICT (id) DO UPDATE SET
+  level_id = excluded.level_id, number = excluded.number, code = excluded.code,
+  unit = excluded.unit, name = excluded.name, description = excluded.description;
+
+-- Math Kangaroo (mk): 1 levels, 8 topics
+
+INSERT INTO curricula (id, name, source, edition, description, source_url, sort) VALUES
+  ('mk', 'Math Kangaroo', 'Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)', NULL, 'Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest''s 3-, 4- and 5-point questions are the bank''s three difficulties.', NULL, 4)
+ON CONFLICT (id) DO UPDATE SET
+  name = excluded.name, source = excluded.source, edition = excluded.edition,
+  description = excluded.description, source_url = excluded.source_url, sort = excluded.sort
+  WHERE curricula.organization_id IS NULL;
+
+INSERT INTO curriculum_levels (id, curriculum_id, code, name, stage, grade_band, description) VALUES
+  ('MK12', 'mk', NULL, 'Math Kangaroo Grades 1-2', 3001, 'Grades 1-2', 'The contest''s youngest level (Felix, or Pre-Ecolier).')
+ON CONFLICT (id) DO UPDATE SET
+  curriculum_id = excluded.curriculum_id, code = excluded.code, name = excluded.name,
+  stage = excluded.stage, grade_band = excluded.grade_band, description = excluded.description;
+
+INSERT INTO curriculum_topics (id, level_id, number, code, unit, name, description) VALUES
+  ('MK12.01', 'MK12', 1, NULL, 'Number', 'Counting and Numbers', 'Counting things described in words, how many whole numbers are in a range (house numbers 15 to 47), cuts and pieces of a rope, digits and two-digit numbers, and comparing numbers.'),
+  ('MK12.02', 'MK12', 2, NULL, 'Number', 'Number Puzzles', 'Missing numbers in sums and differences, shapes standing for numbers, equal sums in rows, circles or boxes, sharing cards into groups with equal sums, and small number grids written row by row.'),
+  ('MK12.03', 'MK12', 3, NULL, 'Reasoning', 'Patterns and Sequences', 'Repeating patterns of objects or colours (the 14th or the 27th item), alternating beads, two counts that move together (one climbs 3 steps while another goes down 2), and growing patterns.'),
+  ('MK12.04', 'MK12', 4, NULL, 'Reasoning', 'Logic and Order', 'Ordering by clues (taller, older, on a higher shelf), places in a line (7th from the front, 2nd from the back), places in a race, who has which, and what must be true.'),
+  ('MK12.05', 'MK12', 5, NULL, 'Geometry', 'Shapes and Space in Words', 'Shapes by their sides and corners, cubes glued in a row or a tower (drops of glue, faces that touch), the faces of a die, folding and cutting paper, turning left and right on a walk, and mirror letters, all described in words.'),
+  ('MK12.06', 'MK12', 6, NULL, 'Number', 'Measuring, Time and Money', 'Weights from two weighings, lengths of sticks laid end to end or overlapping, prices from two purchases, days of the week and ages, and how long an activity with breaks takes.'),
+  ('MK12.07', 'MK12', 7, NULL, 'Reasoning', 'Story Problems', 'Legs, wheels or humps of mixed animals and things, rooms and windows, points won and lost in a game, turns taken over several nights, working backwards, and guess and check.'),
+  ('MK12.08', 'MK12', 8, NULL, 'Combinatorics', 'Counting Ways', 'Making numbers from given digits, pairs and dances, the sums possible when two numbers are chosen, paths on a small grid described in words, the most or fewest possible, and how many to take to be sure.')
 ON CONFLICT (id) DO UPDATE SET
   level_id = excluded.level_id, number = excluded.number, code = excluded.code,
   unit = excluded.unit, name = excluded.name, description = excluded.description;

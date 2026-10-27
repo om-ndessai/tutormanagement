@@ -1,0 +1,85 @@
+{
+  "id": "mk",
+  "name": "Math Kangaroo",
+  "source": "Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)",
+  "edition": null,
+  "source_url": null,
+  "description": "Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest's 3-, 4- and 5-point questions are the bank's three difficulties.",
+  "sort": 4,
+  "levels": [
+    {
+      "id": "MK12",
+      "code": null,
+      "name": "Math Kangaroo Grades 1-2",
+      "stage": 3001,
+      "grade_band": "Grades 1-2",
+      "description": "The contest's youngest level (Felix, or Pre-Ecolier).",
+      "topics": [
+        {
+          "id": "MK12.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Counting and Numbers",
+          "description": "Counting things described in words, how many whole numbers are in a range (house numbers 15 to 47), cuts and pieces of a rope, digits and two-digit numbers, and comparing numbers."
+        },
+        {
+          "id": "MK12.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Number Puzzles",
+          "description": "Missing numbers in sums and differences, shapes standing for numbers, equal sums in rows, circles or boxes, sharing cards into groups with equal sums, and small number grids written row by row."
+        },
+        {
+          "id": "MK12.03",
+          "code": null,
+          "number": 3,
+          "unit": "Reasoning",
+          "name": "Patterns and Sequences",
+          "description": "Repeating patterns of objects or colours (the 14th or the 27th item), alternating beads, two counts that move together (one climbs 3 steps while another goes down 2), and growing patterns."
+        },
+        {
+          "id": "MK12.04",
+          "code": null,
+          "number": 4,
+          "unit": "Reasoning",
+          "name": "Logic and Order",
+          "description": "Ordering by clues (taller, older, on a higher shelf), places in a line (7th from the front, 2nd from the back), places in a race, who has which, and what must be true."
+        },
+        {
+          "id": "MK12.05",
+          "code": null,
+          "number": 5,
+          "unit": "Geometry",
+          "name": "Shapes and Space in Words",
+          "description": "Shapes by their sides and corners, cubes glued in a row or a tower (drops of glue, faces that touch), the faces of a die, folding and cutting paper, turning left and right on a walk, and mirror letters, all described in words."
+        },
+        {
+          "id": "MK12.06",
+          "code": null,
+          "number": 6,
+          "unit": "Number",
+          "name": "Measuring, Time and Money",
+          "description": "Weights from two weighings, lengths of sticks laid end to end or overlapping, prices from two purchases, days of the week and ages, and how long an activity with breaks takes."
+        },
+        {
+          "id": "MK12.07",
+          "code": null,
+          "number": 7,
+          "unit": "Reasoning",
+          "name": "Story Problems",
+          "description": "Legs, wheels or humps of mixed animals and things, rooms and windows, points won and lost in a game, turns taken over several nights, working backwards, and guess and check."
+        },
+        {
+          "id": "MK12.08",
+          "code": null,
+          "number": 8,
+          "unit": "Combinatorics",
+          "name": "Counting Ways",
+          "description": "Making numbers from given digits, pairs and dances, the sums possible when two numbers are chosen, paths on a small grid described in words, the most or fewest possible, and how many to take to be sure."
+        }
+      ]
+    }
+  ]
+}
