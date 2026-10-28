@@ -5,7 +5,7 @@
     "NC17.PC.N.2": "30 questions, matrices written by their rows; every matrix answer is computed by the generator. 69 written (23 per difficulty). No transposes, determinants or inverses (not in the summary). Matrices are written by rows.",
     "NC17.PC.N.3": "Directions are measured counterclockwise from the positive x-axis. Vectors with irrational magnitudes are choice questions.",
     "NC17.PC.A.1": "Graph work is described in words (intercepts, direction, asymptote, labeled points). Solution sets are written as inequalities (not interval unions), since set symbols are not supported. Numeric questions ask for counts of integers, sums or a largest integer so the keys are exact numbers. Text-only; graphs are described by their features in words.",
-    "NC17.PC.A.2": "Arcsine and arccosine are written as sin^{-1} and cos^{-1}; irrational solutions are asked as choice questions, and trig solutions are given as exact multiples of pi or degrees.",
+    "NC17.PC.A.2": "Arcsine and arccosine are written as sin^{-1} and cos^{-1}; irrational solutions are asked as choice questions, and trig solutions are given as exact multiples of pi or degrees. 69 questions written (23 per difficulty). Trig equations are on stated intervals in radians or degrees; irrational answers are choice questions; parametric curves are asked as equations or values.",
     "NC17.PC.F.2": "Angles are given in degrees or radians as each question says; irrational values are choice questions.",
     "NC17.PC.F.3": "Triangle questions use sides and angles with exact answers (60 and 120 degrees, 3-5-7, 5-8-7, 7-15-13, sines given as fractions). Skills: inverse trig solutions (6), Pythagorean identity (5), Law of Cosines side (5) and angle (4), Law of Sines side (4) and the ambiguous case (3), choosing the law (3). The Pythagorean identity covers sin^2 + cos^2 = 1 only. Irrational answers are choice questions.",
     "NC17.PC.F.4": "Covers key features, growth and decay models, equations, transformations, optimization and identifying conics by hand. Optimization is a quadratic-area problem a student can finish without a graphing tool; graph features are asked from the equation.",
@@ -12764,6 +12764,98 @@
       }
     },
     {
+      "id": "da72ea98-5e02-43c9-8339-36b06fdcf2a8",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_9 x = \\frac{1}{2}$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Rewrite as $x = 9^{1/2} = \\sqrt{9} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 9^{1/2} = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.412Z"
+        }
+      }
+    },
+    {
+      "id": "d4022b11-e5d2-4351-be22-25f31b65da2b",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "Solve $3^x = 81$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Since $81 = 3^4$, $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81 = 3^4, x = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.431Z"
+        }
+      }
+    },
+    {
+      "id": "54ded835-8796-4216-9c2a-50176b5e7d5e",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Which lists all solutions of $\\tan x = \\sqrt{3}$ for $0 \\le x < 2\\pi$?",
+      "choices": [
+        "$x = \\frac{\\pi}{3}$ and $x = \\frac{4\\pi}{3}$",
+        "$x = \\frac{\\pi}{3}$ and $x = \\frac{2\\pi}{3}$",
+        "$x = \\frac{\\pi}{6}$ and $x = \\frac{7\\pi}{6}$",
+        "$x = \\frac{\\pi}{3}$ and $x = \\frac{5\\pi}{3}$"
+      ],
+      "answer": "$x = \\frac{\\pi}{3}$ and $x = \\frac{4\\pi}{3}$",
+      "compute": null,
+      "solution": "Tangent is $\\sqrt{3}$ at $\\frac{\\pi}{3}$, and tangent repeats every $\\pi$, so the other solution is $\\frac{\\pi}{3} + \\pi = \\frac{4\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{3}$ and $x = \\frac{4\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan x = sqrt3 at pi/3 and pi/3 + pi = 4pi/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.453Z"
+        }
+      }
+    },
+    {
       "id": "c8340f13-35b1-437e-bee3-7d94f83a40c7",
       "topic_id": "NC17.PC.A.2",
       "difficulty": 2,
@@ -13084,6 +13176,137 @@
       }
     },
     {
+      "id": "4a71ffe7-cb10-43b5-a553-6ee4241bc0de",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "What is $\\cos\\left(\\sin^{-1}\\left(\\frac{5}{13}\\right)\\right)$?",
+      "choices": [],
+      "answer": "12/13",
+      "compute": "12/13",
+      "solution": "Let $\\theta = \\sin^{-1}\\frac{5}{13}$, an angle in quadrant I. Then $\\cos \\theta = \\sqrt{1 - \\frac{25}{169}} = \\frac{12}{13}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12/13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin y = 5/13 with y in [-pi/2, pi/2], so cos y = +sqrt(1 - 25/169) = 12/13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.412Z"
+        }
+      }
+    },
+    {
+      "id": "9e380034-09b9-4e61-ab03-2c3873b439de",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "On the interval from 0 up to but not including $2\\pi$, the equation $2\\sin x = -\\sqrt{2}$ has two solutions. What are they?",
+      "choices": [
+        "$x = \\frac{3\\pi}{4}$ and $x = \\frac{5\\pi}{4}$",
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{7\\pi}{4}$",
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{3\\pi}{4}$",
+        "$x = \\frac{5\\pi}{4}$ and $x = \\frac{7\\pi}{4}$"
+      ],
+      "answer": "$x = \\frac{5\\pi}{4}$ and $x = \\frac{7\\pi}{4}$",
+      "compute": null,
+      "solution": "$\\sin x = -\\frac{\\sqrt{2}}{2}$. Sine is negative in quadrants III and IV, with reference angle $\\frac{\\pi}{4}$: $x = \\pi + \\frac{\\pi}{4}$ and $x = 2\\pi - \\frac{\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{5\\pi}{4}$ and $x = \\frac{7\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x = -sqrt2/2: third and fourth quadrants, x = 5pi/4 and 7pi/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.428Z"
+        }
+      }
+    },
+    {
+      "id": "ba3892dd-bfe1-47de-a1fc-a07e3f130d6c",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A moving point is at $(2\\sec t, 3\\tan t)$ at time $t$. Using $\\sec^2 t - \\tan^2 t = 1$, which equation do its positions satisfy?",
+      "choices": [
+        "$\\frac{x^2}{4} - \\frac{y^2}{9} = 1$",
+        "$\\frac{x^2}{9} - \\frac{y^2}{4} = 1$",
+        "$\\frac{x^2}{4} + \\frac{y^2}{9} = 1$",
+        "$\\frac{y^2}{4} - \\frac{x^2}{9} = 1$"
+      ],
+      "answer": "$\\frac{x^2}{4} - \\frac{y^2}{9} = 1$",
+      "compute": null,
+      "solution": "$\\sec t = \\frac{x}{2}$ and $\\tan t = \\frac{y}{3}$. The identity $\\sec^2 t - \\tan^2 t = 1$ gives $\\frac{x^2}{4} - \\frac{y^2}{9} = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^2}{4} - \\frac{y^2}{9} = 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sec t = x/2, tan t = y/3, so x^2/4 - y^2/9 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.429Z"
+        }
+      }
+    },
+    {
+      "id": "067f1ba7-4214-4598-993c-5cec5ed402d5",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve an exponential equation",
+      "stem": "Which is the solution of $2e^x = 10$?",
+      "choices": [
+        "$x = \\ln 8$",
+        "$x = \\frac{\\ln 10}{2}$",
+        "$x = \\ln 5$",
+        "$x = 5$"
+      ],
+      "answer": "$x = \\ln 5$",
+      "compute": null,
+      "solution": "Divide by 2: $e^x = 5$. Then take the natural logarithm: $x = \\ln 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\ln 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "e^x = 5, x = ln 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.458Z"
+        }
+      }
+    },
+    {
       "id": "1bdb6eb3-829d-4c6b-9224-6bb189b8c41f",
       "topic_id": "NC17.PC.A.2",
       "difficulty": 3,
@@ -13390,6 +13613,132 @@
           "work": "2x in [0,4pi): sin=1/2 at pi/6,5pi/6,13pi/6,17pi/6, so 4 solutions (x=pi/12,5pi/12,13pi/12,17pi/12).",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:03.215Z"
+        }
+      }
+    },
+    {
+      "id": "6fe924d7-7937-404a-8182-8d80f1ad8b8a",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use logarithm properties",
+      "stem": "Suppose $\\ln a = 4$ and $\\ln b = 2$. What is $\\ln \\frac{a^2}{b^3}$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2*4-3*2",
+      "solution": "$\\ln \\frac{a^2}{b^3} = 2\\ln a - 3\\ln b = 2(4) - 3(2) = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ln(a^2/b^3) = 2 ln a - 3 ln b = 8 - 6 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.399Z"
+        }
+      }
+    },
+    {
+      "id": "344b14e9-8ff0-4fc1-9c55-0f5fa9162c75",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_2 (x + 1) + \\log_2 (x + 7) = 4$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$(x + 1)(x + 7) = 16$, so $x^2 + 8x - 9 = 0$ and $(x + 9)(x - 1) = 0$. The root $x = -9$ makes the inputs negative, so $x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(x+7) = 16, x^2+8x-9=0, (x+9)(x-1)=0; x=-9 rejected. x = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.454Z"
+        }
+      }
+    },
+    {
+      "id": "3cd936e5-540f-4a2f-a465-644e758ce596",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "For $0 \\le x < 2\\pi$, a student solves $\\sin x \\cos x = \\sin x$ by dividing both sides by $\\sin x$. This gives $\\cos x = 1$, so $x = 0$. Which solution did the student miss?",
+      "choices": [
+        "$x = \\frac{\\pi}{2}$",
+        "$x = \\frac{3\\pi}{2}$",
+        "$x = \\pi$",
+        "$x = \\frac{\\pi}{4}$"
+      ],
+      "answer": "$x = \\pi$",
+      "compute": null,
+      "solution": "Moving everything to one side and factoring gives $\\sin x (\\cos x - 1) = 0$. So $\\sin x = 0$, which gives $x = 0$ and $x = \\pi$, or $\\cos x = 1$, which gives $x = 0$. Dividing by $\\sin x$ lost $x = \\pi$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x(cos x - 1)=0: sin x = 0 gives 0, pi; cos x=1 gives 0. Missed pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.460Z"
+        }
+      }
+    },
+    {
+      "id": "e8590519-7bef-474b-9ca9-93ca916b000b",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use logarithm properties",
+      "stem": "Suppose $\\log_b 3 = p$ and $\\log_b 5 = q$. Which expression equals $\\log_b 45$?",
+      "choices": [
+        "$p + 2q$",
+        "$2pq$",
+        "$2p + 2q$",
+        "$2p + q$"
+      ],
+      "answer": "$2p + q$",
+      "compute": null,
+      "solution": "$45 = 3^2 \\cdot 5$, so $\\log_b 45 = 2\\log_b 3 + \\log_b 5 = 2p + q$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2p + q$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 = 3^2 x 5, log = 2p + q.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.461Z"
         }
       }
     },

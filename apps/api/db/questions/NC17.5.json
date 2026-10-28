@@ -19002,6 +19002,200 @@
       }
     },
     {
+      "id": "07af6e10-7f9f-4f2f-89b6-3dac64464130",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "What is $0.8 \\div 4$?",
+      "choices": [
+        "2",
+        "0.2",
+        "0.02",
+        "3.2"
+      ],
+      "answer": "0.2",
+      "compute": "0.8/4",
+      "solution": "8 tenths divided into 4 equal groups is 2 tenths, which is 0.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.8 / 4: 8 tenths / 4 = 2 tenths = 0.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.332Z"
+        }
+      }
+    },
+    {
+      "id": "cbcadf64-a7f2-4538-a599-25759537f3c2",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Four friends share 2.8 kilograms of grapes equally. How many kilograms does each friend get?",
+      "choices": [],
+      "answer": "0.7",
+      "compute": "2.8/4",
+      "solution": "28 tenths divided by 4 is 7 tenths, which is 0.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.8 / 4 = 0.7 kg.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.404Z"
+        }
+      }
+    },
+    {
+      "id": "fbbfffa1-a932-40fd-8385-79c9ff39215c",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "What is $6.2 + 1.9$?",
+      "choices": [
+        "7.1",
+        "8.1",
+        "7.11",
+        "4.3"
+      ],
+      "answer": "8.1",
+      "compute": "6.2+1.9",
+      "solution": "Add the tenths: 2 + 9 = 11 tenths, which is 1 whole and 1 tenth. Add the wholes: 6 + 1 + 1 = 8. The sum is 8.1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.2 + 1.9 = 8.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.433Z"
+        }
+      }
+    },
+    {
+      "id": "c21daf25-0264-48df-80c6-395a82c0bb5a",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Each box holds 0.8 kilogram of nails. How many kilograms of nails are in 4 boxes?",
+      "choices": [],
+      "answer": "3.2",
+      "compute": "4*0.8",
+      "solution": "4 groups of 8 tenths is 32 tenths, which is 3.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 0.8 = 3.2 kg.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.434Z"
+        }
+      }
+    },
+    {
+      "id": "df81cf1b-402b-437f-beaa-195d5f845084",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Which is the best estimate of $7.1 - 2.9$?",
+      "choices": [
+        "4",
+        "5",
+        "10",
+        "3"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Round to the nearest whole numbers: 7 - 3 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.1 ~ 7, 2.9 ~ 3, 7 - 3 = 4 (exact 4.2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.450Z"
+        }
+      }
+    },
+    {
+      "id": "bbf623eb-de94-48fe-ad7f-ac885998cbb4",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "What is $5.0 - 1.7$?",
+      "choices": [
+        "3.3",
+        "4.3",
+        "3.7",
+        "6.7"
+      ],
+      "answer": "3.3",
+      "compute": "5-1.7",
+      "solution": "5.0 is 50 tenths. 50 tenths - 17 tenths = 33 tenths, which is 3.3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.0 - 1.7 = 3.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.458Z"
+        }
+      }
+    },
+    {
       "id": "becdeb11-a674-4f0e-949f-254c5ebf9fe4",
       "topic_id": "NC17.5.NBT.7",
       "difficulty": 2,
@@ -19318,6 +19512,156 @@
           "work": "2 x 6.75 = 13.50; 20 - 13.50 = 6.50.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:24.317Z"
+        }
+      }
+    },
+    {
+      "id": "4e73327a-d863-437d-b5c5-008b300063f6",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "What is $7.38 + 4.6$?",
+      "choices": [
+        "7.84",
+        "11.44",
+        "11.98",
+        "12.04"
+      ],
+      "answer": "11.98",
+      "compute": "7.38+4.6",
+      "solution": "Line up the decimal points: 7.38 + 4.60 = 11.98.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11.98",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.38 + 4.60 = 11.98.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.358Z"
+        }
+      }
+    },
+    {
+      "id": "bc70c0da-9185-4172-8b09-cee28fa9db15",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "Subtract: $9.06 - 4.8$.",
+      "choices": [],
+      "answer": "4.26",
+      "compute": "9.06-4.8",
+      "solution": "Line up the decimal points: 9.06 - 4.80 = 4.26.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.06 - 4.80 = 4.26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.435Z"
+        }
+      }
+    },
+    {
+      "id": "dcd1fe12-1a68-4b5e-80b8-bbb7622c7ea8",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Pia ran 3.45 miles on Saturday and 2.8 miles on Sunday. How many miles did she run in all?",
+      "choices": [],
+      "answer": "6.25",
+      "compute": "3.45+2.8",
+      "solution": "Line up the decimal points: 3.45 + 2.80 = 6.25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.45 + 2.80 = 6.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.436Z"
+        }
+      }
+    },
+    {
+      "id": "ee412982-a57d-4e54-b80f-6190fcc4dddd",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Find the sum: $0.75 + 0.8 + 0.05$.",
+      "choices": [],
+      "answer": "1.6",
+      "compute": "0.75+0.8+0.05",
+      "solution": "0.75 + 0.80 = 1.55, and 1.55 + 0.05 = 1.60. The sum is 1.6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.75 + 0.80 + 0.05 = 1.60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.447Z"
+        }
+      }
+    },
+    {
+      "id": "94359300-d294-4cfd-8c54-2bc4c4b3b92b",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Each bottle holds 1.25 liters of milk. How many liters are in 4 bottles?",
+      "choices": [],
+      "answer": "5",
+      "compute": "4*1.25",
+      "solution": "4 x 1.25 = 4 x 1 + 4 x 0.25 = 4 + 1 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 1.25 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.463Z"
         }
       }
     },

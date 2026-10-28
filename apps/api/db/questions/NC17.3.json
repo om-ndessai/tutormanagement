@@ -6,7 +6,7 @@
     "NC17.3.OA.2": "Whole-number quotients only (no remainders), dividends within the one-digit multiplication facts (at most 81).",
     "NC17.3.OA.3": "All one-step problems with factors and divisors up to 10 (products to 90). Two-step problems (3.OA.8) are deliberately left out.",
     "NC17.3.OA.6": "Whole-number quotients only, products within 100; stories and written-out sentences only.",
-    "NC17.3.OA.8": "Only addition, subtraction and multiplication (multiplication facts within 100, sums and differences within 1000), as the summary names; no division. Letters stand for the unknown in the equation questions. Skills: multiply then add (3), multiply then subtract (6), add and subtract (4), add then multiply (3), two products combined (4), write an equation (6), work backward (4).",
+    "NC17.3.OA.8": "Only addition, subtraction and multiplication (multiplication facts within 100, sums and differences within 1000), as the summary names; no division. Letters stand for the unknown in the equation questions. Skills: multiply then add (3), multiply then subtract (6), add and subtract (4), add then multiply (3), two products combined (4), write an equation (6), work backward (4). Two-step stories with addition, subtraction and multiplication only (no division); products within 100, sums and differences within 1000.",
     "NC17.3.OA.9": "Hundreds board and multiplication table patterns are described in words, not shown; the explaining questions are choice questions about reasons.",
     "NC17.3.NBT.2": "Sums and minuends are within 1,000 (one answer is exactly 1,000-based, a missing part). Estimates always say how to round.",
     "NC17.3.NF.1": "All models (area strips, number lines, ribbons) are described in words. Answers that are fractions are written a/b.",
@@ -15818,6 +15818,40 @@
       }
     },
     {
+      "id": "164b51a8-2a28-4936-962e-90b131565c95",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply, then subtract",
+      "stem": "A tray has 2 rows with 6 eggs in each row. 3 eggs crack. How many eggs are not cracked?",
+      "choices": [
+        "15",
+        "9",
+        "5",
+        "12"
+      ],
+      "answer": "9",
+      "compute": "2*6-3",
+      "solution": "2 rows of 6 eggs is $2 \\times 6 = 12$ eggs. Then $12 - 3 = 9$ eggs are not cracked.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 6 = 12, 12 - 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.457Z"
+        }
+      }
+    },
+    {
       "id": "8d146ee4-674a-4c8f-bedd-7b9b266d0d89",
       "topic_id": "NC17.3.OA.8",
       "difficulty": 2,
@@ -16138,6 +16172,35 @@
       }
     },
     {
+      "id": "b13fbf2f-8b6c-4ff0-9adb-c4bf09e49f4c",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply, then add",
+      "stem": "A pencil costs 3 dollars and a notebook costs 9 dollars. Zane buys 6 pencils and 1 notebook. How many dollars does he pay?",
+      "choices": [],
+      "answer": "27",
+      "compute": "6*3+9",
+      "solution": "Pencils: $6 \\times 3 = 18$ dollars. Then $18 + 9 = 27$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 3 = 18, + 9 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.428Z"
+        }
+      }
+    },
+    {
       "id": "ddc31804-34e6-4c38-b4fd-9f6a2cad009c",
       "topic_id": "NC17.3.OA.8",
       "difficulty": 3,
@@ -16449,6 +16512,132 @@
           "work": "3 x 6 = 3 packs of 6; + 4 = gets 4 more.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:44.181Z"
+        }
+      }
+    },
+    {
+      "id": "368ee5b3-20ee-403e-8a1f-72b413c3c8ff",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Mia reads 9 pages each day for 5 days. She has 12 pages left in her book. The book has $p$ pages in all. Which equation matches the story?",
+      "choices": [
+        "$9 + 5 + 12 = p$",
+        "$9 \\times 5 - 12 = p$",
+        "$9 \\times 5 + 12 = p$",
+        "$9 \\times (5 + 12) = p$"
+      ],
+      "answer": "$9 \\times 5 + 12 = p$",
+      "compute": null,
+      "solution": "She has read $9 \\times 5$ pages and has 12 left, so the whole book is $9 \\times 5 + 12 = p$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 \\times 5 + 12 = p$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 pages x 5 days = 45 read, plus 12 left: p = 45 + 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.323Z"
+        }
+      }
+    },
+    {
+      "id": "cc82d2cf-0d1c-40f6-831a-703abccf03fc",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "Jenna had 90 dollars. She spent some dollars at the store and then earned 15 dollars. Now she has 70 dollars. How many dollars did she spend?",
+      "choices": [],
+      "answer": "35",
+      "compute": "90+15-70",
+      "solution": "Before earning 15 she had $70 - 15 = 55$ dollars. She spent $90 - 55 = 35$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 - s + 15 = 70, so 105 - s = 70, s = 35. Check: 90-35=55, 55+15=70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.348Z"
+        }
+      }
+    },
+    {
+      "id": "0defa7f9-6d99-4192-ae88-df146ba9667e",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply, then add",
+      "stem": "Each ticket to a play costs 6 dollars. A family buys 7 tickets and a program for 5 dollars. How many dollars do they pay?",
+      "choices": [
+        "42",
+        "18",
+        "47",
+        "72"
+      ],
+      "answer": "47",
+      "compute": "6*7+5",
+      "solution": "Tickets: $7 \\times 6 = 42$ dollars. Then $42 + 5 = 47$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x 6 = 42, + 5 = 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.438Z"
+        }
+      }
+    },
+    {
+      "id": "436649a1-b525-430f-ae4c-c488418ae540",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two products, then combine",
+      "stem": "A bakery sells 7 boxes with 9 muffins in each box and 6 boxes with 8 cupcakes in each box. How many muffins and cupcakes does the bakery sell in all?",
+      "choices": [],
+      "answer": "111",
+      "compute": "7*9+6*8",
+      "solution": "Muffins: $7 \\times 9 = 63$. Cupcakes: $6 \\times 8 = 48$. Together $63 + 48 = 111$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "111",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x9=63, 6x8=48, total 111.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.445Z"
         }
       }
     },

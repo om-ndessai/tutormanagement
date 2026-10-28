@@ -19030,6 +19030,171 @@
       }
     },
     {
+      "id": "1ab0ff26-274f-4f1f-8ad9-c72de935590d",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare numbers in a story",
+      "stem": "One library has $6{,}325$ books. Another has $6{,}235$ books. How many books are in the library that has fewer books?",
+      "choices": [],
+      "answer": "6235",
+      "compute": "6235",
+      "solution": "Hundreds: 2 is less than 3, so $6{,}235$ is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6235",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Thousands equal (6); hundreds 3 vs 2, so 6,235 < 6,325. Fewer: 6,235.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.348Z"
+        }
+      }
+    },
+    {
+      "id": "fc552a49-b1d5-45a9-a240-3ad4c3d2ba21",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Compare $81{,}305$ and $81{,}350$. In which place do the digits first differ, going from left to right?",
+      "choices": [
+        "Tens",
+        "Ones",
+        "Hundreds",
+        "Thousands"
+      ],
+      "answer": "Tens",
+      "compute": null,
+      "solution": "The ten thousands (8), thousands (1) and hundreds (3) are the same. The tens differ: 0 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81,305 vs 81,350: ten thousands 8=8, thousands 1=1, hundreds 3=3, tens 0 vs 5. Tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.426Z"
+        }
+      }
+    },
+    {
+      "id": "e65451a7-545d-42e1-8a6a-356c573c3e19",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Which of these numbers is the least?",
+      "choices": [
+        "$2{,}908$",
+        "$2{,}890$",
+        "$2{,}809$",
+        "$2{,}098$"
+      ],
+      "answer": "$2{,}098$",
+      "compute": null,
+      "solution": "All four have 2 thousands, but only $2{,}098$ has 0 hundreds. The other three have 9, 8 or 8 hundreds, so $2{,}098$ is least.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2{,}098$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All have 2 thousands; hundreds: 9,8,8,0. 2,098 least.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.430Z"
+        }
+      }
+    },
+    {
+      "id": "02e2328e-e6e8-4e2f-bf65-4357e2d15b43",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose or check a comparison with >, = or <",
+      "stem": "Which number can go in the ? to make $? > 5{,}640$ true?",
+      "choices": [
+        "$5{,}648$",
+        "$5{,}604$",
+        "$5{,}046$",
+        "$5{,}640$"
+      ],
+      "answer": "$5{,}648$",
+      "compute": null,
+      "solution": "The number must be greater than $5{,}640$. Only $5{,}648$ is: its tens match but its ones are 8, which is more than 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5{,}648$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 5,648 > 5,640; 5,640 is equal, 5,604 and 5,046 are less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.439Z"
+        }
+      }
+    },
+    {
+      "id": "48b1109e-0c57-49ca-95d1-d3ed52bb85fc",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Which list shows the numbers in order from greatest to least?",
+      "choices": [
+        "$4{,}900$, $9{,}040$, $9{,}400$",
+        "$9{,}040$, $9{,}400$, $4{,}900$",
+        "$9{,}400$, $4{,}900$, $9{,}040$",
+        "$9{,}400$, $9{,}040$, $4{,}900$"
+      ],
+      "answer": "$9{,}400$, $9{,}040$, $4{,}900$",
+      "compute": null,
+      "solution": "Start with the greatest: $9{,}400$, then $9{,}040$, then $4{,}900$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9{,}400$, $9{,}040$, $4{,}900$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,400 > 9,040 > 4,900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.449Z"
+        }
+      }
+    },
+    {
       "id": "6e4ce146-b36f-4c1a-81ff-aa7e1f0af688",
       "topic_id": "NC17.4.NBT.7",
       "difficulty": 2,
@@ -19345,6 +19510,93 @@
       }
     },
     {
+      "id": "a06cc15d-44a7-4bf3-a8d2-9bd5a5834a93",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare numbers in a story",
+      "stem": "A shop sells a sofa for $1{,}295$ dollars, a bed for $1{,}925$ dollars and a table for $1{,}259$ dollars. How many dollars does the item that costs the least cost?",
+      "choices": [],
+      "answer": "1259",
+      "compute": "1259",
+      "solution": "All three start with 1 thousand. Hundreds: 2, 9 and 2. Then tens: 9 and 5, so $1{,}259$ is least.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1259",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,259 < 1,295 (tens 5 < 9) < 1,925. Least: 1,259.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.406Z"
+        }
+      }
+    },
+    {
+      "id": "ae511ce6-140d-4865-b03d-ab0693280196",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a digit that makes a comparison true",
+      "stem": "The ? is a digit. The number $4?{,}300$ is greater than $47{,}300$ and less than $49{,}300$. What is the ?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The thousands digit must be more than 7 and less than 9. So the ? is 8, and the number is $48{,}300$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47,300 < 4?,300 < 49,300: ? must be 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.435Z"
+        }
+      }
+    },
+    {
+      "id": "9357ecbb-b6eb-496c-bf5e-41fdeaed4b81",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Mr. Ortiz picks the greater of $48{,}903$ and $48{,}930$. What digit is in the tens place of the number he picks?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The numbers match until the tens place: 0 and 3. So $48{,}930$ is greater, and its tens digit is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48,930 > 48,903 (tens 3 vs 0). Tens digit of 48,930 is 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.438Z"
+        }
+      }
+    },
+    {
       "id": "03ddcc06-a2f8-430f-8d17-6c9fc88d4cf3",
       "topic_id": "NC17.4.NBT.7",
       "difficulty": 3,
@@ -19656,6 +19908,103 @@
           "work": "34,770 is between 34,709 and 34,790; 34,907 too big; 34,097 and 34,079 too small.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:24.280Z"
+        }
+      }
+    },
+    {
+      "id": "028f0c77-600b-488f-9b7c-8e2d0943dc77",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a digit that makes a comparison true",
+      "stem": "Which digit makes both comparisons true? $48{,}?15 > 48{,}715$ and $48{,}?15 < 48{,}915$",
+      "choices": [
+        "7",
+        "9",
+        "6",
+        "8"
+      ],
+      "answer": "8",
+      "compute": null,
+      "solution": "The ? is in the hundreds place. It must be more than 7 and less than 9, so it is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48,?15 > 48,715 needs ? > 7 (7 gives equality); < 48,915 needs ? < 9. So ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.384Z"
+        }
+      }
+    },
+    {
+      "id": "7f7f62d8-d71e-4787-bc1e-7e2645847aa7",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare numbers in a story",
+      "stem": "Five games had these attendances: $8{,}945$, $10{,}200$, $9{,}990$, $10{,}020$, $9{,}909$. How many games had more than $10{,}000$ people?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Only $10{,}200$ and $10{,}020$ are greater than $10{,}000$. The others have fewer than 10 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Over 10,000: 10,200 and 10,020. 9,990, 9,909, 8,945 are below. Count 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.426Z"
+        }
+      }
+    },
+    {
+      "id": "e8d3c171-2c69-4c0b-b79f-8b32f02b9f4f",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Look at these numbers: A = $73{,}048$, B = $73{,}408$ and C = $73{,}084$. Which comparison is true?",
+      "choices": [
+        "$C > B > A$",
+        "$A > C > B$",
+        "$B > C > A$",
+        "$B > A > C$"
+      ],
+      "answer": "$B > C > A$",
+      "compute": null,
+      "solution": "Hundreds: B has 4, A and C have 0. So B is greatest. Tens: C has 8 and A has 4, so C > A. That gives B > C > A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$B > C > A$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B=73,408 (hundreds 4) largest; C=73,084 > A=73,048 (tens 8 vs 4). B > C > A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.451Z"
         }
       }
     },

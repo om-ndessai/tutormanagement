@@ -6,7 +6,7 @@
     "NC17.2.OA.2": "Two-addend facts within 20 only (no three-addend sums); all numbers and results stay within 20.",
     "NC17.2.OA.3": "Odd/even answers are words, so those are choice questions; numeric ones ask for pairs, leftovers, group sizes or the number in a doubles equation. All numbers stay within 20.",
     "NC17.2.OA.4": "Arrays are described in words (rows and columns) and total at most 25 (5 by 5). Where a sum is asked, options never include the column-wise sum of the same array, so exactly one option is correct. Arrays kept within 5 by 5; sums of arrays put together may total more than 25. All stems are stories or written-out arrays.",
-    "NC17.2.NBT.2": "Whole numbers within 1000 only; no counting back by 5s, 10s or 100s (the standard names skip-counting forward). Skills: count on by ones (3), count back by ones (3), skip-count by 10s (6), by 5s (5), by 100s (6), missing number in a pattern (4), rule of a pattern (3).",
+    "NC17.2.NBT.2": "Whole numbers within 1000 only; no counting back by 5s, 10s or 100s (the standard names skip-counting forward). Skills: count on by ones (3), count back by ones (3), skip-count by 10s (6), by 5s (5), by 100s (6), missing number in a pattern (4), rule of a pattern (3). Written in three steps; counting stays within 1000 (1000 itself is used as an end point).",
     "NC17.2.NBT.3": "All numbers are below 1000 (a few two-digit ones at difficulty 1). Number words are written with hyphens, e.g. forty-six. Numerals and expanded forms are asked both ways; a words answer is a choice question. Expanded-form distractors never include a valid sum (e.g. 400 + 18 for 418) so only one option is correct.",
     "NC17.2.NBT.4": "Statements of comparison are written with the symbols in $...$. Answers are whole numbers or a digit; a symbol alone is never an option (only three symbols exist), so the symbol is chosen inside a full statement.",
     "NC17.2.NBT.6": "Sums stay under 300 (three two-digit numbers at most). Missing-addend questions are solved by counting up or knowing the sum, not by formal subtraction rules. Place-value drawings are replaced by tens-and-ones sentences.",
@@ -15830,6 +15830,93 @@
       }
     },
     {
+      "id": "be3b1a9b-8292-4911-ac17-4857771cd9e7",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip-count by 5s",
+      "stem": "Ali counts by 5s: 100, 105, 110. What number does he say next?",
+      "choices": [],
+      "answer": "115",
+      "compute": "110+5",
+      "solution": "110 + 5 = 115.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "115",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100, 105, 110, next 115.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.405Z"
+        }
+      }
+    },
+    {
+      "id": "5a6b850c-5061-411d-9721-12bd6d72edb3",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count back by ones",
+      "stem": "Mara counts back by ones. She says 101, 100. What number does she say next?",
+      "choices": [],
+      "answer": "99",
+      "compute": "100-1",
+      "solution": "Counting back takes away 1. 100 - 1 = 99.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "99",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "101, 100, next 99.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.411Z"
+        }
+      }
+    },
+    {
+      "id": "15a098ab-0c53-47ed-bf31-55c583447665",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip-count by 5s",
+      "stem": "Zoe counts the cents in a pile of nickels. Each nickel is 5 cents. She says 5, 10, 15, 20. What does she say for the next nickel?",
+      "choices": [],
+      "answer": "25",
+      "compute": "20+5",
+      "solution": "Each nickel adds 5 cents. 20 + 5 = 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5, 10, 15, 20, next 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.434Z"
+        }
+      }
+    },
+    {
       "id": "9978b274-e622-4fa5-b319-acc857a447aa",
       "topic_id": "NC17.2.NBT.2",
       "difficulty": 2,
@@ -16150,6 +16237,248 @@
       }
     },
     {
+      "id": "344c4448-f342-44fc-b80e-901c4656b7e0",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip-count by 5s",
+      "stem": "Nia counts by 5s: 985, 990, 995. What number does she say next?",
+      "choices": [],
+      "answer": "1000",
+      "compute": "995+5",
+      "solution": "995 + 5 = 1000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "985, 990, 995, next +5 = 1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.358Z"
+        }
+      }
+    },
+    {
+      "id": "0fdcf8dc-38af-4aaf-98c4-be5f26cabc9b",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip-count by 10s",
+      "stem": "Lia counts dimes by 10s. Each dime is 10 cents. What number does she say for the 11th dime?",
+      "choices": [],
+      "answer": "110",
+      "compute": "11*10",
+      "solution": "The 1st dime is 10, the 2nd is 20, and so on. The 11th dime is 110.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10, 20, ..., 11th dime: 11 x 10 = 110.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.405Z"
+        }
+      }
+    },
+    {
+      "id": "a5f5e6a5-be9a-4f4a-a914-7906387604bb",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip-count by 100s",
+      "stem": "A pattern adds 100 each time. The 1st number is 205. What is the 4th number?",
+      "choices": [],
+      "answer": "505",
+      "compute": "205+300",
+      "solution": "The numbers are 205, 305, 405, 505.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "505",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "205, 305, 405, 505. 4th is 505.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.427Z"
+        }
+      }
+    },
+    {
+      "id": "f9d8e48f-f716-4488-a876-48bf299e984a",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "Rick counts by 5s. Which list has a mistake?",
+      "choices": [
+        "495, 500, 505, 515",
+        "75, 80, 85, 90",
+        "205, 210, 215, 220",
+        "340, 345, 350, 355"
+      ],
+      "answer": "495, 500, 505, 515",
+      "compute": null,
+      "solution": "After 505 counting by 5s comes 510, not 515. The other lists all add 5 each time.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "495, 500, 505, 515",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "495, 500, 505, then should be 510, not 515. Others step by 5 correctly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.435Z"
+        }
+      }
+    },
+    {
+      "id": "22731bd3-c03b-4550-9a94-337f935ffd40",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on by ones",
+      "stem": "Fay counts by ones: 697, 698, 699. Which number does she say next?",
+      "choices": [
+        "700",
+        "690",
+        "600",
+        "799"
+      ],
+      "answer": "700",
+      "compute": "699+1",
+      "solution": "699 + 1 = 700.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "697, 698, 699, 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.440Z"
+        }
+      }
+    },
+    {
+      "id": "0a20f3e3-4277-4469-bb23-9a4ba2fdd557",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Start at 40 and count by 5s. Say the next 4 numbers after 40. What is the last number you say?",
+      "choices": [],
+      "answer": "60",
+      "compute": "40+20",
+      "solution": "The next 4 numbers are 45, 50, 55 and 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45, 50, 55, 60. Last is 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.450Z"
+        }
+      }
+    },
+    {
+      "id": "6bfe9343-3a9e-4f8b-9046-17e29a661246",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip-count by 100s",
+      "stem": "Counting by 100s: 64, 164, 264, ? What number comes next?",
+      "choices": [],
+      "answer": "364",
+      "compute": "264+100",
+      "solution": "264 + 100 = 364.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "364",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64, 164, 264, 364.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.457Z"
+        }
+      }
+    },
+    {
+      "id": "48ddd3b2-7780-4a4f-96af-1db8cbf55522",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "Counting by ones: 569, ?, 571. What number is the ?",
+      "choices": [],
+      "answer": "570",
+      "compute": "569+1",
+      "solution": "569 + 1 = 570.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "570",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "569, 570, 571.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.461Z"
+        }
+      }
+    },
+    {
       "id": "9856ebc9-b6ee-4d27-bdce-f6ba5df1453d",
       "topic_id": "NC17.2.NBT.2",
       "difficulty": 3,
@@ -16456,6 +16785,103 @@
           "work": "Box n is n x 100: 9th box is 900.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:44.144Z"
+        }
+      }
+    },
+    {
+      "id": "d586d48c-939d-4967-b446-54b750287c45",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Skip-count by 100s",
+      "stem": "Kim counts by 100s. She says 800. What number did she say just before 800?",
+      "choices": [
+        "790",
+        "799",
+        "900",
+        "700"
+      ],
+      "answer": "700",
+      "compute": "800-100",
+      "solution": "Just before is 100 less. 800 - 100 = 700.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 100s: 700, 800. Before 800 is 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.404Z"
+        }
+      }
+    },
+    {
+      "id": "eb9f92c1-1a63-4f04-ad22-c4ff7eee51ed",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Skip-count by 5s",
+      "stem": "Ava counts nickels by 5s. Each nickel is 5 cents. What number does she say for the 12th nickel?",
+      "choices": [],
+      "answer": "60",
+      "compute": "12*5",
+      "solution": "The 12th nickel is 12 fives: 5, 10, 15, ... up to 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5, 10, ..., 12th nickel: 12 x 5 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.431Z"
+        }
+      }
+    },
+    {
+      "id": "593a9e22-f867-48dd-a694-92cf8e1882d1",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count back by ones",
+      "stem": "Jun counts back by ones from 601. Which list shows the numbers he says?",
+      "choices": [
+        "601, 600, 509, 508",
+        "601, 600, 590, 589",
+        "601, 600, 699, 698",
+        "601, 600, 599, 598"
+      ],
+      "answer": "601, 600, 599, 598",
+      "compute": null,
+      "solution": "Counting back, 600 is followed by 599 and then 598.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "601, 600, 599, 598",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "601, 600, 599, 598.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.447Z"
         }
       }
     },

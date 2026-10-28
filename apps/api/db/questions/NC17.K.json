@@ -8,7 +8,7 @@
     "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3. Counting is shown as written lists and repeated symbols; counts are generated from arrays/rep() in scripts/build-b5-NC17.K.CC.5.mjs. No how-much-more comparisons.",
     "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step. Text only: groups are shown as lists of marks, as numbers in a story or as real-world counts (legs, wheels). No question asks how many more or fewer. Counts stay within 10, never chain two comparisons, and three-group comparisons are left out.",
     "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1. Kindergarten comparison of two written numerals to 10, text only: numerals are given in the stem. Never asks how much more; no chains of comparisons.",
-    "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10.",
+    "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10. Pictures and drawings are written as words; fingers, objects, acting out, words and expressions are all tested as text. Sums and differences stay within 10. Two difficulty-3 questions ask which item does NOT match.",
     "NC17.K.OA.2": "Everything is one step and inside 10. Skills: add to (6), take from (6), put together (6), take apart / one part unknown (6), matching a story and a number sentence (6). The change-unknown and start-unknown problems are Grade 1 (OA.1), so they are left out. Objects and drawings are written as a story (blocks, circles Zoe draws).",
     "NC17.K.OA.3": "Zero is left out as a part (Kindergarten pairs here use 1 or more in each part). Drawings are replaced by number sentences and short stories. Order of a pair (3 and 4 versus 4 and 3) is never asked, since it is ambiguous at this age.",
     "NC17.K.OA.4": "Written for Kindergarten: one step, numbers 0 to 10, ten-frames and objects described in words. Skills: story 7, number sentence 4 (+ missing start 3), ten-frame 3, pairs 6, zero and ten 3.",
@@ -22086,6 +22086,40 @@
       }
     },
     {
+      "id": "a6a32f6e-2db4-484d-b6ae-1de2945b8c14",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Which story matches $2 + 2$?",
+      "choices": [
+        "3 fish are in a bowl. 2 more fish swim in.",
+        "2 fish are in a bowl. 2 fish swim out.",
+        "2 fish are in a bowl. 2 more fish swim in.",
+        "2 fish are in a bowl. 1 more fish swims in."
+      ],
+      "answer": "2 fish are in a bowl. 2 more fish swim in.",
+      "compute": null,
+      "solution": "We start with 2 fish and 2 more come in, so $2 + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 fish are in a bowl. 2 more fish swim in.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 fish and 2 more swim in: 2 + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.429Z"
+        }
+      }
+    },
+    {
       "id": "6ad53275-5a9e-47c0-8a23-1fd84aaf5faf",
       "topic_id": "NC17.K.OA.1",
       "difficulty": 2,
@@ -22392,6 +22426,137 @@
           "work": "6, then 7, 8, 9: 9.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:41.569Z"
+        }
+      }
+    },
+    {
+      "id": "132b6998-a7b3-4cf6-b4b6-3e1355e0c59f",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Which expression shows adding 3 more to 6?",
+      "choices": [
+        "$6 - 3$",
+        "$3 + 3$",
+        "$9 + 3$",
+        "$6 + 3$"
+      ],
+      "answer": "$6 + 3$",
+      "compute": null,
+      "solution": "Adding 3 more to 6 is $6 + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start with 6, add 3 more: 6 + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.339Z"
+        }
+      }
+    },
+    {
+      "id": "8fc2a17d-c5a6-4339-aee8-2e8f0222dd4d",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Show with fingers",
+      "stem": "Which story goes with $5 + 5$?",
+      "choices": [
+        "Ava holds up 5 fingers and puts 5 fingers down.",
+        "Ava holds up 10 fingers and puts 5 fingers down.",
+        "Ava holds up 5 fingers and puts 1 finger down.",
+        "Ava holds up 5 fingers on one hand and 5 fingers on the other."
+      ],
+      "answer": "Ava holds up 5 fingers on one hand and 5 fingers on the other.",
+      "compute": null,
+      "solution": "The fingers on both hands are put together: $5 + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ava holds up 5 fingers on one hand and 5 fingers on the other.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5: 5 fingers on one hand and 5 on the other joined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.403Z"
+        }
+      }
+    },
+    {
+      "id": "02cd7f2e-c4bb-44b1-9567-14bf05ec9907",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell adding from taking away",
+      "stem": "Which words in a story tell you to subtract?",
+      "choices": [
+        "how many in all",
+        "how many altogether",
+        "how many are left",
+        "put them together"
+      ],
+      "answer": "how many are left",
+      "compute": null,
+      "solution": "\"How many are left\" asks what remains after some go away.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "how many are left",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "'how many are left' signals taking away; the others signal joining.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.404Z"
+        }
+      }
+    },
+    {
+      "id": "8d1410db-716d-400c-a767-eddf6141a568",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Connect words and expressions",
+      "stem": "Read the words: 7 and 2 more. How many is that in all?",
+      "choices": [],
+      "answer": "9",
+      "compute": "7+2",
+      "solution": "\"7 and 2 more\" is $7 + 2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 and 2 more = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.427Z"
         }
       }
     },
@@ -22707,6 +22872,69 @@
           "work": "3 + 5 = 8.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:41.569Z"
+        }
+      }
+    },
+    {
+      "id": "141ba1af-4a9e-402a-a7c6-373ec8df0142",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Act out or count on",
+      "stem": "Count on from 8 by saying the next 2 numbers after 8. What is the last number you say?",
+      "choices": [],
+      "answer": "10",
+      "compute": "8+2",
+      "solution": "After 8 you say 9, then 10. The last number is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9, 10. Last is 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.455Z"
+        }
+      }
+    },
+    {
+      "id": "4243afed-39ed-4000-84ec-88cca73468f3",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Show addition with a story",
+      "stem": "Omar has 6 red cubes and 3 blue cubes. Which expression shows how many cubes he has in all?",
+      "choices": [
+        "$6 - 3$",
+        "$9 - 3$",
+        "$6 + 6$",
+        "$6 + 3$"
+      ],
+      "answer": "$6 + 3$",
+      "compute": null,
+      "solution": "Put the red and blue cubes together: $6 + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 red and 3 blue together: 6 + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.459Z"
         }
       }
     },

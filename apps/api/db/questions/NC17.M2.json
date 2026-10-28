@@ -6,6 +6,7 @@
     "NC17.M2.N-RN.2": "Nth roots are written in words (cube root of x) because the converter has no nth-root sign; all radicands and bases are positive, so every answer is real and unique. Rationalizing denominators is left out of this set. Rationalizing denominators and irrational answers as numeric are left out; irrational results are choice questions. Radicals other than square roots are written in words (the cube root of ...).",
     "NC17.M2.N-RN.3": "Mostly choice questions (explanations and proofs cannot be typed as numbers). A few D3 items go slightly beyond the four stated rules (sum/product of two irrationals can be rational) as the natural counter-cases; the zero exception to rational-times-irrational is tested on purpose. Full 69 written (23 per difficulty). Two-irrational sums/products (5) go slightly beyond the summary but are the natural contrast; every irrational used is named as irrational in the stem or is pi or a non-square root.",
     "NC17.M2.N-CN.1": "Kept to what the summary names: i squared, powers of i, a + bi form, real and imaginary parts, equality, square roots of negatives. Arithmetic with two complex numbers (adding, multiplying a + bi forms, conjugates) is left for the standards that cover it. Questions on square roots of negatives use only the principal root; \"which number squares to -25\" never lists -5i among the options. Operations on complex numbers (addition, products of two complex numbers, conjugates) belong to later standards and are not asked; products such as 3i*2i appear only to show i squared is -1.",
+    "NC17.M2.A-SSE.1": "Interpretation is asked in words (what a term, factor, coefficient or whole bracket means) and by short calculations that need that reading; no graphs are referred to. Skills spread about evenly over quadratic terms, vertex form, factored form, square roots, inverse variation, right-triangle trigonometry and multi-part expressions.",
     "NC17.M2.A-SSE.3": "Covers rewriting by completing the square and reading the minimum or maximum (and where it occurs); solving a quadratic equation by completing the square is a different standard and is not asked. Expressions as answers are choice questions; numeric answers are values.",
     "NC17.M2.A-APR.1": "Division of polynomials is not part of this standard (only add, subtract, multiply), so it appears only as a factoring check. Closure is asked as a statement and through place-value checks at x = 10.",
     "NC17.M2.A-CED.2": "Graphs are described in words (shape, vertex, start point, direction) or by table or point; answers needing irrational numbers or a drawn graph were not asked.",
@@ -12710,6 +12711,234 @@
       }
     },
     {
+      "id": "5942e85f-98e2-4680-81fa-4688c1f5cfa3",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A hillside rises 8 meters over a horizontal distance of 6 meters. It makes an angle $\\theta$ with the level ground. What does the expression $\\frac{8}{6}$ represent?",
+      "choices": [
+        "$\\sin \\theta$",
+        "$\\cos \\theta$",
+        "$\\tan \\theta$",
+        "$\\frac{1}{\\tan \\theta}$"
+      ],
+      "answer": "$\\tan \\theta$",
+      "compute": null,
+      "solution": "$\\frac{8}{6} = \\frac{\\text{rise}}{\\text{run}} = \\frac{\\text{opposite}}{\\text{adjacent}} = \\tan \\theta$. The hypotenuse is 10, so $\\sin \\theta$ would be $\\frac{8}{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\tan \\theta$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "rise/run = opposite/adjacent = tan theta.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.413Z"
+        }
+      }
+    },
+    {
+      "id": "646541f3-e8e6-479f-8636-1456226ac48b",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "The depth of water in a tank, in centimeters, is $d(t) = (t - 4)^2 + 3$, where $t$ is the number of hours after noon. Which statement is true?",
+      "choices": [
+        "The depth is least, 3 centimeters, 4 hours after noon",
+        "The depth is greatest, 3 centimeters, 4 hours after noon",
+        "The depth is least, 4 centimeters, 3 hours after noon",
+        "The depth is greatest, 4 centimeters, 3 hours after noon"
+      ],
+      "answer": "The depth is least, 3 centimeters, 4 hours after noon",
+      "compute": null,
+      "solution": "$(t - 4)^2$ is never negative, so $d$ is smallest when $t - 4 = 0$, at $t = 4$. Then $d = 0 + 3 = 3$. The graph opens upward, so this is a least value.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The depth is least, 3 centimeters, 4 hours after noon",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(t-4)^2 >= 0, opens up, minimum 3 cm at t = 4 hours after noon.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.432Z"
+        }
+      }
+    },
+    {
+      "id": "145bc9dc-2e8d-41f3-8b88-827a0c3f55f7",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "The number of hours $h$ needed to mow a field varies inversely with the number of mowers $m$, so $h = \\frac{k}{m}$. With 8 mowers the job takes 5 hours. What is $k$?",
+      "choices": [],
+      "answer": "40",
+      "compute": "8*5",
+      "solution": "From $h = \\frac{k}{m}$, $k = h \\times m = 5 \\times 8 = 40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = h m = 5 x 8 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.433Z"
+        }
+      }
+    },
+    {
+      "id": "a19d42c7-6fad-4de8-9037-d8527af9f37e",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "square root expression in context",
+      "stem": "A square picture has area $A$ square inches, so each side is $\\sqrt{A}$ inches long. What does the expression $4\\sqrt{A}$ represent?",
+      "choices": [
+        "The area of the picture, in square inches",
+        "The length of one side of the picture, in inches",
+        "The length of a diagonal of the picture, in inches",
+        "The distance around the picture, in inches"
+      ],
+      "answer": "The distance around the picture, in inches",
+      "compute": null,
+      "solution": "There are 4 equal sides, each $\\sqrt{A}$ inches, so $4\\sqrt{A}$ is the distance around the picture (its perimeter).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The distance around the picture, in inches",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 sides x sqrt(A) = perimeter, distance around.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.446Z"
+        }
+      }
+    },
+    {
+      "id": "2c4b3af1-b7d0-449e-97f6-257cdeb32f85",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "A vendor's profit in dollars at a ticket price of $p$ dollars is $P(p) = -(p - 10)^2 + 80$. At which price is the profit greatest?",
+      "choices": [
+        "80 dollars",
+        "-10 dollars",
+        "70 dollars",
+        "10 dollars"
+      ],
+      "answer": "10 dollars",
+      "compute": null,
+      "solution": "The square $(p - 10)^2$ is never negative, so $-(p - 10)^2$ is largest (0) when $p = 10$. That is the price with the greatest profit, 80. The 80 is the profit, not the price.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(p-10)^2 <= 0, max 80 at p = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.448Z"
+        }
+      }
+    },
+    {
+      "id": "62843487-c216-49b6-a853-30adb1825d18",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A ball's height in meters after $t$ seconds is $h(t) = -4.9t^2 + 20t$. Which term shows the height the ball would gain from its upward speed alone, ignoring gravity?",
+      "choices": [
+        "$-4.9t^2$",
+        "$20t$",
+        "$20$",
+        "$-4.9t$"
+      ],
+      "answer": "$20t$",
+      "compute": null,
+      "solution": "The term $20t$ is the speed (20 meters per second) times the time, which is the distance gained moving upward at a steady speed. The term $-4.9t^2$ is the effect of gravity.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20t$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Upward speed alone: height = 20t; -4.9t^2 is gravity.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.452Z"
+        }
+      }
+    },
+    {
+      "id": "8fad5c41-49c5-4c95-8410-fb9aece922a8",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A tree's shadow on level ground is 8 feet long. The angle of the sun above the horizon is $\\theta$, where $\\tan \\theta = 1.5$. How tall is the tree, in feet?",
+      "choices": [],
+      "answer": "12",
+      "compute": "8*1.5",
+      "solution": "$\\tan \\theta = \\frac{\\text{height}}{\\text{shadow}}$, so height $= 8 \\times 1.5 = 12$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan theta = height/shadow, height = 1.5 x 8 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.453Z"
+        }
+      }
+    },
+    {
       "id": "3c894212-d5ed-4f5e-86f1-67f72bb9ad21",
       "topic_id": "NC17.M2.A-SSE.1",
       "difficulty": 2,
@@ -13030,6 +13259,137 @@
       }
     },
     {
+      "id": "d0debf5c-8c44-45db-b1c1-e942cddd078b",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "square root expression in context",
+      "stem": "A ship sails $x$ miles east of a dock and then 3 miles north. Its straight-line distance from the dock is $d = \\sqrt{x^2 + 9}$ miles. What does the expression $x^2 + 9$ represent?",
+      "choices": [
+        "The total number of miles the ship has sailed from the dock",
+        "The ship's straight-line distance from the dock, in miles",
+        "The square of the ship's straight-line distance from the dock",
+        "The area of the region of sea the ship has sailed across"
+      ],
+      "answer": "The square of the ship's straight-line distance from the dock",
+      "compute": null,
+      "solution": "By the Pythagorean theorem the distance $d$ satisfies $d^2 = x^2 + 3^2 = x^2 + 9$. So the expression under the root is $d^2$, the square of the distance.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The square of the ship's straight-line distance from the dock",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "d^2 = x^2 + 9 by Pythagoras, so x^2+9 is the square of the distance.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.437Z"
+        }
+      }
+    },
+    {
+      "id": "ac9e24f5-f384-413f-b90f-aaeb6dc23eb4",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A projectile's height in meters after $t$ seconds is $h(t) = -5t^2 + 20t + 15$. Which statement about the coefficient 20 is true?",
+      "choices": [
+        "It is the upward speed at launch, in meters per second",
+        "It is the starting height of the projectile, in meters",
+        "It is the greatest height the projectile reaches, in meters",
+        "It is the time when the projectile lands, in seconds"
+      ],
+      "answer": "It is the upward speed at launch, in meters per second",
+      "compute": null,
+      "solution": "In $h(t) = -5t^2 + vt + h_0$, the coefficient $v$ of $t$ is the launch speed and the constant $h_0$ is the starting height. So 20 is the upward speed in meters per second; the starting height is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is the upward speed at launch, in meters per second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h = -5t^2 + v0 t + h0 form: 20 is initial upward velocity (m/s). Start height 15; max h(2)=35; lands at 2+sqrt7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.450Z"
+        }
+      }
+    },
+    {
+      "id": "b553cac6-09c5-4032-872c-5005872a743e",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A surveyor stands $d$ feet from the base of a building on level ground and looks up at the top of the building at an angle of elevation $\\theta$. What does the expression $\\frac{d}{\\cos \\theta}$ represent?",
+      "choices": [
+        "The height of the building above the level ground",
+        "The line-of-sight distance from the surveyor to the top",
+        "The distance along the ground from the surveyor to the building",
+        "The slope of the line of sight to the top"
+      ],
+      "answer": "The line-of-sight distance from the surveyor to the top",
+      "compute": null,
+      "solution": "The distance $d$ is the side next to $\\theta$ and the line of sight is the hypotenuse. Since $\\cos \\theta = \\frac{d}{\\text{hypotenuse}}$, the hypotenuse is $\\frac{d}{\\cos \\theta}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The line-of-sight distance from the surveyor to the top",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos theta = d/hyp, so hyp = d/cos theta: line-of-sight distance.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.459Z"
+        }
+      }
+    },
+    {
+      "id": "dd317e07-96a4-4bd5-b7a6-a6f235af4d48",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "square root expression in context",
+      "stem": "The speed of a wave in shallow water is about $v = \\sqrt{10d}$ meters per second, where $d$ is the depth of the water in meters. A wave travels at 20 meters per second. What is the depth of the water, in meters?",
+      "choices": [],
+      "answer": "40",
+      "compute": "20^2/10",
+      "solution": "$20 = \\sqrt{10d}$, so $400 = 10d$ and $d = 40$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 = sqrt(10d), 400 = 10d, d = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.462Z"
+        }
+      }
+    },
+    {
       "id": "0adaec59-26cf-4523-8992-378b3f47a7a2",
       "topic_id": "NC17.M2.A-SSE.1",
       "difficulty": 3,
@@ -13326,6 +13686,69 @@
           "work": "Framed area minus poster area: (w+4)(h+4)-wh.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:04.670Z"
+        }
+      }
+    },
+    {
+      "id": "86129f41-2049-4d37-8629-06debf114e50",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A wire runs from the top of a pole of height $H$ to an anchor point on level ground and makes an angle $\\theta$ with the ground. The wire's length is $\\frac{H}{\\sin \\theta}$ and the distance from the anchor point to the base of the pole is $\\frac{H}{\\tan \\theta}$. What does $\\frac{H}{\\sin \\theta} - \\frac{H}{\\tan \\theta}$ represent?",
+      "choices": [
+        "The wire's length plus the distance from its anchor point to the pole's base",
+        "The wire's length minus the distance from its anchor point to the pole's base",
+        "The wire's length divided by the distance from its anchor point to the pole's base",
+        "The pole's height minus the distance from its anchor point to the pole's base"
+      ],
+      "answer": "The wire's length minus the distance from its anchor point to the pole's base",
+      "compute": null,
+      "solution": "The first term is the wire's length and the second is the distance along the ground from the anchor point to the pole. The minus sign between them means the first minus the second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The wire's length minus the distance from its anchor point to the pole's base",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Expression subtracts the ground distance from the wire length.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.445Z"
+        }
+      }
+    },
+    {
+      "id": "a5309820-e178-4b86-b319-5d0319f35a73",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "The function $g(x) = a(x - 4)^2 + 6$ has a greatest value of 6, and $g(6) = -2$. What is $a$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "(-2-6)/4",
+      "solution": "$g(6) = a(2)^2 + 6 = 4a + 6 = -2$, so $4a = -8$ and $a = -2$. The negative sign agrees with a greatest value.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(6) = 4a + 6 = -2, a = -2 (negative, consistent with a maximum of 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:28:58.456Z"
         }
       }
     },
