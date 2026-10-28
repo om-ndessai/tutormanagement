@@ -21,6 +21,8 @@ export function filenameFrom(disposition: string | null, fallback: string): stri
 const MIME_TYPES: Record<string, { mimeType: string; UTI: string }> = {
   csv: { mimeType: 'text/csv', UTI: 'public.comma-separated-values-text' },
   ics: { mimeType: 'text/calendar', UTI: 'public.calendar-event' },
+  // The Handwriting lab's corpus (Phase 54): adults' strokes, or the synthetic hand's.
+  json: { mimeType: 'application/json', UTI: 'public.json' },
 };
 
 /** The request every download makes: the active organization, the identity, the session cookie. */

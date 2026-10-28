@@ -408,6 +408,17 @@ native rebuild of both dev builds, so build only while the devices are free.
   spaces" and its Quest trust switch. "Space" for "organization" on screen, guarded by
   `src/test/wording.test.ts`. Built and tested 2026-10-24 (build note under design 63): typecheck, lint (0 errors) and Jest (135 suites, 978 tests) green, the export bundles; `spaces/*` (7 flows) green on the iOS simulator and the Android emulator; the changed `organization/*`, `organizations/*`, `platform/{organizations,admins-people,org-admin-denied}`, `exposure/student-controls`, `shell/navigation`, `canvas-assessments/{menu,question-count}`, `features/{organization,person-form}`, `people/create-student`, `onboarding/wizard-admin` and `search/admin` green on both; `features/console` green on Android and red on iOS (the console row's label is the name alone, so the flow's `.*Tutoring, Assessment` is not found; the row is unchanged), `people/directory-admin` green on iOS and red on Android (a guardian below the fold; the person detail is unchanged); `npm run smoke -- mobile` green on both (7/7 each), on the development build.
 
+## Portal Phase 54 — the Handwriting lab (AI-13 stage 0; parity: the web half is built by the lead)
+
+- [ ] 64. Mobile: the Handwriting lab in the console, at parity with the web (R14) — opened from the
+  Questions tab; the ruled page with the shared canvas (`underlay`), Write a sample line and Read now;
+  each line read blind once the pen rests and shown beside the page (wide) or below it (narrow); Right,
+  Not what I wrote (LaTeX, previewed, checked by the shared schema), Read again and the reader's picture;
+  the samples' summary, list, delete (after a confirm) and the corpus shared as JSON. Built 2026-10-28
+  (design 64): typecheck, lint (0 errors), Jest (140 suites, 1025 tests) and the export green. **Owed:**
+  `handwriting-lab/lab` and `platform/org-admin-denied` on the iOS simulator and the Android emulator
+  (none where it was built), an iPad for the wide layout, and the commit.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

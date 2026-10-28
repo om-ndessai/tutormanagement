@@ -3807,3 +3807,133 @@ changed.
 - **Seen, not changed (Phase 26/50 behaviour):** on a parent's first visit, the floating tour offer can take
   a tap meant for the screen under it (a flow tapping Leave on My profile started the tour instead).
 - **Ran (local Worker and seed only):** typecheck, lint (0 errors) and Jest (135 suites, 978 tests) green, the export bundles; `spaces/*` (7 flows) green on the iOS simulator and the Android emulator; the changed `organization/*`, `organizations/*`, `platform/{organizations,admins-people,org-admin-denied}`, `exposure/student-controls`, `shell/navigation`, `canvas-assessments/{menu,question-count}`, `features/{organization,person-form}`, `people/create-student`, `onboarding/wizard-admin` and `search/admin` green on both; `features/console` green on Android and red on iOS (the console row's label is the name alone, so the flow's `.*Tutoring, Assessment` is not found; the row is unchanged), `people/directory-admin` green on iOS and red on Android (a guardian below the fold; the person detail is unchanged); `npm run smoke -- mobile` green on both (7/7 each), on the development build. The web suite was not run (the lead's).
+
+## 64. Phase 54: the Handwriting lab (AI-13 stage 0) — design (2026-10-28)
+**Scope:** the web's Handwriting lab at parity, in the console (`docs/plan.md`, Phase 54;
+`docs/roadmap/think-aloud-canvas.md`; R14). A platform admin writes maths on the canvas, one step a line;
+each line is found from the gaps in the ink (shared `segmentLines`), read blind once the pen rests, and
+the reading appears beside the page, line by line; "Right" or "Not what I wrote" (LaTeX, previewed) saves
+the line as a sample; the samples are summarised and listed, and the corpus can be shared as a file.
+Adults' handwriting only (AG1): the lab is in the console, behind `Stack.Protected guard={platformAdmin}`
+and the server's `requirePlatformAdmin`. No API, schema, shared or web change comes from this work (the
+lead built them).
+
+**Web sources:** `apps/web/src/features/handwriting-lab/{api.ts, use-line-reader.ts, reading-panel.tsx,
+samples-card.tsx, handwriting-lab-page.tsx}` (working tree on 4b16671); the tab in
+`features/platform/platform-shell.tsx`; the canvas's `testId` in `canvas-assessments/drawing-canvas.tsx`.
+Shared: `handwriting.ts`, `handwriting-synthetic.ts` (`writeLine`, `SYNTHETIC_LINES`),
+`canvas-assessments.ts` (`formatStroke`, `CANVAS_LIMITS`).
+
+**Endpoints:** (`api.ts` copied: the same `handwritingKeys.samples`, the same invalidation; platform admins
+only, no `X-Organization` needed)
+- `POST /platform/handwriting/read {lines: [{key, strokes}], include_image: true}` (1-4 lines):
+  `readHandwriting`, called by `useLineReader`. A line that fails is `status: 'failed'` with its `error`;
+  a whole request that fails marks its batch failed with the server's sentence.
+- `GET /platform/handwriting/samples?limit=50`: `useHandwritingSamples`.
+- `POST /platform/handwriting/samples` (201): `useSaveHandwritingSample`; checked first with
+  `saveHandwritingSampleSchema.safeParse` (an empty or SSN-shaped truth is refused before sending); a 422's
+  `details.truth` shows under the LaTeX field.
+- `DELETE /platform/handwriting/samples/:id`: `useDeleteHandwritingSample` (404 when gone: the toast).
+- `GET /platform/handwriting/corpus?source=samples|synthetic`: the web's two download links become
+  `downloadAndShare` (the app's share-a-file pattern: cache, share sheet, deleted), with `json` added to
+  `src/lib/download.ts`'s types. The file holds strokes of adults' writing or the synthetic hand.
+
+**Entry point:** the console's native tab bar is full (five, the most Android's holds), so the lab is a
+screen pushed over the tabs from the **Questions** tab: an outlined "Handwriting lab" button
+(`question-bank-handwriting-lab`) under "Suggested by spaces" -- the AI work sits beside the bank on the
+web too (Question bank, AI, Handwriting lab). Route `app/(platform)/handwriting-lab.tsx`
+(`aimtrue://handwriting-lab`), a header titled "Handwriting lab", the swipe back off (a stroke from the
+left edge must not leave the page, as when taking an assessment).
+
+**Screen:** `HandwritingLabScreen`, `screen-handwriting-lab`.
+- **Wide** (≥ 700 pt and landscape, the take-assessment rule: an iPad on its side): the tools and the
+  largest 5:4 page that fits on the left, never scrolling; on the right (300-400 pt) a scroll view with
+  the intro, "Saving lines as", What I read and the samples.
+- **Narrow** (a phone, an iPad upright): one scroll view -- intro, tools, the page (as wide as the screen;
+  `scrollRef`, so a touch on the page writes rather than scrolls), "Saving lines as", What I read, Samples.
+- **Tools** (`lab-pen`, `lab-eraser`, `lab-undo`, `lab-clear`, `lab-write-sample`, `lab-read-now`): Pen
+  and Eraser as the assessment's buttons, Undo and Clear page as icon buttons, then "Write a sample line"
+  (the next `SYNTHETIC_LINES` entry, `writeLine` on the first free ruled line, size 44, mess 0.4, as the
+  web) and "Read now". Undo keeps 50 steps; Clear page needs no confirm (it is undoable), as on the web.
+  "The page is full. Clear it to write more." and "Every line of the page has writing. Clear it to write
+  more." as toasts.
+- **The page** (`lab-page`, the canvas `lab-canvas`): the shared `DrawingCanvas` gains one prop,
+  `underlay` (drawn under the ink, takes no touches; the assessment passes none, so it is unchanged): the
+  eight faint rules (every 100 units) and each found line's band, numbered at its right, tinted while
+  highlighted.
+- **Saving lines as** (`lab-category`, items `lab-category-<value>`): a Paper `Menu` of
+  `HANDWRITING_SAMPLE_CATEGORIES` by their labels (the `OptionPicker` would add a search field at seven).
+- **What I read** (`reading-panel`; `reading-source` "Fake reader" or the model; the fake reader's note;
+  the empty sentence): per line `reading-line-N` with `reading-text-N` -- the number, "I read:" and the
+  maths, the confidence %, a spinner while reading (a static icon under reduce motion), "Waiting for the
+  pen to rest…", "Read, but not as maths." (never in the lab, which shows every reading), "I could not
+  read this line.", the failure's sentence, and the lab's "Not plain maths: a student would not be shown
+  this reading." Tapping a line's text marks it on the page (the web's hover; on an iPad's pointer, hover
+  does it too). Its label reads the line in words (`latexToText(…, 'speech')`).
+- **Per line** (`LineActions`): `line-right-N` "Right"; `line-fix-N` "Not what I wrote" (or "Say what it
+  says" when unread), opening `line-truth-N` (monospace, prefilled with the reading), its live preview,
+  `line-save-N` "Save sample" and `line-cancel-N`; `line-read-again-N` "Read again" for an unreadable or
+  failed line; `line-picture-N` "What the reader saw" toggling `line-image-N` (the PNG data URL, sized from
+  its own header); `line-saved-N` "Saved as a sample" once saved. Toasts as the web's ("Line N saved: read
+  right." / "… misread.").
+- **Samples** (`samples-card`): the summary (`samples-summary`: "N samples · read right X%" and each
+  category's matched/total), the newest 50 (`sample-row-<id>`: ✓/✗, the truth, "read as …" when misread,
+  category · model · who · when, `formatRelativeTime` as the console's activity), `sample-delete-<id>`
+  behind a native confirm (mobile only: a mis-tap on a phone is easy), and the two shares
+  (`samples-download-samples`, `samples-download-synthetic`).
+
+**Maths:** a reading is LaTeX without `$`. The panel can hold a line per rule and the card 50 samples, so
+one KaTeX web view each (the bank's `MathBody`) is too heavy. A native line instead (`math-line.tsx` over
+the pure `math-line-model.ts`): a top-level `\frac` is stacked (numerator, bar, denominator, nested
+fractions too), everything else is `latexToText(…, 'display')` (×, ÷, ·, superscripts, √, ≤). That keeps
+apart what the reader can get wrong and the lab exists to catch -- a slash against a stacked fraction,
+× against · -- which the plain text alone would not (both fractions read "3/4"). It does not flag LaTeX
+KaTeX would refuse; the reading itself is shown as typed (monospace) when it is not plain maths.
+
+**Pure modules (Jest):**
+- `line-reader-model.ts`: the hook's rules -- which lines to send (not in flight; unread or failed, or
+  any on Read again), batches of `HANDWRITING_LIMITS.linesPerRequest`, the request (each stroke
+  `formatStroke`d from the page as it is when sent), a failed reading from an error, merging replies with
+  each line's place and arrival order, and each line's state (its reading, or while re-read the latest
+  reading in its place).
+- `use-line-reader.ts`: the web's hook on those rules -- segment on every stroke, read the changed lines
+  `HANDWRITING_LIMITS.pauseMs` after the last one, `readNow`, `readAgain`, the last `source`.
+- `lab-model.ts`: the ruled page (`RULES`, `freeBaseline`), the page's reducer (add, erase by stroke,
+  undo with 50 steps, clear), the sample's body, the model name kept with it, the summary's words,
+  `pngSize` (a data URL's width and height from its IHDR, for the picture's shape).
+
+**Exposure:** R14 -- console only; nothing of an organization is read or shown; no child's work (the
+page is the platform admin's own). No money, no SSN field (the truth runs through the shared
+`refuseSsn` before any request), no organization's name. The reading's picture stays in memory (a data
+URL in the cache of this screen's state), never written to the device.
+
+**Flows:** `flows/handwriting-lab/lab.yaml` (Nav, a platform admin: Questions → Handwriting lab, "Write a
+sample line", line 1 read by the fake reader as its strokes, "Right", "Saved as a sample", the summary);
+`flows/platform/org-admin-denied.yaml` gains `aimtrue://handwriting-lab` (Priya lands on Home).
+
+**Risks / open questions:**
+- No simulator or emulator in this environment: the flows are written, not run; the tester owes them on
+  both platforms (and an iPad for the wide layout).
+- The native maths line is lighter than KaTeX and reads only what the panel needs; if the owner wants the
+  exact KaTeX rendering, the fix preview alone can move to one `MathBody` (one web view).
+- The web's corpus links become a share sheet; on a phone that is the way to hand the file to a laptop.
+
+**Build note (2026-10-28).** Built from this entry with the lead's Worker, shared contract and web; nothing
+under `apps/api`, `apps/web`, `packages/shared` or `e2e/` changed.
+- **As designed.** The one change to a shared piece: `DrawingCanvas` gains `underlay` (rendered under the
+  finished strokes, `pointerEvents="none"`); with none passed it renders as before.
+- **Changed while building, and why:**
+  - The page's refs (readings, strokes) are kept current in effects, not during render as the web does:
+    the app builds with the React Compiler, whose lint refuses a ref written in render.
+  - The fix preview is the same native line as the readings (not one `MathBody`), so a keystroke never
+    reloads a web view.
+  - The reading's picture is sized from its own PNG header (`pngSize`), as an `Image` needs a shape.
+- **Ran:** `npm run mobile:typecheck` green; `npm run mobile:lint` 0 errors (26 warnings, all existing,
+  none in this work); `npm run mobile:test` 140 suites, 1025 tests green (new: `math-line-model`,
+  `line-reader-model`, `lab-model`, `handwriting-lab-views` (the screen end to end with the api client
+  mocked: written, read, picture, Right, a fix refused for an SSN-shaped line, a 422 under the field, a
+  failed read and Read again, the samples shared and deleted), and a JSON case in `download.test`);
+  `npm run mobile:export` bundles both platforms. The routes were checked against the local Worker with
+  curl (`/platform/handwriting/read` with `include_image`, `/samples`).
+- **Not run:** Maestro (`handwriting-lab/lab`, `platform/org-admin-denied`): no iOS simulator or Android
+  emulator in this environment. An iPad (the wide layout) and VoiceOver/TalkBack by hand.

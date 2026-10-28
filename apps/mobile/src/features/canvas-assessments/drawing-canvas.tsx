@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/canvas-assessments/drawing-canvas.tsx @ 37bdad1 and its Phase 40
-// change (`size`, `penWidth`, `variant: 'overlay'`).
+// change (`size`, `penWidth`, `variant: 'overlay'`); Phase 54 adds `underlay` (the Handwriting lab).
 //
 // A surface to write on: the student's page, or (Phase 40) a transparent layer of the tutor's red
 // ink over a rendered PDF page. Mobile: react-native-svg draws, react-native-gesture-handler
@@ -14,8 +14,8 @@
 // inside a scroll view, such a touch is handed back to it, so a finger scrolls while a pen marks).
 // No feedback: it only draws.
 import { CANVAS_LIMITS, type CanvasStroke } from '@tmi/shared';
-import { memo, useCallback, useEffect, type RefObject } from 'react';
-import { View } from 'react-native';
+import { memo, useCallback, useEffect, type ReactNode, type RefObject } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector, PointerType } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
@@ -78,6 +78,7 @@ export function DrawingCanvas({
   disabled = false,
   scrollRef,
   testID = 'assessment-canvas',
+  underlay,
 }: {
   strokes: readonly CanvasStroke[];
   tool: CanvasTool;
@@ -102,6 +103,11 @@ export function DrawingCanvas({
   /** The scroll view it sits in: a touch on the surface marks it rather than scrolling. */
   scrollRef?: RefObject<unknown>;
   testID?: string;
+  /**
+   * Phase 54: drawn under the ink, filling the surface, and taking no touches (the Handwriting lab's
+   * rules and the lines it found). The assessment and the review pass none.
+   */
+  underlay?: ReactNode;
 }) {
   const theme = useAppTheme();
   const overlay = variant === 'overlay';
@@ -244,6 +250,11 @@ export function DrawingCanvas({
               }
         }
       >
+        {underlay ? (
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+            {underlay}
+          </View>
+        ) : null}
         <FinishedStrokes strokes={strokes} ink={ink} viewBox={viewBox} />
         <Svg width="100%" height="100%" viewBox={viewBox} style={{ position: 'absolute' }}>
           <AnimatedPath

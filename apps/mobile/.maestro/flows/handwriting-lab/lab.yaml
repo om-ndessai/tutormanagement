@@ -1,0 +1,67 @@
+# The Handwriting lab (Phase 54, design #64): Nav, a platform admin, opens it from the console's
+# Questions tab, writes a line with "Write a sample line" (no pen needed: the synthetic hand writes
+# 12+7=19 on the first ruled line), and the local fake reader reads it once the pen rests -- as its
+# number of strokes, 9. "Right" saves it as a sample (read right), and the samples' summary shows.
+# Local Worker only: the fake reader never reaches a model. Adds one sample to the local database.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: platform-org-chmi
+    timeout: 30000
+- tapOn: 'Questions'
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-questions
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: question-bank-handwriting-lab
+    timeout: 20000
+- tapOn:
+    id: question-bank-handwriting-lab
+- extendedWaitUntil:
+    visible:
+      id: screen-handwriting-lab
+    timeout: 15000
+- assertVisible:
+    id: lab-canvas
+- assertVisible: 'Write a step on the page. Each line is read once the pen rests.'
+- tapOn:
+    id: lab-write-sample
+# Read once the pen rests (800 ms), by the fake reader.
+- extendedWaitUntil:
+    visible:
+      id: reading-text-1
+      text: 'Line 1\. I read: 9\..*'
+    timeout: 15000
+- assertVisible:
+    id: reading-source
+- assertVisible: 'Fake reader'
+- takeScreenshot: handwriting-lab-read
+- scrollUntilVisible:
+    element:
+      id: line-right-1
+    centerElement: true
+- tapOn:
+    id: line-right-1
+- extendedWaitUntil:
+    visible:
+      id: line-saved-1
+    timeout: 15000
+- assertVisible: 'Saved as a sample'
+- scrollUntilVisible:
+    element:
+      id: samples-summary
+    centerElement: true
+- assertVisible:
+    id: samples-total
+    text: '[0-9]+ samples? · read right .*'
+- takeScreenshot: handwriting-lab-saved

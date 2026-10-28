@@ -1,6 +1,6 @@
 # R14: an organization's admin is nobody in the console. Priya (admin of chmi): a deep link to
-# /platform -- or to its question bank or Review (#54) -- lands her back in her organization, and the
-# account sheet offers no way in.
+# /platform -- or to its question bank or Review (#54), or the Handwriting lab (#64) -- lands her back
+# in her organization, and the account sheet offers no way in.
 appId: ${APP_ID}
 tags:
   - exposure
@@ -49,6 +49,19 @@ tags:
     id: screen-question-review
 - assertNotVisible:
     id: question-bank-approve
+# The Handwriting lab (Phase 54, #64): adults' handwriting, platform admins only.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://handwriting-lab'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- assertNotVisible:
+    id: screen-handwriting-lab
+- assertNotVisible:
+    id: lab-canvas
 - tapOn:
     id: account-button
 - extendedWaitUntil:

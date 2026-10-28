@@ -2,7 +2,8 @@
 // the bank: its figures, "Review N checked", and each level's standards with their approved
 // questions by difficulty against the target and what is waiting. Mobile (#54): no "Write for N
 // standards" (writing stays at the desk); each level is closed until opened (U5's pattern), and the
-// "Needs a figure" switch is a read-only chip here.
+// "Needs a figure" switch is a read-only chip here. Phase 54 (#64): the Handwriting lab opens from
+// here, as the console's tab bar has no room for a sixth tab.
 import {
   QUESTIONS_PER_DIFFICULTY_TARGET,
   QUESTION_DIFFICULTY_LABELS,
@@ -276,6 +277,19 @@ export function QuestionBankScreen() {
             contentStyle={{ minHeight: 48 }}
           >
             Suggested by spaces
+          </Button>
+          {/* Phase 54 (#64): the console's tab bar is full, so the lab opens from here. */}
+          <Button
+            testID="question-bank-handwriting-lab"
+            mode="outlined"
+            icon="draw"
+            onPress={() => {
+              haptics.selection();
+              router.push('/handwriting-lab');
+            }}
+            contentStyle={{ minHeight: 48 }}
+          >
+            Handwriting lab
           </Button>
 
           <FigureRow

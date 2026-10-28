@@ -69,6 +69,21 @@ describe('downloads', () => {
     expect(mockFiles[0]).toMatchObject({ name: 'sessions.csv', text: 'date,student\n', deleted: true });
   });
 
+  it("shares the Handwriting lab's corpus as JSON (Phase 54), then deletes it", async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: () => Promise.resolve('{"version":1}'),
+      headers: { get: () => 'attachment; filename="handwriting-samples-2026-10-28.json"' },
+    });
+    await downloadAndShare('/platform/handwriting/corpus?source=samples', 'handwriting-samples.json');
+    expect(mockShare).toHaveBeenCalledWith(
+      'file:///cache/handwriting-samples-2026-10-28.json',
+      expect.objectContaining({ mimeType: 'application/json', UTI: 'public.json' }),
+    );
+    expect(mockFiles[0]).toMatchObject({ text: '{"version":1}', deleted: true });
+  });
+
   it('deletes the file even when sharing fails', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
