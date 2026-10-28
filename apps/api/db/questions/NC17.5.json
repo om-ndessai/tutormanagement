@@ -6465,6 +6465,733 @@
       }
     },
     {
+      "id": "25e684d5-3dd2-438a-8685-3ed93d0fe60e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Explain place value patterns",
+      "stem": "Look at the pattern 2, 20, 200, 2,000. What number comes next?",
+      "choices": [],
+      "answer": "20000",
+      "compute": "2000*10",
+      "solution": "Each number is 10 times the one before it. $2{,}000 \\times 10 = 20{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each term times 10: 20,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.376Z"
+        }
+      }
+    },
+    {
+      "id": "1e8f324b-598f-4d57-88a3-fa376cfff2e2",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a power of ten",
+      "stem": "A farmer packs 9,000 eggs into boxes with 100 eggs in each box. How many boxes does the farmer fill?",
+      "choices": [],
+      "answer": "90",
+      "compute": "9000/100",
+      "solution": "Dividing by 100 moves each digit two places to the right: $9{,}000 \\div 100 = 90$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$9000\\div100=90$ boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.401Z"
+        }
+      }
+    },
+    {
+      "id": "a99f57f7-4f9b-48c9-8c0b-c2dfaba4df4b",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "Write as a decimal: 3 tenths and 5 thousandths.",
+      "choices": [],
+      "answer": "0.305",
+      "compute": "0.3+0.005",
+      "solution": "3 tenths is 0.3 and 5 thousandths is 0.005. Together they make 0.305, with a 0 in the hundredths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.305",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.3 + 0.005 = 0.305.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.411Z"
+        }
+      }
+    },
+    {
+      "id": "ea7693b1-15b0-4f3d-b611-8888699e4483",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Powers of ten with exponents",
+      "stem": "10,000 can be written as $10^?$. What is the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "10,000 is a 1 followed by 4 zeros, which is $10 \\times 10 \\times 10 \\times 10 = 10^4$. So the ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,000 = 10^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.418Z"
+        }
+      }
+    },
+    {
+      "id": "6dc8ed50-27c9-4146-b506-dd7349470f5c",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide by a power of ten",
+      "stem": "Divide $4.6$ by 10. What is the result?",
+      "choices": [
+        "46",
+        "0.46",
+        "0.046",
+        "0.64"
+      ],
+      "answer": "0.46",
+      "compute": "4.6/10",
+      "solution": "Dividing by 10 moves each digit one place to the right, so $4.6 \\div 10 = 0.46$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.46",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.6 / 10 = 0.46.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.422Z"
+        }
+      }
+    },
+    {
+      "id": "d2159ed5-f378-4701-8b8c-507bc479a5d4",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "A 7 in the hundreds place is worth 700. How much is a 7 worth when it is in the tens place?",
+      "choices": [],
+      "answer": "70",
+      "compute": "700/10",
+      "solution": "Moving one place to the right makes a digit worth one tenth as much. $700 \\div 10 = 70$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tens place is worth 7 x 10 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.433Z"
+        }
+      }
+    },
+    {
+      "id": "553cfa26-0133-4a4c-9b83-7382c6185f79",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "Which digit is in the thousandths place of $12.683$?",
+      "choices": [
+        "6",
+        "3",
+        "8",
+        "2"
+      ],
+      "answer": "3",
+      "compute": null,
+      "solution": "The places after the decimal point are tenths (6), hundredths (8) and thousandths (3). So the digit in the thousandths place is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.683: 6 tenths, 8 hundredths, 3 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.451Z"
+        }
+      }
+    },
+    {
+      "id": "e9bed743-b240-42eb-bcb3-0d30fa4f24c5",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "One pencil weighs 12 grams. How many grams do 100 pencils weigh?",
+      "choices": [],
+      "answer": "1200",
+      "compute": "12*100",
+      "solution": "Multiplying by 100 moves each digit two places to the left: $12 \\times 100 = 1{,}200$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 × 100 = 1200 grams.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.462Z"
+        }
+      }
+    },
+    {
+      "id": "b06dd0c8-60e3-4051-bb54-c8a541aa0c65",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "Which number has the digit 7 in the millions place?",
+      "choices": [
+        "70,300",
+        "703,000",
+        "3,700,000",
+        "7,030,000"
+      ],
+      "answer": "7,030,000",
+      "compute": null,
+      "solution": "The millions place is the seventh place from the right. In 7,030,000 the 7 is there. In 3,700,000 the 3 is in the millions place and the 7 is in the hundred thousands place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7,030,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,030,000 has 7 in millions. 3,700,000: 7 hundred thousands; 70,300: ten thousands; 703,000: hundred thousands.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.466Z"
+        }
+      }
+    },
+    {
+      "id": "3d8135cc-766e-4e87-ae10-a4cdf6d0a3bd",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "A bottle holds 0.25 liters of juice. How many liters of juice are in 10 bottles?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "0.25*10",
+      "solution": "Multiplying by 10 moves each digit one place to the left: $0.25 \\times 10 = 2.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.25 x 10 = 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.544Z"
+        }
+      }
+    },
+    {
+      "id": "058216a0-e7af-4063-b988-a5be5a20e280",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "Find the ? in $15 \\times ? = 1{,}500$.",
+      "choices": [],
+      "answer": "100",
+      "compute": "1500/15",
+      "solution": "1,500 is 15 followed by two zeros, which is $15 \\times 100$. So the ? is 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1500/15 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.574Z"
+        }
+      }
+    },
+    {
+      "id": "6dc1a97e-6a19-4d65-b710-2f978f81d898",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply by a power of ten",
+      "stem": "Which number is equal to $23 \\times 1{,}000$?",
+      "choices": [
+        "230",
+        "2,300",
+        "23,000",
+        "230,000"
+      ],
+      "answer": "23,000",
+      "compute": "23*1000",
+      "solution": "Multiplying by 1,000 moves each digit three places to the left, so $23 \\times 1{,}000 = 23{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23 x 1000 = 23,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.610Z"
+        }
+      }
+    },
+    {
+      "id": "1c54a510-73f2-4aac-9ea1-58bab766f39d",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Powers of ten with exponents",
+      "stem": "Which number is the same as $2 \\times 10^3$?",
+      "choices": [
+        "6",
+        "200",
+        "2,003",
+        "2,000"
+      ],
+      "answer": "2,000",
+      "compute": "2*1000",
+      "solution": "$10^3 = 1{,}000$, so $2 \\times 10^3 = 2 \\times 1{,}000 = 2{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 1000 = 2,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.611Z"
+        }
+      }
+    },
+    {
+      "id": "1f2d8b3c-cf49-456c-87af-10dfc9947f38",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Powers of ten with exponents",
+      "stem": "Which power of ten is equal to 100,000?",
+      "choices": [
+        "$10^4$",
+        "$10^5$",
+        "$10^6$",
+        "$5^{10}$"
+      ],
+      "answer": "$10^5$",
+      "compute": null,
+      "solution": "100,000 is a 1 followed by 5 zeros, so it is $10^5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10^5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100,000 = 10^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.614Z"
+        }
+      }
+    },
+    {
+      "id": "bfd3c8c0-6a0a-484b-947d-b39bc454749b",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Explain place value patterns",
+      "stem": "In the list 8,000, 800, 80, 8, each number is related to the number before it. Which statement is true?",
+      "choices": [
+        "Each number is 10 times the number before it.",
+        "Each number is 10 less than the number before it.",
+        "Each number is one tenth of the number before it.",
+        "Each number is one hundredth of the number before it."
+      ],
+      "answer": "Each number is one tenth of the number before it.",
+      "compute": null,
+      "solution": "8,000 divided by 10 is 800, and 800 divided by 10 is 80. Each number is one tenth of the one before.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each number is one tenth of the number before it.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8000 -> 800 -> 80 -> 8, each is divided by 10: one tenth.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.622Z"
+        }
+      }
+    },
+    {
+      "id": "c6196cf6-7e41-41cc-9f34-b13d8daa1442",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Explain place value patterns",
+      "stem": "Which operation moves every digit of a number one place to the right?",
+      "choices": [
+        "Dividing by 10",
+        "Multiplying by 10",
+        "Subtracting 10",
+        "Dividing by 100"
+      ],
+      "answer": "Dividing by 10",
+      "compute": null,
+      "solution": "Dividing by 10 makes each digit worth one tenth as much, so each digit moves one place to the right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Dividing by 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dividing by 10 shifts every digit one place right (e.g. 350 -> 35).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.626Z"
+        }
+      }
+    },
+    {
+      "id": "934ddfd7-fc2d-423b-8baf-8a52b6a52d76",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a power of ten",
+      "stem": "What is $2{,}800 \\div 100$?",
+      "choices": [],
+      "answer": "28",
+      "compute": "2800/100",
+      "solution": "Dividing by 100 moves each digit two places to the right: $2{,}800 \\div 100 = 28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2800 / 100 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.629Z"
+        }
+      }
+    },
+    {
+      "id": "6441336a-d7cc-48bd-8209-69767463eee7",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "In the number $2{,}200{,}000$, the 2 in the millions place is worth how many times as much as the 2 in the hundred thousands place?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Each place is worth 10 times the place to its right. The millions place is just left of the hundred thousands place, so the first 2 is worth 10 times as much.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Millions 2 = 2,000,000; hundred thousands 2 = 200,000; ratio 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.630Z"
+        }
+      }
+    },
+    {
+      "id": "71ea7f77-46a2-4d64-a1d0-c5c4a5861067",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "In the number $8.88$, how does the value of the 8 in the ones place compare with the value of the 8 in the tenths place?",
+      "choices": [
+        "It is 100 times as much.",
+        "It is one tenth as much.",
+        "It is 10 times as much.",
+        "It is the same."
+      ],
+      "answer": "It is 10 times as much.",
+      "compute": null,
+      "solution": "The ones place is worth 10 times the tenths place: 8 compared with 0.8. So the 8 in the ones place is 10 times as much.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is 10 times as much.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ones 8 = 8; tenths 8 = 0.8; 8/0.8 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.636Z"
+        }
+      }
+    },
+    {
+      "id": "9398d663-fc5f-4c9c-838a-3de1328e296e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide by a power of ten",
+      "stem": "Which number is one tenth of 60?",
+      "choices": [
+        "600",
+        "0.6",
+        "66",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "60/10",
+      "solution": "One tenth of a number is the number divided by 10. $60 \\div 10 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 ÷ 10 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.648Z"
+        }
+      }
+    },
+    {
+      "id": "8d331468-f4b2-4e2d-8e23-83a962d344e2",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "What is the value of the digit 6 in the number $3{,}640{,}200$?",
+      "choices": [],
+      "answer": "600000",
+      "compute": "600000",
+      "solution": "Reading from the right, the places are ones, tens, hundreds, thousands, ten thousands, hundred thousands, millions. The 6 is in the hundred thousands place, so it is worth 600,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,640,200: 6 in hundred-thousands place -> 600,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.649Z"
+        }
+      }
+    },
+    {
+      "id": "ecc27c40-8806-43bd-a932-c83239a94b64",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "Which number has the digit 5 in the thousandths place?",
+      "choices": [
+        "8.105",
+        "8.150",
+        "8.510",
+        "85.01"
+      ],
+      "answer": "8.105",
+      "compute": null,
+      "solution": "The thousandths place is the third digit after the decimal point. In 8.105 that digit is 5. In 8.150 the 5 is in the hundredths place, in 8.510 it is in the tenths place, and in 85.01 it is in the ones place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.105",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.105: digits 1 tenths, 0 hundredths, 5 thousandths. Others have 0, 0, or (85.01) only hundredths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.662Z"
+        }
+      }
+    },
+    {
+      "id": "09439edd-1fc5-46ab-a905-42c87c5b5cec",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply by a power of ten",
+      "stem": "Which number is 100 times as much as $0.07$?",
+      "choices": [
+        "7",
+        "0.7",
+        "70",
+        "0.0007"
+      ],
+      "answer": "7",
+      "compute": "0.07*100",
+      "solution": "Multiplying by 100 moves each digit two places to the left, so $0.07 \\times 100 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.07 × 100 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.664Z"
+        }
+      }
+    },
+    {
       "id": "8e9b12b3-3b38-4b63-bd5c-7e6f66f95982",
       "topic_id": "NC17.5.NBT.1",
       "difficulty": 2,
@@ -6780,6 +7507,733 @@
       }
     },
     {
+      "id": "c7fead22-e184-4f8a-b544-694c865269e3",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Powers of ten with exponents",
+      "stem": "A number is multiplied by $10^2$ and the product is 560. What is the number?",
+      "choices": [],
+      "answer": "5.6",
+      "compute": "560/100",
+      "solution": "$10^2 = 100$. To undo multiplying by 100, divide by 100: $560 \\div 100 = 5.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$560\\div 100=5.6$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.346Z"
+        }
+      }
+    },
+    {
+      "id": "d57a2e2a-698a-4b1f-afdf-0cc87f1be831",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "A 4 in the thousandths place is worth what fraction of a 4 in the hundredths place? Write the fraction as a/b.",
+      "choices": [],
+      "answer": "1/10",
+      "compute": "1/10",
+      "solution": "The thousandths place is the next place to the right of the hundredths place. A digit moved one place to the right is worth one tenth as much, so the answer is 1/10. Check: 0.004 is one tenth of 0.04.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.004 is 1/10 of 0.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.363Z"
+        }
+      }
+    },
+    {
+      "id": "824d2ac9-00e2-4331-ab66-d14b676a75b5",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "What is the value of the digit 4 in the number $6{,}405{,}000$?",
+      "choices": [],
+      "answer": "400000",
+      "compute": "400000",
+      "solution": "The 6 is in the millions place and the 4 is in the next place to the right, the hundred thousands. So the 4 is worth 400,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6,405,000: 4 is in the hundred-thousands place: 400,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.400Z"
+        }
+      }
+    },
+    {
+      "id": "cc9f661b-c9fa-4001-be2f-99756779a2ec",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide by a power of ten",
+      "stem": "A tank holds 7.5 liters of water. It is poured equally into 100 cups. How many liters of water are in each cup?",
+      "choices": [],
+      "answer": "0.075",
+      "compute": "7.5/100",
+      "solution": "Dividing by 100 moves each digit two places to the right: $7.5 \\div 100 = 0.075$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.075",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.5 / 100 = 0.075.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.408Z"
+        }
+      }
+    },
+    {
+      "id": "c799128d-5615-4b19-9962-3b896092f0ef",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Explain place value patterns",
+      "stem": "A pattern starts at 0.003, and each number is 10 times the number before it. What is the 4th number in the pattern?",
+      "choices": [],
+      "answer": "3",
+      "compute": "0.003*1000",
+      "solution": "The pattern is 0.003, 0.03, 0.3, 3. The 4th number is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.003, 0.03, 0.3, 3. 4th number is 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.420Z"
+        }
+      }
+    },
+    {
+      "id": "76d9bb12-95c1-4cbc-ac7e-38bc6a9aad16",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Powers of ten with exponents",
+      "stem": "Find $0.9 \\times 10^4$.",
+      "choices": [],
+      "answer": "9000",
+      "compute": "0.9*10000",
+      "solution": "$10^4 = 10{,}000$. Multiplying 0.9 by 10,000 moves each digit four places to the left: $0.9 \\times 10{,}000 = 9{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.9 x 10,000 = 9000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.435Z"
+        }
+      }
+    },
+    {
+      "id": "75c4b3f4-0eb8-4855-8335-7e1cbab01bc7",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "Which number has a 3 that is worth 0.03?",
+      "choices": [
+        "4.032",
+        "4.302",
+        "4.023",
+        "43.02"
+      ],
+      "answer": "4.032",
+      "compute": null,
+      "solution": "A digit worth 0.03 is in the hundredths place, the second place after the decimal point. In 4.032 the 3 is there. In 4.302 the 3 is in the tenths place, in 4.023 it is in the thousandths place, and in 43.02 it is in the ones place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.032",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.03 is a 3 in the hundredths place: 4.032. (4.023 thousandths, 43.02 ones, 4.302 tenths.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.454Z"
+        }
+      }
+    },
+    {
+      "id": "2d2099a6-66a9-4702-b74e-efcef535a1c1",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "Write $5{,}000 + 60 + 0.4 + 0.007$ as a decimal number.",
+      "choices": [],
+      "answer": "5060.407",
+      "compute": "5000+60+0.4+0.007",
+      "solution": "Put each part in its place: 5 thousands, 0 hundreds, 6 tens, 0 ones, then 4 tenths, 0 hundredths and 7 thousandths. The number is 5,060.407.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5060.407",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5000 + 60 + 0.4 + 0.007 = 5060.407.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.465Z"
+        }
+      }
+    },
+    {
+      "id": "91144d9b-b929-4059-9cde-b108043c2b5c",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "Which statement about the number $7{,}052.416$ is true?",
+      "choices": [
+        "The 5 is in the hundreds place.",
+        "The 2 is in the tenths place.",
+        "The 6 is in the thousandths place.",
+        "The 4 is in the hundredths place."
+      ],
+      "answer": "The 6 is in the thousandths place.",
+      "compute": null,
+      "solution": "The places are: 7 thousands, 0 hundreds, 5 tens, 2 ones, then 4 tenths, 1 hundredths and 6 thousandths. So the 6 is in the thousandths place; the 5 is in the tens place, the 2 in the ones place and the 4 in the tenths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 6 is in the thousandths place.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,052.416: 7 thousands, 0 hundreds, 5 tens, 2 ones, 4 tenths, 1 hundredths, 6 thousandths. Only '6 in thousandths' is true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.475Z"
+        }
+      }
+    },
+    {
+      "id": "af4cc659-15dd-411e-a3d7-f9392df42b3e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "Which is the expanded form of $308.05$?",
+      "choices": [
+        "$300 + 80 + 0.5$",
+        "$300 + 8 + 0.005$",
+        "$30 + 8 + 0.05$",
+        "$300 + 8 + 0.05$"
+      ],
+      "answer": "$300 + 8 + 0.05$",
+      "compute": null,
+      "solution": "In 308.05 the digits are 3 hundreds, 0 tens, 8 ones, 0 tenths and 5 hundredths. So the expanded form is $300 + 8 + 0.05$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$300 + 8 + 0.05$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "308.05 = 300 + 8 + 0.05.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.494Z"
+        }
+      }
+    },
+    {
+      "id": "d9152704-a3e5-4666-8e58-1541d6f8e798",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Explain place value patterns",
+      "stem": "Which statement correctly describes $4.7 \\times 100$?",
+      "choices": [
+        "Each digit moves two places to the right, so the product is 0.047.",
+        "Each digit moves one place to the left, so the product is 47.",
+        "Each digit moves two places to the left, so the product is 470.",
+        "Two zeros are added to the end, so the product is 4.700."
+      ],
+      "answer": "Each digit moves two places to the left, so the product is 470.",
+      "compute": null,
+      "solution": "Multiplying by 100 makes each digit worth 100 times as much, so each digit moves two places to the left: 4.7 becomes 470.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each digit moves two places to the left, so the product is 470.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.7 × 100 = 470; digits move two places left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.495Z"
+        }
+      }
+    },
+    {
+      "id": "924d6036-43e7-4b56-88df-871214d6e9eb",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Explain place value patterns",
+      "stem": "A number is multiplied by 10 twice in a row, and the result is 4,500. What was the number?",
+      "choices": [],
+      "answer": "45",
+      "compute": "4500/100",
+      "solution": "Multiplying by 10 twice is multiplying by 100. To undo it, divide: $4{,}500 \\div 100 = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplied by 100 in all; 4500 / 100 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.514Z"
+        }
+      }
+    },
+    {
+      "id": "a3a30f6d-e7db-4619-82f7-98bda36bd4fc",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide by a power of ten",
+      "stem": "Which equation is true?",
+      "choices": [
+        "$7 \\div 100 = 0.07$",
+        "$7 \\div 10 = 0.07$",
+        "$7 \\div 1{,}000 = 0.07$",
+        "$7 \\div 100 = 0.7$"
+      ],
+      "answer": "$7 \\div 100 = 0.07$",
+      "compute": null,
+      "solution": "Dividing 7 by 10 gives 0.7, by 100 gives 0.07, and by 1,000 gives 0.007. So only $7 \\div 100 = 0.07$ is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\div 100 = 0.07$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 / 100 = 0.07 true. 7/10 = 0.7, 7/1000 = 0.007.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.545Z"
+        }
+      }
+    },
+    {
+      "id": "ce430f2c-462f-4eb0-9fbc-0b3b2d962742",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "One marble has a mass of 3.5 grams. What is the mass of 1,000 marbles, in grams?",
+      "choices": [],
+      "answer": "3500",
+      "compute": "3.5*1000",
+      "solution": "Multiplying by 1,000 moves each digit three places to the left: $3.5 \\times 1{,}000 = 3{,}500$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.5 x 1000 = 3500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.547Z"
+        }
+      }
+    },
+    {
+      "id": "9691178f-b2ea-4724-b7f0-37b15847ee57",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "Nina compares the 5 in the number 450 with the 5 in the number 4.5. Which statement is correct?",
+      "choices": [
+        "The 5 in 450 is worth 10 times the 5 in 4.5.",
+        "The 5 in 450 is worth 1,000 times the 5 in 4.5.",
+        "The 5 in 450 is worth one tenth of the 5 in 4.5.",
+        "The 5 in 450 is worth 100 times the 5 in 4.5."
+      ],
+      "answer": "The 5 in 450 is worth 100 times the 5 in 4.5.",
+      "compute": null,
+      "solution": "The 5 in 450 is in the tens place and is worth 50. The 5 in 4.5 is in the tenths place and is worth 0.5. $50 \\div 0.5 = 100$, so it is worth 100 times as much.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 5 in 450 is worth 100 times the 5 in 4.5.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 in 450 = 50; 5 in 4.5 = 0.5; 50/0.5 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.549Z"
+        }
+      }
+    },
+    {
+      "id": "fb5c6061-420f-407e-9661-6e81cccdebfe",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "In the number $2{,}402{,}000$, how many times as much is the 2 on the left worth as the 2 on the right?",
+      "choices": [
+        "10",
+        "1,000",
+        "100",
+        "10,000"
+      ],
+      "answer": "1,000",
+      "compute": null,
+      "solution": "The left 2 is in the millions place and is worth 2,000,000. The right 2 is in the thousands place and is worth 2,000. $2{,}000{,}000 \\div 2{,}000 = 1{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left 2 = 2,000,000; right 2 = 2,000; ratio 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.552Z"
+        }
+      }
+    },
+    {
+      "id": "c42068da-2ce3-4cd6-aefa-b1321b482726",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Explain place value patterns",
+      "stem": "A number is divided by 10 three times in a row. Which single operation gives the same result?",
+      "choices": [
+        "Divide by 1,000",
+        "Divide by 30",
+        "Divide by 100",
+        "Divide by 10,000"
+      ],
+      "answer": "Divide by 1,000",
+      "compute": null,
+      "solution": "Each division by 10 moves the digits one place to the right. Three divisions move them three places, which is dividing by 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Divide by 1,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dividing by 10 three times = dividing by 10x10x10 = 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.573Z"
+        }
+      }
+    },
+    {
+      "id": "ad9c6eb0-2cc5-4a5e-8b20-98704167535e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "Which number is four and twenty-six thousandths?",
+      "choices": [
+        "4.26",
+        "4.026",
+        "4.0026",
+        "426"
+      ],
+      "answer": "4.026",
+      "compute": null,
+      "solution": "26 thousandths is 0.026, since the last digit is in the thousandths place. So the number is 4.026.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.026",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four and twenty-six thousandths = 4 + 0.026 = 4.026.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.583Z"
+        }
+      }
+    },
+    {
+      "id": "82dd44a9-2a59-4cde-a575-6e4ac27d67be",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Powers of ten with exponents",
+      "stem": "Which number is equal to $10^6$?",
+      "choices": [
+        "100,000",
+        "10,000,000",
+        "1,000,000",
+        "600,000"
+      ],
+      "answer": "1,000,000",
+      "compute": "1000000",
+      "solution": "$10^6$ is a 1 followed by 6 zeros, which is one million: 1,000,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^6 = 1,000,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.597Z"
+        }
+      }
+    },
+    {
+      "id": "c7f68faf-d1b3-421e-a8f7-a39fa0c5b12d",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Powers of ten with exponents",
+      "stem": "Divide 3,500 by $10^2$. What is the quotient?",
+      "choices": [],
+      "answer": "35",
+      "compute": "3500/100",
+      "solution": "$10^2 = 100$ and $3{,}500 \\div 100 = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3500 / 100 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.601Z"
+        }
+      }
+    },
+    {
+      "id": "e30e328a-9de4-4242-89a8-989ef2ad118e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide by a power of ten",
+      "stem": "Which number is one hundredth of $3{,}400$?",
+      "choices": [
+        "340",
+        "3.4",
+        "0.34",
+        "34"
+      ],
+      "answer": "34",
+      "compute": "3400/100",
+      "solution": "One hundredth of a number is the number divided by 100. $3{,}400 \\div 100 = 34$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3400 / 100 = 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.620Z"
+        }
+      }
+    },
+    {
+      "id": "1692b075-fe85-40c2-8252-f8c12d6c9078",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply by a power of ten",
+      "stem": "Which number is equal to $0.046 \\times 100$?",
+      "choices": [
+        "46",
+        "4.6",
+        "0.46",
+        "0.0046"
+      ],
+      "answer": "4.6",
+      "compute": "0.046*100",
+      "solution": "Multiplying by 100 moves each digit two places to the left, so $0.046 \\times 100 = 4.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.046 x 100 = 4.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.627Z"
+        }
+      }
+    },
+    {
+      "id": "ce0e133d-cda5-4035-8a80-ebc846cc3763",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "Find the ? in $0.8 \\times ? = 80$.",
+      "choices": [],
+      "answer": "100",
+      "compute": "80/0.8",
+      "solution": "To go from 0.8 to 80, each digit moves two places to the left. That is multiplying by 100, so the ? is 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 ÷ 0.8 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.673Z"
+        }
+      }
+    },
+    {
       "id": "bd681b89-451c-4d95-a627-dfb902d894eb",
       "topic_id": "NC17.5.NBT.1",
       "difficulty": 3,
@@ -7091,6 +8545,723 @@
           "work": "0.07 vs 0.007: 10 times, true. 0.07 vs 0.7 is 1/10; 0.7 vs 0.007 is 100; 0.007 vs 0.07 is 1/10.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:08.278Z"
+        }
+      }
+    },
+    {
+      "id": "6be298d7-4ded-4c9d-b962-69b8eebd1323",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "A number is made of 8 millions, 4 thousands and 6 hundredths. All other places are 0. Write the number as a decimal.",
+      "choices": [],
+      "answer": "8004000.06",
+      "compute": "8000000+4000+0.06",
+      "solution": "8 millions is 8,000,000. 4 thousands is 4,000. 6 hundredths is 0.06. Together the number is 8,004,000.06.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8004000.06",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,000,000 + 4,000 + 0.06 = 8,004,000.06.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.371Z"
+        }
+      }
+    },
+    {
+      "id": "d03877f3-3dc4-4d02-853e-5ee65eb3c407",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "A digit in which place has a value 100 times as much as the same digit in the tenths place?",
+      "choices": [
+        "ones place",
+        "tens place",
+        "hundreds place",
+        "hundredths place"
+      ],
+      "answer": "tens place",
+      "compute": null,
+      "solution": "Each place is 10 times the place to its right. Tenths to ones is 10 times, and ones to tens is another 10 times, so the tens place is 100 times the tenths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "tens place",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tenths value 0.1; 100 times is 10: tens place.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.378Z"
+        }
+      }
+    },
+    {
+      "id": "455378bb-1cd3-4c00-aefb-c8695ef8cded",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "How many thousandths are in 0.4?",
+      "choices": [],
+      "answer": "400",
+      "compute": "0.4/0.001",
+      "solution": "0.4 is 4 tenths. Each tenth is 100 thousandths, so 4 tenths is 400 thousandths. Check: 0.400 is 400 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.4 = 0.400 = 400 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.388Z"
+        }
+      }
+    },
+    {
+      "id": "224156f5-586a-4e6c-ba79-c9b0f07bcee7",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide by a power of ten",
+      "stem": "Which expression does NOT equal 0.35?",
+      "choices": [
+        "$35 \\div 100$",
+        "$0.35 \\div 10$",
+        "$3.5 \\div 10$",
+        "$350 \\div 1{,}000$"
+      ],
+      "answer": "$0.35 \\div 10$",
+      "compute": null,
+      "solution": "$35 \\div 100 = 0.35$, $3.5 \\div 10 = 0.35$ and $350 \\div 1{,}000 = 0.35$. But $0.35 \\div 10 = 0.035$, so that is the one that does not equal 0.35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.35 \\div 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$0.35\\div10=0.035$; $3.5\\div10=0.35$, $350\\div1000=0.35$, $35\\div100=0.35$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.389Z"
+        }
+      }
+    },
+    {
+      "id": "94e48052-2a32-4f22-bbe1-5a594fdaddb2",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "Which number is equal to 5 ones and 12 tenths?",
+      "choices": [
+        "6.2",
+        "5.12",
+        "17",
+        "5.2"
+      ],
+      "answer": "6.2",
+      "compute": "5+1.2",
+      "solution": "12 tenths is 1 one and 2 tenths, which is 1.2. Then $5 + 1.2 = 6.2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 12 tenths = 5 + 1.2 = 6.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.399Z"
+        }
+      }
+    },
+    {
+      "id": "32ac79e3-f0dc-4dde-83cb-82d4053b0486",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply by a power of ten",
+      "stem": "Which product is the greatest?",
+      "choices": [
+        "$0.9 \\times 1{,}000$",
+        "$8.4 \\times 100$",
+        "$0.095 \\times 10{,}000$",
+        "$91 \\times 10$"
+      ],
+      "answer": "$0.095 \\times 10{,}000$",
+      "compute": null,
+      "solution": "The products are $0.095 \\times 10{,}000 = 950$, $0.9 \\times 1{,}000 = 900$, $8.4 \\times 100 = 840$ and $91 \\times 10 = 910$. The greatest is 950.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.095 \\times 10{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "910, 840, 900, 950: greatest is $0.095\\times10{,}000=950$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.402Z"
+        }
+      }
+    },
+    {
+      "id": "8c493239-3476-4d67-83dd-523230d26b5e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "A number has a 3 in the millions place, a 0 in the hundred thousands place, a 7 in the ten thousands place and a 5 in the tenths place. Every other place has a 0. What is the number?",
+      "choices": [],
+      "answer": "3070000.5",
+      "compute": "3000000+70000+0.5",
+      "solution": "Place the digits: 3 millions, 0 hundred thousands, 7 ten thousands, then zeros up to the ones place, and 5 tenths. The number is 3,070,000.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3070000.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,070,000 + 0.5 = 3,070,000.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.427Z"
+        }
+      }
+    },
+    {
+      "id": "7da0c33b-f625-42df-aef8-761980cc63a0",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Powers of ten with exponents",
+      "stem": "Find the ? in $0.0045 \\times 10^? = 45$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "To go from 0.0045 to 45, each digit moves four places to the left. That is multiplying by $10^4 = 10{,}000$, so the ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 / 0.0045 = 10,000 = 10^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.436Z"
+        }
+      }
+    },
+    {
+      "id": "001d69f5-1298-4497-ba1b-c116075fd04e",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Powers of ten with exponents",
+      "stem": "A distance of 6,200 meters is divided by $10^3$ to change it to kilometers. How many kilometers is it?",
+      "choices": [],
+      "answer": "6.2",
+      "compute": "6200/1000",
+      "solution": "$10^3 = 1{,}000$ and $6{,}200 \\div 1{,}000 = 6.2$. The distance is 6.2 kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6200 / 1000 = 6.2 km.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.445Z"
+        }
+      }
+    },
+    {
+      "id": "08e1340a-9c79-4d75-b6ba-b7e4087a7630",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Explain place value patterns",
+      "stem": "In a pattern, each number is one hundredth of the number before it. The first number is 7,000,000. What is the 4th number?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7000000/1000000",
+      "solution": "The pattern is 7,000,000, then 70,000, then 700, then 7. The 4th number is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,000,000 → 70,000 → 700 → 7. 4th number is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.457Z"
+        }
+      }
+    },
+    {
+      "id": "857add56-d29d-4655-ab64-54346cbf8bec",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "In one number, a 4 is worth 4,000. In another number, a 4 is worth 0.04. The first 4 is worth how many times as much as the second 4?",
+      "choices": [],
+      "answer": "100000",
+      "compute": "4000/0.04",
+      "solution": "From 0.04 to 4,000: each place to the left is 10 times as much. 0.04 is in the hundredths place and 4,000 is in the thousands place, five places to the left. $10 \\times 10 \\times 10 \\times 10 \\times 10 = 100{,}000$. Check: $4{,}000 \\div 0.04 = 100{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4000 ÷ 0.04 = 100,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.468Z"
+        }
+      }
+    },
+    {
+      "id": "983a9a68-3dec-433a-805f-72284e1b2c77",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Explain place value patterns",
+      "stem": "A pattern begins with 4,000,000, and each number is one tenth of the number before it. What is the first number in the pattern that is less than 1?",
+      "choices": [],
+      "answer": "0.4",
+      "compute": "0.4",
+      "solution": "The pattern is 4,000,000, 400,000, 40,000, 4,000, 400, 40, 4, 0.4. The number 4 is not less than 1, but 0.4 is.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,000,000; 400,000; 40,000; 4,000; 400; 40; 4; 0.4. First below 1 is 0.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.482Z"
+        }
+      }
+    },
+    {
+      "id": "52edfb3f-5c3e-4259-b650-de1488b35f82",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "Which number has a 6 in the ten thousands place and also a 6 in the hundredths place?",
+      "choices": [
+        "3,206,010.60",
+        "3,602,010.06",
+        "3,260,100.60",
+        "3,260,010.06"
+      ],
+      "answer": "3,260,010.06",
+      "compute": null,
+      "solution": "In 3,260,010.06 the digits are 3 millions, 2 hundred thousands, 6 ten thousands, 0 thousands, 0 hundreds, 1 ten and 0 ones, then 0 tenths and 6 hundredths. So both 6s are in the right places. In 3,206,010.60 the ten thousands digit is 0; in 3,602,010.06 the 6 is in the hundred thousands place; in 3,260,100.60 the hundredths digit is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3,260,010.06",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,260,010.06: 6 in ten thousands, 6 in hundredths. 3,260,100.60 has 0 hundredths; 3,602,010.06 has 0 ten thousands; 3,206,010.60 neither.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.491Z"
+        }
+      }
+    },
+    {
+      "id": "546d8132-b902-4a1f-b997-8e6c5bc34b09",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and write numbers in place-value parts",
+      "stem": "Which number is equal to $7 \\times 1{,}000 + 4 \\times 10 + 3 \\times 0.1 + 6 \\times 0.001$?",
+      "choices": [
+        "7,040.306",
+        "7,400.306",
+        "7,040.36",
+        "7,004.306"
+      ],
+      "answer": "7,040.306",
+      "compute": null,
+      "solution": "The parts are 7,000 + 40 + 0.3 + 0.006. Writing each in its place gives 7,040.306: 0 hundreds, 0 ones, 0 hundredths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7,040.306",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7000 + 40 + 0.3 + 0.006 = 7040.306.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.512Z"
+        }
+      }
+    },
+    {
+      "id": "cb136a2f-9761-4015-afd6-453506d601f7",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "Find the ? in $3.07 \\times ? = 30{,}700$.",
+      "choices": [],
+      "answer": "10000",
+      "compute": "30700/3.07",
+      "solution": "To go from 3.07 to 30,700, each digit moves four places to the left. That is multiplying by 10,000, so the ? is 10,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30700 / 3.07 = 10000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.520Z"
+        }
+      }
+    },
+    {
+      "id": "668c4889-6a97-418f-afab-83d40510b3d2",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Explain place value patterns",
+      "stem": "Priya says, \"To divide 3.9 by 100, I move every digit two places to the left.\" Which statement is correct?",
+      "choices": [
+        "Priya is right. The digits move two places to the left, so the result is 390.",
+        "Priya is wrong. The digits move two places to the right, so the result is 0.039.",
+        "Priya is wrong. The digits move one place to the right, so the result is 0.39.",
+        "Priya is wrong. The digits move two places to the right, so the result is 0.0039."
+      ],
+      "answer": "Priya is wrong. The digits move two places to the right, so the result is 0.039.",
+      "compute": null,
+      "solution": "Dividing by 100 makes every digit worth one hundredth as much, so each digit moves two places to the right: 3.9 becomes 0.039.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Priya is wrong. The digits move two places to the right, so the result is 0.039.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.9 / 100 = 0.039; digits move two places right. Priya is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.526Z"
+        }
+      }
+    },
+    {
+      "id": "cd8ede85-c582-4f66-86c9-ce60830d1bf6",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply by a power of ten",
+      "stem": "A factory fills 1,000 boxes. Each box holds 0.045 kilograms of nails. How many kilograms of nails are in all the boxes?",
+      "choices": [],
+      "answer": "45",
+      "compute": "0.045*1000",
+      "solution": "Multiplying by 1,000 moves each digit three places to the left: $0.045 \\times 1{,}000 = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.045 x 1000 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.530Z"
+        }
+      }
+    },
+    {
+      "id": "6cd87dff-3894-46c2-991e-45342ba735c0",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place value relationships (10 times, one tenth)",
+      "stem": "How does the value of the 2 in $0.002$ compare with the value of the 2 in $0.2$?",
+      "choices": [
+        "It is one tenth as much.",
+        "It is 100 times as much.",
+        "It is one hundredth as much.",
+        "It is 1,000 times as much."
+      ],
+      "answer": "It is one hundredth as much.",
+      "compute": null,
+      "solution": "The 2 in 0.2 is worth 0.2 and the 2 in 0.002 is worth 0.002. $0.2 \\div 0.002 = 100$, so the 2 in 0.002 is one hundredth as much.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is one hundredth as much.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In 0.002 the 2 is 2 thousandths; in 0.2 it is 2 tenths. 0.002/0.2 = 1/100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.565Z"
+        }
+      }
+    },
+    {
+      "id": "de9e728e-cdc9-44f4-ac08-1df6a3f24eb2",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a power of ten",
+      "stem": "Find the ? in $8{,}400 \\div ? = 8.4$.",
+      "choices": [],
+      "answer": "1000",
+      "compute": "8400/8.4",
+      "solution": "To go from 8,400 to 8.4, each digit moves three places to the right. That is dividing by 1,000, so the ? is 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8400 / 1000 = 8.4, so ? = 1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.569Z"
+        }
+      }
+    },
+    {
+      "id": "386a01fc-3573-44ed-a0ff-6757ce63ddc7",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a power of ten",
+      "stem": "A box of 100 identical bolts has a mass of 82 grams. What is the mass of one bolt, in grams?",
+      "choices": [],
+      "answer": "0.82",
+      "compute": "82/100",
+      "solution": "Dividing by 100 moves each digit two places to the right: $82 \\div 100 = 0.82$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.82",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "82 / 100 = 0.82 grams.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.578Z"
+        }
+      }
+    },
+    {
+      "id": "9dac82da-81d8-436a-902c-b172e8c7d616",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value of a digit, millions to thousandths",
+      "stem": "The digit 2 in the number $4{,}000.285$ is worth how many thousandths?",
+      "choices": [],
+      "answer": "200",
+      "compute": "0.2/0.001",
+      "solution": "The 2 is in the tenths place, so it is worth 0.2. One tenth is 100 thousandths, so 0.2 is 200 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,000.285: 2 is in the tenths place, worth 0.2 = 200 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.587Z"
+        }
+      }
+    },
+    {
+      "id": "2ff8c76b-71cd-4f10-aa09-307b17e3347b",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Explain place value patterns",
+      "stem": "Which rule changes 0.08 into 800?",
+      "choices": [
+        "Multiply by 1,000",
+        "Multiply by 100",
+        "Divide by 10,000",
+        "Multiply by 10,000"
+      ],
+      "answer": "Multiply by 10,000",
+      "compute": null,
+      "solution": "Moving the digit 8 from the hundredths place to the hundreds place is four places to the left. That is multiplying by $10 \\times 10 \\times 10 \\times 10 = 10{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiply by 10,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "800 / 0.08 = 10,000, so multiply by 10,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.590Z"
+        }
+      }
+    },
+    {
+      "id": "aa4654a6-b1e4-4d79-9a5e-bda297d65848",
+      "topic_id": "NC17.5.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Powers of ten with exponents",
+      "stem": "Which expression has the greatest value?",
+      "choices": [
+        "$5 \\times 10^3$",
+        "$40 \\times 10^2$",
+        "$300 \\times 10^1$",
+        "$0.6 \\times 10^4$"
+      ],
+      "answer": "$0.6 \\times 10^4$",
+      "compute": null,
+      "solution": "$0.6 \\times 10^4 = 6{,}000$, $5 \\times 10^3 = 5{,}000$, $40 \\times 10^2 = 4{,}000$ and $300 \\times 10^1 = 3{,}000$. The greatest is 6,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.6 \\times 10^4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.6x10^4 = 6,000; 300x10 = 3,000; 40x100 = 4,000; 5x1000 = 5,000. Greatest is 6,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.597Z"
         }
       }
     },

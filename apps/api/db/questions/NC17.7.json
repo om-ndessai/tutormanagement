@@ -3407,6 +3407,728 @@
       }
     },
     {
+      "id": "18824f20-f9d0-47f4-8b0a-a8b6efe7e997",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The graph of a proportional relationship between hours $x$ and miles $y$ for a car goes through the point $(1, 55)$. What does this point mean?",
+      "choices": [
+        "The car goes 1 mile in 55 hours.",
+        "The car goes 55 miles in 1 hour.",
+        "The car goes 56 miles in all.",
+        "The car goes 55 miles in 55 hours."
+      ],
+      "answer": "The car goes 55 miles in 1 hour.",
+      "compute": null,
+      "solution": "The point $(1, 55)$ pairs 1 hour with 55 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The car goes 55 miles in 1 hour.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In a proportional graph (x,y)=(1,55) means 1 hour, 55 miles: the unit rate.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.404Z"
+        }
+      }
+    },
+    {
+      "id": "e46a7cab-01ee-4755-aaf5-d320241ffdfe",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "In a proportional relationship the pairs $(x, y)$ are $(1, 5)$, $(2, 10)$ and $(4, ?)$. What is the missing $y$-value?",
+      "choices": [],
+      "answer": "20",
+      "compute": "5*4",
+      "solution": "The constant is $k = 5 \\div 1 = 5$, so when $x = 4$, $y = 5 \\times 4 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 5/1 = 5; y = 5*4 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.406Z"
+        }
+      }
+    },
+    {
+      "id": "ebeba430-42fc-4764-ac68-25517faf1a11",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "A bike travels 24 kilometers in 2 hours at a steady speed, so distance is proportional to time. What is the constant of proportionality, in kilometers per hour?",
+      "choices": [],
+      "answer": "12",
+      "compute": "24/2",
+      "solution": "The constant is distance divided by time: $24 \\div 2 = 12$ kilometers per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 / 2 = 12 km per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.410Z"
+        }
+      }
+    },
+    {
+      "id": "9fe965fc-d516-446e-b9ac-1d830c49a2d1",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an equation y = kx",
+      "stem": "A proportional relationship has the pairs $(x, y)$: $(4, 6)$, $(8, 12)$ and $(12, 18)$. Which equation matches it?",
+      "choices": [
+        "$y = x + 2$",
+        "$y = \\frac{2}{3}x$",
+        "$y = 1.5x$",
+        "$y = 6x$"
+      ],
+      "answer": "$y = 1.5x$",
+      "compute": null,
+      "solution": "The constant is $6 \\div 4 = 1.5$, and $12 \\div 8$ and $18 \\div 12$ are also 1.5. So $y = 1.5x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 1.5x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y/x = 6/4 = 12/8 = 18/12 = 1.5, so y = 1.5x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.412Z"
+        }
+      }
+    },
+    {
+      "id": "8d5ea51c-805c-42d5-843b-73e8777e403e",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide if an equation is proportional",
+      "stem": "Which situation shows a proportional relationship between $x$ and $y$?",
+      "choices": [
+        "The total cost $y$ of $x$ movie tickets at 9 dollars each",
+        "The cost $y$ of $x$ lessons with a 10 dollar fee plus 6 dollars each",
+        "The height $y$ of a plant that is 3 centimeters tall and grows 1 centimeter a week",
+        "The age $y$ of a child who is 5 years old now, in $x$ years"
+      ],
+      "answer": "The total cost $y$ of $x$ movie tickets at 9 dollars each",
+      "compute": null,
+      "solution": "Only the ticket cost starts at 0 when $x = 0$ and grows by the same amount each time ($y = 9x$). The others start with an amount already there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The total cost $y$ of $x$ movie tickets at 9 dollars each",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only cost = 9x passes through the origin with constant ratio; the others have a starting amount.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.431Z"
+        }
+      }
+    },
+    {
+      "id": "80fe866d-c7ca-45df-bf26-53bf42f8cc62",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "In a proportional relationship the pairs $(x, y)$ are $(2, 8)$, $(3, ?)$ and $(6, 24)$. What is the missing $y$-value?",
+      "choices": [],
+      "answer": "12",
+      "compute": "8/2*3",
+      "solution": "The constant is $k = 8 \\div 2 = 4$, so when $x = 3$, $y = 4 \\times 3 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 8/2 = 4; y = 4 x 3 = 12 (check 24/6 = 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.439Z"
+        }
+      }
+    },
+    {
+      "id": "5489d5f0-13f4-4e91-bac2-822113a80772",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "In a proportional relationship the pairs $(x, y)$ are $(1, 7)$ and $(3, ?)$. What is the missing $y$-value?",
+      "choices": [],
+      "answer": "21",
+      "compute": "7*3",
+      "solution": "The constant is 7, so when $x = 3$, $y = 7 \\times 3 = 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 7; y = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.442Z"
+        }
+      }
+    },
+    {
+      "id": "dafe5aed-be3a-4974-98a5-9227a2583429",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "A tank fills so that after $x$ seconds it holds $y = 0.5x$ liters. How many liters does it hold after 10 seconds?",
+      "choices": [],
+      "answer": "5",
+      "compute": "0.5*10",
+      "solution": "Put $x = 10$ into the equation: $y = 0.5 \\times 10 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 0.5 x 10 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.444Z"
+        }
+      }
+    },
+    {
+      "id": "0b3409fe-0227-4495-8f80-3d7c603ed155",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize a proportional graph",
+      "stem": "The graph of $y = 4x$ is a straight line. Which point is on it?",
+      "choices": [
+        "$(3, 7)$",
+        "$(4, 3)$",
+        "$(12, 4)$",
+        "$(3, 12)$"
+      ],
+      "answer": "$(3, 12)$",
+      "compute": null,
+      "solution": "When $x = 3$, $y = 4 \\times 3 = 12$, so $(3, 12)$ is on the line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3, 12)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4*3 = 12, so (3, 12). Others: 4*3=12≠7, 4*12≠4, 4*4≠3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.453Z"
+        }
+      }
+    },
+    {
+      "id": "d4440fc2-cb31-444e-ad49-2e52f0666099",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The equation $y = 12x$ gives the number of eggs $y$ in $x$ cartons. What does the 12 mean?",
+      "choices": [
+        "Each carton holds 12 eggs.",
+        "There are 12 cartons.",
+        "There are 12 eggs in all.",
+        "One egg fills 12 cartons."
+      ],
+      "answer": "Each carton holds 12 eggs.",
+      "compute": null,
+      "solution": "The constant 12 is the number of eggs for 1 carton.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each carton holds 12 eggs.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 12x: 12 eggs per carton.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.463Z"
+        }
+      }
+    },
+    {
+      "id": "21d56fd7-ed25-484a-a68e-196cc17b4654",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The number of wheels $y$ on $x$ bicycles is $y = 2x$. How many bicycles have 18 wheels in all?",
+      "choices": [],
+      "answer": "9",
+      "compute": "18/2",
+      "solution": "Put $y = 18$ into the equation: $18 = 2x$, so $x = 18 \\div 2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 = 2x, x = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.468Z"
+        }
+      }
+    },
+    {
+      "id": "916feaf4-7e91-44c0-8243-14a89af68e4f",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide if a table is proportional",
+      "stem": "Which statement is true for every proportional relationship between $x$ and $y$?",
+      "choices": [
+        "The difference $y - x$ is the same for every pair.",
+        "The sum $x + y$ is the same for every pair.",
+        "The ratio $y \\div x$ is the same for every pair.",
+        "The product $xy$ is the same for every pair."
+      ],
+      "answer": "The ratio $y \\div x$ is the same for every pair.",
+      "compute": null,
+      "solution": "In a proportional relationship $y = kx$, so $y \\div x = k$ for every pair.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The ratio $y \\div x$ is the same for every pair.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = kx means y/x = k constant for every pair (x ≠ 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.471Z"
+        }
+      }
+    },
+    {
+      "id": "27e83f43-ca92-4ceb-a2d0-81231c3f454a",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write an equation y = kx",
+      "stem": "A machine makes 7 toys every minute. The number of toys $y$ after $x$ minutes is $y = kx$. What is $k$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Each minute adds 7 toys, so $y = 7x$ and $k = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 7x, k = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.481Z"
+        }
+      }
+    },
+    {
+      "id": "4ae543e7-a837-4595-ad8d-55003c3c518e",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the constant of proportionality",
+      "stem": "The pairs $(x, y)$ of a proportional relationship are $(2, 24)$, $(4, 48)$ and $(6, 72)$. What is the constant of proportionality?",
+      "choices": [
+        "22",
+        "12",
+        "48",
+        "6"
+      ],
+      "answer": "12",
+      "compute": "24/2",
+      "solution": "Divide $y$ by $x$: $24 \\div 2 = 12$, and $48 \\div 4 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24/2 = 48/4 = 72/6 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.498Z"
+        }
+      }
+    },
+    {
+      "id": "05bde4f1-4057-4062-b7b5-62ea76e6ce6a",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "In a proportional relationship, $y = 20$ when $x = 5$. What is the constant of proportionality?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "The constant is $k = y \\div x = 20 \\div 5 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 20 / 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.523Z"
+        }
+      }
+    },
+    {
+      "id": "849fb445-9c70-4c77-8b6b-707ead39a81c",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "The equation $y = 8x$ shows a proportional relationship. What is the constant of proportionality?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "In $y = kx$ the constant is the number multiplying $x$, which is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = kx with k = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.524Z"
+        }
+      }
+    },
+    {
+      "id": "12680971-3264-4b8f-aa4d-fcd062955f74",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The graph of the pay $y$, in dollars, for $x$ hours of work is a straight line through $(0, 0)$ and $(1, 12)$. How many dollars does the worker earn in each hour?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The point $(1, 12)$ says 1 hour of work earns 12 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope = 12/1 = 12 dollars per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.530Z"
+        }
+      }
+    },
+    {
+      "id": "f4bb2726-5403-4c26-8d6e-dc60583a191c",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide if a table is proportional",
+      "stem": "Zoe wrote four tables of values for $x$ and $y$. Exactly one is not a proportional relationship. Which one is it?",
+      "choices": [
+        "$x$: 1, 2, 3 and $y$: 2, 4, 6",
+        "$x$: 1, 2, 3 and $y$: 3, 5, 7",
+        "$x$: 1, 2, 3 and $y$: 5, 10, 15",
+        "$x$: 1, 2, 3 and $y$: 1.5, 3, 4.5"
+      ],
+      "answer": "$x$: 1, 2, 3 and $y$: 3, 5, 7",
+      "compute": null,
+      "solution": "The ratios $y \\div x$ are $3$, $2.5$ and about $2.33$ in the first table, so they are not equal. The other tables have the same ratio each time.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x$: 1, 2, 3 and $y$: 3, 5, 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,5,7: 3/1 = 3, 5/2 = 2.5, not constant. Others have k = 2, 1.5, 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.539Z"
+        }
+      }
+    },
+    {
+      "id": "04df81a9-c202-46ce-aea5-7e19debd17cf",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an equation y = kx",
+      "stem": "A recipe uses 2 cups of flour for each batch. Let $x$ be the number of batches and $y$ the cups of flour. Which equation shows this?",
+      "choices": [
+        "$y = x + 2$",
+        "$2y = x$",
+        "$y = 2 - x$",
+        "$y = 2x$"
+      ],
+      "answer": "$y = 2x$",
+      "compute": null,
+      "solution": "Each batch uses 2 cups, so the flour is 2 times the batches: $y = 2x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 cups per batch: y = 2x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.559Z"
+        }
+      }
+    },
+    {
+      "id": "3c274951-237f-4bcb-90bf-3b6997f990d2",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize a proportional graph",
+      "stem": "The graph of a proportional relationship is a straight line through $(0, 0)$ and $(4, 12)$. Which point is also on the graph?",
+      "choices": [
+        "$(5, 13)$",
+        "$(5, 16)$",
+        "$(5, 15)$",
+        "$(5, 9)$"
+      ],
+      "answer": "$(5, 15)$",
+      "compute": null,
+      "solution": "The constant is $12 \\div 4 = 3$, so $y = 3x$. When $x = 5$, $y = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, 15)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 12/4 = 3; at x = 5, y = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.593Z"
+        }
+      }
+    },
+    {
+      "id": "2684c485-473b-42b5-887d-ae8b5731aaee",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The cost $y$, in dollars, of $x$ tickets is $y = 9x$. What is the cost of 4 tickets, in dollars?",
+      "choices": [],
+      "answer": "36",
+      "compute": "9*4",
+      "solution": "Put $x = 4$ into the equation: $y = 9 \\times 4 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.609Z"
+        }
+      }
+    },
+    {
+      "id": "e840b0d8-b482-498c-b232-ec9259b32826",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "The graph of a proportional relationship is a straight line through the origin and the point $(2, 10)$. What is the constant of proportionality?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "The constant is $k = y \\div x = 10 \\div 2 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = y/x = 10/2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.641Z"
+        }
+      }
+    },
+    {
+      "id": "a8d42f07-93f0-4870-bd6c-4529b1a54b05",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide if an equation is proportional",
+      "stem": "The graph of one of these equations is a straight line through the origin. Which equation is it?",
+      "choices": [
+        "$y = \\frac{3}{2}x$",
+        "$y = \\frac{3}{2} + x$",
+        "$y = \\frac{3}{2} - x$",
+        "$y = \\frac{x}{2} + 3$"
+      ],
+      "answer": "$y = \\frac{3}{2}x$",
+      "compute": null,
+      "solution": "A proportional relationship has the form $y = kx$, with nothing added or subtracted. Only $y = \\frac{3}{2}x$ fits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\frac{3}{2}x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Through origin needs y=0 at x=0: only y=(3/2)x. Others give 3, 3/2, 3/2 at x=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.669Z"
+        }
+      }
+    },
+    {
       "id": "4f3f23b2-7152-4117-859d-bf4d9e0a994a",
       "topic_id": "NC17.7.RP.2",
       "difficulty": 2,
@@ -3718,6 +4440,728 @@
           "work": "5y = 20x so y = 4x; k = 4.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:10.464Z"
+        }
+      }
+    },
+    {
+      "id": "b1799cf9-a8ff-4998-925a-4abd954ecd25",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide if an equation is proportional",
+      "stem": "Which equation can be rewritten in the form $y = kx$?",
+      "choices": [
+        "$y - 2 = 3x$",
+        "$4y = 10x$",
+        "$y + 5 = x$",
+        "$2y = x + 6$"
+      ],
+      "answer": "$4y = 10x$",
+      "compute": null,
+      "solution": "Divide $4y = 10x$ by 4 to get $y = 2.5x$. The others have a number added or subtracted: $y = 3x + 2$, $y = x - 5$, $y = \\frac{x + 6}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4y = 10x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$4y=10x$ divides by 4 to $y=2.5x$. The others have a constant term: $y=x-5$, $y=3x+2$, $y=x/2+3$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.210Z"
+        }
+      }
+    },
+    {
+      "id": "6446d0dd-1e38-4c9e-9893-fd5e2d374f9e",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognize a proportional graph",
+      "stem": "The point $(4, 10)$ is on the graph of a proportional relationship between $x$ and $y$. Which other point must be on the graph?",
+      "choices": [
+        "$(2, 5)$",
+        "$(2, 6)$",
+        "$(6, 12)$",
+        "$(1, 6)$"
+      ],
+      "answer": "$(2, 5)$",
+      "compute": null,
+      "solution": "The constant is $10 \\div 4 = 2.5$, so $y = 2.5x$. When $x = 2$, $y = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 10/4 = 2.5. (2,5): 5/2 = 2.5 yes. (1,6),(6,12),(2,6) give 6, 2, 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.448Z"
+        }
+      }
+    },
+    {
+      "id": "a1ee9235-e203-46e8-9717-d8e73718e4b0",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "A snail travels $\\frac{3}{4}$ foot in 3 minutes at a constant speed, so distance is proportional to time. What is the constant of proportionality, in feet per minute?",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "(3/4)/3",
+      "solution": "The constant is distance divided by time: $\\frac{3}{4} \\div 3 = \\frac{1}{4}$ foot per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/4) / 3 = 1/4 foot per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.450Z"
+        }
+      }
+    },
+    {
+      "id": "92855b52-1a8f-4675-bce9-17f4e0ce157a",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the constant of proportionality",
+      "stem": "The pairs $(x, y)$ of a proportional relationship are $(4, 10)$, $(8, 20)$ and $(20, 50)$. What is the constant of proportionality?",
+      "choices": [
+        "2.5",
+        "6",
+        "0.4",
+        "30"
+      ],
+      "answer": "2.5",
+      "compute": "10/4",
+      "solution": "Divide $y$ by $x$: $10 \\div 4 = 2.5$, and $50 \\div 20 = 2.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/4 = 20/8 = 50/20 = 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.457Z"
+        }
+      }
+    },
+    {
+      "id": "ed8ce840-36f7-445d-8a9f-03e70696d395",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "A table shows a proportional relationship. The $x$-values are 4, 6 and 10, and the $y$-values are 14, ? and 35. What is the missing $y$-value?",
+      "choices": [],
+      "answer": "21",
+      "compute": "14/4*6",
+      "solution": "The constant is $14 \\div 4 = 3.5$ (check: $35 \\div 10 = 3.5$). When $x = 6$, $y = 3.5 \\times 6 = 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 14/4 = 3.5 (35/10 = 3.5). y = 3.5*6 = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.457Z"
+        }
+      }
+    },
+    {
+      "id": "a2e63ca4-958e-4016-a2bb-13bf7dffea22",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The relationship between $x$ and $y$ is proportional, and $y = 15$ when $x = 6$. What is $y$ when $x = 10$?",
+      "choices": [],
+      "answer": "25",
+      "compute": "15/6*10",
+      "solution": "The constant is $15 \\div 6 = 2.5$, so when $x = 10$, $y = 2.5 \\times 10 = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 15/6 = 2.5; y = 2.5 × 10 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.473Z"
+        }
+      }
+    },
+    {
+      "id": "cfcbf03b-b386-4327-af91-1c11df8fac00",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognize a proportional graph",
+      "stem": "A straight line passes through the points $(3, 6)$ and $(5, 10)$. Which statement is true?",
+      "choices": [
+        "It is not proportional, because the line does not start at $(1, 1)$",
+        "It is proportional, because the line also passes through $(0, 0)$",
+        "It is not proportional, because the $y$-values are not equal",
+        "It is proportional, because the line passes through $(1, 1)$"
+      ],
+      "answer": "It is proportional, because the line also passes through $(0, 0)$",
+      "compute": null,
+      "solution": "The slope is $(10 - 6) \\div (5 - 3) = 2$ and $6 \\div 3 = 2$, so the line is $y = 2x$, which passes through $(0, 0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is proportional, because the line also passes through $(0, 0)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/3 = 10/5 = 2, line y = 2x passes through (0,0): proportional. (1,1) not on it.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.481Z"
+        }
+      }
+    },
+    {
+      "id": "d6aee28e-0e00-4e3e-a669-dfb80d650b45",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "A printer prints 90 pages in 6 minutes, and the pages printed $y$ are proportional to the minutes $x$. How many pages does it print in 15 minutes?",
+      "choices": [],
+      "answer": "225",
+      "compute": "90/6*15",
+      "solution": "The constant is $90 \\div 6 = 15$ pages per minute, so $y = 15 \\times 15 = 225$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "225",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90/6 = 15 pages/min; 15 × 15 = 225.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.492Z"
+        }
+      }
+    },
+    {
+      "id": "5e7e81c2-00cc-449d-88d5-2fa6defc5081",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "In a proportional relationship, $x$ is the pounds of bananas and $y$ is the cost in dollars. What does the point $(0, 0)$ on the graph mean?",
+      "choices": [
+        "Bananas cost 0 dollars each pound.",
+        "Zero pounds of bananas cost 0 dollars.",
+        "Zero dollars buy 1 pound of bananas.",
+        "The first pound of bananas is free."
+      ],
+      "answer": "Zero pounds of bananas cost 0 dollars.",
+      "compute": null,
+      "solution": "The first number is the pounds and the second is the cost, so $(0, 0)$ says 0 pounds cost 0 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Zero pounds of bananas cost 0 dollars.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(0,0) means x = 0 pounds costs y = 0 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.513Z"
+        }
+      }
+    },
+    {
+      "id": "86327dc1-b736-4ec1-8321-717a7a36aedc",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "A tutor charges a steady hourly rate, so the cost $y$ is proportional to the hours $x$. The table has $x$: 2, 5, 8 and $y$: 7, 17.5, 28, with $y$ in dollars. What is the constant of proportionality, in dollars per hour?",
+      "choices": [],
+      "answer": "3.5",
+      "compute": "28/8",
+      "solution": "The constant is $k = y \\div x$: $7 \\div 2 = 3.5$, $17.5 \\div 5 = 3.5$ and $28 \\div 8 = 3.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/2 = 3.5, 17.5/5 = 3.5, 28/8 = 3.5. k = 3.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.514Z"
+        }
+      }
+    },
+    {
+      "id": "a5623965-d130-44f9-baf8-bbb9510c3fb8",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The cost $y$, in dollars, of $x$ apples is $y = 0.75x$. How many apples can be bought for 6 dollars?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6/0.75",
+      "solution": "Put $y = 6$ into the equation: $6 = 0.75x$, so $x = 6 \\div 0.75 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.75x = 6, x = 6 / 0.75 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.515Z"
+        }
+      }
+    },
+    {
+      "id": "043afb06-5ce7-4e91-a53d-429e59340429",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "A plant grows $y = 2.4x$ millimeters in $x$ days. How many millimeters does it grow in 15 days?",
+      "choices": [],
+      "answer": "36",
+      "compute": "2.4*15",
+      "solution": "Put $x = 15$ into the equation: $y = 2.4 \\times 15 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 2.4 x 15 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.517Z"
+        }
+      }
+    },
+    {
+      "id": "5501a4be-a3a7-4692-8378-d8baf5c1f49a",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "A proportional relationship is given by $y = \\frac{2}{3}x$. What is $y$ when $x = 21$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "2/3*21",
+      "solution": "Put $x = 21$ into the equation: $y = \\frac{2}{3} \\times 21 = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = (2/3)(21) = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.518Z"
+        }
+      }
+    },
+    {
+      "id": "78b70f99-5202-43d3-b972-206c6ccb0187",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an equation y = kx",
+      "stem": "A car uses 4 gallons of gas for every 100 miles. Let $x$ be the miles driven and $y$ the gallons used. Which equation shows this relationship?",
+      "choices": [
+        "$y = 25x$",
+        "$y = 4x$",
+        "$y = x + 0.04$",
+        "$y = 0.04x$"
+      ],
+      "answer": "$y = 0.04x$",
+      "compute": null,
+      "solution": "The gas used for each mile is $4 \\div 100 = 0.04$ gallon, so $y = 0.04x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 0.04x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Gallons per mile = 4/100 = 0.04, so y = 0.04x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.520Z"
+        }
+      }
+    },
+    {
+      "id": "6233b75d-25f2-4d55-b0bb-0836ae367d9e",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide if an equation is proportional",
+      "stem": "Which situation is NOT a proportional relationship between $x$ and $y$?",
+      "choices": [
+        "The miles $y$ driven in $x$ hours at 50 miles per hour",
+        "The pay $y$ for $x$ hours of work at 12 dollars an hour",
+        "The liters $y$ in a tank after $x$ minutes at 3 liters a minute, starting empty",
+        "The cost $y$ of $x$ lessons with a 15 dollar fee plus 5 dollars a lesson"
+      ],
+      "answer": "The cost $y$ of $x$ lessons with a 15 dollar fee plus 5 dollars a lesson",
+      "compute": null,
+      "solution": "The lesson cost is $y = 5x + 15$, which is already 15 dollars when $x = 0$. The others have the form $y = kx$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cost $y$ of $x$ lessons with a 15 dollar fee plus 5 dollars a lesson",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fee + 5 per lesson: y = 5x + 15, not through origin. Others are y = 50x, 12x, 3x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.534Z"
+        }
+      }
+    },
+    {
+      "id": "d56072be-66d5-418a-9506-775979f355a9",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The graph of a proportional relationship is a straight line through the origin and the point $(6, 15)$. What is the $y$-value of the point on the line where $x = 4$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "15/6*4",
+      "solution": "The constant is $15 \\div 6 = 2.5$, so when $x = 4$, $y = 2.5 \\times 4 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 15/6 = 2.5; y = 2.5 x 4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.544Z"
+        }
+      }
+    },
+    {
+      "id": "a60cb37f-c698-4cff-880e-c87dd3bc9884",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "A car uses 6 gallons of gas to go 156 miles. The miles $y$ are proportional to the gallons $x$. What is the constant of proportionality, in miles per gallon?",
+      "choices": [],
+      "answer": "26",
+      "compute": "156/6",
+      "solution": "The constant is $k = y \\div x = 156 \\div 6 = 26$ miles per gallon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "156 / 6 = 26 miles per gallon.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.560Z"
+        }
+      }
+    },
+    {
+      "id": "3d8accbf-7523-443f-ba52-7d4f1cf605ff",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The graph of the cost $y$, in dollars, of $x$ pounds of flour is a straight line through the origin and the point $(8, 6)$. What is the cost of 1 pound of flour, in dollars?",
+      "choices": [],
+      "answer": "0.75",
+      "compute": "6/8",
+      "solution": "The cost of 1 pound is the constant $6 \\div 8 = 0.75$ dollar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Line through origin: k = 6/8 = 0.75 dollars per pound.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.567Z"
+        }
+      }
+    },
+    {
+      "id": "96d71a11-646c-4586-96b3-d96935ebe10d",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "In a proportional relationship the pairs $(x, y)$ are $(6, 4)$ and $(9, ?)$. What is the missing $y$-value?",
+      "choices": [],
+      "answer": "6",
+      "compute": "4/6*9",
+      "solution": "The constant is $4 \\div 6 = \\frac{2}{3}$, so when $x = 9$, $y = \\frac{2}{3} \\times 9 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 4/6 = 2/3; y = 9 x 2/3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.582Z"
+        }
+      }
+    },
+    {
+      "id": "7c6eb9bb-bdde-42de-aec6-ba0c959e6fb5",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an equation y = kx",
+      "stem": "In a proportional relationship, $y = 14$ when $x = 21$. Which equation represents it?",
+      "choices": [
+        "$y = \\frac{3}{2}x$",
+        "$y = x - 7$",
+        "$y = \\frac{2}{3}x$",
+        "$y = 7x$"
+      ],
+      "answer": "$y = \\frac{2}{3}x$",
+      "compute": null,
+      "solution": "The constant is $14 \\div 21 = \\frac{2}{3}$, so $y = \\frac{2}{3}x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\frac{2}{3}x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 14/21 = 2/3; y = (2/3)x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.606Z"
+        }
+      }
+    },
+    {
+      "id": "c7b04dc7-011f-4508-bc7c-ba43c4c806ac",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide if an equation is proportional",
+      "stem": "A student has four equations. Which one does NOT describe a proportional relationship between $x$ and $y$?",
+      "choices": [
+        "$y = \\frac{x}{6}$",
+        "$y = 0.6x$",
+        "$y = \\frac{2x}{3}$",
+        "$y = \\frac{6}{x}$"
+      ],
+      "answer": "$y = \\frac{6}{x}$",
+      "compute": null,
+      "solution": "The equation $y = \\frac{6}{x}$ divides by $x$, so $y$ is not a constant multiple of $x$. The others have the form $y = kx$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\frac{6}{x}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 6/x is inverse, not y = kx. Others are y = kx with k = 1/6, 0.6, 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.612Z"
+        }
+      }
+    },
+    {
+      "id": "f3afa331-1adb-4a7e-b6a2-70acdd06f3b6",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The equation $y = 1.25x$ gives the cost $y$, in dollars, of $x$ pounds of grapes. What does the point $(4, 5)$ on its graph mean?",
+      "choices": [
+        "5 pounds of grapes cost 4 dollars.",
+        "1.25 pounds of grapes cost 1 dollar.",
+        "4 pounds of grapes cost 5 dollars.",
+        "4 pounds of grapes cost 1.25 dollars."
+      ],
+      "answer": "4 pounds of grapes cost 5 dollars.",
+      "compute": null,
+      "solution": "When $x = 4$, $y = 1.25 \\times 4 = 5$. So 4 pounds cost 5 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 pounds of grapes cost 5 dollars.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 4 pounds, y = 5 dollars (1.25 x 4 = 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.617Z"
+        }
+      }
+    },
+    {
+      "id": "a7477131-9b62-4178-a890-552c92865c51",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide if a table is proportional",
+      "stem": "Which table of values represents a proportional relationship?",
+      "choices": [
+        "$x$: 4, 6, 10 and $y$: 10, 15, 25",
+        "$x$: 4, 6, 10 and $y$: 10, 12, 16",
+        "$x$: 4, 6, 10 and $y$: 8, 12, 18",
+        "$x$: 4, 6, 10 and $y$: 10, 15, 24"
+      ],
+      "answer": "$x$: 4, 6, 10 and $y$: 10, 15, 25",
+      "compute": null,
+      "solution": "In the first table $y \\div x$ is $2.5$ every time. In the others the ratios differ (for example $10 \\div 4 = 2.5$ but $12 \\div 6 = 2$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x$: 4, 6, 10 and $y$: 10, 15, 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 10/4=15/6=25/10=2.5. B: 24/10=2.4. C: 2.5, 2, 1.6. D: 2, 2, 1.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.650Z"
         }
       }
     },
@@ -4038,6 +5482,728 @@
           "work": "k = 10/4 = 2.5 (17.5/7 = 2.5); x = 30/2.5 = 12.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:10.464Z"
+        }
+      }
+    },
+    {
+      "id": "ab122f38-a86d-47aa-a31a-5d3cac2e5b7a",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "A tank fills at a constant rate, so the gallons $y$ in it are proportional to the minutes $x$. It holds 2 gallons after $\\frac{1}{2}$ minute and 3 gallons after $\\frac{3}{4}$ minute. After how many minutes does it hold 5 gallons?",
+      "choices": [],
+      "answer": "5/4",
+      "compute": "5/4",
+      "solution": "The constant is $2 \\div \\frac{1}{2} = 4$, so $y = 4x$. For $y = 5$: $x = 5 \\div 4 = \\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 2/(1/2) = 4 gal/min; check 3/(3/4) = 4. 5 = 4x so x = 5/4 = 1.25 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.451Z"
+        }
+      }
+    },
+    {
+      "id": "ce837dfe-b31d-4646-a492-6ab740e79fd2",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "A car travels 150 miles on 6 gallons of gas. The miles driven are proportional to the gallons used. How many gallons does it use to travel 400 miles?",
+      "choices": [],
+      "answer": "16",
+      "compute": "400/(150/6)",
+      "solution": "The car goes $150 \\div 6 = 25$ miles on each gallon, so 400 miles need $400 \\div 25 = 16$ gallons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "150/6 = 25 miles per gallon; 400/25 = 16 gallons.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.470Z"
+        }
+      }
+    },
+    {
+      "id": "6d9c9d78-6411-46f1-af59-98333fffb2e1",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The variables $x$ and $y$ are related by the equation $4y = 18x$. What is $y$ when $x = 6$?",
+      "choices": [],
+      "answer": "27",
+      "compute": "18*6/4",
+      "solution": "Put $x = 6$ into the equation: $4y = 18 \\times 6 = 108$, so $y = 108 \\div 4 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4y = 18·6 = 108, y = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.478Z"
+        }
+      }
+    },
+    {
+      "id": "46d4b1d2-7e43-4d6c-9004-0be53781eb3e",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The cost $y$, in dollars, of $x$ kilograms of nuts is $y = 3.2x$. What is the cost of 2.5 kilograms, in dollars?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3.2*2.5",
+      "solution": "Put $x = 2.5$ into the equation: $y = 3.2 \\times 2.5 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.2 × 2.5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.483Z"
+        }
+      }
+    },
+    {
+      "id": "9099e0f4-2861-4d33-9ca1-c205761d70b7",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "Pump A fills $y = 4.5x$ liters in $x$ minutes. Pump B fills 40 liters in 8 minutes at a constant rate. How many minutes does Pump B need to fill the amount that Pump A fills in 10 minutes?",
+      "choices": [],
+      "answer": "9",
+      "compute": "4.5*10/(40/8)",
+      "solution": "Pump A fills $4.5 \\times 10 = 45$ liters in 10 minutes. Pump B fills $40 \\div 8 = 5$ liters a minute, so it needs $45 \\div 5 = 9$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A in 10 min: 45 L. B rate 40/8 = 5 L/min; 45/5 = 9 min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.485Z"
+        }
+      }
+    },
+    {
+      "id": "9825de9b-4a40-4955-a563-6b94f237d84a",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation y = kx",
+      "stem": "A proportional relationship has $y = 1.5$ when $x = 2.5$. Which equation represents it?",
+      "choices": [
+        "$y = 0.6x$",
+        "$y = \\frac{5}{3}x$",
+        "$y = x - 1$",
+        "$y = 3.75x$"
+      ],
+      "answer": "$y = 0.6x$",
+      "compute": null,
+      "solution": "The constant is $1.5 \\div 2.5 = 0.6$, so $y = 0.6x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 0.6x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 1.5 / 2.5 = 0.6; y = 0.6x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.522Z"
+        }
+      }
+    },
+    {
+      "id": "de900684-d556-4f32-8a30-44d6eb6c69be",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "Mia earns $y = 12.5x$ dollars in $x$ hours. Sam earns 66 dollars in 6 hours at a constant rate. In 8 hours, how many more dollars does Mia earn than Sam?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12.5*8-66/6*8",
+      "solution": "Mia earns $12.5 \\times 8 = 100$ dollars. Sam earns $66 \\div 6 = 11$ dollars an hour, so $11 \\times 8 = 88$ dollars. The difference is $100 - 88 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mia: 12.5 x 8 = 100. Sam: 66/6 = 11 per hour, 11 x 8 = 88. Difference 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.528Z"
+        }
+      }
+    },
+    {
+      "id": "38cb42d9-fed0-4e82-bd0a-69cf1a0ecbf6",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "Five pounds of cheese cost 13.75 dollars, and the cost is proportional to the weight. How many dollars do 12 pounds of the cheese cost?",
+      "choices": [],
+      "answer": "33",
+      "compute": "13.75/5*12",
+      "solution": "The cost of 1 pound is $13.75 \\div 5 = 2.75$ dollars, so 12 pounds cost $2.75 \\times 12 = 33$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13.75 / 5 = 2.75 per pound; 2.75 x 12 = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.529Z"
+        }
+      }
+    },
+    {
+      "id": "2102e7d8-8c67-43f1-8d52-b6dddaa08bc3",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "Table A shows a proportional relationship with the pairs $(2, 5)$ and $(4, 10)$. Relationship B is $y = 2.4x$. How much greater is the constant of proportionality of A than that of B?",
+      "choices": [],
+      "answer": "0.1",
+      "compute": "5/2-2.4",
+      "solution": "For A the constant is $5 \\div 2 = 2.5$. For B it is $2.4$. The difference is $2.5 - 2.4 = 0.1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: k = 5/2 = 2.5. B: 2.4. 2.5 - 2.4 = 0.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.542Z"
+        }
+      }
+    },
+    {
+      "id": "ebf8a5fb-f34d-4789-94bb-a9a08caf0235",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The equation $y = \\frac{x}{8}$ gives the cups of paint $y$ needed to cover $x$ square feet of wall. Which statement is true?",
+      "choices": [
+        "Each square foot needs 8 cups of paint.",
+        "Each cup of paint covers $\\frac{1}{8}$ square foot.",
+        "Each square foot needs 1 cup of paint.",
+        "Each cup of paint covers 8 square feet."
+      ],
+      "answer": "Each cup of paint covers 8 square feet.",
+      "compute": null,
+      "solution": "Each square foot needs $\\frac{1}{8}$ cup, so 8 square feet need 1 cup: each cup covers 8 square feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each cup of paint covers 8 square feet.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = x/8: 8 sq ft need 1 cup, so each cup covers 8 square feet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.543Z"
+        }
+      }
+    },
+    {
+      "id": "fbdfa807-2c01-4423-ab92-d324c2be760c",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The graph of a proportional relationship is a straight line through the origin and the point $(9, 6)$. What is the $x$-value of the point on the line whose $y$-value is 1?",
+      "choices": [],
+      "answer": "1.5",
+      "compute": "9/6",
+      "solution": "The constant is $6 \\div 9 = \\frac{2}{3}$, so $y = \\frac{2}{3}x$. For $y = 1$: $x = 1 \\div \\frac{2}{3} = 1.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 6/9 = 2/3; 1 = (2/3)x, x = 1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.550Z"
+        }
+      }
+    },
+    {
+      "id": "41a45272-9502-4af2-87a7-69fa1f3fed7d",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide if an equation is proportional",
+      "stem": "Which of these equations, once solved for $y$, is NOT of the form $y = kx$?",
+      "choices": [
+        "$\\frac{y}{x} = 7$",
+        "$2y = 5x$",
+        "$y = 0.4x$",
+        "$\\frac{y}{x + 1} = 4$"
+      ],
+      "answer": "$\\frac{y}{x + 1} = 4$",
+      "compute": null,
+      "solution": "Solving $\\frac{y}{x + 1} = 4$ gives $y = 4x + 4$, which is not a constant multiple of $x$. The others give $y = 7x$, $y = 2.5x$ and $y = 0.4x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{y}{x + 1} = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y/(x+1) = 4 gives y = 4x + 4, not y = kx. Others: y = 0.4x, y = 7x, y = 2.5x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.555Z"
+        }
+      }
+    },
+    {
+      "id": "62311931-d315-4ac4-af78-7662c47fe553",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The distance $y$, in kilometers, that a cyclist rides in $x$ hours is $y = 4.8x$. How many hours does the cyclist need to ride 18 kilometers?",
+      "choices": [],
+      "answer": "3.75",
+      "compute": "18/4.8",
+      "solution": "Put $y = 18$ into the equation: $18 = 4.8x$, so $x = 18 \\div 4.8 = 3.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / 4.8 = 3.75 hours.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.558Z"
+        }
+      }
+    },
+    {
+      "id": "0ca25457-2411-4bad-94e5-a3fcfdeca764",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a proportional equation to find a value",
+      "stem": "The equation $y = 4.5x$ is proportional. Which value of $x$ makes $y$ equal to 36?",
+      "choices": [
+        "162",
+        "0.125",
+        "31.5",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "36/4.5",
+      "solution": "Solve $36 = 4.5x$: $x = 36 \\div 4.5 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 / 4.5 = 8. Check 4.5 x 8 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.586Z"
+        }
+      }
+    },
+    {
+      "id": "7e2d22bb-ef8f-48e4-baee-397d28f9939e",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Complete a table of a proportional relationship",
+      "stem": "A table shows a proportional relationship. The $x$-values are 2.5, 4 and 6.5, and the $y$-values are 10, ? and 26. What is the missing $y$-value?",
+      "choices": [
+        "16",
+        "11.5",
+        "6.4",
+        "40"
+      ],
+      "answer": "16",
+      "compute": "10/2.5*4",
+      "solution": "The constant is $10 \\div 2.5 = 4$ (check: $26 \\div 6.5 = 4$). When $x = 4$, $y = 4 \\times 4 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 10/2.5 = 4 (check 26/6.5 = 4); y = 4 x 4 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.589Z"
+        }
+      }
+    },
+    {
+      "id": "33a38975-2a85-4895-a809-4d197c28c2ba",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Recognize a proportional graph",
+      "stem": "A table shows a proportional relationship with $x$: 2, 4, 6 and $y$: 3, 6, 9. Which graph could show it?",
+      "choices": [
+        "A straight line through $(0, 0)$ and $(2, 3)$",
+        "A straight line through $(0, 1)$ and $(2, 3)$",
+        "A straight line through $(0, 0)$ and $(3, 2)$",
+        "A straight line through $(0, 3)$ and $(2, 6)$"
+      ],
+      "answer": "A straight line through $(0, 0)$ and $(2, 3)$",
+      "compute": null,
+      "solution": "The constant is $3 \\div 2 = 1.5$, so the line is $y = 1.5x$, which passes through $(0, 0)$ and $(2, 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A straight line through $(0, 0)$ and $(2, 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 1.5x. Line through (0,0) and (2,3) has slope 1.5. (3,2) gives 2/3; others do not pass through origin.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.592Z"
+        }
+      }
+    },
+    {
+      "id": "f8aa0273-66af-4adf-9b09-408ab0b9a5df",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "Graph A is a proportional relationship through the point $(2, 7)$. Graph B is a proportional relationship through the point $(3, 10)$. Which statement is true?",
+      "choices": [
+        "B has the greater constant, because 10 is more than 7",
+        "A has the greater constant, because $7 \\div 2$ is more than $10 \\div 3$",
+        "B has the greater constant, because 3 is more than 2",
+        "They have the same constant, because both pass through the origin"
+      ],
+      "answer": "A has the greater constant, because $7 \\div 2$ is more than $10 \\div 3$",
+      "compute": null,
+      "solution": "A: $7 \\div 2 = 3.5$. B: $10 \\div 3 \\approx 3.33$. So A has the greater constant.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A has the greater constant, because $7 \\div 2$ is more than $10 \\div 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k_A = 7/2 = 3.5, k_B = 10/3 = 3.33. A greater, for the reason stated.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.600Z"
+        }
+      }
+    },
+    {
+      "id": "8084a9a2-9c67-41ca-9779-e4ab48097d78",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation y = kx",
+      "stem": "A faucet fills $\\frac{3}{4}$ gallon in 2 minutes at a constant rate. Let $x$ be the minutes and $y$ the gallons. Which equation represents this?",
+      "choices": [
+        "$y = \\frac{8}{3}x$",
+        "$y = \\frac{3}{8}x$",
+        "$y = \\frac{3}{2}x$",
+        "$y = x + \\frac{3}{8}$"
+      ],
+      "answer": "$y = \\frac{3}{8}x$",
+      "compute": null,
+      "solution": "The gallons in 1 minute are $\\frac{3}{4} \\div 2 = \\frac{3}{8}$, so $y = \\frac{3}{8}x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\frac{3}{8}x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = (3/4)/2 = 3/8 gallon per minute; y = (3/8)x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.601Z"
+        }
+      }
+    },
+    {
+      "id": "a4d15f31-0a6c-462c-bc64-77e4de7bb3aa",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Recognize a proportional graph",
+      "stem": "The graph of a proportional relationship is a straight line through the origin and the point $(3, 2)$. Which point is also on the graph?",
+      "choices": [
+        "$(4.5, 6.5)$",
+        "$(6, 5)$",
+        "$(4.5, 3)$",
+        "$(5, 4)$"
+      ],
+      "answer": "$(4.5, 3)$",
+      "compute": null,
+      "solution": "The constant is $2 \\div 3 = \\frac{2}{3}$, so $y = \\frac{2}{3}x$. When $x = 4.5$, $y = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4.5, 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 2/3. (4.5,3): 3/4.5 = 2/3 yes. (5,4) 0.8, (6,5) 0.83, (4.5,6.5) no.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.621Z"
+        }
+      }
+    },
+    {
+      "id": "3a9cf2b7-50b6-4590-b666-2b7e5eba5087",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the constant and points in context",
+      "stem": "The graph of the loaves $y$ made from $x$ cups of flour is a straight line through the origin and the point $(4, 1)$. Which statement is true?",
+      "choices": [
+        "1 cup of flour makes 4 loaves.",
+        "4 loaves use 1 cup of flour.",
+        "4 cups of flour make 1 loaf, so 1 cup makes $\\frac{1}{4}$ loaf.",
+        "4 cups of flour make 4 loaves."
+      ],
+      "answer": "4 cups of flour make 1 loaf, so 1 cup makes $\\frac{1}{4}$ loaf.",
+      "compute": null,
+      "solution": "The point $(4, 1)$ pairs 4 cups with 1 loaf, so each cup makes $\\frac{1}{4}$ loaf.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 cups of flour make 1 loaf, so 1 cup makes $\\frac{1}{4}$ loaf.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Point (4,1): x=4 cups gives y=1 loaf; k=1/4 loaf per cup.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.632Z"
+        }
+      }
+    },
+    {
+      "id": "96f29c17-9ce8-4d8b-8cf2-61f62d3c594d",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide if a table is proportional",
+      "stem": "Which table does NOT show a proportional relationship?",
+      "choices": [
+        "$x$: 2, 5, 9 and $y$: 3, 7.5, 13.5",
+        "$x$: 1, 4, 10 and $y$: 0.6, 2.4, 6",
+        "$x$: 2, 6, 10 and $y$: 5, 15, 26",
+        "$x$: 3, 6, 12 and $y$: 2, 4, 8"
+      ],
+      "answer": "$x$: 2, 6, 10 and $y$: 5, 15, 26",
+      "compute": null,
+      "solution": "In the first table $y \\div x$ is $2.5$, $2.5$ and $2.6$, so it is not constant. The other tables have the same ratio throughout (1.5, 0.6 and $\\frac{2}{3}$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x$: 2, 6, 10 and $y$: 5, 15, 26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: y/x=1.5 each. B: 0.6 each. C: 5/2=2.5, 15/6=2.5, 26/10=2.6 not constant. D: 2/3 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.640Z"
+        }
+      }
+    },
+    {
+      "id": "146cc720-e28a-4a61-82b7-ad8447556f2f",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "A hiker walks $2\\frac{1}{2}$ miles in $\\frac{3}{4}$ hour at a constant speed, so distance is proportional to time. What is the constant of proportionality, in miles per hour?",
+      "choices": [],
+      "answer": "10/3",
+      "compute": "(5/2)/(3/4)",
+      "solution": "The constant is distance divided by time: $2\\frac{1}{2} \\div \\frac{3}{4} = \\frac{5}{2} \\times \\frac{4}{3} = \\frac{10}{3}$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = (5/2) ÷ (3/4) = 5/2 × 4/3 = 10/3 = 3 1/3 mph.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.656Z"
+        }
+      }
+    },
+    {
+      "id": "df86a1fa-a140-45f4-aef6-11642007d355",
+      "topic_id": "NC17.7.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the constant of proportionality",
+      "stem": "A recipe uses $\\frac{3}{4}$ cup of oil for 2 cups of flour. The oil $y$ is proportional to the flour $x$. What is the constant of proportionality $k$ in $y = kx$?",
+      "choices": [],
+      "answer": "3/8",
+      "compute": "(3/4)/2",
+      "solution": "The constant is oil divided by flour: $\\frac{3}{4} \\div 2 = \\frac{3}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = y/x = (3/4) ÷ 2 = 3/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.668Z"
         }
       }
     },

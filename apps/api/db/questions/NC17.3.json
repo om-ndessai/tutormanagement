@@ -3,6 +3,7 @@
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
     "NC17.3.OA.1": "Factors up to 10 only. Skills: equal groups, writing multiplication sentences, repeated addition, arrays, meaning of a product, and the commutative, distributive and associative properties. Strategies are tested as choices of expression or story, since text cannot ask a student to explain. Factors up to 10. Division and missing-factor questions left out (other standards). Arrays and groups are written in words.",
+    "NC17.3.OA.2": "Whole-number quotients only (no remainders), dividends within the one-digit multiplication facts (at most 81).",
     "NC17.3.OA.3": "All one-step problems with factors and divisors up to 10 (products to 90). Two-step problems (3.OA.8) are deliberately left out.",
     "NC17.3.OA.8": "Only addition, subtraction and multiplication (multiplication facts within 100, sums and differences within 1000), as the summary names; no division. Letters stand for the unknown in the equation questions. Skills: multiply then add (3), multiply then subtract (6), add and subtract (4), add then multiply (3), two products combined (4), write an equation (6), work backward (4).",
     "NC17.3.OA.9": "Hundreds board and multiplication table patterns are described in words, not shown; the explaining questions are choice questions about reasons.",
@@ -951,6 +952,108 @@
       }
     },
     {
+      "id": "79d9904e-8ec1-4abb-8c81-fb1f55c0f22c",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Meaning of a product",
+      "stem": "Which story shows $3 \\times 4$?",
+      "choices": [
+        "3 crayons and 4 more crayons",
+        "4 boxes with 4 crayons in each box",
+        "4 crayons with 3 crayons taken away",
+        "3 boxes with 4 crayons in each box"
+      ],
+      "answer": "3 boxes with 4 crayons in each box",
+      "compute": null,
+      "solution": "$3 \\times 4$ means 3 groups with 4 in each group.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 boxes with 4 crayons in each box",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 4 = 3 groups of 4: 3 boxes with 4 crayons each. No option shows 4 groups of 3, so only one fits.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.522Z"
+        }
+      }
+    },
+    {
+      "id": "d4557cf3-b39c-4517-b243-84e55991729c",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Meaning of a product",
+      "stem": "A shelf has 4 boxes with 6 pens in each box. In $4 \\times 6 = 24$, what does the 6 tell you?",
+      "choices": [
+        "The number of boxes on the shelf",
+        "The total number of pens in all",
+        "The number of pens in each box",
+        "The number of pens that were added"
+      ],
+      "answer": "The number of pens in each box",
+      "compute": null,
+      "solution": "In 4 groups of 6, the 4 is the number of groups and the 6 is the number in each group.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of pens in each box",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 groups of 6: the 6 is pens in each box.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.554Z"
+        }
+      }
+    },
+    {
+      "id": "712f6475-5b92-41b8-b197-299b9910dc54",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Commutative property",
+      "stem": "Which has the same product as $3 \\times 7$?",
+      "choices": [
+        "$3 + 7$",
+        "$7 \\times 3$",
+        "$3 \\times 3$",
+        "$7 \\times 7$"
+      ],
+      "answer": "$7 \\times 3$",
+      "compute": null,
+      "solution": "Changing the order of the factors does not change the product.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x7 = 21 = 7x3 (commutative).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.605Z"
+        }
+      }
+    },
+    {
       "id": "802a2207-ded9-4506-817d-7e194c44e4c0",
       "topic_id": "NC17.3.OA.1",
       "difficulty": 2,
@@ -1886,6 +1989,108 @@
       }
     },
     {
+      "id": "e46ce6e3-c413-4356-9d9b-6bcc5ebdb8be",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Commutative property",
+      "stem": "Which number makes this equation true? $8 \\times 6 = ? \\times 8$",
+      "choices": [
+        "8",
+        "48",
+        "6",
+        "14"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The factors can be switched: $8 \\times 6 = 6 \\times 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Commutative: 8 x 6 = 6 x 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.552Z"
+        }
+      }
+    },
+    {
+      "id": "ed92f945-1039-4aae-843f-f2b949b3a8c5",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Associative property: three factors",
+      "stem": "Dev finds $2 \\times 4 \\times 3$. He multiplies $2 \\times 4$ first. Which expression shows his next step?",
+      "choices": [
+        "$6 \\times 4$",
+        "$2 \\times 7$",
+        "$8 \\times 3$",
+        "$2 \\times 12$"
+      ],
+      "answer": "$8 \\times 3$",
+      "compute": null,
+      "solution": "$2 \\times 4 = 8$, so the next step is $8 \\times 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 \\times 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 4 = 8, then 8 x 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.556Z"
+        }
+      }
+    },
+    {
+      "id": "77412514-6561-435e-8cfc-c850baf8ce07",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Meaning of a product",
+      "stem": "Which problem can be solved with $4 \\times 7$?",
+      "choices": [
+        "There are 4 bags with 7 apples in each bag. How many apples are there in all?",
+        "There are 4 bags with 7 apples in all. How many apples are in each bag?",
+        "Sam has 4 apples and gets 7 more. How many apples does he have?",
+        "Sam has 7 apples and eats 4 of them. How many apples are left?"
+      ],
+      "answer": "There are 4 bags with 7 apples in each bag. How many apples are there in all?",
+      "compute": null,
+      "solution": "$4 \\times 7$ means 4 groups of 7, so the total of 4 bags with 7 apples in each bag.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 4 bags with 7 apples in each bag. How many apples are there in all?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 7 = 4 groups of 7: 4 bags with 7 apples each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.623Z"
+        }
+      }
+    },
+    {
       "id": "0fa1c0b2-47f9-4867-8724-ec63f8592a9c",
       "topic_id": "NC17.3.OA.1",
       "difficulty": 3,
@@ -2763,6 +2968,108 @@
       }
     },
     {
+      "id": "b3f7901a-ccf6-4ee9-ac21-5738a6e0b8eb",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distributive property: break apart a factor",
+      "stem": "Ravi says $6 \\times 7 = 6 \\times 5 + 6 \\times 2$. Is he right?",
+      "choices": [
+        "No, because he should add 6 + 5 + 2 to get the total",
+        "Yes, because 7 = 5 + 2 and he multiplies 6 by each part",
+        "No, because 5 plus 2 is more than the 7 he needs",
+        "Yes, because 6 times 5 times 2 is the same as 6 times 7"
+      ],
+      "answer": "Yes, because 7 = 5 + 2 and he multiplies 6 by each part",
+      "compute": null,
+      "solution": "7 = 5 + 2, so 7 groups of 6 is 5 groups of 6 plus 2 groups of 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, because 7 = 5 + 2 and he multiplies 6 by each part",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive: 6x7 = 6x(5+2) = 30 + 12 = 42. Yes, the last reason.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.446Z"
+        }
+      }
+    },
+    {
+      "id": "9939d4d3-0750-49f6-bed0-fa3c9ce5f010",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distributive property: break apart a factor",
+      "stem": "Which shows a correct way to break apart $6 \\times 8$?",
+      "choices": [
+        "$6 \\times 5 + 3$",
+        "$6 \\times 5 + 8 \\times 3$",
+        "$6 \\times 5 + 6 \\times 3$",
+        "$5 \\times 8 + 3 \\times 8$"
+      ],
+      "answer": "$6 \\times 5 + 6 \\times 3$",
+      "compute": null,
+      "solution": "8 = 5 + 3, so $6 \\times 8 = 6 \\times 5 + 6 \\times 3 = 30 + 18 = 48$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 5 + 6 \\times 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 8 = 6 x (5 + 3) = 6x5 + 6x3 = 30 + 18 = 48. Others: 54, 33, 64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.563Z"
+        }
+      }
+    },
+    {
+      "id": "ed0ac17f-a0ae-4d9a-a218-7db7aed39bb5",
+      "topic_id": "NC17.3.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Associative property: three factors",
+      "stem": "Which expression has the same value as $2 \\times 3 \\times 4$?",
+      "choices": [
+        "$5 \\times 4$",
+        "$2 \\times 7$",
+        "$6 + 4$",
+        "$6 \\times 4$"
+      ],
+      "answer": "$6 \\times 4$",
+      "compute": null,
+      "solution": "$2 \\times 3 = 6$, so $2 \\times 3 \\times 4 = 6 \\times 4 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2×3×4 = 24; 6×4 = 24; others 10, 14, 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.643Z"
+        }
+      }
+    },
+    {
       "id": "74d07062-f6bf-49fe-9dc7-21a93681d0aa",
       "topic_id": "NC17.3.OA.2",
       "difficulty": 1,
@@ -3069,6 +3376,718 @@
           "work": "3 rows of 5 = 15; 15 / 3 = 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:12.133Z"
+        }
+      }
+    },
+    {
+      "id": "3626867b-4927-462c-87cf-667bc236f900",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Repeated subtraction",
+      "stem": "A tank holds 16 liters of water. Pam pours out 2 liters at a time until the tank is empty. How many times does she pour?",
+      "choices": [],
+      "answer": "8",
+      "compute": "16/2",
+      "solution": "16 - 2 eight times reaches 0, so $16 \\div 2 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$16\\div 2=8$ pours (16,14,...,2,0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.260Z"
+        }
+      }
+    },
+    {
+      "id": "0e5d09ea-76d2-47b1-b532-33323ed84d49",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Division as an unknown factor",
+      "stem": "Use division to find the ? in $5 \\times ? = 35$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "35/5",
+      "solution": "5 times what number is 35? $35 \\div 5 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$35\\div 5=7$; check $5\\times7=35$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.262Z"
+        }
+      }
+    },
+    {
+      "id": "1a6b1e85-f662-4b81-917a-abdd391ce4e9",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the division sentence for a story",
+      "stem": "An array has 2 rows with 6 in each row. Which division sentence goes with this array?",
+      "choices": [
+        "$12 \\div 6 = 6$",
+        "$6 \\div 2 = 12$",
+        "$12 \\div 2 = 6$",
+        "$12 \\div 3 = 4$"
+      ],
+      "answer": "$12 \\div 2 = 6$",
+      "compute": null,
+      "solution": "The array has 2 x 6 = 12 in all. Sharing 12 into 2 rows gives 6 in each row: $12 \\div 2 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 \\div 2 = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 rows of 6 is 12; $12\\div 2=6$ (rows into total gives per row).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.265Z"
+        }
+      }
+    },
+    {
+      "id": "ae239e3b-2b41-4e83-8f07-ad99f847af17",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "A class has 27 students. Each team has 3 students. How many teams are there?",
+      "choices": [],
+      "answer": "9",
+      "compute": "27/3",
+      "solution": "$27 \\div 3 = 9$ teams.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$27\\div 3=9$ teams.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.266Z"
+        }
+      }
+    },
+    {
+      "id": "930fabd0-5338-4cf3-8258-f980396fcaf0",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "Four friends share 28 grapes equally. How many grapes does each friend get?",
+      "choices": [],
+      "answer": "7",
+      "compute": "28/4",
+      "solution": "$28 \\div 4 = 7$ grapes each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$28\\div 4=7$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.319Z"
+        }
+      }
+    },
+    {
+      "id": "a4660327-8c34-4537-b578-279499e72d94",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A store puts 32 apples into 8 equal bags. How many apples are in each bag?",
+      "choices": [],
+      "answer": "4",
+      "compute": "32/8",
+      "solution": "$32 \\div 8 = 4$ apples in each bag.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$32\\div 8=4$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.333Z"
+        }
+      }
+    },
+    {
+      "id": "8afc9ad9-64b8-4fb5-94a1-8963ff4505b8",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Division as an unknown factor",
+      "stem": "Find $28 \\div 4$ by thinking of $4 \\times ? = 28$. What is $28 \\div 4$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "28/4",
+      "solution": "4 x 7 = 28, so $28 \\div 4 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$4\\times 7=28$, so 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.333Z"
+        }
+      }
+    },
+    {
+      "id": "a03907ed-4b6b-4f2e-99af-336f1e5ce1c6",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "A florist has 45 roses. She puts 9 roses in each bunch. How many bunches does she make?",
+      "choices": [],
+      "answer": "5",
+      "compute": "45/9",
+      "solution": "$45 \\div 9 = 5$ bunches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$45\\div 9=5$ bunches.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.335Z"
+        }
+      }
+    },
+    {
+      "id": "762bd5fe-b1dc-4f2c-8986-684346a468c1",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "There are 3 equal groups of counters. There are 21 counters in all. How many counters are in each group?",
+      "choices": [],
+      "answer": "7",
+      "compute": "21/3",
+      "solution": "$21 \\div 3 = 7$ counters in each group.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$21\\div 3=7$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.345Z"
+        }
+      }
+    },
+    {
+      "id": "4904f54a-0732-4b2b-91fe-e959878a1b4b",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "What a division sentence means",
+      "stem": "Which division sentence is true?",
+      "choices": [
+        "$24 \\div 3 = 8$",
+        "$24 \\div 3 = 7$",
+        "$24 \\div 6 = 3$",
+        "$24 \\div 8 = 4$"
+      ],
+      "answer": "$24 \\div 3 = 8$",
+      "compute": null,
+      "solution": "3 x 8 = 24, so $24 \\div 3 = 8$. Also $24 \\div 6 = 4$ and $24 \\div 8 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24 \\div 3 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$24\\div3=8$ true; $24\\div8=3$ not 4; $24\\div6=4$ not 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.355Z"
+        }
+      }
+    },
+    {
+      "id": "4579098b-fd34-4749-acfe-1ab596d149e6",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "Kai has 24 stickers. He puts 8 stickers in each group. How many groups does he make?",
+      "choices": [],
+      "answer": "3",
+      "compute": "24/8",
+      "solution": "$24 \\div 8 = 3$ groups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$24\\div 8=3$ groups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.358Z"
+        }
+      }
+    },
+    {
+      "id": "922c8850-e9c7-4c94-a3ab-52620644899f",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A pack has 30 cards. 5 children share the cards equally. How many cards does each child get?",
+      "choices": [
+        "35",
+        "6",
+        "25",
+        "5"
+      ],
+      "answer": "6",
+      "compute": "30/5",
+      "solution": "$30 \\div 5 = 6$ cards for each child.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$30\\div 5=6$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.369Z"
+        }
+      }
+    },
+    {
+      "id": "48c4ed4b-9ac4-4528-95d9-a1700323ad8a",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Division as an unknown factor",
+      "stem": "Which multiplication fact is related to $27 \\div 3 = 9$?",
+      "choices": [
+        "$27 \\times 3 = 81$",
+        "$9 + 3 = 12$",
+        "$3 \\times 6 = 18$",
+        "$3 \\times 9 = 27$"
+      ],
+      "answer": "$3 \\times 9 = 27$",
+      "compute": null,
+      "solution": "Division and multiplication use the same three numbers: 3 x 9 = 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 9 = 27$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27 / 3 = 9 matches 3 x 9 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.411Z"
+        }
+      }
+    },
+    {
+      "id": "6f0cf47b-4349-4dbe-b382-3a5a53fdbf48",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the division sentence for a story",
+      "stem": "18 children sit at 6 tables. The same number of children sit at each table. Which number sentence shows how many children sit at each table?",
+      "choices": [
+        "$18 \\times 6 = 108$",
+        "$18 \\div 6 = 3$",
+        "$18 - 6 = 12$",
+        "$6 \\div 18 = 3$"
+      ],
+      "answer": "$18 \\div 6 = 3$",
+      "compute": null,
+      "solution": "Sharing 18 equally among 6 tables is $18 \\div 6 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$18 \\div 6 = 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 shared among 6 tables: 18 / 6 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.418Z"
+        }
+      }
+    },
+    {
+      "id": "c4b68bce-be1b-4776-b33a-402bde3029b3",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Repeated subtraction",
+      "stem": "Which repeated subtraction shows how many groups of 4 are in 12?",
+      "choices": [
+        "$12 - 4 - 4 = 4$",
+        "$12 - 3 - 3 - 3 - 3 = 0$",
+        "$12 - 4 - 4 - 4 = 0$",
+        "$12 - 6 - 6 = 0$"
+      ],
+      "answer": "$12 - 4 - 4 - 4 = 0$",
+      "compute": null,
+      "solution": "Subtract 4 until you reach 0: 12 - 4 - 4 - 4 = 0. That is 3 groups of 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 - 4 - 4 - 4 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 4 - 4 - 4 = 0: three groups of 4. Others subtract 6s or 3s, or do not reach 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.426Z"
+        }
+      }
+    },
+    {
+      "id": "204db28a-1f1a-4fba-959c-e22b321988e7",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Division with an array",
+      "stem": "An array has 4 rows with the same number of stars in each row. There are 20 stars in all. How many stars are in each row?",
+      "choices": [],
+      "answer": "5",
+      "compute": "20/4",
+      "solution": "20 stars in 4 equal rows: $20 \\div 4 = 5$ stars in each row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 4 = 5 stars per row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.447Z"
+        }
+      }
+    },
+    {
+      "id": "0e59c0cd-c5a7-41a9-a19f-267453800f14",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the division sentence for a story",
+      "stem": "Which division sentence goes with $6 \\times 4 = 24$?",
+      "choices": [
+        "$24 \\div 4 = 8$",
+        "$6 \\div 4 = 24$",
+        "$4 \\div 24 = 6$",
+        "$24 \\div 6 = 4$"
+      ],
+      "answer": "$24 \\div 6 = 4$",
+      "compute": null,
+      "solution": "Division undoes multiplication: $24 \\div 6 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24 \\div 6 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 × 4 = 24 gives 24 ÷ 6 = 4 (and 24 ÷ 4 = 6). 24 ÷ 4 = 8 is false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.487Z"
+        }
+      }
+    },
+    {
+      "id": "c008ae2d-73dc-4ba7-9853-8ada2bf744cc",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "36 seeds are planted in 4 equal rows. What does the answer to $36 \\div 4$ tell you?",
+      "choices": [
+        "How many seeds are in each row",
+        "How many rows there are",
+        "How many seeds there are in all",
+        "How many seeds are left over"
+      ],
+      "answer": "How many seeds are in each row",
+      "compute": null,
+      "solution": "$36 \\div 4 = 9$. Sharing the seeds equally into 4 rows gives the number of seeds in each row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many seeds are in each row",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 ÷ 4 rows = 9 seeds in each row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.489Z"
+        }
+      }
+    },
+    {
+      "id": "904623e7-d7d5-4dcf-95e0-57ee181f5a61",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Repeated subtraction",
+      "stem": "A bag has 12 apples. Ella takes out 3 apples each time until the bag is empty. How many times does she take apples out?",
+      "choices": [],
+      "answer": "4",
+      "compute": "12/3",
+      "solution": "12 - 3 - 3 - 3 - 3 = 0. She subtracts 3 four times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 / 3 = 4 times.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.526Z"
+        }
+      }
+    },
+    {
+      "id": "b12a9a44-692b-41a2-b9e3-97dc35a539aa",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A teacher shares 16 pencils equally among 4 tables. How many pencils does each table get?",
+      "choices": [],
+      "answer": "4",
+      "compute": "16/4",
+      "solution": "$16 \\div 4 = 4$ pencils for each table.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 / 4 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.536Z"
+        }
+      }
+    },
+    {
+      "id": "5f126037-117e-4f95-9c1c-fbb1c3b0317d",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "Jon has 20 marbles. He puts 4 marbles in each bag. How many bags does he use?",
+      "choices": [],
+      "answer": "5",
+      "compute": "20/4",
+      "solution": "Count how many groups of 4 are in 20: $20 \\div 4 = 5$ bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.547Z"
+        }
+      }
+    },
+    {
+      "id": "cfe47b23-aa9b-427a-bc70-209f1b0ced42",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "What a division sentence means",
+      "stem": "Which story matches $18 \\div 3 = 6$?",
+      "choices": [
+        "18 cherries are put equally onto 3 plates, so each plate gets 15 cherries",
+        "3 plates each hold 18 cherries, so there are 54 cherries",
+        "18 cherries and 3 more cherries make 21 cherries",
+        "18 cherries are put equally onto 3 plates, so each plate gets 6 cherries"
+      ],
+      "answer": "18 cherries are put equally onto 3 plates, so each plate gets 6 cherries",
+      "compute": null,
+      "solution": "18 split equally into 3 groups gives 6 in each group, since 3 x 6 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18 cherries are put equally onto 3 plates, so each plate gets 6 cherries",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 shared equally onto 3 plates gives 6 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.564Z"
+        }
+      }
+    },
+    {
+      "id": "7c2c1144-0160-460d-bbdf-fed4e7c286d6",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Division with an array",
+      "stem": "A rectangle of tiles has 18 tiles in all. Each row has 6 tiles. How many rows are there?",
+      "choices": [],
+      "answer": "3",
+      "compute": "18/6",
+      "solution": "Count the groups of 6 in 18: $18 \\div 6 = 3$ rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 ÷ 6 = 3 rows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.636Z"
         }
       }
     },
@@ -3393,6 +4412,728 @@
       }
     },
     {
+      "id": "24dd757d-e873-4101-9cd0-595bf962c28a",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Division as an unknown factor",
+      "stem": "Sam knows that $8 \\times 6 = 48$. What is $48 \\div 8$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "48/8",
+      "solution": "Division undoes multiplication, so $48 \\div 8 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$48\\div 8=6$ since $8\\times 6=48$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.281Z"
+        }
+      }
+    },
+    {
+      "id": "220a8cc5-63a5-4a13-9715-2627a1d4b2f0",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the division sentence for a story",
+      "stem": "Rita has 56 stickers. She puts the same number of stickers on each of 8 pages. Which number sentence shows how many stickers go on each page?",
+      "choices": [
+        "$56 \\div 7 = 8$",
+        "$56 \\div 8 = 7$",
+        "$56 - 8 = 48$",
+        "$56 \\times 8 = 448$"
+      ],
+      "answer": "$56 \\div 8 = 7$",
+      "compute": null,
+      "solution": "Sharing 56 equally onto 8 pages is $56 \\div 8 = 7$ stickers on each page.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$56 \\div 8 = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56 shared onto 8 pages: $56\\div 8=7$ per page.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.316Z"
+        }
+      }
+    },
+    {
+      "id": "6297dc69-c366-474c-9520-139ea72f812c",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "A shop has 36 oranges. It packs 6 oranges in each bag. How many bags can the shop fill?",
+      "choices": [],
+      "answer": "6",
+      "compute": "36/6",
+      "solution": "$36 \\div 6 = 6$ bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$36\\div 6=6$ bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.320Z"
+        }
+      }
+    },
+    {
+      "id": "c63b8d97-1c79-4ee2-9834-1d92c2247b2a",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A teacher puts 35 books equally onto 5 shelves. How many books are on each shelf?",
+      "choices": [],
+      "answer": "7",
+      "compute": "35/5",
+      "solution": "$35 \\div 5 = 7$ books on each shelf.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$35\\div 5=7$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.336Z"
+        }
+      }
+    },
+    {
+      "id": "5abd2b03-eead-4902-8b2c-8cd7efee29a5",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A coach splits 42 players equally into 7 teams. How many players are on each team?",
+      "choices": [],
+      "answer": "6",
+      "compute": "42/7",
+      "solution": "$42 \\div 7 = 6$ players on each team.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$42\\div 7=6$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.360Z"
+        }
+      }
+    },
+    {
+      "id": "916d9d24-9ce1-455d-8e77-bda798473e0b",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A baker puts 54 cookies equally into 6 boxes. How many cookies are in each box?",
+      "choices": [],
+      "answer": "9",
+      "compute": "54/6",
+      "solution": "$54 \\div 6 = 9$ cookies in each box.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$54\\div 6=9$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.362Z"
+        }
+      }
+    },
+    {
+      "id": "4debadd0-8716-4918-89d4-3f7ac5cd89eb",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Division with an array",
+      "stem": "Which is a way to use an array to find $24 \\div 6$?",
+      "choices": [
+        "Put 24 counters in 6 rows with 24 in each row",
+        "Put 24 counters in one row and add 6 more counters",
+        "Take 6 counters away from 24 counters one time",
+        "Put 24 counters in rows of 6 and count the rows"
+      ],
+      "answer": "Put 24 counters in rows of 6 and count the rows",
+      "compute": null,
+      "solution": "Making rows of 6 until all 24 counters are used gives 4 rows, so $24 \\div 6 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Put 24 counters in rows of 6 and count the rows",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rows of 6 from 24 counters gives 4 rows, so $24\\div6=4$. Option A (6 rows of 24) is 144 counters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.367Z"
+        }
+      }
+    },
+    {
+      "id": "25851244-7d29-4faa-ad11-87f6c24efffc",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Explain a division strategy",
+      "stem": "Ravi finds $32 \\div 4$ by thinking of the number that makes 32 when it is multiplied by 4. Which sentence does he use?",
+      "choices": [
+        "$32 \\times ? = 4$",
+        "$? \\times 32 = 4$",
+        "$4 + ? = 32$",
+        "$4 \\times ? = 32$"
+      ],
+      "answer": "$4 \\times ? = 32$",
+      "compute": null,
+      "solution": "He asks 4 times what is 32. Since 4 x 8 = 32, $32 \\div 4 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times ? = 32$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$32\\div4=?$ is $4\\times ?=32$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.392Z"
+        }
+      }
+    },
+    {
+      "id": "bb410223-fe33-4844-b31d-360c01d4e1f1",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "A bus holds 8 students. There are 40 students to take on trips. How many buses are full?",
+      "choices": [],
+      "answer": "5",
+      "compute": "40/8",
+      "solution": "$40 \\div 8 = 5$ buses.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "$40\\div8=5$ full buses.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.402Z"
+        }
+      }
+    },
+    {
+      "id": "d1cb72e4-5ebb-4830-9e39-28e9fdfff020",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Division with an array",
+      "stem": "Tara has 20 dots. She circles groups of 5 dots until every dot is in a group. How many groups does she circle?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "$20 \\div 5 = 4$ groups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 5 = 4 groups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.407Z"
+        }
+      }
+    },
+    {
+      "id": "b1f12613-4883-4930-a526-d8b69b72bcba",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "What a division sentence means",
+      "stem": "Mia says that $36 \\div 9$ can be read as \"How many 9s are in 36?\" What is the answer?",
+      "choices": [
+        "4",
+        "27",
+        "45",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "36/9",
+      "solution": "9 x 4 = 36, so there are 4 nines in 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 / 9 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.408Z"
+        }
+      }
+    },
+    {
+      "id": "053a547c-a837-4c8e-955c-edaee0146472",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Repeated subtraction",
+      "stem": "Mina has 24 beads. She uses 4 beads for each bracelet. Which repeated subtraction shows how many bracelets she can make?",
+      "choices": [
+        "$24 - 4 - 4 - 4 - 4 - 4 - 4 = 0$",
+        "$24 - 4 - 4 - 4 - 4 - 4 = 4$",
+        "$24 - 6 - 6 - 6 - 6 = 0$",
+        "$24 - 4 - 4 - 4 - 4 = 8$"
+      ],
+      "answer": "$24 - 4 - 4 - 4 - 4 - 4 - 4 = 0$",
+      "compute": null,
+      "solution": "Subtract 4 until nothing is left: 24 - 4 six times reaches 0. She makes 6 bracelets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24 - 4 - 4 - 4 - 4 - 4 - 4 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 / 4 = 6 bracelets: subtract 4 six times to reach 0. Only the last option uses 4s and reaches 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.421Z"
+        }
+      }
+    },
+    {
+      "id": "3695388f-9d03-40b0-996f-355524bc4c77",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Division with an array",
+      "stem": "Which array shows $36 \\div 9$, when each column has 9 in it?",
+      "choices": [
+        "36 columns with 9 in each column",
+        "9 columns with 9 in each column",
+        "4 columns with 9 in each column",
+        "9 columns with 4 in each column"
+      ],
+      "answer": "4 columns with 9 in each column",
+      "compute": null,
+      "solution": "$36 \\div 9 = 4$, so there are 4 columns of 9. (9 columns of 4 also has 36, but each column then has 4, not 9.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 columns with 9 in each column",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 / 9 = 4 columns of 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.425Z"
+        }
+      }
+    },
+    {
+      "id": "ddd7d299-3b12-42ce-b713-c7875d408dd3",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Repeated subtraction",
+      "stem": "A worker unloads 56 boxes from a truck, 8 boxes on each trip, until the truck is empty. How many trips does the worker make?",
+      "choices": [],
+      "answer": "7",
+      "compute": "56/8",
+      "solution": "$56 \\div 8 = 7$ trips, or subtract 8 seven times to reach 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56 / 8 = 7 trips.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.433Z"
+        }
+      }
+    },
+    {
+      "id": "6677b161-386c-455c-9378-1ee395075ba0",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "Ms. Fox has 54 crayons. She puts 6 crayons in each box. How many boxes does she fill?",
+      "choices": [],
+      "answer": "9",
+      "compute": "54/6",
+      "solution": "$54 \\div 6 = 9$ boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "54 / 6 = 9 boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.444Z"
+        }
+      }
+    },
+    {
+      "id": "12064042-600a-490a-8051-4aa375630850",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "Maya has 30 counters. She makes an array with 5 rows and the same number of counters in each row. How many counters are in each row?",
+      "choices": [
+        "6",
+        "35",
+        "25",
+        "5"
+      ],
+      "answer": "6",
+      "compute": "30/5",
+      "solution": "$30 \\div 5 = 6$ counters in each row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 / 5 = 6 per row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.445Z"
+        }
+      }
+    },
+    {
+      "id": "8b061f44-16a3-4880-9046-11162893d989",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "Ana puts 40 photos in an album, 8 photos on each page. In $40 \\div 8 = 5$, what does the 8 stand for?",
+      "choices": [
+        "The number of pages used",
+        "The number of photos in all",
+        "The number of photos on each page",
+        "The number of photos left over"
+      ],
+      "answer": "The number of photos on each page",
+      "compute": null,
+      "solution": "Each page has 8 photos, so 8 is the group size. The 5 is the number of pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of photos on each page",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 photos, 8 per page, 5 pages. The 8 is the photos on each page.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.452Z"
+        }
+      }
+    },
+    {
+      "id": "1510109e-bc1f-4bb9-bcc5-07a8f98cd88f",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the size of each group (equal sharing)",
+      "stem": "A truck carries 63 boxes in 7 equal stacks. How many boxes are in each stack?",
+      "choices": [],
+      "answer": "9",
+      "compute": "63/7",
+      "solution": "$63 \\div 7 = 9$ boxes in each stack.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63 ÷ 7 = 9 boxes per stack.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.453Z"
+        }
+      }
+    },
+    {
+      "id": "930760ee-2773-4aad-a8cf-dcce19f7a090",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "Which problem asks for the number of groups?",
+      "choices": [
+        "Sue puts 12 shells equally into 3 bags. How many shells are in each bag?",
+        "Sue puts 12 shells into bags with 3 shells in each bag. How many bags does she use?",
+        "Sue has 3 bags with 12 shells in each bag. How many shells does she have in all?",
+        "Sue has 12 shells and finds 3 more shells. How many shells does she have now?"
+      ],
+      "answer": "Sue puts 12 shells into bags with 3 shells in each bag. How many bags does she use?",
+      "compute": null,
+      "solution": "Bags with 3 shells each means the size of each group is known, so $12 \\div 3$ finds how many bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Sue puts 12 shells into bags with 3 shells in each bag. How many bags does she use?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Shells in bags of 3, how many bags = number of groups (12 ÷ 3). The equal-sharing one asks group size; others are addition/multiplication.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.466Z"
+        }
+      }
+    },
+    {
+      "id": "ee828d60-ffdf-4155-b9f6-fd64bd69fd50",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "What a division sentence means",
+      "stem": "Which situation needs $48 \\div 6$ to find the size of each group?",
+      "choices": [
+        "48 books are put 6 to a shelf. How many shelves are needed?",
+        "6 shelves each hold 48 books. How many books are there in all?",
+        "48 books are put equally onto 6 shelves. How many books are on each shelf?",
+        "48 books are on a shelf and 6 are taken off. How many are left?"
+      ],
+      "answer": "48 books are put equally onto 6 shelves. How many books are on each shelf?",
+      "compute": null,
+      "solution": "Putting 48 equally onto 6 shelves and asking how many on each shelf is $48 \\div 6 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48 books are put equally onto 6 shelves. How many books are on each shelf?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal sharing onto 6 shelves: 48 ÷ 6 = size of each group.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.472Z"
+        }
+      }
+    },
+    {
+      "id": "3d221fc5-ba46-4f0f-9eef-c543c987dc0e",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Division as an unknown factor",
+      "stem": "Use division to find the ? in $? \\times 6 = 42$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "42/6",
+      "solution": "What times 6 makes 42? $42 \\div 6 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42 ÷ 6 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.476Z"
+        }
+      }
+    },
+    {
+      "id": "581f7fb4-f6ab-444e-8413-357556ac3b38",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Division with an array",
+      "stem": "An array of 48 stickers has 6 columns with the same number of stickers in each column. How many stickers are in each column?",
+      "choices": [],
+      "answer": "8",
+      "compute": "48/6",
+      "solution": "$48 \\div 6 = 8$ stickers in each column.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 ÷ 6 = 8 per column.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.480Z"
+        }
+      }
+    },
+    {
+      "id": "d907ce47-8d25-4d77-9157-6ab36fb76a4f",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "Dev shares 35 cards equally among 5 friends. In $35 \\div 5 = 7$, what does the 5 stand for?",
+      "choices": [
+        "The number of cards each friend gets",
+        "The number of friends",
+        "The number of cards in all",
+        "The number of cards left over"
+      ],
+      "answer": "The number of friends",
+      "compute": null,
+      "solution": "There are 5 groups (friends). The 7 is the number of cards each friend gets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of friends",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 cards among 5 friends: 5 is the number of friends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.484Z"
+        }
+      }
+    },
+    {
       "id": "8c0f3ed5-63a0-4171-b482-9bfdf2fa3965",
       "topic_id": "NC17.3.OA.2",
       "difficulty": 3,
@@ -3704,6 +5445,694 @@
           "work": "30 / 5 = 6: 30 split into 5 equal groups, 6 each.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:12.133Z"
+        }
+      }
+    },
+    {
+      "id": "78743a70-16f4-4eb4-a44d-0a818b1894bb",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Division in a two-step story",
+      "stem": "Ben has 40 marbles and finds 5 more marbles. He puts all of his marbles equally into 9 jars. How many marbles are in each jar?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(40+5)/9",
+      "solution": "40 + 5 = 45 marbles. $45 \\div 9 = 5$ marbles in each jar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40+5=45 marbles; $45\\div 9=5$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.244Z"
+        }
+      }
+    },
+    {
+      "id": "d751e4c5-749e-4832-9a35-ef388045d3d7",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "Ravi puts 54 stamps in an album, 6 stamps on each page. Which question does $54 \\div 6$ answer?",
+      "choices": [
+        "How many stamps are on each page?",
+        "How many stamps are on 6 pages?",
+        "How many pages does Ravi fill?",
+        "How many stamps are left over?"
+      ],
+      "answer": "How many pages does Ravi fill?",
+      "compute": null,
+      "solution": "Each page holds 6 stamps, so $54 \\div 6 = 9$ tells how many pages (groups) are filled.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many pages does Ravi fill?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "54 / 6 = 9 counts the pages (groups of 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.423Z"
+        }
+      }
+    },
+    {
+      "id": "ed41f6df-ffed-4a51-a670-6ed53ed189c6",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "Nick deals 24 cards equally to 3 players. Then Nick puts 24 cards into piles of 3. What do the two answers to $24 \\div 3$ mean?",
+      "choices": [
+        "8 cards for each player, and 8 piles",
+        "8 players, and 8 piles",
+        "8 cards for each player, and 8 cards in each pile",
+        "8 players, and 8 cards in each pile"
+      ],
+      "answer": "8 cards for each player, and 8 piles",
+      "compute": null,
+      "solution": "Dealing to 3 players: $24 \\div 3 = 8$ cards each. Piles of 3: $24 \\div 3 = 8$ piles. The same answer can be a group size or a number of groups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 cards for each player, and 8 piles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal sharing to 3 players gives 8 cards each; piles of 3 gives 8 piles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.435Z"
+        }
+      }
+    },
+    {
+      "id": "da231886-831d-4ba3-979d-6579ae6bed7a",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Division in a two-step story",
+      "stem": "40 flowers are put equally in 5 vases. Then 3 more flowers are added to each vase. How many flowers are in each vase now?",
+      "choices": [],
+      "answer": "11",
+      "compute": "40/5+3",
+      "solution": "$40 \\div 5 = 8$ flowers in each vase. Adding 3 gives 8 + 3 = 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 / 5 = 8; 8 + 3 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.442Z"
+        }
+      }
+    },
+    {
+      "id": "b8fd91ef-5f1f-4710-ac0e-6ddd45f6f776",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Division with an array",
+      "stem": "Which array can NOT be made with exactly 36 counters?",
+      "choices": [
+        "9 rows with 4 in each row",
+        "5 rows with 7 in each row",
+        "6 rows with 6 in each row",
+        "4 rows with 9 in each row"
+      ],
+      "answer": "5 rows with 7 in each row",
+      "compute": null,
+      "solution": "5 x 7 = 35, not 36. The others are 36: 9 x 4, 6 x 6 and 4 x 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 rows with 7 in each row",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9×4 = 36, 6×6 = 36, 4×9 = 36, 5×7 = 35 ≠ 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.469Z"
+        }
+      }
+    },
+    {
+      "id": "2a80068b-889e-4e53-88f4-6bd328328e54",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Explain a division strategy",
+      "stem": "Kim says $56 \\div 8 = 7$. How can she check her answer?",
+      "choices": [
+        "Add 7 and 8 and see if the sum is 56",
+        "Multiply 7 by 8 and see if the product is 56",
+        "Multiply 56 by 8 and see if the product is 7",
+        "Subtract 7 from 56 and see if the answer is 8"
+      ],
+      "answer": "Multiply 7 by 8 and see if the product is 56",
+      "compute": null,
+      "solution": "Division undoes multiplication, so 7 x 8 should equal 56. It does (7 x 8 = 56), so her answer is right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiply 7 by 8 and see if the product is 56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Division checks by multiplication: 7 × 8 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.472Z"
+        }
+      }
+    },
+    {
+      "id": "581023d6-fdfb-4bba-888b-d0d22cc3bdf7",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Repeated subtraction",
+      "stem": "Rosa writes this list: 48, 40, 32, 24, 16, 8, 0. Which division sentence does her list show?",
+      "choices": [
+        "$48 \\div 8 = 6$",
+        "$48 \\div 8 = 7$",
+        "$48 \\div 7 = 8$",
+        "$56 \\div 8 = 7$"
+      ],
+      "answer": "$48 \\div 8 = 6$",
+      "compute": null,
+      "solution": "She subtracts 8 each time, and there are 6 subtractions from 48 to 0. So $48 \\div 8 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$48 \\div 8 = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Subtracting 8 from 48 repeatedly reaches 0 after 6 subtractions: 48 ÷ 8 = 6. (48 ÷ 8 = 7 is false.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.488Z"
+        }
+      }
+    },
+    {
+      "id": "ad057929-cec1-4e21-9594-bb9a6ae49244",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a quotient as a group count or a group size",
+      "stem": "24 pencils are shared equally. In which case does each person get the most pencils?",
+      "choices": [
+        "Shared among 4 people",
+        "Shared among 6 people",
+        "Shared among 3 people",
+        "Shared among 8 people"
+      ],
+      "answer": "Shared among 3 people",
+      "compute": null,
+      "solution": "$24 \\div 3 = 8$, $24 \\div 4 = 6$, $24 \\div 6 = 4$ and $24 \\div 8 = 3$. The fewer the groups, the more in each group.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Shared among 3 people",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24÷3 = 8, ÷4 = 6, ÷6 = 4, ÷8 = 3. Most with 3 people.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.495Z"
+        }
+      }
+    },
+    {
+      "id": "0f81c691-99b8-4334-8fdf-2ccf24280877",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Repeated subtraction",
+      "stem": "Ava subtracts 9 from 36 again and again until she reaches 0. Ben subtracts 6 from 36 again and again until he reaches 0. How many more times does Ben subtract than Ava?",
+      "choices": [],
+      "answer": "2",
+      "compute": "36/6-36/9",
+      "solution": "Ava subtracts $36 \\div 9 = 4$ times. Ben subtracts $36 \\div 6 = 6$ times. 6 - 4 = 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ava: 36 ÷ 9 = 4 times. Ben: 36 ÷ 6 = 6 times. 6 − 4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.497Z"
+        }
+      }
+    },
+    {
+      "id": "8357b1da-ada7-4308-898e-09da301bdb5c",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Repeated subtraction",
+      "stem": "Lara subtracts 4 from a number again and again. After 7 subtractions she reaches 0. What number did she start with?",
+      "choices": [],
+      "answer": "28",
+      "compute": "7*4",
+      "solution": "Seven groups of 4 make 7 x 4 = 28. Check: $28 \\div 4 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 subtractions of 4 reach 0, so start = 7 x 4 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.504Z"
+        }
+      }
+    },
+    {
+      "id": "a7466744-e0ae-4c5d-9e0b-9fd4a38a1e2b",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Division as an unknown factor",
+      "stem": "Which division fact helps you solve $? \\times 7 = 63$?",
+      "choices": [
+        "$63 \\div 7 = 56$",
+        "$63 - 7 = 56$",
+        "$7 \\div 63 = 9$",
+        "$63 \\div 7 = 9$"
+      ],
+      "answer": "$63 \\div 7 = 9$",
+      "compute": null,
+      "solution": "? x 7 = 63 means 63 split into 7 equal parts. $63 \\div 7 = 9$, so the ? is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$63 \\div 7 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? x 7 = 63 is solved by 63 / 7 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.512Z"
+        }
+      }
+    },
+    {
+      "id": "a03495ea-1e7e-4ca5-a66e-45fc0d7d0818",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Division in a two-step story",
+      "stem": "72 stickers are shared equally among 8 children. Then each child loses 3 stickers. How many stickers does each child have now?",
+      "choices": [],
+      "answer": "6",
+      "compute": "72/8-3",
+      "solution": "$72 \\div 8 = 9$ stickers each. After losing 3, each child has 9 - 3 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 / 8 = 9 each; 9 - 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.516Z"
+        }
+      }
+    },
+    {
+      "id": "b4f734b5-4b1a-4a8d-886c-590e8e4bb1bb",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Repeated subtraction",
+      "stem": "A tank holds 48 liters. A pump takes out 6 liters every minute until the tank is empty. How many minutes does this take?",
+      "choices": [],
+      "answer": "8",
+      "compute": "48/6",
+      "solution": "48 - 6 eight times reaches 0, so $48 \\div 6 = 8$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 / 6 = 8 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.533Z"
+        }
+      }
+    },
+    {
+      "id": "b27c1bfb-db7b-40c0-b9a1-4a86193a6422",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Division in a two-step story",
+      "stem": "A museum has 56 paintings in 7 equal rooms. How many paintings are in 3 of the rooms?",
+      "choices": [],
+      "answer": "24",
+      "compute": "56/7*3",
+      "solution": "$56 \\div 7 = 8$ paintings in each room. 3 rooms have 3 x 8 = 24 paintings.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56 / 7 = 8 per room; 3 x 8 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.537Z"
+        }
+      }
+    },
+    {
+      "id": "00ec633e-0437-4b81-ba72-6a37e37ded98",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unknown total or unknown divisor",
+      "stem": "Look at this number sentence: $36 \\div ? = 9$. What number is the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "36/9",
+      "solution": "36 split into groups of 9 gives 4 groups. Check: $36 \\div 4 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 / 4 = 9, so ? = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.568Z"
+        }
+      }
+    },
+    {
+      "id": "4e6a1fc1-86b3-48ff-b557-d0ec95e801d6",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "What a division sentence means",
+      "stem": "Which statement about $45 \\div 9$ is NOT true?",
+      "choices": [
+        "It tells how many 9s are in 45",
+        "It can mean 9 groups with 45 in each group",
+        "It has the same answer as the ? in $9 \\times ? = 45$",
+        "It can be found by subtracting 9 from 45 until 0"
+      ],
+      "answer": "It can mean 9 groups with 45 in each group",
+      "compute": null,
+      "solution": "$45 \\div 9 = 5$. It means 45 split into groups of 9, or into 9 equal groups. It never means 9 groups of 45, since that would be 405.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It can mean 9 groups with 45 in each group",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45/9 = 5. 9 x 5 = 45 true; how many 9s in 45 true; repeated subtraction 5 times true. \"9 groups with 45 in each\" would be 405 in all: NOT true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.571Z"
+        }
+      }
+    },
+    {
+      "id": "519088de-0f1e-45bf-ba76-b43f0230e37b",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Division with an array",
+      "stem": "Which is the best way to explain $30 \\div 6 = 5$ with an array?",
+      "choices": [
+        "An array with 30 in all and 5 rows has 36 in each row",
+        "An array with 30 rows has 6 in each row",
+        "An array with 30 in all and 6 in each row has 5 rows",
+        "An array with 6 rows and 5 in each row has 11 in all"
+      ],
+      "answer": "An array with 30 in all and 6 in each row has 5 rows",
+      "compute": null,
+      "solution": "Rows of 6 are made from 30 until none are left. That takes 5 rows, so $30 \\div 6 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "An array with 30 in all and 6 in each row has 5 rows",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 objects in rows of 6 make 5 rows: 30 / 6 = 5. Others give wrong totals.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.577Z"
+        }
+      }
+    },
+    {
+      "id": "c1320ba1-5a84-4688-9c3d-0a3efbfc4d3b",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Division as an unknown factor",
+      "stem": "Which pair of facts shows that division undoes multiplication?",
+      "choices": [
+        "$7 \\times 6 = 42$ and $42 \\div 6 = 8$",
+        "$7 + 6 = 13$ and $13 - 6 = 7$",
+        "$42 \\div 6 = 7$ and $42 \\div 7 = 5$",
+        "$7 \\times 6 = 42$ and $42 \\div 6 = 7$"
+      ],
+      "answer": "$7 \\times 6 = 42$ and $42 \\div 6 = 7$",
+      "compute": null,
+      "solution": "7 x 6 = 42 and $42 \\div 6 = 7$ use the same numbers. Dividing the product by one factor gives the other factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 6 = 42$ and $42 \\div 6 = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x6 = 42 and 42/6 = 7 returns to 7. Option 1 has 42/6 = 8 (false); option 2 is addition/subtraction; option 3 is two divisions, one false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.580Z"
+        }
+      }
+    },
+    {
+      "id": "a23742bf-83b9-405e-9d5e-c63888cf60ca",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Division in a two-step story",
+      "stem": "Sana has 48 beads. She makes 6 necklaces with the same number of beads on each. She gives 2 necklaces to a friend. How many beads does she give away?",
+      "choices": [],
+      "answer": "16",
+      "compute": "48/6*2",
+      "solution": "$48 \\div 6 = 8$ beads on each necklace. 2 necklaces have 2 x 8 = 16 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48/6 = 8 beads per necklace; 2 necklaces = 16 beads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.583Z"
+        }
+      }
+    },
+    {
+      "id": "a480b2f6-e2cc-4533-bb4e-f8fd4681b092",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unknown total or unknown divisor",
+      "stem": "Look at this number sentence: $? \\div 8 = 7$. What number is the ?",
+      "choices": [],
+      "answer": "56",
+      "compute": "8*7",
+      "solution": "The total split into groups of 8 gives 7 groups, so the total is 8 x 7 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 8 x 7 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.584Z"
+        }
+      }
+    },
+    {
+      "id": "603deb51-d7c8-4124-8380-c923e8f101a9",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unknown total or unknown divisor",
+      "stem": "Some friends share 36 grapes equally. Each friend gets 6 grapes. How many friends are there?",
+      "choices": [],
+      "answer": "6",
+      "compute": "36/6",
+      "solution": "The number of groups of 6 in 36 is $36 \\div 6 = 6$ friends.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/6 = 6 friends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.624Z"
+        }
+      }
+    },
+    {
+      "id": "64eed9eb-de26-420f-99c8-775dc7169459",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number of groups",
+      "stem": "A trail is 63 kilometers long. Kim hikes 9 kilometers each day. How many days does she need to finish the trail?",
+      "choices": [],
+      "answer": "7",
+      "compute": "63/9",
+      "solution": "$63 \\div 9 = 7$ days.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63 ÷ 9 = 7 days.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.633Z"
         }
       }
     },

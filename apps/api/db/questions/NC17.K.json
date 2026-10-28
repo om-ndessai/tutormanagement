@@ -3,7 +3,7 @@
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
     "NC17.K.CC.1": "Counting forward only, by ones and tens within 100. Skills: next number by ones (5), next number by tens (7), missing numbers (4), counting across a ten (4), counting up to 100 (3), starting at any number (3), patterns of tens (4).",
-    "NC17.K.CC.3": "Numerals cannot be drawn or traced in text, so the questions test choosing or writing the right numeral for a number word, a count told in words, and zero as none. Handwriting form (reversed digits) cannot be tested here. Counts are told in words, never shown as a picture.",
+    "NC17.K.CC.3": "Numerals cannot be drawn or traced in text, so the questions test choosing or writing the right numeral for a number word, a count told in words, and zero as none. Handwriting form (reversed digits) cannot be tested here. Counts are told in words, never shown as a picture. Kindergarten: picture work is written as symbols in a row (counted by the child) or as lists of named things. Letters-in-a-word and long lists count the whole set and stay within 20.",
     "NC17.K.CC.4": "Shapes, dot cards and hands are written out in words; seeing 1-5 at a glance is tested through described dot patterns (square, triangle, 2+3 split). Numbers stay within 20 and every question is one step.",
     "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3.",
     "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step.",
@@ -6404,6 +6404,728 @@
       }
     },
     {
+      "id": "f9e56a71-05cd-4f99-9a57-5bfd8b6cfb48",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "Jo gave away all his marbles. Now he has none. Write the numeral that tells how many marbles Jo has.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "Jo has no marbles. The numeral for none is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "None is written as 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.225Z"
+        }
+      }
+    },
+    {
+      "id": "06dd1522-03fa-47d5-ab1e-648ca14e0721",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the numeral for a number word",
+      "stem": "Leo says the number \"five\" out loud. Which numeral means the same?",
+      "choices": [
+        "4",
+        "6",
+        "2",
+        "5"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Five is written 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "\"five\" is 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.242Z"
+        }
+      }
+    },
+    {
+      "id": "dc5017c4-332a-4f1c-9a6c-1bef8b715624",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the numeral just before or after",
+      "stem": "Which numeral comes right before 8 when you count?",
+      "choices": [
+        "6",
+        "8",
+        "7",
+        "9"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Counting: 6, 7, 8. Right before 8 comes 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Before 8 is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.304Z"
+        }
+      }
+    },
+    {
+      "id": "07ab6aad-6a9b-495d-9df3-0229f9740944",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Record how many with a numeral",
+      "stem": "Here are some apples: A A A A A A A A. Count them. Write the numeral that tells how many apples.",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Count each A once: 1, 2, 3, 4, 5, 6, 7, 8. The numeral is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 8 A marks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.315Z"
+        }
+      }
+    },
+    {
+      "id": "faf3ae59-2c43-41b5-8b25-839a0fb53a79",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zero means none",
+      "stem": "Which numeral means none?",
+      "choices": [
+        "0",
+        "1",
+        "2",
+        "10"
+      ],
+      "answer": "0",
+      "compute": "0",
+      "solution": "When there are none, we write 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "None is 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.345Z"
+        }
+      }
+    },
+    {
+      "id": "f49a5771-19e3-42c3-91d6-9a3fae4b67c8",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Record how many with a numeral",
+      "stem": "Count the stars: * * * * * * *. Write the numeral that tells how many stars.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Touch each star once and count: 1, 2, 3, 4, 5, 6, 7. There are 7 stars, so the numeral is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 7 stars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.365Z"
+        }
+      }
+    },
+    {
+      "id": "ba5480b7-c252-44a9-8e27-a16846dc6135",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the numeral for a number word",
+      "stem": "Say the number seven out loud. Now write the numeral you said.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Seven is written 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "seven is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.389Z"
+        }
+      }
+    },
+    {
+      "id": "8dd7346f-e973-4a77-be6c-e60d200f98e3",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count a set and write how many",
+      "stem": "A dog is on the grass. A cat is on the grass. A bird is on the grass. Which numeral tells how many animals are on the grass?",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Count the animals: dog 1, cat 2, bird 3. The numeral is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dog, cat, bird: 3 animals.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.420Z"
+        }
+      }
+    },
+    {
+      "id": "c91ddb8b-bd8b-47f1-8670-7c4eb2c86ec9",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count a set and write how many",
+      "stem": "A cup, a plate, a fork and a spoon are on the table. Which numeral tells how many things are on the table?",
+      "choices": [
+        "4",
+        "3",
+        "5",
+        "6"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Count: cup 1, plate 2, fork 3, spoon 4. The numeral is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cup, plate, fork, spoon: 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.446Z"
+        }
+      }
+    },
+    {
+      "id": "a61423f4-fb32-4337-8737-5eee64d90b21",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Record how many with a numeral",
+      "stem": "Count the dots: o o o o. Which numeral tells how many dots?",
+      "choices": [
+        "4",
+        "3",
+        "5",
+        "6"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Count each dot once: 1, 2, 3, 4. The numeral is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "o o o o: 4 dots.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.447Z"
+        }
+      }
+    },
+    {
+      "id": "23838a70-a497-4e83-b8fd-23be87980bdf",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "A pocket is empty. How many coins are in it? Write the numeral.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "The pocket has no coins. None is written with the numeral 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Empty pocket: 0 coins.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.459Z"
+        }
+      }
+    },
+    {
+      "id": "a73fa683-80fd-4927-a6c5-367f00872c6c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the numeral just before or after",
+      "stem": "Count: 6, 7, 8, ? Which numeral goes where the ? is?",
+      "choices": [
+        "10",
+        "7",
+        "8",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "After 8 comes 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6, 7, 8, 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.463Z"
+        }
+      }
+    },
+    {
+      "id": "dce905da-2101-45a2-a6a5-2387945b3c09",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the numeral for a number word",
+      "stem": "A sign says \"three\". Write the numeral for the word on the sign.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The word three is written with the numeral 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "three = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.464Z"
+        }
+      }
+    },
+    {
+      "id": "c3f33520-2d60-495e-9c13-7a0c81010f4e",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "Write the numeral for zero.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "Zero is written 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "zero = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.465Z"
+        }
+      }
+    },
+    {
+      "id": "5f6ccac8-bb45-4845-b0ad-5a658728bbd7",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a numeral to its number word",
+      "stem": "Which word matches the numeral 3?",
+      "choices": [
+        "seven",
+        "eight",
+        "three",
+        "two"
+      ],
+      "answer": "three",
+      "compute": null,
+      "solution": "The numeral 3 is the word three.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "three",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 = three.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.469Z"
+        }
+      }
+    },
+    {
+      "id": "fad143e9-46cd-4c48-b983-a10bc83f98ff",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the numeral just before or after",
+      "stem": "Count: 1, 2, 3, ? Write the numeral that goes where the ? is.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "After 3 comes 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 2, 3, 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.471Z"
+        }
+      }
+    },
+    {
+      "id": "2c164b7c-5327-4c03-a994-4561283a94f2",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the numeral for a number word",
+      "stem": "Max wants to write the number four. Which numeral should he write?",
+      "choices": [
+        "14",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Four is written 4. The numeral 14 is fourteen.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "four = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.474Z"
+        }
+      }
+    },
+    {
+      "id": "1cbd6140-eab1-4445-8a00-7157c8ad0114",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count a set and write how many",
+      "stem": "A tank has a red fish, a blue fish, a green fish, a yellow fish and an orange fish. Write the numeral that tells how many fish are in the tank.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Count the fish one at a time: 1, 2, 3, 4, 5. The numeral is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "red, blue, green, yellow, orange = 5 fish.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.483Z"
+        }
+      }
+    },
+    {
+      "id": "b39934b3-c08a-4900-b0fe-2b1f9f7ff6c2",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Record how many with a numeral",
+      "stem": "Count the circles: O O. Which numeral tells how many circles?",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "There are two circles. The numeral for two is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "O O = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.484Z"
+        }
+      }
+    },
+    {
+      "id": "8e80a0b1-a66d-4245-beba-41499d1042e7",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the numeral just before or after",
+      "stem": "Write the numeral that comes right after 4 when you count.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Counting: 3, 4, 5. After 4 comes 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 4 comes 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.485Z"
+        }
+      }
+    },
+    {
+      "id": "448fef3a-c6b0-4dc1-8502-7e157c3a701d",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the numeral for a number word",
+      "stem": "Ella reads the word \"eight\" on a card. Write the numeral for it.",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The word eight is written with the numeral 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "eight = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.492Z"
+        }
+      }
+    },
+    {
+      "id": "c3828fa1-62ce-4f82-8fd0-6ff7fec205d7",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count a set and write how many",
+      "stem": "Pip has a hat, a coat and a scarf. How many things does Pip have? Write the numeral.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Count the things: hat 1, coat 2, scarf 3. The numeral is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "hat, coat, scarf = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.499Z"
+        }
+      }
+    },
+    {
+      "id": "21a1483e-148d-4452-889c-e81c13fb24f1",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zero means none",
+      "stem": "There are 3 birds and 0 cats at the park. Which numeral tells how many cats?",
+      "choices": [
+        "3",
+        "0",
+        "1",
+        "2"
+      ],
+      "answer": "0",
+      "compute": "0",
+      "solution": "The 0 cats means there are no cats. The numeral for how many cats is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0 cats -> numeral 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.671Z"
+        }
+      }
+    },
+    {
       "id": "188044ff-44e5-4de1-9f5c-d191fdb37241",
       "topic_id": "NC17.K.CC.3",
       "difficulty": 2,
@@ -6719,6 +7441,728 @@
       }
     },
     {
+      "id": "26810098-30de-4384-b885-1831ff7da0c5",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write the numeral just before or after",
+      "stem": "Write the numeral that comes right before 11.",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Counting: 9, 10, 11. Right before 11 comes 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting 10, 11: before 11 is 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.263Z"
+        }
+      }
+    },
+    {
+      "id": "05f785d2-1c90-4122-b56c-6c3ea3a5430c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "How many legs does a snake have? Write the numeral.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "A snake has no legs. None is written 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A snake has no legs: 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.267Z"
+        }
+      }
+    },
+    {
+      "id": "693b449e-4b26-4f8f-adac-3775a6a73673",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Record how many with a numeral",
+      "stem": "Pia drew a row of shapes: @ @ @ @ @ @ @ @ @ @ @ @ @ @. How many shapes did she draw? Write the numeral.",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Count each star once. The last number you say is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the @ marks: 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.279Z"
+        }
+      }
+    },
+    {
+      "id": "ea553d29-bf30-4e82-b958-66dd85d4dbda",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the numeral for a number word",
+      "stem": "Lin counts out loud and says \"fifteen\". Which numeral should Lin write?",
+      "choices": [
+        "5",
+        "15",
+        "14",
+        "16"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Fifteen is written 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "fifteen is 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.307Z"
+        }
+      }
+    },
+    {
+      "id": "84c09e68-fb4f-4f48-8cbf-c222a494b67f",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a numeral from tens and ones",
+      "stem": "Write the numeral for 1 ten and 2 ones.",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "One ten is 10. Ten and 2 more is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 ten and 2 ones = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.308Z"
+        }
+      }
+    },
+    {
+      "id": "34ea1746-993e-442e-a317-59cbb4ff20c2",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write the numeral just before or after",
+      "stem": "Count up: 13, 14, 15, ? Write the numeral that goes where the ? is.",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "After 15 comes 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13,14,15,16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.312Z"
+        }
+      }
+    },
+    {
+      "id": "1db9ff4a-bb1c-438f-8e5b-d6c6b5076ff9",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write the numeral for a number word",
+      "stem": "Write eleven as a numeral.",
+      "choices": [],
+      "answer": "11",
+      "compute": "11",
+      "solution": "Eleven is written 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "eleven is 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.313Z"
+        }
+      }
+    },
+    {
+      "id": "4a3e583f-2af1-438d-af75-a881f3a6182c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a numeral from its digits",
+      "stem": "Write the numeral made with a 1 and then a 0.",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Write the 1 first and the 0 next: 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 then 0: 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.354Z"
+        }
+      }
+    },
+    {
+      "id": "d207591d-e5b7-425a-a5d9-94ad476d3e23",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the numeral just before or after",
+      "stem": "Which numeral comes right before 15 when you count?",
+      "choices": [
+        "14",
+        "13",
+        "16",
+        "5"
+      ],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Counting: 13, 14, 15. Right before 15 comes 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Before 15 is 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.372Z"
+        }
+      }
+    },
+    {
+      "id": "9ec05eeb-b803-46bb-a28f-c1d6a013cad7",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a numeral to its number word",
+      "stem": "Which word matches the numeral 12?",
+      "choices": [
+        "twelve",
+        "eleven",
+        "twenty",
+        "two"
+      ],
+      "answer": "twelve",
+      "compute": null,
+      "solution": "The numeral 12 is the word twelve.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "twelve",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 is twelve.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.374Z"
+        }
+      }
+    },
+    {
+      "id": "5dbfa83b-8d05-46eb-b530-d9304970e090",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Record how many with a numeral",
+      "stem": "Count the squares: # # # # # # # # # # #. Which numeral tells how many squares?",
+      "choices": [
+        "10",
+        "12",
+        "21",
+        "11"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "Count each square once. The last number you say is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 11 # marks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.390Z"
+        }
+      }
+    },
+    {
+      "id": "4954acc6-8503-4509-a774-bbcc59392b26",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write the numeral for a number word",
+      "stem": "A house on Oak Street has the number ten on its door. Write the numeral for ten.",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Ten is written with a 1 and then a 0: 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ten is 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.391Z"
+        }
+      }
+    },
+    {
+      "id": "404a49b8-0d92-4daf-b5b1-d900d8372bc7",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a numeral from its digits",
+      "stem": "Which numeral is made with a 1 and then a 4?",
+      "choices": [
+        "41",
+        "14",
+        "4",
+        "11"
+      ],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Write the 1 first and the 4 next: 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A 1 then a 4 is written 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.403Z"
+        }
+      }
+    },
+    {
+      "id": "0033bd96-b5c3-4c3f-9081-e331677871af",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count a set and write how many",
+      "stem": "How many letters are in the word \"GRASSHOPPER\"? Which numeral tells how many?",
+      "choices": [
+        "10",
+        "12",
+        "11",
+        "1"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "Count the letters: G, R, A, S, S, H, O, P, P, E, R. There are 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "G-R-A-S-S-H-O-P-P-E-R: 11 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.403Z"
+        }
+      }
+    },
+    {
+      "id": "6e7b09cc-00e5-4bc0-b0dc-0d949699652f",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Record how many with a numeral",
+      "stem": "Count the plus signs: + + + + + + + + + + + + + + +. Which numeral tells how many?",
+      "choices": [
+        "15",
+        "5",
+        "14",
+        "16"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Count each plus sign once. The last number you say is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the plus signs: 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.404Z"
+        }
+      }
+    },
+    {
+      "id": "910d1bcd-3fc5-4e10-b74f-a4edc54be935",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the numeral for a number word",
+      "stem": "Which numeral matches the word twelve?",
+      "choices": [
+        "2",
+        "11",
+        "12",
+        "21"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Twelve is written 12. The numeral 21 is a different number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "twelve = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.405Z"
+        }
+      }
+    },
+    {
+      "id": "30e58622-a2eb-44bc-aac6-5bdaa48cb06c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a numeral from tens and ones",
+      "stem": "Which numeral shows 1 ten and 5 ones?",
+      "choices": [
+        "51",
+        "6",
+        "10",
+        "15"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "One ten is 10. Ten and 5 more is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 ten and 5 ones = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.417Z"
+        }
+      }
+    },
+    {
+      "id": "9470673c-a7e5-4e00-beea-6b0973c3cc82",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the numeral just before or after",
+      "stem": "Count: 9, 10, 11, ? Which numeral goes where the ? is?",
+      "choices": [
+        "13",
+        "12",
+        "2",
+        "10"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "After 11 comes 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9, 10, 11, 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.419Z"
+        }
+      }
+    },
+    {
+      "id": "197990d3-966d-4591-ab1f-6ee929d6939e",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count a set and write how many",
+      "stem": "How many letters are in the word \"STRAWBERRY\"? Write the numeral.",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Count the letters: S, T, R, A, W, B, E, R, R, Y. There are 10 letters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "S-T-R-A-W-B-E-R-R-Y: 10 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.419Z"
+        }
+      }
+    },
+    {
+      "id": "fc0bee39-51c3-4b6f-b0e9-413676c1c2ce",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count a set and write how many",
+      "stem": "How many letters are in the word \"HIPPOPOTAMUS\"? Write the numeral.",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Count the letters: H, I, P, P, O, P, O, T, A, M, U, S. There are 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "H-I-P-P-O-P-O-T-A-M-U-S = 12 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.456Z"
+        }
+      }
+    },
+    {
+      "id": "c44d22ed-a39a-4af0-b33e-0f90db59b1e1",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Record how many with a numeral",
+      "stem": "Count the dots: o o o o o o o o o o o o. Write the numeral that tells how many dots.",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Count each dot once, and do not skip any: the last number you say is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 12 dots.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.461Z"
+        }
+      }
+    },
+    {
+      "id": "98aee988-1af7-4a7c-8d24-a3c9fc64153a",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "Eli had 8 grapes and ate them all. Now he has none left. Write the numeral that tells how many grapes are left.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "Eli has no grapes left. The numeral for none is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ate them all: 0 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.467Z"
+        }
+      }
+    },
+    {
+      "id": "7669834f-7a00-480a-9aab-0dc53169d74f",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Zero means none",
+      "stem": "Which numeral tells how many wings a dog has?",
+      "choices": [
+        "1",
+        "2",
+        "4",
+        "0"
+      ],
+      "answer": "0",
+      "compute": "0",
+      "solution": "A dog has no wings. None is written 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A dog has no wings: 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.470Z"
+        }
+      }
+    },
+    {
       "id": "702c8b10-6204-4f8b-8335-9c9222a27ad9",
       "topic_id": "NC17.K.CC.3",
       "difficulty": 3,
@@ -7030,6 +8474,728 @@
           "work": "Right before twenty is nineteen: 19.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:19.791Z"
+        }
+      }
+    },
+    {
+      "id": "49e6e7d5-df13-4a3f-9af8-9f9a780edd69",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a numeral from tens and ones",
+      "stem": "Which numeral shows 1 ten and 8 ones?",
+      "choices": [
+        "18",
+        "81",
+        "9",
+        "10"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "One ten is 10. Ten and 8 more is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 ten and 8 ones is 10+8=18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.240Z"
+        }
+      }
+    },
+    {
+      "id": "64793756-291a-4eea-b5fa-df2577d52fc0",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a numeral from its digits",
+      "stem": "Jo wrote a numeral with two digits. The first digit is 1 and the second digit is 6. Which numeral did Jo write?",
+      "choices": [
+        "16",
+        "61",
+        "6",
+        "11"
+      ],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Put the 1 first and the 6 second: 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits 1 then 6: 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.283Z"
+        }
+      }
+    },
+    {
+      "id": "2b9305d6-a234-4fe8-9030-2edecffa8ae4",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the numeral for a number word",
+      "stem": "Ivy says the number eighteen. Which numeral shows what she said?",
+      "choices": [
+        "18",
+        "8",
+        "17",
+        "19"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Eighteen is written 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "eighteen is 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.296Z"
+        }
+      }
+    },
+    {
+      "id": "f6163ea9-21ec-40a8-8d23-d6e1cdbd372f",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count a set and write how many",
+      "stem": "How many letters are in the word \"INTERNATIONAL\"? Which numeral tells how many?",
+      "choices": [
+        "12",
+        "14",
+        "31",
+        "13"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Count the letters: I, N, T, E, R, N, A, T, I, O, N, A, L. There are 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "I-N-T-E-R-N-A-T-I-O-N-A-L has 13 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.299Z"
+        }
+      }
+    },
+    {
+      "id": "beccb081-487b-48b2-a142-8757718c52d9",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write the numeral just before or after",
+      "stem": "Write the numeral that comes right after 17 when you count.",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Counting: 16, 17, 18. After 17 comes 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 17 comes 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.301Z"
+        }
+      }
+    },
+    {
+      "id": "c146afa1-22f0-40c4-a5fb-c28eb9872720",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Record how many with a numeral",
+      "stem": "Count all the marks in both rows. Row 1: o o o o o o o o o o. Row 2: o o o o o o o o o o. Write the numeral that tells how many o marks there are in all.",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Two rows of ten. Count on from 10: 11, 12, ... up to 20. The numeral is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 1 has 10, row 2 has 10: 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.310Z"
+        }
+      }
+    },
+    {
+      "id": "31a586db-4916-464f-99d0-29c0850a576a",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Record how many with a numeral",
+      "stem": "Count all the marks in both rows. Row 1: x x x x x x x x x x. Row 2: x x x x x x x. Write the numeral that tells how many x marks there are in all.",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "Row 1 has 10 and row 2 has 7. Count on from 10: 11, 12, 13, 14, 15, 16, 17. There are 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 1 has 10, row 2 has 7: 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.334Z"
+        }
+      }
+    },
+    {
+      "id": "6a6c0e1d-2d9e-48c4-a7a6-653a8bba57da",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Record how many with a numeral",
+      "stem": "Count all the marks in both rows. Row 1: x x x x x x x x x x. Row 2: x x x x x x x x. Which numeral tells how many x marks there are in all?",
+      "choices": [
+        "17",
+        "19",
+        "18",
+        "28"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Row 1 has 10 and row 2 has 8. Count on from 10: 11, 12, 13, 14, 15, 16, 17, 18. There are 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 1 has 10, row 2 has 8: 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.334Z"
+        }
+      }
+    },
+    {
+      "id": "19307a95-43b4-4448-9eec-d3b88ed8595a",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Zero means none",
+      "stem": "Sue has 18 grapes and eats all of them. Which numeral tells how many grapes she has left?",
+      "choices": [
+        "1",
+        "0",
+        "18",
+        "8"
+      ],
+      "answer": "0",
+      "compute": "0",
+      "solution": "She ate all of them, so none are left. None is written 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "She ate all 18, so 0 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.335Z"
+        }
+      }
+    },
+    {
+      "id": "1a567b01-fd3a-4580-a755-aab7fb59b334",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a numeral to its number word",
+      "stem": "Which word matches the numeral 20?",
+      "choices": [
+        "two",
+        "twelve",
+        "ten",
+        "twenty"
+      ],
+      "answer": "twenty",
+      "compute": null,
+      "solution": "The numeral 20 is the word twenty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "twenty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 is twenty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.335Z"
+        }
+      }
+    },
+    {
+      "id": "879d6546-428d-4be0-a887-0e97f5ef3569",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write the numeral just before or after",
+      "stem": "Count backward: 20, 19, 18, ? Write the numeral that goes where the ? is.",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "Counting back, the number after 18 is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20,19,18,17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.336Z"
+        }
+      }
+    },
+    {
+      "id": "5e79d6be-bd2d-4da2-b6cc-4e72a92d9396",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the numeral for a number word",
+      "stem": "A hotel room is number twenty. Which numeral goes on the door?",
+      "choices": [
+        "2",
+        "12",
+        "10",
+        "20"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Twenty is written with a 2 and then a 0: 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "twenty is 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.351Z"
+        }
+      }
+    },
+    {
+      "id": "65028b53-d2a7-413e-a1fa-59908a045382",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a numeral from tens and ones",
+      "stem": "A bag has a stick of 10 blocks and 7 single blocks. Write the numeral that tells how many blocks there are.",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "Ten blocks and 7 more blocks make 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A ten-stick is 10, plus 7 ones = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.405Z"
+        }
+      }
+    },
+    {
+      "id": "4c5ae06c-7807-4d83-91cf-a4d5b58ad42a",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a numeral from tens and ones",
+      "stem": "Which numeral shows 2 tens and 0 ones?",
+      "choices": [
+        "2",
+        "20",
+        "12",
+        "10"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Two tens make 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 tens and 0 ones = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.410Z"
+        }
+      }
+    },
+    {
+      "id": "1a3d3cd5-3bbe-468f-816d-bb9b25925fb7",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count a set and write how many",
+      "stem": "A toy box has a car, a truck, a bus, a boat, a plane, a train, a ball, a doll, a kite, a drum, a top, a bell, a block and a robot. How many toys are in the box? Write the numeral.",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Count one at a time: car 1, truck 2, bus 3, boat 4, plane 5, train 6, ball 7, doll 8, kite 9, drum 10, top 11, bell 12, block 13, robot 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted: car, truck, bus, boat, plane, train, ball, doll, kite, drum, top, bell, block, robot = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.421Z"
+        }
+      }
+    },
+    {
+      "id": "af1c3747-2432-46ba-a3d4-63d4be8f24aa",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a numeral from tens and ones",
+      "stem": "Write the numeral for 1 ten and 9 ones.",
+      "choices": [],
+      "answer": "19",
+      "compute": "19",
+      "solution": "One ten is 10. Ten and 9 more is 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 ten and 9 ones = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.422Z"
+        }
+      }
+    },
+    {
+      "id": "7b8673be-ce40-49be-a97c-7897b343e69c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a numeral to its number word",
+      "stem": "Which word matches the numeral 16?",
+      "choices": [
+        "fifteen",
+        "thirteen",
+        "sixteen",
+        "sixty"
+      ],
+      "answer": "sixteen",
+      "compute": null,
+      "solution": "The numeral 16 is the word sixteen. Sixty is a bigger number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "sixteen",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 is sixteen.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.424Z"
+        }
+      }
+    },
+    {
+      "id": "e96dbd7d-16ed-4e7b-bc3a-c3360c3b5152",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the numeral just before or after",
+      "stem": "Count: 16, 17, 18, ? Which numeral goes where the ? is?",
+      "choices": [
+        "20",
+        "9",
+        "19",
+        "1"
+      ],
+      "answer": "19",
+      "compute": "19",
+      "solution": "After 18 comes 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16, 17, 18, 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.428Z"
+        }
+      }
+    },
+    {
+      "id": "f1727790-e5b3-42ef-9be3-4dba17028aa3",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "A van has 14 seats. All the seats are empty. How many people are sitting in the van? Write the numeral.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "The seats are empty, so no one is sitting. None is written 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All seats empty: 0 people.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.431Z"
+        }
+      }
+    },
+    {
+      "id": "63796fa9-3554-4519-b747-3a3f89ad7a30",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a numeral from its digits",
+      "stem": "Write the numeral that has 2 as its first digit and 0 as its second digit.",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Put the 2 first and the 0 second: 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits 2 then 0: 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.433Z"
+        }
+      }
+    },
+    {
+      "id": "81945117-d7bd-4674-ba89-66b2e15b7b8c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Zero means none",
+      "stem": "Ryan counts 19 stars in the sky and no clouds. Write the numeral that tells how many clouds Ryan counts.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "There are no clouds. None is written 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "No clouds: 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.434Z"
+        }
+      }
+    },
+    {
+      "id": "2161c5db-bbb9-4368-a1c9-eadc84070d8c",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count a set and write how many",
+      "stem": "Count the letters in this list: A B C D E F G H I J K L M N O P. Write the numeral that tells how many letters there are.",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "The letters A to P are 16 letters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A to P: 16 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.439Z"
+        }
+      }
+    },
+    {
+      "id": "5641428d-07ab-42fa-b77e-70a8a82dafac",
+      "topic_id": "NC17.K.CC.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write the numeral for a number word",
+      "stem": "A birthday cake has the number sixteen on it. Write the numeral that is on the cake.",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Sixteen is written 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sixteen = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.455Z"
         }
       }
     },

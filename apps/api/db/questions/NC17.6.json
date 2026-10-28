@@ -3428,6 +3428,670 @@
       }
     },
     {
+      "id": "0296f13c-44dd-4a55-97b5-34e57e224e46",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A turtle walks 10 feet in 5 minutes. Which pair gives both unit rates?",
+      "choices": [
+        "0.5 foot per minute and 2 minutes per foot",
+        "5 feet per minute and 2 minutes per foot",
+        "2 feet per minute and 0.5 minute per foot",
+        "2 feet per minute and 2 minutes per foot"
+      ],
+      "answer": "2 feet per minute and 0.5 minute per foot",
+      "compute": null,
+      "solution": "$10 \\div 5 = 2$ feet per minute, and $5 \\div 10 = 0.5$ minute per foot.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 feet per minute and 0.5 minute per foot",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/5 = 2 ft per minute; 5/10 = 0.5 minute per foot.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.392Z"
+        }
+      }
+    },
+    {
+      "id": "c8d67178-ec54-4586-bd03-be6ef97f9bd2",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "Which situation has a unit rate of 6 miles per hour?",
+      "choices": [
+        "Walking 12 miles in 3 hours",
+        "Walking 3 miles in 18 hours",
+        "Walking 6 miles in 3 hours",
+        "Walking 18 miles in 3 hours"
+      ],
+      "answer": "Walking 18 miles in 3 hours",
+      "compute": null,
+      "solution": "$18 \\div 3 = 6$ miles per hour. The others give 4, $\\frac{1}{6}$ and 2 miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Walking 18 miles in 3 hours",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18/3=6 mph; 3/18=1/6; 12/3=4; 6/3=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.401Z"
+        }
+      }
+    },
+    {
+      "id": "e3ce16c2-8e96-47dd-bf9a-a0569a813475",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare unit rates",
+      "stem": "Mina reads 6 pages in 2 minutes. Sam reads 5 pages in 1 minute. How many more pages per minute does Sam read than Mina?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-6/2",
+      "solution": "Mina reads $6 \\div 2 = 3$ pages per minute. Sam reads 5 pages per minute. The difference is $5 - 3 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mina 6/2 = 3 pages/min; Sam 5. 5 - 3 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.423Z"
+        }
+      }
+    },
+    {
+      "id": "47b5460e-6b10-4ca4-a089-fc30433ef05f",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A recipe uses 4 cups of water for every 1 cup of rice. How many cups of water are needed for 3 cups of rice?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4*3",
+      "solution": "The unit ratio is 4 cups of water to 1 cup of rice, so 3 cups of rice need $4 \\times 3 = 12$ cups of water.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3 = 12 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.430Z"
+        }
+      }
+    },
+    {
+      "id": "db9b5654-9416-4645-9a15-87573467f20e",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "A trail mix has 10 cups of raisins for every 5 cups of nuts. Written with 1 cup of nuts, the ratio is ? cups of raisins to 1 cup of nuts. What is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "10/5",
+      "solution": "Divide both numbers by 5: 10 to 5 is the same as 2 to 1, so the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10:5 = 2:1, so 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.431Z"
+        }
+      }
+    },
+    {
+      "id": "a494f8bb-9046-4687-a681-bd2a3056e611",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A car uses 1 gallon of gas for every 25 miles. How many gallons does it use to go 100 miles?",
+      "choices": [],
+      "answer": "4",
+      "compute": "100/25",
+      "solution": "Each 25 miles uses 1 gallon, so 100 miles uses $100 \\div 25 = 4$ gallons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100 / 25 = 4 gallons.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.432Z"
+        }
+      }
+    },
+    {
+      "id": "eaace9f6-81fe-46b7-af72-ceb9115c25aa",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "The ratio of cats to dogs at a shelter is 14 to 2. The same ratio can be written ? to 1. What is the ?",
+      "choices": [],
+      "answer": "7",
+      "compute": "14/2",
+      "solution": "Divide both numbers by 2: 14 to 2 is the same as 7 to 1, so the ? is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14:2 = 7:1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.443Z"
+        }
+      }
+    },
+    {
+      "id": "6bcaac9f-29fa-4c24-8573-82cad6f5a5b6",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "Which ratio is equivalent to $5:15$ and has 1 as its first number?",
+      "choices": [
+        "$1:5$",
+        "$1:3$",
+        "$3:1$",
+        "$1:10$"
+      ],
+      "answer": "$1:3$",
+      "compute": null,
+      "solution": "Divide both numbers by 5: $5:15$ is the same as $1:3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1:3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5:15 = 1:3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.449Z"
+        }
+      }
+    },
+    {
+      "id": "2c587762-71c1-4080-b222-55426ae76788",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "A faucet drips 10 milliliters of water in 5 seconds. Which statement is true?",
+      "choices": [
+        "It drips 2 milliliters in each second.",
+        "It drips 5 milliliters in each second.",
+        "It drips 10 milliliters in each second.",
+        "It takes 2 seconds to drip each milliliter."
+      ],
+      "answer": "It drips 2 milliliters in each second.",
+      "compute": null,
+      "solution": "$10 \\div 5 = 2$, so it drips 2 milliliters in each second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It drips 2 milliliters in each second.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/5 = 2 mL per second (and 0.5 s per mL, so the first is false).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.449Z"
+        }
+      }
+    },
+    {
+      "id": "c097500f-7549-48fc-a9b3-5fa599de5610",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "A drink uses 1 cup of syrup for every 4 cups of water. Which statement is true?",
+      "choices": [
+        "There are 4 cups of water for each cup of syrup.",
+        "There are 4 cups of syrup for each cup of water.",
+        "There are 5 cups of water for each cup of syrup.",
+        "There is 1 cup of water for each 4 cups of syrup."
+      ],
+      "answer": "There are 4 cups of water for each cup of syrup.",
+      "compute": null,
+      "solution": "The ratio of syrup to water is 1 to 4, so each cup of syrup goes with 4 cups of water.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 4 cups of water for each cup of syrup.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 syrup : 4 water means 4 cups of water for each cup of syrup.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.453Z"
+        }
+      }
+    },
+    {
+      "id": "097ba64c-37c9-4aa2-9af7-beea9906a9be",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a unit rate",
+      "stem": "A worker packs 20 boxes in 4 hours at a steady rate. Which gives the unit rate?",
+      "choices": [
+        "80 boxes per hour",
+        "16 boxes per hour",
+        "5 boxes per hour",
+        "0.2 box per hour"
+      ],
+      "answer": "5 boxes per hour",
+      "compute": null,
+      "solution": "$20 \\div 4 = 5$, so the worker packs 5 boxes per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 boxes per hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 ÷ 4 = 5 boxes per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.455Z"
+        }
+      }
+    },
+    {
+      "id": "9b35ea27-90bf-48c8-b524-58aa6f5ae944",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "A pack of 4 batteries costs 12 dollars. How many dollars does 1 battery cost?",
+      "choices": [],
+      "answer": "3",
+      "compute": "12/4",
+      "solution": "Divide the cost by the number of batteries: $12 \\div 4 = 3$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 ÷ 4 = 3 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.473Z"
+        }
+      }
+    },
+    {
+      "id": "12686864-85d0-4a0f-a7d3-38d9ad977427",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "A bakery puts 48 rolls into 6 boxes, with the same number of rolls in each box. How many rolls are in 1 box?",
+      "choices": [],
+      "answer": "8",
+      "compute": "48/6",
+      "solution": "Divide the rolls by the boxes: $48 \\div 6 = 8$ rolls in 1 box.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 ÷ 6 = 8 rolls per box.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.479Z"
+        }
+      }
+    },
+    {
+      "id": "3a96e0b6-2e1c-4c72-ae82-0174e80d0b67",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare unit rates",
+      "stem": "Shop A sells 4 notebooks for 8 dollars. Shop B sells 3 notebooks for 9 dollars. Which shop charges less for 1 notebook?",
+      "choices": [
+        "Shop B, at 3 dollars each",
+        "Shop A, at 4 dollars each",
+        "Shop B, at 2 dollars each",
+        "Shop A, at 2 dollars each"
+      ],
+      "answer": "Shop A, at 2 dollars each",
+      "compute": null,
+      "solution": "Shop A: $8 \\div 4 = 2$ dollars. Shop B: $9 \\div 3 = 3$ dollars. Shop A is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Shop A, at 2 dollars each",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 8/4 = 2 dollars each. B: 9/3 = 3 dollars each. A is less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.517Z"
+        }
+      }
+    },
+    {
+      "id": "9f0d3827-8e29-4523-beae-7942d6a7dd34",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "The ratio of red marbles to blue marbles is 18 to 6. Which statement gives this ratio for 1 blue marble?",
+      "choices": [
+        "12 red marbles for every 1 blue marble.",
+        "3 red marbles for every 1 blue marble.",
+        "6 red marbles for every 1 blue marble.",
+        "1 red marble for every 3 blue marbles."
+      ],
+      "answer": "3 red marbles for every 1 blue marble.",
+      "compute": null,
+      "solution": "Divide both numbers by 6: 18 to 6 is 3 to 1, so there are 3 red marbles for every 1 blue marble.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 red marbles for every 1 blue marble.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / 6 = 3 red per blue.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.527Z"
+        }
+      }
+    },
+    {
+      "id": "273d0a21-d091-4958-b8f4-300d0652db19",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "A garden hose fills a bucket with 63 liters of water in 7 minutes at a steady rate. How many liters does it fill in 1 minute?",
+      "choices": [],
+      "answer": "9",
+      "compute": "63/7",
+      "solution": "Divide the liters by the minutes: $63 \\div 7 = 9$ liters in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63 / 7 = 9 liters per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.560Z"
+        }
+      }
+    },
+    {
+      "id": "586fd89d-6bd5-4997-bbe5-a9c23529ea17",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a unit rate",
+      "stem": "A box of 12 pencils costs 3 dollars. How many dollars does 1 pencil cost?",
+      "choices": [
+        "4",
+        "0.25",
+        "36",
+        "9"
+      ],
+      "answer": "0.25",
+      "compute": "3/12",
+      "solution": "Divide the cost by the number of pencils: $3 \\div 12 = 0.25$ dollar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 / 12 = 0.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.562Z"
+        }
+      }
+    },
+    {
+      "id": "c526d0ee-5122-4155-9352-349bd9f822c4",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a unit rate",
+      "stem": "Five tickets cost 45 dollars in all. How many dollars does 1 ticket cost?",
+      "choices": [
+        "40",
+        "50",
+        "9",
+        "225"
+      ],
+      "answer": "9",
+      "compute": "45/5",
+      "solution": "Divide the cost by the number of tickets: $45 \\div 5 = 9$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45/5 = 9 dollars each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.576Z"
+        }
+      }
+    },
+    {
+      "id": "000ba727-b339-4246-9678-aaf9377c6ab2",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "A cyclist rides 30 miles in 2 hours, which is a unit rate of 15 miles per hour. What does this unit rate mean?",
+      "choices": [
+        "The cyclist rides 15 miles in each hour.",
+        "The cyclist rides 15 hours for each mile.",
+        "The cyclist rides 2 miles in each hour.",
+        "The cyclist rides 30 miles in each hour."
+      ],
+      "answer": "The cyclist rides 15 miles in each hour.",
+      "compute": null,
+      "solution": "A rate of 15 miles per hour means 15 miles for each 1 hour: $30 \\div 2 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cyclist rides 15 miles in each hour.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 miles per hour means 15 miles in each hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.579Z"
+        }
+      }
+    },
+    {
+      "id": "b0702c8c-2cec-4c26-946d-e9c576a2b17a",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "Leo rides his bike 36 miles in 3 hours at a steady speed. How many miles does he ride in 1 hour?",
+      "choices": [],
+      "answer": "12",
+      "compute": "36/3",
+      "solution": "Divide the distance by the time: $36 \\div 3 = 12$ miles in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/3 = 12 miles per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.595Z"
+        }
+      }
+    },
+    {
+      "id": "8f66ecf9-1572-4e8f-b0c1-bd91596e6a74",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A baker uses 6 cups of flour to make 12 muffins. How many cups of flour does 1 muffin need?",
+      "choices": [],
+      "answer": "0.5",
+      "compute": "6/12",
+      "solution": "Divide the cups by the muffins: $6 \\div 12 = 0.5$ cup for 1 muffin.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/12 = 0.5 cup per muffin.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.613Z"
+        }
+      }
+    },
+    {
       "id": "2cd1be07-8235-4bea-83bd-b7494fff8551",
       "topic_id": "NC17.6.RP.2",
       "difficulty": 2,
@@ -3743,6 +4407,728 @@
       }
     },
     {
+      "id": "d2ad41e2-5ada-4a8c-84cb-b46e598523da",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A machine fills 14 bottles each minute. How many minutes does it take to fill 168 bottles?",
+      "choices": [],
+      "answer": "12",
+      "compute": "168/14",
+      "solution": "Divide the bottles by the rate: $168 \\div 14 = 12$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "168 / 14 = 12 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.404Z"
+        }
+      }
+    },
+    {
+      "id": "a4fbc191-afe4-4356-b315-ed24d97ce33d",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare unit rates",
+      "stem": "Plant A grew 12 centimeters in 4 weeks. Plant B grew 15 centimeters in 6 weeks. How many more centimeters per week did Plant A grow than Plant B?",
+      "choices": [],
+      "answer": "0.5",
+      "compute": "12/4-15/6",
+      "solution": "Plant A: $12 \\div 4 = 3$ centimeters per week. Plant B: $15 \\div 6 = 2.5$ centimeters per week. The difference is $3 - 2.5 = 0.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 12/4 = 3 cm/week. B: 15/6 = 2.5 cm/week. 3 - 2.5 = 0.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.406Z"
+        }
+      }
+    },
+    {
+      "id": "2bc74983-616c-484a-97c4-0e3bd79af838",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A pump moves 15 liters of water in 6 minutes. Which statement gives both unit rates?",
+      "choices": [
+        "2.5 liters each minute, and 0.4 minute for each liter",
+        "0.4 liter each minute, and 2.5 minutes for each liter",
+        "2.5 liters each minute, and 2.5 minutes for each liter",
+        "90 liters each minute, and 0.4 minute for each liter"
+      ],
+      "answer": "2.5 liters each minute, and 0.4 minute for each liter",
+      "compute": null,
+      "solution": "$15 \\div 6 = 2.5$ liters each minute, and $6 \\div 15 = 0.4$ minute for each liter.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5 liters each minute, and 0.4 minute for each liter",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15/6 = 2.5 liters per minute; 6/15 = 0.4 minute per liter.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.409Z"
+        }
+      }
+    },
+    {
+      "id": "1daa6b05-0d18-4435-adf7-7b5d89c1d7ee",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit rates with fractions and decimals",
+      "stem": "A runner runs 4.5 miles in 36 minutes at a steady pace. How many minutes does the runner take to run 1 mile?",
+      "choices": [],
+      "answer": "8",
+      "compute": "36/4.5",
+      "solution": "Divide the minutes by the miles: $36 \\div 4.5 = 8$ minutes per mile.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 / 4.5 = 8 minutes per mile.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.411Z"
+        }
+      }
+    },
+    {
+      "id": "52223efb-060e-4e33-b49e-b4a8cdbbe03e",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A machine seals 8 boxes in 20 minutes at a steady rate. How many minutes does it take to seal 1 box?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "20/8",
+      "solution": "Divide the minutes by the boxes: $20 \\div 8 = 2.5$ minutes for 1 box.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 8 = 2.5 minutes per box.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.424Z"
+        }
+      }
+    },
+    {
+      "id": "4bc03756-d1de-4d7a-8300-ea9fedf6d2bd",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "A paint mix uses 5 liters of blue paint for every 2 liters of white paint. How many liters of blue paint are there for each liter of white paint?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "5/2",
+      "solution": "Divide both numbers by 2: 5 to 2 is the same as 2.5 to 1, so there are 2.5 liters of blue for each liter of white.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 / 2 = 2.5 liters of blue per liter of white.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.427Z"
+        }
+      }
+    },
+    {
+      "id": "b75d1b79-97bd-436f-b1da-9ff1696f1553",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "Rice costs 1.80 dollars for each pound. How many pounds of rice can be bought for 9 dollars?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9/1.8",
+      "solution": "Divide the money by the price of 1 pound: $9 \\div 1.80 = 5$ pounds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 / 1.80 = 5 pounds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.428Z"
+        }
+      }
+    },
+    {
+      "id": "598b0030-2eee-4f45-a39d-163251a9c336",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "Which pair gives both unit ratios for the ratio $4:8$?",
+      "choices": [
+        "$1:2$ and $2:1$",
+        "$1:4$ and $4:1$",
+        "$2:1$ and $1:\\frac{1}{2}$",
+        "$1:2$ and $\\frac{1}{2}:1$"
+      ],
+      "answer": "$1:2$ and $\\frac{1}{2}:1$",
+      "compute": null,
+      "solution": "Dividing both numbers by 4 gives $1:2$. Dividing both by 8 gives $\\frac{1}{2}:1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1:2$ and $\\frac{1}{2}:1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4:8 = 1:2 (divide by 4) = 1/2:1 (divide by 8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.429Z"
+        }
+      }
+    },
+    {
+      "id": "a65d0916-2b3f-44b8-aebe-491cf8b32739",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a unit rate",
+      "stem": "Ribbon is sold by the yard. A piece 2.5 yards long costs 10 dollars. How many dollars does 1 yard cost?",
+      "choices": [
+        "25",
+        "12.5",
+        "4",
+        "0.25"
+      ],
+      "answer": "4",
+      "compute": "10/2.5",
+      "solution": "Divide the cost by the length: $10 \\div 2.5 = 4$ dollars per yard.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 / 2.5 = 4 dollars per yard.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.430Z"
+        }
+      }
+    },
+    {
+      "id": "d91cb686-1ca1-426f-a331-d5be79729e41",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "Which ratio is equivalent to $15:6$ and has 1 as its second number?",
+      "choices": [
+        "$0.4:1$",
+        "$5:2$",
+        "$9:1$",
+        "$2.5:1$"
+      ],
+      "answer": "$2.5:1$",
+      "compute": null,
+      "solution": "Divide both numbers by 6: $15 \\div 6 = 2.5$, so $15:6$ is the same as $2.5:1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2.5:1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15/6 = 2.5, so 15:6 = 2.5:1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.452Z"
+        }
+      }
+    },
+    {
+      "id": "59869741-8abc-4b5b-8457-ad564b6e1d3d",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "A team has won 9 games for every 6 games it has lost. Written with 1 loss, the ratio is ? wins to 1 loss. What is the ?",
+      "choices": [],
+      "answer": "1.5",
+      "compute": "9/6",
+      "solution": "Divide both numbers by 6: 9 to 6 is the same as 1.5 to 1, so the ? is 1.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9:6 = 1.5:1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.458Z"
+        }
+      }
+    },
+    {
+      "id": "a5f2b579-34c3-421d-9ece-d1bfaf467239",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "A 3-pound bag of apples costs 7.50 dollars. How many dollars does 1 pound of apples cost?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "7.5/3",
+      "solution": "Divide the cost by the pounds: $7.50 \\div 3 = 2.50$ dollars per pound.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.50 ÷ 3 = 2.50 dollars per pound.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.461Z"
+        }
+      }
+    },
+    {
+      "id": "8861ac40-a23c-4dea-8234-0f393ca9ca58",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare unit rates",
+      "stem": "Runner A runs 90 meters in 15 seconds. Runner B runs 72 meters in 9 seconds. Runner C runs 100 meters in 20 seconds. Who is the fastest?",
+      "choices": [
+        "Runner B, at 8 meters per second",
+        "Runner A, at 6 meters per second",
+        "Runner C, at 5 meters per second",
+        "Runner B, at 0.125 meter per second"
+      ],
+      "answer": "Runner B, at 8 meters per second",
+      "compute": null,
+      "solution": "A: $90 \\div 15 = 6$. B: $72 \\div 9 = 8$. C: $100 \\div 20 = 5$. Runner B has the greatest rate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Runner B, at 8 meters per second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 90/15 = 6 m/s; B: 72/9 = 8 m/s; C: 100/20 = 5 m/s. B fastest at 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.475Z"
+        }
+      }
+    },
+    {
+      "id": "a51ca89f-f865-4485-a132-539d9e63b331",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare unit rates",
+      "stem": "Which has the same unit rate as 6 miles in 4 hours?",
+      "choices": [
+        "8 miles in 6 hours",
+        "9 miles in 6 hours",
+        "10 miles in 8 hours",
+        "6 miles in 6 hours"
+      ],
+      "answer": "9 miles in 6 hours",
+      "compute": null,
+      "solution": "$6 \\div 4 = 1.5$ miles per hour, and $9 \\div 6 = 1.5$ miles per hour. The others give $\\frac{4}{3}$, 1.25 and 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 miles in 6 hours",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/4 = 1.5 mph. 10/8 = 1.25, 9/6 = 1.5, 8/6 ≈ 1.33, 6/6 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.486Z"
+        }
+      }
+    },
+    {
+      "id": "cab567f9-dc1a-429a-8722-4b3bb7a269e1",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "Rosa says that walking 18 miles in 4.5 hours is a rate of 0.25 mile per hour. Which statement is correct?",
+      "choices": [
+        "Rosa is right: the rate is 0.25 mile per hour.",
+        "Rosa is wrong: the rate is 4 miles per hour, and 0.25 is the hours for each mile.",
+        "Rosa is wrong: the rate is 81 miles per hour.",
+        "Rosa is wrong: the rate is 13.5 miles per hour."
+      ],
+      "answer": "Rosa is wrong: the rate is 4 miles per hour, and 0.25 is the hours for each mile.",
+      "compute": null,
+      "solution": "$18 \\div 4.5 = 4$ miles per hour. The number 0.25 is $4.5 \\div 18$, the hours for each mile.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rosa is wrong: the rate is 4 miles per hour, and 0.25 is the hours for each mile.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / 4.5 = 4 miles per hour. 4.5 / 18 = 0.25 hour per mile, so 0.25 is hours for each mile. Rosa is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.503Z"
+        }
+      }
+    },
+    {
+      "id": "62b480f0-3d86-46a0-8c78-ff091772ca37",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "Water flows out of a tank at 3.5 gallons per minute. Which statement is true?",
+      "choices": [
+        "In 2 minutes, 7 gallons flow out.",
+        "In 2 minutes, 1.75 gallons flow out.",
+        "In 2 minutes, 5.5 gallons flow out.",
+        "In 3.5 minutes, 2 gallons flow out."
+      ],
+      "answer": "In 2 minutes, 7 gallons flow out.",
+      "compute": null,
+      "solution": "Each minute 3.5 gallons flow out, so 2 minutes is $3.5 \\times 2 = 7$ gallons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "In 2 minutes, 7 gallons flow out.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.5 x 2 = 7 gallons in 2 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.546Z"
+        }
+      }
+    },
+    {
+      "id": "bab2efeb-d6d5-4f2b-8fde-963ffbcefcaf",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare unit rates",
+      "stem": "Store X sells 3 pounds of rice for 4.20 dollars. Store Y sells 5 pounds for 6.50 dollars. Store Z sells 2 pounds for 2.80 dollars. Which store has the lowest price per pound?",
+      "choices": [
+        "Store X, at 1.40 dollars per pound",
+        "Store Z, at 1.40 dollars per pound",
+        "Store Y, at 1.30 dollars per pound",
+        "Store Y, at 6.50 dollars per pound"
+      ],
+      "answer": "Store Y, at 1.30 dollars per pound",
+      "compute": null,
+      "solution": "X: $4.20 \\div 3 = 1.40$. Y: $6.50 \\div 5 = 1.30$. Z: $2.80 \\div 2 = 1.40$. Store Y is lowest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Store Y, at 1.30 dollars per pound",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "X: 4.20/3 = 1.40. Y: 6.50/5 = 1.30. Z: 2.80/2 = 1.40. Y lowest at 1.30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.551Z"
+        }
+      }
+    },
+    {
+      "id": "f0a39280-4a3c-4864-b83b-8477279afaa4",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare unit rates",
+      "stem": "Juice is sold as 6 bottles for 9 dollars, or as 10 bottles for 14 dollars. How many dollars less does 1 bottle cost in the cheaper deal?",
+      "choices": [],
+      "answer": "0.1",
+      "compute": "9/6-14/10",
+      "solution": "First deal: $9 \\div 6 = 1.50$ dollars a bottle. Second deal: $14 \\div 10 = 1.40$ dollars a bottle. The second is cheaper by $1.50 - 1.40 = 0.10$ dollar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/6 = 1.50 per bottle; 14/10 = 1.40 per bottle. Cheaper deal is 0.10 less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.562Z"
+        }
+      }
+    },
+    {
+      "id": "0cd3f7c0-5f17-4ace-a407-287da9174d91",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A rider covers 45 kilometers in 3 hours. At the same steady speed, how many kilometers does the rider cover in 7 hours?",
+      "choices": [],
+      "answer": "105",
+      "compute": "45/3*7",
+      "solution": "The unit rate is $45 \\div 3 = 15$ kilometers per hour, so 7 hours is $15 \\times 7 = 105$ kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "105",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45/3 = 15 km per hour; 15 x 7 = 105.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.575Z"
+        }
+      }
+    },
+    {
+      "id": "0a5921a8-f5e3-4a1d-b12e-1868d3f66d40",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A machine makes 18 parts every 4 minutes. How many parts does it make in 10 minutes at the same rate?",
+      "choices": [
+        "72",
+        "180",
+        "2.2",
+        "45"
+      ],
+      "answer": "45",
+      "compute": "18/4*10",
+      "solution": "The unit rate is $18 \\div 4 = 4.5$ parts per minute, so 10 minutes gives $4.5 \\times 10 = 45$ parts.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18/4 = 4.5 parts per minute; x10 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.594Z"
+        }
+      }
+    },
+    {
+      "id": "ebc31b0e-db35-4e1c-ae00-0357cbd899ef",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "A recipe uses 3 cups of flour and 2 cups of sugar. Which statement is true?",
+      "choices": [
+        "There are 1.5 cups of sugar for each cup of flour.",
+        "There are 1.5 cups of flour for each cup of sugar.",
+        "There are 6 cups of flour for each cup of sugar.",
+        "There is 0.5 cup of flour for each cup of sugar."
+      ],
+      "answer": "There are 1.5 cups of flour for each cup of sugar.",
+      "compute": null,
+      "solution": "Divide the flour by the sugar: $3 \\div 2 = 1.5$ cups of flour for each cup of sugar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 1.5 cups of flour for each cup of sugar.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Flour:sugar = 3:2 = 1.5:1, so 1.5 cups flour per cup of sugar. Sugar per flour is 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.596Z"
+        }
+      }
+    },
+    {
+      "id": "0385b615-1091-4688-b7bb-5cfdbafe05b9",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "A printer prints 135 pages in 9 minutes at a steady rate. How many pages does it print in 1 minute?",
+      "choices": [],
+      "answer": "15",
+      "compute": "135/9",
+      "solution": "Divide the pages by the minutes: $135 \\div 9 = 15$ pages per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "135/9 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.611Z"
+        }
+      }
+    },
+    {
+      "id": "6fcd8e2c-5196-49e7-b20b-3fa1bb7ab7b1",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "Pablo earns 11.50 dollars for each hour he works. How many dollars does he earn in 8 hours?",
+      "choices": [],
+      "answer": "92",
+      "compute": "11.5*8",
+      "solution": "Multiply the hourly pay by the hours: $11.50 \\times 8 = 92$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "92",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11.50 × 8 = 92.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.661Z"
+        }
+      }
+    },
+    {
       "id": "b9ce40bf-9c43-45b7-abea-180dbecab179",
       "topic_id": "NC17.6.RP.2",
       "difficulty": 3,
@@ -4054,6 +5440,728 @@
           "work": "1 / 2.5 = 0.4 hour per mile. 2 miles takes 0.8 hour, not 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.536Z"
+        }
+      }
+    },
+    {
+      "id": "effced4d-6b9b-46ed-bbf3-fa7a94cd2585",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "Which rate is the same as 2.5 gallons per minute?",
+      "choices": [
+        "10 gallons in 2.5 minutes",
+        "10 gallons in 4 minutes",
+        "5 gallons in 12.5 minutes",
+        "2.5 gallons in 10 minutes"
+      ],
+      "answer": "10 gallons in 4 minutes",
+      "compute": null,
+      "solution": "$10 \\div 4 = 2.5$ gallons per minute. The others give 4, 0.4 and 0.25 gallon per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 gallons in 4 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/2.5=4; 10/4=2.5 ✓; 2.5/10=0.25; 5/12.5=0.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.402Z"
+        }
+      }
+    },
+    {
+      "id": "1a6c26bb-8b61-4ca0-b058-16ef2ed7505b",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A pool drains at a steady rate of 12 gallons each minute. How many minutes does it take to drain 30 gallons?",
+      "choices": [
+        "2.5",
+        "360",
+        "18",
+        "0.4"
+      ],
+      "answer": "2.5",
+      "compute": "30/12",
+      "solution": "Divide the amount by the rate: $30 \\div 12 = 2.5$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 / 12 = 2.5 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.409Z"
+        }
+      }
+    },
+    {
+      "id": "4b2c164b-6618-4978-9bf0-34ebc62c71bf",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit rates with fractions and decimals",
+      "stem": "A baker uses $1\\frac{1}{2}$ cups of sugar to make 4 equal batches of cookies. How many cups of sugar are in 1 batch?",
+      "choices": [],
+      "answer": "3/8",
+      "compute": "(3/2)/4",
+      "solution": "Divide the sugar by the batches: $1\\frac{1}{2} \\div 4 = \\frac{3}{2} \\times \\frac{1}{4} = \\frac{3}{8}$ cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 1/2 / 4 = 3/2 / 4 = 3/8 cup.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.412Z"
+        }
+      }
+    },
+    {
+      "id": "d5698ca7-ff62-4f74-8494-48148b178652",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "In the ratio 20 to 8, which statement is true?",
+      "choices": [
+        "There are 0.4 of the first quantity for each 1 of the second.",
+        "There are 12 of the first quantity for each 1 of the second.",
+        "There are 2.5 of the first quantity for each 1 of the second.",
+        "There are 2.5 of the second quantity for each 1 of the first."
+      ],
+      "answer": "There are 2.5 of the first quantity for each 1 of the second.",
+      "compute": null,
+      "solution": "Divide both numbers by 8: 20 to 8 is 2.5 to 1, so 2.5 of the first quantity for each 1 of the second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 2.5 of the first quantity for each 1 of the second.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20/8 = 2.5 of the first for each 1 of the second. (8/20 = 0.4 of the second per first.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.413Z"
+        }
+      }
+    },
+    {
+      "id": "6e5fef0f-f7bd-4438-87fa-06d99c443d49",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A car travels 28 miles on each gallon of gas. How many gallons does the car use for each mile? Give an exact answer as a fraction.",
+      "choices": [],
+      "answer": "1/28",
+      "compute": "1/28",
+      "solution": "If 1 gallon covers 28 miles, then 1 mile uses $1 \\div 28 = \\frac{1}{28}$ gallon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 miles per gallon means 1/28 gallon per mile.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.417Z"
+        }
+      }
+    },
+    {
+      "id": "1d81dc29-b8fa-4295-8d72-49cef90c8905",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare unit rates",
+      "stem": "Ana's car travels 288 miles on 9 gallons of gas. Ben's car travels 210 miles on 6 gallons. How many more miles per gallon does Ben's car get than Ana's car?",
+      "choices": [],
+      "answer": "3",
+      "compute": "210/6-288/9",
+      "solution": "Ana: $288 \\div 9 = 32$ miles per gallon. Ben: $210 \\div 6 = 35$ miles per gallon. The difference is $35 - 32 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ana 288/9 = 32 mpg; Ben 210/6 = 35 mpg; 35 - 32 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.441Z"
+        }
+      }
+    },
+    {
+      "id": "7f0af091-a401-4dcc-9b72-5ab8e2af9351",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit rates with fractions and decimals",
+      "stem": "A tap fills 5.5 liters of water in 2 minutes at a steady rate. How many liters does it fill in 1 minute?",
+      "choices": [],
+      "answer": "2.75",
+      "compute": "5.5/2",
+      "solution": "Divide the liters by the minutes: $5.5 \\div 2 = 2.75$ liters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.5 / 2 = 2.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.441Z"
+        }
+      }
+    },
+    {
+      "id": "371dac77-5ff0-49a0-b500-9545b9b89886",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "Maria runs 6 miles in 48 minutes at a steady pace. At that pace, how many minutes does it take her to run 2.5 miles?",
+      "choices": [],
+      "answer": "20",
+      "compute": "48/6*2.5",
+      "solution": "She runs 1 mile in $48 \\div 6 = 8$ minutes, so 2.5 miles take $8 \\times 2.5 = 20$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48/6 = 8 min per mile; 8 x 2.5 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.450Z"
+        }
+      }
+    },
+    {
+      "id": "d1270db6-cf22-45b8-9c73-e680760c7350",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "Water drips from a pipe at a steady 0.4 liter each hour. How many hours does it take to drip 3 liters?",
+      "choices": [],
+      "answer": "7.5",
+      "compute": "3/0.4",
+      "solution": "Divide the amount by the rate: $3 \\div 0.4 = 7.5$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 ÷ 0.4 = 7.5 hours.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.456Z"
+        }
+      }
+    },
+    {
+      "id": "a1c84f70-af2f-4a5e-a1e5-f331e2a0c1c9",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare unit rates",
+      "stem": "A 12-ounce box of cereal costs 3.00 dollars, an 18-ounce box costs 4.14 dollars, and a 16-ounce box costs 3.52 dollars. Which box has the lowest price per ounce?",
+      "choices": [
+        "The 18-ounce box, at 0.23 dollar per ounce",
+        "The 12-ounce box, at 0.25 dollar per ounce",
+        "The 16-ounce box, at 3.52 dollars per ounce",
+        "The 16-ounce box, at 0.22 dollar per ounce"
+      ],
+      "answer": "The 16-ounce box, at 0.22 dollar per ounce",
+      "compute": null,
+      "solution": "12 ounces: $3.00 \\div 12 = 0.25$. 18 ounces: $4.14 \\div 18 = 0.23$. 16 ounces: $3.52 \\div 16 = 0.22$. The 16-ounce box is lowest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 16-ounce box, at 0.22 dollar per ounce",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 oz: 3.00/12 = 0.25; 18 oz: 4.14/18 = 0.23; 16 oz: 3.52/16 = 0.22. Lowest is 16-oz at 0.22 $/oz.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.459Z"
+        }
+      }
+    },
+    {
+      "id": "a9e8a315-0b80-497f-acf3-751a1e3a75e3",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare unit rates",
+      "stem": "A pack of 12 pens costs 9 dollars. A pack of 20 pens costs 13 dollars. How many cents less does one pen cost in the cheaper pack? (1 dollar is 100 cents.)",
+      "choices": [],
+      "answer": "10",
+      "compute": "900/12-1300/20",
+      "solution": "First pack: 900 cents $\\div$ 12 $= 75$ cents a pen. Second pack: 1300 cents $\\div$ 20 $= 65$ cents a pen. The difference is 10 cents.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12-pack: 900/12 = 75 c; 20-pack: 1300/20 = 65 c. 75 − 65 = 10 cents.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.467Z"
+        }
+      }
+    },
+    {
+      "id": "038a4ba3-b21a-4feb-9e45-ea431e9c2e9a",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A bakery sells 3 loaves of bread for 7.50 dollars. Which statement gives both unit rates?",
+      "choices": [
+        "Each loaf costs 0.4 dollar, and 2.50 loaves are sold for each dollar.",
+        "Each loaf costs 2.50 dollars, and 2.50 loaves are sold for each dollar.",
+        "Each loaf costs 22.50 dollars, and 0.4 loaf is sold for each dollar.",
+        "Each loaf costs 2.50 dollars, and 0.4 loaf is sold for each dollar."
+      ],
+      "answer": "Each loaf costs 2.50 dollars, and 0.4 loaf is sold for each dollar.",
+      "compute": null,
+      "solution": "$7.50 \\div 3 = 2.50$ dollars for each loaf, and $3 \\div 7.50 = 0.4$ loaf for each dollar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each loaf costs 2.50 dollars, and 0.4 loaf is sold for each dollar.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.50/3 = 2.50 dollars per loaf; 3/7.50 = 0.4 loaf per dollar.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.477Z"
+        }
+      }
+    },
+    {
+      "id": "f42ed084-a7b4-41d8-bc43-ec4c14e4fa9c",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "The ratio of the length to the width of a rectangle is 18 to 4. Written with a width of 1, the ratio is ? to 1. What is the ?",
+      "choices": [],
+      "answer": "4.5",
+      "compute": "18/4",
+      "solution": "Divide both numbers by 4: 18 to 4 is the same as 4.5 to 1, so the ? is 4.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / 4 = 4.5, so 4.5 to 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.537Z"
+        }
+      }
+    },
+    {
+      "id": "5128a0c2-e66a-475b-9ca2-8f66f0358d93",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "At a zoo the ratio of monkeys to lions is 14 to 4. Which statement is correct?",
+      "choices": [
+        "There are 3.5 lions for each monkey.",
+        "There are 7 monkeys for each lion.",
+        "There are 10 monkeys for each lion.",
+        "There are 3.5 monkeys for each lion."
+      ],
+      "answer": "There are 3.5 monkeys for each lion.",
+      "compute": null,
+      "solution": "Divide both numbers by 4: 14 to 4 is 3.5 to 1, so there are 3.5 monkeys for each lion.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 3.5 monkeys for each lion.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 / 4 = 3.5 monkeys per lion (lions per monkey = 4/14).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.540Z"
+        }
+      }
+    },
+    {
+      "id": "d8378faa-0417-4b6f-83fb-1c75ff8e19ad",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A car travels 150 miles in 2.5 hours at a steady speed. How many miles does it travel in 4 hours at that speed?",
+      "choices": [],
+      "answer": "240",
+      "compute": "150/2.5*4",
+      "solution": "The unit rate is $150 \\div 2.5 = 60$ miles per hour, so 4 hours is $60 \\times 4 = 240$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "240",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "150 / 2.5 = 60 mph; 60 x 4 = 240.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.540Z"
+        }
+      }
+    },
+    {
+      "id": "729196fd-cef1-4950-a27b-8fed1d834a53",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "Printer A prints 60 pages in 4 minutes. Printer B prints 45 pages in 5 minutes. Working together, how many pages do they print in 1 minute?",
+      "choices": [
+        "24",
+        "6",
+        "105",
+        "9"
+      ],
+      "answer": "24",
+      "compute": "60/4+45/5",
+      "solution": "Printer A prints $60 \\div 4 = 15$ pages a minute and Printer B prints $45 \\div 5 = 9$. Together: $15 + 9 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 60/4 = 15 per min. B: 45/5 = 9 per min. Together 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.548Z"
+        }
+      }
+    },
+    {
+      "id": "d664bdfc-cddf-425b-9e46-770e4dce5c00",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A snail crawls $\\frac{3}{5}$ foot in 9 minutes at a steady pace. How many minutes does it take the snail to crawl 1 foot?",
+      "choices": [],
+      "answer": "15",
+      "compute": "9/(3/5)",
+      "solution": "Divide the time by the distance: $9 \\div \\frac{3}{5} = 9 \\times \\frac{5}{3} = 15$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 / (3/5) = 15 minutes per foot.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.550Z"
+        }
+      }
+    },
+    {
+      "id": "d361893a-d1e8-4e84-a4ba-9ae0eb6f0143",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "Jo says that 5 apples for 4 dollars means each apple costs 1.25 dollars. Which statement is correct?",
+      "choices": [
+        "Jo is wrong: 1.25 is the apples for 1 dollar, and each apple costs 0.80 dollar.",
+        "Jo is right: each apple costs 1.25 dollars.",
+        "Jo is wrong: each apple costs 20 dollars.",
+        "Jo is wrong: each apple costs 9 dollars."
+      ],
+      "answer": "Jo is wrong: 1.25 is the apples for 1 dollar, and each apple costs 0.80 dollar.",
+      "compute": null,
+      "solution": "$5 \\div 4 = 1.25$ is the number of apples for 1 dollar. Each apple costs $4 \\div 5 = 0.80$ dollar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Jo is wrong: 1.25 is the apples for 1 dollar, and each apple costs 0.80 dollar.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 / 5 = 0.80 dollar per apple; 5 / 4 = 1.25 apples per dollar. Jo is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.563Z"
+        }
+      }
+    },
+    {
+      "id": "4f206221-70d7-4333-bb43-ee0b748e6cbb",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A tank drains 8 liters each minute. How many liters drain in 2.25 minutes?",
+      "choices": [],
+      "answer": "18",
+      "compute": "8*2.25",
+      "solution": "Multiply the rate by the time: $8 \\times 2.25 = 18$ liters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 2.25 = 18 liters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.598Z"
+        }
+      }
+    },
+    {
+      "id": "634a858a-9301-4eda-afa3-3f4f78b33057",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit rates with fractions and decimals",
+      "stem": "A hose fills $\\frac{3}{4}$ of a gallon jug in $\\frac{1}{2}$ minute. At that steady rate, how many gallons does it fill in 1 minute?",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "(3/4)/(1/2)",
+      "solution": "Divide the amount by the time: $\\frac{3}{4} \\div \\frac{1}{2} = \\frac{3}{4} \\times 2 = \\frac{3}{2}$ gallons in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 gallon in 1/2 minute; (3/4)/(1/2) = 3/2 = 1.5 gallons per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.608Z"
+        }
+      }
+    },
+    {
+      "id": "e1405dd7-8da7-49b0-8085-f98136324c32",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find both unit rates of a ratio",
+      "stem": "A faucet fills $\\frac{3}{4}$ of a bucket in 3 minutes. Which pair gives both unit rates?",
+      "choices": [
+        "$\\frac{9}{4}$ buckets per minute and $\\frac{4}{9}$ minute per bucket",
+        "$\\frac{1}{4}$ bucket per minute and 4 minutes per bucket",
+        "4 buckets per minute and $\\frac{1}{4}$ minute per bucket",
+        "$\\frac{1}{4}$ bucket per minute and $\\frac{1}{4}$ minute per bucket"
+      ],
+      "answer": "$\\frac{1}{4}$ bucket per minute and 4 minutes per bucket",
+      "compute": null,
+      "solution": "$\\frac{3}{4} \\div 3 = \\frac{1}{4}$ bucket per minute, and $3 \\div \\frac{3}{4} = 4$ minutes per bucket.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{4}$ bucket per minute and 4 minutes per bucket",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/4)/3 = 1/4 bucket per minute; 3/(3/4) = 4 minutes per bucket.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.616Z"
+        }
+      }
+    },
+    {
+      "id": "bf6256e6-fcdd-4017-a2c6-374c24cb3476",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a ratio as an equivalent unit ratio",
+      "stem": "Which pair gives both unit ratios for the ratio 10 to 4?",
+      "choices": [
+        "2.5 to 1, and 1 to 2.5",
+        "0.4 to 1, and 1 to 0.4",
+        "2.5 to 1, and 1 to 0.4",
+        "6 to 1, and 1 to 6"
+      ],
+      "answer": "2.5 to 1, and 1 to 0.4",
+      "compute": null,
+      "solution": "Dividing both numbers by 4 gives 2.5 to 1. Dividing both by 10 gives 1 to 0.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5 to 1, and 1 to 0.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10:4 = 2.5:1 (divide by 4) = 1:0.4 (divide by 10). Option 1 \"1 to 2.5\" equals 4:10, the reverse ratio; option 3 \"0.4 to 1\" is also reversed. Only 2.5 to 1 and 1 to 0.4 are both equivalent to 10 to 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.625Z"
+        }
+      }
+    },
+    {
+      "id": "c11ce320-4152-405b-98cc-180e49c6f68e",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a unit rate in context",
+      "stem": "A car uses $\\frac{1}{25}$ gallon of gas for each mile. Which statement is also true?",
+      "choices": [
+        "The car travels $\\frac{1}{25}$ mile on each gallon.",
+        "The car uses 25 gallons for each mile.",
+        "The car travels 25 miles on each gallon.",
+        "The car travels 25 miles on each $\\frac{1}{25}$ gallon."
+      ],
+      "answer": "The car travels 25 miles on each gallon.",
+      "compute": null,
+      "solution": "If 1 mile uses $\\frac{1}{25}$ gallon, then 1 gallon covers $1 \\div \\frac{1}{25} = 25$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The car travels 25 miles on each gallon.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/25 gal per mile -> 1 ÷ (1/25) = 25 miles per gallon. Last option false: 1/25 gal gives 1 mile.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.637Z"
         }
       }
     },

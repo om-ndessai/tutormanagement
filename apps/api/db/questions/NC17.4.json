@@ -4,7 +4,7 @@
   "notes": {
     "NC17.4.OA.1": "Grade 4 multiplicative comparison within facts and a few 2- and 3-digit products and quotients. Skills: interpreting a comparison equation, choosing an equation, find larger / smaller / how many times, additive versus multiplicative, multi-step. Wrote 69 (23 per difficulty), all whole numbers within Grade 4 multiplication facts and multi-digit by one-digit. Contexts avoid the first-pass stems; no figure needed.",
     "NC17.4.OA.3": "All whole-number answers; products stay within 4-digit by 1-digit and 2-digit by 2-digit. Estimation questions state the rounding place, so each has one answer. Remainder questions say whether to round up, drop or use the remainder.",
-    "NC17.4.OA.4": "All numbers stay within 50 (the summary range). Prime/composite questions use numbers up to 50 only.",
+    "NC17.4.OA.4": "All numbers stay within 50 (the summary range). Prime/composite questions use numbers up to 50 only. Numbers kept within 50 for factors and primality; multiples go no higher than 100.",
     "NC17.4.NBT.1": "Whole numbers up to 100,000 only; every product or quotient stays within that range. Skills (rough counts): value of a digit 4, each place ten times the place to its right 4, compare a digit in two places 4, multiply or divide by 10 5, name the place 2, explain place-value statements 4, count in place-value units 4, build a number from its places 3. Model-based items (blocks, place-value charts) are asked as written statements.",
     "NC17.4.NBT.2": "Whole numbers to 100,000. Numeric questions give the numeral without commas; word forms are choice questions. Skills: words (5), numeral from words (5), expanded form (5), numeral from expanded form (5), matching forms (5), zeros as placeholders (5).",
     "NC17.4.NBT.7": "Numbers are within 100,000. Comparisons are written with $>$, $=$ and $<$; number-line and place-value-chart pictures are not used.",
@@ -6508,6 +6508,680 @@
       }
     },
     {
+      "id": "d6ce957d-e190-40ae-9e5a-6d3e332ee677",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "Jo writes the factor pairs of 10: 1 and 10, then 2 and 5. How many different factors of 10 did Jo write?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The numbers written are 1, 10, 2 and 5. That is 4 different factors.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors written: 1, 10, 2, 5: four different factors.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.343Z"
+        }
+      }
+    },
+    {
+      "id": "376fa13b-abf8-47f1-a78d-059130c43c9a",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Prime and composite numbers",
+      "stem": "How many of the numbers 2, 3, 4, 5 and 6 are prime?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "2, 3 and 5 are prime. 4 ($2 \\times 2$) and 6 ($2 \\times 3$) are composite. So 3 numbers are prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2, 3, 5 are prime; 4 and 6 are not: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.345Z"
+        }
+      }
+    },
+    {
+      "id": "b32ebee9-5416-4165-adc5-d12fdc556fa3",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reasoning about primes and factors",
+      "stem": "I am a number with exactly two factors, 1 and me. I am greater than 5 and less than 9. What number am I?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Check 6, 7 and 8. 6 and 8 are even and have more factors. 7 has only 1 and 7, so I am 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exactly two factors means prime; between 5 and 9: 6,7,8; only 7 is prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.406Z"
+        }
+      }
+    },
+    {
+      "id": "cc3f81eb-cd36-4749-b3c2-d84ad3459a9e",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Decide whether a number is a factor",
+      "stem": "How many of the numbers 2, 3, 4 and 5 are factors of 20?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$20 \\div 2 = 10$, $20 \\div 4 = 5$ and $20 \\div 5 = 4$ all come out even. $20 \\div 3$ does not. So 2, 4 and 5 are factors: 3 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20: 2 yes, 3 no, 4 yes, 5 yes. 3 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.422Z"
+        }
+      }
+    },
+    {
+      "id": "22595299-34a4-4dae-92f4-a439389da986",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiples of a number",
+      "stem": "What is the smallest multiple of 7 that is greater than 20?",
+      "choices": [],
+      "answer": "21",
+      "compute": "3*7",
+      "solution": "Count by 7s: 7, 14, 21. The first one greater than 20 is 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 7: 14, 21. Smallest above 20 is 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.432Z"
+        }
+      }
+    },
+    {
+      "id": "94d94fa6-7971-456c-99ee-86090153f09d",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Ava says 11 is a prime number. Which reason supports her?",
+      "choices": [
+        "It is odd and it does not end in 5.",
+        "It is greater than 10 and less than 12.",
+        "It can only be divided evenly by 1 and 11.",
+        "It has two digits that are the same."
+      ],
+      "answer": "It can only be divided evenly by 1 and 11.",
+      "compute": null,
+      "solution": "A prime number has exactly two factors, 1 and itself. 11 has only 1 and 11 as factors. The other reasons say nothing about its factors.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It can only be divided evenly by 1 and 11.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A prime has only 1 and itself as factors: 11 divides evenly only by 1 and 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.440Z"
+        }
+      }
+    },
+    {
+      "id": "e454c00f-a952-4c8c-9f7d-974d587287bb",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Which number is NOT a factor of 16?",
+      "choices": [
+        "2",
+        "6",
+        "4",
+        "8"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$2 \\times 8 = 16$ and $4 \\times 4 = 16$, so 2, 4 and 8 are factors of 16. No whole number times 6 makes 16 ($6 \\times 2 = 12$, $6 \\times 3 = 18$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 16: 1,2,4,8,16. 6 is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.458Z"
+        }
+      }
+    },
+    {
+      "id": "29bc6c74-0141-4338-8660-8b301e4376cb",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "1 and 25 are one factor pair of 25. Which numbers are another factor pair of 25?",
+      "choices": [
+        "5 and 5",
+        "5 and 20",
+        "2 and 13",
+        "3 and 8"
+      ],
+      "answer": "5 and 5",
+      "compute": null,
+      "solution": "$5 \\times 5 = 25$, so 5 and 5 are a factor pair. The other options do not multiply to 25: $5 \\times 20 = 100$, $2 \\times 13 = 26$, $3 \\times 8 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 = 5 × 5. Others: 26, 24, 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.465Z"
+        }
+      }
+    },
+    {
+      "id": "56e1ce5c-7427-4cfb-9319-8f0553fe2f5f",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Which list has only prime numbers?",
+      "choices": [
+        "2, 4, 5",
+        "2, 3, 5",
+        "3, 5, 9",
+        "1, 2, 3"
+      ],
+      "answer": "2, 3, 5",
+      "compute": null,
+      "solution": "2, 3 and 5 each have exactly two factors. The other lists each have a number that is not prime: 4 and 9 are composite, and 1 has only one factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2, 3, 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2, 3, 5 all prime. 9 composite, 1 not prime, 4 composite.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.477Z"
+        }
+      }
+    },
+    {
+      "id": "8f943e39-2d52-40c1-9b6f-31d88202e8cd",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Which number is composite?",
+      "choices": [
+        "15",
+        "11",
+        "13",
+        "17"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "$15 = 3 \\times 5$, so 15 has a factor other than 1 and itself. 11, 13 and 17 are prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 = 3 × 5 is composite; 11, 13, 17 prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.480Z"
+        }
+      }
+    },
+    {
+      "id": "9fc5a5ba-ba91-4340-9f24-30f9317d80e3",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiples of a number",
+      "stem": "Which list shows only multiples of 4?",
+      "choices": [
+        "8, 14, 20",
+        "6, 12, 20",
+        "4, 10, 16",
+        "8, 12, 20"
+      ],
+      "answer": "8, 12, 20",
+      "compute": null,
+      "solution": "Multiples of 4 are 4, 8, 12, 16, 20, ... The list 8, 12, 20 has only multiples. Each other list has a number that is not one: 14, 6 or 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8, 12, 20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8, 12, 20 all divisible by 4; 14, 6, 10 are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.518Z"
+        }
+      }
+    },
+    {
+      "id": "354484fa-b2d3-4271-afe8-9f44b430d6dc",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiples of a number",
+      "stem": "Which number is NOT a multiple of 3?",
+      "choices": [
+        "20",
+        "12",
+        "18",
+        "27"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "12, 18 and 27 are in the count by 3s (..., 12, 15, 18, 21, 24, 27). Counting by 3s goes 18, 21, so it skips 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27, 18, 12 are multiples of 3; 20 is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.525Z"
+        }
+      }
+    },
+    {
+      "id": "8a718da9-44c7-46ef-871b-7e6413bf1de3",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "Which equation is true and shows a factor pair of 18?",
+      "choices": [
+        "$4 \\times 5 = 18$",
+        "$2 \\times 8 = 18$",
+        "$3 \\times 6 = 18$",
+        "$3 \\times 7 = 18$"
+      ],
+      "answer": "$3 \\times 6 = 18$",
+      "compute": null,
+      "solution": "Check each product: $4 \\times 5 = 20$, $2 \\times 8 = 16$, $3 \\times 7 = 21$. Only $3 \\times 6 = 18$ is true, so 3 and 6 are a factor pair of 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 6 = 18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 6 = 18 true; 3x7=21, 2x8=16, 4x5=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.525Z"
+        }
+      }
+    },
+    {
+      "id": "84cfd0a6-b79a-4e28-bceb-d30607c97c74",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiples of a number",
+      "stem": "Which number is in the list of multiples of 9?",
+      "choices": [
+        "28",
+        "19",
+        "27",
+        "39"
+      ],
+      "answer": "27",
+      "compute": "27",
+      "solution": "The multiples of 9 are 9, 18, 27, 36, ... Only 27 is in the list.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27 = 9 x 3. 19, 39, 28 are not multiples of 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.531Z"
+        }
+      }
+    },
+    {
+      "id": "0f7a843b-f66a-478b-ab30-481fab3ac910",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Which number is both even and prime?",
+      "choices": [
+        "4",
+        "6",
+        "8",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Even numbers larger than 2 have 2 as a factor, so they have more than two factors. 2 has only the factors 1 and 2, so it is the even prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 is the only even prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.549Z"
+        }
+      }
+    },
+    {
+      "id": "73714c5c-eb80-42d8-a59a-c3f3f567235b",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Which of these numbers is a factor of 24?",
+      "choices": [
+        "5",
+        "7",
+        "9",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$6 \\times 4 = 24$, so 6 is a factor of 24. Counting by 5s, 7s or 9s skips 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 = 6 x 4. 5, 9, 7 do not divide 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.553Z"
+        }
+      }
+    },
+    {
+      "id": "b922c135-8a5c-492a-94c8-5e597cd8d2eb",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Which number is a factor of both 6 and 9?",
+      "choices": [
+        "2",
+        "3",
+        "6",
+        "9"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$3 \\times 2 = 6$ and $3 \\times 3 = 9$, so 3 is a factor of both. 2 is not a factor of 9, 6 is not a factor of 9, and 9 is not a factor of 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 6: 1,2,3,6; of 9: 1,3,9. Common among options: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.554Z"
+        }
+      }
+    },
+    {
+      "id": "ef76512a-664b-4493-b652-aac82870954d",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "The factors of 6 are 1, 2, 3 and 6. How many factor pairs does 6 have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Match the factors in pairs: 1 and 6, then 2 and 3. That is 2 factor pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor pairs: 1x6, 2x3. Two pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.570Z"
+        }
+      }
+    },
+    {
+      "id": "3dbd8b32-9fb9-48de-bd80-39b7e3f9a902",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Which number is a factor of every whole number?",
+      "choices": [
+        "0",
+        "2",
+        "10",
+        "1"
+      ],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Any whole number equals 1 times itself, so 1 is a factor of every whole number. 2 and 10 do not divide every number, and 0 is not a factor of anything.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 divides every whole number. 0 divides none; 2 and 10 fail for odd numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.572Z"
+        }
+      }
+    },
+    {
+      "id": "33120a45-6cc7-49a6-a962-69c1992d09f1",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Prime and composite numbers",
+      "stem": "What is the smallest prime number?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "1 is not prime because it has only one factor. 2 has exactly two factors, 1 and 2, so 2 is the smallest prime number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 is the smallest prime (1 is not prime).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.576Z"
+        }
+      }
+    },
+    {
+      "id": "a11c38fa-96e9-40d3-a2af-1c5aeddac4a6",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "$8 \\times ? = 40$. What number is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "40/8",
+      "solution": "$8 \\times 5 = 40$, so the ? is 5. Check by dividing: $40 \\div 8 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40/8 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.626Z"
+        }
+      }
+    },
+    {
       "id": "1dfad8d4-de28-440b-8748-5925149e1096",
       "topic_id": "NC17.4.OA.4",
       "difficulty": 2,
@@ -6814,6 +7488,704 @@
           "work": "5, 10, ..., 50 = 5x1 ... 5x10: 10 numbers.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:33.807Z"
+        }
+      }
+    },
+    {
+      "id": "3154cba3-1d05-4431-bda9-6016e04d6618",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Leo says, \"Every multiple of 3 that is greater than 3 is a composite number.\" Which statement is correct?",
+      "choices": [
+        "Leo is wrong. 9 is a multiple of 3 and it is prime.",
+        "Leo is wrong. 3 is a multiple of 3 and it is prime.",
+        "Leo is right. Such a number has 1, 3 and itself as factors.",
+        "Leo is right. Such a number has exactly two factors."
+      ],
+      "answer": "Leo is right. Such a number has 1, 3 and itself as factors.",
+      "compute": null,
+      "solution": "A multiple of 3 that is greater than 3 has the factors 1, 3 and itself, which are at least three different numbers, so it is composite. 9 is not prime ($3 \\times 3$), and the number 3 itself is not greater than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Leo is right. Such a number has 1, 3 and itself as factors.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 3 above 3 (6, 9, 12, ...) have 1, 3 and themselves as factors, so at least three factors: composite. Leo is right; D gives the correct reason (A describes a prime; B uses 3, which is not greater than 3; 9 is not prime).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.352Z"
+        }
+      }
+    },
+    {
+      "id": "2cbd591c-1f57-48c2-ba38-3c8435072567",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Which number is a factor of 42 but NOT a factor of 28?",
+      "choices": [
+        "3",
+        "7",
+        "14",
+        "4"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The factors of 42 are 1, 2, 3, 6, 7, 14, 21 and 42. The factors of 28 are 1, 2, 4, 7, 14 and 28. 7 and 14 are factors of both, and 4 is a factor of 28 only. So 3 is the answer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 divides 42 (14) but not 28. 7 and 14 divide both; 4 divides 28 not 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.388Z"
+        }
+      }
+    },
+    {
+      "id": "b058d9d6-2947-4e04-8800-a6fbf2399274",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiples of a number",
+      "stem": "Pia counts by 8s, starting at 8. What is the 6th number she says?",
+      "choices": [],
+      "answer": "48",
+      "compute": "6*8",
+      "solution": "She says 8, 16, 24, 32, 40, 48. The 6th multiple of 8 is $6 \\times 8 = 48$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8, 16, 24, 32, 40, 48: sixth is 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.388Z"
+        }
+      }
+    },
+    {
+      "id": "ef2105c5-3645-49c6-920f-3533dcabf0c3",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "What is the greatest factor of 40 that is less than 10?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The factors of 40 are 1, 2, 4, 5, 8, 10, 20 and 40. The greatest one less than 10 is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 40: 1,2,4,5,8,10,20,40; greatest below 10 is 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.400Z"
+        }
+      }
+    },
+    {
+      "id": "7a6ebfbb-1fe9-4ada-aa2a-d2aa418aaf78",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count factors and factor pairs",
+      "stem": "Which number is NOT in the list of all the factors of 30?",
+      "choices": [
+        "4",
+        "6",
+        "10",
+        "15"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$6 \\times 5 = 30$, $10 \\times 3 = 30$ and $15 \\times 2 = 30$. 30 is not a multiple of 4 because $4 \\times 7 = 28$ and $4 \\times 8 = 32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 30: 1,2,3,5,6,10,15,30; 4 is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.401Z"
+        }
+      }
+    },
+    {
+      "id": "bb19ecad-1ff1-4df1-bc96-9e7758e8c3b6",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count factors and factor pairs",
+      "stem": "Which number has exactly three factor pairs?",
+      "choices": [
+        "13",
+        "14",
+        "15",
+        "12"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "12 has the pairs 1 and 12, 2 and 6, 3 and 4. 13 has one pair, and 14 and 15 each have two pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12: 1x12, 2x6, 3x4 (three pairs). 13: one; 14: two; 15: two.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.424Z"
+        }
+      }
+    },
+    {
+      "id": "b653f284-63a6-49dc-9212-ee51887fc20d",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Two different prime numbers add up to 12. What is the larger of the two?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Try the primes: $5 + 7 = 12$. The pairs 2 + 10 and 3 + 9 and 11 + 1 do not use two primes. So the primes are 5 and 7, and the larger is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs of primes summing to 12: 5+7 only (1 is not prime, 11+1 fails). Larger is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.425Z"
+        }
+      }
+    },
+    {
+      "id": "1ef3c024-dd23-4de6-9226-0a97d051dbfd",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Ravi tests the whole numbers from 1 to 10 to see which ones divide 36 evenly. How many of them divide 36 evenly?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Test each: 1, 2, 3, 4, 6 and 9 divide 36 evenly. 5, 7, 8 and 10 do not. That is 6 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divisors of 36 from 1 to 10: 1,2,3,4,6,9 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.434Z"
+        }
+      }
+    },
+    {
+      "id": "d2ac52a1-8d9a-48b1-9ccb-53ae184eb16f",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiples of a number",
+      "stem": "A number between 40 and 50 is a multiple of 11. What is the number?",
+      "choices": [],
+      "answer": "44",
+      "compute": "4*11",
+      "solution": "Multiples of 11 are 11, 22, 33, 44, 55. Only 44 is between 40 and 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "44",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 11: 33, 44, 55. Between 40 and 50: 44.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.448Z"
+        }
+      }
+    },
+    {
+      "id": "07c557ab-75ac-488d-85e5-3cb78cb6bab0",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "A rectangle has an area of 42 square units and a length of 6 units. What is its width, in units?",
+      "choices": [],
+      "answer": "7",
+      "compute": "42/6",
+      "solution": "The length and width are a factor pair of 42. Since $6 \\times 7 = 42$, the width is 7 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42 = 6 × 7, width 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.490Z"
+        }
+      }
+    },
+    {
+      "id": "7640400f-5d3b-4e49-b602-eb8c8d576dcf",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Which number is a multiple of 6 and also a factor of 24?",
+      "choices": [
+        "6",
+        "8",
+        "9",
+        "18"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is a multiple of 6 ($6 \\times 1$) and a factor of 24 ($6 \\times 4$). 8 and 9 are not multiples of 6, and 18 is not a factor of 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 6 among options: 6, 18. Factors of 24: 8, 6. Only 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.534Z"
+        }
+      }
+    },
+    {
+      "id": "d6d6e75b-d601-458a-9519-6a67249fa3a4",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "Zoe lists every number that divides 28 evenly. How many numbers are on her list?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The numbers that divide 28 evenly are its factors: 1, 2, 4, 7, 14 and 28. That is 6 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divisors of 28: 1, 2, 4, 7, 14, 28 = 6 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.541Z"
+        }
+      }
+    },
+    {
+      "id": "6e785da2-1e4d-445a-9465-13233602ced7",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Which number is composite and is also a multiple of 5?",
+      "choices": [
+        "5",
+        "35",
+        "11",
+        "31"
+      ],
+      "answer": "35",
+      "compute": "35",
+      "solution": "$35 = 5 \\times 7$ is composite and a multiple of 5. 5 is a multiple of 5 but it is prime. 11 and 31 are prime and are not multiples of 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 = 5 x 7, composite and multiple of 5. 31, 11, 5 are prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.555Z"
+        }
+      }
+    },
+    {
+      "id": "77e4d1f4-be87-4228-ae45-9770970b7a6c",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "Which list shows all the factor pairs of 18?",
+      "choices": [
+        "2 and 9, 3 and 6",
+        "1 and 18, 2 and 9, 3 and 6",
+        "1 and 18, 3 and 6",
+        "1 and 18, 2 and 9, 4 and 5"
+      ],
+      "answer": "1 and 18, 2 and 9, 3 and 6",
+      "compute": null,
+      "solution": "$1 \\times 18 = 18$, $2 \\times 9 = 18$ and $3 \\times 6 = 18$. Nothing else works: 4 and 5 make 20. The other lists leave out a pair or include a wrong one.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 and 18, 2 and 9, 3 and 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 = 1x18 = 2x9 = 3x6. 4x5 = 20 is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.576Z"
+        }
+      }
+    },
+    {
+      "id": "a0cb4648-17ef-44c8-9f7e-ee0ad09006dd",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiples of a number",
+      "stem": "Which number is a multiple of both 3 and 4?",
+      "choices": [
+        "12",
+        "8",
+        "9",
+        "14"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "$12 = 3 \\times 4$, so 12 is a multiple of both. 8 is not a multiple of 3, 9 is not a multiple of 4, and 14 is a multiple of neither.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 = 3x4 is a multiple of both. 9 not of 4; 8 not of 3; 14 neither.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.630Z"
+        }
+      }
+    },
+    {
+      "id": "914be90d-b2b4-4587-a156-12cee6dca440",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Prime and composite numbers",
+      "stem": "How many prime numbers are less than 20?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The primes less than 20 are 2, 3, 5, 7, 11, 13, 17 and 19. That is 8 primes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Primes below 20: 2,3,5,7,11,13,17,19 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.638Z"
+        }
+      }
+    },
+    {
+      "id": "1bb339a9-af5e-4c94-94a8-9ef60edb9246",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Reasoning about primes and factors",
+      "stem": "I am a multiple of 4 and a factor of 40. I am greater than 10 and less than 30. What number am I?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "The factors of 40 are 1, 2, 4, 5, 8, 10, 20 and 40. Of these, only 20 is between 10 and 30, and $20 = 4 \\times 5$ is a multiple of 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 4 in (10,30): 12,16,20,24,28; factors of 40 among them: 20 only.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.644Z"
+        }
+      }
+    },
+    {
+      "id": "76672571-467d-48da-94cd-1316bd0cf1fa",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "Raj finds that 1 and 30, 2 and 15, and 3 and 10 are factor pairs of 30. One factor pair is missing. What is the larger number in the missing pair?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The missing pair is 5 and 6, since $5 \\times 6 = 30$. The larger number is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor pairs of 30: 1×30, 2×15, 3×10, 5×6. Missing 5 and 6; larger 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.647Z"
+        }
+      }
+    },
+    {
+      "id": "986f3212-b866-44b7-99f9-6c112b30e934",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiples of a number",
+      "stem": "Players form teams of exactly 7, with no one left over. Which number of players could there be?",
+      "choices": [
+        "34",
+        "36",
+        "38",
+        "35"
+      ],
+      "answer": "35",
+      "compute": "35",
+      "solution": "The number must be a multiple of 7. Counting by 7s gives 28, 35, 42. Only 35 is in the options.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 = 5×7; 36, 34, 38 not multiples of 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.649Z"
+        }
+      }
+    },
+    {
+      "id": "d3765f26-408d-4322-b00f-af6125e1f172",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Which statement about the factors of 40 is true?",
+      "choices": [
+        "6 is a factor of 40, because $6 \\times 7 = 40$.",
+        "9 is a factor of 40, because $9 \\times 4 = 40$.",
+        "8 is a factor of 40, because $8 \\times 5 = 40$.",
+        "7 is a factor of 40, because $7 \\times 6 = 40$."
+      ],
+      "answer": "8 is a factor of 40, because $8 \\times 5 = 40$.",
+      "compute": null,
+      "solution": "$8 \\times 5 = 40$ is correct. In the other statements the products are wrong: $6 \\times 7 = 42$, $9 \\times 4 = 36$ and $7 \\times 6 = 42$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 is a factor of 40, because $8 \\times 5 = 40$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8×5=40 true; 6×7=42, 9×4=36, 7×6=42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.666Z"
+        }
+      }
+    },
+    {
+      "id": "ca4c7410-2ec3-426b-84ae-68ef1c3dd60d",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Which number between 20 and 26 is prime?",
+      "choices": [
+        "21",
+        "23",
+        "22",
+        "24"
+      ],
+      "answer": "23",
+      "compute": "23",
+      "solution": "$21 = 3 \\times 7$, $22 = 2 \\times 11$ and $24 = 4 \\times 6$ are composite. 23 has only the factors 1 and 23, so it is prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21=3×7, 22=2×11, 24 even; 23 prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.668Z"
+        }
+      }
+    },
+    {
+      "id": "2285a698-1cf6-4a13-865c-1b85a42bc929",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "Which number has 3 and 8 as one of its factor pairs?",
+      "choices": [
+        "11",
+        "38",
+        "24",
+        "83"
+      ],
+      "answer": "24",
+      "compute": "24",
+      "solution": "$3 \\times 8 = 24$, so 3 and 8 are a factor pair of 24. 11 is $3 + 8$, and 38 and 83 just put the digits side by side.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3×8 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.671Z"
         }
       }
     },
@@ -7129,6 +8501,718 @@
           "work": "31, 37, 41, 43, 47: five.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:33.807Z"
+        }
+      }
+    },
+    {
+      "id": "d67538a4-2050-4e37-96e7-bc7097cd4f05",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count factors and factor pairs",
+      "stem": "Which number has exactly four factor pairs?",
+      "choices": [
+        "24",
+        "28",
+        "32",
+        "45"
+      ],
+      "answer": "24",
+      "compute": "24",
+      "solution": "24 has the pairs 1 and 24, 2 and 12, 3 and 8, 4 and 6. 28, 32 and 45 each have three pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor pairs: 28: (1,28),(2,14),(4,7)=3; 24: (1,24),(2,12),(3,8),(4,6)=4; 45: (1,45),(3,15),(5,9)=3; 32: (1,32),(2,16),(4,8)=3. Only 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.337Z"
+        }
+      }
+    },
+    {
+      "id": "b13eacea-170a-4a4f-b68c-fe7fb985dd05",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "Two whole numbers multiply to 45 and add to 14. What is the larger of the two numbers?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The factor pairs of 45 are 1 and 45, 3 and 15, 5 and 9. The pair that adds to 14 is 5 and 9 ($5 + 9 = 14$). The larger number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor pairs of 45: (1,45),(3,15),(5,9); 5+9=14, larger is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.351Z"
+        }
+      }
+    },
+    {
+      "id": "b69d90d0-a1f2-44f7-8575-c4bb48f4c1bf",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decide whether a number is a factor",
+      "stem": "How many of the factors of 50 are odd numbers?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The factors of 50 are 1, 2, 5, 10, 25 and 50. The odd ones are 1, 5 and 25. That is 3 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 50: 1, 2, 5, 10, 25, 50; odd: 1, 5, 25 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.356Z"
+        }
+      }
+    },
+    {
+      "id": "496aacd7-6a03-4209-8c63-d291631da212",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count factors and factor pairs",
+      "stem": "Which number has an odd number of factors?",
+      "choices": [
+        "15",
+        "21",
+        "25",
+        "24"
+      ],
+      "answer": "25",
+      "compute": "25",
+      "solution": "The factors of 25 are 1, 5 and 25, which is 3. Factors come in pairs, but 5 pairs with itself. 15 and 21 have 4 factors and 24 has 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 has factors 1, 5, 25 (3, odd). 21: 1,3,7,21; 15: 1,3,5,15; 24: 8 factors.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.373Z"
+        }
+      }
+    },
+    {
+      "id": "307ecde1-4c15-498d-b00c-a76b1cd1b9bd",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reasoning about primes and factors",
+      "stem": "A number is a factor of 45 and a multiple of 5. It is not 5 and it is not 45. What number is it?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "The factors of 45 are 1, 3, 5, 9, 15 and 45. The multiples of 5 among them are 5, 15 and 45. Leaving out 5 and 45 gives 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 45 that are multiples of 5: 5, 15, 45. Not 5 or 45: 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.389Z"
+        }
+      }
+    },
+    {
+      "id": "94ffabec-8948-4b71-8b8d-7a8d294e3d5f",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Prime and composite numbers",
+      "stem": "What is the sum of the two smallest prime numbers that are greater than 20?",
+      "choices": [],
+      "answer": "52",
+      "compute": "23+29",
+      "solution": "21 and 22 are composite, so the smallest prime greater than 20 is 23. The next prime is 29, since 24 to 28 are composite. The sum is $23 + 29 = 52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Primes above 20: 23, 29; sum 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.390Z"
+        }
+      }
+    },
+    {
+      "id": "a5f380e6-c707-4b1c-bcb3-708d24ac1a04",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiples of a number",
+      "stem": "What is the smallest multiple of 8 that is greater than 60?",
+      "choices": [],
+      "answer": "64",
+      "compute": "8*8",
+      "solution": "Count by 8s: 56, 64. 56 is less than 60, so the first multiple greater than 60 is 64.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 8: 56, 64; smallest above 60 is 64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.400Z"
+        }
+      }
+    },
+    {
+      "id": "0e6f94a8-d5e1-452d-9ad7-41f299a1e7b3",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Prime and composite numbers",
+      "stem": "What is the greatest prime number less than 50?",
+      "choices": [],
+      "answer": "47",
+      "compute": "47",
+      "solution": "49 is $7 \\times 7$ and 48 is even, so neither is prime. 47 has only the factors 1 and 47, so it is the greatest prime less than 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "49 = 7x7, 48 even; 47 is prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.400Z"
+        }
+      }
+    },
+    {
+      "id": "408819bf-d939-477a-bd9c-2b7657cfb843",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "Which list shows all the factor pairs of 36?",
+      "choices": [
+        "1 and 36, 2 and 18, 3 and 12, 4 and 9",
+        "2 and 18, 3 and 12, 4 and 9, 6 and 6",
+        "1 and 36, 2 and 18, 3 and 12, 4 and 9, 6 and 6",
+        "1 and 36, 2 and 18, 3 and 12, 4 and 8, 6 and 6"
+      ],
+      "answer": "1 and 36, 2 and 18, 3 and 12, 4 and 9, 6 and 6",
+      "compute": null,
+      "solution": "$1 \\times 36$, $2 \\times 18$, $3 \\times 12$, $4 \\times 9$ and $6 \\times 6$ all equal 36, and there are no others. Leaving out 6 and 6 or 1 and 36 misses a pair, and $4 \\times 8$ is 32, not 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 and 36, 2 and 18, 3 and 12, 4 and 9, 6 and 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 = 1x36, 2x18, 3x12, 4x9, 6x6. Only the last option lists all of them (A has 4 and 8, wrong; B misses 6x6; C misses 1x36).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.408Z"
+        }
+      }
+    },
+    {
+      "id": "4a3c7618-4809-4937-b10b-2c762757eda7",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiples of a number",
+      "stem": "How many multiples of 6 are there from 1 to 50?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The multiples of 6 up to 50 are 6, 12, 18, 24, 30, 36, 42 and 48. That is 8 multiples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 6 up to 50: 6,12,18,24,30,36,42,48 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.428Z"
+        }
+      }
+    },
+    {
+      "id": "2ac366f3-0fc4-47a0-bb43-4ac360a44692",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "Sol writes down every factor of 48. How many numbers does he write?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The factors of 48 are 1, 2, 3, 4, 6, 8, 12, 16, 24 and 48. That is 10 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 48: 1,2,3,4,6,8,12,16,24,48 = 10 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.454Z"
+        }
+      }
+    },
+    {
+      "id": "99b55668-aff8-4427-bf67-f1b6b79d4838",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether a number is a factor",
+      "stem": "Which number is a factor of 48 but is NOT a factor of 36?",
+      "choices": [
+        "12",
+        "8",
+        "6",
+        "18"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The factors of 48 are 1, 2, 3, 4, 6, 8, 12, 16, 24 and 48. The factors of 36 are 1, 2, 3, 4, 6, 9, 12, 18 and 36. 12 and 6 are factors of both, and 18 is a factor of 36 only. So 8 is the answer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 48: 1,2,3,4,6,8,12,16,24,48; of 36: 1,2,3,4,6,9,12,18,36. 12 both, 6 both, 18 not of 48, 8 of 48 only.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.471Z"
+        }
+      }
+    },
+    {
+      "id": "bacbc931-0f34-41a3-91d6-a85d52b95506",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Two prime numbers multiply to make 35. What is their sum?",
+      "choices": [],
+      "answer": "12",
+      "compute": "5+7",
+      "solution": "The factor pairs of 35 are 1 and 35, 5 and 7. Only 5 and 7 are both prime. Their sum is $5 + 7 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 = 5 × 7, both prime; 5 + 7 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.479Z"
+        }
+      }
+    },
+    {
+      "id": "3a1ac0e3-c937-4697-abf3-f0a05f001795",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiples of a number",
+      "stem": "Which list shows the first four multiples of 12?",
+      "choices": [
+        "12, 24, 36, 46",
+        "12, 22, 32, 42",
+        "12, 24, 48, 96",
+        "12, 24, 36, 48"
+      ],
+      "answer": "12, 24, 36, 48",
+      "compute": null,
+      "solution": "Multiples of 12 are found by adding 12 each time: 12, 24, 36, 48. Adding 10 each time or doubling each time gives other lists.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12, 24, 36, 48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12, 24, 36, 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.489Z"
+        }
+      }
+    },
+    {
+      "id": "12eb3887-8f0b-40aa-8466-e10de0677bb9",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "How many of the whole numbers from 1 to 12 have exactly four factors?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The numbers 6 (1, 2, 3, 6), 8 (1, 2, 4, 8) and 10 (1, 2, 5, 10) have four factors. The others have 1, 2, 3 or 6 factors. So 3 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exactly four factors: 6 (1,2,3,6), 8 (1,2,4,8), 10 (1,2,5,10). 12 has six; primes have two; 1, 4, 9 have 1 or 3. Count 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.490Z"
+        }
+      }
+    },
+    {
+      "id": "b6433d0a-162f-4dce-98fa-829ad677986e",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Which statement about prime and composite numbers is true?",
+      "choices": [
+        "The sum of two prime numbers is always a prime number.",
+        "Every multiple of a prime number is a composite number.",
+        "The product of two prime numbers is always a composite number.",
+        "Every factor of a composite number is a composite number."
+      ],
+      "answer": "The product of two prime numbers is always a composite number.",
+      "compute": null,
+      "solution": "A product of two primes has the factors 1, both primes and itself, so it has more than two factors and is composite. $3 + 5 = 8$ is not prime. A prime is a multiple of itself, and 1 and 2 are factors of 4 and are not composite.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The product of two prime numbers is always a composite number.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p x q has factors 1, p, q, pq so composite: true. Others false: p itself is a multiple of p and prime; 3+5=8; 1 is a factor of every composite.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.553Z"
+        }
+      }
+    },
+    {
+      "id": "dc52c792-5b68-43cf-aaf3-772ff052b2c9",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reasoning about primes and factors",
+      "stem": "I am a two-digit number less than 50. I am a multiple of 5 and also a multiple of 9. What number am I?",
+      "choices": [],
+      "answer": "45",
+      "compute": "5*9",
+      "solution": "A multiple of both 5 and 9 is a multiple of 45. The only one that has two digits and is less than 50 is 45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of both 5 and 9 are multiples of 45; the only two-digit one under 50 is 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.586Z"
+        }
+      }
+    },
+    {
+      "id": "914007e9-78eb-456d-a88f-a3e515a5008b",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decide whether a number is a factor",
+      "stem": "What is the sum of the factors of 12 that are less than 12?",
+      "choices": [],
+      "answer": "16",
+      "compute": "1+2+3+4+6",
+      "solution": "The factors of 12 less than 12 are 1, 2, 3, 4 and 6. Their sum is $1 + 2 + 3 + 4 + 6 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 12 less than 12: 1,2,3,4,6; sum = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.598Z"
+        }
+      }
+    },
+    {
+      "id": "e4b05e89-3939-4ce5-ba44-b856a5ade183",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reasoning about primes and factors",
+      "stem": "Nia says, \"Any number that ends in 3 is prime.\" Which number shows that Nia is wrong?",
+      "choices": [
+        "33",
+        "13",
+        "23",
+        "43"
+      ],
+      "answer": "33",
+      "compute": "33",
+      "solution": "$33 = 3 \\times 11$, so it is composite even though it ends in 3. 13, 23 and 43 are prime, so they do not show Nia is wrong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "33 = 3×11 is composite and ends in 3; 13, 43, 23 are prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.642Z"
+        }
+      }
+    },
+    {
+      "id": "3d4e8b47-da77-46c6-a927-44491d27bf05",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor pairs and factors of a number",
+      "stem": "A rectangle has an area of 48 square centimeters. Its length is 3 times its width, and both are whole numbers. What is the width, in centimeters?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "List the factor pairs of 48: 1 and 48, 2 and 24, 3 and 16, 4 and 12, 6 and 8. Only 4 and 12 have one number 3 times the other. So the width is 4 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w × 3w = 48 -> factor pairs of 48 with one 3 times other: 4×12. Width 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.645Z"
+        }
+      }
+    },
+    {
+      "id": "5237c223-7db8-42f8-9a77-6408ef285cee",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count factors and factor pairs",
+      "stem": "I am a number with exactly three factors. I am greater than 10 and less than 30. What number am I?",
+      "choices": [],
+      "answer": "25",
+      "compute": "25",
+      "solution": "A number with exactly three factors is a prime times itself. 25 has the factors 1, 5 and 25. 4 and 9 are too small and 49 is too big.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exactly three factors means square of a prime: 4, 9, 25, 49. In (10,30): 25 (1,5,25).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.651Z"
+        }
+      }
+    },
+    {
+      "id": "b89f67b4-fb59-4533-afda-60ba0761e910",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Which two numbers are both prime and exactly 2 apart?",
+      "choices": [
+        "9 and 11",
+        "11 and 13",
+        "13 and 17",
+        "15 and 17"
+      ],
+      "answer": "11 and 13",
+      "compute": null,
+      "solution": "11 and 13 are both prime and $13 - 11 = 2$. In 9 and 11, 9 is composite. 13 and 17 are 4 apart. In 15 and 17, 15 is composite.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11 and 13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11,13 both prime, differ by 2. 15 and 9 composite; 13,17 differ by 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.654Z"
+        }
+      }
+    },
+    {
+      "id": "2671f6c7-a8b5-4889-84df-205141d473bb",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Prime and composite numbers",
+      "stem": "Which number is the product of two different prime numbers?",
+      "choices": [
+        "31",
+        "49",
+        "32",
+        "35"
+      ],
+      "answer": "35",
+      "compute": "35",
+      "solution": "$35 = 5 \\times 7$, and 5 and 7 are different primes. 31 is itself prime, $49 = 7 \\times 7$ uses the same prime twice, and $32 = 2 \\times 2 \\times 2 \\times 2 \\times 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35=5×7 distinct primes. 31 prime, 49=7×7, 32=2^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.654Z"
         }
       }
     },

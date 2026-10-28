@@ -3,7 +3,7 @@
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
     "NC17.1.OA.1": "All sums and starting amounts are within 20. Skills: result unknown (3), put together (6), change unknown (5), start unknown (4), compare (7), matching a story to a number sentence (5). Compare is about a quarter because it has three forms (difference, bigger, smaller unknown).",
-    "NC17.1.OA.3": "Sums are within 20. Grade 1 does not name the properties for students, so the questions test the strategies (turn-around facts, making a ten, adding in a convenient order) and equations showing them. Choice options within each question end the same way.",
+    "NC17.1.OA.3": "Sums are within 20. Grade 1 does not name the properties for students, so the questions test the strategies (turn-around facts, making a ten, adding in a convenient order) and equations showing them. Choice options within each question end the same way. Sums stay within 20. Subtraction is used only in distractors.",
     "NC17.1.OA.4": "Sums and totals stay within 20. Adding on and rewriting as subtraction are both asked, plus a first-addend-unknown form and matching a number sentence to a story.",
     "NC17.1.OA.6": "Number lines are described in words (start at, jump right or left). Subtraction signs are written as plain hyphens, so no LaTeX is used.",
     "NC17.1.OA.7": "Every sum and difference stays within 20. A single equation cannot be a numeric question with a true/false answer, so \"is it true\" is asked as which-is-true, which-is-not-true and how-many-are-true; missing numbers and stories are numeric.",
@@ -6388,6 +6388,728 @@
       }
     },
     {
+      "id": "abcc93e7-8a71-4daf-ab1f-b328813ca16b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Which number sentence shows $5 + 4$ with the addends turned around?",
+      "choices": [
+        "$4 + 5$",
+        "$5 - 4$",
+        "$5 + 5$",
+        "$4 + 4$"
+      ],
+      "answer": "$4 + 5$",
+      "compute": null,
+      "solution": "Turning around the addends of 5 + 4 gives 4 + 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Turning the addends around: $4+5$.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.285Z"
+        }
+      }
+    },
+    {
+      "id": "3630b093-aad8-4d78-8e69-bcab87d41e7b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Commutative property: swap the addends",
+      "stem": "A bag has 7 red marbles and 3 blue marbles. A second bag has 3 red marbles and 7 blue marbles. How many marbles are in the second bag?",
+      "choices": [],
+      "answer": "10",
+      "compute": "3+7",
+      "solution": "Add 3 + 7. It is the same as 7 + 3, which is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second bag: 3 + 7 = 10 (same as 7 + 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.417Z"
+        }
+      }
+    },
+    {
+      "id": "3342c869-5bc2-46be-894c-0b972f1e0bc0",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Dan knows that $6 + 3 = 9$. He says $3 + 6$ has the same sum. What is the sum of $3 + 6$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "The addends can be added in either order, so 3 + 6 is also 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 6 = 9 (commutative).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.443Z"
+        }
+      }
+    },
+    {
+      "id": "616f911f-3d89-4ce8-890c-1df404a8059c",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "What is $1 + 6 + 3$?",
+      "choices": [
+        "10",
+        "9",
+        "11",
+        "7"
+      ],
+      "answer": "10",
+      "compute": "1+6+3",
+      "solution": "Add 1 + 6 = 7, then 7 + 3 = 10. Or add 6 + 3 first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 6 + 3 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.487Z"
+        }
+      }
+    },
+    {
+      "id": "63856b45-6128-41e6-bd5d-9253a8a2d65d",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "There are 5 ducks on the grass, 2 ducks in the water and 3 ducks by the tree. How many ducks are there?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+2+3",
+      "solution": "Add 5 + 3 = 8 first, then 8 + 2 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 2 + 3 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.493Z"
+        }
+      }
+    },
+    {
+      "id": "bcfeedad-0cd7-44ff-9105-5dd9a832a59f",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Lee has 3 toy cars, 2 toy trucks and 4 toy buses. How many toys does Lee have in all?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3+2+4",
+      "solution": "3 + 2 = 5, and 5 + 4 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2 + 4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.500Z"
+        }
+      }
+    },
+    {
+      "id": "8590989c-7037-46a0-84e5-00028eaacbbe",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on from the larger addend",
+      "stem": "To find $2 + 8$, Mia starts at 8 and counts on 2. What number does she say last?",
+      "choices": [],
+      "answer": "10",
+      "compute": "8+2",
+      "solution": "From 8, count on: 9, 10. She says 10 last.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start at 8, count on 2: 9, 10. Last number said is 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.500Z"
+        }
+      }
+    },
+    {
+      "id": "b0a70b89-d245-4009-85ef-d2db6f49be5c",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on from the larger addend",
+      "stem": "Which way finds $3 + 6$ correctly by counting on from the bigger number?",
+      "choices": [
+        "Start at 6 and count on 3: 6, 7, 8",
+        "Start at 6 and count on 3: 7, 8, 9",
+        "Start at 6 and count on 3: 7, 8, 9, 10",
+        "Start at 6 and count back 3: 5, 4, 3"
+      ],
+      "answer": "Start at 6 and count on 3: 7, 8, 9",
+      "compute": null,
+      "solution": "Start at 6. Count on 3 more, without saying 6 again: 7, 8, 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Start at 6 and count on 3: 7, 8, 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start at 6, count on 3: 7, 8, 9. Sum 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.527Z"
+        }
+      }
+    },
+    {
+      "id": "562bc266-2aaf-4e76-ad50-04597c1e6640",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Which two numbers in $4 + 6 + 3$ make 10 when added?",
+      "choices": [
+        "4 and 3",
+        "6 and 3",
+        "4 and 6",
+        "4, 6 and 3 together"
+      ],
+      "answer": "4 and 6",
+      "compute": null,
+      "solution": "4 + 6 = 10. Then 10 + 3 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 and 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 6 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.536Z"
+        }
+      }
+    },
+    {
+      "id": "aadc568c-adbc-4e5b-9ddb-8a729d854069",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equations that show the properties",
+      "stem": "Which number goes where the ? is to make this true? $4 + 3 = ? + 4$",
+      "choices": [
+        "4",
+        "7",
+        "1",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Turn around 4 + 3 to get 3 + 4, so the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 3 = 3 + 4, ? = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.546Z"
+        }
+      }
+    },
+    {
+      "id": "ede9000f-8d58-492d-bab4-998b8e58b415",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equations that show the properties",
+      "stem": "Find the number the ? stands for: $7 + ? = 2 + 7$",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The same two numbers are added on both sides, so the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+7 = 9 = 7+2, so ? = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.568Z"
+        }
+      }
+    },
+    {
+      "id": "183259c4-a117-4ddf-816f-b209716ac0cd",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Ria adds $2 + 3 + 3$ by adding $3 + 3$ first. What is $3 + 3$?",
+      "choices": [
+        "5",
+        "7",
+        "8",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "3+3",
+      "solution": "3 + 3 = 6. Then 2 + 6 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.570Z"
+        }
+      }
+    },
+    {
+      "id": "8af180af-e7c7-4b02-bfaa-e6e9ce53065b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equations that show the properties",
+      "stem": "Which equation shows that you can add in any order?",
+      "choices": [
+        "$6 + 2 = 6 - 2$",
+        "$6 + 2 = 2 + 2$",
+        "$6 + 2 = 2 + 6$",
+        "$6 + 2 = 6 + 6$"
+      ],
+      "answer": "$6 + 2 = 2 + 6$",
+      "compute": null,
+      "solution": "Both sides add the same numbers, 6 and 2, in a different order, and both equal 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 2 = 2 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+2 = 2+6 shows order does not matter; others are false or not about order.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.570Z"
+        }
+      }
+    },
+    {
+      "id": "0badba26-b993-4901-a54c-b3acfb3ab6f9",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equations that show the properties",
+      "stem": "Find the number the ? stands for: $? + 3 = 3 + 6$",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Turn around 3 + 6 to get 6 + 3, so the ? is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+6 = 6+3, so ? = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.573Z"
+        }
+      }
+    },
+    {
+      "id": "01ba9845-45db-47ed-ae90-d90cfe6535ab",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Nia has 2 apples and 6 plums. Omar has 6 apples and 2 plums. Which is true?",
+      "choices": [
+        "Omar has more fruits than Nia.",
+        "Each of them has 8 fruits.",
+        "Nia has more fruits than Omar.",
+        "Each of them has 4 fruits."
+      ],
+      "answer": "Each of them has 8 fruits.",
+      "compute": null,
+      "solution": "Both add the same two numbers in a different order: 2 + 6 = 8 and 6 + 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each of them has 8 fruits.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Nia 2+6 = 8, Omar 6+2 = 8. Each has 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.587Z"
+        }
+      }
+    },
+    {
+      "id": "43feaa12-60ee-48fd-af67-f3882daf32e2",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Find the number the ? stands for: $(3 + 2) + 4 = 3 + (? + 4)$",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The numbers are only grouped in a new way, so the 2 stays: 3 + (2 + 4).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associative: (3+2)+4 = 3+(2+4), ? = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.612Z"
+        }
+      }
+    },
+    {
+      "id": "e729fa86-c593-480b-9271-903752c6d221",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Which is the sum of $2 + 5 + 2$?",
+      "choices": [
+        "7",
+        "9",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "2+5+2",
+      "solution": "2 + 5 = 7, and 7 + 2 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+5+2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.618Z"
+        }
+      }
+    },
+    {
+      "id": "dc008548-b5b7-4c27-9898-4a9de57f03e5",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Associative property: regroup three addends",
+      "stem": "To add $3 + 4 + 2$, Ben starts with $4 + 2$. What does he add next?",
+      "choices": [
+        "$3 + 4$",
+        "$7 + 2$",
+        "$3 + 6$",
+        "$4 + 6$"
+      ],
+      "answer": "$3 + 6$",
+      "compute": null,
+      "solution": "4 + 2 makes 6. Then Ben adds the 3 and the 6: 3 + 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+2 = 6, then add the 3: 3+6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.621Z"
+        }
+      }
+    },
+    {
+      "id": "41437423-331f-4f90-a01e-dc3160385321",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Gus has 7 red kites, 2 blue kites and 3 green kites. He adds the 7 and the 3 first. How many kites does Gus have in all?",
+      "choices": [],
+      "answer": "12",
+      "compute": "7+3+2",
+      "solution": "7 + 3 = 10, and 10 + 2 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+3=10, +2 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.652Z"
+        }
+      }
+    },
+    {
+      "id": "066ee5e3-124d-4f2f-aa78-933d4436c9f3",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on from the larger addend",
+      "stem": "Pam finds $3 + 5$ by starting at 5 and counting on 3: 6, 7, ? What number goes where the ? is?",
+      "choices": [],
+      "answer": "8",
+      "compute": "5+3",
+      "solution": "Count on 3 from 5: 6, 7, 8. The ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5, then 6, 7, 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.653Z"
+        }
+      }
+    },
+    {
+      "id": "65bf438a-2560-4a70-ad66-d4463c58b72d",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on from the larger addend",
+      "stem": "Ty wants to find $1 + 6$ by counting on from the bigger number. Which number does he start at?",
+      "choices": [
+        "6",
+        "1",
+        "7",
+        "5"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The bigger number is 6. He starts at 6 and counts on 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bigger number is 6; start at 6, count on 1 -> 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.659Z"
+        }
+      }
+    },
+    {
+      "id": "60470d8c-555a-4ee8-a6d9-3ff6a79b5213",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Ana has 8 shells in one box, 2 shells in another box and 6 shells in a third box. She adds 8 + 2 first. How many shells does she have in all?",
+      "choices": [],
+      "answer": "16",
+      "compute": "8+2+6",
+      "solution": "8 + 2 = 10, and 10 + 6 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+2=10, +6 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.660Z"
+        }
+      }
+    },
+    {
+      "id": "e2b6e258-0207-450c-9bbf-58dc696494f9",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Jay adds $1 + 4 + 3$. First he adds $1 + 4$ and gets 5. Then he adds 3. What is the sum?",
+      "choices": [],
+      "answer": "8",
+      "compute": "1+4+3",
+      "solution": "5 + 3 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1+4=5, 5+3=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.667Z"
+        }
+      }
+    },
+    {
       "id": "35635f46-7ee7-4c3e-8fe2-6f4468c70214",
       "topic_id": "NC17.1.OA.3",
       "difficulty": 2,
@@ -6703,6 +7425,728 @@
       }
     },
     {
+      "id": "8545df5c-3579-44dd-a1ad-2a85b5ca468b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equations that show the properties",
+      "stem": "One of these equations is false. Which one is false?",
+      "choices": [
+        "$8 + 6 = 6 + 8$",
+        "$8 + 6 = 6 + 6$",
+        "$14 = 6 + 8$",
+        "$9 + 3 = 3 + 9$"
+      ],
+      "answer": "$8 + 6 = 6 + 6$",
+      "compute": null,
+      "solution": "8 + 6 = 14 but 6 + 6 = 12, so that equation is false. The others use the same addends in either order.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 6 = 6 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 6 = 14 but 6 + 6 = 12, so false. Others true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.478Z"
+        }
+      }
+    },
+    {
+      "id": "59d48d6f-9215-4fb4-8a90-2e8f23bd3436",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Lana wrote $9 + 8 = 17$. She wrote another sum with the same two numbers. Which one could it be?",
+      "choices": [
+        "$8 + 9 = 17$",
+        "$9 - 8 = 1$",
+        "$8 + 8 = 16$",
+        "$9 + 9 = 18$"
+      ],
+      "answer": "$8 + 9 = 17$",
+      "compute": null,
+      "solution": "The same two addends in the other order: 8 + 9 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 9 = 17$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same two numbers swapped: 8 + 9 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.488Z"
+        }
+      }
+    },
+    {
+      "id": "5e6fc1f3-3b39-4d12-9b8e-b317c8d0ff4e",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "A bookshelf has 6 books on the top shelf, 9 books on the middle shelf and 4 books on the bottom shelf. How many books are on the bookshelf?",
+      "choices": [
+        "19",
+        "18",
+        "17",
+        "20"
+      ],
+      "answer": "19",
+      "compute": "6+9+4",
+      "solution": "6 + 4 = 10, and 10 + 9 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4 = 10, 10 + 9 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.502Z"
+        }
+      }
+    },
+    {
+      "id": "b43eb690-7554-4e51-ae3d-e3593d734767",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Add $3 + 8 + 7$. Look for two numbers that make 10.",
+      "choices": [],
+      "answer": "18",
+      "compute": "3+8+7",
+      "solution": "3 + 7 = 10, and 10 + 8 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 7 = 10, 10 + 8 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.518Z"
+        }
+      }
+    },
+    {
+      "id": "89ee8ada-288f-45a9-99df-f06e9d54624c",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on from the larger addend",
+      "stem": "Hugo has 2 coins. He gets 15 more coins. He finds the total by counting on from 15. What is the total?",
+      "choices": [],
+      "answer": "17",
+      "compute": "15+2",
+      "solution": "From 15, count on 2: 16, 17. The total is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15, then 16, 17. Total 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.524Z"
+        }
+      }
+    },
+    {
+      "id": "48837df8-613b-4f1c-aa83-cb7864bfd60c",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Lena read 8 pages on Monday and 7 pages on Tuesday. Ari read 7 pages on Monday and 8 pages on Tuesday. How many pages did Ari read in all?",
+      "choices": [],
+      "answer": "15",
+      "compute": "7+8",
+      "solution": "7 + 8 = 15. It is the same as 8 + 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ari: 7 + 8 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.532Z"
+        }
+      }
+    },
+    {
+      "id": "da2a2fed-61bb-4482-b283-56f6d78383e2",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Choose the easier pair to add first",
+      "stem": "A desk has 9 pens, 5 pencils and 1 marker. Add the 9 and the 1 first. How many things are on the desk?",
+      "choices": [],
+      "answer": "15",
+      "compute": "9+1+5",
+      "solution": "9 + 1 = 10, and 10 + 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 1 = 10, 10 + 5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.538Z"
+        }
+      }
+    },
+    {
+      "id": "076f7759-cc5e-4f17-8ecd-170e2a29bce3",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Which sum is the same as $6 + 9$?",
+      "choices": [
+        "$9 - 6$",
+        "$6 + 6$",
+        "$9 + 9$",
+        "$9 + 6$"
+      ],
+      "answer": "$9 + 6$",
+      "compute": null,
+      "solution": "Turning the addends around gives 9 + 6, which is also 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Commutative: 6 + 9 = 9 + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.565Z"
+        }
+      }
+    },
+    {
+      "id": "bdeb6ece-2c90-4e8d-98ad-53d9b66d23ef",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equations that show the properties",
+      "stem": "Which pair of sums must be equal?",
+      "choices": [
+        "$7 + 9$ and $9 - 7$",
+        "$7 + 9$ and $7 + 7$",
+        "$7 + 9$ and $9 + 7$",
+        "$7 + 9$ and $9 + 9$"
+      ],
+      "answer": "$7 + 9$ and $9 + 7$",
+      "compute": null,
+      "solution": "7 + 9 and 9 + 7 use the same addends in a different order, so both are 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 9$ and $9 + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+9=16 and 9+7=16 (commutative). 9-7=2, 9+9=18, 7+7=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.566Z"
+        }
+      }
+    },
+    {
+      "id": "d78e2921-2b9e-4833-be34-08b159e69f0d",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Find the number the ? stands for: $(4 + 6) + 5 = 4 + (? + 5)$",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The same numbers are regrouped, so the ? is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associative: (4+6)+5 = 4+(6+5), so ? = 6. Check 15 = 4+11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.567Z"
+        }
+      }
+    },
+    {
+      "id": "9d52798b-d96f-43b8-a1fe-1bc3851761eb",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equations that show the properties",
+      "stem": "Find the number the ? stands for: $12 + 5 = 5 + ?$",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Turn around 12 + 5 to get 5 + 12, so the ? is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12+5 = 17 = 5+12, so ? = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.569Z"
+        }
+      }
+    },
+    {
+      "id": "53db0883-16f7-4097-8b98-cfed8a35b4ca",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Dee adds $7 + 3 + 8$. She adds the 7 and the 3 first to make 10. What is the sum?",
+      "choices": [
+        "10",
+        "17",
+        "19",
+        "18"
+      ],
+      "answer": "18",
+      "compute": "7+3+8",
+      "solution": "7 + 3 = 10, and 10 + 8 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+3 = 10; 10+8 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.614Z"
+        }
+      }
+    },
+    {
+      "id": "a6881c69-d619-437a-8f1f-cc9ef3e111a8",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on from the larger addend",
+      "stem": "Which way finds $3 + 13$ by counting on from the bigger number?",
+      "choices": [
+        "Start at 13 and count on 3",
+        "Start at 13 and count on 13",
+        "Start at 3 and count on 3",
+        "Start at 13 and count back 3"
+      ],
+      "answer": "Start at 13 and count on 3",
+      "compute": null,
+      "solution": "The bigger number is 13. Start there and count on 3 more: 14, 15, 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Start at 13 and count on 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bigger number 13, count on 3: 14,15,16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.617Z"
+        }
+      }
+    },
+    {
+      "id": "9a180243-b1e7-4204-b62e-74537c95bec8",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Add $7 + 4 + 3$ by adding the two numbers that make 10 first. What is the sum?",
+      "choices": [],
+      "answer": "14",
+      "compute": "7+4+3",
+      "solution": "7 + 3 = 10, and 10 + 4 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+3 = 10, +4 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.618Z"
+        }
+      }
+    },
+    {
+      "id": "53bed19b-43aa-4e94-baaf-10052f8d2a70",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Which is the sum of $9 + 3 + 1$?",
+      "choices": [
+        "12",
+        "14",
+        "10",
+        "13"
+      ],
+      "answer": "13",
+      "compute": "9+3+1",
+      "solution": "9 + 1 = 10, and 10 + 3 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+1 = 10, +3 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.625Z"
+        }
+      }
+    },
+    {
+      "id": "9ed48fc1-1b32-4c7d-a87b-6a158dda705d",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on from the larger addend",
+      "stem": "Count on to find $3 + 12$. Start at 12 and count on 3. What number do you reach?",
+      "choices": [],
+      "answer": "15",
+      "compute": "12+3",
+      "solution": "13, 14, 15. You reach 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 -> 13, 14, 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.639Z"
+        }
+      }
+    },
+    {
+      "id": "9ff9c8e8-2230-4d3f-8a86-4181f7fde10a",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Max has 5 cars, then gets 4 more cars, then gets 6 more cars. He finds the total with $5 + (4 + 6)$. What is $5 + (4 + 6)$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "5+(4+6)",
+      "solution": "4 + 6 = 10, and 5 + 10 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+6=10; 5+10=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.646Z"
+        }
+      }
+    },
+    {
+      "id": "447226e0-e792-473b-b34f-ac6135a8f5bb",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "A shop sold 6 red hats on Monday, 7 blue hats on Tuesday and 4 green hats on Wednesday. How many hats did it sell in all?",
+      "choices": [],
+      "answer": "17",
+      "compute": "6+7+4",
+      "solution": "6 + 4 = 10, and 10 + 7 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+4=10, +7 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.657Z"
+        }
+      }
+    },
+    {
+      "id": "e9a6cc37-0506-4075-9911-77350bfe5f24",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Which number sentence has the same sum as $(4 + 6) + 5$?",
+      "choices": [
+        "$4 + (6 - 5)$",
+        "$(4 + 6) + 6$",
+        "$4 + (6 + 5)$",
+        "$4 + 6 + 4$"
+      ],
+      "answer": "$4 + (6 + 5)$",
+      "compute": null,
+      "solution": "Regrouping the same three numbers keeps the sum: (4 + 6) + 5 = 4 + (6 + 5).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + (6 + 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4+6)+5=15; 4+(6+5)=15. Others 5, 16, 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.661Z"
+        }
+      }
+    },
+    {
+      "id": "3d0bdbc7-7bb3-476c-8331-b9c7267bb7fd",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "There are 8 boys, 6 girls and 2 teachers on a bus. How many people are on the bus?",
+      "choices": [
+        "15",
+        "16",
+        "17",
+        "14"
+      ],
+      "answer": "16",
+      "compute": "8+6+2",
+      "solution": "8 + 2 = 10, and 10 + 6 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+2=10, +6=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.665Z"
+        }
+      }
+    },
+    {
+      "id": "e151b869-5581-45b1-9457-1dc33eb2ec4f",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Rob turns $3 + 12$ around and adds $12 + 3$ instead. What is the sum?",
+      "choices": [],
+      "answer": "15",
+      "compute": "12+3",
+      "solution": "Start at 12 and count on 3: 13, 14, 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12+3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.670Z"
+        }
+      }
+    },
+    {
+      "id": "3b39bfee-51af-47e2-a446-80ba197cb50b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Which pair of numbers in $8 + 9 + 2$ makes 10 when added?",
+      "choices": [
+        "8 and 9",
+        "8 and 2",
+        "9 and 2",
+        "8, 9 and 2 together"
+      ],
+      "answer": "8 and 2",
+      "compute": null,
+      "solution": "8 + 2 = 10. Then 10 + 9 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 and 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+2=10; 8+9=17, 9+2=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.673Z"
+        }
+      }
+    },
+    {
+      "id": "21bccd7c-96fe-48f8-af13-ecd42539208b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equations that show the properties",
+      "stem": "You know $9 + 5 = 14$. Find the number the ? stands for: $5 + 9 = ?$",
+      "choices": [],
+      "answer": "14",
+      "compute": "9+5",
+      "solution": "The addends can be turned around, so 5 + 9 is also 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Commutative: 5+9 = 9+5 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.674Z"
+        }
+      }
+    },
+    {
       "id": "1fe43a65-c61e-4e4c-9872-0f06c18c2520",
       "topic_id": "NC17.1.OA.3",
       "difficulty": 3,
@@ -7014,6 +8458,723 @@
           "work": "6 + 10: the 10 comes from 7 + 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:19.829Z"
+        }
+      }
+    },
+    {
+      "id": "e8df9994-efb4-42fd-9ed7-3fa71fcabda1",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equations that show the properties",
+      "stem": "Find the number the ? stands for: $5 + 8 + 2 = ? + 5$",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+8+2-5",
+      "solution": "5 + 8 + 2 = 15. Then ? + 5 = 15, so the ? is 10. (Check: 8 + 2 = 10.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 8 + 2 = 15 = ? + 5, so ? = 10 (8 + 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.516Z"
+        }
+      }
+    },
+    {
+      "id": "95a97381-029e-4cf0-ac0e-3598950a1af0",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on from the larger addend",
+      "stem": "Count on to find $4 + 16$. Start at 16 and count on 4. What number do you say last?",
+      "choices": [],
+      "answer": "20",
+      "compute": "16+4",
+      "solution": "17, 18, 19, 20. She says 20 last.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16, then 17, 18, 19, 20. Last is 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.531Z"
+        }
+      }
+    },
+    {
+      "id": "3e1a9011-ecc8-4b83-ae71-73297397b8b8",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Find the number the ? stands for: $9 + (1 + 6) = (9 + ?) + 6$",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "The numbers are regrouped, so the ? is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associative: 9 + (1 + 6) = (9 + 1) + 6, ? = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.541Z"
+        }
+      }
+    },
+    {
+      "id": "d1bfeac0-bd2c-48bb-be23-fb3fbb36bad4",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Choose the easier pair to add first",
+      "stem": "A drawer has 6 red socks, 9 white socks and 4 black socks. Add the 6 and the 4 first. How many socks are in the drawer?",
+      "choices": [],
+      "answer": "19",
+      "compute": "6+4+9",
+      "solution": "6 + 4 = 10, and 10 + 9 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4 = 10, 10 + 9 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.545Z"
+        }
+      }
+    },
+    {
+      "id": "cc0aab6c-d033-4a8b-96de-28e88bb4ab3b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Zoe has 7 red buttons and 12 blue buttons. Uma has the same numbers the other way around: 12 red buttons and 7 blue buttons. How many buttons does Uma have?",
+      "choices": [],
+      "answer": "19",
+      "compute": "12+7",
+      "solution": "12 + 7 = 19. It is the same as 7 + 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + 7 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.557Z"
+        }
+      }
+    },
+    {
+      "id": "8dd85b81-42bb-4c3f-a05b-f8bc0c572dea",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Find $9 + 7 + 1$ by adding the 9 and the 1 first.",
+      "choices": [],
+      "answer": "17",
+      "compute": "9+1+7",
+      "solution": "9 + 1 = 10, and 10 + 7 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 1 = 10, 10 + 7 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.561Z"
+        }
+      }
+    },
+    {
+      "id": "beae9ee0-01c5-4d0e-963a-f880e06358aa",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Add $4 + 7 + 6$.",
+      "choices": [],
+      "answer": "17",
+      "compute": "4+7+6",
+      "solution": "4 + 6 = 10, and 10 + 7 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 6 = 10, 10 + 7 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.564Z"
+        }
+      }
+    },
+    {
+      "id": "e68305f7-05fb-4a13-845e-fa82a9d10862",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equations that show the properties",
+      "stem": "Find the number the ? stands for: $? + 6 + 4 = 4 + 6 + 8$",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Both sides add 6 and 4, so the other number must match: the ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Right side 4+6+8 = 18; ?+10 = 18, ? = 8 (same addends reordered).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.567Z"
+        }
+      }
+    },
+    {
+      "id": "b8e7e666-1d54-4d1a-809c-676c59c0d8a0",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Ben adds $3 + 16$ and gets 19. Then he adds $16 + 3$. Without adding again, what sum should he get?",
+      "choices": [],
+      "answer": "19",
+      "compute": "3+16",
+      "solution": "The addends can be turned around, so 16 + 3 is also 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Commutative: 16+3 = 3+16 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.569Z"
+        }
+      }
+    },
+    {
+      "id": "a883af44-0f27-453c-b2e0-c50ccbc2bbc0",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Pat has 9 stamps, Lou has 5 stamps and Gia has 1 stamp. How many stamps do they have altogether?",
+      "choices": [
+        "14",
+        "16",
+        "15",
+        "13"
+      ],
+      "answer": "15",
+      "compute": "9+5+1",
+      "solution": "9 + 1 = 10, and 10 + 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+5+1 = 9+1+5 = 10+5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.571Z"
+        }
+      }
+    },
+    {
+      "id": "df03a262-ea53-454c-ae30-71f75562c927",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Which number sentence has the same sum as $7 + (3 + 6)$?",
+      "choices": [
+        "$(7 + 3) - 6$",
+        "$7 + (3 + 3)$",
+        "$(7 + 6) + 6$",
+        "$(7 + 3) + 6$"
+      ],
+      "answer": "$(7 + 3) + 6$",
+      "compute": null,
+      "solution": "The same three numbers are regrouped: 7 + (3 + 6) = (7 + 3) + 6 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(7 + 3) + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+(3+6) = 16. (7+3)-6 = 4, 7+(3+3) = 13, (7+6)+6 = 19, (7+3)+6 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.572Z"
+        }
+      }
+    },
+    {
+      "id": "247b6d1a-5c30-4a62-b493-d5a8284378a6",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "Carlos has 7 red cards, 6 blue cards and 3 green cards. How many cards does he have in all?",
+      "choices": [],
+      "answer": "16",
+      "compute": "7+6+3",
+      "solution": "7 + 3 = 10, and 10 + 6 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+3 = 10, +6 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.588Z"
+        }
+      }
+    },
+    {
+      "id": "e2980763-ddd4-4543-98ac-3f63372c030b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equations that show the properties",
+      "stem": "Which number makes both sentences true? $9 + ? = 14$ and $? + 9 = 14$",
+      "choices": [
+        "5",
+        "4",
+        "6",
+        "23"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "9 + 5 = 14, and 5 + 9 = 14 too, because the addends can be turned around.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14-9 = 5; 9+5 = 5+9 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.591Z"
+        }
+      }
+    },
+    {
+      "id": "14a3d416-441d-43b8-bbc8-d921caaf7d5a",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on from the larger addend",
+      "stem": "Why is counting on from the bigger number a good way to add $2 + 17$?",
+      "choices": [
+        "You count on 17 steps.",
+        "You count on only 2 steps.",
+        "The sum becomes smaller.",
+        "You subtract 2 from 17."
+      ],
+      "answer": "You count on only 2 steps.",
+      "compute": null,
+      "solution": "Turn it around to 17 + 2. Start at 17 and count on 2 steps: 18, 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "You count on only 2 steps.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start at 17 and count on just 2 steps (18, 19).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.622Z"
+        }
+      }
+    },
+    {
+      "id": "066e8d99-2f55-4e6f-b457-125a6eb4ca51",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Ivan says $14 + 5$ is greater than $5 + 14$ because the bigger number is first. Which statement is true?",
+      "choices": [
+        "Ivan is right; the sum of $14 + 5$ is 19 and the sum of $5 + 14$ is 18.",
+        "Ivan is right; $14 + 5$ is greater by 9.",
+        "Ivan is wrong; both sums are 9.",
+        "Ivan is wrong; both sums are 19."
+      ],
+      "answer": "Ivan is wrong; both sums are 19.",
+      "compute": null,
+      "solution": "Adding in either order gives the same sum: 14 + 5 = 19 and 5 + 14 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ivan is wrong; both sums are 19.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14+5 = 19 = 5+14. Order does not change the sum.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.628Z"
+        }
+      }
+    },
+    {
+      "id": "afb94006-c5b4-4134-9473-8e1240fd36dc",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers by choosing the order",
+      "stem": "A parking lot has 11 cars, 5 vans and 4 trucks. How many vehicles are in the lot?",
+      "choices": [],
+      "answer": "20",
+      "compute": "11+5+4",
+      "solution": "5 + 4 = 9, and 11 + 9 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11+5+4 = 11+9 = 20 (or 5+4=9 first).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.635Z"
+        }
+      }
+    },
+    {
+      "id": "090d88d9-efac-4caa-bcd3-d7e3b7576bdd",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Mo adds $5 + 9 + 5$ in his head. Which plan is smart?",
+      "choices": [
+        "Add 9 and 5 to make 10, then add 5.",
+        "Add 5 and 5 to make 10, then subtract 9.",
+        "Add 5 and 9 first, and ignore the last 5.",
+        "Add 5 and 5 to make 10, then add 9."
+      ],
+      "answer": "Add 5 and 5 to make 10, then add 9.",
+      "compute": null,
+      "solution": "5 + 5 = 10, and 10 + 9 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 5 and 5 to make 10, then add 9.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5=10, then 10+9=19. Others wrong (9+5=14, not 10).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.641Z"
+        }
+      }
+    },
+    {
+      "id": "7ff3eb84-3fbf-47dc-8c23-d2fbd435bf77",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on from the larger addend",
+      "stem": "Pia counts on to add $5 + 13$. She says 13, then 14, 15, 16, 17, 18. What is $5 + 13$?",
+      "choices": [],
+      "answer": "18",
+      "compute": "13+5",
+      "solution": "She counted on 5 from 13 and reached 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on 5 from 13 ends at 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.644Z"
+        }
+      }
+    },
+    {
+      "id": "9d7712c1-1899-4965-b426-85058d060195",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Commutative property: swap the addends",
+      "stem": "Which sum is NOT equal to $8 + 11$?",
+      "choices": [
+        "$11 + 8$",
+        "$9 + 10$",
+        "$8 + 12$",
+        "$7 + 12$"
+      ],
+      "answer": "$8 + 12$",
+      "compute": null,
+      "solution": "8 + 11 = 19. 11 + 8, 9 + 10 and 7 + 12 are all 19, but 8 + 12 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+11=19; 11+8, 7+12, 9+10 all 19; 8+12=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.652Z"
+        }
+      }
+    },
+    {
+      "id": "15cb2c0b-7059-4d95-a048-b984cfb38a1b",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equations that show the properties",
+      "stem": "Which equation shows the same three numbers added in a new order?",
+      "choices": [
+        "$6 + 7 + 3 = 3 + 7 + 3$",
+        "$6 + 7 + 3 = 3 + 7 + 6$",
+        "$6 + 7 + 3 = 6 + 7 - 3$",
+        "$6 + 7 + 3 = 7 + 3$"
+      ],
+      "answer": "$6 + 7 + 3 = 3 + 7 + 6$",
+      "compute": null,
+      "solution": "Both sides use 6, 7 and 3 once each, so both sums are 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 7 + 3 = 3 + 7 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 3+7+6 has the same three numbers in a new order.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.656Z"
+        }
+      }
+    },
+    {
+      "id": "e3356809-4043-4505-963e-e254ebf1f6b1",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the easier pair to add first",
+      "stem": "Which pair of numbers in $2 + 9 + 8$ is easiest to add first because they make 10?",
+      "choices": [
+        "2 and 9",
+        "9 and 8",
+        "2 and 8",
+        "2, 9 and 8 together"
+      ],
+      "answer": "2 and 8",
+      "compute": null,
+      "solution": "2 + 8 = 10. Then 10 + 9 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 and 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+8=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.664Z"
+        }
+      }
+    },
+    {
+      "id": "3a2b12e0-835e-48dc-b51c-7ddf32140a80",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Which grouping of $6 + 5 + 5$ makes a ten?",
+      "choices": [
+        "$6 + (5 + 5)$",
+        "$(6 + 5) + 5$",
+        "$6 + 5 + 6$",
+        "$(6 - 5) + 5$"
+      ],
+      "answer": "$6 + (5 + 5)$",
+      "compute": null,
+      "solution": "5 + 5 = 10, so 6 + (5 + 5) = 6 + 10 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + (5 + 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5=10 grouped: 6+(5+5) = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.670Z"
+        }
+      }
+    },
+    {
+      "id": "44b75992-bcc4-40c2-9760-144d077d825d",
+      "topic_id": "NC17.1.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Associative property: regroup three addends",
+      "stem": "Ava adds $8 + 6 + 4$. She adds 6 and 4 first to get 10, then adds 8. What is her sum?",
+      "choices": [],
+      "answer": "18",
+      "compute": "8+(6+4)",
+      "solution": "6 + 4 = 10, and 8 + 10 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+4=10, +8 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:04:15.672Z"
         }
       }
     },
