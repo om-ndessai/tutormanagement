@@ -34614,6 +34614,40 @@
       }
     },
     {
+      "id": "bcb82b2e-b9cb-40bf-83ba-afd15b94ab1a",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose and read data displays",
+      "stem": "Which display is made from the minimum, the first quartile, the median, the third quartile and the maximum of a data set?",
+      "choices": [
+        "Scatter plot",
+        "Box plot",
+        "Pie chart",
+        "Histogram"
+      ],
+      "answer": "Box plot",
+      "compute": null,
+      "solution": "A box plot shows these five values. A histogram counts how many values fall in each interval instead.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Box plot",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The five-number summary makes a box plot.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.977Z"
+        }
+      }
+    },
+    {
       "id": "96eca703-2173-463f-8b20-027ca29e483c",
       "topic_id": "NC17.M1.S-ID.1",
       "difficulty": 2,
@@ -34891,6 +34925,35 @@
           "work": "Ranges: A 95-40=55, B 90-50=40. IQR: A 80-55=25, B 75-60=15, so A middle half more spread. B min 50 > 40. Medians A 65 < B 68.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.635Z"
+        }
+      }
+    },
+    {
+      "id": "86c613cf-839b-4ce4-aa46-3efa23d2bfeb",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the length of the box in a box plot",
+      "stem": "A box plot is made for these 12 test scores: 52, 55, 58, 60, 63, 67, 70, 72, 75, 79, 84, 90. The box runs from Q1 to Q3. Q1 is the median of the lowest 6 scores and Q3 is the median of the highest 6 scores. How long is the box (Q3 minus Q1)?",
+      "choices": [],
+      "answer": "18",
+      "compute": "(75+79)/2-(58+60)/2",
+      "solution": "Q1 is the median of 52, 55, 58, 60, 63, 67, which is (58 + 60) / 2 = 59. Q3 is the median of 70, 72, 75, 79, 84, 90, which is (75 + 79) / 2 = 77. The box is 77 - 59 = 18 long.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lower 6: 52,55,58,60,63,67 -> Q1 = (58+60)/2 = 59. Upper 6: 70,72,75,79,84,90 -> Q3 = (75+79)/2 = 77. 77 - 59 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.086Z"
         }
       }
     },

@@ -4138,6 +4138,40 @@
       }
     },
     {
+      "id": "fa0db4dc-dfe5-4f7a-a2a9-d8d7e6361419",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate by rounding",
+      "stem": "A library has 4 shelves with 28 books on each shelf. It then gets 19 more books. Round 28 and 19 to the nearest ten to estimate how many books the library has now.",
+      "choices": [
+        "140",
+        "100",
+        "130",
+        "50"
+      ],
+      "answer": "140",
+      "compute": "4*30+20",
+      "solution": "28 rounds to 30 and 19 rounds to 20. Books on shelves: 4 x 30 = 120. Then 120 + 20 = 140.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "140",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 30 = 120; + 20 = 140.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.913Z"
+        }
+      }
+    },
+    {
       "id": "f35b3b80-e598-4c76-85b5-11dc74d1f82d",
       "topic_id": "NC17.4.OA.3",
       "difficulty": 2,
@@ -6179,6 +6213,35 @@
           "work": "Actual 297 + 6*48 = 297 + 288 = 585. Estimate 300 + 6*50 = 600, so 485 is too low.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.573Z"
+        }
+      }
+    },
+    {
+      "id": "dd302964-3075-4477-8e2a-242001e1e138",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate by rounding",
+      "stem": "A bakery bakes 7 trays of 28 rolls and sells 94 rolls at lunch. Round 28 and 94 to the nearest ten to estimate how many rolls are left.",
+      "choices": [],
+      "answer": "120",
+      "compute": "7*30-90",
+      "solution": "28 rounds to 30 and 94 rounds to 90. Rolls baked: 7 x 30 = 210. Rolls left: 210 - 90 = 120.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 -> 30, 7 x 30 = 210; 94 -> 90; 210 - 90 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.899Z"
         }
       }
     },
@@ -23643,6 +23706,35 @@
       }
     },
     {
+      "id": "f071d573-6882-40d4-a93e-189b58a2c98c",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Elapsed time across the hour",
+      "stem": "Dad put a cake in the oven at 5:40. It was done at 6:10. How many minutes did the cake bake?",
+      "choices": [],
+      "answer": "30",
+      "compute": "20+10",
+      "solution": "From 5:40 to 6:00 is 20 minutes. From 6:00 to 6:10 is 10 more minutes. $20 + 10 = 30$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5:40 to 6:00 = 20 min, 6:00 to 6:10 = 10 min; 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.027Z"
+        }
+      }
+    },
+    {
       "id": "ecf8b096-f948-4750-ab02-cfbf993c764c",
       "topic_id": "NC17.4.MD.8",
       "difficulty": 2,
@@ -29906,6 +29998,35 @@
           "work": "B is 5 cm right of the line; distance 5+5=10.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.479Z"
+        }
+      }
+    },
+    {
+      "id": "7ae5f1fa-1b14-42f6-bfda-dada30fdf41c",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count pieces cut along lines of symmetry",
+      "stem": "A square piece of paper is cut along every one of its lines of symmetry. How many pieces does the paper make?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4*2",
+      "solution": "A square has 4 lines of symmetry: 2 through the midpoints of opposite sides and 2 along the corners. All 4 lines cross at the center and cut the square into 8 matching triangles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has 4 lines of symmetry (2 midlines, 2 diagonals), all through the centre; cutting along all 4 gives 8 triangles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.973Z"
         }
       }
     }

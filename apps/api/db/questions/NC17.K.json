@@ -4,8 +4,8 @@
   "notes": {
     "NC17.K.CC.1": "Counting forward only, by ones and tens within 100. Skills: next number by ones (5), next number by tens (7), missing numbers (4), counting across a ten (4), counting up to 100 (3), starting at any number (3), patterns of tens (4).",
     "NC17.K.CC.3": "Numerals cannot be drawn or traced in text, so the questions test choosing or writing the right numeral for a number word, a count told in words, and zero as none. Handwriting form (reversed digits) cannot be tested here. Counts are told in words, never shown as a picture. Kindergarten: picture work is written as symbols in a row (counted by the child) or as lists of named things. Letters-in-a-word and long lists count the whole set and stay within 20.",
-    "NC17.K.CC.4": "Shapes, dot cards and hands are written out in words; seeing 1-5 at a glance is tested through described dot patterns (square, triangle, 2+3 split). Numbers stay within 20 and every question is one step.",
-    "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3.",
+    "NC17.K.CC.4": "Shapes, dot cards and hands are written out in words; seeing 1-5 at a glance is tested through described dot patterns (square, triangle, 2+3 split). Numbers stay within 20 and every question is one step. Written as text: dot patterns are described by where the dots are, never pictured. Numbers stay within 20, mostly within 10; subitizing questions stay within 5.",
+    "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3. Counting is shown as written lists and repeated symbols; counts are generated from arrays/rep() in scripts/build-b5-NC17.K.CC.5.mjs. No how-much-more comparisons.",
     "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step.",
     "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1.",
     "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10.",
@@ -4068,6 +4068,35 @@
       }
     },
     {
+      "id": "7bcbf91d-7138-41e3-a18d-5344d0f486d7",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on from a number",
+      "stem": "Dan counts the cars in a parking lot. He has counted 8 cars. He sees 1 more car and keeps counting from 8. What number does he say for that car?",
+      "choices": [],
+      "answer": "9",
+      "compute": "8+1",
+      "solution": "Dan does not start again at 1. He counts on from 8, so the next number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 8, the next number is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.934Z"
+        }
+      }
+    },
+    {
       "id": "19118f8e-26ee-40df-86f7-172039712d64",
       "topic_id": "NC17.K.CC.2",
       "difficulty": 2,
@@ -5072,6 +5101,40 @@
           "work": "25, 26, 27. Last number 27.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.672Z"
+        }
+      }
+    },
+    {
+      "id": "a0b77596-9bc4-421e-8f24-405e2a052f6e",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on from a number",
+      "stem": "Nina just said 38. What are the next three numbers she says?",
+      "choices": [
+        "39, 40, 41",
+        "38, 39, 40",
+        "40, 41, 42",
+        "37, 36, 35"
+      ],
+      "answer": "39, 40, 41",
+      "compute": null,
+      "solution": "She continues from 38 without starting again: 39, 40, 41.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "39, 40, 41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 38: 39, 40, 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.301Z"
         }
       }
     },
@@ -6085,6 +6148,35 @@
           "work": "88, 89, 90, 91, 92, 93: 90 and 92.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.683Z"
+        }
+      }
+    },
+    {
+      "id": "ace60324-8193-4e74-9fee-bedf52387653",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on from a number",
+      "stem": "Rosa has counted 58 beads. Then she counts 5 more beads, saying the next number for each one. What number does she say for the last bead?",
+      "choices": [],
+      "answer": "63",
+      "compute": "58+5",
+      "solution": "She says 59, 60, 61, 62, 63. The last number is 63.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "59, 60, 61, 62, 63.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.916Z"
         }
       }
     },
@@ -9515,6 +9607,694 @@
       }
     },
     {
+      "id": "fbc2a457-dde6-4499-b95f-e0465c1f8205",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count out a number of objects",
+      "stem": "Mom says, \"Please bring me 3 spoons.\" Ty brings spoons and says 1, 2, 3. How many spoons does Ty bring?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The last number Ty says is 3, so he brings 3 spoons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.793Z"
+        }
+      }
+    },
+    {
+      "id": "90078003-7f33-4c87-a599-ce8d9d470ddf",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "The count stays the same when objects move",
+      "stem": "Nora has 4 buttons in a line. She slides them into a pile. How many buttons are in the pile?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Moving the buttons does not change how many there are. There are still 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Moving does not change the count: 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.793Z"
+        }
+      }
+    },
+    {
+      "id": "c9f60981-7876-43c3-9d74-3b7e467e9f0d",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Notice a counting mistake",
+      "stem": "Ted counts 3 ducks. He says 1, 2, 4. Which number did he skip?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "We count 1, 2, 3, 4. Ted left out 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 2, 3 -- he skipped 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.819Z"
+        }
+      }
+    },
+    {
+      "id": "1145fe3e-dff2-41ef-86be-b22c74fa609e",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "Which card has 3 dots?",
+      "choices": [
+        "1 dot on top and 2 dots on the bottom",
+        "2 dots on top and 2 dots on the bottom",
+        "1 dot on top and 1 dot on the bottom",
+        "3 dots on top and 2 dots on the bottom"
+      ],
+      "answer": "1 dot on top and 2 dots on the bottom",
+      "compute": null,
+      "solution": "1 dot and 2 dots make 3 dots. The other cards have 4, 2 and 5 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 dot on top and 2 dots on the bottom",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 2 = 3; others 5, 4, 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.840Z"
+        }
+      }
+    },
+    {
+      "id": "08aa1bff-026e-4241-8c0b-912704c3032b",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "One more is the next number",
+      "stem": "Which number comes right after 4 when you count?",
+      "choices": [
+        "3",
+        "6",
+        "4",
+        "5"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "When we count, we say 4 and then 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting 1,2,3,4,5: after 4 comes 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.849Z"
+        }
+      }
+    },
+    {
+      "id": "8139df48-1af0-4e33-8d5e-4541907790a3",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "One more is the next number",
+      "stem": "A tower has 2 blocks. Ned puts one more block on top. How many blocks are in the tower now?",
+      "choices": [
+        "1",
+        "2",
+        "4",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "One more than 2 is the next number when we count: 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 1 = 3 blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.951Z"
+        }
+      }
+    },
+    {
+      "id": "960d0b68-2d02-473a-8d9e-92ef342442e7",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "One number for each object",
+      "stem": "Five kids each get 1 juice box. How many juice boxes are given out?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "One juice box for each kid. Count the kids: 5, so there are 5 juice boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each of 5 kids gets 1 box, one-to-one: 5 boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.013Z"
+        }
+      }
+    },
+    {
+      "id": "930fb61d-8a79-4470-9a77-23b675c0a808",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "A card has 2 dots on the top and 2 dots on the bottom. How many dots are on the card?",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "There are 2 dots on top and 2 on the bottom. Count them: 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 2 = 4 dots.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.026Z"
+        }
+      }
+    },
+    {
+      "id": "f3f3e07c-cde8-4116-89f9-af3661fa3493",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "The last number said tells how many",
+      "stem": "Lucy counts her crayons. She points and says 1, 2, 3, 4, 5. How many crayons does Lucy have?",
+      "choices": [
+        "4",
+        "5",
+        "6",
+        "1"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The last number she says tells how many. She ends on 5, so she has 5 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 5, so 5 crayons.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.031Z"
+        }
+      }
+    },
+    {
+      "id": "fb77d0df-61c7-4d8f-a468-87ffe022cc90",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "Look at the toys: a car, a ball, a drum, a doll and a kite. How many toys is that?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Touch each toy once and count: 1, 2, 3, 4, 5. There are 5 toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "car, ball, drum, doll, kite = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.033Z"
+        }
+      }
+    },
+    {
+      "id": "68d175b5-7189-4bae-b44a-3480c8de3c6c",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "One more is the next number",
+      "stem": "Tia has counted 3 shells. She finds 1 more shell. What number does she say for the new shell?",
+      "choices": [
+        "2",
+        "3",
+        "5",
+        "4"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The next number after 3 is 4. She says 4 for the new shell.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 3 comes 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.041Z"
+        }
+      }
+    },
+    {
+      "id": "623ba0ef-0da9-42a5-bf53-b0e50d1c52f7",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Notice a counting mistake",
+      "stem": "Rae counts 3 cups. She touches each cup once and says 1, 2, 3. Is her counting right?",
+      "choices": [
+        "No, one cup got two numbers",
+        "Yes, each cup got one number",
+        "No, one cup got no number",
+        "No, she said the numbers in a mixed-up order"
+      ],
+      "answer": "Yes, each cup got one number",
+      "compute": null,
+      "solution": "She touched each cup one time and said the numbers in order, so her counting is right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, each cup got one number",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One number per cup, in order, 3 cups: right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.079Z"
+        }
+      }
+    },
+    {
+      "id": "7d644282-c29e-4b64-9679-2c65da391ec0",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count out a number of objects",
+      "stem": "Gia puts grapes on a plate one at a time. She says 1, 2, 3, 4 as she puts down the last grape. How many grapes are on the plate?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The last number she says is 4, so there are 4 grapes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said, 4: 4 grapes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.085Z"
+        }
+      }
+    },
+    {
+      "id": "5edbd1ae-339b-4c6a-b708-c50a132076fd",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "One number for each object",
+      "stem": "There are 3 kids. Each kid gets 1 hat. How many hats are needed?",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "One hat for each kid. Count the kids: 3, so 3 hats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One hat per kid: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.086Z"
+        }
+      }
+    },
+    {
+      "id": "4dd96210-d08d-45a8-bb7c-c34c69885565",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "The last number said tells how many",
+      "stem": "Ben counts the toys on a rug. He says 1, 2, 3, 4 and stops on 4. What does the 4 tell us?",
+      "choices": [
+        "There are 3 toys on the rug",
+        "There are 4 toys on the rug",
+        "There are 5 toys on the rug",
+        "There is 1 toy on the rug"
+      ],
+      "answer": "There are 4 toys on the rug",
+      "compute": null,
+      "solution": "The last number said tells how many are in the group. Ben stopped on 4, so there are 4 toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 4 toys on the rug",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The last number counted tells how many: 4 toys.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.107Z"
+        }
+      }
+    },
+    {
+      "id": "c2ea690f-c918-4a36-90a4-0b4a71284455",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count out a number of objects",
+      "stem": "Pam wants 5 beads on a string. She puts on beads and says 1, 2, 3, 4, 5. What should Pam do now?",
+      "choices": [
+        "Stop, she has 5 beads",
+        "Add 1 more bead",
+        "Take 1 bead off",
+        "Start over from 1"
+      ],
+      "answer": "Stop, she has 5 beads",
+      "compute": null,
+      "solution": "She wanted 5 beads and said 5 for the last one, so she has 5 and can stop.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Stop, she has 5 beads",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "She has said 5 for the fifth bead, so she has 5: stop.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.133Z"
+        }
+      }
+    },
+    {
+      "id": "c7214c36-bf91-49bf-b7a7-ced97c6b733d",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "Lee sees a card with 2 dots in one row and 1 dot in another row. How many dots does Lee see?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "2 dots and 1 dot make 3 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.147Z"
+        }
+      }
+    },
+    {
+      "id": "cc5041b7-c547-4805-a801-d5def550ef4f",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "The count stays the same when objects move",
+      "stem": "Lee has 2 blocks. He puts one block on top of the other. How many blocks are in the tower?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Stacking the blocks does not change how many there are. There are 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Still 2 blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.147Z"
+        }
+      }
+    },
+    {
+      "id": "2ec2c6d3-ed2d-4c58-b3ea-76e4462b2c37",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "Zed has a pencil, an eraser and a ruler on his desk. How many things are on his desk?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Count each thing once: pencil 1, eraser 2, ruler 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pencil, eraser, ruler = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.164Z"
+        }
+      }
+    },
+    {
+      "id": "fa1abe0f-8084-4901-afa5-23eda30cbb00",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "In a row there are 5 apples. How many apples are in the row?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Count the apples one at a time: 1, 2, 3, 4, 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 apples.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.301Z"
+        }
+      }
+    },
+    {
+      "id": "18c5f5e6-9c4b-4ed8-8de8-6fed1c5828e1",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "You see 1 dot on the left and 1 dot on the right. How many dots do you see?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "There is 1 dot on each side, so you see 2 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 1 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.315Z"
+        }
+      }
+    },
+    {
+      "id": "3adf6345-b336-418f-bccb-07c56ca61915",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "The last number said tells how many",
+      "stem": "Lin counts the spoons in a drawer and ends with the number 6. How many spoons are in the drawer?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The last number said tells how many. There are 6 spoons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number counted is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.317Z"
+        }
+      }
+    },
+    {
       "id": "d7ac5be2-e783-4baa-b9b9-b4f6629c67ed",
       "topic_id": "NC17.K.CC.4",
       "difficulty": 2,
@@ -9825,6 +10605,728 @@
       }
     },
     {
+      "id": "dc1fe12a-930b-4beb-9904-f78b12bd30d9",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "A card has 2 dots on the left, 1 dot in the middle and 2 dots on the right. How many dots are on the card?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "2 dots, 1 dot and 2 dots: count 2, then 3, then 5. There are 5 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 1 + 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.827Z"
+        }
+      }
+    },
+    {
+      "id": "a638efcd-72a9-4e22-a43e-85e81c07bbbd",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "A card has 1 dot in the middle and 4 dots around it. How many dots are on the card?",
+      "choices": [
+        "4",
+        "6",
+        "3",
+        "5"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "1 dot and 4 dots make 5 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.836Z"
+        }
+      }
+    },
+    {
+      "id": "486d5a58-a483-4780-9583-5c65a3f88ab3",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "One more is the next number",
+      "stem": "Max has counted 7 cars in a line. He adds 1 more car to the line. How many cars are in the line now?",
+      "choices": [
+        "8",
+        "6",
+        "7",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "One more than 7 is the next number we say when counting: 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 1 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.838Z"
+        }
+      }
+    },
+    {
+      "id": "1a4867de-054d-42af-b1ea-6c00eb2c4439",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "One more is the next number",
+      "stem": "In a game, Lila is on step 9. She moves up one more step. What step number is she on now?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The number right after 9 is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One more than 9 is 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.854Z"
+        }
+      }
+    },
+    {
+      "id": "a8a558ef-6a3c-474d-81c2-fddf94e0c400",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "A zoo has a lion, a bear, a zebra, a monkey, a seal, a camel, a goat and a deer. How many animals is that?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Count each animal once: lion 1, bear 2, zebra 3, monkey 4, seal 5, camel 6, goat 7, deer 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "lion, bear, zebra, monkey, seal, camel, goat, deer = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.862Z"
+        }
+      }
+    },
+    {
+      "id": "c62dd75d-3656-4e34-b051-970901918348",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "A bag has a red block, a blue block, a green block, a yellow block, an orange block and a purple block. How many blocks are in the bag?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Count each block once. There are 6 colors, one block of each, so 6 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red, blue, green, yellow, orange, purple: 6 blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.935Z"
+        }
+      }
+    },
+    {
+      "id": "6204eac6-4c29-4ca0-be4d-a0f0f2c58b0e",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "Nine kids stand in a line: Ann, Bo, Cy, Di, Ed, Flo, Gus, Hal and Ivy. How many kids are in the line?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Say one number for each name: Ann 1, Bo 2, Cy 3, Di 4, Ed 5, Flo 6, Gus 7, Hal 8, Ivy 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count the names: Ann, Bo, Cy, Di, Ed, Flo, Gus, Hal, Ivy = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.936Z"
+        }
+      }
+    },
+    {
+      "id": "64e1dbe7-1841-42e7-a2a3-b5dcf0fecf04",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "The last number said tells how many",
+      "stem": "Dex counts the people on a bus: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11. How many people are on the bus?",
+      "choices": [
+        "10",
+        "12",
+        "11",
+        "1"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "The last number said is 11, so 11 people are on the bus.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The last number said is 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.961Z"
+        }
+      }
+    },
+    {
+      "id": "26e4041f-f983-4b6d-bd41-e959cca624e2",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count out a number of objects",
+      "stem": "Mia is counting out 10 chips. She has said 9 for the chip she just put down. What number does she say for the next chip?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The number after 9 is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 9 comes 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.970Z"
+        }
+      }
+    },
+    {
+      "id": "458125ea-1188-409a-acdf-7e3757c9c573",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Notice a counting mistake",
+      "stem": "Ivan counts the 5 cows in a field. He forgets one cow and counts only the other 4, saying one number for each cow. What number does he say last?",
+      "choices": [
+        "4",
+        "5",
+        "6",
+        "1"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "He says a number for 4 cows only, so the last number he says is 4. He should have said 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "He counts 4 cows: 1, 2, 3, 4. Last number is 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.975Z"
+        }
+      }
+    },
+    {
+      "id": "76feb8a4-eae8-41f9-905f-072466aa7afa",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "The count stays the same when objects move",
+      "stem": "Arlo puts his 9 toy trucks in a line. Then he puts them in a circle. How many trucks are in the circle?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Where the trucks are does not change how many there are. There are 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rearranging does not change the number: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.991Z"
+        }
+      }
+    },
+    {
+      "id": "45750533-307f-42d4-8473-7e74f62a3729",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Notice a counting mistake",
+      "stem": "Ari counts balls and says 1, 2, 3, 4, 6, 7. She skipped a number. Which number did she skip?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Counting in order goes 1, 2, 3, 4, 5, 6, 7. Ari left out 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 2, 3, 4, then 6: she skipped 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.996Z"
+        }
+      }
+    },
+    {
+      "id": "ec23bc8c-79ad-4921-a5d0-caf3361f0158",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "The count stays the same when objects move",
+      "stem": "Sara counts 8 coins in a stack. She spreads them out on the table and counts again. What number does she say last?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Spreading the coins out does not change how many there are. The last number is still 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Spreading coins does not change the count: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.029Z"
+        }
+      }
+    },
+    {
+      "id": "93fa566b-fedd-4982-b36b-8be09655a308",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "One more is the next number",
+      "stem": "Nina says 6, 7, 8, 9. What number does she say next?",
+      "choices": [
+        "8",
+        "10",
+        "9",
+        "11"
+      ],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Counting up, the number after 9 is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6, 7, 8, 9, then 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.060Z"
+        }
+      }
+    },
+    {
+      "id": "072b42f0-c326-4bfe-b486-ed6a5208256e",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count out a number of objects",
+      "stem": "Uma gives out cards one at a time. She says 1, 2, 3, 4, 5, 6 as she hands over the last card. How many cards did Uma give out?",
+      "choices": [
+        "5",
+        "6",
+        "7",
+        "1"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The last number she says is 6, so she gave out 6 cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 6: 6 cards.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.070Z"
+        }
+      }
+    },
+    {
+      "id": "2b640637-d85a-4d2e-be53-ad5e642e51ee",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "The count stays the same when objects move",
+      "stem": "Ben has 8 balls in a bag. He pours them on the floor and they roll all over. How many balls are on the floor?",
+      "choices": [
+        "7",
+        "9",
+        "8",
+        "1"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The balls rolled, but none were added or taken away. There are still 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Spreading does not change the number: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.078Z"
+        }
+      }
+    },
+    {
+      "id": "cc6473a4-16b2-4008-8caa-fefc71b7c912",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "One number for each object",
+      "stem": "Which way is the right way to count 4 hats?",
+      "choices": [
+        "Touch each hat once and say one number each",
+        "Touch one hat four times and say 1, 2, 3, 4",
+        "Skip some hats and still say 1, 2, 3, 4",
+        "Say 1, 2, 3, 4 quickly without looking at the hats"
+      ],
+      "answer": "Touch each hat once and say one number each",
+      "compute": null,
+      "solution": "Each hat gets one number and no hat is missed or counted twice.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Touch each hat once and say one number each",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One-to-one: touch each hat once, one number each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.084Z"
+        }
+      }
+    },
+    {
+      "id": "d7656474-8d94-4bb0-b675-332e74979384",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "Which card has 5 dots?",
+      "choices": [
+        "2 dots on top and 2 dots on the bottom",
+        "3 dots on top and 2 dots on the bottom",
+        "3 dots on top and 3 dots on the bottom",
+        "1 dot on top and 3 dots on the bottom"
+      ],
+      "answer": "3 dots on top and 2 dots on the bottom",
+      "compute": null,
+      "solution": "3 dots and 2 dots make 5 dots. The other cards have 4, 6 and 4 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 dots on top and 2 dots on the bottom",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2 = 5; others 4, 6, 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.107Z"
+        }
+      }
+    },
+    {
+      "id": "8424214a-6532-4897-b881-15b67612cb59",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count out a number of objects",
+      "stem": "Dev needs to put out 9 plates. He has put out 6 plates, saying 1 to 6. What number does he say for the next plate?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "After 6 comes 7, so he says 7 for the next plate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 6 comes 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.175Z"
+        }
+      }
+    },
+    {
+      "id": "561a4a8a-501a-47a5-93eb-de6881071358",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "One number for each object",
+      "stem": "A teacher puts 1 crayon at each of 7 desks. How many crayons does she put out?",
+      "choices": [
+        "6",
+        "8",
+        "1",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "There is one crayon for each desk. There are 7 desks, so 7 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 crayon at each of 7 desks = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.179Z"
+        }
+      }
+    },
+    {
+      "id": "7ecfd06d-3fd3-4d81-9225-6886f7dac81f",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "One number for each object",
+      "stem": "A bus has 10 seats. Each seat has 1 kid and all the seats are full. How many kids are on the bus?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "One kid for each seat. There are 10 seats, so there are 10 kids.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 seats, 1 kid each = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.180Z"
+        }
+      }
+    },
+    {
+      "id": "77397c40-e776-45da-ae52-7a691af24087",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "The last number said tells how many",
+      "stem": "Fay counts the steps up to her door. The last number she says is 12. How many steps are there?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The last number said tells how many, so there are 12 steps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 12, so 12 steps.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.189Z"
+        }
+      }
+    },
+    {
+      "id": "30e4f17f-5eca-448b-b584-e241f1ba4b67",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "The last number said tells how many",
+      "stem": "Jen counts the pens in a cup: 1, 2, 3, 4, 5, 6, 7. Someone asks, \"How many pens are in the cup?\" What does Jen say?",
+      "choices": [
+        "6",
+        "8",
+        "7",
+        "1"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The last number she said tells how many. She ended on 7, so there are 7 pens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 7, so 7 pens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.298Z"
+        }
+      }
+    },
+    {
       "id": "259e5840-4aa5-4d26-ab64-8789ece4ca61",
       "topic_id": "NC17.K.CC.4",
       "difficulty": 3,
@@ -10112,6 +11614,728 @@
           "work": "Order does not change the count: 10 both times.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:29.448Z"
+        }
+      }
+    },
+    {
+      "id": "707931d8-57cd-4014-a8a0-8bfdc9a1c00e",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "The count stays the same when objects move",
+      "stem": "Wes counts 13 pebbles in a jar. His sister empties the jar and counts the pebbles again, starting with a different pebble. Which is true?",
+      "choices": [
+        "She gets 12 instead",
+        "She gets 13 as well",
+        "She gets 14 instead",
+        "She gets 1 instead"
+      ],
+      "answer": "She gets 13 as well",
+      "compute": null,
+      "solution": "The pebbles are the same, so counting in a different order still gives 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She gets 13 as well",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order does not change the count: 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.764Z"
+        }
+      }
+    },
+    {
+      "id": "93784bc7-65a6-457d-88af-3b08890ec144",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "These letters are in a row: A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P. How many letters are in the row?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Say one number for each letter: A is 1, B is 2, and so on. P is the 16th letter, so there are 16 letters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A through P is 16 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.774Z"
+        }
+      }
+    },
+    {
+      "id": "eb3721e7-168a-4836-9f11-aaff22cdd581",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "A card has dots in 3 groups: 1 dot, then 2 dots, then 2 dots. How many dots are on the card?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "1 dot, then 2 more makes 3, then 2 more makes 5. There are 5 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 2 + 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.804Z"
+        }
+      }
+    },
+    {
+      "id": "0ebc1461-ce5c-44c9-a8bc-dfc7f1b76d32",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects one at a time",
+      "stem": "A band has these players: Ana, Ben, Cal, Dee, Eli, Fay, Gus, Hope, Ian, Jo, Kim, Lou and Mo. How many players are in the band?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Say one number for each name, in order: Ana 1, Ben 2, and so on up to Mo 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the 13 names.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.814Z"
+        }
+      }
+    },
+    {
+      "id": "6e39abb7-5b0d-49cf-be76-6409640da2fc",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "The last number said tells how many",
+      "stem": "A jar has some beans. Jo counts them out loud and the last number she says is 20. How many beans are in the jar?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "The last number said tells how many, so there are 20 beans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is how many: 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.842Z"
+        }
+      }
+    },
+    {
+      "id": "3ca3129f-5acd-4d20-9b8c-db2d3c132f0d",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count out a number of objects",
+      "stem": "Gail has 12 pennies. She wants to give her sister exactly 10 of them. She counts them out one at a time and stops. What is the last number she says?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "She stops when she has counted out 10 pennies, so the last number she says is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counts 1 to 10 and stops: 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.864Z"
+        }
+      }
+    },
+    {
+      "id": "f7e9200d-e840-47ef-8252-d947198d1d2c",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "The count stays the same when objects move",
+      "stem": "Hana has 18 beads in a bowl. She pours them onto a tray and counts them again. What is the last number she says?",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Pouring the beads out does not change how many there are. The last number is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rearranging does not change the count: 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.868Z"
+        }
+      }
+    },
+    {
+      "id": "21781866-57f3-4bf0-a79a-570313712a89",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "One more is the next number",
+      "stem": "Bea counts 19 blocks. She puts 1 more block with them and counts all the blocks. What is the last number she says?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "One more than 19 is the next number, 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 + 1 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.891Z"
+        }
+      }
+    },
+    {
+      "id": "96736c51-225b-48ca-965a-1850ea5a9820",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Notice a counting mistake",
+      "stem": "Ola counts 7 stickers. She says 1, 2, 3, 4, 5, 6 for six stickers. Then she points at a sticker she already counted and says 7. What went wrong?",
+      "choices": [
+        "She counted one sticker two times",
+        "She said the numbers in a mixed-up order",
+        "She counted all 7 stickers correctly",
+        "She said only 6 numbers in all"
+      ],
+      "answer": "She counted one sticker two times",
+      "compute": null,
+      "solution": "The last sticker she touched was one she had already counted, so one sticker got two numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She counted one sticker two times",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "She counted 6 stickers, then pointed at one already counted and said 7: one sticker counted twice.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.940Z"
+        }
+      }
+    },
+    {
+      "id": "e37c74dc-1199-466e-9263-689c1019a311",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "The last number said tells how many",
+      "stem": "Ali counts 14 counters: 1, 2, 3 and so on up to 14. Then he covers them with a cloth. How many counters are under the cloth?",
+      "choices": [
+        "13",
+        "15",
+        "1",
+        "14"
+      ],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Covering the counters does not change how many there are. The last number he said was 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The last number counted, 14, tells how many; covering does not change it.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.957Z"
+        }
+      }
+    },
+    {
+      "id": "b8f68ae7-5f89-46ba-8c4e-eadcc43d9fcc",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "One number for each object",
+      "stem": "Every kid in a class got 1 pencil, and no pencils were left over. There are 15 pencils. How many kids are in the class?",
+      "choices": [
+        "14",
+        "16",
+        "15",
+        "1"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "One pencil for each kid with none left over, so the number of kids is the same as the number of pencils: 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One pencil per kid, none left: 15 kids.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.039Z"
+        }
+      }
+    },
+    {
+      "id": "62cbe7a4-0ad4-48e7-a565-06e9abadd450",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "A card flashes for one second. It shows 4 dots, 1 in each corner of a square. Ella says \"4\" without counting one by one. Is Ella right?",
+      "choices": [
+        "No, the card shows 3 dots",
+        "No, the card shows 5 dots",
+        "Yes, the card has 4 dots",
+        "No, the card shows 2 dots"
+      ],
+      "answer": "Yes, the card has 4 dots",
+      "compute": null,
+      "solution": "One dot in each of the 4 corners is 4 dots, so Ella is right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, the card has 4 dots",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 corners, 4 dots: Ella is right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.039Z"
+        }
+      }
+    },
+    {
+      "id": "d3a968d7-1ce1-4553-8783-bb10aca918d7",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "One number for each object",
+      "stem": "Ms. Cho puts 1 apple in each of her 9 bags. She uses all her apples and none are left. How many apples does she have?",
+      "choices": [
+        "9",
+        "8",
+        "10",
+        "1"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "One apple for each bag. There are 9 bags, so there are 9 apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 apple in each of 9 bags, none left: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.063Z"
+        }
+      }
+    },
+    {
+      "id": "d2241a15-3e61-4abc-8d05-bc573cc06001",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "One number for each object",
+      "stem": "At a party, each of 14 kids gets 1 balloon. Every kid has a balloon and none are left over. How many balloons are there?",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "One balloon for each kid. There are 14 kids, so there are 14 balloons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One balloon per kid, none left: 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.073Z"
+        }
+      }
+    },
+    {
+      "id": "49522f54-6d32-4202-ab95-85f10c536800",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count out a number of objects",
+      "stem": "Hana is counting out 15 crayons. Which number does she say for the last crayon she puts down?",
+      "choices": [
+        "14",
+        "16",
+        "10",
+        "15"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "She wants 15 crayons, so she stops when she says 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting 15 crayons, the last number said is 15 (cardinality).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.101Z"
+        }
+      }
+    },
+    {
+      "id": "956d70ad-ac26-4bfa-a891-e34023b33411",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "One more is the next number",
+      "stem": "A line has 14 kids. One more kid joins the end of the line. What number does the new kid get when the line is counted?",
+      "choices": [
+        "13",
+        "15",
+        "14",
+        "16"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "The number after 14 is 15, so the new kid is number 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 kids, the new kid at the end is number 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.108Z"
+        }
+      }
+    },
+    {
+      "id": "c351f20f-9036-4c34-b326-890fd91610be",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "The count stays the same when objects move",
+      "stem": "Pax has 15 stickers on a sheet. He peels them off and sticks them on a door. He counts the stickers on the door. What is the last number he says?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Moving the stickers does not change how many there are. The last number is still 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 stickers counted, last number 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.131Z"
+        }
+      }
+    },
+    {
+      "id": "fedf1462-d5ed-4f2c-8b9f-59342652d1a4",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects one at a time",
+      "stem": "Which list counts 7 toys the right way, with one number for each toy?",
+      "choices": [
+        "1, 2, 3, 4, 4, 5, 6",
+        "1, 2, 3, 4, 5, 6, 7",
+        "1, 2, 3, 5, 6, 7, 8",
+        "1, 2, 3, 4, 5, 7, 6"
+      ],
+      "answer": "1, 2, 3, 4, 5, 6, 7",
+      "compute": null,
+      "solution": "Counting the right way says the numbers in order, with none skipped and none said twice: 1 to 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1, 2, 3, 4, 5, 6, 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct one-to-one count of 7 is 1..7 in order.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.134Z"
+        }
+      }
+    },
+    {
+      "id": "388b827d-b6f5-4701-8e41-1944a7cad4f6",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count out a number of objects",
+      "stem": "Tess is carrying chairs for a class. She has carried 15 chairs and said 15 for the last one. What number does she say for the next chair she carries?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "The number after 15 is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 15 comes 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.142Z"
+        }
+      }
+    },
+    {
+      "id": "72fd35f1-4972-445c-9acc-4f05948552ef",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "The last number said tells how many",
+      "stem": "You count a group of toys. Which number tells how many toys are in the group?",
+      "choices": [
+        "The first number you say",
+        "The number you say for the smallest toy",
+        "The number you say for the biggest toy",
+        "The last number you say"
+      ],
+      "answer": "The last number you say",
+      "compute": null,
+      "solution": "When we count each object once, the last number said tells how many are in the group.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The last number you say",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cardinality: the last number said.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.181Z"
+        }
+      }
+    },
+    {
+      "id": "0adc1a19-abef-4a26-b24d-5ac7c9218e66",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Notice a counting mistake",
+      "stem": "Zack counts a pile of cubes and says 10 last. But he touched one cube two times. How many cubes are in the pile?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "One cube got two numbers, so his count is 1 too big. The pile has 9 cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One cube counted twice, so 10 counts for 9 cubes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.186Z"
+        }
+      }
+    },
+    {
+      "id": "3eabf497-bd22-45bc-8c6f-65052e051bed",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "See up to 5 objects at a glance",
+      "stem": "Card one has 5 dots: 1 in each corner of a square and 1 in the middle. Card two has 3 dots in a row and 2 dots in a row below. Do the cards have the same number of dots?",
+      "choices": [
+        "No, card one has more dots in it",
+        "No, card two has more dots in it",
+        "Yes, both cards have 5 dots",
+        "No, card two has only 4 dots"
+      ],
+      "answer": "Yes, both cards have 5 dots",
+      "compute": null,
+      "solution": "3 dots and 2 dots make 5 dots, and card one has 5 dots too. Both have 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, both cards have 5 dots",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Card two: 3 + 2 = 5; card one 5. Same.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.276Z"
+        }
+      }
+    },
+    {
+      "id": "5659ddcd-e88f-4f4f-85fe-0fb3a87a7b9f",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "One more is the next number",
+      "stem": "Kit counts by ones: 16, 17, 18. What number does Kit say next?",
+      "choices": [],
+      "answer": "19",
+      "compute": "19",
+      "solution": "Counting up by ones, the number after 18 is 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 18 comes 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.278Z"
         }
       }
     },
@@ -10422,6 +12646,728 @@
           "work": "Counting 6 apples, the last number said is 6.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:34.083Z"
+        }
+      }
+    },
+    {
+      "id": "a2676220-bd49-41e1-9f9b-943e76e74dba",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count objects in an array",
+      "stem": "A wall has windows in 3 rows. Row 1: w w. Row 2: w w. Row 3: w w. How many windows are on the wall?",
+      "choices": [
+        "2",
+        "5",
+        "6",
+        "3"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Count all the windows, one at a time, row after row. The last number is 6. Counting only one row gives 2 and counting the rows gives 3, which are not the whole.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 2 + 2 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.740Z"
+        }
+      }
+    },
+    {
+      "id": "4ae08848-3567-419a-b0b6-986f58593926",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "A tray holds cups in 2 rows. Row 1: u u u u u. Row 2: u u u u u. How many cups are on the tray?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Count all the cups, row by row, without skipping or counting one twice. There are 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.813Z"
+        }
+      }
+    },
+    {
+      "id": "2d6391ea-723a-43fe-a5f6-a2e2db4cb3d3",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count out a given number of objects",
+      "stem": "Tia wants to count out 4 cubes. Which numbers does she say?",
+      "choices": [
+        "1, 2, 3",
+        "1, 2, 3, 4, 5",
+        "1, 2, 3, 4",
+        "2, 3, 4, 5"
+      ],
+      "answer": "1, 2, 3, 4",
+      "compute": null,
+      "solution": "She starts at 1 and says one number for each cube. She stops at 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1, 2, 3, 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count 1, 2, 3, 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.837Z"
+        }
+      }
+    },
+    {
+      "id": "0ae70a26-7aaf-464b-92aa-5d085dc09160",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count objects in a circle",
+      "stem": "Kim counts toys in a circle: bear, ball, bus, bell. She starts at the bear and goes around once. What is the last number she says?",
+      "choices": [
+        "4",
+        "1",
+        "3",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "She says 1 for the bear, 2 for the ball, 3 for the bus and 4 for the bell. The last number is 4, the number of toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four toys counted once around: 1,2,3,4. Last number 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.862Z"
+        }
+      }
+    },
+    {
+      "id": "d188173c-350a-4c55-bb46-05847e8f0b25",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count scattered objects",
+      "stem": "These toys are mixed up in a box: car, drum, doll, kite, ball, top, bell. How many toys are in the box?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Count each toy one time. There are 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "car, drum, doll, kite, ball, top, bell = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.867Z"
+        }
+      }
+    },
+    {
+      "id": "7fa7805f-b22d-41d9-afa9-44a4993c517c",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects in a line",
+      "stem": "Look at this row: + + + + + + +. How many plus signs are in the row?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Touch each plus sign once and count: 1, 2, 3, 4, 5, 6, 7. The last number is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Seven plus signs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.869Z"
+        }
+      }
+    },
+    {
+      "id": "7d970dd8-e2be-4f99-97a2-5542ce15269b",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Name the number one more",
+      "stem": "What number comes right after 8 when you count?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "When you count, 9 comes right after 8. It is one more than 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 8 comes 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.872Z"
+        }
+      }
+    },
+    {
+      "id": "4c8df2de-dbf4-4361-a22c-29bb498d6027",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count objects in a line",
+      "stem": "Ruth, Omar, Jai, Lu and Ned wait in a line for the slide. How many children are in the line?",
+      "choices": [
+        "5",
+        "4",
+        "6",
+        "3"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Count each child once: Ruth 1, Omar 2, Jai 3, Lu 4, Ned 5. There are 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ruth, Omar, Jai, Lu, Ned = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.948Z"
+        }
+      }
+    },
+    {
+      "id": "94f6e287-af89-4a55-9db8-43b0152c5a69",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Sue takes grapes from a bowl and counts each one as it goes in her hand. When she takes the last grape, she says nine. How many grapes did Sue take?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The last number said tells how many she took: 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The last number said is the number taken: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.958Z"
+        }
+      }
+    },
+    {
+      "id": "94d77cd4-6948-462a-a66b-b6957245c04c",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "Stickers are on a card in 2 rows. Row 1: s s s s. Row 2: s s s s. How many stickers are on the card?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Count every sticker once, row by row: 1 to 4 in the first row, then 5 to 8 in the second. There are 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 rows of 4 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.962Z"
+        }
+      }
+    },
+    {
+      "id": "6e56c38f-0801-4839-a2c8-87c09e5d816f",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count objects in a circle",
+      "stem": "Chairs are set in a circle. Going around, they are labeled A, B, C, D, E, F and G. How many chairs are in the circle?",
+      "choices": [
+        "6",
+        "8",
+        "5",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Count each label once: A 1, B 2, C 3, D 4, E 5, F 6, G 7. There are 7 chairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A to G is 7 letters: 7 chairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.966Z"
+        }
+      }
+    },
+    {
+      "id": "6a8b17d0-a270-485d-a4af-b2213d554f8d",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Name the number one more",
+      "stem": "Rob has 3 toy cars. His aunt gives him 1 more toy car. How many toy cars does Rob have now?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "One more than 3 is the next number when you count: 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.001Z"
+        }
+      }
+    },
+    {
+      "id": "ad156bfb-062e-470f-b781-483653a8d196",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects in a line",
+      "stem": "A string has these beads, one after another: o o o o o o o o o o. How many beads are on the string?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Count the beads one at a time. The last number said is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 10 o symbols.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.042Z"
+        }
+      }
+    },
+    {
+      "id": "e86fd7d4-4d4a-4d8c-8718-f133f4752c92",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name the number one more",
+      "stem": "Zia counts 2 shells. She picks up one more shell. What number does she say for that shell?",
+      "choices": [
+        "1",
+        "2",
+        "4",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "After 2 comes 3. She says 3 for the new shell.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 2 comes 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.044Z"
+        }
+      }
+    },
+    {
+      "id": "e36265dc-b454-4369-982a-e8dadff20140",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Ned drops one block in a box each time he says a number. He says 1, 2, 3, 4, 5, 6. How many blocks are in the box?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "One block goes in for each number said. The last number said is 6, so there are 6 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One block per number, 6 numbers: 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.077Z"
+        }
+      }
+    },
+    {
+      "id": "726de933-7657-4cf8-a9bb-d3ff46e6b102",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count out a given number of objects",
+      "stem": "Ava counts out beads for a necklace. She stops at the number 8. How many beads has she counted out?",
+      "choices": [
+        "8",
+        "7",
+        "9",
+        "1"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The last number said tells how many. Ava has counted out 8 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Stops at 8: 8 beads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.087Z"
+        }
+      }
+    },
+    {
+      "id": "eca87260-7401-429c-84f6-c160213f0590",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count objects in a circle",
+      "stem": "Candles stand in a circle on a cake. Going around once, they are: white, pink, white, pink, white, pink. How many candles are there?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Go around the circle once and count each candle one time. There are 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "white, pink, white, pink, white, pink = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.095Z"
+        }
+      }
+    },
+    {
+      "id": "797f1145-4e8d-445f-b5d2-963ed03fbdbb",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count out a given number of objects",
+      "stem": "Which list has exactly 5 things?",
+      "choices": [
+        "pen, pen, pen, pen",
+        "pen, pen, pen, pen, pen",
+        "pen, pen, pen, pen, pen, pen",
+        "pen, pen, pen"
+      ],
+      "answer": "pen, pen, pen, pen, pen",
+      "compute": null,
+      "solution": "Count the pens in each list. Only the list with 1, 2, 3, 4, 5 has exactly 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "pen, pen, pen, pen, pen",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First list has 5 pens; others have 4, 3, 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.102Z"
+        }
+      }
+    },
+    {
+      "id": "3e6ebf96-1d4b-4d31-bf5c-aa15bc7490bd",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name the number one more",
+      "stem": "Which number is one more than 6?",
+      "choices": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Counting up from 6, the next number is 7. 5 is one less and 8 is two more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 1 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.103Z"
+        }
+      }
+    },
+    {
+      "id": "7feea8d3-6820-4495-a997-2e2cde1d75cb",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count scattered objects",
+      "stem": "You see a frog, a bug, a bee, a worm and a snail, all spread out on the grass. How many animals are on the grass?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Point to each animal once as you count: 1, 2, 3, 4, 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "frog, bug, bee, worm, snail = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.117Z"
+        }
+      }
+    },
+    {
+      "id": "ba91bcdd-5c8e-4b81-aa4b-9bf2ce86bc42",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Sid counts stones into a pail. He says 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 as he drops them in, one at a time. How many stones are in the pail?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The last number he says is 10, so there are 10 stones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 10, one stone each: 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.191Z"
+        }
+      }
+    },
+    {
+      "id": "80278f83-1f71-4329-bcac-a0eddf259286",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count scattered objects",
+      "stem": "Buttons are spread on a table: red, blue, blue, red, green, red. How many buttons are on the table?",
+      "choices": [
+        "5",
+        "6",
+        "7",
+        "3"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Count every button once, even when the colors repeat. There are 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count the list: 6 buttons.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.318Z"
+        }
+      }
+    },
+    {
+      "id": "985e3c58-34eb-4c6d-a11d-9bd2c458fcfb",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count objects in a line",
+      "stem": "A line of bikes is parked at a rack: b b b b b b b b b. How many bikes are in the line?",
+      "choices": [
+        "8",
+        "9",
+        "10",
+        "7"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Count the bikes one at a time. The last number said is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting the b marks: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.323Z"
         }
       }
     },
@@ -10746,6 +13692,723 @@
       }
     },
     {
+      "id": "6cf81a12-a63c-4653-b8f3-623e925eb6d4",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in a line",
+      "stem": "Birds sit on a wire from left to right: robin, wren, robin, jay, jay, wren, robin, jay, wren, wren, robin, jay, robin, wren. How many birds are on the wire?",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Count each bird once, even when the kind repeats. There are 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting the list: 14 birds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.772Z"
+        }
+      }
+    },
+    {
+      "id": "429ade12-6626-485a-9a4e-193a2ae744d5",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Gia counts out shells. She says the numbers 1 to 13, one for each shell. How many shells has Gia counted out?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "The last number said tells how many: 13 shells.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.775Z"
+        }
+      }
+    },
+    {
+      "id": "0833eeff-bfbd-404f-9187-6771f1bcec37",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name the number one more",
+      "stem": "Which sentence is true?",
+      "choices": [
+        "13 is one more than 14",
+        "13 is one more than 11",
+        "13 is one more than 12",
+        "13 is one more than 3"
+      ],
+      "answer": "13 is one more than 12",
+      "compute": null,
+      "solution": "When you count, 12 is followed by 13, so 13 is one more than 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13 is one more than 12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + 1 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.792Z"
+        }
+      }
+    },
+    {
+      "id": "ebff344c-2eeb-4be3-bf55-4aa1a98c0ec5",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "Tiles are on a floor in 2 rows. Row 1: t t t t t t. Row 2: t t t t t t. How many tiles are on the floor?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Count all the tiles once, row by row. There are 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two rows of 6 tiles: 6 + 6 = 12 (counted).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.798Z"
+        }
+      }
+    },
+    {
+      "id": "8b5bb95b-bf81-46fd-9b81-e7f37cd70611",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count out a given number of objects",
+      "stem": "Tess counts out 14 pencils. Which number does she say right before she says the number for the last pencil?",
+      "choices": [
+        "13",
+        "12",
+        "14",
+        "15"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "She counts 1, 2, ... 13, 14. The number just before 14 is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting 1..14, the number said just before 14 is 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.806Z"
+        }
+      }
+    },
+    {
+      "id": "6db8197f-30a8-4717-b06a-012f209c3726",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count objects in a circle",
+      "stem": "Lin counts 13 stones in a ring. She starts at a red stone. What should she do when she gets back to the red stone?",
+      "choices": [
+        "Count the red stone a second time",
+        "Start the count again at 1",
+        "Stop, because every stone has been counted once",
+        "Count the red stone and then stop"
+      ],
+      "answer": "Stop, because every stone has been counted once",
+      "compute": null,
+      "solution": "In a circle, the first stone is the one you come back to. If you already counted it, stop. Counting it again makes the total too big.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Stop, because every stone has been counted once",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In a ring, stop at the starting stone: all 13 already counted once.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.808Z"
+        }
+      }
+    },
+    {
+      "id": "e38a9d11-b2b3-4dc6-9feb-af5f14e2277c",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in a circle",
+      "stem": "Marbles lie in a ring. Going around once, you see: o o o o o o o o o o o o. How many marbles are in the ring?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Start at one marble, go around once and stop when you are back. The last number is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 12 marbles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.843Z"
+        }
+      }
+    },
+    {
+      "id": "e09aa203-00e5-4713-b9a0-f00a36c95848",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count scattered objects",
+      "stem": "Leaves are scattered on the grass: red, yellow, red, brown, yellow, yellow, red, brown, red, yellow, brown, red. How many leaves are on the grass?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Count every leaf once, even when colors repeat. There are 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count the list: 12 leaves.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.852Z"
+        }
+      }
+    },
+    {
+      "id": "f72ebab6-ee75-4e59-b4d5-eb6021de4e42",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count scattered objects",
+      "stem": "These things are all over the playroom floor: ball, block, bear, ball, bus, bear, block, ball, bus, bear, block, bus, ball. How many things are on the floor?",
+      "choices": [
+        "12",
+        "14",
+        "4",
+        "13"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Count each thing once, even when a kind repeats. There are 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count the list: 13 things (4 balls, 3 blocks, 3 bears, 3 buses).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.859Z"
+        }
+      }
+    },
+    {
+      "id": "1b52d959-6210-4244-b12d-8e78dd70e72d",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name the number one more",
+      "stem": "A bus has 14 riders. One more rider gets on. How many riders are on the bus now?",
+      "choices": [
+        "13",
+        "15",
+        "14",
+        "16"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "One more than 14 is the next number, 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One more than 14 is 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.941Z"
+        }
+      }
+    },
+    {
+      "id": "267d3106-262d-400f-a378-7f4051fa9639",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count scattered objects",
+      "stem": "Beads are in a dish in no order: blue, red, green, red, blue, blue, green, red, red, blue, green, blue, red, green, blue. How many beads are in the dish?",
+      "choices": [
+        "15",
+        "14",
+        "16",
+        "3"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Count every bead once, whatever its color. There are 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the list one by one: 15 beads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.958Z"
+        }
+      }
+    },
+    {
+      "id": "29fc6cbd-9d6a-4309-b9c4-3d01b235e6fc",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in a circle",
+      "stem": "Cups sit on a round tray. Going all the way around, the cups are: c c c c c c c c c c c c c c c. How many cups are on the tray?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Go around once, counting each cup one time. There are 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the c's: 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.960Z"
+        }
+      }
+    },
+    {
+      "id": "aa04c454-a303-4495-937f-a706dedcae2e",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count objects in a circle",
+      "stem": "Plates are set around a round table, one for each of: Dad, Mom, Gran, Gramps, Ana, Ben, Cy, Dee, Eve, Fox, Gus, Hal and Ivy. How many plates are on the table?",
+      "choices": [
+        "12",
+        "13",
+        "14",
+        "3"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "There is one plate for each name. Count the names once: there are 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the names: Dad, Mom, Gran, Gramps (4), Ana, Ben, Cy, Dee, Eve, Fox, Gus, Hal, Ivy (9): 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.995Z"
+        }
+      }
+    },
+    {
+      "id": "c948753c-8b3e-43e2-8fd2-8e823d4b8d8a",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "Seats in a small theater are in 3 rows. Row 1: s s s s s. Row 2: s s s s s. Row 3: s s s s s. How many seats are there?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Count every seat once, row after row. The last number said is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 rows of 5 seats: 5+5+5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.022Z"
+        }
+      }
+    },
+    {
+      "id": "ed5c374e-896b-4e16-b339-f2d6519e8af3",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Name the number one more",
+      "stem": "What number comes right after 11 when you count?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "After 11 comes 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11, then 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.030Z"
+        }
+      }
+    },
+    {
+      "id": "dc8fe2ea-9831-45c4-9252-faaadd16f669",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in a line",
+      "stem": "These letters are in a row: a b c d e f g h i j k l m. How many letters are in the row?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Count each letter once from the left. The last number said is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a b c d e f g h i j k l m = 13 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.066Z"
+        }
+      }
+    },
+    {
+      "id": "9395e531-eed0-49e4-844e-70f79a267575",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count objects in a line",
+      "stem": "A fence has posts in a line: | | | | | | | | | | | | | | |. How many posts are in the line?",
+      "choices": [
+        "14",
+        "16",
+        "5",
+        "15"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Count the posts one at a time. The last number said is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 15 | marks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.093Z"
+        }
+      }
+    },
+    {
+      "id": "ae25a6e0-de88-4ccb-84e5-383e56edd182",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count out a given number of objects",
+      "stem": "Which list has exactly 12 letters?",
+      "choices": [
+        "a b c d e f g h i j k",
+        "a b c d e f g h i j k l m",
+        "a b c d e f g h i j",
+        "a b c d e f g h i j k l"
+      ],
+      "answer": "a b c d e f g h i j k l",
+      "compute": null,
+      "solution": "Count the letters in each list. Only one list ends with the 12th letter: a b c d e f g h i j k l.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a b c d e f g h i j k l",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a to l is 12 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.094Z"
+        }
+      }
+    },
+    {
+      "id": "da895f0f-2fef-497b-bc41-6c63939a6fb3",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count scattered objects",
+      "stem": "A bowl has fruit mixed up: pear, plum, fig, plum, pear, lime, fig, pear, plum, lime, fig, pear, plum, lime. How many pieces of fruit are in the bowl?",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Count each piece once. There are 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 14 names in the list.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.099Z"
+        }
+      }
+    },
+    {
+      "id": "42a8dee1-d0d2-4eb1-98f7-2667e93631c0",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Name the number one more",
+      "stem": "Lia counts 10, 11, 12. What number does she say next?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Counting goes 10, 11, 12, 13. The next number is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 12 comes 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.211Z"
+        }
+      }
+    },
+    {
+      "id": "2f2be8ac-cd29-4266-8383-0af3c169f3be",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count objects in an array",
+      "stem": "A bus has seats in 3 rows. Row 1: x x x x x. Row 2: x x x x x. Row 3: x x x. How many seats are on the bus?",
+      "choices": [
+        "13",
+        "12",
+        "14",
+        "5"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Count every seat, row after row: 5 in the first row, 5 more in the second, then 3 more in the third. The last number is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 + 3 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.263Z"
+        }
+      }
+    },
+    {
+      "id": "72c64981-dbf2-4e8e-a778-621cd63017bb",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "A shelf has 2 levels with toy blocks. Level 1: b b b b b b. Level 2: b b b b b. How many blocks are on the shelf?",
+      "choices": [],
+      "answer": "11",
+      "compute": "11",
+      "solution": "Count the blocks on the top level, then keep counting on the next level. There are 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 5 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.289Z"
+        }
+      }
+    },
+    {
+      "id": "365440c6-8750-4925-8365-6ebecb827ed7",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Rae needs 14 cubes for a game. She has counted out cubes, and the last number she said was 13. How many cubes does Rae have now?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "The last number she said tells how many she has so far: 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is how many she has: 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.305Z"
+        }
+      }
+    },
+    {
       "id": "ea416b66-e4e3-4f15-b116-368523d87ea5",
       "topic_id": "NC17.K.CC.5",
       "difficulty": 3,
@@ -11052,6 +14715,728 @@
           "work": "After 14 comes 15.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:34.083Z"
+        }
+      }
+    },
+    {
+      "id": "fd1dd51d-a678-4831-afc2-54411a6515be",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects in a circle",
+      "stem": "Two kids count the same ring of 16 stones, but start at different stones. The first kid says 16 as her last number. What last number does the second kid say?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "It does not matter where you start. The number of stones is the same, so the last number is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count is the same regardless of start: 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.764Z"
+        }
+      }
+    },
+    {
+      "id": "c4af2dc6-e17e-44ca-a812-b0a906a14012",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects in a line",
+      "stem": "Look at the dashes in a line: - - - - - - - - - - - - - - - - - -. How many dashes are in the line?",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Count each dash once from the left. The last number said is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted 18 dashes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.771Z"
+        }
+      }
+    },
+    {
+      "id": "868cb1cd-b7bc-4bcf-9f54-c0538f353e15",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects in an array",
+      "stem": "A garden has plants in 3 rows. Row 1: p p p p p p. Row 2: p p p p p p. Row 3: p p p p p p. How many plants are in the garden?",
+      "choices": [
+        "6",
+        "17",
+        "19",
+        "18"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Count every plant once, row after row. The last number is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 rows of 6 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.773Z"
+        }
+      }
+    },
+    {
+      "id": "75524c6f-d4c8-4355-8b00-3433c26cd6f4",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Name the number one more",
+      "stem": "A shelf has 15 books. Dev puts 1 more book on the shelf. How many books are on the shelf now?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "One more than 15 is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 + 1 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.779Z"
+        }
+      }
+    },
+    {
+      "id": "ca23806d-a5fe-4f97-ae7b-cf5b6b2e99c8",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count scattered objects",
+      "stem": "Coins are mixed up on a desk: penny, dime, penny, nickel, dime, penny, nickel, nickel, penny, dime, penny, nickel, dime, penny, dime, nickel, penny, penny. How many coins are on the desk?",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Count each coin one time. There are 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the listed coins one by one: 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.812Z"
+        }
+      }
+    },
+    {
+      "id": "c31b3cf0-f9d9-424e-b39c-f94e182e0cc5",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects in a circle",
+      "stem": "Omar counts the flags around a round pond. How can he be sure to count each flag one time?",
+      "choices": [
+        "Count ten flags, and stop when he has said ten",
+        "Keep going past the flag he started at",
+        "Mark the flag he starts at, and stop when he is back at it",
+        "Count the flag he started at once more at the end"
+      ],
+      "answer": "Mark the flag he starts at, and stop when he is back at it",
+      "compute": null,
+      "solution": "In a circle there is no end to find. Marking the first flag shows when he has gone all the way around, so no flag is counted twice or missed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Mark the flag he starts at, and stop when he is back at it",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mark the start and stop on returning to it: each flag once.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.832Z"
+        }
+      }
+    },
+    {
+      "id": "68964298-7871-417b-b749-c2426f3d1a09",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects in a line",
+      "stem": "Fiona lines up her toy animals from left to right: cow, pig, hen, cow, hen, pig, pig, cow, hen, cow, pig, hen, hen, cow, pig, cow, hen, pig, cow. How many toy animals are in the line?",
+      "choices": [],
+      "answer": "19",
+      "compute": "19",
+      "solution": "Count each animal once, even when the kind repeats. There are 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the listed animals: 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.839Z"
+        }
+      }
+    },
+    {
+      "id": "05beef3c-d9ea-4948-9482-7a61dfb41e69",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects in an array",
+      "stem": "A parking lot has 2 rows of cars. Row 1: c c c c c c c c c c. Row 2: c c c c c c c c c. How many cars are in the lot?",
+      "choices": [
+        "19",
+        "18",
+        "20",
+        "10"
+      ],
+      "answer": "19",
+      "compute": "19",
+      "solution": "Count the cars in the first row, then keep counting in the second row. The last number is 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 + 9 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.846Z"
+        }
+      }
+    },
+    {
+      "id": "8c684b6b-1374-4c76-876e-6160f7be80ff",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count scattered objects",
+      "stem": "Balloons float all over a room: red, blue, red, green, blue, red, green, green, blue, red, blue, green, red, blue, green, red. How many balloons are in the room?",
+      "choices": [
+        "16",
+        "15",
+        "17",
+        "3"
+      ],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Count every balloon once. There are 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count list: 16 balloons (6 red, 5 blue, 5 green).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.870Z"
+        }
+      }
+    },
+    {
+      "id": "83d45f25-1da4-474d-b733-7e0818c5586a",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count out a given number of objects",
+      "stem": "Which list has exactly 17 letters?",
+      "choices": [
+        "a b c d e f g h i j k l m n o p",
+        "a b c d e f g h i j k l m n o p q r",
+        "a b c d e f g h i j k l m n o",
+        "a b c d e f g h i j k l m n o p q"
+      ],
+      "answer": "a b c d e f g h i j k l m n o p q",
+      "compute": null,
+      "solution": "Count the letters in each list. Only one list ends with the 17th letter, q.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a b c d e f g h i j k l m n o p q",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a..q is 17 letters (q is the 17th).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.892Z"
+        }
+      }
+    },
+    {
+      "id": "191605b8-eeae-4850-9cec-cf0c3960a47d",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "A box of chocolates has 5 rows. Row 1: k k k k. Row 2: k k k k. Row 3: k k k k. Row 4: k k k k. Row 5: k k k k. How many chocolates are in the box?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Count every chocolate once, row by row. There are 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 4 k = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.907Z"
+        }
+      }
+    },
+    {
+      "id": "0dbfcba7-3f84-441d-ad36-6a50d83fca3f",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects in an array",
+      "stem": "Cards are on a table in 4 rows. Row 1: c c c c. Row 2: c c c c. Row 3: c c c c. Row 4: c c c c. How many cards are on the table?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Count all the cards, row after row, without losing your place. The last number is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 rows of 4 = 16 cards.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.943Z"
+        }
+      }
+    },
+    {
+      "id": "7010d5bd-27f8-4eb0-aed4-f5751d4a7cf1",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count objects in a circle",
+      "stem": "Lights go around the edge of a round sign: * * * * * * * * * * * * * * * *. How many lights are on the sign?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Mark the first light, go around once and stop when you are back. There are 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the stars: 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.965Z"
+        }
+      }
+    },
+    {
+      "id": "6354de83-ff9c-4b27-9092-e6528c3472f4",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Name the number one more",
+      "stem": "Which number is one more than 18?",
+      "choices": [
+        "17",
+        "19",
+        "18",
+        "20"
+      ],
+      "answer": "19",
+      "compute": "19",
+      "solution": "Counting up from 18, the next number is 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 + 1 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.971Z"
+        }
+      }
+    },
+    {
+      "id": "70fe46da-306a-4963-8690-cc79d03bfbae",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects in a line",
+      "stem": "These letters are in a row: a b c d e f g h i j k l m n o p q r s t. How many letters are in the row?",
+      "choices": [
+        "19",
+        "20",
+        "21",
+        "10"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Count each letter once. The last number said is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a to t is 20 letters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.990Z"
+        }
+      }
+    },
+    {
+      "id": "ed075f9a-9c02-410e-98f7-310486f350cd",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count scattered objects",
+      "stem": "Stickers are all over a notebook cover: star, moon, sun, star, sun, moon, moon, star, sun, sun, star, moon, star, sun, moon, star, sun, moon, sun, star. How many stickers are on the cover?",
+      "choices": [
+        "19",
+        "18",
+        "3",
+        "20"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Count every sticker once, even when a picture repeats. There are 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted the list: 20 stickers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.992Z"
+        }
+      }
+    },
+    {
+      "id": "ed6bafa5-a96c-4d98-a2c3-8d28bd25b08e",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Bea counts out seashells. She says 1, 2, 3, and keeps going up to 16, and puts one shell in her pail for each number. How many shells are in the pail?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "The last number said is 16, so there are 16 shells.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One shell per number, 1 to 16: 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.092Z"
+        }
+      }
+    },
+    {
+      "id": "3aab2bc8-123f-45b8-b044-c250e391251d",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count out a given number of objects",
+      "stem": "Hal counts out cubes and has said every number from 1 up to 19. Then he puts down one more cube and says the next number. How many cubes has Hal counted out in all?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "After 19 the next number is 20. The last number said is 20, so Hal has 20 cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Said 1 to 19 for 19 cubes, then one more cube is 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.103Z"
+        }
+      }
+    },
+    {
+      "id": "4867efaa-97e3-4016-88a4-46c0435f213d",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count scattered objects",
+      "stem": "Shells are scattered on the sand: moon, cone, moon, clam, cone, clam, moon, moon, cone, clam, cone, moon, clam, cone, moon, clam, cone. How many shells are on the sand?",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "Count each shell once. There are 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting the listed shells one by one: 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.277Z"
+        }
+      }
+    },
+    {
+      "id": "0e013cde-9295-4423-a7d1-252141ff44e4",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects in a circle",
+      "stem": "Stones are laid in a circle: s s s s s s s s s s s s s s s s s. How many stones are in the circle?",
+      "choices": [
+        "16",
+        "17",
+        "18",
+        "7"
+      ],
+      "answer": "17",
+      "compute": "17",
+      "solution": "Count each stone once as you go around. There are 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting the s marks: 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.287Z"
+        }
+      }
+    },
+    {
+      "id": "70f80195-e880-43b9-a137-798f0fa2f842",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Name the number one more",
+      "stem": "A string has 17 beads. Sam adds 1 more bead. How many beads are on the string now?",
+      "choices": [
+        "16",
+        "17",
+        "18",
+        "19"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "One more than 17 is the next number, 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 + 1 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.303Z"
+        }
+      }
+    },
+    {
+      "id": "8c0dc99e-27a2-4925-ae3b-a3ac724ae778",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Name the number one more",
+      "stem": "What number comes right after 19 when you count?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "After 19 comes 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.313Z"
+        }
+      }
+    },
+    {
+      "id": "39deaac0-86c9-4dd8-bb85-aa10249bd85b",
+      "topic_id": "NC17.K.CC.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count objects in a line",
+      "stem": "A row of beads on a thread: o o o o o o o o o o o o o o o o. How many beads are on the thread?",
+      "choices": [
+        "15",
+        "17",
+        "16",
+        "6"
+      ],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Count the beads one at a time. The last number said is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting the o marks: 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.321Z"
         }
       }
     },
@@ -26758,6 +31143,40 @@
           "work": "A soup can is a cylinder; ball sphere, party hat cone, die cube.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.577Z"
+        }
+      }
+    },
+    {
+      "id": "e8a4b51b-c5a1-472b-8d63-9b637843c0cb",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a solid shape",
+      "stem": "Pam rolls clay in her hands to make a ball. Which solid shape did she make?",
+      "choices": [
+        "Cube",
+        "Sphere",
+        "Cone",
+        "Cylinder"
+      ],
+      "answer": "Sphere",
+      "compute": null,
+      "solution": "A ball is round all over, with no flat sides. That solid shape is a sphere.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Sphere",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rolled ball is a sphere.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.318Z"
         }
       }
     },

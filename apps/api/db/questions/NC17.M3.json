@@ -24221,6 +24221,35 @@
       }
     },
     {
+      "id": "db16781b-e4da-41ab-be8c-234cc0e1b33f",
+      "topic_id": "NC17.M3.F-LE.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation with a calculator",
+      "stem": "Bacteria in a dish triple every hour, so after $t$ hours there are $3^t$ times as many as at the start. After how many hours are there 50 times as many? Give $t$ to the nearest hundredth.",
+      "choices": [],
+      "answer": "3.56",
+      "compute": null,
+      "solution": "Solve $3^t = 50$, so $t = \\log_3 50 = \\ln 50 / \\ln 3 \\approx 3.912 / 1.0986 \\approx 3.56$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^t = 50 -> t = log_3 50 = ln50/ln3 = 3.9120/1.0986 = 3.5609 -> 3.56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.047Z"
+        }
+      }
+    },
+    {
       "id": "baa072e8-478a-499f-8980-44e29faa2e54",
       "topic_id": "NC17.M3.F-LE.4",
       "difficulty": 2,

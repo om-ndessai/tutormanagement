@@ -4,7 +4,8 @@
   "notes": {
     "NC17.1.OA.1": "All sums and starting amounts are within 20. Skills: result unknown (3), put together (6), change unknown (5), start unknown (4), compare (7), matching a story to a number sentence (5). Compare is about a quarter because it has three forms (difference, bigger, smaller unknown).",
     "NC17.1.OA.3": "Sums are within 20. Grade 1 does not name the properties for students, so the questions test the strategies (turn-around facts, making a ten, adding in a convenient order) and equations showing them. Choice options within each question end the same way. Sums stay within 20. Subtraction is used only in distractors.",
-    "NC17.1.OA.4": "Sums and totals stay within 20. Adding on and rewriting as subtraction are both asked, plus a first-addend-unknown form and matching a number sentence to a story.",
+    "NC17.1.OA.4": "Sums and totals stay within 20. Adding on and rewriting as subtraction are both asked, plus a first-addend-unknown form and matching a number sentence to a story. All sums and totals are within 20. The unknown is written as ? and called \"the ?\". Money is not used.",
+    "NC17.1.OA.9": "All sums and minuends within 10 (distractors may exceed 10 as add-instead-of-subtract slips). Answers are computed from the expression in scripts/build-b5-NC17.1.OA.9.mjs.",
     "NC17.1.OA.6": "Number lines are described in words (start at, jump right or left). Subtraction signs are written as plain hyphens, so no LaTeX is used.",
     "NC17.1.OA.7": "Every sum and difference stays within 20. A single equation cannot be a numeric question with a true/false answer, so \"is it true\" is asked as which-is-true, which-is-not-true and how-many-are-true; missing numbers and stories are numeric.",
     "NC17.1.OA.8": "All numbers within 20, plus tens within 100. Skills (counts below in reply).",
@@ -4101,6 +4102,69 @@
       }
     },
     {
+      "id": "52e23898-3db9-4836-85b7-b95b71bb2e6a",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story",
+      "stem": "A bag has 6 red apples, 2 green apples and 3 yellow apples. How many apples are in the bag?",
+      "choices": [],
+      "answer": "11",
+      "compute": "6+2+3",
+      "solution": "Add all three groups: $6 + 2 + 3 = 11$ apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 2 + 3 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.954Z"
+        }
+      }
+    },
+    {
+      "id": "1503fb39-b6f4-4fd1-8633-f7dbaf06e613",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Put together three groups in a story",
+      "stem": "Lily has 5 red beads, 3 blue beads and 6 green beads. How many beads does she have in all?",
+      "choices": [
+        "8",
+        "13",
+        "16",
+        "14"
+      ],
+      "answer": "14",
+      "compute": "5+3+6",
+      "solution": "Add the three groups: 5 + 3 + 6 = 14 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 3 + 6 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.083Z"
+        }
+      }
+    },
+    {
       "id": "3d0b6be2-b775-4a10-8f3d-7f6de5884bfb",
       "topic_id": "NC17.1.OA.2",
       "difficulty": 2,
@@ -5094,6 +5158,40 @@
       }
     },
     {
+      "id": "c5885ee1-3ff5-422a-9d1b-9513603d448f",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers in a story",
+      "stem": "The class read 9 books on Monday, 6 books on Tuesday and 5 books on Wednesday. How many books did the class read in all?",
+      "choices": [
+        "20",
+        "15",
+        "14",
+        "11"
+      ],
+      "answer": "20",
+      "compute": "9+6+5",
+      "solution": "Add all three days: $9 + 6 + 5 = 20$ books. The other options leave out one day.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 6 + 5 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.895Z"
+        }
+      }
+    },
+    {
       "id": "75e4e0ee-8326-446e-b8c6-b0400b2e8290",
       "topic_id": "NC17.1.OA.2",
       "difficulty": 3,
@@ -6069,6 +6167,64 @@
           "work": "9+4+6=19; 9+4+5=18 not equal; the others are reorderings equal to 19.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.669Z"
+        }
+      }
+    },
+    {
+      "id": "304b06d6-8b00-4512-b870-f2c23d28f78f",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing group in a story",
+      "stem": "Ana sees 4 birds in a tree and 8 birds on the grass. Some more birds are on a fence. She sees 17 birds in all. How many birds are on the fence?",
+      "choices": [],
+      "answer": "5",
+      "compute": "17-4-8",
+      "solution": "The birds in the tree and on the grass are 4 + 8 = 12. Then 17 - 12 = 5 birds are on the fence.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 8 = 12; 17 - 12 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.871Z"
+        }
+      }
+    },
+    {
+      "id": "5ebaa93e-b6cc-46d1-b07b-04406355301c",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the starting amount in a story",
+      "stem": "Pam has some stickers. Her friend gives her 6 stickers and her brother gives her 5 stickers. Now Pam has 15 stickers. How many stickers did she have at first?",
+      "choices": [],
+      "answer": "4",
+      "compute": "15-6-5",
+      "solution": "Pam was given 6 + 5 = 11 stickers. She had 15 - 11 = 4 stickers at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 5 = 11; 15 - 11 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.928Z"
         }
       }
     },
@@ -9489,6 +9645,728 @@
       }
     },
     {
+      "id": "8c52d953-e35b-48e3-8d16-16638bc5a6ec",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "What number makes $4 + ? = 6$ true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Start at 4 and count up to 6: 5, 6. That is 2 steps, so the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.762Z"
+        }
+      }
+    },
+    {
+      "id": "0092447b-8389-4c6a-87c0-9c05e6a0751c",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "Which number makes $8 + ? = 9$ true?",
+      "choices": [
+        "17",
+        "1",
+        "0",
+        "2"
+      ],
+      "answer": "1",
+      "compute": "1",
+      "solution": "8 and 1 more make 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 8 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.777Z"
+        }
+      }
+    },
+    {
+      "id": "8698d956-7e69-4c55-a9f5-b2c0dc64d703",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Missing first addend",
+      "stem": "Fill in the ?: $? + 4 = 9$.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Take 4 away from 9: 9 - 4 = 5. Check: 5 + 4 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.781Z"
+        }
+      }
+    },
+    {
+      "id": "f92266e2-3804-4c5a-bb33-cb1242d4f08e",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "Pia wants to solve $2 + ? = 7$ by subtracting. Which sentence should she use?",
+      "choices": [
+        "$2 - 7 = ?$",
+        "$7 + 2 = ?$",
+        "$2 + 7 = ?$",
+        "$7 - 2 = ?$"
+      ],
+      "answer": "$7 - 2 = ?$",
+      "compute": null,
+      "solution": "The whole is 7 and one part is 2. Take the part away from the whole: $7 - 2 = ?$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 - 2 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + ? = 7 means ? = 7 - 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.805Z"
+        }
+      }
+    },
+    {
+      "id": "cbed3c9f-599f-429e-91f4-b71d05f4972a",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story: add on to reach a goal",
+      "stem": "Mo is on step 4 of a ladder. The ladder has 9 steps. How many more steps must he climb to reach the top?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Count up from 4 to 9: 5, 6, 7, 8, 9. That is 5 steps. Or 9 - 4 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "From step 4 to step 9: 9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.818Z"
+        }
+      }
+    },
+    {
+      "id": "97d66bf9-1186-416c-a9db-0b47296b50ca",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Sam has 3 cars. He gets some more cars. Now he has 8 cars. Which number sentence matches the story?",
+      "choices": [
+        "$3 + 8 = ?$",
+        "$8 + ? = 3$",
+        "$3 + ? = 8$",
+        "$3 - ? = 8$"
+      ],
+      "answer": "$3 + ? = 8$",
+      "compute": null,
+      "solution": "Sam starts with 3, adds some, and gets 8. So $3 + ? = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + ? = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 3, gets some, now 8: 3 + ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.820Z"
+        }
+      }
+    },
+    {
+      "id": "7251336f-2aab-495b-8586-28158fa4db34",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story: some more are added",
+      "stem": "Ned had 2 toy cars. His uncle gave him some more. Now Ned has 9 toy cars. How many toy cars did his uncle give him?",
+      "choices": [
+        "11",
+        "6",
+        "8",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The sentence is $2 + ? = 9$. 9 - 2 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + ? = 9; 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.826Z"
+        }
+      }
+    },
+    {
+      "id": "4b7e5f50-5c39-4669-bf12-1b6555e6a795",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "To find the ? in $? + 4 = 8$, Leo takes 4 away from 8. What is the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "8 - 4 = 4, so the ? is 4. Check: 4 + 4 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 4 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.830Z"
+        }
+      }
+    },
+    {
+      "id": "4638bbbc-89b4-4265-9eb7-27998b5d3b72",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story: some more are added",
+      "stem": "A pond had 5 ducks. Some more ducks swam in. Now there are 10 ducks. How many ducks swam in?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The sentence is $5 + ? = 10$. 5 + 5 = 10, so 5 ducks swam in.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + ? = 10; 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.833Z"
+        }
+      }
+    },
+    {
+      "id": "a41ee2c6-38ee-4803-a93d-afc4d77ab3af",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use ten to find the missing addend",
+      "stem": "What is the ? in $7 + ? = 10$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "From 7 to 10 is 3 more. Or 10 - 7 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.836Z"
+        }
+      }
+    },
+    {
+      "id": "053e8484-3e86-4200-8995-3e36c35613a5",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on to find the missing addend",
+      "stem": "Dan has 6 blocks. He adds blocks and counts on: 7, 8, 9. How many blocks did he add?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "He said 7, 8 and 9 as he added the blocks, so he added 3 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counts on 7, 8, 9: three blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.865Z"
+        }
+      }
+    },
+    {
+      "id": "4c952748-3bf5-4a11-ba83-a9963c3c60a9",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story: a whole and one part",
+      "stem": "A train has 9 cars. 4 cars are red and the rest are blue. How many cars are blue?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The whole is 9 and one part is 4. The other part is 9 - 4 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.915Z"
+        }
+      }
+    },
+    {
+      "id": "bf9c70b3-0c43-4652-be30-a870975b2749",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "$? + 1 = 7$. Which number is the ?",
+      "choices": [
+        "8",
+        "6",
+        "7",
+        "5"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The number before 7 is 6, and 6 + 1 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 1 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.956Z"
+        }
+      }
+    },
+    {
+      "id": "500a7c04-1b5f-4a6e-bd9d-53e1e204c5a5",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use ten to find the missing addend",
+      "stem": "A tray holds 10 muffins when it is full. There are 9 muffins on the tray. How many more muffins fill the tray?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "9 and 1 make 10, so 1 more muffin fills the tray.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 9 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.996Z"
+        }
+      }
+    },
+    {
+      "id": "da7ce065-47c9-4172-8d02-24b03e94bfa2",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story: a whole and one part",
+      "stem": "There are 6 cookies in a jar. Pam can see 4 of them. The rest are hidden. How many cookies are hidden?",
+      "choices": [
+        "10",
+        "4",
+        "2",
+        "3"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The whole is 6 and one part is 4. The hidden part is 6 - 4 = 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 4 = 2 hidden.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.025Z"
+        }
+      }
+    },
+    {
+      "id": "f86f4e77-4f02-4818-9f4c-7bc7e8a59e75",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on to find the missing addend",
+      "stem": "Mina has 7 pennies. She adds pennies and counts on: 8, 9. How many pennies did she add?",
+      "choices": [
+        "1",
+        "3",
+        "9",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "She said 8 and 9 as she added, so she added 2 pennies.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 7: 8, 9 is two pennies.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.074Z"
+        }
+      }
+    },
+    {
+      "id": "c7e17a5a-6434-411b-a2b8-2321e4c653f6",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story: add on to reach a goal",
+      "stem": "A shelf has room for 9 books. There are 4 books on it. How many more books fill the shelf?",
+      "choices": [
+        "5",
+        "13",
+        "4",
+        "6"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Count up from 4 to 9: 5, 6, 7, 8, 9. That is 5 more. Or 9 - 4 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + ? = 9, ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.141Z"
+        }
+      }
+    },
+    {
+      "id": "542b9739-14f8-47f4-ac40-4ca3cacf985f",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "$? + 3 = 8$. Which number is the ?",
+      "choices": [
+        "11",
+        "5",
+        "4",
+        "6"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Think: what and 3 make 8? Or take 3 away from 8: 8 - 3 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.149Z"
+        }
+      }
+    },
+    {
+      "id": "5216e72c-c815-416f-8c56-20b4c85e31ea",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story: add on to reach a goal",
+      "stem": "A cup holds 9 pennies when it is full. It has 6 pennies in it. How many more pennies fill the cup?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Count up from 6 to 9: 7, 8, 9. That is 3 more. Or 9 - 6 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + ? = 9, ? = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.168Z"
+        }
+      }
+    },
+    {
+      "id": "1124a380-5f85-4aea-aa9e-f63c570d537a",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story: some more are added",
+      "stem": "Eva had 3 shells. She found some more at the beach. Now she has 7 shells. How many shells did she find?",
+      "choices": [
+        "4",
+        "10",
+        "3",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The sentence is $3 + ? = 7$. Count up from 3 to 7 or do 7 - 3 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + ? = 7, ? = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.171Z"
+        }
+      }
+    },
+    {
+      "id": "92360858-4e73-491a-ac85-c94bae425cae",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Which story matches $5 + ? = 8$?",
+      "choices": [
+        "Lily has 5 grapes. She gets some more. Now she has 8 grapes",
+        "Lily has 8 grapes. She eats 5. She has some grapes left",
+        "Lily has 5 grapes. She gets 8 more. She has some grapes now",
+        "Lily has 8 grapes. She gets 5 more. She has some grapes now"
+      ],
+      "answer": "Lily has 5 grapes. She gets some more. Now she has 8 grapes",
+      "compute": null,
+      "solution": "In the number sentence we start with 5, add some, and end with 8. Only the first story does that.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Lily has 5 grapes. She gets some more. Now she has 8 grapes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 5, add some, end 8: 5 + ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.184Z"
+        }
+      }
+    },
+    {
+      "id": "f2db486e-e0c2-402e-93c2-bd28d436f9a3",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "Solve for the ?: $3 + ? = 9$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "From 3 up to 9 is 6, because 3 + 6 = 9. Or 9 - 3 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 6 = 9, so ? = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.228Z"
+        }
+      }
+    },
+    {
+      "id": "3d1ede5e-d3cd-412d-9c1e-c66011ac4b5d",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story: a whole and one part",
+      "stem": "There are 5 children in a van. 2 of them are girls and the rest are boys. How many boys are in the van?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The whole is 5 and one part is 2. The other part is 5 - 2 = 3, or $2 + ? = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 2 = 3 boys.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.312Z"
+        }
+      }
+    },
+    {
       "id": "3cb39022-ba28-415f-853a-9c8370c01e5f",
       "topic_id": "NC17.1.OA.4",
       "difficulty": 2,
@@ -9795,6 +10673,728 @@
           "work": "12 + ? = 18; ? = 6.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:29.487Z"
+        }
+      }
+    },
+    {
+      "id": "ac4b3a1a-c90e-4bee-858b-8a156e057d34",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story: add on to reach a goal",
+      "stem": "A game needs 20 points to win. Ana has 15 points. How many more points does she need to win?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Count up from 15 to 20: that is 5 more. Or 20 - 15 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 + ? = 20, ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.733Z"
+        }
+      }
+    },
+    {
+      "id": "d8e0f517-d04d-4cf6-8a82-592082fdb102",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "To find the ? in $? + 7 = 16$, Gina takes 7 away from 16. What is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "16 - 7 = 9, so the ? is 9. Check: 9 + 7 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 - 7 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.737Z"
+        }
+      }
+    },
+    {
+      "id": "41138780-a1af-4275-a6d6-b44b22bb401e",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use ten to find the missing addend",
+      "stem": "Sam finds the ? in $6 + ? = 14$. He first adds 4 to make 10. Then he adds 4 more to reach 14. How much does he add in all?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "4 and 4 make 8, so 6 + 8 = 14. The ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 = 8; 6 + 8 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.738Z"
+        }
+      }
+    },
+    {
+      "id": "4608bed4-5f3d-4921-9ac7-c8e6ebb19148",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "Solve $7 + ? = 12$. What is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "From 7 up to 12 is 5, because 7 + 5 = 12. Or 12 - 7 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 7 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.754Z"
+        }
+      }
+    },
+    {
+      "id": "33db8a8b-fc14-4a3a-8b4c-c113d5a95b84",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story: a whole and one part",
+      "stem": "A fruit bowl has 14 pieces of fruit. 6 are apples and the rest are pears. How many pears are in the bowl?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The whole is 14 and one part is 6. The other part is 14 - 6 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 - 6 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.756Z"
+        }
+      }
+    },
+    {
+      "id": "7a7ee622-4a69-4a0a-b27f-7e20af581060",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Story: some more are added",
+      "stem": "There were 9 cows in a barn. Some more cows came in. Now there are 16 cows. How many cows came in?",
+      "choices": [
+        "25",
+        "7",
+        "6",
+        "8"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The sentence is $9 + ? = 16$. 16 - 9 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 - 9 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.758Z"
+        }
+      }
+    },
+    {
+      "id": "0b54d567-94b2-4c13-a143-f5033da618bd",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on to find the missing addend",
+      "stem": "Dee has 12 beads. She adds beads and says 13, 14, 15, 16, 17 as she adds them. How many beads did she add?",
+      "choices": [
+        "5",
+        "4",
+        "6",
+        "17"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "She said 5 numbers as she added beads, so she added 5 beads. Check: 12 + 5 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13, 14, 15, 16, 17 = 5 numbers said, 5 beads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.774Z"
+        }
+      }
+    },
+    {
+      "id": "0d5a5221-c94f-47c7-ba09-d94193876403",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "Which number makes $6 + ? = 15$ true?",
+      "choices": [
+        "21",
+        "8",
+        "9",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "15 - 6 = 9. Check: 6 + 9 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 6 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.776Z"
+        }
+      }
+    },
+    {
+      "id": "ca4f2ed5-b1eb-4487-823f-47ae1e14225d",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story: add on to reach a goal",
+      "stem": "Kim has 8 stamps. She needs 15 stamps to fill a page. How many more stamps does she need?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Count up from 8 to 15, or do 15 - 8 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + ? = 15; 15 - 8 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.797Z"
+        }
+      }
+    },
+    {
+      "id": "c06f6d9c-7db3-4449-8fbe-07a8e41cd611",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Story: add on to reach a goal",
+      "stem": "A pool lane is 19 meters long. Ben has swum 11 meters. How many more meters must he swim to reach the end?",
+      "choices": [
+        "30",
+        "8",
+        "7",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Count up from 11 to 19, or do 19 - 11 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 + ? = 19; 19 - 11 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.811Z"
+        }
+      }
+    },
+    {
+      "id": "0864e86b-fd15-48f1-8e02-11df3f7a01a8",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on to find the missing addend",
+      "stem": "Eli has 13 pennies. He adds pennies and says 14, 15, 16 as he adds them. How many pennies did he add?",
+      "choices": [
+        "2",
+        "4",
+        "3",
+        "16"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "He said 3 numbers as he added, so he added 3 pennies. Check: 13 + 3 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14, 15, 16: three numbers; 16 - 13 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.820Z"
+        }
+      }
+    },
+    {
+      "id": "00cbced4-352c-44da-b0b0-3466eda4a848",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use ten to find the missing addend",
+      "stem": "Tara solves $9 + ? = 16$ by making ten. She adds 1 to 9 to get 10. Then she adds 6 to get from 10 to 16. How much did she add in all?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "1 and 6 make 7, so 9 + 7 = 16. The ? is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 6 = 7; 9 + 7 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.821Z"
+        }
+      }
+    },
+    {
+      "id": "ee21d549-4cfd-4c00-b29a-2c57360cc971",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "Mia solves $5 + ? = 14$ by subtracting 5 from 14. What is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "14 - 5 = 9, so the ? is 9. Check: 5 + 9 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 - 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.844Z"
+        }
+      }
+    },
+    {
+      "id": "39652c7d-506a-474e-891d-be661872b235",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Wes has 12 cherries. He picks some more. Now he has 18 cherries. Which number sentence matches the story?",
+      "choices": [
+        "$12 + 18 = ?$",
+        "$18 + ? = 12$",
+        "$12 - ? = 18$",
+        "$12 + ? = 18$"
+      ],
+      "answer": "$12 + ? = 18$",
+      "compute": null,
+      "solution": "Wes starts with 12, adds some, and ends with 18. So $12 + ? = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 + ? = 18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + ? = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.845Z"
+        }
+      }
+    },
+    {
+      "id": "fafcc058-beb0-4a92-9cb9-194c7789f08b",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "What number goes in the ? to make $13 + ? = 17$ true?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "From 13 up to 17 is 4. Or 17 - 13 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 - 13 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.889Z"
+        }
+      }
+    },
+    {
+      "id": "0bbdf343-3391-4ed2-af64-caa697f3572f",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story: a whole and one part",
+      "stem": "Twelve cards are in a row. 7 cards are face up and the rest are face down. How many cards are face down?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The whole is 12 and one part is 7. The other part is 12 - 7 = 5, or $7 + ? = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 7 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.895Z"
+        }
+      }
+    },
+    {
+      "id": "b3a5dfce-22a3-4a69-a7a1-aee916f27054",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Story: a whole and one part",
+      "stem": "There are 16 kids in a club. 10 of them are boys and the rest are girls. How many girls are in the club?",
+      "choices": [
+        "26",
+        "5",
+        "7",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The whole is 16 and one part is 10. The other part is 16 - 10 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 - 10 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.908Z"
+        }
+      }
+    },
+    {
+      "id": "5e55073b-b252-436d-a3d6-82302670bdf9",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story: some more are added",
+      "stem": "A shop had 6 hats. A delivery brought more hats. Now the shop has 15 hats. How many hats came in the delivery?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The sentence is $6 + ? = 15$. 15 - 6 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 6 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.909Z"
+        }
+      }
+    },
+    {
+      "id": "4edce738-9c38-48c1-a701-42b494a8c82c",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "$? + 9 = 15$. Which number is the ?",
+      "choices": [
+        "24",
+        "7",
+        "6",
+        "5"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Take 9 away from 15: 15 - 9 = 6. Check: 6 + 9 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 9 = 6, and 6 + 9 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.933Z"
+        }
+      }
+    },
+    {
+      "id": "690c74ea-07a4-4bd8-bc58-eaa7b8cfa58a",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Which story matches $9 + ? = 17$?",
+      "choices": [
+        "Max has 17 stickers. He gives away 9. He has some stickers left",
+        "Max has 9 stickers. He gets some more. Now he has 17 stickers",
+        "Max has 9 stickers. He gets 17 more. He has some stickers now",
+        "Max has 9 stickers. He gives some away. Now he has 17 stickers"
+      ],
+      "answer": "Max has 9 stickers. He gets some more. Now he has 17 stickers",
+      "compute": null,
+      "solution": "In the number sentence we start with 9, add some, and end with 17. Only the first story does that.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Max has 9 stickers. He gets some more. Now he has 17 stickers",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + ? = 17 means start with 9, get some more, end with 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.937Z"
+        }
+      }
+    },
+    {
+      "id": "b5225c40-f802-44e8-b7cf-e8d1e8a423e2",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Missing first addend",
+      "stem": "Find the ? in $? + 7 = 12$.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Take 7 away from 12: 12 - 7 = 5. Check: 5 + 7 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 7 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.952Z"
+        }
+      }
+    },
+    {
+      "id": "7b7b3e90-1c8f-4adc-beaf-b253536254a1",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "Which subtraction sentence helps solve $? + 6 = 15$?",
+      "choices": [
+        "$15 - 6 = ?$",
+        "$6 - 15 = ?$",
+        "$15 + 6 = ?$",
+        "$6 + 15 = ?$"
+      ],
+      "answer": "$15 - 6 = ?$",
+      "compute": null,
+      "solution": "The whole is 15 and one part is 6. Take the part from the whole: $15 - 6 = ?$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$15 - 6 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 6 = 15 becomes 15 - 6 = ? = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.953Z"
+        }
+      }
+    },
+    {
+      "id": "209113eb-156c-47d6-9fbe-ae9033d6fe5e",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "$? + 5 = 16$. Which number is the ?",
+      "choices": [
+        "11",
+        "21",
+        "10",
+        "12"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "Take 5 away from 16: 16 - 5 = 11. Check: 11 + 5 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 - 5 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.314Z"
         }
       }
     },
@@ -10114,6 +11714,733 @@
       }
     },
     {
+      "id": "595c7417-6cde-45f2-8074-95d2aa40c254",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story: add on to reach a goal",
+      "stem": "Aunt Lee needs 19 chairs for a party. She has 11 chairs. How many more chairs does she need?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Count up from 11 to 19, or do 19 - 11 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 - 11 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.761Z"
+        }
+      }
+    },
+    {
+      "id": "7ea7300b-f64d-4486-9830-ddd3c9a0ca4c",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Story: add on to reach a goal",
+      "stem": "A tower must be 18 blocks tall. Sam has built it 11 blocks tall. How many more blocks does he need?",
+      "choices": [
+        "29",
+        "6",
+        "7",
+        "8"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Count up from 11 to 18, or do 18 - 11 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 - 11 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.761Z"
+        }
+      }
+    },
+    {
+      "id": "959f5e9f-20de-4fcc-a78a-9b36b622e373",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "Which number sentence has the ? equal to 5?",
+      "choices": [
+        "$? + 9 = 15$",
+        "$? + 9 = 13$",
+        "$? + 8 = 14$",
+        "$? + 9 = 14$"
+      ],
+      "answer": "$? + 9 = 14$",
+      "compute": null,
+      "solution": "14 - 9 = 5. The others give 6, 4 and 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$? + 9 = 14$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 - 9 = 5. Others give 6, 4, 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.766Z"
+        }
+      }
+    },
+    {
+      "id": "9fa43a4a-953d-4856-8b8f-25f5058ba595",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use ten to find the missing addend",
+      "stem": "Which way makes ten to solve $9 + ? = 17$?",
+      "choices": [
+        "Add 10 to 9 to get 19, then take away 2",
+        "Add 1 to 9 to make 10, then add 7 more to reach 17",
+        "Take 9 away from 10, then add on 17",
+        "Add 7 to 9 to make 10, then add 1 more to reach 17"
+      ],
+      "answer": "Add 1 to 9 to make 10, then add 7 more to reach 17",
+      "compute": null,
+      "solution": "9 and 1 make 10. Then 10 and 7 make 17. So 1 + 7 = 8 was added in all, and the ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 1 to 9 to make 10, then add 7 more to reach 17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 1 = 10, 10 + 7 = 17, ? = 8. Option with making ten correctly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.777Z"
+        }
+      }
+    },
+    {
+      "id": "ff9aecab-8867-44cd-b9aa-72865d2bb752",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Story: some more are added",
+      "stem": "A parking lot had 6 cars. More cars drove in. Now there are 17 cars. How many cars drove in?",
+      "choices": [
+        "23",
+        "10",
+        "11",
+        "12"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "The sentence is $6 + ? = 17$. 17 - 6 = 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 - 6 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.780Z"
+        }
+      }
+    },
+    {
+      "id": "89a462bf-a163-4533-8715-41ee483be4eb",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use ten to find the missing addend",
+      "stem": "Nell finds the ? in $5 + ? = 13$ by making ten. She adds 5 to get to 10. Then she adds 3 to get from 10 to 13. What is the ?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "5 and 3 make 8, so 5 + 8 = 13. The ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.782Z"
+        }
+      }
+    },
+    {
+      "id": "6cc43add-0773-4b24-a41b-10db11d62da5",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "Solve $3 + ? = 17$. What is the ?",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "From 3 up to 17 is 14, because 17 - 3 = 14. Check: 3 + 14 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 - 3 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.782Z"
+        }
+      }
+    },
+    {
+      "id": "fdf83e40-3257-4fa1-9378-fa6d3ef2e27c",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "Ben says, \"To solve $11 + ? = 18$, I can do $18 - 11$.\" Is Ben right?",
+      "choices": [
+        "No, he should add 11 and 18 instead",
+        "Yes, 18 is the whole and 11 is one part",
+        "No, he should do 11 - 18 instead",
+        "Yes, but then the ? is 29"
+      ],
+      "answer": "Yes, 18 is the whole and 11 is one part",
+      "compute": null,
+      "solution": "The whole is 18 and one part is 11, so 18 - 11 = 7 is the other part. Ben is right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, 18 is the whole and 11 is one part",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 is the whole, 11 a part: 18 - 11 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.790Z"
+        }
+      }
+    },
+    {
+      "id": "ed7bb7a8-d9c6-420d-b9ca-d62520013bc5",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on to find the missing addend",
+      "stem": "Ella has 16 stamps. She adds stamps and says 17, 18, 19, 20 as she adds them. How many stamps did she add?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "She said 4 numbers as she added stamps, so she added 4 stamps. Check: 16 + 4 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counted on 4 numbers: 17, 18, 19, 20; 20 - 16 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.810Z"
+        }
+      }
+    },
+    {
+      "id": "4e6e6765-7e46-4e80-95fe-7a0505b23a8f",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Missing first addend",
+      "stem": "A dog park had some dogs. 8 more dogs came. Now there are 17 dogs. How many dogs were at the park at first?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The sentence is $? + 8 = 17$. 17 - 8 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 8 = 17; 17 - 8 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.811Z"
+        }
+      }
+    },
+    {
+      "id": "dcda0e59-b7ca-4ff7-9b7e-4c303e14328c",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Turn a missing addend into subtraction",
+      "stem": "Why can you subtract 9 from 16 to solve $9 + ? = 16$?",
+      "choices": [
+        "Because adding 9 and 16 gives the same answer as 16 - 9 does",
+        "Because 16 is the whole and 9 is one part, so the ? is the other part",
+        "Because the ? has to be the same number as the 9 in the sentence",
+        "Because the ? has to be a number that is bigger than 16 or equal to it"
+      ],
+      "answer": "Because 16 is the whole and 9 is one part, so the ? is the other part",
+      "compute": null,
+      "solution": "The whole is 16 and one part is 9. Taking the part from the whole leaves the other part, which is the ?: 16 - 9 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Because 16 is the whole and 9 is one part, so the ? is the other part",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Part-part-whole: 16 whole, 9 a part, ? the other part = 16 - 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.815Z"
+        }
+      }
+    },
+    {
+      "id": "93db388d-f054-48fd-8b4d-185906101e6e",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Missing first addend",
+      "stem": "Fill in the ?: $? + 5 = 20$.",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Take 5 away from 20: 20 - 5 = 15. Check: 15 + 5 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.815Z"
+        }
+      }
+    },
+    {
+      "id": "080a8813-df6a-4365-bbd7-e63df0218815",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story: a whole and one part",
+      "stem": "There are 19 players in a game. 11 are on the red team and the rest are on the blue team. How many players are on the blue team?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The whole is 19 and one part is 11. The other part is 19 - 11 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 + ? = 19; 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.817Z"
+        }
+      }
+    },
+    {
+      "id": "877a77b4-38ba-47c3-8024-ef667e98cf85",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "Some birds were on a wire. 7 more birds landed. Now there are 15 birds. How many birds were on the wire at first?",
+      "choices": [
+        "22",
+        "7",
+        "8",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The sentence is $? + 7 = 15$. 15 - 7 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 7 = 15; 15 - 7 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.821Z"
+        }
+      }
+    },
+    {
+      "id": "5f924b23-97d5-4b96-9a59-af9c9004192c",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story: a whole and one part",
+      "stem": "A basket has 17 pieces of fruit. 8 are apples and the rest are oranges. How many oranges are in the basket?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The whole is 17 and one part is 8. The other part is 17 - 8 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + ? = 17; 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.824Z"
+        }
+      }
+    },
+    {
+      "id": "c20fc293-4b7c-4773-82d8-2b158471d3c2",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Story: a whole and one part",
+      "stem": "A toy box has 20 toys. 13 are cars and the rest are dolls. How many dolls are in the box?",
+      "choices": [
+        "7",
+        "33",
+        "6",
+        "8"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The whole is 20 and one part is 13. The other part is 20 - 13 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 + ? = 20; 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.831Z"
+        }
+      }
+    },
+    {
+      "id": "21134563-796b-4593-aee3-cc53d633ced5",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Missing first addend",
+      "stem": "$? + 6 = 18$. Which number is the ?",
+      "choices": [
+        "24",
+        "13",
+        "11",
+        "12"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Take 6 away from 18: 18 - 6 = 12. Check: 12 + 6 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 - 6 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.831Z"
+        }
+      }
+    },
+    {
+      "id": "179bf030-c2e1-40d8-93b9-11a7e1b191e3",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on to find the missing addend",
+      "stem": "Dan has 9 coins. He adds coins and says 10, 11, 12, 13, 14, 15 as he adds them. How many coins did he add?",
+      "choices": [
+        "15",
+        "5",
+        "7",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "He said 6 numbers as he added coins, so he added 6 coins. Check: 9 + 6 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10..15 is six numbers; 15 - 9 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.837Z"
+        }
+      }
+    },
+    {
+      "id": "35813fc8-4963-4f2d-9858-59791c1a30bd",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use ten to find the missing addend",
+      "stem": "Rob solves $8 + ? = 17$ by making ten. He adds 2 to get to 10. Then he adds 7 to get from 10 to 17. What is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "2 and 7 make 9, so 8 + 9 = 17. The ? is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 7 = 9; 8 + 9 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.926Z"
+        }
+      }
+    },
+    {
+      "id": "102d285c-973a-49a8-9a61-f6d13df3c926",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story: some more are added",
+      "stem": "A library had 8 puzzles. It got more puzzles. Now it has 20 puzzles. How many puzzles did it get?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The sentence is $8 + ? = 20$. 20 - 8 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 8 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.929Z"
+        }
+      }
+    },
+    {
+      "id": "cb511454-78cd-43f1-a4f5-02b04606e4d8",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "Which number makes $12 + ? = 20$ true?",
+      "choices": [
+        "8",
+        "32",
+        "7",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "20 - 12 = 8. Check: 12 + 8 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 12 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.932Z"
+        }
+      }
+    },
+    {
+      "id": "dc3bb7cd-20a6-45ad-90d0-4aebf2412b6e",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing addend in a number sentence",
+      "stem": "What is the ? in $8 + ? = 18$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "From 8 up to 18 is 10. Or 18 - 8 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 - 8 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.944Z"
+        }
+      }
+    },
+    {
+      "id": "277655e7-dcde-4228-84d7-6b6334303447",
+      "topic_id": "NC17.1.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Kira has some pencils. She buys 6 more. Now she has 15 pencils. Which number sentence matches the story?",
+      "choices": [
+        "$? + 6 = 15$",
+        "$6 + 15 = ?$",
+        "$15 + ? = 6$",
+        "$? - 6 = 15$"
+      ],
+      "answer": "$? + 6 = 15$",
+      "compute": null,
+      "solution": "Kira starts with some pencils (?), adds 6, and has 15. So $? + 6 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$? + 6 = 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unknown start, add 6, get 15: ? + 6 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.949Z"
+        }
+      }
+    },
+    {
       "id": "69793310-86f8-486b-88c7-c01d22f6f6f9",
       "topic_id": "NC17.1.OA.9",
       "difficulty": 1,
@@ -10415,6 +12742,713 @@
           "work": "10 - 7 = 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.463Z"
+        }
+      }
+    },
+    {
+      "id": "64175239-3b32-4b24-8f56-f7d791cc232b",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing number",
+      "stem": "In the number sentence $? + 5 = 9$, which number is the ?",
+      "choices": [
+        "3",
+        "5",
+        "4",
+        "14"
+      ],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "$4 + 5 = 9$, so the ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.765Z"
+        }
+      }
+    },
+    {
+      "id": "255bbb20-e3fe-497d-9ccf-b218dd54c886",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "Add 5 and 2. What is the total?",
+      "choices": [],
+      "answer": "7",
+      "compute": "5+2",
+      "solution": "5 and 2 more make 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.771Z"
+        }
+      }
+    },
+    {
+      "id": "1c0444dc-9fdc-4248-8230-db178790f1a8",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Make 10",
+      "stem": "Which sum is equal to 10?",
+      "choices": [
+        "$5 + 4$",
+        "$7 + 2$",
+        "$6 + 5$",
+        "$6 + 4$"
+      ],
+      "answer": "$6 + 4$",
+      "compute": null,
+      "solution": "$6 + 4 = 10$. The others make 9, 9 and 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4 = 10; others 9, 9, 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.780Z"
+        }
+      }
+    },
+    {
+      "id": "cafec212-b20b-4da6-8df8-a63fe9905993",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Leo knows that $2 + 5 = 7$. What is $7 - 5$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "7-5",
+      "solution": "Subtracting 5 from the total 7 leaves the other part, 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 5 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.790Z"
+        }
+      }
+    },
+    {
+      "id": "00c94db5-1224-4654-a894-9e47aa4b5089",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add within 10",
+      "stem": "Which number is the answer to $2 + 6$?",
+      "choices": [
+        "8",
+        "4",
+        "7",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "2+6",
+      "solution": "Start at 6 and count up 2 more: 7, 8. The answer is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 6 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.797Z"
+        }
+      }
+    },
+    {
+      "id": "73f2bd55-3904-468f-ba25-cef340c1620a",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Match and compare number sentences",
+      "stem": "What is the bigger of the two answers: $4 + 4$ and $3 + 6$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3+6",
+      "solution": "$4 + 4 = 8$ and $3 + 6 = 9$. The bigger answer is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 = 8, 3 + 6 = 9; bigger 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.822Z"
+        }
+      }
+    },
+    {
+      "id": "e5ae1d90-2977-4e82-b72b-d2c699b2925d",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Match and compare number sentences",
+      "stem": "$5 + 2 = 4 + ?$. What is the ?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5+2-4",
+      "solution": "Both sides must be the same. $5 + 2 = 7$, and $4 + 3 = 7$, so the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 2 = 7 = 4 + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.826Z"
+        }
+      }
+    },
+    {
+      "id": "d53db1b8-84e6-42b6-9bd1-31dc52ff6fe0",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "What number is 2 less than 9?",
+      "choices": [],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "2 less than 9 is $9 - 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.836Z"
+        }
+      }
+    },
+    {
+      "id": "73489a9f-5877-4dfd-a902-91d3c51ea1f8",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "What is 8 take away 5?",
+      "choices": [],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "Take 5 away from 8: $8 - 5 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 5 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.839Z"
+        }
+      }
+    },
+    {
+      "id": "392f5077-a211-466a-a9d4-ac077f8da3b1",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "Fill in the ? so the sentence is true: $8 - ? = 5$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "Taking away 3 from 8 leaves 5, so the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.841Z"
+        }
+      }
+    },
+    {
+      "id": "3f5f1b55-62e8-47f2-b609-932450ef1695",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Which addition fact goes with $8 - 3 = 5$?",
+      "choices": [
+        "$8 + 3 = 11$",
+        "$5 + 3 = 8$",
+        "$3 + 3 = 6$",
+        "$8 + 5 = 13$"
+      ],
+      "answer": "$5 + 3 = 8$",
+      "compute": null,
+      "solution": "The same three numbers, 3, 5 and 8, can be added: $5 + 3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 3 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5 goes with 5 + 3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.859Z"
+        }
+      }
+    },
+    {
+      "id": "f803e75d-a742-48d2-bdc1-9c19dcecd477",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Doubles and three addends",
+      "stem": "Add three numbers: 3, 1 and 4. What is the total?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+1+4",
+      "solution": "$3 + 1 = 4$, and $4 + 4 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 1 + 4 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.888Z"
+        }
+      }
+    },
+    {
+      "id": "017f5723-4280-43dc-aa9c-f9f3439de407",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract story problems",
+      "stem": "There are 4 ducks in a pond. 3 more ducks swim in. How many ducks are in the pond now?",
+      "choices": [],
+      "answer": "7",
+      "compute": "4+3",
+      "solution": "Put the ducks together: $4 + 3 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 3 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.891Z"
+        }
+      }
+    },
+    {
+      "id": "2fed96b0-0e63-449b-a73d-36783d0583d9",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "Find the ? in $2 + ? = 6$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "What goes with 2 to make 6? Count up from 2 to 6: 4 more. The ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.953Z"
+        }
+      }
+    },
+    {
+      "id": "1ad84955-2f9b-4343-9192-f84dd836e6a3",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract story problems",
+      "stem": "A garden has 5 red flowers and 4 yellow flowers. How many flowers are in the garden?",
+      "choices": [],
+      "answer": "9",
+      "compute": "5+4",
+      "solution": "Put the two groups together: $5 + 4 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.954Z"
+        }
+      }
+    },
+    {
+      "id": "a798e649-eba1-4207-9786-62c861ea5939",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Make 10",
+      "stem": "How many more do you add to 7 to make 10?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-7",
+      "solution": "7 and 3 make 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.977Z"
+        }
+      }
+    },
+    {
+      "id": "b2a8059d-5cf7-44aa-9688-c3cdbeea38d0",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match and compare number sentences",
+      "stem": "One of these number sentences is correct. Which one?",
+      "choices": [
+        "$6 - 3 = 4$",
+        "$9 - 1 = 7$",
+        "$2 + 5 = 7$",
+        "$3 + 3 = 5$"
+      ],
+      "answer": "$2 + 5 = 7$",
+      "compute": null,
+      "solution": "$2 + 5 = 7$ is right. $6 - 3 = 3$, $9 - 1 = 8$ and $3 + 3 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 5 = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6-3=3, 9-1=8, 2+5=7 true, 3+3=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.001Z"
+        }
+      }
+    },
+    {
+      "id": "9c9a31a6-5922-4075-ac80-2db292fec734",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract story problems",
+      "stem": "Raj has 9 cookies. He eats 2 of them. How many cookies does Raj have left?",
+      "choices": [
+        "6",
+        "8",
+        "5",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "He eats some, so take away: $9 - 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.031Z"
+        }
+      }
+    },
+    {
+      "id": "8b1e476a-7888-4c59-ab31-3c2aa2b39fe1",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract story problems",
+      "stem": "6 kids are on the swings. 4 kids go home. How many kids are on the swings now?",
+      "choices": [
+        "2",
+        "10",
+        "3",
+        "4"
+      ],
+      "answer": "2",
+      "compute": "6-4",
+      "solution": "Some kids leave, so take away: $6 - 4 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.076Z"
+        }
+      }
+    },
+    {
+      "id": "37b30068-10fc-4c78-a525-cafe276e51fe",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "What number is 3 more than 6?",
+      "choices": [],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "3 more than 6 is $6 + 3 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.165Z"
+        }
+      }
+    },
+    {
+      "id": "1a3fa870-144f-47a0-9f39-5ba48347a049",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Doubles and three addends",
+      "stem": "What is double 4?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4+4",
+      "solution": "Double 4 means 4 and 4 more: 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.170Z"
+        }
+      }
+    },
+    {
+      "id": "ef73e1ce-1b41-4065-98b7-dc15db6ec924",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract within 10",
+      "stem": "$6 - 2 = ?$ Which number goes in place of the ?",
+      "choices": [
+        "8",
+        "4",
+        "3",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "Take 2 away from 6 to get 4. Adding instead would give 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.248Z"
+        }
+      }
+    },
+    {
+      "id": "fcb82049-7985-48ea-a7d4-d14537aac331",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "Subtract 8 from 10. What is the answer?",
+      "choices": [],
+      "answer": "2",
+      "compute": "10-8",
+      "solution": "$10 - 8 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 8 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.308Z"
         }
       }
     },
@@ -10734,6 +13768,728 @@
       }
     },
     {
+      "id": "bfddb775-6a89-406a-a682-18d1c194dbd5",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "What do you get when you add 4 and 5?",
+      "choices": [],
+      "answer": "9",
+      "compute": "4+5",
+      "solution": "$4 + 5 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.739Z"
+        }
+      }
+    },
+    {
+      "id": "ef1e509b-cecc-4010-9b9d-ab2798102613",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add within 10",
+      "stem": "Which number is 2 more than 6?",
+      "choices": [
+        "8",
+        "7",
+        "9",
+        "4"
+      ],
+      "answer": "8",
+      "compute": "6+2",
+      "solution": "2 more than 6 is $6 + 2 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.754Z"
+        }
+      }
+    },
+    {
+      "id": "e80a3ae4-5482-429e-9aad-b2239fa774de",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Doubles and three addends",
+      "stem": "Mina adds three numbers: 2, 5 and 1. What is her answer?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2+5+1",
+      "solution": "$2 + 5 = 7$, and $7 + 1 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 5 + 1 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.756Z"
+        }
+      }
+    },
+    {
+      "id": "281b26ae-7c4b-4698-be04-d8d872c4dc39",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract story problems",
+      "stem": "Nina has 5 stickers. She wants to have 9 stickers. How many more stickers does she need?",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "5 and 4 make 9, so she needs 4 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + ? = 9; 9 - 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.805Z"
+        }
+      }
+    },
+    {
+      "id": "ab7d618b-d86a-4121-8f80-3eb58f671e0f",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "$6 = 2 + ?$. What is the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "2 and 4 make 6, so the ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.812Z"
+        }
+      }
+    },
+    {
+      "id": "0eb2fcb9-4c85-4792-b052-623c982191d3",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "$? + 4 = 10$. Find the ?",
+      "choices": [],
+      "answer": "6",
+      "compute": "10-4",
+      "solution": "6 and 4 make 10, so the ? is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 4 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.812Z"
+        }
+      }
+    },
+    {
+      "id": "216a29fb-eddb-4844-a414-13193e8bb7d2",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Which fact is NOT in the same fact family as $2 + 6 = 8$?",
+      "choices": [
+        "$6 + 2 = 8$",
+        "$8 - 6 = 2$",
+        "$8 - 2 = 6$",
+        "$6 - 2 = 4$"
+      ],
+      "answer": "$6 - 2 = 4$",
+      "compute": null,
+      "solution": "The family uses 2, 6 and 8 only. $6 - 2 = 4$ uses a 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 - 2 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Family of 2,6,8: 8-2=6, 8-6=2, 6+2=8. 6-2=4 is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.831Z"
+        }
+      }
+    },
+    {
+      "id": "eb84a241-dee7-4423-9240-825b653add58",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract within 10",
+      "stem": "Which number is 3 less than 10?",
+      "choices": [
+        "3",
+        "7",
+        "13",
+        "6"
+      ],
+      "answer": "7",
+      "compute": "10-3",
+      "solution": "3 less than 10 is $10 - 3 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 3 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.838Z"
+        }
+      }
+    },
+    {
+      "id": "776a3f83-9480-4cd2-824d-7300afbcbc42",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number",
+      "stem": "Which number makes $? - 3 = 4$ true?",
+      "choices": [
+        "1",
+        "4",
+        "3",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "4+3",
+      "solution": "You need a number that is 3 more than 4. $7 - 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 3 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.868Z"
+        }
+      }
+    },
+    {
+      "id": "6b4a8309-21d2-4094-ae90-813e0a6cbe8f",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract story problems",
+      "stem": "There are 8 children in a room. 3 of them are boys and the rest are girls. How many girls are in the room?",
+      "choices": [
+        "3",
+        "5",
+        "4",
+        "6"
+      ],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "Take the boys away from all the children: $8 - 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.993Z"
+        }
+      }
+    },
+    {
+      "id": "6ac1e193-a874-45d4-908a-cd44a1acff91",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number",
+      "stem": "Which number goes in the ? to make $7 - ? = 2$ true?",
+      "choices": [
+        "9",
+        "2",
+        "5",
+        "4"
+      ],
+      "answer": "5",
+      "compute": "7-2",
+      "solution": "$7 - 5 = 2$, so the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 5 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.998Z"
+        }
+      }
+    },
+    {
+      "id": "222abc0b-657c-4037-8c87-bfc5c8a26739",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Make 10",
+      "stem": "Dee has 4 stickers. How many more does she need to have 10 stickers?",
+      "choices": [
+        "5",
+        "7",
+        "6",
+        "14"
+      ],
+      "answer": "6",
+      "compute": "10-4",
+      "solution": "4 and 6 make 10, so she needs 6 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 4 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.004Z"
+        }
+      }
+    },
+    {
+      "id": "19a25e3b-6460-4da1-aaa1-117d86c4d40e",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "Start with 9 and take away 4. What number do you get?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "$9 - 4 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.062Z"
+        }
+      }
+    },
+    {
+      "id": "c18a3452-f8d5-40d1-87d0-1f3c05f43a62",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match and compare number sentences",
+      "stem": "Pick the number sentence that is false.",
+      "choices": [
+        "$4 + 4 = 7$",
+        "$3 + 5 = 8$",
+        "$9 - 4 = 5$",
+        "$7 - 2 = 5$"
+      ],
+      "answer": "$4 + 4 = 7$",
+      "compute": null,
+      "solution": "$4 + 4 = 8$, not 7. The other three are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 = 8, not 7; others true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.077Z"
+        }
+      }
+    },
+    {
+      "id": "5217020f-0c88-4793-ab92-d80e33b931b9",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "Find the answer: $1 + 6 = ?$",
+      "choices": [],
+      "answer": "7",
+      "compute": "1+6",
+      "solution": "1 more than 6 is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 6 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.078Z"
+        }
+      }
+    },
+    {
+      "id": "e2754070-d497-4d74-9699-fb911718d2bd",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "Find the answer: $8 - 6 = ?$",
+      "choices": [],
+      "answer": "2",
+      "compute": "8-6",
+      "solution": "$8 - 6 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 6 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.087Z"
+        }
+      }
+    },
+    {
+      "id": "f7ca6c00-f54e-4b5b-8969-fa315731af34",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Match and compare number sentences",
+      "stem": "$4 + 3 = 5 + ?$. What is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "4+3-5",
+      "solution": "$4 + 3 = 7$. Since $5 + 2 = 7$, the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+3 = 7 = 5 + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.119Z"
+        }
+      }
+    },
+    {
+      "id": "fa9560a3-0b65-4767-a8a6-de89eeee6e54",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract story problems",
+      "stem": "A farm has 6 cows and 3 sheep. How many animals are on the farm?",
+      "choices": [
+        "9",
+        "3",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "Put the groups together: $6 + 3 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.122Z"
+        }
+      }
+    },
+    {
+      "id": "33b81f77-b085-43e6-9c34-891fec47115c",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "Mark starts with 6 and adds 4. What number does he get?",
+      "choices": [],
+      "answer": "10",
+      "compute": "6+4",
+      "solution": "$6 + 4 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.126Z"
+        }
+      }
+    },
+    {
+      "id": "855ca1c4-4d93-4bde-bca2-35f6c51c1a0d",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract story problems",
+      "stem": "Kai had some marbles. He lost 3 and now has 5 marbles. How many marbles did Kai have at first?",
+      "choices": [],
+      "answer": "8",
+      "compute": "5+3",
+      "solution": "Put back the 3 he lost: $5 + 3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? - 3 = 5, ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.139Z"
+        }
+      }
+    },
+    {
+      "id": "8357aaf3-7b66-4326-a820-b33d5c56fbf6",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match and compare number sentences",
+      "stem": "Which pair has the same answer?",
+      "choices": [
+        "$5 + 3$ and $10 - 3$",
+        "$5 + 3$ and $10 - 2$",
+        "$4 + 3$ and $10 - 2$",
+        "$6 + 3$ and $10 - 2$"
+      ],
+      "answer": "$5 + 3$ and $10 - 2$",
+      "compute": null,
+      "solution": "$5 + 3 = 8$ and $10 - 2 = 8$. In the other pairs the answers are 8 and 7, 7 and 8, or 9 and 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 3$ and $10 - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+3=7 vs 8; 5+3=8 and 10-2=8 match; 5+3=8 vs 7; 6+3=9 vs 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.270Z"
+        }
+      }
+    },
+    {
+      "id": "733d615c-9ac0-49d9-b21f-ff9f8cb5003d",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Zed knows that $5 + 4 = 9$. Use it to find $9 - 5$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "Taking 5 away from 9 leaves the other part, 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 5 = 4 since 5 + 4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.312Z"
+        }
+      }
+    },
+    {
+      "id": "d631a176-3308-47dc-8f9b-f8d27d76e6a4",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Which subtraction sentence goes with $4 + 3 = 7$?",
+      "choices": [
+        "$7 - 4 = 2$",
+        "$4 - 3 = 7$",
+        "$7 - 3 = 4$",
+        "$3 - 4 = 7$"
+      ],
+      "answer": "$7 - 3 = 4$",
+      "compute": null,
+      "solution": "The total is 7, so start from 7: $7 - 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 - 3 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Related subtraction: 7 - 3 = 4 (7 - 4 = 3, not 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.314Z"
+        }
+      }
+    },
+    {
       "id": "a110ddbd-26de-47ee-803c-441d85d88bbe",
       "topic_id": "NC17.1.OA.9",
       "difficulty": 3,
@@ -11040,6 +14796,718 @@
           "work": "10 - 6 = 4 green crayons.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.463Z"
+        }
+      }
+    },
+    {
+      "id": "67c8fb02-4a2f-474b-8c40-eecbff7cf4d2",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract story problems",
+      "stem": "Ben had 6 toy cars. His uncle gave him some more. Now Ben has 10 toy cars. How many cars did his uncle give him?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "6 and 4 make 10, so his uncle gave him 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + ? = 10; 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.819Z"
+        }
+      }
+    },
+    {
+      "id": "a359b4bf-5439-425c-b4a9-cd70bb743a90",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match and compare number sentences",
+      "stem": "Which number sentence has an answer greater than $5 + 4$?",
+      "choices": [
+        "$7 + 2$",
+        "$10 - 2$",
+        "$6 + 4$",
+        "$3 + 6$"
+      ],
+      "answer": "$6 + 4$",
+      "compute": null,
+      "solution": "$5 + 4 = 9$. Only $6 + 4 = 10$ is greater. The others make 9, 8 and 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+4=9. 3+6=9, 6+4=10, 10-2=8, 7+2=9. Only 6+4 is greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.865Z"
+        }
+      }
+    },
+    {
+      "id": "3998a7da-02ec-4700-b40d-25a6e1ba0781",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "7 and 2 together make which number?",
+      "choices": [],
+      "answer": "9",
+      "compute": "7+2",
+      "solution": "$7 + 2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.871Z"
+        }
+      }
+    },
+    {
+      "id": "5ddfc19b-6896-49c7-a2d1-c14cacb47405",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract within 10",
+      "stem": "Which number sentence has an answer of 4?",
+      "choices": [
+        "$9 - 5$",
+        "$9 - 4$",
+        "$7 - 2$",
+        "$6 - 3$"
+      ],
+      "answer": "$9 - 5$",
+      "compute": null,
+      "solution": "$9 - 5 = 4$. The others make 5, 5 and 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6-3=3, 7-2=5, 9-4=5, 9-5=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.910Z"
+        }
+      }
+    },
+    {
+      "id": "509c4eac-d7c4-4df1-8c37-ae7ceecf1356",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing number",
+      "stem": "Which number makes $5 + ? = 10 - 2$ true?",
+      "choices": [
+        "2",
+        "3",
+        "5",
+        "8"
+      ],
+      "answer": "3",
+      "compute": "10-2-5",
+      "solution": "$10 - 2 = 8$. Since $5 + 3 = 8$, the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 2 = 8; 5 + 3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.924Z"
+        }
+      }
+    },
+    {
+      "id": "517adf1c-b046-4203-8343-c4ad3585ff65",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "$1 + 6 + ? = 9$. Find the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "9-1-6",
+      "solution": "$1 + 6 = 7$, and $7 + 2 = 9$, so the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 6 = 7; 9 - 7 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.967Z"
+        }
+      }
+    },
+    {
+      "id": "86fac9dc-9773-41ad-83d9-d6f31427171f",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Doubles and three addends",
+      "stem": "Add 1, 6 and 2. What is the total?",
+      "choices": [],
+      "answer": "9",
+      "compute": "1+6+2",
+      "solution": "$1 + 6 = 7$, and $7 + 2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 6 + 2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.002Z"
+        }
+      }
+    },
+    {
+      "id": "3fa6ab91-7ecd-4d15-98ef-2402eb077c84",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Match and compare number sentences",
+      "stem": "$9 - 3 = 4 + ?$. What is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "9-3-4",
+      "solution": "$9 - 3 = 6$. Since $4 + 2 = 6$, the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 3 = 6 = 4 + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.031Z"
+        }
+      }
+    },
+    {
+      "id": "3bec550d-3ce6-4351-b08d-994b235d934a",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Make 10",
+      "stem": "Joe wants a string of 10 beads. He has 7 beads on it. How many more beads does he need?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-7",
+      "solution": "7 and 3 make 10, so he needs 3 more beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.032Z"
+        }
+      }
+    },
+    {
+      "id": "1cad38f2-a038-4bc0-9984-05da2aa63e78",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "$? - 6 = 3$. What is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "$9 - 6 = 3$, so the ? is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 3 + 6 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.059Z"
+        }
+      }
+    },
+    {
+      "id": "d3faf7c4-c8ac-43cf-823e-aaaa75e9133d",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add within 10",
+      "stem": "What is 9 more than 1?",
+      "choices": [],
+      "answer": "10",
+      "compute": "9+1",
+      "solution": "$9 + 1 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 9 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.061Z"
+        }
+      }
+    },
+    {
+      "id": "2979be70-a73c-4c1d-9485-82c09c3f18cb",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Emi knows that $6 + 3 = 9$. Which other fact must be true?",
+      "choices": [
+        "$9 - 3 = 5$",
+        "$6 - 3 = 9$",
+        "$3 - 6 = 9$",
+        "$9 - 3 = 6$"
+      ],
+      "answer": "$9 - 3 = 6$",
+      "compute": null,
+      "solution": "Taking the part 3 away from the total 9 leaves the other part, 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 3 = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fact family 3, 6, 9: 9 - 3 = 6 is true; others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.063Z"
+        }
+      }
+    },
+    {
+      "id": "dfc20d18-0d25-4e12-a7bb-48ecf1afe755",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "The numbers 2, 7 and 9 are in a fact family. Which sentence belongs to it?",
+      "choices": [
+        "$9 - 7 = 2$",
+        "$9 - 2 = 6$",
+        "$7 - 2 = 9$",
+        "$9 + 2 = 7$"
+      ],
+      "answer": "$9 - 7 = 2$",
+      "compute": null,
+      "solution": "The total is 9, and $9 - 7 = 2$ uses all three numbers correctly.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 7 = 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Family 2, 7, 9: 9 - 7 = 2 true; others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.072Z"
+        }
+      }
+    },
+    {
+      "id": "ed78f4d6-9210-4882-a263-9458ebbd2fb0",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add and subtract story problems",
+      "stem": "Pia has 3 more stickers than Dan. Dan has 5 stickers. How many stickers does Pia have?",
+      "choices": [
+        "2",
+        "5",
+        "8",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "5+3",
+      "solution": "Pia has Dan's 5 and 3 more: $5 + 3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.075Z"
+        }
+      }
+    },
+    {
+      "id": "2c0245e3-e655-42f3-bc0a-d20903e3f4c3",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "The numbers 4, 6 and 10 make a fact family. If $10 - 4 = 6$, what is $10 - 6$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "Taking away the other part, 6, leaves 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.080Z"
+        }
+      }
+    },
+    {
+      "id": "aaf07cf6-df33-4996-a169-2345059d5089",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number",
+      "stem": "$10 = ? + 6$. Find the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "$4 + 6 = 10$, so the ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.088Z"
+        }
+      }
+    },
+    {
+      "id": "5a751c83-39e2-415b-8154-27d1e6bef1a5",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fact families: add and subtract are linked",
+      "stem": "Jun knows that $8 - 5 = 3$. What is $3 + 5$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5",
+      "solution": "The parts 3 and 5 make the total 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.090Z"
+        }
+      }
+    },
+    {
+      "id": "1a4a250b-a559-4c2e-be34-b769dd16622b",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract story problems",
+      "stem": "A shop has 8 hats. It sells 3 hats in the morning and 1 hat in the afternoon. How many hats are left?",
+      "choices": [],
+      "answer": "4",
+      "compute": "8-3-1",
+      "solution": "$8 - 3 = 5$, and $5 - 1 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5, 5 - 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.109Z"
+        }
+      }
+    },
+    {
+      "id": "b8c04b9b-10a9-47c0-a5e3-cdf477f46487",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add within 10",
+      "stem": "Which number sentence adds up to 9?",
+      "choices": [
+        "$3 + 5$",
+        "$6 + 4$",
+        "$7 + 1$",
+        "$4 + 5$"
+      ],
+      "answer": "$4 + 5$",
+      "compute": null,
+      "solution": "$4 + 5 = 9$. The others make 8, 10 and 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+5=9, 6+4=10, 3+5=8, 7+1=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.111Z"
+        }
+      }
+    },
+    {
+      "id": "def9495a-eed2-432d-bff5-d0d17fafa189",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Make 10",
+      "stem": "Which number sentence shows a way to make 10?",
+      "choices": [
+        "$3 + 6 = 10$",
+        "$4 + 5 = 10$",
+        "$2 + 7 = 10$",
+        "$3 + 7 = 10$"
+      ],
+      "answer": "$3 + 7 = 10$",
+      "compute": null,
+      "solution": "$3 + 7 = 10$ is true. The others make 9, 9 and 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 7 = 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 7 = 10; others make 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.131Z"
+        }
+      }
+    },
+    {
+      "id": "b1fc0712-1919-46a7-92bb-18797a4111c7",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match and compare number sentences",
+      "stem": "Which sentence does NOT have the right answer?",
+      "choices": [
+        "$6 + 2 = 8$",
+        "$7 - 4 = 4$",
+        "$9 - 3 = 6$",
+        "$5 + 5 = 10$"
+      ],
+      "answer": "$7 - 4 = 4$",
+      "compute": null,
+      "solution": "$7 - 4 = 3$, not 4. The other three are right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 - 4 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-3=6 ok, 5+5=10 ok, 6+2=8 ok, 7-4=3 not 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.241Z"
+        }
+      }
+    },
+    {
+      "id": "6a521466-957e-45f0-9130-fcab6e9838b8",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "What is 10 minus 3?",
+      "choices": [],
+      "answer": "7",
+      "compute": "10-3",
+      "solution": "$10 - 3 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 3 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.281Z"
+        }
+      }
+    },
+    {
+      "id": "bc21dcb6-f992-45fe-901b-ccc3e2775ab4",
+      "topic_id": "NC17.1.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract within 10",
+      "stem": "Start with 10, take away 6, and then take away 2 more. What number is left?",
+      "choices": [],
+      "answer": "2",
+      "compute": "10-6-2",
+      "solution": "$10 - 6 = 4$, and $4 - 2 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4; 4 - 2 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.302Z"
         }
       }
     },

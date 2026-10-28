@@ -4100,6 +4100,69 @@
       }
     },
     {
+      "id": "22c569b6-63e8-4bc6-b2c4-1a53a46693bb",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ordered pairs from two patterns",
+      "stem": "Pattern A starts at 0 and adds 2 each time. Pattern B starts at 0 and adds 5 each time. Matching terms make ordered pairs (A term, B term). The first pair is (0, 0) and the second pair is (2, 5). What is the B number in the fourth pair?",
+      "choices": [],
+      "answer": "15",
+      "compute": "5*3",
+      "solution": "Pattern B is 0, 5, 10, 15, so its fourth term is 15. (Pattern A is 0, 2, 4, 6, so the fourth pair is (6, 15).)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs (0,0),(2,5),(4,10),(6,15). B = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.140Z"
+        }
+      }
+    },
+    {
+      "id": "7fea948f-84dd-467b-b8e3-e706113586cb",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Relate terms of two patterns",
+      "stem": "Pattern A starts at 0 and adds 3 each time: 0, 3, 6, 9. Pattern B starts at 0 and adds 6 each time. How does each term of Pattern B compare with the matching term of Pattern A?",
+      "choices": [
+        "It is 3 more",
+        "It is 6 more",
+        "It is half as much",
+        "It is 2 times as much"
+      ],
+      "answer": "It is 2 times as much",
+      "compute": null,
+      "solution": "Pattern B is 0, 6, 12, 18. Each term is 2 times the matching term of Pattern A: 0, 6, 12, 18 = 2 x (0, 3, 6, 9).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is 2 times as much",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B terms 0,6,12,18 vs A 0,3,6,9: each B term is 2 times A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.205Z"
+        }
+      }
+    },
+    {
       "id": "e3e7c765-9e21-4c85-a475-6a3e9cacaba9",
       "topic_id": "NC17.5.OA.3",
       "difficulty": 2,
@@ -6146,6 +6209,35 @@
           "work": "D: A 0,10,20,30; B 0,5,10,15: A=2B for every term. A option: 10,15,20 vs 5,10,15: 15 is not 2x10. B option: B=2A. C: A=5B.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.632Z"
+        }
+      }
+    },
+    {
+      "id": "1c765db0-4ec6-44d3-8eb6-f1525654ddb5",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Relate terms of two patterns",
+      "stem": "Pattern A starts at 0 and adds 4 each time. Pattern B starts at 0 and adds 12 each time. The terms in the same position are written as ordered pairs: (0, 0), (4, 12), (8, 24), and so on. What is the second number in the ordered pair whose first number is 20?",
+      "choices": [],
+      "answer": "60",
+      "compute": "20*3",
+      "solution": "Each B term is 3 times the A term in the same position, because 12 is 3 times 4. So the pair is (20, 60).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 0,4,8,12,16,20 -> 20 is the 6th term (5 steps). B after 5 steps: 5*12=60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.014Z"
         }
       }
     },
@@ -21818,6 +21910,40 @@
           "work": "Opposite sides of a parallelogram are equal; the side opposite the 7 cm side is 7 cm.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.514Z"
+        }
+      }
+    },
+    {
+      "id": "fd846653-1c9a-4279-b4b4-b89cf8fee498",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Attributes pass down the hierarchy",
+      "stem": "All parallelograms have two pairs of parallel sides. A rhombus is a parallelogram. Which must be true of every rhombus?",
+      "choices": [
+        "It has two pairs of parallel sides",
+        "It has four right angles",
+        "It has exactly one pair of parallel sides",
+        "Its diagonals are the same length"
+      ],
+      "answer": "It has two pairs of parallel sides",
+      "compute": null,
+      "solution": "A rhombus is a kind of parallelogram, so it has every attribute of a parallelogram, including two pairs of parallel sides. Four right angles and equal diagonals belong to rectangles, not to every rhombus.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has two pairs of parallel sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rhombus is a parallelogram, so two pairs of parallel sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.318Z"
         }
       }
     },

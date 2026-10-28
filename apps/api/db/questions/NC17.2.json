@@ -5,7 +5,7 @@
     "NC17.2.OA.1": "All amounts and answers are within 100. Skills: one-step result unknown (4), put together (5), change unknown (2), start unknown (3), compare (5), matching to an equation (4), two-step (7, including start-unknown and change-unknown ones). All numbers and results are within 100. Unknowns in every position, add-to/take-from/put-together/compare, one- and two-step, and matching stories to equations.",
     "NC17.2.OA.2": "Two-addend facts within 20 only (no three-addend sums); all numbers and results stay within 20.",
     "NC17.2.OA.3": "Odd/even answers are words, so those are choice questions; numeric ones ask for pairs, leftovers, group sizes or the number in a doubles equation. All numbers stay within 20.",
-    "NC17.2.OA.4": "Arrays are described in words (rows and columns) and total at most 25 (5 by 5). Where a sum is asked, options never include the column-wise sum of the same array, so exactly one option is correct.",
+    "NC17.2.OA.4": "Arrays are described in words (rows and columns) and total at most 25 (5 by 5). Where a sum is asked, options never include the column-wise sum of the same array, so exactly one option is correct. Arrays kept within 5 by 5; sums of arrays put together may total more than 25. All stems are stories or written-out arrays.",
     "NC17.2.NBT.2": "Whole numbers within 1000 only; no counting back by 5s, 10s or 100s (the standard names skip-counting forward). Skills: count on by ones (3), count back by ones (3), skip-count by 10s (6), by 5s (5), by 100s (6), missing number in a pattern (4), rule of a pattern (3).",
     "NC17.2.NBT.3": "All numbers are below 1000 (a few two-digit ones at difficulty 1). Number words are written with hyphens, e.g. forty-six. Numerals and expanded forms are asked both ways; a words answer is a choice question. Expanded-form distractors never include a valid sum (e.g. 400 + 18 for 418) so only one option is correct.",
     "NC17.2.NBT.4": "Statements of comparison are written with the symbols in $...$. Answers are whole numbers or a digit; a symbol alone is never an option (only three symbols exist), so the symbol is chosen inside a full statement.",
@@ -6527,6 +6527,728 @@
       }
     },
     {
+      "id": "f9498c0a-eddd-42d0-9981-e3f4c39c59fe",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd and even number patterns",
+      "stem": "Ty counts by twos and says 1, 3, 5, 7. What is true about the numbers he says?",
+      "choices": [
+        "They are all even.",
+        "They switch between odd and even.",
+        "They are all odd.",
+        "They are all less than 5."
+      ],
+      "answer": "They are all odd.",
+      "compute": null,
+      "solution": "Each of 1, 3, 5 and 7 has one left over when put in pairs, so they are all odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are all odd.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 3, 5, 7 are all odd; not all < 5, not alternating, not even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.703Z"
+        }
+      }
+    },
+    {
+      "id": "f610245d-e663-4a1b-8678-95e8cf79ff58",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "How many of these numbers are even: 2, 7, 9, 12?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "2 and 12 are even. 7 and 9 are odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Even: 2 and 12. 7, 9 odd. Count = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.705Z"
+        }
+      }
+    },
+    {
+      "id": "c54d3969-1ad2-4870-9cae-7f16cd896928",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Dan counted 13 birds in a tree. Which sentence is true?",
+      "choices": [
+        "13 is an even number.",
+        "13 is an odd number.",
+        "All 13 birds can be put in pairs.",
+        "13 birds can be split into two equal groups."
+      ],
+      "answer": "13 is an odd number.",
+      "compute": null,
+      "solution": "13 birds make 6 pairs and 1 bird is left over, so 13 is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13 is an odd number.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 is odd; cannot be split equally or paired fully.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.776Z"
+        }
+      }
+    },
+    {
+      "id": "95a519c3-bd1d-485f-8b44-a144d4aa1c99",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Kai has 10 mittens. He puts them in pairs. How many pairs does he make?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "Count by twos: 2, 4, 6, 8, 10. That is 5 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 / 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.784Z"
+        }
+      }
+    },
+    {
+      "id": "5cc64c1f-df70-40ac-a3d4-203a034519fd",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Nina has 6 pairs of shoes. How many shoes does she have?",
+      "choices": [],
+      "answer": "12",
+      "compute": "6*2",
+      "solution": "Each pair is 2 shoes. 2, 4, 6, 8, 10, 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 2 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.796Z"
+        }
+      }
+    },
+    {
+      "id": "d757ff66-b5bc-48ed-9767-5a3ddb69d7ef",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Which two numbers are both odd?",
+      "choices": [
+        "4 and 7",
+        "3 and 5",
+        "8 and 9",
+        "10 and 12"
+      ],
+      "answer": "3 and 5",
+      "compute": null,
+      "solution": "3 and 5 are both odd. In the other pairs one or both numbers are even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 and 5 are both odd; each other pair has an even number.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.798Z"
+        }
+      }
+    },
+    {
+      "id": "e17ce355-ce33-4325-8272-86a1c9706d67",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "What is the smallest even number that is greater than 7?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The numbers after 7 are 8, 9, 10. 8 is the first even one.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Even numbers above 7: 8, 10, ...; smallest 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.813Z"
+        }
+      }
+    },
+    {
+      "id": "7147edec-7876-49dc-8f2f-5a3c7b2cbf73",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "A doubles equation adds the same number twice. Which doubles equation has a total of 12?",
+      "choices": [
+        "$6 + 6 = 12$",
+        "$5 + 7 = 12$",
+        "$4 + 8 = 12$",
+        "$3 + 9 = 12$"
+      ],
+      "answer": "$6 + 6 = 12$",
+      "compute": null,
+      "solution": "Only 6 + 6 adds the same number twice.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 6 = 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Doubles: 6 + 6 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.816Z"
+        }
+      }
+    },
+    {
+      "id": "b7c70022-1313-4579-8d37-e829eb4512fc",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd and even number patterns",
+      "stem": "Pat counts by twos: 10, 12, 14. What number comes right after 14?",
+      "choices": [],
+      "answer": "16",
+      "compute": "14+2",
+      "solution": "Counting by twos adds 2 each time. 14 + 2 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10, 12, 14, 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.816Z"
+        }
+      }
+    },
+    {
+      "id": "7f3f048a-0baa-41e6-bdb6-282faf595442",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Sue puts 7 shoes in pairs. How many shoes are left over?",
+      "choices": [],
+      "answer": "1",
+      "compute": "7-2*3",
+      "solution": "7 shoes make 3 pairs. 3 pairs use 6 shoes, so 1 shoe is left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 = 3 pairs + 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.825Z"
+        }
+      }
+    },
+    {
+      "id": "1ab6c77a-9bb5-49d9-8141-4b494c614f2b",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd or even by pairing",
+      "stem": "Rae puts 14 buttons in pairs. Which sentence is true?",
+      "choices": [
+        "There are 7 pairs and 1 left over.",
+        "There are 6 pairs and 2 left over.",
+        "There are 6 pairs and 1 left over.",
+        "There are 7 pairs and none left over."
+      ],
+      "answer": "There are 7 pairs and none left over.",
+      "compute": null,
+      "solution": "Counting by twos reaches 14 after 7 pairs, with none left over. So 14 is even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 7 pairs and none left over.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 / 2 = 7 pairs, none left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.843Z"
+        }
+      }
+    },
+    {
+      "id": "b9998bfd-9324-42f4-854d-a976d3e90f07",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Ella has 7 red beads and 7 blue beads. How many beads does she have in all?",
+      "choices": [],
+      "answer": "14",
+      "compute": "7+7",
+      "solution": "7 + 7 = 14, a doubles equation. So 14 is even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 7 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.866Z"
+        }
+      }
+    },
+    {
+      "id": "078e6ce1-eda8-44a8-af15-4867e69b324b",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Leo splits 18 marbles into two equal groups of 9. Which equation shows this?",
+      "choices": [
+        "$9 + 9 = 18$",
+        "$10 + 8 = 18$",
+        "$9 + 8 = 17$",
+        "$18 + 18 = 36$"
+      ],
+      "answer": "$9 + 9 = 18$",
+      "compute": null,
+      "solution": "Two equal groups of 9 are 9 + 9, and that makes 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 + 9 = 18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two equal groups of 9: 9 + 9 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.870Z"
+        }
+      }
+    },
+    {
+      "id": "818f76d0-0b5e-4ada-96fc-12cdecaeef43",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd and even number patterns",
+      "stem": "The first odd numbers are 1, 3, 5, 7. What odd number comes next?",
+      "choices": [],
+      "answer": "9",
+      "compute": "7+2",
+      "solution": "Odd numbers go up by 2. 7 + 2 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Next odd after 7 is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.927Z"
+        }
+      }
+    },
+    {
+      "id": "3b18679d-b9a5-4824-a2e2-a572a4b1c34e",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Sam wants to share some pencils with one friend so that they each get the same number and none are left. How many pencils could he have?",
+      "choices": [
+        "7",
+        "10",
+        "9",
+        "15"
+      ],
+      "answer": "10",
+      "compute": null,
+      "solution": "Sam and his friend make two groups. 10 pencils split into 5 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal shares with none left means an even number. 10 = 5 + 5 is even; 7, 15, 9 are odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.934Z"
+        }
+      }
+    },
+    {
+      "id": "dd9ceaf5-8eab-492c-996f-fbd263f479ff",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Ana has 13 flowers. She puts them in pairs. How many pairs does she make?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(13-1)/2",
+      "solution": "6 pairs use 12 flowers. 1 flower is left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 = 6 pairs (12) with 1 left over. She makes 6 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.935Z"
+        }
+      }
+    },
+    {
+      "id": "94863102-0380-4d0b-88ce-b40e74aa90c9",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "This is a doubles equation: $? + 6 = 12$. What is the ?",
+      "choices": [],
+      "answer": "6",
+      "compute": "12-6",
+      "solution": "A doubles equation adds the same number twice. 6 + 6 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 6 = 12, so ? = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.943Z"
+        }
+      }
+    },
+    {
+      "id": "6d9670c8-d2fe-4c95-bd76-2bb3b8a4e88f",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd and even number patterns",
+      "stem": "Odd numbers go 11, 13, 15. Which number is the next odd number?",
+      "choices": [
+        "17",
+        "16",
+        "18",
+        "19"
+      ],
+      "answer": "17",
+      "compute": null,
+      "solution": "Odd numbers go up by 2. 15 + 2 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 15 comes 17 (odd numbers go up by 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.949Z"
+        }
+      }
+    },
+    {
+      "id": "c4bc5d22-7950-4f0d-a54b-f7103fb7b36c",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "A teacher splits 20 crayons into two equal groups. How many crayons are in each group?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20/2",
+      "solution": "10 + 10 = 20, so each group has 10 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 = 10 + 10: 10 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.968Z"
+        }
+      }
+    },
+    {
+      "id": "dd64ae94-27a2-446e-853c-cb4dea71abf8",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Mia's door number is an odd number. Which number could it be?",
+      "choices": [
+        "4",
+        "10",
+        "11",
+        "18"
+      ],
+      "answer": "11",
+      "compute": null,
+      "solution": "4, 10 and 18 can all be put in pairs with none left over. 11 cannot, so it is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 is odd; 18, 10, 4 even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.260Z"
+        }
+      }
+    },
+    {
+      "id": "9e9e45b4-1ce6-4382-b92d-cbe0f40d09a2",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Rosa wants to give her two cousins the same number of toy cars, with none left. How many cars could she have?",
+      "choices": [
+        "5",
+        "11",
+        "13",
+        "8"
+      ],
+      "answer": "8",
+      "compute": null,
+      "solution": "Only an even number can be shared equally between two. 8 cars: 4 and 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Must be even: 8 (4 each).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.304Z"
+        }
+      }
+    },
+    {
+      "id": "8e5f18e6-81a1-45d7-bceb-b008e2fb132c",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Which of these numbers is NOT even?",
+      "choices": [
+        "4",
+        "10",
+        "18",
+        "13"
+      ],
+      "answer": "13",
+      "compute": null,
+      "solution": "4, 10 and 18 can be split into two equal groups. 13 cannot.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 is odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.321Z"
+        }
+      }
+    },
+    {
+      "id": "7e3cf3d0-5c92-4053-961a-49163cddd8dc",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Double 4 means $4 + 4$. What is double 4?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4+4",
+      "solution": "4 + 4 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.322Z"
+        }
+      }
+    },
+    {
       "id": "dd5b8da2-41c0-46b9-9c8b-a2faa2371287",
       "topic_id": "NC17.2.OA.3",
       "difficulty": 2,
@@ -6842,6 +7564,728 @@
       }
     },
     {
+      "id": "4998228f-ee3e-4c0c-a49c-5b3849a16b10",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Theo holds the same number of cherries in each hand. He has 14 cherries in all. How many cherries are in one hand?",
+      "choices": [],
+      "answer": "7",
+      "compute": "14/2",
+      "solution": "7 + 7 = 14, so each hand holds 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 split into two equal hands: 7 + 7 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.695Z"
+        }
+      }
+    },
+    {
+      "id": "725d790d-08f9-4d4d-9778-344f9c6c63ce",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Which list has only odd numbers?",
+      "choices": [
+        "3, 7, 10, 15",
+        "3, 8, 9, 15",
+        "3, 7, 9, 15",
+        "4, 7, 9, 15"
+      ],
+      "answer": "3, 7, 9, 15",
+      "compute": null,
+      "solution": "Each number in 3, 7, 9, 15 leaves 1 over when put in pairs. The other lists each hold an even number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3, 7, 9, 15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 8, 10 are even; only 3, 7, 9, 15 are all odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.704Z"
+        }
+      }
+    },
+    {
+      "id": "2437e210-bc3c-4d12-a0ed-42fa3b4eef31",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "A teacher has 18 students. She puts them in pairs for a game. How many pairs are there?",
+      "choices": [],
+      "answer": "9",
+      "compute": "18/2",
+      "solution": "Counting by twos: 2, 4, 6, 8, 10, 12, 14, 16, 18. That is 9 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / 2 = 9 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.739Z"
+        }
+      }
+    },
+    {
+      "id": "51a31ad4-5701-45f8-a798-8ca5c4bf319f",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd and even number patterns",
+      "stem": "Bea counts the even numbers starting at 2: 2, 4, 6, and so on. What is the sixth number she says?",
+      "choices": [],
+      "answer": "12",
+      "compute": "2*6",
+      "solution": "2, 4, 6, 8, 10, 12. The sixth number is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2, 4, 6, 8, 10, 12: sixth is 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.754Z"
+        }
+      }
+    },
+    {
+      "id": "8fab0680-8384-42e4-a191-24484438cb85",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd and even number patterns",
+      "stem": "Pam counts by twos starting at 4: 4, 6, 8, 10. She keeps counting. Which number will she say?",
+      "choices": [
+        "13",
+        "18",
+        "15",
+        "17"
+      ],
+      "answer": "18",
+      "compute": null,
+      "solution": "She says even numbers only: 12, 14, 16, 18. The odd numbers are not said.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 6, 8, ... evens; 18 is said, 17, 13, 15 are odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.763Z"
+        }
+      }
+    },
+    {
+      "id": "a10167a5-a0ac-4a13-93c8-42a534bdad98",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Which sentence is true?",
+      "choices": [
+        "17 is even and 18 is odd.",
+        "Both 17 and 18 are odd.",
+        "Both 17 and 18 are even.",
+        "17 is odd and 18 is even."
+      ],
+      "answer": "17 is odd and 18 is even.",
+      "compute": null,
+      "solution": "17 leaves 1 over when put in pairs, so it is odd. 18 makes 9 pairs, so it is even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17 is odd and 18 is even.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 odd, 18 even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.773Z"
+        }
+      }
+    },
+    {
+      "id": "04513c26-a537-4bb7-8ade-bd683a2ff701",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Which total can be made by adding a whole number to itself?",
+      "choices": [
+        "7",
+        "11",
+        "14",
+        "17"
+      ],
+      "answer": "14",
+      "compute": null,
+      "solution": "7 + 7 = 14. The numbers 7, 11 and 17 are odd, so no number added to itself makes them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 = 7 + 7; others odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.784Z"
+        }
+      }
+    },
+    {
+      "id": "41e6d9a0-268a-4096-8a35-d5125e499e6b",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Gus has 9 red marbles and the same number of blue marbles. How many marbles does he have in all?",
+      "choices": [],
+      "answer": "18",
+      "compute": "9+9",
+      "solution": "9 + 9 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 9 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.795Z"
+        }
+      }
+    },
+    {
+      "id": "8ded964d-7a6f-46be-ba63-69fbce08f8ac",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even by pairing",
+      "stem": "Maya puts some buttons in pairs and has none left over. Which could NOT be the number of buttons?",
+      "choices": [
+        "6",
+        "10",
+        "16",
+        "13"
+      ],
+      "answer": "13",
+      "compute": null,
+      "solution": "6, 10 and 16 all make pairs with none left over. 13 would leave 1 button.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pairs with none left means even; 13 is odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.810Z"
+        }
+      }
+    },
+    {
+      "id": "67283358-c12d-4daa-a6ad-981cbc313c03",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even by pairing",
+      "stem": "Dina puts her cards in pairs and has 1 card left over. Which number of cards could she have?",
+      "choices": [
+        "8",
+        "12",
+        "15",
+        "18"
+      ],
+      "answer": "15",
+      "compute": null,
+      "solution": "8, 12 and 18 can be put in pairs with none left over. 15 leaves 1 over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 left over means odd: 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.828Z"
+        }
+      }
+    },
+    {
+      "id": "35758c8c-28c9-419a-a37a-07bd55ee787e",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Ali says, \"I can split 12 things into two equal groups.\" Bo says, \"I can split 15 things into two equal groups.\" Cy says, \"I can split 18 things into two equal groups.\" Who is wrong?",
+      "choices": [
+        "Bo",
+        "Ali",
+        "Cy",
+        "Nobody is wrong."
+      ],
+      "answer": "Bo",
+      "compute": null,
+      "solution": "12 splits into 6 and 6. 18 splits into 9 and 9. 15 leaves 1 over, so Bo is wrong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Bo",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 is odd, so Bo is wrong; 12 and 18 even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.829Z"
+        }
+      }
+    },
+    {
+      "id": "0fe01adc-e6b8-4c82-a5ee-3cc8c24a7da4",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Two equal groups have 7 stickers each. There is also 1 sticker left over. How many stickers are there in all?",
+      "choices": [],
+      "answer": "15",
+      "compute": "7+7+1",
+      "solution": "7 + 7 = 14. One more sticker makes 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 7 + 1 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.835Z"
+        }
+      }
+    },
+    {
+      "id": "57f33efa-3ef7-474b-90c5-1b08157963e0",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Jan writes all the even numbers from 11 to 19. How many numbers does she write?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "She writes 12, 14, 16 and 18. That is 4 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Even numbers between 11 and 19: 12, 14, 16, 18 -> 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.851Z"
+        }
+      }
+    },
+    {
+      "id": "099ac32a-868a-4996-97fd-3d7c40706745",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Kit has 14 cubes. He splits them into two equal groups. How many cubes are in each group?",
+      "choices": [
+        "7 cubes",
+        "6 cubes",
+        "8 cubes",
+        "28 cubes"
+      ],
+      "answer": "7 cubes",
+      "compute": null,
+      "solution": "7 + 7 = 14, so each group has 7 cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7 cubes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 / 2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.863Z"
+        }
+      }
+    },
+    {
+      "id": "19960e82-dede-4c9a-bd54-78d57fa574fd",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "A coach splits 20 children into two equal teams. How many children are on each team?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20/2",
+      "solution": "10 + 10 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.873Z"
+        }
+      }
+    },
+    {
+      "id": "d82846f4-0deb-4ddc-a92c-53d5d19e97a4",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "How many of the numbers 5, 8, 11, 14, 17 and 20 are odd?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "5, 11 and 17 are odd. 8, 14 and 20 are even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Odd: 5, 11, 17 = 3 numbers (8, 14, 20 even).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.938Z"
+        }
+      }
+    },
+    {
+      "id": "54d3a48a-643b-48d3-be30-27d270d97aac",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Ella has 15 beads. She makes as many pairs as she can. How many pairs does she make?",
+      "choices": [],
+      "answer": "7",
+      "compute": "(15-1)/2",
+      "solution": "7 pairs use 14 beads and 1 bead is left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 = 7 pairs (14) + 1 left over: 7 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.953Z"
+        }
+      }
+    },
+    {
+      "id": "af6a4803-447b-441e-a9b7-f285e9389039",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Which number is even and greater than 12?",
+      "choices": [
+        "10",
+        "13",
+        "16",
+        "15"
+      ],
+      "answer": "16",
+      "compute": null,
+      "solution": "10 is even but not greater than 12. 13 and 15 are odd. 16 is even and greater than 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Even numbers: 16, 10. Greater than 12: 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.959Z"
+        }
+      }
+    },
+    {
+      "id": "e13c626e-4edd-4233-aa5d-c26635c76f97",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Mina writes $6 + 6 = 12$. Pete writes $5 + 7 = 12$. A doubles equation adds the same number twice. Whose equation is a doubles equation?",
+      "choices": [
+        "Only Pete's",
+        "Only Mina's",
+        "Both of them",
+        "Neither of them"
+      ],
+      "answer": "Only Mina's",
+      "compute": null,
+      "solution": "6 + 6 adds the same number twice. 5 + 7 adds two different numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only Mina's",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 6 adds the same number twice; 5 + 7 does not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.963Z"
+        }
+      }
+    },
+    {
+      "id": "75972c9c-8e99-48ba-8e33-af7bd4ace8c3",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Ken puts toy cars in pairs. He makes 6 pairs and has 1 car left over. How many cars does he have?",
+      "choices": [],
+      "answer": "13",
+      "compute": "6*2+1",
+      "solution": "6 pairs is 12 cars. One more car makes 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 pairs = 12, plus 1 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.993Z"
+        }
+      }
+    },
+    {
+      "id": "1a9c9088-202e-4d4b-ac01-0af32c905c1a",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Owen has the same number of toy cars in a red box and a blue box. He has 20 cars in all. How many cars are in the red box?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20/2",
+      "solution": "10 + 10 = 20, a doubles equation.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal boxes, 20 total: 10 + 10, red box 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.245Z"
+        }
+      }
+    },
+    {
+      "id": "4182dc12-a6da-4777-bd1e-f1c75656d2b1",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Eli adds two different numbers and gets 15: $7 + 8 = 15$. He says 15 is even. Why is he wrong?",
+      "choices": [
+        "No number added to itself makes 15, so 15 is odd.",
+        "He should have added 8 + 8 to make 15.",
+        "Both 7 and 8 are odd numbers.",
+        "He needs three numbers to show it."
+      ],
+      "answer": "No number added to itself makes 15, so 15 is odd.",
+      "compute": null,
+      "solution": "7 + 7 = 14 and 8 + 8 = 16. No doubles equation makes 15, so 15 is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No number added to itself makes 15, so 15 is odd.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 is odd because it is not a double; 7+7=14, 8+8=16. Option \"both odd\" is false (8 is even).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.253Z"
+        }
+      }
+    },
+    {
+      "id": "d2ed4c34-bb81-4a11-baab-fc7ac6e360fa",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Odd and even number patterns",
+      "stem": "Cal counts by twos starting at 3: 3, 5, 7, and so on. What is the seventh number he says?",
+      "choices": [],
+      "answer": "15",
+      "compute": "3+2*6",
+      "solution": "3, 5, 7, 9, 11, 13, 15. The seventh number is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,5,7,9,11,13,15: seventh is 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.254Z"
+        }
+      }
+    },
+    {
       "id": "9bb3f62f-9f11-4eb9-bb03-8ed71340bcd4",
       "topic_id": "NC17.2.OA.3",
       "difficulty": 3,
@@ -7148,6 +8592,694 @@
           "work": "Doubles are always even: 14=7+7, 12=6+6, 18=9+9; 15 is odd so cannot be made.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:33.731Z"
+        }
+      }
+    },
+    {
+      "id": "d7008827-4bca-491e-9f15-f05f8e07b260",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Lena has 14 pencils. She puts them in pairs and gives 3 pairs to friends. How many pencils does she have left?",
+      "choices": [],
+      "answer": "8",
+      "compute": "14-3*2",
+      "solution": "3 pairs is 6 pencils. 14 - 6 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 pairs = 6 pencils; 14 - 6 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.759Z"
+        }
+      }
+    },
+    {
+      "id": "36c449aa-fd5a-46ee-92dc-7d503fee27f0",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd and even number patterns",
+      "stem": "Tim counts by twos starting at 7. Which number will he NOT say?",
+      "choices": [
+        "11",
+        "20",
+        "15",
+        "19"
+      ],
+      "answer": "20",
+      "compute": null,
+      "solution": "7, 9, 11, 13, 15, 17, 19, 21 are all odd. 20 is even, so he never says it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7, 9, 11, 13, 15, 17, 19, 21 ... all odd; 20 is never said.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.763Z"
+        }
+      }
+    },
+    {
+      "id": "71008336-2a2c-4f01-96a5-e76e6603005e",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Ivy counts 15 beads. She takes 1 bead away and splits the rest into two equal groups. How many beads are in each group?",
+      "choices": [],
+      "answer": "7",
+      "compute": "(15-1)/2",
+      "solution": "15 - 1 = 14. 7 + 7 = 14, so each group has 7 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 1 = 14; 14/2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.777Z"
+        }
+      }
+    },
+    {
+      "id": "5e7454f7-3d5e-41c0-9c14-e0cb1fd3706b",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Kai is thinking of an even number between 13 and 19. It is not 14 and it is not 18. What is his number?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "The even numbers between 13 and 19 are 14, 16 and 18. Only 16 is left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Evens between 13 and 19: 14, 16, 18; not 14 or 18 -> 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.779Z"
+        }
+      }
+    },
+    {
+      "id": "f7c3c566-469c-4204-b72e-a29e2f2a7e63",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even by pairing",
+      "stem": "Amy has 14 counters, Ben has 15 counters and Cy has 16 counters. They each put their counters in pairs. Who has a counter left over?",
+      "choices": [
+        "Amy",
+        "Ben",
+        "Cy",
+        "All of them"
+      ],
+      "answer": "Ben",
+      "compute": null,
+      "solution": "14 and 16 are even and make pairs with none left over. 15 leaves 1 over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ben",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 is odd; Ben has one left over.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.781Z"
+        }
+      }
+    },
+    {
+      "id": "2adec2ed-c45b-47d4-aa43-e1c10a1bfce1",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Which pair of doubles equations has totals that are both greater than 12?",
+      "choices": [
+        "$6 + 6 = 12$ and $9 + 9 = 18$",
+        "$7 + 7 = 14$ and $8 + 8 = 16$",
+        "$5 + 5 = 10$ and $9 + 9 = 18$",
+        "$4 + 4 = 8$ and $8 + 8 = 16$"
+      ],
+      "answer": "$7 + 7 = 14$ and $8 + 8 = 16$",
+      "compute": null,
+      "solution": "14 and 16 are both greater than 12. 12 is not greater than 12, and 10 and 8 are less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 7 = 14$ and $8 + 8 = 16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 and 16 both > 12. Others include 12, 8, 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.783Z"
+        }
+      }
+    },
+    {
+      "id": "cef73c9d-d627-4052-9888-f1e443ce5ef9",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd and even number patterns",
+      "stem": "How many odd numbers are greater than 10 and less than 20?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "They are 11, 13, 15, 17 and 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11, 13, 15, 17, 19: five odd numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.805Z"
+        }
+      }
+    },
+    {
+      "id": "5540904a-9023-48b3-8dab-c1ca75269d83",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Ari adds a number to itself and gets 12. Then he adds 1 to the number he began with and adds the new number to itself. What total does he get?",
+      "choices": [],
+      "answer": "14",
+      "compute": "(12/2+1)*2",
+      "solution": "The number is 6, since 6 + 6 = 12. The new number is 7, and 7 + 7 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n + n = 12 so n = 6; 7 + 7 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.813Z"
+        }
+      }
+    },
+    {
+      "id": "e218de88-29f1-43f8-a195-c20bf838e0ae",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Which two numbers can BOTH be split into two equal groups with none left over?",
+      "choices": [
+        "6 and 15",
+        "9 and 10",
+        "8 and 12",
+        "11 and 14"
+      ],
+      "answer": "8 and 12",
+      "compute": null,
+      "solution": "8 is 4 + 4 and 12 is 6 + 6. In each other pair one number is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 and 12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 and 12 both even; 15, 9, 11 are odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.828Z"
+        }
+      }
+    },
+    {
+      "id": "f99a89e4-1433-4534-bf6e-3f1cb238ced5",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "How many even numbers are there from 10 to 20, counting both 10 and 20?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "They are 10, 12, 14, 16, 18 and 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,12,14,16,18,20 -> 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.857Z"
+        }
+      }
+    },
+    {
+      "id": "3873c102-c1d0-4f22-a2af-495f9daefe92",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "A box holds 20 stickers. Mom takes 2 pairs. How many pairs of stickers are left?",
+      "choices": [],
+      "answer": "8",
+      "compute": "20/2-2",
+      "solution": "20 stickers make 10 pairs. 10 - 2 = 8 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 stickers = 10 pairs; 10 - 2 = 8 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.858Z"
+        }
+      }
+    },
+    {
+      "id": "a1956402-5068-44a4-9c7d-421a9b096ffe",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd and even number patterns",
+      "stem": "Tara counts by twos starting at 5: 5, 7, 9, and so on. Which statement is true?",
+      "choices": [
+        "She says only even numbers.",
+        "She says an even number after every odd number.",
+        "She says only odd numbers.",
+        "She says the number 10."
+      ],
+      "answer": "She says only odd numbers.",
+      "compute": null,
+      "solution": "Adding 2 to an odd number gives an odd number, so she never says an even number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She says only odd numbers.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5,7,9,11,... adding 2 to an odd number gives odd; only odd numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.863Z"
+        }
+      }
+    },
+    {
+      "id": "29930470-c7bd-4904-be1c-7f4a26891926",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Raj splits 20 grapes into two equal groups. He gives one whole group away and eats 3 grapes from the other group. How many grapes does he have left?",
+      "choices": [],
+      "answer": "7",
+      "compute": "20/2-3",
+      "solution": "Each group has 10 grapes. He keeps one group of 10 and eats 3: 10 - 3 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 split -> 10 and 10; gives one away, eats 3 of other: 10 - 3 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.866Z"
+        }
+      }
+    },
+    {
+      "id": "c7e7f375-504d-479a-a876-c0836f95f3d7",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Sam has 7 marbles in one bag and 9 marbles in another. Each bag makes pairs with 1 left over. He pours both bags together and puts all the marbles in pairs. How many pairs does he make?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(7+9)/2",
+      "solution": "The 2 left-over marbles make 1 more pair. 3 pairs + 4 pairs + 1 pair = 8 pairs. Check: 16 marbles in pairs is 8 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 9 = 16 marbles; 16 / 2 = 8 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.867Z"
+        }
+      }
+    },
+    {
+      "id": "dd32caa8-877e-4d8f-a2a6-a140efc3883d",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell whether a number is odd or even",
+      "stem": "Jo has 12 beads in pairs with none left over. She gets 1 more bead. Which sentence is true?",
+      "choices": [
+        "Now she has 13 beads and every bead has a partner.",
+        "Now she has 14 beads and 1 bead has no partner.",
+        "Now she has 14 beads and every bead has a partner.",
+        "Now she has 13 beads and 1 bead has no partner."
+      ],
+      "answer": "Now she has 13 beads and 1 bead has no partner.",
+      "compute": null,
+      "solution": "12 + 1 = 13. The new bead has no partner, so 13 is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Now she has 13 beads and 1 bead has no partner.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 even + 1 = 13, odd: one bead without a partner.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.930Z"
+        }
+      }
+    },
+    {
+      "id": "1d571948-4e55-489e-9cae-3342b37645ee",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Which sentence about doubles equations is true?",
+      "choices": [
+        "Every doubles equation has an odd total.",
+        "Every doubles equation has an even total.",
+        "Every doubles equation has a total of 10.",
+        "Every doubles equation adds two different numbers."
+      ],
+      "answer": "Every doubles equation has an even total.",
+      "compute": null,
+      "solution": "A doubles equation makes two equal groups, so nothing is left over. The total is always even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every doubles equation has an even total.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A doubles equation is n + n = 2n, always even. Totals vary, numbers are the same, never odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.937Z"
+        }
+      }
+    },
+    {
+      "id": "c7a8f10c-8d59-4573-b54f-6102d7afb24b",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Which doubles equation has a total between 15 and 19?",
+      "choices": [
+        "$8 + 8 = 16$",
+        "$7 + 7 = 14$",
+        "$10 + 10 = 20$",
+        "$5 + 5 = 10$"
+      ],
+      "answer": "$8 + 8 = 16$",
+      "compute": null,
+      "solution": "Only 16 is between 15 and 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 8 = 16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Totals: 10, 20, 14, 16. Only 16 is between 15 and 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.938Z"
+        }
+      }
+    },
+    {
+      "id": "1a266928-4e40-4e9e-9614-edc4fd0d5343",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Dev writes $6 + 6 = 12$. He wants a doubles equation with a total 4 more than 12. What number should he add to itself?",
+      "choices": [
+        "8",
+        "4",
+        "6",
+        "16"
+      ],
+      "answer": "8",
+      "compute": "(12+4)/2",
+      "solution": "The new total is 16. 8 + 8 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + 4 = 16 = 8 + 8, so add 8 to itself.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.029Z"
+        }
+      }
+    },
+    {
+      "id": "5238ce60-1cc5-48cb-b10d-8ec6d526781f",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Mia has 8 beads and Zack has 10 beads. They put all their beads together and split them into two equal groups. How many beads are in each group?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(8+10)/2",
+      "solution": "8 + 10 = 18. 9 + 9 = 18, so each group has 9 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 10 = 18; 18 ÷ 2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.243Z"
+        }
+      }
+    },
+    {
+      "id": "7c911265-7f3a-4412-9b78-c9c99037845e",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd or even with a doubles equation",
+      "stem": "Gia has the same number of red pens and blue pens, 18 pens in all. She loses 3 red pens. How many red pens does she have now?",
+      "choices": [
+        "3",
+        "9",
+        "15",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "18/2-3",
+      "solution": "18 = 9 + 9, so she had 9 red pens. 9 - 3 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 ÷ 2 = 9 red; 9 - 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.262Z"
+        }
+      }
+    },
+    {
+      "id": "b92c234d-949b-478f-ab2c-847c511b66fb",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by pairing",
+      "stem": "Nate has 5 pairs of socks. He loses 1 sock. How many socks does he have now?",
+      "choices": [],
+      "answer": "9",
+      "compute": "5*2-1",
+      "solution": "5 pairs is 10 socks. 10 - 1 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 pairs = 10 socks; 10 - 1 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.269Z"
+        }
+      }
+    },
+    {
+      "id": "1409f8b0-9a03-4df7-9e14-8ba1759ba78e",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Odd or even by splitting into two equal groups",
+      "stem": "Ned has an odd number of cards. He gets 1 more card and can then split them into two equal groups of 8. How many cards did Ned have to begin with?",
+      "choices": [],
+      "answer": "15",
+      "compute": "8+8-1",
+      "solution": "Two groups of 8 make 16 cards. That is 1 more than he had, so he had 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two groups of 8 = 16 after gaining one; started with 15 (odd).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.309Z"
         }
       }
     },
@@ -7467,6 +9599,694 @@
       }
     },
     {
+      "id": "6737e663-e6a0-44da-9f92-e3618c3c59dc",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Which sum matches an array with 2 rows and 5 in each row?",
+      "choices": [
+        "$2 + 2 + 2 + 2 + 2$",
+        "$2 + 5$",
+        "$5 + 5$",
+        "$5 + 5 + 5$"
+      ],
+      "answer": "$5 + 5$",
+      "compute": null,
+      "solution": "Each row has 5 and there are 2 rows, so the sum is $5 + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 rows of 5: 5 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.755Z"
+        }
+      }
+    },
+    {
+      "id": "10b4cc1c-8498-4351-b686-4d4f127811b2",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell which sums have equal addends",
+      "stem": "Which sum has equal addends?",
+      "choices": [
+        "$4 + 3 + 4$",
+        "$2 + 4 + 2$",
+        "$4 + 4 + 4$",
+        "$5 + 1 + 5$"
+      ],
+      "answer": "$4 + 4 + 4$",
+      "compute": null,
+      "solution": "Equal addends are the same number each time. Only $4 + 4 + 4$ uses one number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 + 4 has equal addends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.766Z"
+        }
+      }
+    },
+    {
+      "id": "d6e462fc-3130-4387-901b-c2388a3b6051",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Ken drew 10 stars in equal rows. Which array shows his stars?",
+      "choices": [
+        "2 rows of 5",
+        "3 rows of 3",
+        "2 rows of 4",
+        "3 rows of 4"
+      ],
+      "answer": "2 rows of 5",
+      "compute": null,
+      "solution": "2 rows of 5 is 5 + 5 = 10. The others make 9, 8 and 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 rows of 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 5 = 10; 9, 8, 12 otherwise.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.774Z"
+        }
+      }
+    },
+    {
+      "id": "613a5658-db36-4e96-9395-a425890f3e9c",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Lia wrote $5 + 5$ for an array. Each 5 is one row. Which array is it?",
+      "choices": [
+        "5 rows of 2",
+        "2 rows of 5",
+        "5 rows of 5",
+        "2 rows of 2"
+      ],
+      "answer": "2 rows of 5",
+      "compute": null,
+      "solution": "There are two 5s, so there are 2 rows with 5 in each row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 rows of 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 with each 5 a row: 2 rows of 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.818Z"
+        }
+      }
+    },
+    {
+      "id": "825ae6bb-33bf-4bd6-9bb6-a5a76178c4b7",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "An array is written as $2 + 2 + 2 + 2 + 2$. Each 2 is one row. How many rows does it have?",
+      "choices": [
+        "5",
+        "2",
+        "10",
+        "4"
+      ],
+      "answer": "5",
+      "compute": null,
+      "solution": "Count the 2s in the sum. There are five of them, so there are 5 rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Five 2s, one per row -> 5 rows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.855Z"
+        }
+      }
+    },
+    {
+      "id": "a5db6705-e177-4308-9413-5602d22ab3e4",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "A pan has 3 rows of 3 muffins. Dev writes $3 + 3 + 3 = ?$ for the total. What number is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3+3+3",
+      "solution": "3 + 3 = 6 and 6 + 3 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+3+3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.856Z"
+        }
+      }
+    },
+    {
+      "id": "3443572f-85a2-489d-9629-84db1106893c",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rows and columns give the same total",
+      "stem": "An array has 3 rows of 5. Each column has 3 objects. Which sum adds up the columns?",
+      "choices": [
+        "$3 + 3 + 3 + 3$",
+        "$5 + 5 + 5 + 5 + 5$",
+        "$3 + 3 + 3 + 3 + 3$",
+        "$3 + 3 + 3$"
+      ],
+      "answer": "$3 + 3 + 3 + 3 + 3$",
+      "compute": null,
+      "solution": "There are 5 columns and each column has 3 objects, so write 3 five times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 3 + 3 + 3 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 rows of 5 -> 5 columns of 3: 3+3+3+3+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.889Z"
+        }
+      }
+    },
+    {
+      "id": "3abd71e7-0e85-4c8f-baae-f384c3943c47",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A box of crayons has 4 rows. Each row has 2 crayons. How many crayons are in the box?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2+2+2+2",
+      "solution": "Add the rows: 2 + 2 + 2 + 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.929Z"
+        }
+      }
+    },
+    {
+      "id": "5c2b5d55-a932-441f-bbbc-296353a63e6b",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "A garden has 2 rows of 3 plants. Kai takes away 1 whole row. How many plants are left?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "One row of 3 is left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 rows of 3 = 6; remove one row of 3: 3 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.973Z"
+        }
+      }
+    },
+    {
+      "id": "a7005ce1-b719-4e41-9238-857c44a609dd",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rows and columns give the same total",
+      "stem": "A box has 2 rows of 5 cards. Pam adds the columns instead. Each column has 2 cards. She writes $2 + 2 + 2 + 2 + 2 = ?$ What is the total?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2+2+2+2+2",
+      "solution": "Adding the columns gives the same total as adding the rows: 5 + 5 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 columns of 2: 2+2+2+2+2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.994Z"
+        }
+      }
+    },
+    {
+      "id": "218b74ed-46d3-45bb-8d49-3df43f5ad135",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "Zoe adds the rows of her array and writes $5 + 5 + 5$. What is the total?",
+      "choices": [
+        "15",
+        "10",
+        "20",
+        "25"
+      ],
+      "answer": "15",
+      "compute": "5+5+5",
+      "solution": "5 + 5 = 10 and 10 + 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 + 5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.012Z"
+        }
+      }
+    },
+    {
+      "id": "ddf4e4d7-eb17-4bb4-b6e3-d1cd1af22a32",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Jo wrote $3 + 3 + 3 + 3$ for the total of an array. Each 3 is one row. How many objects are in each row?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "Each addend is one row, and each addend is 3, so each row has 3 objects.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each addend is a row; each addend is 3, so 3 objects per row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.020Z"
+        }
+      }
+    },
+    {
+      "id": "eaeb8ea1-c0c2-4016-beea-ed3596f00410",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "A tray has 3 rows of 2 muffins. Dad adds 1 more row of 2 muffins. How many muffins are on the tray now?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2+2+2+2",
+      "solution": "Now there are 4 rows of 2: 2 + 2 + 2 + 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 1 = 4 rows of 2: 2+2+2+2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.071Z"
+        }
+      }
+    },
+    {
+      "id": "800be782-d0c5-4fe9-9d88-f1351e4f73b3",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A seed tray has 4 rows. Each row has 3 seeds. How many seeds are in the tray?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3+3+3+3",
+      "solution": "Add one 3 for each row: 3 + 3 + 3 + 3 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+3+3+3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.119Z"
+        }
+      }
+    },
+    {
+      "id": "e9a7d12b-c5df-437e-b358-2596443ffda6",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rows and columns give the same total",
+      "stem": "A tray has 2 rows of 4 cookies. Ria turns the tray and sees 4 columns of 2 cookies. How many cookies are on the tray?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4+4",
+      "solution": "Adding the rows gives 4 + 4 = 8. Adding the columns gives 2 + 2 + 2 + 2 = 8. It is the same tray.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 4 = 4 x 2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.125Z"
+        }
+      }
+    },
+    {
+      "id": "010e9982-24d9-496a-8bab-be984d24d972",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A tiny window has 2 rows of 2 panes. How many panes are in the window?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2+2",
+      "solution": "Add the rows: 2 + 2 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.134Z"
+        }
+      }
+    },
+    {
+      "id": "db690fe3-b2a7-47b2-9ab8-25d52290bc5c",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Ava made an array with 8 counters. Which could be her array?",
+      "choices": [
+        "2 rows of 3",
+        "3 rows of 3",
+        "2 rows of 5",
+        "2 rows of 4"
+      ],
+      "answer": "2 rows of 4",
+      "compute": null,
+      "solution": "2 rows of 4 is 4 + 4 = 8. The others make 6, 9 and 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 rows of 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 4 = 8; others 9, 6, 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.146Z"
+        }
+      }
+    },
+    {
+      "id": "65888e28-6956-4c0f-bafc-8eff8fae92eb",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Which array matches $2 + 2 + 2 + 2$? Each 2 is one row.",
+      "choices": [
+        "2 rows of 4",
+        "4 rows of 2",
+        "2 rows of 2",
+        "4 rows of 4"
+      ],
+      "answer": "4 rows of 2",
+      "compute": null,
+      "solution": "There are four 2s, so there are 4 rows with 2 in each row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 rows of 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four 2s, each a row: 4 rows of 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.172Z"
+        }
+      }
+    },
+    {
+      "id": "2aec3138-a1e6-4424-be35-0614971e65d9",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "Ava puts stamps on a page in 3 rows. Each row has 2 stamps. How many stamps are on the page?",
+      "choices": [],
+      "answer": "6",
+      "compute": "2+2+2",
+      "solution": "There are 3 rows of 2. 2 + 2 + 2 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 rows of 2: 2+2+2 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.200Z"
+        }
+      }
+    },
+    {
+      "id": "1df08904-1a0f-4497-b092-1eaf3f4840bb",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Which equation shows the total for 4 rows with 2 bananas in each row?",
+      "choices": [
+        "$2 + 2 + 2 = 6$",
+        "$4 + 2 = 6$",
+        "$2 + 2 + 2 + 2 + 2 = 10$",
+        "$2 + 2 + 2 + 2 = 8$"
+      ],
+      "answer": "$2 + 2 + 2 + 2 = 8$",
+      "compute": null,
+      "solution": "Four rows of 2 means four 2s: 2 + 2 + 2 + 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 2 + 2 + 2 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 rows of 2: 2+2+2+2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.247Z"
+        }
+      }
+    },
+    {
+      "id": "ec993d5a-c535-4386-ab4b-8c9c8d819d88",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Sam wrote $4 + 4 + 4$ for an array. Each 4 is one row. How many rows are in the array?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "There are three 4s in the sum, so there are 3 rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Three 4s, so 3 rows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.286Z"
+        }
+      }
+    },
+    {
+      "id": "1383d7b2-88a0-4f6c-9c94-5f078b5e1a60",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Dani has 5 rows of 2 beads. She writes $2 + 2 + 2 + 2 + 2 = ?$ for the total. What number is the ?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2+2+2+2+2",
+      "solution": "Count by 2s five times: 2, 4, 6, 8, 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 twos = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.307Z"
+        }
+      }
+    },
+    {
       "id": "ce901d60-9d09-4033-a8e7-cfb7eac6b6b4",
       "topic_id": "NC17.2.OA.4",
       "difficulty": 2,
@@ -7782,6 +10602,738 @@
       }
     },
     {
+      "id": "f79f260e-2f21-4d68-bdfb-a10eadb8bb52",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "A shop hangs hats on a wall in 3 rows. Each row has 5 hats. The owner hangs 1 more row of 5 hats. How many hats are on the wall now?",
+      "choices": [],
+      "answer": "20",
+      "compute": "5+5+5+5",
+      "solution": "There are 4 rows of 5. 5 + 5 + 5 + 5 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 rows of 5 = 15, plus one more row of 5 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.715Z"
+        }
+      }
+    },
+    {
+      "id": "e1183963-ece6-40d3-bb35-54cb2e5e6317",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Which array has more objects than 3 rows of 5?",
+      "choices": [
+        "3 rows of 4",
+        "2 rows of 5",
+        "4 rows of 4",
+        "5 rows of 3"
+      ],
+      "answer": "4 rows of 4",
+      "compute": null,
+      "solution": "3 rows of 5 has 15. 4 rows of 4 has 16, which is more. The others have 12, 10 and 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 rows of 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 5 = 15. 4x4 = 16 > 15; 3x4 = 12, 2x5 = 10, 5x3 = 15 (equal, not more).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.755Z"
+        }
+      }
+    },
+    {
+      "id": "dcff1b25-d94e-44b4-ab3d-68a1913a6007",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell which sums have equal addends",
+      "stem": "Which sum has equal addends and a total of 12?",
+      "choices": [
+        "$5 + 4 + 3$",
+        "$6 + 3 + 3$",
+        "$4 + 4 + 4$",
+        "$2 + 4 + 6$"
+      ],
+      "answer": "$4 + 4 + 4$",
+      "compute": null,
+      "solution": "$4 + 4 + 4$ uses the same number each time and makes 12. The others make 12 too but their addends are not equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 + 4 = 12, equal addends. Others unequal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.756Z"
+        }
+      }
+    },
+    {
+      "id": "3cbe5145-2147-41c4-924b-752da96e93d1",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Put two arrays together",
+      "stem": "Pia has 4 rows of 2 beads. Raj has 3 rows of 3 beads. How many beads do they have together?",
+      "choices": [],
+      "answer": "17",
+      "compute": "8+9",
+      "solution": "Pia has 2 + 2 + 2 + 2 = 8. Raj has 3 + 3 + 3 = 9. Together 8 + 9 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 2 = 8; 3 x 3 = 9; 8 + 9 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.758Z"
+        }
+      }
+    },
+    {
+      "id": "8ac12c7c-0619-446c-9d66-d56b3a697206",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rows and columns give the same total",
+      "stem": "A tray has 5 rows of 2 cups. Ben adds by columns instead. Each column has 5 cups. Which sum does he write?",
+      "choices": [
+        "$5 + 5$",
+        "$2 + 2 + 2 + 2 + 2$",
+        "$5 + 2$",
+        "$5 + 5 + 5$"
+      ],
+      "answer": "$5 + 5$",
+      "compute": null,
+      "solution": "There are 2 columns and each has 5 cups, so the sum is $5 + 5$. It equals 10, the same total as adding the rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 2 means 2 columns of 5: 5 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.762Z"
+        }
+      }
+    },
+    {
+      "id": "e3d524a6-1647-409f-9333-61461d7af610",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Which equation is true for an array with 4 rows of 3?",
+      "choices": [
+        "$3 + 3 + 3 = 12$",
+        "$4 + 4 + 4 + 4 = 12$",
+        "$3 + 3 + 3 + 3 = 12$",
+        "$3 + 3 + 3 + 3 = 7$"
+      ],
+      "answer": "$3 + 3 + 3 + 3 = 12$",
+      "compute": null,
+      "solution": "There are 4 rows with 3 in each row. 3 + 3 + 3 + 3 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 3 + 3 + 3 = 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 rows of 3: 3+3+3+3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.778Z"
+        }
+      }
+    },
+    {
+      "id": "56f51e08-504d-489f-89fb-3f78c2688f57",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Which sum gives the total for 5 rows of 3 apples?",
+      "choices": [
+        "$5 + 5 + 5$",
+        "$3 + 3 + 3 + 3 + 3$",
+        "$3 + 3 + 3 + 3$",
+        "$5 + 5 + 5 + 5 + 5$"
+      ],
+      "answer": "$3 + 3 + 3 + 3 + 3$",
+      "compute": null,
+      "solution": "Each row has 3 apples and there are 5 rows, so write 3 five times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 3 + 3 + 3 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 3: five 3s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.795Z"
+        }
+      }
+    },
+    {
+      "id": "84b85b3e-df0c-4600-927c-789f4fb18ed7",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A theater has 5 rows. Each row has 4 seats. How many seats are in the theater?",
+      "choices": [
+        "20",
+        "9",
+        "16",
+        "25"
+      ],
+      "answer": "20",
+      "compute": "4+4+4+4+4",
+      "solution": "Add the rows: 4 + 4 + 4 + 4 + 4 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 4 = 20 (4+4+4+4+4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.815Z"
+        }
+      }
+    },
+    {
+      "id": "3836e615-e703-4af7-9530-e167053683d2",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Luis has 4 rows of 5 coins. He writes the total as a sum of equal addends, one addend for each row. How many addends are in his sum?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "There are 4 rows, so the sum has 4 addends: 5 + 5 + 5 + 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One addend per row, 4 rows: 5 + 5 + 5 + 5, four addends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.822Z"
+        }
+      }
+    },
+    {
+      "id": "46d9c52b-54d2-4d88-8a0f-b19950d4b1be",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rows and columns give the same total",
+      "stem": "A box has 5 rows of 2 cards. Turned sideways, it has 2 rows of 5 cards. How many cards are in the box?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2+2+2+2+2",
+      "solution": "Turning the box does not change the cards. 2 + 2 + 2 + 2 + 2 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 2 = 10 either way.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.826Z"
+        }
+      }
+    },
+    {
+      "id": "917e4700-75d8-4844-b666-e86279a09e76",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rows and columns give the same total",
+      "stem": "Mei has an array with 4 rows of 5. She adds the rows: $5 + 5 + 5 + 5$. If she adds the columns instead, how many numbers does she add?",
+      "choices": [],
+      "answer": "5",
+      "compute": null,
+      "solution": "The array has 5 columns, so she adds 5 numbers: 4 + 4 + 4 + 4 + 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 rows of 5 has 5 columns (each of 4): 4+4+4+4+4, five numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.834Z"
+        }
+      }
+    },
+    {
+      "id": "b6e84918-4f26-4061-9ef7-fccc4a203843",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Which two arrays have the same total?",
+      "choices": [
+        "2 rows of 5 and 3 rows of 4",
+        "4 rows of 2 and 2 rows of 5",
+        "5 rows of 3 and 4 rows of 4",
+        "4 rows of 3 and 3 rows of 4"
+      ],
+      "answer": "4 rows of 3 and 3 rows of 4",
+      "compute": null,
+      "solution": "4 rows of 3 and 3 rows of 4 both make 12. The other pairs make 10 and 12, 8 and 10, 15 and 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 rows of 3 and 3 rows of 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 and 12. Others: 10 vs 12, 8 vs 10, 15 vs 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.838Z"
+        }
+      }
+    },
+    {
+      "id": "86fb965f-da9f-42b7-9e44-0c4d6c3a96bd",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rows and columns give the same total",
+      "stem": "A tray has 3 rows of 4 cookies. Which statement is true?",
+      "choices": [
+        "Adding the rows gives 12 and adding the columns gives 7",
+        "Both ways of adding give a total of 12",
+        "Both ways of adding give a total of 7",
+        "Adding the rows gives 7 and adding the columns gives 12"
+      ],
+      "answer": "Both ways of adding give a total of 12",
+      "compute": null,
+      "solution": "Rows: 4 + 4 + 4 = 12. Columns: 3 + 3 + 3 + 3 = 12. Both give 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both ways of adding give a total of 12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rows 4+4+4 = 12, columns 3+3+3+3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.892Z"
+        }
+      }
+    },
+    {
+      "id": "e7ec24c5-00e7-4733-9228-567668a39ad2",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "Rosa lays pears in a flat box. There are 4 rows of pears, and each row has 5 pears. Add to find how many pears are in the box.",
+      "choices": [],
+      "answer": "20",
+      "compute": "5+5+5+5",
+      "solution": "Add the rows: 5 + 5 + 5 + 5 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 + 5 + 5 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.955Z"
+        }
+      }
+    },
+    {
+      "id": "fa4a037e-479e-4765-880d-8d77c91c30d9",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "Tom has 3 rows of 4 blocks. He adds 2 more rows of 4. Which sum shows all his blocks?",
+      "choices": [
+        "$4 + 4 + 4 + 4$",
+        "$4 + 4 + 4 + 4 + 4 + 4$",
+        "$3 + 3 + 3 + 3 + 3$",
+        "$4 + 4 + 4 + 4 + 4$"
+      ],
+      "answer": "$4 + 4 + 4 + 4 + 4$",
+      "compute": null,
+      "solution": "Now there are 3 + 2 = 5 rows of 4. Write 4 five times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 + 4 + 4 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2 = 5 rows of 4: 4+4+4+4+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.032Z"
+        }
+      }
+    },
+    {
+      "id": "f8b71ce0-60e1-4ed6-9400-50ffc0460aca",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A poster has 5 rows of stars. Each row has 4 stars. How many stars are on the poster?",
+      "choices": [],
+      "answer": "20",
+      "compute": "4+4+4+4+4",
+      "solution": "There are five rows of 4. 4 + 4 + 4 + 4 + 4 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 4: 4+4+4+4+4 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.074Z"
+        }
+      }
+    },
+    {
+      "id": "8f1dc60a-e664-4d63-8035-72c86c5e2606",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A stamp sheet has 4 rows of 3 stamps. How many stamps are on the sheet?",
+      "choices": [
+        "7",
+        "14",
+        "16",
+        "12"
+      ],
+      "answer": "12",
+      "compute": "3+3+3+3",
+      "solution": "Add the rows: 3 + 3 + 3 + 3 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+3+3+3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.104Z"
+        }
+      }
+    },
+    {
+      "id": "4e5e8734-b23e-4f5f-9a0e-f79f97eecacd",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Nina writes $4 + 4 + 4 + 4 + 4 = ?$ for the total of an array. What number is the ?",
+      "choices": [],
+      "answer": "20",
+      "compute": "4+4+4+4+4",
+      "solution": "Add by 4s: 4, 8, 12, 16, 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 fours = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.124Z"
+        }
+      }
+    },
+    {
+      "id": "79c8551e-3b09-49c0-9c30-1ae5c00e369b",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Which array has a total equal to $5 + 5 + 5 + 5$?",
+      "choices": [
+        "4 rows of 5",
+        "5 rows of 5",
+        "4 rows of 4",
+        "3 rows of 5"
+      ],
+      "answer": "4 rows of 5",
+      "compute": null,
+      "solution": "The sum has four 5s, which is 4 rows of 5 with a total of 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 rows of 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5+5+5 = 4 rows of 5 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.132Z"
+        }
+      }
+    },
+    {
+      "id": "45084bcf-d022-495a-8111-a802701403fa",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Ben wrote $5 + 5 + 5 + 5$. Each 5 is one row. Which tells about his array?",
+      "choices": [
+        "5 rows of 4",
+        "4 rows of 4",
+        "5 rows of 5",
+        "4 rows of 5"
+      ],
+      "answer": "4 rows of 5",
+      "compute": null,
+      "solution": "There are four 5s, so there are 4 rows, and each row has 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 rows of 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four 5s: 4 rows of 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.262Z"
+        }
+      }
+    },
+    {
+      "id": "44b865b7-ccb3-4a2a-8621-63887bdd9580",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Sara made 2 equal rows with 10 beads in all. How many beads are in each row?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "The two rows must be equal. 5 + 5 = 10, so each row has 5 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 = 5 + 5: 5 each row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.305Z"
+        }
+      }
+    },
+    {
+      "id": "2a37947c-9d9d-4cd4-ac2b-098686a505a9",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "A tray has 5 rows of 3 cookies. Ria eats 1 whole row. How many cookies are left?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3+3+3+3",
+      "solution": "4 rows of 3 are left: 3 + 3 + 3 + 3 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 3 = 15; minus a row of 3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.316Z"
+        }
+      }
+    },
+    {
+      "id": "b9252291-5400-454f-a9d2-ab5efc434552",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Put two arrays together",
+      "stem": "One tray has 2 rows of 5 muffins. Another tray has 3 rows of 5 muffins. Which sum gives all the muffins?",
+      "choices": [
+        "$5 + 5 + 5 + 5$",
+        "$5 + 5 + 5 + 5 + 5$",
+        "$2 + 3 + 5$",
+        "$5 + 5 + 5 + 5 + 5 + 5$"
+      ],
+      "answer": "$5 + 5 + 5 + 5 + 5$",
+      "compute": null,
+      "solution": "There are 2 + 3 = 5 rows of 5 muffins, so write 5 five times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 5 + 5 + 5 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 3 = 5 rows of 5: five 5s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.324Z"
+        }
+      }
+    },
+    {
       "id": "7a71b95c-82a6-419a-adac-cb89c3a6316a",
       "topic_id": "NC17.2.OA.4",
       "difficulty": 3,
@@ -8088,6 +11640,728 @@
           "work": "5 rows of 5 now: 25.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:29.526Z"
+        }
+      }
+    },
+    {
+      "id": "08e8a24c-b39c-4c7c-a6e3-051f7fdc7956",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the total of an array by adding rows",
+      "stem": "A band sits in 4 rows. Each row has 5 players. Then 3 players leave. How many players are left?",
+      "choices": [],
+      "answer": "17",
+      "compute": "20-3",
+      "solution": "4 rows of 5 is 5 + 5 + 5 + 5 = 20. Then 20 - 3 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 5 = 20; 20 - 3 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.760Z"
+        }
+      }
+    },
+    {
+      "id": "6183e353-e5e8-4b22-bbd6-b0f94dedf261",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "An array has 4 rows of 3. Which sum does NOT give its total?",
+      "choices": [
+        "$3 + 3 + 3 + 3$",
+        "$4 + 4 + 4$",
+        "$3 + 3 + 3$",
+        "$6 + 6$"
+      ],
+      "answer": "$3 + 3 + 3$",
+      "compute": null,
+      "solution": "The total is 12. $3 + 3 + 3$ is only 9. The other sums all make 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 3 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total 12. 6+6=12, 4+4+4=12, 3+3+3+3=12; 3+3+3 = 9 does not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.776Z"
+        }
+      }
+    },
+    {
+      "id": "ca890c3a-7fe9-4333-9912-a803da5241e9",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "An array has 15 objects in rows of 3. Which sum shows its total?",
+      "choices": [
+        "$3 + 3 + 3 + 3$",
+        "$3 + 3 + 3$",
+        "$3 + 3 + 3 + 3 + 3 + 3$",
+        "$3 + 3 + 3 + 3 + 3$"
+      ],
+      "answer": "$3 + 3 + 3 + 3 + 3$",
+      "compute": null,
+      "solution": "Add 3 until you reach 15: 3, 6, 9, 12, 15. That is five 3s.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 3 + 3 + 3 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 / 3 = 5 rows: five 3s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.778Z"
+        }
+      }
+    },
+    {
+      "id": "cea6e1b3-a96e-4b5b-8d09-965e48115558",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "Each row of an array has 4 objects. The array has 20 objects in all. How many rows does it have?",
+      "choices": [],
+      "answer": "5",
+      "compute": "20/4",
+      "solution": "4, 8, 12, 16, 20: you add 4 five times, so there are 5 rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.781Z"
+        }
+      }
+    },
+    {
+      "id": "cdadfd4e-4e6e-4a57-80f7-6bc5776ef529",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put two arrays together",
+      "stem": "A farm has 4 rows of 5 carrots. Another farm has 5 rows of 4 carrots. How many carrots are there on the two farms?",
+      "choices": [],
+      "answer": "40",
+      "compute": "20+20",
+      "solution": "4 rows of 5 is 20 carrots. 5 rows of 4 is 20 carrots. 20 + 20 = 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 + 20 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.791Z"
+        }
+      }
+    },
+    {
+      "id": "02b61d30-39f2-493e-afb2-2ea513ccd844",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Which array has fewer objects than 4 rows of 4?",
+      "choices": [
+        "3 rows of 5",
+        "4 rows of 5",
+        "5 rows of 4",
+        "5 rows of 5"
+      ],
+      "answer": "3 rows of 5",
+      "compute": null,
+      "solution": "4 rows of 4 has 16. 3 rows of 5 has 15, which is fewer. The others have 20, 20 and 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 rows of 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x4 = 16. 3x5 = 15 < 16; others 20, 20, 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.792Z"
+        }
+      }
+    },
+    {
+      "id": "d60b05a3-7ef8-4b78-8c04-4b9450d0a560",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell which sums have equal addends",
+      "stem": "Mark says $3 + 3 + 4$ shows an array of 3 equal rows. Which is true?",
+      "choices": [
+        "It does, because there are 3 addends",
+        "It does, because the total is 10",
+        "It does, because the addends are all small numbers",
+        "It does not, because the addends are not equal"
+      ],
+      "answer": "It does not, because the addends are not equal",
+      "compute": null,
+      "solution": "Equal rows need equal addends. 3, 3 and 4 are not all the same, so the rows are not equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It does not, because the addends are not equal",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 3 + 4 has unequal addends, so not 3 equal rows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.807Z"
+        }
+      }
+    },
+    {
+      "id": "af96d5c1-a250-440d-bf3b-121b8e60d49b",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rows and columns give the same total",
+      "stem": "Array A has 3 rows of 5. Array B has 5 rows of 3. Which statement is true?",
+      "choices": [
+        "Array A has a total of 15 and array B has a total of 8",
+        "Both arrays have a total of 15",
+        "Array A has a total of 8 and array B has a total of 15",
+        "Both arrays have a total of 8"
+      ],
+      "answer": "Both arrays have a total of 15",
+      "compute": null,
+      "solution": "A: 5 + 5 + 5 = 15. B: 3 + 3 + 3 + 3 + 3 = 15. They are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both arrays have a total of 15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 5 = 15 and 5 x 3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.811Z"
+        }
+      }
+    },
+    {
+      "id": "36fda2ef-3d26-4a6d-9723-80e354c8eb8e",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rows and columns give the same total",
+      "stem": "A game has 2 rows of 5 tiles. Dev puts the tiles in rows of 2 instead. How many rows of 2 does he make?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "There are 10 tiles. 2, 4, 6, 8, 10: that is 5 rows of 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 5 = 10 tiles; 10 / 2 = 5 rows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.825Z"
+        }
+      }
+    },
+    {
+      "id": "35f23772-5ef6-4e99-b951-b3b0c5e48d2b",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rows and columns give the same total",
+      "stem": "An array has 5 rows of 2. Its total is written as $2 + 2 + 2 + 2 + 2$. Another array has the same total in 2 equal rows. How many objects are in each of those rows?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "The total is 10. Two equal rows need 5 + 5 = 10, so each row has 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total 10; 2 equal rows: 5 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.833Z"
+        }
+      }
+    },
+    {
+      "id": "9f1aeb72-5c9b-4114-9a2a-455048e1ac24",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match an array to its total or sum",
+      "stem": "Which array has more than 12 but fewer than 16 objects?",
+      "choices": [
+        "3 rows of 4",
+        "3 rows of 5",
+        "4 rows of 4",
+        "2 rows of 5"
+      ],
+      "answer": "3 rows of 5",
+      "compute": null,
+      "solution": "3 rows of 5 has 15. The others have 12, 16 and 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 rows of 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12, 15, 16, 10; only 15 is between 12 and 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.841Z"
+        }
+      }
+    },
+    {
+      "id": "fc3986fa-b034-4f0a-a1ac-9908110febc5",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Nora writes $5 + 5 + 5 + 5 + 5 = ?$ for the squares on a game board with 5 equal rows. How many squares are on the board?",
+      "choices": [],
+      "answer": "25",
+      "compute": "5*5",
+      "solution": "Count by 5s: 5, 10, 15, 20, 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 5: 5+5+5+5+5 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.848Z"
+        }
+      }
+    },
+    {
+      "id": "9ad0b57c-bae7-4a03-8eb9-d9d29689aab4",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell which sums have equal addends",
+      "stem": "Which sum could show an array with equal rows?",
+      "choices": [
+        "$3 + 3 + 3 + 4$",
+        "$2 + 4 + 2 + 4$",
+        "$2 + 2 + 2 + 2$",
+        "$5 + 5 + 4 + 5$"
+      ],
+      "answer": "$2 + 2 + 2 + 2$",
+      "compute": null,
+      "solution": "An array with equal rows has the same number in each row. Only $2 + 2 + 2 + 2$ uses one number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 2 + 2 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 2+2+2+2 has equal addends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.917Z"
+        }
+      }
+    },
+    {
+      "id": "0609a0b0-466f-4311-b398-98097a0b64e3",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put two arrays together",
+      "stem": "Gina has 3 rows of 3 magnets. Hal has 2 rows of 5 magnets. How many more magnets does Hal have than Gina?",
+      "choices": [],
+      "answer": "1",
+      "compute": "10-9",
+      "solution": "Gina has 3 + 3 + 3 = 9. Hal has 5 + 5 = 10. 10 - 9 = 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Gina 3+3+3 = 9, Hal 5+5 = 10; 10 - 9 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.939Z"
+        }
+      }
+    },
+    {
+      "id": "d1c64afe-3c92-423f-8f58-c53ae35e7f38",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put two arrays together",
+      "stem": "A box holds 3 rows of 4 crayons. A second box holds 2 rows of 5 crayons. How many crayons are in the two boxes?",
+      "choices": [],
+      "answer": "22",
+      "compute": "12+10",
+      "solution": "First box: 4 + 4 + 4 = 12. Second box: 5 + 5 = 10. Together 12 + 10 = 22.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 4 = 12 (4+4+4), 2 x 5 = 10 (5+5); 12 + 10 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.989Z"
+        }
+      }
+    },
+    {
+      "id": "a2f80f58-c383-4722-af0e-97e0c3dbd803",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Which equation shows the total of an array with 5 rows of 4?",
+      "choices": [
+        "$4 + 4 + 4 + 4 = 20$",
+        "$4 + 4 + 4 + 4 + 4 = 20$",
+        "$5 + 5 + 5 + 5 + 5 = 20$",
+        "$4 + 4 + 4 + 4 + 4 = 24$"
+      ],
+      "answer": "$4 + 4 + 4 + 4 + 4 = 20$",
+      "compute": null,
+      "solution": "Five rows of 4 is 4 + 4 + 4 + 4 + 4, and that equals 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 + 4 + 4 + 4 = 20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 4: five 4s = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.084Z"
+        }
+      }
+    },
+    {
+      "id": "5a569042-305d-4127-b866-9d90bc22690f",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "A garden has 5 rows of 5 plants. Kai takes away 2 whole rows. How many plants are left?",
+      "choices": [],
+      "answer": "15",
+      "compute": "5+5+5",
+      "solution": "3 rows of 5 are left: 5 + 5 + 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 5 = 25; remove 2 rows (10) leaves 3 rows of 5 = 5+5+5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.104Z"
+        }
+      }
+    },
+    {
+      "id": "c0be5b64-1c79-4bc0-b575-733d436c924e",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "An array has 4 rows of 3 trees. Pat plants 1 more tree in each row, so each row has 4 trees. How many trees are there now?",
+      "choices": [],
+      "answer": "16",
+      "compute": "4+4+4+4",
+      "solution": "There are still 4 rows, now with 4 trees each: 4 + 4 + 4 + 4 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 rows of 4 = 4+4+4+4 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.110Z"
+        }
+      }
+    },
+    {
+      "id": "c6836011-0376-417c-8809-6abe12a5b05e",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rows and columns give the same total",
+      "stem": "An array has 5 rows of 4. Which pair of sums both give its total?",
+      "choices": [
+        "$4 + 4 + 4 + 4 + 4$ and $5 + 5 + 5 + 5$",
+        "$4 + 4 + 4 + 4 + 4$ and $5 + 5 + 5$",
+        "$4 + 4 + 4 + 4$ and $5 + 5 + 5 + 5$",
+        "$5 + 5 + 5 + 5 + 5$ and $4 + 4 + 4 + 4$"
+      ],
+      "answer": "$4 + 4 + 4 + 4 + 4$ and $5 + 5 + 5 + 5$",
+      "compute": null,
+      "solution": "Rows: 5 rows of 4 is $4 + 4 + 4 + 4 + 4 = 20$. Columns: 4 columns of 5 is $5 + 5 + 5 + 5 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 + 4 + 4 + 4$ and $5 + 5 + 5 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 rows of 4: five 4s = 4+4+4+4+4 = 20; also four columns of 5: 5+5+5+5 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.201Z"
+        }
+      }
+    },
+    {
+      "id": "f442f264-4379-46ca-b3d0-4d852250d2ce",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Change an array by adding or taking away a row",
+      "stem": "An array has 3 rows of 4. Which sum shows the total after one row of 4 is taken away?",
+      "choices": [
+        "$4 + 4$",
+        "$4 + 4 + 4$",
+        "$3 + 3$",
+        "$4 + 4 + 4 + 4$"
+      ],
+      "answer": "$4 + 4$",
+      "compute": null,
+      "solution": "3 rows take away 1 row leaves 2 rows of 4, so the sum is $4 + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 rows of 4, remove one row: 2 rows left, 4 + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.264Z"
+        }
+      }
+    },
+    {
+      "id": "812d9a44-c89d-42a8-b3ab-8af864cd15a7",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put two arrays together",
+      "stem": "A tray has 3 rows of 5 cookies. Another tray has 4 rows of 3 cookies. How many cookies are on the two trays?",
+      "choices": [],
+      "answer": "27",
+      "compute": "15+12",
+      "solution": "First tray: 5 + 5 + 5 = 15. Second tray: 3 + 3 + 3 + 3 = 12. Together 15 + 12 = 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5+5 = 15; 3+3+3+3 = 12; 15 + 12 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.297Z"
+        }
+      }
+    },
+    {
+      "id": "07e99f55-9bca-4825-aff2-05f4c25f3f46",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read an array from a sum of equal addends",
+      "stem": "An array has the same number of rows and columns. It has 16 objects in all. How many objects are in each row?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "Try 3 rows of 3 = 9 (too small) and 4 rows of 4 = 16. So each row has 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square array: 4 x 4 = 16, 4 in each row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.300Z"
+        }
+      }
+    },
+    {
+      "id": "fae85660-99ea-4d5e-b3b0-f02cc3c58869",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the total as a sum of equal addends",
+      "stem": "Which sum can show an array with 15 objects in equal rows?",
+      "choices": [
+        "$4 + 4 + 4$",
+        "$5 + 5 + 5 + 5$",
+        "$5 + 5 + 5$",
+        "$3 + 3 + 3 + 3$"
+      ],
+      "answer": "$5 + 5 + 5$",
+      "compute": null,
+      "solution": "5 + 5 + 5 = 15. The other sums make 12, 20 and 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 5 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 + 5 = 15 (3 rows of 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.307Z"
         }
       }
     },

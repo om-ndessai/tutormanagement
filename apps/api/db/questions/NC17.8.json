@@ -3137,6 +3137,35 @@
       }
     },
     {
+      "id": "b1ce237c-4baa-482e-95b8-cd92b5e8095f",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Digits of a repeating decimal",
+      "stem": "The decimal for $\\frac{2}{7}$ is $0.285714285714\\ldots$ with the block 285714 repeating forever. What is the 50th digit after the decimal point?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The block has 6 digits. 50 = 8 x 6 + 2, so the 50th digit is the 2nd digit of the block, which is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 6; 50 = 6 x 8 + 2, so the 50th digit is the 2nd of 285714: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.005Z"
+        }
+      }
+    },
+    {
       "id": "d8e7eafc-a0fa-4699-b9cd-5abd09bb917e",
       "topic_id": "NC17.8.NS.2",
       "difficulty": 1,

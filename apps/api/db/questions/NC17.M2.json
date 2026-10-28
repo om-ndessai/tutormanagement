@@ -21729,6 +21729,35 @@
       }
     },
     {
+      "id": "0e541e5b-2bd1-4b58-a8fc-184760b09616",
+      "topic_id": "NC17.M2.F-IF.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare maximum values from an equation and a table",
+      "stem": "Function $f$ is given by $f(x)=-x^2+4x+1$. Function $g$ is quadratic, with the table $x=0,1,2,3,4$ and $g(x)=2,5,6,5,2$. How much greater is the maximum value of $g$ than the maximum value of $f$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "6-5",
+      "solution": "The vertex of $f$ is at $x=2$, where $f(2)=-4+8+1=5$, so its maximum is 5. In the table, $g$ is highest at $x=2$ with value 6. So the maximum of $g$ is 6 - 5 = 1 greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f vertex at x = 2: f(2) = -4+8+1 = 5. g symmetric about x = 2, max g(2) = 6. 6 - 5 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.155Z"
+        }
+      }
+    },
+    {
       "id": "32076c1f-66cc-4354-8bea-c84674b3105a",
       "topic_id": "NC17.M2.F-IF.9",
       "difficulty": 3,
@@ -35261,6 +35290,35 @@
       }
     },
     {
+      "id": "959a3477-66ea-4601-a8c1-a5d50e87dd8c",
+      "topic_id": "NC17.M2.G-SRT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use AA correspondence to find an angle",
+      "stem": "Triangles $ABC$ and $DEF$ are similar by AA, with $\\angle A \\cong \\angle D$ and $\\angle C \\cong \\angle F$. Angle $A$ measures $38^\\circ$ and angle $E$ measures $75^\\circ$. What is the measure of angle $C$, in degrees?",
+      "choices": [],
+      "answer": "67",
+      "compute": "180-38-75",
+      "solution": "Since angles A and C match angles D and F, the remaining angles match too: angle B is congruent to angle E, so angle B measures 75 degrees. Then angle C = 180 - 38 - 75 = 67 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C corresponds to F; B to E so B = 75; C = 180 - 38 - 75 = 67.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.326Z"
+        }
+      }
+    },
+    {
       "id": "92da14eb-d580-4804-b8f7-4aa31653cbf5",
       "topic_id": "NC17.M2.G-SRT.4",
       "difficulty": 1,
@@ -39298,6 +39356,35 @@
       }
     },
     {
+      "id": "02fa283e-ec6b-40bb-b831-7d7c6cd3e638",
+      "topic_id": "NC17.M2.S-IC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Experimental probability from a simulation",
+      "stem": "A bag has 1 red marble and 3 blue marbles, so the theoretical probability of red is 0.25. A student simulates drawing a marble 80 times, putting it back each time, and gets red 24 times. What is the experimental probability of red, as a decimal?",
+      "choices": [],
+      "answer": "0.3",
+      "compute": "24/80",
+      "solution": "Experimental probability = 24 / 80 = 0.3. It is a little higher than the theoretical 0.25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 / 80 = 0.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.876Z"
+        }
+      }
+    },
+    {
       "id": "e60014fc-2df4-4714-b8c5-b0d5c4be0e1f",
       "topic_id": "NC17.M2.S-IC.2",
       "difficulty": 2,
@@ -39890,6 +39977,35 @@
           "work": "Probability 0.35 needs 35 of the 100 outcomes: 00 to 34 is 35 numbers. 00-35 is 36, 35-99 is 65, 30-35 is 6.",
           "run_id": "claude-code",
           "at": "2026-10-28T18:48:28.516Z"
+        }
+      }
+    },
+    {
+      "id": "432f4cc7-17e6-42b0-aa2f-cb87457b0384",
+      "topic_id": "NC17.M2.S-IC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count results consistent with a theoretical probability",
+      "stem": "A bag has 10 marbles and 1 is red. A marble is drawn and put back, 400 times. The expected number of red draws is 40 and the standard deviation is 6. A result is consistent with the bag if it is within 2 standard deviations of 40, including both end values. How many different whole numbers of red draws are consistent?",
+      "choices": [],
+      "answer": "25",
+      "compute": "2*2*6+1",
+      "solution": "2 standard deviations is 12. The consistent results run from 40 - 12 = 28 to 40 + 12 = 52, including both ends. That is 52 - 28 + 1 = 25 whole numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Within 40 +/- 12: 28 to 52 inclusive, 52 - 28 + 1 = 25 values. (SD sqrt(400*0.1*0.9)=6 checks.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.106Z"
         }
       }
     },

@@ -1018,6 +1018,40 @@
       }
     },
     {
+      "id": "cc853523-dfe5-49bd-b740-ee96cc61f695",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A snail crawls $\\frac{1}{2}$ foot in $\\frac{1}{4}$ hour. How many feet does it crawl in 1 hour?",
+      "choices": [
+        "$\\frac{1}{8}$",
+        "$\\frac{3}{4}$",
+        "$2$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": "$2$",
+      "compute": "(1/2)/(1/4)",
+      "solution": "The unit rate is $\\frac{1}{2} \\div \\frac{1}{4} = \\frac{1}{2} \\times 4 = 2$ feet per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2) / (1/4) = 2 feet per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.940Z"
+        }
+      }
+    },
+    {
       "id": "b09b1eeb-912c-451b-8b97-025463773f10",
       "topic_id": "NC17.7.RP.1",
       "difficulty": 2,
@@ -6523,6 +6557,723 @@
       }
     },
     {
+      "id": "5f8f12ac-8f84-494b-b386-d8f983f14e37",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Percent increase and decrease",
+      "stem": "The price of a jacket falls from 80 dollars to 72 dollars. What is the percent decrease?",
+      "choices": [
+        "8",
+        "90",
+        "11",
+        "10"
+      ],
+      "answer": "10",
+      "compute": "(80-72)/80*100",
+      "solution": "The price falls by 8 dollars. 8 divided by the original 80 = 0.1, which is 10 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Decrease 8; 8/80 = 0.10 = 10%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.706Z"
+        }
+      }
+    },
+    {
+      "id": "16be71e8-0a01-4eae-bb94-b62e7844c006",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A bike costs 150 dollars. This week it is 10 percent off. How many dollars is the discount?",
+      "choices": [
+        "135",
+        "15",
+        "1.5",
+        "160"
+      ],
+      "answer": "15",
+      "compute": "150*10/100",
+      "solution": "10 percent of 150 is 15 dollars. The sale price would be 135 dollars, but the question asks for the discount.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10% of 150 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.845Z"
+        }
+      }
+    },
+    {
+      "id": "a98cadc0-a1b9-4b51-8b59-c840e7b1ddf4",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rates, including fractions",
+      "stem": "A cyclist rides 12 miles in $\\frac{1}{2}$ hour. How many miles per hour is that?",
+      "choices": [],
+      "answer": "24",
+      "compute": "12/(1/2)",
+      "solution": "In 1 hour the cyclist rides twice as far: 2 times 12 = 24 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 miles per 1/2 hour = 24 miles per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.850Z"
+        }
+      }
+    },
+    {
+      "id": "b93d4fa7-8f49-4301-a12a-59c2a47cb295",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Percent error",
+      "stem": "A scale reads 97 grams for an object whose true mass is 100 grams. What is the percent error?",
+      "choices": [
+        "97",
+        "103",
+        "0.3",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3/100*100",
+      "solution": "The error is 3 grams. 3 divided by the true mass 100 = 0.03, which is 3 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|97-100|/100 = 0.03 = 3 percent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.858Z"
+        }
+      }
+    },
+    {
+      "id": "9f19c2a9-2ec6-4653-be7b-331ccd0c9048",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rates, including fractions",
+      "stem": "A tap fills 3 liters in 6 minutes. How many liters does it fill in 1 minute?",
+      "choices": [
+        "0.5",
+        "2",
+        "18",
+        "3"
+      ],
+      "answer": "0.5",
+      "compute": "3/6",
+      "solution": "Divide the liters by the minutes: 3 divided by 6 = 0.5 liters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/6 = 0.5 liters per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.861Z"
+        }
+      }
+    },
+    {
+      "id": "7b455ba9-cb92-4320-83f9-f60015ff7da5",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Simple interest",
+      "stem": "An account pays 3 percent simple interest per year. How many dollars of interest does a deposit of 200 dollars earn in 1 year?",
+      "choices": [],
+      "answer": "6",
+      "compute": "200*3/100",
+      "solution": "3 percent of 200 is 0.03 times 200 = 6 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.03 x 200 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.864Z"
+        }
+      }
+    },
+    {
+      "id": "8ad267e1-7941-4b6a-9da7-002fd837dd82",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A photo is enlarged by a scale factor of 3. The width of the original photo is 4 inches. How many inches wide is the enlarged photo?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4*3",
+      "solution": "Multiply the original width by the scale factor: 4 times 3 = 12 inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.894Z"
+        }
+      }
+    },
+    {
+      "id": "0c0b894d-85a9-4ae7-968f-f1a052169dcb",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the whole from a percent",
+      "stem": "A team won 12 games, which is 75 percent of the games it played. How many games did it play?",
+      "choices": [
+        "9",
+        "16",
+        "15",
+        "90"
+      ],
+      "answer": "16",
+      "compute": "12*100/75",
+      "solution": "75 percent is $\\frac{3}{4}$. If 3 parts are 12 games, each part is 4, so all 4 parts are 16 games.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 / 0.75 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.911Z"
+        }
+      }
+    },
+    {
+      "id": "1850729a-9e3e-46ed-8e11-10b3175fea1e",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rates, including fractions",
+      "stem": "5 apples cost 4 dollars. Let x be the cost, in dollars, of 15 apples at the same price. Which proportion is correct?",
+      "choices": [
+        "$\\frac{5}{4} = \\frac{x}{15}$",
+        "$\\frac{5}{4} = \\frac{15}{x}$",
+        "$\\frac{5}{x} = \\frac{15}{4}$",
+        "$\\frac{4}{5} = \\frac{15}{x}$"
+      ],
+      "answer": "$\\frac{5}{4} = \\frac{15}{x}$",
+      "compute": null,
+      "solution": "Both sides must compare apples to dollars in the same order: 5 apples to 4 dollars equals 15 apples to x dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{4} = \\frac{15}{x}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "apples/dollars: 5/4 = 15/x gives x = 12. Others give 18.75 or 4/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.914Z"
+        }
+      }
+    },
+    {
+      "id": "ba9941be-8f8f-4570-94ab-174227942220",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rates, including fractions",
+      "stem": "A machine fills 60 bottles in 5 minutes at a steady rate. How many bottles does it fill in 1 minute?",
+      "choices": [],
+      "answer": "12",
+      "compute": "60/5",
+      "solution": "Divide the bottles by the minutes: 60 divided by 5 = 12 bottles per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 / 5 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.931Z"
+        }
+      }
+    },
+    {
+      "id": "7d76f618-3adf-4c73-b913-b50819883269",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Percent error",
+      "stem": "A pencil is truly 20 centimeters long. A student measures it as 21 centimeters. What is the percent error?",
+      "choices": [],
+      "answer": "5",
+      "compute": "1/20*100",
+      "solution": "The error is 1 centimeter. 1 divided by the true length 20 = 0.05, which is 5 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|21 - 20| / 20 = 0.05 = 5%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.969Z"
+        }
+      }
+    },
+    {
+      "id": "7ca62a86-77ad-4dd9-b472-e066892159d6",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Percent increase and decrease",
+      "stem": "A club had 50 members last year and has 65 members this year. By what percent did its membership increase?",
+      "choices": [],
+      "answer": "30",
+      "compute": "(65-50)/50*100",
+      "solution": "The increase is 15 members. 15 divided by 50 = 0.3, which is 30 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(65 - 50) / 50 = 15/50 = 30%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.988Z"
+        }
+      }
+    },
+    {
+      "id": "f93e792f-552e-4b54-8533-90d68ada5268",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A worker earns a commission of 5 percent of her sales. Her sales are 400 dollars. How many dollars is her commission?",
+      "choices": [
+        "2",
+        "80",
+        "20",
+        "420"
+      ],
+      "answer": "20",
+      "compute": "400*5/100",
+      "solution": "5 percent of 400 is 0.05 times 400 = 20 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5% of 400 = 0.05 x 400 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.028Z"
+        }
+      }
+    },
+    {
+      "id": "8715fe03-f33b-40f8-bec9-421003ac1f7e",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Percent increase and decrease",
+      "stem": "A plant grows from 20 centimeters to 25 centimeters tall. What is the percent increase in its height?",
+      "choices": [],
+      "answer": "25",
+      "compute": "(25-20)/20*100",
+      "solution": "The increase is 5 centimeters. 5 divided by the original 20 is 0.25, which is 25 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Increase 5; 5/20 = 25%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.059Z"
+        }
+      }
+    },
+    {
+      "id": "89c05e69-42a2-495e-9b4c-c10a7de93cfa",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A scale drawing is made with a scale factor of $\\frac{1}{10}$. A desk is 120 centimeters long. How long is the desk in the drawing, in centimeters?",
+      "choices": [],
+      "answer": "12",
+      "compute": "120/10",
+      "solution": "The drawing is $\\frac{1}{10}$ of the real length: 120 divided by 10 = 12 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 x 1/10 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.062Z"
+        }
+      }
+    },
+    {
+      "id": "96200e65-b833-400a-aefa-111754a87fd9",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "The number 7 is 10 percent of a number. What is the number?",
+      "choices": [],
+      "answer": "70",
+      "compute": "7*100/10",
+      "solution": "10 percent is one tenth, so the number is 10 times 7 = 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.1n = 7 -> n = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.073Z"
+        }
+      }
+    },
+    {
+      "id": "aef89961-9200-4199-9792-b88cbfca8c19",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A store buys a toy for 30 dollars and marks up the price by 50 percent. What is the selling price, in dollars?",
+      "choices": [],
+      "answer": "45",
+      "compute": "30*1.5",
+      "solution": "The markup is 50 percent of 30 = 15 dollars. The selling price is 30 + 15 = 45 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 x 1.5 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.095Z"
+        }
+      }
+    },
+    {
+      "id": "622097a6-7561-4929-89f5-04af3534e62c",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "Mia leaves a tip of 3 dollars, which is 20 percent of the bill. What is the bill, in dollars?",
+      "choices": [],
+      "answer": "15",
+      "compute": "3*100/20",
+      "solution": "20 percent is one fifth of the bill, so the bill is 5 times 3 = 15 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 = 0.20 x bill, bill = 3 / 0.2 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.101Z"
+        }
+      }
+    },
+    {
+      "id": "d83e8d7d-0917-4636-823e-761b04e80833",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A restaurant bill is 20 dollars. Sam leaves a tip of 15 percent of the bill. How many dollars is the tip?",
+      "choices": [],
+      "answer": "3",
+      "compute": "20*15/100",
+      "solution": "15 percent of 20 is 0.15 times 20 = 3 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.15 x 20 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.106Z"
+        }
+      }
+    },
+    {
+      "id": "3ed9d552-9ed2-4f69-b221-f55be9e08450",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Scale drawings and scale factors",
+      "stem": "On a map, 2 centimeters stand for 10 kilometers. A trail is 7 centimeters long on the map. How many kilometers long is the real trail?",
+      "choices": [
+        "35",
+        "1.4",
+        "70",
+        "14"
+      ],
+      "answer": "35",
+      "compute": "7/2*10",
+      "solution": "Each centimeter stands for 5 kilometers, so 7 centimeters stand for 7 times 5 = 35 kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 cm = 5 km; 7 x 5 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.137Z"
+        }
+      }
+    },
+    {
+      "id": "5c61c189-9eff-4302-a2cc-56ac0a63f6d8",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Simple interest",
+      "stem": "A deposit of 400 dollars earns 2 percent simple interest per year. How many dollars of interest does it earn in 3 years?",
+      "choices": [
+        "8",
+        "240",
+        "24",
+        "424"
+      ],
+      "answer": "24",
+      "compute": "400*2/100*3",
+      "solution": "Each year earns 2 percent of 400 = 8 dollars. In 3 years: 3 times 8 = 24 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400 x 0.02 x 3 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.170Z"
+        }
+      }
+    },
+    {
+      "id": "37c27ec3-42a7-428d-a719-60422b560dbc",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Percent increase and decrease",
+      "stem": "A number starts at 50 and increases by 20 percent. What is the new number?",
+      "choices": [
+        "60",
+        "70",
+        "10",
+        "40"
+      ],
+      "answer": "60",
+      "compute": "50*1.2",
+      "solution": "20 percent of 50 is 10, so the new number is 50 + 10 = 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 x 1.2 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.311Z"
+        }
+      }
+    },
+    {
+      "id": "5248f0d4-a880-49f2-bd49-5374d0f4a11f",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Simple interest",
+      "stem": "Dev borrows 500 dollars at 4 percent simple interest per year for 1 year. How many dollars does Dev pay back in all?",
+      "choices": [],
+      "answer": "520",
+      "compute": "500+500*4/100",
+      "solution": "The interest is 4 percent of 500 = 20 dollars. Dev pays back 500 + 20 = 520 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "520",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Interest 500 x 0.04 = 20; repay 520.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.319Z"
+        }
+      }
+    },
+    {
       "id": "95e9961d-e595-4fcb-8b2d-628b4b97154f",
       "topic_id": "NC17.7.RP.3",
       "difficulty": 2,
@@ -6838,6 +7589,713 @@
       }
     },
     {
+      "id": "cbb0dca1-e076-4db1-9586-ad677c6c1ba3",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A pair of shoes costs 60 dollars. The sales tax is 8 percent. What is the total cost with tax, in dollars?",
+      "choices": [],
+      "answer": "64.8",
+      "compute": "60*1.08",
+      "solution": "Tax: 0.08 times 60 = 4.80 dollars. Total: 60 + 4.80 = 64.80 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tax 0.08 x 60 = 4.80; total 64.80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.849Z"
+        }
+      }
+    },
+    {
+      "id": "ffdced38-44f6-4b2c-bc1d-7c1c081d8b76",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A seller earns a commission of 4.5 percent when a car sells. The car sells for 8,000 dollars. How many dollars is the commission?",
+      "choices": [],
+      "answer": "360",
+      "compute": "8000*4.5/100",
+      "solution": "4.5 percent of 8,000 is 0.045 times 8,000 = 360 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "360",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.045 x 8000 = 360.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.853Z"
+        }
+      }
+    },
+    {
+      "id": "bc0822e6-53b1-419a-9b2b-751dab049a5d",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Percent increase and decrease",
+      "stem": "Rent goes from 800 dollars to 860 dollars a month. What is the percent increase?",
+      "choices": [],
+      "answer": "7.5",
+      "compute": "(860-800)/800*100",
+      "solution": "The increase is 60 dollars. 60 divided by the original 800 = 0.075, which is 7.5 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Increase 60; 60/800 = 0.075 = 7.5 percent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.876Z"
+        }
+      }
+    },
+    {
+      "id": "14bdda72-3a8b-4d3f-bb6e-0e2889981309",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A store buys a coat for 50 dollars and sells it for 40 percent more. What is the selling price, in dollars?",
+      "choices": [
+        "70",
+        "20",
+        "90",
+        "55"
+      ],
+      "answer": "70",
+      "compute": "50*1.4",
+      "solution": "40 percent of 50 is 20, so the selling price is 50 + 20 = 70 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40% of 50 = 20; 50 + 20 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.942Z"
+        }
+      }
+    },
+    {
+      "id": "ffb42cfe-8281-4acc-8043-499ccee598c0",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Percent error",
+      "stem": "A sensor reports a reading of 48 when the true value is 40. What is the percent error?",
+      "choices": [],
+      "answer": "20",
+      "compute": "8/40*100",
+      "solution": "The error is 8. 8 divided by the true value 40 = 0.2, which is 20 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|48 - 40| / 40 = 8/40 = 20%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.011Z"
+        }
+      }
+    },
+    {
+      "id": "b6c45e46-2be7-4ca4-99ca-e9e5f93ec915",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A scale drawing uses $\\frac{1}{2}$ inch for every 5 feet. A hall is 2.5 inches long in the drawing. How many feet long is the real hall?",
+      "choices": [],
+      "answer": "25",
+      "compute": "2.5/0.5*5",
+      "solution": "2.5 inches is 5 times $\\frac{1}{2}$ inch, so the real hall is 5 times 5 = 25 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.5 / 0.5 = 5 half-inches; 5 x 5 ft = 25 ft.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.021Z"
+        }
+      }
+    },
+    {
+      "id": "a6dd1369-3204-4f4c-8973-1b95c998ca8a",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the whole from a percent",
+      "stem": "A number is increased by 40 percent and the result is 91. What was the number?",
+      "choices": [
+        "127.4",
+        "51",
+        "65",
+        "54.6"
+      ],
+      "answer": "65",
+      "compute": "91/1.4",
+      "solution": "The result is 140 percent of the number, so the number is 91 divided by 1.4 = 65.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.4n = 91 -> n = 65. Check 65*1.4=91.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.023Z"
+        }
+      }
+    },
+    {
+      "id": "958d02c6-12d2-4385-98e1-ba81d0b5f3e9",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "A savings account earned 12 dollars in interest in one year, which was 1.5 percent of the balance. What was the balance, in dollars?",
+      "choices": [],
+      "answer": "800",
+      "compute": "12*100/1.5",
+      "solution": "Balance = 12 divided by 0.015 = 800 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.015 B = 12 -> B = 800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.064Z"
+        }
+      }
+    },
+    {
+      "id": "3f2f87bd-ba15-497d-8d51-06b05d87bdfb",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Simple interest",
+      "stem": "A deposit of 900 dollars at 3 percent simple interest per year has earned 54 dollars of interest. For how many years has it been in the account?",
+      "choices": [],
+      "answer": "2",
+      "compute": "54/(900*3/100)",
+      "solution": "Interest each year: 3 percent of 900 = 27 dollars. 54 divided by 27 = 2 years.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Yearly interest 900 x 0.03 = 27; 54 / 27 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.080Z"
+        }
+      }
+    },
+    {
+      "id": "c58b0785-01a0-4280-a791-5d10c7ef5739",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Percent increase and decrease",
+      "stem": "A town has 3,200 people. Its population grows by 15 percent in one year. What is the new population?",
+      "choices": [],
+      "answer": "3680",
+      "compute": "3200*1.15",
+      "solution": "15 percent of 3,200 is 480, so the new population is 3,200 + 480 = 3,680.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3680",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3200 x 1.15 = 3680.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.082Z"
+        }
+      }
+    },
+    {
+      "id": "949fa1a5-159d-47b0-8d3c-33d5000ed119",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A model bridge is built at a scale of 1 to 50. The real bridge is 120 meters long. How many meters long is the model?",
+      "choices": [
+        "6,000",
+        "0.24",
+        "2.4",
+        "70"
+      ],
+      "answer": "2.4",
+      "compute": "120/50",
+      "solution": "The model is $\\frac{1}{50}$ of the real length: 120 divided by 50 = 2.4 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 / 50 = 2.4 m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.098Z"
+        }
+      }
+    },
+    {
+      "id": "b7abf7c8-7c26-4432-8f07-eee786f6dc27",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Percent increase and decrease",
+      "stem": "A school has 500 students. Enrollment falls by 12 percent. How many students does the school have now?",
+      "choices": [
+        "12",
+        "440",
+        "488",
+        "560"
+      ],
+      "answer": "440",
+      "compute": "500*0.88",
+      "solution": "12 percent of 500 is 60, so the school now has 500 - 60 = 440 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "440",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12% of 500 = 60; 500 - 60 = 440.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.121Z"
+        }
+      }
+    },
+    {
+      "id": "7c82b217-0d39-4593-80ab-4d3fcbef0c8b",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit rates, including fractions",
+      "stem": "A recipe uses $\\frac{3}{4}$ cup of sugar for every 2 cups of flour. How many cups of sugar are needed for 5 cups of flour?",
+      "choices": [],
+      "answer": "1.875",
+      "compute": "(3/4)/2*5",
+      "solution": "Sugar for 1 cup of flour: $\\frac{3}{4}$ divided by 2 = $\\frac{3}{8}$ cup. For 5 cups: 5 times $\\frac{3}{8}$ = $\\frac{15}{8}$ = 1.875 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sugar per cup of flour = (3/4)/2 = 3/8; 5 x 3/8 = 15/8 = 1.875.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.128Z"
+        }
+      }
+    },
+    {
+      "id": "5b126124-487e-4f74-b4f9-fb70d427d849",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Simple interest",
+      "stem": "A loan of 800 dollars charges 5 percent simple interest per year. How many dollars must be paid back in all after 2 years?",
+      "choices": [
+        "80",
+        "840",
+        "800",
+        "880"
+      ],
+      "answer": "880",
+      "compute": "800+800*5/100*2",
+      "solution": "Interest per year: 5 percent of 800 = 40 dollars. In 2 years: 80 dollars. Total: 800 + 80 = 880 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "880",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Interest 800 x 0.05 x 2 = 80; total 880.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.154Z"
+        }
+      }
+    },
+    {
+      "id": "c24c07ef-cf1c-4b30-8132-98ae33699bcd",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit rates, including fractions",
+      "stem": "A car uses 8 gallons of gas to go 224 miles. At that rate, how many gallons does it use to go 350 miles?",
+      "choices": [],
+      "answer": "12.5",
+      "compute": "350/28",
+      "solution": "The car goes 224 divided by 8 = 28 miles per gallon. 350 divided by 28 = 12.5 gallons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "224 / 8 = 28 miles per gallon; 350 / 28 = 12.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.157Z"
+        }
+      }
+    },
+    {
+      "id": "866b648e-267b-49b1-939c-ec809291b567",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "A shop sold 18 of its shirts on Monday. That was 30 percent of all its shirts. How many shirts did the shop have?",
+      "choices": [],
+      "answer": "60",
+      "compute": "18*100/30",
+      "solution": "30 percent of the shirts is 18, so 10 percent is 6 and 100 percent is 60 shirts.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.30 x N = 18, N = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.187Z"
+        }
+      }
+    },
+    {
+      "id": "50233fa7-99ca-4e75-9196-0b29627376e1",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Simple interest",
+      "stem": "Ben deposits 1,200 dollars at 2.5 percent simple interest per year. How many dollars of interest does he earn in 4 years?",
+      "choices": [],
+      "answer": "120",
+      "compute": "1200*2.5/100*4",
+      "solution": "Each year: 2.5 percent of 1,200 = 30 dollars. In 4 years: 4 times 30 = 120 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "I = 1200 x 0.025 x 4 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.247Z"
+        }
+      }
+    },
+    {
+      "id": "fd9c363f-2402-48c7-bf7c-ff29033450e7",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Percent error",
+      "stem": "A student measures a height as 156 centimeters. The true height is 160 centimeters. What is the percent error?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "4/160*100",
+      "solution": "The error is 4 centimeters. 4 divided by the true height 160 = 0.025, which is 2.5 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|156-160|/160 = 4/160 = 0.025 = 2.5%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.257Z"
+        }
+      }
+    },
+    {
+      "id": "2d7fe74e-6727-4e74-aadd-c67b480ab163",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Percent error",
+      "stem": "A cup is measured to hold 260 milliliters. It truly holds 250 milliliters. What is the percent error?",
+      "choices": [
+        "4",
+        "10",
+        "3.8",
+        "96"
+      ],
+      "answer": "4",
+      "compute": "10/250*100",
+      "solution": "The error is 10 milliliters. 10 divided by the true amount 250 = 0.04, which is 4 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|260-250|/250 = 10/250 = 4%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.266Z"
+        }
+      }
+    },
+    {
+      "id": "93afe663-d503-45ec-864b-a7273345e5ef",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "Mia paid 36 dollars for a meal, and that total includes a tip of 20 percent of the bill before the tip. What was the bill before the tip, in dollars?",
+      "choices": [],
+      "answer": "30",
+      "compute": "36/1.2",
+      "solution": "The total is 100 + 20 = 120 percent of the bill. 36 divided by 1.2 = 30 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.2 x bill = 36, bill = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.268Z"
+        }
+      }
+    },
+    {
+      "id": "cf3cca63-2476-4ae5-af9d-fb41d98a8c56",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A rectangle 6 centimeters by 9 centimeters is enlarged so that its 6-centimeter side becomes 24 centimeters. How many centimeters long is the enlarged 9-centimeter side?",
+      "choices": [],
+      "answer": "36",
+      "compute": "9*24/6",
+      "solution": "The scale factor is 24 divided by 6 = 4. The other side becomes 9 times 4 = 36 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scale 24/6 = 4; 9 x 4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.299Z"
+        }
+      }
+    },
+    {
+      "id": "44d09fa0-0f8a-494b-9b7c-3ddb4dbe37f0",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Unit rates, including fractions",
+      "stem": "A hose fills $\\frac{2}{3}$ of a tank in 4 minutes. What fraction of the tank does it fill in 1 minute?",
+      "choices": [
+        "6",
+        "$\\frac{1}{6}$",
+        "$\\frac{8}{3}$",
+        "$\\frac{3}{8}$"
+      ],
+      "answer": "$\\frac{1}{6}$",
+      "compute": null,
+      "solution": "Divide the fraction of the tank by the minutes: $\\frac{2}{3}$ divided by 4 = $\\frac{2}{12}$ = $\\frac{1}{6}$ of the tank each minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/3) ÷ 4 = 2/12 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.310Z"
+        }
+      }
+    },
+    {
+      "id": "e738a6a1-f087-48f0-b4cf-044fbfeb57bc",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A coat that costs 45 dollars is on sale for 30 percent off. What is the sale price, in dollars?",
+      "choices": [
+        "13.5",
+        "58.5",
+        "15",
+        "31.5"
+      ],
+      "answer": "31.5",
+      "compute": "45*0.7",
+      "solution": "The discount is 30 percent of 45 = 13.50 dollars. The sale price is 45 - 13.50 = 31.50 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 x 0.7 = 31.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.320Z"
+        }
+      }
+    },
+    {
       "id": "44837180-1b22-41fc-bbbc-2945a6090edc",
       "topic_id": "NC17.7.RP.3",
       "difficulty": 3,
@@ -7149,6 +8607,718 @@
           "work": "Reads high by 3% of 250 = 7.5: 257.5.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:08.355Z"
+        }
+      }
+    },
+    {
+      "id": "66ffa28e-6ca7-4159-a77e-c4e86e4fe201",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit rates, including fractions",
+      "stem": "Mia walks 6 miles in 2 hours. Raj walks 9 miles in 4 hours. Both walk at steady speeds. How many miles has Raj walked by the time Mia has walked 15 miles?",
+      "choices": [],
+      "answer": "11.25",
+      "compute": "15/3*(9/4)",
+      "solution": "Mia walks 3 miles per hour, so 15 miles takes 5 hours. Raj walks 9 divided by 4 = 2.25 miles per hour, so in 5 hours he walks 11.25 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mia 3 mph: 15 miles takes 5 h. Raj 9/4 = 2.25 mph; 2.25 x 5 = 11.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.760Z"
+        }
+      }
+    },
+    {
+      "id": "5ef5a4f7-c908-42ea-9821-054e465ddbd3",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Scale drawings and scale factors",
+      "stem": "Which scale is equivalent to 1 inch to 4 feet?",
+      "choices": [
+        "4 inches to 8 feet",
+        "1 inch to 48 feet",
+        "2 inches to 6 feet",
+        "3 inches to 12 feet"
+      ],
+      "answer": "3 inches to 12 feet",
+      "compute": null,
+      "solution": "Multiplying both sides of 1 inch to 4 feet by 3 gives 3 inches to 12 feet. The other scales do not keep 4 feet for each inch.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 inches to 12 feet",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1:4 scales to 3:12. Others are 1:48, 1:2, 1:3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.853Z"
+        }
+      }
+    },
+    {
+      "id": "61b77bba-e656-4346-86c4-34a9acff0108",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Unit rates, including fractions",
+      "stem": "A recipe uses $\\frac{3}{4}$ cup of oil for each $1\\frac{1}{2}$ cups of flour. How many cups of oil are used for each 1 cup of flour?",
+      "choices": [
+        "$\\frac{9}{8}$",
+        "2",
+        "$\\frac{1}{2}$",
+        "$\\frac{3}{8}$"
+      ],
+      "answer": "$\\frac{1}{2}$",
+      "compute": null,
+      "solution": "Divide the oil by the flour: $\\frac{3}{4}$ divided by $\\frac{3}{2}$ = $\\frac{3}{4}$ times $\\frac{2}{3}$ = $\\frac{1}{2}$ cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/4) / (3/2) = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.897Z"
+        }
+      }
+    },
+    {
+      "id": "1b2f25a5-1be7-4bf4-a8ad-46e567949704",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Simple interest",
+      "stem": "Account A holds 600 dollars at 4 percent simple interest per year. Account B holds 800 dollars at 2.5 percent simple interest per year. After 3 years, how many more dollars of interest has Account A earned than Account B?",
+      "choices": [],
+      "answer": "12",
+      "compute": "600*4/100*3-800*2.5/100*3",
+      "solution": "Account A: 24 dollars a year, 72 in 3 years. Account B: 20 dollars a year, 60 in 3 years. The difference is 12 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 600 x 0.04 x 3 = 72. B: 800 x 0.025 x 3 = 60. 72 - 60 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.941Z"
+        }
+      }
+    },
+    {
+      "id": "64aba3f1-b311-4add-8ca2-5eb1864e1c11",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "A store marks up a sweater by 40 percent to a selling price of 98 dollars. How many dollars did the store pay for it?",
+      "choices": [],
+      "answer": "70",
+      "compute": "98/1.4",
+      "solution": "The selling price is 140 percent of the cost: 98 divided by 1.4 = 70 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cost c: 1.4c = 98 -> c = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.025Z"
+        }
+      }
+    },
+    {
+      "id": "4ac02ecc-7b35-487c-8dde-3c8eed20107f",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Percent increase and decrease",
+      "stem": "A stock costs 80 dollars. Its price falls by 20 percent and then rises by 25 percent. What is its final price, in dollars?",
+      "choices": [],
+      "answer": "80",
+      "compute": "80*0.8*1.25",
+      "solution": "After the fall: 80 times 0.8 = 64 dollars. After the rise: 64 times 1.25 = 80 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 x 0.8 = 64; 64 x 1.25 = 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.028Z"
+        }
+      }
+    },
+    {
+      "id": "a2a2398a-594e-45ed-9df8-ba20e6d8e303",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Percent increase and decrease",
+      "stem": "A shirt's price rises from 25 dollars to 35 dollars. A coat's price rises from 120 dollars to 150 dollars. By how many percentage points is the shirt's percent increase greater than the coat's?",
+      "choices": [],
+      "answer": "15",
+      "compute": "(35-25)/25*100-(150-120)/120*100",
+      "solution": "Shirt: 10 divided by 25 = 40 percent. Coat: 30 divided by 120 = 25 percent. The difference is 15 percentage points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Shirt: 10/25 = 40%. Coat: 30/120 = 25%. 40 - 25 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.044Z"
+        }
+      }
+    },
+    {
+      "id": "558fccbe-b337-4730-8557-eaf143c5a1ff",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A salesperson earns 8 percent commission on the first 5,000 dollars of sales and 10 percent on any sales above 5,000 dollars. Sales are 7,500 dollars. How many dollars is the commission?",
+      "choices": [
+        "650",
+        "750",
+        "600",
+        "400"
+      ],
+      "answer": "650",
+      "compute": "5000*8/100+2500*10/100",
+      "solution": "First 5,000 dollars: 0.08 times 5,000 = 400. The other 2,500 dollars: 0.10 times 2,500 = 250. Total: 650 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "650",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.08 x 5000 = 400; 0.10 x 2500 = 250; total 650.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.065Z"
+        }
+      }
+    },
+    {
+      "id": "f3b4c66e-22b3-41ae-a5a2-39f465687a34",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Simple interest",
+      "stem": "A loan charges 4 percent simple interest per year. After 18 months the interest owed is 90 dollars. How many dollars were borrowed?",
+      "choices": [],
+      "answer": "1500",
+      "compute": "90/(4/100*1.5)",
+      "solution": "18 months is 1.5 years. Interest = amount times 0.04 times 1.5 = 0.06 times amount, so the amount is 90 divided by 0.06 = 1,500 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "I = P x 0.04 x 1.5 = 0.06P = 90 -> P = 1500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.092Z"
+        }
+      }
+    },
+    {
+      "id": "61c6e8b8-b784-40eb-b85c-b26804bf5671",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "Store A sells a lamp with a regular price of 80 dollars for 25 percent off. Store B sells the same lamp with a regular price of 70 dollars for 15 dollars off. Which store has the lower price, and by how many dollars?",
+      "choices": [
+        "Store A, by 5 dollars",
+        "Store B, by 5 dollars",
+        "Store B, by 10 dollars",
+        "Store A, by 10 dollars"
+      ],
+      "answer": "Store B, by 5 dollars",
+      "compute": null,
+      "solution": "Store A: 80 - 20 = 60 dollars. Store B: 70 - 15 = 55 dollars. Store B is lower by 5 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Store B, by 5 dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 80 x 0.75 = 60. B: 70 - 15 = 55. B lower by 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.114Z"
+        }
+      }
+    },
+    {
+      "id": "bd51f893-b5f3-4a9e-9377-65ec7ded0ae3",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Scale drawings and scale factors",
+      "stem": "On a map, $\\frac{3}{4}$ inch stands for 15 miles. Two cities are 4.5 inches apart on the map. How many miles apart are they?",
+      "choices": [],
+      "answer": "90",
+      "compute": "4.5/(3/4)*15",
+      "solution": "4.5 divided by $\\frac{3}{4}$ = 6 groups of $\\frac{3}{4}$ inch, and each group is 15 miles: 6 times 15 = 90 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.5 / 0.75 = 6 groups; 6 x 15 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.135Z"
+        }
+      }
+    },
+    {
+      "id": "60d4cade-df57-4d7f-a008-6d802231e878",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Simple interest",
+      "stem": "After 3 years of 6 percent simple interest per year, an account holds 1,180 dollars in all. How many dollars were first deposited?",
+      "choices": [
+        "1,000",
+        "1,109.2",
+        "1,162",
+        "1,392.4"
+      ],
+      "answer": "1,000",
+      "compute": "1180/1.18",
+      "solution": "Three years at 6 percent adds 18 percent, so 1,180 is 118 percent of the deposit. 1,180 divided by 1.18 = 1,000 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P(1 + 0.06 x 3) = 1180, 1.18P = 1180, P = 1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.137Z"
+        }
+      }
+    },
+    {
+      "id": "959f976f-7da3-4251-87b9-0467be9a1fc3",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A tower is 36 meters tall. In one scale drawing 1 centimeter stands for 8 meters. In another 1 centimeter stands for 12 meters. How many centimeters taller is the tower in the first drawing than in the second?",
+      "choices": [
+        "4.5",
+        "3",
+        "1.5",
+        "0.5"
+      ],
+      "answer": "1.5",
+      "compute": "36/8-36/12",
+      "solution": "First drawing: 36 divided by 8 = 4.5 centimeters. Second drawing: 36 divided by 12 = 3 centimeters. The difference is 1.5 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/8 = 4.5 cm; 36/12 = 3 cm; difference 1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.148Z"
+        }
+      }
+    },
+    {
+      "id": "7ece819a-d93a-40d4-8d90-0c516cbee111",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit rates, including fractions",
+      "stem": "A painter paints $\\frac{2}{5}$ of a fence in $1\\frac{1}{2}$ hours. At that rate, how many hours does it take to paint the whole fence?",
+      "choices": [],
+      "answer": "3.75",
+      "compute": "1.5/(2/5)",
+      "solution": "Time for the whole fence: $1\\frac{1}{2}$ divided by $\\frac{2}{5}$ = $\\frac{3}{2}$ times $\\frac{5}{2}$ = $\\frac{15}{4}$ = 3.75 hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Whole = (3/2) / (2/5) = (3/2)(5/2) = 15/4 = 3.75 hours.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.161Z"
+        }
+      }
+    },
+    {
+      "id": "aed5f3f6-ba0d-4bfd-b043-ce20fd9559b8",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Scale drawings and scale factors",
+      "stem": "A photo 10 centimeters wide and 15 centimeters tall is enlarged so that its taller side is 24 centimeters. How many centimeters wide is the enlarged photo?",
+      "choices": [],
+      "answer": "16",
+      "compute": "10*24/15",
+      "solution": "The scale factor is 24 divided by 15 = 1.6. The width becomes 10 times 1.6 = 16 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scale 24/15 = 1.6; width 10 x 1.6 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.163Z"
+        }
+      }
+    },
+    {
+      "id": "19d5e2f5-88ca-4e64-a5e5-33bc83aaafc6",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Percent increase and decrease",
+      "stem": "A town's population grows 10 percent one year and then 10 percent the next year. What is the total percent increase over the two years?",
+      "choices": [
+        "20",
+        "11",
+        "21",
+        "10"
+      ],
+      "answer": "21",
+      "compute": "(1.1*1.1-1)*100",
+      "solution": "Each year multiplies by 1.1, so two years multiply by 1.1 times 1.1 = 1.21, which is a 21 percent increase.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.1 x 1.1 = 1.21, so 21% increase.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.220Z"
+        }
+      }
+    },
+    {
+      "id": "f3e51029-ac40-41e9-b43f-be8e8d8dfc34",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "Four friends split a restaurant bill of 60 dollars equally after adding a service charge of 20 percent of the bill. How many dollars does each friend pay?",
+      "choices": [],
+      "answer": "18",
+      "compute": "60*1.2/4",
+      "solution": "Service charge: 12 dollars. Total: 72 dollars. Each of 4 friends pays 72 divided by 4 = 18 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Charge 0.2 x 60 = 12; total 72; 72 ÷ 4 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.265Z"
+        }
+      }
+    },
+    {
+      "id": "02a10834-cd64-461d-849d-02744cb4b3de",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the whole from a percent",
+      "stem": "A town's population fell by 8 percent and is now 4,600. What was the population before the fall?",
+      "choices": [
+        "4,968",
+        "4,232",
+        "5,152",
+        "5,000"
+      ],
+      "answer": "5,000",
+      "compute": "4600/0.92",
+      "solution": "The new population is 92 percent of the old one. 4,600 divided by 0.92 = 5,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.92 x P = 4600, P = 5000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.279Z"
+        }
+      }
+    },
+    {
+      "id": "863c1b3a-0045-4ebf-8123-b522fac1583e",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A laptop costs 900 dollars. It is 20 percent off, and then a sales tax of 6 percent of the sale price is added. What is the final cost, in dollars?",
+      "choices": [],
+      "answer": "763.2",
+      "compute": "900*0.8*1.06",
+      "solution": "Sale price: 900 times 0.8 = 720 dollars. Tax: 6 percent of 720 = 43.20. Final cost: 720 + 43.20 = 763.20 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "763.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "900 x 0.8 = 720; 720 x 1.06 = 763.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.283Z"
+        }
+      }
+    },
+    {
+      "id": "dd0cd884-ec7d-4287-8264-ae712a6ec640",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Percent error",
+      "stem": "Measurement A reads 84 when the true value is 80. Measurement B reads 156 when the true value is 150. By how many percentage points is the percent error of A greater than that of B?",
+      "choices": [],
+      "answer": "1",
+      "compute": "4/80*100-6/150*100",
+      "solution": "A: 4 divided by 80 = 5 percent. B: 6 divided by 150 = 4 percent. The difference is 1 percentage point.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 4/80 = 5%. B: 6/150 = 4%. Difference 1 point.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.288Z"
+        }
+      }
+    },
+    {
+      "id": "56fb6c2f-37ae-4fda-839d-95819efc41c5",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Percent of a quantity (tax, tip, discount, markup, commission)",
+      "stem": "A meal costs 40 dollars before tax. A tax of 8 percent of the meal's cost is added, and a tip of 15 percent of the meal's cost is also added. What is the total, in dollars?",
+      "choices": [],
+      "answer": "49.2",
+      "compute": "40*(1+0.08+0.15)",
+      "solution": "Tax: 3.20 dollars. Tip: 6 dollars. Total: 40 + 3.20 + 6 = 49.20 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tax 3.20, tip 6.00; 40 + 3.20 + 6 = 49.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.300Z"
+        }
+      }
+    },
+    {
+      "id": "8e99d580-f616-4378-9022-dcf079a6bb97",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Percent error",
+      "stem": "A ruler reading of 38 centimeters has a percent error of 5 percent, and the reading is smaller than the true length. What is the true length, in centimeters?",
+      "choices": [
+        "39.9",
+        "40",
+        "36.1",
+        "43"
+      ],
+      "answer": "40",
+      "compute": "38/0.95",
+      "solution": "The reading is 95 percent of the true length, so the true length is 38 divided by 0.95 = 40 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reading is 5% below true: 38 = 0.95T, T = 40. (36.1 would be true value below reading.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.316Z"
+        }
+      }
+    },
+    {
+      "id": "a5f91a30-e930-4292-affd-1ff00873be22",
+      "topic_id": "NC17.7.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the whole from a percent",
+      "stem": "A price including an 8 percent sales tax is 54 dollars. What was the price before tax, in dollars?",
+      "choices": [],
+      "answer": "50",
+      "compute": "54/1.08",
+      "solution": "The total is 108 percent of the price before tax: 54 divided by 1.08 = 50 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.08 x P = 54, P = 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.325Z"
         }
       }
     },

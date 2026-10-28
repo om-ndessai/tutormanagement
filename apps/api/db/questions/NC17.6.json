@@ -1034,6 +1034,40 @@
       }
     },
     {
+      "id": "3fdac309-13c9-41e4-96a0-782f45f7132e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio language",
+      "stem": "In a bag, the ratio of red marbles to blue marbles is 3:5. Which sentence says the same thing?",
+      "choices": [
+        "For every 3 red marbles there are 5 blue marbles",
+        "For every 5 red marbles there are 3 blue marbles",
+        "Red marbles make up 3 out of every 5 marbles",
+        "For every 3 red marbles there are 8 blue marbles"
+      ],
+      "answer": "For every 3 red marbles there are 5 blue marbles",
+      "compute": null,
+      "solution": "In 3:5 the first number is red and the second is blue, so there are 5 blue marbles for every 3 red ones. Red marbles are 3 out of every 8, not 3 out of every 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "For every 3 red marbles there are 5 blue marbles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:5 red to blue = for every 3 red, 5 blue.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.183Z"
+        }
+      }
+    },
+    {
       "id": "deca7b56-fcf2-4f0b-b794-5460bde51855",
       "topic_id": "NC17.6.RP.1",
       "difficulty": 2,
@@ -6481,6 +6515,728 @@
       }
     },
     {
+      "id": "d4b2061e-ce23-43ce-bbf9-1905e94cbb75",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "The ratio 15 to 9 is written in a ratio table. Which row shows the same ratio in the smallest whole numbers?",
+      "choices": [
+        "3 to 5",
+        "5 to 3",
+        "5 to 1",
+        "3 to 1"
+      ],
+      "answer": "5 to 3",
+      "compute": null,
+      "solution": "Divide both numbers by 3: 15 divided by 3 is 5 and 9 divided by 3 is 3, so 5 to 3. Switching the order or dividing the two numbers by different amounts changes the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 to 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF of 15 and 9 is 3: 5 to 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.726Z"
+        }
+      }
+    },
+    {
+      "id": "f427b291-f9a8-473a-9f76-45d2440459c2",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare ratios and rates",
+      "stem": "Which pair of ratios is equivalent?",
+      "choices": [
+        "2 to 5 and 4 to 7",
+        "2 to 5 and 6 to 10",
+        "2 to 5 and 6 to 15",
+        "2 to 5 and 5 to 2"
+      ],
+      "answer": "2 to 5 and 6 to 15",
+      "compute": null,
+      "solution": "Multiplying both numbers of 2 to 5 by 3 gives 6 to 15. Adding 2 to both numbers (4 to 7) or reversing the order does not give an equivalent ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 to 5 and 6 to 15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 to 15 = 3 x (2 to 5). Others are not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.726Z"
+        }
+      }
+    },
+    {
+      "id": "7aac90c5-1ee7-41ea-86a7-805182a2d947",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A hose fills 5 buckets in 20 minutes at a steady rate. How many minutes does it take to fill 1 bucket?",
+      "choices": [
+        "0.25",
+        "15",
+        "4",
+        "100"
+      ],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "Divide 20 minutes by 5 buckets: 20 divided by 5 = 4 minutes for 1 bucket.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 5 = 4 minutes per bucket.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.727Z"
+        }
+      }
+    },
+    {
+      "id": "258b49dd-d389-45db-9db6-68842eaaa46f",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "A bag has red beads and blue beads. For every 1 red bead there are 3 blue beads. There are 12 beads in all. How many are blue?",
+      "choices": [],
+      "answer": "9",
+      "compute": "12/4*3",
+      "solution": "Each group has 1 + 3 = 4 beads, and 12 divided by 4 = 3 groups. Blue beads: 3 groups times 3 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 3 = 4 beads per group; 12/4 = 3 groups; blue 3 x 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.753Z"
+        }
+      }
+    },
+    {
+      "id": "f6ea9867-0ee1-4c19-9527-47463f311e81",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "A table shows the cost of tickets. 4 tickets cost 20 dollars and 8 tickets cost 40 dollars. Using the same ratio, how many dollars do 12 tickets cost?",
+      "choices": [],
+      "answer": "60",
+      "compute": "12*20/4",
+      "solution": "4 tickets cost 20 dollars, so 12 tickets (3 times as many) cost 3 times 20 = 60 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 dollars per ticket; 12 x 5 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.757Z"
+        }
+      }
+    },
+    {
+      "id": "b171e4a2-41cd-4893-9a43-f7c02515457f",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A trip takes 28 days. There are 7 days in 1 week. How many weeks is that?",
+      "choices": [],
+      "answer": "4",
+      "compute": "28/7",
+      "solution": "Divide the days by 7 days per week: 28 divided by 7 = 4 weeks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 / 7 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.759Z"
+        }
+      }
+    },
+    {
+      "id": "d4934a50-f007-4e3b-8612-28c2846cde44",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "Shop A sells 6 notebooks for 9 dollars. Shop B sells 4 notebooks for 8 dollars. How many dollars less does 1 notebook cost at Shop A than at Shop B?",
+      "choices": [],
+      "answer": "0.5",
+      "compute": "8/4-9/6",
+      "solution": "Shop A: 9 divided by 6 = 1.5 dollars each. Shop B: 8 divided by 4 = 2 dollars each. The difference is 0.5 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 9/6 = 1.50; B: 8/4 = 2.00; difference 0.50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.761Z"
+        }
+      }
+    },
+    {
+      "id": "79c244c6-e489-4159-9e3c-47f5086e06c0",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "One row of a ratio table is 5 to 2. Which pair could be another row of the same table?",
+      "choices": [
+        "10 to 4",
+        "7 to 4",
+        "10 to 7",
+        "5 to 4"
+      ],
+      "answer": "10 to 4",
+      "compute": null,
+      "solution": "Doubling both numbers in 5 to 2 gives 10 to 4. Adding the same number to both (7 to 4, 10 to 7) does not keep the ratio, and 5 to 4 changes only one number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 to 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 to 2 doubled is 10 to 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.765Z"
+        }
+      }
+    },
+    {
+      "id": "22527713-f31f-4024-9ad8-6ecd91af1238",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "A fruit bowl has apples and pears in the ratio 2 to 3. There are 6 apples. How many pears are in the bowl?",
+      "choices": [],
+      "answer": "9",
+      "compute": "6/2*3",
+      "solution": "6 apples is 3 groups of 2, so there are 3 groups of 3 pears = 9 pears.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 apples = 3 x 2, so pears = 3 x 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.772Z"
+        }
+      }
+    },
+    {
+      "id": "12bf7ada-edfd-409d-8383-479f47c09f75",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Graphs of value pairs",
+      "stem": "The points (1, 9), (2, 18) and (3, 27) are on a graph that shows (hours worked, dollars earned). How many dollars does the graph show for 5 hours?",
+      "choices": [],
+      "answer": "45",
+      "compute": "5*9",
+      "solution": "Each hour earns 9 dollars, so 5 hours earn 5 times 9 = 45 dollars. The point is (5, 45).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 dollars per hour; 5 x 9 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.773Z"
+        }
+      }
+    },
+    {
+      "id": "63abb700-4816-4e12-ab87-165e8ff21651",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A van travels 45 miles in 3 hours at a steady speed. How many miles does it travel in 1 hour?",
+      "choices": [
+        "135",
+        "42",
+        "48",
+        "15"
+      ],
+      "answer": "15",
+      "compute": "45/3",
+      "solution": "Divide the miles by the hours: 45 divided by 3 = 15 miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 / 3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.794Z"
+        }
+      }
+    },
+    {
+      "id": "dd80d404-1ce3-4d6d-908b-7bffb1b157a4",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Graphs of value pairs",
+      "stem": "On a graph of (days, pages read), the straight line through (0, 0) also passes through the point (4, 12). The point (1, ?) is on the same line. What number is the ?",
+      "choices": [],
+      "answer": "3",
+      "compute": "12/4",
+      "solution": "Dividing both numbers of (4, 12) by 4 gives (1, 3), so the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Line through origin and (4,12): y = 3x; at x = 1, y = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.807Z"
+        }
+      }
+    },
+    {
+      "id": "97b99a85-7d39-4931-b3f7-11bc24c5d3a6",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A baker uses 20 eggs to make 5 identical cakes. How many eggs does 1 cake need?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "Divide the eggs by the cakes: 20 divided by 5 = 4 eggs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 / 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.823Z"
+        }
+      }
+    },
+    {
+      "id": "9e24511f-5bc2-4968-ab77-6800de3237cb",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "Each row of a table shows a number of bags and the number of apples in them. 1 bag has 6 apples, 2 bags have 12 apples and 3 bags have 18 apples. How many apples are in 5 bags?",
+      "choices": [],
+      "answer": "30",
+      "compute": "5*6",
+      "solution": "Each bag has 6 apples, so 5 bags have 5 times 6 = 30 apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 per bag; 5 x 6 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.830Z"
+        }
+      }
+    },
+    {
+      "id": "b50ce7da-9437-4454-88dc-5bff7b5bddfb",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A fence is 6 yards long. Each yard is 3 feet. How long is the fence in feet?",
+      "choices": [],
+      "answer": "18",
+      "compute": "6*3",
+      "solution": "There are 3 feet in each yard, so 6 yards is 6 times 3 = 18 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 3 = 18 feet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.834Z"
+        }
+      }
+    },
+    {
+      "id": "cf22d707-6d3a-4282-957d-a10e25d26deb",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare ratios and rates",
+      "stem": "Pack A has 2 pens and costs 4 dollars. Pack B has 3 pens and costs 9 dollars. Which pack costs less for each pen, and how much?",
+      "choices": [
+        "Pack B, at 2 dollars per pen",
+        "Pack A, at 2 dollars per pen",
+        "Pack A, at 3 dollars per pen",
+        "Pack B, at 3 dollars per pen"
+      ],
+      "answer": "Pack A, at 2 dollars per pen",
+      "compute": null,
+      "solution": "Pack A: 4 divided by 2 = 2 dollars per pen. Pack B: 9 divided by 3 = 3 dollars per pen. Pack A is cheaper per pen.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Pack A, at 2 dollars per pen",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 4/2 = 2 per pen; B: 9/3 = 3 per pen. A is cheaper at 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.842Z"
+        }
+      }
+    },
+    {
+      "id": "7c2c6f01-8561-4bce-b56e-075b43f1352f",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A pack of 8 juice boxes costs 4 dollars. How many dollars does 1 juice box cost?",
+      "choices": [],
+      "answer": "0.5",
+      "compute": "4/8",
+      "solution": "Divide the cost by the number of boxes: 4 divided by 8 = 0.5 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 / 8 = 0.5 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.874Z"
+        }
+      }
+    },
+    {
+      "id": "6d0f5b67-870f-4a2f-a53d-03f956b51335",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A bag of flour has a mass of 3 kilograms. There are 1,000 grams in 1 kilogram. What is the mass in grams?",
+      "choices": [
+        "3,000",
+        "300",
+        "30",
+        "0.003"
+      ],
+      "answer": "3,000",
+      "compute": "3*1000",
+      "solution": "Multiply by 1,000 grams per kilogram: 3 times 1,000 = 3,000 grams.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 1000 = 3000 g.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.913Z"
+        }
+      }
+    },
+    {
+      "id": "80022236-7b18-41b0-a6b3-8f74d679cacc",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A ribbon is 24 inches long. There are 12 inches in 1 foot. How many feet long is the ribbon?",
+      "choices": [
+        "12",
+        "2",
+        "288",
+        "36"
+      ],
+      "answer": "2",
+      "compute": "24/12",
+      "solution": "Divide the inches by 12 inches per foot: 24 divided by 12 = 2 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 / 12 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.923Z"
+        }
+      }
+    },
+    {
+      "id": "a4630a1a-297e-48aa-b776-daf2bfaf8d1a",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Graphs of value pairs",
+      "stem": "A graph of a ratio relationship is a straight line through (0, 0). Which two points could both be on it?",
+      "choices": [
+        "(2, 3) and (4, 5)",
+        "(2, 3) and (3, 4)",
+        "(2, 3) and (6, 6)",
+        "(2, 3) and (4, 6)"
+      ],
+      "answer": "(2, 3) and (4, 6)",
+      "compute": null,
+      "solution": "From (2, 3) to (4, 6) both numbers double, so the ratio stays the same. In the other pairs the second number is not 1.5 times the first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(2, 3) and (4, 6)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Through origin means y/x constant. 3/2 = 1.5; (4,6): 6/4 = 1.5. Others: 1, 4/3, 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.952Z"
+        }
+      }
+    },
+    {
+      "id": "7ff5f23f-1db0-4caf-9eca-7af1cd9bc79a",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Graphs of value pairs",
+      "stem": "On a graph of (cups of juice, scoops of mix), the point (1, 6) is on the graph. What does this point tell you?",
+      "choices": [
+        "1 scoop of mix goes with 6 cups of juice",
+        "6 cups of juice go with 6 scoops of mix",
+        "1 cup of juice goes with 6 scoops of mix",
+        "Every cup of juice goes with 1 scoop of mix"
+      ],
+      "answer": "1 cup of juice goes with 6 scoops of mix",
+      "compute": null,
+      "solution": "The first number is cups of juice and the second is scoops of mix, so (1, 6) says 1 cup of juice goes with 6 scoops of mix.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 cup of juice goes with 6 scoops of mix",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Point (x, y) = (cups of juice, scoops of mix) = (1, 6): 1 cup of juice with 6 scoops of mix.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.955Z"
+        }
+      }
+    },
+    {
+      "id": "15dc6383-0b7a-4a82-ae80-abc4e3264fd8",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "A team has 3 players for every 1 coach. There are 5 coaches. How many players are there?",
+      "choices": [
+        "15",
+        "8",
+        "2",
+        "20"
+      ],
+      "answer": "15",
+      "compute": "5*3",
+      "solution": "Each coach goes with 3 players, so 5 coaches go with 5 times 3 = 15 players.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 players x 5 coaches = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.964Z"
+        }
+      }
+    },
+    {
+      "id": "41d42bb0-5963-48d4-9683-b686a06c5a11",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "Kim runs 12 laps in 6 minutes. Ray runs 15 laps in 5 minutes. Both run at steady rates. How many more laps per minute does Ray run than Kim?",
+      "choices": [],
+      "answer": "1",
+      "compute": "15/5-12/6",
+      "solution": "Kim runs 12 divided by 6 = 2 laps per minute and Ray runs 15 divided by 5 = 3 laps per minute. The difference is 1 lap per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Kim 12/6 = 2, Ray 15/5 = 3; 3 - 2 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.968Z"
+        }
+      }
+    },
+    {
       "id": "1f7f84a9-3b4c-434d-ac08-ec1c6ac97c9e",
       "topic_id": "NC17.6.RP.3",
       "difficulty": 2,
@@ -6796,6 +7552,723 @@
       }
     },
     {
+      "id": "90d2077e-3a85-4720-bed0-8913321a3434",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "In a band the ratio of flutes to drums is 7 to 2. There are 36 flutes and drums in all. How many are drums?",
+      "choices": [
+        "28",
+        "18",
+        "9",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "36/9*2",
+      "solution": "Each group has 7 + 2 = 9 instruments, and 36 divided by 9 = 4 groups. Drums: 4 times 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 2 = 9 parts; 36/9 = 4 each; drums 2 x 4 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.716Z"
+        }
+      }
+    },
+    {
+      "id": "6b31720d-42c5-423f-ac88-63bbe4ee9ff7",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A recipe needs 48 ounces of water. There are 8 ounces in 1 cup. How many cups of water does the recipe need?",
+      "choices": [
+        "384",
+        "40",
+        "56",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "48/8",
+      "solution": "Divide the ounces by 8 ounces per cup: 48 divided by 8 = 6 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 / 8 = 6 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.725Z"
+        }
+      }
+    },
+    {
+      "id": "6f78b309-4108-4dae-a335-bded828321bb",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Measurement conversions with ratios",
+      "stem": "Which length is equal to 2.4 meters? (1 meter = 100 centimeters)",
+      "choices": [
+        "240 centimeters",
+        "24 centimeters",
+        "2,400 centimeters",
+        "0.024 centimeters"
+      ],
+      "answer": "240 centimeters",
+      "compute": null,
+      "solution": "Multiply by 100 centimeters per meter: 2.4 times 100 = 240 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "240 centimeters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4 x 100 = 240 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.775Z"
+        }
+      }
+    },
+    {
+      "id": "1433dabf-30e3-4f5c-be5a-5409f1086c9b",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "A trail mix has nuts and raisins in the ratio 3 to 2 by mass. A bag holds 50 grams of the mix. How many grams of the bag are raisins?",
+      "choices": [],
+      "answer": "20",
+      "compute": "50/5*2",
+      "solution": "Each group has 3 + 2 = 5 grams, and 50 divided by 5 = 10 groups. Raisins: 10 times 2 = 20 grams.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 parts, 10 g each; raisins 2 x 10 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.777Z"
+        }
+      }
+    },
+    {
+      "id": "d090db70-7e55-446b-8061-c9f2a7101141",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "A ratio table has the rows 2 to 7, 4 to 14 and 6 to 21. Which rule fits every row?",
+      "choices": [
+        "The second number is 5 more than the first number",
+        "The second number is 3 times the first number",
+        "The second number is 7 times the first number",
+        "The second number is 3.5 times the first number"
+      ],
+      "answer": "The second number is 3.5 times the first number",
+      "compute": null,
+      "solution": "7 divided by 2 = 3.5, 14 divided by 4 = 3.5 and 21 divided by 6 = 3.5. Adding 5 works for the first row only (4 + 5 is 9, not 14).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The second number is 3.5 times the first number",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/2 = 3.5, 14/4 = 3.5, 21/6 = 3.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.786Z"
+        }
+      }
+    },
+    {
+      "id": "bd8458ec-93f2-4bc4-b151-88ccecf5b199",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A 30-ounce bottle of soap costs 4.20 dollars. What is the price per ounce, in dollars?",
+      "choices": [],
+      "answer": "0.14",
+      "compute": "4.2/30",
+      "solution": "Divide the price by the ounces: 4.20 divided by 30 = 0.14 dollars per ounce.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.20 / 30 = 0.14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.786Z"
+        }
+      }
+    },
+    {
+      "id": "777c03ff-b84c-443d-b96b-517b84d4f121",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A hose gives 6 liters of water each minute. There are 1,000 milliliters in 1 liter. How many milliliters of water does it give each minute?",
+      "choices": [],
+      "answer": "6000",
+      "compute": "6*1000",
+      "solution": "Multiply by 1,000 milliliters per liter: 6 times 1,000 = 6,000 milliliters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 1000 = 6000 mL.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.807Z"
+        }
+      }
+    },
+    {
+      "id": "d0c8c7f2-97ae-4fc1-9b6f-c9ff7868628c",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "Maya starts a ratio table with 5 to 8 and writes more rows: 10 to 16, 15 to 24, 20 to 30 and 25 to 40. Which row is not equivalent to 5 to 8?",
+      "choices": [
+        "20 to 30",
+        "10 to 16",
+        "15 to 24",
+        "25 to 40"
+      ],
+      "answer": "20 to 30",
+      "compute": null,
+      "solution": "Multiplying 5 to 8 by 4 gives 20 to 32, not 20 to 30. The rows 10 to 16, 15 to 24 and 25 to 40 come from multiplying by 2, 3 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20 to 30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5:8 x4 = 20:32, not 20:30. Others: 10:16, 15:24, 25:40 equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.809Z"
+        }
+      }
+    },
+    {
+      "id": "30a5f12d-b217-4728-a9a3-2cc564d9b07e",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Graphs of value pairs",
+      "stem": "Which list of (x, y) points would lie on a straight line through (0, 0)?",
+      "choices": [
+        "(1, 3), (2, 5), (4, 9)",
+        "(1, 3), (2, 4), (3, 5)",
+        "(1, 3), (2, 6), (4, 12)",
+        "(2, 3), (4, 5), (6, 7)"
+      ],
+      "answer": "(1, 3), (2, 6), (4, 12)",
+      "compute": null,
+      "solution": "In (1, 3), (2, 6), (4, 12) each y is 3 times x, so the points are in one ratio. In the other lists y divided by x changes from point to point.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(1, 3), (2, 6), (4, 12)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1,3),(2,6),(4,12): y = 3x, proportional. Others not (y/x not constant).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.809Z"
+        }
+      }
+    },
+    {
+      "id": "a947d5e7-4ff0-4471-98cd-547baad6733a",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "Lena makes lemonade with a fixed recipe: 4 lemons make 6 cups, and 10 lemons make 15 cups. How many lemons make 21 cups?",
+      "choices": [],
+      "answer": "14",
+      "compute": "21*4/6",
+      "solution": "Every 2 lemons make 3 cups. 21 cups is 7 groups of 3 cups, so it takes 7 times 2 = 14 lemons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5 cups per lemon (6/4, 15/10); 21 / 1.5 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.844Z"
+        }
+      }
+    },
+    {
+      "id": "f724135b-6d39-4461-96a4-9bdceddbe524",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Graphs of value pairs",
+      "stem": "A graph of (kilograms of apples, dollars) is a straight line through (0, 0) and contains the point (3, 12). Which point is not on the graph?",
+      "choices": [
+        "(5, 20)",
+        "(4, 15)",
+        "(2, 8)",
+        "(6, 24)"
+      ],
+      "answer": "(4, 15)",
+      "compute": null,
+      "solution": "Each kilogram costs 12 divided by 3 = 4 dollars. The point (4, 15) would need 16 dollars for 4 kilograms, so it is not on the graph.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(4, 15)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate 12/3 = 4 dollars per kg, y = 4x. (6,24),(2,8),(5,20) fit; 4 x 4 = 16 not 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.848Z"
+        }
+      }
+    },
+    {
+      "id": "74f6b1b4-08c0-44d4-96f4-bab268dedb2a",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Graphs of value pairs",
+      "stem": "A ratio relationship is graphed as (hours, dollars). The graph contains the point (8, 20). How many dollars does the graph show for 1 hour?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "20/8",
+      "solution": "Divide both numbers of (8, 20) by 8 to get (1, 2.5). The graph shows 2.5 dollars for 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate 20/8 = 2.5 dollars per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.856Z"
+        }
+      }
+    },
+    {
+      "id": "972cbc38-4c21-4383-bf82-7f40c05e1896",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare ratios and rates",
+      "stem": "Each mix lists cups of juice to cups of water. Which mix tastes the most like juice?",
+      "choices": [
+        "2 to 3",
+        "5 to 8",
+        "3 to 5",
+        "7 to 12"
+      ],
+      "answer": "2 to 3",
+      "compute": null,
+      "solution": "Find the juice for 1 cup of water: 2/3 is about 0.67, 5/8 = 0.625, 3/5 = 0.6 and 7/12 is about 0.58. The mix 2 to 3 has the most juice for each cup of water.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 to 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Juice:water as fraction: 2/3=.667, 7/12=.583, 5/8=.625, 3/5=.6. Highest 2 to 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.861Z"
+        }
+      }
+    },
+    {
+      "id": "030224a2-ba8a-426d-a581-5d97dfeee4a2",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Graphs of value pairs",
+      "stem": "A graph of (minutes, laps) is a straight line through (0, 0). It contains the points (6, 2) and (12, 4). How many laps does the graph show for 15 minutes?",
+      "choices": [],
+      "answer": "5",
+      "compute": "15*2/6",
+      "solution": "The graph shows 2 laps for every 6 minutes. 15 minutes is 2.5 times 6 minutes, so 2.5 times 2 = 5 laps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate 2/6 = 1/3 lap per minute; 15/3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.931Z"
+        }
+      }
+    },
+    {
+      "id": "0e1c5964-90e7-4c69-ae08-1937101ceb42",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A printer prints 270 pages in 6 minutes at a steady rate. How many pages does it print in 1 minute?",
+      "choices": [
+        "264",
+        "45",
+        "1,620",
+        "276"
+      ],
+      "answer": "45",
+      "compute": "270/6",
+      "solution": "Divide the pages by the minutes: 270 divided by 6 = 45 pages per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "270 / 6 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.956Z"
+        }
+      }
+    },
+    {
+      "id": "6f80dbaa-86ef-4d32-b852-ab7dd99ddc4d",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit ratio and unit rate",
+      "stem": "Lena pays 7.50 dollars for 2.5 pounds of grapes. How many dollars does 1 pound cost?",
+      "choices": [],
+      "answer": "3",
+      "compute": "7.5/2.5",
+      "solution": "Divide the cost by the pounds: 7.5 divided by 2.5 = 3 dollars per pound.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.50 / 2.5 = 3.00.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.961Z"
+        }
+      }
+    },
+    {
+      "id": "52ecceec-8776-4d82-9684-e0e897935763",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "Two rows of a ratio table are 45 to 30 and ? to 10. What number is the ?",
+      "choices": [],
+      "answer": "15",
+      "compute": "45/3",
+      "solution": "The second number went from 30 to 10, which is divided by 3. Divide 45 by 3 to get 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 / 10 = 3, so 45 / 3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.974Z"
+        }
+      }
+    },
+    {
+      "id": "94a5a017-3e91-4551-9b48-b708305fb9ef",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "A class has boys and girls in the ratio 5 to 6. There are 15 boys. How many students are in the class?",
+      "choices": [],
+      "answer": "33",
+      "compute": "15/5*11",
+      "solution": "15 boys is 3 groups of 5, so there are 3 groups of 6 = 18 girls. Total: 15 + 18 = 33 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 boys / 5 = 3 per part; girls 6 x 3 = 18; total 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.999Z"
+        }
+      }
+    },
+    {
+      "id": "57110117-38f9-46bf-b5da-51a5381728ff",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "Car A goes 150 miles on 6 gallons of gas. Car B goes 210 miles on 10 gallons. How many more miles per gallon does Car A get than Car B?",
+      "choices": [],
+      "answer": "4",
+      "compute": "150/6-210/10",
+      "solution": "Car A: 150 divided by 6 = 25 miles per gallon. Car B: 210 divided by 10 = 21 miles per gallon. The difference is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 150/6 = 25 mpg. B: 210/10 = 21 mpg. 25 - 21 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.166Z"
+        }
+      }
+    },
+    {
+      "id": "9a932a57-cb58-4ff8-a7a3-e7d7782826cf",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "Recipe A uses 2 cups of juice for every 3 cups of soda. Recipe B uses 3 cups of juice for every 4 cups of soda. For 12 cups of soda, how many more cups of juice does Recipe B use than Recipe A?",
+      "choices": [],
+      "answer": "1",
+      "compute": "12/4*3-12/3*2",
+      "solution": "Recipe A: 12 cups of soda is 4 groups of 3, so 4 times 2 = 8 cups of juice. Recipe B: 3 groups of 4, so 3 times 3 = 9 cups of juice. The difference is 1 cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 2/3 x 12 = 8 juice; B: 3/4 x 12 = 9 juice; 9 - 8 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.242Z"
+        }
+      }
+    },
+    {
+      "id": "eb230f8f-ec43-4c06-b3ba-386d7386cac7",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A cake recipe uses 10 cups of flour and 4 cups of sugar. How many cups of flour are used for each cup of sugar?",
+      "choices": [
+        "0.4",
+        "6",
+        "2.5",
+        "40"
+      ],
+      "answer": "2.5",
+      "compute": "10/4",
+      "solution": "Divide the flour by the sugar: 10 divided by 4 = 2.5 cups of flour for 1 cup of sugar. Dividing the other way (0.4) gives sugar for each cup of flour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 ÷ 4 = 2.5 cups flour per cup sugar.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.255Z"
+        }
+      }
+    },
+    {
+      "id": "a6533d31-53df-463e-81da-08ddf2c0151e",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A rope is 3.5 yards long. There are 3 feet in 1 yard. How many feet long is the rope?",
+      "choices": [],
+      "answer": "10.5",
+      "compute": "3.5*3",
+      "solution": "Multiply by 3 feet per yard: 3.5 times 3 = 10.5 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.5 x 3 = 10.5 feet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.260Z"
+        }
+      }
+    },
+    {
+      "id": "7f479e0b-857a-4eb8-aa11-0e3fe314fd11",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "A store sells 8 ounces of nuts for 2.00 dollars, 12 ounces for 2.64 dollars and 20 ounces for 4.60 dollars. What is the lowest price per ounce, in dollars?",
+      "choices": [],
+      "answer": "0.22",
+      "compute": "2.64/12",
+      "solution": "Prices per ounce: 2.00 divided by 8 = 0.25, 2.64 divided by 12 = 0.22 and 4.60 divided by 20 = 0.23. The lowest is 0.22 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.00/8 = 0.25; 2.64/12 = 0.22; 4.60/20 = 0.23. Lowest 0.22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.267Z"
+        }
+      }
+    },
+    {
       "id": "609824a0-0a6e-409e-a3b3-f527acf85aeb",
       "topic_id": "NC17.6.RP.3",
       "difficulty": 3,
@@ -7107,6 +8580,694 @@
           "work": "9/2 = 4.5; 4.5 x 5 = 22.5.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:08.318Z"
+        }
+      }
+    },
+    {
+      "id": "1b34f0d7-ae6f-4f3b-a7e9-84e8e72b0db6",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Graphs of value pairs",
+      "stem": "A straight line passes through (0, 0), (2, 30) and (4, 60) on a graph of (hours, miles). Which statement is true?",
+      "choices": [
+        "The point (3, 40) is on the line",
+        "The point (6, 80) is on the line",
+        "The point (1, 30) is on the line",
+        "The point (3, 45) is on the line"
+      ],
+      "answer": "The point (3, 45) is on the line",
+      "compute": null,
+      "solution": "The line has 30 divided by 2 = 15 miles per hour, so y is 15 times x. At 3 hours that is 45 miles, so (3, 45) is on the line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The point (3, 45) is on the line",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate 30/2 = 15 miles per hour, y = 15x. (3,45) fits; (1,30), (6,80), (3,40) do not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.872Z"
+        }
+      }
+    },
+    {
+      "id": "4fe613ca-429a-4853-a540-6763bfc5baf9",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A cyclist rides at a steady 18 kilometers per hour. How many meters does the cyclist ride in 1 minute? (1 kilometer = 1,000 meters; 1 hour = 60 minutes)",
+      "choices": [],
+      "answer": "300",
+      "compute": "18*1000/60",
+      "solution": "18 kilometers = 18,000 meters in 60 minutes. 18,000 divided by 60 = 300 meters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 km/h = 18000 m per 60 min = 300 m per min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.890Z"
+        }
+      }
+    },
+    {
+      "id": "158ccc75-aae5-4b44-bbcb-0b1dc1a76054",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Unit ratio and unit rate",
+      "stem": "Movie tickets cost 6.50 dollars each. How many tickets can Jo buy with 52 dollars?",
+      "choices": [
+        "58.5",
+        "338",
+        "0.125",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "52/6.5",
+      "solution": "Divide the money by the price of one ticket: 52 divided by 6.5 = 8 tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52 / 6.5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.932Z"
+        }
+      }
+    },
+    {
+      "id": "ae7b4d2e-cb78-4502-9efb-195269370272",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare ratios and rates",
+      "stem": "Four pairs of friends biked at steady speeds. In which pair did both friends bike at the same speed?",
+      "choices": [
+        "Ann: 21 miles in 3 hours; Ben: 30 miles in 5 hours",
+        "Ann: 21 miles in 3 hours; Ben: 42 miles in 7 hours",
+        "Ann: 21 miles in 3 hours; Ben: 35 miles in 5 hours",
+        "Ann: 21 miles in 3 hours; Ben: 28 miles in 3 hours"
+      ],
+      "answer": "Ann: 21 miles in 3 hours; Ben: 35 miles in 5 hours",
+      "compute": null,
+      "solution": "Ann bikes 21 divided by 3 = 7 miles per hour. Ben with 35 miles in 5 hours also bikes 7 miles per hour. The other Bens bike 6, 6 and about 9.3 miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ann: 21 miles in 3 hours; Ben: 35 miles in 5 hours",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ann 7 mph. Ben: 28/3 = 9.33, 35/5 = 7, 42/7 = 6, 30/5 = 6. Only 35 in 5 matches.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.997Z"
+        }
+      }
+    },
+    {
+      "id": "e5058b14-464e-4647-9b08-885fd570d4aa",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "Ravi and Sue share stickers in the ratio 4 to 5. Sue gets 6 more stickers than Ravi. How many stickers are shared in all?",
+      "choices": [
+        "54",
+        "30",
+        "24",
+        "15"
+      ],
+      "answer": "54",
+      "compute": "6*9",
+      "solution": "The ratio differs by 1 part, which is 6 stickers. In all there are 4 + 5 = 9 parts, so 9 times 6 = 54 stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference is 1 part = 6, so 9 parts = 54 (24 and 30).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.998Z"
+        }
+      }
+    },
+    {
+      "id": "c876ac9f-a3c8-4a58-a2ab-b5843cf963d0",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A machine puts 45 boxes on a belt each minute. How many boxes does it put on the belt in 2 hours? (1 hour = 60 minutes)",
+      "choices": [],
+      "answer": "5400",
+      "compute": "45*120",
+      "solution": "2 hours = 120 minutes. 45 boxes per minute times 120 minutes = 5,400 boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 h = 120 min; 45 x 120 = 5400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.022Z"
+        }
+      }
+    },
+    {
+      "id": "43840db4-cdb2-4653-8ac7-06a397460e59",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A copy machine prints 24 pages in 40 seconds at a steady rate. How many pages does it print in 1 minute?",
+      "choices": [
+        "0.6",
+        "64",
+        "36",
+        "960"
+      ],
+      "answer": "36",
+      "compute": "24/40*60",
+      "solution": "24 divided by 40 = 0.6 pages per second, and 1 minute is 60 seconds, so 0.6 times 60 = 36 pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24/40 = 0.6 pages per second; 60 s x 0.6 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.027Z"
+        }
+      }
+    },
+    {
+      "id": "bc1489fd-533f-4475-b1ab-5fcae45da6bc",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "Bag A holds 8 ounces of rice and costs 3.20 dollars. Bag B holds 12 ounces and costs 4.20 dollars. How many cents less per ounce does Bag B cost than Bag A?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(3.2/8-4.2/12)*100",
+      "solution": "Bag A: 3.20 divided by 8 = 0.40 dollars per ounce. Bag B: 4.20 divided by 12 = 0.35 dollars per ounce. The difference is 0.05 dollars = 5 cents.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 320/8 = 40 cents/oz. B: 420/12 = 35 cents/oz. 40 - 35 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.043Z"
+        }
+      }
+    },
+    {
+      "id": "ffe9767f-cf8c-4d64-90ea-3da22f92b3b7",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Graphs of value pairs",
+      "stem": "The point (4, 10) is on the graph of a ratio relationship. Which point is not on the same graph?",
+      "choices": [
+        "(10, 25)",
+        "(6, 15)",
+        "(8, 18)",
+        "(2, 5)"
+      ],
+      "answer": "(8, 18)",
+      "compute": null,
+      "solution": "On this graph y is 2.5 times x. (10, 25), (6, 15) and (2, 5) fit, but 2.5 times 8 = 20, not 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(8, 18)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ratio y/x = 10/4 = 2.5. (10,25),(2,5),(6,15) fit; (8,18): 8 x 2.5 = 20, not 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.058Z"
+        }
+      }
+    },
+    {
+      "id": "1ce260ad-1fce-4ca3-ba60-10e3cdf1686f",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit ratio and unit rate",
+      "stem": "Cheese costs 7.65 dollars for 1.7 pounds. How many dollars does 1 pound cost?",
+      "choices": [],
+      "answer": "4.5",
+      "compute": "7.65/1.7",
+      "solution": "Divide the price by the pounds: 7.65 divided by 1.7 = 4.5 dollars per pound.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.65 / 1.7 = 4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.069Z"
+        }
+      }
+    },
+    {
+      "id": "b321f09d-639e-42b3-9370-8603d0d1c8a1",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Measurement conversions with ratios",
+      "stem": "Which length is the longest? (1 meter = 100 centimeters = 1,000 millimeters; 1 kilometer = 1,000 meters)",
+      "choices": [
+        "0.0021 kilometers",
+        "2 meters",
+        "180 centimeters",
+        "1,900 millimeters"
+      ],
+      "answer": "0.0021 kilometers",
+      "compute": null,
+      "solution": "In meters: 2 meters is 2, 180 centimeters is 1.8, 1,900 millimeters is 1.9 and 0.0021 kilometers is 2.1. The longest is 0.0021 kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.0021 kilometers",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.0021 km = 2.1 m; 180 cm = 1.8 m; 1900 mm = 1.9 m; 2 m. Longest is 2.1 m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.076Z"
+        }
+      }
+    },
+    {
+      "id": "bf0bc8b9-c7ad-40c4-9739-29dfe98fbb92",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare ratios and rates",
+      "stem": "Ken bikes 12 miles in 48 minutes. Lu bikes 9 miles in 30 minutes. Both bike at steady speeds. How many more miles per hour does Lu go than Ken?",
+      "choices": [],
+      "answer": "3",
+      "compute": "9/30*60-12/48*60",
+      "solution": "Ken: 12 miles in 48 minutes is 15 miles per hour. Lu: 9 miles in 30 minutes is 18 miles per hour. The difference is 3 miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ken: 12 mi / 0.8 h = 15 mph. Lu: 9 / 0.5 = 18 mph. 18 - 15 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.081Z"
+        }
+      }
+    },
+    {
+      "id": "0f1ce1d2-3662-43c0-9023-a0870866bd01",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "A pump moves 18 liters of water every 4 minutes. Using a ratio table, how many minutes does it take to move 63 liters?",
+      "choices": [],
+      "answer": "14",
+      "compute": "63/18*4",
+      "solution": "63 liters is 3.5 times 18 liters, so the time is 3.5 times 4 minutes = 14 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63 / 18 = 3.5 groups; 3.5 x 4 = 14 min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.091Z"
+        }
+      }
+    },
+    {
+      "id": "c1a75998-d3ca-46c8-bde8-2b05d642edc7",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Measurement conversions with ratios",
+      "stem": "A runner finishes a 5-kilometer race in 25 minutes at a steady pace. How many meters does the runner cover each minute? (1 kilometer = 1,000 meters)",
+      "choices": [
+        "5",
+        "200",
+        "20",
+        "125,000"
+      ],
+      "answer": "200",
+      "compute": "5*1000/25",
+      "solution": "5 kilometers = 5,000 meters. 5,000 divided by 25 minutes = 200 meters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5000 m / 25 min = 200 m per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.096Z"
+        }
+      }
+    },
+    {
+      "id": "47e7063a-1b20-43fc-afaf-163eb4288f81",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "A ratio table has the row 12 to 20. Which is not a way to make another row of the same table?",
+      "choices": [
+        "Divide both numbers by 4 to get 3 to 5",
+        "Add 5 to both numbers to get 17 to 25",
+        "Multiply both numbers by 3 to get 36 to 60",
+        "Halve both numbers to get 6 to 10"
+      ],
+      "answer": "Add 5 to both numbers to get 17 to 25",
+      "compute": null,
+      "solution": "Equivalent rows come from multiplying or dividing both numbers by the same amount. Adding the same number to both changes the ratio: 17 to 25 is not equivalent to 12 to 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 5 to both numbers to get 17 to 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adding 5 does not keep the ratio (17:25 is not 3:5); others are equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.136Z"
+        }
+      }
+    },
+    {
+      "id": "31ceb069-28f1-4095-955c-7552e50b50f5",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "A ratio table has the rows 2 to 3, ? to 12 and 10 to ?. What is the sum of the two missing numbers?",
+      "choices": [],
+      "answer": "23",
+      "compute": "12*2/3+10*3/2",
+      "solution": "From 3 to 12 (times 4), the first missing number is 2 times 4 = 8. From 2 to 10 (times 5), the second is 3 times 5 = 15. The sum is 8 + 15 = 23.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2:3 x4 = 8:12; 2:3 x5 = 10:15. 8 + 15 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.151Z"
+        }
+      }
+    },
+    {
+      "id": "1299368d-bf33-4beb-a017-ccf2572e9d73",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratio tables and equivalent ratios",
+      "stem": "A ratio table has the rows 8 to 14 and 20 to 35. A third row has 21 as its second number. What is its first number?",
+      "choices": [],
+      "answer": "12",
+      "compute": "21*8/14",
+      "solution": "Both rows simplify to 4 to 7. 21 is 3 times 7, so the first number is 3 times 4 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8:14 = 20:35 = 4:7. 21 = 7 x 3, so 4 x 3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.159Z"
+        }
+      }
+    },
+    {
+      "id": "e81c5562-a5fc-4f83-9082-6eb8d2ade3b0",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "At a show the ratio of adults to children is 2 to 7. There are 45 people in all. How many more children than adults are there?",
+      "choices": [],
+      "answer": "25",
+      "compute": "45/9*(7-2)",
+      "solution": "Each group has 2 + 7 = 9 people, and 45 divided by 9 = 5 groups. Adults: 10, children: 35. The difference is 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 parts = 45, part = 5. Adults 10, children 35. 35 - 10 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.167Z"
+        }
+      }
+    },
+    {
+      "id": "07ed55b9-cedb-4115-b5ee-5271caf8bd26",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Part-to-part and part-to-whole ratio problems",
+      "stem": "A bag holds red, blue and green marbles in the ratio 2 to 3 to 5. There are 40 marbles in all. How many are blue?",
+      "choices": [],
+      "answer": "12",
+      "compute": "40/10*3",
+      "solution": "Each group has 2 + 3 + 5 = 10 marbles, and 40 divided by 10 = 4 groups. Blue: 4 times 3 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 parts = 40, part = 4; blue 3 x 4 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.177Z"
+        }
+      }
+    },
+    {
+      "id": "dbec48b3-b88b-40c8-abf0-ea6ce5694de3",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare ratios and rates",
+      "stem": "Runner A runs 90 meters in 12 seconds, Runner B runs 140 meters in 20 seconds and Runner C runs 100 meters in 15 seconds, all at steady speeds. Which runner is fastest, and what is that speed?",
+      "choices": [
+        "Runner B, at 7.5 meters per second",
+        "Runner A, at 7.5 meters per second",
+        "Runner A, at 7 meters per second",
+        "Runner C, at 7 meters per second"
+      ],
+      "answer": "Runner A, at 7.5 meters per second",
+      "compute": null,
+      "solution": "Runner A: 90 divided by 12 = 7.5. Runner B: 140 divided by 20 = 7. Runner C: 100 divided by 15 is about 6.7. Runner A is fastest at 7.5 meters per second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Runner A, at 7.5 meters per second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 90/12 = 7.5. B: 140/20 = 7. C: 100/15 = 6.67. A fastest at 7.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:25.185Z"
+        }
+      }
+    },
+    {
+      "id": "91781fb8-0196-4880-8d8c-d1a8d27ddf22",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit ratio and unit rate",
+      "stem": "A trail runner covers 9 miles in 1.5 hours at a steady pace. At that pace, how many miles does the runner cover in 4 hours?",
+      "choices": [],
+      "answer": "24",
+      "compute": "9/1.5*4",
+      "solution": "Unit rate: 9 divided by 1.5 = 6 miles per hour. In 4 hours: 6 times 4 = 24 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/1.5 = 6 mph; 6 x 4 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.231Z"
+        }
+      }
+    },
+    {
+      "id": "c3c47288-e0a0-4ef0-a56c-dc64a61915eb",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Graphs of value pairs",
+      "stem": "In a graph of (minutes, gallons), Pump A's line goes through (0, 0) and (4, 14). Pump B's line goes through (0, 0) and (5, 20). At 10 minutes, how many more gallons has Pump B moved than Pump A?",
+      "choices": [],
+      "answer": "5",
+      "compute": "20/5*10-14/4*10",
+      "solution": "Pump A moves 14 divided by 4 = 3.5 gallons per minute, so 35 gallons in 10 minutes. Pump B moves 4 gallons per minute, so 40 gallons. The difference is 5 gallons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 14/4 = 3.5 gal/min, 35 at 10 min. B: 20/5 = 4, 40. 40 - 35 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:42.256Z"
         }
       }
     },

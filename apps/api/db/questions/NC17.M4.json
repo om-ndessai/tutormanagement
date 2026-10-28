@@ -3107,6 +3107,40 @@
       }
     },
     {
+      "id": "b18b2f53-95d5-47d6-ae37-4bd796feba88",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Operate with complex numbers",
+      "stem": "Let $z = 1 + 2i$ and $w = 3 - i$. Which is $z^2 - zw$?",
+      "choices": [
+        "$4 - i$",
+        "$-8 + 9i$",
+        "$-4 - i$",
+        "$-8 - i$"
+      ],
+      "answer": "$-8 - i$",
+      "compute": null,
+      "solution": "First, $z^2 = 1 + 4i + 4i^2 = -3 + 4i$. Next, $zw = 3 - i + 6i - 2i^2 = 5 + 5i$. Then $z^2 - zw = (-3 - 5) + (4 - 5)i = -8 - i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-8 - i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "z^2 = 1 + 4i - 4 = -3 + 4i. zw = (1+2i)(3-i) = 3 - i + 6i + 2 = 5 + 5i. z^2 - zw = -8 - i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:12:24.787Z"
+        }
+      }
+    },
+    {
       "id": "4d67d3f7-0f77-4e48-9f06-0a64476fc7c6",
       "topic_id": "NC17.M4.N.2",
       "difficulty": 1,
