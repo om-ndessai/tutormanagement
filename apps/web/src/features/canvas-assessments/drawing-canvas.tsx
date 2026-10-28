@@ -122,6 +122,7 @@ export function DrawingCanvas({
   size = CANVAS_LIMITS,
   penWidth = PEN_WIDTH,
   variant = 'page',
+  testId = 'assessment-canvas',
 }: {
   strokes: readonly CanvasStroke[];
   tool: CanvasTool;
@@ -139,6 +140,8 @@ export function DrawingCanvas({
    * transparent layer of the tutor's red ink over a rendered PDF page.
    */
   variant?: 'page' | 'overlay';
+  /** Phase 54: the Handwriting lab's canvas has its own. */
+  testId?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const live = useRef<{ pointerId: number; points: number[] } | null>(null);
@@ -242,7 +245,7 @@ export function DrawingCanvas({
       ref={canvasRef}
       role="img"
       aria-label={label}
-      data-testid="assessment-canvas"
+      data-testid={testId}
       className={cn(
         // As wide as the page allows, but never taller than the screen leaves room for, so the
         // whole page can be written on without scrolling (a pen cannot scroll and write at once).

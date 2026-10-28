@@ -52,6 +52,7 @@ DROP TABLE IF EXISTS canvas_assessment_files;
 DROP TABLE IF EXISTS canvas_assessments;
 DROP TABLE IF EXISTS question_bank_topics;
 DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS handwriting_samples;
 DROP TABLE IF EXISTS ai_runs;
 DROP TABLE IF EXISTS ai_task_settings;
 DROP TABLE IF EXISTS notification_log;
@@ -1905,6 +1906,28 @@ CREATE TABLE ai_runs (
 
 CREATE INDEX ai_runs_task_time_idx ON ai_runs (task, created_at);
 CREATE INDEX ai_runs_time_idx ON ai_runs (created_at);
+
+-- Phase 54 (AI-13 stage 0): the Handwriting lab's corpus. A line a platform admin
+-- wrote in the lab -- adults' handwriting, never a student's -- with what they say
+-- it says and what the reader made of it, for measuring the reader before any
+-- child's work is read (docs/think-aloud-plan.md). Platform data: no organization.
+-- `strokes` is the line in the canvas's wire format, one stroke per line of text.
+CREATE TABLE handwriting_samples (
+  id                 TEXT PRIMARY KEY,
+  strokes            TEXT NOT NULL,
+  stroke_count       INTEGER NOT NULL CHECK (stroke_count > 0),
+  truth              TEXT NOT NULL,
+  category           TEXT NOT NULL CHECK (category IN ('clear', 'slip', 'messy', 'fraction',
+                       'unfinished', 'column', 'other')),
+  reading            TEXT,
+  reading_status     TEXT CHECK (reading_status IN ('read', 'unreadable')),
+  reading_model      TEXT,
+  matched            INTEGER NOT NULL DEFAULT 0 CHECK (matched IN (0, 1)),
+  written_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+  created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX handwriting_samples_time_idx ON handwriting_samples (created_at);
 
 -- The question bank: platform reference data, like the catalog. One standard
 -- per question. Written by a model, checked by code and by a second model

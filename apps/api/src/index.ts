@@ -24,6 +24,7 @@ import { onboardingRoutes } from './routes/onboarding.js';
 import { logoRoutes, organizationRoutes } from './routes/organization.js';
 import { platformRoutes } from './routes/platform.js';
 import { aiRoutes } from './routes/ai.js';
+import { handwritingRoutes } from './routes/handwriting.js';
 import { questionBankRoutes } from './routes/question-bank.js';
 import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 import { questRoutes } from './routes/quest.js';
@@ -100,6 +101,8 @@ const platformApi = new Hono<AppEnv>()
   // Phase 36: the AI layer and the question bank it writes.
   .route('/ai', aiRoutes)
   .route('/questions', questionBankRoutes)
+  // Phase 54 (AI-13 stage 0): the Handwriting lab -- adults' handwriting only.
+  .route('/handwriting', handwritingRoutes)
   .route('/', platformRoutes);
 
 /**

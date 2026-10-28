@@ -49,6 +49,7 @@ const OUTSIDE: { who: 'admin' | 'platformAdmin'; path: string }[] = [
   { who: 'platformAdmin', path: '/platform/questions/NC26.M1.ANFR.1' },
   { who: 'platformAdmin', path: '/platform/questions/review' },
   { who: 'platformAdmin', path: '/platform/ai' },
+  { who: 'platformAdmin', path: '/platform/handwriting' },
 ];
 for (const width of WIDTHS) {
   for (const { who, path } of [...OUTSIDE, { who: 'admin' as const, path: '/organization' }]) {

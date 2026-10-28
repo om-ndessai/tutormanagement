@@ -26,6 +26,7 @@ import { PlatformActivityPage } from '@/features/platform/platform-activity-page
 import { PlatformAdminsPage } from '@/features/platform/platform-admins-page';
 import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
 import { PlatformShell } from '@/features/platform/platform-shell';
+import { HandwritingLabPage } from '@/features/handwriting-lab/handwriting-lab-page';
 import { AiPage } from '@/features/question-bank/ai-page';
 import { QuestionBankPage } from '@/features/question-bank/question-bank-page';
 import { ReviewPage } from '@/features/question-bank/review-page';
@@ -66,6 +67,7 @@ export function App() {
           <Route path="questions/review" element={<ReviewPage />} />
           <Route path="questions/:topicId" element={<StandardPage />} />
           <Route path="ai" element={<AiPage />} />
+          <Route path="handwriting" element={<HandwritingLabPage />} />
         </Route>
 
         {/* The portal itself runs inside the organization this tab chose. */}

@@ -583,3 +583,19 @@ Phase 53 built 2026-10-25 (web suite 265 passed; mobile smoke 7/7 on iOS and And
 deployed with sign-in on and the invited list; production unchanged (it carries the code, switched off,
 at its next release). Owed by the owner: the test origin on the Google web client, and an iOS OAuth
 client for `com.aimtrue.app.test` before AimTrue-Test can sign in on a phone.
+
+Phase 54: (requested 2026-10-28 by the owner; built on its own branch, `claude/great-turing-em8i3e`, while other work continues on `main`; web and the app; not yet released)
+Towards the think-aloud canvas (roadmap AI-13): "an agentic development environment", and its phase
+one, reading what is written on the canvas and showing what was read in a panel beside it. Plan:
+`docs/think-aloud-plan.md`. Built as AI-13's stage 0, because a child's handwriting cannot go to a
+model until consent for AI processing exists (AG1): a **Handwriting lab** in the platform console
+(`/platform/handwriting`, platform admins only, so every line read is an adult's). The canvas finds
+each line from the gaps in the ink (shared `segmentLines`); a changed line's strokes go to the Worker,
+which draws it as a PNG and has Claude Haiku 5.5 transcribe it blind as LaTeX (task
+`handwriting.read_line`; `runAi` gains pictures, and a tool asked for by name for a model that thinks);
+"I read: …" appears beside the canvas, line by line. Confirming or correcting a reading keeps the line
+as a sample (`handwriting_samples`); `npm run handwriting:eval` re-reads a corpus (the samples, or a
+synthetic hand's lines) through the Worker's own route and scores it; the `think-aloud-reader` skill
+and `docs/think-aloud/reader-log.md` are the loop for improving the reader. Next: stage 1 (hint
+ladders, no AI at run time) and stage 2 (the student's canvas reads, behind `ai_processing` consent,
+with code judging each line), when the owner asks.

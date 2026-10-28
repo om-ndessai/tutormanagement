@@ -77,7 +77,13 @@ the coverage view.
 - **Tasks are a registry, `AI_TASKS` in `packages/shared/src/ai.ts`.** Each has an id, a label, Zod
   schemas for input and output, `child_input` (true when anything a child produced is in it), its
   provider and model, and default caps. Adding an AI feature means adding a task. Phase 36 registers
-  two: `question_bank.draft` and `question_bank.check`.
+  two: `question_bank.draft` and `question_bank.check`. Phase 54 adds a third,
+  `handwriting.read_line` (Claude Haiku 5.5, the Handwriting lab's blind reader, adults only:
+  `docs/think-aloud-plan.md`), and with it two things `runAi` can now do: send **pictures** ahead of
+  the prompt (base64 PNGs the Worker drew itself, so nothing outside it can be smuggled in; a picture
+  cannot be redacted or searched for an SSN, which is why only Worker-drawn ink goes there), and ask
+  for the reply's tool by name in the instructions (`tool_choice: 'auto'`, with a task `effort`)
+  rather than forcing it, for a model that thinks and refuses a forced tool.
 - **Providers.** An allowlist in code (AG3): `anthropic` (Messages API, through AI Gateway when
   `AI_GATEWAY` is set, key as the Worker secret `ANTHROPIC_API_KEY`) and `fake` (deterministic, for
   local and e2e runs, so no test spends money or quota; it writes sums whose blind solve it can

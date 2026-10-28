@@ -119,6 +119,9 @@ export const AUDIT_ACTIONS = [
   // Phase 40: a tutor's review. Never a note or the comment.
   'canvas_assessment.reviewed',
   'canvas_assessment.review_reopened',
+  // Phase 54: the Handwriting lab's samples (platform events). Never what was written.
+  'handwriting.sample_saved',
+  'handwriting.sample_deleted',
   // Phase 42: Question Quest. A tutor's review and a level set; never a
   // student's answer (answers are quest_attempts rows) or a flag's reason.
   'quest.question_approved',
@@ -243,6 +246,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'canvas_assessment.discarded': 'Assessment discarded',
   'canvas_assessment.reviewed': 'Assessment reviewed',
   'canvas_assessment.review_reopened': 'Assessment review reopened',
+  'handwriting.sample_saved': 'Handwriting sample saved',
+  'handwriting.sample_deleted': 'Handwriting sample deleted',
   'quest.question_approved': 'Quest question approved',
   'quest.question_flagged': 'Quest question flagged',
   'quest.level_set': 'Quest level set',

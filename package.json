@@ -44,7 +44,8 @@
     "db:reset:full": "npm run db:reset:full --workspace @tmi/api",
     "seed:scenarios": "node scripts/seed-scenarios.mjs",
     "test:compat": "bash scripts/compat.sh",
-    "test:invite": "node scripts/test-invite.mjs"
+    "test:invite": "node scripts/test-invite.mjs",
+    "handwriting:eval": "node scripts/handwriting-eval.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

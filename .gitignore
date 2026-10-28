@@ -26,3 +26,6 @@ scripts/migrate-tmi/out/
 
 # The backward-compatibility test's databases and logs (scripts/compat.sh).
 .compat/
+
+# Phase 54: the handwriting evaluation's reports and pictures (npm run handwriting:eval).
+.handwriting-eval/

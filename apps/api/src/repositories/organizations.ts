@@ -604,6 +604,7 @@ export async function listPlatformAudit(db: D1Database, limit: number) {
        WHERE a.action LIKE 'organization.%' OR a.action LIKE 'platform_admin.%'
           OR a.action LIKE 'person.%' OR a.action LIKE 'ai.%'
           OR a.action LIKE 'question.%' OR a.action LIKE 'question_bank.%'
+          OR a.action LIKE 'handwriting.%'
        ORDER BY a.created_at DESC
        LIMIT ?`,
     )

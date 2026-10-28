@@ -36,7 +36,9 @@ Beast Academy alone, read through each organization's own list (34), North Carol
 standards in both editions, with each organization's admins choosing what it offers (35), and
 the AI layer with the question bank it writes, in the platform console (36). Phase 38, the
 Assessment menu in beta (answers written on a canvas, a PDF for the tutor), and Phase 40, the tutor's
-review of it online, are built ahead of 37.
+review of it online, are built ahead of 37. Phase 54, the Handwriting lab (AI-13 stage 0: reading
+handwriting line by line, adults only, in the platform console; `docs/think-aloud-plan.md`), is built
+on its own branch and not yet released.
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
@@ -153,6 +155,7 @@ Run from the repo root.
 | `npm run questions:export` | Copy production's APPROVED questions into `apps/api/db/questions/*.json` and regenerate `db/questions.sql` (one read-only SELECT on `tutoring-db`) |
 | `npm run db:studio` | Dump the users table from local D1 |
 | `npm run test:invite -- list\|add <email or pattern>\|add-google <sub>\|remove <…>` | Who may sign in to the test portal (`invited_users` in `tutoring-test-db`, TEST account only) |
+| `npm run handwriting:eval` | Phase 54: re-reads a handwriting corpus through the local Worker's reader and scores it (`--corpus=synthetic\|samples\|<file>`, `--label=`); reports and the pictures of misreads in `.handwriting-eval/`. The `think-aloud-reader` skill is the procedure |
 | `npm run typecheck` | Typecheck all three packages — run this before declaring work done |
 | `npm run smoke` | The smoke test on BOTH clients, locally: the web tests tagged `@smoke`, then the mobile flows tagged `smoke` on the iOS simulator and the Android emulator. `-- web\|mobile\|ios\|android` runs one side. **Run it after any change to the API, the shared contract or the schema** |
 | `npm run build` | Build the SPA into `apps/web/dist` |
@@ -679,6 +682,21 @@ reviewed PDF from the stored strokes and the review -- same page layout, the not
 was -- which the student's whole audience then reads. No scoring yet. An organization's admins set how
 many questions an assessment draws (`canvas_assessment_questions`, 1-25). Phase 39's AI evaluation
 (delayed) needs consent first: it reads a child's handwriting.
+
+**A line of handwriting is read blind, one line at a time, and only an adult's until consent exists**
+(Phase 54, AI-13 stage 0, `docs/think-aloud-plan.md`). The canvas finds its lines from the gaps in the
+ink (`segmentLines`, shared) and sends only a changed line's strokes; the Worker draws that line as a
+PNG (`lib/raster.ts`: the strokes themselves never reach a model) and the `handwriting.read_line` task
+(Claude Haiku 5.5, through `runAi`, which now takes Worker-drawn pictures) transcribes it as LaTeX
+given nothing else: no question, no answer, no other line, so it cannot "correct" a slip. A model only
+reads; code will judge (stage 2). A reading reaches a student only if it is plain maths
+(`isMathReading`). The reader lives in the platform console's Handwriting lab (`/platform/handwriting`,
+`routes/handwriting.ts`), so every line read is a platform admin's; reading a student's canvas is a
+separate `child_input` task, refused until `ai_processing` consent exists (AG1). The lab keeps lines
+as samples (`handwriting_samples`, platform data) and `npm run handwriting:eval` scores the reader
+against them through the Worker's own route: change one thing, measure, record it in
+`docs/think-aloud/reader-log.md` (the `think-aloud-reader` skill). Never tune `normalizeReading` to
+win points, and never put a child's handwriting in a corpus.
 
 **Question Quest (Phase 42) is gamification on the question bank, and its approvals are real.** While
 an organization's `gamify_question_quest` is on (its admins' switch, off by default), a signed-in student

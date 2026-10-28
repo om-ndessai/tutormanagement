@@ -12,7 +12,7 @@ import { z } from 'zod';
 export const AI_PROVIDERS = ['anthropic', 'fake'] as const;
 export type AiProvider = (typeof AI_PROVIDERS)[number];
 
-export const AI_MODELS = ['claude-sonnet-5-5', 'claude-opus-5-5'] as const;
+export const AI_MODELS = ['claude-sonnet-5-5', 'claude-opus-5-5', 'claude-haiku-5-5'] as const;
 export type AiModel = (typeof AI_MODELS)[number];
 
 /**
@@ -23,9 +23,11 @@ export type AiModel = (typeof AI_MODELS)[number];
 export const AI_MODEL_PRICES: Record<AiModel, { input: number; output: number }> = {
   'claude-sonnet-5-5': { input: 3_000_000, output: 15_000_000 },
   'claude-opus-5-5': { input: 5_000_000, output: 25_000_000 },
+  // Phase 54: the handwriting reader. Checked against the pricing table on 2026-10-28.
+  'claude-haiku-5-5': { input: 100_000, output: 500_000 },
 };
 
-export const AI_TASK_IDS = ['question_bank.draft', 'question_bank.check'] as const;
+export const AI_TASK_IDS = ['question_bank.draft', 'question_bank.check', 'handwriting.read_line'] as const;
 export type AiTaskId = (typeof AI_TASK_IDS)[number];
 
 export interface AiTask {
@@ -43,6 +45,14 @@ export interface AiTask {
   /** Defaults, until a platform admin changes them. */
   daily_cap_cents: number;
   monthly_cap_cents: number;
+  /**
+   * How the reply's tool is asked for: `tool` forces it (Phase 36's tasks), `auto` names it in
+   * the instructions instead, for a model that runs with thinking on and refuses a forced tool
+   * (Phase 54). Unset means `tool`.
+   */
+  tool_choice?: 'tool' | 'auto';
+  /** How hard the model thinks, where the model takes it; unset leaves the model's default. */
+  effort?: 'low' | 'medium' | 'high';
 }
 
 export const AI_TASKS: Record<AiTaskId, AiTask> = {
@@ -67,6 +77,22 @@ export const AI_TASKS: Record<AiTaskId, AiTask> = {
     max_tokens: 16_000,
     daily_cap_cents: 500,
     monthly_cap_cents: 2_500,
+  },
+  // Phase 54 (AI-13 stage 0): the Handwriting lab's reader. Adults' handwriting only -- the lab
+  // is the platform console's -- so no child's work is in it; reading a student's canvas will be
+  // its own task, with child_input set, once consent for AI processing exists (AG1).
+  'handwriting.read_line': {
+    id: 'handwriting.read_line',
+    label: 'Read handwriting',
+    description: 'Transcribes one handwritten line of maths from its picture, blind: no question, no answer, no other line.',
+    child_input: false,
+    provider: 'anthropic',
+    model: 'claude-haiku-5-5',
+    max_tokens: 2_000,
+    daily_cap_cents: 100,
+    monthly_cap_cents: 500,
+    tool_choice: 'auto',
+    effort: 'low',
   },
 };
 

@@ -1393,6 +1393,42 @@ BEGIN
 END;
 ```
 
+Phase 54 (the Handwriting lab, AI-13 stage 0, 2026-10-28, `docs/think-aloud-plan.md`) is additive:
+one platform table, the lab's corpus of adults' handwritten lines. No organization owns it and no
+existing row changes; the old Worker never reads it. The reader's task (`handwriting.read_line`)
+needs no row: `ai_task_settings` falls back to its defaults, and `ai_runs.task` is free text. Apply
+after the backup, before `npm run deploy`:
+
+```sql release=phase-54
+-- Phase 54 (AI-13 stage 0): the Handwriting lab's corpus. A line a platform admin
+-- wrote in the lab -- adults' handwriting, never a student's -- with what they say
+-- it says and what the reader made of it, for measuring the reader before any
+-- child's work is read (docs/think-aloud-plan.md). Platform data: no organization.
+-- `strokes` is the line in the canvas's wire format, one stroke per line of text.
+CREATE TABLE handwriting_samples (
+  id                 TEXT PRIMARY KEY,
+  strokes            TEXT NOT NULL,
+  stroke_count       INTEGER NOT NULL CHECK (stroke_count > 0),
+  truth              TEXT NOT NULL,
+  category           TEXT NOT NULL CHECK (category IN ('clear', 'slip', 'messy', 'fraction',
+                       'unfinished', 'column', 'other')),
+  reading            TEXT,
+  reading_status     TEXT CHECK (reading_status IN ('read', 'unreadable')),
+  reading_model      TEXT,
+  matched            INTEGER NOT NULL DEFAULT 0 CHECK (matched IN (0, 1)),
+  written_by_user_id TEXT REFERENCES users (id) ON DELETE SET NULL,
+  created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX handwriting_samples_time_idx ON handwriting_samples (created_at);
+```
+
+Check, read-only:
+
+```bash
+npx wrangler d1 execute tutoring-db --remote --command="SELECT COUNT(*) AS samples FROM handwriting_samples"
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

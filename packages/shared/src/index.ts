@@ -18,6 +18,8 @@ export * from './api.js';
 export * from './ai.js';
 export * from './questions.js';
 export * from './canvas-assessments.js';
+export * from './handwriting.js';
+export * from './handwriting-synthetic.js';
 export * from './quest.js';
 export * from './quest-games.js';
 export * from './home.js';

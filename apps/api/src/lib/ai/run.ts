@@ -47,8 +47,15 @@ export interface RunAiOptions<T> {
   redactNames?: readonly string[];
   /** For a `child_input` task: whether the purpose's parental consent is on file (AG1). */
   consent?: boolean;
+  /**
+   * Phase 54: pictures sent ahead of the prompt, as base64 PNGs. A picture cannot be redacted or
+   * searched for an SSN, so only what the Worker drew itself goes here (a line of ink, cropped).
+   */
+  images?: readonly { media_type: 'image/png'; data: string }[];
   /** What the fake provider answers, locally and in tests. */
   fake: () => unknown;
+  /** The tokens a fake call is counted as, so the caps behave as the real task's would. */
+  fakeTokens?: { input: number; output: number };
 }
 
 export interface RunAiResult<T> {
@@ -91,6 +98,7 @@ async function callAnthropic(
   system: string,
   prompt: string,
   tool: { name: string; description: string; schema: ZodType },
+  images: readonly { media_type: 'image/png'; data: string }[] = [],
 ): Promise<ProviderReply> {
   if (!env.ANTHROPIC_API_KEY) throw new ProviderError('no_api_key', false);
   const base = (env.AI_GATEWAY_URL?.trim() || ANTHROPIC_URL).replace(/\/$/, '');
@@ -107,9 +115,26 @@ async function callAnthropic(
         model: task.model,
         max_tokens: task.max_tokens,
         system,
-        messages: [{ role: 'user', content: prompt }],
+        messages: [
+          {
+            role: 'user',
+            content:
+              images.length === 0
+                ? prompt
+                : [
+                    ...images.map((image) => ({
+                      type: 'image',
+                      source: { type: 'base64', media_type: image.media_type, data: image.data },
+                    })),
+                    { type: 'text', text: prompt },
+                  ],
+          },
+        ],
         tools: [{ name: tool.name, description: tool.description, input_schema: toolSchema(tool.schema) }],
-        tool_choice: { type: 'tool', name: tool.name },
+        // Phase 54: a model that thinks refuses a forced tool; its task names the tool in its
+        // instructions instead, and a reply without the call is unusable (and retried) as before.
+        tool_choice: task.tool_choice === 'auto' ? { type: 'auto' } : { type: 'tool', name: tool.name },
+        ...(task.effort ? { output_config: { effort: task.effort } } : {}),
       }),
       signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
     });
@@ -213,8 +238,12 @@ export async function runAi<T>(env: Env, options: RunAiOptions<T>): Promise<RunA
     try {
       reply =
         provider === 'fake'
-          ? { json: options.fake(), inputTokens: 1_000, outputTokens: 2_000 }
-          : await callAnthropic(env, task, system.text, prompt.text, options.tool);
+          ? {
+              json: options.fake(),
+              inputTokens: options.fakeTokens?.input ?? 1_000,
+              outputTokens: options.fakeTokens?.output ?? 2_000,
+            }
+          : await callAnthropic(env, task, system.text, prompt.text, options.tool, options.images);
     } catch (error) {
       const failure = error instanceof ProviderError ? error : new ProviderError('unexpected', false);
       await record('provider_error', failure.detail);

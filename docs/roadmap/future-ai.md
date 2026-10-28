@@ -585,6 +585,9 @@ the Workers AI free allowance: one short generation per lesson. **Size.** S.
 - **What it builds on.** AI-7's design for the canvas, and the question bank (Phase 36).
 - **The research.** [think-aloud-canvas.md](think-aloud-canvas.md), including why taking audio
   out makes it much more feasible.
+- **Built so far.** Stage 0, as Phase 54 (2026-10-28): the reader, the panel beside the canvas, the
+  Handwriting lab for adults' handwriting and the evaluation loop. See
+  [think-aloud-plan.md](../think-aloud-plan.md).
 
 **Why.**
 - **Feedback on each step is what works.** In VanLehn's review, tutoring systems that respond to
