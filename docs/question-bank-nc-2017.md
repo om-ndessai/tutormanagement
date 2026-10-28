@@ -147,3 +147,104 @@ limit:
 Most have complete drafts waiting for the blind solve. Pass B is then to be finished on the other 357
 standards, the 16 held questions fixed, and the second release made the same way. To resume, read the
 workspace's `B5-STATE.md`.
+
+## Second part (2026-10-28): the 21 missing standards and pass B, on branch `claude/sweet-darwin-s30s5m`
+
+The first part's workspace stayed on the owner's Mac, so a cloud session rebuilt it from that session's
+transcript. The briefs and scripts are now in the repository (`docs/question-bank-workspace/`, with a
+README), so the work can resume anywhere. Same pipeline: Sonnet writers, `lintQuestion`, Opus solving
+blind; only `checked` is kept, nothing approved.
+
+**Done on this branch** (5,311 new questions; every one `checked`):
+- **Pass A on the 21 empty standards**: all 21 now hold questions. NC 2017 has no standard without them.
+- **Pass B** (topping a standard up to about 99) on 72 of the 361 standards, taken round robin over the
+  14 levels, so every level gained.
+- **Repairs**: about 50 questions the blind solver flagged were replaced by new ones on the same standard
+  and difficulty and solved again.
+
+| Level | Standards | At ~99 | Questions before | Questions now |
+| --- | --- | --- | --- | --- |
+| Kindergarten | 23 | 7 | 721 | 1,166 |
+| Grade 1 | 23 | 7 | 758 | 1,169 |
+| Grade 2 | 23 | 5 | 690 | 1,035 |
+| Grade 3 | 20 | 5 | 569 | 944 |
+| Grade 4 | 25 | 6 | 758 | 1,163 |
+| Grade 5 | 17 | 6 | 549 | 924 |
+| Grade 6 | 31 | 5 | 838 | 1,272 |
+| Grade 7 | 23 | 5 | 660 | 1,035 |
+| Grade 8 | 25 | 5 | 750 | 1,095 |
+| NC Math 1 | 41 | 5 | 1,133 | 1,568 |
+| NC Math 2 | 47 | 4 | 1,284 | 1,676 |
+| NC Math 3 | 41 | 4 | 1,071 | 1,495 |
+| NC Math 4 | 10 | 4 | 300 | 575 |
+| Precalculus | 12 | 4 | 359 | 634 |
+
+(The table is as of the last commit that touched it; `node docs/question-bank-workspace/tools/status.mjs`
+gives the current count.)
+
+**Still to do:** pass B on the rest of the standards (`plan-b.mjs` lists them). **The 16 held questions**
+of the first release are not here: their text never left the Mac (`qb3/hold5.json` and `final/`). They
+are not needed for coverage, since pass B fills those standards anyway; fix them there only if wanted.
+
+**New checks.** The blind solvers found LaTeX backslashes lost in the JSON: `"\times"` in a file is a tab
+and "imes", and a JavaScript string drops `\c` from `\circ`. The workspace lint now refuses control
+characters and LaTeX commands without their backslash. Scanning the whole bank found two released
+worked solutions with the fault, fixed here:
+- `83cc96af-54ea-4b18-b472-e4fa91041f7e` (NC17.M2.G-CO.3): "180^circ".
+- `9d90b256-e008-4550-ac6d-54a1053ed04e` (NC26.M1): a form feed where `\frac` began.
+
+## Loading this branch into the database (for the owner, after merging the branches)
+
+This branch changes only `apps/api/db/questions/NC17.*.json` (plus one solution line in `NC26.M1.json`),
+the two generated SQL files, `db/release-questions.mjs` and docs. No schema change, and no code change.
+
+1. **Merge.** `apps/api/db/questions.sql` and `questions-sample.sql` are generated, so every question
+   branch conflicts there. Do not resolve them by hand: take either side, then regenerate once every
+   branch is in (the other branches' new levels must be in `LEVELS` in `db/generate-questions.mjs` first):
+
+   ```bash
+   npm run db:questions:generate --workspace @tmi/api
+   ```
+
+   `npm run typecheck` then confirms the files are current.
+2. **Check locally**, as for any release (CLAUDE.md): `npm run db:reset`, `npm run dev`, the local suite
+   (`e2e/tests/question-bank.spec.ts` lints every question in the repository).
+3. **Write production's INSERTs** for the questions new since the last release tag. This covers every
+   merged branch at once; a question already in production is skipped (`ON CONFLICT (id) DO NOTHING`):
+
+   ```bash
+   node apps/api/db/release-questions.mjs --since=release-20261025 --out=$HOME/aimtrue-question-bank/release
+   ```
+
+   It writes `questions-01.sql`, `questions-02.sql`, … of at most 12,000 questions each. **Load one file a
+   day:** a question is about five rows written (the row, its key and three indexes), and the free plan
+   writes 100,000 rows a day for the whole account, real use included.
+4. **Back up, then load** (from `apps/api`), checking first that a file holds only INSERTs:
+
+   ```bash
+   npx wrangler d1 export tutoring-db --remote --output ~/tmi-portal-backups/tutoring-db-$(date +%F)-pre-questions.sql
+   ```
+
+   ```bash
+   grep -cE '^(UPDATE|DELETE|DROP|ALTER)' $HOME/aimtrue-question-bank/release/questions-01.sql
+   ```
+
+   ```bash
+   npx wrangler d1 execute tutoring-db --remote --file $HOME/aimtrue-question-bank/release/questions-01.sql -y
+   ```
+5. **The two solution fixes**, applied only where nobody has edited or approved the row:
+
+   ```sql
+   UPDATE questions SET solution = replace(solution, '180^circ', '180^\circ')
+   WHERE id = '83cc96af-54ea-4b18-b472-e4fa91041f7e' AND status = 'checked';
+   UPDATE questions SET solution = replace(solution, char(12), '\f')
+   WHERE id = '9d90b256-e008-4550-ac6d-54a1053ed04e' AND status = 'checked';
+   ```
+6. **Then tag the release** (`release-YYYYMMDD`), so the next `--since` starts there.
+
+**Do not run `npm run questions:export` before the load.** It rewrites `db/questions/*.json` from
+production, which would drop every question not yet loaded.
+
+**Size.** `questions.sql` is about 40 MB at 46,000 questions (about 0.85 KB each). GitHub refuses a file
+over 100 MB, which this file reaches at roughly 115,000 questions; if the merged banks approach that,
+split `questions.sql` by curriculum before committing it.
