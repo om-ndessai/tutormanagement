@@ -9633,6 +9633,733 @@
       }
     },
     {
+      "id": "3c9370a2-557a-4dcc-8ba6-50b5dcb2cf92",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-1.5 + 4$?",
+      "choices": [],
+      "answer": "2.5",
+      "compute": "-1.5+4",
+      "solution": "$4 - 1.5 = 2.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1.5 + 4 = 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.993Z"
+        }
+      }
+    },
+    {
+      "id": "b23a57bf-b4a3-4a84-b8d4-c94ef8d09426",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "opposites and zero sums",
+      "stem": "What number does the ? stand for in $\\frac{5}{6} + ? = 0$?",
+      "choices": [
+        "$\\frac{5}{6}$",
+        "$\\frac{6}{5}$",
+        "$-\\frac{6}{5}$",
+        "$-\\frac{5}{6}$"
+      ],
+      "answer": "$-\\frac{5}{6}$",
+      "compute": null,
+      "solution": "The sum of a number and its opposite is 0. The opposite of $\\frac{5}{6}$ is $-\\frac{5}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{5}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Additive inverse of 5/6 is -5/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.997Z"
+        }
+      }
+    },
+    {
+      "id": "efe81670-deb4-40fc-b1b1-852c9024084f",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "What is $-\\frac{3}{10} - \\frac{1}{10}$?",
+      "choices": [],
+      "answer": "-2/5",
+      "compute": "-4/10",
+      "solution": "$-\\frac{3}{10} - \\frac{1}{10} = -\\frac{4}{10} = -\\frac{2}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-4/10 = -2/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.998Z"
+        }
+      }
+    },
+    {
+      "id": "887fb930-7a36-49a7-985c-dbf9f41e0145",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "real-world sums and differences",
+      "stem": "A football team gains 3 yards on one play and loses 5 yards on the next. What is the net change in yards?",
+      "choices": [
+        "2",
+        "-8",
+        "-2",
+        "8"
+      ],
+      "answer": "-2",
+      "compute": "3-5",
+      "solution": "A gain is $+3$ and a loss is $-5$. $3 + (-5) = -2$ yards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "+3 - 5 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.016Z"
+        }
+      }
+    },
+    {
+      "id": "34c58ad3-b4a3-41d6-ab09-c2fe7c5021d4",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add and subtract fractions",
+      "stem": "What is $\\frac{2}{7} - \\frac{5}{7}$?",
+      "choices": [
+        "$-\\frac{3}{7}$",
+        "$\\frac{3}{7}$",
+        "$-\\frac{7}{7}$",
+        "$-\\frac{3}{14}$"
+      ],
+      "answer": "$-\\frac{3}{7}$",
+      "compute": null,
+      "solution": "The denominators match, so subtract the tops: $2 - 5 = -3$. The result is $-\\frac{3}{7}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{3}{7}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/7 - 5/7 = -3/7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.094Z"
+        }
+      }
+    },
+    {
+      "id": "a60bc3bf-f008-4377-88c9-e3f24a222ac5",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-0.6 - 0.7$?",
+      "choices": [],
+      "answer": "-1.3",
+      "compute": "-0.6-0.7",
+      "solution": "Subtracting 0.7 moves 0.7 to the left of $-0.6$: $-0.6 - 0.7 = -1.3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-0.6 - 0.7 = -1.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.113Z"
+        }
+      }
+    },
+    {
+      "id": "81607fec-0281-45c1-bc41-4664f1bf8f5d",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "opposites and zero sums",
+      "stem": "What is the opposite of $-\\frac{3}{4}$?",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "3/4",
+      "solution": "Opposites are the same distance from 0 on opposite sides. The opposite of $-\\frac{3}{4}$ is $\\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Opposite of -3/4 is 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.114Z"
+        }
+      }
+    },
+    {
+      "id": "e5ab59f2-6688-4845-8ec0-2dbd72e5aa18",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "distance between numbers",
+      "stem": "Which expression gives the distance between $-3$ and $8$ on a number line?",
+      "choices": [
+        "$8 - (-3)$",
+        "$8 - 3$",
+        "$-3 + 8$",
+        "$-3 - 8$"
+      ],
+      "answer": "$8 - (-3)$",
+      "compute": null,
+      "solution": "Distance is the larger number minus the smaller: $8 - (-3) = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 - (-3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distance = 8 - (-3) = 11. -3 - 8 = -11 (negative), 8 - 3 = 5, -3 + 8 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.117Z"
+        }
+      }
+    },
+    {
+      "id": "1c2a9b4b-e9b9-4117-a5dc-dcaef7f0b763",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "properties of operations",
+      "stem": "Use pairs of opposites to find $-13 + 6 + 13$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$-13$ and $13$ add to 0, leaving $0 + 6 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-13 + 13 = 0, so the sum is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.123Z"
+        }
+      }
+    },
+    {
+      "id": "ea561938-2de3-4dc5-98b9-49cfd93b2ef9",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add and subtract fractions",
+      "stem": "What is $-\\frac{1}{3} + \\frac{2}{3}$?",
+      "choices": [
+        "$-\\frac{1}{3}$",
+        "$\\frac{1}{3}$",
+        "$-1$",
+        "$\\frac{1}{6}$"
+      ],
+      "answer": "$\\frac{1}{3}$",
+      "compute": null,
+      "solution": "The denominators match: $-1 + 2 = 1$, so the sum is $\\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1/3 + 2/3 = 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.133Z"
+        }
+      }
+    },
+    {
+      "id": "6e5e3027-dabe-4751-bd57-08d4b7c8e721",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add and subtract integers",
+      "stem": "Which move on a number line shows $-2 - 5$?",
+      "choices": [
+        "Start at $-2$ and move 5 units right",
+        "Start at $2$ and move 5 units left",
+        "Start at $-5$ and move 2 units left",
+        "Start at $-2$ and move 5 units left"
+      ],
+      "answer": "Start at $-2$ and move 5 units left",
+      "compute": null,
+      "solution": "Subtracting 5 means moving 5 units to the left of the starting number $-2$. This lands on $-7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Start at $-2$ and move 5 units left",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2 - 5: start at -2, subtracting 5 moves 5 left to -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.211Z"
+        }
+      }
+    },
+    {
+      "id": "f9a53f3e-4b39-4bd7-ac3f-38d43986b49c",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add and subtract decimals",
+      "stem": "What is $0.8 - 1.3$?",
+      "choices": [
+        "0.5",
+        "-2.1",
+        "-0.5",
+        "2.1"
+      ],
+      "answer": "-0.5",
+      "compute": "0.8-1.3",
+      "solution": "$1.3 - 0.8 = 0.5$, and since 1.3 is the larger number being subtracted, the answer is $-0.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.8 - 1.3 = -0.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.261Z"
+        }
+      }
+    },
+    {
+      "id": "6570d58b-479b-4fd1-95ac-462afad0a0cf",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "distance between numbers",
+      "stem": "What is the distance between $-6$ and $-1$ on a number line?",
+      "choices": [],
+      "answer": "5",
+      "compute": "-1-(-6)",
+      "solution": "Subtract the smaller from the larger: $-1 - (-6) = -1 + 6 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|-1-(-6)| = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.303Z"
+        }
+      }
+    },
+    {
+      "id": "6d71865a-c09b-400d-b8e1-804e81631d4f",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add and subtract integers",
+      "stem": "What is $5 - 11 + 2$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "5-11+2",
+      "solution": "$5 - 11 = -6$, and $-6 + 2 = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-11=-6, -6+2=-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.305Z"
+        }
+      }
+    },
+    {
+      "id": "57e16517-8a0f-481d-8a17-dd98cb46639e",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "properties of operations",
+      "stem": "Which equation is an example of the identity property of addition?",
+      "choices": [
+        "$-7 + 0 = -7$",
+        "$-7 + 7 = 0$",
+        "$-7 + 4 = 4 + (-7)$",
+        "$(-7 + 4) + 2 = -7 + (4 + 2)$"
+      ],
+      "answer": "$-7 + 0 = -7$",
+      "compute": null,
+      "solution": "The identity property says adding 0 leaves a number unchanged: $-7 + 0 = -7$. The others show the inverse, commutative and associative properties.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-7 + 0 = -7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adding 0 leaves the number: -7+0=-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.338Z"
+        }
+      }
+    },
+    {
+      "id": "457122c9-ae28-490e-afb1-cd541e574d21",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "real-world sums and differences",
+      "stem": "Ravi's account balance is 25 dollars. He pays a bill of 40 dollars. A negative balance means he owes money. What is his balance now, in dollars?",
+      "choices": [],
+      "answer": "-15",
+      "compute": "25-40",
+      "solution": "$25 - 40 = -15$. He owes 15 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 - 40 = -15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.381Z"
+        }
+      }
+    },
+    {
+      "id": "9f9fb6d2-3ae6-4db9-86de-8c1718ca4efb",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add and subtract integers",
+      "stem": "Subtracting $-8$ is the same as adding which number?",
+      "choices": [
+        "$-8$",
+        "$-\\frac{1}{8}$",
+        "$8$",
+        "$0$"
+      ],
+      "answer": "$8$",
+      "compute": null,
+      "solution": "Subtracting a number is the same as adding its opposite. The opposite of $-8$ is $8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a - (-8) = a + 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.430Z"
+        }
+      }
+    },
+    {
+      "id": "92a65c09-84c9-4667-b734-d5ff01d24acb",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add and subtract integers",
+      "stem": "Start at $-4$ on a number line and move 9 units to the right. What number do you land on?",
+      "choices": [],
+      "answer": "5",
+      "compute": "-4+9",
+      "solution": "Moving right adds. $-4 + 9 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-4 + 9 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.432Z"
+        }
+      }
+    },
+    {
+      "id": "2c87a3a2-e1c5-46d9-9f6f-998f219ab9ae",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "properties of operations",
+      "stem": "What number does the ? stand for in $(-8 + 3) + 5 = -8 + (3 + ?)$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The associative property lets us regroup without changing the numbers. The ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left: -5 + 5 = 0. Right: -8 + 3 + ? = 0 -> ? = 5 (associative property).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.433Z"
+        }
+      }
+    },
+    {
+      "id": "10488bff-84f5-4ae7-adf2-08b2fcec2aa3",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "real-world sums and differences",
+      "stem": "In a parking garage, the ground floor is 0, the floors below it are $-1$, $-2$, and so on, and the floors above it are 1, 2, 3. An elevator starts on floor 3 and goes down 5 floors. Which floor does it stop on?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "3-5",
+      "solution": "$3 - 5 = -2$, so it stops on floor $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 - 5 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.446Z"
+        }
+      }
+    },
+    {
+      "id": "73cb452d-0176-4d39-b52e-d84bf2f2dd7e",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "real-world sums and differences",
+      "stem": "The temperature is 1 degree Celsius. It falls 6 degrees. What is the new temperature, in degrees Celsius?",
+      "choices": [
+        "5",
+        "7",
+        "-7",
+        "-5"
+      ],
+      "answer": "-5",
+      "compute": "1-6",
+      "solution": "$1 - 6 = -5$ degrees Celsius.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 - 6 = -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.459Z"
+        }
+      }
+    },
+    {
+      "id": "13f43460-a343-49e5-a525-86e141d7595e",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add and subtract integers",
+      "stem": "What is $12 + (-20)$?",
+      "choices": [
+        "8",
+        "-8",
+        "-32",
+        "32"
+      ],
+      "answer": "-8",
+      "compute": "12-20",
+      "solution": "Adding $-20$ is the same as subtracting 20. $12 - 20 = -8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + (-20) = -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.530Z"
+        }
+      }
+    },
+    {
+      "id": "b20fb149-f9d0-4d9d-9f41-56aed06fbc71",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "distance between numbers",
+      "stem": "A bird is 10 meters above sea level and a fish is 7 meters below sea level. How far apart are they, in meters?",
+      "choices": [
+        "3",
+        "17",
+        "70",
+        "10"
+      ],
+      "answer": "17",
+      "compute": "10-(-7)",
+      "solution": "Heights are $10$ and $-7$. The distance is $10 - (-7) = 17$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distance = 10 - (-7) = 17 m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.542Z"
+        }
+      }
+    },
+    {
       "id": "ce642e07-7f0b-40a7-96a9-7b475ed63051",
       "topic_id": "NC17.7.NS.1",
       "difficulty": 2,
@@ -9953,6 +10680,723 @@
       }
     },
     {
+      "id": "dec12d7d-f1e0-4ec7-990f-18cb2d195dfa",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "add and subtract integers",
+      "stem": "Which expression has the same value as $7 - (-5)$?",
+      "choices": [
+        "$7 - 5$",
+        "$-7 + 5$",
+        "$7 + 5$",
+        "$-7 - 5$"
+      ],
+      "answer": "$7 + 5$",
+      "compute": null,
+      "solution": "Subtracting $-5$ is the same as adding 5, so $7 - (-5) = 7 + 5 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - (-5) = 7 + 5 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.978Z"
+        }
+      }
+    },
+    {
+      "id": "e286b200-cc0c-4a0f-95db-c8b6b42779ef",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "add and subtract fractions",
+      "stem": "What is $-\\frac{3}{5} - \\frac{1}{2}$?",
+      "choices": [
+        "$-\\frac{4}{7}$",
+        "$-\\frac{1}{10}$",
+        "$\\frac{11}{10}$",
+        "$-\\frac{11}{10}$"
+      ],
+      "answer": "$-\\frac{11}{10}$",
+      "compute": null,
+      "solution": "Use tenths: $-\\frac{6}{10} - \\frac{5}{10} = -\\frac{11}{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{11}{10}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-6/10 - 5/10 = -11/10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.993Z"
+        }
+      }
+    },
+    {
+      "id": "45b325c1-7352-49fd-916a-c591a341bad3",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "opposites and zero sums",
+      "stem": "What is the value of $-(-9.5)$?",
+      "choices": [
+        "-9.5",
+        "9.5",
+        "0.95",
+        "19"
+      ],
+      "answer": "9.5",
+      "compute": "9.5",
+      "solution": "The opposite of $-9.5$ is $9.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(-9.5) = 9.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.046Z"
+        }
+      }
+    },
+    {
+      "id": "6cc570f5-514a-4530-be14-4883345f102b",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "opposites and zero sums",
+      "stem": "The opposite of a number is 4.5. What is the number?",
+      "choices": [],
+      "answer": "-4.5",
+      "compute": "-4.5",
+      "solution": "Opposites are the same distance from 0 on opposite sides of 0. Since 4.5 is the opposite of $-4.5$, the number is $-4.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The opposite of -4.5 is 4.5, so the number is -4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.091Z"
+        }
+      }
+    },
+    {
+      "id": "1a9742a8-6848-47ea-a544-1257b71694c5",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "real-world sums and differences",
+      "stem": "A diver is at $-18$ meters. She swims up 7 meters and then dives down 12 meters. What is her elevation now, in meters?",
+      "choices": [
+        "-13",
+        "1",
+        "-37",
+        "-23"
+      ],
+      "answer": "-23",
+      "compute": "-18+7-12",
+      "solution": "$-18 + 7 = -11$, and $-11 - 12 = -23$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-18 + 7 = -11; -11 - 12 = -23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.098Z"
+        }
+      }
+    },
+    {
+      "id": "2f2b7592-c14f-491d-91c0-723ec11d2bc3",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "properties of operations",
+      "stem": "Use properties of operations to find $2.5 + (-7) + 7.5$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Group the numbers that make 10: $2.5 + 7.5 = 10$. Then $10 + (-7) = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.5 + 7.5 = 10; 10 + (-7) = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.112Z"
+        }
+      }
+    },
+    {
+      "id": "47b7b89a-4510-4ede-950e-a6d7711dc746",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "distance between numbers",
+      "stem": "What is the distance between $-2.5$ and $4$ on a number line?",
+      "choices": [],
+      "answer": "6.5",
+      "compute": "4-(-2.5)",
+      "solution": "$4 - (-2.5) = 4 + 2.5 = 6.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - (-2.5) = 6.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.116Z"
+        }
+      }
+    },
+    {
+      "id": "ea215c72-f7d8-430d-9388-3204d9bf3cba",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "add and subtract integers",
+      "stem": "What is $-6 - 9 - (-4)$?",
+      "choices": [
+        "-19",
+        "-11",
+        "-1",
+        "11"
+      ],
+      "answer": "-11",
+      "compute": "-6-9+4",
+      "solution": "Subtracting $-4$ is adding 4. $-6 - 9 = -15$, and $-15 + 4 = -11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-6 - 9 = -15; -15 + 4 = -11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.119Z"
+        }
+      }
+    },
+    {
+      "id": "8f4e581b-4ef6-4f11-b900-b0b40cd1a31a",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "properties of operations",
+      "stem": "Use properties of operations to find $4.8 + (-3.2) + (-4.8)$.",
+      "choices": [],
+      "answer": "-3.2",
+      "compute": "-3.2",
+      "solution": "Reorder: $4.8 + (-4.8) + (-3.2) = 0 + (-3.2) = -3.2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4.8 + -4.8) + -3.2 = -3.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.160Z"
+        }
+      }
+    },
+    {
+      "id": "4726576a-eb55-4555-bfae-7eee5e3570c9",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "real-world sums and differences",
+      "stem": "An account balance is $-32.75$ dollars. A deposit of 50 dollars is made. What is the new balance, in dollars?",
+      "choices": [],
+      "answer": "17.25",
+      "compute": "-32.75+50",
+      "solution": "$-32.75 + 50 = 17.25$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-32.75 + 50 = 17.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.182Z"
+        }
+      }
+    },
+    {
+      "id": "e380bba0-0af2-4d47-9828-7d77069c9a58",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-5.2 + 3.75$?",
+      "choices": [],
+      "answer": "-1.45",
+      "compute": "-5.2+3.75",
+      "solution": "The numbers have different signs, so subtract: $5.20 - 3.75 = 1.45$. The negative number is larger in size, so the answer is $-1.45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1.45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5.2 + 3.75 = -(5.20 - 3.75) = -1.45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.233Z"
+        }
+      }
+    },
+    {
+      "id": "03e0976f-bf6f-4ec0-bbbc-10ef13127203",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "properties of operations",
+      "stem": "Which equation is an example of the associative property of addition?",
+      "choices": [
+        "$-2 + 5 = 5 + (-2)$",
+        "$-2 + 2 = 0$",
+        "$(-2 + 5) + 7 = -2 + (5 + 7)$",
+        "$(-2 - 5) - 7 = -2 - (5 - 7)$"
+      ],
+      "answer": "$(-2 + 5) + 7 = -2 + (5 + 7)$",
+      "compute": null,
+      "solution": "The associative property regroups addition without changing the order. Subtraction is not associative, and the other two equations show the commutative and inverse properties.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-2 + 5) + 7 = -2 + (5 + 7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associative: regrouping sums, (-2+5)+7 = -2+(5+7). The subtraction one is false (-14 vs 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.246Z"
+        }
+      }
+    },
+    {
+      "id": "49564d19-681e-493f-88ee-7fe7b194bbfd",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "distance between numbers",
+      "stem": "What is the distance between $-\\frac{1}{2}$ and $\\frac{3}{4}$ on a number line?",
+      "choices": [
+        "$\\frac{1}{4}$",
+        "$\\frac{3}{8}$",
+        "$\\frac{5}{4}$",
+        "$\\frac{3}{4}$"
+      ],
+      "answer": "$\\frac{5}{4}$",
+      "compute": null,
+      "solution": "$\\frac{3}{4} - \\left(-\\frac{1}{2}\\right) = \\frac{3}{4} + \\frac{2}{4} = \\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|3/4 - (-1/2)| = 3/4 + 2/4 = 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.246Z"
+        }
+      }
+    },
+    {
+      "id": "e804f012-f67e-4737-a046-9ab7710c4a60",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "distance between numbers",
+      "stem": "A submarine is 80 meters below sea level. A helicopter is 120 meters above sea level. How far apart are they, in meters?",
+      "choices": [],
+      "answer": "200",
+      "compute": "120+80",
+      "solution": "Elevations are $-80$ and $120$. $120 - (-80) = 200$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 - (-80) = 200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.253Z"
+        }
+      }
+    },
+    {
+      "id": "9057718b-be01-47eb-94fc-bdf0b2682fa6",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "properties of operations",
+      "stem": "Which property is shown by $\\frac{3}{5} + \\left(-\\frac{3}{5}\\right) = 0$?",
+      "choices": [
+        "Identity property of addition",
+        "Inverse property of addition",
+        "Commutative property of addition",
+        "Associative property of addition"
+      ],
+      "answer": "Inverse property of addition",
+      "compute": null,
+      "solution": "A number plus its opposite is 0. This is the inverse property of addition.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Inverse property of addition",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A number plus its opposite is 0: inverse property of addition.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.294Z"
+        }
+      }
+    },
+    {
+      "id": "e41ac15c-589e-472d-bb97-88bf12e10043",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "real-world sums and differences",
+      "stem": "Which situation is described by $-8 + 5$?",
+      "choices": [
+        "A diver 8 meters below the surface swims up 5 meters",
+        "A diver 8 meters below the surface swims down 5 more meters",
+        "A hiker 5 meters above sea level climbs up 8 more meters",
+        "A hiker 8 meters above sea level climbs down 5 meters"
+      ],
+      "answer": "A diver 8 meters below the surface swims up 5 meters",
+      "compute": null,
+      "solution": "$-8$ is 8 meters below the surface, and $+5$ is moving up 5 meters. The result is $-3$, which is 3 meters below the surface.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A diver 8 meters below the surface swims up 5 meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start at -8 (8 m below), add 5 (up 5): diver swims up 5 m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.313Z"
+        }
+      }
+    },
+    {
+      "id": "7ea1457d-6804-4b6a-90b2-600ef23a2405",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-0.45 - (-1.2)$?",
+      "choices": [],
+      "answer": "0.75",
+      "compute": "-0.45+1.2",
+      "solution": "Subtracting $-1.2$ is adding 1.2: $-0.45 + 1.2 = 0.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-0.45 + 1.2 = 0.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.341Z"
+        }
+      }
+    },
+    {
+      "id": "222a5f69-90ed-4472-a9dc-8b8212f91902",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "add and subtract decimals",
+      "stem": "What is $6.3 - 9.05$?",
+      "choices": [
+        "-2.75",
+        "2.75",
+        "-3.25",
+        "-15.35"
+      ],
+      "answer": "-2.75",
+      "compute": "6.3-9.05",
+      "solution": "$9.05 - 6.30 = 2.75$. Since we subtract the larger number, the answer is $-2.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.3 - 9.05 = -(9.05 - 6.30) = -2.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.388Z"
+        }
+      }
+    },
+    {
+      "id": "84b68227-8fe5-4e3b-849f-84831d9bd7ab",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "real-world sums and differences",
+      "stem": "A stock price fell 3.5 dollars on Monday and rose 1.25 dollars on Tuesday. What was the net change over the two days, in dollars?",
+      "choices": [],
+      "answer": "-2.25",
+      "compute": "-3.5+1.25",
+      "solution": "$-3.5 + 1.25 = -2.25$. The price fell 2.25 dollars in all.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3.5 + 1.25 = -2.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.403Z"
+        }
+      }
+    },
+    {
+      "id": "ae5b82bf-2933-42c8-adaf-01b070c6f29e",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "What is $\\frac{5}{6} - \\frac{1}{3}$?",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "5/6-1/3",
+      "solution": "$\\frac{1}{3} = \\frac{2}{6}$, so $\\frac{5}{6} - \\frac{2}{6} = \\frac{3}{6} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 - 2/6 = 3/6 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.409Z"
+        }
+      }
+    },
+    {
+      "id": "18ec8725-dc78-47cd-9d0a-95f971ee7ab7",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "What is $\\frac{7}{8} - 1\\frac{1}{4}$?",
+      "choices": [],
+      "answer": "-3/8",
+      "compute": "7/8-5/4",
+      "solution": "$1\\frac{1}{4} = \\frac{10}{8}$, so $\\frac{7}{8} - \\frac{10}{8} = -\\frac{3}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/8 - 5/4 = 7/8 - 10/8 = -3/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.450Z"
+        }
+      }
+    },
+    {
+      "id": "f04c4fdd-feeb-4a1a-962b-cce8187d6222",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add and subtract integers",
+      "stem": "What is $25 - 40 + 12$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "25-40+12",
+      "solution": "$25 - 40 = -15$, and $-15 + 12 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 - 40 = -15; -15 + 12 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.454Z"
+        }
+      }
+    },
+    {
+      "id": "90febecb-0216-49f2-b5d4-6a43941a556e",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "Find the sum of $-\\frac{7}{8}$ and $\\frac{1}{4}$.",
+      "choices": [],
+      "answer": "-5/8",
+      "compute": "-7/8+1/4",
+      "solution": "$\\frac{1}{4} = \\frac{2}{8}$, so $-\\frac{7}{8} + \\frac{2}{8} = -\\frac{5}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-7/8 + 2/8 = -5/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.487Z"
+        }
+      }
+    },
+    {
       "id": "4d050c02-bbb0-4342-b0c4-d91c46229067",
       "topic_id": "NC17.7.NS.1",
       "difficulty": 3,
@@ -10264,6 +11708,728 @@
           "work": "Group: (-7/8 + 7/8) + (4.6 - 1.6) = 0 + 3 = 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:51.447Z"
+        }
+      }
+    },
+    {
+      "id": "61260dfd-94f7-42d9-9ecd-d14b8668273d",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "What is $\\frac{7}{10} - \\left(-\\frac{3}{5}\\right)$?",
+      "choices": [],
+      "answer": "13/10",
+      "compute": "7/10+3/5",
+      "solution": "Subtracting $-\\frac{3}{5}$ is adding $\\frac{3}{5}$: $\\frac{7}{10} + \\frac{6}{10} = \\frac{13}{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13/10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/10 + 3/5 = 7/10 + 6/10 = 13/10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.923Z"
+        }
+      }
+    },
+    {
+      "id": "5af116da-0546-41d2-8243-1b366e9e3ecf",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "properties of operations",
+      "stem": "Maya adds $-2.3 + \\frac{1}{4} + 2.3 + \\frac{3}{4}$ by grouping the opposites together and the fractions together. What is the sum?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$-2.3 + 2.3 = 0$ and $\\frac{1}{4} + \\frac{3}{4} = 1$. The sum is $0 + 1 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-2.3 + 2.3) + (1/4 + 3/4) = 0 + 1 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.040Z"
+        }
+      }
+    },
+    {
+      "id": "7c852a00-5b48-4fbb-a2a7-699b7a09a6fb",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "distance between numbers",
+      "stem": "Point A is at $-3.4$ on a number line. Point B is to the right of A, and the distance between A and B is 8.2. What number is at B?",
+      "choices": [
+        "-4.8",
+        "11.6",
+        "4.8",
+        "-11.6"
+      ],
+      "answer": "4.8",
+      "compute": "-3.4+8.2",
+      "solution": "Moving right 8.2 from $-3.4$: $-3.4 + 8.2 = 4.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B = -3.4 + 8.2 = 4.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.129Z"
+        }
+      }
+    },
+    {
+      "id": "46fb7eb7-5852-4c86-bee4-24897f67ac41",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "real-world sums and differences",
+      "stem": "Omar has 120 dollars in his account. He pays a bill of 85.40 dollars, receives a refund of 30.25 dollars, and then pays 90 dollars for rent. A negative balance means he owes money. What is his balance now, in dollars?",
+      "choices": [],
+      "answer": "-25.15",
+      "compute": "120-85.4+30.25-90",
+      "solution": "$120 - 85.40 = 34.60$. $34.60 + 30.25 = 64.85$. $64.85 - 90 = -25.15$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-25.15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 - 85.40 = 34.60; +30.25 = 64.85; -90 = -25.15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.157Z"
+        }
+      }
+    },
+    {
+      "id": "1218b249-caa1-45a6-8ded-6947e9a1cd2c",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "Subtract $-1\\frac{3}{4}$ from $-3\\frac{1}{2}$.",
+      "choices": [],
+      "answer": "-7/4",
+      "compute": "-7/2+7/4",
+      "solution": "Subtracting a negative is adding: $-\\frac{14}{4} + \\frac{7}{4} = -\\frac{7}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3 1/2 - (-1 3/4) = -3.5 + 1.75 = -1.75 = -7/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.165Z"
+        }
+      }
+    },
+    {
+      "id": "46475e04-37ad-4077-ac55-a3ce4b3064f7",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "opposites and zero sums",
+      "stem": "The sum of $x$ and $-6.25$ is 0. What is the value of $x - 1.75$?",
+      "choices": [],
+      "answer": "4.5",
+      "compute": "6.25-1.75",
+      "solution": "Since $x + (-6.25) = 0$, $x$ is the opposite of $-6.25$, which is 6.25. Then $6.25 - 1.75 = 4.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + (-6.25) = 0 so x = 6.25; 6.25 - 1.75 = 4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.193Z"
+        }
+      }
+    },
+    {
+      "id": "6a9e2999-99ae-42f4-af04-eb148a05a591",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-12.04 + 7.9$?",
+      "choices": [],
+      "answer": "-4.14",
+      "compute": "-12.04+7.9",
+      "solution": "Subtract the sizes: $12.04 - 7.90 = 4.14$. The larger size is negative, so the answer is $-4.14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4.14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-12.04 + 7.9 = -(12.04 - 7.90) = -4.14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.197Z"
+        }
+      }
+    },
+    {
+      "id": "83719fb2-dbb4-440a-976d-3a6d10020f11",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract fractions",
+      "stem": "What is $\\frac{5}{12} - \\frac{7}{8}$?",
+      "choices": [],
+      "answer": "-11/24",
+      "compute": "5/12-7/8",
+      "solution": "Use twenty-fourths: $\\frac{10}{24} - \\frac{21}{24} = -\\frac{11}{24}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11/24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/12 - 7/8 = 10/24 - 21/24 = -11/24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.207Z"
+        }
+      }
+    },
+    {
+      "id": "b3aa9ccf-443e-47e4-bec5-e6d506bcceb9",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add and subtract fractions",
+      "stem": "What is $-\\frac{5}{6} + \\frac{3}{4} - \\frac{1}{3}$?",
+      "choices": [
+        "$-\\frac{5}{12}$",
+        "$\\frac{1}{4}$",
+        "$-\\frac{1}{12}$",
+        "$-\\frac{23}{12}$"
+      ],
+      "answer": "$-\\frac{5}{12}$",
+      "compute": null,
+      "solution": "Use twelfths: $-\\frac{10}{12} + \\frac{9}{12} - \\frac{4}{12} = -\\frac{5}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{5}{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCD 12: -10/12 + 9/12 - 4/12 = -5/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.240Z"
+        }
+      }
+    },
+    {
+      "id": "7b62f3a4-1cb0-48cc-af60-21e25a75a97f",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-18.2 + 7.85 - (-4.6)$?",
+      "choices": [
+        "5.75",
+        "-14.95",
+        "-30.65",
+        "-5.75"
+      ],
+      "answer": "-5.75",
+      "compute": "-18.2+7.85+4.6",
+      "solution": "$-18.2 + 7.85 = -10.35$. Subtracting $-4.6$ is adding 4.6: $-10.35 + 4.6 = -5.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-18.2 + 7.85 = -10.35; -10.35 + 4.6 = -5.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.240Z"
+        }
+      }
+    },
+    {
+      "id": "0fa37595-2df3-4071-aa90-d4d6053bd9ab",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "real-world sums and differences",
+      "stem": "A frozen dessert is at $-18$ degrees Celsius. It is taken out and warms to 21 degrees Celsius. By how many degrees did its temperature rise?",
+      "choices": [],
+      "answer": "39",
+      "compute": "21-(-18)",
+      "solution": "The change is $21 - (-18) = 21 + 18 = 39$ degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "39",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21 - (-18) = 39.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.312Z"
+        }
+      }
+    },
+    {
+      "id": "e8dc7154-aabb-40b0-9ca2-66a7b296ce9f",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "properties of operations",
+      "stem": "Rewriting $-8 - 5$ as $-8 + (-5)$ and then using the commutative property of addition gives which expression?",
+      "choices": [
+        "$5 + (-8)$",
+        "$-5 + (-8)$",
+        "$-5 - (-8)$",
+        "$8 + (-5)$"
+      ],
+      "answer": "$-5 + (-8)$",
+      "compute": null,
+      "solution": "The commutative property lets us swap the two addends: $-8 + (-5) = -5 + (-8)$. Both equal $-13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5 + (-8)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-8+(-5) commuted = -5+(-8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.323Z"
+        }
+      }
+    },
+    {
+      "id": "ff864d6c-b413-4cc2-9a27-36b7dd2bd82b",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add and subtract integers",
+      "stem": "What is $-5 - (-13) + (-16) - (-4)$?",
+      "choices": [
+        "4",
+        "-38",
+        "20",
+        "-4"
+      ],
+      "answer": "-4",
+      "compute": "-5+13-16+4",
+      "solution": "Rewrite as addition: $-5 + 13 + (-16) + 4$. Then $-5 + 13 = 8$, $8 - 16 = -8$, and $-8 + 4 = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5+13 = 8; 8-16 = -8; -8+4 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.335Z"
+        }
+      }
+    },
+    {
+      "id": "29926183-3b0c-4f08-9958-28307fea47dd",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "real-world sums and differences",
+      "stem": "At 6 a.m. the temperature was $-3$ degrees. At noon it was 9 degrees. Which statement describes $9 - (-3)$?",
+      "choices": [
+        "The temperature rose 6 degrees from 6 a.m. to noon",
+        "The temperature fell 12 degrees from 6 a.m. to noon",
+        "The temperature fell 6 degrees from 6 a.m. to noon",
+        "The temperature rose 12 degrees from 6 a.m. to noon"
+      ],
+      "answer": "The temperature rose 12 degrees from 6 a.m. to noon",
+      "compute": null,
+      "solution": "The difference between the later and earlier temperatures is $9 - (-3) = 12$. It is positive, so the temperature rose 12 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The temperature rose 12 degrees from 6 a.m. to noon",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-(-3) = 12, temperature went from -3 up to 9: rose 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.336Z"
+        }
+      }
+    },
+    {
+      "id": "b9d8be50-98cc-4481-a709-683e899c88fb",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "opposites and zero sums",
+      "stem": "Which expression is equal to the opposite of $a + b$?",
+      "choices": [
+        "$-a + (-b)$",
+        "$-a + b$",
+        "$a + (-b)$",
+        "$-a - (-b)$"
+      ],
+      "answer": "$-a + (-b)$",
+      "compute": null,
+      "solution": "The opposite of a sum is the sum of the opposites. For example, with $a = 2$ and $b = 3$ the opposite of 5 is $-5$, and $-2 + (-3) = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-a + (-b)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(a+b) = -a + (-b).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.345Z"
+        }
+      }
+    },
+    {
+      "id": "634ec62a-1023-4354-a36d-d42cde445c53",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract integers",
+      "stem": "What is $-34 - (-19) + 27 - 41$?",
+      "choices": [],
+      "answer": "-29",
+      "compute": "-34+19+27-41",
+      "solution": "$-34 + 19 = -15$, $-15 + 27 = 12$, and $12 - 41 = -29$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-34 - (-19) = -34 + 19 = -15; -15 + 27 = 12; 12 - 41 = -29.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.375Z"
+        }
+      }
+    },
+    {
+      "id": "1b56ea6d-90f2-4609-b8d6-96cc50155e08",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "distance between numbers",
+      "stem": "A number is 7.5 units to the left of $-2$ on a number line. What is the number?",
+      "choices": [
+        "-5.5",
+        "-9.5",
+        "5.5",
+        "9.5"
+      ],
+      "answer": "-9.5",
+      "compute": "-2-7.5",
+      "solution": "Moving left means subtracting: $-2 - 7.5 = -9.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-9.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left of -2 by 7.5: -2 - 7.5 = -9.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.382Z"
+        }
+      }
+    },
+    {
+      "id": "95e8f362-6244-49dc-9b38-77a5c267d3f9",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract decimals",
+      "stem": "What is $3.006 - 10$?",
+      "choices": [],
+      "answer": "-6.994",
+      "compute": "3.006-10",
+      "solution": "$10 - 3.006 = 6.994$, and since 10 is larger, the answer is $-6.994$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6.994",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.006 - 10 = -(10 - 3.006) = -6.994.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.383Z"
+        }
+      }
+    },
+    {
+      "id": "3012ad7d-88c9-4942-90bf-dda24fc7d7e6",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "real-world sums and differences",
+      "stem": "The top of a mountain is 1250 meters above sea level. The bottom of a cave is 85.5 meters below sea level. How many meters higher is the top of the mountain than the bottom of the cave?",
+      "choices": [
+        "1335.5",
+        "1164.5",
+        "-1335.5",
+        "1250"
+      ],
+      "answer": "1335.5",
+      "compute": "1250-(-85.5)",
+      "solution": "Elevations are $1250$ and $-85.5$. The difference is $1250 - (-85.5) = 1335.5$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1335.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1250 - (-85.5) = 1335.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.404Z"
+        }
+      }
+    },
+    {
+      "id": "e09e22a2-7f07-41a4-93d0-ed3f4a321e36",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "distance between numbers",
+      "stem": "What is the distance between $-\\frac{7}{4}$ and $\\frac{3}{2}$ on a number line?",
+      "choices": [],
+      "answer": "13/4",
+      "compute": "3/2+7/4",
+      "solution": "$\\frac{3}{2} - \\left(-\\frac{7}{4}\\right) = \\frac{6}{4} + \\frac{7}{4} = \\frac{13}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distance = 3/2 - (-7/4) = 6/4 + 7/4 = 13/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.435Z"
+        }
+      }
+    },
+    {
+      "id": "9af48871-41f5-428b-b0d5-1f34c1ead7c2",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add and subtract fractions",
+      "stem": "Find the sum of $-2\\frac{1}{4}$ and $3\\frac{2}{3}$.",
+      "choices": [
+        "$-1\\frac{5}{12}$",
+        "$1\\frac{5}{12}$",
+        "$1\\frac{11}{12}$",
+        "$5\\frac{11}{12}$"
+      ],
+      "answer": "$1\\frac{5}{12}$",
+      "compute": null,
+      "solution": "$-2\\frac{1}{4} = -\\frac{27}{12}$ and $3\\frac{2}{3} = \\frac{44}{12}$. The sum is $\\frac{17}{12} = 1\\frac{5}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{5}{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-9/4 + 11/3 = -27/12 + 44/12 = 17/12 = 1 5/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.438Z"
+        }
+      }
+    },
+    {
+      "id": "1109d91c-3e05-4cd3-bdcb-bd50b6f3501b",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add and subtract decimals",
+      "stem": "What is $-0.375 - 1.25$?",
+      "choices": [
+        "1.625",
+        "-0.875",
+        "-1.625",
+        "0.875"
+      ],
+      "answer": "-1.625",
+      "compute": "-0.375-1.25",
+      "solution": "Both numbers move left from zero, so add their sizes: $0.375 + 1.25 = 1.625$. The answer is $-1.625$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1.625",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-0.375 - 1.25 = -1.625.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.446Z"
+        }
+      }
+    },
+    {
+      "id": "0f801275-1897-4577-bb43-cc8aed6cabd4",
+      "topic_id": "NC17.7.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add and subtract integers",
+      "stem": "What number does the ? stand for in $-27 - ? = -9$?",
+      "choices": [],
+      "answer": "-18",
+      "compute": "-27+9",
+      "solution": "Check: $-27 - (-18) = -27 + 18 = -9$. So the ? is $-18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-27 - ? = -9 so ? = -27 + 9 = -18. Check: -27 - (-18) = -9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.452Z"
         }
       }
     },

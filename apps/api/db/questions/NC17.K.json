@@ -6,7 +6,7 @@
     "NC17.K.CC.3": "Numerals cannot be drawn or traced in text, so the questions test choosing or writing the right numeral for a number word, a count told in words, and zero as none. Handwriting form (reversed digits) cannot be tested here. Counts are told in words, never shown as a picture. Kindergarten: picture work is written as symbols in a row (counted by the child) or as lists of named things. Letters-in-a-word and long lists count the whole set and stay within 20.",
     "NC17.K.CC.4": "Shapes, dot cards and hands are written out in words; seeing 1-5 at a glance is tested through described dot patterns (square, triangle, 2+3 split). Numbers stay within 20 and every question is one step. Written as text: dot patterns are described by where the dots are, never pictured. Numbers stay within 20, mostly within 10; subitizing questions stay within 5.",
     "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3. Counting is shown as written lists and repeated symbols; counts are generated from arrays/rep() in scripts/build-b5-NC17.K.CC.5.mjs. No how-much-more comparisons.",
-    "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step.",
+    "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step. Text only: groups are shown as lists of marks, as numbers in a story or as real-world counts (legs, wheels). No question asks how many more or fewer. Counts stay within 10, never chain two comparisons, and three-group comparisons are left out.",
     "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1.",
     "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10.",
     "NC17.K.OA.2": "Everything is one step and inside 10. Skills: add to (6), take from (6), put together (6), take apart / one part unknown (6), matching a story and a number sentence (6). The change-unknown and start-unknown problems are Grade 1 (OA.1), so they are left out. Objects and drawings are written as a story (blocks, circles Zoe draws).",
@@ -15761,6 +15761,733 @@
       }
     },
     {
+      "id": "2e7d2108-f65f-45af-87de-2f466a71a0ca",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Uma has 3 plates. Vic has fewer plates than Uma. How many plates could Vic have?",
+      "choices": [
+        "3",
+        "4",
+        "1",
+        "5"
+      ],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Vic has fewer than 3 plates. Of these, only 1 is fewer than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fewer than 3: only 1 among the options.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.968Z"
+        }
+      }
+    },
+    {
+      "id": "ff75824a-d6d7-4a77-a728-e02b696a10f5",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "A pond has 2 frogs and 5 fish. How many animals are in the group that has more?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "There are 2 frogs and 5 fish. 5 is more than 2, so the fish are the group with more. There are 5 fish.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 fish > 2 frogs; the larger group has 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.977Z"
+        }
+      }
+    },
+    {
+      "id": "4d580fe0-b992-4681-b0f4-a093adb818ad",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Pia has this many beads: O O O O. Which number of beads is the same as Pia has?",
+      "choices": [
+        "4",
+        "3",
+        "5",
+        "2"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Count Pia's beads: 1, 2, 3, 4. The same number is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "O O O O is 4 beads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.992Z"
+        }
+      }
+    },
+    {
+      "id": "fa719f9c-043a-45fa-9dda-93c4f1a61f79",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match one to one to compare groups",
+      "stem": "A boy gives 1 carrot to each of 3 bunnies. There are 5 carrots. Which sentence is true?",
+      "choices": [
+        "There are fewer carrots than bunnies.",
+        "There are the same number of carrots and bunnies.",
+        "There are 5 bunnies.",
+        "There are more carrots than bunnies."
+      ],
+      "answer": "There are more carrots than bunnies.",
+      "compute": null,
+      "solution": "After each of the 3 bunnies gets a carrot, 2 carrots are left. So there are more carrots than bunnies.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are more carrots than bunnies.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 carrots > 3 bunnies.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.019Z"
+        }
+      }
+    },
+    {
+      "id": "5ece038e-b5e6-4bf7-9d83-1b4a17908d63",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "A tricycle has 3 wheels. A bike has 2 wheels. How many wheels does the one with more wheels have?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "3 is more than 2, so the tricycle has more wheels. It has 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 > 2, the tricycle has more: 3 wheels.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.058Z"
+        }
+      }
+    },
+    {
+      "id": "6734ce2c-8a75-4ba2-bcff-7c769358be82",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "There is 1 penny in a jar. There are 3 pennies in a cup. Which sentence is true?",
+      "choices": [
+        "The cup has fewer pennies than the jar.",
+        "The jar and the cup have the same number of pennies.",
+        "The jar has fewer pennies than the cup.",
+        "The jar has 3 pennies."
+      ],
+      "answer": "The jar has fewer pennies than the cup.",
+      "compute": null,
+      "solution": "The jar has 1 penny and the cup has 3. 1 is fewer than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The jar has fewer pennies than the cup.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Jar 1, cup 3; 1 < 3, so jar has fewer.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.081Z"
+        }
+      }
+    },
+    {
+      "id": "668215cd-a6b6-4e2c-a1c0-cabcc8484df3",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "A tray has 3 cookies. A plate has 5 cookies. Which sentence is true?",
+      "choices": [
+        "The plate has fewer cookies than the tray.",
+        "The tray has fewer cookies than the plate.",
+        "The tray and the plate have the same number of cookies.",
+        "The tray has 5 cookies."
+      ],
+      "answer": "The tray has fewer cookies than the plate.",
+      "compute": null,
+      "solution": "Count 3 and 5. The tray has 3, which is fewer than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The tray has fewer cookies than the plate.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 < 5, so the tray has fewer cookies than the plate. Others are false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.091Z"
+        }
+      }
+    },
+    {
+      "id": "742a9da2-8faa-4c0a-9212-d7b47dc215ba",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell when two groups have the same number",
+      "stem": "Nina has 4 kites. Omar has 4 kites. Which sentence is true?",
+      "choices": [
+        "Nina has more kites than Omar.",
+        "Omar has fewer kites than Nina.",
+        "Nina and Omar have the same number of kites.",
+        "Nina has 3 kites."
+      ],
+      "answer": "Nina and Omar have the same number of kites.",
+      "compute": null,
+      "solution": "Both children have 4 kites, so they have the same number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Nina and Omar have the same number of kites.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 = 4, so they have the same number.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.106Z"
+        }
+      }
+    },
+    {
+      "id": "06cabe84-8fb8-4ea8-9ff8-03658516f0d1",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count two groups and say which has more",
+      "stem": "Top row: X X X X. Bottom row: X X. Which sentence is true?",
+      "choices": [
+        "The bottom row has more X marks than the top row.",
+        "The top row has more X marks than the bottom row.",
+        "The two rows have the same number of X marks.",
+        "The top row has 2 X marks."
+      ],
+      "answer": "The top row has more X marks than the bottom row.",
+      "compute": null,
+      "solution": "The top row has 4 X marks and the bottom row has 2. 4 is more than 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The top row has more X marks than the bottom row.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Top has 4, bottom has 2; top has more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.132Z"
+        }
+      }
+    },
+    {
+      "id": "91488082-7ae8-4416-ad57-c987273336fa",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "A card has two sides. The left side has 4 dots: O O O O. The right side has 3 dots: O O O. How many dots are on the side that has more?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4 is more than 3, so the left side has more. It has 4 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 > 3; the side with more has 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.172Z"
+        }
+      }
+    },
+    {
+      "id": "536d2da9-5d33-4a8f-ac40-7473e075e509",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Mo has 4 toy cars. Sue has 1 toy car. Who has fewer toy cars? Write the number of toy cars that person has.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Sue has 1 car and Mo has 4. 1 is fewer than 4, so Sue has fewer, and she has 1 car.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sue has 1, Mo has 4; 1 < 4, Sue has fewer: 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.204Z"
+        }
+      }
+    },
+    {
+      "id": "00194363-912a-4e98-8d90-dc905e5fc476",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "Two teams play a game. The red team has 5 kids. The blue team has 3 kids. The team with more kids goes first. How many kids are on the team that goes first?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "5 is more than 3, so the red team has more kids. The red team has 5 kids.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 > 3, red team goes first: 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.288Z"
+        }
+      }
+    },
+    {
+      "id": "f256a7d8-03c7-45e4-bd66-f0c17e041893",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "Zed has two boxes of cubes. One box has 3 cubes. The other box has 1 cube. Zed takes the box with fewer cubes. How many cubes does he take?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "1 is fewer than 3, so Zed takes the box with 1 cube.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 < 3; fewer box has 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.323Z"
+        }
+      }
+    },
+    {
+      "id": "d42aae94-b31e-4f11-b468-1d013323fd26",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Ivy has 5 leaves. Rob has 2 leaves. Ivy says, \"I have fewer leaves than Rob.\" Is Ivy right?",
+      "choices": [
+        "No, Ivy has more leaves than Rob",
+        "Yes, Ivy has fewer leaves than Rob",
+        "No, Ivy and Rob have the same number of leaves",
+        "Yes, Ivy has 2 leaves"
+      ],
+      "answer": "No, Ivy has more leaves than Rob",
+      "compute": null,
+      "solution": "Ivy has 5 leaves and Rob has 2. 5 is more than 2, so Ivy has more leaves, not fewer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, Ivy has more leaves than Rob",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 > 2, so Ivy has more; she is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.344Z"
+        }
+      }
+    },
+    {
+      "id": "a4b4e0fb-939c-405c-af49-1d5d3f381021",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count two groups and say which has more",
+      "stem": "Pip has 6 stars: * * * * * *. Quin has 2 stars: * *. Which sentence is true?",
+      "choices": [
+        "Pip has more stars than Quin.",
+        "Quin has more stars than Pip.",
+        "Pip and Quin have the same number of stars.",
+        "Pip has fewer stars than Quin."
+      ],
+      "answer": "Pip has more stars than Quin.",
+      "compute": null,
+      "solution": "Pip has 6 stars and Quin has 2. 6 is more than 2, so Pip has more stars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Pip has more stars than Quin.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 > 2, so Pip has more stars than Quin. Other options false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.358Z"
+        }
+      }
+    },
+    {
+      "id": "f033512c-af0f-46e5-a1f5-1526da2de874",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tell when two groups have the same number",
+      "stem": "Lila holds coins in both hands. Both hands hold the same number of coins. The left hand holds 5 coins. How many coins does the right hand hold?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The same number as the left hand, which is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same number in both hands; left has 5, so right has 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.372Z"
+        }
+      }
+    },
+    {
+      "id": "851dd2c8-5496-4f3a-8fce-f63e8157bbdf",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Match one to one to compare groups",
+      "stem": "Lee puts 1 block on each of 5 squares. Every square gets a block. No blocks are left over. How many blocks did Lee have?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "One block for each square, with none left, means the blocks and squares are the same number. Lee had 5 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One block on each of 5 squares, none left over: 5 blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.396Z"
+        }
+      }
+    },
+    {
+      "id": "40965fe7-4ecd-42dd-a641-9cb2496198aa",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Cal has 4 hats. Eli has more hats than Cal. How many hats could Eli have?",
+      "choices": [
+        "2",
+        "5",
+        "4",
+        "3"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Eli has more than 4 hats. Of these, only 5 is more than 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 4: only 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.428Z"
+        }
+      }
+    },
+    {
+      "id": "4c4249dc-4acd-4c2b-bd20-468ca48f75bb",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match one to one to compare groups",
+      "stem": "A girl puts 1 hat on each of 4 dolls. Every doll has a hat. There are no hats left over. Which sentence is true?",
+      "choices": [
+        "There are more hats than dolls.",
+        "There are fewer hats than dolls.",
+        "There are 3 dolls.",
+        "There are the same number of hats and dolls."
+      ],
+      "answer": "There are the same number of hats and dolls.",
+      "compute": null,
+      "solution": "Each doll got exactly 1 hat and no hat was left, so the hats match the dolls one to one. The numbers are the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are the same number of hats and dolls.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One hat per doll, none left over, every doll has one: 4 hats and 4 dolls, same number.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.452Z"
+        }
+      }
+    },
+    {
+      "id": "35500e3c-908e-4e89-b155-03dbe8267d0e",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell when two groups have the same number",
+      "stem": "Bowl 1 has 3 plums. Bowl 2 has 3 pears. Which sentence is true?",
+      "choices": [
+        "Bowl 1 has more fruits than Bowl 2.",
+        "Bowl 2 has fewer fruits than Bowl 1.",
+        "Bowl 2 has 4 pears.",
+        "The two bowls have the same number of fruits."
+      ],
+      "answer": "The two bowls have the same number of fruits.",
+      "compute": null,
+      "solution": "Each bowl has 3 fruits. The numbers are the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The two bowls have the same number of fruits.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 plums and 3 pears: same number of fruits.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.490Z"
+        }
+      }
+    },
+    {
+      "id": "effd7813-2144-4b85-ab47-8c246b8f6e8d",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "The cat has more than 3 toys but fewer than 5 toys. How many toys does the cat have?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The number after 3 and before 5 is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 3 and fewer than 5: 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.512Z"
+        }
+      }
+    },
+    {
+      "id": "d44579fb-0cd6-4168-a154-ec64f164bf52",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Ned has more than 5 crayons and fewer than 7 crayons. How many crayons does Ned have?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The number that comes after 5 and before 7 is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 5 and fewer than 7: only 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.520Z"
+        }
+      }
+    },
+    {
+      "id": "f1cd9acc-fba1-4727-8e7e-c435d8df5975",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "A dog has 4 legs. A bird has 2 legs. How many legs does the animal with fewer legs have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "2 is fewer than 4, so the bird has fewer legs. It has 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 < 4, bird has fewer legs: 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.523Z"
+        }
+      }
+    },
+    {
       "id": "fb36942e-48bd-4b67-8a05-be75dff496e5",
       "topic_id": "NC17.K.CC.6",
       "difficulty": 2,
@@ -16072,6 +16799,699 @@
           "work": "Same as 10.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:03.256Z"
+        }
+      }
+    },
+    {
+      "id": "3c98f691-eba7-4443-af09-b47e6b2d21ca",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match one to one to compare groups",
+      "stem": "A bus has 8 seats. Eight children get on and each child sits on a different seat. Which sentence is true?",
+      "choices": [
+        "One seat is empty.",
+        "One child has no seat.",
+        "Every seat has a child.",
+        "There are more seats than children."
+      ],
+      "answer": "Every seat has a child.",
+      "compute": null,
+      "solution": "Each child takes one seat, and the number of children is the same as the number of seats, so every seat has a child.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every seat has a child.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 children each on a different one of 8 seats, so all 8 seats are filled: every seat has a child. No empty seat, no child without a seat, equal numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.041Z"
+        }
+      }
+    },
+    {
+      "id": "324800bb-9acf-4ccb-8619-b667e831d9a0",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Count the beads: O O O O O O O. Which number is the same as the number of beads?",
+      "choices": [
+        "6",
+        "7",
+        "8",
+        "5"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Count the beads: 1, 2, 3, 4, 5, 6, 7. There are 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Seven O's: 7 beads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.073Z"
+        }
+      }
+    },
+    {
+      "id": "6beae33a-2610-4994-9124-9b380ad3ac47",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Fay says, \"A pile of 8 shells has fewer shells than a pile of 5 shells.\" Is Fay right?",
+      "choices": [
+        "Yes, the pile of 8 shells has fewer",
+        "No, the pile of 8 shells has more",
+        "No, the two piles have the same number",
+        "Yes, the pile of 5 shells has more"
+      ],
+      "answer": "No, the pile of 8 shells has more",
+      "compute": null,
+      "solution": "8 is more than 5. So the pile of 8 has more shells, not fewer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, the pile of 8 shells has more",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 > 5, so Fay is wrong; the pile of 8 has more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.133Z"
+        }
+      }
+    },
+    {
+      "id": "eac254bc-d1bd-4017-a1b8-1dda7c71cbb9",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Match one to one to compare groups",
+      "stem": "Sid lines up 8 red cubes. He puts a blue cube under each red cube, one for each. No blue cubes are left. How many blue cubes did he use?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Each red cube has one blue cube, so there are the same number of each. He used 8 blue cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One blue per red, none left: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.148Z"
+        }
+      }
+    },
+    {
+      "id": "6efe72ac-06e7-43f9-bc93-5f809afa9e2a",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "One die shows 6 dots. Another die shows 4 dots. How many dots are on the die that shows fewer?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4 is fewer than 6, so the second die shows fewer. It shows 4 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 < 6; the die with fewer shows 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.159Z"
+        }
+      }
+    },
+    {
+      "id": "61383e88-b8e2-4d6e-95b5-a57c627aab38",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell when two groups have the same number",
+      "stem": "A garden has 7 roses: * * * * * * *. It also has 7 tulips. Which sentence is true?",
+      "choices": [
+        "There are more roses than tulips.",
+        "There are fewer roses than tulips.",
+        "There are the same number of roses and tulips.",
+        "There are 8 tulips."
+      ],
+      "answer": "There are the same number of roses and tulips.",
+      "compute": null,
+      "solution": "There are 7 roses and 7 tulips. The numbers are the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are the same number of roses and tulips.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 roses and 7 tulips: same.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.172Z"
+        }
+      }
+    },
+    {
+      "id": "ca94a8d4-bf72-450e-bdac-0e02a9bf53d1",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Tess has 7 beads. Uli has 8 beads. Tess says, \"We have the same number of beads.\" Is Tess right?",
+      "choices": [
+        "No, Uli has more beads than Tess",
+        "No, Tess has more beads than Uli",
+        "Yes, they have the same number of beads",
+        "Yes, Tess has more beads"
+      ],
+      "answer": "No, Uli has more beads than Tess",
+      "compute": null,
+      "solution": "Tess has 7 and Uli has 8. 8 is more than 7, so they do not have the same number. Uli has more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, Uli has more beads than Tess",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 < 8, so Uli has more; Tess is not right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.227Z"
+        }
+      }
+    },
+    {
+      "id": "2be53f41-7302-4dc9-8d59-e86abb90d5e8",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare the groups in pairs of groups",
+      "stem": "Which pair has the same number in both groups?",
+      "choices": [
+        "5 cups and 6 plates",
+        "4 pens and 3 caps",
+        "7 forks and 7 knives",
+        "8 books and 6 bags"
+      ],
+      "answer": "7 forks and 7 knives",
+      "compute": null,
+      "solution": "7 forks and 7 knives are the same number. In the other pairs one number is more than the other.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7 forks and 7 knives",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 forks and 7 knives are equal; others differ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.228Z"
+        }
+      }
+    },
+    {
+      "id": "c788887d-76d7-4a57-af4d-91b4233d2435",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "The class bunny has 7 carrots. The class turtle has 5 lettuce leaves. Which sentence is true?",
+      "choices": [
+        "The bunny has fewer food pieces than the turtle.",
+        "The turtle has fewer food pieces than the bunny.",
+        "The bunny and the turtle have the same number of food pieces.",
+        "The turtle has 7 food pieces."
+      ],
+      "answer": "The turtle has fewer food pieces than the bunny.",
+      "compute": null,
+      "solution": "5 is fewer than 7, so the turtle has fewer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The turtle has fewer food pieces than the bunny.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Turtle 5, bunny 7; 5 < 7, turtle has fewer.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.229Z"
+        }
+      }
+    },
+    {
+      "id": "a4823aaa-d635-470f-b4fc-3a0d1e25dab9",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "A card has two sides. The left side has 6 dots. The right side has 5 dots. How many dots are on the side with more dots?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is more than 5, so the left side has more. It has 6 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 > 5, so 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.250Z"
+        }
+      }
+    },
+    {
+      "id": "312640b1-a705-4bc4-bfc3-3e7937d79ade",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Five bags hold 7, 2, 8, 6 and 5 marbles. How many of the bags hold fewer than 7 marbles?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The bags with fewer than 7 marbles are the ones with 2, 6 and 5. That is 3 bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fewer than 7: 2, 6, 5. That is 3 bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.267Z"
+        }
+      }
+    },
+    {
+      "id": "aefb5d7a-bfd2-494e-802f-e7498b517f1e",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tell when two groups have the same number",
+      "stem": "Two nests have the same number of eggs. The first nest has 8 eggs. How many eggs does the second nest have?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The same number as the first nest, which is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same number: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.272Z"
+        }
+      }
+    },
+    {
+      "id": "8988dc85-e4cf-4b72-8bc2-e12018c1481e",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "In a game the child with more points wins. Cal gets 7 points. Dee gets 5 points. How many points did the winner get?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is more than 5, so Cal wins with 7 points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 > 5, Cal wins with 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.274Z"
+        }
+      }
+    },
+    {
+      "id": "3da24702-9a1a-4c83-8967-752f0d95c17c",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "A jar has 8 buttons. Another jar has 6 buttons. Mom uses the jar with more buttons. How many buttons are in the jar she uses?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "8 is more than 6, so Mom uses the jar with 8 buttons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 > 6: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.288Z"
+        }
+      }
+    },
+    {
+      "id": "00405629-6c62-4441-85a2-d21a3a31209a",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Ben has more than 4 shells and fewer than 6 shells. How many shells does Ben have?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The number between 4 and 6 is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 4 and fewer than 6 is 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.299Z"
+        }
+      }
+    },
+    {
+      "id": "04e9b82d-1677-455e-900e-5dcaa22190b7",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Match one to one to compare groups",
+      "stem": "A girl puts 1 hat on each doll. All 6 dolls have a hat and no hats are left. How many hats does she have?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "One hat for each doll with none left means the hats and dolls are the same number. She has 6 hats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One hat per doll, 6 dolls, none left: 6 hats.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.336Z"
+        }
+      }
+    },
+    {
+      "id": "ed18df88-0075-4c02-a32c-e9e3bea93686",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "A spider has 8 legs. An ant has 6 legs. How many legs does the one with fewer legs have?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is fewer than 8, so the ant has fewer legs. It has 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 vs 6: ant has fewer, 6 legs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.378Z"
+        }
+      }
+    },
+    {
+      "id": "a2dacf19-d37e-4348-8551-11e292bae7f6",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare the groups in pairs of groups",
+      "stem": "Which pair has FEWER in the first group than in the second group?",
+      "choices": [
+        "5 socks and 8 shoes",
+        "9 socks and 7 shoes",
+        "6 socks and 6 shoes",
+        "8 socks and 4 shoes"
+      ],
+      "answer": "5 socks and 8 shoes",
+      "compute": null,
+      "solution": "5 socks is fewer than 8 shoes. In the others the first group has more, or the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 socks and 8 shoes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fewer in first: 8 vs 4 no; 6 vs 6 no; 9 vs 7 no; 5 vs 8 yes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.382Z"
+        }
+      }
+    },
+    {
+      "id": "101b2e33-60c8-4058-8068-7b6f9329cda2",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match one to one to compare groups",
+      "stem": "Six children each take 1 swing at a park with 7 swings. Every child is on a swing. Which sentence is true?",
+      "choices": [
+        "One child has no swing.",
+        "Every swing has a child.",
+        "There are 8 swings.",
+        "One swing has no child."
+      ],
+      "answer": "One swing has no child.",
+      "compute": null,
+      "solution": "Each of the 6 children sits on a different swing. 7 swings is more than 6, so one swing is empty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "One swing has no child.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 children, 7 swings, each child on one: 7 - 6 = 1 swing empty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.397Z"
+        }
+      }
+    },
+    {
+      "id": "28f83985-2564-4b0c-85c0-70c5b48e27ba",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count two groups and say which has more",
+      "stem": "Pia picks 6 flowers. Quinn picks 8 flowers. Which sentence is true?",
+      "choices": [
+        "Quinn picked more flowers than Pia.",
+        "Pia picked more flowers than Quinn.",
+        "Pia and Quinn picked the same number of flowers.",
+        "Quinn picked 6 flowers."
+      ],
+      "answer": "Quinn picked more flowers than Pia.",
+      "compute": null,
+      "solution": "Count 6 and 8. 8 is more than 6, so Quinn picked more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Quinn picked more flowers than Pia.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 > 6: Quinn picked more than Pia.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.505Z"
+        }
+      }
+    },
+    {
+      "id": "794dc342-3d5f-449f-856c-0d6d379247c9",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare the groups in pairs of groups",
+      "stem": "Which pair has MORE in the first group than in the second group?",
+      "choices": [
+        "2 dogs and 5 cats",
+        "6 pens and 6 pencils",
+        "3 cups and 8 plates",
+        "7 bugs and 4 bees"
+      ],
+      "answer": "7 bugs and 4 bees",
+      "compute": null,
+      "solution": "7 bugs is more than 4 bees. In the others the first group has fewer, or the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7 bugs and 4 bees",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 > 4: 7 bugs and 4 bees. Others: 3<8, 2<5, 6=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.513Z"
+        }
+      }
+    },
+    {
+      "id": "fd2cb0ec-4418-4a52-9fe8-ae80491d50e5",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "A basket has 8 plums. A bowl has 7 plums. Kim eats from the one with fewer plums. How many plums are in the one she eats from?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is fewer than 8, so Kim eats from the bowl. It has 7 plums.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Basket 8, bowl 7. 7 < 8 so the bowl has fewer; she eats from the bowl, which has 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.517Z"
         }
       }
     },
@@ -16392,6 +17812,704 @@
           "work": "8 red > 6 blue, so red has more; Ana is wrong.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:47:21.369Z"
+        }
+      }
+    },
+    {
+      "id": "372e99d4-d2ea-436e-b783-a2e338c95060",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tell when two groups have the same number",
+      "stem": "Ali has 9 stickers. Bea has the same number of stickers as Ali. Cy has 8 stickers. How many stickers does Bea have?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Bea has the same number as Ali. Ali has 9, so Bea has 9. Cy's 8 is not part of the answer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bea has the same as Ali, who has 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.890Z"
+        }
+      }
+    },
+    {
+      "id": "d245836e-b174-47ed-bcf8-74f6bac16400",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match one to one to compare groups",
+      "stem": "There are 7 boys and 9 girls. They make pairs. Each pair is one boy and one girl. Every boy is in a pair. Which sentence is true?",
+      "choices": [
+        "Some girls have no boy to pair with.",
+        "Some boys have no girl to pair with.",
+        "Every girl has a boy to pair with.",
+        "There are more boys than girls."
+      ],
+      "answer": "Some girls have no boy to pair with.",
+      "compute": null,
+      "solution": "9 girls is more than 7 boys. After every boy has a girl, some girls are left without a boy.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Some girls have no boy to pair with.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 boys each pair with a girl, using 7 of 9 girls; 2 girls are left without a boy.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.899Z"
+        }
+      }
+    },
+    {
+      "id": "0e912214-b225-4b74-82f1-c30381913baf",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "There are 9 bees and 10 ants in a garden. Which sentence is true?",
+      "choices": [
+        "There are fewer bees than ants.",
+        "There are fewer ants than bees.",
+        "There are the same number of bees and ants.",
+        "There are 9 ants."
+      ],
+      "answer": "There are fewer bees than ants.",
+      "compute": null,
+      "solution": "9 is fewer than 10, so there are fewer bees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are fewer bees than ants.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 < 10, so fewer bees than ants.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.044Z"
+        }
+      }
+    },
+    {
+      "id": "ffd293b8-47c0-4045-b6a5-f76f4fc94e04",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Zoe has more than 7 stickers but fewer than 10 stickers. How many stickers could she have?",
+      "choices": [
+        "7",
+        "10",
+        "6",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The number must be more than 7 and fewer than 10. Of these, only 8 fits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 7 and fewer than 10: 8 or 9; only 8 is offered.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.045Z"
+        }
+      }
+    },
+    {
+      "id": "ec30cf1a-06a4-425e-aef8-4f2a298760d9",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "A red box has 9 cubes. A blue box has 10 cubes. Jan takes the box with more cubes. How many cubes are in the box Jan takes?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "10 is more than 9, so Jan takes the blue box with 10 cubes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 9, Jan takes the blue box with 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.048Z"
+        }
+      }
+    },
+    {
+      "id": "9b7169ec-b1b7-45b1-b4a4-a6a05f45d085",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell when two groups have the same number",
+      "stem": "Ali has 9 stickers. Bea has the same number of stickers as Ali. Cy has 8 stickers. Which sentence is true?",
+      "choices": [
+        "Cy has more stickers than Bea.",
+        "Bea and Cy have the same number of stickers.",
+        "Bea has more stickers than Cy.",
+        "Bea has 8 stickers."
+      ],
+      "answer": "Bea has more stickers than Cy.",
+      "compute": null,
+      "solution": "Bea has the same number as Ali, which is 9. 9 is more than Cy's 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Bea has more stickers than Cy.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bea has 9 (same as Ali); Cy has 8; 9 > 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.070Z"
+        }
+      }
+    },
+    {
+      "id": "b702c59c-41bf-4204-a1c5-57971dbb80ec",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare the groups in pairs of groups",
+      "stem": "Mr. Lee counts things in the classroom. Which of his counts shows two groups with the same number?",
+      "choices": [
+        "9 hens and 10 chicks",
+        "8 pens and 9 pencils",
+        "10 cups and 8 lids",
+        "10 caps and 10 hats"
+      ],
+      "answer": "10 caps and 10 hats",
+      "compute": null,
+      "solution": "10 caps and 10 hats are the same number. In the other pairs the numbers are different.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 caps and 10 hats",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 caps and 10 hats are equal; the others differ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.120Z"
+        }
+      }
+    },
+    {
+      "id": "aa4c1392-7280-439b-b8ae-5f43f0d45c09",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "Ed has 9 pens. Fay has 7 pens. Which sentence is NOT true?",
+      "choices": [
+        "Ed has more pens than Fay.",
+        "Ed and Fay have the same number of pens.",
+        "Fay has fewer pens than Ed.",
+        "Fay has 7 pens."
+      ],
+      "answer": "Ed and Fay have the same number of pens.",
+      "compute": null,
+      "solution": "Ed has 9 and Fay has 7. They do not have the same number, so that sentence is not true. The other sentences are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ed and Fay have the same number of pens.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 is not equal to 7, so 'Ed and Fay have the same number of pens' is not true; the other three are true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.125Z"
+        }
+      }
+    },
+    {
+      "id": "c9b0f016-3461-455e-a819-ca66597298cd",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Match one to one to compare groups",
+      "stem": "Cara has some cups. She puts one lid on each cup. Every cup has a lid and there are no lids left. She has 10 lids. How many cups does Cara have?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "One lid for each cup with none left over means the same number of each. She has 10 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "One lid per cup, none left: cups = lids = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.135Z"
+        }
+      }
+    },
+    {
+      "id": "5e092bf1-cc36-46a5-9260-23c3cd5e561a",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare the groups in pairs of groups",
+      "stem": "Ms. Ray counts things in the hall. In which of her counts is the first group smaller than the second?",
+      "choices": [
+        "8 cups and 9 mugs",
+        "10 ants and 9 bees",
+        "7 pens and 7 pencils",
+        "9 forks and 8 spoons"
+      ],
+      "answer": "8 cups and 9 mugs",
+      "compute": null,
+      "solution": "8 is fewer than 9. In the other pairs the first group has more, or the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 cups and 9 mugs",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 < 9 for cups vs mugs; 10>9, 7=7, 9>8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.141Z"
+        }
+      }
+    },
+    {
+      "id": "61b76fb6-ce8f-45da-afd6-d30a98828ba6",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Gia has more than 8 grapes and fewer than 10 grapes. How many grapes does Gia have?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The number between 8 and 10 is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 8 and fewer than 10: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.151Z"
+        }
+      }
+    },
+    {
+      "id": "0db5044b-c877-4cfa-ba02-a22ad9c180b4",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has fewer",
+      "stem": "In a vote, fish get 7 votes and birds get 8 votes. How many votes did the animal with fewer votes get?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is fewer than 8, so the fish had fewer votes. They got 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 < 8, so fish have fewer votes: 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.181Z"
+        }
+      }
+    },
+    {
+      "id": "36c31425-7efb-441d-af2d-fc8a2aa67d84",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "Card A has 6 dots. Card B has 9 dots. Mia takes the card with more dots. Sam takes the other card. How many dots are on Sam's card?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "9 is more than 6, so Mia takes Card B. Sam takes Card A, which has 6 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 > 6, Mia takes B; Sam takes A with 6 dots.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.220Z"
+        }
+      }
+    },
+    {
+      "id": "ae598b98-b400-4eef-b7b1-f2598dbeda68",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Jo has 8 stamps. Which friend has more stamps than Jo but fewer than 10?",
+      "choices": [
+        "the friend with 7 stamps",
+        "the friend with 8 stamps",
+        "the friend with 9 stamps",
+        "the friend with 10 stamps"
+      ],
+      "answer": "the friend with 9 stamps",
+      "compute": null,
+      "solution": "The number must be more than 8 and fewer than 10. Only 9 fits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the friend with 9 stamps",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 8 and fewer than 10: 9. Only the friend with 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.237Z"
+        }
+      }
+    },
+    {
+      "id": "05c3ee70-4dd0-4b93-8dfc-bc7b3473f73c",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Six jars hold 4, 9, 10, 3, 7 and 5 beans. How many of the jars hold fewer than 6 beans?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The jars with fewer than 6 beans hold 4, 3 and 5. That is 3 jars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fewer than 6: 4, 3, 5 -> 3 jars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.318Z"
+        }
+      }
+    },
+    {
+      "id": "7044cc29-91fa-4027-a4a0-a22bc601c7fa",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Max has 8 cubes. Zia has 10 cubes. Max says, \"Zia has more.\" Zia says, \"We have the same number.\" Who is right?",
+      "choices": [
+        "Only Zia is right.",
+        "Only Max is right.",
+        "Both are right.",
+        "Neither is right."
+      ],
+      "answer": "Only Max is right.",
+      "compute": null,
+      "solution": "10 is more than 8, so Zia has more. Max is right. Zia is not right, because they do not have the same number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only Max is right.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 8 so Zia has more; Max right, Zia wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.325Z"
+        }
+      }
+    },
+    {
+      "id": "e3b7336d-4345-49b2-a4fc-62cc3fd3889f",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count two groups and say which has more",
+      "stem": "Mel has 10 coins. Nan has 9 coins. Which sentence is true?",
+      "choices": [
+        "Nan has more coins than Mel.",
+        "Mel and Nan have the same number of coins.",
+        "Mel has fewer coins than Nan.",
+        "Mel has more coins than Nan."
+      ],
+      "answer": "Mel has more coins than Nan.",
+      "compute": null,
+      "solution": "10 is more than 9, so Mel has more coins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Mel has more coins than Nan.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.327Z"
+        }
+      }
+    },
+    {
+      "id": "05af7657-7e8f-46a7-a862-6aab0acc22e1",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match one to one to compare groups",
+      "stem": "There are 9 players and 10 balls. Each player picks up 1 ball. Which sentence is true?",
+      "choices": [
+        "One player has no ball.",
+        "One ball is left over.",
+        "No balls are left over.",
+        "Two balls are left over."
+      ],
+      "answer": "One ball is left over.",
+      "compute": null,
+      "solution": "Each of the 9 players takes one ball. 10 is one more than 9, so 1 ball is left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "One ball is left over.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 balls, 9 players each take 1: 10-9 = 1 ball left over; every player has a ball.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.364Z"
+        }
+      }
+    },
+    {
+      "id": "9e96538f-4e82-4055-826c-0f3cedf678d0",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Three children have shells. Ned has 8 shells. Opal has 10 shells. Paz has 8 shells. How many of the three children have fewer than 10 shells?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Ned has 8 and Paz has 8. Both are fewer than 10. Opal has 10. So 2 children have fewer than 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ned 8 < 10, Opal 10 not fewer, Paz 8 < 10. Two children.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.376Z"
+        }
+      }
+    },
+    {
+      "id": "74414ce2-597e-4775-9c52-e04058fadd66",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count two groups and say which has more",
+      "stem": "The class votes. Cats get 9 votes. Dogs get 10 votes. The animal with more votes wins. How many votes did the winner get?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "10 is more than 9, so dogs win with 10 votes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 9, dogs win with 10 votes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.401Z"
+        }
+      }
+    },
+    {
+      "id": "6705b440-cba1-48c6-8412-e79a145b7d42",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a number that is more or fewer than a group",
+      "stem": "Five shelves hold 10, 7, 9, 6 and 8 books. How many of the shelves hold more than 6 books?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The shelves with more than 6 books hold 10, 7, 9 and 8. That is 4 shelves.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "More than 6: 10, 7, 9, 8 (6 is not). Four shelves.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.410Z"
+        }
+      }
+    },
+    {
+      "id": "e41bafca-6ff5-45f8-b942-2503e38d7994",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Judge what a child says about two groups",
+      "stem": "Rae says, \"A group of 9 has fewer than a group of 8.\" Is Rae right?",
+      "choices": [
+        "Yes, the group of 9 has fewer",
+        "No, the two groups have the same number",
+        "No, the group of 9 has more",
+        "Yes, the group of 8 has more"
+      ],
+      "answer": "No, the group of 9 has more",
+      "compute": null,
+      "solution": "9 is more than 8, so the group of 9 has more, not fewer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, the group of 9 has more",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 > 8, so the group of 9 has more; Rae is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.559Z"
         }
       }
     },

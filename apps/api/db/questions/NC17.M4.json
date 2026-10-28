@@ -3,6 +3,7 @@
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
     "NC17.M4.N.2": "Matrices and vectors are written by their rows and components; a matrix answer is a choice question with every option written the same way. Matrix-times-vector and determinants are not in the standard summary and were left out. Vectors are given as components, never as drawn arrows.",
+    "NC17.M4.AF.1": "Domains are not tested. Difficulty-3 compositions stay within sums, products, powers, reciprocals, roots and logs.",
     "NC17.M4.AF.2": "Exact answers only: Law of Sines and Law of Cosines items use special angles or given sine values so numeric keys are rational; radical answers are choice questions. No technology needed.",
     "NC17.M4.AF.5": "The standard says regression with technology; every question gives the fitted model or data and asks for a prediction, residual or interpretation by hand.",
     "NC17.M4.SP.2": "Everything is asked by hand: standard errors are chosen to be exact (for example 0.02 or 0.025), z* values are given in the question, and the p-value of a two-sided test is built from a given tail area. The symbol for the sample proportion (p-hat) is not in the converter, so it is written in words.",
@@ -4396,6 +4397,728 @@
       }
     },
     {
+      "id": "23556209-d925-41d7-ab31-af5a915a7022",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $g(x) = 2x$ double a number and $f(x) = x^2$ square a number. A number $x$ is doubled, and then the result is squared. Which expression gives the final result?",
+      "choices": [
+        "$2x^2$",
+        "$4x$",
+        "$4x^2$",
+        "$x^2 + 2x$"
+      ],
+      "answer": "$4x^2$",
+      "compute": null,
+      "solution": "$f(g(x)) = (2x)^2 = 4x^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Doubled then squared: f(g(x)) = (2x)^2 = 4x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.079Z"
+        }
+      }
+    },
+    {
+      "id": "251ea31a-46bc-4f72-8f16-87d7ddb85298",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = |x|$ and $g(x) = x - 7$. What is $f(g(3))$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "7-3",
+      "solution": "$g(3) = 3 - 7 = -4$. Then $f(-4) = |-4| = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(3) = -4; |-4| = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.081Z"
+        }
+      }
+    },
+    {
+      "id": "0a1ca600-0841-41aa-8402-4a68b55349c4",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Break a function into two functions",
+      "stem": "Let $h(x) = 2x + 5$. Which pair of functions makes $f(g(x)) = h(x)$?",
+      "choices": [
+        "$f(x) = 2x$ and $g(x) = x + 5$",
+        "$f(x) = x + 5$ and $g(x) = x + 2$",
+        "$f(x) = 2x + 5$ and $g(x) = x + 5$",
+        "$f(x) = x + 5$ and $g(x) = 2x$"
+      ],
+      "answer": "$f(x) = x + 5$ and $g(x) = 2x$",
+      "compute": null,
+      "solution": "With $g(x) = 2x$ and $f(x) = x + 5$ we get $f(g(x)) = 2x + 5$. The other pairs give $2x + 10$, $x + 7$ and $2x + 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = x + 5$ and $g(x) = 2x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: f(2x) = 2x + 5 = h. B: 2(x+5) = 2x+10. C: x+7. D: 2(x+5)+5 = 2x+15. Only A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.094Z"
+        }
+      }
+    },
+    {
+      "id": "ad264d6b-3ac7-44bf-9472-7ad8ebbdbc2e",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = x^2 + 1$ and $g(x) = 2x$. Find $g(f(2))$.",
+      "choices": [],
+      "answer": "10",
+      "compute": "2*(2^2+1)",
+      "solution": "First $f(2) = 2^2 + 1 = 5$. Then $g(5) = 2 \\cdot 5 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(2) = 5, g(5) = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.097Z"
+        }
+      }
+    },
+    {
+      "id": "92233613-d132-4c68-91ee-3aa82b7a821a",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = x^3$ and $g(x) = x - 1$. What is $f(g(3))$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(3-1)^3",
+      "solution": "$g(3) = 2$. Then $f(2) = 2^3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(3) = 2, f(2) = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.100Z"
+        }
+      }
+    },
+    {
+      "id": "59af1672-be6a-431e-9948-cf1143c15d3d",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "For $f$: $f(1) = 5$, $f(2) = 3$, $f(3) = 8$. For $g$: $g(1) = 3$, $g(2) = 1$, $g(3) = 2$. Which is $f(g(1))$?",
+      "choices": [
+        "3",
+        "8",
+        "5",
+        "1"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "$g(1) = 3$, so $f(g(1)) = f(3) = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(1) = 3, f(3) = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.104Z"
+        }
+      }
+    },
+    {
+      "id": "17f12f10-bf18-49fa-b54a-5dca90145e5d",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $f(x) = 3x$ and $g(x) = x - 2$. Maya says that $f(g(x)) = 3x - 2$. Which expression is the correct $f(g(x))$?",
+      "choices": [
+        "$3x - 2$",
+        "$3x - 6$",
+        "$x - 6$",
+        "$3x + 6$"
+      ],
+      "answer": "$3x - 6$",
+      "compute": null,
+      "solution": "Put $g(x) = x - 2$ into $f$: $f(g(x)) = 3(x - 2) = 3x - 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x - 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = 3(x - 2) = 3x - 6. Maya forgot to multiply the 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.108Z"
+        }
+      }
+    },
+    {
+      "id": "0fe49bc3-8acd-4477-a1b9-44e0153b81c7",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = 3x - 2$ and $g(x) = x + 5$. What is $f(g(1))$?",
+      "choices": [],
+      "answer": "16",
+      "compute": "3*(1+5)-2",
+      "solution": "First $g(1) = 1 + 5 = 6$. Then $f(6) = 3 \\cdot 6 - 2 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(1)=6, f(6)=18-2=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.140Z"
+        }
+      }
+    },
+    {
+      "id": "2fcc369b-de0f-484e-ac51-a18544c22909",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a composite function in a situation",
+      "stem": "Each of $x$ students gets 2 tickets, so the number of tickets is $t(x) = 2x$. The cost of $t$ tickets is $c(t) = 5t + 1$ dollars. What is $c(t(4))$, in dollars?",
+      "choices": [],
+      "answer": "41",
+      "compute": "5*(2*4)+1",
+      "solution": "$t(4) = 8$ tickets. Then $c(8) = 5 \\cdot 8 + 1 = 41$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t(4)=8; c(8)=41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.154Z"
+        }
+      }
+    },
+    {
+      "id": "9f6a2fe5-5e20-4687-a639-5957131a7602",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order matters in composition",
+      "stem": "To find $f(g(2))$, a student first works out $f(2)$ and then puts that result into $g$. What did the student do wrong?",
+      "choices": [
+        "Applied $f$ first, when $g$ must be applied first",
+        "Added $f(2)$ and $g(2)$ instead of using one inside the other",
+        "Applied $g$ first, when $f$ must be applied first",
+        "Nothing, because $f(g(2))$ and $g(f(2))$ are always equal"
+      ],
+      "answer": "Applied $f$ first, when $g$ must be applied first",
+      "compute": null,
+      "solution": "In $f(g(2))$ the inside function $g$ works on 2 first, and $f$ works on that result. The student did it in the other order.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Applied $f$ first, when $g$ must be applied first",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(2)) needs g first, then f; student applied f first.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.174Z"
+        }
+      }
+    },
+    {
+      "id": "9351c7d6-4248-4f92-8014-3e7ebc324ee3",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "The function $f$ halves its input, $f(x) = \\frac{x}{2}$, and $g(x) = x + 6$. What is $f(g(4))$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(4+6)/2",
+      "solution": "First $g(4) = 10$. Then $f(10) = 10 \\div 2 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(4) = 10; f(10) = 10/2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.180Z"
+        }
+      }
+    },
+    {
+      "id": "f7f12d8d-ca1b-4855-8528-00e54ba59fa6",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate a composite function from points of a graph",
+      "stem": "The graph of $g$ contains the points $(0, 2)$ and $(2, 7)$. The graph of $f$ contains the points $(2, -4)$ and $(7, 1)$. What is $f(g(0))$?",
+      "choices": [
+        "$2$",
+        "$7$",
+        "$1$",
+        "$-4$"
+      ],
+      "answer": "$-4$",
+      "compute": null,
+      "solution": "$g(0) = 2$ from the point $(0, 2)$. Then $f(2) = -4$ from the point $(2, -4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(0) = 2; f(2) = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.200Z"
+        }
+      }
+    },
+    {
+      "id": "ffe43a64-266f-4f4e-aecf-37475c75d96f",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = 4x$ and $g(x) = x - 3$. Find the value of $g(f(2))$.",
+      "choices": [],
+      "answer": "5",
+      "compute": "4*2-3",
+      "solution": "$f(2) = 8$. Then $g(8) = 8 - 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(2) = 8; g(8) = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.213Z"
+        }
+      }
+    },
+    {
+      "id": "52fb86f2-ee00-4db4-8f20-01c8c2d53f19",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = 2x + 1$. Find $f(f(2))$.",
+      "choices": [],
+      "answer": "11",
+      "compute": "2*(2*2+1)+1",
+      "solution": "$f(2) = 5$. Then $f(5) = 2 \\cdot 5 + 1 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(2) = 5; f(5) = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.217Z"
+        }
+      }
+    },
+    {
+      "id": "701836b5-5dbd-453c-a7ff-58445b7445f7",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = 5 - x$ and $g(x) = x^2$. What is $g(f(7))$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(5-7)^2",
+      "solution": "$f(7) = 5 - 7 = -2$. Then $g(-2) = (-2)^2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(7) = -2; g(-2) = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.219Z"
+        }
+      }
+    },
+    {
+      "id": "a8451d6f-3736-441a-9cba-2e745bd083ce",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $f(x) = x + 4$ and $g(x) = x^2$. Replace the $x$ in $g(x) = x^2$ with $f(x)$. Which expression results?",
+      "choices": [
+        "$x^2 + 4$",
+        "$x^2 + 16$",
+        "$2x + 8$",
+        "$(x + 4)^2$"
+      ],
+      "answer": "$(x + 4)^2$",
+      "compute": null,
+      "solution": "Put $f(x) = x + 4$ into $g$: $g(f(x)) = (x + 4)^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x + 4)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(f(x)) = (f(x))^2 = (x+4)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.234Z"
+        }
+      }
+    },
+    {
+      "id": "b877df6a-3ee0-4c83-b34d-d3bcb8f075cd",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "The input 2 gives $f(2) = 6$, and the input 6 gives $g(6) = 11$. What is $g(f(2))$?",
+      "choices": [
+        "6",
+        "11",
+        "17",
+        "2"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "$f(2) = 6$, so $g(f(2)) = g(6) = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(f(2)) = g(6) = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.362Z"
+        }
+      }
+    },
+    {
+      "id": "6b436d02-7704-4853-a9c0-2b6716ca3b78",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = x + 4$ and $g(x) = 3x - 6$. What is $f(g(0))$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "3*0-6+4",
+      "solution": "$g(0) = -6$. Then $f(-6) = -6 + 4 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(0) = 3*0 - 6 = -6; f(-6) = -6 + 4 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.373Z"
+        }
+      }
+    },
+    {
+      "id": "9336640e-a6d6-4afc-ba4d-50487ae74185",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from points of a graph",
+      "stem": "The graph of $g$ contains the points $(1, 4)$ and $(2, 6)$. The graph of $f$ contains the points $(4, -1)$ and $(6, 9)$. What is $f(g(2))$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The point $(2, 6)$ gives $g(2) = 6$. The point $(6, 9)$ gives $f(6) = 9$. So $f(g(2)) = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(2) = 6; f(6) = 9. f(g(2)) = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.398Z"
+        }
+      }
+    },
+    {
+      "id": "93e6d32b-6457-42cf-99fd-3fd35197a5c2",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "Two functions are given by their values. For $f$: $f(0) = 3$, $f(1) = 5$, $f(2) = 0$. For $g$: $g(0) = 2$, $g(1) = 0$, $g(2) = 1$. What is $f(g(1))$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$g(1) = 0$, so $f(g(1)) = f(0) = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(1) = 0; f(0) = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.428Z"
+        }
+      }
+    },
+    {
+      "id": "31e0ea44-84dc-453d-9d0a-0725614b890e",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order matters in composition",
+      "stem": "Let $f(x) = x - 5$ and $g(x) = 3x$. A number is tripled, and then 5 is subtracted from the result. Which expression gives the final result?",
+      "choices": [
+        "$g(f(x))$",
+        "$f(x) \\cdot g(x)$",
+        "$f(g(x))$",
+        "$f(x) + g(x)$"
+      ],
+      "answer": "$f(g(x))$",
+      "compute": null,
+      "solution": "Tripling is $g$, done first. Subtracting 5 is $f$, done second, so the result is $f(g(x)) = 3x - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(g(x))$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Triple first: g(x)=3x; then subtract 5: f(3x)=3x-5 = f(g(x)). g(f(x)) = 3x-15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.519Z"
+        }
+      }
+    },
+    {
+      "id": "54918195-8045-41dd-a71d-4618ebca9db4",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use a composite function in a situation",
+      "stem": "Ben earns $e(h) = 12h$ dollars for $h$ hours of work. He saves half of what he earns, so his savings are $s(e) = \\frac{e}{2}$ dollars. Which formula gives his savings after $h$ hours?",
+      "choices": [
+        "$6h$",
+        "$24h$",
+        "$12h + 2$",
+        "$\\frac{h}{2}$"
+      ],
+      "answer": "$6h$",
+      "compute": null,
+      "solution": "$s(e(h)) = \\frac{12h}{2} = 6h$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6h$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "s(e(h)) = 12h/2 = 6h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.525Z"
+        }
+      }
+    },
+    {
+      "id": "79e15d21-272f-47ec-bce4-bc7e8d7a2cf6",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $f(x) = 2x + 1$ and $g(x) = x + 3$. Which expression equals $f(g(x))$?",
+      "choices": [
+        "$2x + 7$",
+        "$2x + 4$",
+        "$2x + 3$",
+        "$3x + 4$"
+      ],
+      "answer": "$2x + 7$",
+      "compute": null,
+      "solution": "$f(g(x)) = 2(x + 3) + 1 = 2x + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = 2(x+3)+1 = 2x+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.567Z"
+        }
+      }
+    },
+    {
       "id": "2ab08fec-2f86-4858-8daf-26b2e32eb74a",
       "topic_id": "NC17.M4.AF.1",
       "difficulty": 2,
@@ -4711,6 +5434,728 @@
       }
     },
     {
+      "id": "97c8cf93-82cc-4994-98b3-cbb41581b006",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an equation involving a composite function",
+      "stem": "Let $f(x) = x^2$ and $g(x) = x + 3$. The equation $f(g(x)) = 25$ has two solutions. What is the greater one?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "$f(g(x)) = (x + 3)^2 = 25$, so $x + 3 = 5$ or $x + 3 = -5$. That gives $x = 2$ or $x = -8$. The greater is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+3)^2 = 25 -> x+3 = 5 or -5 -> x = 2 or -8. Greater 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.052Z"
+        }
+      }
+    },
+    {
+      "id": "6e47afe8-efd6-4142-b912-43186df6a829",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a composite function in a situation",
+      "stem": "A square garden has side length $s(w) = 2w + 1$ meters after $w$ weeks of digging. Its area is $A(s) = s^2$ square meters. What is the area after 4 weeks, in square meters?",
+      "choices": [],
+      "answer": "81",
+      "compute": "(2*4+1)^2",
+      "solution": "$s(4) = 9$ meters. Then $A(9) = 81$ square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "s(4) = 9; A = 81.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.076Z"
+        }
+      }
+    },
+    {
+      "id": "35e5ba25-2252-4d5a-ac9f-08a166915132",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a composite function in a situation",
+      "stem": "A shirt costs $p$ dollars. A store takes 5 dollars off, $d(p) = p - 5$, and then adds 10 percent tax, $t(x) = 1.1x$. Which formula gives the final cost in dollars?",
+      "choices": [
+        "$1.1p - 5$",
+        "$1.1p - 5.5$",
+        "$1.1p + 5.5$",
+        "$0.1p - 5$"
+      ],
+      "answer": "$1.1p - 5.5$",
+      "compute": null,
+      "solution": "$t(d(p)) = 1.1(p - 5) = 1.1p - 5.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1.1p - 5.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t(d(p)) = 1.1(p - 5) = 1.1p - 5.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.110Z"
+        }
+      }
+    },
+    {
+      "id": "6cfe4435-e01b-4ffd-822c-ac715d306321",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a composite function to find an unknown",
+      "stem": "Two functions undo each other when $f(g(x)) = x$ for every $x$. Which pair of functions does that?",
+      "choices": [
+        "$f(x) = 2x + 6$ and $g(x) = \\frac{x + 6}{2}$",
+        "$f(x) = 2x + 6$ and $g(x) = \\frac{x}{2} - 6$",
+        "$f(x) = 2x + 6$ and $g(x) = \\frac{1}{2x + 6}$",
+        "$f(x) = 2x + 6$ and $g(x) = \\frac{x - 6}{2}$"
+      ],
+      "answer": "$f(x) = 2x + 6$ and $g(x) = \\frac{x - 6}{2}$",
+      "compute": null,
+      "solution": "$f(g(x)) = 2 \\cdot \\frac{x - 6}{2} + 6 = x - 6 + 6 = x$. The others leave $x + 12$, $x - 6$ or a fraction.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = 2x + 6$ and $g(x) = \\frac{x - 6}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f((x-6)/2) = (x - 6) + 6 = x. Others: A gives x + 12; C gives 2/(2x+6) + 6; D gives x - 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.115Z"
+        }
+      }
+    },
+    {
+      "id": "89c90a8a-2475-4749-b3cf-660060c737c7",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Order matters in composition",
+      "stem": "Let $f(x) = 4x - 1$ and $g(x) = x + 2$. By how much does $f(g(3))$ exceed $g(f(3))$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(4*(3+2)-1)-((4*3-1)+2)",
+      "solution": "$f(g(3)) = f(5) = 19$ and $g(f(3)) = g(11) = 13$. The difference is $19 - 13 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(3)) = f(5) = 19. g(f(3)) = g(11) = 13. 19 - 13 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.118Z"
+        }
+      }
+    },
+    {
+      "id": "d4c23079-db43-434a-b5bd-418e323b5c10",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\frac{6}{x + 1}$ and $g(x) = 2x - 1$. What is $f(g(2))$?",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "6/((2*2-1)+1)",
+      "solution": "$g(2) = 3$. Then $f(3) = \\frac{6}{3 + 1} = \\frac{6}{4} = \\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(2) = 3; f(3) = 6/4 = 3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.124Z"
+        }
+      }
+    },
+    {
+      "id": "4d4b3355-9d2c-400f-805f-1127b4f876ac",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a composite function in a situation",
+      "stem": "A circular ripple has radius $r(t) = 3t$ centimeters after $t$ seconds. The area of a circle is $A(r) = \\pi r^2$. Which formula gives the area after $t$ seconds?",
+      "choices": [
+        "$9\\pi t^2$",
+        "$3\\pi t^2$",
+        "$9\\pi t$",
+        "$6\\pi t$"
+      ],
+      "answer": "$9\\pi t^2$",
+      "compute": null,
+      "solution": "$A(r(t)) = \\pi (3t)^2 = 9\\pi t^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9\\pi t^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A(r(t)) = pi (3t)^2 = 9 pi t^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.171Z"
+        }
+      }
+    },
+    {
+      "id": "fdac2249-7f1d-497f-b064-316e3d7ae810",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a composite function in a situation",
+      "stem": "A temperature of $K$ kelvin is $c(K) = K - 273$ degrees Celsius. A temperature of $c$ degrees Celsius is $F(c) = 1.8c + 32$ degrees Fahrenheit. What is $F(c(278))$, in degrees Fahrenheit?",
+      "choices": [],
+      "answer": "41",
+      "compute": "1.8*(278-273)+32",
+      "solution": "$c(278) = 5$ degrees Celsius. Then $F(5) = 1.8 \\cdot 5 + 32 = 41$ degrees Fahrenheit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c(278) = 5; F(5) = 1.8x5 + 32 = 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.206Z"
+        }
+      }
+    },
+    {
+      "id": "3f48097a-75c5-4d71-9755-b2d04e51d8a0",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Evaluate a composite function from points of a graph",
+      "stem": "The function $f$ is described by the points $(-2, 4)$, $(1, 0)$, $(3, -5)$ and the function $g$ by the points $(-1, 3)$, $(0, -2)$, $(2, 1)$, where each point is (input, output). Which value is $g(f(1))$?",
+      "choices": [
+        "$0$",
+        "$4$",
+        "$-2$",
+        "$1$"
+      ],
+      "answer": "$-2$",
+      "compute": null,
+      "solution": "$f(1) = 0$ from the point $(1, 0)$. Then $g(0) = -2$ from the point $(0, -2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1) = 0; g(0) = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.232Z"
+        }
+      }
+    },
+    {
+      "id": "f1d90420-9b01-4258-8e6d-baee3b7bf3f2",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a composite function to find an unknown",
+      "stem": "Let $f(x) = 2x - 1$. A function $g$ makes $f(g(x)) = 6x + 5$ true for every $x$. What is $g(1)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "((6*1+5)+1)/2",
+      "solution": "$f(g(x)) = 2g(x) - 1 = 6x + 5$, so $g(x) = 3x + 3$. Then $g(1) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2g(x)-1 = 6x+5 -> g(x) = 3x+3 -> g(1) = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.309Z"
+        }
+      }
+    },
+    {
+      "id": "761a87b4-66d8-42ec-85df-72a35aeb43db",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = 3^x$ and $g(x) = x - 2$. What is $f(g(5))$?",
+      "choices": [],
+      "answer": "27",
+      "compute": "3^(5-2)",
+      "solution": "$g(5) = 3$. Then $f(3) = 3^3 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(5)=3; f(3)=27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.341Z"
+        }
+      }
+    },
+    {
+      "id": "7be0212c-1ac1-499f-a015-d024ef1e2cb9",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $f(x) = 2x - 3$. Which expression is $f(f(x))$?",
+      "choices": [
+        "$4x - 6$",
+        "$4x - 9$",
+        "$4x - 3$",
+        "$2x - 6$"
+      ],
+      "answer": "$4x - 9$",
+      "compute": null,
+      "solution": "$f(f(x)) = 2(2x - 3) - 3 = 4x - 6 - 3 = 4x - 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x - 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(f(x)) = 2(2x-3)-3 = 4x-6-3 = 4x-9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.360Z"
+        }
+      }
+    },
+    {
+      "id": "5ab91205-b7fd-41a3-baf5-fc12375cb9e0",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\frac{2}{x}$ and $g(x) = x + 3$. Which expression equals $g(f(x))$?",
+      "choices": [
+        "$\\frac{2}{x + 3}$",
+        "$\\frac{2}{x} + 3x$",
+        "$\\frac{5}{x}$",
+        "$\\frac{2}{x} + 3$"
+      ],
+      "answer": "$\\frac{2}{x} + 3$",
+      "compute": null,
+      "solution": "Put $f(x) = \\frac{2}{x}$ into $g$: $g(f(x)) = \\frac{2}{x} + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{x} + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(f(x)) = f(x) + 3 = 2/x + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.380Z"
+        }
+      }
+    },
+    {
+      "id": "807a33a9-6577-4b7f-b826-847e59d6525a",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = 2^x$ and $g(x) = 2x$. Which expression equals $f(g(x))$?",
+      "choices": [
+        "$2 \\cdot 2^x$",
+        "$4^x$",
+        "$2^x + 2x$",
+        "$2x^2$"
+      ],
+      "answer": "$4^x$",
+      "compute": null,
+      "solution": "$f(g(x)) = 2^{2x} = (2^2)^x = 4^x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4^x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = 2^(2x) = (2^2)^x = 4^x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.407Z"
+        }
+      }
+    },
+    {
+      "id": "d4fb5f0f-08b8-4b3c-aa32-b460d9ba6048",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $p(x) = 2x^2 + 1$ and $q(x) = x - 3$. Which expression equals $p(q(x))$ once it is multiplied out and collected?",
+      "choices": [
+        "$2x^2 - 17$",
+        "$2x^2 - 12x + 10$",
+        "$2x^2 - 12x + 19$",
+        "$2x^2 - 6x + 10$"
+      ],
+      "answer": "$2x^2 - 12x + 19$",
+      "compute": null,
+      "solution": "$p(q(x)) = 2(x - 3)^2 + 1 = 2(x^2 - 6x + 9) + 1 = 2x^2 - 12x + 19$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 - 12x + 19$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x-3)^2 + 1 = 2(x^2 - 6x + 9) + 1 = 2x^2 - 12x + 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.447Z"
+        }
+      }
+    },
+    {
+      "id": "9e29322b-b355-4243-b52d-ba289fef1145",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = x^2 - 2$. What is $f(f(3))$?",
+      "choices": [],
+      "answer": "47",
+      "compute": "(3^2-2)^2-2",
+      "solution": "$f(3) = 9 - 2 = 7$. Then $f(7) = 49 - 2 = 47$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(3) = 9 - 2 = 7; f(7) = 49 - 2 = 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.453Z"
+        }
+      }
+    },
+    {
+      "id": "462f5243-9825-42ac-883e-1f58f32d5a9e",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order matters in composition",
+      "stem": "Let $f(x) = x + 3$ and $g(x) = x - 8$. Which statement is true?",
+      "choices": [
+        "$f(g(x)) = x$ for every $x$",
+        "$f(g(x)) = x - 5$ but $g(f(x)) = x + 5$",
+        "$f(g(x)) = g(f(x)) = x - 5$ for every $x$",
+        "$f(g(x)) = x + 11$ for every $x$"
+      ],
+      "answer": "$f(g(x)) = g(f(x)) = x - 5$ for every $x$",
+      "compute": null,
+      "solution": "$f(g(x)) = (x - 8) + 3 = x - 5$ and $g(f(x)) = (x + 3) - 8 = x - 5$, so they are equal here.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(g(x)) = g(f(x)) = x - 5$ for every $x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = (x-8)+3 = x-5; g(f(x)) = (x+3)-8 = x-5. Equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.455Z"
+        }
+      }
+    },
+    {
+      "id": "1d6deb9e-c703-42b3-853e-d9018f027198",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\sqrt{x}$ and $g(x) = 2x + 1$. What is $f(g(12))$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$g(12) = 25$. Then $f(25) = \\sqrt{25} = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(12) = 25; sqrt(25) = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.495Z"
+        }
+      }
+    },
+    {
+      "id": "37e893ed-eae6-467d-9f83-7896e18ff2bd",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from points of a graph",
+      "stem": "The graph of $f$ passes through $(-1, 6)$, $(2, -3)$ and $(5, 0)$. The graph of $g$ passes through $(0, 5)$, $(3, 2)$ and $(4, -1)$. What is $f(g(4))$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The point $(4, -1)$ gives $g(4) = -1$. The point $(-1, 6)$ gives $f(-1) = 6$. So $f(g(4)) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(4) = -1 (point (4,-1)); f(-1) = 6 (point (-1,6)). Answer 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.541Z"
+        }
+      }
+    },
+    {
+      "id": "36e22d12-05d4-4094-b114-780b400832fe",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $f(x) = x^2 - 3x$ and $g(x) = x + 2$. When $f(g(x))$ is written as $x^2 + bx + c$, what is $c$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "2^2-3*2",
+      "solution": "$f(g(x)) = (x + 2)^2 - 3(x + 2) = x^2 + 4x + 4 - 3x - 6 = x^2 + x - 2$, so $c = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(x+2) = (x+2)^2 - 3(x+2) = x^2+4x+4-3x-6 = x^2+x-2. c = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.548Z"
+        }
+      }
+    },
+    {
+      "id": "cb0e2a0e-59bf-4a23-9aa3-274faff0847b",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "For $f$: $f(0) = 2$, $f(1) = 0$, $f(2) = 1$, $f(3) = 3$. For $g$: $g(0) = 3$, $g(1) = 1$, $g(2) = 0$, $g(3) = 2$. For which input $x$ is $f(g(x)) = 3$?",
+      "choices": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "answer": "0",
+      "compute": "0",
+      "solution": "$f(3) = 3$ is the only way to get 3 out of $f$, so we need $g(x) = 3$. That happens for $x = 0$. Check: $f(g(0)) = f(3) = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(0)) = f(3) = 3. f(g(1)) = f(1) = 0; f(g(2)) = f(0) = 2; f(g(3)) = f(2) = 1. Only x = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.552Z"
+        }
+      }
+    },
+    {
+      "id": "99e1ec79-173d-48f5-85cc-a1258db8298b",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "For $f$: $f(1) = 3$, $f(2) = 4$, $f(3) = 1$, $f(4) = 2$. For $g$: $g(1) = 4$, $g(2) = 3$, $g(3) = 2$, $g(4) = 1$. What is $f(g(1)) + g(f(4))$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "$g(1) = 4$, so $f(g(1)) = f(4) = 2$. $f(4) = 2$, so $g(f(4)) = g(2) = 3$. The sum is $2 + 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(1) = 4, f(4) = 2. f(4) = 2, g(2) = 3. Sum 2 + 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.555Z"
+        }
+      }
+    },
+    {
+      "id": "e9cad92f-a617-49d7-97b3-1a3ccaaf41a5",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Break a function into two functions",
+      "stem": "Let $h(x) = \\sqrt{x + 5}$. Which choice of $f$ and $g$ makes $f(g(x)) = h(x)$?",
+      "choices": [
+        "$f(x) = x + 5$ and $g(x) = \\sqrt{x}$",
+        "$f(x) = \\sqrt{x}$ and $g(x) = x - 5$",
+        "$f(x) = \\sqrt{x + 5}$ and $g(x) = x + 5$",
+        "$f(x) = \\sqrt{x}$ and $g(x) = x + 5$"
+      ],
+      "answer": "$f(x) = \\sqrt{x}$ and $g(x) = x + 5$",
+      "compute": null,
+      "solution": "The inside step is adding 5, so $g(x) = x + 5$, and the outside step is the square root, so $f(x) = \\sqrt{x}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = \\sqrt{x}$ and $g(x) = x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(x) = x+5, f(x) = sqrt x gives f(g(x)) = sqrt(x+5). Others: sqrt(x-5); sqrt x + 5; sqrt(x+10).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.571Z"
+        }
+      }
+    },
+    {
       "id": "00852e91-51c9-45fc-b57d-348c1833e71e",
       "topic_id": "NC17.M4.AF.1",
       "difficulty": 3,
@@ -5022,6 +6467,728 @@
           "work": "A: 3x+2 vs 3x+6; B: 2x^2 vs 4x^2; C: 15x both; D: x^2+1 vs (x+1)^2",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:02.126Z"
+        }
+      }
+    },
+    {
+      "id": "8b0518eb-cc93-4323-8a78-79b009dbcfe0",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a composite function in a situation",
+      "stem": "A balloon's radius is $r(t) = 2t + 1$ centimeters after $t$ seconds. The volume of a sphere is $V(r) = \\frac{4}{3}\\pi r^3$. Which formula gives the volume after $t$ seconds?",
+      "choices": [
+        "$\\frac{4}{3}\\pi(2t^3 + 1)$",
+        "$\\frac{4}{3}\\pi(2t) + 1$",
+        "$\\frac{4}{3}\\pi(2t + 1)^3$",
+        "$\\frac{4}{3}\\pi(2t + 1)$"
+      ],
+      "answer": "$\\frac{4}{3}\\pi(2t + 1)^3$",
+      "compute": null,
+      "solution": "Put $r(t) = 2t + 1$ in place of $r$: $V(r(t)) = \\frac{4}{3}\\pi(2t + 1)^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{4}{3}\\pi(2t + 1)^3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V(r(t)) = (4/3) pi (2t+1)^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.057Z"
+        }
+      }
+    },
+    {
+      "id": "77bb260b-35be-4c6e-920a-fc6dd2af2712",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Order matters in composition",
+      "stem": "Let $f(x) = x + 1$ and $g(x) = x^2$. For what value of $x$ is $f(g(x)) = g(f(x))$?",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "$f(g(x)) = x^2 + 1$ and $g(f(x)) = (x + 1)^2 = x^2 + 2x + 1$. They are equal when $2x = 0$, so $x = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = x^2 + 1; g(f(x)) = (x+1)^2 = x^2 + 2x + 1. Equal when 2x = 0, x = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.059Z"
+        }
+      }
+    },
+    {
+      "id": "a0bbf24f-8bdb-410a-831a-8433bee5ab4b",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\sqrt{x + 3}$ and $g(x) = x^2 - 3$. Which expression equals $g(f(x))$ for every $x \\ge -3$?",
+      "choices": [
+        "$x + 3$",
+        "$x$",
+        "$x - 6$",
+        "$x^2$"
+      ],
+      "answer": "$x$",
+      "compute": null,
+      "solution": "$g(f(x)) = (\\sqrt{x + 3})^2 - 3 = x + 3 - 3 = x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(f(x)) = (sqrt(x+3))^2 - 3 = x + 3 - 3 = x for x >= -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.061Z"
+        }
+      }
+    },
+    {
+      "id": "b06b3a6c-7616-42c2-9809-9922e9898dbe",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\frac{x}{x + 1}$ and $g(x) = \\frac{1}{x}$. For $x > 0$, which expression equals $f(g(x))$ in simplest form?",
+      "choices": [
+        "$\\frac{1}{x + 1}$",
+        "$\\frac{x}{x + 1}$",
+        "$\\frac{x + 1}{x}$",
+        "$\\frac{1}{x^2 + x}$"
+      ],
+      "answer": "$\\frac{1}{x + 1}$",
+      "compute": null,
+      "solution": "$f(g(x)) = \\frac{1/x}{1/x + 1} = \\frac{1/x}{(1 + x)/x} = \\frac{1}{x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1/x) = (1/x)/(1/x + 1) = (1/x)/((1+x)/x) = 1/(x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.063Z"
+        }
+      }
+    },
+    {
+      "id": "db111ada-2d6b-487c-9f51-c3fbbb3d7d45",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a composite function to find an unknown",
+      "stem": "Let $f(x) = x + 6$. Which function $g$ makes $f(g(x)) = x^2 + 1$ true for every $x$?",
+      "choices": [
+        "$g(x) = x^2 + 7$",
+        "$g(x) = x^2 - 5$",
+        "$g(x) = x^2 + 1$",
+        "$g(x) = (x - 5)^2$"
+      ],
+      "answer": "$g(x) = x^2 - 5$",
+      "compute": null,
+      "solution": "$f(g(x)) = g(x) + 6 = x^2 + 1$, so $g(x) = x^2 - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g(x) = x^2 - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = g(x) + 6 = x^2 + 1, so g(x) = x^2 - 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.071Z"
+        }
+      }
+    },
+    {
+      "id": "b98826d0-7612-4b83-9ceb-a1d1824a2747",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a composite function to find an unknown",
+      "stem": "Let $f(x) = 3x - 4$. A function $g$ makes $f(g(x)) = 6x^2 - 4$ true for every $x$. What is $g(3)$?",
+      "choices": [],
+      "answer": "18",
+      "compute": "(6*3^2-4+4)/3",
+      "solution": "$3g(x) - 4 = 6x^2 - 4$, so $g(x) = 2x^2$. Then $g(3) = 2 \\cdot 9 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 g(x) - 4 = 6x^2 - 4 -> g(x) = 2x^2; g(3) = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.073Z"
+        }
+      }
+    },
+    {
+      "id": "fcf637bf-2680-4684-bcbe-b0f96a32e869",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "For $f$: $f(1) = 2$, $f(2) = 5$, $f(3) = 1$, $f(4) = 3$, $f(5) = 4$. For $g$: $g(1) = 3$, $g(2) = 1$, $g(3) = 5$, $g(4) = 2$, $g(5) = 4$. For which input $x$ is $f(g(x)) = 4$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$f(5) = 4$, so we need $g(x) = 5$. That happens at $x = 3$. Check: $f(g(3)) = f(5) = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(y) = 4 only for y = 5; g(x) = 5 only for x = 3. Check f(g(3)) = f(5) = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.077Z"
+        }
+      }
+    },
+    {
+      "id": "acb7d725-5d43-47aa-aa6b-69c29e9d88cb",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a composite function to find an unknown",
+      "stem": "Let $f(x) = ax + 2$ and $g(x) = x^2 - 1$, where $a$ is a number. If $f(g(3)) = 26$, what is $a$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(26-2)/(3^2-1)",
+      "solution": "$g(3) = 8$, so $f(g(3)) = 8a + 2 = 26$. Then $8a = 24$ and $a = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(3) = 9 - 1 = 8. f(8) = 8a + 2 = 26, so 8a = 24, a = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.092Z"
+        }
+      }
+    },
+    {
+      "id": "c6d1f0d1-b16e-4ee0-8be1-097b8115806c",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a composite function in a situation",
+      "stem": "A car travels $d(t) = 60t$ miles in $t$ hours. It uses $g(d) = \\frac{d}{30}$ gallons for $d$ miles, and gas costs $c(g) = 4g$ dollars for $g$ gallons. Which formula gives the gas cost, in dollars, for $t$ hours?",
+      "choices": [
+        "$8t$",
+        "$2t$",
+        "$4t$",
+        "$\\frac{t}{2}$"
+      ],
+      "answer": "$8t$",
+      "compute": null,
+      "solution": "$g(d(t)) = \\frac{60t}{30} = 2t$ gallons. Then $c(2t) = 4 \\cdot 2t = 8t$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8t$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "d = 60t miles, gallons = 60t/30 = 2t, cost = 4(2t) = 8t.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.102Z"
+        }
+      }
+    },
+    {
+      "id": "2ecdcd0d-078d-48f7-aaf1-6d8714486f98",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\frac{x - 1}{x + 1}$ and $g(x) = 3x$. Which expression equals $g(f(x))$?",
+      "choices": [
+        "$\\frac{3x - 1}{3x + 1}$",
+        "$\\frac{x - 3}{x + 3}$",
+        "$\\frac{3x - 3}{x + 1}$",
+        "$\\frac{3x - 3}{3x + 3}$"
+      ],
+      "answer": "$\\frac{3x - 3}{x + 1}$",
+      "compute": null,
+      "solution": "$g(f(x)) = 3 \\cdot \\frac{x - 1}{x + 1} = \\frac{3x - 3}{x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3x - 3}{x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(f(x)) = 3 (x-1)/(x+1) = (3x - 3)/(x + 1). Option (3x-3)/(3x+3) simplifies to (x-1)/(x+1), not equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.112Z"
+        }
+      }
+    },
+    {
+      "id": "76fb4516-1659-4074-b9ed-908560e6e6ef",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a composite function in a situation",
+      "stem": "A taxi's fare is $F(m) = 3 + 2m$ dollars for a ride of $m$ miles. On one route the taxi has gone $m(t) = \\frac{t}{2}$ miles after $t$ minutes. After how many minutes has the fare reached 15 dollars?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(15-3)/2*2",
+      "solution": "$F(m(t)) = 3 + 2 \\cdot \\frac{t}{2} = 3 + t$. Setting $3 + t = 15$ gives $t = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "F(m(t)) = 3 + 2(t/2) = 3 + t = 15, so t = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.121Z"
+        }
+      }
+    },
+    {
+      "id": "47bb874e-d889-4725-b930-be51a4230f91",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compose with a radical, rational or exponential function",
+      "stem": "Let $f(x) = \\log_2 x$ and $g(x) = 8x$ for $x > 0$. Which expression equals $f(g(x))$?",
+      "choices": [
+        "$8 \\log_2 x$",
+        "$8 + \\log_2 x$",
+        "$3 + \\log_2 x$",
+        "$3 \\log_2 x$"
+      ],
+      "answer": "$3 + \\log_2 x$",
+      "compute": null,
+      "solution": "$f(g(x)) = \\log_2 (8x) = \\log_2 8 + \\log_2 x = 3 + \\log_2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + \\log_2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2(8x) = log2 8 + log2 x = 3 + log2 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.214Z"
+        }
+      }
+    },
+    {
+      "id": "978fd98f-4453-477c-bdd1-75ea0104efeb",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "Let $f(x) = x^2 + 1$, $g(x) = 3x - 2$ and $h(x) = x + 4$. Find $f(g(h(0)))$ by working from the inside out.",
+      "choices": [],
+      "answer": "101",
+      "compute": "(3*(0+4)-2)^2+1",
+      "solution": "$h(0) = 4$. Then $g(4) = 10$. Then $f(10) = 101$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "101",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h(0) = 4; g(4) = 10; f(10) = 101.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.291Z"
+        }
+      }
+    },
+    {
+      "id": "4b8d0045-755d-492c-8caa-18648f5f4e47",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "The function $f$ sends 1 to 4, 2 to 1, 3 to 5, 4 to 2 and 5 to 3. The function $g$ sends 1 to 2, 2 to 5, 3 to 1, 4 to 3 and 5 to 4. What is $g(g(f(2)))$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$f(2) = 1$. Then $g(1) = 2$. Then $g(2) = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(2)=1, g(1)=2, g(2)=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.298Z"
+        }
+      }
+    },
+    {
+      "id": "2e461cc8-c5fa-4733-9daa-ef2f53bd3911",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an equation involving a composite function",
+      "stem": "Let $f(x) = x^2 - 1$ and $g(x) = 2x + 3$. For the positive value of $x$ that makes $f(g(x)) = 24$, what is $x$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(5-3)/2",
+      "solution": "$f(g(x)) = (2x + 3)^2 - 1 = 24$, so $(2x + 3)^2 = 25$ and $2x + 3 = 5$ or $-5$. This gives $x = 1$ or $x = -4$. The positive one is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+3)^2 - 1 = 24 -> (2x+3)^2 = 25 -> 2x+3 = 5 or -5 -> x = 1 or -4; positive x = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.304Z"
+        }
+      }
+    },
+    {
+      "id": "0b6870b3-af30-429f-931e-9290df680d55",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a composite function to find an unknown",
+      "stem": "Let $g(x) = x - 2$. A function $f$ makes $f(g(x)) = x^2 - 4x + 7$ true for every $x$. What is $f(5)$?",
+      "choices": [],
+      "answer": "28",
+      "compute": "5^2+3",
+      "solution": "Write $x = u + 2$ where $u = g(x)$: $f(u) = (u + 2)^2 - 4(u + 2) + 7 = u^2 + 3$. Then $f(5) = 25 + 3 = 28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(x)=5 when x=7; f(5)=49-28+7=28. (f(t)=t^2+3.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.329Z"
+        }
+      }
+    },
+    {
+      "id": "e711ce7d-7e0a-4889-b675-110c8dfbb6f2",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Order matters in composition",
+      "stem": "Let $f(x) = x + 3$ and $g(x) = x^2 - 2$. Find the difference $g(f(2)) - f(g(2))$.",
+      "choices": [],
+      "answer": "18",
+      "compute": "((2+3)^2-2)-((2^2-2)+3)",
+      "solution": "$g(f(2)) = g(5) = 23$ and $f(g(2)) = f(2) = 5$. The difference is $23 - 5 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(2)=5, g(5)=23; g(2)=2, f(2)=5; 23-5 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.346Z"
+        }
+      }
+    },
+    {
+      "id": "f00167d8-5b34-4989-b508-8308c4e5c28f",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Evaluate a composite function from a table",
+      "stem": "For $f$: $f(1) = 3$, $f(2) = 1$, $f(3) = 2$. For $g$: $g(1) = 2$, $g(2) = 3$, $g(3) = 1$. Which statement is true?",
+      "choices": [
+        "$f(g(x)) = x$ for each of $x = 1, 2, 3$",
+        "$f(g(1)) = 3$",
+        "$g(f(2)) = 3$",
+        "$f(g(3)) = 1$"
+      ],
+      "answer": "$f(g(x)) = x$ for each of $x = 1, 2, 3$",
+      "compute": null,
+      "solution": "$f(g(1)) = f(2) = 1$, $f(g(2)) = f(3) = 2$ and $f(g(3)) = f(1) = 3$, so $f(g(x)) = x$ each time. Also $g(f(2)) = g(1) = 2$, not 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(g(x)) = x$ for each of $x = 1, 2, 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(1))=f(2)=1, f(g(2))=f(3)=2, f(g(3))=f(1)=3: identity. B false (1), C g(f(2))=g(1)=2 false, D 3 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.349Z"
+        }
+      }
+    },
+    {
+      "id": "41adb431-18df-46a6-87c4-f0c97a65e0a4",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from formulas",
+      "stem": "The function $f$ is given by $f(x) = 1 - 2x$. Start with 1 and apply $f$ three times in a row. What is the final result?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "1-2*(1-2*(1-2*1))",
+      "solution": "$f(1) = -1$. Then $f(-1) = 1 + 2 = 3$. Then $f(3) = 1 - 6 = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1)=-1, f(-1)=3, f(3)=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.353Z"
+        }
+      }
+    },
+    {
+      "id": "b39e61a9-e0a6-4cbc-8631-8903948547bb",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Break a function into two functions",
+      "stem": "Let $h(x) = 2^{3x - 1}$. Which choice of $f$ and $g$ makes $f(g(x)) = h(x)$?",
+      "choices": [
+        "$f(x) = 3x - 1$ and $g(x) = 2^x$",
+        "$f(x) = 2^{3x}$ and $g(x) = x - 1$",
+        "$f(x) = 2^x - 1$ and $g(x) = 3x$",
+        "$f(x) = 2^x$ and $g(x) = 3x - 1$"
+      ],
+      "answer": "$f(x) = 2^x$ and $g(x) = 3x - 1$",
+      "compute": null,
+      "solution": "The inside step is $3x - 1$ and the outside step raises 2 to that power. The other pairs give $3 \\cdot 2^x - 1$, $2^{3x - 3}$ and $2^{3x} - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = 2^x$ and $g(x) = 3x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = 2^(3x-1) with f = 2^x, g = 3x-1. Others: 2^(3x)-1; 2^(3x-3); 3*2^x - 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.480Z"
+        }
+      }
+    },
+    {
+      "id": "6fdd82b4-8269-4133-96cf-69fb639b26b7",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a composite function as a formula",
+      "stem": "Let $f(x) = x^2 + 2x + 1$ and $g(x) = x - 1$. Which expression equals $f(g(x))$ in simplest form?",
+      "choices": [
+        "$x^2 + 2x - 2$",
+        "$x^2$",
+        "$x^2 - 2x$",
+        "$x^2 + 4x$"
+      ],
+      "answer": "$x^2$",
+      "compute": null,
+      "solution": "$f(g(x)) = (x - 1)^2 + 2(x - 1) + 1 = x^2 - 2x + 1 + 2x - 2 + 1 = x^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(g(x)) = (x-1)^2+2(x-1)+1 = ((x-1)+1)^2 = x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.523Z"
+        }
+      }
+    },
+    {
+      "id": "7fd03801-149b-4032-8649-8a579eab7f04",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order matters in composition",
+      "stem": "Let $f(x) = 2x + 3$ and $g(x) = 4x - 1$. Which statement is true for every $x$?",
+      "choices": [
+        "$g(f(x)) - f(g(x)) = 0$",
+        "$g(f(x)) - f(g(x)) = 8x$",
+        "$g(f(x)) - f(g(x)) = 12$",
+        "$g(f(x)) - f(g(x)) = 10$"
+      ],
+      "answer": "$g(f(x)) - f(g(x)) = 10$",
+      "compute": null,
+      "solution": "$f(g(x)) = 2(4x - 1) + 3 = 8x + 1$ and $g(f(x)) = 4(2x + 3) - 1 = 8x + 11$. The difference is $10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g(f(x)) - f(g(x)) = 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(f(x)) = 4(2x+3)-1 = 8x+11; f(g(x)) = 2(4x-1)+3 = 8x+1; difference 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.549Z"
+        }
+      }
+    },
+    {
+      "id": "f4842906-958a-46f6-b811-55abb99d28eb",
+      "topic_id": "NC17.M4.AF.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a composite function from points of a graph",
+      "stem": "The functions below are defined only by these points, each written (input, output). For $f$: $(1, 5)$, $(2, 0)$, $(3, -2)$, $(5, 1)$. For $g$: $(0, 3)$, $(1, 2)$, $(2, 5)$, $(5, 1)$. What is $g(f(g(1)))$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$g(1) = 2$. Then $f(2) = 0$. Then $g(0) = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "g(1) = 2; f(2) = 0; g(0) = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.561Z"
         }
       }
     },

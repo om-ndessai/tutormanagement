@@ -3,6 +3,7 @@
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
     "NC17.PC.N.2": "30 questions, matrices written by their rows; every matrix answer is computed by the generator.",
+    "NC17.PC.N.3": "Directions are measured counterclockwise from the positive x-axis. Vectors with irrational magnitudes are choice questions.",
     "NC17.PC.A.1": "Graph work is described in words (intercepts, direction, asymptote, labeled points). Solution sets are written as inequalities (not interval unions), since set symbols are not supported. Numeric questions ask for counts of integers, sums or a largest integer so the keys are exact numbers.",
     "NC17.PC.A.2": "Arcsine and arccosine are written as sin^{-1} and cos^{-1}; irrational solutions are asked as choice questions, and trig solutions are given as exact multiples of pi or degrees.",
     "NC17.PC.F.2": "Angles are given in degrees or radians as each question says; irrational values are choice questions.",
@@ -4389,6 +4390,728 @@
       }
     },
     {
+      "id": "4c6b5861-afbf-43d0-9102-8c15194d929c",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "The vector $v$ has components $(2, -5)$. Which vector has the same magnitude as $v$ and points in the opposite direction?",
+      "choices": [
+        "$(-2, 5)$",
+        "$(2, 5)$",
+        "$(-2, -5)$",
+        "$(5, -2)$"
+      ],
+      "answer": "$(-2, 5)$",
+      "compute": null,
+      "solution": "The opposite of $v$ is $-v = (-2, 5)$. The vectors $(2, 5)$ and $(-2, -5)$ have the same magnitude, but they are not opposite to $v$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-2, 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Opposite vector is -v = (-2, 5); same magnitude sqrt(29).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.033Z"
+        }
+      }
+    },
+    {
+      "id": "1a53cbd1-2fa9-4b24-912f-0d7e4416d9d1",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Direction angle of a vector",
+      "stem": "Measured counterclockwise from the positive $x$-axis, which vector has direction angle $270^\\circ$?",
+      "choices": [
+        "$(0, 3)$",
+        "$(-3, 0)$",
+        "$(3, 0)$",
+        "$(0, -3)$"
+      ],
+      "answer": "$(0, -3)$",
+      "compute": null,
+      "solution": "$270^\\circ$ is three quarters of a turn, which points straight down, along the negative $y$-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(0, -3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "270 deg points along negative y-axis: (0, -3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.066Z"
+        }
+      }
+    },
+    {
+      "id": "e24194d4-1cf0-4c0f-ae1e-705d32546015",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract vectors geometrically",
+      "stem": "The vectors $u$ and $v$ are drawn starting at the same point. Which description matches $u - v$?",
+      "choices": [
+        "The vector from the tip of $u$ to the tip of $v$",
+        "The vector from the tip of $v$ to the tip of $u$",
+        "The diagonal of the parallelogram, starting at the common point",
+        "The vector from the tail of $u$ to the tail of $v$"
+      ],
+      "answer": "The vector from the tip of $v$ to the tip of $u$",
+      "compute": null,
+      "solution": "Since $v + (u - v) = u$, the vector $u - v$ must go from the tip of $v$ to the tip of $u$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The vector from the tip of $v$ to the tip of $u$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "With common tail, v + (u - v) = u, so u - v runs from the tip of v to the tip of u.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.070Z"
+        }
+      }
+    },
+    {
+      "id": "e1dcf953-d428-4e1e-a31f-087bb2ad0ab3",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract vectors by components",
+      "stem": "The vector $u$ has components $(3, 8)$ and the vector $v$ has components $(5, 2)$. Which is $u - v$?",
+      "choices": [
+        "$(-2, 6)$",
+        "$(2, -6)$",
+        "$(8, 10)$",
+        "$(-2, 10)$"
+      ],
+      "answer": "$(-2, 6)$",
+      "compute": null,
+      "solution": "$u - v = (3 - 5, 8 - 2) = (-2, 6)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-2, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u - v = (3-5, 8-2) = (-2, 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.097Z"
+        }
+      }
+    },
+    {
+      "id": "dc2a7d84-6a95-427e-8b65-3230ba63b227",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract vectors by components",
+      "stem": "The vector $p$ has components $(0, 8)$ and the vector $q$ has components $(5, 3)$. What is the $y$-component of $p - q$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "Subtract component by component: the $y$-component is $8 - 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y-component: 8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.100Z"
+        }
+      }
+    },
+    {
+      "id": "dab09e43-440e-4b85-92ca-629241987b94",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract vectors by components",
+      "stem": "The vectors $u$ and $v$ satisfy $u + v = (0, 0)$, and $u$ has components $(4, -9)$. What is the $x$-component of $v$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "0-4",
+      "solution": "$v = (0, 0) - u = (-4, 9)$, so its $x$-component is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "v = -u = (-4, 9); x-component -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.155Z"
+        }
+      }
+    },
+    {
+      "id": "cc8a2a07-d0fe-4b2a-8ff3-8f18ef767410",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Magnitude of a vector from its components",
+      "stem": "The vector $a$ has components $(5, 12)$. What is its magnitude?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "$|a| = \\sqrt{5^2 + 12^2} = \\sqrt{169} = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(25+144) = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.159Z"
+        }
+      }
+    },
+    {
+      "id": "4214277a-fea7-4e10-8ca9-f4c864e5b4ab",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Vector between two points",
+      "stem": "A vector starts at the point $P(-2, 5)$ and ends at the point $Q(4, 1)$. What is its $x$-component?",
+      "choices": [],
+      "answer": "6",
+      "compute": "4-(-2)",
+      "solution": "End minus start: $4 - (-2) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - (-2) = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.169Z"
+        }
+      }
+    },
+    {
+      "id": "3844c91f-84f0-4239-8784-0382c0751665",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Magnitude of a vector from its components",
+      "stem": "The vector $w$ has components $(7, -24)$. What is the magnitude of $-w$?",
+      "choices": [],
+      "answer": "25",
+      "compute": "25",
+      "solution": "$-w$ has components $(-7, 24)$, and reversing a vector does not change its length. $\\sqrt{49 + 576} = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|-w| = |w| = sqrt(49+576) = sqrt(625) = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.184Z"
+        }
+      }
+    },
+    {
+      "id": "befea9b0-48d9-405f-9f99-9cf8ef9d3ba1",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Components from magnitude and direction",
+      "stem": "A vector has magnitude 7 and direction $90^\\circ$, measured counterclockwise from the positive $x$-axis. What is its $x$-component?",
+      "choices": [],
+      "answer": "0",
+      "compute": "7*0",
+      "solution": "At $90^\\circ$ the vector points straight up, so it has no horizontal part. Its $x$-component is $7 \\cos 90^\\circ = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 7 cos 90 deg = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.187Z"
+        }
+      }
+    },
+    {
+      "id": "f5c18250-b73d-430a-8f8d-fa44f81c6e0a",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add vectors by components",
+      "stem": "The vectors $r$, $s$ and $t$ have components $(1, 2)$, $(3, -1)$ and $(-2, 4)$. What is the $y$-component of $r + s + t$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2-1+4",
+      "solution": "Add the $y$-components: $2 + (-1) + 4 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y-components 2 + (-1) + 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.236Z"
+        }
+      }
+    },
+    {
+      "id": "513b0761-1df9-4869-9a0a-75f95f69781a",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add vectors by components",
+      "stem": "The vector $p$ has components $(-4, 1)$ and the vector $q$ has components $(6, -3)$. Which is $p + q$?",
+      "choices": [
+        "$(10, -4)$",
+        "$(-10, 4)$",
+        "$(2, -2)$",
+        "$(2, 4)$"
+      ],
+      "answer": "$(2, -2)$",
+      "compute": null,
+      "solution": "$p + q = (-4 + 6, 1 + (-3)) = (2, -2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, -2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-4+6, 1-3) = (2, -2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.278Z"
+        }
+      }
+    },
+    {
+      "id": "1aeec100-5d10-4737-aa3c-f536ca5ea22e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Direction angle of a vector",
+      "stem": "The vector $d$ has components $(-5, 0)$. Measured counterclockwise from the positive $x$-axis, what is its direction angle, in degrees?",
+      "choices": [],
+      "answer": "180",
+      "compute": "180",
+      "solution": "The vector points along the negative $x$-axis, which is half a turn, $180^\\circ$, from the positive $x$-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-5, 0) points along negative x-axis: 180 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.292Z"
+        }
+      }
+    },
+    {
+      "id": "3519e61c-4391-480e-9226-22c0e453cc84",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Direction angle of a vector",
+      "stem": "The vector $c$ has components $(0, 7)$. Measured counterclockwise from the positive $x$-axis, what is its direction angle, in degrees?",
+      "choices": [],
+      "answer": "90",
+      "compute": "90",
+      "solution": "The vector points straight up along the positive $y$-axis, which is $90^\\circ$ from the positive $x$-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(0,7) points straight up: 90 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.312Z"
+        }
+      }
+    },
+    {
+      "id": "dea33e9e-ba78-48f6-abb4-96c965997216",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "Which statement must be true if two vectors are equal?",
+      "choices": [
+        "They have the same magnitude and start at the same point",
+        "They have the same magnitude and the same direction",
+        "They have the same direction and start at the same point",
+        "They have the same starting point and the same ending point"
+      ],
+      "answer": "They have the same magnitude and the same direction",
+      "compute": null,
+      "solution": "Two vectors are equal when their magnitudes and directions match, wherever they are drawn. Equal vectors may be drawn at different places, so they need not share a starting point.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They have the same magnitude and the same direction",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal vectors: same magnitude and direction (position irrelevant).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.316Z"
+        }
+      }
+    },
+    {
+      "id": "94d75b0b-8af3-4df3-a2dd-e684cf200a22",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Components from magnitude and direction",
+      "stem": "A vector has magnitude 10 and direction $180^\\circ$, measured counterclockwise from the positive $x$-axis. Which are its components?",
+      "choices": [
+        "$(10, 0)$",
+        "$(0, -10)$",
+        "$(-10, 0)$",
+        "$(0, 10)$"
+      ],
+      "answer": "$(-10, 0)$",
+      "compute": null,
+      "solution": "At $180^\\circ$ the vector points along the negative $x$-axis, so it is $(10 \\cos 180^\\circ, 10 \\sin 180^\\circ) = (-10, 0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-10, 0)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(10cos180, 10sin180) = (-10, 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.321Z"
+        }
+      }
+    },
+    {
+      "id": "2ee0227a-4338-4a65-9ef4-575f4abc44a0",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add vectors in a real situation",
+      "stem": "On one object, a force of 3 newtons pulls to the right and a force of 5 newtons pulls to the left. What is the net force?",
+      "choices": [
+        "8 newtons to the left",
+        "2 newtons to the right",
+        "15 newtons to the left",
+        "2 newtons to the left"
+      ],
+      "answer": "2 newtons to the left",
+      "compute": null,
+      "solution": "Opposite forces subtract: $5 - 3 = 2$, and the larger force wins, so the net force is 2 newtons to the left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 newtons to the left",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 left - 3 right = 2 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.332Z"
+        }
+      }
+    },
+    {
+      "id": "e4aabf5a-b61b-4da4-b944-34942e03b079",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Direction angle of a vector",
+      "stem": "The vector $m$ has components $(4, -4)$. Measured counterclockwise from the positive $x$-axis, what is its direction angle?",
+      "choices": [
+        "$315^\\circ$",
+        "$45^\\circ$",
+        "$135^\\circ$",
+        "$225^\\circ$"
+      ],
+      "answer": "$315^\\circ$",
+      "compute": null,
+      "solution": "The vector points right and down, into the fourth quarter. The angle with the $x$-axis is $45^\\circ$ below it, so the direction is $360^\\circ - 45^\\circ = 315^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$315^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4,-4) in quadrant IV on diagonal: 315 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.335Z"
+        }
+      }
+    },
+    {
+      "id": "085cd939-9205-4726-ad48-43d82353ba8b",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add vectors in a real situation",
+      "stem": "A boat sails 7 miles due west and then 24 miles due south. How far, in miles, is the boat in a straight line from where it started?",
+      "choices": [],
+      "answer": "25",
+      "compute": "25",
+      "solution": "The two legs are perpendicular, so the displacement has components $(-7, -24)$. Its magnitude is $\\sqrt{49 + 576} = \\sqrt{625} = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Displacement components 7 and 24 at right angles; magnitude sqrt(49+576) = sqrt(625) = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.402Z"
+        }
+      }
+    },
+    {
+      "id": "61238b04-f2db-40e8-811f-8fc76e90016b",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Vectors versus scalars",
+      "stem": "Which of these quantities is a scalar?",
+      "choices": [
+        "A force of 5 newtons pulling straight down",
+        "A room temperature of 70 degrees Fahrenheit",
+        "A velocity of 10 meters per second east",
+        "A displacement of 3 kilometers north"
+      ],
+      "answer": "A room temperature of 70 degrees Fahrenheit",
+      "compute": null,
+      "solution": "A temperature has a size only. A force, a velocity and a displacement each need a direction as well.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A room temperature of 70 degrees Fahrenheit",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Temperature has magnitude only: scalar. Velocity, force, displacement with direction are vectors.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.408Z"
+        }
+      }
+    },
+    {
+      "id": "6a73975c-cd5b-4e9b-8dce-b3ab4e01a797",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Vector between two points",
+      "stem": "The vector from $A(1, 1)$ to $B(4, 3)$ is equal to the vector from $C(2, 5)$ to $D(5, y)$. What is $y$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "5+(3-1)",
+      "solution": "The first vector is $(3, 2)$. The second must also rise by 2, so $y = 5 + 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = (3, 2). D = C + (3, 2) = (5, 7). y = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.411Z"
+        }
+      }
+    },
+    {
+      "id": "f86c7f5a-3682-4ce8-ba64-f3ee2edbd8d9",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Magnitude of a vector from its components",
+      "stem": "The vector $b$ has components $(-8, 6)$. What is its magnitude?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "$|b| = \\sqrt{(-8)^2 + 6^2} = \\sqrt{100} = 10$. A negative component squares to a positive number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(64 + 36) = sqrt(100) = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.502Z"
+        }
+      }
+    },
+    {
+      "id": "24b1487d-9ad7-47e1-9350-f42a7bc0e6ae",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Magnitude of a vector from its components",
+      "stem": "Which vector has magnitude 13?",
+      "choices": [
+        "$(5, 13)$",
+        "$(6, 7)$",
+        "$(8, 9)$",
+        "$(5, 12)$"
+      ],
+      "answer": "$(5, 12)$",
+      "compute": null,
+      "solution": "$\\sqrt{5^2 + 12^2} = 13$. The others have magnitudes $\\sqrt{194}$, $\\sqrt{85}$ and $\\sqrt{145}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, 12)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|(5,12)| = sqrt(25+144) = 13. (5,13): sqrt194; (6,7): sqrt85; (8,9): sqrt145.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.565Z"
+        }
+      }
+    },
+    {
       "id": "49d8535b-e4ba-4787-9ac0-8bd68ffa0502",
       "topic_id": "NC17.PC.N.3",
       "difficulty": 2,
@@ -4704,6 +5427,728 @@
       }
     },
     {
+      "id": "4854bec5-53f3-46f9-aced-92cfb1ecba1a",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract vectors by components",
+      "stem": "The vectors $u$ and $v$ satisfy $u - v = (2, -7)$, and $v$ has components $(4, 5)$. What is the $y$-component of $u$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-7+5",
+      "solution": "$u = (u - v) + v = (2 + 4, -7 + 5) = (6, -2)$, so the $y$-component is $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u = v + (2, -7) = (6, -2). y-component -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.109Z"
+        }
+      }
+    },
+    {
+      "id": "164bafcd-15e2-4bcb-ba1f-53fea98b2d23",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add vectors in a real situation",
+      "stem": "A boat heads due east at 15 kilometers per hour in still water, while a current pushes it due north at 8 kilometers per hour. What is the boat's speed relative to the ground, in kilometers per hour?",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "The two velocities are perpendicular, so the resultant is $(15, 8)$ with magnitude $\\sqrt{225 + 64} = \\sqrt{289} = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Resultant (15, 8); speed = sqrt(225 + 64) = sqrt(289) = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.125Z"
+        }
+      }
+    },
+    {
+      "id": "0eebdfff-a260-44eb-89b2-44d234175fbc",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Direction angle of a vector",
+      "stem": "The vector $u$ has components $(2, 5)$ and the vector $v$ has components $(-2, -1)$. Measured counterclockwise from the positive $x$-axis, what is the direction angle of $u + v$, in degrees?",
+      "choices": [],
+      "answer": "90",
+      "compute": "90",
+      "solution": "$u + v = (0, 4)$, which points straight up, so the direction angle is $90^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u + v = (0, 4), pointing along the positive y-axis: 90 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.128Z"
+        }
+      }
+    },
+    {
+      "id": "913ed643-4e62-4704-9f16-cbe5ff5b14d0",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Direction angle of a vector",
+      "stem": "A drone's velocity vector is $(\\sqrt{3}, -1)$. Measured counterclockwise from due east, which angle gives the direction it flies?",
+      "choices": [
+        "$30^\\circ$",
+        "$330^\\circ$",
+        "$150^\\circ$",
+        "$210^\\circ$"
+      ],
+      "answer": "$330^\\circ$",
+      "compute": null,
+      "solution": "The vector points right and down, into the fourth quarter. Its reference angle has $\\tan = \\frac{1}{\\sqrt{3}}$, so it is $30^\\circ$, and the direction is $360^\\circ - 30^\\circ = 330^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$330^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(sqrt3, -1): x>0, y<0, quadrant IV, reference angle arctan(1/sqrt3)=30, so 360-30 = 330.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.134Z"
+        }
+      }
+    },
+    {
+      "id": "b84636c2-6e1c-4fa2-8ac8-1ef4d6d0c655",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Direction angle of a vector",
+      "stem": "Subtract $v = (5, 2)$ from $u = (1, 2)$. Counterclockwise from the positive $x$-axis, in which direction does the vector $u - v$ point?",
+      "choices": [
+        "$0^\\circ$",
+        "$180^\\circ$",
+        "$90^\\circ$",
+        "$270^\\circ$"
+      ],
+      "answer": "$180^\\circ$",
+      "compute": null,
+      "solution": "$u - v = (1 - 5, 2 - 2) = (-4, 0)$, which points along the negative $x$-axis: $180^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$180^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u - v = (1-5, 2-2) = (-4, 0), points along negative x-axis: 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.135Z"
+        }
+      }
+    },
+    {
+      "id": "9e5f487a-f85e-49ac-bfcf-2542a949bdd3",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Magnitude of a sum or difference",
+      "stem": "Two forces act on a ring: one is $(-4, 7)$ newtons and the other is $(-5, 5)$ newtons. What is the magnitude, in newtons, of the total force?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "$u + v = (-9, 12)$, so $|u + v| = \\sqrt{81 + 144} = \\sqrt{225} = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum (-9, 12); magnitude sqrt(81+144) = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.143Z"
+        }
+      }
+    },
+    {
+      "id": "f04d995c-9c44-4843-b911-af8ff3e22529",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Vector between two points",
+      "stem": "A vector starts at $P(-3, 2)$ and ends at $Q(5, -13)$. What is its magnitude?",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "The vector is $(5 - (-3), -13 - 2) = (8, -15)$, with magnitude $\\sqrt{64 + 225} = \\sqrt{289} = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Q - P = (8, -15); magnitude sqrt(64+225) = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.149Z"
+        }
+      }
+    },
+    {
+      "id": "63ce74cb-225b-432e-ad5c-033612db9773",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Magnitude of a sum or difference",
+      "stem": "The vector $u$ has components $(2, 1)$ and the vector $v$ has components $(3, 5)$. What is the magnitude of $u + v$?",
+      "choices": [
+        "$11$",
+        "$\\sqrt{11}$",
+        "$61$",
+        "$\\sqrt{61}$"
+      ],
+      "answer": "$\\sqrt{61}$",
+      "compute": null,
+      "solution": "$u + v = (5, 6)$, so $|u + v| = \\sqrt{25 + 36} = \\sqrt{61}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{61}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u+v = (5, 6); magnitude sqrt(25+36) = sqrt61.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.158Z"
+        }
+      }
+    },
+    {
+      "id": "04ad04d0-7fd0-4d86-881f-bfdbdb7e6ca9",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Components from magnitude and direction",
+      "stem": "A vector has magnitude 6 and direction $45^\\circ$, measured counterclockwise from the positive $x$-axis. Which are its components?",
+      "choices": [
+        "$(6, 6)$",
+        "$(3, 3)$",
+        "$(3\\sqrt{2}, 3\\sqrt{2})$",
+        "$(6\\sqrt{2}, 6\\sqrt{2})$"
+      ],
+      "answer": "$(3\\sqrt{2}, 3\\sqrt{2})$",
+      "compute": null,
+      "solution": "Both components are $6 \\cos 45^\\circ = 6 \\cdot \\frac{\\sqrt{2}}{2} = 3\\sqrt{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3\\sqrt{2}, 3\\sqrt{2})$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(6cos45, 6sin45) = (3sqrt2, 3sqrt2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.167Z"
+        }
+      }
+    },
+    {
+      "id": "4510aa76-fefe-4999-86b3-ae9afd3d6f5b",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Components from magnitude and direction",
+      "stem": "A vector has magnitude 14 and direction $60^\\circ$, measured counterclockwise from the positive $x$-axis. What is its $x$-component?",
+      "choices": [],
+      "answer": "7",
+      "compute": "14/2",
+      "solution": "The $x$-component is $14 \\cos 60^\\circ = 14 \\cdot \\frac{1}{2} = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 14 cos 60 deg = 14 x 1/2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.200Z"
+        }
+      }
+    },
+    {
+      "id": "664bb2b5-fd8c-4874-ab58-626c84a67fde",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "Which statement correctly describes the difference between speed and velocity?",
+      "choices": [
+        "Velocity has a direction as well as a size, but speed has only a size",
+        "Speed has a direction as well as a size, but velocity has only a size",
+        "Speed and velocity are both vectors, and they differ only in units",
+        "Velocity is always larger than speed for the same motion"
+      ],
+      "answer": "Velocity has a direction as well as a size, but speed has only a size",
+      "compute": null,
+      "solution": "Velocity is a vector: it has a magnitude and a direction. Speed is its magnitude, a scalar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Velocity has a direction as well as a size, but speed has only a size",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Velocity is a vector (magnitude and direction); speed is a scalar (magnitude only).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.224Z"
+        }
+      }
+    },
+    {
+      "id": "bd43671f-51ea-4780-aa7c-42037cbfb162",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract vectors by components",
+      "stem": "The vector $u$ has components $(0, -6)$ and the vector $v$ has components $(-4, -1)$. Which is $u - v$?",
+      "choices": [
+        "$(4, -5)$",
+        "$(-4, 5)$",
+        "$(-4, -7)$",
+        "$(4, -7)$"
+      ],
+      "answer": "$(4, -5)$",
+      "compute": null,
+      "solution": "$u - v = (0 - (-4), -6 - (-1)) = (4, -5)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, -5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u - v = (0-(-4), -6-(-1)) = (4, -5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.245Z"
+        }
+      }
+    },
+    {
+      "id": "8222cfec-bf62-4aa5-a2a8-61540e17fe82",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "The vector $u$ has magnitude 6 and the vector $v$ has magnitude 10. What is the smallest possible magnitude of $u + v$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "The magnitude of the sum is smallest when the vectors point in opposite directions, giving $10 - 6 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Opposite directions: |10-6| = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.307Z"
+        }
+      }
+    },
+    {
+      "id": "7b9f70c1-33e4-4e32-9cb1-81b5616bad2e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add vectors by components",
+      "stem": "The vector $u$ has components $(-7, 2)$ and the vector $v$ has components $(3, -9)$. Which is $u + v$?",
+      "choices": [
+        "$(-10, 11)$",
+        "$(4, 7)$",
+        "$(-4, 11)$",
+        "$(-4, -7)$"
+      ],
+      "answer": "$(-4, -7)$",
+      "compute": null,
+      "solution": "$u + v = (-7 + 3, 2 + (-9)) = (-4, -7)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-4, -7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-7+3, 2-9) = (-4,-7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.329Z"
+        }
+      }
+    },
+    {
+      "id": "087ed101-df83-4efc-8695-144149b7409e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Components from magnitude and direction",
+      "stem": "A vector has magnitude 20 and direction $150^\\circ$, measured counterclockwise from the positive $x$-axis. What is its $y$-component?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20/2",
+      "solution": "The $y$-component is $20 \\sin 150^\\circ = 20 \\cdot \\frac{1}{2} = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 20 sin 150 deg = 20 x 1/2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.384Z"
+        }
+      }
+    },
+    {
+      "id": "b781c49c-c414-47d9-94b0-7e370db1b2b6",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add vectors by components",
+      "stem": "The vector $u$ has components $(a, 3)$ and the vector $v$ has components $(2, b)$. The sum $u + v$ has components $(7, -1)$. What is $a + b$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(7-2)+(-1-3)",
+      "solution": "$a + 2 = 7$ gives $a = 5$. $3 + b = -1$ gives $b = -4$. So $a + b = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a + 2 = 7 -> a = 5; 3 + b = -1 -> b = -4. a + b = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.391Z"
+        }
+      }
+    },
+    {
+      "id": "b946252d-e135-427f-bfcc-3bc062e2141b",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract vectors geometrically",
+      "stem": "$ABCD$ is a parallelogram with its vertices named in order around it. Which vector equals the sum of the vector from $A$ to $B$ and the vector from $A$ to $D$?",
+      "choices": [
+        "The vector from $B$ to $D$",
+        "The vector from $D$ to $B$",
+        "The vector from $A$ to $C$",
+        "The vector from $C$ to $A$"
+      ],
+      "answer": "The vector from $A$ to $C$",
+      "compute": null,
+      "solution": "Two vectors drawn from the same corner add to the diagonal of the parallelogram they span, which here is the diagonal from $A$ to $C$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The vector from $A$ to $C$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Parallelogram rule: AB + AD = AB + BC = AC (AD = BC).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.405Z"
+        }
+      }
+    },
+    {
+      "id": "d840556e-f620-4937-9b1f-73e82f57b10c",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add vectors in a real situation",
+      "stem": "A boat's velocity in still water is $(6, 2)$ kilometers per hour and the current's velocity is $(-1, -3)$ kilometers per hour. Which is the boat's velocity relative to the ground?",
+      "choices": [
+        "$(7, 5)$",
+        "$(5, 1)$",
+        "$(5, -1)$",
+        "$(-5, 1)$"
+      ],
+      "answer": "$(5, -1)$",
+      "compute": null,
+      "solution": "Add the velocities: $(6 + (-1), 2 + (-3)) = (5, -1)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, -1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ground velocity = (6 + (-1), 2 + (-3)) = (5, -1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.419Z"
+        }
+      }
+    },
+    {
+      "id": "b9d21c8a-44af-4a9a-bd9c-738477a1d7b9",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Vector between two points",
+      "stem": "The point $A$ is $(-2, 3)$ and the point $B$ is $(1, -1)$. Which is the vector from $A$ to $B$?",
+      "choices": [
+        "$(-3, 4)$",
+        "$(3, -4)$",
+        "$(-1, 2)$",
+        "$(3, 4)$"
+      ],
+      "answer": "$(3, -4)$",
+      "compute": null,
+      "solution": "End minus start: $(1 - (-2), -1 - 3) = (3, -4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3, -4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B - A = (1 - (-2), -1 - 3) = (3, -4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.424Z"
+        }
+      }
+    },
+    {
+      "id": "739fb123-c2f9-4022-a022-69c93b253236",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add vectors by components",
+      "stem": "Three forces act on a post. The first is $(5, -2)$, the second is $(-1, -4)$, and the third is chosen so that the three forces add to the zero vector. What is the $y$-component of the third force?",
+      "choices": [],
+      "answer": "6",
+      "compute": "2+4",
+      "solution": "The first two add to $(4, -6)$. The third must be $(-4, 6)$, so its $y$-component is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y: -2 + (-4) + y = 0 -> y = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.426Z"
+        }
+      }
+    },
+    {
+      "id": "1502447f-bf91-44e3-b4f7-37952dd70516",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "Which statement is true for every pair of vectors $u$ and $v$?",
+      "choices": [
+        "$|u + v| = |u| + |v|$",
+        "$|u + v| \\ge |u| + |v|$",
+        "$|u - v| = |u| - |v|$",
+        "$|u + v| \\le |u| + |v|$"
+      ],
+      "answer": "$|u + v| \\le |u| + |v|$",
+      "compute": null,
+      "solution": "The length of one side of a triangle is never more than the sum of the other two, so $|u + v| \\le |u| + |v|$. Equality holds only when the vectors point the same way.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$|u + v| \\le |u| + |v|$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Triangle inequality |u+v| <= |u|+|v| always holds; the others fail in general.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.483Z"
+        }
+      }
+    },
+    {
+      "id": "4651eda9-70c4-425a-818d-1dca082819d5",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Direction angle of a vector",
+      "stem": "An arrow runs from the origin to the point $(-2, 2\\sqrt{3})$. It makes what angle, in degrees, with the positive $x$-axis, measured counterclockwise and between $0^\\circ$ and $360^\\circ$?",
+      "choices": [],
+      "answer": "120",
+      "compute": "120",
+      "solution": "The vector is in the second quarter. The reference angle satisfies $\\tan = \\frac{2\\sqrt{3}}{2} = \\sqrt{3}$, so it is $60^\\circ$. The direction is $180^\\circ - 60^\\circ = 120^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Point (-2, 2sqrt3) in quadrant II, r=4, reference angle arctan(sqrt3)=60 deg, angle = 180-60 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.534Z"
+        }
+      }
+    },
+    {
+      "id": "a59afee9-8b7e-4954-8a79-2bb5e9cc202e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Magnitude of a sum or difference",
+      "stem": "The vector $u$ points in the positive $x$ direction with magnitude 20, and the vector $v$ points in the positive $y$ direction with magnitude 21. What is the magnitude of $u - v$?",
+      "choices": [],
+      "answer": "29",
+      "compute": "29",
+      "solution": "$u = (20, 0)$ and $v = (0, 21)$, so $u - v = (20, -21)$ with magnitude $\\sqrt{400 + 441} = \\sqrt{841} = 29$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u - v = (20, -21); magnitude sqrt(400+441) = sqrt841 = 29.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.554Z"
+        }
+      }
+    },
+    {
       "id": "1f3496af-45fb-4969-86f1-1f67c63ee5c9",
       "topic_id": "NC17.PC.N.3",
       "difficulty": 3,
@@ -5015,6 +6460,694 @@
           "work": "AB+BC=AC=(10-1, 13-1)=(9,12)",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:02.163Z"
+        }
+      }
+    },
+    {
+      "id": "0289f988-8856-47af-9de8-e8dfa8844acd",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add and subtract vectors geometrically",
+      "stem": "Three points $A$, $B$ and $C$ are not on one line. Which vector equals the vector from $A$ to $B$ minus the vector from $A$ to $C$?",
+      "choices": [
+        "The vector from $B$ to $C$",
+        "The vector from $A$ to $C$",
+        "The vector from $B$ to $A$",
+        "The vector from $C$ to $B$"
+      ],
+      "answer": "The vector from $C$ to $B$",
+      "compute": null,
+      "solution": "If $a$ and $c$ are the vectors from $A$ to $B$ and from $A$ to $C$, then $a - c$ goes from the tip of $c$ to the tip of $a$, which is from $C$ to $B$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The vector from $C$ to $B$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB - AC = (B - A) - (C - A) = B - C, the vector from C to B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.111Z"
+        }
+      }
+    },
+    {
+      "id": "e189f403-ffad-4e34-a6b6-bb6f693dc8ea",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract vectors by components",
+      "stem": "The vectors $u$ and $v$ satisfy $u + v = (7, 3)$ and $u - v = (1, -5)$. What is the magnitude of $v$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Subtracting the equations gives $2v = (6, 8)$, so $v = (3, 4)$ and $|v| = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Subtract: 2v = (6, 8), v = (3, 4), |v| = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.143Z"
+        }
+      }
+    },
+    {
+      "id": "9e043462-fe3c-4b2d-9f61-70dd08cedc29",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Components from magnitude and direction",
+      "stem": "The vector $u$ has magnitude 12 and direction $30^\\circ$. The vector $v$ has magnitude 10 and direction $210^\\circ$. Both are measured counterclockwise from the positive $x$-axis. What is the $y$-component of $u + v$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "12/2-10/2",
+      "solution": "$u$ has $y$-component $12 \\sin 30^\\circ = 6$. $v$ has $y$-component $10 \\sin 210^\\circ = -5$. The sum is $6 - 5 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u_y = 12 sin30 = 6; v_y = 10 sin210 = -5; sum 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.150Z"
+        }
+      }
+    },
+    {
+      "id": "604e3b49-c8fe-48fe-bed2-e142774290f3",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Direction angle of a vector",
+      "stem": "The vector $u$ has magnitude 4 and direction $0^\\circ$. The vector $v$ has magnitude 4 and direction $120^\\circ$. Measured counterclockwise from the positive $x$-axis, what is the direction of $u + v$?",
+      "choices": [
+        "$30^\\circ$",
+        "$90^\\circ$",
+        "$60^\\circ$",
+        "$120^\\circ$"
+      ],
+      "answer": "$60^\\circ$",
+      "compute": null,
+      "solution": "$u = (4, 0)$ and $v = (-2, 2\\sqrt{3})$, so $u + v = (2, 2\\sqrt{3})$. Its reference angle has $\\tan = \\sqrt{3}$, and it is in the first quarter, so the direction is $60^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u=(4,0), v=(-2, 2sqrt3); sum (2, 2sqrt3), angle arctan(sqrt3)=60 (rhombus bisects 0 and 120).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.153Z"
+        }
+      }
+    },
+    {
+      "id": "80867caf-0ce3-4bd2-97f5-aa8fe6817a46",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add vectors by components",
+      "stem": "The vector $u$ has components $(2, -5)$, the vector $v$ has components $(-4, 1)$ and the vector $w$ has components $(3, 3)$. Which is $u + v - w$?",
+      "choices": [
+        "$(-5, -7)$",
+        "$(1, -1)$",
+        "$(5, 7)$",
+        "$(-5, -1)$"
+      ],
+      "answer": "$(-5, -7)$",
+      "compute": null,
+      "solution": "$u + v = (-2, -4)$. Then subtracting $w$ gives $(-2 - 3, -4 - 3) = (-5, -7)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-5, -7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u + v = (-2, -4); minus w (3,3) = (-5, -7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.213Z"
+        }
+      }
+    },
+    {
+      "id": "2f1b4002-74b2-4715-be84-90363d28b57b",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add vectors in a real situation",
+      "stem": "A drone flies 20 meters due east, then 9 meters due north, then 8 meters due west. How far, in meters, is it from where it started?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "East is positive $x$ and north is positive $y$. The total is $(20 - 8, 9) = (12, 9)$, with magnitude $\\sqrt{144 + 81} = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Net east 20-8 = 12, north 9. Distance sqrt(144+81) = sqrt(225) = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.236Z"
+        }
+      }
+    },
+    {
+      "id": "1853f996-d5a4-40bb-9ef5-b36a711077dc",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "Force $A$ has magnitude 8 and direction $60^\\circ$. Force $B$ has magnitude 16 and direction $240^\\circ$. Both directions are measured counterclockwise from the positive $x$-axis. What is the magnitude of the total force $A + B$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "16-8",
+      "solution": "$240^\\circ = 60^\\circ + 180^\\circ$, so the forces point in exactly opposite directions. They partly cancel, leaving $16 - 8 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 and 240 differ by 180: opposite directions. Total magnitude |16 - 8| = 8 (direction 240).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.251Z"
+        }
+      }
+    },
+    {
+      "id": "569733a5-1b5d-44a4-aa5a-62c16b3f84f6",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Magnitude of a sum or difference",
+      "stem": "The vector $u$ has components $(4, 6)$ and the vector $v$ has components $(k, -2)$. The sum $u + v$ has magnitude 5 and a positive $x$-component. What is $k$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "3-4",
+      "solution": "$u + v = (4 + k, 4)$. Its magnitude is 5, so $(4 + k)^2 + 16 = 25$ and $(4 + k)^2 = 9$. The $x$-component is positive, so $4 + k = 3$ and $k = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u+v = (4+k, 4). (4+k)^2 + 16 = 25 so 4+k = +-3; positive x-component: 4+k = 3, k = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.261Z"
+        }
+      }
+    },
+    {
+      "id": "2211f67a-27c4-4eb9-9ea2-8c9e46b999ab",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Magnitude of a vector from its components",
+      "stem": "A vector has magnitude 26, a negative $x$-component of $-10$, and a negative $y$-component. What is its $y$-component?",
+      "choices": [],
+      "answer": "-24",
+      "compute": "-24",
+      "solution": "$(-10)^2 + y^2 = 26^2$ gives $y^2 = 676 - 100 = 576$, so $y = \\pm 24$. The $y$-component is negative, so it is $-24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-10)^2 + y^2 = 676, y^2 = 576, y = -24 (negative).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.279Z"
+        }
+      }
+    },
+    {
+      "id": "219497ab-a09c-48ec-97c5-e1b671a17b5f",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add vectors in a real situation",
+      "stem": "A plane's velocity in still air is $(150, 200)$ kilometers per hour and the wind's velocity is $(-30, -40)$ kilometers per hour. By how many kilometers per hour is the plane's speed over the ground less than its speed in still air?",
+      "choices": [],
+      "answer": "50",
+      "compute": "250-200",
+      "solution": "Air speed: $\\sqrt{150^2 + 200^2} = 250$. Over the ground the velocity is $(120, 160)$, with speed $\\sqrt{120^2 + 160^2} = 200$. The difference is $250 - 200 = 50$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Still air speed sqrt(150^2+200^2) = 250. Ground velocity (120,160), speed 200. Difference 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.283Z"
+        }
+      }
+    },
+    {
+      "id": "85499e4d-32b4-423f-ba73-5063b044b660",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Vector between two points",
+      "stem": "The points are $A(-1, 2)$, $B(3, 5)$ and $C(11, -14)$. The vector from $A$ to $B$ is added to the vector from $B$ to $C$. What is the magnitude of the result?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "The sum of the two is the vector from $A$ to $C$: $(11 - (-1), -14 - 2) = (12, -16)$. Its magnitude is $\\sqrt{144 + 256} = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB+BC = AC = (11-(-1), -14-2) = (12,-16); |AC| = sqrt(144+256) = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.294Z"
+        }
+      }
+    },
+    {
+      "id": "0226d798-5db6-4228-b510-22d2d24531da",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Components from magnitude and direction",
+      "stem": "A force has magnitude 8 and direction $120^\\circ$, measured counterclockwise from the positive $x$-axis. Which are its components?",
+      "choices": [
+        "$(-4, 4\\sqrt{3})$",
+        "$(-4\\sqrt{3}, 4)$",
+        "$(4, 4\\sqrt{3})$",
+        "$(-8, 8\\sqrt{3})$"
+      ],
+      "answer": "$(-4, 4\\sqrt{3})$",
+      "compute": null,
+      "solution": "$8 \\cos 120^\\circ = 8 \\cdot (-\\frac{1}{2}) = -4$ and $8 \\sin 120^\\circ = 8 \\cdot \\frac{\\sqrt{3}}{2} = 4\\sqrt{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-4, 4\\sqrt{3})$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(8cos120, 8sin120) = (-4, 4sqrt3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.297Z"
+        }
+      }
+    },
+    {
+      "id": "d19deedd-8a42-4703-8bee-20dcbf4e8e4a",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Direction angle of a vector",
+      "stem": "The vector $u$ has components $(1, -6)$ and the vector $v$ has components $(6, -1)$. Measured counterclockwise from the positive $x$-axis, the vector $u - v$ points in which direction, in degrees from $0^\\circ$ to $360^\\circ$?",
+      "choices": [],
+      "answer": "225",
+      "compute": "180+45",
+      "solution": "$u - v = (1 - 6, -6 - (-1)) = (-5, -5)$. It points left and down at $45^\\circ$ below the negative $x$-axis, so the direction is $180^\\circ + 45^\\circ = 225^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "225",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u-v = (1-6, -6+1) = (-5,-5), third quadrant on the diagonal: 225 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.297Z"
+        }
+      }
+    },
+    {
+      "id": "e1fda3ab-a18f-4cd5-ba99-5d7a477f435e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "The vector $u$ has components $(a, b)$ and the vector $v$ has components $(-a, -b)$. Which expression gives the magnitude of $u - v$?",
+      "choices": [
+        "$0$",
+        "$2\\sqrt{a^2 + b^2}$",
+        "$\\sqrt{a^2 + b^2}$",
+        "$2(a + b)$"
+      ],
+      "answer": "$2\\sqrt{a^2 + b^2}$",
+      "compute": null,
+      "solution": "$u - v = (2a, 2b)$, so its magnitude is $\\sqrt{4a^2 + 4b^2} = 2\\sqrt{a^2 + b^2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2\\sqrt{a^2 + b^2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u-v = (2a,2b); magnitude sqrt(4a^2+4b^2) = 2sqrt(a^2+b^2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.300Z"
+        }
+      }
+    },
+    {
+      "id": "e12090e9-343f-4933-a4df-ce6e19b28fa5",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract vectors geometrically",
+      "stem": "$ABCD$ is a parallelogram with vertices in order, where $A$ is $(0, 0)$, $B$ is $(6, 1)$ and $D$ is $(2, 5)$. What is the $x$-coordinate of $C$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6+2-0",
+      "solution": "The vector from $A$ to $C$ is the vector from $A$ to $B$ plus the vector from $A$ to $D$: $(6, 1) + (2, 5) = (8, 6)$. So $C$ is $(8, 6)$ and its $x$-coordinate is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C = B + D - A = (8, 6); x = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.334Z"
+        }
+      }
+    },
+    {
+      "id": "8da35195-5437-4eaa-ad0b-f562ee290472",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "Each arrow is described by its starting point and its ending point. Which pair of arrows shows equal vectors?",
+      "choices": [
+        "From $(0, 0)$ to $(3, 4)$, and from $(0, 0)$ to $(4, 3)$",
+        "From $(0, 0)$ to $(3, 4)$, and from $(3, 4)$ to $(0, 0)$",
+        "From $(0, 0)$ to $(3, 4)$, and from $(1, 1)$ to $(4, 5)$",
+        "From $(0, 0)$ to $(3, 4)$, and from $(1, 1)$ to $(5, 4)$"
+      ],
+      "answer": "From $(0, 0)$ to $(3, 4)$, and from $(1, 1)$ to $(4, 5)$",
+      "compute": null,
+      "solution": "The first arrow of each pair is $(3, 4)$. The second arrows are $(3, 4)$, $(4, 3)$, $(-3, -4)$ and $(4, 3)$, and only the first of these is equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "From $(0, 0)$ to $(3, 4)$, and from $(1, 1)$ to $(4, 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vector (0,0)->(3,4) = <3,4>. (0,0)->(4,3) = <4,3>; (1,1)->(5,4) = <4,3>; (3,4)->(0,0) = <-3,-4>; (1,1)->(4,5) = <3,4>. Equal: last option.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.370Z"
+        }
+      }
+    },
+    {
+      "id": "b89f4374-37d3-4b5b-a4cf-3c93d64cb52a",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "The vector $u$ has magnitude 7 and the vector $v$ has magnitude 4. Which of these could be the magnitude of $u + v$?",
+      "choices": [
+        "5",
+        "1",
+        "12",
+        "14"
+      ],
+      "answer": "5",
+      "compute": null,
+      "solution": "The magnitude of $u + v$ is at least $7 - 4 = 3$ and at most $7 + 4 = 11$. Only 5 is in that range.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Triangle inequality: 7-4 = 3 <= |u+v| <= 11. Only 5 lies in [3, 11].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.465Z"
+        }
+      }
+    },
+    {
+      "id": "7443e62a-6d91-4b30-9f60-1addffcd0c0e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract vectors by components",
+      "stem": "The vectors $u$ and $v$ have components $(1, 6)$ and $(-3, 2)$. Which vector $w$ satisfies $u - w = v$?",
+      "choices": [
+        "$(-2, 8)$",
+        "$(4, 4)$",
+        "$(-4, -4)$",
+        "$(4, -4)$"
+      ],
+      "answer": "$(4, 4)$",
+      "compute": null,
+      "solution": "From $u - w = v$ we get $w = u - v = (1 - (-3), 6 - 2) = (4, 4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w = u - v = (1-(-3), 6-2) = (4, 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.487Z"
+        }
+      }
+    },
+    {
+      "id": "fa4cf128-c16e-4435-9d90-f48e1b23d9fd",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Vector between two points",
+      "stem": "The points are $P(5, -2)$, $Q(1, 3)$ and $R(-2, -4)$. Which is the vector from $P$ to $Q$ minus the vector from $P$ to $R$?",
+      "choices": [
+        "$(-11, 3)$",
+        "$(-3, -7)$",
+        "$(11, -3)$",
+        "$(3, 7)$"
+      ],
+      "answer": "$(3, 7)$",
+      "compute": null,
+      "solution": "The vector from $P$ to $Q$ is $(-4, 5)$ and from $P$ to $R$ is $(-7, -2)$. The difference is $(-4 + 7, 5 + 2) = (3, 7)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3, 7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "PQ = (-4, 5), PR = (-7, -2). PQ - PR = (3, 7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.492Z"
+        }
+      }
+    },
+    {
+      "id": "460dcda2-6852-4aa7-9057-ff36fa27fb5e",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Magnitude of a sum or difference",
+      "stem": "The vector $u$ has components $(-6, 5)$ and the vector $v$ has components $(-18, -4)$. What is the length of the vector $u - v$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "$u - v = (-6 + 18, 5 + 4) = (12, 9)$, so its length is $\\sqrt{144 + 81} = \\sqrt{225} = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u - v = (-6+18, 5+4) = (12, 9). Length sqrt(144+81) = sqrt225 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.528Z"
+        }
+      }
+    },
+    {
+      "id": "37309df2-27ef-4431-8fb6-a9b2c067bce6",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add vectors by components",
+      "stem": "Two forces, $(10, -3)$ and $(-7, -1)$, act on a crate. A third force is added so that the three forces total the zero vector. What is the magnitude of the third force?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The first two add to $(3, -4)$, so the third is $(-3, 4)$, with magnitude $\\sqrt{9 + 16} = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum = (3, -4); third force = (-3, 4); magnitude sqrt(9+16) = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.545Z"
+        }
+      }
+    },
+    {
+      "id": "fa431a22-42b0-4b9c-83db-8e7c3d01ee98",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of vector addition and magnitude",
+      "stem": "The vectors $u$ and $v$ have the same magnitude and point in opposite directions. Which statement about $u + v$ is true?",
+      "choices": [
+        "It has twice the magnitude of $u$",
+        "It is the zero vector",
+        "It has the same magnitude as $u$",
+        "It points in the same direction as $u$"
+      ],
+      "answer": "It is the zero vector",
+      "compute": null,
+      "solution": "Here $v = -u$, so $u + v = u + (-u) = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is the zero vector",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "v = -u, so u + v = 0, the zero vector.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.547Z"
         }
       }
     },

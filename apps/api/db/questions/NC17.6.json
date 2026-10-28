@@ -9582,6 +9582,733 @@
       }
     },
     {
+      "id": "9ed8418b-fb3b-421e-b508-0ac21efeda0a",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Which decimal is equal to 8%?",
+      "choices": [
+        "0.8",
+        "8",
+        "0.08",
+        "0.008"
+      ],
+      "answer": "0.08",
+      "compute": null,
+      "solution": "8% is 8 out of 100, which is 8 hundredths: 0.08.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.08",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8% = 8/100 = 0.08.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.097Z"
+        }
+      }
+    },
+    {
+      "id": "e4f4e05a-e1c8-4d0c-8b77-ccbc650801af",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "What is 20% of 90?",
+      "choices": [
+        "1.8",
+        "18",
+        "70",
+        "180"
+      ],
+      "answer": "18",
+      "compute": "90*20/100",
+      "solution": "10% of 90 is 9, so 20% is $2 \\times 9 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.2 x 90 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.116Z"
+        }
+      }
+    },
+    {
+      "id": "4220ae16-ddb4-4309-8b2e-4c0433186300",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "Ella has 10 of the 50 raffle tickets. What percent of the tickets does she have?",
+      "choices": [
+        "10",
+        "20",
+        "5",
+        "40"
+      ],
+      "answer": "20",
+      "compute": "10*100/50",
+      "solution": "10 out of 50 is the same as 20 out of 100, so Ella has 20% of the tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/50 = 20/100 = 20%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.151Z"
+        }
+      }
+    },
+    {
+      "id": "d786a5f7-28f4-4c0a-993c-3dd657eea7f4",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "find the whole from a part",
+      "stem": "Ava says that 14 is 50% of a number. What is the number?",
+      "choices": [],
+      "answer": "28",
+      "compute": "14*100/50",
+      "solution": "50% is one half, so 14 is half of the number. The whole is $2 \\times 14 = 28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 = 0.5 n, n = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.152Z"
+        }
+      }
+    },
+    {
+      "id": "f67a4274-670f-4280-9afe-de42a6fbbb8c",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "25% of the students in a club are sixth graders. There are 5 sixth graders in the club. How many students are in the club?",
+      "choices": [
+        "1.25",
+        "30",
+        "125",
+        "20"
+      ],
+      "answer": "20",
+      "compute": "5*100/25",
+      "solution": "25% is one fourth, so 5 students is one fourth of the club. The whole club is $4 \\times 5 = 20$ students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 is 25%, so whole = 5 x 4 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.156Z"
+        }
+      }
+    },
+    {
+      "id": "b9884064-52ac-42e6-950b-b0525a8ed74b",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "A pizza shop made 200 slices on Friday. 50% of the slices were cheese. How many slices were cheese?",
+      "choices": [],
+      "answer": "100",
+      "compute": "200*50/100",
+      "solution": "50% is one half. Half of 200 is 100, so 100 slices were cheese.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50% of 200 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.164Z"
+        }
+      }
+    },
+    {
+      "id": "f8973994-93de-4c6d-88bf-277d5ace6ac2",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Which fraction is equal to 9%?",
+      "choices": [
+        "$\\frac{9}{100}$",
+        "$\\frac{9}{10}$",
+        "$\\frac{1}{9}$",
+        "$\\frac{90}{100}$"
+      ],
+      "answer": "$\\frac{9}{100}$",
+      "compute": null,
+      "solution": "Percent means \"per 100\", so 9% means 9 out of 100, which is the fraction $\\frac{9}{100}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{9}{100}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9% = 9/100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.187Z"
+        }
+      }
+    },
+    {
+      "id": "a47f9173-bf56-4eee-9379-89300a06f346",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "A music playlist has 150 songs. 60% of the songs are slow songs. How many songs are slow?",
+      "choices": [
+        "9",
+        "60",
+        "90",
+        "210"
+      ],
+      "answer": "90",
+      "compute": "150*60/100",
+      "solution": "10% of 150 is 15, so 60% is $6 \\times 15 = 90$ songs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60% of 150 = 0.6 x 150 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.226Z"
+        }
+      }
+    },
+    {
+      "id": "b01d8b77-2257-445f-9e7a-c4d687e2b036",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "Kai has read 15 pages of a 30-page story. What percent of the story has Kai read?",
+      "choices": [],
+      "answer": "50",
+      "compute": "15*100/30",
+      "solution": "15 out of 30 is one half, which is 50%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15/30 = 1/2 = 50%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.249Z"
+        }
+      }
+    },
+    {
+      "id": "0413ebf9-9647-4da6-b659-d1f0d800e3ee",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "A bag has 10 marbles. 1 marble is green. What percent of the marbles are green?",
+      "choices": [
+        "1",
+        "90",
+        "100",
+        "10"
+      ],
+      "answer": "10",
+      "compute": "1*100/10",
+      "solution": "1 out of 10 is the same as 10 out of 100, so 10% of the marbles are green.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/10 = 10%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.282Z"
+        }
+      }
+    },
+    {
+      "id": "a7986acd-fd01-45e7-8cc6-1c6c000eaf3a",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "percent as a rate per 100",
+      "stem": "Ben earns 100 dollars. He saves 28 dollars of it. What percent of his earnings does he save?",
+      "choices": [],
+      "answer": "28",
+      "compute": "28",
+      "solution": "A percent is the number out of 100. Ben saves 28 out of every 100 dollars, so he saves 28%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28/100 = 28%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.320Z"
+        }
+      }
+    },
+    {
+      "id": "f586ee7f-6c68-4b5a-a6db-54a86576fec0",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "A class has 20 students. 5 of them are absent today. What percent of the class is absent?",
+      "choices": [],
+      "answer": "25",
+      "compute": "5*100/20",
+      "solution": "5 out of 20 is the same as 1 out of 4, which is 25 out of 100. So 25% of the class is absent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/20 = 25%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.342Z"
+        }
+      }
+    },
+    {
+      "id": "2c5afc73-3993-4513-b407-295872ac83e9",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "Sam jogs for 40 minutes. The first 25% of the time is a warm-up. How many minutes is the warm-up?",
+      "choices": [],
+      "answer": "10",
+      "compute": "40*25/100",
+      "solution": "25% is one fourth. One fourth of 40 minutes is 10 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% of 40 = 40/4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.420Z"
+        }
+      }
+    },
+    {
+      "id": "9a5c2993-f9eb-4609-8460-0358c8ddf362",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "percent of a quantity",
+      "stem": "A recipe calls for 200 grams of flour. A baker uses 40% of the flour for the crust. How many grams of flour is that?",
+      "choices": [],
+      "answer": "80",
+      "compute": "200*40/100",
+      "solution": "10% of 200 is 20, so 40% is $4 \\times 20 = 80$ grams.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.40 x 200 = 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.441Z"
+        }
+      }
+    },
+    {
+      "id": "1e137c86-1582-470e-a71f-bb99b4c21a94",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "A family ate 3 of the 4 sandwiches. What percent of the sandwiches did they eat?",
+      "choices": [
+        "25",
+        "34",
+        "75",
+        "4"
+      ],
+      "answer": "75",
+      "compute": "3*100/4",
+      "solution": "$\\frac{3}{4}$ is the same as $\\frac{75}{100}$, so they ate 75% of the sandwiches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 = 75%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.448Z"
+        }
+      }
+    },
+    {
+      "id": "75d78c67-dd5a-4c90-b5a6-68c4a03b1c94",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "A garden has 90 plants. 10% of the plants have flowers. How many plants have flowers?",
+      "choices": [],
+      "answer": "9",
+      "compute": "90*10/100",
+      "solution": "10% is one tenth. One tenth of 90 is 9, so 9 plants have flowers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10% of 90 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.477Z"
+        }
+      }
+    },
+    {
+      "id": "681ace78-d6b7-4be5-9038-b9808c49e5b7",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "percent as a rate per 100",
+      "stem": "The decimal 0.45 means 45 hundredths. What percent is equal to 0.45?",
+      "choices": [],
+      "answer": "45",
+      "compute": "45",
+      "solution": "45 hundredths is 45 out of 100, which is 45%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.45 = 45/100 = 45%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.496Z"
+        }
+      }
+    },
+    {
+      "id": "b44a8382-4115-45a4-8973-092e81bb5088",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "benchmark percents",
+      "stem": "What is 10% of 350?",
+      "choices": [
+        "35",
+        "3.5",
+        "340",
+        "3500"
+      ],
+      "answer": "35",
+      "compute": "350*10/100",
+      "solution": "10% is one tenth. Dividing 350 by 10 gives 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "350 / 10 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.500Z"
+        }
+      }
+    },
+    {
+      "id": "574a8121-8650-462f-94e2-a8205e8fb647",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "benchmark percents",
+      "stem": "Finding 25% of a number is the same as doing which of these to the number?",
+      "choices": [
+        "Dividing it by 2",
+        "Dividing it by 25",
+        "Multiplying it by 4",
+        "Dividing it by 4"
+      ],
+      "answer": "Dividing it by 4",
+      "compute": null,
+      "solution": "25% is 25 out of 100, which is one fourth. Finding one fourth of a number means dividing it by 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Dividing it by 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% = 1/4, so divide by 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.511Z"
+        }
+      }
+    },
+    {
+      "id": "480ab0a7-3bac-47f1-bd88-3bab0b12ca34",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Which statement describes 1%?",
+      "choices": [
+        "1 out of every 10",
+        "1 out of every 100",
+        "1 out of every 1",
+        "100 out of every 1"
+      ],
+      "answer": "1 out of every 100",
+      "compute": null,
+      "solution": "Percent means per 100. So 1% is 1 out of every 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 out of every 100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1% = 1 per 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.546Z"
+        }
+      }
+    },
+    {
+      "id": "c4f4991a-d867-4e41-8582-ce426f20c840",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "On Oak Street, 10% of the street lights are broken. 3 lights are broken. How many street lights are on Oak Street?",
+      "choices": [
+        "30",
+        "0.3",
+        "13",
+        "300"
+      ],
+      "answer": "30",
+      "compute": "3*100/10",
+      "solution": "10% is one tenth, so 3 lights is one tenth of all the lights. The total is $10 \\times 3 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10% of N = 3, N = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.553Z"
+        }
+      }
+    },
+    {
+      "id": "79335d9e-ec9b-43a3-ab22-d3daadf6e3fe",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "percent of a quantity",
+      "stem": "A farm has 40 animals. 30% of the animals are goats. How many goats are on the farm?",
+      "choices": [],
+      "answer": "12",
+      "compute": "40*30/100",
+      "solution": "10% of 40 is 4, so 30% is 3 times as much: $3 \\times 4 = 12$ goats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.30 x 40 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.569Z"
+        }
+      }
+    },
+    {
+      "id": "544f3c44-d9a2-4546-a727-4c775b834c0c",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "find the whole from a part",
+      "stem": "Kim has biked 6 kilometers, which is 20% of her trip. How long is her whole trip, in kilometers?",
+      "choices": [],
+      "answer": "30",
+      "compute": "6*100/20",
+      "solution": "20% is one fifth, so 6 kilometers is one fifth of the trip. The whole trip is $5 \\times 6 = 30$ kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 = 0.2 x T, T = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.569Z"
+        }
+      }
+    },
+    {
       "id": "9827d7a6-2f96-40cd-87df-a38d303b614b",
       "topic_id": "NC17.6.RP.4",
       "difficulty": 2,
@@ -9893,6 +10620,733 @@
           "work": "14/20 = 70/100 = 70%.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:51.406Z"
+        }
+      }
+    },
+    {
+      "id": "f8af434a-e822-40e7-9d1b-7c3f0f0f4154",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "percent as a rate per 100",
+      "stem": "At a shop, 7 out of every 20 customers pay with cash. At the same rate, how many out of every 100 customers pay with cash?",
+      "choices": [],
+      "answer": "35",
+      "compute": "7*100/20",
+      "solution": "100 is 5 times 20, so multiply 7 by 5: $7 \\times 5 = 35$ out of every 100 customers, which is 35%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/20 = 35/100, so 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.045Z"
+        }
+      }
+    },
+    {
+      "id": "41fc4df3-9cd4-4a03-8440-f513110e0c21",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Which fraction is equal to 15%?",
+      "choices": [
+        "$\\frac{3}{20}$",
+        "$\\frac{15}{10}$",
+        "$\\frac{1}{5}$",
+        "$\\frac{3}{10}$"
+      ],
+      "answer": "$\\frac{3}{20}$",
+      "compute": null,
+      "solution": "15% is $\\frac{15}{100}$. Dividing the top and bottom by 5 gives $\\frac{3}{20}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{20}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15/100 = 3/20. 15/10 = 150%, 1/5 = 20%, 3/10 = 30%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.060Z"
+        }
+      }
+    },
+    {
+      "id": "9a238f00-dbb5-44c8-9f36-43a76ea40138",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "In a survey of 250 people, 28% chose tea. How many people chose tea?",
+      "choices": [
+        "28",
+        "7",
+        "70",
+        "222"
+      ],
+      "answer": "70",
+      "compute": "250*28/100",
+      "solution": "28% of 250 is $0.28 \\times 250 = 70$ people.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.28 x 250 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.082Z"
+        }
+      }
+    },
+    {
+      "id": "45d28706-31b0-4ad8-aafc-0adf776562b5",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find the whole from a part",
+      "stem": "A pond has 9 ducks, which are 30% of all the birds at the pond. How many birds are at the pond?",
+      "choices": [],
+      "answer": "30",
+      "compute": "9*100/30",
+      "solution": "30% of the birds is 9, so 10% is $9 \\div 3 = 3$. All the birds (100%) is $10 \\times 3 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.30 x total = 9, total = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.098Z"
+        }
+      }
+    },
+    {
+      "id": "e1a28081-9dbb-4635-9ea0-8fbabc0a5721",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "The fee on a bill is 5% of the bill. The bill is 120 dollars. How many dollars is the fee?",
+      "choices": [],
+      "answer": "6",
+      "compute": "120*5/100",
+      "solution": "10% of 120 is 12, and 5% is half of that: 6 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5% of 120 = 0.05 x 120 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.126Z"
+        }
+      }
+    },
+    {
+      "id": "03806fa6-c426-433b-81d3-77ea3b9b2533",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "percent of a quantity",
+      "stem": "A library has 800 books. 12% of the books are mysteries. How many mystery books does the library have?",
+      "choices": [],
+      "answer": "96",
+      "compute": "800*12/100",
+      "solution": "1% of 800 is 8, so 12% is $12 \\times 8 = 96$ books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12% of 800 = 96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.138Z"
+        }
+      }
+    },
+    {
+      "id": "b62d5e98-1e29-4254-8d11-053539108ca9",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "percent as a rate per 100",
+      "stem": "What percent is equal to the fraction $\\frac{7}{25}$?",
+      "choices": [],
+      "answer": "28",
+      "compute": "7*100/25",
+      "solution": "$\\frac{7}{25} = \\frac{7 \\times 4}{25 \\times 4} = \\frac{28}{100}$, which is 28%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/25 = 28/100 = 28%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.150Z"
+        }
+      }
+    },
+    {
+      "id": "b9299e63-99e7-4e4f-9036-d710f88cb2dc",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "Ruth paid a deposit of 40 dollars, which was 25% of the price of a bike. What is the price of the bike, in dollars?",
+      "choices": [
+        "160",
+        "10",
+        "65",
+        "1000"
+      ],
+      "answer": "160",
+      "compute": "40*100/25",
+      "solution": "25% is one fourth, so 40 dollars is one fourth of the price. The price is $4 \\times 40 = 160$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% of price = 40, price = 40 x 4 = 160.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.208Z"
+        }
+      }
+    },
+    {
+      "id": "955ee592-6680-4110-ad1c-a23e6e174195",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "benchmark percents",
+      "stem": "Which is the quickest way to find 10% of 450?",
+      "choices": [
+        "Multiply 450 by 10",
+        "Divide 450 by 100",
+        "Divide 450 by 10",
+        "Divide 450 by 4"
+      ],
+      "answer": "Divide 450 by 10",
+      "compute": null,
+      "solution": "10% is one tenth, so divide 450 by 10 to get 45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Divide 450 by 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10% = 1/10: divide 450 by 10 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.210Z"
+        }
+      }
+    },
+    {
+      "id": "27811890-a389-43aa-b876-8e3bef18dc5c",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "A school band has 80 members. 75% of the members march in the parade. How many members march?",
+      "choices": [],
+      "answer": "60",
+      "compute": "80*75/100",
+      "solution": "25% of 80 is 20, so 75% is $3 \\times 20 = 60$ members.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75% of 80 = 3/4 x 80 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.225Z"
+        }
+      }
+    },
+    {
+      "id": "46d1c72a-c39e-4047-ac8a-36060a901105",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "A hockey team won 12 of its 16 games. What percent of its games did the team win?",
+      "choices": [],
+      "answer": "75",
+      "compute": "12*100/16",
+      "solution": "$\\frac{12}{16} = \\frac{3}{4} = \\frac{75}{100}$, so the team won 75% of its games.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12/16 = 3/4 = 75%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.229Z"
+        }
+      }
+    },
+    {
+      "id": "e0b9e7c1-1c83-48aa-ac43-48412e9a9731",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "Which expression gives 35% of 80?",
+      "choices": [
+        "$35 \\times 80$",
+        "$0.35 \\times 80$",
+        "$0.035 \\times 80$",
+        "$\\frac{35}{80} \\times 100$"
+      ],
+      "answer": "$0.35 \\times 80$",
+      "compute": null,
+      "solution": "35% is 35 out of 100, or 0.35. So 35% of 80 is $0.35 \\times 80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.35 \\times 80$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35% = 0.35, so 0.35 x 80 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.236Z"
+        }
+      }
+    },
+    {
+      "id": "f3eaca58-cfe6-4266-a51c-c46cb98b8d6f",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Which percent is equal to 8 out of 25?",
+      "choices": [
+        "8%",
+        "32%",
+        "25%",
+        "3.2%"
+      ],
+      "answer": "32%",
+      "compute": null,
+      "solution": "To get 100 in the bottom, multiply 25 by 4. Multiply 8 by 4 as well: 32 out of 100, which is 32%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8/25 = 32/100 = 32%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.271Z"
+        }
+      }
+    },
+    {
+      "id": "fcbc1f82-4ead-4d8c-9a6c-5a78a5949681",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "A stadium has 500 seats. 120 seats are empty. What percent of the seats are empty?",
+      "choices": [],
+      "answer": "24",
+      "compute": "120*100/500",
+      "solution": "$\\frac{120}{500} = \\frac{24}{100}$, so 24% of the seats are empty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120/500 = 24/100 = 24%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.273Z"
+        }
+      }
+    },
+    {
+      "id": "c0980aa1-c048-4417-a9e5-ddcb3710a113",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "6 of the 40 students in a class are left-handed. What percent of the students are left-handed?",
+      "choices": [
+        "6",
+        "6.7",
+        "15",
+        "85"
+      ],
+      "answer": "15",
+      "compute": "6*100/40",
+      "solution": "$\\frac{6}{40} = \\frac{15}{100}$, so 15% of the students are left-handed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/40 = 0.15 = 15%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.279Z"
+        }
+      }
+    },
+    {
+      "id": "59f19a5b-7e99-4abf-90ed-9545db25c546",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "A zoo has 60 birds. 45% of the birds are parrots. How many parrots are at the zoo?",
+      "choices": [
+        "27",
+        "2.7",
+        "105",
+        "133"
+      ],
+      "answer": "27",
+      "compute": "60*45/100",
+      "solution": "45% of 60 is $\\frac{45}{100} \\times 60 = 27$ parrots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.45*60 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.342Z"
+        }
+      }
+    },
+    {
+      "id": "5cb4df29-c7ca-462f-a228-d156fb91ff27",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find the whole from a part",
+      "stem": "Ana planted some seeds. 24 of them sprouted, which was 80% of the seeds. How many seeds did Ana plant?",
+      "choices": [],
+      "answer": "30",
+      "compute": "24*100/80",
+      "solution": "80% is 24, so 10% is $24 \\div 8 = 3$. All the seeds (100%) is $10 \\times 3 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80% of n = 24 -> n = 24 / 0.8 = 30. Check 0.8*30=24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.377Z"
+        }
+      }
+    },
+    {
+      "id": "860012cc-7f16-49e8-b4b3-4876bb2601fc",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "On a 20-question quiz, Marco answered 17 questions correctly. What percent of the questions did he answer correctly?",
+      "choices": [
+        "3",
+        "17",
+        "15",
+        "85"
+      ],
+      "answer": "85",
+      "compute": "17*100/20",
+      "solution": "$\\frac{17}{20} = \\frac{85}{100}$, so Marco answered 85% of the questions correctly.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "85",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17/20 = 85/100 = 85%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.457Z"
+        }
+      }
+    },
+    {
+      "id": "5d42c9df-6773-47f2-b4b9-02ca5734a5e2",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "A bakery sold 21 muffins, which was 60% of all the baked goods it sold. How many baked goods did it sell in all?",
+      "choices": [
+        "12.6",
+        "81",
+        "350",
+        "35"
+      ],
+      "answer": "35",
+      "compute": "21*100/60",
+      "solution": "60% of the total is 21, so 20% is $21 \\div 3 = 7$. The total (100%) is $5 \\times 7 = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21 / 0.60 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.476Z"
+        }
+      }
+    },
+    {
+      "id": "14d753fb-fb47-47f7-a92b-a610556110c6",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "A bike costs 250 dollars. The store takes 10% off the price. How many dollars is the discount?",
+      "choices": [],
+      "answer": "25",
+      "compute": "250*10/100",
+      "solution": "10% is one tenth. One tenth of 250 is 25, so the discount is 25 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10% of 250 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.484Z"
+        }
+      }
+    },
+    {
+      "id": "053f67a7-f550-409f-8a1a-cfbd6259de32",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "percent of a quantity",
+      "stem": "Lena earns 600 dollars. She saves 15% of it. How many dollars does she save?",
+      "choices": [],
+      "answer": "90",
+      "compute": "600*15/100",
+      "solution": "10% of 600 is 60 and 5% is 30, so 15% is $60 + 30 = 90$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.15 x 600 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.493Z"
+        }
+      }
+    },
+    {
+      "id": "ebf80129-d4d7-42f5-a42b-775118c40e22",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "benchmark percents",
+      "stem": "A glass holds 200 milliliters when full. It is 25% full. How many milliliters of juice are in the glass?",
+      "choices": [
+        "8",
+        "25",
+        "175",
+        "50"
+      ],
+      "answer": "50",
+      "compute": "200*25/100",
+      "solution": "25% is one fourth. One fourth of 200 is 50 milliliters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% of 200 = 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.504Z"
+        }
+      }
+    },
+    {
+      "id": "7a065f9d-4323-495e-a39d-dab2391ef4d4",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "Which equation can be used to find the number $w$ when 25% of $w$ is 12?",
+      "choices": [
+        "$0.25 \\times 12 = w$",
+        "$0.25 \\times w = 12$",
+        "$25 \\times w = 12$",
+        "$w \\div 0.25 = 12$"
+      ],
+      "answer": "$0.25 \\times w = 12$",
+      "compute": null,
+      "solution": "25% is 0.25, and \"25% of $w$ is 12\" means $0.25 \\times w = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.25 \\times w = 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% = 0.25; 0.25 x w = 12 (w = 48).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.568Z"
         }
       }
     },
@@ -10213,6 +11667,738 @@
           "work": "25% of 80 = 20; 30% of 60 = 18; 20 > 18 (by 2, not 8).",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:51.406Z"
+        }
+      }
+    },
+    {
+      "id": "01b197c7-a35e-4d38-baab-0b66fd410eca",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "benchmark percents",
+      "stem": "Which of these amounts is the greatest?",
+      "choices": [
+        "10% of 400",
+        "25% of 180",
+        "50% of 70",
+        "75% of 64"
+      ],
+      "answer": "75% of 64",
+      "compute": null,
+      "solution": "10% of 400 is 40. 25% of 180 is 45. 75% of 64 is 48. 50% of 70 is 35. The greatest is 75% of 64.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75% of 64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45, 35, 40, 48: greatest is 75% of 64 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.979Z"
+        }
+      }
+    },
+    {
+      "id": "108239be-e48f-4ec1-af4c-98d71a26ab77",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "Jade answered 33 of the 40 questions on a test correctly. What percent of the questions did she answer correctly?",
+      "choices": [],
+      "answer": "82.5",
+      "compute": "33*100/40",
+      "solution": "$\\frac{33}{40} = 0.825 = 82.5\\%$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "82.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "33/40 = 0.825 = 82.5%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.990Z"
+        }
+      }
+    },
+    {
+      "id": "6d50ab3e-8b85-4cb1-a343-0d07a8be8824",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "A company has 3500 employees. 1% of them are managers. How many managers does the company have?",
+      "choices": [],
+      "answer": "35",
+      "compute": "3500/100",
+      "solution": "1% means one hundredth. $3500 \\div 100 = 35$ managers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1% of 3,500 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.999Z"
+        }
+      }
+    },
+    {
+      "id": "c2664cce-31ba-47de-b5f3-14591d5c43fa",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Store A sold 18 of its 24 shirts. Store B sold 21 of its 30 shirts. Which statement is true?",
+      "choices": [
+        "Store B sold a greater percent of its shirts",
+        "Both stores sold the same percent of their shirts",
+        "Store A sold a greater percent of its shirts",
+        "There is not enough information to compare"
+      ],
+      "answer": "Store A sold a greater percent of its shirts",
+      "compute": null,
+      "solution": "Store A sold $\\frac{18}{24} = 75\\%$ of its shirts. Store B sold $\\frac{21}{30} = 70\\%$. So Store A sold the greater percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Store A sold a greater percent of its shirts",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 18/24 = 75%; B: 21/30 = 70%. A greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.001Z"
+        }
+      }
+    },
+    {
+      "id": "7d25109d-45d9-4d09-aac7-1b249b026c12",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Exactly one of these is equal to 12%. Which one is it?",
+      "choices": [
+        "3 out of 25",
+        "12 out of 25",
+        "1 out of 12",
+        "3 out of 12"
+      ],
+      "answer": "3 out of 25",
+      "compute": null,
+      "solution": "3 out of 25 is the same as 12 out of 100 (multiply both by 4), which is 12%. The others are 48%, about 8%, and 25%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 out of 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/25 = 12/100 = 12%. Others 25%, 48%, ~8.3%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.009Z"
+        }
+      }
+    },
+    {
+      "id": "57497093-2dc6-40bb-a33e-3338706d3fc9",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "A school has 250 students. 40 of them are in band. What percent of the students are in band?",
+      "choices": [
+        "40",
+        "6.25",
+        "84",
+        "16"
+      ],
+      "answer": "16",
+      "compute": "40*100/250",
+      "solution": "$\\frac{40}{250} = \\frac{16}{100}$, so 16% of the students are in band.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40/250 = 0.16 = 16%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.013Z"
+        }
+      }
+    },
+    {
+      "id": "e25cfe15-498d-4ec7-8979-6a5e2eaf65a0",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "A coat costs 80 dollars. It is discounted by 15%. What is the sale price, in dollars?",
+      "choices": [
+        "12",
+        "68",
+        "65",
+        "92"
+      ],
+      "answer": "68",
+      "compute": "80-80*15/100",
+      "solution": "15% of 80 is 12 dollars. The sale price is $80 - 12 = 68$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15% of 80 = 12; 80 - 12 = 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.043Z"
+        }
+      }
+    },
+    {
+      "id": "3340f2c9-37c1-4d50-96f7-b7c41668a0bb",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "benchmark percents",
+      "stem": "A jacket costs 48 dollars. It goes on sale for 25% off. What is the sale price, in dollars?",
+      "choices": [],
+      "answer": "36",
+      "compute": "48-48*25/100",
+      "solution": "25% of 48 is 12, so the sale takes off 12 dollars. $48 - 12 = 36$ dollars. (Or: the sale price is 75% of 48, which is 36.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25% of 48 = 12; 48 - 12 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.063Z"
+        }
+      }
+    },
+    {
+      "id": "f174dbbd-c877-4b6b-9be4-f65e0df5018a",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "18 apples are rotten, which is 6% of all the apples. How many apples are there?",
+      "choices": [
+        "1.08",
+        "24",
+        "300",
+        "108"
+      ],
+      "answer": "300",
+      "compute": "18*100/6",
+      "solution": "6% is 18, so 1% is $18 \\div 6 = 3$. All the apples (100%) is $100 \\times 3 = 300$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / 0.06 = 300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.077Z"
+        }
+      }
+    },
+    {
+      "id": "df6d5295-3613-4b92-988b-ad9dfca2ba52",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find the whole from a part",
+      "stem": "A school club spent 8 dollars on posters, which was 5% of all the money it raised. How many dollars did the club raise?",
+      "choices": [],
+      "answer": "160",
+      "compute": "8*100/5",
+      "solution": "5% is 8, so 1% is $8 \\div 5 = 1.6$. The whole (100%) is $100 \\times 1.6 = 160$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 / 0.05 = 160.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.082Z"
+        }
+      }
+    },
+    {
+      "id": "679afc3a-5796-4586-885a-952d2d9ece23",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "A store has 45 backpacks left, which is 36% of the backpacks it stocked. How many backpacks did it stock?",
+      "choices": [
+        "125",
+        "16.2",
+        "81",
+        "1620"
+      ],
+      "answer": "125",
+      "compute": "45*100/36",
+      "solution": "36% is 45, so 1% is $45 \\div 36 = 1.25$. The whole is $100 \\times 1.25 = 125$ backpacks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 / 0.36 = 125. Check 0.36 x 125 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.122Z"
+        }
+      }
+    },
+    {
+      "id": "d7d5476f-ae5d-4b67-8882-44dcd8190100",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "benchmark percents",
+      "stem": "A meal costs 45 dollars. Mia leaves a tip of 20% of the cost. How many dollars is the tip?",
+      "choices": [
+        "9",
+        "4.5",
+        "25",
+        "90"
+      ],
+      "answer": "9",
+      "compute": "45*20/100",
+      "solution": "10% of 45 is 4.5, so 20% is $2 \\times 4.5 = 9$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20% of 45 = 0.2 x 45 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.131Z"
+        }
+      }
+    },
+    {
+      "id": "47f78222-f191-4947-a967-c6577d986f3f",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "A tank holds 250 liters when full. It is 36% full. How many more liters are needed to fill it?",
+      "choices": [
+        "90",
+        "214",
+        "160",
+        "286"
+      ],
+      "answer": "160",
+      "compute": "250-250*36/100",
+      "solution": "36% of 250 is 90 liters in the tank. To fill it, $250 - 90 = 160$ more liters are needed. (The tank is 64% empty.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Needed 64% of 250 = 160.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.173Z"
+        }
+      }
+    },
+    {
+      "id": "3eba367c-7b2f-482d-ae9e-88263583b77c",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "percent of a quantity",
+      "stem": "A sports club has 140 members. 35% of the members are juniors. How many members are not juniors?",
+      "choices": [],
+      "answer": "91",
+      "compute": "140-140*35/100",
+      "solution": "35% of 140 is 49 juniors. Members who are not juniors: $140 - 49 = 91$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "91",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "65% of 140 = 91.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.175Z"
+        }
+      }
+    },
+    {
+      "id": "59ae7098-204a-4539-9b08-c86527575969",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "percent as a rate per 100",
+      "stem": "At a school, 3 out of every 8 students take the bus. What percent of the students take the bus?",
+      "choices": [],
+      "answer": "37.5",
+      "compute": "3*100/8",
+      "solution": "$\\frac{3}{8} = 0.375 = \\frac{37.5}{100}$, so 37.5% of the students take the bus.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/8 = 0.375 = 37.5%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.231Z"
+        }
+      }
+    },
+    {
+      "id": "47519223-57f4-43b7-8dfa-01b4cfbb823d",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "Out of 60 students surveyed, 27 prefer soccer. What percent of the students surveyed prefer soccer?",
+      "choices": [],
+      "answer": "45",
+      "compute": "27*100/60",
+      "solution": "$\\frac{27}{60} = \\frac{9}{20} = \\frac{45}{100}$, so 45% prefer soccer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27/60 = 0.45 = 45%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.254Z"
+        }
+      }
+    },
+    {
+      "id": "f12dc60d-1a06-42ed-85bb-9eb1092ce0ed",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find the whole from a part",
+      "stem": "After saving 35% of her goal, Nina has 70 dollars. What is her goal, in dollars?",
+      "choices": [],
+      "answer": "200",
+      "compute": "70*100/35",
+      "solution": "35% of the goal is 70, so 5% is $70 \\div 7 = 10$. The goal (100%) is $20 \\times 10 = 200$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.35 G = 70, G = 200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.285Z"
+        }
+      }
+    },
+    {
+      "id": "1c788618-b12c-4949-b5ad-e961636af4cb",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find the percent",
+      "stem": "Zane saved 36 dollars of the 150 dollars he earned. What percent of his earnings did he save?",
+      "choices": [
+        "24",
+        "36",
+        "76",
+        "4.2"
+      ],
+      "answer": "24",
+      "compute": "36*100/150",
+      "solution": "$\\frac{36}{150} = \\frac{24}{100}$, so Zane saved 24% of his earnings.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/150 = 0.24 = 24%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.293Z"
+        }
+      }
+    },
+    {
+      "id": "33a6a0fe-13d3-4114-8aae-e9671392c2f2",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find the whole from a part",
+      "stem": "120 students walk to school, which is 40% of all the students. How many students do not walk to school?",
+      "choices": [
+        "120",
+        "180",
+        "300",
+        "480"
+      ],
+      "answer": "180",
+      "compute": "120*100/40-120",
+      "solution": "40% of the students is 120, so 10% is 30 and all the students (100%) is 300. Students who do not walk: $300 - 120 = 180$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = 120/0.4 = 300; not walking 300-120=180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.308Z"
+        }
+      }
+    },
+    {
+      "id": "47417541-096c-47ee-aa56-0d8b8fa947f9",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "percent of a quantity",
+      "stem": "There are 75 students in the grade. 36% of them are in the chess club. How many students are in the chess club?",
+      "choices": [
+        "2.7",
+        "111",
+        "48",
+        "27"
+      ],
+      "answer": "27",
+      "compute": "75*36/100",
+      "solution": "36% of 75 is $0.36 \\times 75 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.36 x 75 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.429Z"
+        }
+      }
+    },
+    {
+      "id": "cc17d25e-49c0-4d73-bca8-db76ad00ecf4",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "percent of a quantity",
+      "stem": "A school has 500 students. 40% of the students play a sport. Of the students who play a sport, 25% play soccer. How many students play soccer?",
+      "choices": [],
+      "answer": "50",
+      "compute": "500*40/100*25/100",
+      "solution": "40% of 500 is 200 students who play a sport. 25% of 200 is 50 students who play soccer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40% of 500 = 200; 25% of 200 = 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.497Z"
+        }
+      }
+    },
+    {
+      "id": "61378b83-11ef-4353-9560-cdc4610cf78d",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "percent as a rate per 100",
+      "stem": "Which of these numbers is the greatest?",
+      "choices": [
+        "0.3",
+        "3/8",
+        "35%",
+        "1/4"
+      ],
+      "answer": "3/8",
+      "compute": null,
+      "solution": "Write each as a percent: 0.3 = 30%, 35%, 3/8 = 37.5%, and 1/4 = 25%. The greatest is 3/8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35% = 0.35, 3/8 = 0.375, 0.3, 1/4 = 0.25. Greatest 3/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.499Z"
+        }
+      }
+    },
+    {
+      "id": "85d90855-2ad5-4ccf-a28d-6e49abff4df0",
+      "topic_id": "NC17.6.RP.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find the percent",
+      "stem": "A bag of 80 beads has 24 blue beads and 16 red beads. All the other beads are green. What percent of the beads are green?",
+      "choices": [],
+      "answer": "50",
+      "compute": "(80-24-16)*100/80",
+      "solution": "Green beads: $80 - 24 - 16 = 40$. $\\frac{40}{80} = \\frac{1}{2} = 50\\%$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Green = 80 - 24 - 16 = 40; 40/80 = 50%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.504Z"
         }
       }
     },

@@ -3491,6 +3491,738 @@
       }
     },
     {
+      "id": "cbe89190-be1c-42d6-a663-a07dbe4d9cd2",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "$\\sqrt{80}$ is between two consecutive whole numbers. What is the larger of the two?",
+      "choices": [],
+      "answer": "9",
+      "compute": null,
+      "solution": "$8^2 = 64$ and $9^2 = 81$. Since 80 is between 64 and 81, $\\sqrt{80}$ is between 8 and 9. The larger is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81 > 80 > 64, so between 8 and 9; larger is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.967Z"
+        }
+      }
+    },
+    {
+      "id": "dfd123ad-e296-4e6e-a27a-563faaa257ca",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "The distance around a circle is a little more than 3 times its diameter. A round table has a diameter of 4 feet. Which is the best estimate of the distance around its edge?",
+      "choices": [
+        "About 4 feet",
+        "About 13 feet",
+        "About 8 feet",
+        "About 16 feet"
+      ],
+      "answer": "About 13 feet",
+      "compute": null,
+      "solution": "3 times 4 is 12, and a little more than that is about 13 feet (4 times 3.14 is 12.56).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "About 13 feet",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A little more than 3 x 4 = 12 (about 12.57), so about 13 feet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.043Z"
+        }
+      }
+    },
+    {
+      "id": "86d51a7e-b75c-4e87-8f1c-6a892f871590",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "Rounded to the nearest whole number, what is $\\sqrt{83}$?",
+      "choices": [],
+      "answer": "9",
+      "compute": null,
+      "solution": "$9^2 = 81$ and $10^2 = 100$. 83 is much closer to 81, so $\\sqrt{83}$ is about 9.1, which rounds to 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81 < 83 < 100, 9^2 = 81, 9.5^2 = 90.25 > 83, so sqrt(83) is about 9.11, rounds to 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.084Z"
+        }
+      }
+    },
+    {
+      "id": "c1c9d367-03ea-421b-aa35-bd45faaf0438",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Locate an irrational number on the number line",
+      "stem": "Which of these points on a number line is closest to $\\sqrt{6}$?",
+      "choices": [
+        "2.4",
+        "2.8",
+        "3.0",
+        "2.0"
+      ],
+      "answer": "2.4",
+      "compute": null,
+      "solution": "$2^2 = 4$ and $3^2 = 9$, and $2.4^2 = 5.76$ is close to 6. So $\\sqrt{6}$ is about 2.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt6 ~ 2.449 (2.4^2=5.76, 2.5^2=6.25). Closest option 2.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.130Z"
+        }
+      }
+    },
+    {
+      "id": "c4201254-6518-4998-af8e-01054e6fc40b",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate cube roots",
+      "stem": "Which two whole numbers is the cube root of 100 between?",
+      "choices": [
+        "3 and 4",
+        "5 and 6",
+        "4 and 5",
+        "33 and 34"
+      ],
+      "answer": "4 and 5",
+      "compute": null,
+      "solution": "$4^3 = 64$ and $5^3 = 125$. Since 100 is between 64 and 125, its cube root is between 4 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^3=64 < 100 < 125=5^3, so between 4 and 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.139Z"
+        }
+      }
+    },
+    {
+      "id": "6394f051-80c8-48a9-b70c-774fd0e8cd45",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Order numbers that include roots",
+      "stem": "Look at the numbers $\\sqrt{5}$, $\\sqrt{8}$, $\\sqrt{12}$ and $\\sqrt{17}$. How many of them are less than 3?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "$3^2 = 9$. A square root is less than 3 when the number inside is less than 9. That is true for 5 and 8, but not for 12 or 17. So 2 of them are less than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt5, sqrt8 < sqrt9 = 3; sqrt12, sqrt17 > 3. Two.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.142Z"
+        }
+      }
+    },
+    {
+      "id": "077eb86f-6d21-4a1d-963b-6ff085edb28a",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Locate an irrational number on the number line",
+      "stem": "A number line has a mark at every whole number. Which mark is closest to the point for $-\\sqrt{8}$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": null,
+      "solution": "$\\sqrt{8}$ is about 2.83, so $-\\sqrt{8}$ is about $-2.83$. The closest whole-number mark is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt8 ~ 2.83 (2.8^2 = 7.84, 2.9^2 = 8.41), so -sqrt8 ~ -2.83; nearest mark -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.232Z"
+        }
+      }
+    },
+    {
+      "id": "1703c151-8483-43c0-8f39-e2f22c9fc4f0",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "Which decimal is closest to the value of $\\pi$?",
+      "choices": [
+        "3.41",
+        "3.04",
+        "3.24",
+        "3.14"
+      ],
+      "answer": "3.14",
+      "compute": null,
+      "solution": "$\\pi$ is about 3.14159, so 3.14 is the closest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pi = 3.14159..., closest is 3.14 (|diff| 0.0016; 3.24 off by 0.098, 3.04 by 0.10).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.239Z"
+        }
+      }
+    },
+    {
+      "id": "dae34f0b-00d3-4d3c-9c16-f2f632f2f425",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which statement about $\\sqrt{12}$ is true?",
+      "choices": [
+        "It is greater than 3 and less than 4.",
+        "It is greater than 4 and less than 5.",
+        "It is greater than 2 and less than 3.",
+        "It is exactly 6."
+      ],
+      "answer": "It is greater than 3 and less than 4.",
+      "compute": null,
+      "solution": "$3^2 = 9$ and $4^2 = 16$, and 12 is between 9 and 16. So $\\sqrt{12}$ is between 3 and 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is greater than 3 and less than 4.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 < 12 < 16, so 3 < sqrt12 < 4 (about 3.46).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.243Z"
+        }
+      }
+    },
+    {
+      "id": "2153b8e5-ae3e-436d-806d-819be1014009",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use estimates of roots in context",
+      "stem": "A square rug covers 70 square feet. The length of one side is between which two whole numbers of feet?",
+      "choices": [
+        "7 and 8",
+        "9 and 10",
+        "8 and 9",
+        "35 and 36"
+      ],
+      "answer": "8 and 9",
+      "compute": null,
+      "solution": "The side length is $\\sqrt{70}$. $8^2 = 64$ and $9^2 = 81$, so the side is between 8 and 9 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 and 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 < 70 < 81, so side between 8 and 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.266Z"
+        }
+      }
+    },
+    {
+      "id": "02578299-7ae8-4eaf-b824-6771663a8663",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "Rounded to the nearest whole number, what is $\\sqrt{37}$?",
+      "choices": [],
+      "answer": "6",
+      "compute": null,
+      "solution": "$6^2 = 36$ and $7^2 = 49$. 37 is very close to 36, so $\\sqrt{37}$ is about 6.1, which rounds to 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 < 37 < 49; sqrt37 ~ 6.08, rounds to 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.290Z"
+        }
+      }
+    },
+    {
+      "id": "cf3721c7-77b1-4a96-9a21-384698172c98",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "A round pond has a diameter of 6 meters. Using 3.14 for $\\pi$, how many meters is the distance around the pond? (The distance around is $\\pi$ times the diameter.)",
+      "choices": [],
+      "answer": "18.84",
+      "compute": "3.14*6",
+      "solution": "$3.14 \\times 6 = 18.84$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18.84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.14*6 = 18.84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.317Z"
+        }
+      }
+    },
+    {
+      "id": "c3714702-d6e4-4bab-882c-6e8981a26bfa",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use estimates of roots in context",
+      "stem": "A square tile has an area of 50 square centimeters. To the nearest whole centimeter, how long is one side?",
+      "choices": [],
+      "answer": "7",
+      "compute": null,
+      "solution": "The side is $\\sqrt{50}$. $7^2 = 49$ is very close to 50, so the side is about 7.07, which rounds to 7 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side = sqrt(50) ~ 7.07 (7^2=49, 7.5^2=56.25). Nearest whole cm: 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.381Z"
+        }
+      }
+    },
+    {
+      "id": "83da1eda-6875-4ba3-ae8d-1ae03e314b67",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which of these numbers is less than 5?",
+      "choices": [
+        "$\\sqrt{26}$",
+        "$\\sqrt{30}$",
+        "$\\sqrt{50}$",
+        "$\\sqrt{24}$"
+      ],
+      "answer": "$\\sqrt{24}$",
+      "compute": null,
+      "solution": "$5^2 = 25$. A square root is less than 5 only if the number inside is less than 25. Only 24 is, so $\\sqrt{24}$ is less than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{24}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 = sqrt(25). sqrt(24) < 5; sqrt(26), sqrt(30), sqrt(50) > 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.390Z"
+        }
+      }
+    },
+    {
+      "id": "0ecc554f-6d0f-461c-92d7-dd7f45bfc9cb",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate cube roots",
+      "stem": "The cube root of 20 is between two consecutive whole numbers. What is the larger of the two?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "$2^3 = 8$ and $3^3 = 27$. Since 20 is between 8 and 27, its cube root is between 2 and 3. The larger is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^3 = 8 < 20 < 27 = 3^3, so between 2 and 3; larger is 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.413Z"
+        }
+      }
+    },
+    {
+      "id": "aa8c80c9-e62e-45dd-b8db-d7a0781eee68",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "The number $\\sqrt{99}$ lies between which two whole numbers?",
+      "choices": [
+        "9 and 10",
+        "8 and 9",
+        "10 and 11",
+        "49 and 50"
+      ],
+      "answer": "9 and 10",
+      "compute": null,
+      "solution": "$9^2 = 81$ and $10^2 = 100$, and 99 is between them, so $\\sqrt{99}$ is between 9 and 10 (just under 10).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 and 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81 < 99 < 100, so 9 < sqrt(99) < 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.440Z"
+        }
+      }
+    },
+    {
+      "id": "10610f92-5824-4544-b8ee-a2cae2a7ac93",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "A rough rule says the distance around a circle is about 3 times its diameter. A round pool has a diameter of 8 meters. About how many meters is the distance around it?",
+      "choices": [],
+      "answer": "24",
+      "compute": "3*8",
+      "solution": "Using 3 for $\\pi$: $3 \\times 8 = 24$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "About 3 x 8 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.444Z"
+        }
+      }
+    },
+    {
+      "id": "d1791d68-0516-44fd-89b1-dec9c6bd9cf1",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "Which whole number is closest to $\\sqrt{26}$?",
+      "choices": [
+        "6",
+        "4",
+        "13",
+        "5"
+      ],
+      "answer": "5",
+      "compute": null,
+      "solution": "$5^2 = 25$ and $6^2 = 36$. 26 is much closer to 25 than to 36, so $\\sqrt{26}$ is about 5.1 and the closest whole number is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 < 26 < 36 and 26 is 1 away from 25: sqrt(26) is about 5.1, closest to 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.474Z"
+        }
+      }
+    },
+    {
+      "id": "77a02b95-eee9-423d-8262-a4bf3fd922bc",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order numbers that include roots",
+      "stem": "Which list puts $6$, $\\sqrt{30}$ and $5$ in order from greatest to least?",
+      "choices": [
+        "$\\sqrt{30}$, $6$, $5$",
+        "$5$, $\\sqrt{30}$, $6$",
+        "$6$, $\\sqrt{30}$, $5$",
+        "$6$, $5$, $\\sqrt{30}$"
+      ],
+      "answer": "$6$, $\\sqrt{30}$, $5$",
+      "compute": null,
+      "solution": "$5^2 = 25$ and $6^2 = 36$, so $\\sqrt{30}$ is between 5 and 6 (about 5.5). From greatest to least: 6, $\\sqrt{30}$, 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6$, $\\sqrt{30}$, $5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 < 30 < 36 so sqrt(30) is about 5.48: 6 > sqrt(30) > 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.481Z"
+        }
+      }
+    },
+    {
+      "id": "f86bdaa3-6ad7-421d-aa78-6c946afa5ac8",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "Which two consecutive whole numbers is $\\sqrt{18}$ between?",
+      "choices": [
+        "3 and 4",
+        "9 and 10",
+        "4 and 5",
+        "5 and 6"
+      ],
+      "answer": "4 and 5",
+      "compute": null,
+      "solution": "$4^2 = 16$ and $5^2 = 25$. Since 18 is between 16 and 25, $\\sqrt{18}$ is between 4 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 < 18 < 25 so 4 < sqrt(18) < 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.499Z"
+        }
+      }
+    },
+    {
+      "id": "742fc696-dbd2-47ba-8677-d3b6d1449c40",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "Which is the best estimate of $\\sqrt{5}$?",
+      "choices": [
+        "2.5",
+        "2.2",
+        "1.7",
+        "2.8"
+      ],
+      "answer": "2.2",
+      "compute": null,
+      "solution": "$2^2 = 4$ and $3^2 = 9$, so $\\sqrt{5}$ is a little more than 2. Since $2.2^2 = 4.84$, 2.2 is the closest of the choices (2.5 is too big because $2.5^2 = 6.25$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt5 ~ 2.236; 2.2^2 = 4.84, 2.5^2 = 6.25; 2.2 is best.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.557Z"
+        }
+      }
+    },
+    {
+      "id": "f2d65e75-ef43-4651-907c-13fab339a428",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "Since $1.7^2 = 2.89$ and $1.8^2 = 3.24$, what is $\\sqrt{3}$ to the nearest tenth?",
+      "choices": [],
+      "answer": "1.7",
+      "compute": null,
+      "solution": "3 is between 2.89 and 3.24, and it is closer to 2.89 (a difference of 0.11) than to 3.24 (a difference of 0.24). So $\\sqrt{3}$ is closer to 1.7 than to 1.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt3 between 1.7 and 1.8; 1.75^2 = 3.0625 > 3, so nearer 1.7 (sqrt3 ~ 1.732).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.567Z"
+        }
+      }
+    },
+    {
+      "id": "74e9ca76-3cf4-4c68-b5f7-e2749dd97570",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which of these numbers is greater than 7?",
+      "choices": [
+        "$\\sqrt{45}$",
+        "$\\sqrt{50}$",
+        "$\\sqrt{47}$",
+        "$\\sqrt{40}$"
+      ],
+      "answer": "$\\sqrt{50}$",
+      "compute": null,
+      "solution": "$7^2 = 49$. A square root is greater than 7 only if the number inside is greater than 49. Only 50 is, so $\\sqrt{50}$ is greater than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{50}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 = sqrt49. sqrt40, sqrt45, sqrt47 < 7; sqrt50 > 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.570Z"
+        }
+      }
+    },
+    {
       "id": "31499a00-6ab5-457e-9874-5083fca702b3",
       "topic_id": "NC17.8.NS.2",
       "difficulty": 2,
@@ -3807,6 +4539,743 @@
           "work": "6.3^2 = 39.69, 6.35^2 = 40.32; sqrt40 ~ 6.32, best is 6.3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:10.503Z"
+        }
+      }
+    },
+    {
+      "id": "cba3393b-eea9-47d9-bcfd-adeb39f8abac",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "Which is the best approximation of $\\sqrt{90}$ to the nearest tenth?",
+      "choices": [
+        "9.4",
+        "9.5",
+        "9.6",
+        "9.0"
+      ],
+      "answer": "9.5",
+      "compute": null,
+      "solution": "$9.5^2 = 90.25$, which is very close to 90, while $9.4^2 = 88.36$. So $\\sqrt{90}$ is about 9.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.4^2 = 88.36, 9.5^2 = 90.25, 9.45^2 = 89.30 < 90, so sqrt90 ~ 9.487 -> 9.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.944Z"
+        }
+      }
+    },
+    {
+      "id": "ecb744b0-ef14-4d68-9e80-c2a6013055fc",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which comparison is true?",
+      "choices": [
+        "$\\sqrt{55} > 7.5$",
+        "$\\sqrt{55} < 7.5$",
+        "$\\sqrt{55} = 7.5$",
+        "$\\sqrt{55} > 8$"
+      ],
+      "answer": "$\\sqrt{55} < 7.5$",
+      "compute": null,
+      "solution": "$7.5^2 = 56.25$. Since 55 is less than 56.25, $\\sqrt{55}$ is less than 7.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{55} < 7.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.5^2 = 56.25 > 55, so sqrt55 < 7.5 (~7.42).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.959Z"
+        }
+      }
+    },
+    {
+      "id": "c8169208-08bf-4f86-b924-c1c0ceaf062d",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate cube roots",
+      "stem": "To the nearest whole number, what is the cube root of 300?",
+      "choices": [],
+      "answer": "7",
+      "compute": null,
+      "solution": "$6^3 = 216$ and $7^3 = 343$. 300 is much closer to 343, so the cube root is about 6.7, which rounds to 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6^3 = 216, 7^3 = 343; 6.5^3 = 274.6 < 300, so cube root ~ 6.69 -> 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.968Z"
+        }
+      }
+    },
+    {
+      "id": "4a1d5bd7-e438-4775-83ba-38c17acddfd9",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "To the nearest tenth, what is $\\sqrt{60}$?",
+      "choices": [],
+      "answer": "7.7",
+      "compute": null,
+      "solution": "$7.7^2 = 59.29$ and $7.8^2 = 60.84$. 60 is closer to 59.29, so $\\sqrt{60}$ is about 7.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.7^2 = 59.29, 7.75^2 = 60.06 > 60, so ~7.746 -> 7.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.991Z"
+        }
+      }
+    },
+    {
+      "id": "cda20424-862f-47ab-8969-c54f6d7bb3b2",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Order numbers that include roots",
+      "stem": "Mia writes the numbers $2$, $\\sqrt{7}$, $2.5$, $\\sqrt{5}$ and $3$. How many of them are less than $2.5$?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "$2.5^2 = 6.25$. $\\sqrt{5}$ is less than 2.5 (5 is less than 6.25) and so is 2. But $\\sqrt{7}$ is more than 2.5 (7 is more than 6.25), and so is 3. So 2 numbers are less than 2.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt5 ~ 2.24, sqrt7 ~ 2.65. Less than 2.5: 2 and sqrt5. 2.5 itself is not less. Count 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.058Z"
+        }
+      }
+    },
+    {
+      "id": "1e32aea2-c30a-452f-a47a-727669d50639",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "A circular pizza has a diameter of 12 inches. Using 3.14 for $\\pi$, how many inches is the distance around its edge? (The distance around is $\\pi$ times the diameter.)",
+      "choices": [],
+      "answer": "37.68",
+      "compute": "3.14*12",
+      "solution": "$3.14 \\times 12 = 37.68$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37.68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.14 x 12 = 37.68.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.076Z"
+        }
+      }
+    },
+    {
+      "id": "d5f0d53c-3837-43cc-969f-27c218156503",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order numbers that include roots",
+      "stem": "Which list puts $-3$, $-3.5$ and $-\\sqrt{10}$ in order from least to greatest?",
+      "choices": [
+        "$-3$, $-\\sqrt{10}$, $-3.5$",
+        "$-\\sqrt{10}$, $-3.5$, $-3$",
+        "$-3.5$, $-3$, $-\\sqrt{10}$",
+        "$-3.5$, $-\\sqrt{10}$, $-3$"
+      ],
+      "answer": "$-3.5$, $-\\sqrt{10}$, $-3$",
+      "compute": null,
+      "solution": "$\\sqrt{10}$ is about 3.16, so $-\\sqrt{10}$ is about $-3.16$. On a number line, $-3.5$ is farthest left, then $-3.16$, then $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3.5$, $-\\sqrt{10}$, $-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(10) is about 3.162, so -sqrt(10) is about -3.162. Least to greatest: -3.5, -3.162, -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.103Z"
+        }
+      }
+    },
+    {
+      "id": "b0449038-5e84-41f1-9367-dfcc18a6b7c4",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use estimates of roots in context",
+      "stem": "A square picture frame has an area of 120 square inches. To the nearest whole inch, how long is one side?",
+      "choices": [],
+      "answer": "11",
+      "compute": null,
+      "solution": "The side is $\\sqrt{120}$. $10^2 = 100$ and $11^2 = 121$. 120 is very close to 121, so the side is about 10.95, which rounds to 11 inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt120: 10.95^2 = 119.9, 10.5^2=110.25; ~10.95, rounds to 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.162Z"
+        }
+      }
+    },
+    {
+      "id": "711e11ea-de19-4a06-abb6-2f52fdc7301a",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use estimates of roots in context",
+      "stem": "A square plot of land has an area of 175 square meters. Which whole number is closest to the length of one side, in meters?",
+      "choices": [
+        "12",
+        "14",
+        "88",
+        "13"
+      ],
+      "answer": "13",
+      "compute": null,
+      "solution": "The side is $\\sqrt{175}$. $13^2 = 169$ and $14^2 = 196$. 175 is much closer to 169, so the side is about 13.2 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13^2 = 169, 14^2 = 196; 175 is 6 above 169 and 21 below 196; sqrt(175) ~ 13.23, nearest 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.193Z"
+        }
+      }
+    },
+    {
+      "id": "48034794-d9bd-4aec-9fc1-4838f7bcedd6",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order numbers that include roots",
+      "stem": "Which list puts $2$, $2.5$ and $\\sqrt{6}$ in order from least to greatest?",
+      "choices": [
+        "$2$, $2.5$, $\\sqrt{6}$",
+        "$\\sqrt{6}$, $2$, $2.5$",
+        "$2$, $\\sqrt{6}$, $2.5$",
+        "$2.5$, $\\sqrt{6}$, $2$"
+      ],
+      "answer": "$2$, $\\sqrt{6}$, $2.5$",
+      "compute": null,
+      "solution": "$2.5^2 = 6.25$, which is more than 6, so $\\sqrt{6}$ is a little less than 2.5. It is also more than 2 (since $2^2 = 4$). Order: 2, $\\sqrt{6}$, 2.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$, $\\sqrt{6}$, $2.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt6 ~ 2.449 (2.4^2 = 5.76, 2.5^2 = 6.25), so 2 < sqrt6 < 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.203Z"
+        }
+      }
+    },
+    {
+      "id": "62d1033c-1bf5-40cc-9e17-f7e829fee052",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "What is $\\sqrt{150}$ rounded to the nearest whole number?",
+      "choices": [],
+      "answer": "12",
+      "compute": null,
+      "solution": "$12^2 = 144$ and $13^2 = 169$. 150 is much closer to 144, so $\\sqrt{150}$ is about 12.2, which rounds to 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12^2 = 144, 13^2 = 169; 150 closer to 144; sqrt150 ~ 12.25 -> 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.210Z"
+        }
+      }
+    },
+    {
+      "id": "31574b0d-b8fe-4b7e-b846-7f78a6f42dc4",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "Which fraction is closest to the value of $\\pi$?",
+      "choices": [
+        "$\\frac{19}{6}$",
+        "$\\frac{22}{7}$",
+        "$\\frac{13}{4}$",
+        "$\\frac{17}{6}$"
+      ],
+      "answer": "$\\frac{22}{7}$",
+      "compute": null,
+      "solution": "$\\pi$ is about 3.1416. $\\frac{22}{7}$ is about 3.143, $\\frac{19}{6}$ is about 3.167, $\\frac{13}{4}$ is 3.25 and $\\frac{17}{6}$ is about 2.83. So $\\frac{22}{7}$ is closest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{22}{7}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pi ~ 3.14159. 17/6 = 2.833, 19/6 = 3.167 (off 0.025), 22/7 = 3.1429 (off 0.0013), 13/4 = 3.25. Closest 22/7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.231Z"
+        }
+      }
+    },
+    {
+      "id": "960f0301-a69f-4583-b079-9e7de36358a7",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "Which whole number is closest to $\\sqrt{115}$?",
+      "choices": [
+        "10",
+        "12",
+        "57",
+        "11"
+      ],
+      "answer": "11",
+      "compute": null,
+      "solution": "$10^2 = 100$ and $11^2 = 121$. 115 is closer to 121 than to 100, so $\\sqrt{115}$ is about 10.7, which is closest to 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^2=100, 11^2=121; 115 is 6 from 121 and 15 from 100; sqrt(115)~10.72, nearest 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.292Z"
+        }
+      }
+    },
+    {
+      "id": "0d4e05be-d7d8-441c-b2c8-486544a6794a",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate cube roots",
+      "stem": "Between which two consecutive whole numbers is the cube root of 400?",
+      "choices": [
+        "7 and 8",
+        "6 and 7",
+        "8 and 9",
+        "133 and 134"
+      ],
+      "answer": "7 and 8",
+      "compute": null,
+      "solution": "$7^3 = 343$ and $8^3 = 512$. Since 400 is between them, its cube root is between 7 and 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7 and 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^3=343 < 400 < 512=8^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.308Z"
+        }
+      }
+    },
+    {
+      "id": "c0fac101-c1ea-4f46-bfb3-f4d4d18ff60c",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "The distance around a wheel is 31.4 inches. Using 3.14 for $\\pi$, what is the diameter of the wheel, in inches? (The distance around is $\\pi$ times the diameter.)",
+      "choices": [],
+      "answer": "10",
+      "compute": "31.4/3.14",
+      "solution": "Diameter $= 31.4 \\div 3.14 = 10$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "d = 31.4/3.14 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.324Z"
+        }
+      }
+    },
+    {
+      "id": "3623c48b-c30d-4c6d-81b9-520237e3f2af",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Locate an irrational number on the number line",
+      "stem": "On a number line marked in tenths, between which two marks is $\\sqrt{11}$?",
+      "choices": [
+        "3.3 and 3.4",
+        "3.2 and 3.3",
+        "3.4 and 3.5",
+        "5.5 and 5.6"
+      ],
+      "answer": "3.3 and 3.4",
+      "compute": null,
+      "solution": "$3.3^2 = 10.89$ and $3.4^2 = 11.56$. Since 11 is between them, $\\sqrt{11}$ is between 3.3 and 3.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.3 and 3.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.3^2 = 10.89, 3.4^2 = 11.56, so sqrt(11) ~ 3.317 between 3.3 and 3.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.387Z"
+        }
+      }
+    },
+    {
+      "id": "920a314b-e25f-4b88-b0aa-e24ab626a4bf",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which whole number is between $\\sqrt{20}$ and $\\sqrt{30}$?",
+      "choices": [
+        "4",
+        "6",
+        "25",
+        "5"
+      ],
+      "answer": "5",
+      "compute": null,
+      "solution": "$\\sqrt{20}$ is about 4.5 and $\\sqrt{30}$ is about 5.5. The only whole number between 4.5 and 5.5 is 5. (The number 25 is between 20 and 30, but not between their square roots.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(20) ~ 4.47, sqrt(30) ~ 5.48. Only 5 is between (25 is between 20 and 30, but 25 > 5.48).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.425Z"
+        }
+      }
+    },
+    {
+      "id": "4c057a50-252c-4f2c-915b-48b1208d448a",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "To the nearest tenth, what is $\\sqrt{11}$?",
+      "choices": [],
+      "answer": "3.3",
+      "compute": null,
+      "solution": "$3.3^2 = 10.89$ and $3.4^2 = 11.56$. 11 is much closer to 10.89, so $\\sqrt{11}$ is about 3.3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.3^2 = 10.89, 3.32^2 = 11.02, so sqrt(11) is about 3.317, which rounds to 3.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.469Z"
+        }
+      }
+    },
+    {
+      "id": "8d7dd177-bbc7-48a7-a1f1-45de2cc03724",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which of these square roots is between 6 and 7?",
+      "choices": [
+        "$\\sqrt{40}$",
+        "$\\sqrt{30}$",
+        "$\\sqrt{50}$",
+        "$\\sqrt{60}$"
+      ],
+      "answer": "$\\sqrt{40}$",
+      "compute": null,
+      "solution": "$6^2 = 36$ and $7^2 = 49$. The number inside must be between 36 and 49. Only 40 is, so $\\sqrt{40}$ is between 6 and 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{40}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 < 40 < 49, so 6 < sqrt(40) < 7. sqrt(30) < 6, sqrt(50) and sqrt(60) > 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.477Z"
+        }
+      }
+    },
+    {
+      "id": "dc518e3e-621d-40d2-992b-130b505ebe42",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "Between which two consecutive whole numbers does $\\sqrt{200}$ lie?",
+      "choices": [
+        "14 and 15",
+        "13 and 14",
+        "15 and 16",
+        "100 and 101"
+      ],
+      "answer": "14 and 15",
+      "compute": null,
+      "solution": "$14^2 = 196$ and $15^2 = 225$. Since 200 is between them, $\\sqrt{200}$ is between 14 and 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14 and 15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14^2=196, 15^2=225; 196<200<225 so between 14 and 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.528Z"
+        }
+      }
+    },
+    {
+      "id": "ad2a440c-eb9c-4c82-ac52-11e3a44ca121",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "Which of these numbers is greater than $\\pi$?",
+      "choices": [
+        "3.1",
+        "3.14",
+        "3.15",
+        "3.141"
+      ],
+      "answer": "3.15",
+      "compute": null,
+      "solution": "$\\pi$ is about 3.14159. The numbers 3.1, 3.14 and 3.141 are all a little smaller, and only 3.15 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pi = 3.14159...; 3.14, 3.1, 3.141 are less; 3.15 is greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.544Z"
+        }
+      }
+    },
+    {
+      "id": "2eb0221b-ec9a-4a27-bfe5-1928ec19efcd",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Locate an irrational number on the number line",
+      "stem": "On a number line, which of these numbers is closest to $\\sqrt{10}$?",
+      "choices": [
+        "3.0",
+        "3.5",
+        "3.2",
+        "3.8"
+      ],
+      "answer": "3.2",
+      "compute": null,
+      "solution": "$3.2^2 = 10.24$, which is very close to 10, so $\\sqrt{10}$ is about 3.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt10 ~ 3.162. Distances: 3.0: 0.16, 3.2: 0.04, 3.5: 0.34, 3.8: 0.64. Closest 3.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.555Z"
+        }
+      }
+    },
+    {
+      "id": "d832657b-6863-40a2-a564-a964318c06d0",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "The square root of 500 lies between two consecutive whole numbers. What is the sum of those two numbers?",
+      "choices": [],
+      "answer": "45",
+      "compute": "22+23",
+      "solution": "$22^2 = 484$ and $23^2 = 529$. So $\\sqrt{500}$ is between 22 and 23, and $22 + 23 = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "22^2 = 484, 23^2 = 529; sqrt500 between 22 and 23; sum 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.560Z"
         }
       }
     },
@@ -4131,6 +5600,733 @@
       }
     },
     {
+      "id": "a48d2519-59a4-490e-848f-ccce9f180a13",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "To the nearest tenth, what is $\\sqrt{78}$?",
+      "choices": [],
+      "answer": "8.8",
+      "compute": null,
+      "solution": "$8.8^2 = 77.44$ and $8.9^2 = 79.21$. The halfway point is $8.85^2 = 78.3225$, which is more than 78, so $\\sqrt{78}$ is less than 8.85 and rounds to 8.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.8^2 = 77.44, 8.85^2 = 78.32 > 78, so sqrt78 ~ 8.83 -> 8.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.971Z"
+        }
+      }
+    },
+    {
+      "id": "e034b17d-7519-4590-8ef9-38d20a131e5a",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "How many whole numbers have a square root that is between 12 and 13?",
+      "choices": [],
+      "answer": "24",
+      "compute": "168-145+1",
+      "solution": "$12^2 = 144$ and $13^2 = 169$. The whole numbers strictly between 144 and 169 are 145 to 168, which is $168 - 145 + 1 = 24$ numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "144 < n < 169: n = 145..168, 24 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.991Z"
+        }
+      }
+    },
+    {
+      "id": "eeab4c9a-94b5-4d6e-943c-b079505f75d6",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place a square root between consecutive whole numbers",
+      "stem": "Between which two consecutive integers is $-\\sqrt{55}$?",
+      "choices": [
+        "$-7$ and $-6$",
+        "$-8$ and $-7$",
+        "$7$ and $8$",
+        "$-56$ and $-55$"
+      ],
+      "answer": "$-8$ and $-7$",
+      "compute": null,
+      "solution": "$7^2 = 49$ and $8^2 = 64$, so $\\sqrt{55}$ is between 7 and 8 (about 7.4). Then $-\\sqrt{55}$ is between $-8$ and $-7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-8$ and $-7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt55 ~ 7.42, so -sqrt55 ~ -7.42, between -8 and -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.993Z"
+        }
+      }
+    },
+    {
+      "id": "36b3bf96-7ccc-48a2-9d9c-647200740249",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Order numbers that include roots",
+      "stem": "Look at the numbers $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$, $\\sqrt{7}$ and $\\sqrt{11}$. How many of them are between 1.5 and 3?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "$1.5^2 = 2.25$ and $3^2 = 9$. A root is between 1.5 and 3 when the number inside is between 2.25 and 9. That is true for 3, 5 and 7, but not for 2 or 11. So 3 of them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.414 no; 1.732, 2.236, 2.646 yes; 3.317 no. Three.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.017Z"
+        }
+      }
+    },
+    {
+      "id": "eec6932a-d0be-494f-82fc-31111adcba3a",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "A circle has a diameter of 100 centimeters. The distance around it is found once using 3.14 for $\\pi$ and once using 3.1416. By how many centimeters do the two answers differ?",
+      "choices": [],
+      "answer": "0.16",
+      "compute": "100*(3.1416-3.14)",
+      "solution": "The two values for $\\pi$ differ by $3.1416 - 3.14 = 0.0016$. Multiplying by the diameter: $100 \\times 0.0016 = 0.16$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.1416 x 100 - 3.14 x 100 = 314.16 - 314 = 0.16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.055Z"
+        }
+      }
+    },
+    {
+      "id": "b743b24c-eb30-4def-8669-711192494cfa",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "Which square root rounds to 12 when it is rounded to the nearest whole number?",
+      "choices": [
+        "$\\sqrt{130}$",
+        "$\\sqrt{140}$",
+        "$\\sqrt{160}$",
+        "$\\sqrt{170}$"
+      ],
+      "answer": "$\\sqrt{140}$",
+      "compute": null,
+      "solution": "$\\sqrt{140}$ is about 11.83, which rounds to 12. The others are about 11.40 (rounds to 11), 12.65 (rounds to 13) and 13.04 (rounds to 13).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{140}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rounds to 12 means between 11.5^2 = 132.25 and 12.5^2 = 156.25. Only 140 (sqrt ~ 11.83). sqrt130 ~ 11.4, sqrt160 ~ 12.65, sqrt170 ~ 13.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.076Z"
+        }
+      }
+    },
+    {
+      "id": "f2677f4f-9a4e-423b-b9b7-6a6928e2ffb4",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use estimates of roots in context",
+      "stem": "One square has an area of 90 square meters and a smaller square has an area of 40 square meters. To the nearest whole meter, how much longer is a side of the larger square than a side of the smaller square?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "The sides are $\\sqrt{90} \\approx 9.49$ and $\\sqrt{40} \\approx 6.32$. The difference is about 3.16, which rounds to 3 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(90) is about 9.49, sqrt(40) about 6.32; difference about 3.16, nearest whole 3. (Rounding each first, 9 - 6 = 3, same.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.105Z"
+        }
+      }
+    },
+    {
+      "id": "314abff1-e485-4afb-b6f6-d56220bc28e5",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which number is greater than $\\sqrt{37}$ but less than $\\sqrt{38}$?",
+      "choices": [
+        "6.1",
+        "6.0",
+        "6.05",
+        "6.2"
+      ],
+      "answer": "6.1",
+      "compute": null,
+      "solution": "$6.1^2 = 37.21$, which is between 37 and 38, so 6.1 is between the two roots. $6^2 = 36$ and $6.05^2 = 36.6$ are below 37, and $6.2^2 = 38.44$ is above 38.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square each: 6.0^2 = 36, 6.05^2 = 36.6025, 6.1^2 = 37.21, 6.2^2 = 38.44. Only 37 < 37.21 < 38.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.114Z"
+        }
+      }
+    },
+    {
+      "id": "4274b538-7e87-4607-8c36-8bb2d47024bf",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate a square root to the nearest whole number",
+      "stem": "What whole number is closest to the sum $\\sqrt{70} + \\sqrt{20}$?",
+      "choices": [],
+      "answer": "13",
+      "compute": null,
+      "solution": "$\\sqrt{70}$ is about 8.37 and $\\sqrt{20}$ is about 4.47. Their sum is about 12.84, which is closest to 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(70) is about 8.367 (8.37^2 = 70.06), sqrt(20) about 4.472; sum about 12.84, nearest 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.127Z"
+        }
+      }
+    },
+    {
+      "id": "20e6e0d1-9d6f-44e0-8809-7bda461ab9ff",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate cube roots",
+      "stem": "Which of these is closest to the cube root of 90?",
+      "choices": [
+        "4.5",
+        "4.0",
+        "5.0",
+        "30"
+      ],
+      "answer": "4.5",
+      "compute": null,
+      "solution": "$4^3 = 64$ and $5^3 = 125$. $4.5^3 = 91.125$, which is very close to 90. So the cube root of 90 is about 4.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.5^3 = 91.125, very close to 90; 4^3=64, 5^3=125. 4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.141Z"
+        }
+      }
+    },
+    {
+      "id": "b3063f04-b62a-4482-b330-b86f5ff13e49",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "To the nearest tenth, what is $\\sqrt{95}$?",
+      "choices": [],
+      "answer": "9.7",
+      "compute": null,
+      "solution": "$9.7^2 = 94.09$ and $9.8^2 = 96.04$. The halfway point is $9.75^2 = 95.0625$, which is more than 95, so $\\sqrt{95}$ is less than 9.75 and rounds to 9.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.7^2 = 94.09, 9.75^2 = 95.0625 > 95, so sqrt95 ~ 9.747, rounds to 9.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.145Z"
+        }
+      }
+    },
+    {
+      "id": "017dbddd-2588-46f7-8815-1e560bcfba81",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "Which list puts $\\sqrt{10}$, $3.14$, $\\frac{22}{7}$ and $\\pi$ in order from least to greatest?",
+      "choices": [
+        "$3.14$, $\\frac{22}{7}$, $\\pi$, $\\sqrt{10}$",
+        "$\\pi$, $3.14$, $\\frac{22}{7}$, $\\sqrt{10}$",
+        "$3.14$, $\\pi$, $\\frac{22}{7}$, $\\sqrt{10}$",
+        "$3.14$, $\\pi$, $\\sqrt{10}$, $\\frac{22}{7}$"
+      ],
+      "answer": "$3.14$, $\\pi$, $\\frac{22}{7}$, $\\sqrt{10}$",
+      "compute": null,
+      "solution": "$3.14 = 3.14$, $\\pi \\approx 3.1416$, $\\frac{22}{7} \\approx 3.1429$ and $\\sqrt{10} \\approx 3.1623$. That is the order from least to greatest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3.14$, $\\pi$, $\\frac{22}{7}$, $\\sqrt{10}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.14 < pi (3.14159) < 22/7 (3.142857) < sqrt10 (3.1623).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.147Z"
+        }
+      }
+    },
+    {
+      "id": "a8cbb0dd-4a83-4f7a-b9ee-e33c610a2abe",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a root to the nearest tenth",
+      "stem": "Which is $\\sqrt{34}$ to the nearest tenth?",
+      "choices": [
+        "5.7",
+        "5.9",
+        "6.0",
+        "5.8"
+      ],
+      "answer": "5.8",
+      "compute": null,
+      "solution": "$5.8^2 = 33.64$ and $5.9^2 = 34.81$. 34 is closer to 33.64, so $\\sqrt{34}$ is about 5.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.8^2=33.64, 5.85^2=34.2225>34, 5.9^2=34.81; sqrt34~5.831 -> 5.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.300Z"
+        }
+      }
+    },
+    {
+      "id": "4e04ffbd-b986-41f8-ad1a-3efe2faf2b61",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "What is the smallest whole number that is greater than $\\sqrt{230}$?",
+      "choices": [],
+      "answer": "16",
+      "compute": null,
+      "solution": "$15^2 = 225$ and $16^2 = 256$. Since 230 is more than 225, $\\sqrt{230}$ is more than 15 (about 15.2) and less than 16. The smallest whole number greater than it is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15^2=225 < 230 < 256=16^2; smallest whole number greater is 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.317Z"
+        }
+      }
+    },
+    {
+      "id": "e59732d0-8cc4-4949-8718-471431dcd304",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate cube roots",
+      "stem": "To the nearest whole number, what is the cube root of 900?",
+      "choices": [],
+      "answer": "10",
+      "compute": null,
+      "solution": "$9^3 = 729$ and $10^3 = 1000$. 900 is closer to 1000 than to 729 (a difference of 100 versus 171), so the cube root is about 9.7, which rounds to 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9^3=729, 10^3=1000; 9.5^3=857.4 < 900, so cube root ~9.65 -> 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.338Z"
+        }
+      }
+    },
+    {
+      "id": "42767f39-51ab-4c28-a509-4f8eb76538af",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare irrational numbers with rational numbers",
+      "stem": "Which number is greater than $\\sqrt{30}$ and less than $\\sqrt{35}$?",
+      "choices": [
+        "5.4",
+        "5.95",
+        "5.7",
+        "6.2"
+      ],
+      "answer": "5.7",
+      "compute": null,
+      "solution": "$\\sqrt{30}$ is about 5.48 and $\\sqrt{35}$ is about 5.92. Of the choices, only 5.7 is between them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt30~5.477, sqrt35~5.916. 5.4 too small; 5.7^2=32.49 in range; 5.95^2=35.40 too big; 6.2 too big.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.347Z"
+        }
+      }
+    },
+    {
+      "id": "7d2d0c94-f0da-4d9c-bb6f-7712dedfebd2",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use estimates of roots in context",
+      "stem": "A square has an area of 300 square meters. Which whole number is closest to the length of one side, in meters?",
+      "choices": [
+        "15",
+        "19",
+        "150",
+        "17"
+      ],
+      "answer": "17",
+      "compute": null,
+      "solution": "$17^2 = 289$ and $18^2 = 324$. 300 is closer to 289, so the side is about 17.3 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side = sqrt(300). 17^2=289, 18^2=324, so ~17.32; closest whole number 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.357Z"
+        }
+      }
+    },
+    {
+      "id": "7329a669-601f-4230-8042-ca576693bb32",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order numbers that include roots",
+      "stem": "Which list puts $7$, $\\sqrt{50}$, $7.1$ and $\\frac{50}{7}$ in order from least to greatest?",
+      "choices": [
+        "$7$, $7.1$, $\\sqrt{50}$, $\\frac{50}{7}$",
+        "$7$, $\\sqrt{50}$, $7.1$, $\\frac{50}{7}$",
+        "$\\sqrt{50}$, $7$, $7.1$, $\\frac{50}{7}$",
+        "$7$, $\\sqrt{50}$, $\\frac{50}{7}$, $7.1$"
+      ],
+      "answer": "$7$, $\\sqrt{50}$, $7.1$, $\\frac{50}{7}$",
+      "compute": null,
+      "solution": "$\\sqrt{50}$ is about 7.07, and $\\frac{50}{7}$ is about 7.14. Order: 7, 7.07, 7.1, 7.14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7$, $\\sqrt{50}$, $7.1$, $\\frac{50}{7}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(50) ~ 7.071 (7.07^2=49.98), 50/7 ~ 7.143. Order: 7 < 7.071 < 7.1 < 7.143.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.364Z"
+        }
+      }
+    },
+    {
+      "id": "77c35263-3df8-4083-b9df-41001f623c5f",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate pi and compare approximations of pi",
+      "stem": "A circular garden has a radius of 3 meters. Fencing around its edge costs 4 dollars per meter. Using 3.14 for $\\pi$, how many dollars does the fencing cost? (The distance around a circle is $2 \\times \\pi \\times$ the radius.)",
+      "choices": [],
+      "answer": "75.36",
+      "compute": "2*3.14*3*4",
+      "solution": "Distance around $= 2 \\times 3.14 \\times 3 = 18.84$ meters. Cost $= 18.84 \\times 4 = 75.36$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75.36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Circumference = 2 x 3.14 x 3 = 18.84 m. Cost = 18.84 x 4 = 75.36 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.379Z"
+        }
+      }
+    },
+    {
+      "id": "16192df5-0814-482c-a1d8-88ffd283c3cd",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order numbers that include roots",
+      "stem": "Which list puts $\\sqrt{10}$, $3.1$ and $\\frac{19}{6}$ in order from least to greatest?",
+      "choices": [
+        "$3.1$, $\\frac{19}{6}$, $\\sqrt{10}$",
+        "$\\sqrt{10}$, $3.1$, $\\frac{19}{6}$",
+        "$\\frac{19}{6}$, $\\sqrt{10}$, $3.1$",
+        "$3.1$, $\\sqrt{10}$, $\\frac{19}{6}$"
+      ],
+      "answer": "$3.1$, $\\sqrt{10}$, $\\frac{19}{6}$",
+      "compute": null,
+      "solution": "$\\sqrt{10}$ is about 3.162, $3.1$ is 3.1 and $\\frac{19}{6}$ is about 3.167. Order: 3.1, $\\sqrt{10}$, $\\frac{19}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3.1$, $\\sqrt{10}$, $\\frac{19}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.1; sqrt(10) is about 3.1623; 19/6 is about 3.1667. Least to greatest: 3.1, sqrt(10), 19/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.489Z"
+        }
+      }
+    },
+    {
+      "id": "cdf8188b-3a99-43bd-a3c0-e391eccd8d8b",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Locate an irrational number on the number line",
+      "stem": "On a number line, which of these is closest to $2 + \\sqrt{7}$?",
+      "choices": [
+        "4.6",
+        "4.2",
+        "5.0",
+        "9.0"
+      ],
+      "answer": "4.6",
+      "compute": null,
+      "solution": "$\\sqrt{7}$ is about 2.65, so $2 + \\sqrt{7}$ is about 4.65. Of the choices, 4.6 is closest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(7) is about 2.646 (2.6^2 = 6.76, 2.65^2 = 7.02); 2 + 2.646 = 4.646, closest to 4.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.508Z"
+        }
+      }
+    },
+    {
+      "id": "e90e6426-9ff9-4208-b648-e3d5e9eb0c48",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use estimates of roots in context",
+      "stem": "A cube-shaped box has a volume of 500 cubic inches. To the nearest whole inch, how long is each edge?",
+      "choices": [],
+      "answer": "8",
+      "compute": null,
+      "solution": "The edge is the cube root of 500. $7^3 = 343$ and $8^3 = 512$. 500 is very close to 512, so the edge is about 7.9, which rounds to 8 inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Edge = cube root of 500. 7^3 = 343, 8^3 = 512; 7.9^3 = 493.04, 7.95^3 ~ 502.5, so edge ~ 7.94, nearest whole inch 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.550Z"
+        }
+      }
+    },
+    {
+      "id": "7d97813f-103f-4432-9e55-09919fb5b0ab",
+      "topic_id": "NC17.8.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Locate an irrational number on the number line",
+      "stem": "On a number line marked in tenths, between which two marks is $\\sqrt{50}$?",
+      "choices": [
+        "6.9 and 7.0",
+        "7.1 and 7.2",
+        "7.0 and 7.1",
+        "7.5 and 7.6"
+      ],
+      "answer": "7.0 and 7.1",
+      "compute": null,
+      "solution": "$7^2 = 49$ and $7.1^2 = 50.41$. Since 50 is between them, $\\sqrt{50}$ is between 7.0 and 7.1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.0 and 7.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^2 = 49, 7.1^2 = 50.41; sqrt50 ~ 7.07, between 7.0 and 7.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.552Z"
+        }
+      }
+    },
+    {
       "id": "ab423c4b-2d80-47a9-84c4-aab5f375ec2a",
       "topic_id": "NC17.8.EE.1",
       "difficulty": 1,
@@ -4437,6 +6633,670 @@
           "work": "10^6/10^4 = 10^2 = 100.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.596Z"
+        }
+      }
+    },
+    {
+      "id": "efd3c5c0-6c9e-44d2-9efa-f4ca96537949",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "power of a power",
+      "stem": "Which is equal to $(7^3)^2$?",
+      "choices": [
+        "$7^5$",
+        "$7^9$",
+        "$9^7$",
+        "$7^6$"
+      ],
+      "answer": "$7^6$",
+      "compute": null,
+      "solution": "Multiply the exponents: $(7^3)^2 = 7^{3 \\cdot 2} = 7^6$. Adding gives $7^5$, which is the rule for a product.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7^6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(7^3)^2 = 7^(3x2) = 7^6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.934Z"
+        }
+      }
+    },
+    {
+      "id": "491a0f14-1b9e-44c2-b988-ea82f4072c30",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "zero exponent",
+      "stem": "What is the value of $25^0 + 3$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "1+3",
+      "solution": "Any nonzero number to the power 0 is 1, so $25^0 = 1$ and $25^0 + 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25^0 = 1; 1 + 3 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.946Z"
+        }
+      }
+    },
+    {
+      "id": "76f186d6-25c2-4851-9d3e-a7f54183ab31",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "power of a product or quotient",
+      "stem": "Which expression is equal to $\\left(\\frac{6}{5}\\right)^4$?",
+      "choices": [
+        "$\\frac{6^4}{5}$",
+        "$\\frac{6}{5^4}$",
+        "$\\frac{6^4}{5^4}$",
+        "$\\frac{6^4}{4^5}$"
+      ],
+      "answer": "$\\frac{6^4}{5^4}$",
+      "compute": null,
+      "solution": "The exponent applies to both the numerator and the denominator: $\\left(\\frac{6}{5}\\right)^4 = \\frac{6^4}{5^4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{6^4}{5^4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(6/5)^4 = 6^4/5^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.973Z"
+        }
+      }
+    },
+    {
+      "id": "fb889b23-2e62-477f-8de0-93b6e388ddb5",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "missing exponent",
+      "stem": "$(4^{?})^{2} = 4^{6}$. What is the ?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6/2",
+      "solution": "Multiplying the exponents gives $? \\cdot 2 = 6$, so the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2? = 6, ? = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.018Z"
+        }
+      }
+    },
+    {
+      "id": "aeb4b00d-e36a-4529-818f-da5fe120af52",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "missing exponent",
+      "stem": "Which number in place of the ? makes $10^{?} = 0.1$ true?",
+      "choices": [
+        "$1$",
+        "$-10$",
+        "$0$",
+        "$-1$"
+      ],
+      "answer": "$-1$",
+      "compute": "-1",
+      "solution": "$0.1 = \\frac{1}{10} = 10^{-1}$, so the ? is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^{-1} = 1/10 = 0.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.039Z"
+        }
+      }
+    },
+    {
+      "id": "91c65ce1-efcc-4775-b8da-8e1f03ed8e6a",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "evaluate with integer exponents",
+      "stem": "Which number is equal to $10^4$?",
+      "choices": [
+        "$40$",
+        "$1{,}000$",
+        "$10{,}000$",
+        "$100{,}000$"
+      ],
+      "answer": "$10{,}000$",
+      "compute": null,
+      "solution": "$10^4 = 10 \\cdot 10 \\cdot 10 \\cdot 10 = 10{,}000$ (a 1 followed by 4 zeros).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^4 = 10,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.042Z"
+        }
+      }
+    },
+    {
+      "id": "c567ad7c-227b-49f7-84e5-f285a0c660fe",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "product of powers",
+      "stem": "Rosa writes $4^3 \\cdot 4^5$ as one power of 4. What is the exponent?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5",
+      "solution": "When powers of the same base are multiplied, add the exponents: $4^3 \\cdot 4^5 = 4^{3+5} = 4^8$. The exponent is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^3 x 4^5 = 4^8; exponent 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.045Z"
+        }
+      }
+    },
+    {
+      "id": "f73c95a4-653b-4335-969d-8e650af1c16a",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "power of a power",
+      "stem": "$(3^4)^2 = 3^k$. What is $k$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4*2",
+      "solution": "A power raised to a power multiplies the exponents: $(3^4)^2 = 3^{4 \\cdot 2} = 3^8$, so $k = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3^4)^2 = 3^8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.050Z"
+        }
+      }
+    },
+    {
+      "id": "1fd6f130-1431-48eb-831c-1a702f4d4d1c",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "negative exponent",
+      "stem": "Which expression is the reciprocal of $9^4$, written as a power of 9?",
+      "choices": [
+        "$-9^4$",
+        "$9^{-4}$",
+        "$4^{-9}$",
+        "$(-9)^4$"
+      ],
+      "answer": "$9^{-4}$",
+      "compute": null,
+      "solution": "A negative exponent means the reciprocal: $\\frac{1}{9^4} = 9^{-4}$. A minus sign in front does not make a reciprocal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9^{-4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reciprocal of 9^4 is 1/9^4 = 9^{-4}. -9^4 is negative, 4^{-9} is a different base, (-9)^4 = 9^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.083Z"
+        }
+      }
+    },
+    {
+      "id": "1663c2a1-124a-4d47-b5a0-61206d3d3555",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "product of powers",
+      "stem": "Which is equal to $2^3 \\cdot 2^4$?",
+      "choices": [
+        "$2^{12}$",
+        "$4^7$",
+        "$2^7$",
+        "$2^1$"
+      ],
+      "answer": "$2^7$",
+      "compute": null,
+      "solution": "Same base, so add the exponents: $2^3 \\cdot 2^4 = 2^{3+4} = 2^7$. Multiplying the exponents (12), multiplying the bases (4) or subtracting (1) are common mistakes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^3 x 2^4 = 2^(3+4) = 2^7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.121Z"
+        }
+      }
+    },
+    {
+      "id": "0ed038ba-af8e-4457-932c-289764d5f488",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "evaluate with integer exponents",
+      "stem": "What is the value of $(-1)^{7}$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "An odd number of factors of $-1$ gives $-1$: $(-1)^7 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Odd power of -1 is -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.123Z"
+        }
+      }
+    },
+    {
+      "id": "c2d0ffb2-17ca-49fd-9685-94b4e176b3fa",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "quotient of powers",
+      "stem": "A factory packs $3^5$ pencils into boxes. Each box holds $3^3$ pencils. How many boxes are filled?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3^5/3^3",
+      "solution": "Divide: $\\frac{3^5}{3^3} = 3^{5-3} = 3^2 = 9$ boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^5 / 3^3 = 3^2 = 9 boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.129Z"
+        }
+      }
+    },
+    {
+      "id": "e34f2ba0-9a0c-4903-aeb1-1f75484de2e5",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "quotient of powers",
+      "stem": "Dividing $5^6$ by $5^6$ gives what number?",
+      "choices": [],
+      "answer": "1",
+      "compute": "5^6/5^6",
+      "solution": "Any nonzero number divided by itself is 1. By the exponent rule, $5^{6-6} = 5^0 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5^6 / 5^6 = 5^0 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.168Z"
+        }
+      }
+    },
+    {
+      "id": "ffbbb23a-7ae1-4b95-9603-63cd7ff518ee",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "negative exponent",
+      "stem": "What number is $7^2 \\cdot 7^{-2}$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "7^2/7^2",
+      "solution": "Add the exponents: $2 + (-2) = 0$, so the product is $7^0 = 1$. (Also, $7^{-2}$ is $\\frac{1}{7^2}$, and $7^2 \\cdot \\frac{1}{7^2} = 1$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^(2-2) = 7^0 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.171Z"
+        }
+      }
+    },
+    {
+      "id": "2922208f-6e9e-439d-8642-d945c9f42328",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "quotient of powers",
+      "stem": "Which single power of 8 equals $\\frac{8^9}{8^2}$?",
+      "choices": [
+        "$8^{11}$",
+        "$8^7$",
+        "$8^{18}$",
+        "$1^{7}$"
+      ],
+      "answer": "$8^7$",
+      "compute": null,
+      "solution": "Dividing powers of the same base subtracts the exponents: $9 - 2 = 7$, so the result is $8^7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8^7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8^9/8^2 = 8^(9-2) = 8^7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.178Z"
+        }
+      }
+    },
+    {
+      "id": "a1e44a07-63bd-41d1-8249-6655da4a391c",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "power of a product or quotient",
+      "stem": "Which expression is equal to $(2 \\cdot 7)^3$?",
+      "choices": [
+        "$2^3 \\cdot 7^3$",
+        "$2 \\cdot 7^3$",
+        "$2^3 \\cdot 7$",
+        "$2^3 + 7^3$"
+      ],
+      "answer": "$2^3 \\cdot 7^3$",
+      "compute": null,
+      "solution": "The exponent applies to each factor of a product: $(2 \\cdot 7)^3 = 2^3 \\cdot 7^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^3 \\cdot 7^3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(ab)^3 = a^3 b^3: 2^3 x 7^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.256Z"
+        }
+      }
+    },
+    {
+      "id": "1727aa3d-2e23-4313-b398-f2fce070558c",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "spot a mistake with exponent rules",
+      "stem": "Lena wrote $4^2 \\cdot 4^3 = 4^6$, but the exponent is wrong. What exponent should replace the 6?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "Add the exponents when multiplying powers of the same base: $2 + 3 = 5$. Lena multiplied them instead.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^2*4^3 = 4^(2+3) = 4^5. Exponent 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.360Z"
+        }
+      }
+    },
+    {
+      "id": "4d2a7afc-0bd0-45c5-bb5d-e98c50560c19",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "zero exponent",
+      "stem": "Which of these has the value 1?",
+      "choices": [
+        "$0^9$",
+        "$9^1$",
+        "$9 \\cdot 0$",
+        "$9^0$"
+      ],
+      "answer": "$9^0$",
+      "compute": null,
+      "solution": "$9^0 = 1$. The others are $0^9 = 0$, $9^1 = 9$ and $9 \\cdot 0 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9^0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9*0=0, 9^0=1, 9^1=9, 0^9=0. Only 9^0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.399Z"
+        }
+      }
+    },
+    {
+      "id": "e65b86d2-5226-4c6d-a9e1-6c46f98958a5",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "product of powers",
+      "stem": "The product $3^{-2} \\cdot 3^{5}$ equals $3^k$. What is $k$?",
+      "choices": [
+        "$3$",
+        "$7$",
+        "$-3$",
+        "$-10$"
+      ],
+      "answer": "$3$",
+      "compute": "-2+5",
+      "solution": "Add the exponents: $-2 + 5 = 3$, so $3^{-2} \\cdot 3^{5} = 3^3$ and $k = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^(-2+5) = 3^3, k = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.449Z"
+        }
+      }
+    },
+    {
+      "id": "5209ae73-70ab-42f5-9b66-914da05a5657",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "negative exponent",
+      "stem": "What is the value of $\\left(\\frac{1}{3}\\right)^{-1}$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "A negative exponent flips the fraction: $\\left(\\frac{1}{3}\\right)^{-1} = \\frac{3}{1} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/3)^-1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.488Z"
+        }
+      }
+    },
+    {
+      "id": "a47641e2-6344-44a3-b28c-8964ff2b1507",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "compare numbers with exponents",
+      "stem": "Which of these numbers is the greatest?",
+      "choices": [
+        "$2^{0}$",
+        "$2^{-3}$",
+        "$2^{-1}$",
+        "$(-2)^{3}$"
+      ],
+      "answer": "$2^{0}$",
+      "compute": null,
+      "solution": "$2^0 = 1$, $2^{-3} = \\frac{1}{8}$, $2^{-1} = \\frac{1}{2}$ and $(-2)^3 = -8$. The greatest is $2^0 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^{0}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^0 = 1, 2^-3 = 1/8, 2^-1 = 1/2, (-2)^3 = -8. Greatest 2^0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.575Z"
         }
       }
     },
@@ -4766,6 +7626,723 @@
       }
     },
     {
+      "id": "23a809ff-fd8e-4e94-8f2e-b7a62a9c6430",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "power of a product or quotient",
+      "stem": "Which expression is equal to $\\left(\\frac{3^2}{4}\\right)^{3}$?",
+      "choices": [
+        "$\\frac{3^5}{4^3}$",
+        "$\\frac{3^6}{4}$",
+        "$\\frac{3^6}{4^3}$",
+        "$\\frac{3^8}{4^3}$"
+      ],
+      "answer": "$\\frac{3^6}{4^3}$",
+      "compute": null,
+      "solution": "Raise numerator and denominator to the power 3: $\\frac{(3^2)^3}{4^3} = \\frac{3^6}{4^3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3^6}{4^3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3^2/4)^3 = 3^6/4^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.943Z"
+        }
+      }
+    },
+    {
+      "id": "4eec1d3a-fec7-4abb-8748-1bf25a401dcd",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "product of powers",
+      "stem": "Nora multiplies $2^{-3}$ by $2^{5}$ and writes the result as a whole number. What whole number does she write?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2^2",
+      "solution": "Add the exponents: $-3 + 5 = 2$, so the product is $2^2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(-3+5) = 2^2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.973Z"
+        }
+      }
+    },
+    {
+      "id": "ce827b5e-e2ea-46dc-b7f7-e950c91cb525",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "power of a power",
+      "stem": "Which single power of 5 equals $(5^{-2})^{3}$?",
+      "choices": [
+        "$5^{-5}$",
+        "$5^{-6}$",
+        "$5^{6}$",
+        "$5^{-8}$"
+      ],
+      "answer": "$5^{-6}$",
+      "compute": null,
+      "solution": "Multiply the exponents: $(-2)(3) = -6$, so the result is $5^{-6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5^{-6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5^-2)^3 = 5^-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.974Z"
+        }
+      }
+    },
+    {
+      "id": "303ef6e5-7ca5-467c-a3e3-24014205cc29",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "power of a product or quotient",
+      "stem": "Write $\\left(\\frac{2}{5}\\right)^{-2}$ as a fraction.",
+      "choices": [],
+      "answer": "25/4",
+      "compute": "25/4",
+      "solution": "A negative exponent flips the fraction: $\\left(\\frac{2}{5}\\right)^{-2} = \\left(\\frac{5}{2}\\right)^{2} = \\frac{25}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/5)^-2 = (5/2)^2 = 25/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.008Z"
+        }
+      }
+    },
+    {
+      "id": "f7913827-0f09-4524-9045-d70a2f0ae9f6",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "quotient of powers",
+      "stem": "A water tank holds $10^{3}$ liters when full. Mia fills it using a small scoop that holds $10^{-1}$ liter. How many scoops of water does it take to fill the whole tank?",
+      "choices": [],
+      "answer": "10000",
+      "compute": "10^3/(1/10)",
+      "solution": "Divide: $\\frac{10^3}{10^{-1}} = 10^{3-(-1)} = 10^4 = 10{,}000$ scoops.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^3 / 10^-1 = 10^4 = 10,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.010Z"
+        }
+      }
+    },
+    {
+      "id": "cb1158da-c6c2-4981-99ec-e7435e57b004",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "zero exponent",
+      "stem": "Which expression is NOT equal to 1?",
+      "choices": [
+        "$(-4)^{0}$",
+        "$4^{1} \\cdot 4^{0}$",
+        "$\\frac{4^{3}}{4^{3}}$",
+        "$4^{5} \\cdot 4^{-5}$"
+      ],
+      "answer": "$4^{1} \\cdot 4^{0}$",
+      "compute": null,
+      "solution": "$4^1 \\cdot 4^0 = 4 \\cdot 1 = 4$. The others are 1: $(-4)^0 = 1$, $\\frac{4^3}{4^3} = 4^0 = 1$ and $4^5 \\cdot 4^{-5} = 4^0 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4^{1} \\cdot 4^{0}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^1 x 4^0 = 4; others equal 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.014Z"
+        }
+      }
+    },
+    {
+      "id": "6f4e3ed0-c900-4c38-9d54-5c339423e170",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "negative exponent",
+      "stem": "The decimal 0.001 is written as $10^{k}$. What is $k$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "$0.001 = \\frac{1}{1000} = \\frac{1}{10^3} = 10^{-3}$, so $k = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.001 = 1/1000 = 10^{-3}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.040Z"
+        }
+      }
+    },
+    {
+      "id": "d34a9c34-45de-4a98-8a9a-a024f448ed05",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "evaluate with integer exponents",
+      "stem": "Evaluate each power first, then compute: $2^{3} \\cdot 3^{2} - 4^{2}$. What number is this?",
+      "choices": [],
+      "answer": "56",
+      "compute": "8*9-16",
+      "solution": "$2^3 = 8$, $3^2 = 9$ and $4^2 = 16$. Then $8 \\cdot 9 - 16 = 72 - 16 = 56$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^3 = 8, 3^2 = 9, 4^2 = 16; 8 x 9 - 16 = 72 - 16 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.044Z"
+        }
+      }
+    },
+    {
+      "id": "6eb042aa-a0af-4044-8d81-3b589c348ea0",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "spot a mistake with exponent rules",
+      "stem": "Jonah wrote $\\frac{5^{8}}{5^{2}} = 5^{4}$. Which statement explains his mistake?",
+      "choices": [
+        "He divided the exponents instead of subtracting them.",
+        "He added the exponents instead of subtracting them.",
+        "He divided the bases and the exponents.",
+        "He multiplied the exponents instead of subtracting."
+      ],
+      "answer": "He divided the exponents instead of subtracting them.",
+      "compute": null,
+      "solution": "The quotient rule subtracts the exponents: $\\frac{5^8}{5^2} = 5^{8-2} = 5^6$. Jonah divided $8 \\div 2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He divided the exponents instead of subtracting them.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5^8/5^2 = 5^6; he got 5^4 by computing 8/2 = 4, dividing the exponents instead of subtracting. (Dividing bases would give 1.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.047Z"
+        }
+      }
+    },
+    {
+      "id": "f4b94fb7-afa0-4927-a7b5-9e62e3bb65db",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "product of powers",
+      "stem": "Ben multiplies $5^{-3}$ by $5^{-2}$. Which expression shows his answer written as one power of 5?",
+      "choices": [
+        "$5^{-6}$",
+        "$5^{5}$",
+        "$5^{-1}$",
+        "$5^{-5}$"
+      ],
+      "answer": "$5^{-5}$",
+      "compute": null,
+      "solution": "Add the exponents: $-3 + (-2) = -5$, so the product is $5^{-5}$. Multiplying the exponents (giving $-6$) or dropping the signs (giving 5) are mistakes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5^{-5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5^{-3} x 5^{-2} = 5^{-5}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.051Z"
+        }
+      }
+    },
+    {
+      "id": "717926ba-58ab-48cd-8901-19ec313a9ee6",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "negative exponent",
+      "stem": "Which number is equal to $\\left(\\frac{1}{4}\\right)^{-2}$?",
+      "choices": [
+        "$16$",
+        "$\\frac{1}{16}$",
+        "$-8$",
+        "$8$"
+      ],
+      "answer": "$16$",
+      "compute": "16",
+      "solution": "A negative exponent flips the fraction: $\\left(\\frac{1}{4}\\right)^{-2} = 4^2 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/4)^{-2} = 4^2 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.089Z"
+        }
+      }
+    },
+    {
+      "id": "9d51a914-dcb3-4965-9ef1-a78a5c1f9c9a",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "product of powers",
+      "stem": "A number is $10^{4} \\cdot 10^{-6}$. Write it as a decimal.",
+      "choices": [],
+      "answer": "0.01",
+      "compute": "10^4/10^6",
+      "solution": "Add the exponents: $4 + (-6) = -2$, so the number is $10^{-2} = \\frac{1}{100} = 0.01$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.01",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^4 x 10^-6 = 10^-2 = 0.01.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.094Z"
+        }
+      }
+    },
+    {
+      "id": "0a4d1c23-6c15-4d24-b6e2-6f68ff80b984",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "power of a product or quotient",
+      "stem": "Find the value of $\\frac{2^{3} \\cdot 5^{2}}{10^{2}}$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2^3*5^2/10^2",
+      "solution": "Since $10^2 = 2^2 \\cdot 5^2$, the fraction is $\\frac{2^3 \\cdot 5^2}{2^2 \\cdot 5^2} = 2^{1} = 2$. (Or: $\\frac{8 \\cdot 25}{100} = 2$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^3 x 5^2 = 8 x 25 = 200; 10^2 = 100; 200/100 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.107Z"
+        }
+      }
+    },
+    {
+      "id": "18153542-d2a1-4b76-a265-9a7815eac14f",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "missing exponent",
+      "stem": "$(7^{?})^{3} = 7^{-12}$. What is the ?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-12/3",
+      "solution": "Multiply the exponents: $? \\cdot 3 = -12$, so the ? is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(7^k)^3 = 7^{3k} = 7^{-12}, so 3k = -12, k = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.241Z"
+        }
+      }
+    },
+    {
+      "id": "a55d3717-2fd1-44cb-8b94-dfbd6e89dba6",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "quotient of powers",
+      "stem": "Which single power of 3 equals $\\frac{3^{-2}}{3^{4}}$?",
+      "choices": [
+        "$3^{-6}$",
+        "$3^{2}$",
+        "$3^{-8}$",
+        "$3^{6}$"
+      ],
+      "answer": "$3^{-6}$",
+      "compute": null,
+      "solution": "Subtract the exponents: $-2 - 4 = -6$, so the result is $3^{-6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3^{-6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^{-2-4} = 3^{-6}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.245Z"
+        }
+      }
+    },
+    {
+      "id": "055a081c-e466-440a-93b4-3ed256794738",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare numbers with exponents",
+      "stem": "Which statement is true?",
+      "choices": [
+        "$2^{-3} > 2^{-2}$",
+        "$3^{-1} < 3^{-2}$",
+        "$4^{-1} < 4^{0}$",
+        "$5^{0} = 5$"
+      ],
+      "answer": "$4^{-1} < 4^{0}$",
+      "compute": null,
+      "solution": "$4^{-1} = \\frac{1}{4}$ and $4^0 = 1$, so $4^{-1} < 4^0$. The others are false: $\\frac{1}{8} < \\frac{1}{4}$, $\\frac{1}{3} > \\frac{1}{9}$ and $5^0 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4^{-1} < 4^{0}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^{-1} = 1/4 < 1 true. 1/8 > 1/4 false; 5^0 = 1 not 5; 1/3 < 1/9 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.247Z"
+        }
+      }
+    },
+    {
+      "id": "9059bf94-b1ab-49c5-a9ce-62f70c04fc46",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "negative exponent",
+      "stem": "Find the value of $\\frac{1}{3^{-2}}$.",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "$3^{-2} = \\frac{1}{9}$, so $\\frac{1}{3^{-2}}$ is the reciprocal of $\\frac{1}{9}$, which is 9. (Equivalently, $\\frac{1}{3^{-2}} = 3^2$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3^-2 = 3^2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.324Z"
+        }
+      }
+    },
+    {
+      "id": "49130424-e0db-4211-838d-59c20400e95c",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "negative exponent",
+      "stem": "A negative base can also have a negative exponent. Which number is equal to $(-2)^{-3}$?",
+      "choices": [
+        "$\\frac{1}{8}$",
+        "$-8$",
+        "$8$",
+        "$-\\frac{1}{8}$"
+      ],
+      "answer": "$-\\frac{1}{8}$",
+      "compute": null,
+      "solution": "$(-2)^{-3} = \\frac{1}{(-2)^3} = \\frac{1}{-8} = -\\frac{1}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{1}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-2)^-3 = 1/(-8) = -1/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.339Z"
+        }
+      }
+    },
+    {
+      "id": "e20d6e58-ff6c-4bdc-9a1e-d0167c873d64",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "power of a power",
+      "stem": "Write $(2^{-1})^{4}$ as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "1/16",
+      "compute": "1/16",
+      "solution": "Multiply the exponents: $(-1)(4) = -4$, so $(2^{-1})^4 = 2^{-4} = \\frac{1}{2^4} = \\frac{1}{16}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2^-1)^4 = 2^-4 = 1/16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.349Z"
+        }
+      }
+    },
+    {
+      "id": "7fe608b9-f3e3-4f96-969c-9271c01ba8db",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "evaluate with integer exponents",
+      "stem": "Add one half cubed and one half squared: $\\left(\\frac{1}{2}\\right)^{3} + \\left(\\frac{1}{2}\\right)^{2}$. Write the sum as a fraction.",
+      "choices": [],
+      "answer": "3/8",
+      "compute": "1/8+1/4",
+      "solution": "$\\left(\\frac{1}{2}\\right)^3 = \\frac{1}{8}$ and $\\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4} = \\frac{2}{8}$. The sum is $\\frac{3}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)^3 = 1/8, (1/2)^2 = 1/4 = 2/8. Sum 3/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.369Z"
+        }
+      }
+    },
+    {
+      "id": "cf8cfc73-94f9-4065-8d16-6da999fe32ed",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "quotient of powers",
+      "stem": "Write $\\frac{2^{3}}{2^{7}}$ as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "1/16",
+      "compute": "1/16",
+      "solution": "Subtract the exponents: $3 - 7 = -4$, so $\\frac{2^3}{2^7} = 2^{-4} = \\frac{1}{2^4} = \\frac{1}{16}$. (Or: $\\frac{8}{128} = \\frac{1}{16}$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^3/2^7 = 2^(-4) = 1/16 (8/128 = 1/16).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.397Z"
+        }
+      }
+    },
+    {
+      "id": "3dd4d015-3464-44ed-8a00-7b922d276035",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "zero exponent",
+      "stem": "Add the first three powers of 3, starting with the zero power: $3^{0} + 3^{1} + 3^{2}$. What is the sum?",
+      "choices": [],
+      "answer": "13",
+      "compute": "1+3+9",
+      "solution": "$3^0 = 1$, $3^1 = 3$ and $3^2 = 9$, and $1 + 3 + 9 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 3 + 9 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.431Z"
+        }
+      }
+    },
+    {
+      "id": "bb92baa3-e609-418e-9129-e0b7b9014acc",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "spot a mistake with exponent rules",
+      "stem": "Which equation is true?",
+      "choices": [
+        "$2^{3} \\cdot 2^{2} = 2^{6}$",
+        "$2^{3} + 2^{3} = 2^{6}$",
+        "$\\frac{2^{6}}{2^{2}} = 2^{3}$",
+        "$(2^{3})^{2} = 2^{6}$"
+      ],
+      "answer": "$(2^{3})^{2} = 2^{6}$",
+      "compute": null,
+      "solution": "$(2^3)^2 = 2^{3 \\cdot 2} = 2^6$. The others are false: $2^3 \\cdot 2^2 = 2^5$, $2^3 + 2^3 = 2^4$ and $\\frac{2^6}{2^2} = 2^4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2^{3})^{2} = 2^{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2^3)^2 = 2^6 true. 2^3 x 2^2 = 2^5; 2^3 + 2^3 = 2^4; 2^6/2^2 = 2^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.514Z"
+        }
+      }
+    },
+    {
       "id": "d7bb8e00-1637-4dba-9eba-8705e37ab66f",
       "topic_id": "NC17.8.EE.1",
       "difficulty": 3,
@@ -5072,6 +8649,713 @@
           "work": "4^-2 = 1/16; 16^3 = 4096; 4096/16 = 256; 2^5 = 32; 256/32 = 8.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:47:21.369Z"
+        }
+      }
+    },
+    {
+      "id": "5fc53460-bcc6-4760-a94a-70f36a0486a0",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "compare numbers with exponents",
+      "stem": "Which list shows the numbers in order from least to greatest?",
+      "choices": [
+        "$2^{2}, 2^{0}, 2^{-1}, 2^{-3}$",
+        "$2^{-1}, 2^{-3}, 2^{0}, 2^{2}$",
+        "$2^{-3}, 2^{-1}, 2^{0}, 2^{2}$",
+        "$2^{0}, 2^{-1}, 2^{-3}, 2^{2}$"
+      ],
+      "answer": "$2^{-3}, 2^{-1}, 2^{0}, 2^{2}$",
+      "compute": null,
+      "solution": "The values are $\\frac{1}{8}$, $\\frac{1}{2}$, $1$ and $4$. In order from least to greatest: $2^{-3}, 2^{-1}, 2^{0}, 2^{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^{-3}, 2^{-1}, 2^{0}, 2^{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^-3 = 1/8, 2^-1 = 1/2, 2^0 = 1, 2^2 = 4. Increasing: 2^-3, 2^-1, 2^0, 2^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.109Z"
+        }
+      }
+    },
+    {
+      "id": "734783f5-f669-4e95-8ce4-d230d8cd5be2",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "power of a product or quotient",
+      "stem": "A square has side length $5^{-1}$ meter. What is its area in square meters, as a fraction?",
+      "choices": [],
+      "answer": "1/25",
+      "compute": "1/25",
+      "solution": "Area is side times side: $(5^{-1})^2 = 5^{-2} = \\frac{1}{25}$ square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5^-1)^2 = 5^-2 = 1/25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.166Z"
+        }
+      }
+    },
+    {
+      "id": "d3a0ad17-50be-4915-95ea-9b0fa31a247a",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "product of powers",
+      "stem": "A bead is $10^{-3}$ meter wide. A row has $10^{5}$ of these beads placed side by side. How long is the row, in meters?",
+      "choices": [],
+      "answer": "100",
+      "compute": "10^2",
+      "solution": "Multiply: $10^{-3} \\cdot 10^{5} = 10^{2} = 100$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^-3 x 10^5 = 10^2 = 100 m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.188Z"
+        }
+      }
+    },
+    {
+      "id": "4c17d3b6-5232-4964-91d3-e15ddf57418d",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "power of a power",
+      "stem": "Which expression is equal to $2^{10}$?",
+      "choices": [
+        "$(2^{5})^{2}$",
+        "$2^{5} \\cdot 2^{2}$",
+        "$\\frac{2^{20}}{2^{2}}$",
+        "$(2^{-5})^{2}$"
+      ],
+      "answer": "$(2^{5})^{2}$",
+      "compute": null,
+      "solution": "$(2^5)^2 = 2^{10}$. The others equal $2^7$, $2^{18}$ and $2^{-10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2^{5})^{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2^5)^2 = 2^10. Others: 2^-10, 2^7, 2^18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.191Z"
+        }
+      }
+    },
+    {
+      "id": "5cd05faf-52a6-4d0a-8f70-4e0a16df1cb6",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "quotient of powers",
+      "stem": "How many times as large as $3^{2}$ is $3^{5}$?",
+      "choices": [],
+      "answer": "27",
+      "compute": "3^5/3^2",
+      "solution": "Divide: $\\frac{3^5}{3^2} = 3^{3} = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^5 / 3^2 = 3^3 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.201Z"
+        }
+      }
+    },
+    {
+      "id": "541b5ce5-bd08-4d4c-b333-73598a9c208b",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Which power of 10 equals $\\frac{10^{5} \\cdot 10^{-2}}{10^{-1}}$?",
+      "choices": [
+        "$10^{2}$",
+        "$10^{6}$",
+        "$10^{3}$",
+        "$10^{4}$"
+      ],
+      "answer": "$10^{4}$",
+      "compute": null,
+      "solution": "The top is $10^{5 + (-2)} = 10^3$. Dividing by $10^{-1}$ subtracts $-1$: $3 - (-1) = 4$, so the result is $10^4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10^{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^(5-2) / 10^-1 = 10^(3+1) = 10^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.221Z"
+        }
+      }
+    },
+    {
+      "id": "40ecc3f4-1d88-4c51-be91-34c8fec79da4",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "negative exponent",
+      "stem": "Find the value of $5^{0} - 5^{-1}$ as a fraction.",
+      "choices": [],
+      "answer": "4/5",
+      "compute": "1-1/5",
+      "solution": "$5^0 = 1$ and $5^{-1} = \\frac{1}{5}$, so the difference is $1 - \\frac{1}{5} = \\frac{4}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 - 1/5 = 4/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.247Z"
+        }
+      }
+    },
+    {
+      "id": "3395e554-56fd-41cc-b838-608fd7196cb0",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "negative exponent",
+      "stem": "Find the value of $2^{-2} + 2^{-2} + 2^{-2} + 2^{-2}$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "4*(1/4)",
+      "solution": "Each term is $\\frac{1}{4}$, and four of them make $4 \\cdot \\frac{1}{4} = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 1/4 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.248Z"
+        }
+      }
+    },
+    {
+      "id": "2502bc40-5010-49ca-b115-d23816a7c762",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Write $\\frac{9^{2} \\cdot 27}{3^{4}}$ as a whole number.",
+      "choices": [],
+      "answer": "27",
+      "compute": "9^2*27/3^4",
+      "solution": "$9^2 = 3^4$, so the $3^4$ cancels and what is left is $27$. (Check: $\\frac{81 \\cdot 27}{81} = 27$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9^2 = 3^4, so 3^4 x 27 / 3^4 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.254Z"
+        }
+      }
+    },
+    {
+      "id": "baab0f24-4446-438e-ae82-cfa521c68f55",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "power of a product or quotient",
+      "stem": "The expression $\\left(\\frac{2^{-1}}{3}\\right)^{-2}$ is a whole number. What whole number is it?",
+      "choices": [],
+      "answer": "36",
+      "compute": "36",
+      "solution": "Inside: $\\frac{2^{-1}}{3} = \\frac{1}{2 \\cdot 3} = \\frac{1}{6}$. Then $\\left(\\frac{1}{6}\\right)^{-2} = 6^2 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^{-1}/3 = 1/6; (1/6)^{-2} = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.275Z"
+        }
+      }
+    },
+    {
+      "id": "2ca30647-855d-4535-9aba-1069a11f93ab",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "missing exponent",
+      "stem": "$2^{n} = \\frac{1}{64}$. What is $n$?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-6",
+      "solution": "$\\frac{1}{64} = \\frac{1}{2^6} = 2^{-6}$, so $n = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/64 = 2^{-6}, n = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.285Z"
+        }
+      }
+    },
+    {
+      "id": "568a3ee0-d259-48e7-92d2-c57dbae185eb",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Simplifying $\\frac{(2^{3})^{2} \\cdot 2^{-4}}{2^{5}}$ leaves one power of 2. Which one is it?",
+      "choices": [
+        "$2^{-4}$",
+        "$2^{-3}$",
+        "$2^{3}$",
+        "$2^{5}$"
+      ],
+      "answer": "$2^{-3}$",
+      "compute": null,
+      "solution": "Top: $(2^3)^2 = 2^6$, and $2^6 \\cdot 2^{-4} = 2^2$. Then divide by $2^5$: $2^{2-5} = 2^{-3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^{-3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^6 x 2^{-4} / 2^5 = 2^{6-4-5} = 2^{-3}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.291Z"
+        }
+      }
+    },
+    {
+      "id": "fdeef763-a37b-449c-bcd6-dfe3993243dc",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "quotient of powers",
+      "stem": "Both the top and the bottom of $\\frac{2^{-5}}{2^{-2}}$ have negative exponents. Which number is the quotient?",
+      "choices": [
+        "$8$",
+        "$\\frac{1}{128}$",
+        "$\\frac{1}{32}$",
+        "$\\frac{1}{8}$"
+      ],
+      "answer": "$\\frac{1}{8}$",
+      "compute": null,
+      "solution": "Subtract the exponents: $-5 - (-2) = -3$, so the value is $2^{-3} = \\frac{1}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(-5-(-2)) = 2^-3 = 1/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.350Z"
+        }
+      }
+    },
+    {
+      "id": "fc713f70-c7fe-4c89-b62b-6b3b312893b9",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "power of a product or quotient",
+      "stem": "The fraction $\\frac{6^{3}}{2^{3} \\cdot 3^{2}}$ is equal to what whole number?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6^3/(2^3*3^2)",
+      "solution": "Since $6^3 = 2^3 \\cdot 3^3$, the fraction is $\\frac{2^3 \\cdot 3^3}{2^3 \\cdot 3^2} = 3^{1} = 3$. (Or: $\\frac{216}{8 \\cdot 9} = \\frac{216}{72} = 3$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6^3 = 216; 2^3 x 3^2 = 72; 216/72 = 3. (Or 2^3 3^3 / (2^3 3^2) = 3.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.484Z"
+        }
+      }
+    },
+    {
+      "id": "78f4e45f-da2d-4f59-a3a2-16d5adcc22ef",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "zero exponent",
+      "stem": "Find the value of $(7^{-2} \\cdot 7^{2})^{5} + 7^{0}$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "1+1",
+      "solution": "$7^{-2} \\cdot 7^{2} = 7^0 = 1$, so $1^5 = 1$. Then $1 + 7^0 = 1 + 1 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^-2 * 7^2 = 7^0 = 1; 1^5 = 1; + 7^0 = 1 + 1 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.500Z"
+        }
+      }
+    },
+    {
+      "id": "a52e600d-6663-44a1-847d-f52f584301c5",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Raise $3^{-2}$ to the power $-3$, then multiply by $3^{-4}$. What whole number results?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3^2",
+      "solution": "$(3^{-2})^{-3} = 3^{6}$, and $3^6 \\cdot 3^{-4} = 3^2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3^-2)^-3 = 3^6; 3^6 x 3^-4 = 3^2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.510Z"
+        }
+      }
+    },
+    {
+      "id": "ffd0ecb4-1ada-45f8-bf8d-6eece38d35dd",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "negative exponent",
+      "stem": "Which expression is NOT equivalent to $3^{-4}$?",
+      "choices": [
+        "$\\frac{1}{3^{4}}$",
+        "$\\frac{3^{2}}{3^{6}}$",
+        "$\\left(\\frac{1}{3}\\right)^{4}$",
+        "$\\left(3^{-2}\\right)^{-2}$"
+      ],
+      "answer": "$\\left(3^{-2}\\right)^{-2}$",
+      "compute": null,
+      "solution": "$(3^{-2})^{-2} = 3^{4}$, which is $81$, not $\\frac{1}{81}$. The others each equal $\\frac{1}{81}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(3^{-2}\\right)^{-2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3^4 = 3^-4. (3^-2)^-2 = 3^4 = 81, not 3^-4. 3^2/3^6 = 3^-4. (1/3)^4 = 3^-4. Only (3^-2)^-2 is not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.517Z"
+        }
+      }
+    },
+    {
+      "id": "b626eaf9-c3af-4c79-8917-80ed64392e0c",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Which value is equal to $\\frac{2^{-3} \\cdot 16}{4^{-1}}$?",
+      "choices": [
+        "$2$",
+        "$\\frac{1}{2}$",
+        "$8$",
+        "$-8$"
+      ],
+      "answer": "$8$",
+      "compute": "8",
+      "solution": "$2^{-3} \\cdot 16 = \\frac{16}{8} = 2$. Dividing by $4^{-1} = \\frac{1}{4}$ gives $2 \\cdot 4 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^-3*16 = 16/8 = 2. Divide by 4^-1 = multiply by 4: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.527Z"
+        }
+      }
+    },
+    {
+      "id": "52bf3061-ecd9-471f-b1a6-b349947de346",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "spot a mistake with exponent rules",
+      "stem": "Dana simplified $\\frac{4^{3} \\cdot 4^{-5}}{4^{-2}}$ in two steps. Step 1: $\\frac{4^{-2}}{4^{-2}}$. Step 2: $4^{-4}$. The answer should be 1. Which statement describes her error?",
+      "choices": [
+        "In Step 2 she added the exponents instead of subtracting.",
+        "In Step 1 she subtracted the exponents instead of adding.",
+        "In Step 2 she multiplied the exponents instead of subtracting.",
+        "In Step 1 she should have gotten $4^{8}$."
+      ],
+      "answer": "In Step 2 she added the exponents instead of subtracting.",
+      "compute": null,
+      "solution": "Step 1 is right: $3 + (-5) = -2$. For the quotient, subtract: $-2 - (-2) = 0$, so the answer is $4^0 = 1$. Dana computed $-2 + (-2) = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "In Step 2 she added the exponents instead of subtracting.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Step 1: 4^3*4^-5 = 4^-2, correct. Step 2: 4^-2/4^-2 should be 4^(-2-(-2)) = 4^0 = 1; she wrote 4^-4 = 4^(-2+-2), adding exponents instead of subtracting. Multiplying would give 4^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.531Z"
+        }
+      }
+    },
+    {
+      "id": "8dabbe64-9e0e-4d0e-bfbc-2791582e7e3f",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Find the value of $\\frac{(-2)^{4} \\cdot (-2)^{-6}}{(-2)^{-1}}$.",
+      "choices": [],
+      "answer": "-1/2",
+      "compute": "-1/2",
+      "solution": "Exponents: $4 + (-6) - (-1) = -1$, so the value is $(-2)^{-1} = \\frac{1}{-2} = -\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exponent: 4 + (-6) - (-1) = -1. (-2)^-1 = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.539Z"
+        }
+      }
+    },
+    {
+      "id": "4bce5e47-4701-491b-a906-083c8ff6129d",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "missing exponent",
+      "stem": "$\\frac{5^{n} \\cdot 5^{-2}}{5^{4}} = 5^{-1}$. What is $n$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "-1+4+2",
+      "solution": "The left side is $5^{n + (-2) - 4} = 5^{n-6}$. Setting $n - 6 = -1$ gives $n = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n - 2 - 4 = -1, n = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.539Z"
+        }
+      }
+    },
+    {
+      "id": "c7c8a549-2260-4780-bac5-11d79329ad78",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "evaluate with integer exponents",
+      "stem": "A cube has edges of length $2^{3}$ centimeters. What is its volume in cubic centimeters?",
+      "choices": [],
+      "answer": "512",
+      "compute": "(2^3)^3",
+      "solution": "Volume is edge cubed: $(2^3)^3 = 2^9 = 512$ cubic centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "512",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2^3)^3 = 8^3 = 512.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.548Z"
+        }
+      }
+    },
+    {
+      "id": "a1e15c38-798e-4a68-bec6-196030de6c2a",
+      "topic_id": "NC17.8.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "simplify a numerical expression with integer exponents",
+      "stem": "Find the value of $4^{3} \\cdot 2^{-2}$.",
+      "choices": [],
+      "answer": "16",
+      "compute": "64/4",
+      "solution": "$4^3 = 64$ and $2^{-2} = \\frac{1}{4}$, so the product is $64 \\cdot \\frac{1}{4} = 16$. (Or write $4^3 = 2^6$ and $2^6 \\cdot 2^{-2} = 2^4 = 16$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^3 = 64, 2^-2 = 1/4, product 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.571Z"
         }
       }
     },

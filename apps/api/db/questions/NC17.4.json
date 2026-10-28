@@ -5,7 +5,7 @@
     "NC17.4.OA.1": "Grade 4 multiplicative comparison within facts and a few 2- and 3-digit products and quotients. Skills: interpreting a comparison equation, choosing an equation, find larger / smaller / how many times, additive versus multiplicative, multi-step. Wrote 69 (23 per difficulty), all whole numbers within Grade 4 multiplication facts and multi-digit by one-digit. Contexts avoid the first-pass stems; no figure needed.",
     "NC17.4.OA.3": "All whole-number answers; products stay within 4-digit by 1-digit and 2-digit by 2-digit. Estimation questions state the rounding place, so each has one answer. Remainder questions say whether to round up, drop or use the remainder.",
     "NC17.4.OA.4": "All numbers stay within 50 (the summary range). Prime/composite questions use numbers up to 50 only. Numbers kept within 50 for factors and primality; multiples go no higher than 100.",
-    "NC17.4.NBT.1": "Whole numbers up to 100,000 only; every product or quotient stays within that range. Skills (rough counts): value of a digit 4, each place ten times the place to its right 4, compare a digit in two places 4, multiply or divide by 10 5, name the place 2, explain place-value statements 4, count in place-value units 4, build a number from its places 3. Model-based items (blocks, place-value charts) are asked as written statements.",
+    "NC17.4.NBT.1": "Whole numbers up to 100,000 only; every product or quotient stays within that range. Skills (rough counts): value of a digit 4, each place ten times the place to its right 4, compare a digit in two places 4, multiply or divide by 10 5, name the place 2, explain place-value statements 4, count in place-value units 4, build a number from its places 3. Model-based items (blocks, place-value charts) are asked as written statements. Whole numbers within 100,000 only; money is avoided because a dollar sign is not allowed. Place names are asked as choice or by digit, since a word answer cannot be numeric.",
     "NC17.4.NBT.2": "Whole numbers to 100,000. Numeric questions give the numeral without commas; word forms are choice questions. Skills: words (5), numeral from words (5), expanded form (5), numeral from expanded form (5), matching forms (5), zeros as placeholders (5).",
     "NC17.4.NBT.7": "Numbers are within 100,000. Comparisons are written with $>$, $=$ and $<$; number-line and place-value-chart pictures are not used.",
     "NC17.4.NBT.6": "Arrays and area models are described in words (a rectangle with an area and a width). Quotients with remainders are written like \"9 R 3\" in choice questions only; numeric questions ask for the quotient or the remainder separately.",
@@ -9600,6 +9600,723 @@
       }
     },
     {
+      "id": "002ea9a0-f99a-4161-89e1-9bfa9cdb7a6b",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "Maya puts 4 stickers in her book each day. After day 1 she has 4 stickers, after day 2 she has 8 and after day 3 she has 12. How many stickers does she have after day 4?",
+      "choices": [],
+      "answer": "16",
+      "compute": "12+4",
+      "solution": "Each day adds 4 stickers. After day 4 she has 12 + 4 = 16 stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 8, 12, 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.900Z"
+        }
+      }
+    },
+    {
+      "id": "b77798b3-4362-42cd-8431-24a966e6b19f",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing or incorrect term",
+      "stem": "The rule is add 4. A pattern goes 8, 12, ?, 20. What number does the ? stand for?",
+      "choices": [],
+      "answer": "16",
+      "compute": "12+4",
+      "solution": "12 + 4 = 16, and 16 + 4 = 20, so the ? is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + 4 = 16, and 16 + 4 = 20 checks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.901Z"
+        }
+      }
+    },
+    {
+      "id": "96c463ec-b0d0-42d0-a129-c0185fc3de7f",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "A pattern follows the rule add 12: 12, 24, 36, 48. Which number comes next?",
+      "choices": [
+        "54",
+        "72",
+        "59",
+        "60"
+      ],
+      "answer": "60",
+      "compute": "48+12",
+      "solution": "The next number is 48 + 12 = 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 + 12 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.958Z"
+        }
+      }
+    },
+    {
+      "id": "ddbb2219-4fb5-45f8-aba4-cbefeb57da10",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A block pattern has 12 blocks in Step 1, 10 blocks in Step 2 and 8 blocks in Step 3. If the pattern continues, how many blocks are in Step 5?",
+      "choices": [],
+      "answer": "4",
+      "compute": "12-2*4",
+      "solution": "Each step has 2 fewer blocks: 12, 10, 8, 6, 4. Step 5 has 4 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Subtract 2: 12,10,8,6,4. Step 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.003Z"
+        }
+      }
+    },
+    {
+      "id": "f19adc91-a7f5-4e59-9cbd-ffae46fcaaf8",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "Leo counts by 5s. The first number is 0 and the rule is add 5. What is the 7th number he says?",
+      "choices": [],
+      "answer": "30",
+      "compute": "6*5",
+      "solution": "The numbers are 0, 5, 10, 15, 20, 25, 30. The 7th number is 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0, 5, 10, 15, 20, 25, 30: the 7th is 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.093Z"
+        }
+      }
+    },
+    {
+      "id": "93d7c68f-9ca4-4e48-958e-3cbba46c2048",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Repeating pattern",
+      "stem": "Flags in a row go red, white, red, white, red, white, and so on. How many white flags are in the first 8 flags?",
+      "choices": [],
+      "answer": "4",
+      "compute": "8/2",
+      "solution": "Every second flag is white, so 8 / 2 = 4 flags are white.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Whites are in even positions 2, 4, 6, 8: 4 white flags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.096Z"
+        }
+      }
+    },
+    {
+      "id": "c50a7caa-3a34-4b2e-8899-fd7cc7379124",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number is 6 and the rule is add 10. Which list shows the first four numbers of the pattern?",
+      "choices": [
+        "6, 12, 18, 24",
+        "6, 16, 26, 36",
+        "10, 20, 30, 40",
+        "16, 26, 36, 46"
+      ],
+      "answer": "6, 16, 26, 36",
+      "compute": null,
+      "solution": "Start at 6 and add 10 each time: 6, 16, 26, 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6, 16, 26, 36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6, 16, 26, 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.104Z"
+        }
+      }
+    },
+    {
+      "id": "c6d50329-c2cf-4f71-8b10-4022814a03c1",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A pattern of dots has 5 dots in Step 1, 10 dots in Step 2 and 15 dots in Step 3. If the pattern continues, how many dots are in Step 6?",
+      "choices": [],
+      "answer": "30",
+      "compute": "6*5",
+      "solution": "Each step has 5 more dots. Step 4 has 20, Step 5 has 25 and Step 6 has 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Add 5 each step: Step n has 5n dots; Step 6: 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.111Z"
+        }
+      }
+    },
+    {
+      "id": "6d76ec71-4412-4040-a2ab-805465a33dd9",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 1. The rule is multiply by 3. What is the 4th number in the pattern?",
+      "choices": [],
+      "answer": "27",
+      "compute": "1*3*3*3",
+      "solution": "The numbers are 1, 3, 9, 27. The 4th number is 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 3, 9, 27; 4th is 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.136Z"
+        }
+      }
+    },
+    {
+      "id": "0add8d05-9b4d-42f8-92b9-66575d08f1c1",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Repeating pattern",
+      "stem": "The numbers 1, 2, 3 repeat in this order: 1, 2, 3, 1, 2, 3, and so on. What is the 9th number?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "The 3rd, 6th and 9th numbers are all 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 3; 9th is position 3 in cycle: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.166Z"
+        }
+      }
+    },
+    {
+      "id": "0e95ff84-d81f-4d5b-8cbf-f4f0f1134439",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the rule of a pattern",
+      "stem": "Look at the pattern 15, 25, 35, 45. Which rule makes this pattern?",
+      "choices": [
+        "Add 15 each time",
+        "Subtract 10 each time",
+        "Add 10 each time",
+        "Add 5 each time"
+      ],
+      "answer": "Add 10 each time",
+      "compute": null,
+      "solution": "Each number is 10 more than the one before, so the rule is add 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 10 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15,25,35,45: each step +10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.178Z"
+        }
+      }
+    },
+    {
+      "id": "1902cafa-edfd-4ada-aebf-d109becb3ce8",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 2 and the rule is add 4: 2, 6, 10, 14. Which statement is true?",
+      "choices": [
+        "All of the numbers are even",
+        "All of the numbers are odd",
+        "Odd and even numbers take turns",
+        "Every number is a multiple of 4"
+      ],
+      "answer": "All of the numbers are even",
+      "compute": null,
+      "solution": "Adding 4 to an even number always gives an even number. 2 and 6 are not multiples of 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "All of the numbers are even",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2, 6, 10, 14 all even (2 not a multiple of 4; none odd).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.188Z"
+        }
+      }
+    },
+    {
+      "id": "ad275f7a-8b31-495f-a35a-dd381df0fa90",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 20. The rule is subtract 3. What is the third number in the pattern?",
+      "choices": [],
+      "answer": "14",
+      "compute": "20-3-3",
+      "solution": "The first number is 20. The second is 20 - 3 = 17. The third is 17 - 3 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20, 17, 14: third is 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.215Z"
+        }
+      }
+    },
+    {
+      "id": "d038a9f4-f3dc-4dc1-a166-e950f9dbfb43",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 3 and the rule is add 10: 3, 13, 23, 33, 43. What is true about the ones digit of every number?",
+      "choices": [
+        "It is always 0",
+        "It goes up by 1 each time",
+        "It alternates between 3 and 4",
+        "It is always 3"
+      ],
+      "answer": "It is always 3",
+      "compute": null,
+      "solution": "Adding 10 changes the tens digit only, so the ones digit stays 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is always 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adding 10 keeps the ones digit: 3 each time.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.226Z"
+        }
+      }
+    },
+    {
+      "id": "92ef0655-5dd4-42cf-b799-c86ec1ba662e",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 1. Which rule makes a pattern with only odd numbers?",
+      "choices": [
+        "Add 3 each time",
+        "Add 5 each time",
+        "Add 4 each time",
+        "Multiply by 2 each time"
+      ],
+      "answer": "Add 4 each time",
+      "compute": null,
+      "solution": "Adding an even number to an odd number gives an odd number: 1, 5, 9, 13. Adding 3 or 5 switches between odd and even, and doubling gives even numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 4 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x2: 1,2 even. +4: 1,5,9,13 all odd. +5: 6 even. +3: 4 even. Add 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.257Z"
+        }
+      }
+    },
+    {
+      "id": "a9ef6aef-223e-452e-943b-9c17fe130392",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing or incorrect term",
+      "stem": "The rule is subtract 2. Ben wrote 19, 17, 15, 14. The last number is wrong. What should the last number be?",
+      "choices": [],
+      "answer": "13",
+      "compute": "15-2",
+      "solution": "The number after 15 should be 15 - 2 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19, 17, 15, 13. Last should be 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.264Z"
+        }
+      }
+    },
+    {
+      "id": "9fb3b49a-a3ce-45df-bfbe-35194046fb96",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Shape pattern",
+      "stem": "Stars are placed in rows. Row 1 has 1 star, Row 2 has 3 stars, Row 3 has 5 stars and Row 4 has 7 stars. Which rule tells how many stars each row has?",
+      "choices": [
+        "Add 1 to the row before",
+        "Add 2 to the row before",
+        "Add 3 to the row before",
+        "Multiply the row before by 2"
+      ],
+      "answer": "Add 2 to the row before",
+      "compute": null,
+      "solution": "Each row has 2 more stars than the row before: 1, 3, 5, 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 2 to the row before",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 3, 5, 7: add 2 each time.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.277Z"
+        }
+      }
+    },
+    {
+      "id": "ee9c9a67-6779-4a97-a4ff-ec3a586e5122",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the rule of a pattern",
+      "stem": "A pattern goes 50, 45, 40, 35. What number is subtracted each time?",
+      "choices": [],
+      "answer": "5",
+      "compute": "50-45",
+      "solution": "50 - 45 = 5, and 45 - 40 = 5, so 5 is subtracted each time.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50-45=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.315Z"
+        }
+      }
+    },
+    {
+      "id": "75bf42da-06e0-4c7f-877c-ca27ce7649a3",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number is 2 and the rule is multiply by 2. Which list follows this rule?",
+      "choices": [
+        "2, 4, 6, 8",
+        "2, 4, 8, 16",
+        "2, 4, 8, 12",
+        "2, 4, 8, 10"
+      ],
+      "answer": "2, 4, 8, 16",
+      "compute": null,
+      "solution": "Doubling each time gives 2, 4, 8, 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2, 4, 8, 16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiply by 2: 2, 4, 8, 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.374Z"
+        }
+      }
+    },
+    {
+      "id": "c705c790-e606-4139-aaa5-69b489471d9b",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing or incorrect term",
+      "stem": "The rule is add 20. A pattern goes ?, 40, 60, 80. What number does the ? stand for?",
+      "choices": [],
+      "answer": "20",
+      "compute": "40-20",
+      "solution": "The number before 40 is 40 - 20 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 20 = 40 -> ? = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.415Z"
+        }
+      }
+    },
+    {
+      "id": "91cdb3c1-f9c9-4fe9-942f-2e422c3191b1",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Repeating pattern",
+      "stem": "The letters A, B, C, D repeat in this order: A, B, C, D, A, B, C, D, and so on. What is the 6th letter?",
+      "choices": [
+        "A",
+        "C",
+        "D",
+        "B"
+      ],
+      "answer": "B",
+      "compute": null,
+      "solution": "The letters repeat every 4. The 5th letter is A, so the 6th letter is B.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "B",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A,B,C,D,A,B: 6th letter is B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.434Z"
+        }
+      }
+    },
+    {
+      "id": "00aaf855-bcd9-44fa-a079-0c1695587bfd",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the rule of a pattern",
+      "stem": "Look at the pattern 7, 14, 21, 28. Which rule makes this pattern?",
+      "choices": [
+        "Add 7 each time",
+        "Add 14 each time",
+        "Multiply by 2 each time",
+        "Add 21 each time"
+      ],
+      "answer": "Add 7 each time",
+      "compute": null,
+      "solution": "Each number is 7 more than the one before, so the rule is add 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 7 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14-7 = 21-14 = 28-21 = 7: add 7 each time.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.465Z"
+        }
+      }
+    },
+    {
+      "id": "61ea4bfd-398c-457f-bd85-95786f24ced0",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 4 and the rule is add 10: 4, 14, 24, 34, and so on. What digit is in the ones place of the 9th number?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "Adding 10 never changes the ones digit, so every number ends in 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9th = 4 + 8 x 10 = 84. Ones digit 4 (every term ends in 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.472Z"
+        }
+      }
+    },
+    {
       "id": "45804e0e-af21-4994-a2a3-77fbdb980b49",
       "topic_id": "NC17.4.OA.5",
       "difficulty": 2,
@@ -9915,6 +10632,723 @@
       }
     },
     {
+      "id": "bd9c95ff-1c74-49a8-b084-a90fb30d45be",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 0 and the rule is add 6: 0, 6, 12, 18, 24. Which statement is true about the numbers?",
+      "choices": [
+        "Every number is odd",
+        "Every number is a multiple of 4",
+        "Every number is a multiple of 6",
+        "The tens digit is always the same"
+      ],
+      "answer": "Every number is a multiple of 6",
+      "compute": null,
+      "solution": "Each number is a whole number of sixes. 6 and 18 are not multiples of 4, and the numbers are all even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every number is a multiple of 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All are 6 x n; 18 is not a multiple of 4, 6 is even, tens digits change.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.952Z"
+        }
+      }
+    },
+    {
+      "id": "ed394f81-5591-42fc-9778-535bf73ac4f6",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 9 and the rule is add 9: 9, 18, 27, 36, 45, 54. Which statement is true about the numbers?",
+      "choices": [
+        "The ones digit goes up by 1 each time",
+        "The digits of each number add up to 9",
+        "Every number is odd",
+        "The tens digit stays the same"
+      ],
+      "answer": "The digits of each number add up to 9",
+      "compute": null,
+      "solution": "1 + 8 = 9, 2 + 7 = 9, 3 + 6 = 9, and so on. The ones digit goes down by 1, and the numbers are odd and even by turns.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The digits of each number add up to 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,18,27,36,45,54: digit sums all 9. Ones digit goes down; 18 even; tens digit changes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.956Z"
+        }
+      }
+    },
+    {
+      "id": "13184358-1984-486d-9edd-05d65c3c4d0c",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the rule of a pattern",
+      "stem": "The first number in a pattern is 5, the second is 20 and the third is 35. Which rule makes this pattern?",
+      "choices": [
+        "Multiply by 4 each time",
+        "Add 20 each time",
+        "Add 5 each time",
+        "Add 15 each time"
+      ],
+      "answer": "Add 15 each time",
+      "compute": null,
+      "solution": "20 - 5 = 15 and 35 - 20 = 15, so the rule is add 15. Multiplying by 4 gives 5, 20, 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 15 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 5 = 15, 35 - 20 = 15: add 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.975Z"
+        }
+      }
+    },
+    {
+      "id": "41c7fc78-12ad-45fc-a746-fed4d579517f",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing or incorrect term",
+      "stem": "The rule is multiply by 3. A pattern goes 2, 6, 18, ?, 162. What number does the ? stand for?",
+      "choices": [],
+      "answer": "54",
+      "compute": "18*3",
+      "solution": "18 x 3 = 54, and 54 x 3 = 162.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 x 3 = 54; 54 x 3 = 162 checks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.015Z"
+        }
+      }
+    },
+    {
+      "id": "21cdc92d-b33a-45d3-8689-7fcc0f77e43a",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Features of a pattern",
+      "stem": "The pattern 0, 3, 6, 9, 12, and so on starts at 0 and the rule is add 3. How many of the first 10 numbers are even?",
+      "choices": [],
+      "answer": "5",
+      "compute": null,
+      "solution": "The first 10 numbers are 0, 3, 6, 9, 12, 15, 18, 21, 24, 27. The even ones are 0, 6, 12, 18 and 24, which is 5 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First 10: 0,3,6,9,12,15,18,21,24,27. Even: 0,6,12,18,24 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.051Z"
+        }
+      }
+    },
+    {
+      "id": "bce6c2de-afa2-4e25-98af-9a389c7b5965",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare two patterns",
+      "stem": "Pattern A starts at 2 and the rule is add 5. Pattern B starts at 12 and the rule is add 5. Which statement is true?",
+      "choices": [
+        "Each number in B is 5 more than the number in the same position in A",
+        "Each number in B is 12 more than the number in the same position in A",
+        "Each number in B is 10 more than the number in the same position in A",
+        "Each number in B is 6 times the number in the same position in A"
+      ],
+      "answer": "Each number in B is 10 more than the number in the same position in A",
+      "compute": null,
+      "solution": "Pattern A: 2, 7, 12, 17. Pattern B: 12, 17, 22, 27. Each number in B is 10 more than the one in A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each number in B is 10 more than the number in the same position in A",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 2, 7, 12, 17... B: 12, 17, 22, 27... B - A = 10 in every position (12-2, 17-7, 22-12). 6 times holds only for the first term.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.086Z"
+        }
+      }
+    },
+    {
+      "id": "e33a6419-d93c-41f6-abd9-f1e033e9ef12",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Repeating pattern",
+      "stem": "The shapes square, circle, circle repeat in this order: square, circle, circle, square, circle, circle, and so on. How many squares are in the first 11 shapes?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "The pattern repeats every 3 shapes and each group has 1 square. 11 shapes make 3 full groups (3 squares) plus 2 more shapes, square and circle (1 more square). That is 4 squares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Squares at positions 1, 4, 7, 10 within 11: 4 squares.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.101Z"
+        }
+      }
+    },
+    {
+      "id": "1bd1460a-749b-475d-87e1-a79878c984b7",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number is 40 and the rule is add 15. Which of these numbers is in the pattern?",
+      "choices": [
+        "85",
+        "80",
+        "90",
+        "95"
+      ],
+      "answer": "85",
+      "compute": null,
+      "solution": "The pattern is 40, 55, 70, 85, 100. Only 85 is in it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "85",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40, 55, 70, 85, 100. Terms are 40 + 15k; 85 = 40 + 45 is in. 80, 90, 95 are not (differences 40, 50, 55 not multiples of 15).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.103Z"
+        }
+      }
+    },
+    {
+      "id": "c6a65383-f952-4512-9b66-e8af70ceffda",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Repeating pattern",
+      "stem": "The colors red, blue, yellow, green repeat in this order, again and again. What color is the 15th one?",
+      "choices": [
+        "yellow",
+        "red",
+        "blue",
+        "green"
+      ],
+      "answer": "yellow",
+      "compute": null,
+      "solution": "The pattern repeats every 4. 15 = 3 x 4 + 3, so the 15th color is the same as the 3rd, yellow.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "yellow",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 = 4 x 3 + 3, so the 15th is the 3rd color: yellow.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.118Z"
+        }
+      }
+    },
+    {
+      "id": "13c7416f-97ff-4cf0-867b-cd63b93dade7",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number is 90 and the rule is subtract 8. Which list shows the first four numbers of the pattern?",
+      "choices": [
+        "82, 74, 66, 58",
+        "90, 81, 72, 63",
+        "90, 82, 74, 66",
+        "90, 98, 106, 114"
+      ],
+      "answer": "90, 82, 74, 66",
+      "compute": null,
+      "solution": "90 - 8 = 82, 82 - 8 = 74, 74 - 8 = 66.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90, 82, 74, 66",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90, 82, 74, 66.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.175Z"
+        }
+      }
+    },
+    {
+      "id": "cacfe525-1404-45a2-83f3-8a33d6e883a6",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A row of squares is made from sticks. One square uses 4 sticks. Two squares in a row use 7 sticks. Three squares in a row use 10 sticks. If the pattern continues, how many sticks do 5 squares in a row use?",
+      "choices": [],
+      "answer": "16",
+      "compute": "4+3*4",
+      "solution": "Each new square adds 3 sticks: 4, 7, 10, 13, 16. Five squares use 16 sticks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sticks: 4, 7, 10, +3 each square; 4 squares 13, 5 squares 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.182Z"
+        }
+      }
+    },
+    {
+      "id": "d4bb0c37-1d08-4945-a894-b8ec6fbdee8c",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing or incorrect term",
+      "stem": "The rule is add 8. These numbers are in a pattern: 17, 25, ?, 41, 49. What number does the ? stand for?",
+      "choices": [],
+      "answer": "33",
+      "compute": "25+8",
+      "solution": "25 + 8 = 33, and 33 + 8 = 41.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17, 25, 33, 41, 49: 25 + 8 = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.195Z"
+        }
+      }
+    },
+    {
+      "id": "6da571c3-c647-4bd8-b249-98e56cf806fa",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare two patterns",
+      "stem": "Pattern A starts at 0 and the rule is add 4. Pattern B starts at 0 and the rule is add 8. Each number in Pattern B is how many times the number in the same position in Pattern A?",
+      "choices": [],
+      "answer": "2",
+      "compute": "8/4",
+      "solution": "Pattern A: 0, 4, 8, 12. Pattern B: 0, 8, 16, 24. Each number in B is 2 times the one in A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 0,4,8,12,...; B: 0,8,16,24,...; each B term is 2 x A term (0 = 2 x 0 too).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.207Z"
+        }
+      }
+    },
+    {
+      "id": "f64b8496-0bbb-4f01-bdca-63d1d8081323",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 14. The rule is add 9. What is the 6th number in the pattern?",
+      "choices": [],
+      "answer": "59",
+      "compute": "14+5*9",
+      "solution": "The numbers are 14, 23, 32, 41, 50, 59. The 6th number is 14 + 5 x 9 = 59.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "59",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14, 23, 32, 41, 50, 59. 6th = 14 + 5x9 = 59.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.240Z"
+        }
+      }
+    },
+    {
+      "id": "8c03892e-c80f-4888-bc8a-7734910424b0",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the rule of a pattern",
+      "stem": "The pattern 8, 19, 30, 41 follows an add rule. What number is added each time?",
+      "choices": [],
+      "answer": "11",
+      "compute": "19-8",
+      "solution": "19 - 8 = 11, 30 - 19 = 11 and 41 - 30 = 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 - 8 = 11; 30 - 19 = 11; 41 - 30 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.270Z"
+        }
+      }
+    },
+    {
+      "id": "3fe31317-5010-46a9-9721-9c1167a1952e",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "A box holds 6 muffins. Two boxes hold 12 muffins, three boxes hold 18 muffins, and so on. How many muffins do 9 boxes hold?",
+      "choices": [],
+      "answer": "54",
+      "compute": "9*6",
+      "solution": "Each box adds 6 muffins. 9 boxes hold 9 x 6 = 54 muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 per box: 9*6 = 54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.309Z"
+        }
+      }
+    },
+    {
+      "id": "1c046b6c-e95a-4b21-833c-49808b05c8e7",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A block tower is built in floors. Floor 1 has 4 blocks and Floor 2 has 9 blocks. Each new floor has 5 more blocks than the floor before. How many blocks are on Floor 5?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4+4*5",
+      "solution": "The floors have 4, 9, 14, 19 and 24 blocks. Floor 5 has 24 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 9, 14, 19, 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.326Z"
+        }
+      }
+    },
+    {
+      "id": "5cfabea0-6b13-4074-acc4-5228573189bd",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the rule of a pattern",
+      "stem": "Look at the pattern 4, 12, 36, 108. Which rule makes this pattern?",
+      "choices": [
+        "Add 8 each time",
+        "Multiply by 3 each time",
+        "Multiply by 8 each time",
+        "Add 24 each time"
+      ],
+      "answer": "Multiply by 3 each time",
+      "compute": null,
+      "solution": "4 x 3 = 12, 12 x 3 = 36 and 36 x 3 = 108. Adding 8 only works for the first step.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiply by 3 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4*3=12, 12*3=36, 36*3=108. Add 8 fails (12->20). Multiply by 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.372Z"
+        }
+      }
+    },
+    {
+      "id": "2f11d576-f1d4-4708-8026-03e271608110",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 96. The rule is divide by 2. What is the 4th number in the pattern?",
+      "choices": [],
+      "answer": "12",
+      "compute": "96/2/2/2",
+      "solution": "96 / 2 = 48, 48 / 2 = 24 and 24 / 2 = 12. The 4th number is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "96, 48, 24, 12. 4th number is 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.388Z"
+        }
+      }
+    },
+    {
+      "id": "441e2a87-8607-4568-bee2-666f5a05b415",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing or incorrect term",
+      "stem": "Kai uses the rule subtract 7. He writes 70, 63, 55, 49, 42. Which number is wrong?",
+      "choices": [
+        "55",
+        "63",
+        "49",
+        "42"
+      ],
+      "answer": "55",
+      "compute": null,
+      "solution": "63 - 7 = 56, not 55. The next numbers, 49 and 42, fit the rule after 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70, 63, 56, 49, 42 is correct; 55 should be 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.418Z"
+        }
+      }
+    },
+    {
+      "id": "2e15f8c0-ae07-41a8-8e87-179607ab852b",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Shape pattern",
+      "stem": "A pattern of tiles has 3 tiles in Figure 1, 6 tiles in Figure 2 and 9 tiles in Figure 3. Which figure has 24 tiles?",
+      "choices": [
+        "Figure 6",
+        "Figure 9",
+        "Figure 21",
+        "Figure 8"
+      ],
+      "answer": "Figure 8",
+      "compute": null,
+      "solution": "Figure n has 3 x n tiles. 24 / 3 = 8, so Figure 8 has 24 tiles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Figure 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Figure n has 3n tiles; 3n = 24 -> n = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.421Z"
+        }
+      }
+    },
+    {
+      "id": "3df7c5bd-f1e2-4526-a85a-1b35b01e1f4e",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 3 and the rule is add 5: 3, 8, 13, 18, 23, and so on. What digit is in the ones place of the 12th number?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5*11-50",
+      "solution": "The ones digits go 3, 8, 3, 8, and so on. Even-numbered terms end in 8, so the 12th ends in 8. Check: 3 + 11 x 5 = 58.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "nth term = 3 + 5(n-1). 12th = 3 + 55 = 58. Ones digit 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.436Z"
+        }
+      }
+    },
+    {
+      "id": "58e89f0e-1c99-4125-ac88-a77b01d29556",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 5. The rule is multiply by 2. What is the 6th number in the pattern?",
+      "choices": [],
+      "answer": "160",
+      "compute": "5*2*2*2*2*2",
+      "solution": "The numbers are 5, 10, 20, 40, 80, 160. The 6th number is 160.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5, 10, 20, 40, 80, 160. 6th is 160.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.451Z"
+        }
+      }
+    },
+    {
       "id": "fd9f68bb-c0c1-4d29-be68-7d315f9bf7a3",
       "topic_id": "NC17.4.OA.5",
       "difficulty": 3,
@@ -10221,6 +11655,718 @@
           "work": "21-9 = 33-21 = 45-33 = 12; start 9, add 12.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:29.625Z"
+        }
+      }
+    },
+    {
+      "id": "9ff527ca-344e-45bc-aae2-dac839671b13",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare two patterns",
+      "stem": "Pattern A starts at 4 and the rule is add 5. Pattern B starts at 4 and the rule is add 10. What is the 8th number in Pattern B minus the 8th number in Pattern A?",
+      "choices": [],
+      "answer": "35",
+      "compute": "(4+7*10)-(4+7*5)",
+      "solution": "The 8th number in A is 4 + 7 x 5 = 39. The 8th number in B is 4 + 7 x 10 = 74. The difference is 74 - 39 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 4 + 7x5 = 39. B: 4 + 7x10 = 74. 74 - 39 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.898Z"
+        }
+      }
+    },
+    {
+      "id": "7e18d2ee-baae-4c86-b9a3-628e6db821f6",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 3 and the rule is add 4: 3, 7, 11, 15, and so on. How many of the first 12 numbers are odd?",
+      "choices": [],
+      "answer": "12",
+      "compute": null,
+      "solution": "Adding 4, an even number, to an odd number always gives an odd number. All of the numbers are odd, so all 12 are.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starts odd, adds even 4, so every term is odd: all 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.060Z"
+        }
+      }
+    },
+    {
+      "id": "cbaf4331-2fc9-42df-9ac8-432cc6edf5af",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing or incorrect term",
+      "stem": "A pattern starts at 8 and the rule is add 12. Which of these numbers is NOT in the pattern?",
+      "choices": [
+        "44",
+        "70",
+        "56",
+        "80"
+      ],
+      "answer": "70",
+      "compute": null,
+      "solution": "The pattern is 8, 20, 32, 44, 56, 68, 80. The number 70 is not in it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms 8, 20, 32, 44, 56, 68, 80, 92: 44, 56, 80 in; 70 is not (70-8 = 62 not a multiple of 12).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.066Z"
+        }
+      }
+    },
+    {
+      "id": "deb1ff89-d37f-4340-ac71-7b665f59b092",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A pattern of tiles has 7 tiles in Figure 1, 12 tiles in Figure 2 and 17 tiles in Figure 3. Which figure has 52 tiles?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(52-7)/5+1",
+      "solution": "Each figure has 5 more tiles. 52 - 7 = 45, and 45 / 5 = 9 steps after Figure 1, so it is Figure 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tiles 7, 12, 17: +5 each, figure n has 5n + 2. 5n + 2 = 52, n = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.072Z"
+        }
+      }
+    },
+    {
+      "id": "9bed40de-c66e-4191-82c6-5592da8fbcb9",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A row of pentagons is made from sticks. One pentagon uses 5 sticks. Two pentagons that share a side use 9 sticks. Three pentagons in a row use 13 sticks. How many sticks do 8 pentagons in a row use?",
+      "choices": [],
+      "answer": "33",
+      "compute": "5+7*4",
+      "solution": "Each new pentagon adds 4 sticks. 8 pentagons use 5 + 7 x 4 = 33 sticks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5, 9, 13: add 4 per pentagon. n pentagons: 5 + 4(n-1). n = 8: 5 + 28 = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.089Z"
+        }
+      }
+    },
+    {
+      "id": "16f671ba-2ecc-45d8-931d-790eedc2f14c",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 5 and the rule is add 15: 5, 20, 35, 50, 65, 80. Which statement is true about the ones digits?",
+      "choices": [
+        "They alternate between 5 and 0",
+        "They are always 5",
+        "They go up by 5 each time",
+        "They are always 0"
+      ],
+      "answer": "They alternate between 5 and 0",
+      "compute": null,
+      "solution": "The ones digits are 5, 0, 5, 0, 5, 0, so they alternate between 5 and 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They alternate between 5 and 0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ones digits: 5, 0, 5, 0, 5, 0: they alternate between 5 and 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.099Z"
+        }
+      }
+    },
+    {
+      "id": "b45bbb40-1f2c-4192-be77-b5c1625e039f",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare two patterns",
+      "stem": "Pattern A starts at 1 and the rule is multiply by 2. Pattern B starts at 1 and the rule is multiply by 3. How much greater is the 5th number in Pattern B than the 5th number in Pattern A?",
+      "choices": [],
+      "answer": "65",
+      "compute": "3^4-2^4",
+      "solution": "The 5th number in A is 16 (1, 2, 4, 8, 16). The 5th number in B is 81 (1, 3, 9, 27, 81). 81 - 16 = 65.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 1, 2, 4, 8, 16. B: 1, 3, 9, 27, 81. 81 - 16 = 65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.100Z"
+        }
+      }
+    },
+    {
+      "id": "b4969015-3741-4bd7-95d3-264e5ba0ec7e",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the rule of a pattern",
+      "stem": "A pattern adds the same number each time. The 2nd number is 19 and the 5th number is 40. What is the 1st number?",
+      "choices": [],
+      "answer": "12",
+      "compute": "19-(40-19)/3",
+      "solution": "From the 2nd to the 5th number is 3 steps and 40 - 19 = 21, so each step adds 7. The 1st number is 19 - 7 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "From 2nd to 5th is 3 steps: (40 - 19)/3 = 7. 1st = 19 - 7 = 12. Check 12, 19, 26, 33, 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.120Z"
+        }
+      }
+    },
+    {
+      "id": "a91a70cd-641f-401f-a247-8c5756160478",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 4 and the rule is add 7. What digit is in the ones place of the 20th number in the pattern?",
+      "choices": [],
+      "answer": "7",
+      "compute": "4+19*7-130",
+      "solution": "The 20th number is 4 + 19 x 7 = 137. Its ones digit is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "nth = 4 + 7(n-1); 20th = 4 + 133 = 137; ones digit 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.158Z"
+        }
+      }
+    },
+    {
+      "id": "8f2b80b4-f4bf-4024-ad96-dbb158e3b614",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the rule of a pattern",
+      "stem": "Look at the pattern 64, 32, 16, 8. Which rule makes this pattern?",
+      "choices": [
+        "Subtract 32 each time",
+        "Subtract 2 each time",
+        "Divide by 2 each time",
+        "Divide by 4 each time"
+      ],
+      "answer": "Divide by 2 each time",
+      "compute": null,
+      "solution": "64 / 2 = 32, 32 / 2 = 16 and 16 / 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Divide by 2 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64/2=32, 32/2=16, 16/2=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.170Z"
+        }
+      }
+    },
+    {
+      "id": "3570e862-061f-490e-a27a-99d627f6e452",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing or incorrect term",
+      "stem": "A pattern adds the same number each time: 9, ?, ?, ?, 33. What is the 3rd number in the pattern?",
+      "choices": [],
+      "answer": "21",
+      "compute": "9+2*(33-9)/4",
+      "solution": "From 9 to 33 is 4 steps and 33 - 9 = 24, so each step adds 6. The numbers are 9, 15, 21, 27, 33. The 3rd number is 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 to 33 in 4 equal steps: 24/4 = 6; 9, 15, 21, 27, 33; 3rd is 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.195Z"
+        }
+      }
+    },
+    {
+      "id": "f739176a-6919-4323-87fe-6c3750bbfc1e",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 100. The rule is subtract 12. What is the first number in the pattern that is less than 10?",
+      "choices": [],
+      "answer": "4",
+      "compute": "100-8*12",
+      "solution": "The numbers are 100, 88, 76, 64, 52, 40, 28, 16, 4. The first number less than 10 is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100, 88, 76, 64, 52, 40, 28, 16, 4: first below 10 is 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.198Z"
+        }
+      }
+    },
+    {
+      "id": "7808295a-1d9a-4b75-95c3-f42dddb181bc",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Shape pattern",
+      "stem": "A pattern of dots has 5 dots in Figure 1, 8 dots in Figure 2 and 11 dots in Figure 3. If the pattern continues, how many dots are in Figure 10?",
+      "choices": [],
+      "answer": "32",
+      "compute": "5+9*3",
+      "solution": "Each figure has 3 more dots. Figure 10 has 5 + 9 x 3 = 32 dots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Add 3 each figure: 5 + 3(10-1) = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.244Z"
+        }
+      }
+    },
+    {
+      "id": "9619129b-bf6d-431e-8522-c0384828273b",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "Dani saves 12 dollars each week. After 1 week she has 12 dollars, after 2 weeks she has 24 dollars, and so on. After how many weeks will she first have more than 100 dollars?",
+      "choices": [],
+      "answer": "9",
+      "compute": null,
+      "solution": "8 weeks give 96 dollars, which is not more than 100. 9 weeks give 108 dollars. So she first has more than 100 dollars after 9 weeks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12w > 100: 8 weeks = 96, 9 weeks = 108. First at 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.245Z"
+        }
+      }
+    },
+    {
+      "id": "84019c0d-e6a3-4579-80ab-a711a97705bd",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Repeating pattern",
+      "stem": "These pictures repeat in this order: star, moon, sun, sun, cloud, star, moon, sun, sun, cloud, and so on. What is the 23rd picture?",
+      "choices": [
+        "moon",
+        "sun",
+        "star",
+        "cloud"
+      ],
+      "answer": "sun",
+      "compute": null,
+      "solution": "The pattern repeats every 5. 23 = 4 x 5 + 3, so the 23rd picture is the same as the 3rd, a sun.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "sun",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 5. 23 = 4x5 + 3: 3rd picture = sun.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.255Z"
+        }
+      }
+    },
+    {
+      "id": "2cee1e88-9434-4e4d-bf79-720a45f3fd80",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Shape pattern",
+      "stem": "A pattern of tiles has 4 tiles in Figure 1, 8 tiles in Figure 2 and 12 tiles in Figure 3. If the pattern continues, which statement is true?",
+      "choices": [
+        "Figure 6 has 28 tiles",
+        "Figure 10 has 44 tiles",
+        "Figure 9 has 36 tiles",
+        "Figure 5 has 16 tiles"
+      ],
+      "answer": "Figure 9 has 36 tiles",
+      "compute": null,
+      "solution": "Figure n has 4 x n tiles. Figure 9 has 36, Figure 6 has 24, Figure 10 has 40 and Figure 5 has 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Figure 9 has 36 tiles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tiles = 4n: F5 20, F9 36, F10 40, F6 24. Only F9 = 36 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.271Z"
+        }
+      }
+    },
+    {
+      "id": "87d4d1bd-c23c-46dd-ad38-eedd08733374",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Repeating pattern",
+      "stem": "Beads repeat in this order: red, red, blue, green, red, red, blue, green, and so on. How many of the first 30 beads are red?",
+      "choices": [],
+      "answer": "16",
+      "compute": "7*2+2",
+      "solution": "The pattern repeats every 4 beads and each group has 2 red. 30 = 7 x 4 + 2, so there are 7 full groups (14 red) and 2 more red beads, which is 16 red beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 4 with 2 reds. 30 = 7x4 + 2: 14 reds + beads 29,30 are red,red = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.289Z"
+        }
+      }
+    },
+    {
+      "id": "b68aece0-0e96-43f3-aee0-7d8216f0ad0c",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Features of a pattern",
+      "stem": "A pattern starts at 3 and the rule is multiply by 2: 3, 6, 12, 24, 48. Which statement is true?",
+      "choices": [
+        "Every number is odd",
+        "Odd and even numbers take turns",
+        "Every number is a multiple of 5",
+        "After the first number, every number is even"
+      ],
+      "answer": "After the first number, every number is even",
+      "compute": null,
+      "solution": "Doubling always gives an even number. The first number, 3, is odd, so the others are all even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "After the first number, every number is even",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 is odd; 6,12,24,48 are even (doubling makes even).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.305Z"
+        }
+      }
+    },
+    {
+      "id": "90065dd5-e481-4a73-a02f-3f719c1e1c24",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number is 4 and the rule is multiply by 3. Which list shows the first four numbers of the pattern?",
+      "choices": [
+        "4, 12, 24, 48",
+        "4, 7, 10, 13",
+        "12, 36, 108, 324",
+        "4, 12, 36, 108"
+      ],
+      "answer": "4, 12, 36, 108",
+      "compute": null,
+      "solution": "4 x 3 = 12, 12 x 3 = 36 and 36 x 3 = 108.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4, 12, 36, 108",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 12, 36, 108.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.320Z"
+        }
+      }
+    },
+    {
+      "id": "30c3ba7c-dd3b-4ade-9640-31223236d97d",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the rule of a pattern",
+      "stem": "Look at the pattern 3, 15, 75, 375. Which rule makes this pattern?",
+      "choices": [
+        "Multiply by 5 each time",
+        "Add 12 each time",
+        "Multiply by 12 each time",
+        "Multiply by 3 each time"
+      ],
+      "answer": "Multiply by 5 each time",
+      "compute": null,
+      "solution": "3 x 5 = 15, 15 x 5 = 75 and 75 x 5 = 375. Adding 12 only fits the first step.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiply by 5 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15/3=5, 75/15=5, 375/75=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.354Z"
+        }
+      }
+    },
+    {
+      "id": "4f7b461a-4a07-4986-8b67-7c1c1376b6aa",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 6 and the rule is add 9. Which place in the pattern does the number 78 have? (For example, 6 is in the 1st place.)",
+      "choices": [],
+      "answer": "9",
+      "compute": "(78-6)/9+1",
+      "solution": "78 - 6 = 72, and 72 / 9 = 8 steps. 8 steps after the 1st place is the 9th place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Term n = 6 + 9(n-1). 78 - 6 = 72 = 9 x 8 -> n - 1 = 8 -> n = 9. Sequence 6,15,24,33,42,51,60,69,78: 9th.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.394Z"
+        }
+      }
+    },
+    {
+      "id": "e325ede6-2727-404f-b993-938442a8e99a",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number in a pattern is 1. The rule is multiply by 4. What is the 6th number in the pattern?",
+      "choices": [],
+      "answer": "1024",
+      "compute": "4^5",
+      "solution": "The numbers are 1, 4, 16, 64, 256, 1024. The 6th number is 1024.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1024",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 4, 16, 64, 256, 1024. 6th is 1024.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.406Z"
+        }
+      }
+    },
+    {
+      "id": "23654e20-e63f-43c0-a63a-82dce27244a3",
+      "topic_id": "NC17.4.OA.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Generate a pattern from a rule",
+      "stem": "The first number is 25 and the rule is add 35. Which of these numbers is in the pattern?",
+      "choices": [
+        "160",
+        "165",
+        "170",
+        "180"
+      ],
+      "answer": "165",
+      "compute": null,
+      "solution": "The pattern is 25, 60, 95, 130, 165, 200. Only 165 is in it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "165",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms 25 + 35k: 25, 60, 95, 130, 165, 200. 165 is in; 180-25=155, 170-25=145, 160-25=135 not multiples of 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.439Z"
         }
       }
     },
@@ -10540,6 +12686,728 @@
       }
     },
     {
+      "id": "727cf6cf-a541-4734-a20e-2af15a93590c",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare a digit in two places",
+      "stem": "The 2 in 2,000 is worth how many times as much as the 2 in 200?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2000/200",
+      "solution": "The 2 in 2,000 is worth 2,000 and the 2 in 200 is worth 200. 2,000 / 200 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,000 / 200 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.978Z"
+        }
+      }
+    },
+    {
+      "id": "47f4f635-8f73-466c-8d7d-e505beb72dbb",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "A box holds 10 crayons. A crate holds 10 boxes. How many crayons are in one crate?",
+      "choices": [],
+      "answer": "100",
+      "compute": "10*10",
+      "solution": "10 boxes of 10 crayons is 10 x 10 = 100 crayons. Ten tens make one hundred, so the hundreds place is worth 10 times the tens place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 10 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.011Z"
+        }
+      }
+    },
+    {
+      "id": "2a73a3bc-3c65-494d-9235-044c3557db7b",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Which number is 10 times as large as 350?",
+      "choices": [
+        "360",
+        "35",
+        "3,500",
+        "35,000"
+      ],
+      "answer": "3,500",
+      "compute": "350*10",
+      "solution": "Multiplying by 10 moves every digit one place to the left: 350 becomes 3,500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3,500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "350 x 10 = 3,500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.060Z"
+        }
+      }
+    },
+    {
+      "id": "88ff68d2-ef3b-4077-8dd0-58abb03b16d9",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Value of a digit",
+      "stem": "What is the value of the 9 in $91{,}000$?",
+      "choices": [],
+      "answer": "90000",
+      "compute": "9*10000",
+      "solution": "The 9 is in the ten thousands place, so it is worth 9 ten thousands, or 90,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 is in the ten thousands place: 90,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.062Z"
+        }
+      }
+    },
+    {
+      "id": "d96e5a5b-af1a-410e-bec1-aca4cdc6cfc6",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare a digit in two places",
+      "stem": "In the number 77, how does the value of the left 7 compare with the value of the right 7?",
+      "choices": [
+        "the same",
+        "7 times as much",
+        "100 times as much",
+        "10 times as much"
+      ],
+      "answer": "10 times as much",
+      "compute": null,
+      "solution": "The left 7 is worth 70 and the right 7 is worth 7. 70 is 10 times 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 times as much",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left 7 is 70, right 7 is 7: 10 times as much.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.075Z"
+        }
+      }
+    },
+    {
+      "id": "a26fe133-fe4b-4210-9ef2-513ed73e287a",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Value of a digit",
+      "stem": "What is the value of the 8 in $48{,}159$?",
+      "choices": [],
+      "answer": "8000",
+      "compute": "8*1000",
+      "solution": "In 48,159 the 8 is in the thousands place, so it is worth 8 thousands, or 8,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48,159: the 8 is in the thousands place, value 8000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.108Z"
+        }
+      }
+    },
+    {
+      "id": "973ca4c2-8461-44ca-bc81-9c401a33ddac",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name the place of a digit",
+      "stem": "In $90{,}364$, the digit 3 is in which place?",
+      "choices": [
+        "tens",
+        "thousands",
+        "ones",
+        "hundreds"
+      ],
+      "answer": "hundreds",
+      "compute": null,
+      "solution": "From the right the places are ones (4), tens (6), hundreds (3). The 3 is in the hundreds place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 ten thousands, 0 thousands, 3 hundreds, 6 tens, 4 ones: hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.116Z"
+        }
+      }
+    },
+    {
+      "id": "cb590e8d-58b5-4380-ba8a-0293ab422565",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count in place-value units",
+      "stem": "Which is equal to 5 hundreds?",
+      "choices": [
+        "5 tens",
+        "500 tens",
+        "5,000 ones",
+        "50 tens"
+      ],
+      "answer": "50 tens",
+      "compute": null,
+      "solution": "5 hundreds is 500. 50 tens is 50 x 10 = 500. The other choices are 50, 5,000 and 5,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 hundreds = 500 = 50 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.117Z"
+        }
+      }
+    },
+    {
+      "id": "33aec763-d65c-4aa9-8131-8208fc3067da",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "Which place is worth 10 times the tens place?",
+      "choices": [
+        "ones",
+        "hundreds",
+        "thousands",
+        "ten thousands"
+      ],
+      "answer": "hundreds",
+      "compute": null,
+      "solution": "Each place is worth 10 times the place to its right. The place just left of the tens place is the hundreds place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x tens = hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.132Z"
+        }
+      }
+    },
+    {
+      "id": "23b9b85d-a517-413e-ad1c-f06039317b15",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count in place-value units",
+      "stem": "How many tens make 700?",
+      "choices": [],
+      "answer": "70",
+      "compute": "700/10",
+      "solution": "One ten is 10, so the number of tens in 700 is 700 / 10 = 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700 / 10 = 70 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.153Z"
+        }
+      }
+    },
+    {
+      "id": "9e95d596-e3fe-4906-9387-f3ff97e1563a",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "What is $9{,}000 \\div 10$?",
+      "choices": [],
+      "answer": "900",
+      "compute": "9000/10",
+      "solution": "Dividing by 10 moves every digit one place to the right. 9 thousands divided by 10 is 9 hundreds, or 900.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,000 / 10 = 900 (each place shifts one to the right).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.179Z"
+        }
+      }
+    },
+    {
+      "id": "faddc0ec-2c37-4ca6-a7fb-ffb8575d8d71",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Explain place-value statements",
+      "stem": "Mia says, \"A digit one place to the left is worth 10 times as much.\" Which statement fits what she says?",
+      "choices": [
+        "The 3 in 3 is worth 10 times the 3 in 30",
+        "The 3 in 300 is worth 10 times the 3 in 3",
+        "The 3 in 30 is worth 10 times the 3 in 3",
+        "The 3 in 30 is worth 3 times the 3 in 3"
+      ],
+      "answer": "The 3 in 30 is worth 10 times the 3 in 3",
+      "compute": null,
+      "solution": "The 3 in 30 is worth 30 and the 3 in 3 is worth 3. Moving one place to the left makes the 3 worth 10 times as much.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 3 in 30 is worth 10 times the 3 in 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 in 30 = 30, 3 in 3 = 3, 30 = 10 x 3. Option \"300 vs 3\" is 100 times, so false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.192Z"
+        }
+      }
+    },
+    {
+      "id": "f4e78b8c-b928-475d-8ad0-bd4d2e817dd7",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count in place-value units",
+      "stem": "Ten tens make one of which unit?",
+      "choices": [
+        "1 thousand",
+        "1 hundred",
+        "1 ten thousand",
+        "10 ones"
+      ],
+      "answer": "1 hundred",
+      "compute": null,
+      "solution": "10 tens is 10 x 10 = 100, which is 1 hundred.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 hundred",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 10 = 100: one hundred.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.242Z"
+        }
+      }
+    },
+    {
+      "id": "cd3ae135-03d9-469f-98ea-228f9e4fc333",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value of a digit",
+      "stem": "In $25{,}730$, what is the value of the digit 7?",
+      "choices": [
+        "700",
+        "7",
+        "70",
+        "7,000"
+      ],
+      "answer": "700",
+      "compute": "700",
+      "solution": "The 7 is in the hundreds place, so it is worth 7 hundreds, which is 700.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25,730: 7 in hundreds place = 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.262Z"
+        }
+      }
+    },
+    {
+      "id": "b2c5ac5e-652b-4059-8662-d34add03ae16",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Trade ten of a place for one of the next place",
+      "stem": "Which trade is fair?",
+      "choices": [
+        "Trade 10 tens for 1 thousand",
+        "Trade 10 thousands for 1 ten thousand",
+        "Trade 10 hundreds for 1 ten thousand",
+        "Trade 10 ones for 1 hundred"
+      ],
+      "answer": "Trade 10 thousands for 1 ten thousand",
+      "compute": null,
+      "solution": "Ten of one place make 1 of the next place to the left. 10 thousands make 1 ten thousand. The other trades skip a place or fall short.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Trade 10 thousands for 1 ten thousand",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 1,000 = 10,000. Others wrong (10 hundreds = 1 thousand, etc.).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.263Z"
+        }
+      }
+    },
+    {
+      "id": "e77c171c-3d69-44e3-9a3c-e6a907d568cf",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "A 1 in the hundreds place is worth 100. A 1 in the thousands place is worth how many times as much?",
+      "choices": [],
+      "answer": "10",
+      "compute": "1000/100",
+      "solution": "A 1 in the thousands place is worth 1,000, which is 10 times 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,000 / 100 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.276Z"
+        }
+      }
+    },
+    {
+      "id": "3e054076-aeb5-4b3a-bfdf-eea07186b06d",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Name the place of a digit",
+      "stem": "Which digit is in the thousands place of $73{,}086$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "From the left the digits are 7 (ten thousands), 3 (thousands), 0 (hundreds), 8 (tens), 6 (ones). The digit in the thousands place is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "73,086: ten thousands 7, thousands 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.284Z"
+        }
+      }
+    },
+    {
+      "id": "88809df1-2a4f-41d7-ac63-f4286ea14f2e",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a number from its places",
+      "stem": "What number has 6 ten thousands, 2 thousands, 0 hundreds, 5 tens and 1 one?",
+      "choices": [],
+      "answer": "62051",
+      "compute": "60000+2000+50+1",
+      "solution": "60,000 + 2,000 + 0 + 50 + 1 = 62,051.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "62051",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,000 + 2,000 + 0 + 50 + 1 = 62,051.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.284Z"
+        }
+      }
+    },
+    {
+      "id": "70fd782d-f62e-457b-a615-771f031c8ba9",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name the place of a digit",
+      "stem": "Which number has a 6 in the hundreds place?",
+      "choices": [
+        "3,625",
+        "6,215",
+        "2,156",
+        "1,562"
+      ],
+      "answer": "3,625",
+      "compute": null,
+      "solution": "In 3,625 the digits are 3 (thousands), 6 (hundreds), 2 (tens), 5 (ones). In the other numbers the 6 is in the thousands, ones and tens places.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3,625",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hundreds digits: 1,562 ->5; 3,625 ->6; 6,215 ->2; 2,156 ->1. Only 3,625.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.359Z"
+        }
+      }
+    },
+    {
+      "id": "2275a462-9f14-405b-a6ac-4f8a438be6ee",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "A truck carries 6,000 bricks in 10 equal stacks. How many bricks are in each stack?",
+      "choices": [],
+      "answer": "600",
+      "compute": "6000/10",
+      "solution": "Share 6,000 bricks into 10 equal stacks: 6,000 / 10 = 600 bricks in each stack.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6,000 / 10 = 600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.422Z"
+        }
+      }
+    },
+    {
+      "id": "92074858-25e7-4a2c-b27a-9358d38ca8f5",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Build a number from its places",
+      "stem": "Which is the expanded form of $4{,}530$?",
+      "choices": [
+        "$4{,}000 + 500 + 30$",
+        "$4{,}000 + 50 + 3$",
+        "$400 + 500 + 30$",
+        "$4{,}000 + 500 + 3$"
+      ],
+      "answer": "$4{,}000 + 500 + 30$",
+      "compute": null,
+      "solution": "The 4 is worth 4,000, the 5 is worth 500 and the 3 is worth 30, so 4,530 = 4,000 + 500 + 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4{,}000 + 500 + 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,530 = 4 thousands + 5 hundreds + 3 tens = 4,000 + 500 + 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.467Z"
+        }
+      }
+    },
+    {
+      "id": "e46edac5-222b-46dd-8a6d-70152c68128f",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Trade ten of a place for one of the next place",
+      "stem": "Eli has 10 blocks that each stand for 100. He trades all 10 blocks for one new block. What number does the new block stand for?",
+      "choices": [],
+      "answer": "1000",
+      "compute": "10*100",
+      "solution": "10 hundreds make 1 thousand, so the new block stands for 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 hundreds = 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.479Z"
+        }
+      }
+    },
+    {
+      "id": "1bdd4ec0-0496-4017-a4ea-b8600bc77faa",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "A bakery sells 80 muffins on Monday. On Saturday it sells 10 times as many muffins. How many muffins does it sell on Saturday?",
+      "choices": [],
+      "answer": "800",
+      "compute": "80*10",
+      "solution": "10 times as many is 80 x 10 = 800 muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 x 10 = 800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.509Z"
+        }
+      }
+    },
+    {
       "id": "d8a069e4-631a-4ed3-8f5d-a2a9ca684bf2",
       "topic_id": "NC17.4.NBT.1",
       "difficulty": 2,
@@ -10851,6 +13719,733 @@
           "work": "5,000 / 50 = 100, so she is wrong; 100 times.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:53.718Z"
+        }
+      }
+    },
+    {
+      "id": "9955851d-0159-43ee-87ff-4939856ea186",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Kai walks 340 steps. Ben walks 10 times as many steps as Kai. How many steps does Ben walk?",
+      "choices": [],
+      "answer": "3400",
+      "compute": "340*10",
+      "solution": "340 x 10 = 3,400 steps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "340 x 10 = 3,400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.882Z"
+        }
+      }
+    },
+    {
+      "id": "ed9bf1e6-d4a1-47be-90ea-a0083db48cf0",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a number from its places",
+      "stem": "What number is 9 ten thousands + 3 hundreds + 4 tens?",
+      "choices": [],
+      "answer": "90340",
+      "compute": "90000+300+40",
+      "solution": "90,000 + 300 + 40 = 90,340. There are no thousands and no ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90340",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90,000 + 300 + 40 = 90,340.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.950Z"
+        }
+      }
+    },
+    {
+      "id": "b9c39295-10fc-4023-9df8-c62d60b045cb",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "Which list shows the value of a 2 in the ones, tens, hundreds and thousands places, in that order?",
+      "choices": [
+        "2, 20, 220, 2,220",
+        "2, 12, 102, 1,002",
+        "2, 20, 2,000, 20,000",
+        "2, 20, 200, 2,000"
+      ],
+      "answer": "2, 20, 200, 2,000",
+      "compute": null,
+      "solution": "Each place is worth 10 times the place to its right, so a 2 is worth 2, then 20, then 200, then 2,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2, 20, 200, 2,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 in ones = 2, tens = 20, hundreds = 200, thousands = 2,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.057Z"
+        }
+      }
+    },
+    {
+      "id": "4c6dc46a-fd62-4975-8e3d-a6c55f0d647e",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Value of a digit",
+      "stem": "What is the value of the 4 in $64{,}028$?",
+      "choices": [],
+      "answer": "4000",
+      "compute": "4*1000",
+      "solution": "The 4 is in the thousands place, so it is worth 4,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64,028: the 4 is in the thousands place, 4000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.123Z"
+        }
+      }
+    },
+    {
+      "id": "2b9aaa27-f6fc-4a52-a229-8c2618e7ee84",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Trade ten of a place for one of the next place",
+      "stem": "Ana has 37 hundreds blocks. She trades groups of 10 hundreds for thousands blocks as many times as she can. How many hundreds blocks are left?",
+      "choices": [],
+      "answer": "7",
+      "compute": "37-30",
+      "solution": "37 hundreds is 3 groups of 10 hundreds and 7 more. She makes 3 thousands blocks and 7 hundreds blocks are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "37 hundreds = 3 groups of 10 hundreds + 7 hundreds. 7 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.127Z"
+        }
+      }
+    },
+    {
+      "id": "b2588def-f87d-4584-ba70-9cd900605c16",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "A rope is 750 centimeters long. A longer rope is 10 times as long. How many centimeters long is the longer rope?",
+      "choices": [],
+      "answer": "7500",
+      "compute": "750*10",
+      "solution": "750 x 10 = 7,500 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "750 x 10 = 7500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.130Z"
+        }
+      }
+    },
+    {
+      "id": "685bdf64-b895-45f6-9a17-5a5f2a2cac69",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Which expression has the value 5,200?",
+      "choices": [
+        "$520 \\times 10$",
+        "$52 \\times 10$",
+        "$5{,}200 \\times 10$",
+        "$520 \\div 10$"
+      ],
+      "answer": "$520 \\times 10$",
+      "compute": null,
+      "solution": "520 x 10 = 5,200. 52 x 10 = 520, 5,200 x 10 = 52,000 and 520 / 10 = 52.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$520 \\times 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "520 x 10 = 5200; others give 52, 52000, 520.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.133Z"
+        }
+      }
+    },
+    {
+      "id": "1ac00306-0ed4-4869-b730-7284b03d946a",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a number from its places",
+      "stem": "Which is the expanded form of $62{,}405$?",
+      "choices": [
+        "$6{,}000 + 200 + 40 + 5$",
+        "$60{,}000 + 2{,}000 + 40 + 5$",
+        "$60{,}000 + 2{,}000 + 400 + 5$",
+        "$60{,}000 + 2{,}000 + 400 + 50$"
+      ],
+      "answer": "$60{,}000 + 2{,}000 + 400 + 5$",
+      "compute": null,
+      "solution": "The 6 is worth 60,000, the 2 is worth 2,000, the 4 is worth 400 and the 5 is worth 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60{,}000 + 2{,}000 + 400 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "62,405 = 60,000 + 2,000 + 400 + 0 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.148Z"
+        }
+      }
+    },
+    {
+      "id": "70b13130-2b98-4608-9664-47b512fd4cb5",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Explain place-value statements",
+      "stem": "Jo says the 4 in 400 is worth 4 times the 4 in 40. What is the right comparison?",
+      "choices": [
+        "It is worth 10 times as much, because each place is worth 10 times the place to its right",
+        "It is worth 100 times as much, because it has two more zeros",
+        "It is worth 4 times as much, because the digits are the same",
+        "It is worth the same, because both digits are 4"
+      ],
+      "answer": "It is worth 10 times as much, because each place is worth 10 times the place to its right",
+      "compute": null,
+      "solution": "The 4 in 400 is worth 400 and the 4 in 40 is worth 40. The hundreds place is next to the tens place, so the value is 10 times as much.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is worth 10 times as much, because each place is worth 10 times the place to its right",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400 = 4 hundreds, 40 = 4 tens; hundreds place is 10 times tens place, so 10 times as much.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.179Z"
+        }
+      }
+    },
+    {
+      "id": "dde1b311-8044-40d2-883c-f731ff711557",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Explain place-value statements",
+      "stem": "Which statement about $44{,}000$ is true?",
+      "choices": [
+        "The 4 in the thousands place is worth 10 times the 4 in the ten thousands place",
+        "The two 4s are worth the same amount",
+        "The 4 in the ten thousands place is worth 100 times the 4 in the thousands place",
+        "The 4 in the ten thousands place is worth 10 times the 4 in the thousands place"
+      ],
+      "answer": "The 4 in the ten thousands place is worth 10 times the 4 in the thousands place",
+      "compute": null,
+      "solution": "The left 4 is worth 40,000 and the right 4 is worth 4,000. The places are next to each other, so 40,000 is 10 times 4,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 4 in the ten thousands place is worth 10 times the 4 in the thousands place",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "44,000: ten-thousands 4 = 40,000, thousands 4 = 4,000; 40,000 = 10 x 4,000. First option true; others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.182Z"
+        }
+      }
+    },
+    {
+      "id": "c40292b4-36e2-442d-b46a-cc17b55c09dc",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count in place-value units",
+      "stem": "The number 30,000 is the same as how many thousands?",
+      "choices": [
+        "3",
+        "300",
+        "3,000",
+        "30"
+      ],
+      "answer": "30",
+      "compute": "30000/1000",
+      "solution": "One thousand is 1,000, so 30,000 has 30,000 / 1,000 = 30 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30,000 / 1,000 = 30 thousands.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.193Z"
+        }
+      }
+    },
+    {
+      "id": "af2ae48f-e1bb-4af3-a665-5d1b35850d08",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare a digit in two places",
+      "stem": "In the number $18{,}180$, how does the value of the 8 in the thousands place compare with the value of the 8 in the tens place?",
+      "choices": [
+        "10 times as much",
+        "100 times as much",
+        "1,000 times as much",
+        "8 times as much"
+      ],
+      "answer": "100 times as much",
+      "compute": null,
+      "solution": "The 8 in the thousands place is worth 8,000 and the 8 in the tens place is worth 80. 8,000 / 80 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100 times as much",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Thousands 8 = 8,000; tens 8 = 80; 8,000/80 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.265Z"
+        }
+      }
+    },
+    {
+      "id": "bc3a56e3-f9fa-4bd8-b43b-c0dcbfe006d9",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "One ten thousand is how many times as much as one hundred?",
+      "choices": [],
+      "answer": "100",
+      "compute": "10000/100",
+      "solution": "10,000 / 100 = 100. Going from hundreds to thousands is 10 times, and from thousands to ten thousands is 10 times again: 10 x 10 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,000 / 100 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.270Z"
+        }
+      }
+    },
+    {
+      "id": "46d442c0-de14-44f6-8cbd-dfe56cbec89f",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare a digit in two places",
+      "stem": "In the number $9{,}090$, the 9 in the thousands place is worth how many times as much as the 9 in the tens place?",
+      "choices": [],
+      "answer": "100",
+      "compute": "9000/90",
+      "solution": "The left 9 is worth 9,000 and the right 9 is worth 90. 9,000 / 90 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,000 / 90 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.280Z"
+        }
+      }
+    },
+    {
+      "id": "8ad4da28-e71c-4741-aeef-90c3278b559a",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Value of a digit",
+      "stem": "Which digit in $70{,}581$ has a value of 80?",
+      "choices": [
+        "5",
+        "8",
+        "7",
+        "1"
+      ],
+      "answer": "8",
+      "compute": null,
+      "solution": "The 8 is in the tens place, so it is worth 8 x 10 = 80. The 5 is worth 500, the 7 is worth 70,000 and the 1 is worth 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,581: 8 is in the tens place, value 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.282Z"
+        }
+      }
+    },
+    {
+      "id": "4b7af77e-8c76-4ee1-adb5-e0b38c1b0566",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "Which place is worth 100 times the ones place?",
+      "choices": [
+        "tens",
+        "thousands",
+        "hundreds",
+        "ten thousands"
+      ],
+      "answer": "hundreds",
+      "compute": null,
+      "solution": "From the ones place, the tens place is 10 times as much, and the hundreds place is 10 times that, or 100 times the ones place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ones=1, tens=10, hundreds=100; hundreds is 100 times ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.294Z"
+        }
+      }
+    },
+    {
+      "id": "0d943a66-cf50-4d1a-8af2-e03b875df070",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Multiply 45 by 10. Then multiply the result by 10. What number do you get?",
+      "choices": [],
+      "answer": "4500",
+      "compute": "45*10*10",
+      "solution": "45 x 10 = 450, and 450 x 10 = 4,500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45*10=450, 450*10=4500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.304Z"
+        }
+      }
+    },
+    {
+      "id": "ea253500-6a19-40e3-a2f7-b98d72f4b97e",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name the place of a digit",
+      "stem": "In which number is the 7 in the thousands place?",
+      "choices": [
+        "27,140",
+        "72,140",
+        "21,470",
+        "14,207"
+      ],
+      "answer": "27,140",
+      "compute": null,
+      "solution": "In 27,140 the digits from the left are ten thousands 2, thousands 7. In the others the 7 is in the ten thousands, tens and ones places.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27,140",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27,140: digits 2(ten thousands) 7(thousands). Others: 14,207 ones; 72,140 ten thousands; 21,470 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.339Z"
+        }
+      }
+    },
+    {
+      "id": "a12a59c4-ff71-4688-93a3-3b572708f51f",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Value of a digit",
+      "stem": "In which number does the digit 3 have the greatest value?",
+      "choices": [
+        "9,503",
+        "34,095",
+        "4,326",
+        "13,078"
+      ],
+      "answer": "34,095",
+      "compute": null,
+      "solution": "The 3 is worth 30,000 in 34,095, but only 3 in 9,503, 300 in 4,326 and 3,000 in 13,078.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34,095",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Value of 3: 13,078 -> 3,000; 4,326 -> 300; 34,095 -> 30,000; 9,503 -> 3. Greatest in 34,095.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.370Z"
+        }
+      }
+    },
+    {
+      "id": "7429e2ca-520a-40a2-b09c-c6e5c0c4193e",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a number from its places",
+      "stem": "What number is equal to $7 \\times 1{,}000 + 3 \\times 10 + 9 \\times 10{,}000$?",
+      "choices": [],
+      "answer": "97030",
+      "compute": "7*1000+3*10+9*10000",
+      "solution": "7 x 1,000 = 7,000, 3 x 10 = 30 and 9 x 10,000 = 90,000. The sum is 97,030.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "97030",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90,000 + 7,000 + 30 = 97,030.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.466Z"
+        }
+      }
+    },
+    {
+      "id": "a9adf1e1-2707-4971-9c0b-4f1d3bb01b31",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Trade ten of a place for one of the next place",
+      "stem": "Which is another way to write 5,000?",
+      "choices": [
+        "5 hundreds",
+        "500 hundreds",
+        "50 hundreds",
+        "50 tens"
+      ],
+      "answer": "50 hundreds",
+      "compute": null,
+      "solution": "50 hundreds is 50 x 100 = 5,000. 5 hundreds is 500, 500 hundreds is 50,000 and 50 tens is 500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50 hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 hundreds = 5,000; 50 tens = 500; 5 hundreds = 500; 500 hundreds = 50,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.494Z"
+        }
+      }
+    },
+    {
+      "id": "0f9299a5-e336-4dce-8a81-b423cd7420ff",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Name the place of a digit",
+      "stem": "Which digit is in the thousands place of $17{,}950$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The digits of 17,950 are 1 (ten thousands), 7 (thousands), 9 (hundreds), 5 (tens), 0 (ones). The digit in the thousands place is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17,950: ten thousands 1, thousands 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.525Z"
+        }
+      }
+    },
+    {
+      "id": "f7fe29f5-c7f1-4d8c-8717-343885fc38ba",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count in place-value units",
+      "stem": "How many tens make 8,000?",
+      "choices": [],
+      "answer": "800",
+      "compute": "8000/10",
+      "solution": "One ten is 10, so 8,000 has 8,000 / 10 = 800 tens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,000 / 10 = 800 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.540Z"
         }
       }
     },
@@ -11171,6 +14766,728 @@
           "work": "60,000/6,000 = 10; 60,000/600 = 100.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:53.718Z"
+        }
+      }
+    },
+    {
+      "id": "2bf7982e-6d95-47a3-bb48-91e44dec0f74",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count in place-value units",
+      "stem": "Which number is equal to 120 hundreds?",
+      "choices": [
+        "1,200",
+        "10,200",
+        "2,100",
+        "12,000"
+      ],
+      "answer": "12,000",
+      "compute": "120*100",
+      "solution": "120 x 100 = 12,000. Ten hundreds make a thousand, so 120 hundreds make 12 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 x 100 = 12,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.945Z"
+        }
+      }
+    },
+    {
+      "id": "870094d2-bebd-476d-83dd-61c03eb2e711",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare a digit in two places",
+      "stem": "A 6 is in the thousands place of one number and in the ones place of another number. The first 6 is worth how many times as much as the second 6?",
+      "choices": [
+        "10 times",
+        "1,000 times",
+        "100 times",
+        "6 times"
+      ],
+      "answer": "1,000 times",
+      "compute": null,
+      "solution": "The first 6 is worth 6,000 and the second 6 is worth 6. 6,000 / 6 = 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000 times",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Thousands is 1,000 x ones: 6,000 / 6 = 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.970Z"
+        }
+      }
+    },
+    {
+      "id": "27fbeb3f-b320-48d5-9636-1b6126dba6e3",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Name the place of a digit",
+      "stem": "The 7 in a whole number is worth 700. How many digits are to the right of the 7?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "700 is 7 hundreds, so the 7 is in the hundreds place. The tens and ones places are to its right, so 2 digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 in hundreds place: 2 digits to its right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.004Z"
+        }
+      }
+    },
+    {
+      "id": "14d28ac3-795d-44c1-90d3-e9307a60ef40",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "A digit moves 3 places to the left. Its value becomes how many times as large?",
+      "choices": [
+        "30 times",
+        "100 times",
+        "1,000 times",
+        "10,000 times"
+      ],
+      "answer": "1,000 times",
+      "compute": null,
+      "solution": "Each place to the left makes the value 10 times as large. 3 places: 10 x 10 x 10 = 1,000 times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000 times",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each place left is x10: 10^3 = 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.011Z"
+        }
+      }
+    },
+    {
+      "id": "b393978e-c3a5-4d3f-857b-156742558f96",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a number from its places",
+      "stem": "A number has 5 digits. The digit in the ten thousands place is 4. The digit in the thousands place is twice that digit. The other three digits are all 0. What is the number?",
+      "choices": [],
+      "answer": "48000",
+      "compute": "4*10000+8*1000",
+      "solution": "The thousands digit is 2 x 4 = 8. The number is 4 ten thousands and 8 thousands: 40,000 + 8,000 = 48,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ten thousands 4, thousands 8, rest 0: 48,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.041Z"
+        }
+      }
+    },
+    {
+      "id": "66194b64-0a7f-4c84-932c-ab2e9687faa1",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value of a digit",
+      "stem": "In $56{,}213$, the value of the 6 is how much more than the value of the 2?",
+      "choices": [],
+      "answer": "5800",
+      "compute": "6000-200",
+      "solution": "The 6 is in the thousands place, worth 6,000. The 2 is in the hundreds place, worth 200. 6,000 - 200 = 5,800.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Value of 6 is 6,000; value of 2 is 200; 6000 - 200 = 5800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.049Z"
+        }
+      }
+    },
+    {
+      "id": "d03f898a-a5b3-403e-acdc-0d886a621f53",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Which equation is true?",
+      "choices": [
+        "$7{,}400 \\div 10 = 740$",
+        "$7{,}400 \\div 10 = 74$",
+        "$7{,}400 \\div 10 = 7{,}040$",
+        "$7{,}400 \\div 10 = 74{,}000$"
+      ],
+      "answer": "$7{,}400 \\div 10 = 740$",
+      "compute": null,
+      "solution": "Dividing by 10 moves each digit one place to the right: 7,400 becomes 740.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7{,}400 \\div 10 = 740$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7400 / 10 = 740.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.106Z"
+        }
+      }
+    },
+    {
+      "id": "ea6cb654-2829-40bb-9eb5-f4b7f263fb17",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "A warehouse ships 10 cartons. Each carton holds 10 boxes. Each box holds 25 pens. How many pens does the warehouse ship?",
+      "choices": [],
+      "answer": "2500",
+      "compute": "10*10*25",
+      "solution": "Each carton holds 10 x 25 = 250 pens. 10 cartons hold 250 x 10 = 2,500 pens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 10 = 100 boxes; 100 x 25 = 2500 pens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.110Z"
+        }
+      }
+    },
+    {
+      "id": "72d8399d-0b25-4ab8-abc9-00bb69c8d750",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value of a digit",
+      "stem": "What is the sum of the values of the two 4s in $40{,}402$?",
+      "choices": [],
+      "answer": "40400",
+      "compute": "40000+400",
+      "solution": "One 4 is in the ten thousands place (40,000) and the other is in the hundreds place (400). 40,000 + 400 = 40,400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,402: the 4 in ten thousands = 40,000; the 4 in hundreds = 400; sum 40,400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.179Z"
+        }
+      }
+    },
+    {
+      "id": "8f50fb9b-fc2d-4dc1-9cc3-289b6342c764",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count in place-value units",
+      "stem": "How many hundreds make 100,000?",
+      "choices": [],
+      "answer": "1000",
+      "compute": "100000/100",
+      "solution": "One hundred is 100, and 100,000 / 100 = 1,000. So 1,000 hundreds make 100,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100,000 / 100 = 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.202Z"
+        }
+      }
+    },
+    {
+      "id": "619626ba-662d-45b2-b517-fe86d3757efe",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Explain place-value statements",
+      "stem": "Which reasoning shows that the 4 in 4,000 is worth 100 times the 4 in 40?",
+      "choices": [
+        "Thousands is 2 places left of tens, and $10 \\times 10 = 100$",
+        "Thousands is 2 places left of tens, and $10 + 10 = 20$",
+        "Thousands is 3 places left of tens, and $10 \\times 10 \\times 10 = 1{,}000$",
+        "Thousands is 1 place left of tens, so it is 10 times as much"
+      ],
+      "answer": "Thousands is 2 places left of tens, and $10 \\times 10 = 100$",
+      "compute": null,
+      "solution": "Tens, hundreds, thousands: thousands is 2 places left of tens. Each place left makes the value 10 times as much, so 10 x 10 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Thousands is 2 places left of tens, and $10 \\times 10 = 100$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Thousands is two places left of tens (tens, hundreds, thousands): 10 x 10 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.203Z"
+        }
+      }
+    },
+    {
+      "id": "ab9392ac-45bd-49b4-ad1f-f7114c543022",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "A parking lot holds 10 times as many cars as a smaller lot. The larger lot holds 7,800 cars. How many cars does the smaller lot hold?",
+      "choices": [],
+      "answer": "780",
+      "compute": "7800/10",
+      "solution": "The smaller lot holds one tenth as many: 7,800 / 10 = 780 cars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "780",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,800 / 10 = 780.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.253Z"
+        }
+      }
+    },
+    {
+      "id": "42861d1a-d3df-4179-b295-aacc578e2a51",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Which number is 10 times as much as $10{,}000$?",
+      "choices": [
+        "1,000",
+        "100,000",
+        "10,010",
+        "20,000"
+      ],
+      "answer": "100,000",
+      "compute": "10000*10",
+      "solution": "10 x 10,000 = 100,000. Ten ten-thousands make one hundred thousand.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 10,000 = 100,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.284Z"
+        }
+      }
+    },
+    {
+      "id": "cc50d2ef-3974-4443-a74a-ebf0155d57ae",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply or divide a number by 10",
+      "stem": "Kai's number is 10 times Ben's number. Ben's number is 10 times Cal's number. Cal's number is 36. What is Kai's number?",
+      "choices": [],
+      "answer": "3600",
+      "compute": "36*10*10",
+      "solution": "Ben's number is 36 x 10 = 360. Kai's number is 360 x 10 = 3,600.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ben = 10*36 = 360; Kai = 10*360 = 3600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.322Z"
+        }
+      }
+    },
+    {
+      "id": "2745ce80-b2d5-4f7d-8564-265d2fb2caa4",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Trade ten of a place for one of the next place",
+      "stem": "Which is NOT another way to write 7,000?",
+      "choices": [
+        "70 hundreds",
+        "700 tens",
+        "70 tens",
+        "7,000 ones"
+      ],
+      "answer": "70 tens",
+      "compute": null,
+      "solution": "70 tens is only 70 x 10 = 700. 70 hundreds, 700 tens and 7,000 ones are all 7,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70 tens = 700, not 7000; 7000 ones, 700 tens, 70 hundreds all = 7000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.326Z"
+        }
+      }
+    },
+    {
+      "id": "668e0208-981d-48cf-a482-b72e1582585a",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count in place-value units",
+      "stem": "How many hundreds are in $46{,}000$?",
+      "choices": [],
+      "answer": "460",
+      "compute": "46000/100",
+      "solution": "One hundred is 100, so 46,000 has 46,000 / 100 = 460 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "460",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46000/100 = 460.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.328Z"
+        }
+      }
+    },
+    {
+      "id": "d7adec06-a504-4334-b504-dea8e857e014",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Value of a digit",
+      "stem": "In which number is the 3 worth 30 and the 5 worth 5,000?",
+      "choices": [
+        "45,830",
+        "45,083",
+        "43,850",
+        "35,480"
+      ],
+      "answer": "45,830",
+      "compute": null,
+      "solution": "In 45,830 the 5 is in the thousands place (5,000) and the 3 is in the tens place (30). The other numbers place these digits differently.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45,830",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need 3 in tens and 5 in thousands. 35,480: 3 ten-thousands. 43,850: 3 thousands. 45,083: 3 ones. 45,830: 5 thousands, 3 tens. Answer 45,830.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.363Z"
+        }
+      }
+    },
+    {
+      "id": "daaf9724-44cb-41b8-a928-6213019cf292",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Each place is ten times the place to its right",
+      "stem": "A 5 in a number is worth 5,000. If the 5 moved two places to the right, how much would it be worth?",
+      "choices": [],
+      "answer": "50",
+      "compute": "5000/100",
+      "solution": "Each move one place to the right divides the value by 10. Two moves divide by 10 twice, or by 100: 5,000 / 100 = 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 in thousands place = 5,000. Two places right -> tens place, worth 50 (5,000 / 100).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.374Z"
+        }
+      }
+    },
+    {
+      "id": "c363db2a-babc-43e9-b215-fbd209bd7a4a",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Name the place of a digit",
+      "stem": "Which number has the same digit in the thousands place and in the tens place?",
+      "choices": [
+        "71,158",
+        "71,518",
+        "17,115",
+        "11,538"
+      ],
+      "answer": "71,518",
+      "compute": null,
+      "solution": "In 71,518 the thousands digit is 1 and the tens digit is 1. In 71,158 they are 1 and 5, in 17,115 they are 7 and 1, and in 11,538 they are 1 and 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "71,518",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11,538: thousands 1, tens 3. 17,115: 7 vs 1. 71,518: thousands 1, tens 1 - same. 71,158: 1 vs 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.473Z"
+        }
+      }
+    },
+    {
+      "id": "ba9b6779-5fd1-4212-8daf-6f0645211f9b",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare a digit in two places",
+      "stem": "In the number $77{,}777$, the 7 in the ten thousands place is worth how many times as much as the 7 in the tens place?",
+      "choices": [],
+      "answer": "1000",
+      "compute": "70000/70",
+      "solution": "The 7 in the ten thousands place is worth 70,000 and the 7 in the tens place is worth 70. 70,000 / 70 = 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,000 / 70 = 1,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.494Z"
+        }
+      }
+    },
+    {
+      "id": "7a1a37cf-aaf5-4532-914a-0300be6e32f0",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Explain place-value statements",
+      "stem": "Which statement is false?",
+      "choices": [
+        "The 9 in 900 is worth 10 times the 9 in 90",
+        "The 9 in 90,000 is worth 10 times the 9 in 9,000",
+        "The 9 in 90 is worth 10 times the 9 in 9",
+        "The 9 in 9,000 is worth 10 times the 9 in 90"
+      ],
+      "answer": "The 9 in 9,000 is worth 10 times the 9 in 90",
+      "compute": null,
+      "solution": "The 9 in 9,000 is worth 9,000 and the 9 in 90 is worth 90, which is 100 times as much, not 10 times. The other statements compare neighboring places.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 9 in 9,000 is worth 10 times the 9 in 90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "900 = 10x90 true; 90,000 = 10x9,000 true; 90 = 10x9 true; 9,000 = 100x90, not 10 times, so false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.518Z"
+        }
+      }
+    },
+    {
+      "id": "8ba237ca-35c8-4802-acc5-f9c03c7f09e2",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Build a number from its places",
+      "stem": "Which number is equal to 3 ten thousands plus 14 hundreds?",
+      "choices": [
+        "30,140",
+        "3,140",
+        "31,400",
+        "34,100"
+      ],
+      "answer": "31,400",
+      "compute": "30000+14*100",
+      "solution": "3 ten thousands is 30,000 and 14 hundreds is 1,400. 30,000 + 1,400 = 31,400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31,400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 ten thousands = 30,000; 14 hundreds = 1,400; total 31,400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.520Z"
+        }
+      }
+    },
+    {
+      "id": "2ee774c2-860b-4b09-b618-9dbaade0833f",
+      "topic_id": "NC17.4.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Trade ten of a place for one of the next place",
+      "stem": "Nate has 4 blocks that each stand for 10,000 and 23 blocks that each stand for 100. What number do his blocks stand for in all?",
+      "choices": [],
+      "answer": "42300",
+      "compute": "4*10000+23*100",
+      "solution": "4 x 10,000 = 40,000 and 23 x 100 = 2,300. Together: 40,000 + 2,300 = 42,300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x10,000 = 40,000; 23x100 = 2,300; total 42,300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.550Z"
         }
       }
     },

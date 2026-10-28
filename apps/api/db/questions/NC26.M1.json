@@ -24276,7 +24276,7 @@
       "choices": [],
       "answer": "5",
       "compute": "9-4",
-      "solution": "Replace $y$ by $\frac{1}{2}x + 3$: $x + \frac{1}{2}x + 3 = 9$, so $\frac{3}{2}x = 6$ and $x = 4$. Then $y = 9 - 4 = 5$.",
+      "solution": "Replace $y$ by $\\frac{1}{2}x + 3$: $x + \\frac{1}{2}x + 3 = 9$, so $\\frac{3}{2}x = 6$ and $x = 4$. Then $y = 9 - 4 = 5$.",
       "status": "checked",
       "source": "ai",
       "checks": {

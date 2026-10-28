@@ -3466,6 +3466,743 @@
       }
     },
     {
+      "id": "b5fa19de-9859-48d6-9b4d-263c635d7a44",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "In the expression $3 - 4t$, what is the coefficient of $t$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": null,
+      "solution": "The coefficient is the number multiplying $t$, including its sign: $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 - 4t = 3 + (-4)t, coefficient -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.902Z"
+        }
+      }
+    },
+    {
+      "id": "9a6c65e7-9b38-4e49-a260-c5f97412283d",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count the terms of an expression",
+      "stem": "Which of these expressions has exactly two terms?",
+      "choices": [
+        "$6x$",
+        "$3x + 4$",
+        "$x^2 - 5x + 2$",
+        "$8$"
+      ],
+      "answer": "$3x + 4$",
+      "compute": null,
+      "solution": "$3x + 4$ has the terms $3x$ and $4$. $6x$ and $8$ have one term each, and $x^2 - 5x + 2$ has three.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x + 4 has two terms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.012Z"
+        }
+      }
+    },
+    {
+      "id": "4bbb32f9-f7aa-45a2-b5d0-b5ebb8531bb4",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the terms of an expression",
+      "stem": "How many terms does the expression $x^2 + 6$ have?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "Terms are separated by plus and minus signs. The terms are $x^2$ and $6$, so there are 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms x^2 and 6: 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.068Z"
+        }
+      }
+    },
+    {
+      "id": "996181a4-435f-42ca-bc4d-c0539d9a04bc",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "A rumor spreads so that $4 \\cdot 5^n$ people have heard it after $n$ hours. How many people knew it at the start, when $n = 0$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4*5^0",
+      "solution": "$5^0 = 1$, so the number is $4 \\cdot 1 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 5^0 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.078Z"
+        }
+      }
+    },
+    {
+      "id": "4d8e6580-5050-4e65-bf7f-632003082133",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A parking garage charges $3h + 5$ dollars for $h$ hours: 3 dollars for each hour plus a 5 dollar entry fee. For a 4-hour stay, how many dollars of the bill come from the hourly charges, the part $3h$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3*4",
+      "solution": "$3h = 3 \\cdot 4 = 12$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3h with h = 4: 3 x 4 = 12 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.096Z"
+        }
+      }
+    },
+    {
+      "id": "1c12f27d-747c-4b46-a322-8c0aa7df0a7a",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the terms of an expression",
+      "stem": "How many terms does the expression $9a - 2b + 5c - 1$ have?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "The terms are $9a$, $2b$, $5c$ and $1$ (each with its sign), so there are 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms 9a, -2b, 5c, -1: four.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.164Z"
+        }
+      }
+    },
+    {
+      "id": "bcb5e100-eb8d-4c36-846b-9b77e3c62d5f",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A rectangle has length $l$ and width $w$, and its perimeter is $2l + 2w$. What does the term $2l$ stand for?",
+      "choices": [
+        "The area inside the rectangle, in square units",
+        "The distance all the way around the rectangle",
+        "The distance along the two lengths together",
+        "The distance along the two widths together"
+      ],
+      "answer": "The distance along the two lengths together",
+      "compute": null,
+      "solution": "A rectangle has two sides of length $l$, so $2l$ is the distance along those two sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The distance along the two lengths together",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2l is length + length, the two lengths together.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.165Z"
+        }
+      }
+    },
+    {
+      "id": "5ec60a99-a760-4143-bf29-3180d56eaaa8",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "Which term of the expression $5x^2 - 2x + 7$ is the quadratic term?",
+      "choices": [
+        "$-2x$",
+        "$7$",
+        "$5x$",
+        "$5x^2$"
+      ],
+      "answer": "$5x^2$",
+      "compute": null,
+      "solution": "The quadratic term is the one with the variable squared, which is $5x^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quadratic term is the x^2 term: 5x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.194Z"
+        }
+      }
+    },
+    {
+      "id": "6e8cb4bc-09c2-44f6-ba81-bb671b616ae8",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "Which phrase describes the expression $3(x - 4)$?",
+      "choices": [
+        "The difference of three times a number and 4",
+        "Three more than the difference of a number and 4",
+        "Three times a number, divided by 4",
+        "Three times the difference of a number and 4"
+      ],
+      "answer": "Three times the difference of a number and 4",
+      "compute": null,
+      "solution": "The parentheses hold $x - 4$, the difference of a number and 4. That whole quantity is multiplied by 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Three times the difference of a number and 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x - 4): three times (x minus 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.205Z"
+        }
+      }
+    },
+    {
+      "id": "4e9c80b0-96b6-42de-acda-58836abf3639",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "In the expression $7x^2 + 2x - 5$, which number is the coefficient of $x^2$?",
+      "choices": [
+        "2",
+        "$-5$",
+        "14",
+        "7"
+      ],
+      "answer": "7",
+      "compute": null,
+      "solution": "The coefficient of $x^2$ is the number that multiplies $x^2$, which is 7. The 2 multiplies $x$, and $-5$ is the constant term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Coefficient of x^2 is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.221Z"
+        }
+      }
+    },
+    {
+      "id": "4ab2301a-9614-4143-8656-f0a578ac3487",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "A hiker is $2 + 4t$ kilometers from the trailhead after $t$ hours of hiking. How fast is the hiker walking?",
+      "choices": [
+        "2 kilometers per hour",
+        "6 kilometers per hour",
+        "4 kilometers per hour",
+        "8 kilometers per hour"
+      ],
+      "answer": "4 kilometers per hour",
+      "compute": null,
+      "solution": "The distance grows by 4 kilometers for each hour, so the speed is 4 kilometers per hour. (The 2 is the distance at the start.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 kilometers per hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distance increases by 4 per hour (coefficient of t); 2 is the starting distance. 4 km/h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.252Z"
+        }
+      }
+    },
+    {
+      "id": "b592bc79-8a5d-4f97-b355-426c0dfc017c",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "The expression $2(x - 7)$ is a product of two factors. What are they?",
+      "choices": [
+        "$2$ and $x - 7$",
+        "$2$ and $x$",
+        "$x$ and $7$",
+        "$2$, $x$ and $7$"
+      ],
+      "answer": "$2$ and $x - 7$",
+      "compute": null,
+      "solution": "$2(x - 7)$ means 2 times the quantity $x - 7$. The two factors are 2 and $x - 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$ and $x - 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x-7): factors 2 and (x - 7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.255Z"
+        }
+      }
+    },
+    {
+      "id": "ba8decff-9f71-400c-a45a-6922f6bab53d",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "Buying $n$ notebooks at 3 dollars each and 2 pens at 1 dollar each costs $3n + 2$ dollars. What does the part $3n$ represent?",
+      "choices": [
+        "The cost of the notebooks",
+        "The cost of the pens",
+        "The number of notebooks",
+        "The cost of everything bought"
+      ],
+      "answer": "The cost of the notebooks",
+      "compute": null,
+      "solution": "Each notebook costs 3 dollars, so $n$ notebooks cost $3n$ dollars. The 2 is the cost of the pens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cost of the notebooks",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3n = 3 dollars times n notebooks = cost of the notebooks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.259Z"
+        }
+      }
+    },
+    {
+      "id": "354f1524-6634-4b52-bfe5-b94a963ccadd",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare what two expressions say about change",
+      "stem": "Plan A costs $10 + 3m$ dollars for $m$ months and plan B costs $5 + 3m$ dollars. Which statement is true?",
+      "choices": [
+        "Plan A adds more each month, and both start at the same cost",
+        "Plan A has the larger starting cost, and both add the same amount each month",
+        "Plan B has the larger starting cost, and both add the same amount each month",
+        "Plan B adds more each month, and both start at the same cost"
+      ],
+      "answer": "Plan A has the larger starting cost, and both add the same amount each month",
+      "compute": null,
+      "solution": "The starting costs are 10 for A and 5 for B, so A starts higher. Both have 3 as the amount added each month.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Plan A has the larger starting cost, and both add the same amount each month",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Constants 10 vs 5: A starts higher; both have 3m, same monthly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.316Z"
+        }
+      }
+    },
+    {
+      "id": "4ee885c8-6bbf-4b4c-8024-7654a1c706d3",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "Which expression means \"the sum of 5 and twice a number $n$\"?",
+      "choices": [
+        "$2(5 + n)$",
+        "$5 + 2n$",
+        "$5 \\cdot 2n$",
+        "$5 + n^2$"
+      ],
+      "answer": "$5 + 2n$",
+      "compute": null,
+      "solution": "\"Twice a number $n$\" is $2n$. The sum of 5 and $2n$ is $5 + 2n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 2n$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Twice n is 2n; sum with 5: 5+2n.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.321Z"
+        }
+      }
+    },
+    {
+      "id": "83dc613c-2032-4d41-817d-9a6150c14586",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare what two expressions say about change",
+      "stem": "After $w$ weeks, plant X is $4 + 2w$ centimeters tall and plant Y is $4 + 3w$ centimeters tall. Which statement is true?",
+      "choices": [
+        "The plants start at the same height, and X grows faster",
+        "Y starts taller, and the plants grow at the same rate",
+        "X starts taller, and Y grows faster",
+        "The plants start at the same height, and Y grows faster"
+      ],
+      "answer": "The plants start at the same height, and Y grows faster",
+      "compute": null,
+      "solution": "Both start at 4 centimeters. Y grows 3 centimeters a week and X grows 2, so Y grows faster.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The plants start at the same height, and Y grows faster",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Both start at 4 (w=0). X grows 2 cm/week, Y grows 3 cm/week, so Y faster.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.371Z"
+        }
+      }
+    },
+    {
+      "id": "c3c78017-ae64-4fea-a5ad-2e1dfdd32bf4",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "Look at the expression $6 + 4(n - 1)$. What is the value of the part $n - 1$ when $n = 5$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "5-1",
+      "solution": "$n - 1 = 5 - 1 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n - 1 = 5 - 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.378Z"
+        }
+      }
+    },
+    {
+      "id": "2e35a82c-bb2f-44c9-bbe5-d9600bc18bf3",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "A square floor has a side length of $s$ feet. What does the expression $s^2$ give?",
+      "choices": [
+        "The distance around the floor, in feet",
+        "The area of the floor, in square feet",
+        "The length of one side, in feet",
+        "Twice the side length, in feet"
+      ],
+      "answer": "The area of the floor, in square feet",
+      "compute": null,
+      "solution": "Area is side times side, so $s^2$ is the area of the floor in square feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The area of the floor, in square feet",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "s^2 = side x side = area of square floor, in square feet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.383Z"
+        }
+      }
+    },
+    {
+      "id": "1a28fe9b-0b3f-47ef-b249-311fa0e971ce",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "The number of fans of a video after $d$ days is $50 \\cdot 2^d$. What does the 50 tell you?",
+      "choices": [
+        "The number of fans at the start, when $d = 0$",
+        "The number of new fans that are gained each day",
+        "The number of fans after 50 days have passed",
+        "The number of days it takes for the fans to double"
+      ],
+      "answer": "The number of fans at the start, when $d = 0$",
+      "compute": null,
+      "solution": "When $d = 0$, $2^0 = 1$, so the number of fans is $50 \\cdot 1 = 50$. The 50 is the starting number of fans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of fans at the start, when $d = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At d = 0, 50 x 2^0 = 50: the starting number of fans.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.458Z"
+        }
+      }
+    },
+    {
+      "id": "6f75b727-d065-4d20-bab6-62f42b9721fd",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "A culture has $300 \\cdot 2^h$ bacteria after $h$ hours. By what number is the amount multiplied each hour?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "Each extra hour adds 1 to the exponent, which multiplies the amount by the base, 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Growth factor is the base 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.468Z"
+        }
+      }
+    },
+    {
+      "id": "7f4348fe-17f6-4dae-ac18-adfe06062c89",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "What is the constant term of the expression $14 - 3x$?",
+      "choices": [],
+      "answer": "14",
+      "compute": null,
+      "solution": "The constant term is the part with no variable, which is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Constant term is 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.490Z"
+        }
+      }
+    },
+    {
+      "id": "82adafad-c36b-41af-b080-c3d1c9888caa",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "The height of a candle, in centimeters, after $h$ hours of burning is $20 - 2h$. What does the 2 tell you?",
+      "choices": [
+        "The candle is 2 centimeters tall when it is first lit",
+        "The candle burns out completely after 2 hours",
+        "The candle gets 2 centimeters shorter each hour",
+        "The candle is still 2 centimeters tall after 1 hour"
+      ],
+      "answer": "The candle gets 2 centimeters shorter each hour",
+      "compute": null,
+      "solution": "Each hour $h$ goes up by 1, so the height goes down by 2 centimeters. The number 2 is the rate at which the candle burns down.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The candle gets 2 centimeters shorter each hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 2h: height drops by 2 cm for each hour. 20 is initial height.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.522Z"
+        }
+      }
+    },
+    {
+      "id": "049ed39a-2be7-4624-b665-50e0c07ce5ac",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "The amount of money in a jar after $w$ weeks is $30 + 5w$ dollars. How many dollars are added to the jar each week?",
+      "choices": [],
+      "answer": "5",
+      "compute": null,
+      "solution": "The amount grows by 5 dollars for each week, so 5 dollars are added each week.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 + 5w: 5 dollars added each week.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.543Z"
+        }
+      }
+    },
+    {
       "id": "a183f295-b298-441b-9d42-79a1456d61ec",
       "topic_id": "NC17.M1.A-SSE.1",
       "difficulty": 2,
@@ -3777,6 +4514,709 @@
           "work": "4(x+1)^2 = 4 times the square of (x+1).",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:10.540Z"
+        }
+      }
+    },
+    {
+      "id": "feb72ae8-f9dc-44c0-b262-0e8904916978",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "The expression $4x(x - 3)$ is a product of three factors. What are they?",
+      "choices": [
+        "$4$, $x$ and $3$",
+        "$4x$ and $x - 3$",
+        "$4$, $x$ and $x - 3$",
+        "$4$, $x$, $x$ and $3$"
+      ],
+      "answer": "$4$, $x$ and $x - 3$",
+      "compute": null,
+      "solution": "$4x(x - 3)$ means $4 \\cdot x \\cdot (x - 3)$. The factors are 4, $x$ and the quantity $x - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4$, $x$ and $x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x(x-3) = 4 * x * (x-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.990Z"
+        }
+      }
+    },
+    {
+      "id": "80f50089-7cb9-4380-a892-ff8080900a9f",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "A sample has $64 \\cdot (0.5)^y$ grams of a substance after $y$ years. How many grams remain after 2 years?",
+      "choices": [],
+      "answer": "16",
+      "compute": "64*0.5^2",
+      "solution": "The amount is multiplied by 0.5 each year. After 2 years: $64 \\cdot 0.5 \\cdot 0.5 = 16$ grams.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 x 0.25 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.000Z"
+        }
+      }
+    },
+    {
+      "id": "7b5a52c6-927b-4f59-a1af-374b25b79ee6",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "In the expression $-x^2 + 6x$, what is the coefficient of $x^2$?",
+      "choices": [
+        "1",
+        "0",
+        "$-1$",
+        "6"
+      ],
+      "answer": "$-1$",
+      "compute": null,
+      "solution": "$-x^2$ means $-1 \\cdot x^2$, so the coefficient is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-x^2 = (-1)x^2, coefficient -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.047Z"
+        }
+      }
+    },
+    {
+      "id": "96e5f618-df01-4421-bb07-68204fd0e134",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare what two expressions say about change",
+      "stem": "Rob's savings are $40 + 6w$ dollars after $w$ weeks and Tia's are $6 + 40w$ dollars. Which statement is true?",
+      "choices": [
+        "Rob started with more, and he also saves more each week",
+        "Tia started with more, but Rob saves more each week",
+        "Rob started with more, but Tia saves more each week",
+        "They started with the same amount, but Tia saves more"
+      ],
+      "answer": "Rob started with more, but Tia saves more each week",
+      "compute": null,
+      "solution": "Rob starts with 40 and Tia with 6, so Rob started with more. Rob adds 6 a week and Tia adds 40, so Tia saves more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rob started with more, but Tia saves more each week",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rob starts 40, saves 6/week; Tia starts 6, saves 40/week.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.074Z"
+        }
+      }
+    },
+    {
+      "id": "b22f4127-fe89-4f9e-83ab-019265ce9639",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "In the expression $9 - 2.5x$, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "-2.5",
+      "compute": null,
+      "solution": "The coefficient is the number multiplying $x$, with its sign: $-2.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 2.5x = 9 + (-2.5)x; coefficient -2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.128Z"
+        }
+      }
+    },
+    {
+      "id": "7f08e0e1-9bdf-406a-9830-b0827533db4e",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "The expression $4 + 3(x - 1)$ is the sum of which two pieces?",
+      "choices": [
+        "$4$ and $3(x - 1)$",
+        "$7$ and $x - 1$",
+        "$4 + 3$ and $x - 1$",
+        "$4$ and $3$"
+      ],
+      "answer": "$4$ and $3(x - 1)$",
+      "compute": null,
+      "solution": "The plus sign between 4 and $3(x - 1)$ separates the two terms. The second is the product of 3 and $x - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4$ and $3(x - 1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The expression is 4 plus the product 3(x-1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.131Z"
+        }
+      }
+    },
+    {
+      "id": "1d4b0a17-3ba6-4fcd-b5b3-7a245f4f56bc",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "A square with side $s$ has a smaller square with side 2 cut out of one corner. The area left is $s^2 - 4$. What does the 4 represent?",
+      "choices": [
+        "The side length of the square that was cut out",
+        "The area of the square that was cut out",
+        "The area of the original square",
+        "The perimeter of the square that was cut out"
+      ],
+      "answer": "The area of the square that was cut out",
+      "compute": null,
+      "solution": "The cut-out square has area $2 \\cdot 2 = 4$, which is subtracted from the area $s^2$ of the original square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The area of the square that was cut out",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 = 2^2, the area of the cut-out square.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.137Z"
+        }
+      }
+    },
+    {
+      "id": "fe30bd4b-636d-46ba-9fc6-6d2c2005860b",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the terms of an expression",
+      "stem": "As it is written, how many terms does the expression $3(x + 2) - 4x + 7$ have?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "The terms are $3(x + 2)$, $4x$ and $7$. The parentheses group the first term into one piece, so there are 3 terms.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms: 3(x+2), -4x, 7: three.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.151Z"
+        }
+      }
+    },
+    {
+      "id": "c740bf3a-f01c-49f3-b28b-b0c59dbdb9ff",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "Ella's savings, in dollars, after $w$ weeks are $75 + 12w$. Which statement is true?",
+      "choices": [
+        "She started with 12 dollars and adds 75 dollars each week",
+        "She saves 87 dollars in her first week",
+        "She saves 75 dollars each week for 12 weeks",
+        "She started with 75 dollars and adds 12 dollars each week"
+      ],
+      "answer": "She started with 75 dollars and adds 12 dollars each week",
+      "compute": null,
+      "solution": "When $w = 0$ she has 75 dollars. Each week adds 12 dollars, the coefficient of $w$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She started with 75 dollars and adds 12 dollars each week",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75 is the start, 12 is added each week.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.163Z"
+        }
+      }
+    },
+    {
+      "id": "11a76168-fe55-4c51-a194-ff56103c36c8",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A meal costs $m$ dollars and a drink costs 5 dollars. With a 20 percent tip, the total is $1.2(m + 5)$ dollars. What does $m + 5$ represent?",
+      "choices": [
+        "The amount of the tip that is left on the table",
+        "The total cost of the meal and drink including the tip",
+        "The cost of the meal alone, without the drink",
+        "The cost of the meal and the drink before the tip"
+      ],
+      "answer": "The cost of the meal and the drink before the tip",
+      "compute": null,
+      "solution": "The meal and the drink together cost $m + 5$. Multiplying by 1.2 adds the 20 percent tip to that.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cost of the meal and the drink before the tip",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m+5 is the meal plus drink before the 1.2 tip factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.167Z"
+        }
+      }
+    },
+    {
+      "id": "e3c39145-841c-478c-9b71-69d71d1636b4",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "The height of an elevator above the ground, in meters, after $s$ seconds is $30 - 2s$. What does the $-2$ tell you?",
+      "choices": [
+        "The elevator moves down 2 meters every second",
+        "The elevator starts 2 meters below the ground",
+        "The elevator moves up 2 meters every second",
+        "The elevator stops after 2 seconds"
+      ],
+      "answer": "The elevator moves down 2 meters every second",
+      "compute": null,
+      "solution": "Each second the height changes by $-2$ meters, so the elevator goes down 2 meters every second. The 30 is where it starts.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The elevator moves down 2 meters every second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 - 2s: height drops by 2 m for each second, so moving down 2 m per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.192Z"
+        }
+      }
+    },
+    {
+      "id": "46f46dcd-c724-4c5d-a203-24d3774fc8a0",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A tutor's pay for a week is $18h + 25$ dollars, where $h$ is the number of hours worked. For $h = 10$, what is the value of the part $18h$?",
+      "choices": [],
+      "answer": "180",
+      "compute": "18*10",
+      "solution": "$18h = 18 \\cdot 10 = 180$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 x 10 = 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.196Z"
+        }
+      }
+    },
+    {
+      "id": "107b8c14-01ec-4eaf-845c-d08d4f98265f",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "Which phrase describes the expression $(x + 3)^2$?",
+      "choices": [
+        "The sum of the square of a number and 3",
+        "Two times the sum of a number and 3",
+        "The square of the sum of a number and 3",
+        "The sum of a number and 9"
+      ],
+      "answer": "The square of the sum of a number and 3",
+      "compute": null,
+      "solution": "The sum $x + 3$ is inside the parentheses, and the whole sum is squared.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The square of the sum of a number and 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+3)^2 squares the sum x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.241Z"
+        }
+      }
+    },
+    {
+      "id": "06d3600e-9d3f-4cad-8cce-5f62bf260697",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare what two expressions say about change",
+      "stem": "Gym X charges $30 + 20m$ dollars for $m$ months and gym Y charges $50 + 15m$ dollars. Which statement is true?",
+      "choices": [
+        "X has the smaller joining fee, but Y adds less each month",
+        "X has the larger joining fee, and Y adds less each month",
+        "X has the smaller joining fee, and Y adds more each month",
+        "Y has the smaller joining fee, and X adds less each month"
+      ],
+      "answer": "X has the smaller joining fee, but Y adds less each month",
+      "compute": null,
+      "solution": "X starts at 30 and Y at 50, so X has the smaller joining fee. X adds 20 a month and Y adds 15, so Y adds less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "X has the smaller joining fee, but Y adds less each month",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "X: fee 30, +20/month. Y: fee 50, +15/month. X smaller fee, Y adds less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.269Z"
+        }
+      }
+    },
+    {
+      "id": "d1a3e266-556b-4697-a762-51c12bf94251",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "The value of a laptop, in dollars, after $t$ years is $900(0.8)^t$. By what percent does its value drop each year?",
+      "choices": [],
+      "answer": "20",
+      "compute": null,
+      "solution": "Each year the value is 0.8, or 80 percent, of the year before. So it drops by $100 - 80 = 20$ percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor 0.8 keeps 80%, so drops 20% a year.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.343Z"
+        }
+      }
+    },
+    {
+      "id": "f55a2a39-7c4b-4d7c-a8fd-fb5286c88cac",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "A town's population is $p$. After it grows by 15 percent, the population is $p + 0.15p$. By what number is $p$ multiplied to give the new population?",
+      "choices": [],
+      "answer": "1.15",
+      "compute": "1+0.15",
+      "solution": "$p + 0.15p = 1p + 0.15p = 1.15p$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p + 0.15p = 1.15p. Multiplier 1.15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.376Z"
+        }
+      }
+    },
+    {
+      "id": "b743b134-caa6-41c1-a4c1-2bc65f32a916",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "A driver is paid $12 + 0.5m$ dollars for a delivery of $m$ miles. How many dollars does each extra mile add to the pay?",
+      "choices": [],
+      "answer": "0.5",
+      "compute": null,
+      "solution": "The pay goes up by 0.5 dollars for each mile, the coefficient of $m$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Coefficient of m is 0.5: each extra mile adds 0.5 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.386Z"
+        }
+      }
+    },
+    {
+      "id": "c06442cc-1bff-4572-bfe8-f45d21d2ae62",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "A rectangle has width $w$ meters and length $w + 7$ meters, so its area is $w^2 + 7w$ square meters. For $w = 3$, what is the value of the term $7w$?",
+      "choices": [],
+      "answer": "21",
+      "compute": "7*3",
+      "solution": "$7w = 7 \\cdot 3 = 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7w = 7 x 3 = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.392Z"
+        }
+      }
+    },
+    {
+      "id": "4886bd2b-0631-43ed-b838-05c384b82257",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count the terms of an expression",
+      "stem": "Which of these expressions has three terms as it is written?",
+      "choices": [
+        "$4x^2 + 3x - 8$",
+        "$2x(x + 5)$",
+        "$(x + 1)(x + 2)$",
+        "$5(x^2 + 3x)$"
+      ],
+      "answer": "$4x^2 + 3x - 8$",
+      "compute": null,
+      "solution": "$4x^2 + 3x - 8$ has the terms $4x^2$, $3x$ and $8$. The other three are single products, so each has one term as it is written.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x^2 + 3x - 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2 + 3x - 8 has three terms. Others are written as products (one term each).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.417Z"
+        }
+      }
+    },
+    {
+      "id": "70e374fb-5053-4a67-8f6d-7da18f496aec",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "The number of views of a video after $d$ days is $200 \\cdot 1.5^d$. What does the 1.5 tell you?",
+      "choices": [
+        "Each day there are 1.5 more views than there were the day before",
+        "Each day the number of views is 1.5 times the day before",
+        "The number of views grows by 150 percent each day",
+        "The video had 1.5 views on the first day it was posted"
+      ],
+      "answer": "Each day the number of views is 1.5 times the day before",
+      "compute": null,
+      "solution": "The base 1.5 is the number multiplied in for each day, so each day has 1.5 times as many views as the day before.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each day the number of views is 1.5 times the day before",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5 is the growth factor: each day views are 1.5 times the day before (a 50% increase, not 150%).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.470Z"
+        }
+      }
+    },
+    {
+      "id": "fc1b623f-85d1-4a53-a9b4-28a00a0698dd",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the terms of an expression",
+      "stem": "As it is written, how many terms does the expression $\\frac{x^2}{2} - 3x + 4 - x$ have?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "The terms are $\\frac{x^2}{2}$, $3x$, $4$ and $x$, so there are 4 (even though $3x$ and $x$ could later be combined).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms as written: x^2/2, -3x, 4, -x: 4 terms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.506Z"
+        }
+      }
+    },
+    {
+      "id": "419730fd-bc3f-4068-8890-a92a36a073a1",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "A rectangle has a perimeter of 40 meters. Its width is $x$ meters and its area is $x(20 - x)$ square meters. What does $20 - x$ represent?",
+      "choices": [
+        "The perimeter of the rectangle, in meters",
+        "The area of the rectangle, in square meters",
+        "The width of the rectangle, in meters",
+        "The length of the rectangle, in meters"
+      ],
+      "answer": "The length of the rectangle, in meters",
+      "compute": null,
+      "solution": "Half the perimeter is 20, and the width and length add to 20. So the length is $20 - x$, and area is width times length.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The length of the rectangle, in meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter 40 means length + width = 20, so length = 20 - x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.508Z"
         }
       }
     },
@@ -4101,6 +5541,733 @@
       }
     },
     {
+      "id": "b656f993-c38c-4ac6-af7b-b20ed921cbab",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "In the expression $2x^2 + 3kx - 7$, where $k$ is a fixed number, which is the coefficient of $x$?",
+      "choices": [
+        "$3k$",
+        "$3$",
+        "$k$",
+        "$3kx$"
+      ],
+      "answer": "$3k$",
+      "compute": null,
+      "solution": "The coefficient of $x$ is everything that multiplies $x$ in that term. In $3kx$, that is $3k$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3k$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3kx = (3k)x; coefficient 3k.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.992Z"
+        }
+      }
+    },
+    {
+      "id": "a92b2df7-c8b3-428e-8a60-f42069a5c047",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "The expression $5 - 2(3 - 4x)$ is simplified to have one $x$ term and one constant term. What is the coefficient of $x$?",
+      "choices": [],
+      "answer": "8",
+      "compute": null,
+      "solution": "$5 - 2(3 - 4x) = 5 - 6 + 8x = 8x - 1$. The coefficient of $x$ is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 6 + 8x = 8x - 1; coefficient 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.997Z"
+        }
+      }
+    },
+    {
+      "id": "484ecc10-f358-4774-81ea-b72dbef98875",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "The value of a car, in dollars, after $t$ years is $24000(0.85)^t$. Which statement is true?",
+      "choices": [
+        "Each year the car loses 85 percent of its value",
+        "Each year the car loses 15 percent of its value",
+        "Each year the car loses 0.85 dollars of its value",
+        "The car is worth 85 dollars after one year"
+      ],
+      "answer": "Each year the car loses 15 percent of its value",
+      "compute": null,
+      "solution": "Each year the value is 0.85, or 85 percent, of the year before, so 15 percent is lost each year.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each year the car loses 15 percent of its value",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor 0.85 means 85% kept each year, so 15% lost each year.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.048Z"
+        }
+      }
+    },
+    {
+      "id": "34b49a0f-667d-467a-a43d-d05b3061a6ff",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "The amount of a substance after $t$ hours is $240 \\cdot (0.5)^{t/4}$ grams. How many hours does it take for the amount to be cut in half?",
+      "choices": [],
+      "answer": "4",
+      "compute": null,
+      "solution": "The exponent $t/4$ goes up by 1 every 4 hours, and each increase of 1 multiplies the amount by 0.5. So the amount is halved every 4 hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Amount halves when t/4 = 1 (factor 0.5^1), so t = 4 hours.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.067Z"
+        }
+      }
+    },
+    {
+      "id": "ab01d6a4-6e35-41d0-b2ec-c3ea523ff94d",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "Treating $x + 3$ as a single piece, which expression equals $5(x + 3) - 2(x + 3)$?",
+      "choices": [
+        "$3(x + 3)$",
+        "$7(x + 3)$",
+        "$3(x - 3)$",
+        "$10(x + 3)^2$"
+      ],
+      "answer": "$3(x + 3)$",
+      "compute": null,
+      "solution": "Five of the piece minus two of the piece is three of the piece: $3(x + 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3(x + 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5(x+3) - 2(x+3) = 3(x+3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.068Z"
+        }
+      }
+    },
+    {
+      "id": "abec9f8c-c54e-446d-adc9-24f52efd37d2",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A circular ring has an outer radius $R$ and an inner radius $r$. Its area is $\\pi R^2 - \\pi r^2$. What does the term $\\pi r^2$ represent?",
+      "choices": [
+        "The area of the whole outer circle of the ring",
+        "The area of the ring, without the hole in it",
+        "The distance around the edge of the inner circle",
+        "The area of the inner circle that is taken away"
+      ],
+      "answer": "The area of the inner circle that is taken away",
+      "compute": null,
+      "solution": "$\\pi r^2$ is the area of a circle with radius $r$, the hole in the middle, and it is subtracted from the whole outer circle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The area of the inner circle that is taken away",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pi R^2 is the outer circle; subtracting pi r^2 removes the inner circle (the hole).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.069Z"
+        }
+      }
+    },
+    {
+      "id": "870b7466-72ac-4a42-9e5f-912f9073b144",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A rectangle has width $w$ meters and length $w + 4$ meters, so its perimeter is $2w + 2(w + 4)$. How many meters greater is the value of the part $2(w + 4)$ than the value of the part $2w$?",
+      "choices": [],
+      "answer": "8",
+      "compute": null,
+      "solution": "$2(w + 4) - 2w = 2w + 8 - 2w = 8$ meters, whatever $w$ is.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(w+4) - 2w = 2w + 8 - 2w = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.072Z"
+        }
+      }
+    },
+    {
+      "id": "ed6ce9b5-b945-4554-b6a3-10ee033b6b4e",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare what two expressions say about change",
+      "stem": "Town X has $8000(1.02)^t$ people after $t$ years and town Y has $8000 + 160t$ people. Which statement is true?",
+      "choices": [
+        "X gains the same number of people each year, but Y gains more each year",
+        "Both towns gain the same number of people each year",
+        "X gains more people each year than the year before, but Y gains the same number",
+        "X gains fewer people each year than the year before, and Y gains the same number"
+      ],
+      "answer": "X gains more people each year than the year before, but Y gains the same number",
+      "compute": null,
+      "solution": "Y adds 160 people every year. X grows by 2 percent of its current size, and its size keeps growing, so each year it gains a little more than the year before.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "X gains more people each year than the year before, but Y gains the same number",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "X is exponential (x1.02 each year) so its yearly gain grows; Y is linear, +160 each year.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.131Z"
+        }
+      }
+    },
+    {
+      "id": "0f9c05b8-df1e-404c-a237-cd15d942ba19",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "Anya buys $a$ adult tickets at 12 dollars each and $c$ child tickets at 7 dollars each. Her total is $12a + 7c$ dollars. She buys 3 adult tickets and pays 64 dollars in all. How many child tickets does she buy?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(64-12*3)/7",
+      "solution": "The adult tickets cost $12 \\cdot 3 = 36$ dollars. The child tickets cost $64 - 36 = 28$ dollars, which is $28 \\div 7 = 4$ tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 x 3 = 36; 64 - 36 = 28; 28/7 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.176Z"
+        }
+      }
+    },
+    {
+      "id": "0e5dcf2a-c318-4e67-b91b-5355fe5a3ee8",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "The height of a ball, in feet, after $t$ seconds is $-16t^2 + 32t + 5$. What is the value of the term $-16t^2$ when $t = 2$?",
+      "choices": [],
+      "answer": "-64",
+      "compute": "-16*2^2",
+      "solution": "$-16 \\cdot 2^2 = -16 \\cdot 4 = -64$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-16 x 2^2 = -64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.177Z"
+        }
+      }
+    },
+    {
+      "id": "c434758f-a6ff-4d61-b233-ded1878adecd",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "A tank holds $200 - 6t$ liters of water after $t$ minutes. Which statement is NOT true?",
+      "choices": [
+        "The tank started with 200 liters",
+        "The tank loses 6 liters each minute",
+        "The tank holds 140 liters after 10 minutes",
+        "The tank is empty after 6 minutes"
+      ],
+      "answer": "The tank is empty after 6 minutes",
+      "compute": null,
+      "solution": "After 6 minutes the tank holds $200 - 36 = 164$ liters, so it is not empty. The other statements are true: the start is 200, the rate is 6 a minute, and after 10 minutes it holds $200 - 60 = 140$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The tank is empty after 6 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200 - 6t: loses 6 L/min (true), started 200 (true), t=10: 140 (true); empty when 6t = 200, t ~ 33.3, not 6 (NOT true).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.198Z"
+        }
+      }
+    },
+    {
+      "id": "5aed7c81-fbb7-493b-8a10-cea4d2494d70",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Identify coefficients, factors and constants",
+      "stem": "The expression $(m + 2)x + 7$ has a coefficient of 9 on $x$. What is the value of $m$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "The coefficient of $x$ is $m + 2$. Setting $m + 2 = 9$ gives $m = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m + 2 = 9, m = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.216Z"
+        }
+      }
+    },
+    {
+      "id": "a5297a55-e9e6-4550-9366-9f98163b5c47",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the terms of an expression",
+      "stem": "As it is written, how many terms does the expression $(2x + 1)(x - 4) - 3(x + 2)^2 + 6$ have?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "The terms are the product $(2x + 1)(x - 4)$, the product $3(x + 2)^2$ and the number 6. Each product is one term, so there are 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Top-level terms separated by + / -: (2x+1)(x-4), -3(x+2)^2, 6. That is 3 terms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.235Z"
+        }
+      }
+    },
+    {
+      "id": "cf276de5-2c12-4a17-8252-2482a9f08d7c",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "Which expression shows $2x^2 - 8x + 6$ as 2 times a simpler expression?",
+      "choices": [
+        "$2(x^2 - 8x + 6)$",
+        "$2(x^2 - 4x + 6)$",
+        "$2(x^2 - 4x + 3)$",
+        "$2(2x^2 - 4x + 3)$"
+      ],
+      "answer": "$2(x^2 - 4x + 3)$",
+      "compute": null,
+      "solution": "Dividing each term by 2 gives $x^2$, $-4x$ and $3$, so the expression is $2(x^2 - 4x + 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2(x^2 - 4x + 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2 - 8x + 6 = 2(x^2 - 4x + 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.275Z"
+        }
+      }
+    },
+    {
+      "id": "77797a8d-7ae2-4612-9210-80ad20e71e16",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "The amount left to pay on a loan after $w$ weeks is $450 - 30w$ dollars. By how many dollars does the amount left decrease over 4 weeks?",
+      "choices": [],
+      "answer": "120",
+      "compute": "30*4",
+      "solution": "The amount drops by 30 dollars each week, so over 4 weeks it drops by $30 \\cdot 4 = 120$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Decreases 30 per week: 4 x 30 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.277Z"
+        }
+      }
+    },
+    {
+      "id": "8c0d8c6d-5164-431d-9205-9f47a9e87d1b",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "A theater finds that when it sells $x$ tickets, each ticket costs $50 - x$ dollars, so the revenue is $x(50 - x)$ dollars. What does the factor $50 - x$ represent?",
+      "choices": [
+        "The number of tickets that are sold",
+        "The revenue from the tickets, in dollars",
+        "The number of tickets that go unsold",
+        "The price of one ticket, in dollars"
+      ],
+      "answer": "The price of one ticket, in dollars",
+      "compute": null,
+      "solution": "Revenue is the number of tickets times the price of one ticket. The number sold is $x$, so $50 - x$ is the price of one ticket.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The price of one ticket, in dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Revenue = tickets * price; 50-x is the price per ticket.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.337Z"
+        }
+      }
+    },
+    {
+      "id": "d088c3dc-da3f-461e-8b74-e93bc2041022",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read an expression as a combination of simpler pieces",
+      "stem": "What is the smallest value that the expression $3(x - 2)^2 + 5$ can have?",
+      "choices": [],
+      "answer": "5",
+      "compute": null,
+      "solution": "The square $(x - 2)^2$ is never negative, so $3(x - 2)^2$ is at least 0. The smallest value of the whole expression is $0 + 5 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)^2 >= 0, minimum 0 at x=2, so smallest value 3*0+5 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.367Z"
+        }
+      }
+    },
+    {
+      "id": "d19cfa10-6e42-4b19-8672-cc30f3a0a756",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret rates and starting values in a linear expression",
+      "stem": "The cost of a taxi ride of $m$ miles is $15 + 2.5m$ dollars. How many more dollars does a 10-mile ride cost than a 6-mile ride?",
+      "choices": [],
+      "answer": "10",
+      "compute": "4*2.5",
+      "solution": "The two rides differ by 4 miles, and each mile costs 2.5 dollars, so the difference is $4 \\cdot 2.5 = 10$ dollars. (The 15 dollar fee is the same for both.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference = 2.5 x (10 - 6) = 10. Check: 40 - 30 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.389Z"
+        }
+      }
+    },
+    {
+      "id": "da4467c1-e0b2-4edd-8116-190af8f778d2",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a part of an expression in context",
+      "stem": "A phone costs $p$ dollars. A store takes 10 dollars off with a coupon and then adds 6 percent tax, so the total is $1.06(p - 10)$ dollars. What does $p - 10$ represent?",
+      "choices": [
+        "The amount of tax that is added to the price",
+        "The price after the coupon and before the tax",
+        "The final total that is paid, including the tax",
+        "The value of the coupon"
+      ],
+      "answer": "The price after the coupon and before the tax",
+      "compute": null,
+      "solution": "The coupon takes 10 dollars off $p$, giving $p - 10$. Multiplying by 1.06 then adds the tax.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The price after the coupon and before the tax",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p - 10 is the price after the 10-dollar coupon; multiplying by 1.06 adds tax afterwards.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.438Z"
+        }
+      }
+    },
+    {
+      "id": "8deaf0a1-015a-4424-986a-9d60b8c13f0f",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare what two expressions say about change",
+      "stem": "Plan C costs $20 + 0.1m$ dollars for $m$ minutes and plan D costs $35 + 0.05m$ dollars. Which statement is true?",
+      "choices": [
+        "Plan D has the larger starting fee, but plan C charges more per minute",
+        "Plan D has the larger starting fee, and plan D charges more per minute",
+        "Plan C has the larger starting fee, but plan D charges more per minute",
+        "Plan C has the larger starting fee, and plan C charges more per minute"
+      ],
+      "answer": "Plan D has the larger starting fee, but plan C charges more per minute",
+      "compute": null,
+      "solution": "D starts at 35 and C at 20, so D has the larger starting fee. C adds 0.1 a minute and D adds 0.05, so C charges more per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Plan D has the larger starting fee, but plan C charges more per minute",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starting fees: C 20, D 35, so D larger. Per minute: C 0.10, D 0.05, so C charges more per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.457Z"
+        }
+      }
+    },
+    {
+      "id": "26597c91-80e6-459c-b986-3b027db764e8",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count the terms of an expression",
+      "stem": "Which of these expressions has exactly two terms after it is simplified?",
+      "choices": [
+        "$3(x + 2) - 3x$",
+        "$2x + 5 + 4x - 5$",
+        "$x^2 + 3x - x^2 + 4$",
+        "$6x - 6x + 7$"
+      ],
+      "answer": "$x^2 + 3x - x^2 + 4$",
+      "compute": null,
+      "solution": "$x^2 + 3x - x^2 + 4 = 3x + 4$, which has two terms. The others simplify to 6, $6x$ and 7, which have one term each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 3x - x^2 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x-6x+7 = 7 (1 term); 2x+5+4x-5 = 6x (1); 3(x+2)-3x = 6 (1); x^2+3x-x^2+4 = 3x+4 (2 terms).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.463Z"
+        }
+      }
+    },
+    {
+      "id": "22575d91-b0cb-40bd-b619-8b1aec16ea1e",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the parts of a quadratic expression",
+      "stem": "A square of side $x + 4$ is cut into four pieces: an $x$ by $x$ square, two $x$ by 4 rectangles and a 4 by 4 square. Its area is $x^2 + 8x + 16$. Which term is the combined area of the two rectangles?",
+      "choices": [
+        "$x^2$",
+        "$8x$",
+        "$16$",
+        "$4x$"
+      ],
+      "answer": "$8x$",
+      "compute": null,
+      "solution": "Each rectangle has area $4x$, so two of them have area $8x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two x-by-4 rectangles: 4x + 4x = 8x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.498Z"
+        }
+      }
+    },
+    {
+      "id": "acfd9886-187c-499e-ba0b-98c4c0c84fb4",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret the base, exponent and starting value of an exponential expression",
+      "stem": "A colony has $50 \\cdot 2^{3t}$ members after $t$ days. By what number is the colony multiplied each day?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2^3",
+      "solution": "Each day $t$ goes up by 1, so the exponent $3t$ goes up by 3, which multiplies the amount by $2^3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(3t) = 8^t, so the factor each day is 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.515Z"
+        }
+      }
+    },
+    {
       "id": "04a9ca53-892c-40b3-ae33-3e857dcf9b18",
       "topic_id": "NC17.M1.A-SSE.3",
       "difficulty": 1,
@@ -4412,6 +6579,723 @@
           "work": "x^2 - 4 = (x-2)(x+2) = 0, x = 2 or -2; positive 2.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.634Z"
+        }
+      }
+    },
+    {
+      "id": "dfc24cf9-8a3e-43ba-a187-f5dc6ffa79ca",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $x^2 - 9x + 20 = 0$. What is the smaller solution?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Two numbers with product 20 and sum $-9$ are $-4$ and $-5$, so $(x-4)(x-5) = 0$. The solutions are 4 and 5; the smaller is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)(x-5) = 0, x = 4 or 5. Smaller 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.069Z"
+        }
+      }
+    },
+    {
+      "id": "e178c2c6-eed4-4717-bd01-a04a8bae10b2",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "The equation $x^2 + 4x = 0$ has two solutions. What is the negative one?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-4",
+      "solution": "Factor out $x$: $x(x+4) = 0$. So $x = 0$ or $x = -4$. The negative solution is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x + 4) = 0, x = 0 or -4. Negative -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.078Z"
+        }
+      }
+    },
+    {
+      "id": "ebde92a7-6c0a-4a8f-89b8-e4894739cae3",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "zeros from the factored form",
+      "stem": "The equation $(x-3)(x+8) = 0$ has two solutions. How much larger is the larger solution than the smaller one?",
+      "choices": [],
+      "answer": "11",
+      "compute": "3-(-8)",
+      "solution": "The solutions are $x = 3$ and $x = -8$. The difference is $3 - (-8) = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solutions 3 and -8; 3 - (-8) = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.080Z"
+        }
+      }
+    },
+    {
+      "id": "53a06045-aecc-412d-b978-967732ca44d5",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "build a quadratic from its zeros",
+      "stem": "Which function has zeros at $x = 1$ and $x = 3$?",
+      "choices": [
+        "$f(x) = (x+1)(x+3)$",
+        "$f(x) = (x-1)(x+3)$",
+        "$f(x) = (x-1)(x-3)$",
+        "$f(x) = (x+1)(x-3)$"
+      ],
+      "answer": "$f(x) = (x-1)(x-3)$",
+      "compute": null,
+      "solution": "A factor $(x - a)$ gives the zero $x = a$. For zeros 1 and 3 the factors are $(x-1)$ and $(x-3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x-1)(x-3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 1 and 3 from (x-1)(x-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.081Z"
+        }
+      }
+    },
+    {
+      "id": "7a7b8b52-bf0d-45e3-b8ce-e5e49ebafeae",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "factor out a common factor first",
+      "stem": "A number $n$ satisfies $n^2 - 5n = 0$ and $n$ is not 0. What is $n$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Factor out $n$: $n(n-5) = 0$. Since $n \\ne 0$, we need $n - 5 = 0$, so $n = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n(n-5)=0, n != 0, n = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.175Z"
+        }
+      }
+    },
+    {
+      "id": "50138a05-b973-473d-a088-9810569c7785",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $x^2 = 6x - 5$. What is the smaller solution?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Move everything to one side: $x^2 - 6x + 5 = 0$. Then $(x-1)(x-5) = 0$, so the solutions are 1 and 5. The smaller is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 6x + 5 = 0, (x-1)(x-5) = 0; smaller 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.212Z"
+        }
+      }
+    },
+    {
+      "id": "d3445ff4-3624-4546-856b-7dd1958e121e",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "factor a monic quadratic",
+      "stem": "The function $g(x) = x^2 + 10x + 21$ can be written as $g(x) = (x+3)(x+k)$. What is $k$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The constant terms multiply to 21 and add to 10: $3 \\cdot 7 = 21$ and $3 + 7 = 10$. So $k = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3k = 21 and 3 + k = 10: k = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.216Z"
+        }
+      }
+    },
+    {
+      "id": "e2a6cf77-1192-4cf9-bca9-3c7e250e434b",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "What is the sum of the solutions of $x^2 - 7x + 10 = 0$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "2+5",
+      "solution": "$(x-2)(x-5) = 0$ gives the solutions 2 and 5. Their sum is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)(x-5); 2 + 5 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.217Z"
+        }
+      }
+    },
+    {
+      "id": "6d998fae-5865-449b-be62-38074cace42f",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factor a monic quadratic",
+      "stem": "Which pair of numbers has a product of $-24$ and a sum of $-2$?",
+      "choices": [
+        "$-6$ and $4$",
+        "$6$ and $-4$",
+        "$8$ and $-3$",
+        "$-8$ and $3$"
+      ],
+      "answer": "$-6$ and $4$",
+      "compute": null,
+      "solution": "$(-6)(4) = -24$ and $-6 + 4 = -2$. This pair gives the factoring $x^2 - 2x - 24 = (x-6)(x+4)$. The pair 6 and $-4$ has sum 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6$ and $4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-6 x 4 = -24, -6 + 4 = -2. Others: -8+3=-5, 6-4=2, 8-3=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.225Z"
+        }
+      }
+    },
+    {
+      "id": "2ffc09ba-05a4-44ae-86d1-cac587ea66c5",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Which are the solutions of $x^2 - 3x - 10 = 0$?",
+      "choices": [
+        "$x = -5$ and $x = 2$",
+        "$x = 5$ and $x = 2$",
+        "$x = -5$ and $x = -2$",
+        "$x = 5$ and $x = -2$"
+      ],
+      "answer": "$x = 5$ and $x = -2$",
+      "compute": null,
+      "solution": "Factor: $(x-5)(x+2) = 0$. Setting each factor to 0 gives $x = 5$ and $x = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 5$ and $x = -2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-5)(x+2) = 0: x = 5, x = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.248Z"
+        }
+      }
+    },
+    {
+      "id": "b0f5026f-7f91-41e1-88d1-cb9ce47770b2",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "build a quadratic from its zeros",
+      "stem": "The function $x^2 + bx + 18$ factors as $(x+2)(x+9)$. What is $b$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "2+9",
+      "solution": "Multiplying out, $(x+2)(x+9) = x^2 + 11x + 18$, so $b = 2 + 9 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(x+9) = x^2 + 11x + 18, b = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.281Z"
+        }
+      }
+    },
+    {
+      "id": "798ab892-a330-495e-81f0-c1c05c9a70a6",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factor out a common factor first",
+      "stem": "Which expression is equal to $x^2 + 6x$?",
+      "choices": [
+        "$(x+3)(x+3)$",
+        "$6x^2$",
+        "$x(x+6)$",
+        "$x(x+6x)$"
+      ],
+      "answer": "$x(x+6)$",
+      "compute": null,
+      "solution": "Both terms have the factor $x$: $x^2 + 6x = x(x+6)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x(x+6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x+6) = x^2 + 6x. (x+3)^2 = x^2+6x+9; x(x+6x) = 7x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.281Z"
+        }
+      }
+    },
+    {
+      "id": "206062fd-608d-40d2-a2e7-00d6ea79c34a",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "zeros from the factored form",
+      "stem": "The function $f(x) = x(x-6)$ has two zeros. What is the larger one?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Set each factor to 0: $x = 0$ or $x - 6 = 0$, so the zeros are 0 and 6. The larger is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 0 and 6; larger 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.301Z"
+        }
+      }
+    },
+    {
+      "id": "de0dc3f6-00b7-45cc-b47a-ba4d403fab4d",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factor a monic quadratic",
+      "stem": "Which expression is the factored form of $x^2 + 3x - 28$?",
+      "choices": [
+        "$(x+7)(x-4)$",
+        "$(x-7)(x+4)$",
+        "$(x+7)(x+4)$",
+        "$(x-7)(x-4)$"
+      ],
+      "answer": "$(x+7)(x-4)$",
+      "compute": null,
+      "solution": "Look for numbers with product $-28$ and sum 3: they are 7 and $-4$. So $x^2 + 3x - 28 = (x+7)(x-4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x+7)(x-4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7*(-4)=-28, 7-4=3: (x+7)(x-4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.331Z"
+        }
+      }
+    },
+    {
+      "id": "c6636e04-eb39-4651-b276-846750563c05",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "The equation $x^2 - x - 12 = 0$ has one positive solution. What is it?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Factor: $(x-4)(x+3) = 0$, so $x = 4$ or $x = -3$. The positive solution is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)(x+3)=0 -> x=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.347Z"
+        }
+      }
+    },
+    {
+      "id": "e93b2031-4406-41dc-865c-1afe25b6e679",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factoring in a context",
+      "stem": "A rectangle has area $x^2 + 11x + 30$ square meters and length $x + 6$ meters. Which expression gives its width in meters?",
+      "choices": [
+        "$x + 6$",
+        "$x + 11$",
+        "$x + 5$",
+        "$x + 30$"
+      ],
+      "answer": "$x + 5$",
+      "compute": null,
+      "solution": "Factor the area: $x^2 + 11x + 30 = (x+5)(x+6)$. Area is length times width, so the width is $x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+11x+30 = (x+5)(x+6). Width = area / length = x + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.400Z"
+        }
+      }
+    },
+    {
+      "id": "16dc26c2-55d2-4b30-80bb-5da9be1cf47d",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "factor a difference of squares",
+      "stem": "Solve $x^2 - 64 = 0$. What is the positive solution?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "$x^2 - 64 = (x-8)(x+8) = 0$, so $x = 8$ or $x = -8$. The positive solution is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 64 = (x-8)(x+8) = 0 -> x = 8 or -8. Positive 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.427Z"
+        }
+      }
+    },
+    {
+      "id": "f58aaf3b-2b63-4427-b885-9d798864eb27",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factor a monic quadratic",
+      "stem": "Which expression is equal to $x^2 + 8x + 12$?",
+      "choices": [
+        "$(x+3)(x+4)$",
+        "$(x+2)(x+6)$",
+        "$(x+1)(x+12)$",
+        "$(x-2)(x-6)$"
+      ],
+      "answer": "$(x+2)(x+6)$",
+      "compute": null,
+      "solution": "Find two numbers with product 12 and sum 8: they are 2 and 6. So $x^2 + 8x + 12 = (x+2)(x+6)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x+2)(x+6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 6 = 12, 2 + 6 = 8: (x+2)(x+6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.488Z"
+        }
+      }
+    },
+    {
+      "id": "96a66cc2-00d1-4c1f-9f31-00f5380277a4",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "zeros from the factored form",
+      "stem": "The function $f(x) = (x+9)(x-3)$ has two zeros. What is their sum?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-9+3",
+      "solution": "Set each factor equal to 0: $x + 9 = 0$ gives $x = -9$, and $x - 3 = 0$ gives $x = 3$. The sum is $-9 + 3 = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros -9 and 3; sum -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.502Z"
+        }
+      }
+    },
+    {
+      "id": "02ea610d-ec48-4d4a-b539-08001a6c5e8c",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "zeros of a quadratic function",
+      "stem": "The function $f(x) = x^2 - 81$ has two zeros. What is their product?",
+      "choices": [],
+      "answer": "-81",
+      "compute": "-81",
+      "solution": "$x^2 - 81 = (x-9)(x+9)$, so the zeros are 9 and $-9$. Their product is $9 \\cdot (-9) = -81$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 9 and -9; product -81.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.510Z"
+        }
+      }
+    },
+    {
+      "id": "da5eaab4-188c-42f9-bec8-faafe3a0bc3d",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factor a perfect square trinomial",
+      "stem": "How many different zeros does $f(x) = x^2 - 12x + 36$ have?",
+      "choices": [
+        "Two zeros, $x = 6$ and $x = -6$",
+        "One zero, $x = 6$",
+        "Two zeros, $x = 6$ and $x = 36$",
+        "No zeros"
+      ],
+      "answer": "One zero, $x = 6$",
+      "compute": null,
+      "solution": "$x^2 - 12x + 36 = (x-6)(x-6) = (x-6)^2$. The only factor gives $x = 6$, so there is exactly one zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "One zero, $x = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 12x + 36 = (x-6)^2: one zero, x = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.515Z"
+        }
+      }
+    },
+    {
+      "id": "9742de22-85d7-45ff-a7c9-498d53460748",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Which number is a solution of $x^2 - 4x - 5 = 0$?",
+      "choices": [
+        "$5$",
+        "$-5$",
+        "$4$",
+        "$1$"
+      ],
+      "answer": "$5$",
+      "compute": "5",
+      "solution": "Factor: $(x-5)(x+1) = 0$, so $x = 5$ or $x = -1$. Of the numbers offered, only 5 works: $25 - 20 - 5 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-5)(x+1) = 0: x = 5 or -1. Of the options only 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.556Z"
+        }
+      }
+    },
+    {
+      "id": "1f69fd4a-54d8-4e72-88ac-e96b87ca4b04",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factor a perfect square trinomial",
+      "stem": "Which expression is equal to $x^2 - 6x + 9$?",
+      "choices": [
+        "$(x+3)^2$",
+        "$(x-3)(x+3)$",
+        "$(x-9)(x+1)$",
+        "$(x-3)^2$"
+      ],
+      "answer": "$(x-3)^2$",
+      "compute": null,
+      "solution": "The numbers $-3$ and $-3$ have product 9 and sum $-6$, so $x^2 - 6x + 9 = (x-3)(x-3) = (x-3)^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x-3)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)^2 = x^2-6x+9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.562Z"
         }
       }
     },
@@ -4731,6 +7615,723 @@
       }
     },
     {
+      "id": "4f1944fa-09d2-4e66-9f13-33999d7651a0",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "factor a monic quadratic",
+      "stem": "Luis factored $x^2 + 2x - 15$ as $(x+3)(x-5)$. Which statement about his answer is true?",
+      "choices": [
+        "The last term of his product is $+15$, not $-15$.",
+        "The first term of his product is $2x^2$, not $x^2$.",
+        "His answer is correct.",
+        "The middle term of his product is $-2x$, not $+2x$."
+      ],
+      "answer": "The middle term of his product is $-2x$, not $+2x$.",
+      "compute": null,
+      "solution": "Multiplying his factors: $(x+3)(x-5) = x^2 - 5x + 3x - 15 = x^2 - 2x - 15$. The middle term is $-2x$. The correct factoring is $(x+5)(x-3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The middle term of his product is $-2x$, not $+2x$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+3)(x-5) = x^2 - 2x - 15; middle term wrong. Correct is (x+5)(x-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.995Z"
+        }
+      }
+    },
+    {
+      "id": "86b9ef2e-72fc-4e48-8de7-ce9150653417",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "why factoring reveals the solutions",
+      "stem": "To find where the graph of $f(x) = x^2 + x - 12$ crosses the x-axis, we solve $f(x) = 0$. Which step is the best next step?",
+      "choices": [
+        "Set $x^2 = 0$ and $x - 12 = 0$ separately.",
+        "Factor to $(x+4)(x-3)$ and set each factor equal to 0.",
+        "Divide both sides of the equation by $x$.",
+        "Substitute $x = 0$ into the function."
+      ],
+      "answer": "Factor to $(x+4)(x-3)$ and set each factor equal to 0.",
+      "compute": null,
+      "solution": "The zero product property turns $(x+4)(x-3) = 0$ into $x + 4 = 0$ or $x - 3 = 0$, giving the crossing points $x = -4$ and $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Factor to $(x+4)(x-3)$ and set each factor equal to 0.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + x - 12 = (x+4)(x-3); set each factor to 0 (zeros -4 and 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.042Z"
+        }
+      }
+    },
+    {
+      "id": "cc90b5ec-13cf-43ea-94d0-e8d88c91d060",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factor out a common factor first",
+      "stem": "Solve $5x^2 - 35x + 60 = 0$. What is the larger solution?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Divide out the common factor 5: $5(x^2 - 7x + 12) = 5(x-3)(x-4) = 0$. The solutions are 3 and 4; the larger is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5(x^2 - 7x + 12) = 5(x-3)(x-4) = 0; x = 3 or 4. Larger 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.073Z"
+        }
+      }
+    },
+    {
+      "id": "914344a4-928c-4eed-ba74-93e2297fc3ab",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factor out a common factor first",
+      "stem": "The function $f(x) = 3x^2 - 12$ has two zeros. What is the positive zero?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Factor out 3: $3(x^2 - 4) = 3(x-2)(x+2)$. The zeros are 2 and $-2$; the positive zero is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2 = 12, x^2 = 4, x = 2 or -2. Positive 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.080Z"
+        }
+      }
+    },
+    {
+      "id": "1d042122-bebe-4998-a57c-1d3391f92dbc",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "build a quadratic from its zeros",
+      "stem": "The equation $x^2 + kx + 15 = 0$ has the solution $x = -3$. What is $k$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Substitute $x = -3$: $9 - 3k + 15 = 0$, so $3k = 24$ and $k = 8$. (Check: $x^2 + 8x + 15 = (x+3)(x+5)$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Substitute x = -3: 9 - 3k + 15 = 0, so 3k = 24, k = 8. Check: x^2 + 8x + 15 = (x+3)(x+5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.084Z"
+        }
+      }
+    },
+    {
+      "id": "8e604c11-0533-4d58-aa90-7c25f5765306",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "why factoring reveals the solutions",
+      "stem": "Which equation can be solved directly by setting each factor equal to 0?",
+      "choices": [
+        "$(x-1)(x+5) = 0$",
+        "$(x-1)(x+5) = 6$",
+        "$x(x-2) = 3$",
+        "$(x+2)(x+3) = 1$"
+      ],
+      "answer": "$(x-1)(x+5) = 0$",
+      "compute": null,
+      "solution": "The zero product property only works when the product is 0. The other equations have a product equal to a nonzero number, so each factor could take many values.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x-1)(x+5) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The zero product property needs a product equal to 0. Only (x-1)(x+5) = 0 has 0 on the right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.085Z"
+        }
+      }
+    },
+    {
+      "id": "57ceb6b9-9d4f-4577-9694-dbea353ee675",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "Two positive numbers differ by 3, and their product is 40. What is the larger number?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Let the smaller be $n$. Then $n(n+3) = 40$, so $n^2 + 3n - 40 = 0$ and $(n+8)(n-5) = 0$. Since $n$ is positive, $n = 5$ and the larger number is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x+3) = 40, x^2 + 3x - 40 = 0 = (x+8)(x-5), positive x = 5, larger 8. Check 8 x 5 = 40, 8 - 5 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.092Z"
+        }
+      }
+    },
+    {
+      "id": "86fc21fd-990f-46d4-b9a4-6b181bc72137",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "factor a quadratic with leading coefficient not 1",
+      "stem": "Which expression is equal to $4x^2 - 4x - 15$?",
+      "choices": [
+        "$(2x+5)(2x-3)$",
+        "$(4x+5)(x-3)$",
+        "$(4x-5)(x+3)$",
+        "$(2x-5)(2x+3)$"
+      ],
+      "answer": "$(2x-5)(2x+3)$",
+      "compute": null,
+      "solution": "$(2x-5)(2x+3) = 4x^2 + 6x - 10x - 15 = 4x^2 - 4x - 15$. The product $(2x+5)(2x-3)$ has middle term $+4x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2x-5)(2x+3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x-5)(2x+3) = 4x^2+6x-10x-15 = 4x^2-4x-15. Others: 4x^2+7x-15, 4x^2-7x-15, 4x^2+4x-15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.138Z"
+        }
+      }
+    },
+    {
+      "id": "3ff92b91-2a45-42b7-8548-d8441fbb98d4",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $2x^2 - 7x + 3 = 0$. What is the larger solution?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Factor: $(2x-1)(x-3) = 0$. So $x = \\frac{1}{2}$ or $x = 3$. The larger solution is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x-1)(x-3)=0, x=1/2 or 3; larger 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.140Z"
+        }
+      }
+    },
+    {
+      "id": "c26a4145-880a-4c65-80e8-914909df13a3",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "A model rocket's height above the ground is $h = -5t^2 + 20t + 25$ meters after $t$ seconds. At what time, in seconds, does it land ($h = 0$)?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Set $h = 0$ and divide by $-5$: $t^2 - 4t - 5 = 0$. Factor: $(t-5)(t+1) = 0$. Time cannot be negative, so $t = 5$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5(t^2 - 4t - 5) = -5(t-5)(t+1) = 0, t = 5 (t=-1 rejected).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.146Z"
+        }
+      }
+    },
+    {
+      "id": "06671d13-d729-4136-8bc0-f2814176f6e5",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "build a quadratic from its zeros",
+      "stem": "The graph of a quadratic function with integer coefficients crosses the x-axis at $x = \\frac{2}{3}$ and at $x = -1$. Which equation could define the function?",
+      "choices": [
+        "$f(x) = 3x^2 - x - 2$",
+        "$f(x) = 3x^2 + x - 2$",
+        "$f(x) = 2x^2 + x - 3$",
+        "$f(x) = 3x^2 + 5x + 2$"
+      ],
+      "answer": "$f(x) = 3x^2 + x - 2$",
+      "compute": null,
+      "solution": "The zero $x = \\frac{2}{3}$ comes from the factor $(3x - 2)$ and $x = -1$ from $(x + 1)$. Then $(3x-2)(x+1) = 3x^2 + x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = 3x^2 + x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x-2)(x+1) = 3x^2 + x - 2. Check: A=(2x+3)(x-1), C=(3x+2)(x-1), D=(3x+2)(x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.147Z"
+        }
+      }
+    },
+    {
+      "id": "a13a9730-a810-4c0c-877f-5ed2b8745101",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "zeros of a quadratic function",
+      "stem": "The function $f(x) = x^2 - 3x - 28$ has two zeros. How much larger is the larger zero than the smaller zero?",
+      "choices": [],
+      "answer": "11",
+      "compute": "7-(-4)",
+      "solution": "$x^2 - 3x - 28 = (x-7)(x+4)$, so the zeros are 7 and $-4$. The difference is $7 - (-4) = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-3x-28 = (x-7)(x+4); zeros 7 and -4; 7-(-4) = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.180Z"
+        }
+      }
+    },
+    {
+      "id": "58b5060a-945d-4daf-904e-880fb3cf8cbe",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "What is the sum of the two solutions of $6x^2 - x - 2 = 0$?",
+      "choices": [],
+      "answer": "1/6",
+      "compute": "2/3-1/2",
+      "solution": "Factor: $(3x-2)(2x+1) = 0$, so $x = \\frac{2}{3}$ or $x = -\\frac{1}{2}$. The sum is $\\frac{2}{3} - \\frac{1}{2} = \\frac{4}{6} - \\frac{3}{6} = \\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x^2 - x - 2 = (3x-2)(2x+1); solutions 2/3 and -1/2; sum 4/6 - 3/6 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.190Z"
+        }
+      }
+    },
+    {
+      "id": "db0c41d7-83af-4ebb-90d3-cab372d5f7f6",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "zeros of a quadratic function",
+      "stem": "Which are the x-intercepts of the graph of $y = x^2 - 10x + 24$?",
+      "choices": [
+        "$(4, 0)$ and $(6, 0)$",
+        "$(-4, 0)$ and $(-6, 0)$",
+        "$(2, 0)$ and $(12, 0)$",
+        "$(0, 4)$ and $(0, 6)$"
+      ],
+      "answer": "$(4, 0)$ and $(6, 0)$",
+      "compute": null,
+      "solution": "An x-intercept is where $y = 0$. Factor: $(x-4)(x-6) = 0$, so $x = 4$ or $x = 6$. The points are $(4, 0)$ and $(6, 0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, 0)$ and $(6, 0)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)(x-6) = 0: x = 4, 6; intercepts (4,0), (6,0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.263Z"
+        }
+      }
+    },
+    {
+      "id": "7b0316c5-3736-4ae2-a4c0-52d1ff3530fa",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "factor a quadratic with leading coefficient not 1",
+      "stem": "Which expression is equal to $5x^2 - 11x + 2$?",
+      "choices": [
+        "$(5x-1)(x-2)$",
+        "$(5x-2)(x-1)$",
+        "$(5x+1)(x+2)$",
+        "$(5x-1)(x+2)$"
+      ],
+      "answer": "$(5x-1)(x-2)$",
+      "compute": null,
+      "solution": "$(5x-1)(x-2) = 5x^2 - 10x - x + 2 = 5x^2 - 11x + 2$. The product $(5x-2)(x-1)$ has middle term $-7x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5x-1)(x-2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5x-1)(x-2) = 5x^2 - 10x - x + 2 = 5x^2 - 11x + 2. Others: 5x^2+9x-2, 5x^2-7x+2, 5x^2+11x+2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.289Z"
+        }
+      }
+    },
+    {
+      "id": "1ad8f565-5f33-437e-b627-7c277ddacee6",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "A rectangle is 3 centimeters longer than it is wide, and its area is 54 square centimeters. What is the width in centimeters?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Let the width be $w$. Then $w(w+3) = 54$, so $w^2 + 3w - 54 = 0$ and $(w+9)(w-6) = 0$. A width is positive, so $w = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w(w+3)=54 -> w^2+3w-54=0 -> (w+9)(w-6)=0 -> w=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.295Z"
+        }
+      }
+    },
+    {
+      "id": "0ac69adb-025c-4466-997c-f2ffa5ca8153",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $x^2 + 5x = 24$. What is the negative solution?",
+      "choices": [],
+      "answer": "-8",
+      "compute": "-8",
+      "solution": "Rewrite as $x^2 + 5x - 24 = 0$. Factor: $(x+8)(x-3) = 0$, so $x = -8$ or $x = 3$. The negative solution is $-8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+5x-24=0 -> (x+8)(x-3)=0 -> x=-8 or 3; negative -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.306Z"
+        }
+      }
+    },
+    {
+      "id": "761919eb-e2b5-4471-9128-14ddebce336c",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factor out a common factor first",
+      "stem": "The equation $4x^2 - 9x = 0$ has one nonzero solution. What is it?",
+      "choices": [],
+      "answer": "9/4",
+      "compute": "9/4",
+      "solution": "Factor out $x$: $x(4x - 9) = 0$. So $x = 0$ or $4x - 9 = 0$, which gives $x = \\frac{9}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(4x-9)=0 -> x=9/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.311Z"
+        }
+      }
+    },
+    {
+      "id": "b1951ae6-bc8a-4ee2-8d00-4d414ca2a7b3",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "build a quadratic from its zeros",
+      "stem": "Which equation has the solutions $x = 6$ and $x = 0$?",
+      "choices": [
+        "$x^2 + 6x = 0$",
+        "$x^2 - 6 = 0$",
+        "$x^2 + 6 = 0$",
+        "$x^2 - 6x = 0$"
+      ],
+      "answer": "$x^2 - 6x = 0$",
+      "compute": null,
+      "solution": "The zeros 6 and 0 come from the factors $(x-6)$ and $x$. Then $x(x-6) = x^2 - 6x$, so the equation is $x^2 - 6x = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 - 6x = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 6x = x(x-6) = 0 -> x = 0 or 6. x^2+6x gives 0, -6. x^2-6 gives +-sqrt6. x^2+6 none real.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.380Z"
+        }
+      }
+    },
+    {
+      "id": "8f37f383-3bb8-4bb4-bd84-0b8f80e36d91",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "zeros of a quadratic function",
+      "stem": "What are the zeros of $f(x) = 9x^2 - 16$?",
+      "choices": [
+        "$\\frac{3}{4}$ and $-\\frac{3}{4}$",
+        "$\\frac{16}{9}$ and $-\\frac{16}{9}$",
+        "$4$ and $-4$",
+        "$\\frac{4}{3}$ and $-\\frac{4}{3}$"
+      ],
+      "answer": "$\\frac{4}{3}$ and $-\\frac{4}{3}$",
+      "compute": null,
+      "solution": "$9x^2 - 16 = (3x-4)(3x+4)$. Setting each factor to 0 gives $x = \\frac{4}{3}$ and $x = -\\frac{4}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{4}{3}$ and $-\\frac{4}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x^2 - 16 = (3x-4)(3x+4) = 0, x = 4/3 or -4/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.491Z"
+        }
+      }
+    },
+    {
+      "id": "b6a16525-5ba8-45d6-9404-19462736b3fc",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "factor a quadratic with leading coefficient not 1",
+      "stem": "Which expression is equal to $3x^2 + 10x + 8$?",
+      "choices": [
+        "$(3x+2)(x+4)$",
+        "$(3x+8)(x+1)$",
+        "$(3x+4)(x+2)$",
+        "$(3x-4)(x-2)$"
+      ],
+      "answer": "$(3x+4)(x+2)$",
+      "compute": null,
+      "solution": "Check each product. $(3x+4)(x+2) = 3x^2 + 6x + 4x + 8 = 3x^2 + 10x + 8$. The product $(3x+2)(x+4)$ has middle term $14x$, and $(3x+8)(x+1)$ has $11x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(3x+4)(x+2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x+4)(x+2) = 3x^2+6x+4x+8 = 3x^2+10x+8. (3x+2)(x+4) gives 14x; (3x+8)(x+1) gives 11x; (3x-4)(x-2) gives -10x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.545Z"
+        }
+      }
+    },
+    {
+      "id": "ff4be538-ebbb-40e6-b7c1-216563d3b5fb",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "build a quadratic from its zeros",
+      "stem": "The function $f(x) = x^2 + bx + c$ has zeros at $x = 3$ and $x = 7$. What is $c$?",
+      "choices": [],
+      "answer": "21",
+      "compute": "3*7",
+      "solution": "$f(x) = (x-3)(x-7) = x^2 - 10x + 21$, so $c = 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c = product of zeros = 3*7 = 21 (f = (x-3)(x-7) = x^2-10x+21).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.558Z"
+        }
+      }
+    },
+    {
+      "id": "3b5abd1e-7f6b-4dbe-8feb-ac246e5aee17",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factor a perfect square trinomial",
+      "stem": "Solve $x^2 + 14x + 49 = 0$.",
+      "choices": [],
+      "answer": "-7",
+      "compute": "-7",
+      "solution": "$x^2 + 14x + 49 = (x+7)(x+7) = (x+7)^2$. So $x + 7 = 0$ and the only solution is $x = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+7)^2 = 0, x = -7 (double root).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.572Z"
+        }
+      }
+    },
+    {
       "id": "5aa6ee06-2562-493a-8f4b-90f4ebe59f15",
       "topic_id": "NC17.M1.A-SSE.3",
       "difficulty": 3,
@@ -5032,6 +8633,728 @@
           "work": "4(x^2 - 3x - 10) = 4(x-5)(x+2); zeros 5 and -2; product -10.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.634Z"
+        }
+      }
+    },
+    {
+      "id": "6788813e-be6e-41cb-97e2-e22d2749ed73",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factor a perfect square trinomial",
+      "stem": "For which positive value of $k$ does $x^2 - kx + 36 = 0$ have exactly one solution?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "One solution means the trinomial is a perfect square: $(x-6)^2 = x^2 - 12x + 36$. So $k = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Double root when discriminant k^2 - 144 = 0, k = 12: (x-6)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.953Z"
+        }
+      }
+    },
+    {
+      "id": "dea0c93c-f6b5-4915-892c-d7d8f06a50d0",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $(x-3)(x+2) = 6$. What is the larger solution?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Multiply out: $x^2 - x - 6 = 6$, so $x^2 - x - 12 = 0$. Factor: $(x-4)(x+3) = 0$. The solutions are 4 and $-3$; the larger is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Expand: x^2 - x - 6 = 6, so x^2 - x - 12 = 0, (x-4)(x+3) = 0, x = 4 or -3. Larger 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.039Z"
+        }
+      }
+    },
+    {
+      "id": "eeee5554-48ce-4e32-aceb-ac40b9f69ca6",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "factor out a common factor first",
+      "stem": "Which shows $6x^2 + 4x - 10$ factored completely?",
+      "choices": [
+        "$2(3x-5)(x+1)$",
+        "$2(3x+1)(x-5)$",
+        "$2(3x+5)(x+1)$",
+        "$2(3x+5)(x-1)$"
+      ],
+      "answer": "$2(3x+5)(x-1)$",
+      "compute": null,
+      "solution": "First factor out 2: $6x^2 + 4x - 10 = 2(3x^2 + 2x - 5)$. Then $3x^2 + 2x - 5 = (3x+5)(x-1)$. So the complete factoring is $2(3x+5)(x-1)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2(3x+5)(x-1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x^2+4x-10 = 2(3x^2+2x-5) = 2(3x+5)(x-1): check 3x^2 -3x +5x -5. Other options give 3x^2+8x+5, 3x^2-2x-5, 3x^2-14x-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.047Z"
+        }
+      }
+    },
+    {
+      "id": "9950b07b-6b0e-4fa1-8d73-1cac8bddd3c4",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "factor a monic quadratic",
+      "stem": "Which value of $c$ lets $x^2 + 7x + c$ be factored into two binomials with integer coefficients?",
+      "choices": [
+        "$8$",
+        "$9$",
+        "$10$",
+        "$11$"
+      ],
+      "answer": "$10$",
+      "compute": "10",
+      "solution": "We need two integers with sum 7 and product $c$. For $c = 10$ they are 2 and 5. For 8, 9 and 11 no pair of integers has sum 7 and that product.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need integer pair with sum 7: (1,6)->6, (2,5)->10, (3,4)->12. Only 10 offered; 11, 8, 9 do not factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.048Z"
+        }
+      }
+    },
+    {
+      "id": "50d5ed45-dc3a-4216-882d-97b2050df511",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "A stone is thrown from a bridge. Its height above a river is $h = -4t^2 + 4t + 24$ feet after $t$ seconds. At what time, in seconds, does it hit the river ($h = 0$)?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Set $h = 0$ and divide by $-4$: $t^2 - t - 6 = 0$. Factor: $(t-3)(t+2) = 0$. Time is not negative, so $t = 3$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-4t^2+4t+24 = 0 -> t^2 - t - 6 = 0 -> (t-3)(t+2) = 0, t = 3 (t >= 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.052Z"
+        }
+      }
+    },
+    {
+      "id": "faa6dac9-758f-4802-b1f6-ea19ecbdbcd4",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "build a quadratic from its zeros",
+      "stem": "Which function has the same zeros as $f(x) = x^2 - 3x - 10$?",
+      "choices": [
+        "$g(x) = x^2 + 3x - 10$",
+        "$g(x) = x^2 - 3x + 10$",
+        "$g(x) = 2x^2 - 6x - 10$",
+        "$g(x) = 2x^2 - 6x - 20$"
+      ],
+      "answer": "$g(x) = 2x^2 - 6x - 20$",
+      "compute": null,
+      "solution": "$f(x) = (x-5)(x+2)$. Also $2x^2 - 6x - 20 = 2(x^2 - 3x - 10) = 2(x-5)(x+2)$, with the same zeros 5 and $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g(x) = 2x^2 - 6x - 20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = (x-5)(x+2), zeros 5, -2. 2x^2-6x-20 = 2(x^2-3x-10), same zeros. Others: x^2+3x-10 zeros -5, 2; x^2-3x+10 no real zeros; 2x^2-6x-10 = 2(x^2-3x-5) different.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.074Z"
+        }
+      }
+    },
+    {
+      "id": "46688982-a06f-4610-a993-e19be319c304",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "zeros of a quadratic function",
+      "stem": "The equation $x^2 - 14x + 33 = 0$ has two solutions. What is the larger solution divided by the smaller, as a fraction?",
+      "choices": [],
+      "answer": "11/3",
+      "compute": "11/3",
+      "solution": "Factor: $(x-3)(x-11) = 0$, so the solutions are 3 and 11. The larger divided by the smaller is $\\frac{11}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x-11) = 0: x = 3, 11. 11/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.083Z"
+        }
+      }
+    },
+    {
+      "id": "3a232db8-4953-430c-80fd-fa36591db4c2",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "why factoring reveals the solutions",
+      "stem": "In solving $(2x+1)(x-4) = 0$, we say that $2x + 1 = 0$ or $x - 4 = 0$. Which property justifies this step?",
+      "choices": [
+        "The distributive property",
+        "The zero product property",
+        "The commutative property of multiplication",
+        "The associative property of multiplication"
+      ],
+      "answer": "The zero product property",
+      "compute": null,
+      "solution": "If a product of factors equals 0, at least one factor must equal 0. This is the zero product property.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The zero product property",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "If a product is 0, a factor is 0: the zero product property.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.101Z"
+        }
+      }
+    },
+    {
+      "id": "9bfb53bf-4f09-49d3-bfe5-b14c75e43f63",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "factoring in a context",
+      "stem": "Two numbers have a sum of 5 and a product of $-24$. What is the larger number?",
+      "choices": [
+        "$8$",
+        "$3$",
+        "$-3$",
+        "$24$"
+      ],
+      "answer": "$8$",
+      "compute": "8",
+      "solution": "If one number is $x$, the other is $5 - x$, so $x(5-x) = -24$, which gives $x^2 - 5x - 24 = 0$ and $(x-8)(x+3) = 0$. The numbers are 8 and $-3$; the larger is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 5x - 24 = (x-8)(x+3): numbers 8 and -3; larger 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.146Z"
+        }
+      }
+    },
+    {
+      "id": "e1768506-389a-45f8-b3e3-cca187e41d6e",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "factor out a common factor first",
+      "stem": "What are the zeros of $f(x) = 8x^2 - 18$?",
+      "choices": [
+        "$\\frac{3}{2}$ and $-\\frac{3}{2}$",
+        "$\\frac{9}{4}$ and $-\\frac{9}{4}$",
+        "$\\frac{3}{4}$ and $-\\frac{3}{4}$",
+        "$\\frac{2}{3}$ and $-\\frac{2}{3}$"
+      ],
+      "answer": "$\\frac{3}{2}$ and $-\\frac{3}{2}$",
+      "compute": null,
+      "solution": "Factor out 2: $8x^2 - 18 = 2(4x^2 - 9) = 2(2x-3)(2x+3)$. The zeros are $x = \\frac{3}{2}$ and $x = -\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{2}$ and $-\\frac{3}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x^2 - 18 = 2(2x-3)(2x+3); zeros +-3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.169Z"
+        }
+      }
+    },
+    {
+      "id": "5ab03fba-dbe8-40dc-b205-bddcbf4b4f3d",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "zeros of a quadratic function",
+      "stem": "The equation $x^2 - 8x + 15 = 0$ has solutions $p$ and $q$. What is $p^2 + q^2$?",
+      "choices": [
+        "$64$",
+        "$4$",
+        "$30$",
+        "$34$"
+      ],
+      "answer": "$34$",
+      "compute": "9+25",
+      "solution": "$(x-3)(x-5) = 0$, so the solutions are 3 and 5. Then $3^2 + 5^2 = 9 + 25 = 34$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$34$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x-5): p,q = 3,5; 9 + 25 = 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.201Z"
+        }
+      }
+    },
+    {
+      "id": "35497a51-2dad-4b1c-b188-1dca1a73d5b4",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "zeros of a quadratic function",
+      "stem": "The function $f(x) = 3x^2 - 10x - 8$ has two zeros. What is the distance between them on the number line, as a fraction?",
+      "choices": [],
+      "answer": "14/3",
+      "compute": "4+2/3",
+      "solution": "Factor: $(3x+2)(x-4) = 3x^2 - 12x + 2x - 8$. The zeros are $-\\frac{2}{3}$ and $4$. The distance is $4 - \\left(-\\frac{2}{3}\\right) = \\frac{14}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2 - 10x - 8 = (3x+2)(x-4); zeros 4 and -2/3; distance 4 + 2/3 = 14/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.222Z"
+        }
+      }
+    },
+    {
+      "id": "40382889-d59c-4991-9c27-84e9a00f9a5a",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "why factoring reveals the solutions",
+      "stem": "Sam solves $x^2 - 5x = 14$ by writing $x(x-5) = 14$, so he says $x = 14$ or $x - 5 = 14$. Which is the best way to fix his method?",
+      "choices": [
+        "Subtract 14 from both sides first, then factor $x^2 - 5x - 14$.",
+        "Divide both sides by $x$ before factoring.",
+        "Add 14 to each factor, so $x + 14$ and $x - 5 + 14$.",
+        "Take the square root of both sides of the equation."
+      ],
+      "answer": "Subtract 14 from both sides first, then factor $x^2 - 5x - 14$.",
+      "compute": null,
+      "solution": "The zero product property needs one side to be 0. Write $x^2 - 5x - 14 = 0$, factor to $(x-7)(x+2) = 0$, and get $x = 7$ or $x = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Subtract 14 from both sides first, then factor $x^2 - 5x - 14$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zero-product property needs 0 on one side: x^2 - 5x - 14 = 0, (x-7)(x+2) = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.228Z"
+        }
+      }
+    },
+    {
+      "id": "12da988b-cb8c-4f5d-9af1-018d65870d58",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $x^2 - 6x = 3x - 14$. What is the larger solution?",
+      "choices": [
+        "$2$",
+        "$7$",
+        "$9$",
+        "$14$"
+      ],
+      "answer": "$7$",
+      "compute": "7",
+      "solution": "Collect terms: $x^2 - 9x + 14 = 0$. Factor: $(x-2)(x-7) = 0$. The solutions are 2 and 7; the larger is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 9x + 14 = 0 = (x-2)(x-7). Larger 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.265Z"
+        }
+      }
+    },
+    {
+      "id": "45e74d51-5407-450c-83f0-81fef63cd947",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "build a quadratic from its zeros",
+      "stem": "The function $f(x) = 2x^2 + bx - 12$ has a zero at $x = 4$. What is $b$?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "-(2*16-12)/4",
+      "solution": "Substitute $x = 4$: $2(16) + 4b - 12 = 0$, so $4b = -20$ and $b = -5$. (Check: $2x^2 - 5x - 12 = (2x+3)(x-4)$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(16)+4b-12=0 -> 20+4b=0 -> b=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.302Z"
+        }
+      }
+    },
+    {
+      "id": "d2a716e9-d93c-4983-a340-9bfe250a57eb",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "build a quadratic from its zeros",
+      "stem": "Which equation has the solutions $x = -\\frac{2}{5}$ and $x = \\frac{3}{4}$?",
+      "choices": [
+        "$20x^2 + 7x - 6 = 0$",
+        "$20x^2 + 23x + 6 = 0$",
+        "$20x^2 - 7x - 6 = 0$",
+        "$20x^2 - 23x + 6 = 0$"
+      ],
+      "answer": "$20x^2 - 7x - 6 = 0$",
+      "compute": null,
+      "solution": "The zero $-\\frac{2}{5}$ comes from the factor $(5x+2)$ and $\\frac{3}{4}$ from $(4x-3)$. Then $(5x+2)(4x-3) = 20x^2 - 15x + 8x - 6 = 20x^2 - 7x - 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20x^2 - 7x - 6 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5x+2)(4x-3) = 20x^2 -15x + 8x - 6 = 20x^2 - 7x - 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.311Z"
+        }
+      }
+    },
+    {
+      "id": "543f9271-8c39-4ca8-b73d-35b1a372afa3",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "A rug that is 8 feet by 10 feet is surrounded by a border of the same width $x$ on all four sides. The rug and border together cover 168 square feet. What is $x$ in feet?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The whole region is $(8 + 2x)$ by $(10 + 2x)$, so $(8+2x)(10+2x) = 168$. This gives $4x^2 + 36x + 80 = 168$, so $x^2 + 9x - 22 = 0$ and $(x+11)(x-2) = 0$. The width is positive, so $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(8+2x)(10+2x)=168 -> 4x^2+36x+80=168 -> x^2+9x-22=0 -> (x+11)(x-2)=0 -> x=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.319Z"
+        }
+      }
+    },
+    {
+      "id": "7d1cc5e7-c697-40d2-bd15-f55c2dde28e8",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "A quadratic function $f(x) = x^2 + bx + 96$ has two positive zeros that differ by 4. What is the larger zero?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Let the zeros be $r$ and $r + 4$. Their product is 96, so $r^2 + 4r - 96 = 0$ and $(r+12)(r-8) = 0$. Positive means $r = 8$, so the zeros are 8 and 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros r, r+4 with r(r+4)=96 -> r^2+4r-96=0 -> r=8; larger 12 (b=-20).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.330Z"
+        }
+      }
+    },
+    {
+      "id": "af8f6023-9296-4685-b90a-a6e4ed4c1393",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "The length of a rectangle is 2 meters more than twice its width. The area is 60 square meters. What is the width in meters?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Let the width be $w$. Then $w(2w+2) = 60$, so $2w^2 + 2w - 60 = 0$ and $w^2 + w - 30 = 0$. Factor: $(w+6)(w-5) = 0$. A width is positive, so $w = 5$. (Check: $5 \\cdot 12 = 60$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width w, length 2w+2. w(2w+2)=60 -> 2w^2+2w-60=0 -> w^2+w-30=0 -> (w+6)(w-5)=0. w=5 (positive). Check 5*12=60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.356Z"
+        }
+      }
+    },
+    {
+      "id": "5d849732-174d-47f3-9705-ed1f8fd4288d",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solve a quadratic equation by factoring",
+      "stem": "Solve $12x^2 + x - 6 = 0$. What is the smaller solution, as a fraction?",
+      "choices": [],
+      "answer": "-3/4",
+      "compute": "-3/4",
+      "solution": "Factor: $(4x+3)(3x-2) = 12x^2 - 8x + 9x - 6 = 12x^2 + x - 6$. So $x = -\\frac{3}{4}$ or $x = \\frac{2}{3}$. The smaller solution is $-\\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12x^2 + x - 6 = (4x + 3)(3x - 2) (check: 12x^2 - 8x + 9x - 6). Roots -3/4 and 2/3. Smaller -3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.432Z"
+        }
+      }
+    },
+    {
+      "id": "464e7e98-e169-4d2b-99dd-e490ed784b9c",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "factor a quadratic with leading coefficient not 1",
+      "stem": "Which expression is equal to $10x^2 - 13x - 3$?",
+      "choices": [
+        "$(5x+1)(2x-3)$",
+        "$(5x-1)(2x+3)$",
+        "$(10x+1)(x-3)$",
+        "$(5x-3)(2x+1)$"
+      ],
+      "answer": "$(5x+1)(2x-3)$",
+      "compute": null,
+      "solution": "$(5x+1)(2x-3) = 10x^2 - 15x + 2x - 3 = 10x^2 - 13x - 3$. The product $(5x-1)(2x+3)$ has middle term $+13x$, and $(5x-3)(2x+1)$ has $-x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5x+1)(2x-3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5x+1)(2x-3) = 10x^2 - 15x + 2x - 3 = 10x^2 - 13x - 3. Others give -x, +13x, -29x middle terms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.441Z"
+        }
+      }
+    },
+    {
+      "id": "0b592029-2753-41e6-84bf-1f32bf168675",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "build a quadratic from its zeros",
+      "stem": "A quadratic function $f$ has integer coefficients, leading coefficient 2, and zeros at $x = -3$ and $x = \\frac{1}{2}$. What is $f(2)$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "2*(2+3)*(2-1/2)",
+      "solution": "$f(x) = 2(x+3)\\left(x - \\frac{1}{2}\\right) = (x+3)(2x-1) = 2x^2 + 5x - 3$. Then $f(2) = 8 + 10 - 3 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Leading 2, zeros -3 and 1/2: f = 2(x+3)(x-1/2) = (x+3)(2x-1) = 2x^2+5x-3 (integer coefficients). f(2) = 5*3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.564Z"
+        }
+      }
+    },
+    {
+      "id": "64818774-88e4-4879-b971-9eb66694e885",
+      "topic_id": "NC17.M1.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factoring in a context",
+      "stem": "The product of two consecutive odd positive integers is 143. What is the smaller integer?",
+      "choices": [],
+      "answer": "11",
+      "compute": "11",
+      "solution": "Let the smaller be $n$. Then $n(n+2) = 143$, so $n^2 + 2n - 143 = 0$ and $(n+13)(n-11) = 0$. Since $n$ is positive, $n = 11$. (Check: $11 \\cdot 13 = 143$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n(n+2) = 143, n^2+2n-143 = 0, (n+13)(n-11) = 0, n = 11 (11x13 = 143).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.565Z"
         }
       }
     },

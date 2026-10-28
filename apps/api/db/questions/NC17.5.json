@@ -5,7 +5,7 @@
     "NC17.5.OA.2": "Whole-number expressions with parentheses and brackets (no braces, since the converter has no \\{). Skills: evaluate, write from words, interpret without evaluating, properties, two-step word problems, equivalent expressions, missing number. A student cannot be asked to \"explain\" in text, so explaining is tested as choosing the right statement. Wrote 69 (23 per difficulty), whole numbers only. Braces are avoided; brackets and parentheses are used for grouping. Mixed expressions without grouping appear only where multiplication or division inside a term is unambiguous.",
     "NC17.5.OA.3": "Plots are described in words (no pictures): reading and plotting ordered pairs, moves between points, and which point lies on a pattern graph. All terms are whole numbers in the first quadrant; rules are additive, with multiples appearing as relationships between matching terms.",
     "NC17.5.NBT.1": "30 questions written. Skills: place value relationships 5, multiply by powers of ten 6, divide by powers of ten 6, exponent form of powers of ten 6, value of a digit 3, explaining the pattern 4. Negative exponents are left out (not Grade 5).",
-    "NC17.5.NBT.5": "Whole-number products only; the largest factors are 3-digit by 2-digit, as the standard says. Skills (rough counts): two-digit by two-digit 4, three-digit by two-digit 6, partial products 6, multiply by a multiple of ten 3, word problems 6, estimate to check 3, missing digit 2. Written work in columns is described by its rows (partial products) in words.",
+    "NC17.5.NBT.5": "Whole-number products only; the largest factors are 3-digit by 2-digit, as the standard says. Skills (rough counts): two-digit by two-digit 4, three-digit by two-digit 6, partial products 6, multiply by a multiple of ten 3, word problems 6, estimate to check 3, missing digit 2. Written work in columns is described by its rows (partial products) in words. Products only, as the standard asks; no division. Money is avoided (no dollar sign).",
     "NC17.5.NBT.7": "Decimals are kept to hundredths (products of two tenths reach hundredths); models and drawings are described in words rather than shown. Division of a decimal by a decimal uses friendly numbers that divide exactly.",
     "NC17.5.NF.1": "Denominators are always related (one a multiple of the other) so the common denominator is the larger; answers are fractions or mixed numbers. Choice answers have no compute because the checker accepts only plain numbers there; keys were verified by exact fraction arithmetic in the generator.",
     "NC17.5.NF.3": "Whole-number answers are avoided; answers are fractions or mixed numbers, as in the standard. Skills (rough counts): fraction as numerator divided by denominator (6), share less than 1 (5), share a mixed number (6), size of a quotient (4), find the amount shared (2), compare shares (2), match a story to a division (2), two-step sharing (2), find the error (1). Decimal answers left out on purpose.",
@@ -9673,6 +9673,733 @@
       }
     },
     {
+      "id": "761ae5ac-c6a9-4011-bac3-3738eb9097e1",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "How many tenths are in 0.8?",
+      "choices": [],
+      "answer": "8",
+      "compute": "0.8*10",
+      "solution": "0.8 is 8 tenths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.8 = 8 tenths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.957Z"
+        }
+      }
+    },
+    {
+      "id": "860dddae-0eea-49dc-b864-a74838c52a20",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare decimals",
+      "stem": "Which is greater, 0.6 or 0.58? Write the greater number.",
+      "choices": [],
+      "answer": "0.6",
+      "compute": null,
+      "solution": "0.6 is 60 hundredths, which is more than 58 hundredths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.6 = 0.60 > 0.58.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.976Z"
+        }
+      }
+    },
+    {
+      "id": "12ce0eeb-f82c-4165-9c78-441e389ae55b",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which words name 0.07?",
+      "choices": [
+        "seven tenths",
+        "seven hundredths",
+        "seventy hundredths",
+        "seven thousandths"
+      ],
+      "answer": "seven hundredths",
+      "compute": null,
+      "solution": "The 7 is in the hundredths place, so 0.07 is seven hundredths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "seven hundredths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.07 = 7/100, seven hundredths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.064Z"
+        }
+      }
+    },
+    {
+      "id": "e15c90a2-214f-43be-9080-8cf776e5cf0e",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decimals in context and building numbers",
+      "stem": "Kim ran 0.8 mile and Tom ran 0.6 mile. Who ran farther?",
+      "choices": [
+        "Tom",
+        "They ran the same distance",
+        "Kim",
+        "It cannot be told"
+      ],
+      "answer": "Kim",
+      "compute": null,
+      "solution": "0.8 is 8 tenths and 0.6 is 6 tenths. 8 tenths is more, so Kim ran farther.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Kim",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.8 > 0.6, Kim ran farther.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.078Z"
+        }
+      }
+    },
+    {
+      "id": "2211dc1f-636c-467d-b877-ca99f32aebf4",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Order decimals",
+      "stem": "Which of the numbers 0.9, 0.09 and 0.19 is the least? Write it as a decimal.",
+      "choices": [],
+      "answer": "0.09",
+      "compute": null,
+      "solution": "0.9 is 90 hundredths, 0.19 is 19 hundredths and 0.09 is 9 hundredths. The least is 0.09.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.09",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.09 < 0.19 < 0.9. Least is 0.09.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.105Z"
+        }
+      }
+    },
+    {
+      "id": "63450a1d-7154-488d-9c4c-3ef5030871ca",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and write decimals in words",
+      "stem": "Write eight hundredths as a decimal.",
+      "choices": [],
+      "answer": "0.08",
+      "compute": "8/100",
+      "solution": "8 hundredths is 8/100. The 8 goes in the hundredths place and a 0 holds the tenths place: 0.08.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.08",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Eight hundredths = 8/100 = 0.08.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.107Z"
+        }
+      }
+    },
+    {
+      "id": "03c847c1-f3f5-4304-b5af-8887a4beead1",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "Write $\\frac{7}{100}$ as a decimal.",
+      "choices": [],
+      "answer": "0.07",
+      "compute": "7/100",
+      "solution": "7 hundredths is written 0.07.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.07",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/100 = 0.07.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.114Z"
+        }
+      }
+    },
+    {
+      "id": "1021a9bb-928a-4157-89a0-143edf9b7484",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Expanded form",
+      "stem": "Which decimal is the same as 4 tenths and 2 hundredths?",
+      "choices": [
+        "0.24",
+        "4.2",
+        "0.42",
+        "0.402"
+      ],
+      "answer": "0.42",
+      "compute": null,
+      "solution": "4 tenths is 0.4 and 2 hundredths is 0.02. Together they are 0.42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.4 + 0.02 = 0.42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.115Z"
+        }
+      }
+    },
+    {
+      "id": "2ef11a04-0e6e-4b1c-8bb2-054406f6ad22",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "How is 3.6 read in words?",
+      "choices": [
+        "three and six hundredths",
+        "three and six thousandths",
+        "three hundred six",
+        "three and six tenths"
+      ],
+      "answer": "three and six tenths",
+      "compute": null,
+      "solution": "The 6 is in the tenths place, so 3.6 is three and six tenths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "three and six tenths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.6 = three and six tenths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.122Z"
+        }
+      }
+    },
+    {
+      "id": "adff7be6-4bd2-4664-94ff-878b53e9c4a4",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place value of a digit",
+      "stem": "In the number 2.4, the digit 4 is in which place?",
+      "choices": [
+        "ones",
+        "tens",
+        "hundredths",
+        "tenths"
+      ],
+      "answer": "tenths",
+      "compute": null,
+      "solution": "The first place after the decimal point is the tenths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "tenths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4: 4 is in the tenths place.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.144Z"
+        }
+      }
+    },
+    {
+      "id": "3ff55de4-636b-4abf-8182-5603861a2fec",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Place value of a digit",
+      "stem": "What digit is in the tenths place of 7.35?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "The first digit after the decimal point is the tenths place. In 7.35 it is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.35: tenths digit 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.163Z"
+        }
+      }
+    },
+    {
+      "id": "016bac2f-0876-4699-99a0-d5cb49d602bb",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and write decimals in words",
+      "stem": "Write nine thousandths as a decimal.",
+      "choices": [],
+      "answer": "0.009",
+      "compute": "9/1000",
+      "solution": "9 thousandths is 9/1000. The 9 goes in the thousandths place: 0.009.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.009",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/1000 = 0.009.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.177Z"
+        }
+      }
+    },
+    {
+      "id": "52cd506d-2420-4c6d-aa4b-518e79cec898",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and write decimals in words",
+      "stem": "Write two and three tenths as a decimal.",
+      "choices": [],
+      "answer": "2.3",
+      "compute": "2+3/10",
+      "solution": "Two ones and three tenths is 2.3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "two and three tenths = 2.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.197Z"
+        }
+      }
+    },
+    {
+      "id": "882c6c4a-3f6b-4c95-ba39-38886d04e0be",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which words name 0.003?",
+      "choices": [
+        "three hundredths",
+        "three thousandths",
+        "three tenths",
+        "thirty thousandths"
+      ],
+      "answer": "three thousandths",
+      "compute": null,
+      "solution": "The 3 is in the thousandths place, so 0.003 is three thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "three thousandths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.003 = three thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.199Z"
+        }
+      }
+    },
+    {
+      "id": "da36d126-b3f3-400f-b28a-85aa0d4b2198",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "Which decimal is equal to 0.4?",
+      "choices": [
+        "0.40",
+        "0.04",
+        "4.0",
+        "0.14"
+      ],
+      "answer": "0.40",
+      "compute": null,
+      "solution": "Adding a zero at the end of a decimal does not change its value: 0.4 = 0.40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.4 = 0.40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.199Z"
+        }
+      }
+    },
+    {
+      "id": "1e35c75f-8616-48b1-b859-1e34d58f91d7",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "$4.8 = 4 + ?$ What number does the ? stand for?",
+      "choices": [],
+      "answer": "0.8",
+      "compute": "4.8-4",
+      "solution": "The whole part is 4, so the rest is 0.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.8 = 4 + 0.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.205Z"
+        }
+      }
+    },
+    {
+      "id": "31495a58-e126-4e04-b01a-096e44f264e9",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which words name 1.5?",
+      "choices": [
+        "one and five tenths",
+        "one and five hundredths",
+        "one and five thousandths",
+        "five and one tenth"
+      ],
+      "answer": "one and five tenths",
+      "compute": null,
+      "solution": "The 5 is in the tenths place, so 1.5 is one and five tenths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "one and five tenths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5 = one and five tenths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.205Z"
+        }
+      }
+    },
+    {
+      "id": "4061c98b-da02-4340-893e-33f645b2b68b",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place value of a digit",
+      "stem": "In the number 6.19, what is the value of the digit 9?",
+      "choices": [
+        "0.09",
+        "0.9",
+        "9",
+        "0.009"
+      ],
+      "answer": "0.09",
+      "compute": null,
+      "solution": "The 9 is in the hundredths place, so its value is 9 hundredths, or 0.09.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.09",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.19: 9 is in the hundredths place: 0.09.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.208Z"
+        }
+      }
+    },
+    {
+      "id": "ff78c6e0-cc07-4071-b81e-39221f1785b9",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "A number has 3 ones, 6 tenths and 2 hundredths. Write the number as a decimal.",
+      "choices": [],
+      "answer": "3.62",
+      "compute": "3+6/10+2/100",
+      "solution": "3 + 0.6 + 0.02 = 3.62.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.62",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 0.6 + 0.02 = 3.62.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.219Z"
+        }
+      }
+    },
+    {
+      "id": "98cf6d7a-270f-4945-b0ad-a09358973f48",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which statement is true?",
+      "choices": [
+        "$0.2 > 0.9$",
+        "$0.7 > 0.3$",
+        "$0.5 < 0.1$",
+        "$0.8 = 0.08$"
+      ],
+      "answer": "$0.7 > 0.3$",
+      "compute": null,
+      "solution": "7 tenths is more than 3 tenths. The other statements are false: 0.9 > 0.2, 0.1 < 0.5, and 0.8 is 10 times 0.08.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.7 > 0.3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.7 > 0.3 true; others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.220Z"
+        }
+      }
+    },
+    {
+      "id": "8a12de77-b09c-4f80-a87e-733d33a38c44",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which decimal is less than 0.5?",
+      "choices": [
+        "0.7",
+        "0.9",
+        "0.3",
+        "0.5"
+      ],
+      "answer": "0.3",
+      "compute": null,
+      "solution": "0.3 is 3 tenths, which is less than 5 tenths. 0.5 is equal to 0.5, not less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.3 < 0.5; others are equal or greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.223Z"
+        }
+      }
+    },
+    {
+      "id": "63d3bb0b-683d-4acc-8e97-6f43c5830e3c",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order decimals",
+      "stem": "Which list is in order from greatest to least?",
+      "choices": [
+        "0.04, 0.4, 0.45",
+        "0.4, 0.45, 0.04",
+        "0.04, 0.45, 0.4",
+        "0.45, 0.4, 0.04"
+      ],
+      "answer": "0.45, 0.4, 0.04",
+      "compute": null,
+      "solution": "0.45 is 45 hundredths, 0.4 is 40 hundredths and 0.04 is 4 hundredths. So the order is 0.45, 0.4, 0.04.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.45, 0.4, 0.04",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.45 > 0.40 > 0.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.301Z"
+        }
+      }
+    },
+    {
+      "id": "d2d6a7ec-89cf-4367-8fe5-1195ab654c17",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Place value of a digit",
+      "stem": "What digit is in the thousandths place of 0.472?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "The third digit after the decimal point is the thousandths place. In 0.472 it is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.472: 4 tenths, 7 hundredths, 2 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.366Z"
+        }
+      }
+    },
+    {
       "id": "88aa26f3-9e2d-4732-bd4b-bf274e447476",
       "topic_id": "NC17.5.NBT.3",
       "difficulty": 2,
@@ -9984,6 +10711,733 @@
           "work": "12 + 0.45 = 12.45.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:29.662Z"
+        }
+      }
+    },
+    {
+      "id": "35bb5772-f236-4ed1-8c23-9eb0561978af",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Order decimals",
+      "stem": "The numbers 3.4, 3.04, 3.404 and 3.044 are put in order from least to greatest. Which number is third in the list?",
+      "choices": [],
+      "answer": "3.4",
+      "compute": null,
+      "solution": "Written in thousandths: 3.400, 3.040, 3.404, 3.044. Least to greatest: 3.04, 3.044, 3.4, 3.404. The third is 3.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 3.04, 3.044, 3.4, 3.404. Third is 3.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.965Z"
+        }
+      }
+    },
+    {
+      "id": "f3ac345d-e6e8-485d-8233-d9246ad9891b",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "A number has 12 in the whole-number part. It has 5 in the tenths place, 0 in the hundredths place and 3 in the thousandths place. Write the number.",
+      "choices": [],
+      "answer": "12.503",
+      "compute": "12+5/10+3/1000",
+      "solution": "The number is 12.503.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12.503",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.503.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.969Z"
+        }
+      }
+    },
+    {
+      "id": "97edc281-1f80-40a4-9a92-1ffa646b6190",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Dev compares 2.09 and 2.1. Which statement is correct?",
+      "choices": [
+        "$2.09 > 2.1$",
+        "$2.09 = 2.9$",
+        "$2.09 < 2.1$",
+        "$2.09 = 2.1$"
+      ],
+      "answer": "$2.09 < 2.1$",
+      "compute": null,
+      "solution": "2.1 = 2.10, and 2.09 is less than 2.10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2.09 < 2.1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.09 < 2.10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.996Z"
+        }
+      }
+    },
+    {
+      "id": "af532907-eb0c-45d8-bf60-7bd6d194b429",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "Which pair of decimals names the same number?",
+      "choices": [
+        "0.30 and 0.300",
+        "0.03 and 0.30",
+        "0.3 and 0.033",
+        "0.30 and 0.033"
+      ],
+      "answer": "0.30 and 0.300",
+      "compute": null,
+      "solution": "Zeros at the end of a decimal do not change its value, so 0.30 and 0.300 are both 0.3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.30 and 0.300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.30 = 0.300 (trailing zeros); others differ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.998Z"
+        }
+      }
+    },
+    {
+      "id": "7117632e-3798-4bd7-890e-2f80a7f9af04",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "Write $2 \\times 1 + 9 \\times 0.01 + 3 \\times 0.001$ as one decimal.",
+      "choices": [],
+      "answer": "2.093",
+      "compute": "2+9*0.01+3*0.001",
+      "solution": "2 + 0.09 + 0.003 = 2.093.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.093",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 0.09 + 0.003 = 2.093.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.020Z"
+        }
+      }
+    },
+    {
+      "id": "b5549c28-a22e-499e-9aba-8494a842a947",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Place value of a digit",
+      "stem": "What digit is in the hundredths place of 14.386?",
+      "choices": [],
+      "answer": "8",
+      "compute": null,
+      "solution": "After the decimal point the places are tenths (3), hundredths (8) and thousandths (6).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14.386: tenths 3, hundredths 8, thousandths 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.044Z"
+        }
+      }
+    },
+    {
+      "id": "28860503-f793-4693-aafd-10262bd5ca9e",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decimals in context and building numbers",
+      "stem": "Three runners finished a race in 24.5, 24.05 and 24.52 seconds. What was the fastest time? Write it as a decimal.",
+      "choices": [],
+      "answer": "24.05",
+      "compute": null,
+      "solution": "The least time is the fastest. 24.50, 24.05 and 24.52: the least is 24.05.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24.05",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fastest = smallest time: 24.05 < 24.5 < 24.52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.050Z"
+        }
+      }
+    },
+    {
+      "id": "3e4cdc09-5e53-4c81-b04d-10ebe0bd3421",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "A number has 8 ones, 1 hundredth and 6 thousandths. Write the number as a decimal.",
+      "choices": [],
+      "answer": "8.016",
+      "compute": "8+1/100+6/1000",
+      "solution": "8 + 0.01 + 0.006 = 8.016. The tenths place holds a 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.016",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 0.01 + 0.006 = 8.016 (0 tenths).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.057Z"
+        }
+      }
+    },
+    {
+      "id": "dfc52309-7108-4a18-864d-75a4e71e375f",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decimals in context and building numbers",
+      "stem": "A recipe uses 0.125 kilogram of butter. How many thousandths of a kilogram is that?",
+      "choices": [],
+      "answer": "125",
+      "compute": "0.125*1000",
+      "solution": "0.125 is 125 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.125 = 125/1000: 125 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.059Z"
+        }
+      }
+    },
+    {
+      "id": "356b9e09-5e50-4e9b-9094-6aa149cc4963",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Rita says 0.07 is greater than 0.3 because 7 is greater than 3. Which statement shows her mistake?",
+      "choices": [
+        "0.07 has more digits than 0.3",
+        "0.07 is 7 tenths and 0.3 is 3 hundredths",
+        "0.3 is 3 tenths, which is more than 7 hundredths",
+        "0.3 and 0.07 are equal"
+      ],
+      "answer": "0.3 is 3 tenths, which is more than 7 hundredths",
+      "compute": null,
+      "solution": "0.3 = 0.30, which is 30 hundredths. That is more than 7 hundredths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.3 is 3 tenths, which is more than 7 hundredths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.3 = 3 tenths = 30 hundredths > 7 hundredths. Option C swaps the places.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.117Z"
+        }
+      }
+    },
+    {
+      "id": "375a9ef7-b539-494a-a250-a07511f4a6e6",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which number is sixteen and sixteen thousandths?",
+      "choices": [
+        "16.16",
+        "16.016",
+        "16.160",
+        "160.16"
+      ],
+      "answer": "16.016",
+      "compute": null,
+      "solution": "Sixteen thousandths is 0.016, so the number is 16.016.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16.016",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sixteen and sixteen thousandths = 16.016.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.142Z"
+        }
+      }
+    },
+    {
+      "id": "67ed31b1-9061-4760-ba29-a8af17127866",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expanded form",
+      "stem": "Which shows 8.047 in expanded form?",
+      "choices": [
+        "$8 + 4 \\times \\frac{1}{10} + 7 \\times \\frac{1}{100}$",
+        "$8 + 4 \\times \\frac{1}{1000} + 7 \\times \\frac{1}{100}$",
+        "$8 + 4 \\times \\frac{1}{100} + 7 \\times \\frac{1}{100}$",
+        "$8 + 4 \\times \\frac{1}{100} + 7 \\times \\frac{1}{1000}$"
+      ],
+      "answer": "$8 + 4 \\times \\frac{1}{100} + 7 \\times \\frac{1}{1000}$",
+      "compute": null,
+      "solution": "In 8.047 the 4 is in the hundredths place and the 7 is in the thousandths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 4 \\times \\frac{1}{100} + 7 \\times \\frac{1}{1000}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.047 = 8 + 0 tenths + 4 hundredths + 7 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.149Z"
+        }
+      }
+    },
+    {
+      "id": "abaabddf-c67a-45cf-9606-a62fec8107da",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expanded form",
+      "stem": "Which decimal equals $3 + \\frac{4}{10} + \\frac{5}{1000}$?",
+      "choices": [
+        "3.45",
+        "3.045",
+        "3.54",
+        "3.405"
+      ],
+      "answer": "3.405",
+      "compute": null,
+      "solution": "4 tenths is 0.4 and 5 thousandths is 0.005, so the number is 3.405.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.405",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 0.4 + 0.005 = 3.405.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.157Z"
+        }
+      }
+    },
+    {
+      "id": "14e23b4f-a485-43ff-917e-f8fcce770837",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which words name 0.045?",
+      "choices": [
+        "forty-five hundredths",
+        "forty-five thousandths",
+        "four hundred five thousandths",
+        "forty and five thousandths"
+      ],
+      "answer": "forty-five thousandths",
+      "compute": null,
+      "solution": "0.045 has its last digit in the thousandths place and reads as 45 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "forty-five thousandths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.045 = 45/1000, forty-five thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.157Z"
+        }
+      }
+    },
+    {
+      "id": "aa3888e8-7a8c-4716-9313-c2ef48166c57",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare decimals",
+      "stem": "Which is greater, 4.35 or 4.305? Write the greater number.",
+      "choices": [],
+      "answer": "4.35",
+      "compute": null,
+      "solution": "4.35 = 4.350, which is greater than 4.305.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.35 = 4.350 > 4.305.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.171Z"
+        }
+      }
+    },
+    {
+      "id": "41be1eb5-b00a-4ae0-9de8-50954d35ce11",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and write decimals in words",
+      "stem": "Write nine and two hundred six thousandths as a decimal.",
+      "choices": [],
+      "answer": "9.206",
+      "compute": "9+206/1000",
+      "solution": "Two hundred six thousandths is 0.206, so the number is 9.206.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9.206",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 206/1000 = 9.206.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.173Z"
+        }
+      }
+    },
+    {
+      "id": "00ac33fd-f7e0-430c-8ae9-a463fe69b516",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which words name 0.906?",
+      "choices": [
+        "nine hundred six thousandths",
+        "nine hundred six hundredths",
+        "ninety-six thousandths",
+        "nine and six hundredths"
+      ],
+      "answer": "nine hundred six thousandths",
+      "compute": null,
+      "solution": "The last digit is in the thousandths place and the number is 906 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "nine hundred six thousandths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.906 = 906/1000, nine hundred six thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.173Z"
+        }
+      }
+    },
+    {
+      "id": "803b0aa8-23b9-4d13-a0d5-123203ac9500",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which decimal is less than 0.45?",
+      "choices": [
+        "0.46",
+        "0.405",
+        "0.5",
+        "0.450"
+      ],
+      "answer": "0.405",
+      "compute": null,
+      "solution": "0.405 is less than 0.450. 0.46 and 0.5 are greater, and 0.450 equals 0.45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.405",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.405 < 0.450; 0.450 equal, 0.5 and 0.46 greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.215Z"
+        }
+      }
+    },
+    {
+      "id": "a6faaeaf-ab6b-446b-a263-1fc355cfed52",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order decimals",
+      "stem": "Which list puts 0.62, 0.062, 0.6 and 0.602 in order from least to greatest?",
+      "choices": [
+        "0.062, 0.602, 0.6, 0.62",
+        "0.6, 0.62, 0.602, 0.062",
+        "0.62, 0.602, 0.6, 0.062",
+        "0.062, 0.6, 0.602, 0.62"
+      ],
+      "answer": "0.062, 0.6, 0.602, 0.62",
+      "compute": null,
+      "solution": "In thousandths the numbers are 62, 600, 602 and 620. Least to greatest: 0.062, 0.6, 0.602, 0.62.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.062, 0.6, 0.602, 0.62",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.062 < 0.600 < 0.602 < 0.620.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.286Z"
+        }
+      }
+    },
+    {
+      "id": "43e0b213-e2eb-4f2e-ad7e-920ae4b2b854",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and write decimals in words",
+      "stem": "Write thirty-one and four hundredths as a decimal.",
+      "choices": [],
+      "answer": "31.04",
+      "compute": "31+4/100",
+      "solution": "Thirty-one is the whole part. Four hundredths is 0.04 (a 0 holds the tenths place). The number is 31.04.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31.04",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "31 + 0.04 = 31.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.331Z"
+        }
+      }
+    },
+    {
+      "id": "5879026d-6d41-4b7f-ad62-2ce2c99e6e3c",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place value of a digit",
+      "stem": "Which number has a 6 in the tenths place and a 2 in the thousandths place?",
+      "choices": [
+        "4.602",
+        "4.062",
+        "4.206",
+        "6.042"
+      ],
+      "answer": "4.602",
+      "compute": null,
+      "solution": "In 4.602 the digits after the point are 6 (tenths), 0 (hundredths) and 2 (thousandths). In 4.062 the 6 is in the hundredths place, in 4.206 the 2 is in the tenths place, and in 6.042 the 6 is in the ones place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.602",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.602: tenths 6, hundredths 0, thousandths 2. Others: 4.062 (tenths 0), 4.206 (tenths 2), 6.042 (tenths 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.412Z"
+        }
+      }
+    },
+    {
+      "id": "92ea4ca7-9ec7-46be-bf9f-2f207ba51b35",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which number is between 3.2 and 3.3?",
+      "choices": [
+        "3.35",
+        "3.02",
+        "3.25",
+        "3.30"
+      ],
+      "answer": "3.25",
+      "compute": null,
+      "solution": "3.2 = 3.20 and 3.3 = 3.30. Only 3.25 is greater than 3.20 and less than 3.30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.2 < 3.25 < 3.3. 3.30 equals 3.3, 3.35 > 3.3, 3.02 < 3.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.455Z"
+        }
+      }
+    },
+    {
+      "id": "5066a0e8-d94f-4e0a-a2aa-b4b04c67c7a0",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "How many thousandths are in 0.45?",
+      "choices": [],
+      "answer": "450",
+      "compute": "0.45*1000",
+      "solution": "0.45 = 0.450, which is 450 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "450",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.45 = 450/1000, so 450 thousandths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.462Z"
         }
       }
     },
@@ -10308,6 +11762,738 @@
       }
     },
     {
+      "id": "0c95cd7b-8064-4885-a811-2c040ae95a36",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "A number has 3 hundreds, 2 hundredths and 5 thousandths. All the other places are 0. Write the number as a decimal.",
+      "choices": [],
+      "answer": "300.025",
+      "compute": "300+2/100+5/1000",
+      "solution": "300 + 0.02 + 0.005 = 300.025.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300.025",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 + 0.02 + 0.005 = 300.025.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.954Z"
+        }
+      }
+    },
+    {
+      "id": "8cc25d1a-a186-4e96-8b82-941722dfeb50",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decimals in context and building numbers",
+      "stem": "Which is the greatest decimal that can be made with the digits 4, 9 and 0, using each once after the decimal point in 0.___?",
+      "choices": [
+        "0.904",
+        "0.940",
+        "0.490",
+        "0.409"
+      ],
+      "answer": "0.940",
+      "compute": null,
+      "solution": "Put the greatest digit, 9, in the tenths place, then 4, then 0: 0.940.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.940",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest digits first: 0.940.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.972Z"
+        }
+      }
+    },
+    {
+      "id": "2a2f2185-e953-46f1-b175-bfb71f7a3327",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimals in context and building numbers",
+      "stem": "Use each of the digits 3, 0 and 8 once, after the decimal point in 0.___, to make the smallest decimal possible. What is the decimal?",
+      "choices": [],
+      "answer": "0.038",
+      "compute": null,
+      "solution": "Put the smallest digit, 0, in the tenths place, then 3, then 8: 0.038.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.038",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest: 0 then 3 then 8: 0.038.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.977Z"
+        }
+      }
+    },
+    {
+      "id": "2ed86848-04c5-4b38-be30-bc8e5163a4c4",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Order decimals",
+      "stem": "The numbers 0.505, 0.55, 0.5, 0.055 and 0.05 are put in order from greatest to least. Which number is fourth in the list?",
+      "choices": [],
+      "answer": "0.055",
+      "compute": null,
+      "solution": "In thousandths: 505, 550, 500, 55 and 50. Greatest to least: 0.55, 0.505, 0.5, 0.055, 0.05. The fourth is 0.055.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.055",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest to least: 0.55, 0.505, 0.5, 0.055, 0.05. Fourth 0.055.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.995Z"
+        }
+      }
+    },
+    {
+      "id": "0bd3f4c0-68ed-472d-a85e-930e9c7c44e8",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order decimals",
+      "stem": "Which list puts 1.9, 1.99, 1.09 and 1.909 in order from greatest to least?",
+      "choices": [
+        "1.99, 1.909, 1.9, 1.09",
+        "1.909, 1.99, 1.9, 1.09",
+        "1.99, 1.9, 1.909, 1.09",
+        "1.09, 1.9, 1.909, 1.99"
+      ],
+      "answer": "1.99, 1.909, 1.9, 1.09",
+      "compute": null,
+      "solution": "In thousandths: 1.990, 1.909, 1.900 and 1.090. Greatest to least is 1.99, 1.909, 1.9, 1.09.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.99, 1.909, 1.9, 1.09",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.99 > 1.909 > 1.9 > 1.09.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.019Z"
+        }
+      }
+    },
+    {
+      "id": "7fcff425-94db-4328-9f60-d56dfda6cb56",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimals in context and building numbers",
+      "stem": "In a race, four times in seconds were 14.38, 14.083, 14.8 and 14.308. What was the fastest time?",
+      "choices": [],
+      "answer": "14.083",
+      "compute": null,
+      "solution": "The fastest time is the least. In thousandths: 14.380, 14.083, 14.800 and 14.308. The least is 14.083.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14.083",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fastest = least: 14.083 < 14.308 < 14.38 < 14.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.061Z"
+        }
+      }
+    },
+    {
+      "id": "c19b5687-79ed-4697-af85-ab2cdad59be1",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimals in context and building numbers",
+      "stem": "A number has 3 ones. Its tenths digit and its thousandths digit are both 7, and its hundredths digit is 0. Write the number.",
+      "choices": [],
+      "answer": "3.707",
+      "compute": null,
+      "solution": "Ones 3, tenths 7, hundredths 0, thousandths 7: 3.707.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.707",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 ones, 7 tenths, 0 hundredths, 7 thousandths: 3.707.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.067Z"
+        }
+      }
+    },
+    {
+      "id": "d99696b0-c9e6-4de4-93cb-0c06b3369f7b",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which of these decimals is the greatest?",
+      "choices": [
+        "0.808",
+        "0.8",
+        "0.088",
+        "0.88"
+      ],
+      "answer": "0.88",
+      "compute": null,
+      "solution": "In thousandths the numbers are 880, 808, 800 and 88. The greatest is 0.88.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.88",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.880 > 0.808 > 0.800 > 0.088.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.080Z"
+        }
+      }
+    },
+    {
+      "id": "88180952-76da-45c3-9674-229a5520a490",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which one of these statements is true?",
+      "choices": [
+        "$0.409 > 0.41$",
+        "$0.409 < 0.41$",
+        "$0.095 > 0.1$",
+        "$0.7 = 0.07$"
+      ],
+      "answer": "$0.409 < 0.41$",
+      "compute": null,
+      "solution": "0.41 = 0.410, which is more than 0.409. Also 0.1 = 0.100 is more than 0.095, and 0.7 is ten times 0.07.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.409 < 0.41$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.409 vs 0.410: 0.409 < 0.41 true. 0.7 = 0.07 false. 0.095 > 0.1 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.109Z"
+        }
+      }
+    },
+    {
+      "id": "5301ff8a-2ae1-46e0-9929-fc2997b83876",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place value of a digit",
+      "stem": "A number has 9 in the tenths place and 4 in the hundredths place. Which number could it be?",
+      "choices": [
+        "2.49",
+        "9.24",
+        "2.94",
+        "2.904"
+      ],
+      "answer": "2.94",
+      "compute": null,
+      "solution": "In 2.94 the digits after the point are 9 (tenths) and 4 (hundredths). In 2.49 they are swapped, in 9.24 the 9 is in the ones place, and in 2.904 the 4 is in the thousandths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.94",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tenths 9, hundredths 4: 2.94. (2.904 has 0 hundredths; 2.49 and 9.24 wrong.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.119Z"
+        }
+      }
+    },
+    {
+      "id": "f39ca1c5-4232-4370-b3c4-7108db6c5c9f",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare decimals",
+      "stem": "Which statement correctly compares 0.38 and 0.308?",
+      "choices": [
+        "0.308 is greater, because 308 is more than 38",
+        "0.38 is greater, because 0.38 = 0.380 and 380 is more than 308",
+        "0.308 is greater, because it has more digits",
+        "0.38 and 0.308 are equal, because both use 3 and 8"
+      ],
+      "answer": "0.38 is greater, because 0.38 = 0.380 and 380 is more than 308",
+      "compute": null,
+      "solution": "0.38 = 0.380, which is 380 thousandths. 0.308 is 308 thousandths. 380 is more than 308, so 0.38 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.38 is greater, because 0.38 = 0.380 and 380 is more than 308",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.38 = 0.380 > 0.308.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.144Z"
+        }
+      }
+    },
+    {
+      "id": "aec24baa-4261-42e0-aa7a-3c01b21c414a",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "Write $5 \\times 100 + 3 \\times 0.1 + 7 \\times 0.001$ as one decimal.",
+      "choices": [],
+      "answer": "500.307",
+      "compute": "500+0.3+0.007",
+      "solution": "500 + 0.3 + 0.007 = 500.307.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "500.307",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 + 0.3 + 0.007 = 500.307.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.160Z"
+        }
+      }
+    },
+    {
+      "id": "4799ca64-b17d-41a4-8aad-ffde5316a0d9",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expanded form",
+      "stem": "Which is NOT a way to write 4.52?",
+      "choices": [
+        "$4 + \\frac{5}{10} + \\frac{2}{1000}$",
+        "$4 + 0.5 + 0.02$",
+        "$4 + \\frac{52}{100}$",
+        "$4.520$"
+      ],
+      "answer": "$4 + \\frac{5}{10} + \\frac{2}{1000}$",
+      "compute": null,
+      "solution": "4 + 5/10 + 2/1000 = 4.502. The other three all equal 4.52.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + \\frac{5}{10} + \\frac{2}{1000}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 5/10 + 2/1000 = 4.502, not 4.52. Others equal 4.52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.161Z"
+        }
+      }
+    },
+    {
+      "id": "636805fb-000f-4728-87e9-5cf0073a232d",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "$0.7 = \\frac{?}{1000}$ What number does the ? stand for?",
+      "choices": [],
+      "answer": "700",
+      "compute": "0.7*1000",
+      "solution": "0.7 = 0.700, which is 700 thousandths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.7 = 700/1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.164Z"
+        }
+      }
+    },
+    {
+      "id": "5e546657-fb21-4af5-8fcf-efc0de77e0b0",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Place value of a digit",
+      "stem": "In the number 91.836, what is the sum of the digit in the tenths place and the digit in the thousandths place?",
+      "choices": [],
+      "answer": "14",
+      "compute": "8+6",
+      "solution": "The tenths digit is 8 and the thousandths digit is 6. 8 + 6 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "91.836: tenths 8, hundredths 3, thousandths 6; 8+6 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.183Z"
+        }
+      }
+    },
+    {
+      "id": "66480179-4290-4453-8200-44dc7cf7ee62",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expanded form",
+      "stem": "Which is the expanded form of 70.402?",
+      "choices": [
+        "$7 \\times 10 + 4 \\times \\frac{1}{100} + 2 \\times \\frac{1}{1000}$",
+        "$7 \\times 10 + 4 \\times \\frac{1}{10} + 2 \\times \\frac{1}{100}$",
+        "$7 \\times 10 + 4 \\times \\frac{1}{10} + 2 \\times \\frac{1}{1000}$",
+        "$7 \\times 100 + 4 \\times \\frac{1}{10} + 2 \\times \\frac{1}{1000}$"
+      ],
+      "answer": "$7 \\times 10 + 4 \\times \\frac{1}{10} + 2 \\times \\frac{1}{1000}$",
+      "compute": null,
+      "solution": "The 7 is in the tens place, the 4 in the tenths place and the 2 in the thousandths place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 10 + 4 \\times \\frac{1}{10} + 2 \\times \\frac{1}{1000}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70.402 = 7 tens + 4 tenths + 0 hundredths + 2 thousandths = 7x10 + 4x1/10 + 2x1/1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.189Z"
+        }
+      }
+    },
+    {
+      "id": "5ca3c3b1-eac0-4f3a-bb50-e8533f10048c",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent decimals and fractions",
+      "stem": "Which of these is NOT equal to 6.5?",
+      "choices": [
+        "6.50",
+        "6.500",
+        "6.05",
+        "six and five tenths"
+      ],
+      "answer": "6.05",
+      "compute": null,
+      "solution": "6.05 has a 0 in the tenths place, so it is 6 and 5 hundredths. The others are all 6 and 5 tenths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.05",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.05 is six and five hundredths, not 6.5; the others equal 6.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.227Z"
+        }
+      }
+    },
+    {
+      "id": "6360538f-37bf-4591-b2ec-c4cf8c3404cd",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Which number is read forty and sixteen thousandths?",
+      "choices": [
+        "40.16",
+        "40.016",
+        "400.016",
+        "40.0016"
+      ],
+      "answer": "40.016",
+      "compute": null,
+      "solution": "Sixteen thousandths is 0.016 (the 6 is in the thousandths place), so the number is 40.016.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40.016",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Forty = 40, sixteen thousandths = 0.016: 40.016.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.239Z"
+        }
+      }
+    },
+    {
+      "id": "ebf1e05e-138a-492a-8e3a-0a78612e2e3c",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expanded form",
+      "stem": "Which number has this expanded form: $4 \\times 10 + 2 \\times \\frac{1}{100} + 9 \\times \\frac{1}{1000}$?",
+      "choices": [
+        "4.029",
+        "40.29",
+        "40.209",
+        "40.029"
+      ],
+      "answer": "40.029",
+      "compute": null,
+      "solution": "4 tens is 40, 2 hundredths is 0.02 and 9 thousandths is 0.009: 40.029.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40.029",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 + 0.02 + 0.009 = 40.029.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.302Z"
+        }
+      }
+    },
+    {
+      "id": "3bc79603-e57f-4621-a189-52430abd040c",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and write decimals in words",
+      "stem": "Sasha wrote five and two hundredths as 5.2. Which number should Sasha have written?",
+      "choices": [
+        "5.02",
+        "5.2",
+        "5.002",
+        "52.00"
+      ],
+      "answer": "5.02",
+      "compute": null,
+      "solution": "Two hundredths is 0.02, so the number is 5.02. 5.2 is five and two tenths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.02",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Five and two hundredths = 5.02.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.303Z"
+        }
+      }
+    },
+    {
+      "id": "a3591114-d100-4d14-b823-60616c7747d5",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and write decimals in words",
+      "stem": "Write two hundred seven and thirty-eight thousandths as a decimal.",
+      "choices": [],
+      "answer": "207.038",
+      "compute": "207+38/1000",
+      "solution": "Thirty-eight thousandths is 0.038, so the number is 207.038.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "207.038",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "207 + 0.038 = 207.038.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.307Z"
+        }
+      }
+    },
+    {
+      "id": "5ddc87eb-16b7-4e09-be50-efb9b727508b",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decimals in context and building numbers",
+      "stem": "Four packages weigh 2.045, 2.4, 2.405 and 2.04 kilograms. Which package is the heaviest?",
+      "choices": [
+        "2.4 kilograms",
+        "2.045 kilograms",
+        "2.04 kilograms",
+        "2.405 kilograms"
+      ],
+      "answer": "2.405 kilograms",
+      "compute": null,
+      "solution": "In thousandths: 2.045, 2.400, 2.405 and 2.040. The greatest is 2.405.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.405 kilograms",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Compare: 2.405 > 2.400 > 2.045 > 2.040. Heaviest 2.405.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.357Z"
+        }
+      }
+    },
+    {
+      "id": "8301a4ea-c0b0-40ec-912c-d46499b8570c",
+      "topic_id": "NC17.5.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expanded form",
+      "stem": "$12.405 = 12 + ? + 0.005$ What number does the ? stand for?",
+      "choices": [],
+      "answer": "0.4",
+      "compute": null,
+      "solution": "12.405 is 12 and 4 tenths and 5 thousandths, so the ? is 0.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.405 = 12 + 0.4 + 0.005; ? = 0.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.566Z"
+        }
+      }
+    },
+    {
       "id": "e7412134-dfbf-4083-a983-fa724dc58941",
       "topic_id": "NC17.5.NBT.5",
       "difficulty": 1,
@@ -10614,6 +12800,699 @@
           "work": "18 x 14 = 72 + 180 = 252.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:53.757Z"
+        }
+      }
+    },
+    {
+      "id": "a0881013-c00c-4bfc-b34a-dbea855a149f",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-digit by two-digit product",
+      "stem": "Which equation is true?",
+      "choices": [
+        "$22 \\times 13 = 66$",
+        "$22 \\times 13 = 286$",
+        "$22 \\times 13 = 266$",
+        "$22 \\times 13 = 2{,}860$"
+      ],
+      "answer": "$22 \\times 13 = 286$",
+      "compute": null,
+      "solution": "22 x 3 = 66 and 22 x 10 = 220. 66 + 220 = 286.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$22 \\times 13 = 286$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "22 x 13 = 220 + 66 = 286.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.947Z"
+        }
+      }
+    },
+    {
+      "id": "ff2d3d11-ccb6-4700-9f54-1303c7a6f4c6",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "Each bag holds 20 apples. A store has 35 bags. How many apples is that?",
+      "choices": [],
+      "answer": "700",
+      "compute": "20*35",
+      "solution": "35 x 2 = 70. Each bag holds 20, so multiply 70 by 10: 700 apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 x 35 = 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.954Z"
+        }
+      }
+    },
+    {
+      "id": "00fedee8-e3bd-431b-99c7-5d75949b77fe",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate to check a product",
+      "stem": "To estimate $48 \\times 31$, round each number to the nearest ten and multiply. What is the estimate?",
+      "choices": [],
+      "answer": "1500",
+      "compute": "50*30",
+      "solution": "48 rounds to 50 and 31 rounds to 30. 50 x 30 = 1,500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 x 30 = 1,500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.967Z"
+        }
+      }
+    },
+    {
+      "id": "0fc379f1-5f54-4434-a6e7-f758d5598ba5",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Find $421 \\times 22$.",
+      "choices": [],
+      "answer": "9262",
+      "compute": "421*22",
+      "solution": "421 x 2 = 842 and 421 x 20 = 8,420. 842 + 8,420 = 9,262.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9262",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "421 x 22 = 8,420 + 842 = 9,262.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.972Z"
+        }
+      }
+    },
+    {
+      "id": "58e51112-28c3-408e-bdfa-a7a739953e78",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate to check a product",
+      "stem": "A school has 28 classrooms with 31 students in each. About how many students are in the classrooms?",
+      "choices": [
+        "about 900",
+        "about 90",
+        "about 600",
+        "about 9,000"
+      ],
+      "answer": "about 900",
+      "compute": null,
+      "solution": "28 is about 30 and 31 is about 30. 30 x 30 = 900.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "about 900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "~30 x 30 = 900 (exact 868).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.994Z"
+        }
+      }
+    },
+    {
+      "id": "475d84c4-8485-495a-93de-d22a452ccb7e",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate to check a product",
+      "stem": "Which is the best estimate of $52 \\times 19$?",
+      "choices": [
+        "100",
+        "700",
+        "1,000",
+        "10,000"
+      ],
+      "answer": "1,000",
+      "compute": "1000",
+      "solution": "Round 52 to 50 and 19 to 20. Then 50 x 20 = 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 x 20 = 1,000 (exact 988).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.001Z"
+        }
+      }
+    },
+    {
+      "id": "39972c28-38a3-49b6-86ab-49217375b9f2",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing digit",
+      "stem": "In $2? \\times 12 = 300$, the ? stands for one missing digit. What is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "300/12-20",
+      "solution": "300 / 12 = 25, so the missing digit is 5. Check: 25 x 12 = 250 + 50 = 300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 / 12 = 25, so the number is 25; check 25 x 12 = 300. Missing digit 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.038Z"
+        }
+      }
+    },
+    {
+      "id": "702b26fa-5112-418f-856f-ae8061b5029f",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Three-digit by two-digit product",
+      "stem": "What is $201 \\times 31$?",
+      "choices": [
+        "6,030",
+        "6,231",
+        "804",
+        "6,331"
+      ],
+      "answer": "6,231",
+      "compute": "6231",
+      "solution": "201 x 1 = 201 and 201 x 30 = 6,030. 201 + 6,030 = 6,231.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6,231",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "201 x 31 = 201 x 30 + 201 = 6030 + 201 = 6231.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.068Z"
+        }
+      }
+    },
+    {
+      "id": "ea34e5f9-d1a4-4971-8b15-018f1901b61a",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "Which is the product of $60 \\times 12$?",
+      "choices": [
+        "720",
+        "72",
+        "7,200",
+        "620"
+      ],
+      "answer": "720",
+      "compute": "720",
+      "solution": "12 x 6 = 72. Multiplying by 60 is 12 x 6 x 10, so the product is 720.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "720",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 x 12 = 720.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.145Z"
+        }
+      }
+    },
+    {
+      "id": "dd87609e-f85d-4d46-b4eb-ebce87eddb95",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "Find $34 \\times 50$.",
+      "choices": [],
+      "answer": "1700",
+      "compute": "34*50",
+      "solution": "34 x 5 = 170. Multiplying by 50 is 34 x 5 x 10, so the product is 1,700.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "34 x 50 = 1700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.155Z"
+        }
+      }
+    },
+    {
+      "id": "593c2218-75a2-47df-bfef-3eeab2e44fc9",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A bakery packs 24 rolls in each bag. It fills 15 bags. How many rolls is that?",
+      "choices": [
+        "39",
+        "3,600",
+        "120",
+        "360"
+      ],
+      "answer": "360",
+      "compute": "360",
+      "solution": "24 x 5 = 120 and 24 x 10 = 240. 120 + 240 = 360. Adding 24 + 15 = 39 is not multiplying.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "360",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 x 15 = 360.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.156Z"
+        }
+      }
+    },
+    {
+      "id": "4a251f6b-932d-4ae3-ad18-4403f56104ba",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Multiply 112 by 23.",
+      "choices": [],
+      "answer": "2576",
+      "compute": "112*23",
+      "solution": "112 x 3 = 336 and 112 x 20 = 2,240. 336 + 2,240 = 2,576.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2576",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "112 x 23 = 2240 + 336 = 2576.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.160Z"
+        }
+      }
+    },
+    {
+      "id": "63c4eb1c-52a5-43a7-a78e-3b7ed466d7d7",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "Each bus holds 45 students. How many students can 12 buses hold?",
+      "choices": [],
+      "answer": "540",
+      "compute": "45*12",
+      "solution": "45 x 2 = 90 and 45 x 10 = 450. 90 + 450 = 540.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "540",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 x 12 = 450 + 90 = 540.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.185Z"
+        }
+      }
+    },
+    {
+      "id": "0966844f-c089-4482-9d67-aad6baa2ccbd",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A garden has 14 rows. Each row has 25 plants. How many plants are there in all?",
+      "choices": [
+        "39",
+        "3,500",
+        "350",
+        "100"
+      ],
+      "answer": "350",
+      "compute": "350",
+      "solution": "25 x 4 = 100 and 25 x 10 = 250. 100 + 250 = 350. Adding 25 + 14 = 39 is not multiplying.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "350",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 x 25 = 350.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.259Z"
+        }
+      }
+    },
+    {
+      "id": "51ed1343-cf18-4d6c-9eea-82d86831160a",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Partial products in the algorithm",
+      "stem": "When multiplying $52 \\times 36$ with the standard algorithm, the first row is $52 \\times 6$. What number is in the first row?",
+      "choices": [],
+      "answer": "312",
+      "compute": "52*6",
+      "solution": "52 x 6 = 312.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "312",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52 x 6 = 312.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.268Z"
+        }
+      }
+    },
+    {
+      "id": "99386d07-ee5b-4552-8509-cf451274b8f2",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Product with a zero in a factor",
+      "stem": "Which is the product of $102 \\times 21$?",
+      "choices": [
+        "2,040",
+        "2,242",
+        "21,420",
+        "2,142"
+      ],
+      "answer": "2,142",
+      "compute": "2142",
+      "solution": "102 x 1 = 102 and 102 x 20 = 2,040. 102 + 2,040 = 2,142. Leaving out the 102 x 1 row gives 2,040.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2,142",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "102*21 = 2040 + 102 = 2142.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.345Z"
+        }
+      }
+    },
+    {
+      "id": "33458f22-6f7f-4ece-a3df-2ff953dfc4bc",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Partial products in the algorithm",
+      "stem": "Which two numbers are added at the end when multiplying $31 \\times 24$ with the standard algorithm?",
+      "choices": [
+        "124 and 620",
+        "124 and 62",
+        "93 and 620",
+        "124 and 6,200"
+      ],
+      "answer": "124 and 620",
+      "compute": null,
+      "solution": "31 x 4 = 124 is the first row. 31 x 20 = 620 is the second row. The other pairs have a wrong digit or a misplaced zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "124 and 620",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "31 x 24: partial products 31 x 4 = 124 and 31 x 20 = 620; 124 + 620 = 744.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.365Z"
+        }
+      }
+    },
+    {
+      "id": "2d682752-ab92-46f8-8d3f-df3d17a902f8",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a missing digit",
+      "stem": "Which digit makes $1? \\times 13 = 169$ true?",
+      "choices": [
+        "9",
+        "3",
+        "6",
+        "1"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "169 / 13 = 13, so the number is 13 and the missing digit is 3. Check: 13 x 13 = 130 + 39 = 169.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "169/13 = 13, so the missing digit is 3 (13 x 13 = 169).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.368Z"
+        }
+      }
+    },
+    {
+      "id": "fd491654-5d98-4fcd-a6f7-f0b488c00e05",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Product with a zero in a factor",
+      "stem": "Find $206 \\times 14$.",
+      "choices": [],
+      "answer": "2884",
+      "compute": "206*14",
+      "solution": "206 x 4 = 824 and 206 x 10 = 2,060. 824 + 2,060 = 2,884.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2884",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "206 x 14 = 206 x 10 + 206 x 4 = 2060 + 824 = 2884.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.385Z"
+        }
+      }
+    },
+    {
+      "id": "2dfef310-b214-481f-a385-955043aa80f7",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A box holds 120 pages. How many pages are in 11 boxes?",
+      "choices": [],
+      "answer": "1320",
+      "compute": "120*11",
+      "solution": "120 x 1 = 120 and 120 x 10 = 1,200. 120 + 1,200 = 1,320.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1320",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 x 11 = 1,320.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.503Z"
+        }
+      }
+    },
+    {
+      "id": "1b868c4b-0b76-4d54-899c-a7b805612b26",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-digit by two-digit product",
+      "stem": "What is the product of 35 and 12?",
+      "choices": [],
+      "answer": "420",
+      "compute": "35*12",
+      "solution": "35 x 2 = 70 and 35 x 10 = 350. 70 + 350 = 420.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "420",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35x12 = 350+70 = 420.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.537Z"
+        }
+      }
+    },
+    {
+      "id": "c5a77c4b-af9e-47c0-a6d3-c6ada7f30ec5",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-digit by two-digit product",
+      "stem": "Which is the product of $16 \\times 15$?",
+      "choices": [
+        "96",
+        "230",
+        "240",
+        "2,400"
+      ],
+      "answer": "240",
+      "compute": "240",
+      "solution": "16 x 5 = 80 and 16 x 10 = 160. 80 + 160 = 240. Adding only 16 to 80 gives 96, which leaves out the tens row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "240",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16x15 = 160+80 = 240.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.551Z"
         }
       }
     },
@@ -10933,6 +13812,723 @@
       }
     },
     {
+      "id": "1fa4294c-a9a0-4967-af8d-f9bd2207645d",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Product with a zero in a factor",
+      "stem": "Which is the product of $608 \\times 25$?",
+      "choices": [
+        "4,256",
+        "1,700",
+        "12,160",
+        "15,200"
+      ],
+      "answer": "15,200",
+      "compute": "15200",
+      "solution": "608 x 5 = 3,040 and 608 x 20 = 12,160. 3,040 + 12,160 = 15,200. Forgetting the zero in the second row gives 4,256.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15,200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "608 x 25 = 15,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.943Z"
+        }
+      }
+    },
+    {
+      "id": "1920540d-a96d-4acc-98dc-8fb16aff3965",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Partial products in the algorithm",
+      "stem": "In the standard algorithm for $276 \\times 48$, what is the first row, $276 \\times 8$?",
+      "choices": [],
+      "answer": "2208",
+      "compute": "276*8",
+      "solution": "276 x 8: 8 x 6 = 48, 8 x 70 = 560, 8 x 200 = 1,600. 1,600 + 560 + 48 = 2,208.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2208",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "276 x 8 = 2,208.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.947Z"
+        }
+      }
+    },
+    {
+      "id": "ffbdb5fe-9f66-4e07-90d2-401176a339fb",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing digit",
+      "stem": "In $4? \\times 23 = 1{,}081$, the ? stands for one missing digit. What is the ?",
+      "choices": [],
+      "answer": "7",
+      "compute": "1081/23-40",
+      "solution": "1,081 / 23 = 47, so the missing digit is 7. Check: 47 x 3 = 141 and 47 x 20 = 940. 141 + 940 = 1,081.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,081 / 23 = 47, so the missing digit is 7 (47 x 23 = 940 + 141 = 1,081).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.948Z"
+        }
+      }
+    },
+    {
+      "id": "36026999-e9ed-4da2-9c67-18f565d4d880",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find and fix an error in the algorithm",
+      "stem": "Ben multiplies $47 \\times 36$ and gets 1,662. His second row, 1,410, is correct, but his first row is not. What is the correct product of $47 \\times 36$?",
+      "choices": [],
+      "answer": "1692",
+      "compute": "47*36",
+      "solution": "47 x 6 = 282 and 47 x 30 = 1,410. 282 + 1,410 = 1,692. His first row should be 282, not 252.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1692",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 x 6 = 282 (first row), 47 x 30 = 1,410; sum 1,692.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.949Z"
+        }
+      }
+    },
+    {
+      "id": "9f6a2f53-26c9-40d8-9107-2b271447c274",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "A crate holds 300 oranges. How many oranges are in 40 crates?",
+      "choices": [],
+      "answer": "12000",
+      "compute": "300*40",
+      "solution": "3 x 4 = 12, so 300 x 40 = 12,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 x 40 = 12,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.950Z"
+        }
+      }
+    },
+    {
+      "id": "2ea3a9bb-fadd-4680-91d0-32e92c283209",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing digit",
+      "stem": "Which digit makes $3?5 \\times 12 = 4{,}140$ true?",
+      "choices": [
+        "3",
+        "5",
+        "4",
+        "6"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4,140 / 12 = 345, so the missing digit is 4. Check: 345 x 2 = 690 and 345 x 10 = 3,450. 690 + 3,450 = 4,140.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,140 / 12 = 345, so ? = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.955Z"
+        }
+      }
+    },
+    {
+      "id": "765f76f3-3da2-4d0c-8ba9-7f4f5d496145",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-digit by two-digit product",
+      "stem": "Which is the product of $59 \\times 34$?",
+      "choices": [
+        "1,906",
+        "2,106",
+        "20,060",
+        "2,006"
+      ],
+      "answer": "2,006",
+      "compute": "2006",
+      "solution": "59 x 4 = 236 and 59 x 30 = 1,770. 236 + 1,770 = 2,006.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2,006",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "59 x 34 = 1,770 + 236 = 2,006.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.976Z"
+        }
+      }
+    },
+    {
+      "id": "522ca45b-3f9e-4c94-b0d0-e962d13ea2c0",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Find $659 \\times 24$.",
+      "choices": [],
+      "answer": "15816",
+      "compute": "659*24",
+      "solution": "659 x 4 = 2,636 and 659 x 20 = 13,180. 2,636 + 13,180 = 15,816.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15816",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "659 x 24 = 13,180 + 2,636 = 15,816.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.016Z"
+        }
+      }
+    },
+    {
+      "id": "0a3a7308-832c-446b-9c8d-a3843bb83949",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A farm has 24 fields. Each field has 175 trees. How many trees does the farm have?",
+      "choices": [
+        "4,200",
+        "199",
+        "42,000",
+        "3,500"
+      ],
+      "answer": "4,200",
+      "compute": "4200",
+      "solution": "175 x 4 = 700 and 175 x 20 = 3,500. 700 + 3,500 = 4,200. Using only 175 x 20 = 3,500 leaves out the ones row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4,200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "175 x 24 = 175 x 20 + 175 x 4 = 3500 + 700 = 4200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.056Z"
+        }
+      }
+    },
+    {
+      "id": "32609748-d403-41a6-9a6d-257486096f78",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Find $482 \\times 37$.",
+      "choices": [],
+      "answer": "17834",
+      "compute": "482*37",
+      "solution": "482 x 7 = 3,374 and 482 x 30 = 14,460. 3,374 + 14,460 = 17,834.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17834",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "482 x 37 = 482 x 30 + 482 x 7 = 14460 + 3374 = 17834.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.062Z"
+        }
+      }
+    },
+    {
+      "id": "f217a3db-6ad3-4667-82e7-cb089d05f918",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multi-step word problem with the standard algorithm",
+      "stem": "Pam buys 18 packs of cards with 12 cards in each pack. Then she gives away 50 cards. How many cards does she have left?",
+      "choices": [],
+      "answer": "166",
+      "compute": "18*12-50",
+      "solution": "18 x 12 = 216 cards. 216 - 50 = 166 cards left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "166",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 x 12 = 216 cards; 216 - 50 = 166.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.090Z"
+        }
+      }
+    },
+    {
+      "id": "1ed97434-b744-4c66-aeb1-f1186b8ceaa6",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Which is the product of $375 \\times 28$?",
+      "choices": [
+        "3,750",
+        "10,050",
+        "10,500",
+        "1,050"
+      ],
+      "answer": "10,500",
+      "compute": "10500",
+      "solution": "375 x 8 = 3,000 and 375 x 20 = 7,500. 3,000 + 7,500 = 10,500. Writing 750 instead of 7,500 for the second row gives 3,750.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10,500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "375 x 28 = 375 x 20 + 375 x 8 = 7500 + 3000 = 10500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.095Z"
+        }
+      }
+    },
+    {
+      "id": "025aea2e-4fc3-4829-8fbc-f1658a280776",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A library puts 36 books on each of 48 shelves. How many books are on the shelves?",
+      "choices": [],
+      "answer": "1728",
+      "compute": "36*48",
+      "solution": "36 x 8 = 288 and 36 x 40 = 1,440. 288 + 1,440 = 1,728.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1728",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 x 48 = 36 x 50 - 36 x 2 = 1800 - 72 = 1728.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.119Z"
+        }
+      }
+    },
+    {
+      "id": "2100cb2d-0b33-4688-8d72-a7d36251723e",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate to check a product",
+      "stem": "Which is the best estimate of $713 \\times 42$?",
+      "choices": [
+        "2,800",
+        "280,000",
+        "21,000",
+        "28,000"
+      ],
+      "answer": "28,000",
+      "compute": "28000",
+      "solution": "Round 713 to 700 and 42 to 40. 700 x 40 = 28,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "713 x 42 ~ 700 x 40 = 28,000 (exact 29,946). 28,000 is clearly closest of the options.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.184Z"
+        }
+      }
+    },
+    {
+      "id": "488b68b0-6c32-4de4-bbe5-86575941a8be",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find and fix an error in the algorithm",
+      "stem": "Priya multiplies $53 \\times 24$. Her rows are 212 and 106, and she adds them to get 318. Which statement is correct?",
+      "choices": [
+        "The second row should be 1,060, so the product is 1,272",
+        "The first row should be 2,120, so the product is 2,226",
+        "Both rows are right, so the product 318 is correct",
+        "The second row should be 10,600, so the product is 10,812"
+      ],
+      "answer": "The second row should be 1,060, so the product is 1,272",
+      "compute": null,
+      "solution": "53 x 4 = 212 is right. The second row is 53 x 20 = 1,060, not 106. Then 212 + 1,060 = 1,272.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The second row should be 1,060, so the product is 1,272",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "53x4 = 212 (right); 53x20 = 1,060, so second row should be 1,060; 212 + 1,060 = 1,272.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.243Z"
+        }
+      }
+    },
+    {
+      "id": "753f8ac5-6dc2-4493-9a14-7e35f467cf62",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Partial products in the algorithm",
+      "stem": "The two partial products of $764 \\times 35$ are 3,820 and ?. Find the ?",
+      "choices": [],
+      "answer": "22920",
+      "compute": "764*30",
+      "solution": "764 x 5 = 3,820 is the first row. The second row is 764 x 30 = 22,920.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22920",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "764 x 5 = 3,820; 764 x 30 = 22,920.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.248Z"
+        }
+      }
+    },
+    {
+      "id": "a153a19d-655c-4b41-bb5d-061d9f5dd692",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A factory makes 135 toy cars every hour. It runs for 16 hours. How many toy cars does it make?",
+      "choices": [],
+      "answer": "2160",
+      "compute": "135*16",
+      "solution": "135 x 6 = 810 and 135 x 10 = 1,350. 810 + 1,350 = 2,160.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "135 x 16 = 135 x 10 + 135 x 6 = 1350 + 810 = 2160.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.368Z"
+        }
+      }
+    },
+    {
+      "id": "99339e72-74f1-487b-b99e-4fb7dc7e1243",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Partial products in the algorithm",
+      "stem": "Which shows the two partial products for $58 \\times 47$?",
+      "choices": [
+        "406 and 232",
+        "406 and 2,320",
+        "406 and 23,200",
+        "464 and 2,320"
+      ],
+      "answer": "406 and 2,320",
+      "compute": null,
+      "solution": "58 x 7 = 406 and 58 x 40 = 2,320.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "406 and 2,320",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "58 x 7 = 406; 58 x 40 = 2,320. Sum 2,726 = 58 x 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.384Z"
+        }
+      }
+    },
+    {
+      "id": "61b2e872-6812-4af4-8c70-e45ffd48430c",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate to check a product",
+      "stem": "Jo estimates $291 \\times 52$ by rounding each number to its greatest place, 300 and 50. What is her estimate?",
+      "choices": [],
+      "answer": "15000",
+      "compute": "300*50",
+      "solution": "300 x 50 = 15,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 x 50 = 15,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.395Z"
+        }
+      }
+    },
+    {
+      "id": "069304f5-6af9-4b24-a213-6771f5336c51",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Product with a zero in a factor",
+      "stem": "Find $407 \\times 36$.",
+      "choices": [],
+      "answer": "14652",
+      "compute": "407*36",
+      "solution": "407 x 6 = 2,442 and 407 x 30 = 12,210. 2,442 + 12,210 = 14,652.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14652",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "407 x 36 = 407 x 30 + 407 x 6 = 12210 + 2442 = 14652.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.409Z"
+        }
+      }
+    },
+    {
+      "id": "9a265c0e-8344-47b0-a013-3644560b1514",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A baker uses 125 grams of flour for each loaf. How many grams of flour does she use for 32 loaves?",
+      "choices": [
+        "400",
+        "3,750",
+        "4,000",
+        "157"
+      ],
+      "answer": "4,000",
+      "compute": "4000",
+      "solution": "125 x 2 = 250 and 125 x 30 = 3,750. 250 + 3,750 = 4,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "125 x 32 = 125 x 8 x 4 = 1000 x 4 = 4000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.417Z"
+        }
+      }
+    },
+    {
+      "id": "eb825a2c-21d9-44ed-a524-87b3cf24f253",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-digit by two-digit product",
+      "stem": "Multiply 85 by 27.",
+      "choices": [],
+      "answer": "2295",
+      "compute": "85*27",
+      "solution": "85 x 7 = 595 and 85 x 20 = 1,700. 595 + 1,700 = 2,295.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2295",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85 x 27 = 85 x 20 + 85 x 7 = 1700 + 595 = 2295.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.462Z"
+        }
+      }
+    },
+    {
+      "id": "d2de4781-917d-4bba-9627-aa39d3a53a4b",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "Which is the product of $85 \\times 60$?",
+      "choices": [
+        "510",
+        "5,100",
+        "51,000",
+        "4,800"
+      ],
+      "answer": "5,100",
+      "compute": "5100",
+      "solution": "85 x 6 = 510. Multiplying by 60 is 85 x 6 x 10, so the product is 5,100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5,100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85 x 6 = 510, x 10 = 5,100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.486Z"
+        }
+      }
+    },
+    {
       "id": "37eb83b3-3669-4a63-9aea-9ef4193d39ac",
       "topic_id": "NC17.5.NBT.5",
       "difficulty": 3,
@@ -11239,6 +14835,718 @@
           "work": "236 x 40 = 236 x 4 x 10 = 9,440.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:53.757Z"
+        }
+      }
+    },
+    {
+      "id": "c2e11538-4b32-4d74-977c-5b7ae2326f0b",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "Find $460 \\times 35$.",
+      "choices": [],
+      "answer": "16100",
+      "compute": "460*35",
+      "solution": "46 x 35 = 1,610 (46 x 5 = 230 and 46 x 30 = 1,380). Multiplying by 10 more: 460 x 35 = 16,100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "460 x 35 = 13,800 + 2,300 = 16,100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.912Z"
+        }
+      }
+    },
+    {
+      "id": "1e805cff-e937-4e92-b9a1-9cebf7f8509b",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Partial products in the algorithm",
+      "stem": "The first partial product of $478 \\times 62$ is 956. The second partial product is $478 \\times 60$. What is the product $478 \\times 62$?",
+      "choices": [],
+      "answer": "29636",
+      "compute": "478*62",
+      "solution": "478 x 2 = 956 and 478 x 60 = 28,680. 956 + 28,680 = 29,636.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29636",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "478 x 2 = 956; 478 x 60 = 28,680; 956 + 28,680 = 29,636.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.951Z"
+        }
+      }
+    },
+    {
+      "id": "2759d8eb-0fcc-4508-b24f-c74376efd38b",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step word problem with the standard algorithm",
+      "stem": "A bus drives 55 miles each hour for 14 hours. A train goes 72 miles each hour for 11 hours. How many more miles does the train go than the bus?",
+      "choices": [],
+      "answer": "22",
+      "compute": "72*11-55*14",
+      "solution": "Bus: 55 x 14 = 770 miles. Train: 72 x 11 = 792 miles. 792 - 770 = 22 miles more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bus 55 x 14 = 770; train 72 x 11 = 792; 792 - 770 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.957Z"
+        }
+      }
+    },
+    {
+      "id": "21a704dc-ce13-4bef-be18-c8d9db64a00f",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find and fix an error in the algorithm",
+      "stem": "Sam multiplies $346 \\times 27$. His rows are 2,422 and 6,920, and he writes the sum as 9,332. Which statement is correct?",
+      "choices": [
+        "The first row should be 2,442, so the sum is 9,362",
+        "The second row should be 692, so the sum is 3,114",
+        "Both rows are right, but the sum should be 9,342",
+        "Both rows and the sum are right"
+      ],
+      "answer": "Both rows are right, but the sum should be 9,342",
+      "compute": null,
+      "solution": "346 x 7 = 2,422 and 346 x 20 = 6,920 are both right. 2,422 + 6,920 = 9,342, not 9,332.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both rows are right, but the sum should be 9,342",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "346 x 7 = 2,422 correct; 346 x 20 = 6,920 correct; 2,422 + 6,920 = 9,342.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.964Z"
+        }
+      }
+    },
+    {
+      "id": "2b3deacc-69db-43de-a05a-8c3cb3609111",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multi-step word problem with the standard algorithm",
+      "stem": "A book has 1,800 pages. Mia reads 38 pages each day for 45 days. How many pages does she still have to read?",
+      "choices": [
+        "1,710",
+        "3,510",
+        "110",
+        "90"
+      ],
+      "answer": "90",
+      "compute": "90",
+      "solution": "38 x 45 = 1,710 pages read. 1,800 - 1,710 = 90 pages left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "38 x 45 = 1,710; 1,800 - 1,710 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.965Z"
+        }
+      }
+    },
+    {
+      "id": "50fccfcc-f0e7-407c-952b-a2de1e953601",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Partial products in the algorithm",
+      "stem": "Which shows the two partial products for $286 \\times 53$?",
+      "choices": [
+        "858 and 14,300",
+        "858 and 1,430",
+        "848 and 14,300",
+        "858 and 143,000"
+      ],
+      "answer": "858 and 14,300",
+      "compute": null,
+      "solution": "286 x 3 = 858 and 286 x 50 = 14,300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "858 and 14,300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "286 x 3 = 858; 286 x 50 = 14,300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.966Z"
+        }
+      }
+    },
+    {
+      "id": "0aa632d5-bcb1-4078-8689-95133768733c",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step word problem with the standard algorithm",
+      "stem": "A school orders 26 cartons with 150 sheets of paper in each carton. The school uses 3,000 sheets. How many sheets are left?",
+      "choices": [],
+      "answer": "900",
+      "compute": "26*150-3000",
+      "solution": "26 x 150 = 3,900 sheets. 3,900 - 3,000 = 900 sheets left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "26 x 150 = 3,900; 3,900 - 3,000 = 900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.970Z"
+        }
+      }
+    },
+    {
+      "id": "8f0c4829-2cb3-44ef-a925-6d2d50ef022d",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Which is the product of $538 \\times 67$?",
+      "choices": [
+        "6,994",
+        "36,046",
+        "36,146",
+        "35,946"
+      ],
+      "answer": "36,046",
+      "compute": "36046",
+      "solution": "538 x 7 = 3,766 and 538 x 60 = 32,280. 3,766 + 32,280 = 36,046. Adding 538 x 7 to 538 x 6 gives 6,994.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36,046",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "538 x 7 = 3,766; 538 x 60 = 32,280; sum 36,046.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.971Z"
+        }
+      }
+    },
+    {
+      "id": "ab886381-2ed5-43d9-8c3f-73045fa30ca0",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Word problem with the standard algorithm",
+      "stem": "A rectangle is 96 centimeters long and 47 centimeters wide. What is its area in square centimeters?",
+      "choices": [
+        "143",
+        "1,056",
+        "4,512",
+        "45,120"
+      ],
+      "answer": "4,512",
+      "compute": "4512",
+      "solution": "96 x 7 = 672 and 96 x 40 = 3,840. 672 + 3,840 = 4,512. Adding 96 + 47 = 143 is not the area.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4,512",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "96 x 47 = 3,840 + 672 = 4,512.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:31.975Z"
+        }
+      }
+    },
+    {
+      "id": "39b8a106-2d73-48af-a69f-cc8d28e97fe9",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate to check a product",
+      "stem": "Which multiplication has a product closest to 10,000?",
+      "choices": [
+        "$50 \\times 105$",
+        "$50 \\times 205$",
+        "$20 \\times 205$",
+        "$80 \\times 305$"
+      ],
+      "answer": "$50 \\times 205$",
+      "compute": null,
+      "solution": "50 x 205 = 10,250, which is about 250 away from 10,000. The others are 5,250, 4,100 and 24,400, which are much farther away.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50 \\times 205$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A 24,400; B 10,250; C 4,100; D 5,250. B closest.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.002Z"
+        }
+      }
+    },
+    {
+      "id": "acd8d23c-8cfa-42cd-ac4c-20af7320c247",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Product with a zero in a factor",
+      "stem": "Which is the product of $804 \\times 52$?",
+      "choices": [
+        "4,368",
+        "41,808",
+        "5,628",
+        "41,608"
+      ],
+      "answer": "41,808",
+      "compute": "41808",
+      "solution": "804 x 2 = 1,608 and 804 x 50 = 40,200. 1,608 + 40,200 = 41,808. Leaving out the zero in the tens row gives 5,628.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41,808",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "804 x 52 = 804 x 50 + 804 x 2 = 40200 + 1608 = 41808.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.070Z"
+        }
+      }
+    },
+    {
+      "id": "0678212c-52eb-40ca-a074-322fe3c6fba7",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing digit",
+      "stem": "Which digit makes $6?7 \\times 36 = 25{,}092$ true?",
+      "choices": [
+        "9",
+        "7",
+        "8",
+        "6"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "25,092 / 36 = 697, so the missing digit is 9. Check: 697 x 6 = 4,182 and 697 x 30 = 20,910. 4,182 + 20,910 = 25,092.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25092 / 36 = 697, so the digit is 9. Check 697 x 36 = 20910 + 4182 = 25092.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.079Z"
+        }
+      }
+    },
+    {
+      "id": "4c3fdedf-60ae-4d45-a5ef-4213bc33ae48",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing digit",
+      "stem": "In $3?8 \\times 24 = 8{,}592$, the ? stands for one missing digit. What is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(8592/24-308)/10",
+      "solution": "8,592 / 24 = 358, so the missing digit is 5. Check: 358 x 4 = 1,432 and 358 x 20 = 7,160. 1,432 + 7,160 = 8,592.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8592 / 24 = 358 (24 x 358 = 7160 + 1432 = 8592). So the number is 358 and ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.088Z"
+        }
+      }
+    },
+    {
+      "id": "c1cace18-7119-44c2-ba79-3616d3512364",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Product with a zero in a factor",
+      "stem": "Find $905 \\times 78$.",
+      "choices": [],
+      "answer": "70590",
+      "compute": "905*78",
+      "solution": "905 x 8 = 7,240 and 905 x 70 = 63,350. 7,240 + 63,350 = 70,590.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70590",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "905 x 78 = 900 x 78 + 5 x 78 = 70200 + 390 = 70590.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.106Z"
+        }
+      }
+    },
+    {
+      "id": "e14283a1-2169-4b69-a626-6ad1d137cdf1",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find and fix an error in the algorithm",
+      "stem": "Zoe says $305 \\times 24 = 1{,}220$. She found only one of the two partial products. What is the correct product?",
+      "choices": [],
+      "answer": "7320",
+      "compute": "305*24",
+      "solution": "305 x 4 = 1,220 and 305 x 20 = 6,100. 1,220 + 6,100 = 7,320. Zoe found only the first row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7320",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "305 x 4 = 1220; 305 x 20 = 6100; total 7320.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.134Z"
+        }
+      }
+    },
+    {
+      "id": "ab86d652-21a6-4b42-bbd9-a893584ed721",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Find $764 \\times 89$.",
+      "choices": [],
+      "answer": "67996",
+      "compute": "764*89",
+      "solution": "764 x 9 = 6,876 and 764 x 80 = 61,120. 6,876 + 61,120 = 67,996.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67996",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "764 x 89 = 764 x 90 - 764 = 68760 - 764 = 67996.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.169Z"
+        }
+      }
+    },
+    {
+      "id": "87b090f9-dc10-4fba-aff1-1fc838427053",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply by a multiple of ten",
+      "stem": "Which is the product of $90 \\times 78$?",
+      "choices": [
+        "702",
+        "70,200",
+        "7,002",
+        "7,020"
+      ],
+      "answer": "7,020",
+      "compute": "7020",
+      "solution": "78 x 9 = 702. Multiplying by 90 is 78 x 9 x 10, so the product is 7,020.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7,020",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 x 78 = 7,020.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.212Z"
+        }
+      }
+    },
+    {
+      "id": "ded107fc-0b8c-4e81-a940-e142edb138cc",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Three-digit by two-digit product",
+      "stem": "Find $896 \\times 78$.",
+      "choices": [],
+      "answer": "69888",
+      "compute": "896*78",
+      "solution": "896 x 8 = 7,168 and 896 x 70 = 62,720. 7,168 + 62,720 = 69,888.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "69888",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "896 x 78 = 896 x 80 - 896 x 2 = 71,680 - 1,792 = 69,888.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.230Z"
+        }
+      }
+    },
+    {
+      "id": "1d9c17a0-cd10-4741-8c8a-d529f1d7e99a",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step word problem with the standard algorithm",
+      "stem": "A hall has 28 rows. The first 12 rows have 45 seats each. The other rows have 58 seats each. How many seats are in the hall?",
+      "choices": [],
+      "answer": "1468",
+      "compute": "12*45+16*58",
+      "solution": "The first rows: 12 x 45 = 540. The other 28 - 12 = 16 rows: 16 x 58 = 928. 540 + 928 = 1,468 seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1468",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 x 45 = 540; 16 x 58 = 928; 540 + 928 = 1,468.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.258Z"
+        }
+      }
+    },
+    {
+      "id": "2ec6480d-a255-42fe-a193-a8463612f90c",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-digit by two-digit product",
+      "stem": "Find $97 \\times 86$.",
+      "choices": [],
+      "answer": "8342",
+      "compute": "97*86",
+      "solution": "97 x 6 = 582 and 97 x 80 = 7,760. 582 + 7,760 = 8,342.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8342",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "97 x 86 = 100x86 - 3x86 = 8,600 - 258 = 8,342.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.266Z"
+        }
+      }
+    },
+    {
+      "id": "9cb66369-4404-4be8-a4ae-eb5bb78f4f36",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step word problem with the standard algorithm",
+      "stem": "A factory packs 365 bolts in each box and fills 48 boxes. Then 1,000 of the bolts are found to be bad. How many good bolts are there?",
+      "choices": [],
+      "answer": "16520",
+      "compute": "365*48-1000",
+      "solution": "365 x 48 = 17,520 bolts (365 x 8 = 2,920 and 365 x 40 = 14,600). 17,520 - 1,000 = 16,520 good bolts.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16520",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "365 x 48 = 17,520; 17,520 - 1,000 = 16,520.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.267Z"
+        }
+      }
+    },
+    {
+      "id": "1e7fcc12-2b28-493a-90a3-ade93a75c50c",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Partial products in the algorithm",
+      "stem": "A three-digit number is multiplied by 24 with the standard algorithm. The two partial products are 592 and 2,960. What is the three-digit number?",
+      "choices": [],
+      "answer": "148",
+      "compute": "592/4",
+      "solution": "The first row is the number x 4 = 592, so the number is 592 / 4 = 148. Check: 148 x 20 = 2,960.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "148",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "592 = n*4 -> n=148; check 148*20=2960. 148*24=3552.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.327Z"
+        }
+      }
+    },
+    {
+      "id": "e315247e-c67a-49e7-9d7e-6029119b986d",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate to check a product",
+      "stem": "Round 784 to the nearest hundred and 63 to the nearest ten. Then multiply the two rounded numbers. What is the result?",
+      "choices": [],
+      "answer": "48000",
+      "compute": "800*60",
+      "solution": "784 rounds to 800 and 63 rounds to 60. 800 x 60 = 48,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "784 -> 800, 63 -> 60. 800 x 60 = 48,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:16:32.485Z"
         }
       }
     },

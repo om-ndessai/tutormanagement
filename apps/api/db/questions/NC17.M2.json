@@ -25126,7 +25126,7 @@
       ],
       "answer": "Where the two diagonals cross",
       "compute": null,
-      "solution": "A $180^circ$ turn swaps opposite vertices. The point that stays fixed is the midpoint of each diagonal, where the two diagonals cross.",
+      "solution": "A $180^\\circ$ turn swaps opposite vertices. The point that stays fixed is the midpoint of each diagonal, where the two diagonals cross.",
       "status": "checked",
       "source": "ai",
       "checks": {
